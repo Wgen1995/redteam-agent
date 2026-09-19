@@ -93,13 +93,19 @@ for page in sorted(os.listdir(PANO)):
         return '>' + '/'.join(out) + '<'
     src = re.sub(r'>(VOL-\d\d(?:-\d\d)?(?:/(?:VOL-)?\d\d(?:-\d\d)?)+)<', slash_cell, src)
 
-    # 文本节点通用 VOL-XX 链接化（只动 >...< 之间的文本）
+    # 文本节点通用 VOL-XX 链接化（只动 >...< 之间的文本；先遮罩已有锚点区间防嵌套）
+    mask_store = []
+    def _mask(m):
+        mask_store.append(m.group(0))
+        return '\x00M%d\x00' % (len(mask_store) - 1)
+    masked = re.sub(r'<a [^>]*>(?:(?!</a>).)*</a>', _mask, src, flags=re.S)
     def text_node(m):
         inner = m.group(1)
         if 'href=' in inner or '<a' in inner:
             return m.group(0)
         return '>' + VOL_TOKEN.sub(lambda t: link_token(t.group(1)), inner) + '<'
-    src = re.sub(r'>([^<>]*VOL-\d\d[^<>]*)<', text_node, src)
+    masked = re.sub(r'>([^<>]*VOL-\d\d[^<>]*)<', text_node, masked)
+    src = masked.replace('\x00', '').join([]) if False else re.sub(r'\x00M(\d+)\x00', lambda m: mask_store[int(m.group(1))], masked)
 
     # 嵌套锚点清理：<a ...><a ...>VOL-XX</a></a> → 单层
     src = re.sub(r'<a ([^>]*)><a [^>]*>(VOL-[^<]*)</a></a>', r'<a \1>\2</a>', src)

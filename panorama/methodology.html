@@ -75,7 +75,7 @@ ul.tick li{font-size:13.5px;color:#475569;margin-bottom:5px}
   <div class="step"><b>⑦ 收尾</b><span>痕迹处理与合规收尾：清环境、清残留数据，全程不出授权范围</span><span class="kd">决策：清理动作同样受 RoE 约束，证据先按 VULN-xxx 目录归档</span></div>
   <div class="step"><b>⑧ 报告</b><span>六节结构组装 + POC 卡片 + CVSS 3.1 评级 + 证据脱敏，附复测四态口径</span><span class="kd">决策：结论先行；交叉三查——概述数字＝矩阵合计＝明细条数</span></div>
 </div>
-<p class="deep">深读指引：<a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a> 方法论·报告交付（PTES 流程与 PART B 六件交付物）<a href="../docs/learning/html/VOL-01-web-app-part1.html">VOL-01</a> Web 渗透·上（侦察与攻击面）<a href="../docs/learning/html/VOL-03-intranet.html">VOL-03</a> 内网渗透（提权/横向/收尾）<a href="../docs/learning/html/VOL-06-toolchain.html">VOL-06</a> 工具链（工具输出怎么读、RoE）</p>
+<p class="deep">深读指引：<a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a> 方法论·报告交付（PTES 流程与 PART B 六件交付物）<a href="../docs/learning/html/VOL-01-web-app-part1.html">VOL-01</a> Web 渗透·上（侦察与攻击面）<a href="../docs/learning/html/VOL-03-intranet.html#vol-03-内网渗透-从打点到域控">VOL-03</a> 内网渗透（提权/横向/收尾）<a href="../docs/learning/html/VOL-06-toolchain.html">VOL-06</a> 工具链（工具输出怎么读、RoE）</p>
 
 <h2>二、四大方法论框架对照</h2>
 <p>四个框架各管一段：流程、覆盖度、行为对照、叙事。选型口诀——<b>项目管流程用 PTES，Web 覆盖度用 WSTG，内网阶段用 ATT&amp;CK 自查，报告叙事用 Kill Chain</b>。四者不互斥，完整交付里都会出现。</p>
@@ -86,7 +86,7 @@ ul.tick li{font-size:13.5px;color:#475569;margin-bottom:5px}
   <tr><td class="adv">OWASP WSTG</td><td>Web 安全测试指南（稳定版 v4.2），按信息收集、配置与部署管理、身份认证、授权、会话管理、输入校验、错误处理、加密、业务逻辑、客户端等大类组织数十个用例</td><td>Web 系统性覆盖度兜底「该测的都测了」；也是报告「测试方法」章节的引用来源</td><td>只覆盖 Web 系统性测试，项目流程与内网行为不在其分工内</td></tr>
   <tr><td class="lv">MITRE ATT&amp;CK</td><td>对抗战术/技术/常识知识库：真实攻击组织 TTP（战术/技术/过程），企业版矩阵按战术列技术</td><td>内网行为对照：把内网每个动作映射到技术编号，度量红队覆盖面与蓝队检测盲区</td><td>是行为知识库不是执行标准，不提供立项流程与 Web 用例级指导</td></tr>
 </table>
-<p class="deep">深读指引：<a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a> · PART A1.1 四大框架：是什么与何时用</p>
+<p class="deep">深读指引：<a href="../docs/learning/html/VOL-07-08-methodology-reporting.html#vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08</a> · PART A1.1 四大框架：是什么与何时用</p>
 
 <h2>三、黑盒信息渐进决策模型：缺口→下一动作</h2>
 <p>黑盒卡住的实质是<b>事实缺口</b>：不知道某类信息，所以不知道下一步做什么。人工版照抄 MITRE Caldera 的 facts 机制：维护 facts 表（列：<code>事实 / 值 / 来源 / 时间</code>），每个缺口对应一类收集动作，动作产出新事实，直到事实组合满足某条利用路径的前置条件。</p>
@@ -130,7 +130,7 @@ ul.tick li{font-size:13.5px;color:#475569;margin-bottom:5px}
     <div class="go">Repeater 重放一致 → 写报告；不一致 → 降级「疑似」</div>
   </div>
 </div>
-<p class="deep">深读指引：<a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a> · PART A2 审计员→渗透者思维转换表<a href="../docs/learning/html/VOL-04-source-assist.html#vol-04-源码审计-黑盒联动-审计员优势的降维打法"><a href="../docs/learning/html/VOL-04-source-assist.html">VOL-04</a> 源码审计→黑盒联动（审计员优势的降维打法）</a></p>
+<p class="deep">深读指引：<a href="../docs/learning/html/VOL-07-08-methodology-reporting.html#vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08</a> · PART A2 审计员→渗透者思维转换表<a href="../docs/learning/html/VOL-04-source-assist.html#vol-04-源码审计-黑盒联动-审计员优势的降维打法">VOL-04 源码审计→黑盒联动（审计员优势的降维打法）</a></p>
 
 <footer>红队成长全景 · 持续更新</footer>
 </div>

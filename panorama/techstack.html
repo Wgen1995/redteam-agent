@@ -133,7 +133,7 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
   <tr><td>痕迹处理与收尾</td><td>只清理自己新增的持久化构件（工具/账号/计划任务/portproxy）；删除客户日志=销毁证据；整理操作时间线与客户日志对账，输出攻击路径图+事件 ID（4624/4768/4769/4104）</td><td><span class="lv">重点</span></td></tr>
 </table>
 <div class="note"><b>掌握标准（能做什么算掌握）：</b>① 打点后快速产出"本机档案"（账户特权/网段/杀软/RDP 会话/疑似凭据文件）；② 按出网能力选对隧道方案，proxychains 内网扫描出端口清单；③ 提权后 whoami /groups 见 High 或 SYSTEM，且能说出该条提权路径的前提条件；④ GOAD 结业：能独立画出自己的完整路径图（打点机→凭据→横向→DA→DC）并逐节点标注事件 ID；域控矩阵每行至少复现一条，能复盘"补了 X 这条链断在哪"。</div>
-<p><span class="vol">对应卷册：<a href="../docs/learning/html/VOL-03-intranet.html">VOL-03</a>《内网渗透：从打点到域控》全卷</span><span class="vol">靶场：GOAD（5 VM/2 林/3 域）/ TryHackMe Wreath / HTB Sauna·Lame·Nibbles</span><span class="vol">后渗透工具 → <a href="toolchain.html">工具链</a></span></p>
+<p><span class="vol">对应卷册：<a href="../docs/learning/html/VOL-03-intranet.html#vol-03-内网渗透-从打点到域控">VOL-03</a>《内网渗透：从打点到域控》全卷</span><span class="vol">靶场：GOAD（5 VM/2 林/3 域）/ TryHackMe Wreath / HTB Sauna·Lame·Nibbles</span><span class="vol">后渗透工具 → <a href="toolchain.html">工具链</a></span></p>
 
 <h2>④ 源码联动层 · 审计员优势的降维打法</h2>
 <p>你不是从零学黑盒，而是把白盒能力接驳到黑盒工作流。核心心法：审计员最强的不是找洞，而是知道"这个洞对应的那个请求长什么样"——先构造假设，再验证。</p>
