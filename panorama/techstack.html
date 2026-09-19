@@ -53,7 +53,7 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
     <span>六层知识地图</span>
     <span>优先级三级标记</span>
     <span>掌握标准 = 可验收动作</span>
-    <span>内容提炼自 VOL-01 ~ VOL-08</span>
+    <span>内容提炼自 <a href="../docs/learning/html/VOL-01-web-app-part1.html">VOL-01</a> ~ VOL-08</span>
   </div>
 </header>
 
@@ -93,7 +93,7 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
   <tr><td>指纹→CVE 判定</td><td>whatweb / httpx / searchsploit 完成版本→explotr 映射；牢记指纹≠版本≠可利用，逐条核对利用条件（如 Spring4Shell 需 JDK9+、war 部署）</td><td><span class="lv">重点</span></td></tr>
 </table>
 <div class="note"><b>掌握标准（能做什么算掌握）：</b>① 对任一授权目标完整跑一遍"子域→nmap→httpx→ffuf→JS 提取"流水线，产出入口点清单表；② 只凭指纹判版本，再用 searchsploit 取回 exploit 复现"指纹→CVE→验证"闭环（如 struts2 s2-045、thinkphp 5-rce）；③ 爆破结果必人工复核——爆破器必误报，人工确认是纪律。</div>
-<p><span class="vol">对应卷册：VOL-01《Web 应用渗透（上）》第 1–2 节</span><span class="vol">工具细节：nmap / httpx / ffuf 字典工程 → <a href="toolchain.html">toolchain.html</a></span></p>
+<p><span class="vol">对应卷册：<a href="../docs/learning/html/VOL-01-web-app-part1.html">VOL-01</a>《Web 应用渗透（上）》第 1–2 节</span><span class="vol">工具细节：nmap / httpx / ffuf 字典工程 → <a href="toolchain.html">toolchain.html</a></span></p>
 
 <h2>② Web 应用层 · 进得去、进得深、拿得稳</h2>
 <p>上册解决"进得去"（认证+注入），下册解决"进得深、拿得稳"（越权+逻辑+上传+反序列化）。越权与逻辑漏洞是审计经验迁移率最高的板块——黑盒选手测不出支付状态机跳跃，看得懂业务语义的人可以。</p>
@@ -115,7 +115,7 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
   <tr><td>POC→EXP 工程化</td><td>四点差距：环境指纹显式化、输入规范化、失败回退、可重复性；固定工序——指纹前置、参数化禁硬编码、证据自采、失败分类退出码、默认无害（延时/dnslog/标记文件）</td><td><span class="lv">重点</span></td></tr>
 </table>
 <div class="note"><b>掌握标准（能做什么算掌握）：</b>① 双账号测出 IDOR 并批量验证，留"请求+响应+身份说明"三联证据；② 手工五步 UNION 注入拿回显位，三库报错/延时通道随手写，盲注交 sqlmap 指定 technique；③ 篡改 JWT sub/role 后仍非 401/403 即实锤；④ 单包攻击命中后留"发包前后余额两帧"；⑤ 上传绕过用单变量降级法定位"卡在哪层"，拿到 URL 后 POST phpinfo 验证解析；⑥ Fastjson/Shiro 做到报错探针+dnslog/deleteMe 判定的无害验证即收手。</div>
-<p><span class="vol">对应卷册：VOL-01《Web 应用渗透（上）》第 3–4 节 + VOL-02《Web 应用渗透（下）》全卷</span><span class="vol">靶场：vulhub / sqli-labs / upload-labs / PortSwigger lab</span><span class="vol">思维转换 → <a href="methodology.html">methodology.html</a></span></p>
+<p><span class="vol">对应卷册：<a href="../docs/learning/html/VOL-01-web-app-part1.html">VOL-01</a>《Web 应用渗透（上）》第 3–4 节 + <a href="../docs/learning/html/VOL-02-web-app-part2.html">VOL-02</a>《Web 应用渗透（下）》全卷</span><span class="vol">靶场：vulhub / sqli-labs / upload-labs / PortSwigger lab</span><span class="vol">思维转换 → <a href="methodology.html">methodology.html</a></span></p>
 
 <h2>③ 内网与域层 · 立足 → 隧道 → 凭据 → 提权 → 横向 → 域控</h2>
 <p>Web 打点给你的是一只 webshell 或低权限 shell，本层解决"之后怎么办"。主线固定六步：立足 → 隧道 → 凭据 → 提权 → 横向 → 域控，最后合规收尾。</p>
@@ -132,7 +132,7 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
   <tr><td>痕迹处理与收尾</td><td>只清理自己新增的持久化构件（工具/账号/计划任务/portproxy）；删除客户日志=销毁证据；整理操作时间线与客户日志对账，输出攻击路径图+事件 ID（4624/4768/4769/4104）</td><td><span class="lv">重点</span></td></tr>
 </table>
 <div class="note"><b>掌握标准（能做什么算掌握）：</b>① 打点后快速产出"本机档案"（账户特权/网段/杀软/RDP 会话/疑似凭据文件）；② 按出网能力选对隧道方案，proxychains 内网扫描出端口清单；③ 提权后 whoami /groups 见 High 或 SYSTEM，且能说出该条提权路径的前提条件；④ GOAD 结业：能独立画出自己的完整路径图（打点机→凭据→横向→DA→DC）并逐节点标注事件 ID；域控矩阵每行至少复现一条，能复盘"补了 X 这条链断在哪"。</div>
-<p><span class="vol">对应卷册：VOL-03《内网渗透：从打点到域控》全卷</span><span class="vol">靶场：GOAD（5 VM/2 林/3 域）/ TryHackMe Wreath / HTB Sauna·Lame·Nibbles</span><span class="vol">后渗透工具 → <a href="toolchain.html">toolchain.html</a></span></p>
+<p><span class="vol">对应卷册：<a href="../docs/learning/html/VOL-03-intranet.html">VOL-03</a>《内网渗透：从打点到域控》全卷</span><span class="vol">靶场：GOAD（5 VM/2 林/3 域）/ TryHackMe Wreath / HTB Sauna·Lame·Nibbles</span><span class="vol">后渗透工具 → <a href="toolchain.html">toolchain.html</a></span></p>
 
 <h2>④ 源码联动层 · 审计员优势的降维打法</h2>
 <p>你不是从零学黑盒，而是把白盒能力接驳到黑盒工作流。核心心法：审计员最强的不是找洞，而是知道"这个洞对应的那个请求长什么样"——先构造假设，再验证。</p>
@@ -148,7 +148,7 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
   <tr><td>联动闭环</td><td>「假设卡」工作法：白盒假设→黑盒验证（一条请求+判定标准）→证据留存（原始报文+时间戳+截图入 findings 目录）；三段缺一只是线索不是发现；仅代码推断未黑盒复现的永远标 probable</td><td><span class="core">核心</span></td></tr>
 </table>
 <div class="note"><b>掌握标准（能做什么算掌握）：</b>① 有源码时产出「路由×鉴权」表，标不出鉴权规则的路由用无凭据请求 diff 验证（200+JSON 即未授权实锤）；② 看到 sink 能翻译成一条可复现请求（如 fastjson Inet4Address 探针看 DNSLog 出网）；③ 发行包挖到 JWT secret → 本地 jwt_tool 伪造 → 线上重放通过鉴权，闭环才算数；④ findings 目录换台机器、隔一天，10 分钟内能复现——这是证据链合格线。</div>
-<p><span class="vol">对应卷册：VOL-04《源码审计→黑盒联动》全卷</span><span class="vol">白盒技能→黑盒战力折算表 → <a href="methodology.html">methodology.html</a></span><span class="vol">验证工具 nuclei → <a href="toolchain.html">toolchain.html</a></span></p>
+<p><span class="vol">对应卷册：<a href="../docs/learning/html/VOL-04-source-assist.html">VOL-04</a>《源码审计→黑盒联动》全卷</span><span class="vol">白盒技能→黑盒战力折算表 → <a href="methodology.html">methodology.html</a></span><span class="vol">验证工具 nuclei → <a href="toolchain.html">toolchain.html</a></span></p>
 
 <h2>⑤ 客户端层 · EXE / APK / 协议的够用深度</h2>
 <p>客户端是甲方"必须发到用户手里"的代码，天然泄露四类情报：服务端地址、兼容/调试接口、硬编码凭据与密钥、更新机制 URL。本质是"没有源码的代码审计"，审计经验全部可迁移。</p>
@@ -168,7 +168,7 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
   <tr><td>硬编码 finding 卡</td><td>证据五要素：对象（组件+版本）/位置（文件/类/方法/偏移）/值（脱敏+SHA-256 指纹）/验证（是否有效、在哪个入口）/影响（能访问什么资产）；缺一项评审会就被打回</td><td><span class="core">核心</span></td></tr>
 </table>
 <div class="note"><b>掌握标准（能做什么算掌握）：</b>① 拿到任意 EXE/APK 按"前 30 分钟速查清单"跑完：识别→解包/脱壳→双编码 strings→分桶 grep→反编译只啃加密与网络两块→产出三件套（资产补充清单/疑似凭据表/协议疑点列表）；② 能指出"哪个类哪个方法用了哪个硬编码 Key"作为 finding 证据；③ APK 能回答"有没有加固"；抓包失败能分层定位（CA→pinning→mTLS）；④ 协议分析产出帧结构表，手工构造一条合法心跳帧收到服务端预期响应即逆向闭环。</div>
-<p><span class="vol">对应卷册：VOL-05《安装包与客户端分析》全卷</span><span class="vol">靶场：InsecureBankv2 / OWASP UnCrackable L1–L4 / Allsafe / HTB Blocky·Cascade</span><span class="vol">mitmproxy 抓包 → <a href="toolchain.html">toolchain.html</a></span></p>
+<p><span class="vol">对应卷册：<a href="../docs/learning/html/VOL-05-client-package.html">VOL-05</a>《安装包与客户端分析》全卷</span><span class="vol">靶场：InsecureBankv2 / OWASP UnCrackable L1–L4 / Allsafe / HTB Blocky·Cascade</span><span class="vol">mitmproxy 抓包 → <a href="toolchain.html">toolchain.html</a></span></p>
 
 <h2>⑥ 交付层 · 报告、POC 卡、CVSS 与等保</h2>
 <p>报告是唯一交付物，客户"修不修、先修谁"只依赖它。方法论给骨架：项目管流程用 PTES，Web 覆盖度用 WSTG，内网阶段用 ATT&CK 自查，报告叙事用 Kill Chain——四者不互斥，完整交付里都会出现。</p>
@@ -185,7 +185,7 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
   <tr><td>能力阶梯 L0–L5</td><td>进度单位是里程碑验收不是学时：L0 环境就绪→L1 靶场复现单 CVE→L2 vulhub 全类→L3 HTB easy/medium 独立双 flag→L4 授权项目辅助位零返工→L5 独立交付客户签字报告</td><td><span class="lv">重点</span></td></tr>
 </table>
 <div class="note"><b>掌握标准（能做什么算掌握）：</b>① 一洞一卡，同事盲测只给卡不给口头说明，10–15 分钟复现成功且定级一致；② CVSS 双人独立评级，差 &gt;1 级时逐指标对照向量找分歧点，FIRST 计算器复算；③ 交付前全文检索密码/Bearer/token/手机号正则无命中；④ 复测每条四态判定都有重放响应截图支撑；⑤ L5 终点：独立交付一份客户签字接受的完整报告+复测报告，全程零出授权范围。逐级差距清单与周期规划见 <a href="roadmap.html" style="color:#b91c1c;font-weight:600">roadmap.html</a>。</div>
-<p><span class="vol">对应卷册：VOL-07-08《方法论·报告交付·成长路线》全卷</span><span class="vol">笔记与截图规范 → <a href="toolchain.html">toolchain.html</a></span><span class="vol">学习材料索引 → <a href="roadmap.html">roadmap.html</a></span></p>
+<p><span class="vol">对应卷册：<a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a>《方法论·报告交付·成长路线》全卷</span><span class="vol">笔记与截图规范 → <a href="toolchain.html">toolchain.html</a></span><span class="vol">学习材料索引 → <a href="roadmap.html">roadmap.html</a></span></p>
 
 <footer>红队成长全景 · 持续更新</footer>
 </div>

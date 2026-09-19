@@ -25,13 +25,13 @@ th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{backgr
 footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
 .topnav{display:flex;gap:10px;margin:0 0 14px;flex-wrap:wrap}.topnav a{background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 </style></head><body><div class="wrap">
-<nav class="topnav"><a href="methodology.html">🧭 思路与逻辑全景</a><a href="techstack.html">🗺️ 技术栈全景</a><a href="toolchain.html">🧰 工具链全景</a><a href="roadmap.html">🪜 成长路线</a><a href="../docs/learning/">📚 手册目录</a></nav>
+<nav class="topnav"><a href="methodology.html">🧭 思路与逻辑全景</a><a href="techstack.html">🗺️ 技术栈全景</a><a href="toolchain.html">🧰 工具链全景</a><a href="roadmap.html">🪜 成长路线</a><a href="../docs/learning/html/index.html">📚 手册目录</a></nav>
 <header><h1>红队成长全景 · 从源码审计到一人红队</h1>
 <div class="sub">图是地图，册是教材——五页全景导航 + 七卷深度手册 · 为转岗渗透测试的源码审计工程师定制</div>
 <div class="tags"><span>能力里程碑制 · 不做时间排期</span><span>授权渗透 · 只打授权目标</span><span>白盒优势迁移 · 代码即真相→响应即真相+证据链</span><span>四类目标：认证后Web / 内网域 / 安装包 / 源码联动</span><span>交付导向：POC 卡片 + 中文报告</span></div></header>
 
 <h2>这套材料怎么用</h2>
-<div class="note"><b>三句话定位</b>：① <b>全景图（本目录五页）</b>回答"怎么思考/要学什么/有什么工具/怎么成长"——先看图建立框架；② <b>手册（docs/learning/ 七卷）</b>是教材——每个知识点固定【原理】【操作】【验证】【陷阱】四段，操作细到每一步可跟着做；③ <b>你的优势是审计功底</b>——VOL-04 专门讲怎么把白盒经验降维到黑盒，这不是补短板而是接长板。</div>
+<div class="note"><b>三句话定位</b>：① <b>全景图（本目录五页）</b>回答"怎么思考/要学什么/有什么工具/怎么成长"——先看图建立框架；② <b>手册（docs/learning/ 七卷）</b>是教材——每个知识点固定【原理】【操作】【验证】【陷阱】四段，操作细到每一步可跟着做；③ <b>你的优势是审计功底</b>——<a href="../docs/learning/html/VOL-04-source-assist.html">VOL-04</a> 专门讲怎么把白盒经验降维到黑盒，这不是补短板而是接长板。</div>
 <div class="cards">
 <a class="card meth" href="methodology.html"><div class="icon">🧭</div><h4>思路与逻辑全景</h4><p>交战生命周期八步流程条、Kill Chain/PTES/WSTG/ATT&CK 四框架对照与选型、黑盒信息渐进决策模型（信息缺口→下一动作）、审计员→渗透者思维转换表。</p><div class="go">看渗透测试怎么思考 →</div></a>
 <a class="card tech" href="techstack.html"><div class="icon">🗺️</div><h4>技术栈全景</h4><p>六层知识地图（侦察/Web/内网域/源码联动/客户端/交付），61 个知识点带核心·重点·进阶三级优先级与"能做什么算掌握"的验收标准。</p><div class="go">看要掌握哪些技术 →</div></a>
@@ -41,21 +41,21 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
 
 <h2>七卷深度手册</h2>
 <table><tr><th>卷</th><th>标题</th><th>一句话内容</th><th>建议阅读时机</th></tr>
-<tr><td><b>VOL-01</b></td><td>Web 应用渗透（上）</td><td>信息收集/指纹/攻击面/认证机制/注入类（SQL/命令/XSS/SSTI/SSRF）</td><td class="lv">L1-L2 主线</td></tr>
-<tr><td><b>VOL-02</b></td><td>Web 应用渗透（下）</td><td>越权/逻辑漏洞/文件上传/反序列化/POC→EXP 构造方法论</td><td class="lv">L1-L2 主线</td></tr>
-<tr><td><b>VOL-03</b></td><td>内网渗透：从打点到域控</td><td>隧道代理/凭据获取/提权/横向移动/Kerberos 一页讲透/域控矩阵/GOAD 路径</td><td class="core">L2-L3 主线</td></tr>
-<tr><td><b>VOL-04</b></td><td>源码审计→黑盒联动</td><td>入口点优先审计法/代码→PoC 翻译/无源码反推/半黑盒——审计员的优势迁移</td><td class="core">随时（你的优势区）</td></tr>
-<tr><td><b>VOL-05</b></td><td>安装包与客户端分析</td><td>EXE 解包/硬编码提取/.NET 反编译/APK 全链/自定义协议分析</td><td class="adv">按项目需要</td></tr>
-<tr><td><b>VOL-06</b></td><td>工具链详解手册</td><td>五组工具逐个四段详解 + 工具组合战术矩阵</td><td class="lv">L0 起全程随用随查</td></tr>
-<tr><td><b>VOL-07-08</b></td><td>方法论·报告交付·成长路线</td><td>四框架/信息渐进决策/L0-L5 阶梯 + 中文报告/POC 卡片/CVSS/等保/复测</td><td class="core">L0 先读 PART A；真实项目前读 PART B</td></tr>
+<tr><td><b><a href="../docs/learning/html/VOL-01-web-app-part1.html">VOL-01</a></b></td><td>Web 应用渗透（上）</td><td>信息收集/指纹/攻击面/认证机制/注入类（SQL/命令/XSS/SSTI/SSRF）</td><td class="lv">L1-L2 主线</td></tr>
+<tr><td><b><a href="../docs/learning/html/VOL-02-web-app-part2.html">VOL-02</a></b></td><td>Web 应用渗透（下）</td><td>越权/逻辑漏洞/文件上传/反序列化/POC→EXP 构造方法论</td><td class="lv">L1-L2 主线</td></tr>
+<tr><td><b><a href="../docs/learning/html/VOL-03-intranet.html">VOL-03</a></b></td><td>内网渗透：从打点到域控</td><td>隧道代理/凭据获取/提权/横向移动/Kerberos 一页讲透/域控矩阵/GOAD 路径</td><td class="core">L2-L3 主线</td></tr>
+<tr><td><b><a href="../docs/learning/html/VOL-04-source-assist.html">VOL-04</a></b></td><td>源码审计→黑盒联动</td><td>入口点优先审计法/代码→PoC 翻译/无源码反推/半黑盒——审计员的优势迁移</td><td class="core">随时（你的优势区）</td></tr>
+<tr><td><b><a href="../docs/learning/html/VOL-05-client-package.html">VOL-05</a></b></td><td>安装包与客户端分析</td><td>EXE 解包/硬编码提取/.NET 反编译/APK 全链/自定义协议分析</td><td class="adv">按项目需要</td></tr>
+<tr><td><b><a href="../docs/learning/html/VOL-06-toolchain.html">VOL-06</a></b></td><td>工具链详解手册</td><td>五组工具逐个四段详解 + 工具组合战术矩阵</td><td class="lv">L0 起全程随用随查</td></tr>
+<tr><td><b><a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a></b></td><td>方法论·报告交付·成长路线</td><td>四框架/信息渐进决策/L0-L5 阶梯 + 中文报告/POC 卡片/CVSS/等保/复测</td><td class="core">L0 先读 PART A；真实项目前读 PART B</td></tr>
 </table>
 
 <h2>建议路径（按能力级，非时间表）</h2>
 <table><tr><th>能力级</th><th>先看图</th><th>再读册</th><th>动手</th></tr>
-<tr><td><b>L0 就绪</b></td><td>methodology + toolchain</td><td>VOL-06（工具装好）+ VOL-07-08 PART A</td><td>搭靶场环境（vulhub/本地双机）</td></tr>
-<tr><td><b>L1-L2 复现与贯通</b></td><td>techstack（Web 层）</td><td>VOL-01 → VOL-02 →（VOL-04 优势区随时穿插）</td><td>vulhub 全类 + PortSwigger 模块</td></tr>
-<tr><td><b>L3 独立通关</b></td><td>techstack（内网层）</td><td>VOL-03</td><td>HTB easy→medium + GOAD 分模块</td></tr>
-<tr><td><b>L4-L5 实战交付</b></td><td>roadmap 自评</td><td>VOL-07-08 PART B（报告/交付）+ VOL-05（按项目）</td><td>真实授权项目辅助位→独立交付</td></tr>
+<tr><td><b>L0 就绪</b></td><td>methodology + toolchain</td><td><a href="../docs/learning/html/VOL-06-toolchain.html">VOL-06</a>（工具装好）+ <a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a> PART A</td><td>搭靶场环境（vulhub/本地双机）</td></tr>
+<tr><td><b>L1-L2 复现与贯通</b></td><td>techstack（Web 层）</td><td><a href="../docs/learning/html/VOL-01-web-app-part1.html">VOL-01</a> → <a href="../docs/learning/html/VOL-02-web-app-part2.html">VOL-02</a> →（<a href="../docs/learning/html/VOL-04-source-assist.html">VOL-04</a> 优势区随时穿插）</td><td>vulhub 全类 + PortSwigger 模块</td></tr>
+<tr><td><b>L3 独立通关</b></td><td>techstack（内网层）</td><td><a href="../docs/learning/html/VOL-03-intranet.html">VOL-03</a></td><td>HTB easy→medium + GOAD 分模块</td></tr>
+<tr><td><b>L4-L5 实战交付</b></td><td>roadmap 自评</td><td><a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a> PART B（报告/交付）+ <a href="../docs/learning/html/VOL-05-client-package.html">VOL-05</a>（按项目）</td><td>真实授权项目辅助位→独立交付</td></tr>
 </table>
 <div class="note"><b>阅读铁律</b>：手册里每个【操作】都要在靶场真做过一遍才算读过——渗透是手艺，眼睛会了不算会。每个【验证】就是"你做对了没有"的判据，每个【练习】都给出了对口的靶机。</div>
 <footer>红队成长全景 · 持续更新 · 配套 redteam-agent 一人红队 AI 自动化 skill（docs/research/ 与 docs/design/）</footer>

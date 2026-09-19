@@ -56,7 +56,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
   <h1>工具链全景 · 每个工具做什么、什么原理</h1>
   <div class="sub">有哪些工具、分别什么原理、什么时候用哪个——五组工具矩阵、工具组合战术矩阵与选择决策要点。所有命令仅用于已签授权书（Rules of Engagement, RoE）范围内的目标。</div>
   <div class="tags">
-    <span>来源：VOL-06 工具链详解手册</span>
+    <span>来源：<a href="../docs/learning/html/VOL-06-toolchain.html">VOL-06</a> 工具链详解手册</span>
     <span>侦察 / 代理 / 验证利用 / 后渗透 / 辅助</span>
     <span>模板即代码</span>
     <span>定制字典 &gt; 通用字典</span>
@@ -65,7 +65,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 </header>
 
 <h2>① 五组工具矩阵：工具 · 原理 · 命令 · 陷阱</h2>
-<p>按 VOL-06 的五组划分回答「每个工具做什么、一句话原理是什么、核心命令长什么样、最容易踩什么坑」。每个工具附「详解」链接直达原卷。</p>
+<p>按 <a href="../docs/learning/html/VOL-06-toolchain.html">VOL-06</a> 的五组划分回答「每个工具做什么、一句话原理是什么、核心命令长什么样、最容易踩什么坑」。每个工具附「详解」链接直达原卷。</p>
 
 <div class="phase">
   <div class="step"><b>侦察组</b><span>nmap / httpx / ffuf / OneForAll·subfinder</span></div>
@@ -80,28 +80,28 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 <table>
   <tr><th style="width:120px">工具</th><th style="width:180px">做什么</th><th>一句话原理</th><th style="width:250px">核心命令</th><th style="width:260px">陷阱</th></tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">nmap</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">nmap</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>端口与服务侦察基座：目标开了什么门、门后是什么服务</td>
     <td>默认 SYN 半开扫描只发 TCP 握手前两步，收到 SYN/ACK 即判开放并 RST 断开；<code>-sV</code> 发协议探针与签名库比对出版本；NSE 内嵌 Lua 虚拟机按脚本分类联动检测</td>
     <td><code>sudo nmap -sS -sV -p- 192.168.10.5 -oA recon/full_tcp</code><br>UDP 补扫：<code>sudo nmap -sU --top-ports 50</code></td>
     <td>只扫 TCP 会漏 UDP（SNMP/NTP 在那）；不加 <code>sudo</code> 时 <code>-sS</code> 静默降级为更吵的全连接；客户环境用 <code>-T2~T3 --max-rate</code>，<code>-T4/-T5</code> 留给靶场</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">httpx</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#1-2-httpx-存活与指纹批量探测">httpx</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>给大列表（域名/IP/URL）做「谁活着、什么站、什么技术栈」的快速过滤</td>
     <td>Go 并发发 HTTP(S) 探测（https 失败自动回退 http），按需提取状态码/标题/技术栈指纹/IP/CNAME/CDN 归属，基于 retryablehttp 做重试退避</td>
     <td><code>cat subs.txt | httpx -title -tech-detect -cdn -json -o live.json</code><br>内网：<code>-ports 80,443,8000,8080,8443 -rate-limit 50</code></td>
     <td>通配符 DNS 会把全部子域解析到同一 IP，先 <code>-ip</code> 聚类去重；默认只探 80/443，内网必须 <code>-ports</code>；大列表不配 <code>-rate-limit</code> 会打爆 WAF 留一堆 429 污染客户日志</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">ffuf</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#1-3-ffuf-内容发现与字典工程">ffuf</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>Web Fuzz 主力：目录/文件、参数名、参数值、虚拟主机（vhost）</td>
     <td>把 URL 中 <code>FUZZ</code> 占位符替换为字典项并发请求；核心是校准（calibration）——先用随机字符串测出「软 404」基线，<code>-ac</code> 据此自动过滤，剩下的才可信</td>
     <td><code>ffuf -w raft-medium-directories.txt -u https://target/FUZZ -ac -mc 200,301,302,403 -recursion</code><br>定制字典：<code>cewl -d 2 -w site.dict</code> 再与通用字典合并去重</td>
     <td>忘 <code>-ac</code>/<code>-fs</code> 满屏软 404 是新手第一大坑；递归是指数级流量，先 medium 后 large；WAF 目标配 <code>-rate 50</code>；字典工程原则：定制 &gt; 通用</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">OneForAll<br>+ subfinder</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#1-4-子域收集-oneforall-subfinder">OneForAll<br>+ subfinder</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>子域收集，划定攻击面第一步：授权主域下有哪些子域</td>
     <td>OneForAll 聚合多源（子域字典爆破、证书透明度日志、第三方 API、DNS 数据集）再做解析与存活校验；subfinder 走纯被动源无发包——先被动后主动，被动零告警</td>
     <td><code>python3 oneforall.py --target example.com run</code><br><code>subfinder -d example.com -silent &gt; subs.txt</code>，接 httpx 存活筛选</td>
@@ -115,14 +115,14 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 <table>
   <tr><th style="width:120px">工具</th><th style="width:180px">做什么</th><th>一句话原理</th><th style="width:250px">核心命令</th><th style="width:260px">陷阱</th></tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">Burp Suite</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#2-1-burp-suite-web-测试工作台">Burp Suite</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>Web 测试工作台：看包、改包、重放、批量、扫描</td>
     <td>本机 <code>127.0.0.1:8080</code> 起代理监听中转流量，HTTPS 靠 Burp 动态签发的 CA 证书做中间人（MITM）解密；所有流量进 HTTP history，任意请求可送 Repeater / Intruder / Scanner 复用</td>
     <td>Repeater 手工重放微调（80% 时间在这）；联动 sqlmap：请求右键 Copy to file 存 <code>req.txt</code> → <code>sqlmap -r req.txt --batch</code></td>
     <td>系统全局代理会劫持其他工具流量（用 FoxyProxy 分模式）；不设 Target scope 就开 Scanner 会扫到第三方资源（越界+浪费）；Intruder 忘 URL 编码选项，% 破坏请求结构</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">mitmproxy</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#2-2-mitmproxy-脚本化中间人代理">mitmproxy</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>Burp 的命令行互补件：批量改包、自动校验、App/小程序抓包</td>
     <td>同为 MITM 代理，交互模型是「插件（addon）+ 事件钩子（hook）」：Python 文件定义 <code>request(flow)</code>/<code>response(flow)</code>，每个流经过时被回调，直接改写请求/响应</td>
     <td><code>mitmdump -s addon.py --listen-port 8080</code>；手机抓包：Wi-Fi 代理指向本机，设备访问 <code>http://mitm.it</code> 装证书</td>
@@ -136,21 +136,21 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 <table>
   <tr><th style="width:120px">工具</th><th style="width:180px">做什么</th><th>一句话原理</th><th style="width:250px">核心命令</th><th style="width:260px">陷阱</th></tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">sqlmap</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#3-1-sqlmap-sql-注入验证与提数">sqlmap</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>SQL 注入验证与提数：指纹、提数、绕 WAF（只对授权数据）</td>
     <td>对参数注入探测载荷，覆盖五类判定——报错型看回显、布尔盲注对比真假响应、时间盲注用延迟推断、UNION 探列数与回显位、堆叠查询；确认后按数据库方言构造提数语句</td>
     <td><code>sqlmap -r req.txt --batch --level 3 --risk 2</code><br>绕 WAF/降速：<code>--tamper=space2comment --random-agent --delay 2 --threads 1</code></td>
     <td>时间盲注大量 SLEEP 会拖垮小站连接池，生产必配 <code>--delay 2 --threads 1</code> 并约时间窗；<code>--dump</code> 仅在授权允许取数时用，合规做法是 <code>--schema</code>/<code>--count</code> 级取证；sqlmap 不是发现器，先在 Repeater 手工确认再交给它</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">nuclei</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#3-2-nuclei-模板化漏洞扫描">nuclei</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>批量、可复现的已知漏洞（CVE/指纹/泄露）验证器</td>
     <td>引擎与 YAML 模板分离：模板定义「发什么请求 + 怎么判定（matcher）+ 怎么提取（extractor）」，引擎并发渲染执行；模板即代码，可版本化、可自定义、交付时能精确复述检测逻辑</td>
     <td><code>nuclei -l live.txt -severity critical,high -o recon/nuclei_high.txt</code><br>自定义模板：Burp 历史改 <code>{{BaseURL}}</code> 占位 + 双条件 matcher，先对靶场验证再上线</td>
     <td>matcher 只配 200 必误报（软 404 也 200），至少双条件；模板库滞后于新 CVE，高危新洞照官方公告思路自己写；主动/破坏类模板对生产危险，显式排除；结论措辞是「覆盖范围内未发现」而非「安全」</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">fscan /<br>vulmap</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#3-3-fscan-vulmap-内网与组件一键侦察">fscan /<br>vulmap</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>拿到内网立足点（或授权内网段）后的第一轮广度扫描</td>
     <td>fscan（Go 单二进制）：ICMP 存活 → TCP 常用端口 → 服务/指纹识别 → 内置弱口令与已知漏洞 POC；vulmap（Python）面向 Web 中间件/框架（weblogic/tomcat/fastjson/shiro/spring）做漏洞比对+验证。共性：快、全、吵</td>
     <td><code>./fscan -h 192.168.10.0/24 -ao</code>（只存活摸底）<br>定向：<code>-p 22,80,443,3389 -nobr</code>（禁爆破防账号锁定）</td>
@@ -164,21 +164,21 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 <table>
   <tr><th style="width:120px">工具</th><th style="width:180px">做什么</th><th>一句话原理</th><th style="width:250px">核心命令</th><th style="width:260px">陷阱</th></tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">Metasploit</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#4-1-metasploit-利用与后渗透框架">Metasploit</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>模块化利用与后渗透工具箱，内网横向的「瑞士军刀」</td>
     <td>六类模块（auxiliary/exploit/payload/post/encoder/evasion）；每个 exploit 有前置条件（版本、路径、认证状态），不满足即失败——先侦察后利用；meterpreter 是内存驻留的多功能 shell</td>
     <td><code>use exploit/multi/http/tomcat_mgr_upload</code> → <code>show options</code> → <code>exploit</code>；跳板：<code>run post/multi/manage/autoroute</code> + <code>socks_proxy</code> 再配 proxychains</td>
     <td>NAT 后拿错 LHOST（如 127.0.0.1）回连必败，用目标可达的 VPN tun0/公网 VPS；EDR 常拦 meterpreter，降级普通 shell 或先做免杀评估；不 <code>show options</code> 就 exploit 多半参数不全；后渗透每个动作对应授权范围，横向移动要单独确认</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">CobaltStrike</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#4-2-cobaltstrike-概念认知与授权边界">CobaltStrike</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>商业 C2 框架、红队协同平台——本卷只建概念与合规边界，不教操作</td>
     <td>Team Server（监听器管理、任务分发、日志留存）+ Beacon 植入体按 sleep+jitter 周期回连（回连节奏影响被检测概率）+ Malleable C2 Profile 定制流量特征伪装成合法协议；多人共享会话视图是与单机工具的本质差别</td>
     <td>硬前提：正版授权（Fortra 商业许可）+ 客户书面授权（RoE 列明时间窗、目标、C2 域名/IP、允许动作），缺一即违法；练手用官方培训材料或自建授权靶场，无预算用开源替代（Havoc、Sliver、MSF）</td>
     <td>网上「破解版/汉化版」是供应链投毒重灾区，下载即失陷且使用违法（刑法 285/286 红线）；C2 基础设施未列入授权附录 = 越界；一人红队前期用不上：MSF + frp 覆盖绝大多数授权测试场景</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">frp</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#4-3-frp-内网穿透隧道">frp</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>内网穿透隧道：把内网服务/socks 代理反向暴露到你的 VPS</td>
     <td>反向隧道——内网侧 frpc 主动连公网 frps 建立控制连接，外部访问 frps 的 remotePort，流量经隧道转发到 frpc 侧 localPort；支持 tcp/udp/http/https 与插件扩展，socks5 插件可把失陷主机变成公网代理跳板</td>
     <td>frpc.toml：<code>[[proxies]] type="tcp"</code>（内网 RDP 3389 → VPS 13389）或 socks5 插件；之后 <code>proxychains nmap -sT -Pn 192.168.10.0/24</code></td>
@@ -192,21 +192,21 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 <table>
   <tr><th style="width:120px">工具</th><th style="width:180px">做什么</th><th>一句话原理</th><th style="width:250px">核心命令</th><th style="width:260px">陷阱</th></tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">CyberChef</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#5-1-cyberchef-编解码瑞士军刀">CyberChef</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>编解码瑞士军刀</td>
     <td>纯前端实现数百种运算操作（Operation），拖拽组成处理流水线（Recipe）；完全离线可用、数据不出本机——这是对在线工具的合规优势</td>
     <td>常用：Magic（自动识别多层编码）、From Base64、URL Decode、JWT Decode；Recipe 可导出为 URL 分享复现</td>
     <td>操作参数选错（Base64 字母表变体、字符串 vs Hex 输入）是排障第一现场；官方在线版方便但敏感数据务必用离线版</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">代码执行环境</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#5-2-代码执行环境-poc-与自动化工位">代码执行环境</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>PoC 与自动化工位：渗透一半的工作是一次性胶水代码</td>
     <td>虚拟环境（venv）隔离依赖，脚本与命令同存入案例笔记保证可复现；PoC 模板三件套——Session 复用连接、显式关闭校验注明原因、断言产出证据</td>
     <td><code>python3 -m venv ~/.venvs/redteam</code><br><code>jq -r '.[] | select(.status_code==200) | .url' live.json</code></td>
     <td>PoC 硬编码生产地址被他处误触发；venv 忘激活污染全局；<code>verify=False</code> 提交进正式工具库（应做成显式开关）</td>
   </tr>
   <tr>
-    <td><a class="tname" href="../docs/learning/VOL-06-toolchain.md">笔记与截图规范</a><br><a class="dtl" href="../docs/learning/VOL-06-toolchain.md">详解 →</a></td>
+    <td><a class="tname" href="../docs/learning/html/VOL-06-toolchain.html#5-3-笔记与截图规范-交付的另一半">笔记与截图规范</a><br><a class="dtl" href="../docs/learning/html/VOL-06-toolchain.html#1-1-nmap-端口与服务侦察基座">详解 →</a></td>
     <td>交付的另一半：笔记即报告草稿</td>
     <td>报告的证据链只能来自测试当下；每个发现（finding）一张卡，测完卡齐报告就齐——案例卡固定字段：时间/资产/工具命令/输出/截图编号/影响初判</td>
     <td>截图规范五条：全屏含地址栏、Burp 证据请求响应成对（Raw 视图）、命令行含完整命令与关键输出、画面留系统时间、命名 <code>YYYYMMDD_HHmm_target_caseNo_desc.png</code> 与案例卡互引</td>
@@ -223,15 +223,15 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
   <tr><td class="lv">外网资产测绘</td><td>subfinder / OneForAll → httpx 存活指纹 → nmap -sV（真实 IP）</td><td>存活资产表（url / title / 技术栈 / IP / 端口）</td></tr>
   <tr><td class="core">Web 打点</td><td>ffuf 目录+参数 → Burp Repeater 手工验证 → sqlmap -r 提数</td><td>finding 卡 + 请求响应证据对</td></tr>
   <tr><td class="adv">已知漏洞批量验证</td><td>httpx → nuclei（高危过滤）→ 命中项手工复核</td><td>高危漏洞清单（附模板依据）</td></tr>
-  <tr><td class="lv">App / 客户端攻击面</td><td>VOL-05 逆向提取服务端 → mitmproxy 抓包</td><td>API 接口清单 + 通信结构</td></tr>
+  <tr><td class="lv">App / 客户端攻击面</td><td><a href="../docs/learning/html/VOL-05-client-package.html">VOL-05</a> 逆向提取服务端 → mitmproxy 抓包</td><td>API 接口清单 + 通信结构</td></tr>
   <tr><td class="core">内网首探</td><td>fscan -ao 摸底 → fscan -nobr 定向 → nmap 精扫</td><td>去噪后的内网服务清单</td></tr>
   <tr><td class="adv">横向与跳板</td><td>msf autoroute + socks_proxy 或 frp socks5 → proxychains</td><td>可达性验证记录 + 隧道拓扑</td></tr>
-  <tr><td class="lv">证据整理</td><td>CyberChef / jq 清洗 → 笔记卡 + 截图规范</td><td>报告附录证据包（见 VOL-07-08）</td></tr>
+  <tr><td class="lv">证据整理</td><td>CyberChef / jq 清洗 → 笔记卡 + 截图规范</td><td>报告附录证据包（见 <a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a>）</td></tr>
 </table>
 </div>
 
 <h2>③ 工具选择决策要点：噪音 · 速率 · 授权边界</h2>
-<p>选工具的第一性问题不是「哪个更强」，而是「哪个在当前授权与噪音预算内最合适」——这是 VOL-06 贯穿全卷的合规主线。</p>
+<p>选工具的第一性问题不是「哪个更强」，而是「哪个在当前授权与噪音预算内最合适」——这是 <a href="../docs/learning/html/VOL-06-toolchain.html">VOL-06</a> 贯穿全卷的合规主线。</p>
 
 <div class="cards">
   <div class="card">

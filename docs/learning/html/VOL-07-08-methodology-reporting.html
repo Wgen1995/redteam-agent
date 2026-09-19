@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOL-07-08 方法论·报告交付·成长路线（合并卷） · 红队学习手册</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.75}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:270px;background:#fff;border-right:1px solid #e2e8f0;padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;flex-shrink:0}
+.sidebar h3{font-size:14px;color:#b91c1c;margin-bottom:8px}
+.sidebar a.home{display:block;font-size:13px;color:#475569;text-decoration:none;margin-bottom:10px;padding:6px 8px;border-radius:6px}
+.sidebar a.home:hover{background:#fef2f2}
+.sidebar nav a{display:block;font-size:12.5px;color:#64748b;text-decoration:none;padding:4px 8px;border-left:2px solid transparent;border-radius:0 6px 6px 0}
+.sidebar nav a.l2{font-weight:600;color:#334155;margin-top:6px}
+.sidebar nav a.l3{padding-left:18px}
+.sidebar nav a.l4{padding-left:30px;font-size:12px}
+.sidebar nav a:hover{color:#b91c1c;background:#fef2f2}
+.sidebar nav a.on{color:#b91c1c;border-left-color:#b91c1c;background:#fef2f2;font-weight:600}
+.main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
+.doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
+.doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
+.doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
+.doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
+.doc p{font-size:14px;color:#374151;margin:8px 0}
+.doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
+.doc li{margin:4px 0}
+.doc a{color:#b91c1c}
+pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb .lang{display:block;color:#64748b;font-size:11px;margin-bottom:6px}
+code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb code{background:none;color:inherit;padding:0}
+.doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+.doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
+.doc th{background:#f1f5f9;font-size:12px}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px}
+.bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
+.bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
+.pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
+.pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.pn a span{display:block;font-size:11px;color:#94a3b8}
+footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
+@media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar">
+  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a>
+  <a class="home" href="index.html">📚 手册首页</a>
+  <h3>本卷目录</h3>
+  <nav><a class="l2" href="#目录">目录</a>
+<a class="l2" href="#a1-渗透测试思维全景">A1 渗透测试思维全景</a>
+<a class="l3" href="#a1-1-四大框架-是什么与何时用">A1.1 四大框架：是什么与何时用</a>
+<a class="l3" href="#a1-2-黑盒信息渐进决策模型-caldera-facts-的通俗版">A1.2 黑盒信息渐进决策模型（Caldera facts 的通俗版）</a>
+<a class="l2" href="#a2-审计员-渗透者思维转换表">A2 审计员→渗透者思维转换表</a>
+<a class="l3" href="#响应即真相-工作流">&quot;响应即真相&quot;工作流</a>
+<a class="l2" href="#a3-能力阶梯-l0-l5-能力里程碑制-不设时间">A3 能力阶梯 L0–L5（能力里程碑制，不设时间）</a>
+<a class="l3" href="#l1-标准复现动作-以-vulhub-为例">L1 标准复现动作（以 vulhub 为例）</a>
+<a class="l2" href="#a4-学习材料索引">A4 学习材料索引</a>
+<a class="l2" href="#b1-中文渗透测试报告标准结构">B1 中文渗透测试报告标准结构</a>
+<a class="l2" href="#b2-poc-卡片规范-可复现标准">B2 POC 卡片规范＝可复现标准</a>
+<a class="l2" href="#b3-cvss-3-1-评级实操">B3 CVSS 3.1 评级实操</a>
+<a class="l2" href="#b4-证据留存与脱敏">B4 证据留存与脱敏</a>
+<a class="l2" href="#b5-等保语境下的渗透测试报告要点">B5 等保语境下的渗透测试报告要点</a>
+<a class="l2" href="#b6-复测与回归验证流程">B6 复测与回归验证流程</a></nav>
+</aside>
+<div class="main">
+  <nav class="topnav"><a href="../../../panorama/index.html">全景图</a><a href="index.html">手册首页</a><a href="VOL-06-toolchain.html">← VOL-06-toolchain</a></nav>
+  <article class="doc">
+  <h1>VOL-07-08 方法论·报告交付·成长路线（合并卷）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-07-08-methodology-reporting.md</div>
+  <h1 id="vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08 方法论·报告交付·成长路线（合并卷）</h1>
+<p><b>受众</b>：5 年源码审计/产品安全、刚转岗一人红队的工程师：懂漏洞原理与代码，缺黑盒打点、内网、工具链实战与客户交付。</p>
+<p><b>交叉引用</b>：Web 打点见 VOL-01/VOL-02，内网与域见 VOL-03，源码联动见 VOL-04，客户端见 VOL-05，工具链见 VOL-06。</p>
+<h2 id="目录">目录</h2>
+<ul><li>PART A 方法论与成长模型</li><li>A1 渗透测试思维全景：四大框架 + 黑盒信息渐进决策模型</li><li>A2 审计员→渗透者思维转换表</li><li>A3 能力阶梯 L0–L5（能力里程碑制）</li><li>A4 学习材料索引</li><li>PART B 报告与交付</li><li>B1 中文渗透测试报告标准结构</li><li>B2 POC 卡片规范＝可复现标准</li><li>B3 CVSS 3.1 评级实操</li><li>B4 证据留存与脱敏</li><li>B5 等保语境下的报告要点</li><li>B6 复测与回归验证流程</li></ul>
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
+<h1 id="part-a-方法论与成长模型">PART A 方法论与成长模型</h1>
+<h2 id="a1-渗透测试思维全景">A1 渗透测试思维全景</h2>
+<h3 id="a1-1-四大框架-是什么与何时用">A1.1 四大框架：是什么与何时用</h3>
+<table><thead><tr><th>框架</th><th>是什么</th><th>何时用</th></tr></thead><tbody><tr><td>Kill Chain（网络杀链，Lockheed Martin 七阶段：侦察→武器化→交付→利用→安装→命令与控制 C2→目标行动）</td><td>攻击者视角的攻击链叙事模型</td><td>报告"攻击路径"章节：把打点→立足→横移→落地写成故事线</td></tr><tr><td>PTES（Penetration Testing Execution Standard，渗透测试执行标准；七阶段：前期交互→情报收集→威胁建模→漏洞分析→渗透利用→后渗透→报告）</td><td>管项目全流程的方法论</td><td>立项与范围（Scope）谈判、交付物定义；一人红队的项目骨架</td></tr><tr><td>OWASP WSTG（Web Security Testing Guide，Web 安全测试指南，稳定版 v4.2）</td><td>Web 测试用例库，按信息收集、配置与部署管理、身份认证、授权、会话管理、输入校验、错误处理、加密、业务逻辑、客户端等大类组织数十个用例</td><td>Web 系统性覆盖度兜底："该测的都测了"；也是报告"测试方法"章节的引用来源</td></tr><tr><td>MITRE ATT&amp;CK（Adversarial Tactics, Techniques and Common Knowledge，对抗战术/技术/常识知识库）</td><td>真实攻击组织 TTP（战术/技术/过程）知识库，企业版矩阵按战术列技术</td><td>内网行为对照：把内网每个动作映射到技术编号，度量红队覆盖面与蓝队检测盲区</td></tr></tbody></table>
+<p>选型口诀：<b>项目管流程用 PTES，Web 覆盖度用 WSTG，内网阶段用 ATT&amp;CK 自查，报告叙事用 Kill Chain</b>。四者不互斥，完整交付里都会出现。</p>
+<h3 id="a1-2-黑盒信息渐进决策模型-caldera-facts-的通俗版">A1.2 黑盒信息渐进决策模型（Caldera facts 的通俗版）</h3>
+<p><span class="bdg bdg-p">原理</span>黑盒卡住的实质是<b>事实缺口</b>：不知道某类信息，所以不知道下一步做什么。MITRE Caldera（MITRE 官方对手仿真框架）的核心机制之一是事实（facts）：收集到的结构化键值（如主机名、用户列表）；每个能力（ability）声明自己依赖哪些 fact 占位符，引擎用已有 facts 匹配当前可执行的能力——"有什么事实，决定能做什么"（机制细节以官方文档为准：&lt;https://caldera.mitre.org/&gt;）。人工版照抄这个思想：维护 facts 表（列：事实/值/来源/时间），每个缺口对应一类收集动作，动作产出新事实，直到事实组合满足某条利用路径的前置条件。</p>
+<p><span class="bdg bdg-o">操作</span></p>
+<ol><li>建表（Markdown 或 CSV 均可）：<code>| 事实 | 值 | 来源 | 时间 |</code>。</li><li>按缺口选动作（示例命令可直接复制）：</li></ol><ul><li>不知道资产面（子域）：<code>subfinder -d example.com</code>（参数以官方文档为准：&lt;https://github.com/projectdiscovery/subfinder&gt;）</li><li>不知道端口与服务：<code>nmap -sV -sC -p- &lt;目标IP&gt; -oA evidence/nmap_full</code>（<code>-sV</code> 服务版本、<code>-sC</code> 默认脚本、<code>-p-</code> 全端口、<code>-oA</code> 三格式输出存证）</li><li>不知道 Web 指纹：<code>whatweb http://&lt;目标&gt;</code></li><li>不知道目录结构：<code>ffuf -w /opt/SecLists/Discovery/Web-Content/common.txt -u http://&lt;目标&gt;/FUZZ -mc 200,301,302,403</code>（&lt;https://github.com/ffuf/ffuf&gt;）</li><li>拿到一个有效凭据：先枚举它能碰的资产再评估提权——凭据是事实，不是终点</li></ul><ol><li>每完成一步立即把<b>结论</b>写入 facts 表（写结论，不贴原始输出）。</li></ol>
+<p><span class="bdg bdg-v">验证</span>任一时刻你说得清"下一步动作由表中哪条缺口驱动"；说不清的动作不做。当某条利用路径的前置条件（如：可达端口＋存在组件＋可用凭据）全部闭合时，能明确写出"已满足"。</p>
+<p><span class="bdg bdg-t">陷阱</span>①上来全端口轰炸：慢、吵、触发防护，应小步快跑；②收集不落表，碰到同目标全部重来；③把"扫完了"当"收集完了"——原始输出不是事实，提炼出的结论才是。</p>
+<p><span class="bdg bdg-x">练习</span>①本地起 OWASP Juice Shop（<code>docker run --rm -p 3000:3000 bkimminich/juice-shop</code>，&lt;https://owasp.org/www-project-juice-shop/&gt;），做 30 分钟纯信息收集，产出 ≥20 行 facts 表；②对照 WSTG"信息收集"章节（&lt;https://owasp.org/www-project-web-security-testing-guide/&gt;）逐项检查补漏。</p>
+<h2 id="a2-审计员-渗透者思维转换表">A2 审计员→渗透者思维转换表</h2>
+<table><thead><tr><th>维度</th><th>源码审计（旧我）</th><th>渗透测试（新我）</th></tr></thead><tbody><tr><td>真相来源</td><td>代码即真相</td><td>响应即真相 ＋ 证据链</td></tr><tr><td>完备性</td><td>覆盖所有调用点与污点汇聚点（sink）</td><td>覆盖率让位于"路径打通"：打通一条链比列十条可疑更有价值</td></tr><tr><td>边界单位</td><td>函数/模块/数据流</td><td>资产/信任边界/网络分区</td></tr><tr><td>验证方式</td><td>写 PoC 代码、读单测</td><td>可复现 POC 卡片 ＋ 成对请求响应留档</td></tr><tr><td>影响评估</td><td>漏洞原理层面</td><td>打通后的影响放大：提权、横向移动、核心数据</td></tr><tr><td>时间模型</td><td>基本不受限</td><td>授权窗口（测试时间窗）硬约束，动作要排优先级</td></tr></tbody></table>
+<h3 id="响应即真相-工作流">"响应即真相"工作流</h3>
+<p><span class="bdg bdg-p">原理</span>黑盒下唯一可信的输入是服务端返回：状态码、响应头/体、时序、带外（Out-of-Band）回连。证据链＝请求响应成对留存＋时间戳＋判定标准，任何结论可被第三人回放。</p>
+<p><span class="bdg bdg-o">操作</span>①全流量过代理：浏览器挂 Burp Suite Proxy，测试期间禁止直连；②每个测试点先发一次基线（Baseline）请求再发 payload，两条都留档；③判定信号写进用例：回显差异（响应体/长度变化）、时延差异（与基线对比）、带外信号（DNSLog/自建监听）；④结论一律引用 Burp History 条目号或导出文件名。</p>
+<p><span class="bdg bdg-v">验证</span>任取一条结论，在 Burp Repeater 重放所引请求，应得到与记录一致的响应；做不到的降级为"疑似"，不得写入报告。</p>
+<p><span class="bdg bdg-t">陷阱</span>①只看页面渲染不看原始响应，漏掉注释、隐藏字段、状态码差异；②在浏览器 DevTools 里改参数导致代理没记录，证据链断裂；③截图只截"结果"不截"请求"。</p>
+<p><span class="bdg bdg-x">练习</span>在 vulhub 的 thinkphp/5-rce（ThinkPHP 5.x 远程代码执行 RCE，&lt;https://github.com/vulhub/vulhub&gt;）上各打一次：审计视角（先看官方修复 diff 再构造 payload）与黑盒视角（仅凭指纹与报错特征探测），记录两条路径的 facts 消耗差异。</p>
+<h2 id="a3-能力阶梯-l0-l5-能力里程碑制-不设时间">A3 能力阶梯 L0–L5（能力里程碑制，不设时间）</h2>
+<p>进度单位是"里程碑验收通过"，不是学时。每级四件套：能力清单/验收标准/推荐靶场材料/自测清单。</p>
+<p><b>L0 环境与工具就绪</b></p>
+<ul><li>能力清单：Kali 虚拟机、Docker、Burp Suite、nmap、ffuf、sqlmap、nuclei、字典库 SecLists 就位；虚拟机快照与工具版本记录习惯。</li><li>验收标准：从空机器 30 分钟内重建可用测试环境；每个工具能说出 3 个常用参数的含义。</li><li>材料：Kali 官方文档、SecLists（&lt;https://github.com/danielmiessler/SecLists&gt;）。</li><li>自测：□Burp 证书装入 Firefox □vulhub 可起停 □快照已建 □工具版本表已填。</li></ul>
+<p><b>L1 靶场可复现已知漏洞</b></p>
+<ul><li>能力清单：只看官方 advisory（不看 writeup）复现单个 CVE，能解释 payload 每一段；产出合格 POC 卡片（见 B2）。</li><li>验收标准：随机抽一台 vulhub 靶机，独立复现成功且卡片能被第三人复现。</li><li>推荐：log4j/CVE-2021-44228（Log4j2 JNDI 远程代码执行）、bash/CVE-2014-6271（Shellshock）。</li><li>自测：□能解释 payload 每段 □能写出 CVSS 向量（见 B3）□复现后 <code>docker compose down -v</code> 清理。</li></ul>
+<p><b>L2 独立完成 vulhub 全类</b></p>
+<ul><li>能力清单：按类别打穿：反序列化（Deserialization：shiro/CVE-2016-4437、fastjson/1.2.24-rce）、框架 RCE（struts2/s2-045、thinkphp/5-rce、confluence/CVE-2022-26134）、中间件（weblogic/CVE-2020-14882、tomcat/CVE-2017-12615、jenkins/CVE-2018-1000861）、未授权访问（Unauthorized Access：redis/4-unacc、elasticsearch/CVE-2015-1427）、认证缺陷（mysql/CVE-2012-2122）。</li><li>验收标准：每类抽签复现 ≥1 台；同原理换组件时不查文档能自行构造利用思路。</li><li>自测：□每台一张 POC 卡片 □能写出每类漏洞利用链的前置条件（facts 视角）。</li></ul>
+<p><b>L3 HTB easy→medium 独立通关</b></p>
+<ul><li>能力清单：完整盒子流程：枚举→打点→user flag→本机提权→root flag；Linux/Windows 各 ≥3 台；Windows 侧掌握 SMB、WinRM、活动目录（Active Directory, AD）基础。</li><li>验收标准：easy 机 3 小时内独立双 flag；medium 机独立通关并写一页复盘（入口/提权/走过的错路）。示例：easy Linux——Lame、Shocker、Nibbles；easy Windows——Sauna、Active、Grandpa；medium——Resolute、Cascade、Monteverde（Windows AD）、Cronos、DevOops（Linux）。退役机需 HTB VIP 订阅访问，难度以官方页面为准（&lt;https://www.hackthebox.com&gt;）。</li><li>材料：HTB Academy 模块、IppSec 复盘视频（&lt;https://ippsec.rocks&gt;）。</li><li>自测：□每台一页复盘 □能用 ATT&amp;CK 编号映射自己用到的技术（&lt;https://attack.mitre.org&gt;）。</li></ul>
+<p><b>L4 真实授权项目辅助位</b></p>
+<ul><li>能力清单：在资深人员主导下负责子模块（外部打点、Web 漏洞挖掘），按规范交付证据与报告初稿。</li><li>验收标准：所负责子模块零返工：POC 全部可复现、评级偏差 ≤1 级（见 B3）、证据合规（见 B4）。</li><li>材料：本卷 PART B 全部 ＋ 甲方/公司报告模板。</li><li>自测：□卡片交接测试通过 □报告章节无结构性返工。</li></ul>
+<p><b>L5 一人红队独立交付</b></p>
+<ul><li>能力清单：独立跑完授权项目全流程：范围谈判→测试→报告→复测（见 B6）；AD 内网攻击在 GOAD 实验室落地（&lt;https://orange-cyberdefense.github.io/GOAD/&gt;，含 Kerberoasting、AS-REP 烘焙、口令喷洒等大量故意留置漏洞，完整清单以官方文档为准）——完整版 GOAD（5 VM/2 森林/3 域），资源紧张用 GOAD-Light。</li><li>验收标准：独立交付一份客户签字接受的完整报告＋复测报告，全程零出授权范围。</li><li>自测：□报告一次过内部评审 □复测闭环 □项目归档完整。</li></ul>
+<h3 id="l1-标准复现动作-以-vulhub-为例">L1 标准复现动作（以 vulhub 为例）</h3>
+<p><span class="bdg bdg-p">原理</span>靶场复现的价值在动作标准化：环境→验证→利用→留证→清理，形成肌肉记忆后原样迁移到真实项目。</p>
+<p><span class="bdg bdg-o">操作</span></p>
+<pre class="cb"><span class="lang">bash</span><code>cd vulhub/log4j/CVE-2021-44228
+docker compose up -d
+docker compose ps                 # 确认状态与端口映射
+curl -I http://127.0.0.1:8080     # 确认可达（端口以 ps 输出为准）
+# 按 advisory 构造 payload（JNDI 回连），在 DNSLog/监听端确认命中并截图留证
+docker compose down -v            # 清理</code></pre>
+<p><span class="bdg bdg-v">验证</span><code>docker compose ps</code> 显示 running；监听端收到回连即利用成功；POC 卡片交第三人 10 分钟内复现。</p>
+<p><span class="bdg bdg-t">陷阱</span>①端口占用导致 compose 起不来（先清理再重试）；②payload 打错 JNDI 协议前缀（ldap/rmi 区分）；③复现完不清理，多靶机残留互相干扰。</p>
+<p><span class="bdg bdg-x">练习</span>为自己定级（L0–L5），对下一级写逐项差距清单，挑差距最小的一项本周期补齐。</p>
+<h2 id="a4-学习材料索引">A4 学习材料索引</h2>
+<table><thead><tr><th>类别</th><th>资源</th><th>语言</th><th>深度定位</th></tr></thead><tbody><tr><td>书</td><td>《白帽子讲Web安全》（吴翰清）</td><td>中文</td><td>入门→中级，Web 安全观与纵深防御</td></tr><tr><td>书</td><td>《Web安全攻防：渗透测试实战指南》（徐焱等）</td><td>中文</td><td>入门→中级，工具与流程</td></tr><tr><td>书</td><td>《内网安全攻防：渗透测试实战指南》（徐焱等）</td><td>中文</td><td>中级，内网与域渗透</td></tr><tr><td>书</td><td>RTFM / Red Team Field Manual</td><td>英文</td><td>命令速查手册</td></tr><tr><td>课程</td><td>TryHackMe「Jr Penetration Tester」路线</td><td>英文</td><td>入门</td></tr><tr><td>课程</td><td>HTB Academy / CPTS；OffSec PEN-200（OSCP）</td><td>英文</td><td>中级→准专业认证</td></tr><tr><td>靶场</td><td>vulhub、HackTheBox、GOAD、攻防世界（XCTF）</td><td>中/英</td><td>L1→L5 主线（见 A3）</td></tr><tr><td>社区</td><td>FreeBuf、安全客、阿里云先知社区、奇安信攻防社区</td><td>中文</td><td>实战文章与漏洞情报跟进</td></tr><tr><td>速查</td><td>PayloadsAllTheThings、HackTricks（&lt;https://book.hacktricks.xyz&gt;）、GTFOBins/LOLBAS</td><td>英文</td><td>按漏洞类型/滥用二进制速查</td></tr></tbody></table>
+<p>选型原则：中文书建框架，英文速查补细节；凡进入工作流的命令一律回查 <code>--help</code> 与官方文档再固化。</p>
+<p><span class="bdg bdg-x">练习</span>取 SecLists 的 <code>Discovery/Web-Content/common.txt</code> 对 Juice Shop 跑 ffuf，统计 200 响应并逐条解释成因（区分真实目录与 SPA 兜底路由）。</p>
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
+<h1 id="part-b-报告与交付">PART B 报告与交付</h1>
+<h2 id="b1-中文渗透测试报告标准结构">B1 中文渗透测试报告标准结构</h2>
+<p><span class="bdg bdg-p">原理</span>报告是唯一交付物，客户"修不修、先修谁"只依赖它；结构固定则评审可对照检查单、模板可复用、避免漏项。</p>
+<p><span class="bdg bdg-o">操作</span>六节结构，逐节写法：</p>
+<ol><li><b>概述</b>：项目背景；授权依据（合同/授权书编号、测试时间窗、测试方与联系方式）；总体结论一段话：高危 X/中危 Y/低危 Z、整体风险判断、最严重的 1–2 条攻击链；结论先行，管理层不读细节也能懂。</li><li><b>测试范围与方法</b>：资产清单表（域名/IP/应用/账号类型）；方法论引用（PTES 阶段划分＋WSTG 章节对照）；工具及版本表；测试限制（未覆盖项与原因：物理、社会工程学、拒绝服务 DoS 等未做）。写法：这是范围争议的防火墙——没写进范围的等于没测。</li><li><b>风险矩阵（Risk Matrix）</b>：严重度×漏洞类型二维矩阵，只放数量分布；附评分标准：CVSS 3.1 分档——严重（9.0–10.0）/高（7.0–8.9）/中（4.0–6.9）/低（0.1–3.9）。</li><li><b>漏洞明细</b>：每个漏洞一张 POC 卡片（见 B2），按严重度降序排列。</li><li><b>修复建议汇总</b>：总表：漏洞ID/严重度/修复建议/优先级（P0 立即–P3 排期）/建议责任方（应用/运维/网络）；与明细逐条对应，不出现明细里没有的条目。</li><li><b>复测说明</b>：复测范围、时间安排、四态判定口径（见 B6）与结果模板。</li></ol>
+<p><span class="bdg bdg-v">验证</span>交叉三查：概述里的数字＝矩阵合计＝明细条数；每个漏洞在第 5 节有对应建议行；第 3 人只拿报告能复现任一漏洞。</p>
+<p><span class="bdg bdg-t">陷阱</span>①把工具原始输出贴进正文（应放附录并引用）；②范围写"部分系统"这类模糊表述；③结论写"系统安全/不安全"的二元判断——报告只陈述风险与成立条件。</p>
+<p><span class="bdg bdg-x">练习</span>把 A2/A3 产出的 3 个漏洞组装成六节迷你报告（模板可直接复用）。</p>
+<h2 id="b2-poc-卡片规范-可复现标准">B2 POC 卡片规范＝可复现标准</h2>
+<p><span class="bdg bdg-p">原理</span>POC 卡片（Proof of Concept card）是漏洞明细的最小单元，合格标准只有一条：拿到卡片的工程师<b>不咨询你</b>、10 分钟内复现并确认。</p>
+<p><span class="bdg bdg-o">操作</span>卡片字段与写法：</p>
+<ul><li><b>编号与标题</b>：<code>VULN-001｜越权访问（Broken Access Control）｜高危</code></li><li><b>环境假设</b>：目标 URL、所需账号及获取方式（如"userA：普通用户，前台可注册"）、测试时间窗。缺了它复现第一步就卡死。</li><li><b>复现步骤</b>：编号到每一步，一步一个动作。</li><li><b>完整请求</b>：方法＋路径＋全部关键头＋体，能直接粘进 Burp Repeater，同时给 curl 形式。</li><li><b>预期响应</b>：状态码＋关键响应行，写明"看到什么算成功"。</li><li><b>截图</b>：全屏含 URL 栏与系统时间、高亮关键行、已脱敏（见 B4）、每个漏洞 2–4 张。</li><li><b>影响与评级</b>：一句话影响＋CVSS 向量串（见 B3）。</li></ul>
+<p>示例（水平越权）：</p>
+<pre class="cb"><span class="lang">http</span><code>GET /api/orders/1001 HTTP/1.1
+Host: target:8080
+Authorization: Bearer &lt;userA的token&gt;</code></pre>
+<p>预期响应：<code>200</code>，返回 owner＝userB 的订单——普通用户 A 无需交互即可读任意用户订单。curl 等价：<code>curl -H "Authorization: Bearer &lt;userA的token&gt;" http://target:8080/api/orders/1001</code>。</p>
+<p><span class="bdg bdg-v">验证</span>交接测试：找一个没接触过该系统的同事照卡片复现，失败即不合格，改到通过为止——这是卡片能否进报告的唯一标准。</p>
+<p><span class="bdg bdg-t">陷阱</span>①缺环境假设（账号哪来的没写）；②请求缺关键头，复现直接 401；③只写"越权了"不写预期响应指纹；④截图无时间无 URL，事后无法对应。</p>
+<p><span class="bdg bdg-x">练习</span>为 vulhub 的 shiro/CVE-2016-4437（Shiro rememberMe 反序列化）写完整卡片：含 rememberMe Cookie 的完整请求、判定标准（如 DNSLog 回连）、脱敏截图。</p>
+<h2 id="b3-cvss-3-1-评级实操">B3 CVSS 3.1 评级实操</h2>
+<p><span class="bdg bdg-p">原理</span>CVSS 3.1（Common Vulnerability Scoring System，通用漏洞评分系统）基本分由 8 个指标构成向量串（Vector String）：攻击向量 AV/攻击复杂度 AC/所需权限 PR/用户交互 UI/作用范围 S（Scope），加上机密性 C/完整性 I/可用性 A 三维影响，组合映射 0–10 分；分档见 B1 第 3 节。</p>
+<p><span class="bdg bdg-o">操作</span>定级流程：①先定影响——能读什么（C）、能改什么（I）、能停什么（A），各取 H/L/N；②再定可达性——AV:N 网络可达？AC:L 稳定复现无特殊条件？PR:N 完全无需权限？UI:N 无需受害者配合？；③Scope 只有当漏洞影响<b>超出</b>被授权组件边界（应用权限→宿主机、波及其他租户）才取 S:C。模板示例：</p>
+<ul><li>未授权 RCE：<code>CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</code>（9.8，严重）</li><li>需低权限登录的水平越权读数据：<code>CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N</code>（6.5，中）</li><li>反射型 XSS（Cross-Site Scripting）：<code>CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N</code>（6.1，中）</li></ul>
+<p><span class="bdg bdg-v">验证</span>在 FIRST 官方计算器复算，分数与严重档一致：&lt;https://www.first.org/cvss/calculator/3.1&gt;。双人独立评级，差 &gt;1 级时逐指标对照向量找分歧点。</p>
+<p><span class="bdg bdg-t">陷阱</span>常见误评级：①S:C 滥用——"理论上可能影响别的系统"不等于已越信任边界；②"注册个账号就能打"是 PR:L 不是 PR:N；③越权一律评低——能读订单/身份等核心数据应 C:H；④仅内网可达的漏洞 AV 应取 A（邻接 Adjacent），分数显著下降；⑤默认弱口令评低——按"凭据即全部权限被夺"评估实际影响，而不是按"口令问题"。</p>
+<p><span class="bdg bdg-x">练习</span>给 B1 迷你报告的 3 个漏洞独立定级，与同伴互换向量逐项比对分歧。</p>
+<h2 id="b4-证据留存与脱敏">B4 证据留存与脱敏</h2>
+<p><span class="bdg bdg-p">原理</span>证据链服务三方：客户复现、内部评审、争议仲裁。脱敏的最小化原则：报告只保留证明漏洞存在所必需的数据，多一个字段都是风险。</p>
+<p><span class="bdg bdg-o">操作</span>留存目录与命名：</p>
+<pre class="cb"><code>evidence/
+  VULN-001/
+    step2_request.txt      # Burp 导出的成对请求响应
+    step2_response.png
+    SHA256SUMS</code></pre>
+<p>关键原始文件算哈希留档：<code>shasum -a 256 evidence/VULN-001/* &gt; evidence/VULN-001/SHA256SUMS</code>。脱敏规则：①凭据（密码/token/私钥）一律不进报告与截图，用 <code>&lt;已脱敏&gt;</code> 占位，原件单独加密交付指定收件人；②个人敏感信息打码（手机号保留前 3 后 4）；③数据泄露类证明取样例：前 5 条记录＋总行数（如 <code>SELECT COUNT(*)</code>），<b>禁止</b>整表拖库进附件；④交付包加密压缩，密码走另一信道（电话/短信）发送。</p>
+<p><span class="bdg bdg-v">验证</span>交付前全文检索密码字段、<code>Bearer</code>、token、手机号/身份证正则无命中；抽查截图边缘无敏感信息。</p>
+<p><span class="bdg bdg-t">陷阱</span>①POC 步骤里写明文口令（哈希也别写）；②截图顺手带出他人手机号/内网拓扑；③把整表数据当"强证据"塞附件——违规且撑爆邮箱。</p>
+<p><span class="bdg bdg-x">练习</span>对 B2 的卡片跑一遍脱敏自检表，两人互查。</p>
+<h2 id="b5-等保语境下的渗透测试报告要点">B5 等保语境下的渗透测试报告要点</h2>
+<p><span class="bdg bdg-p">原理</span>等级保护（等保 2.0）体系下，三级及以上系统按 GB/T 22239-2019《信息安全技术 网络安全等级保护基本要求》建设整改，等级测评依据 GB/T 28448-2019《测评要求》与 GB/T 28449-2018《测评过程指南》执行；渗透测试常作为测评之外的补充验证或整改复核，报告要能"翻译"到等保语言。</p>
+<p><span class="bdg bdg-o">操作</span>在 B1 结构上增加：①关联定级对象与备案信息（范围与备案边界一致）；②漏洞-条款映射表：每个漏洞对应基本要求的安全条款大类（身份鉴别、访问控制、入侵防范、数据保密性/完整性等），并写出整改后应满足的要求表述；③风险等级在 CVSS 之外补充"高/中/低"表述，衔接测评报告的问题等级；④复测结论纳入整改闭环（见 B6）。条款号务必对照最新官方文本填写（全国标准信息公共服务平台可查原文），不凭记忆写。</p>
+<p><span class="bdg bdg-v">验证</span>映射表逐行可追溯到基本要求原文表述；全文不出现"测评通过/不通过"——那是测评机构的结论，渗透报告只陈述风险。</p>
+<p><span class="bdg bdg-t">陷阱</span>①把渗透报告写成测评报告（越界做符合性判断）；②凭记忆写条款号被评审打回；③授权范围与备案系统边界不一致导致报告无法被引用。</p>
+<p><span class="bdg bdg-x">练习</span>取 GB/T 22239-2019 公开文本，把迷你报告 3 个漏洞映射到安全条款大类（先练大类，不写具体条号）。</p>
+<h2 id="b6-复测与回归验证流程">B6 复测与回归验证流程</h2>
+<p><span class="bdg bdg-p">原理</span>复测（Retest）验证整改有效性，向后看旧漏洞；回归（Regression）确认修复没引入新问题，向前看改动面。二者分开执行、都留证据。</p>
+<p><span class="bdg bdg-o">操作</span>六步流程：</p>
+<ol><li>复测授权确认：沿用初始范围与时间窗，超出部分重新授权。</li><li>逐漏洞按原 POC 卡片<b>原样重放</b>，记录新响应。</li><li>修复方式核验：区分"根因修复"（代码/配置已改）与"缓解"（WAF 拦截、封 IP）——后者在报告中标注"缓解，未根因修复"。</li><li>回归：对修复点周边重测（同端点同类参数、同框架其他路由），加快扫兜底：<code>nuclei -u https://&lt;目标&gt; -severity critical,high</code>（参数以官方文档为准：&lt;https://github.com/projectdiscovery/nuclei&gt;）。</li><li>复测报告：每个漏洞标四态——已修复/部分修复/未修复/风险接受（风险接受必须有客户书面确认）；新发现单独列出。</li><li>归档：初始报告、复测报告、证据包关联存档。</li></ol>
+<p><span class="bdg bdg-v">验证</span>四态判定每条都有重放响应截图支撑；回归有清单（测了哪些相邻面）。</p>
+<p><span class="bdg bdg-t">陷阱</span>①"不弹了"就判修复——可能是 WAF 拦截或网络策略变化，换编码/路径/网络位置再验证；②只测原端点不测同类端点；③复测窗口没重新拿授权；④风险接受无书面记录，事后争议说不清。</p>
+<p><span class="bdg bdg-x">练习</span>在 vulhub 的 mysql/CVE-2012-2122（MariaDB 认证绕过）上模拟全流程：出卡片→实施"修复"（限制访问来源或更换镜像）→按六步走完并产出复测报告。</p>
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
+<p><b>本卷小结</b>：方法论给骨架与路径，PART B 六件交付物（报告结构/POC 卡片/CVSS 评级/证据脱敏/等保映射/复测回归）就是一人红队的全部家当。黑盒打点（见 VOL-01-web-app-part1、VOL-02-web-app-part2）、内网与 AD（见 VOL-03-intranet）、工具与 C2 概念边界（见 VOL-06-toolchain）。</p>
+  <div class="pn"><a href="VOL-06-toolchain.html"><span>← 上一卷</span>VOL-06-toolchain</a><span></span></div>
+  </article>
+  <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
+</div></div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var links=[].slice.call(document.querySelectorAll('.sidebar nav a'));
+  if(!links.length)return;
+  var byId={};links.forEach(function(a){byId[a.getAttribute('href').slice(1)]=a;});
+  var heads=Object.keys(byId).map(function(id){return document.getElementById(id);}).filter(Boolean);
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('on');});
+      var a=byId[e.target.id]; if(a)a.classList.add('on');
+    }});
+  },{rootMargin:'0% 0% -80% 0%'});
+  heads.forEach(function(h){obs.observe(h);});
+});
+</script></body></html>
