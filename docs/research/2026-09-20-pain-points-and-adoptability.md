@@ -44,7 +44,7 @@
 | 13 | 授权边界自守 | 门禁全部 prompt 级或单点：Threatswarm exit-2 hook 有 fail-open+变量绕过实洞；nuclei dialer 只管自身流量（expert/ai-agent #3） | 三层执法（egress 代理 → fail-closed hook → 脚本兜底）+ canary 证等强 | P1.5 / P3 / P4 |
 | 14 | 疲劳误操作 / 破坏性残留 | 声明式机制存在但不保证幂等：DarkMoon execution_guard、Caldera cleanup 逆序、Stratus 生命周期契约；adversary 赛道自认「清理与回滚不完整」 | 有界执行守卫 + changes_ledger + cleanup 收尾断言 | P1.5 |
 
-**总判定**（继承 landscape §1 并在 P2/P3 展开）：没有可以直接采用的完整体——13 项目中仅 **nuclei** ✅直接可用（adopt-as-dependency），7 个 🟡部分可用，5 个 ❌仅借鉴模式；最优组合（nuclei+Osmedeus+Strix+语料包）对照 12 must-haves 仍有 10 条硬缺口，自研边界收敛为「胶水层+门禁+契约」三层（P3.3）。
+**总判定**（继承 landscape §1 并在 P2/P3 展开）：没有可以直接采用的完整体——13 项目中仅 **nuclei** ✅直接可用（adopt-as-dependency），7 个 🟡部分可用，5 个 ❌仅借鉴模式；最优组合（nuclei+Osmedeus+Strix+语料包）对照 12 must-haves 仍有 10 条硬缺口，自研边界收敛为「胶水层+门禁+契约」三层（P3.4）。
 
 ---
 
