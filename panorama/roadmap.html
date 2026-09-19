@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成长路线 · 能力阶梯（无时间约束）｜一人红队成长全景图</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.7;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+header{background:linear-gradient(135deg,#0f172a,#7f1d1d 55%,#b91c1c);color:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 10px 30px rgba(185,28,28,.28)}
+header h1{font-size:24px;margin-bottom:6px}header .sub{opacity:.92;font-size:14px}
+header .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+header .tags span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;font-size:12.5px}
+h2{font-size:20px;margin:36px 0 14px;padding-left:14px;border-left:5px solid #b91c1c}
+p{font-size:14px;color:#475569;margin-bottom:10px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:14px;padding:22px 20px;box-shadow:0 4px 16px rgba(0,0,0,.07);transition:transform .18s,box-shadow .18s;border-top:5px solid #b91c1c;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(185,28,28,.18)}
+.card .icon{font-size:30px;margin-bottom:10px}.card h4{font-size:17px;margin-bottom:6px;color:#1e293b}
+.card p{font-size:13px;color:#64748b;margin:0;flex:1}.card .go{margin-top:12px;font-size:13px;font-weight:600;color:#b91c1c}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
+.lv{color:#b91c1c;font-weight:600}.core{color:#0369a1;font-weight:600}.adv{color:#7c3aed;font-weight:600}
+.note{background:#fef2f2;border-left:4px solid #b91c1c;border-radius:8px;padding:12px 16px;font-size:13.5px;color:#7f1d1d;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
+.topnav{display:flex;gap:10px;margin:0 0 14px;flex-wrap:wrap}.topnav a{background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.phase{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin:16px 0}
+.phase .step{flex:1;min-width:130px;background:#fff;border:1px solid #e2e8f0;padding:14px 10px;text-align:center;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.phase .step b{display:block;font-size:14px;color:#1e293b;margin-bottom:4px}
+.phase .step span{font-size:12px;color:#64748b}
+h3{font-size:16px;margin:26px 0 4px;color:#1e293b}
+h3 em{font-style:normal;font-size:12.5px;color:#94a3b8;font-weight:400}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;padding:1px 5px;word-break:break-all;color:#0f172a}
+.topnav a.on{background:linear-gradient(135deg,#b91c1c,#7f1d1d);color:#fff;box-shadow:0 2px 8px rgba(185,28,28,.3)}
+.tblwrap{overflow-x:auto;margin:12px 0}
+.tblwrap table{margin:0;min-width:820px}
+.cards.levels{grid-template-columns:1fr}
+.card .lhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card .lhead h4{margin:0}
+.card .lhead .lno{font-size:12px;font-weight:700;color:#fff;background:#b91c1c;border-radius:6px;padding:1px 9px;letter-spacing:.5px}
+.card .sec{font-size:12px;font-weight:700;color:#b91c1c;margin:11px 0 3px;letter-spacing:1px}
+.card ul{list-style:none;margin:0;padding:0}
+.card ul li{font-size:13px;color:#64748b;padding:1.5px 0 1.5px 13px;position:relative}
+.card ul li::before{content:"›";position:absolute;left:1px;color:#b91c1c;font-weight:700}
+.card ul.chk li::before{content:"□";font-size:11px;top:1px}
+.card .accept{background:#f8fafc;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:13px;color:#334155;border:1px solid #e2e8f0}
+.card .accept .sec{margin-top:0}
+.fill{color:#cbd5e1;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="topnav">
+  <a href="index.html">总览</a>
+  <a href="methodology.html">思路逻辑</a>
+  <a href="techstack.html">技术栈</a>
+  <a href="toolchain.html">工具链</a>
+  <a href="roadmap.html" class="on">成长路线</a>
+</nav>
+
+<header>
+  <h1>成长路线 · 能力阶梯（无时间约束）</h1>
+  <div class="sub">回答「怎么成长、怎么验证掌握了」：L0–L5 能力阶梯，每级给出能力清单、验收标准（能独立做到什么）、推荐靶场与材料和自测清单；附靶场全景表与「自测通过率」自评模板。</div>
+  <div class="tags">
+    <span>来源：VOL-07-08 方法论·报告交付·成长路线 PART A（能力阶梯）＋ 各卷【练习】汇总</span>
+    <span>能力里程碑制 · 不设时间表</span>
+    <span>L0 环境就绪 → L5 独立交付</span>
+  </div>
+</header>
+
+<div class="note"><b>里程碑制，不是时间表：</b>本页进度单位是「里程碑验收通过」，不是学时。每级四件套＝能力清单／验收标准／推荐靶场材料／自测清单；升级的唯一标准是当前级的验收标准与自测清单全部通过——练多久不算数，做到才算数。配套练习：为自己定级（L0–L5），对下一级写逐项差距清单，挑差距最小的一项本周期补齐。</div>
+
+<h2>阶梯总览：L0 → L5 一条主线</h2>
+<div class="phase">
+  <div class="step"><b>L0 环境就绪</b><span>空机 30 分钟重建测试环境</span></div>
+  <div class="step"><b>L1 复现已知漏洞</b><span>只看 advisory 复现单个 CVE＋POC 卡片</span></div>
+  <div class="step"><b>L2 vulhub 全类打穿</b><span>五类漏洞抽签复现 ≥1 台</span></div>
+  <div class="step"><b>L3 HTB 独立通关</b><span>easy 3 小时双 flag，medium 一页复盘</span></div>
+  <div class="step"><b>L4 授权项目辅助位</b><span>负责子模块，交付零返工</span></div>
+  <div class="step"><b>L5 一人红队独立交付</b><span>全流程＋GOAD 内网落地＋复测闭环</span></div>
+</div>
+
+<h2>L0–L5 六级大卡片：每级的四件套</h2>
+
+<div class="cards levels">
+
+  <div class="card">
+    <div class="icon">🧰</div>
+    <div class="lhead"><span class="lno">L0</span><h4>环境与工具就绪</h4></div>
+    <div class="sec">能力清单</div>
+    <ul>
+      <li>Kali 虚拟机、Docker、Burp Suite、nmap、ffuf、sqlmap、nuclei 与字典库 SecLists 全部就位</li>
+      <li>养成虚拟机快照与工具版本记录习惯</li>
+    </ul>
+    <div class="sec">推荐材料</div>
+    <ul>
+      <li>Kali 官方文档、SecLists（github.com/danielmiessler/SecLists）</li>
+    </ul>
+    <div class="accept">
+      <div class="sec">验收标准（能独立做到）</div>
+      从空机器 30 分钟内重建可用测试环境；每个工具能说出 3 个常用参数的含义。
+    </div>
+    <div class="sec">自测清单</div>
+    <ul class="chk">
+      <li>Burp 证书装入 Firefox</li>
+      <li>vulhub 可起停</li>
+      <li>快照已建</li>
+      <li>工具版本表已填</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="icon">🎯</div>
+    <div class="lhead"><span class="lno">L1</span><h4>靶场可复现已知漏洞</h4></div>
+    <div class="sec">能力清单</div>
+    <ul>
+      <li>只看官方 advisory（不看 writeup）复现单个 CVE，能解释 payload 每一段</li>
+      <li>产出合格 POC 卡片（VOL-07-08 B2：第三人 10 分钟内可复现）</li>
+    </ul>
+    <div class="sec">推荐靶场</div>
+    <ul>
+      <li>vulhub：log4j/CVE-2021-44228（Log4j2 JNDI 远程代码执行）、bash/CVE-2014-6271（Shellshock）</li>
+    </ul>
+    <div class="accept">
+      <div class="sec">验收标准（能独立做到）</div>
+      随机抽一台 vulhub 靶机，独立复现成功且卡片能被第三人复现；标准动作固化为「环境→验证→利用→留证→清理」（<code>docker compose up -d</code> → <code>ps</code> → 验证可达 → 利用留证 → <code>down -v</code> 清理）。
+    </div>
+    <div class="sec">自测清单</div>
+    <ul class="chk">
+      <li>能解释 payload 每段</li>
+      <li>能写出 CVSS 向量（VOL-07-08 B3）</li>
+      <li>复现后 <code>docker compose down -v</code> 清理</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="icon">🗂️</div>
+    <div class="lhead"><span class="lno">L2</span><h4>独立完成 vulhub 全类</h4></div>
+    <div class="sec">能力清单：按类别打穿</div>
+    <ul>
+      <li>反序列化：shiro/CVE-2016-4437、fastjson/1.2.24-rce</li>
+      <li>框架 RCE：struts2/s2-045、thinkphp/5-rce、confluence/CVE-2022-26134</li>
+      <li>中间件：weblogic/CVE-2020-14882、tomcat/CVE-2017-12615、jenkins/CVE-2018-1000861</li>
+      <li>未授权访问：redis/4-unacc、elasticsearch/CVE-2015-1427</li>
+      <li>认证缺陷：mysql/CVE-2012-2122</li>
+    </ul>
+    <div class="accept">
+      <div class="sec">验收标准（能独立做到）</div>
+      每类抽签复现 ≥1 台；同原理换组件时不查文档能自行构造利用思路。
+    </div>
+    <div class="sec">自测清单</div>
+    <ul class="chk">
+      <li>每台一张 POC 卡片</li>
+      <li>能写出每类漏洞利用链的前置条件（facts 视角）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="icon">📦</div>
+    <div class="lhead"><span class="lno">L3</span><h4>HTB easy→medium 独立通关</h4></div>
+    <div class="sec">能力清单</div>
+    <ul>
+      <li>完整盒子流程：枚举→打点→user flag→本机提权→root flag</li>
+      <li>Linux / Windows 各 ≥3 台；Windows 侧掌握 SMB、WinRM 与活动目录（AD）基础</li>
+    </ul>
+    <div class="sec">推荐靶场与材料</div>
+    <ul>
+      <li>easy Linux：Lame、Shocker、Nibbles；easy Windows：Sauna、Active、Grandpa</li>
+      <li>medium：Resolute、Cascade、Monteverde（Windows AD）、Cronos、DevOops（Linux）；退役机需 HTB VIP 订阅，难度以官方页面为准</li>
+      <li>材料：HTB Academy 模块、IppSec 复盘视频（ippsec.rocks）</li>
+    </ul>
+    <div class="accept">
+      <div class="sec">验收标准（能独立做到）</div>
+      easy 机 3 小时内独立双 flag；medium 机独立通关并写一页复盘（入口／提权／走过的错路）。
+    </div>
+    <div class="sec">自测清单</div>
+    <ul class="chk">
+      <li>每台一页复盘</li>
+      <li>能用 ATT&CK 编号映射自己用到的技术（attack.mitre.org）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="icon">🤝</div>
+    <div class="lhead"><span class="lno">L4</span><h4>真实授权项目辅助位</h4></div>
+    <div class="sec">能力清单</div>
+    <ul>
+      <li>在资深人员主导下负责子模块（外部打点、Web 漏洞挖掘）</li>
+      <li>按规范交付证据与报告初稿</li>
+    </ul>
+    <div class="sec">推荐材料</div>
+    <ul>
+      <li>VOL-07-08 PART B 全部（报告结构／POC 卡片／CVSS／证据脱敏／等保映射／复测回归）＋甲方或公司报告模板</li>
+    </ul>
+    <div class="accept">
+      <div class="sec">验收标准（能独立做到）</div>
+      所负责子模块零返工：POC 全部可复现、评级偏差 ≤1 级（B3）、证据合规（B4）。
+    </div>
+    <div class="sec">自测清单</div>
+    <ul class="chk">
+      <li>卡片交接测试通过</li>
+      <li>报告章节无结构性返工</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="icon">🏁</div>
+    <div class="lhead"><span class="lno">L5</span><h4>一人红队独立交付</h4></div>
+    <div class="sec">能力清单</div>
+    <ul>
+      <li>独立跑完授权项目全流程：范围谈判→测试→报告→复测（B6）</li>
+      <li>AD 内网攻击在 GOAD 实验室落地（Kerberoasting、AS-REP 烘焙、口令喷洒等大量故意留置漏洞）——完整版 GOAD（5 VM／2 森林／3 域），资源紧张用 GOAD-Light</li>
+    </ul>
+    <div class="accept">
+      <div class="sec">验收标准（能独立做到）</div>
+      独立交付一份客户签字接受的完整报告＋复测报告，全程零出授权范围。
+    </div>
+    <div class="sec">自测清单</div>
+    <ul class="chk">
+      <li>报告一次过内部评审</li>
+      <li>复测闭环</li>
+      <li>项目归档完整</li>
+    </ul>
+  </div>
+
+</div>
+
+<h2>靶场全景表：各平台适合练什么（从各卷【练习】汇总）</h2>
+<p>按「先本地复现、再在线靶场、后综合闭环」的顺序取用；所有靶场仅限本地与授权环境复现，HTB 退役机需 VIP 订阅、GOAD 只准跑在隔离虚拟网络。</p>
+<div class="tblwrap">
+<table>
+  <tr><th>靶场 / 平台</th><th>形态与定位</th><th>适合练什么（示例）</th><th>对应阶梯</th><th>出处</th></tr>
+  <tr>
+    <td><b>vulhub</b></td>
+    <td>本地 Docker 漏洞库，已知 CVE 复现主战场</td>
+    <td>L1 标准复现动作与 L2 五类打穿：log4j/CVE-2021-44228、bash/CVE-2014-6271（Shellshock）、struts2/s2-045、thinkphp/5-rce、shiro/CVE-2016-4437 与 CVE-2020-1957、fastjson/1.2.24 与 1.2.47-rce、confluence/CVE-2022-26134、weblogic/CVE-2020-14882、CVE-2017-10271 与 weak_password、tomcat/tomcat8 与 CVE-2017-12615、jenkins/CVE-2018-1000861、redis/4-unacc、elasticsearch/CVE-2015-1427、mysql/CVE-2012-2122、discuz/wooyun-2010-080723、gitlist/CVE-2018-1000533、flask/ssti、weblogic/ssrf、nginx/nginx_parsing_vulnerability、laravel/CVE-2021-3129</td>
+    <td><span class="lv">L1–L2 主线</span></td>
+    <td>VOL-01/02/04/07-08</td>
+  </tr>
+  <tr>
+    <td><b>PortSwigger Web Security Academy</b></td>
+    <td>免费在线 Web 实验室，带官方解法</td>
+    <td>越权（Access control：IDOR／垂直越权）、业务逻辑与竞争条件（含 single-packet attack）、JWT／OAuth、SQL 注入、XSS、SSTI、SSRF 全系列 lab，补手工 payload 内功</td>
+    <td><span class="core">L1–L3 内功</span></td>
+    <td>VOL-01/02</td>
+  </tr>
+  <tr>
+    <td><b>HackTheBox（HTB）</b></td>
+    <td>在线靶机，完整盒子链路（退役机需 VIP）</td>
+    <td>L3 验收样例机：Lame、Shocker、Nibbles（easy Linux）；Sauna、Active、Grandpa（easy Windows）；Resolute、Cascade、Monteverde、Cronos、DevOops（medium）。专项链路：Editorial（逻辑漏洞→凭据→立足）、Sau（指纹→SSRF→内网→公开漏洞利用）、Bizness（OFBiz 指纹→CVE-2023-51467 假设卡→黑盒验证闭环）</td>
+    <td><span class="adv">L3 验收主场</span></td>
+    <td>VOL-01/02/03/04/07-08</td>
+  </tr>
+  <tr>
+    <td><b>GOAD</b></td>
+    <td>本地 AD 实验室（完整版 5 VM／2 林／3 域；官方警告「极其易受攻击」，仅限隔离虚拟网络）</td>
+    <td>六模块递进（VOL-03 §8）：A 打点（castelblack IIS 上传→webshell）→B 提权（SeImpersonate→PrintSpoofer→抓 lsass）→C MSSQL（EXECUTE AS 模拟→xp_cmdshell→数据库链路）→D 凭据攻击（brandon.stark AS-REP、jon.snow Kerberoast、rickon.stark 口令喷洒、hodor 弱口令）→E 中继与委派（Responder 毒化 LLMNR、非约束委派、GPO 滥用）→F 拿 DC（DCSync→黄金票据→跨信任）；资源紧张用 GOAD-Light，单机用 MINILAB，进阶盲打 NHA/DRACARYS</td>
+    <td><span class="adv">L5 AD 落地</span></td>
+    <td>VOL-03/07-08</td>
+  </tr>
+  <tr>
+    <td><b>TryHackMe（THM）</b></td>
+    <td>在线课程＋引导式靶场</td>
+    <td>Wreath 网络（免费）：按「边界机→内网→域控」三层 pivot 设计，覆盖隧道与代理链全部内容；「Jr Penetration Tester」路线为入门课程</td>
+    <td><span class="core">内网枢轴／入门</span></td>
+    <td>VOL-03/07-08</td>
+  </tr>
+  <tr>
+    <td><b>upload-labs</b></td>
+    <td>本地文件上传专项（21 关，关卡号以仓库 README 为准）</td>
+    <td>黑白名单、条件竞争、.htaccess、二次渲染，按「单变量降级法」全通</td>
+    <td><span class="core">上传专项</span></td>
+    <td>VOL-02</td>
+  </tr>
+  <tr>
+    <td><b>sqli-labs</b></td>
+    <td>本地 SQL 注入关卡（GitHub 开源）</td>
+    <td>布尔盲注 less-8、时间盲注 less-9 手工内功，配合 sqlmap 复跑对照</td>
+    <td><span class="core">注入内功</span></td>
+    <td>VOL-01</td>
+  </tr>
+  <tr>
+    <td><b>DVWA / bWAPP</b></td>
+    <td>本地脆弱 Web 应用</td>
+    <td>命令注入低→高难度逐级（vulhub/bash、gitlist 之后）、XSS 模块（vulhub 无 XSS 专项时的替代）</td>
+    <td><span class="core">注入／XSS 内功</span></td>
+    <td>VOL-01</td>
+  </tr>
+  <tr>
+    <td><b>OWASP Juice Shop</b></td>
+    <td>本地 Docker 一条命令起的脆弱应用</td>
+    <td>30 分钟纯信息收集产出 ≥20 行 facts 表；用 SecLists common.txt 跑 ffuf 后逐条解释 200 响应成因（区分真实目录与 SPA 兜底路由）；对照 WSTG「信息收集」章节补漏</td>
+    <td><span class="core">信息收集／facts</span></td>
+    <td>VOL-07-08</td>
+  </tr>
+  <tr>
+    <td><b>InsecureBankv2</b></td>
+    <td>Android 测试 App</td>
+    <td>客户端「地址→抓包→改包重放」链路走通</td>
+    <td><span class="core">客户端分析</span></td>
+    <td>VOL-05</td>
+  </tr>
+  <tr>
+    <td><b>malware-traffic-analysis.net</b></td>
+    <td>公开合法 pcap 样本库</td>
+    <td>挑样本练协议阅读手感（通信协议分析前置）</td>
+    <td><span class="core">流量／协议</span></td>
+    <td>VOL-05</td>
+  </tr>
+  <tr>
+    <td><b>攻防世界（XCTF）</b></td>
+    <td>中文 CTF 平台</td>
+    <td>L1→L5 主线靶场的综合补充</td>
+    <td><span class="core">综合补充</span></td>
+    <td>VOL-07-08（A4 材料索引）</td>
+  </tr>
+  <tr>
+    <td><b>自建授权靶标</b></td>
+    <td>本地自建环境</td>
+    <td>Spring Boot 暴露 actuator 全端点练 heapdump 凭据提取；本地写含 <code>__wakeup</code> 的类做 CVE-2016-7124 绕过实验；开源 Java 发行包（如若依 RuoYi Release jar）走「解包→凭据/依赖审计→起服务→黑盒验证」四步；两台本地虚拟机先跑通 frp 再上靶场</td>
+    <td><span class="core">专项补缺</span></td>
+    <td>VOL-02/03/04</td>
+  </tr>
+</table>
+</div>
+
+<h2>「自测通过率」自评表模板</h2>
+<p>统计口径：<b>通过率＝已通过自测项 ÷ 该级自测项总数</b>。某级自测 100% 且验收标准达成＝里程碑通过，方可进入下一级；「差距最小的下一项」列对应 A3 练习——挑一项本周期补齐，练完复评。</p>
+<div class="tblwrap">
+<table>
+  <tr><th>等级</th><th>自测项数</th><th>已通过</th><th>通过率</th><th>验收标准达成？</th><th>差距最小的下一项</th><th>本周期动作 / 复评日期</th></tr>
+  <tr><td><span class="lv">L0</span> 环境与工具就绪</td><td>4</td><td><span class="fill">＿＿／4</span></td><td><span class="fill">＿＿%</span></td><td><span class="fill">□是 □否</span></td><td><span class="fill">＿＿＿＿＿＿</span></td><td><span class="fill">＿＿＿＿＿＿</span></td></tr>
+  <tr><td><span class="lv">L1</span> 靶场可复现已知漏洞</td><td>3</td><td><span class="fill">＿＿／3</span></td><td><span class="fill">＿＿%</span></td><td><span class="fill">□是 □否</span></td><td><span class="fill">＿＿＿＿＿＿</span></td><td><span class="fill">＿＿＿＿＿＿</span></td></tr>
+  <tr><td><span class="lv">L2</span> 独立完成 vulhub 全类</td><td>2</td><td><span class="fill">＿＿／2</span></td><td><span class="fill">＿＿%</span></td><td><span class="fill">□是 □否</span></td><td><span class="fill">＿＿＿＿＿＿</span></td><td><span class="fill">＿＿＿＿＿＿</span></td></tr>
+  <tr><td><span class="core">L3</span> HTB easy→medium 独立通关</td><td>2</td><td><span class="fill">＿＿／2</span></td><td><span class="fill">＿＿%</span></td><td><span class="fill">□是 □否</span></td><td><span class="fill">＿＿＿＿＿＿</span></td><td><span class="fill">＿＿＿＿＿＿</span></td></tr>
+  <tr><td><span class="core">L4</span> 真实授权项目辅助位</td><td>2</td><td><span class="fill">＿＿／2</span></td><td><span class="fill">＿＿%</span></td><td><span class="fill">□是 □否</span></td><td><span class="fill">＿＿＿＿＿＿</span></td><td><span class="fill">＿＿＿＿＿＿</span></td></tr>
+  <tr><td><span class="adv">L5</span> 一人红队独立交付</td><td>3</td><td><span class="fill">＿＿／3</span></td><td><span class="fill">＿＿%</span></td><td><span class="fill">□是 □否</span></td><td><span class="fill">＿＿＿＿＿＿</span></td><td><span class="fill">＿＿＿＿＿＿</span></td></tr>
+</table>
+</div>
+<div class="note">填表规则：只按「能独立做到」计数——他人代做、看 writeup 照抄的不算通过；卡片类自测项以交接测试（第三人 10 分钟复现）为准。等级颜色仅作视觉分层：L0–L2 打基础、L3–L4 进实战、L5 独立交付。</div>
+
+<footer>红队成长全景 · 持续更新</footer>
+</div>
+</body>
+</html>

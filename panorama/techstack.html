@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技术栈全景 · 分层知识地图 | 一人红队成长全景图</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.7;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+header{background:linear-gradient(135deg,#0f172a,#7f1d1d 55%,#b91c1c);color:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 10px 30px rgba(185,28,28,.28)}
+header h1{font-size:24px;margin-bottom:6px}header .sub{opacity:.92;font-size:14px}
+header .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+header .tags span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;font-size:12.5px}
+h2{font-size:20px;margin:36px 0 14px;padding-left:14px;border-left:5px solid #b91c1c}
+p{font-size:14px;color:#475569;margin-bottom:10px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:14px;padding:22px 20px;box-shadow:0 4px 16px rgba(0,0,0,.07);transition:transform .18s,box-shadow .18s;border-top:5px solid #b91c1c;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(185,28,28,.18)}
+.card .icon{font-size:30px;margin-bottom:10px}.card h4{font-size:17px;margin-bottom:6px;color:#1e293b}
+.card p{font-size:13px;color:#64748b;margin:0;flex:1}.card .go{margin-top:12px;font-size:13px;font-weight:600;color:#b91c1c}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
+.lv{color:#b91c1c;font-weight:600}.core{color:#0369a1;font-weight:600}.adv{color:#7c3aed;font-weight:600}
+.note{background:#fef2f2;border-left:4px solid #b91c1c;border-radius:8px;padding:12px 16px;font-size:13.5px;color:#7f1d1d;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
+.topnav{display:flex;gap:10px;margin:0 0 14px;flex-wrap:wrap}.topnav a{background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.topnav a.cur{background:#b91c1c;color:#fff;font-weight:700}
+.phase{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin:16px 0}
+.phase .step{flex:1;min-width:130px;background:#fff;border:1px solid #e2e8f0;padding:14px 10px;text-align:center;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.phase .step b{display:block;font-size:14px;color:#1e293b;margin-bottom:4px}
+.phase .step span{font-size:12px;color:#64748b}
+.vol{display:inline-block;background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:2px 12px;font-size:12px;color:#475569;margin:0 6px 6px 0;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.vol a{color:#b91c1c;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="topnav">
+  <a href="index.html">index.html 总览</a>
+  <a href="methodology.html">methodology.html 思路逻辑</a>
+  <a href="techstack.html" class="cur">techstack.html 技术栈</a>
+  <a href="toolchain.html">toolchain.html 工具链</a>
+  <a href="roadmap.html">roadmap.html 成长路线</a>
+</nav>
+
+<header>
+  <h1>技术栈全景 · 分层知识地图</h1>
+  <div class="sub">回答两个问题：一人红队要掌握哪些技术？每一层学到"能做什么"才算掌握？</div>
+  <div class="tags">
+    <span>六层知识地图</span>
+    <span>优先级三级标记</span>
+    <span>掌握标准 = 可验收动作</span>
+    <span>内容提炼自 VOL-01 ~ VOL-08</span>
+  </div>
+</header>
+
+<h2>〇、分层依赖与优先级标记</h2>
+<p>六层不是并列课程表，而是一条攻击链上的上下游：上层产出是下层的输入。审计转岗的你会看到一条横切线——源码联动层（④）与客户端层（⑤）把白盒能力接进黑盒工作流；交付层（⑥）收口一切产出。工具横向支撑见 <a href="toolchain.html" style="color:#b91c1c;font-weight:600">toolchain.html</a>，整体方法论见 <a href="methodology.html" style="color:#b91c1c;font-weight:600">methodology.html</a>。</p>
+
+<table>
+  <tr><th>层级</th><th>输入（依赖谁）</th><th>输出（产出什么）</th><th>支撑下层 / 反哺</th></tr>
+  <tr><td><b>① 外部侦察层</b></td><td>授权域名 / IP 范围</td><td>存活资产表 + 入口点清单（URL+方法+参数+认证要求）</td><td>② Web 应用层：入口清单是所有测试的底账</td></tr>
+  <tr><td><b>② Web 应用层</b></td><td>入口点清单</td><td>webshell / 低权限 shell；SSRF 是外网进内网的第一跳</td><td>③ 内网与域层：提供立足点</td></tr>
+  <tr><td><b>③ 内网与域层</b></td><td>立足点 shell</td><td>域内凭据 / DA 权限 / 攻击路径图 + 事件 ID 对照</td><td>⑥ 交付层：路径图直接进报告</td></tr>
+  <tr><td><b>④ 源码联动层</b></td><td>源码、发行包、前端 JS</td><td>白盒假设 → 黑盒验证 → findings 归档</td><td>横切①②：指纹命中即切换"版本→CVE→PoC"快通道</td></tr>
+  <tr><td><b>⑤ 客户端层</b></td><td>EXE / APK 安装包</td><td>服务端地址、硬编码凭据、加密密钥、协议帧结构</td><td>反哺①②③：资产补充、老接口打点、内网横向直通车</td></tr>
+  <tr><td><b>⑥ 交付层</b></td><td>全部 findings + 证据</td><td>报告六节结构 / POC 卡 / CVSS 评级 / 复测四态</td><td>收口所有层：发现不落卡 = 白干</td></tr>
+</table>
+
+<div class="phase">
+  <div class="step"><b>资产测绘</b><span>子域·端口·指纹</span></div>
+  <div class="step"><b>入口收敛</b><span>入口点清单</span></div>
+  <div class="step"><b>漏洞验证</b><span>认证·注入·越权·逻辑</span></div>
+  <div class="step"><b>立足内网</b><span>隧道·凭据·提权</span></div>
+  <div class="step"><b>横向域控</b><span>Kerberos·DC</span></div>
+  <div class="step"><b>交付收口</b><span>finding 卡·报告</span></div>
+</div>
+
+<div class="note">优先级标记（本页统一口径）：<span class="core">核心 = 必学地基</span>，不掌握则该层工作无法开展；<span class="lv">重点 = 拉开差距</span>，一人红队产出最高、最该投入的板块；<span class="adv">进阶 = 按需深入</span>，特定项目场景才启用。每层末尾的"掌握标准"是可验收动作——做到了才算学会。</div>
+
+<h2>① 外部侦察层 · 从域名到入口点清单</h2>
+<p>信息收集不是"扫完就完"，而是收敛为一张入口点底账。链路固定：资产 → 端口 → 入口 → 技术栈指纹 → 组件版本 → CVE/公开 POC → 验证。</p>
+<table>
+  <tr><th>核心知识点</th><th>掌握到什么程度</th><th>优先级</th></tr>
+  <tr><td>子域收集</td><td>说得出四来源（CT 证书透明度 / 被动 DNS / 暴力枚举 / 智能置换）；会用 OneForAll 流水线 + Amass 被动/主动；能识别并剔除泛解析噪声、看穿 CNAME 指向 CDN</td><td><span class="core">核心</span></td></tr>
+  <tr><td>端口与服务指纹</td><td>懂 nmap <code>-sS</code> SYN 半开与 <code>-sT</code> 全连接的差异及适用；懂 <code>-sV</code> 探针库+签名推出版本的机制；httpx 批量取 title/状态码/技术栈/CDN；知道 filtered≠无服务</td><td><span class="core">核心</span></td></tr>
+  <tr><td>目录爆破</td><td>懂"高频请求+响应特征区分命中"的判据链（状态码→长度→行数）；会用 ffuf 自动校准 <code>-ac</code> 治"全 200"站点；递归+扩展名+限速；高价值路径先手测（.git/.env/actuator/swagger）</td><td><span class="core">核心</span></td></tr>
+  <tr><td>JS 信息提取</td><td>两条路：归档历史 JS（gau）+ 在线 JS 静态分析（LinkFinder 抽端点）；能 grep 出 AK/SK、内网测试接口、隐藏功能开关；会查 source map 泄露还原源码</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>攻击面收敛</td><td>把收集结果收敛为"入口点清单"表：入口|参数|指纹|候选 CVE|验证状态；会用 Arjun 探前端已删但后端仍读的隐藏参数</td><td><span class="core">核心</span></td></tr>
+  <tr><td>指纹→CVE 判定</td><td>whatweb / httpx / searchsploit 完成版本→explotr 映射；牢记指纹≠版本≠可利用，逐条核对利用条件（如 Spring4Shell 需 JDK9+、war 部署）</td><td><span class="lv">重点</span></td></tr>
+</table>
+<div class="note"><b>掌握标准（能做什么算掌握）：</b>① 对任一授权目标完整跑一遍"子域→nmap→httpx→ffuf→JS 提取"流水线，产出入口点清单表；② 只凭指纹判版本，再用 searchsploit 取回 exploit 复现"指纹→CVE→验证"闭环（如 struts2 s2-045、thinkphp 5-rce）；③ 爆破结果必人工复核——爆破器必误报，人工确认是纪律。</div>
+<p><span class="vol">对应卷册：VOL-01《Web 应用渗透（上）》第 1–2 节</span><span class="vol">工具细节：nmap / httpx / ffuf 字典工程 → <a href="toolchain.html">toolchain.html</a></span></p>
+
+<h2>② Web 应用层 · 进得去、进得深、拿得稳</h2>
+<p>上册解决"进得去"（认证+注入），下册解决"进得深、拿得稳"（越权+逻辑+上传+反序列化）。越权与逻辑漏洞是审计经验迁移率最高的板块——黑盒选手测不出支付状态机跳跃，看得懂业务语义的人可以。</p>
+<table>
+  <tr><th>核心知识点</th><th>掌握到什么程度</th><th>优先级</th></tr>
+  <tr><td>会话 Session</td><td>两个安全前提（ID 不可预测 + 服务端正确失效）；会测登出/改密后旧 session 重放、会话固定、cookie 缺 Secure/HttpOnly/SameSite</td><td><span class="core">核心</span></td></tr>
+  <tr><td>JWT</td><td>结构 base64url(header).payload.signature；缺陷五连：不验签名 / alg=none / HS256 弱密钥爆破（hashcat -m 16500）/ RS256→HS256 算法混淆 / kid 注入；jwt_tool 篡改重签</td><td><span class="core">核心</span></td></tr>
+  <tr><td>OAuth 2.0 / OIDC</td><td>授权码模式三依赖：redirect_uri 严格白名单、code 一次性短时效、state 防 CSRF；会测 code 重放、implicit 暴露、回调校验"包含匹配"变体</td><td><span class="adv">进阶</span></td></tr>
+  <tr><td>SQL 注入</td><td>五通道（UNION / 报错 / 布尔盲 / 时间盲 / 堆叠）+ 三库差异（MySQL information_schema、PG 天然堆叠、MSSQL xp_cmdshell）；手工五步定位回显位；sqlmap 指定通道、tamper 绕 WAF、大表先 --count</td><td><span class="core">核心</span></td></tr>
+  <tr><td>命令注入</td><td>分隔符语义（; | && 反引号 $()）；无回显必做 OOB 带外验证；Java Runtime.exec 不经 shell 只能参数注入（curl -o、tar --checkpoint）</td><td><span class="core">核心</span></td></tr>
+  <tr><td>XSS</td><td>三类（存储/反射/DOM）与 source→sink 分析；实战边界：窃 cookie（受 HttpOnly 限制）、以受害者身份发业务请求、借浏览器探内网；CSP 评估</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>SSTI</td><td>两步检测：{{7*7}} 回显 49 判存在，{{7*'7'}} 区分 Jinja2(7777777)/Twig(49)；RCE 靠模板全局对象链到 os 模块</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>SSRF</td><td>直接危害（内网服务/管理后台/云元数据拿临时凭据）+ 协议进阶（file://、gopher:// 打 Redis、dict:// 探端口）；绕过变体（0177.0.0.1、[::1]、DNS 重绑定、302 跳转）；它是外网打点进入内网的第一跳</td><td><span class="core">核心</span></td></tr>
+  <tr><td>越权（水平/垂直/未授权）</td><td>IDOR 双账号对照实验 + Intruder 批量验证（Grep-Match 命中他人数据）；垂直越权换 token 重放管理接口；未授权四类：actuator（env/heapdump 可提取凭据、劫持活跃 session）、Swagger 文档、管理后台弱口令、内存马视角——按"攻击者获得免鉴权高价值能力"定级</td><td><span class="core">核心</span></td></tr>
+  <tr><td>URL 鉴权绕过</td><td>三层（反代→中间件→框架）对解码/折叠/分号/.. 的规范化差异即生绕过（如 Shiro CVE-2020-1957 的 /xxx/..;/admin）；对每个 401/403 跑变形矩阵，curl 必加 --path-as-is</td><td><span class="adv">进阶</span></td></tr>
+  <tr><td>逻辑漏洞</td><td>支付状态机（金额/数量/回调重放/状态跳跃/优惠券并发）；验证码与密码找回（跳步/爆破/目标置换/Token 可预测）；短信轰炸（多入口叠加放大）；竞态条件 + HTTP/2 单包攻击（验副作用不验响应码）</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>文件上传</td><td>五层校验（前端/后缀/Content-Type/魔术字节/二次渲染）与绕过谱系（php5/.htaccess/.user.ini/GIF89a 头）；nginx+php-fpm 解析漏洞（匹配层与执行层路径理解不一致）；条件竞争上传（毫秒窗口双终端并发）；一句话原理与免杀三类（执行原语替换/流量变形/落点变形）</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>反序列化</td><td>Java：Fastjson @type 危险设计与 1.2.24→1.2.47→safeMode 收口史；Shiro rememberMe（默认密钥伪造/Shiro-550、CBC 填充预言/Shiro-721）；PHP：magic 方法与 POP 链、__wakeup 绕过（CVE-2016-7124）、phar:// 第二入口；黑盒只做"指纹识别+无害验证"，报告标注"可达性已验证、利用链未执行"</td><td><span class="adv">进阶</span></td></tr>
+  <tr><td>POC→EXP 工程化</td><td>四点差距：环境指纹显式化、输入规范化、失败回退、可重复性；固定工序——指纹前置、参数化禁硬编码、证据自采、失败分类退出码、默认无害（延时/dnslog/标记文件）</td><td><span class="lv">重点</span></td></tr>
+</table>
+<div class="note"><b>掌握标准（能做什么算掌握）：</b>① 双账号测出 IDOR 并批量验证，留"请求+响应+身份说明"三联证据；② 手工五步 UNION 注入拿回显位，三库报错/延时通道随手写，盲注交 sqlmap 指定 technique；③ 篡改 JWT sub/role 后仍非 401/403 即实锤；④ 单包攻击命中后留"发包前后余额两帧"；⑤ 上传绕过用单变量降级法定位"卡在哪层"，拿到 URL 后 POST phpinfo 验证解析；⑥ Fastjson/Shiro 做到报错探针+dnslog/deleteMe 判定的无害验证即收手。</div>
+<p><span class="vol">对应卷册：VOL-01《Web 应用渗透（上）》第 3–4 节 + VOL-02《Web 应用渗透（下）》全卷</span><span class="vol">靶场：vulhub / sqli-labs / upload-labs / PortSwigger lab</span><span class="vol">思维转换 → <a href="methodology.html">methodology.html</a></span></p>
+
+<h2>③ 内网与域层 · 立足 → 隧道 → 凭据 → 提权 → 横向 → 域控</h2>
+<p>Web 打点给你的是一只 webshell 或低权限 shell，本层解决"之后怎么办"。主线固定六步：立足 → 隧道 → 凭据 → 提权 → 横向 → 域控，最后合规收尾。</p>
+<table>
+  <tr><th>核心知识点</th><th>掌握到什么程度</th><th>优先级</th></tr>
+  <tr><td>域判断与本机收集</td><td>域成员三特征（机器账户注册 DC / DNS 指向 DC / 时间与 DC 同步 ≤5min）用纯命令验证；Windows 四问（我是谁/在哪/周围谁/谁管我）产出"本机档案"；Linux 重心 sudo/cron/SSH 私钥/history</td><td><span class="core">核心</span></td></tr>
+  <tr><td>隧道与代理</td><td>选型只看出网能力：TCP 自由出网→反向 SOCKS5（frp）；仅 HTTP 出网→Neo-reGeOrg 隧道；完全不出网→netsh portproxy 逐层跳；proxychains 只代理 TCP，nmap 必须 -sT -Pn -n</td><td><span class="core">核心</span></td></tr>
+  <tr><td>凭据获取</td><td>SAM reg save + secretsdump 离线解析；lsass minidump + mimikatz 离线读（转储前与客户书面约定）；DPAPI 主密钥连锁解密浏览器/RDP 凭据（SharpDPAPI/hackbrowserdata）；Linux 私钥打包/shadow 离线破解</td><td><span class="core">核心</span></td></tr>
+  <tr><td>Windows 提权</td><td>四主干：未加引号服务路径劫持、UAC 绕过（fodhelper 类注册表劫持）、令牌滥用（SeImpersonate 已启用→Potato 家族谱系 Hot→Juicy→Rogue→PrintSpoofer→GodPotato）、内核漏洞（最稳但风险最高）</td><td><span class="core">核心</span></td></tr>
+  <tr><td>Linux 提权</td><td>顺序固定：先低噪声配置类（sudo -l / SUID / cron / capabilities 对照 GTFOBins）后内核；版本区间判 DirtyPipe / Baron Samedit / DirtyCow；容器先查 privileged 与 docker.sock</td><td><span class="core">核心</span></td></tr>
+  <tr><td>横向移动（非域）</td><td>凭据复用与 SSH 密钥复用："收集→去重→小批量验证→扩大"；SSH agent 转发劫持；控制并发防 fail2ban 锁定</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>Kerberos 与域攻击</td><td>认证四步（AS-REQ/AS-REP/TGS-REQ/TGS-REP）一页讲透，所有域攻击都是对某一环打折；PTH（哈希即凭据）、Kerberoasting/AS-REP Roasting（领票+离线跑字典）、黄金票据（krbtgt 自签全域有效，修复需两次重置）、白银票据（不过 KDC 更隐蔽）</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>域控攻防矩阵</td><td>按"你有什么资本"选打法：普通域用户→Kerberoast/BloodHound ACL 最短路径；服务账户→约束委派 RBCD；可触发他人认证→Responder 毒化+NTLM 中继；DA→DCSync 取全域哈希；DC 未打补丁→Zerologon/noPac/PetitPotam；现实环境凭据链路才是常态</td><td><span class="adv">进阶</span></td></tr>
+  <tr><td>痕迹处理与收尾</td><td>只清理自己新增的持久化构件（工具/账号/计划任务/portproxy）；删除客户日志=销毁证据；整理操作时间线与客户日志对账，输出攻击路径图+事件 ID（4624/4768/4769/4104）</td><td><span class="lv">重点</span></td></tr>
+</table>
+<div class="note"><b>掌握标准（能做什么算掌握）：</b>① 打点后快速产出"本机档案"（账户特权/网段/杀软/RDP 会话/疑似凭据文件）；② 按出网能力选对隧道方案，proxychains 内网扫描出端口清单；③ 提权后 whoami /groups 见 High 或 SYSTEM，且能说出该条提权路径的前提条件；④ GOAD 结业：能独立画出自己的完整路径图（打点机→凭据→横向→DA→DC）并逐节点标注事件 ID；域控矩阵每行至少复现一条，能复盘"补了 X 这条链断在哪"。</div>
+<p><span class="vol">对应卷册：VOL-03《内网渗透：从打点到域控》全卷</span><span class="vol">靶场：GOAD（5 VM/2 林/3 域）/ TryHackMe Wreath / HTB Sauna·Lame·Nibbles</span><span class="vol">后渗透工具 → <a href="toolchain.html">toolchain.html</a></span></p>
+
+<h2>④ 源码联动层 · 审计员优势的降维打法</h2>
+<p>你不是从零学黑盒，而是把白盒能力接驳到黑盒工作流。核心心法：审计员最强的不是找洞，而是知道"这个洞对应的那个请求长什么样"——先构造假设，再验证。</p>
+<table>
+  <tr><th>核心知识点</th><th>掌握到什么程度</th><th>优先级</th></tr>
+  <tr><td>入口点优先审计</td><td>先回答"哪些入口没被中间件挡住"再 grep sink；建「路由清单×鉴权配置」表（antMatchers/permitAll/filterChain/web.xml 全查）；前缀白名单漏配是集中式鉴权最常见缺陷；认证≠授权，对象属主判断缺失即越权面</td><td><span class="core">核心</span></td></tr>
+  <tr><td>代码→PoC 翻译</td><td>三步：定位参数来源（body/path/query/header）→按绑定规则构造请求→针对净化逻辑变形（先读代码再决定变形，不是玄学）；判定信号按侵入度排序：响应异常→OOB 出网→延时→回显，永远先低风险</td><td><span class="core">核心</span></td></tr>
+  <tr><td>五个重点审计面</td><td>鉴权/越权（id 无属主过滤）、序列化（readObject/rememberMe/多态绑定）、文件操作（路径穿越+黑名单）、SQL 拼接（MyBatis ${} 与 order by 不可参数化位）、SOAP-RPC（WSDL 挂 ?wsdl 连着 XXE 与反序列化两族洞）——看到特征就知道发什么请求</td><td><span class="core">核心</span></td></tr>
+  <tr><td>报错与堆栈反推</td><td>主动受控触发报错；Java 堆栈包名=依赖清单（免费拿到 Maven 坐标）；debug 页/actuator 直接送配置；畸形 1 字符能解决的绝不用 1MB</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>前端 JS 深度分析</td><td>source map 未关=压缩前源码整包白给；登录后重复收集（chunk-* 里才有管理员接口）；隐藏功能=代码里有 UI 上没有，直接调用的高价值点；枚举端点用未认证会话逐一探测</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>指纹→版本→CVE 比对</td><td>nuclei-templates 不只跑还要读（yaml 里 matcher 就是"该漏洞对应的那条请求"）；结论写版本区间 ≤x.y 不写 =x.y；见 CVE 先读 advisory 确认前置条件，避免盲打</td><td><span class="core">核心</span></td></tr>
+  <tr><td>半黑盒：发行包</td><td>"无源码"常是伪命题：官网历史安装包（war/jar/安装器/APK）就是服务端真相快照；解包三必看（配置文件/依赖清单/凭据 grep）；CFR/dnSpy/jadx 反编译；发行包版本≠线上版本，先指纹核对</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>联动闭环</td><td>「假设卡」工作法：白盒假设→黑盒验证（一条请求+判定标准）→证据留存（原始报文+时间戳+截图入 findings 目录）；三段缺一只是线索不是发现；仅代码推断未黑盒复现的永远标 probable</td><td><span class="core">核心</span></td></tr>
+</table>
+<div class="note"><b>掌握标准（能做什么算掌握）：</b>① 有源码时产出「路由×鉴权」表，标不出鉴权规则的路由用无凭据请求 diff 验证（200+JSON 即未授权实锤）；② 看到 sink 能翻译成一条可复现请求（如 fastjson Inet4Address 探针看 DNSLog 出网）；③ 发行包挖到 JWT secret → 本地 jwt_tool 伪造 → 线上重放通过鉴权，闭环才算数；④ findings 目录换台机器、隔一天，10 分钟内能复现——这是证据链合格线。</div>
+<p><span class="vol">对应卷册：VOL-04《源码审计→黑盒联动》全卷</span><span class="vol">白盒技能→黑盒战力折算表 → <a href="methodology.html">methodology.html</a></span><span class="vol">验证工具 nuclei → <a href="toolchain.html">toolchain.html</a></span></p>
+
+<h2>⑤ 客户端层 · EXE / APK / 协议的够用深度</h2>
+<p>客户端是甲方"必须发到用户手里"的代码，天然泄露四类情报：服务端地址、兼容/调试接口、硬编码凭据与密钥、更新机制 URL。本质是"没有源码的代码审计"，审计经验全部可迁移。</p>
+<table>
+  <tr><th>核心知识点</th><th>掌握到什么程度</th><th>优先级</th></tr>
+  <tr><td>PE 文件基础</td><td>节表=文件偏移↔内存地址目录（.text 代码/.rdata 字符串/.rsrc 资源）；导入表=程序"能力清单"（WINHTTP 联网、ADVAPI32 注册表）；能答"载荷在哪个节、有什么联网能力"</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>壳识别与脱壳</td><td>判壳必须是第一步（加壳后字符串提取全失效）；UPX 节名/签名识别+一键 -d；改壳走 OEP dump+重建 IAT；商用壳（VMProtect/Themida）不硬脱，报告写"静态分析不可行"转动态</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>安装器提取</td><td>四类主流（Inno/NSIS/InstallShield/MSI）各自工具链（innoextract/7z/unshield/msiexec /a）；兜底最真实：快照虚拟机正常安装+Regshot 比对差异；安装器是外壳不是业务本体</td><td><span class="core">核心</span></td></tr>
+  <tr><td>双编码字符串提取</td><td>ASCII(-n 8) + UTF-16LE(-e l) 双跑（漏宽字符是新手第一大事故）；分桶 grep：端点/内网 IP/带端口地址/凭据关键词/云 key 特征（AKIA…、AIza…、JWT eyJ 三段）/UNC 路径；FLOSS/gitleaks/trufflehog 补刀</td><td><span class="core">核心</span></td></tr>
+  <tr><td>.NET 反编译</td><td>dnSpyEx/ILSpy 几乎还原源码；不通读全文，只啃加密类+网络层+配置读取三块；搜 machineKey（泄露=ViewState 反序列化打点）；ConfuserEx 混淆先 de4dot</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>Electron asar</td><td>app.asar 默认不加密=前端源码整包白给（API 路径/鉴权逻辑/更新地址）；主进程 JS 里常有密钥；一次分析三平台通用</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>APK 分析主线</td><td>apktool（资源+manifest+可回编译）与 jadx（dex→可读 Java）双线互补；Manifest 快筛组件暴露/debuggable/deeplink/networkSecurityConfig；加固检测（jiagu/shell 特征 so）——加固硬啃静态是最大时间黑洞</td><td><span class="core">核心</span></td></tr>
+  <tr><td>硬编码与 key 提取</td><td>jadx 全文搜 SecretKeySpec 回溯 bytes 来源（静态数组/Base64/assets 配置）；apkleaks/MobSF 自动化当索引用；第三方 SDK 公开 appkey 不是漏洞，只报可越权/越身份的凭据</td><td><span class="core">核心</span></td></tr>
+  <tr><td>签名校验缺陷</td><td>debug 证书/弱自签证书发布=可伪造重分发（供应链风险）；客户端 Java 层签名校验可 patch 绕过；先绕签名校验再处理 pinning，顺序反了会误判</td><td><span class="adv">进阶</span></td></tr>
+  <tr><td>抓包与证书锁定绕过</td><td>三层逐层拆：系统层（Android 7+ 只信系统 CA）→应用层 pinning（Frida hook 校验函数恒真，objection 一条命令）→双向 mTLS（客户端 .p12+口令常打包在 app 内）；分层排障，别上来换八种脚本</td><td><span class="adv">进阶</span></td></tr>
+  <tr><td>通信协议分析</td><td>情报闭环：地址→抓包→帧结构（魔数+版本+长度+载荷）→回反编译源码对号编解码/加密函数→重放验证；Protobuf 特征 parseFrom/writeTo 用 protoc --decode_raw；防重放字段回代码找校验逻辑</td><td><span class="adv">进阶</span></td></tr>
+  <tr><td>硬编码 finding 卡</td><td>证据五要素：对象（组件+版本）/位置（文件/类/方法/偏移）/值（脱敏+SHA-256 指纹）/验证（是否有效、在哪个入口）/影响（能访问什么资产）；缺一项评审会就被打回</td><td><span class="core">核心</span></td></tr>
+</table>
+<div class="note"><b>掌握标准（能做什么算掌握）：</b>① 拿到任意 EXE/APK 按"前 30 分钟速查清单"跑完：识别→解包/脱壳→双编码 strings→分桶 grep→反编译只啃加密与网络两块→产出三件套（资产补充清单/疑似凭据表/协议疑点列表）；② 能指出"哪个类哪个方法用了哪个硬编码 Key"作为 finding 证据；③ APK 能回答"有没有加固"；抓包失败能分层定位（CA→pinning→mTLS）；④ 协议分析产出帧结构表，手工构造一条合法心跳帧收到服务端预期响应即逆向闭环。</div>
+<p><span class="vol">对应卷册：VOL-05《安装包与客户端分析》全卷</span><span class="vol">靶场：InsecureBankv2 / OWASP UnCrackable L1–L4 / Allsafe / HTB Blocky·Cascade</span><span class="vol">mitmproxy 抓包 → <a href="toolchain.html">toolchain.html</a></span></p>
+
+<h2>⑥ 交付层 · 报告、POC 卡、CVSS 与等保</h2>
+<p>报告是唯一交付物，客户"修不修、先修谁"只依赖它。方法论给骨架：项目管流程用 PTES，Web 覆盖度用 WSTG，内网阶段用 ATT&CK 自查，报告叙事用 Kill Chain——四者不互斥，完整交付里都会出现。</p>
+<table>
+  <tr><th>核心知识点</th><th>掌握到什么程度</th><th>优先级</th></tr>
+  <tr><td>四大框架选型</td><td>Kill Chain（报告攻击路径叙事）/ PTES（项目全流程骨架）/ WSTG v4.2（Web 测试用例兜底"该测的都测了"）/ MITRE ATT&CK（内网动作映射技术编号，度量覆盖面与检测盲区）</td><td><span class="core">核心</span></td></tr>
+  <tr><td>facts 信息渐进模型</td><td>黑盒卡住的实质是事实缺口；维护 facts 表（事实/值/来源/时间），每个缺口对应一类收集动作；说得清"下一步动作由哪条缺口驱动"，说不清的动作不做</td><td><span class="core">核心</span></td></tr>
+  <tr><td>报告六节结构</td><td>概述（结论先行）→范围与方法（范围争议的防火墙）→风险矩阵（CVSS 分档）→漏洞明细（一洞一卡按严重度降序）→修复建议汇总（P0–P3+责任方，与明细逐条对应）→复测说明；交叉三查：概述数字=矩阵合计=明细条数</td><td><span class="core">核心</span></td></tr>
+  <tr><td>POC 卡片规范</td><td>合格标准一条：拿到卡片的工程师不咨询你、10 分钟内复现；字段：编号标题/环境假设（账号哪来的）/编号步骤/完整请求（可粘 Repeater+curl）/预期响应指纹/脱敏截图/影响与 CVSS 向量</td><td><span class="core">核心</span></td></tr>
+  <tr><td>CVSS 3.1 评级</td><td>8 指标向量串；定级流程先影响（C/I/A）后可达性（AV/AC/PR/UI/S）；躲开五个误评级：S:C 滥用、"注册就能打"是 PR:L、越权该 C:H 就别评低、仅内网可达 AV:A、弱口令按"凭据即全部权限被夺"评</td><td><span class="core">核心</span></td></tr>
+  <tr><td>证据留存与脱敏</td><td>evidence 目录成对留请求响应+SHA256SUMS；凭据一律不进报告（&lt;已脱敏&gt;占位，原件加密另交）；泄露类取样例前 5 条+总行数，禁止整表拖库进附件；交付包加密压缩、密码走另一信道</td><td><span class="core">核心</span></td></tr>
+  <tr><td>等保语境要点</td><td>漏洞-条款映射到 GB/T 22239-2019 安全条款大类（身份鉴别/访问控制/入侵防范等）；风险等级补"高/中/低"衔接测评口径；不越界写"测评通过/不通过"；条款号对照官方文本，不凭记忆写</td><td><span class="adv">进阶</span></td></tr>
+  <tr><td>复测与回归</td><td>复测向后看旧漏洞、回归向前看改动面，分开执行都留证据；逐卡原样重放；区分"根因修复"与"缓解（WAF 拦截）"；四态判定（已修复/部分/未修复/风险接受——后者须客户书面确认）</td><td><span class="lv">重点</span></td></tr>
+  <tr><td>能力阶梯 L0–L5</td><td>进度单位是里程碑验收不是学时：L0 环境就绪→L1 靶场复现单 CVE→L2 vulhub 全类→L3 HTB easy/medium 独立双 flag→L4 授权项目辅助位零返工→L5 独立交付客户签字报告</td><td><span class="lv">重点</span></td></tr>
+</table>
+<div class="note"><b>掌握标准（能做什么算掌握）：</b>① 一洞一卡，同事盲测只给卡不给口头说明，10–15 分钟复现成功且定级一致；② CVSS 双人独立评级，差 &gt;1 级时逐指标对照向量找分歧点，FIRST 计算器复算；③ 交付前全文检索密码/Bearer/token/手机号正则无命中；④ 复测每条四态判定都有重放响应截图支撑；⑤ L5 终点：独立交付一份客户签字接受的完整报告+复测报告，全程零出授权范围。逐级差距清单与周期规划见 <a href="roadmap.html" style="color:#b91c1c;font-weight:600">roadmap.html</a>。</div>
+<p><span class="vol">对应卷册：VOL-07-08《方法论·报告交付·成长路线》全卷</span><span class="vol">笔记与截图规范 → <a href="toolchain.html">toolchain.html</a></span><span class="vol">学习材料索引 → <a href="roadmap.html">roadmap.html</a></span></p>
+
+<footer>红队成长全景 · 持续更新</footer>
+</div>
+</body>
+</html>
