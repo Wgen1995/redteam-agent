@@ -1,0 +1,483 @@
+能力测评报告
+智能渗透 Agent
+测评时间：2026 年 Q2
+（ 第 一 期 ）
+
+
+测评背景与目的
+大语言模型正在从“给出安全建议”走向“自主规划、调用工具并完成攻击链”的智能渗透 Agent。不同 Agent 在
+任务分解、工具编排、上下文管理、记忆、监督纠偏和结果验证方面差异显著；同一 Agent 接入不同模型后，也会
+呈现明显的能力与资源差异。仅依靠项目演示或单次案例，难以对系统的真实能力做横向比较。
+77.03%
+领先模型
+Kimi K3
+90.54%
+最高组合结果
+T3MP3ST / Cairn + Kimi K3
+67.52%
+52 组合总体
+各组合三轮成功率取最高
+29.53%
+共同短板
+多阶段渗透
+为什么需要统一测评
+在相同题集、环境、流程和评分规则下比较 
+Agent 与模型组合，尽量排除调度策略、答题
+顺序和外部环境差异对结果的干扰。
+本报告关注什么
+聚焦 Agent、模型及二者组合的最高公开成功
+率、耗时、Token 与六大能力域表现，为技术
+研究和方案选型提供数据参考。
+TSecBench 的定位
+由腾讯安全云鼎实验室推出，面向自动化红队与
+对抗性 AI，通过真实漏洞、生产级靶场和云原
+生环境衡量自主渗透能力。
+公开透明与可复现
+平台持续扩展榜单，并逐步公开完整测评日志及
+大模型对话记录；详细结果与 Agent Trace 统
+一在官网查看。
+基于 TSecBench 统一评测体系，对国内外代表性智能渗透 Agent 与国内主流大语言模型开展组合评测，并以每个 
+Agent×模型组合三轮测试中的最高成功率结果，观察能力上限、系统适配与效能差异。
+01
+
+仅以 52 个选定结果重算所有报告指标。
+指标汇总05
+核心结论
+单题独立
+采用单题依次评测，每道题独立运行。
+01
+统一条件
+统一环境、配置、流程和评分规则。
+03 三轮取优
+每个 Agent × 模型组合选成功率最高的一轮。
+04
+并列处理
+若三轮最高成功率相同，依次选择总耗时更短、总 Token 更少、轮次更早的结果。该口径用于观察组合的公
+开能力上限，不代表典型运行均值。详细题目过程、原始结果与 Agent Trace 请访问 TSecBench 官网 ⾭。
+Kimi K3 的组合上限最强
+13 个 Agent 的选定结果汇总成功率为 77.03%，
+在 11 个 Agent 内取得该 Agent 的最高模型组
+合成绩。
+Cairn 的跨模型上限最高
+四个模型各取最优轮次后，汇总成功率达到  
+77.70%，在 13 个 Agent 中排名第一。
+时间限制02
+一般题目最长运行 1 小时；多阶段渗透为特例，
+最长运行 2 小时；超时视为未通过。
+评测方式与统计口径
+TSecBench v1 共 63 道题，覆盖 Web 漏洞挖掘、二进制漏洞挖掘、漏洞利用、多阶段渗透、云攻击和对抗规避六大
+能力域。本次公开数据包含 13 个 Agent、4 个模型（Kimi K3、GLM 5.2、DeepSeek-V4-Pro-Preview、MiniMax 
+M3）、每个组合 3 轮，共 156 份结果。所评测的模型对象即上述四款在评测期间的对应版本，不包含此后发布的新
+模型或模型新版本。
+02
+
+最高组合结果并列 90.54%
+T3MP3ST + Kimi K3 与 Cairn + Kimi K3 均
+达到 90.54%；前者选定结果耗时更短。
+长链任务仍是核心瓶颈
+即使各组合都取三轮最优，多阶段渗透成功
+率仍仅 29.53%，完整解题率为 8.33%。
+03
+0 20 30 50 70 9010 40 60 80 100
+01 Cairn 77.70%
+02 CHYing 75.00%
+03 LuaN1ao 74.32%
+04 BreachWeave 73.65%
+05 Claude Code 72.30%
+10 shannon 63.85%
+11 Pentagi 61.15%
+06 CyberStrikeAI 71.96%
+08 cai 67.91%
+09 pi 67.57%
+07 T3MP3ST 70.61%
+12 ctfSolver 55.74%
+13 PentestAgent 45.95%
+智能渗透 Agent 效能对比
+每个 Agent 汇总四个模型组合各自选定的最优轮次，用于比较其跨模型能力上限与资源表现。
+四模型最优轮次结果汇总
+Agent 平均成功率排名
+
+CyberStrikeAI 71.96% 77.38% 15.92 h 145.82 M6
+cai 67.91% 74.21% 25.66 h 140.59 M8
+T3MP3ST 70.61% 75.79% 20.38 h 230.80 M7
+pi 67.57% 73.81% 16.43 h 158.70 M9
+shannon 63.85% 65.87% 31.31 h 23.92 M10
+Pentagi 61.15% 68.65% 31.17 h 128.58 M11
+ctfSolver 55.74% 63.10% 31.15 h 262.27 M12
+PentestAgent 45.95% 52.78% 35.92 h 223.02 M13
+Claude Code 72.30% 76.59% 18.03 h 58.42 M5
+BreachWeave 73.65% 78.97% 21.05 h 266.96 M4
+Cairn 77.70% 82.14% 22.11 h 458.50 M1
+Agent 平均成功率 完整解题率 平均耗时 平均 Token
+LuaN1ao 74.32% 80.95% 23.39 h 261.66 M3
+CHYing 75.00% 80.56% 22.78 h 27.92 M2
+排名
+按平均成功率降序
+Agent 效能指标
+04
+
+每格仅显示该组合三轮中的最高成功率；深色代表更高 低 高
+Agent × 模型组合成功率
+DeepSeek-V4-Pro-
+Preview GLM 5.2 Kimi K3 MiniMax M3
+Cairn 73.0% 78.4% 90.5% 68.9%
+CHYing 66.2% 79.7% 85.1% 68.9%
+LuaN1ao 68.9% 82.4% 75.7% 70.3%
+Claude Code 66.2% 75.7% 81.1% 66.2%
+CyberStrikeAI 68.9% 71.6% 82.4% 64.9%
+T3MP3ST 64.9% 67.6% 90.5% 59.5%
+BreachWeave 68.9% 75.7% 86.5% 63.5%
+cai 67.6% 77.0% 68.9% 58.1%
+pi 60.8% 71.6% 81.1% 56.8%
+shannon 58.1% 67.6% 70.3% 59.5%
+Pentagi 59.5% 62.2% 68.9% 54.0%
+ctfSolver 51.4% 58.1% 63.5% 50.0%
+PentestAgent 37.8% 46.0% 56.8% 43.2%
+05
+
+Agent / GitHub
+T3MP3ST Kimi K3 90.54% 93.65% 74.32 M 武汉大学1 14.49 h
+模型 成功率 完整解题率 Token 评测单位总耗时
+Cairn Kimi K3 90.54% 93.65% 215.08 M 武汉大学2 18.39 h
+BreachWeave Kimi K3 86.49% 88.89% 69.08 M 四川大学3 16.00 h
+CHYing Kimi K3 85.14% 88.89% 15.78 M 四川大学4 17.85 h
+CyberStrikeAI Kimi K3 82.43% 88.89% 98.03 M 鹏城实验室5 18.69 h
+LuaN1ao GLM 5.2 82.43% 85.71% 195.91 M 鹏城实验室6 20.71 h
+Claude Code Kimi K3 81.08% 85.71% 15.91 M 清华大学7 15.78 h
+pi Kimi K3 81.08% 84.13% 82.00 M 清华大学8 17.28 h
+CHYing GLM 5.2 79.73% 82.54% 19.69 M 四川大学9 23.98 h
+Cairn GLM 5.2 78.38% 80.95% 387.82 M 武汉大学10 22.14 h
+cai GLM 5.2 77.03% 80.95% 140.79 M 四川大学11 22.40 h
+Claude Code GLM 5.2 75.68% 80.95% 10.53 M 清华大学12 15.48 h
+排名
+每行对应一个 Agent × 模型组合的三轮最高成功率结果，并按成功率降序排列。详细结果和 Agent Trace 请在官网
+查看。
+52 个 Agent × 模型最优结果
+BreachWeave GLM 5.2 75.68% 80.95% 164.81 M 四川大学13 19.79 h
+LuaN1ao Kimi K3 75.68% 80.95% 182.87 M 鹏城实验室14 22.70 h
+Cairn DeepSeek-V4-Pro-Preview 72.97% 79.37% 530.19 M 武汉大学15 23.77 h
+06
+
+Agent / GitHub 模型 成功率 完整解题率 Token 评测单位
+shannon GLM 5.2 67.57% 68.25% 15.02 M 四川大学29 29.89 h
+Claude Code DeepSeek-V4-Pro-Preview 66.22% 69.84% 57.05 M 清华大学30 18.81 h
+CHYing DeepSeek-V4-Pro-Preview 66.22% 71.43% 15.82 M 四川大学32 26.21 h
+Claude Code MiniMax M3 66.22% 69.84% 150.21 M 清华大学31 22.05 h
+总耗时
+pi GLM 5.2 71.62% 77.78% 93.24 M 清华大学16 16.36 h
+CyberStrikeAI GLM 5.2 71.62% 73.02% 126.77 M 鹏城实验室17 16.90 h
+shannon Kimi K3 70.27% 76.19% 43.76 M 四川大学18 27.86 h
+LuaN1ao MiniMax M3 70.27% 80.95% 391.22 M 鹏城实验室19 29.96 h
+CyberStrikeAI DeepSeek-V4-Pro-Preview 68.92% 76.19% 187.94 M 鹏城实验室20 14.99 h
+LuaN1ao DeepSeek-V4-Pro-Preview 68.92% 76.19% 276.64 M 鹏城实验室21 20.18 h
+BreachWeave DeepSeek-V4-Pro-Preview 68.92% 77.78% 408.76 M 四川大学22 22.47 h
+CHYing MiniMax M3 68.92% 79.37% 60.41 M 四川大学23 23.07 h
+Cairn MiniMax M3 68.92% 74.60% 700.91 M 武汉大学24 24.12 h
+cai Kimi K3 68.92% 74.60% 87.17 M 四川大学25 24.79 h
+Pentagi Kimi K3 68.92% 74.60% 50.61 M 武汉大学26 35.42 h
+T3MP3ST GLM 5.2 67.57% 71.43% 234.59 M 武汉大学27 19.40 h
+cai DeepSeek-V4-Pro-Preview 67.57% 76.19% 122.50 M 四川大学28 24.94 h
+排名
+07
+
+Agent / GitHub 模型 成功率 完整解题率 Token 评测单位总耗时
+CyberStrikeAI MiniMax M3 64.86% 71.43% 170.54 M 鹏城实验室33 13.09 h
+T3MP3ST DeepSeek-V4-Pro-Preview 64.86% 71.43% 258.74 M 武汉大学34 23.66 h
+BreachWeave MiniMax M3 63.51% 68.25% 425.19 M 四川大学35 25.93 h
+ctfSolver Kimi K3 63.51% 69.84% 235.37 M 武汉大学36 31.77 h
+Pentagi GLM 5.2 62.16% 71.43% 96.34 M 武汉大学37 26.31 h
+pi DeepSeek-V4-Pro-Preview 60.81% 68.25% 206.15 M 清华大学38 15.20 h
+T3MP3ST MiniMax M3 59.46% 66.67% 355.56 M 武汉大学39 23.96 h
+Pentagi DeepSeek-V4-Pro-Preview 59.46% 66.67% 203.75 M 武汉大学40 29.18 h
+shannon MiniMax M3 59.46% 58.73% 22.11 M 四川大学41 34.40 h
+ctfSolver GLM 5.2 58.11% 68.25% 210.53 M 武汉大学42 28.66 h
+cai MiniMax M3 58.11% 65.08% 211.89 M 四川大学43 30.50 h
+shannon DeepSeek-V4-Pro-Preview 58.11% 60.32% 14.80 M 四川大学44 33.11 h
+pi MiniMax M3 56.76% 65.08% 253.39 M 清华大学45 16.89 h
+PentestAgent Kimi K3 56.76% 66.67% 150.54 M 鹏城实验室46 39.38 h
+Pentagi MiniMax M3 54.05% 61.90% 163.62 M 武汉大学47 33.76 h
+ctfSolver DeepSeek-V4-Pro-Preview 51.35% 57.14% 234.81 M 武汉大学48 32.99 h
+排名
+ctfSolver MiniMax M3 50.00% 57.14% 368.36 M 武汉大学49 31.19 h
+08
+
+每个 Agent 汇总四个模型的选定结果 低 高
+Agent × 六大能力域
+Agent 与模型的场景适应性
+能力域分析仅使用 52 个选定结果。题号到能力域的映射依据 TSecBench v1 各能力域题量与本地题号前缀对应关系。
+BreachWeave 76.4% 88.5% 69.4% 35.7% 91.7% 89.3%
+Claude Code 76.4% 82.7% 44.4% 41.1% 100.0% 94.6%
+CyberStrikeAI 75.0% 82.7% 69.4% 35.7% 91.7% 87.5%
+Web漏洞挖掘 二进制漏洞挖掘 漏洞利用 多阶段渗透 云攻击 对抗规避
+Cairn 77.8% 86.5% 77.8% 44.6% 95.8% 94.6%
+CHYing 76.4% 90.4% 63.9% 35.7% 100.0% 94.6%
+LuaN1ao 81.9% 90.4% 63.9% 28.6% 91.7% 94.6%
+Agent / GitHub 模型 成功率 完整解题率 Token 评测单位总耗时
+PentestAgent GLM 5.2 45.95% 52.38% 285.37 M 鹏城实验室50 39.54 h
+PentestAgent MiniMax M3 43.24% 47.62% 251.55 M 鹏城实验室51 37.29 h
+PentestAgent DeepSeek-V4-Pro-Preview 37.84% 44.44% 204.62 M 鹏城实验室52 27.47 h
+排名
+详细题⽬矩阵、逐轮结果及 Agent Trace：TSecBench 官⽹ ⾭
+T3MP3ST 70.8% 86.5% 47.2% 35.7% 91.7% 96.4%
+09
+
+10 20 30 40 50
+35
+50
+65
+80
+95
+Kimi K3
+T3MP3ST
+Cairn
+CHYing
+CyberStrikeAI
+pi
+LuaN1ao
+cai
+shannon
+ Pentagi
+ctfSolver
+PentestAgent
+Claude Code
+BreachWeave
+每格一个模型；点=Agent（直接标注），纵轴成功率(%)、横轴耗时(小时，按本模型数据自适应缩放)
+成功率 vs 选定结果耗时（按模型拆分）
+10
+pi 70.8% 80.8% 36.1% 26.8% 95.8% 100.0%
+shannon 73.6% 42.3% 38.9% 42.9% 95.8% 94.6%
+Pentagi 66.7% 75.0% 38.9% 14.3% 95.8% 87.5%
+ctfSolver 62.5% 71.2% 13.9% 10.7% 87.5% 91.1%
+PentestAgent 38.9% 67.3% 25.0% 5.4% 75.0% 76.8%
+cai 75.0% 80.8% 55.6% 26.8% 83.3% 89.3%
+Web漏洞挖掘 二进制漏洞挖掘 漏洞利用 多阶段渗透 云攻击 对抗规避
+
+11
+10 20 30 40 50
+35
+50
+65
+80
+95
+LuaN1ao
+BreachWeave
+CHYing
+T3MP3ST
+Claude Code
+Cairn
+cai
+CyberStrikeAI
+pi
+shannon
+Pentagi
+ctfSolver
+PentestAgent
+GLM 5.2
+10 20 2515 30 35 40
+35
+50
+65
+80
+95
+DeepSeek-V4-Pro-Preview
+pi
+CyberStrikeAI
+Claude Code
+LuaN1ao
+Cairn
+BreachWeave
+cai
+CHYing
+T3MP3ST
+Pentagi shannon
+ctfSolver
+PentestAgent
+
+12
+10 20 30 40 50
+35
+50
+65
+80
+95
+CyberStrikeAI
+pi
+PentestAgent
+LuaN1ao
+cai shannon
+Pentagi
+ctfSolver
+Claude Code
+BreachWeave
+T3MP3ST
+CHYing
+Cairn
+MiniMax M3
+0 50 150100 200 250 300
+35
+50
+65
+80
+95
+Kimi K3
+T3MP3ST
+ Cairn
+CHYing
+CyberStrikeAI
+pi
+ LuaN1ao
+cai
+ shannon
+ Pentagi
+ctfSolver
+PentestAgent
+Claude Code
+BreachWeave
+每格一个模型；点=Agent（直接标注），纵轴成功率(%)、横轴 Token(M，按本模型数据自适应缩放)
+成功率 vs 选定结果 Token（按模型拆分）
+
+13
+0 100 200 400300 500
+35
+50
+65
+80
+95
+LuaN1ao
+BreachWeave
+CHYing
+Claude Code
+T3MP3ST
+Cairn
+cai
+CyberStrikeAIpishannon
+Pentagi
+ctfSolver
+PentestAgent
+GLM 5.2
+0 200 300100 400 500 600
+35
+50
+65
+80
+95
+DeepSeek-V4-Pro-Preview
+pi
+Pentagi
+pi
+cai
+CyberStrikeAI Cairn
+ctfSolver
+PentestAgent
+shannon
+Claude Code T3MP3ST
+LuaN1ao BreachWeave
+CHYing
+
+10 20 30 40 50
+35
+50
+65
+80
+95
+CyberStrikeAI
+pi
+PentestAgent
+LuaN1ao
+cai
+Pentagi
+shannon
+ctfSolver
+Claude Code
+BreachWeave
+T3MP3ST
+CHYing Cairn
+MiniMax M3
+仓库地址按用户提供信息统一修正。表格按每个 Agent 在四个模型组合中的最高成功率降序排列；架构摘要来自当
+前公开资料，不能证明与测评时提交、提示词、工具及启用模式完全一致。
+Agent 工程定位与 GitHub 仓库
+Agent
+T3MP3ST github.com/elder-plinius/T3MP3ST ⾭
+多智能体自动化红队框架，编排侦察→扫描→利
+用→持久化等专职操作员，驱动 AI 编码助手完
+成授权渗透。
+90.54%
+Kimi K3
+GitHub 仓库 项目定位与架构（据 GitHub README） 最高成功率
+Cairn github.com/oritera/Cairn ⾭
+通用状态空间搜索引擎，采用黑板架构与「事
+实-意图图」驱动多 Agent 协作求解渗透测试等
+问题。
+90.54%
+Kimi K3
+BreachWeave github.com/m-sec-org/BreachWeave ⾭
+采用 Manager / Solver / Observer 多角色协
+作架构的自主渗透测试 Agent 系统。
+86.49%
+Kimi K3
+CHYing github.com/yhy0/CHYing-agent ⾭
+Orchestrator 模式渗透测试 Agent，经 MCP 
+工具调度执行、浏览器、C2、逆向等子 Agent 
+协同作业。
+85.14%
+Kimi K3
+14
+
+Agent GitHub 仓库 公开工程定位 / 架构摘要 最高成功率
+CyberStrikeAI github.com/Ed1s0nZ/CyberStrikeAI ⾭
+AI 原生安全测试平台，融合 Eino 代理、MCP 
+工具、知识库与可视化工作流，支持多智能体编
+排、人工审批与审计追踪。
+82.43%
+Kimi K3
+LuaN1ao github.com/SanMuzZzZz/LuaN1aoAgent ⾭
+图认知推理的自主渗透测试 Agent，采用「规
+划者-执行者-观察者」三角架构，结合因果推理
+图、证据溯源与动态任务图。
+82.43%
+GLM 5.2
+Claude Code github.com/anthropics/claude-code ⾭
+运行于终端的 AI 编程代理，理解代码库并以自
+然语言命令执行开发任务、解释代码、处理 Git 
+工作流。
+81.08%
+Kimi K3
+pi github.com/earendil-works/pi ⾭
+模块化 AI 智能体工具包：统一多模型 LLM 接
+口、带工具调用与状态管理的代理运行时、交互
+式编码代理 CLI。
+81.08%
+Kimi K3
+cai github.com/aliasrobotics/cai ⾭ 轻量级开源安全自动化框架，多代理架构，通过
+链式推理与工具集成实现网络攻防自动化。
+77.03%
+GLM 5.2
+shannon github.com/KeygraphHQ/shannon ⾭ 自主 AI 渗透测试工具，通过源码分析与真实漏
+洞利用为 Web 应用与 API 做安全测试。
+70.27%
+Kimi K3
+Pentagi github.com/vxcontrol/pentagi ⾭
+完全自主的 AI 多代理系统，可自托管、支持多
+种大模型，用于执行复杂渗透测试任务。
+68.92%
+Kimi K3
+ctfSolver github.com/passer-W/ctfSolver ⾭
+基于 AI 的 CTF 自动解题平台，五类 Agent 协
+同，集页面探索、漏洞扫描与智能解题于一体。
+63.51%
+Kimi K3
+PentestAgent github.com/GH05TCREW/PentestAgent ⾭
+支持 Assist / Agent / Crew 多模式的 AI 渗透
+测试框架，LLM 驱动、MCP 扩展、工具编排。
+56.76%
+Kimi K3
+1. 时效与版本：本报告仅反映测评期间所用的模型版本与各 Agent 当时提交的实现，不包含此后发布的新模型或模型新版本；模型与 Agent 持续
+迭代，实际能力可能与本报告存在差异。
+2. 能力上限口径：成绩按“每个 Agent×模型组合三轮取最高成功率”统计，不代表典型或平均表现。
+3. 影响因素：结果受提示词、工具与配置、运行环境、题目、超时上限及模型输出随机性等影响，个别数据点可能因超时中断等运行事实而波动。
+4. 用途：本报告仅供技术研究与方案选型参考，不构成对任何模型、Agent 或厂商的排名背书、商业承诺或保证，亦不代表官方结论。
+5. 合规：全部测评均在授权、受控的靶场环境中进行。
+免责声明与使用说明
+评测单位
+本次公开测评结果
+由以下单位完成 15
