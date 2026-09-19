@@ -57,7 +57,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
   <h1>工具链全景 · 每个工具做什么、什么原理</h1>
   <div class="sub">有哪些工具、分别什么原理、什么时候用哪个——五组工具矩阵、工具组合战术矩阵与选择决策要点。所有命令仅用于已签授权书（Rules of Engagement, RoE）范围内的目标。</div>
   <div class="tags">
-    <span>来源：<a href="../docs/learning/html/VOL-06-toolchain.html#vol-06-工具链详解手册">VOL-06</a> 工具链详解手册</span>
+    <span>来源：<a href="../docs/learning/html/VOL-06-toolchain.html">VOL-06</a> 工具链详解手册</span>
     <span>侦察 / 代理 / 验证利用 / 后渗透 / 辅助</span>
     <span>模板即代码</span>
     <span>定制字典 &gt; 通用字典</span>
@@ -66,7 +66,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 </header>
 
 <h2>① 五组工具矩阵：工具 · 原理 · 命令 · 陷阱</h2>
-<p>按 <a href="../docs/learning/html/VOL-06-toolchain.html#vol-06-工具链详解手册">VOL-06</a> 的五组划分回答「每个工具做什么、一句话原理是什么、核心命令长什么样、最容易踩什么坑」。每个工具附「详解」链接直达原卷。</p>
+<p>按 <a href="../docs/learning/html/VOL-06-toolchain.html">VOL-06</a> 的五组划分回答「每个工具做什么、一句话原理是什么、核心命令长什么样、最容易踩什么坑」。每个工具附「详解」链接直达原卷。</p>
 
 <div class="phase">
   <div class="step"><b>侦察组</b><span>nmap / httpx / ffuf / OneForAll·subfinder</span></div>
@@ -224,10 +224,10 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
   <tr><td class="lv">外网资产测绘</td><td>subfinder / OneForAll → httpx 存活指纹 → nmap -sV（真实 IP）</td><td>存活资产表（url / title / 技术栈 / IP / 端口）</td></tr>
   <tr><td class="core">Web 打点</td><td>ffuf 目录+参数 → Burp Repeater 手工验证 → sqlmap -r 提数</td><td>finding 卡 + 请求响应证据对</td></tr>
   <tr><td class="adv">已知漏洞批量验证</td><td>httpx → nuclei（高危过滤）→ 命中项手工复核</td><td>高危漏洞清单（附模板依据）</td></tr>
-  <tr><td class="lv">App / 客户端攻击面</td><td><a href="../docs/learning/html/VOL-05-client-package.html#vol-05-安装包与客户端分析-够用深度">VOL-05</a> 逆向提取服务端 → mitmproxy 抓包</td><td>API 接口清单 + 通信结构</td></tr>
+  <tr><td class="lv">App / 客户端攻击面</td><td><a href="../docs/learning/html/VOL-05-client-package.html">VOL-05</a> 逆向提取服务端 → mitmproxy 抓包</td><td>API 接口清单 + 通信结构</td></tr>
   <tr><td class="core">内网首探</td><td>fscan -ao 摸底 → fscan -nobr 定向 → nmap 精扫</td><td>去噪后的内网服务清单</td></tr>
   <tr><td class="adv">横向与跳板</td><td>msf autoroute + socks_proxy 或 frp socks5 → proxychains</td><td>可达性验证记录 + 隧道拓扑</td></tr>
-  <tr><td class="lv">证据整理</td><td>CyberChef / jq 清洗 → 笔记卡 + 截图规范</td><td>报告附录证据包（见 <a href="../docs/learning/html/VOL-07-08-methodology-reporting.html#vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08</a>）</td></tr>
+  <tr><td class="lv">证据整理</td><td>CyberChef / jq 清洗 → 笔记卡 + 截图规范</td><td>报告附录证据包（见 <a href="../docs/learning/html/VOL-07-08-methodology-reporting.html">VOL-07-08</a>）</td></tr>
 </table>
 </div>
 
