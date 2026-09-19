@@ -33,12 +33,12 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
 .doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
 .doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
-.doc p{font-size:14px;color:#374151;margin:8px 0}
+.doc p{font-size:14px;color:#374151;margin:8px 0;overflow-wrap:anywhere}
 .doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
-.doc li{margin:4px 0}
+.doc li{margin:4px 0;overflow-wrap:anywhere}
 .doc a{color:#b91c1c}
 pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
-pre.cb .lang{display:block;color:#64748b;font-size:11px;margin-bottom:6px}
+pre.cb .lang{display:block;color:#64748b;font-size:12px;margin-bottom:6px}
 code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
 pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
@@ -49,7 +49,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
 .pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.pn a span{display:block;font-size:11px;color:#94a3b8}
+.pn a span{display:block;font-size:12px;color:#94a3b8}
 footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 @media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
 """
@@ -174,6 +174,8 @@ def render(name, title, blocks, headings, prev, nxt):
     for b in blocks:
         k = b[0]
         if k == 'h':
+            if b[1] == 1:
+                continue  # 正文 h1 与模板标题重复：跳过（锚点由模板 h1 承载）
             body.append('<h%d id="%s">%s</h%d>' % (b[1], b[2], fmt(b[3], name), b[1]))
         elif k == 'p':
             body.append('<p>%s</p>' % fmt(b[1], name))
@@ -207,6 +209,7 @@ def render(name, title, blocks, headings, prev, nxt):
     else: pn.append('<span></span>')
     if nxt: pn.append('<a href="%s"><span>下一卷 →</span>%s</a>' % (nxt[0], H.escape(nxt[1])))
     else: pn.append('<span></span>')
+    h1_id = next((h['id'] for h in headings if h['level'] == 1), slugify(title))
     return '''<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>%s · 红队学习手册</title><style>%s</style></head><body>
 <div class="layout">
@@ -219,7 +222,7 @@ def render(name, title, blocks, headings, prev, nxt):
 <div class="main">
   <nav class="topnav"><a href="../../../panorama/index.html">全景图</a><a href="index.html">手册首页</a>%s%s</nav>
   <article class="doc">
-  <h1>%s</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/%s</div>
+  <h1 id="%s">%s</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/%s</div>
   %s
   <div class="pn">%s%s</div>
   </article>
@@ -229,7 +232,7 @@ def render(name, title, blocks, headings, prev, nxt):
         H.escape(title), CSS, '\n'.join(toc),
         ('<a href="%s">← %s</a>' % (prev[0], H.escape(prev[1]))) if prev else '',
         ('<a href="%s">%s →</a>' % (nxt[0], H.escape(nxt[1]))) if nxt else '',
-        H.escape(title), name, '\n'.join(body), pn[0], pn[1], JS)
+        h1_id, H.escape(title), name, '\n'.join(body), pn[0], pn[1], JS)
 
 def build():
     os.makedirs(OUT, exist_ok=True)

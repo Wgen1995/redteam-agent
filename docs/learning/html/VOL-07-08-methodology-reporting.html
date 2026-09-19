@@ -21,12 +21,12 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
 .doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
 .doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
-.doc p{font-size:14px;color:#374151;margin:8px 0}
+.doc p{font-size:14px;color:#374151;margin:8px 0;overflow-wrap:anywhere}
 .doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
-.doc li{margin:4px 0}
+.doc li{margin:4px 0;overflow-wrap:anywhere}
 .doc a{color:#b91c1c}
 pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
-pre.cb .lang{display:block;color:#64748b;font-size:11px;margin-bottom:6px}
+pre.cb .lang{display:block;color:#64748b;font-size:12px;margin-bottom:6px}
 code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
 pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
@@ -37,7 +37,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
 .pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.pn a span{display:block;font-size:11px;color:#94a3b8}
+.pn a span{display:block;font-size:12px;color:#94a3b8}
 footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 @media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
 </style></head><body>
@@ -65,14 +65,12 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <div class="main">
   <nav class="topnav"><a href="../../../panorama/index.html">全景图</a><a href="index.html">手册首页</a><a href="VOL-06-toolchain.html">← VOL-06-toolchain</a></nav>
   <article class="doc">
-  <h1>VOL-07-08 方法论·报告交付·成长路线（合并卷）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-07-08-methodology-reporting.md</div>
-  <h1 id="vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08 方法论·报告交付·成长路线（合并卷）</h1>
-<p><b>受众</b>：5 年源码审计/产品安全、刚转岗一人红队的工程师：懂漏洞原理与代码，缺黑盒打点、内网、工具链实战与客户交付。</p>
+  <h1 id="vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08 方法论·报告交付·成长路线（合并卷）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-07-08-methodology-reporting.md</div>
+  <p><b>受众</b>：5 年源码审计/产品安全、刚转岗一人红队的工程师：懂漏洞原理与代码，缺黑盒打点、内网、工具链实战与客户交付。</p>
 <p><b>交叉引用</b>：Web 打点见 VOL-01/VOL-02，内网与域见 VOL-03，源码联动见 VOL-04，客户端见 VOL-05，工具链见 VOL-06。</p>
 <h2 id="目录">目录</h2>
 <ul><li>PART A 方法论与成长模型</li><li>A1 渗透测试思维全景：四大框架 + 黑盒信息渐进决策模型</li><li>A2 审计员→渗透者思维转换表</li><li>A3 能力阶梯 L0–L5（能力里程碑制）</li><li>A4 学习材料索引</li><li>PART B 报告与交付</li><li>B1 中文渗透测试报告标准结构</li><li>B2 POC 卡片规范＝可复现标准</li><li>B3 CVSS 3.1 评级实操</li><li>B4 证据留存与脱敏</li><li>B5 等保语境下的报告要点</li><li>B6 复测与回归验证流程</li></ul>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
-<h1 id="part-a-方法论与成长模型">PART A 方法论与成长模型</h1>
 <h2 id="a1-渗透测试思维全景">A1 渗透测试思维全景</h2>
 <h3 id="a1-1-四大框架-是什么与何时用">A1.1 四大框架：是什么与何时用</h3>
 <table><thead><tr><th>框架</th><th>是什么</th><th>何时用</th></tr></thead><tbody><tr><td>Kill Chain（网络杀链，Lockheed Martin 七阶段：侦察→武器化→交付→利用→安装→命令与控制 C2→目标行动）</td><td>攻击者视角的攻击链叙事模型</td><td>报告"攻击路径"章节：把打点→立足→横移→落地写成故事线</td></tr><tr><td>PTES（Penetration Testing Execution Standard，渗透测试执行标准；七阶段：前期交互→情报收集→威胁建模→漏洞分析→渗透利用→后渗透→报告）</td><td>管项目全流程的方法论</td><td>立项与范围（Scope）谈判、交付物定义；一人红队的项目骨架</td></tr><tr><td>OWASP WSTG（Web Security Testing Guide，Web 安全测试指南，稳定版 v4.2）</td><td>Web 测试用例库，按信息收集、配置与部署管理、身份认证、授权、会话管理、输入校验、错误处理、加密、业务逻辑、客户端等大类组织数十个用例</td><td>Web 系统性覆盖度兜底："该测的都测了"；也是报告"测试方法"章节的引用来源</td></tr><tr><td>MITRE ATT&amp;CK（Adversarial Tactics, Techniques and Common Knowledge，对抗战术/技术/常识知识库）</td><td>真实攻击组织 TTP（战术/技术/过程）知识库，企业版矩阵按战术列技术</td><td>内网行为对照：把内网每个动作映射到技术编号，度量红队覆盖面与蓝队检测盲区</td></tr></tbody></table>
@@ -123,7 +121,6 @@ docker compose down -v            # 清理</code></pre>
 <p>选型原则：中文书建框架，英文速查补细节；凡进入工作流的命令一律回查 <code>--help</code> 与官方文档再固化。</p>
 <p><span class="bdg bdg-x">练习</span>取 SecLists 的 <code>Discovery/Web-Content/common.txt</code> 对 Juice Shop 跑 ffuf，统计 200 响应并逐条解释成因（区分真实目录与 SPA 兜底路由）。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
-<h1 id="part-b-报告与交付">PART B 报告与交付</h1>
 <h2 id="b1-中文渗透测试报告标准结构">B1 中文渗透测试报告标准结构</h2>
 <p><span class="bdg bdg-p">原理</span>报告是唯一交付物，客户"修不修、先修谁"只依赖它；结构固定则评审可对照检查单、模板可复用、避免漏项。</p>
 <p><span class="bdg bdg-o">操作</span>六节结构，逐节写法：</p>

@@ -21,12 +21,12 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
 .doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
 .doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
-.doc p{font-size:14px;color:#374151;margin:8px 0}
+.doc p{font-size:14px;color:#374151;margin:8px 0;overflow-wrap:anywhere}
 .doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
-.doc li{margin:4px 0}
+.doc li{margin:4px 0;overflow-wrap:anywhere}
 .doc a{color:#b91c1c}
 pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
-pre.cb .lang{display:block;color:#64748b;font-size:11px;margin-bottom:6px}
+pre.cb .lang{display:block;color:#64748b;font-size:12px;margin-bottom:6px}
 code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
 pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
@@ -37,7 +37,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
 .pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.pn a span{display:block;font-size:11px;color:#94a3b8}
+.pn a span{display:block;font-size:12px;color:#94a3b8}
 footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 @media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
 </style></head><body>
@@ -62,9 +62,8 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <div class="main">
   <nav class="topnav"><a href="../../../panorama/index.html">全景图</a><a href="index.html">手册首页</a><a href="VOL-03-intranet.html">← VOL-03-intranet</a><a href="VOL-05-client-package.html">VOL-05-client-package →</a></nav>
   <article class="doc">
-  <h1>VOL-04 源码审计→黑盒联动：审计员优势的降维打法</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-04-source-assist.md</div>
-  <h1 id="vol-04-源码审计-黑盒联动-审计员优势的降维打法">VOL-04 源码审计→黑盒联动：审计员优势的降维打法</h1>
-<blockquote>受众：5 年白盒源码审计/产品安全、刚转岗一人红队的工程师。你已经懂漏洞原理和代码，本卷只解决一件事：<b>把白盒能力接驳到黑盒工作流</b>。</blockquote>
+  <h1 id="vol-04-源码审计-黑盒联动-审计员优势的降维打法">VOL-04 源码审计→黑盒联动：审计员优势的降维打法</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-04-source-assist.md</div>
+  <blockquote>受众：5 年白盒源码审计/产品安全、刚转岗一人红队的工程师。你已经懂漏洞原理和代码，本卷只解决一件事：<b>把白盒能力接驳到黑盒工作流</b>。</blockquote>
 <h2 id="目录">目录</h2>
 <ul><li>0. 卷首：白盒技能→黑盒战力折算表</li><li>1. 有源码时：入口点优先审计法</li><li>1.1 路由/过滤器/鉴权中间件先行</li><li>1.2 代码→PoC 翻译流程：定位参数→构造请求→绕过输入处理</li><li>1.3 五个重点审计面：鉴权/序列化/文件操作/SQL 拼接/SOAP-RPC</li><li>2. 无源码时反推</li><li>2.1 报错信息利用与堆栈泄露分析</li><li>2.2 前端 JS 深度分析：source map/API 枚举/隐藏功能</li><li>2.3 指纹识别→版本→已知 CVE 比对（nuclei-templates/GitHub Advisory）</li><li>3. 半黑盒：安装包里的服务端代码</li><li>4. 联动工作流：白盒假设→黑盒验证→证据留存闭环</li></ul>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">

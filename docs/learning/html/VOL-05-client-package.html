@@ -21,12 +21,12 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
 .doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
 .doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
-.doc p{font-size:14px;color:#374151;margin:8px 0}
+.doc p{font-size:14px;color:#374151;margin:8px 0;overflow-wrap:anywhere}
 .doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
-.doc li{margin:4px 0}
+.doc li{margin:4px 0;overflow-wrap:anywhere}
 .doc a{color:#b91c1c}
 pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
-pre.cb .lang{display:block;color:#64748b;font-size:11px;margin-bottom:6px}
+pre.cb .lang{display:block;color:#64748b;font-size:12px;margin-bottom:6px}
 code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
 pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
@@ -37,7 +37,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
 .pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.pn a span{display:block;font-size:11px;color:#94a3b8}
+.pn a span{display:block;font-size:12px;color:#94a3b8}
 footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 @media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
 </style></head><body>
@@ -68,9 +68,8 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <div class="main">
   <nav class="topnav"><a href="../../../panorama/index.html">全景图</a><a href="index.html">手册首页</a><a href="VOL-04-source-assist.html">← VOL-04-source-assist</a><a href="VOL-06-toolchain.html">VOL-06-toolchain →</a></nav>
   <article class="doc">
-  <h1>VOL-05 安装包与客户端分析（够用深度）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-05-client-package.md</div>
-  <h1 id="vol-05-安装包与客户端分析-够用深度">VOL-05 安装包与客户端分析（够用深度）</h1>
-<blockquote>受众：5 年源码审计/产品安全、刚转岗一人红队。本卷只解决一件事：拿到 Windows 安装包（EXE）或 Android 安装包（APK）后，按固定流水线提取四类情报——服务端地址、硬编码凭据、加密密钥、通信协议结构——反哺 Web 与内网测试，并按交付标准写成 finding 卡。本质是"没有源码的代码审计"，你的审计经验全部可迁移。</blockquote>
+  <h1 id="vol-05-安装包与客户端分析-够用深度">VOL-05 安装包与客户端分析（够用深度）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-05-client-package.md</div>
+  <blockquote>受众：5 年源码审计/产品安全、刚转岗一人红队。本卷只解决一件事：拿到 Windows 安装包（EXE）或 Android 安装包（APK）后，按固定流水线提取四类情报——服务端地址、硬编码凭据、加密密钥、通信协议结构——反哺 Web 与内网测试，并按交付标准写成 finding 卡。本质是"没有源码的代码审计"，你的审计经验全部可迁移。</blockquote>
 <h2 id="目录">目录</h2>
 <ul><li>1. 定位与总流水线</li><li>2. Windows EXE 分析</li><li>2.1 PE 文件基础：节表与导入表</li><li>2.2 壳识别与 UPX 脱壳</li><li>2.3 安装器提取：Inno Setup / NSIS / InstallShield / MSI</li><li>2.4 字符串与硬编码提取：grep 战术</li><li>2.5 .NET 程序 dnSpy 反编译要点</li><li>2.6 Electron 应用 asar 提取</li><li>3. APK 分析</li><li>3.1 apktool / jadx 逐步</li><li>3.2 AndroidManifest 权限与组件暴露</li><li>3.3 硬编码与加密 key 提取</li><li>3.4 证书与签名校验缺陷</li><li>3.5 抓包与证书锁定绕过（原理层）</li><li>4. 通信协议分析：从安装包到自定义协议</li><li>5. 产出规范：硬编码凭据 finding 卡</li><li>6. 前 30 分钟速查清单</li></ul>
 <blockquote>交叉引用：本系列卷号以最终目录为准，本文以 VOL-01-信息收集、VOL-02-Web、VOL-06-内网、VOL-08-报告交付 指代对应主题卷。</blockquote>

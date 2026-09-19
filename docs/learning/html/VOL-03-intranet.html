@@ -21,12 +21,12 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
 .doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
 .doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
-.doc p{font-size:14px;color:#374151;margin:8px 0}
+.doc p{font-size:14px;color:#374151;margin:8px 0;overflow-wrap:anywhere}
 .doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
-.doc li{margin:4px 0}
+.doc li{margin:4px 0;overflow-wrap:anywhere}
 .doc a{color:#b91c1c}
 pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
-pre.cb .lang{display:block;color:#64748b;font-size:11px;margin-bottom:6px}
+pre.cb .lang{display:block;color:#64748b;font-size:12px;margin-bottom:6px}
 code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
 pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
@@ -37,7 +37,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
 .pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.pn a span{display:block;font-size:11px;color:#94a3b8}
+.pn a span{display:block;font-size:12px;color:#94a3b8}
 footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 @media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
 </style></head><body>
@@ -74,9 +74,8 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <div class="main">
   <nav class="topnav"><a href="../../../panorama/index.html">全景图</a><a href="index.html">手册首页</a><a href="VOL-02-web-app-part2.html">← VOL-02-web-app-part2</a><a href="VOL-04-source-assist.html">VOL-04-source-assist →</a></nav>
   <article class="doc">
-  <h1>VOL-03 · 内网渗透：从打点到域控</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-03-intranet.md</div>
-  <h1 id="vol-03-内网渗透-从打点到域控">VOL-03 · 内网渗透：从打点到域控</h1>
-<blockquote>受众：5 年源码审计/产品安全、刚转岗一人红队的工程师。Web 打点见 VOL-01-web-app-part1 / VOL-02-web-app-part2——你拿到的是一只 webshell 或低权限 shell，本卷解决"之后怎么办"：立足 → 隧道 → 凭据 → 提权 → 横向 → 域控 → 合规收尾。报告交付见 VOL-07-08-methodology-reporting。所有命令仅用于授权环境与本地靶场。</blockquote>
+  <h1 id="vol-03-内网渗透-从打点到域控">VOL-03 · 内网渗透：从打点到域控</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-03-intranet.md</div>
+  <blockquote>受众：5 年源码审计/产品安全、刚转岗一人红队的工程师。Web 打点见 VOL-01-web-app-part1 / VOL-02-web-app-part2——你拿到的是一只 webshell 或低权限 shell，本卷解决"之后怎么办"：立足 → 隧道 → 凭据 → 提权 → 横向 → 域控 → 合规收尾。报告交付见 VOL-07-08-methodology-reporting。所有命令仅用于授权环境与本地靶场。</blockquote>
 <h2 id="目录">目录</h2>
 <ol><li>打点后第一件事：本机信息收集与域判断</li><li>隧道与代理：正向/反向 shell 与代理链</li><li>凭据获取：SAM/LSASS/DPAPI/Linux/浏览器</li><li>权限提升：Windows 四条主干与 Linux 判断流程</li><li>横向移动：非域环境与域环境（Kerberos 一页讲透）</li><li>域控攻防路径全景矩阵</li><li>痕迹处理与收尾（合规边界）</li><li>GOAD 靶场分模块练习路径</li></ol>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
