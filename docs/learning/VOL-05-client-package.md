@@ -1,0 +1,269 @@
+# VOL-05 安装包与客户端分析（够用深度）
+
+> 受众：5 年源码审计/产品安全、刚转岗一人红队。本卷只解决一件事：拿到 Windows 安装包（EXE）或 Android 安装包（APK）后，按固定流水线提取四类情报——服务端地址、硬编码凭据、加密密钥、通信协议结构——反哺 Web 与内网测试，并按交付标准写成 finding 卡。本质是"没有源码的代码审计"，你的审计经验全部可迁移。
+
+## 目录
+- 1. 定位与总流水线
+- 2. Windows EXE 分析
+  - 2.1 PE 文件基础：节表与导入表
+  - 2.2 壳识别与 UPX 脱壳
+  - 2.3 安装器提取：Inno Setup / NSIS / InstallShield / MSI
+  - 2.4 字符串与硬编码提取：grep 战术
+  - 2.5 .NET 程序 dnSpy 反编译要点
+  - 2.6 Electron 应用 asar 提取
+- 3. APK 分析
+  - 3.1 apktool / jadx 逐步
+  - 3.2 AndroidManifest 权限与组件暴露
+  - 3.3 硬编码与加密 key 提取
+  - 3.4 证书与签名校验缺陷
+  - 3.5 抓包与证书锁定绕过（原理层）
+- 4. 通信协议分析：从安装包到自定义协议
+- 5. 产出规范：硬编码凭据 finding 卡
+- 6. 前 30 分钟速查清单
+
+> 交叉引用：本系列卷号以最终目录为准，本文以 VOL-01-信息收集、VOL-02-Web、VOL-06-内网、VOL-08-报告交付 指代对应主题卷。
+
+## 1. 定位与总流水线
+
+客户端是甲方"必须发到用户手里"的代码，天然泄露四类情报：
+1. **服务端地址清单**：正式/测试/灰度环境域名与 IP，是资产测绘的独家补充（见 VOL-01-信息收集）；
+2. **兼容与调试接口**：客户端为兼容旧版本保留的老接口常缺鉴权，是 Web 打点金矿（见 VOL-02-Web）；
+3. **硬编码凭据与密钥**：API token、数据库连接串、测试账号——内网横向的直通车（见 VOL-06-内网）；
+4. **更新机制 URL**：软件自身升级走的服务器，供应链视角的打点。
+
+固定流水线：识别（file/DIE）→ 解包/脱壳（7z/innoextract/upx -d/asar/apktool）→ 双编码字符串提取 → 分桶 grep → 反编译只啃"加密类+网络类" → 验证凭据 → 按 §5 写 finding 卡。
+
+## 2. Windows EXE 分析
+
+### 2.1 PE 文件基础：节表与导入表
+
+**【原理】** PE（Portable Executable，可移植可执行文件）是 Windows EXE/DLL 的格式：DOS 头 → PE 头 → 可选头之后是**节表（Section Table）**——一张"文件偏移↔内存地址（RVA）"的目录，每节描述一块连续数据：.text 代码、.rdata 只读数据（字符串常量在这里）、.data 可写全局、.rsrc 资源（图标/对话框/安装器内嵌载荷）。**导入表（Import Table）**记录程序运行时要加载哪些 DLL、调用其中哪些函数——相当于这张二进制的"能力清单"；对应的导出表（Export Table）是它对外提供的函数。分析价值：节表告诉你"数据在哪"，导入表告诉你"它会干什么"（联网？读写注册表？出现 LoadLibrary+GetProcAddress 组合暗示插件体系或反调试）。
+
+**【操作】** 在 Linux 分析机（apt install binutils p7zip-full upx-ucl innoextract）：
+1. 识别架构：`file setup.exe` → 输出 PE32（32 位）或 PE32+（64 位）。
+2. 列节表：`objdump -h setup.exe`（若不带 PE 目标支持，`apt install mingw-w64` 后用 `x86_64-w64-mingw32-objdump -h setup.exe`）。
+3. 看导入表：`x86_64-w64-mingw32-objdump -p setup.exe | grep -A3 'DLL Name'`，重点关注 WINHTTP/WS2_32（联网）、ADVAPI32（注册表/加密）、WININET。
+4. GUI 交叉确认：Windows 上用 Detect It Easy（DIE，github.com/horsicq/DIE-engine）或 CFF Explorer 拖入即见全部结构，且直接给出壳/编译器判定。
+5. 若导入表只有 mscoree.dll 的 _CorExeMain——这是 .NET 程序，直接转 §2.5。
+
+**【验证】** objdump -h 列出 .text/.rdata/.rsrc 各节的 offset/size/RVA；导入表能看到 "DLL Name: WINHTTP.dll" 及其下函数名。能答上两个问题：载荷在哪个节、程序有什么联网能力。
+
+**【陷阱】** ①安装器是"外壳"不是业务本体：导入表反映的是安装器的能力，别在外壳上做字符串分析白费功夫，先 §2.3 解包。②32/64 位工具不匹配会报错，先 file 看架构。③加壳文件 objdump 照常解析但内容无意义——先过 §2.2 判壳。
+
+### 2.2 壳识别与 UPX 脱壳
+
+**【原理】** 加壳（Packing）= 把原 PE 压缩/加密后塞进新 PE，把入口点（Entry Point）改到一段解压代码（stub），运行时在内存还原再跳回原代码；脱壳（Unpacking）即还原。UPX（Universal Packer for eXecutables）是最常见的开源压缩壳，特征是节名 UPX0/UPX1/UPX2 与 "UPX!" 签名；因为算法标准且无损，官方工具自带逆操作——属于"能一键脱"的壳。加壳后字符串提取完全失效，所以判壳必须是第一步。
+
+**【操作】**
+1. 判壳：DIE 拖入看 Packer 结论；或 `strings setup.exe | grep -i upx`、看节名。
+2. 安装：`apt install upx-ucl`（macOS：`brew install upx`），`upx --version` 确认。
+3. 一键脱：`upx -d setup.exe -o setup_clear.exe`。
+4. 若报 not packed by UPX 但节名确是 UPX：说明被抹了签名的"改壳"。用十六进制编辑器把节名改回 UPX 标准值再 -d，或走内存 dump 路线：Windows 分析机 x64dbg 运行到 OEP（原始入口点）后用 Scylla 插件 dump 进程并重建 IAT（导入地址表，Import Address Table）。
+
+**【验证】** `upx -d` 尾行输出 Unpacked 1 file.；setup_clear.exe 体积明显变大；`strings setup_clear.exe | head -30` 出现可读字符串/URL。
+
+**【陷阱】** ①商用壳（VMProtect/Themida/Enigma）不要硬脱，性价比极低——报告直接写"样本加壳：XXX，静态分析不可行"，转动态分析。②加壳样本常触发杀软/EDR，一律在隔离快照虚拟机里操作，且注意授权范围。③脱壳产物 hash 已变：证据链要同时记原始 hash 与脱壳后 hash。
+
+### 2.3 安装器提取：Inno Setup / NSIS / InstallShield / MSI
+
+**【原理】** 安装器 = 自解压容器 + 安装脚本。主流四类：**Inno Setup**（特征串 "Inno Setup"/jrsoftware）、**NSIS**（Nullsoft Scriptable Install System，7-Zip 原生可解）、**InstallShield**（老版自有 .cab 格式，新版多为 MSI 外壳）、**MSI**（Windows Installer 数据库，可用"管理安装"解出全量文件）。提取目标不只是业务 EXE/DLL：安装脚本、配置文件、内置驱动，有时还有服务账号/安装口令。
+
+**【操作】**
+1. 通用第一步：`7z l setup.exe` 列目录；`7z x setup.exe -oout`（覆盖 NSIS 与部分 Inno/MSI）。
+2. Inno Setup：`innoextract setup.exe` → 当前目录生成 {app}/ 等目录，即安装后布局（官方：jrsoftware.org/ishelp.php）。
+3. InstallShield 老版（见到 data1.cab/data1.hdr）：`unshield x data1.cab`（unshield 专解 InstallShield 5–7 的 cab）。
+4. MSI：Windows 上管理安装 `msiexec /a product.msi /qn TARGETDIR=C:\msi_out`，或用 lessmsi（github.com/activescott/lessmsi）；7z 也能解出大部分。
+5. 兜底（最真实）：快照虚拟机里正常安装一遍 → 从 Program Files 取产物 → 用 Regshot 对比安装前后注册表/文件差异 → 找到配置文件与新增服务。
+
+**【验证】** out/ 下出现业务主程序+config；`file out/*.exe` 正常识别；配置 xml/json 里直接看到服务端地址即成功。
+
+**【陷阱】** ①很多安装器是"引导器"：本体安装时才联网下载（Web Installer），解包只能拿到引导器——需在虚拟机断网/抓包观察它去哪下载（衔接 §4）。②绝不宿主机裸跑；安装报错本身可能是反虚拟机线索。③EXE 也可能是 RAR/7z 自解压（SFX），DIE 一看便知，换对应工具解。
+
+### 2.4 字符串与硬编码提取：grep 战术
+
+**【原理】** 未加密的字符串原样躺在 .rdata/.data 节。Windows 程序两类编码并存：ASCII/UTF-8 与 UTF-16LE 宽字符（Win32 API 默认），只跑 ASCII 的 strings 必漏一半。字符串提取是黑盒里最便宜的"源码泄露"：URL、内网 IP、UNC 共享路径、报错信息里的接口名、数据库连接串、API key、调试开关。
+
+**【操作】** 对解包后的每个 EXE/DLL/配置统一处理：
+1. 双编码提取（GNU strings）：`strings -n 8 app.exe > s_ascii.txt`；`strings -e l -n 4 app.exe > s_utf16.txt`（-e l = 16 位小端宽字符）。
+2. 分桶 grep（按情报类型打标签入库）：
+   - 端点：`cat s_*.txt | grep -E 'https?://|wss?://' | sort -u`
+   - 内网 IP：`grep -E '\b(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.)[0-9]+\.[0-9]+' s_*.txt | sort -u`
+   - 带端口的地址：`grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{2,5}' s_*.txt | sort -u`
+   - 凭据关键词：`grep -Ei 'passwo?rd|pwd=|secret|token|api[_-]?key|bearer|jdbc|connectionstring|private[_-]?key|BEGIN (RSA |EC |OPENSSH )?PRIVATE' s_*.txt`
+   - 云 key 特征（借鉴 gitleaks/trufflehog 公开规则）：AWS `AKIA[0-9A-Z]{16}`、Google `AIza[0-9A-Za-z_-]{35}`、JWT 头 `eyJ[A-Za-z0-9_-]{10,}\``（形如 eyJxxx.yyy.zzz 的三段式）。
+   - SMB/UNC 路径（宽字符里更常见）：`grep -E '\\\\[a-z0-9_.-]+\\[a-z0-9$_.-]+' s_utf16.txt`
+3. 自动化补刀：FLOSS（FLARE 出品，模拟执行抽取混淆字符串，github.com/mandiant/flare-floss）：`floss app.exe`；gitleaks 整目录扫：`gitleaks detect --source ./out --no-git -v`（参数以 github.com/gitleaks/gitleaks README 为准）；trufflehog v3：`trufflehog filesystem ./out`。
+4. 非字符串文件分流：`find out -name '*.config' -o -name '*.xml' -o -name '*.json' -o -name '*.p12'`，分别人工看/导入工具看。
+
+**【验证】** 产出两张表：①URL/IP 去重清单——逐条解析归属，标注"内网/测试环境/公网"，并入资产清单；②疑似凭据表——值、来源文件、上下文行，进入 §5 验证流程。云 key 的验证（例 `aws sts get-caller-identity`）必须在合同授权范围内执行。
+
+**【陷阱】** ①"像密码"≠凭据有效：报错模板、字段名里也全是 password；入库必须人工过上下文，报告必须标注"已验证/未验证"。②漏跑 -e l 宽字符是新手第一大事故。③验证云凭据属高敏动作，授权书没覆盖就不做，把"未验证+理由"写清楚。
+
+### 2.5 .NET 程序 dnSpy 反编译要点
+
+**【原理】** .NET 程序的产物是 CIL 中间码+完整元数据（类型/成员/字符串字面量俱在），反编译几乎可还原源码——正好把 5 年源码审计能力直接平移到黑盒。识别：导入表只有 mscoree.dll 或 DIE 标注 .NET Assembly。国产桌面客户端（办公/运维/安全工具）大量是 C#。
+
+**【操作】**
+1. 工具：dnSpyEx（dnSpy 停更后的社区维护版，github.com/dnSpyEx/dnSpy），Windows 绿色免装；macOS/Linux 用 ILSpy 命令行：`dotnet tool install -g ilspycmd` → `ilspycmd app.exe > app.cs`。
+2. dnSpyEx 打开主程序 → 左侧树按命名空间展开 → 双击类即反编译视图（可切 C#/IL）。
+3. 全局搜索（Ctrl+Shift+K）先搜：`http`、`Rijndael`、`AesManaged`、`password`、`machineKey`（ASP.NET machineKey 泄露=ViewState 反序列化，直接衔接 VOL-02-Web 的打点）。
+4. 定位加密类：搜 `CryptoStream|MD5|SHA1` → 读出硬编码 Key/IV 常量与工作模式。
+5. 动态调试：dnSpy 直接 F9 断点、F5 运行——适合"密文已知、算法在跑时下断拿明文 key"的场景；右键方法"编辑方法（C#）"改逻辑后 File→Save Module 存改版 DLL（去校验做调试用）。
+6. 混淆处理（字符串 \uXXXX、名称乱码 = ConfuserEx 等混淆器）：de4dot 先反混淆 `de4dot app_obf.exe`（github.com/de4dot/de4dot）。
+
+**【验证】** 反编译出可读 C#，类名/方法名/字符串字面量齐全；能指出"哪个类哪个方法用了哪个硬编码 Key"，作为 finding 卡证据（§5）。
+
+**【陷阱】** ①别全文通读——只啃加密类、网络层、配置读取三块，其余靠 strings/FLOSS。②逆向授权：核对合同是否明确允许分析交付的客户端软件。③混淆样本优先用 FLOSS 拿静态串，别跟混淆器死磕。
+
+### 2.6 Electron 应用 asar 提取
+
+**【原理】** Electron 应用=Chromium+Node.js，业务代码就是 JS/HTML，全部装在 resources/app.asar 里；asar（Atom Shell Archive）是带索引的打包格式，默认不加密——等于前端源码整包白给：API 路径、鉴权逻辑、WebSocket 消息格式、渲染层的前端密钥；主进程（main process）JS 里更常有密钥与更新地址。一次分析三平台通用（win/mac/linux 的 asar 相同）。
+
+**【操作】**
+1. 定位：Windows 在 `%LocalAppData%\Programs\<App>\resources\` 或安装目录；macOS：`find /Applications/<App>.app -name '*.asar'`。
+2. 提取：`npm i -g @electron/asar` → `asar extract app.asar app_src`；免安装等价：`npx @electron/asar extract app.asar app_src`（文档：github.com/electron/asar）。
+3. 读 package.json 定 main 入口，先主进程后渲染层。
+4. grep 战术（同 2.4）：`grep -RnE 'api/|/v[0-9]+/|wss?://|secret|token' app_src --exclude-dir=node_modules | head -100`。
+5. 变体：有的厂商改后缀/套自定义容器——`file` 看类型，尝试改回 .asar 后用 `asar list app.asar` 验证。
+
+**【验证】** app_src 出现完整工程树（package.json/main.js 或 dist/）；grep 能命中接口路径。
+
+**【陷阱】** ①生产构建常是压缩混淆过的单行 JS——先 `npx prettier --write .` 格式化再读，搜字符串不受影响。②node_modules 巨大，grep 记得排除。③少数厂商对 asar 自定义加密，静态打不开就转运行时内存 dump，超出"够用深度"就在报告标注"资源已加密"。
+
+**【练习】**（第 2 节；vulhub 是服务端 Web 漏洞库，无本主题对应靶机，故用 HTB+开源/自建靶标）
+1. HTB Blocky（Easy，retired，需 VIP）：WordPress 凭据藏在 Minecraft 插件 JAR——"包内硬编码凭据"入门（JAR 解包=unzip+strings）。
+2. HTB Cascade（Easy，retired Windows）：对 CascAudit.exe（.NET）反编译还原凭据解密逻辑——练 2.5 全流程。两机可用性以 hackthebox.com/machines 目录为准。
+3. UPX 手感：crackmes.one 搜 "UPX" 任选高评分题练"判壳→脱壳→对比"；用 Notepad++（NSIS 打包）练 7z 解安装器。
+4. 授权实战：对客户在用的一个 Electron/.NET 桌面客户端做 2.4–2.6 全流程，产出资产补充清单+疑似凭据表。
+
+## 3. APK 分析
+
+### 3.1 apktool / jadx 逐步
+
+**【原理】** APK=ZIP 容器：classes*.dex（Dalvik 字节码）、AndroidManifest.xml（二进制 XML，直接看不了）、resources.arsc（资源表）、lib/（native so）、assets/、META-INF/（签名）。两条互补工具线：apktool 解资源+manifest 且能回编译（改包用）；jadx 把 dex 反编译成可读 Java（读逻辑用）。
+
+**【操作】**
+1. 环境：`brew install apktool jadx`；jadx 也可从 github.com/skylot/jadx releases 下载（apktool 官网 apktool.org）；需 Java 11+。
+2. apktool：`apktool d app.apk -o app_out` → 得到明文 AndroidManifest.xml、res/、smali/、assets/、apktool.yml。
+3. jadx：全量 `jadx app.apk -d app_src`；交互式 `jadx-gui app.apk`（Ctrl+Shift+F 全文搜索、Ctrl+点击跳定义；个别方法反编译失败时切换 smali 回退视图）。
+4. native so：`ls app_out/lib/*/`，so 内逻辑上 Ghidra（键值白盒、签名校验常藏这里）。
+5. split APK（.xapk/.apks）：本质是 zip，先解出 base.apk 与 split_config.*；业务逻辑几乎都在 base.apk，直接分析它。
+6. 加固检测：apktool 报错或解出的 dex 只有一个壳 stub（特征：lib 里出现 jiagu/shell 之类 so）= 360 加固/腾讯乐固等。静态不可直读：要么真机运行时 dump dex（FRIDA-DEXDump：github.com/hluwa/FRIDA-DEXDump；BlackDex：github.com/CodingGay/BlackDex），要么直接标注"已加固"交付。
+
+**【验证】** app_out/AndroidManifest.xml 可读；jadx-gui 左侧出现 com/... 包树且代码可读；能回答"这 App 有没有加固"。
+
+**【陷阱】** ①拿到 .xapk/.apkm 别慌，先 unzip 再分析 base.apk。②jadx 反编译失败≠没救，smali 永远可读，只是慢。③加固 APK 硬啃静态是最大时间黑洞，先判加固再定策略。
+
+### 3.2 AndroidManifest 权限与组件暴露
+
+**【原理】** 四大组件（Activity/Service/BroadcastReceiver/ContentProvider）若可被外部调用（exported="true"，或配了 intent-filter 未显式关闭）即组件暴露（Exported Component）：任意 App 可直接唤起。对渗透更关键的三类信号：①deeplink（自定义 scheme）→ 常映射到 WebView 加载外部可控 URL（衔接 VOL-02-Web）；②android:debuggable="true" → `adb shell run-as <pkg>` 直接拉私有数据；③networkSecurityConfig → 决定抓包证书能否被信任（衔接 §3.5）。uses-permission 是能力画像：READ_SMS、QUERY_ALL_PACKAGES、无障碍服务都值得记入报告。
+
+**【操作】**
+1. 通读：`less app_out/AndroidManifest.xml`。
+2. 快筛：`grep -nE 'exported|intent-filter|debuggable|allowBackup|networkSecurityConfig|scheme' app_out/AndroidManifest.xml`。
+3. 工具化验证暴露面：drozer（github.com/WithSecureLabs/drozer）：`drozer console connect` → `run app.package.attacksurface com.example.app`（一次性列出攻击面）→ `run app.activity.info -a com.example.app`、`run app.provider.info -a com.example.app`。
+4. deeplink 验证：`adb shell am start -a android.intent.action.VIEW -d "myapp://webview?url=https://evil"`，观察是否加载参数 URL。
+
+**【验证】** drozer 输出与手筛结论一致；deeplink 拉起后 App 跳到对应界面/加载了参数 URL。
+
+**【陷阱】** ①只 grep exported=true 会漏：带 intent-filter 未显式声明的组件照样导出（Android 12 起才强制显式声明）。②allowBackup 的可利用性已缩水：新版 Android 的 adb backup 通道大幅受限，别把定级写满。③导出的分享/推送组件属正常业务，逐个人工判断，误报会拉低报告可信度。
+
+### 3.3 硬编码与加密 key 提取
+
+**【原理】** Java 层字符串在 dex 里，jadx 全文可搜；常见形态：AES Key/IV 常量（SecretKeySpec 的入参）、Base64 secret、第三方 SDK 的 appkey/appSecret、云存储 AK/SK、被硬编码替代的"本地加密存储主密钥"。藏进 native so 的 key（白盒化）超出 grep 能力，回 Ghidra。
+
+**【操作】**
+1. jadx-gui Ctrl+Shift+F 按序搜：`appSecret|app_secret|appkey|accessKey`、`SecretKeySpec|IvParameterSpec|Cipher.getInstance`、`http`。
+2. 命中 `new SecretKeySpec(bytes, "AES")` → 回溯 bytes 来源：静态数组？Base64.decode(常量)？assets 配置？
+3. 资源面：`grep -RniE 'key|secret|token' app_out/assets/ app_out/res/values/strings.xml | head -50`；assets 里的 .db/加密配置单独看。
+4. 自动化：apkleaks（github.com/dwisiswant0/apkleaks）：`apkleaks -f app.apk`（URL/秘钥正则一把梭）；MobSF 平台化扫描：`docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest` 后浏览器开 127.0.0.1:8000 上传 APK（镜像：hub.docker.com/r/opensecurity/mobile-security-framework-mobsf）。
+
+**【验证】** 与 2.4 相同产出：端点清单并入资产测绘；每个疑似凭据记录"值+类名+方法+行号"——正好是 §5 finding 卡的证据字段。
+
+**【陷阱】** ①第三方 SDK 的公开 appkey（地图/推送/统计）不是漏洞，写进报告只会暴露不专业——只报可造成越权/越身份的凭据或客户保密信息。②字符串加密混淆 grep 不到时，找启动期统一解密函数（搜 decrypt、超大 Base64 数组）一次性 dump。③MobSF 自动报告当索引用，人工复核后再入库。
+
+### 3.4 证书与签名校验缺陷
+
+**【原理】** APK 签名保证完整性与身份：v1（JAR 签名）/v2（整包 APK Signature Scheme v2）/v3（支持密钥轮转）。本节看两类问题：①**发布缺陷**：用 debug 证书（Subject 含 CN=Android Debug）或弱自签证书发布 → 任何人可伪造同包名重分发（供应链风险）；②**客户端自保护缺陷**：防二次打包的签名校验逻辑写在 Java 层 → 可 patch 绕过，为 §3.5 的改包/hook 铺路。注意对"服务端证书"的校验（SSL pinning）是另一件事，见 §3.5。
+
+**【操作】**
+1. 看签名者：`keytool -printcert -jarfile app.apk`（输出 Owner/Issuer/有效期）；或 apksigner（Android SDK build-tools）：`apksigner verify --print-certs app.apk`；`apksigner verify --verbose app.apk` 看启用了 v1/v2/v3 哪些方案。
+2. 找代码内签名校验：jadx 搜 `getPackageInfo|GET_SIGNATURES`，定位比较逻辑。
+3. 改包重签：`apktool b app_out -o app_new.apk` → 生成测试 keystore：`keytool -genkey -v -keystore test.keystore -alias test -keyalg RSA -keysize 2048 -validity 10000` → `apksigner sign --ks test.keystore app_new.apk`。
+4. patch 思路：在 apktool 反编译出的 smali 里把签名比较分支（if-eqz/if-nez）改为恒真，再 b + sign。
+
+**【验证】** keytool 输出证书 Subject；若 CN=Android Debug 或超长有效期自签证书——截图存证，写 finding（发布完整性控制缺失）。改包后 `apksigner verify` 通过且设备可安装运行。
+
+**【陷阱】** ①只用 jarsigner（仅 v1）重签 v2 签名包会安装失败，统一用 apksigner。②patch 后 App 常因"签名校验+证书锁定双保险"闪退——先绕签名校验（本节）再处理 pinning（3.5），顺序反了会误判。③证书指纹记入 finding 卡，供客户后续比对。
+
+### 3.5 抓包与证书锁定绕过（原理层）
+
+**【原理】** HTTPS 中间人（Man-in-the-Middle，MITM）抓包要求 App 信任 Burp/mitmproxy 的 CA。障碍三层，逐层拆：①系统层：Android 7+ 默认只信系统 CA、不信用户安装的证书 → 把 Burp 证书装入系统存储（root 后放入 /system/etc/security/cacerts，或 Magisk 模块如 MagiskTrustUserCerts 一类方案），或 App 的 networkSecurityConfig 本就声明信任用户证书（§3.2 已侦察）。②应用层——证书锁定（Certificate Pinning）：代码校验服务端证书/公钥哈希，MITM 证书直接失败。绕过原理=用动态插桩（Dynamic Instrumentation）框架 Frida 在运行时 hook 校验函数使其恒真；objection 把常见 hook 封装成一条命令。③双向 TLS（Mutual TLS，mTLS）：服务端还验客户端证书——客户端证书（.p12）通常打包在 app 内且口令硬编码，提取后导入 Burp 即可。
+
+**【操作】**
+1. 环境：Android Studio AVD 选非 Play 镜像（支持 adb root）或 root 真机。
+2. 装 CA：Burp 导出 DER（Proxy→Options→Export CA certificate）→ 设备上安装为用户证书 → Android 7+ 再转系统信任：openssl 转 PEM、按 subject_hash_old 改名为 <hash>.0 推入系统 cacerts 目录（或直接 Magisk 模块方案）。
+3. frida-server：`adb shell getprop ro.product.cpu.abi` 确认架构 → github.com/frida/frida/releases 下载对应版 → `adb push frida-server /data/local/tmp && adb shell "chmod +x /data/local/tmp/frida-server && /data/local/tmp/frida-server &"`（需 root）。
+4. objection 一键：`pip install objection` → `objection -g com.example.app explore` → 交互内执行 `android sslpinning disable`（内部批量 hook OkHttp CertificatePinner、X509TrustManager 等实现）。
+5. 深度定制：hook 脚本参考 Frida CodeShare（codeshare.frida.re）；手写从 hook `checkServerTrusted` 空实现起步。
+6. mTLS：jadx 搜 `KeyStore|PKCS12|client.p12`，提取证书+硬编码口令 → Burp Settings→Network→TLS→Client TLS Certificate 导入。
+
+**【验证】** Burp HTTP history 出现该 App 流量（域名/路径/JSON 体）；objection 输出 hook 日志。分层结论法：装好 CA 仍握手失败 → pinning；pinning 关掉仍连不上 → mTLS 或 native 层校验。
+
+**【陷阱】** ①排障必须分层，别上来就换八种脚本。②native 层校验（so 里的 ssl verify）Java hook 不到 → 转 Ghidra 定位函数（衔接 3.1 第 4 步）。③App 反 Frida（检测 27042 端口/进程）时改用 gadget 注入等进阶方案。④只测授权 App，意外抓到他人流量立即停止。
+
+**【练习】**（第 3 节）
+1. InsecureBankv2（github.com/dineshshetty/Android-InsecureBankv2）：覆盖硬编码/组件暴露/不安全存储的综合靶标，附 Usage Guide。
+2. OWASP UnCrackable L1–L4（mas.owasp.org/crackmes/Android/，MASTG 官方 CrackMe）：L1 练 root 检测绕过+硬编码 secret，全系列练 Frida hook。
+3. Allsafe（github.com/t0thkr1s/allsafe-android）：练证书锁定绕过与 Frida 专项。
+4. 用 MobSF 对以上任一 APK 出静态报告，对照本节手工结论核对差异——建立"自动报告≠结论"的手感。
+
+## 4. 通信协议分析：从安装包到自定义协议
+
+**【原理】** 情报闭环：§2.4/§3.3 拿到服务端地址 → §3.5 建立抓包 → 观察报文结构 → 回反编译源码（2.5/3.1）定位编解码/加密函数对照字节 → 重放（Replay）验证。私有客户端（游戏、工业上位机、桌面运维工具、IM）常用自定义 TCP/UDP 协议，帧结构普遍是"魔数+版本+长度+（加密）载荷"；密钥要么硬编码、要么握手协商，而协商算法也在客户端里——所以"客户端在手，协议半透明"。
+
+**【操作】**
+1. 从字符串清单抓非常规端口：`grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{2,5}' s_*.txt | sort -u`，对命中 IP:port 做 nmap 服务识别，资产并入 VOL-01-信息收集。
+2. 抓包：设备上 `tcpdump -i any host <IP> -w /sdcard/cap.pcap`（需 root）后 `adb pull`；或宿主机 Wireshark 抓模拟器网卡。
+3. 看流：Wireshark → Analyze → Follow → TCP Stream，记录握手帧/认证帧/业务帧的边界、魔数与长度字段偏移；注意 TLV（type-length-value）结构。
+4. 回源码对号：jadx/dnSpy 搜端口号字符串、魔数常量、`DataOutputStream|ByteBuffer|writeInt`——直接定位协议编解码类，读出字段语义与加密算法。
+5. Protobuf 特征：二进制载荷+反编译里出现 `parseFrom|writeTo` → `protoc --decode_raw < msg.bin` 直接出字段树；批量还原 .proto 可用 pbtk（github.com/marin-m/pbtk）。
+6. 重放验证：HTTP 部分走 Burp Repeater；自定义 TCP 用 Python 按帧结构构造探针；密文先用客户端内提取的 key 解一帧，验证理解正确。
+
+**【验证】** 产出一张协议帧结构表（offset/长度/字段/含义）即达标；能手工构造一条合法心跳帧并收到服务端预期响应，说明逆向闭环成立。
+
+**【陷阱】** ①别只盯 443：最容易出成果的是那台"忘了配 TLS 的明文协议网关"。②防重放字段（时间戳/序列号/签名）会让重放失败——回代码找校验逻辑，而不是瞎重试。③重放业务帧有副作用（真发消息/下单），用测试账号+客户约定的演练窗口。④看不懂的字段先记录再猜，报告里不写臆测语义。
+
+**【练习】**（第 4 节）：用 InsecureBankv2 走通"地址→抓包→改包重放"链路；在 malware-traffic-analysis.net 挑一份合法 pcap 练协议阅读手感；对授权客户的一款私有桌面客户端完成帧结构表。
+
+## 5. 产出规范：硬编码凭据 finding 卡
+
+**【原理】** 硬编码凭据（Hardcoded Credentials）对应 CWE-798（Use of Hard-coded Credentials，使用硬编码凭据）。这类 finding 常被客户 challenge，因为证据链不完整就等于"我看到了一个字符串"。证据五要素：对象（哪个组件哪个版本）、位置（精确到文件/类/方法/偏移）、值（脱敏呈现+指纹）、验证（是否有效、在哪个入口验证）、影响（能访问什么资产）。缺一项，评审会上就被打回。
+
+**【操作】** finding 卡模板（字段直接进报告）：
+- **标题**：组件+版本+位置+凭据类型，例：`XX 客户端 v3.2（app.asar→main.js）硬编码测试环境管理员口令`。
+- **风险等级**：按影响域（内网管理员凭据 > 单租户 API key）与可利用性定级，标准引用 VOL-08-报告交付。
+- **证据三件套**：①位置，可复制路径：`app.apk → jadx → com.xx.net.CryptoUtil.is2()` 或 `setup.exe 解包 → config.xml:12`；②值：脱敏呈现（`Adm***4!`）+ SHA-256 指纹，完整值放加密附录、仅交指定联系人；③复现命令序列（评审员 10 分钟内可跑通）：`apktool d app.apk -o o && grep -rn 'secret' o/smali*/com/xx/net/`。
+- **验证结论**：有效 →"已于 X.X.X.X 登录成功（截图已脱敏）"；未验证 → 写明理由（如"超出授权范围"）。
+- **影响**：该凭据可访问的资产与角色，并入 VOL-06-内网的攻击路径图。
+- **修复建议**：凭据迁服务端下发/系统凭据库（Windows DPAPI、Android Keystore）；已泄露凭据立即轮换；明确告知"加壳/混淆只是提高提取成本，不是修复"。
+- **样本指纹**：原始样本 SHA-256、分析时间与环境（客户升级后仍可对账）。
+
+**【验证】** 自测：换一位同事，只给 finding 卡+样本，10 分钟复现成功即合格；提交前对照五要素逐项检查。
+
+**【陷阱】** ①凭据明文全贴正文——客户内部流转即泄密，必须脱敏+独立加密附录。②把"疑似"写成"确凿"：未验证就如实标注，这是交付可信度的生命线。③SDK 公开 key 凑数（见 3.3 陷阱）。④忘记记版本号/指纹，客户升级后复现不了，finding 变悬案。
+
+**【练习】**（第 5 节）：把 §2.4 或 §3.3 实战中拿到的真实疑似凭据（授权项目）按本节模板写成 finding 卡，请同事盲测复现，并按 VOL-08-报告交付的报告骨架合入。
+
+## 6. 前 30 分钟速查清单
+
+拿到任意 EXE/APK 的动作序列：
+1. `file`/DIE 识别：架构、壳、框架（.NET/Electron/加固）——决定走哪条支线；
+2. 解包：7z → innoextract / upx -d / unshield / msiexec /a；APK：apktool d + jadx；
+3. 双编码 strings（`-n 8` 与 `-e l`）+ apkleaks/gitleaks 一把梭；
+4. 分桶 grep：URL / 内网 IP / 端口 / 凭据关键词 / 云 key 特征；
+5. 反编译只啃加密类与网络类（dnSpy / jadx-gui）；
+6. 产出三件套：资产补充清单、疑似凭据表（含位置证据）、协议疑点列表；
+7. 按 §5 写卡，按 VOL-02-Web / VOL-06-内网 卷衔接下一步打点。
+
+（本卷完。交叉引用卷号以系列最终目录为准。）

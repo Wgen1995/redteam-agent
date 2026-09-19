@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思路与逻辑全景 · 从授权到报告的交战思维</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.7;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+header{background:linear-gradient(135deg,#0f172a,#7f1d1d 55%,#b91c1c);color:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 10px 30px rgba(185,28,28,.28)}
+header h1{font-size:24px;margin-bottom:6px}header .sub{opacity:.92;font-size:14px}
+header .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+header .tags span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;font-size:12.5px}
+h2{font-size:20px;margin:36px 0 14px;padding-left:14px;border-left:5px solid #b91c1c}
+p{font-size:14px;color:#475569;margin-bottom:10px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:14px;padding:22px 20px;box-shadow:0 4px 16px rgba(0,0,0,.07);transition:transform .18s,box-shadow .18s;border-top:5px solid #b91c1c;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(185,28,28,.18)}
+.card .icon{font-size:30px;margin-bottom:10px}.card h4{font-size:17px;margin-bottom:6px;color:#1e293b}
+.card p{font-size:13px;color:#64748b;margin:0;flex:1}.card .go{margin-top:12px;font-size:13px;font-weight:600;color:#b91c1c}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
+.lv{color:#b91c1c;font-weight:600}.core{color:#0369a1;font-weight:600}.adv{color:#7c3aed;font-weight:600}
+.note{background:#fef2f2;border-left:4px solid #b91c1c;border-radius:8px;padding:12px 16px;font-size:13.5px;color:#7f1d1d;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
+.topnav{display:flex;gap:10px;margin:0 0 14px;flex-wrap:wrap}.topnav a{background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.topnav a.on{background:#b91c1c;color:#fff}
+.phase{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin:16px 0}
+.phase .step{flex:1;min-width:130px;background:#fff;border:1px solid #e2e8f0;padding:14px 10px;text-align:center;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.phase .step b{display:block;font-size:14px;color:#1e293b;margin-bottom:4px}
+.phase .step span{font-size:12px;color:#64748b}
+.phase .step .kd{display:block;margin-top:6px;font-size:11.5px;color:#b91c1c}
+.deep{font-size:12.5px;color:#64748b;margin:10px 0 0}
+.deep a{color:#0369a1;text-decoration:none;border-bottom:1px dashed #0369a1;margin-right:6px}
+code{background:#f1f5f9;border-radius:4px;padding:1px 5px;font-size:12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+ul.tick{margin:6px 0 10px 20px}
+ul.tick li{font-size:13.5px;color:#475569;margin-bottom:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="topnav">
+  <a href="index.html">总览</a>
+  <a href="methodology.html" class="on">思路逻辑</a>
+  <a href="techstack.html">技术栈</a>
+  <a href="toolchain.html">工具链</a>
+  <a href="roadmap.html">成长路线</a>
+</nav>
+
+<header>
+  <h1>思路与逻辑全景 · 从授权到报告的交战思维</h1>
+  <div class="sub">回答「渗透测试怎么思考」：方法论给骨架与路径，事实缺口驱动每一步动作，一切结论落在可回放的证据链上</div>
+  <div class="tags">
+    <span>交战生命周期</span>
+    <span>Kill Chain / PTES / WSTG / ATT&amp;CK</span>
+    <span>facts 信息渐进决策</span>
+    <span>审计员→渗透者思维转换</span>
+    <span>响应即真相 + 证据链</span>
+  </div>
+</header>
+
+<h2>一、交战生命周期：从授权到报告的八步</h2>
+<p>一人红队的项目骨架沿 PTES 全流程展开：授权定边界，侦察与攻击面分析定入口，打点拿立足，提权与横向扩大影响，收尾守合规，报告是唯一交付物。每一步先问「这一步的事实够不够支撑下一步」。</p>
+<div class="phase">
+  <div class="step"><b>① 授权与范围</b><span>依据合同/授权书确认资产清单、测试时间窗与排除项（DoS、社会工程学、物理），没写进范围的等于没测</span><span class="kd">决策：IPS 告警阈值与静默要求写进 RoE</span></div>
+  <div class="step"><b>② 侦察</b><span>子域收集、端口与服务扫描、Web 指纹、目录爆破与 JS 提取，被动信息源先行</span><span class="kd">决策：小步快跑，不上来全端口轰炸——慢、吵、触发防护</span></div>
+  <div class="step"><b>③ 攻击面分析</b><span>建入口点清单、参数枚举、指纹→CVE 比对，按信任边界给资产分组</span><span class="kd">决策：先回答「哪些入口没被中间件挡住」，鉴权缺失面优先</span></div>
+  <div class="step"><b>④ 打点</b><span>用注入、越权、未授权访问、反序列化、文件上传等拿 webshell 或低权限 shell</span><span class="kd">决策：凭据是事实不是终点——先枚举它能碰的资产</span></div>
+  <div class="step"><b>⑤ 提权</b><span>本机收集四问（我是谁/在哪/周围有谁/谁管我），Windows 四条主干与 Linux SUID/sudo 判断流程</span><span class="kd">决策：先摸清杀软/EDR 清单再选提权路径</span></div>
+  <div class="step"><b>⑥ 横向</b><span>隧道与代理链、凭据获取（SAM/LSASS/DPAPI），非域与域环境 Kerberos 横向，指向域控</span><span class="kd">决策：域判断先于一切——机器账户/DNS/时间同步三特征确认是否域内</span></div>
+  <div class="step"><b>⑦ 收尾</b><span>痕迹处理与合规收尾：清环境、清残留数据，全程不出授权范围</span><span class="kd">决策：清理动作同样受 RoE 约束，证据先按 VULN-xxx 目录归档</span></div>
+  <div class="step"><b>⑧ 报告</b><span>六节结构组装 + POC 卡片 + CVSS 3.1 评级 + 证据脱敏，附复测四态口径</span><span class="kd">决策：结论先行；交叉三查——概述数字＝矩阵合计＝明细条数</span></div>
+</div>
+<p class="deep">深读指引：<a href="../docs/learning/VOL-07-08-methodology-reporting.md">VOL-07-08 方法论·报告交付（PTES 流程与 PART B 六件交付物）</a><a href="../docs/learning/VOL-01-web-app-part1.md">VOL-01 Web 渗透·上（侦察与攻击面）</a><a href="../docs/learning/VOL-03-intranet.md">VOL-03 内网渗透（提权/横向/收尾）</a><a href="../docs/learning/VOL-06-toolchain.md">VOL-06 工具链（工具输出怎么读、RoE）</a></p>
+
+<h2>二、四大方法论框架对照</h2>
+<p>四个框架各管一段：流程、覆盖度、行为对照、叙事。选型口诀——<b>项目管流程用 PTES，Web 覆盖度用 WSTG，内网阶段用 ATT&amp;CK 自查，报告叙事用 Kill Chain</b>。四者不互斥，完整交付里都会出现。</p>
+<table>
+  <tr><th style="width:14%">框架</th><th style="width:32%">是什么</th><th style="width:29%">何时用</th><th style="width:25%">局限（分工之外）</th></tr>
+  <tr><td class="lv">Kill Chain</td><td>网络杀链（Lockheed Martin 七阶段：侦察→武器化→交付→利用→安装→命令与控制 C2→目标行动），攻击者视角的攻击链叙事模型</td><td>报告「攻击路径」章节：把打点→立足→横移→落地写成故事线</td><td>只回答「路径怎么讲」，不提供测试用例与覆盖度兜底</td></tr>
+  <tr><td class="core">PTES</td><td>渗透测试执行标准，七阶段：前期交互→情报收集→威胁建模→漏洞分析→渗透利用→后渗透→报告，管项目全流程的方法论</td><td>立项与范围（Scope）谈判、交付物定义；一人红队的项目骨架</td><td>管流程骨架，不含 Web 用例与内网 TTP 对照（用例看 WSTG，内网看 ATT&amp;CK）</td></tr>
+  <tr><td class="adv">OWASP WSTG</td><td>Web 安全测试指南（稳定版 v4.2），按信息收集、配置与部署管理、身份认证、授权、会话管理、输入校验、错误处理、加密、业务逻辑、客户端等大类组织数十个用例</td><td>Web 系统性覆盖度兜底「该测的都测了」；也是报告「测试方法」章节的引用来源</td><td>只覆盖 Web 系统性测试，项目流程与内网行为不在其分工内</td></tr>
+  <tr><td class="lv">MITRE ATT&amp;CK</td><td>对抗战术/技术/常识知识库：真实攻击组织 TTP（战术/技术/过程），企业版矩阵按战术列技术</td><td>内网行为对照：把内网每个动作映射到技术编号，度量红队覆盖面与蓝队检测盲区</td><td>是行为知识库不是执行标准，不提供立项流程与 Web 用例级指导</td></tr>
+</table>
+<p class="deep">深读指引：<a href="../docs/learning/VOL-07-08-methodology-reporting.md">VOL-07-08 · PART A1.1 四大框架：是什么与何时用</a></p>
+
+<h2>三、黑盒信息渐进决策模型：缺口→下一动作</h2>
+<p>黑盒卡住的实质是<b>事实缺口</b>：不知道某类信息，所以不知道下一步做什么。人工版照抄 MITRE Caldera 的 facts 机制：维护 facts 表（列：<code>事实 / 值 / 来源 / 时间</code>），每个缺口对应一类收集动作，动作产出新事实，直到事实组合满足某条利用路径的前置条件。</p>
+<table>
+  <tr><th style="width:22%">信息缺口</th><th style="width:44%">下一动作（示例可直接复制）</th><th style="width:34%">要点</th></tr>
+  <tr><td>不知道资产面（子域）</td><td><code>subfinder -d example.com</code></td><td>被动源互不相同，多工具结果合并去重；参数以官方文档为准</td></tr>
+  <tr><td>不知道端口与服务</td><td><code>nmap -sV -sC -p- &lt;目标IP&gt; -oA evidence/nmap_full</code></td><td><code>-sV</code> 服务版本、<code>-sC</code> 默认脚本、<code>-p-</code> 全端口、<code>-oA</code> 三格式输出存证</td></tr>
+  <tr><td>不知道 Web 指纹</td><td><code>whatweb http://&lt;目标&gt;</code></td><td>指纹是「指纹→版本→已知 CVE 比对」快通道的输入</td></tr>
+  <tr><td>不知道目录结构</td><td><code>ffuf -w /opt/SecLists/Discovery/Web-Content/common.txt -u http://&lt;目标&gt;/FUZZ -mc 200,301,302,403</code></td><td>字典决定上限；先小字典，再递归+扩展名</td></tr>
+  <tr><td>拿到一个有效凭据</td><td>先枚举它能碰的资产，再评估提权</td><td>凭据是事实，不是终点</td></tr>
+</table>
+<ul class="tick">
+  <li><b>落表</b>：每完成一步立即把<b>结论</b>写入 facts 表——写结论，不贴原始输出。</li>
+  <li><b>验证</b>：任一时刻你说得清「下一步动作由表中哪条缺口驱动」，说不清的动作不做；当某条利用路径的前置条件（如可达端口＋存在组件＋可用凭据）全部闭合时，能明确写出「已满足」。</li>
+</ul>
+<div class="note">陷阱：①上来全端口轰炸——慢、吵、触发防护，应小步快跑；②收集不落表，碰到同目标全部重来；③把「扫完了」当「收集完了」——原始输出不是事实，提炼出的结论才是。</div>
+<p class="deep">深读指引：<a href="../docs/learning/VOL-07-08-methodology-reporting.md">VOL-07-08 · PART A1.2 黑盒信息渐进决策模型（Caldera facts 通俗版）</a><a href="../docs/learning/VOL-06-toolchain.md">VOL-06 工具链详解（工具怎么选、输出怎么读）</a></p>
+
+<h2>四、审计员 → 渗透者：思维转换表</h2>
+<p>5 年源码审计的直觉不能直接搬进黑盒战场：真相来源、完备性标准、边界单位、验证方式、影响评估、时间模型全部要换轨。核心转换——<b>代码即真相 → 响应即真相 + 证据链</b>。</p>
+<table>
+  <tr><th style="width:14%">维度</th><th style="width:40%">源码审计（旧我）</th><th style="width:46%">渗透测试（新我）</th></tr>
+  <tr><td class="lv">真相来源</td><td>代码即真相</td><td>响应即真相 ＋ 证据链</td></tr>
+  <tr><td class="core">完备性</td><td>覆盖所有调用点与污点汇聚点（sink）</td><td>覆盖率让位于「路径打通」：打通一条链比列十条可疑更有价值</td></tr>
+  <tr><td class="adv">边界单位</td><td>函数 / 模块 / 数据流</td><td>资产 / 信任边界 / 网络分区</td></tr>
+  <tr><td class="lv">验证方式</td><td>写 PoC 代码、读单测</td><td>可复现 POC 卡片 ＋ 成对请求响应留档</td></tr>
+  <tr><td class="core">影响评估</td><td>漏洞原理层面</td><td>打通后的影响放大：提权、横向移动、核心数据</td></tr>
+  <tr><td class="adv">时间模型</td><td>基本不受限</td><td>授权窗口（测试时间窗）硬约束，动作要排优先级</td></tr>
+</table>
+<div class="cards">
+  <div class="card">
+    <div class="icon">🔗</div>
+    <h4>「响应即真相」工作流</h4>
+    <p>黑盒下唯一可信的输入是服务端返回：状态码、响应头/体、时序、带外（Out-of-Band）回连。①全流量过代理：浏览器挂 Burp Suite Proxy，测试期间禁止直连；②每个测试点先发一次基线（Baseline）请求再发 payload，两条都留档；③判定信号写进用例：回显差异（响应体/长度变化）、时延差异（与基线对比）、带外信号（DNSLog/自建监听）；④结论一律引用 Burp History 条目号或导出文件名——任何结论可被第三人回放。</p>
+    <div class="go">证据链＝请求响应成对留存＋时间戳＋判定标准</div>
+  </div>
+  <div class="card">
+    <div class="icon">⚖️</div>
+    <h4>验证口径与降级规则</h4>
+    <p>任取一条结论，在 Burp Repeater 重放所引请求，应得到与记录一致的响应；做不到的降级为「疑似」，不得写入报告。三个断链陷阱：只看页面渲染不看原始响应，漏掉注释、隐藏字段、状态码差异；在浏览器 DevTools 里改参数导致代理没记录；截图只截「结果」不截「请求」。审计优势仍可迁移：白盒技能折算成黑盒打法——先构造假设再验证，知道「这个洞对应的那个请求长什么样」。</p>
+    <div class="go">Repeater 重放一致 → 写报告；不一致 → 降级「疑似」</div>
+  </div>
+</div>
+<p class="deep">深读指引：<a href="../docs/learning/VOL-07-08-methodology-reporting.md">VOL-07-08 · PART A2 审计员→渗透者思维转换表</a><a href="../docs/learning/VOL-04-source-assist.md">VOL-04 源码审计→黑盒联动（审计员优势的降维打法）</a></p>
+
+<footer>红队成长全景 · 持续更新</footer>
+</div>
+</body>
+</html>
