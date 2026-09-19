@@ -11,6 +11,9 @@
 
 ## 1. 外部信息收集（Reconnaissance）
 
+> 🧭 **导读**：你站在整条链路的最上游——手里只有一个授权域名，连一台活着的机器都还没确认。这一章只做“看”：审计时你拿到代码会先数 Controller 和路由，而不是一头扎进某个方法；这里同理，子域、端口、路径、JS 四节就是给目标“数路由”。
+> 忍住别发 payload：第 2 节起的每一发弹药，都从这四张清单里出。
+
 ### 1.1 子域名收集（Subdomain Enumeration）：OneForAll / Amass
 
 【原理】子域是打点的第一资产面，来源四类：①证书透明度（Certificate Transparency，CT）：CA 签发的证书必须公示，crt.sh 等可查；②被动 DNS（Passive DNS）：VirusTotal、SecurityTrails 等存档的历史解析；③暴力枚举（Brute Force）：字典前缀逐个发 DNS 查询，能解析即存在；④智能置换（Permutation）：对已知子域做 dev→dev2/prod-uat 变形再验证。OneForAll 把上述来源+爬虫归档整合为流水线；Amass（OWASP amass）数据源最多、带资产图谱数据库，适合长期维护。
@@ -83,6 +86,9 @@ grep -rh sourceMappingURL *.js                              # 检查 .map 泄露
 
 ## 2. 攻击面建立
 
+> 🧭 **导读**：路到这里换挡——前一章你只在场外“看”，从这章起第一次出手验证，从“知道它存在”走到“确认它打得通”。
+> 钥匙攥在 1.3/1.4 的产出里：字典翻不出的业务路径、JS 里抽到的隐藏端点，都会在这里汇成一本底账；这本账要陪你走完第 3、4 章，值得慢下来记整齐。
+
 【原理】信息收集要收敛为一张"入口点清单"：每行 = URL+方法+参数+认证要求，这是后续所有测试的底账。链路：资产→端口→入口→技术栈指纹→组件版本→CVE/公开 POC→验证。审计期的"fingerprint→CVE"直觉完全适用，只是输入从 pom.xml 换成响应头、报错页、cookie 名、favicon（favicon hash 可在 Shodan 反查同图标资产）。
 
 【操作】①清点：Burp 手动浏览全站，Target→Sitemap 即底账；重点找 swagger/openapi、/graphql（introspection）、actuator。②隐藏参数枚举：Arjun 用响应差异探测前端已删但后端仍读的参数：`arjun -u https://t.com/api/user`（参数以官方 README 为准：<https://github.com/s0md3v/Arjun>）。③指纹与已知漏洞：
@@ -100,6 +106,9 @@ searchsploit -m php/webapps/46xxx.txt        # 取回本地验证
 【练习·第 2 节】vulhub/struts2/s2-045（.action 指纹→CVE-2017-5638）、vulhub/thinkphp/5-rce（报错页指纹→公开 POC）：先只凭指纹判版本，再用 searchsploit 找 exploit 复现，体会"指纹→CVE→验证"闭环。
 
 ## 3. 认证机制分析
+
+> 🧭 **导读**：别把这章当两场硬仗之间的支线——对刚转黑盒的你，门锁常比注入好撬：审计期你见过的那些“鉴权一行注释掉”式事故，黑盒里就藏在这三节。
+> 带上第 2 章底账里标“需登录”的入口当靶子，先翻钥匙，再去打第 4 章的硬仗；3.2 的尾巴埋了根线，第 4 章的 XSS 会回来接上。
 
 ### 3.1 会话（Session）
 【原理】安全前提两个：ID 不可预测+服务端正确失效。常见缺陷：①ID 可预测（自增/时间戳+弱随机）；②登出、改密后旧 session 不失效；③会话固定（Session Fixation）：登录前后 cookie 不轮换；④cookie 缺 Secure/HttpOnly/SameSite 属性。
@@ -130,6 +139,9 @@ python3 jwt_tool.py <TOKEN> -T                               # 篡改重签
 【练习·第 3 节】JWT/OAuth 深练用 PortSwigger Web Security Academy 的 JWT 与 OAuth 主题 lab（免费、带官方解法：<https://portswigger.net/web-security>）；弱口令与认证绕过：vulhub/tomcat/tomcat8（Tomcat 管理台弱口令→deploy war）、vulhub/mysql/CVE-2012-2122（认证比较缺陷，多次连接绕过密码）。
 
 ## 4. 注入类漏洞
+
+> 🧭 **导读**：本卷最硬的一章，但路是一条直线：五个注入是同一种病——数据被当成代码——换了五处战场，从数据库、操作系统一路打到别人的浏览器、模板引擎、内网。
+> SQL 注入排头不是随机，它把“怎么观察、怎么选打法”的基本功练全，后面四节都在复用这套手感；走到 SSRF 收尾，你已站在内网门口——那是 VOL-03 的地界。
 
 ### 4.1 SQL 注入（SQL Injection）
 

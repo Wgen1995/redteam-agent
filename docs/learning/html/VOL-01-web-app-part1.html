@@ -73,6 +73,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <h2 id="目录">目录</h2>
 <ol><li>外部信息收集：子域 / 端口与指纹 / 目录爆破 / JS 提取</li><li>攻击面建立：入口点清单、参数枚举、指纹→CVE</li><li>认证机制分析：Session / JWT / OAuth</li><li>注入类深讲：SQL 注入 / 命令注入 / XSS / SSTI / SSRF</li><li>综合练习路线</li></ol>
 <h2 id="1-外部信息收集-reconnaissance">1. 外部信息收集（Reconnaissance）</h2>
+<blockquote>🧭 <b>导读</b>：你站在整条链路的最上游——手里只有一个授权域名，连一台活着的机器都还没确认。这一章只做“看”：审计时你拿到代码会先数 Controller 和路由，而不是一头扎进某个方法；这里同理，子域、端口、路径、JS 四节就是给目标“数路由”。 忍住别发 payload：第 2 节起的每一发弹药，都从这四张清单里出。</blockquote>
 <h3 id="1-1-子域名收集-subdomain-enumeration-oneforall-amass">1.1 子域名收集（Subdomain Enumeration）：OneForAll / Amass</h3>
 <p><span class="bdg bdg-p">原理</span>子域是打点的第一资产面，来源四类：①证书透明度（Certificate Transparency，CT）：CA 签发的证书必须公示，crt.sh 等可查；②被动 DNS（Passive DNS）：VirusTotal、SecurityTrails 等存档的历史解析；③暴力枚举（Brute Force）：字典前缀逐个发 DNS 查询，能解析即存在；④智能置换（Permutation）：对已知子域做 dev→dev2/prod-uat 变形再验证。OneForAll 把上述来源+爬虫归档整合为流水线；Amass（OWASP amass）数据源最多、带资产图谱数据库，适合长期维护。</p>
 <p><span class="bdg bdg-o">操作</span></p>
@@ -115,6 +116,7 @@ grep -rh sourceMappingURL *.js                              # 检查 .map 泄露
 <p><span class="bdg bdg-t">陷阱</span>①混淆 JS 先在 DevTools 里 pretty-print 再分析；②前端公开 key（如地图 appid）≠凭据，先甄别再上报；③归档里的接口可能已下线，用 httpx 复测存活。</p>
 <p>【练习·第 1 节】对下列每个 vulhub 靶机（<code>cd vulhub/&lt;组件&gt; &amp;&amp; docker compose up -d</code>，<code>docker ps</code> 拿 IP）完整跑一遍"nmap→httpx→ffuf→JS 提取"流水线；再刷 HTB 退役机 Shocker（easy）、Nibbles（easy，指纹→公开漏洞全链路）。</p>
 <h2 id="2-攻击面建立">2. 攻击面建立</h2>
+<blockquote>🧭 <b>导读</b>：路到这里换挡——前一章你只在场外“看”，从这章起第一次出手验证，从“知道它存在”走到“确认它打得通”。 钥匙攥在 1.3/1.4 的产出里：字典翻不出的业务路径、JS 里抽到的隐藏端点，都会在这里汇成一本底账；这本账要陪你走完第 3、4 章，值得慢下来记整齐。</blockquote>
 <p><span class="bdg bdg-p">原理</span>信息收集要收敛为一张"入口点清单"：每行 = URL+方法+参数+认证要求，这是后续所有测试的底账。链路：资产→端口→入口→技术栈指纹→组件版本→CVE/公开 POC→验证。审计期的"fingerprint→CVE"直觉完全适用，只是输入从 pom.xml 换成响应头、报错页、cookie 名、favicon（favicon hash 可在 Shodan 反查同图标资产）。</p>
 <p><span class="bdg bdg-o">操作</span>①清点：Burp 手动浏览全站，Target→Sitemap 即底账；重点找 swagger/openapi、/graphql（introspection）、actuator。②隐藏参数枚举：Arjun 用响应差异探测前端已删但后端仍读的参数：<code>arjun -u https://t.com/api/user</code>（参数以官方 README 为准：&lt;https://github.com/s0md3v/Arjun&gt;）。③指纹与已知漏洞：</p>
 <pre class="cb"><span class="lang">bash</span><code>whatweb https://t.com                        # 技术栈
@@ -125,6 +127,7 @@ searchsploit -m php/webapps/46xxx.txt        # 取回本地验证</code></pre>
 <p><span class="bdg bdg-t">陷阱</span>①指纹≠版本：见到 Spring Boot actuator 不等于 Spring4Shell（CVE-2022-22965）可打，须逐条核对利用条件（JDK9+、war 部署等）；②WAF 吞掉 POC 响应会制造"打不通"假象，先用版本探测端点（如 /actuator/info）确认组件再下结论；③未授权接口本身就是高危（越权访问 Broken Access Control，见 VOL-02）。</p>
 <p>【练习·第 2 节】vulhub/struts2/s2-045（.action 指纹→CVE-2017-5638）、vulhub/thinkphp/5-rce（报错页指纹→公开 POC）：先只凭指纹判版本，再用 searchsploit 找 exploit 复现，体会"指纹→CVE→验证"闭环。</p>
 <h2 id="3-认证机制分析">3. 认证机制分析</h2>
+<blockquote>🧭 <b>导读</b>：别把这章当两场硬仗之间的支线——对刚转黑盒的你，门锁常比注入好撬：审计期你见过的那些“鉴权一行注释掉”式事故，黑盒里就藏在这三节。 带上第 2 章底账里标“需登录”的入口当靶子，先翻钥匙，再去打第 4 章的硬仗；3.2 的尾巴埋了根线，第 4 章的 XSS 会回来接上。</blockquote>
 <h3 id="3-1-会话-session">3.1 会话（Session）</h3>
 <p><span class="bdg bdg-p">原理</span>安全前提两个：ID 不可预测+服务端正确失效。常见缺陷：①ID 可预测（自增/时间戳+弱随机）；②登出、改密后旧 session 不失效；③会话固定（Session Fixation）：登录前后 cookie 不轮换；④cookie 缺 Secure/HttpOnly/SameSite 属性。 <span class="bdg bdg-o">操作</span>注册两个账号抓 Set-Cookie；Burp Comparer 对比多个 session 值找结构规律（长度、字符集、分段）；登出后用旧 cookie 在 Repeater 重放关键请求。 <span class="bdg bdg-v">验证</span>旧 cookie 仍返回 200 且为登录态→"未失效"实锤；cookie 中出现 <code>user=1001</code> 类自增段→可预测。 <span class="bdg bdg-t">陷阱</span>分布式 session（Redis 共享）下"退出重登"可能复用同 ID，区分复用与固定；改密必须全端失效，只测浏览器端不够。</p>
 <h3 id="3-2-jwt-json-web-token">3.2 JWT（JSON Web Token）</h3>
@@ -139,6 +142,7 @@ python3 jwt_tool.py &lt;TOKEN&gt; -T                               # 篡改重�
 <p><span class="bdg bdg-p">原理</span>授权码模式（Authorization Code）的安全依赖：redirect_uri 严格白名单、code 一次性短时效、state 防 CSRF。常见缺陷：①redirect_uri 校验宽→code 被劫持；②code 可重放；③implicit 模式 token 暴露于 URL fragment；④缺 state→登录 CSRF。 <span class="bdg bdg-o">操作</span>Burp 完整走一遍三方登录，标记四个请求：跳转授权、带 code 回调、code 换 token、userinfo。逐项改：redirect_uri 换自有域名/子路径/URL 编码变体；把用过的 code 原样重发。 <span class="bdg bdg-v">验证</span>回调域名改到攻击者域仍 302 通过→redirect_uri 校验缺陷（常伴开放重定向 Open Redirect）；code 二次使用仍 200→可重放。 <span class="bdg bdg-t">陷阱</span>redirect_uri 校验常是"包含"匹配而非全等，试 URL 编码、大小写、加子目录、@；token 在 fragment 里服务端日志不记，但前端 JS 可读，须与 XSS 一并评估。</p>
 <p>【练习·第 3 节】JWT/OAuth 深练用 PortSwigger Web Security Academy 的 JWT 与 OAuth 主题 lab（免费、带官方解法：&lt;https://portswigger.net/web-security&gt;）；弱口令与认证绕过：vulhub/tomcat/tomcat8（Tomcat 管理台弱口令→deploy war）、vulhub/mysql/CVE-2012-2122（认证比较缺陷，多次连接绕过密码）。</p>
 <h2 id="4-注入类漏洞">4. 注入类漏洞</h2>
+<blockquote>🧭 <b>导读</b>：本卷最硬的一章，但路是一条直线：五个注入是同一种病——数据被当成代码——换了五处战场，从数据库、操作系统一路打到别人的浏览器、模板引擎、内网。 SQL 注入排头不是随机，它把“怎么观察、怎么选打法”的基本功练全，后面四节都在复用这套手感；走到 SSRF 收尾，你已站在内网门口——那是 VOL-03 的地界。</blockquote>
 <h3 id="4-1-sql-注入-sql-injection">4.1 SQL 注入（SQL Injection）</h3>
 <p><span class="bdg bdg-p">原理</span>根因是拼接（你已熟），黑盒差异在"观察通道"：①联合注入（UNION-based）：额外 SELECT 并入响应，回显最直接；②报错注入（Error-based）：用 updatexml/extractvalue 把数据挤进报错页；③布尔盲注（Boolean-based Blind）：页面只有真/假两态，逐位猜解；④时间盲注（Time-based Blind）：连形态都没有，用延迟做信号；⑤堆叠注入（Stacked Queries）：一次提交多条语句，取决于驱动是否允许 multi-statement。三库差异要点：MySQL——information_schema、LIMIT 偏移、updatexml 报错、默认禁堆叠（PHP mysqli 单语句、PDO 默认关多句）；PostgreSQL——<code>||</code> 拼接、pg_sleep、pg_read_file、天然支持堆叠；MSSQL——WAITFOR DELAY 延时、xp_cmdshell 执行命令、堆叠支持好。</p>
 <p><span class="bdg bdg-o">操作</span>手工五步（数字型 <code>?id=1</code> 为例）：</p>

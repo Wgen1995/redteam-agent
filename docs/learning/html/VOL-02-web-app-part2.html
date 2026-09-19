@@ -78,6 +78,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <h2 id="目录">目录</h2>
 <ul><li>1. 越权与访问控制</li><li>1.1 水平越权（IDOR）：从对象标识枚举到批量验证</li><li>1.2 垂直越权：低权限凭证打高权限接口</li><li>1.3 未授权访问：Actuator、Swagger、管理后台与内存马视角</li><li>1.4 URL 鉴权绕过：中间件与路由层的规范化差异</li><li>2. 逻辑漏洞</li><li>2.1 支付与订单状态机</li><li>2.2 验证码与密码找回</li><li>2.3 短信轰炸（接口滥用）</li><li>2.4 竞态条件与单包攻击</li><li>3. 文件上传</li><li>3.1 黑白名单绕过全谱</li><li>3.2 解析漏洞：nginx + php-fpm</li><li>3.3 条件竞争上传</li><li>3.4 Webshell 一句话原理与免杀基础</li><li>4. 反序列化</li><li>4.1 Java：Fastjson 与 Shiro（指纹、原理、无害验证）</li><li>4.2 PHP：magic 方法与 phar</li><li>5. POC→EXP 构造方法论与漏洞卡片规范</li></ul>
 <h2 id="1-越权与访问控制">1. 越权与访问控制</h2>
+<blockquote>🧭 <b>导读</b>：上册解决“进得去”——你现在手里有会话、有路由图，人站在鉴权层跟前。这章对你几乎零学习成本：审计时你在代码里找“查询少了归属条件”，现在同一个判断改到 Burp 的响应差异里做，证据从代码行变成响应行。</blockquote>
 <p>失效的访问控制（Broken Access Control）居 OWASP Top 10 2021 首位（A01），对一人红队产出最高：不需要新漏洞类型，只要"两把账号+对照实验"。</p>
 <h3 id="1-1-水平越权-idor-从对象标识枚举到批量验证">1.1 水平越权（IDOR）：从对象标识枚举到批量验证</h3>
 <p><b><span class="bdg bdg-p">原理</span></b> 不安全的直接对象引用（IDOR, Insecure Direct Object Reference）：服务端拿用户输入的对象 ID 只做查询、不做归属校验——<code>SELECT * FROM orders WHERE id=?</code> 少了 <code>AND user_id=?</code>。黑盒判据是响应差异：换 ID 后 200 且数据字段换人即实锤。</p>
@@ -117,6 +118,7 @@ done</code></pre>
 <p><b><span class="bdg bdg-t">陷阱</span></b> ①浏览器与多数 HTTP 库会自动规范化 <code>../</code> 与 <code>%2e</code>，curl 必须加 <code>--path-as-is</code>；Burp 要编辑 raw 请求并留意 Inspector 的自动处理（以 Burp 官方文档为准）；②跳到 200 也可能是后端 404 页（自定义错误页状态 200），要比对响应长度；③先读后写，写接口绕过要有回滚预案。</p>
 <p><b><span class="bdg bdg-x">练习</span></b>（第 1 节）：①PortSwigger Web Security Academy「Access control vulnerabilities」模块的 IDOR/垂直越权系列免费 lab（portswigger.net/web-security/access-control）；②vulhub <code>shiro/CVE-2020-1957</code> 认证绕过环境（github.com/vulhub/vulhub，路径以官方目录为准）；③自建 Spring Boot 暴露 actuator 全端点，20 分钟内完成 heapdump 凭据提取。</p>
 <h2 id="2-逻辑漏洞">2. 逻辑漏洞</h2>
+<blockquote>🧭 <b>导读</b>：刚出鉴权层，眼前换成了业务流程——这里的洞没有 payload 字典可抄，你唯一带得走的仪器是 1.1 练下的那条纪律：一次只换一个变量。节奏上留意：2.4 的竞态要拿 2.1 的优惠券当靶子，按顺序走，别跳读。</blockquote>
 <p>逻辑漏洞（Business Logic Vulnerability）没有通用扫描器，正适合你：读懂业务语义即读懂代码。</p>
 <h3 id="2-1-支付与订单状态机">2.1 支付与订单状态机</h3>
 <p><b><span class="bdg bdg-p">原理</span></b> 交易一致性靠两个不变量：金额数量服务端算、订单状态服务端状态机驱动。漏洞=不变量被客户端输入破坏：金额被信任（改包）、状态机跳跃（未支付→已发货）、并发窗口（券重复核销）。</p>
@@ -140,6 +142,7 @@ done</code></pre>
 <p><b><span class="bdg bdg-t">陷阱</span></b> ①单包攻击要求目标支持 HTTP/2，否则退回 last-byte 同步或多连接并发；②窗口极小时响应可能全 200 却只落库 1 条——竞态验副作用不验响应码；③先看限流，必要时申请测试白名单，别把客户风控打挂。</p>
 <p><b><span class="bdg bdg-x">练习</span></b>（第 2 节）：①PortSwigger「Business logic vulnerabilities」与「Race conditions」模块（含 single-packet attack 官方 lab：portswigger.net/web-security/race-conditions）；②精读 portswigger.net/research/smashing-the-state-machine；③HTB Editorial（Easy，Linux）——图书发布流程的接口逻辑缺陷暴露内部 API 与凭据，完整走"逻辑漏洞→凭据→立足"链（以 hackthebox.com/machines/editorial 及公开 writeup 为准）。</p>
 <h2 id="3-文件上传">3. 文件上传</h2>
+<blockquote>🧭 <b>导读</b>：前两章到手的都是数据的读与改，从这章起目标换挡：要的是代码执行。审计人的直觉在这里最值钱——每一步都在问“校验的和最终用的是不是同一个文件”。节奏提醒：免杀是这条流水线的最下游，别倒着学。</blockquote>
 <h3 id="3-1-黑白名单绕过全谱">3.1 黑白名单绕过全谱</h3>
 <p><b><span class="bdg bdg-p">原理</span></b> 上传校验五层：前端 JS、后缀黑白名单、Content-Type、文件头（魔术字节 magic bytes）、内容解析（getimagesize/二次渲染）。绕过=找"校验层"与"使用层"（容器怎么解析它）的不一致：后端只看扩展名而容器按其他规则执行（3.2）；后端看 Content-Type 而磁盘文件名不受影响。</p>
 <p><b><span class="bdg bdg-o">操作</span></b> 变形谱系（黑名单）：</p>
@@ -175,6 +178,7 @@ while :; do curl -s -d 'cmd=echo md5(1);' http://t/uploads/race.php; done</code>
 <p><b><span class="bdg bdg-t">陷阱</span></b> ①仅授权合同明确允许时落地 Webshell，交付时列清单并协助清除；②PHP 8 移除 assert 字符串执行与 preg_replace /e，旧 payload 直接报错；③内存马属持久化行为，客户环境慎用（衔接 VOL-06-内网）。</p>
 <p><b><span class="bdg bdg-x">练习</span></b>（第 3 节）：①upload-labs（github.com/c0ny1/upload-labs，覆盖黑白名单/条件竞争/.htaccess/二次渲染 21 关，关卡号以仓库 README 为准）按 3.1 单变量降级法全通；②vulhub <code>nginx/nginx_parsing_vulnerability</code> 复现 3.2；③自建环境跑通 3.3 并录屏。</p>
 <h2 id="4-反序列化">4. 反序列化</h2>
+<blockquote>🧭 <b>导读</b>：主场作战——Gadget、magic 方法你在源码里啃了五年，真正的新活只有“隔着黑盒认出它们”。提醒一句节奏：别在这里就把利用链拼完，本卷到无害验证为止，武器化的冲动先攒着，第 5 章有正规工序接住它。</blockquote>
 <p>不安全的反序列化（Insecure Deserialization）你源码审计最熟，黑盒要补的是"指纹识别"与"无害验证"。</p>
 <h3 id="4-1-java-fastjson-与-shiro">4.1 Java：Fastjson 与 Shiro</h3>
 <p><b><span class="bdg bdg-p">原理</span></b> Fastjson 的 <code>@type</code> 允许 JSON 实例化任意类并调 setter——设计即危险，靠 autotype 名单封堵。历史脉络：1.2.24 时代直接可用 JdbcRowSetImpl 走 JNDI 加载远程类；1.2.47 利用缓存机制在 autotype 关闭时仍可绕过；其后 expectClass 校验与 safeMode 逐步收口（版本细节以 fastjson 官方公告为准）。Shiro 的 rememberMe 则是"序列化→AES 加密→Base64 进 Cookie"：1.2.4 时代默认密钥公开（kPH+bIxk5D2deZiIxcaaaA==，以历史版本源码为准），持密钥即可伪造任意序列化对象（Shiro-550/CVE-2016-4437）；密钥轮换后仍有 CBC 填充预言（Shiro-721/CVE-2019-12422，需一个合法 rememberMe 做前缀）。两条链最终都指向 Commons-Collections 等 Gadget，与你审计过的 sink 同类。本卷只讲识别与无害验证，不构造武器化利用链。</p>
@@ -188,6 +192,7 @@ while :; do curl -s -d 'cmd=echo md5(1);' http://t/uploads/race.php; done</code>
 <p><b><span class="bdg bdg-t">陷阱</span></b> ①phar 要求目标后续把参数用于文件系统函数，"能上传"≠"能触发"；②PHP 8 魔术方法语义有变，payload 按目标版本在本地同版本 PHP 先验再发；③序列化串含引号/空字节，HTTP 传输必须 urlencode——新手最常见的死因。</p>
 <p><b><span class="bdg bdg-x">练习</span></b>（第 4 节）：①vulhub <code>fastjson/1.2.24-rce</code>、<code>fastjson/1.2.47-rce</code>、<code>shiro/CVE-2016-4437</code>（目录以 github.com/vulhub/vulhub 为准），只做"指纹+无害验证"两步并写卡；②本地写含 <code>__wakeup</code> 的类完成 CVE-2016-7124 绕过实验；③对比 1.2.24 与 1.2.47 环境差异写 200 字笔记。</p>
 <h2 id="5-poc-exp-构造方法论与漏洞卡片规范">5. POC→EXP 构造方法论与漏洞卡片规范</h2>
+<blockquote>🧭 <b>导读</b>：全卷收口，也是高潮：前四章攒下的都是“洞存在”的散点证据，从这里开始锻造武器。给你个审计系的坐标系——POC 到 EXP 的距离，就是当年“本地能跑的复现脚本”到“敢交付别人运行的利用代码”的距离。第 4 节练习写的卡别扔，那是这章的原料。</blockquote>
 <h3 id="5-1-从验证到稳定利用的工程化">5.1 从验证到稳定利用的工程化</h3>
 <p><b><span class="bdg bdg-p">原理</span></b> POC（Proof of Concept）回答"洞存不存在"，EXP（Exploit）回答"给定任意同类目标能否稳定打"。工程化差距在四点：环境指纹显式化（版本/配置前提写清）、输入规范化（payload 适配编码/大小写/路径差异）、失败回退、可重复性。一人红队的 EXP 还要可批量：一个项目几百个同框架资产，EXP 即专用扫描器。</p>
 <p><b><span class="bdg bdg-o">操作</span></b> 固定工序：1) 指纹前置：EXP 第一步先验组件/版本（如 Shiro deleteMe+密钥探测），不匹配立即退出并输出未命中原因；2) 参数化：目标 URL、payload 落点、回调地址全走 CLI 参数，禁止硬编码；3) 证据自采：成功时自动保存请求/响应到 <code>./evidence/&lt;host&gt;/</code>；4) 失败分类退出码：网络不通/指纹不匹配/验证失败，批量才能统计真阴性；5) 默认无害：只做延时/dnslog/标记文件，执行类动作需 <code>--confirm</code> 显式开启；6) 沉淀：EXP 入模板库，并补一份 nuclei 检测规则（只验不打口径见 VOL-08-报告交付）。</p>

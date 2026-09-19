@@ -80,6 +80,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <ol><li>打点后第一件事：本机信息收集与域判断</li><li>隧道与代理：正向/反向 shell 与代理链</li><li>凭据获取：SAM/LSASS/DPAPI/Linux/浏览器</li><li>权限提升：Windows 四条主干与 Linux 判断流程</li><li>横向移动：非域环境与域环境（Kerberos 一页讲透）</li><li>域控攻防路径全景矩阵</li><li>痕迹处理与收尾（合规边界）</li><li>GOAD 靶场分模块练习路径</li></ol>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="1-打点后第一件事-本机信息收集">1. 打点后第一件事：本机信息收集</h2>
+<blockquote>🧭 <b>导读</b>：欢迎进内网——你手里只有 VOL-01/02 交过来的那只低权限 shell，正站在别人的机器上，两眼一抹黑。 先别急着打谁：这一节是整条攻击链的“入口审计”，像当年接手代码先通读路由与配置，先弄清这台机器是谁、归谁管、在不在域。 这份档案收不全，后面的隧道、提权、横向每一步都在靠猜。</blockquote>
 <h3 id="1-1-判断是否在域内-windows">1.1 判断是否在域内（Windows）</h3>
 <p><span class="bdg bdg-p">原理</span>域（Domain）成员机的三个硬特征：机器账户在域控制器（Domain Controller, DC）注册、DNS 指向 DC、时间与 DC 同步（Kerberos 要求偏移 ≤5 分钟）。三者都留下可查询痕迹，无需任何工具即可判断。 <span class="bdg bdg-o">操作</span>逐条执行并记录输出：</p>
 <pre class="cb"><code>whoami /all
@@ -118,6 +119,7 @@ id | grep -w docker                          # docker 组≈事实 root</code></
 <p><span class="bdg bdg-x">练习</span>GOAD 的 castelblack（Defender 默认关闭，适合第一次完整收集）；HTB Sauna（Easy，AD 信息收集与用户枚举入门；退役机需 VIP 订阅，可用性以官方机器列表为准）。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="2-隧道与代理">2. 隧道与代理</h2>
+<blockquote>🧭 <b>导读</b>：本机档案有了，但这只 shell 只够你趴在原地——想够到内网其他机器，得先修路。 回头翻 1.2 的 <code>ipconfig</code> 与 <code>netstat</code> 输出：网卡和现有连接里，写着这一节怎么选的全部依据。 类比审计：这步相当于给目标系统挂上你的代理，此后对内网的每个动作都从这条通道走。</blockquote>
 <h3 id="2-1-正向-反向-shell">2.1 正向/反向 shell</h3>
 <p><span class="bdg bdg-p">原理</span>正向 shell（Bind Shell）：被控端监听端口，控制端连入——要求被控端口可达；反向 shell（Reverse Shell）：控制端监听、被控端回连——只需被控端可出网，能穿 NAT 与边界防火墙，实战默认选反向。 <span class="bdg bdg-o">操作</span></p>
 <pre class="cb"><code># 反向·Linux 目标
@@ -147,6 +149,7 @@ password = "xxx"</code></pre>
 <p><span class="bdg bdg-x">练习</span>TryHackMe Wreath 网络（免费，专门按"边界机→内网→域控"三层 pivot 设计，覆盖本节全部内容）；frp 先在两台本地虚拟机跑通再上靶场。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="3-凭据获取">3. 凭据获取</h2>
+<blockquote>🧭 <b>导读</b>：隧道通了，脚也伸进内网了——但“登得进去”不等于“带得走资本”，这条链上的硬通货是凭据。 这节的活儿你最熟：找硬编码密钥、翻配置、捞历史记录，只是仓库从代码库换成了内存、注册表和浏览器。 每捞到一枚哈希都收好，第 5 节的 PTH 和票据攻击全拿它们当门票。</blockquote>
 <h3 id="3-1-windows-sam-与-lsass-含防御视角">3.1 Windows：SAM 与 LSASS（含防御视角）</h3>
 <p><span class="bdg bdg-p">原理</span>SAM（安全账户管理器，Security Account Manager）存本机账户的 NTLM 哈希（NT LAN Manager hash），仅 SYSTEM 可读；lsass.exe（本地安全机构子系统进程）内存缓存所有交互登录凭据（NTLM 哈希、Kerberos 票据、个别明文——WDigest 明文缓存自 Win 8.1/Server 2012 R2 起默认关闭）。mimikatz 的 <code>sekurlsa::logonpasswords</code> 本质就是读 lsass 内存。防御视角：Credential Guard（VBS 隔离 lsass）、RunAsPPL、EDR 对 lsass 句柄获取/转储行为重点监控——授权项目里转储前必须与客户书面约定。 <span class="bdg bdg-o">操作</span>（需 SYSTEM 或 SeDebugPrivilege）</p>
 <pre class="cb"><code>reg save HKLM\SAM sam.hive &amp;&amp; reg save HKLM\SYSTEM sys.hive
@@ -174,6 +177,7 @@ unshadow passwd shadow &gt; hash.txt &amp;&amp; john hash.txt                # �
 <p><span class="bdg bdg-x">练习</span>GOAD：拿下 castelblack 后抓 lsass（Defender 关，完整练 mimikatz/procdump 流程）；HTB Sauna（Easy，凭据收割→横向入门一条龙）。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="4-权限提升">4. 权限提升</h2>
+<blockquote>🧭 <b>导读</b>：揣着一兜凭据却还是低权限账户——第 3 节已经让你撞过一次“需 SYSTEM”的门槛，往前走这样的门槛只会更多。 现在的目标只有一个：把 shell 换成 SYSTEM/root，否则第 5 节步步是门禁。 节奏提醒：这一节的动作最容易把机器打崩，授权业务在跑时，先挑稳路走。</blockquote>
 <h3 id="4-1-windows-提权四条主干">4.1 Windows 提权四条主干</h3>
 <p><span class="bdg bdg-p">原理</span>①未加引号服务路径（Unquoted Service Path）：CreateProcess 对带空格路径逐级尝试解析，可写目录+短名可执行文件即可劫持；②UAC（用户账户控制，User Account Control）绕过：管理员账户默认 Medium 完整性级别，利用自动提权程序（如 fodhelper）的注册表劫持拿到 High；③令牌（Token）滥用：SeImpersonatePrivilege（服务账户/IIS 应用池默认持有）可模拟客户端身份——Potato 家族全部建立在这上面；④内核漏洞：补丁缺失时最稳但风险最高。 <span class="bdg bdg-o">操作</span></p>
 <pre class="cb"><code># 服务路径
@@ -197,6 +201,7 @@ uname -r                                         # 内核版本对照</code></pr
 <p><span class="bdg bdg-x">练习</span>HTB Lame（Easy，SUID 入门）、Nibbles（Easy，sudo NOPASSWD）、Shocker（Easy，Shellshock+提权组合）；GOAD castelblack 的 IIS 应用池练 SeImpersonate→PrintSpoofer。HTB 退役机需 VIP，以官方列表为准。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="5-横向移动">5. 横向移动</h2>
+<blockquote>🧭 <b>导读</b>：单机 SYSTEM 到手——恭喜拿下第一个据点，但整张网还在别人手里，旅程刚过半。 从这节起视角要换挡：从“这台机器上有什么”切到“这张网怎么连”，像审计时从单个函数跳出来追整条调用链。 前几节攒下的哈希、明文、私钥，从现在开始逐张兑现。</blockquote>
 <h3 id="5-1-非域环境">5.1 非域环境</h3>
 <p><span class="bdg bdg-p">原理</span>非域内网两条通用路径：凭据复用（运维批量部署导致同口令/同哈希）与 SSH 密钥复用；核心是"收集→去重→小批量验证→扩大"。 <span class="bdg bdg-o">操作</span></p>
 <pre class="cb"><code>for h in $(cat hosts.txt); do sshpass -p 'Passw0rd' ssh -o StrictHostKeyChecking=no -o ConnectTimeout=3 root@$h id; done
@@ -206,6 +211,7 @@ ls -la /tmp/ssh-*/agent.*
 SSH_AUTH_SOCK=/tmp/ssh-XXXXXX/agent.NNNN ssh root@下一跳   # 劫持被转发 agent</code></pre>
 <p><span class="bdg bdg-v">验证</span>脚本输出非空 uid 回显清单=有效凭据资产表。 <span class="bdg bdg-t">陷阱</span>① 批量失败触发 fail2ban/账户锁定，控制并发与重试；② agent 劫持仅当前会话有效，拿不到密钥本体；③ 别漏 Windows 非域机器的 SMB——netexec 同样适用（见 5.3）。</p>
 <h3 id="5-2-kerberos-认证一页讲透">5.2 Kerberos 认证一页讲透</h3>
+<blockquote>🧭 <b>导读</b>：脚下换赛道了——到这里为止都是工作组思路“拿到凭据就去登”，从这一页起进入域的协议世界。 这页别跳过：5.3 到 5.5 的每一把刀都落在这几步认证流程里，先看懂地图，才知道刀口该指哪。 用你审计的老习惯来读：先摸清协议状态机，再找缺校验的那一环。</blockquote>
 <p><span class="bdg bdg-p">原理</span>域认证三方：客户端 / KDC（密钥分发中心，即 DC）/ 目标服务。四步： ① AS-REQ：用户用自身 NTLM 哈希加密时间戳，发送预认证； ② AS-REP：DC 返回登录会话密钥 + TGT（票据授权票据，Ticket Granting Ticket，由 krbtgt 密钥加密——DC 只验签不验人）； ③ TGS-REQ：持 TGT 向 DC 申请访问某 SPN（服务主体名称，Service Principal Name）的服务票据； ④ TGS-REP / AP-REQ：DC 返回用目标服务账户 NTLM 加密的服务票据，服务解密验签后放行。 此后所有域攻击都是对某一环打折：①②环被 AS-REP Roasting（5.4），③④环被 Kerberoasting（5.4）与白银票据（5.5）打，TGT 本体被黄金票据（5.5）伪造，NTLM 体系被 PTH（5.3）绕过。 <span class="bdg bdg-o">操作</span><code>net time \\DC</code> 校时；<code>klist</code> 查看当前会话票据。 <span class="bdg bdg-v">验证</span>klist 列出 krbtgt 的 TGT 与各服务票据，即处在本机 Kerberos 会话中。 <span class="bdg bdg-t">陷阱</span>时间偏移 &gt;5 分钟一切 Kerberos 攻击报 KRB_AP_ERR_MODIFIED——先校时再排错。</p>
 <h3 id="5-3-哈希传递-pass-the-hash-pth">5.3 哈希传递（Pass the Hash, PTH）</h3>
 <p><span class="bdg bdg-p">原理</span>NTLM 挑战-响应中哈希即凭据，全程不需明文；拥有哈希=拥有账户。 <span class="bdg bdg-o">操作</span></p>
@@ -232,12 +238,14 @@ dir \\winterfell\c$
 <p><span class="bdg bdg-x">练习</span>GOAD 官方场景逐一对号：brandon.stark=AS-REP、jon.snow=Kerberoast、完成 north 域 DA 后对 winterfell 做 DCSync→黄金票据。配官方推荐 writeup：https://mayfly277.github.io/categories/goad/ 。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="6-域控攻防路径全景矩阵">6. 域控攻防路径全景矩阵</h2>
+<blockquote>🧭 <b>导读</b>：一路杀到山顶——横向已经让你能触到域控，整场旅程只差这临门一脚。 打 DC 没有唯一正解：这节按“你手里攥着什么资本”来选打法，动身前先盘点第 5 节攒下的钥匙。 把它当地图而非教程，之后到第 8 节的靶场里，你会反复回来对号入座。</blockquote>
 <p><span class="bdg bdg-p">原理</span>DC 是域的大脑：所有认证经它、全域哈希躺在它的 NTDS.dit 里。打 DC 的路径只有三类：凭据链路（最常见）、协议/服务漏洞（碰运气）、强制认证+中继。矩阵行=你当前持有的资本，列=典型打法与收益。 <span class="bdg bdg-o">操作</span></p>
 <table><thead><tr><th>你有什么</th><th>典型打法</th><th>收益</th></tr></thead><tbody><tr><td>普通域用户</td><td>Kerberoast/AS-REP；BloodHound 找 ACL 滥用最短路径</td><td>服务账户→间接 DA</td></tr><tr><td>服务账户</td><td>约束委派/基于资源的约束委派（RBCD）滥用</td><td>模拟任意用户</td></tr><tr><td>可触发他人认证</td><td>Responder 毒化 LLMNR/NBT-NS + NTLM 中继到 LDAP/SMB</td><td>建机器账户→RBCD</td></tr><tr><td>SYSVOL/GPO 权限</td><td>恶意 GPO 脚本下发（GOAD 的 STARKWALLPAPER 即此）</td><td>批量拿域机器</td></tr><tr><td>DA 任一账户</td><td>DCSync（secretsdump -just-dc）</td><td>全域哈希+krbtgt</td></tr><tr><td>DC 可达+未打补丁</td><td>Zerologon（CVE-2020-1472）、noPac（CVE-2021-42278/42287）、PrintNightmare（CVE-2021-1675/34527）、PetitPotam 强制认证→AD CS 中继</td><td>直接控 DC</td></tr><tr><td>MSSQL 账户</td><td>xp_cmdshell / EXECUTE AS 模拟 / 数据库链路（link）</td><td>跨服务器跳板</td></tr></tbody></table>
 <p>路径采集：<code>bloodhound-python -d 域 -u 用户 -p 口令 -dc &lt;DC&gt; -c All</code>（参数以 README 为准）；防御对照逐项写进报告：Zerologon→安全通道签名强化、noPac→两枚补丁、PetitPotam→禁用 MS-EFSRPC+启用 EPA/通道绑定、黄金票据→krbtgt 双重重置，细节以微软官方安全公告为准。 <span class="bdg bdg-v">验证</span>矩阵每行至少在 GOAD 复现一条（见第 8 节路径），能向客户复盘"如果补了 X，这条链断在哪"。 <span class="bdg bdg-t">陷阱</span>别迷信 Zerologon 一步登天——补丁齐全的现实环境里，上三行的凭据链路才是常态打法。</p>
 <p><span class="bdg bdg-x">练习</span>GOAD 模块 E/F（见第 8 节）对照本矩阵逐行复现；再用 BloodHound 为 GOAD 三个域各找一条"普通用户→DA"最短路径并截图存档。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="7-痕迹处理与收尾-合规边界">7. 痕迹处理与收尾（合规边界）</h2>
+<blockquote>🧭 <b>导读</b>：域控到手，攻击旅程收官——从现在起你从攻击者切回工程师身份，进入下山与对账段。 节奏提醒：这一节的清单每条都是边界，动手前重读授权书范围，宁可少删、不可多碰。 转岗前你交审计报告，转岗后交的还是报告——只是证据从代码 diff 换成了这条攻击链本身。</blockquote>
 <p><span class="bdg bdg-p">原理</span>红队的"痕迹处理"仅指清理自己新增的持久化构件；删除或篡改客户日志=销毁证据，超出授权甚至触法。日志是蓝队的答卷，让它留着并写进报告才是交付价值（报告规范见 VOL-07-08-methodology-reporting）。 <span class="bdg bdg-o">操作</span>收尾清单逐项打勾：</p>
 <ul><li>删除落地工具、上传的 webshell/tunnel 文件与自解压目录</li><li>删除新增账号（<code>net user 名 /delete</code>）、计划任务、自启动注册表项</li><li>恢复网络改动：<code>netsh interface portproxy delete v4tov4 listenport=...</code>，关闭 frp/nps 进程并清配置</li><li>整理操作时间线（时间/主机/命令/结果），确保与客户日志可对账</li><li>报告输出：攻击路径图（打点→DC）+ 每步对应事件 ID（4624 登录 / 4768 4769 票据 / 4104 PowerShell 脚本块）+ 未检出项清单</li></ul>
 <p><span class="bdg bdg-v">验证</span>复检：新增账号为空、portproxy 列表为空、上传文件哈希清单比对无残留。 <span class="bdg bdg-t">陷阱</span>① 授权书范围外的主机一律不碰，哪怕"顺路"；② 时间窗结束即停，未竟项写进复测建议而非硬闯；③ 破坏性验证（加密/擦除/停业务）需单独书面授权，默认不做。</p>

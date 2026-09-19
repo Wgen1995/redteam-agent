@@ -27,6 +27,8 @@
 
 ## 1. 越权与访问控制
 
+> 🧭 **导读**：上册解决“进得去”——你现在手里有会话、有路由图，人站在鉴权层跟前。这章对你几乎零学习成本：审计时你在代码里找“查询少了归属条件”，现在同一个判断改到 Burp 的响应差异里做，证据从代码行变成响应行。
+
 失效的访问控制（Broken Access Control）居 OWASP Top 10 2021 首位（A01），对一人红队产出最高：不需要新漏洞类型，只要"两把账号+对照实验"。
 
 ### 1.1 水平越权（IDOR）：从对象标识枚举到批量验证
@@ -98,6 +100,8 @@ done
 
 ## 2. 逻辑漏洞
 
+> 🧭 **导读**：刚出鉴权层，眼前换成了业务流程——这里的洞没有 payload 字典可抄，你唯一带得走的仪器是 1.1 练下的那条纪律：一次只换一个变量。节奏上留意：2.4 的竞态要拿 2.1 的优惠券当靶子，按顺序走，别跳读。
+
 逻辑漏洞（Business Logic Vulnerability）没有通用扫描器，正适合你：读懂业务语义即读懂代码。
 
 ### 2.1 支付与订单状态机
@@ -143,6 +147,8 @@ done
 **【练习】**（第 2 节）：①PortSwigger「Business logic vulnerabilities」与「Race conditions」模块（含 single-packet attack 官方 lab：portswigger.net/web-security/race-conditions）；②精读 portswigger.net/research/smashing-the-state-machine；③HTB Editorial（Easy，Linux）——图书发布流程的接口逻辑缺陷暴露内部 API 与凭据，完整走"逻辑漏洞→凭据→立足"链（以 hackthebox.com/machines/editorial 及公开 writeup 为准）。
 
 ## 3. 文件上传
+
+> 🧭 **导读**：前两章到手的都是数据的读与改，从这章起目标换挡：要的是代码执行。审计人的直觉在这里最值钱——每一步都在问“校验的和最终用的是不是同一个文件”。节奏提醒：免杀是这条流水线的最下游，别倒着学。
 
 ### 3.1 黑白名单绕过全谱
 
@@ -205,6 +211,8 @@ while :; do curl -s -d 'cmd=echo md5(1);' http://t/uploads/race.php; done
 
 ## 4. 反序列化
 
+> 🧭 **导读**：主场作战——Gadget、magic 方法你在源码里啃了五年，真正的新活只有“隔着黑盒认出它们”。提醒一句节奏：别在这里就把利用链拼完，本卷到无害验证为止，武器化的冲动先攒着，第 5 章有正规工序接住它。
+
 不安全的反序列化（Insecure Deserialization）你源码审计最熟，黑盒要补的是"指纹识别"与"无害验证"。
 
 ### 4.1 Java：Fastjson 与 Shiro
@@ -230,6 +238,8 @@ while :; do curl -s -d 'cmd=echo md5(1);' http://t/uploads/race.php; done
 **【练习】**（第 4 节）：①vulhub `fastjson/1.2.24-rce`、`fastjson/1.2.47-rce`、`shiro/CVE-2016-4437`（目录以 github.com/vulhub/vulhub 为准），只做"指纹+无害验证"两步并写卡；②本地写含 `__wakeup` 的类完成 CVE-2016-7124 绕过实验；③对比 1.2.24 与 1.2.47 环境差异写 200 字笔记。
 
 ## 5. POC→EXP 构造方法论与漏洞卡片规范
+
+> 🧭 **导读**：全卷收口，也是高潮：前四章攒下的都是“洞存在”的散点证据，从这里开始锻造武器。给你个审计系的坐标系——POC 到 EXP 的距离，就是当年“本地能跑的复现脚本”到“敢交付别人运行的利用代码”的距离。第 4 节练习写的卡别扔，那是这章的原料。
 
 ### 5.1 从验证到稳定利用的工程化
 

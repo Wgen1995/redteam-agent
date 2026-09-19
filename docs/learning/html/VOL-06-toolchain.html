@@ -74,10 +74,12 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
   <article class="doc">
   <h1 id="vol-06-工具链详解手册">VOL-06 工具链详解手册</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-06-toolchain.md</div>
   <blockquote>受众：5 年源码审计/产品安全经验、刚转岗渗透测试的一人红队工程师。本卷解决"工具怎么选、怎么用、输出怎么读"；漏洞原理见（VOL-01-web-app-part1、VOL-02-web-app-part2），方法论与交付见（VOL-07-08-methodology-reporting），客户端逆向见（VOL-05-client-package）。<b>所有命令仅用于已签授权书（Rules of Engagement, RoE）范围内的目标。</b></blockquote>
+<blockquote>🧭 <b>导读</b>：把这卷当工具字典，别从头读——按任务查组、按工具查条目，每个条目固定“定位/原理/操作/验证/陷阱”五段，像你当年翻 SAST 规则手册那样按需取用。急着动手就直接跳第 6 节战术矩阵，按场景反查该串哪几件工具；无论跳到哪，“陷阱”一段都值得停 30 秒。</blockquote>
 <h2 id="目录">目录</h2>
 <ol><li>侦察组：nmap / httpx / ffuf（字典工程）/ OneForAll</li><li>Web 代理组：Burp Suite / mitmproxy</li><li>验证利用组：sqlmap / nuclei（自定义模板）/ fscan、vulmap</li><li>后渗透组：Metasploit / CobaltStrike（概念与边界）/ frp</li><li>辅助组：CyberChef / 代码执行环境 / 笔记与截图规范</li><li>工具组合战术矩阵</li></ol>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="1-侦察组">1. 侦察组</h2>
+<blockquote>🧭 <b>导读</b>：你站在整条链路的最前端——后面四章每条命令要填的 IP 和 URL，全指望这组的产出。像审计开工先画入口点清单：此刻的目标是“门摸全”而不是“破门快”，这组工具个个能打爆告警，节奏就是你的授权额度。</blockquote>
 <h3 id="1-1-nmap-端口与服务侦察基座">1.1 nmap —— 端口与服务侦察基座</h3>
 <p>定位：黑盒第一步，回答"目标开了什么门、门后是什么服务"。</p>
 <p><span class="bdg bdg-p">原理</span>默认 SYN 半开扫描（<code>-sS</code>）：只发 TCP 握手前两步，收到 SYN/ACK 即判开放并 RST 断开，主机应用层多半无感知。<code>-sV</code> 服务识别：向开放端口发协议探针（probe），响应与签名库 <code>nmap-service-probes</code> 比对推出服务与版本。脚本引擎（Nmap Scripting Engine, NSE）是内嵌 Lua 虚拟机：脚本按分类（safe/version/vuln/exploit/brute 等）组织，可读取已探测的端口与服务信息，实现"发现 80 端口自动跑 http 检测"这类联动。</p>
@@ -150,6 +152,7 @@ cat subs.txt | httpx -title -json -o live.json      # 接 1.2 存活筛选</code
 <p><span class="bdg bdg-v">验证</span><code>example.com.csv</code> 含子域、解析 IP、CNAME 列；两工具合并去重后数量级与客户资产清单对得上，差太多先查通配符 DNS。</p>
 <p><span class="bdg bdg-t">陷阱</span>OneForAll 不配第三方 API key 结果明显偏少；仓库久未大更新，依赖装不上就退回 subfinder + CT 日志方案。爆破类收集会对权威 DNS 产生查询流量，确认授权范围覆盖 DNS。</p>
 <h2 id="2-web-代理组">2. Web 代理组</h2>
+<blockquote>🧭 <b>导读</b>：侦察给你的还是一张静态清单，从这组起你要逐扇门上手了。把 Burp 的 HTTP history 当 Web 世界的调试日志：每个请求-响应对都是可重放、可篡改的一次调用——你审计时读调用链的直觉，在这张表里直接变现。</blockquote>
 <h3 id="2-1-burp-suite-web-测试工作台">2.1 Burp Suite —— Web 测试工作台</h3>
 <p>定位：Web 打点主战场：看包、改包、重放、批量、扫描。</p>
 <p><span class="bdg bdg-p">原理</span>本机 127.0.0.1:8080 起代理监听，浏览器流量经它中转；HTTPS 靠 Burp 动态签发的 CA 证书（Certificate Authority, CA）做中间人（Man-in-the-Middle, MITM）解密——所以必须先信任 Burp CA。所有经手流量进 HTTP history，任意请求可右键送往 Repeater/Intruder/Scanner 复用。</p>
@@ -179,6 +182,7 @@ def response(flow: http.HTTPFlow):
 <p><span class="bdg bdg-v">验证</span>mitmweb 界面出现 flows 且能看内容；脚本内 <code>print()</code> 打到 mitmdump 终端；flow 详情里核对你注入的头是否生效。</p>
 <p><span class="bdg bdg-t">陷阱</span>Android 7+ 默认不信任用户证书，App 的 HTTPS 需系统级证书（root），未授权设备别碰——很多 App 直接走 VOL-05 静态逆向拿服务端地址更快。脚本异常会静默丢流量：前台跑盯 stderr。大流量卡界面用过滤表达式如 <code>~u api.target</code>。</p>
 <h2 id="3-验证利用组">3. 验证利用组</h2>
+<blockquote>🧭 <b>导读</b>：上一组的 Repeater 里应该已攒下几个可疑点——这组负责把它们变成敢写进报告的实锤。心态回到审计岗：工具输出只是告警线索，判定永远归你；任何命中不经手工复核，就只是误报候选人。</blockquote>
 <h3 id="3-1-sqlmap-sql-注入验证与提数">3.1 sqlmap —— SQL 注入验证与提数</h3>
 <p>定位：把手工确认的注入点自动化：指纹、提数、绕 WAF。<b>只对授权数据</b>。</p>
 <p><span class="bdg bdg-p">原理</span>对参数注入探测载荷，覆盖五类判定：报错型（error-based，看 DB 错误回显）、布尔盲注（boolean-blind，对比真假响应差异）、时间盲注（time-based，用延迟推断）、UNION 联合（探测列数与回显位）、堆叠查询（stacked queries）。确认后按数据库（DBMS）方言构造提数语句。它不懂你业务的边界，范围全靠你给。</p>
@@ -249,6 +253,7 @@ python3 vulmap.py -u http://192.168.10.5:8080</code></pre>
 <p><span class="bdg bdg-v">验证</span>fscan 按主机分段输出端口、标题/指纹、命中漏洞与弱口令，并写入结果文件；vulmap 命中输出漏洞名、编号与验证证据。两者输出都是<b>线索清单</b>：逐条回 nmap 精扫 / Burp / 手工 POC 复核。</p>
 <p><span class="bdg bdg-t">陷阱</span>噪音与破坏是主陷阱：弱口令爆破可能锁死域账号、触发 SIEM 应急。铁律：(1) 授权书明确允许 (2) 与客户约定时间窗 (3) <code>-nobr</code> 起步 (4) 控制线程与网段。fscan 判定基于内置 POC 快照，误报漏报都常见，命中必须手工复核才进报告。vulmap 更新缓慢，只当组件快速比对，结论以官方公告 PoC 为准（以官方仓库为准：https://github.com/zhzyker/vulmap ）。在授权边界外网段跑 = 越界红线。</p>
 <h2 id="4-后渗透组">4. 后渗透组</h2>
+<blockquote>🧭 <b>导读</b>：能翻到这组，说明你已有立足点——从这章起每个动作都发生在客户内网，授权边界从“这台机器”收紧到“每一步横向”。节奏提醒：别急着上 C2 框架，一人红队先把“能落地、能留证、能收场”三件事练熟，MSF 加隧道已覆盖大多数授权场景。</blockquote>
 <h3 id="4-1-metasploit-利用与后渗透框架">4.1 Metasploit —— 利用与后渗透框架</h3>
 <p>定位：模块化利用与后渗透（post-exploitation）工具箱，内网横向的"瑞士军刀"。</p>
 <p><span class="bdg bdg-p">原理</span>六类模块：auxiliary（扫描/嗅探等辅助）、exploit（利用链）、payload（利用成功后执行的载荷：普通 shell 或 meterpreter）、post（后渗透：信息收集/提权辅助）、encoder、evasion。每个 exploit 有前置条件（版本、路径、认证状态），不满足即失败——先侦察后利用。meterpreter 是内存驻留的多功能 shell：注入方式运行、不新起落盘进程，提供 <code>sysinfo</code>、<code>getuid</code>、口令转储、内网路由等能力。框架自带 PostgreSQL 工作区记录 hosts/services/creds。</p>
@@ -322,6 +327,7 @@ proxychains nmap -sT -Pn 192.168.10.0/24 -p 80,445,3389</code></pre>
 <p><span class="bdg bdg-v">验证</span>frpc 日志出现 <code>login to server success</code>；VPS <code>ss -lntp | grep 13389</code> 在听；<code>proxychains curl http://内网地址</code> 有响应即链路通；frps 面板（7500）看代理与流量状态。</p>
 <p><span class="bdg bdg-t">陷阱</span>公网裸 frps 是扫描器重点：强 token + 非默认端口 + 面板强口令；历史版本有已知 RCE，<b>始终用最新版</b>。隧道用于客户环境前确认 RoE 允许"流量中转/VPS 出口"，VPS IP 列入授权附录。敏感场景客户端加 <code>transport.tls.enable = true</code>（以官方文档为准：https://github.com/fatedier/frp ）。nmap 走 socks 只支持全连接扫描（<code>-sT -Pn</code>），SYN 扫描不走代理，别误判"端口全关"。</p>
 <h2 id="5-辅助组">5. 辅助组</h2>
+<blockquote>🧭 <b>导读</b>：别被“辅助”二字骗了——前四章攒下的发现，能不能变成客户签字的报告，取决于这一组。把你写审计工作底稿的习惯搬过来：证据当场落、PoC 可复现、数据不出本机；工具解决“找到”，这组解决“交付”。</blockquote>
 <h3 id="5-1-cyberchef-编解码瑞士军刀">5.1 CyberChef —— 编解码瑞士军刀</h3>
 <p><span class="bdg bdg-p">原理</span>纯前端实现数百种运算操作（Operation），拖拽组成处理流水线（Recipe）；完全离线可用，数据不出本机——这是对在线工具的合规优势。 <span class="bdg bdg-o">操作</span>官方 Release 下载 zip 解压，浏览器打开 <code>CyberChef.html</code> 即可（https://github.com/gchq/CyberChef ）。常用：Magic（自动识别多层编码）、From Base64、URL Decode、JWT Decode（解 JWT 结构，配合 VOL-01 鉴权章节）。Recipe 可导出为 URL 分享复现。 <span class="bdg bdg-v">验证</span>对一段 JWT/Base64 输入能一步还原明文即正常。 <span class="bdg bdg-t">陷阱</span>操作参数选错（Base64 字母表变体、字符串 vs Hex 输入）是排障第一现场；官方在线版方便但敏感数据务必用离线版。</p>
 <h3 id="5-2-代码执行环境-poc-与自动化工位">5.2 代码执行环境 —— PoC 与自动化工位</h3>

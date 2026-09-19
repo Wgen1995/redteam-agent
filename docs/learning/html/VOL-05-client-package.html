@@ -78,6 +78,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <ol><li><b>服务端地址清单</b>：正式/测试/灰度环境域名与 IP，是资产测绘的独家补充（见 VOL-01-信息收集）；</li><li><b>兼容与调试接口</b>：客户端为兼容旧版本保留的老接口常缺鉴权，是 Web 打点金矿（见 VOL-02-Web）；</li><li><b>硬编码凭据与密钥</b>：API token、数据库连接串、测试账号——内网横向的直通车（见 VOL-06-内网）；</li><li><b>更新机制 URL</b>：软件自身升级走的服务器，供应链视角的打点。</li></ol>
 <p>固定流水线：识别（file/DIE）→ 解包/脱壳（7z/innoextract/upx -d/asar/apktool）→ 双编码字符串提取 → 分桶 grep → 反编译只啃"加密类+网络类" → 验证凭据 → 按 §5 写 finding 卡。</p>
 <h2 id="2-windows-exe-分析">2. Windows EXE 分析</h2>
+<blockquote>🧭 <b>导读</b>：第一站是 Windows 安装包：EXE 这条线会把「判壳→解包→提取→反编译」四步走全，第 3 节的 APK 不过是换一套工具重跑同一套流程。 节奏提醒：判壳（2.2）没过之前，你别急着对样本跑 strings——对着外壳和加壳产物提取，就像审计时硬读压缩包里的 .class，白费功夫。</blockquote>
 <h3 id="2-1-pe-文件基础-节表与导入表">2.1 PE 文件基础：节表与导入表</h3>
 <p><b><span class="bdg bdg-p">原理</span></b> PE（Portable Executable，可移植可执行文件）是 Windows EXE/DLL 的格式：DOS 头 → PE 头 → 可选头之后是<b>节表（Section Table）</b>——一张"文件偏移↔内存地址（RVA）"的目录，每节描述一块连续数据：.text 代码、.rdata 只读数据（字符串常量在这里）、.data 可写全局、.rsrc 资源（图标/对话框/安装器内嵌载荷）。<b>导入表（Import Table）</b>记录程序运行时要加载哪些 DLL、调用其中哪些函数——相当于这张二进制的"能力清单"；对应的导出表（Export Table）是它对外提供的函数。分析价值：节表告诉你"数据在哪"，导入表告诉你"它会干什么"（联网？读写注册表？出现 LoadLibrary+GetProcAddress 组合暗示插件体系或反调试）。</p>
 <p><b><span class="bdg bdg-o">操作</span></b> 在 Linux 分析机（apt install binutils p7zip-full upx-ucl innoextract）：</p>
@@ -103,6 +104,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <p><b><span class="bdg bdg-v">验证</span></b> 产出两张表：①URL/IP 去重清单——逐条解析归属，标注"内网/测试环境/公网"，并入资产清单；②疑似凭据表——值、来源文件、上下文行，进入 §5 验证流程。云 key 的验证（例 <code>aws sts get-caller-identity</code>）必须在合同授权范围内执行。</p>
 <p><b><span class="bdg bdg-t">陷阱</span></b> ①"像密码"≠凭据有效：报错模板、字段名里也全是 password；入库必须人工过上下文，报告必须标注"已验证/未验证"。②漏跑 -e l 宽字符是新手第一大事故。③验证云凭据属高敏动作，授权书没覆盖就不做，把"未验证+理由"写清楚。</p>
 <h3 id="2-5-net-程序-dnspy-反编译要点">2.5 .NET 程序 dnSpy 反编译要点</h3>
+<blockquote>🧭 <b>导读</b>：到这站画风一变：前面你都在「拆开看」，从这里开始「读代码」——.NET 反编译几乎还原源码，你五年源码审计的手艺第一次可以原样平移。 观察引导：2.4 攒下的凭据表里那些「看得出是密钥、看不出怎么用」的常量，钥匙就在这节——全局搜索定位加密类，回溯它。</blockquote>
 <p><b><span class="bdg bdg-p">原理</span></b> .NET 程序的产物是 CIL 中间码+完整元数据（类型/成员/字符串字面量俱在），反编译几乎可还原源码——正好把 5 年源码审计能力直接平移到黑盒。识别：导入表只有 mscoree.dll 或 DIE 标注 .NET Assembly。国产桌面客户端（办公/运维/安全工具）大量是 C#。</p>
 <p><b><span class="bdg bdg-o">操作</span></b></p>
 <ol><li>工具：dnSpyEx（dnSpy 停更后的社区维护版，github.com/dnSpyEx/dnSpy），Windows 绿色免装；macOS/Linux 用 ILSpy 命令行：<code>dotnet tool install -g ilspycmd</code> → <code>ilspycmd app.exe &gt; app.cs</code>。</li><li>dnSpyEx 打开主程序 → 左侧树按命名空间展开 → 双击类即反编译视图（可切 C#/IL）。</li><li>全局搜索（Ctrl+Shift+K）先搜：<code>http</code>、<code>Rijndael</code>、<code>AesManaged</code>、<code>password</code>、<code>machineKey</code>（ASP.NET machineKey 泄露=ViewState 反序列化，直接衔接 VOL-02-Web 的打点）。</li><li>定位加密类：搜 <code>CryptoStream|MD5|SHA1</code> → 读出硬编码 Key/IV 常量与工作模式。</li><li>动态调试：dnSpy 直接 F9 断点、F5 运行——适合"密文已知、算法在跑时下断拿明文 key"的场景；右键方法"编辑方法（C#）"改逻辑后 File→Save Module 存改版 DLL（去校验做调试用）。</li><li>混淆处理（字符串 \uXXXX、名称乱码 = ConfuserEx 等混淆器）：de4dot 先反混淆 <code>de4dot app_obf.exe</code>（github.com/de4dot/de4dot）。</li></ol>
@@ -117,6 +119,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <p><b><span class="bdg bdg-x">练习</span></b>（第 2 节；vulhub 是服务端 Web 漏洞库，无本主题对应靶机，故用 HTB+开源/自建靶标）</p>
 <ol><li>HTB Blocky（Easy，retired，需 VIP）：WordPress 凭据藏在 Minecraft 插件 JAR——"包内硬编码凭据"入门（JAR 解包=unzip+strings）。</li><li>HTB Cascade（Easy，retired Windows）：对 CascAudit.exe（.NET）反编译还原凭据解密逻辑——练 2.5 全流程。两机可用性以 hackthebox.com/machines 目录为准。</li><li>UPX 手感：crackmes.one 搜 "UPX" 任选高评分题练"判壳→脱壳→对比"；用 Notepad++（NSIS 打包）练 7z 解安装器。</li><li>授权实战：对客户在用的一个 Electron/.NET 桌面客户端做 2.4–2.6 全流程，产出资产补充清单+疑似凭据表。</li></ol>
 <h2 id="3-apk-分析">3. APK 分析</h2>
+<blockquote>🧭 <b>导读</b>：换月台了：你刚在 Windows 走通的四步流水线整体平移到 Android——apktool/jadx 对位 7z/dnSpy，「加固」对位「加壳」，先判加固再定策略，道理同 2.2。 节奏提醒：别被新名词唬住，路径没变；手生时回第 2 节找对应步骤，对照着走。</blockquote>
 <h3 id="3-1-apktool-jadx-逐步">3.1 apktool / jadx 逐步</h3>
 <p><b><span class="bdg bdg-p">原理</span></b> APK=ZIP 容器：classes*.dex（Dalvik 字节码）、AndroidManifest.xml（二进制 XML，直接看不了）、resources.arsc（资源表）、lib/（native so）、assets/、META-INF/（签名）。两条互补工具线：apktool 解资源+manifest 且能回编译（改包用）；jadx 把 dex 反编译成可读 Java（读逻辑用）。</p>
 <p><b><span class="bdg bdg-o">操作</span></b></p>
@@ -150,6 +153,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <p><b><span class="bdg bdg-x">练习</span></b>（第 3 节）</p>
 <ol><li>InsecureBankv2（github.com/dineshshetty/Android-InsecureBankv2）：覆盖硬编码/组件暴露/不安全存储的综合靶标，附 Usage Guide。</li><li>OWASP UnCrackable L1–L4（mas.owasp.org/crackmes/Android/，MASTG 官方 CrackMe）：L1 练 root 检测绕过+硬编码 secret，全系列练 Frida hook。</li><li>Allsafe（github.com/t0thkr1s/allsafe-android）：练证书锁定绕过与 Frida 专项。</li><li>用 MobSF 对以上任一 APK 出静态报告，对照本节手工结论核对差异——建立"自动报告≠结论"的手感。</li></ol>
 <h2 id="4-通信协议分析-从安装包到自定义协议">4. 通信协议分析：从安装包到自定义协议</h2>
+<blockquote>🧭 <b>导读</b>：全卷最大的转轨在这站：前面你一直在「拆包看死的产物」，现在要让客户端跑起来、看它怎么说话——静态转动态。 为什么是现在：你手里已有地址清单（2.4/3.3）、可读源码（2.5/3.1），可能还摸到了密钥——三样凑齐，才有本钱把报文字节和代码函数一一对号，协议这才「半透明」。</blockquote>
 <p><b><span class="bdg bdg-p">原理</span></b> 情报闭环：§2.4/§3.3 拿到服务端地址 → §3.5 建立抓包 → 观察报文结构 → 回反编译源码（2.5/3.1）定位编解码/加密函数对照字节 → 重放（Replay）验证。私有客户端（游戏、工业上位机、桌面运维工具、IM）常用自定义 TCP/UDP 协议，帧结构普遍是"魔数+版本+长度+（加密）载荷"；密钥要么硬编码、要么握手协商，而协商算法也在客户端里——所以"客户端在手，协议半透明"。</p>
 <p><b><span class="bdg bdg-o">操作</span></b></p>
 <ol><li>从字符串清单抓非常规端口：<code>grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{2,5}' s_*.txt | sort -u</code>，对命中 IP:port 做 nmap 服务识别，资产并入 VOL-01-信息收集。</li><li>抓包：设备上 <code>tcpdump -i any host &lt;IP&gt; -w /sdcard/cap.pcap</code>（需 root）后 <code>adb pull</code>；或宿主机 Wireshark 抓模拟器网卡。</li><li>看流：Wireshark → Analyze → Follow → TCP Stream，记录握手帧/认证帧/业务帧的边界、魔数与长度字段偏移；注意 TLV（type-length-value）结构。</li><li>回源码对号：jadx/dnSpy 搜端口号字符串、魔数常量、<code>DataOutputStream|ByteBuffer|writeInt</code>——直接定位协议编解码类，读出字段语义与加密算法。</li><li>Protobuf 特征：二进制载荷+反编译里出现 <code>parseFrom|writeTo</code> → <code>protoc --decode_raw &lt; msg.bin</code> 直接出字段树；批量还原 .proto 可用 pbtk（github.com/marin-m/pbtk）。</li><li>重放验证：HTTP 部分走 Burp Repeater；自定义 TCP 用 Python 按帧结构构造探针；密文先用客户端内提取的 key 解一帧，验证理解正确。</li></ol>
@@ -157,6 +161,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <p><b><span class="bdg bdg-t">陷阱</span></b> ①别只盯 443：最容易出成果的是那台"忘了配 TLS 的明文协议网关"。②防重放字段（时间戳/序列号/签名）会让重放失败——回代码找校验逻辑，而不是瞎重试。③重放业务帧有副作用（真发消息/下单），用测试账号+客户约定的演练窗口。④看不懂的字段先记录再猜，报告里不写臆测语义。</p>
 <p><b><span class="bdg bdg-x">练习</span></b>（第 4 节）：用 InsecureBankv2 走通"地址→抓包→改包重放"链路；在 malware-traffic-analysis.net 挑一份合法 pcap 练协议阅读手感；对授权客户的一款私有桌面客户端完成帧结构表。</p>
 <h2 id="5-产出规范-硬编码凭据-finding-卡">5. 产出规范：硬编码凭据 finding 卡</h2>
+<blockquote>🧭 <b>导读</b>：这站不是新技术，是收口：把前面所有「疑似凭据」压成一张经得起 challenge 的 finding 卡——证据链的套路和你写审计报告同源，只是证据从代码行换成了样本偏移。 节奏提醒：先过五要素再下笔；缺一项，评审会上你就只剩「我看到了一个字符串」。</blockquote>
 <p><b><span class="bdg bdg-p">原理</span></b> 硬编码凭据（Hardcoded Credentials）对应 CWE-798（Use of Hard-coded Credentials，使用硬编码凭据）。这类 finding 常被客户 challenge，因为证据链不完整就等于"我看到了一个字符串"。证据五要素：对象（哪个组件哪个版本）、位置（精确到文件/类/方法/偏移）、值（脱敏呈现+指纹）、验证（是否有效、在哪个入口验证）、影响（能访问什么资产）。缺一项，评审会上就被打回。</p>
 <p><b><span class="bdg bdg-o">操作</span></b> finding 卡模板（字段直接进报告）：</p>
 <ul><li><b>标题</b>：组件+版本+位置+凭据类型，例：<code>XX 客户端 v3.2（app.asar→main.js）硬编码测试环境管理员口令</code>。</li><li><b>风险等级</b>：按影响域（内网管理员凭据 &gt; 单租户 API key）与可利用性定级，标准引用 VOL-08-报告交付。</li><li><b>证据三件套</b>：①位置，可复制路径：<code>app.apk → jadx → com.xx.net.CryptoUtil.is2()</code> 或 <code>setup.exe 解包 → config.xml:12</code>；②值：脱敏呈现（<code>Adm***4!</code>）+ SHA-256 指纹，完整值放加密附录、仅交指定联系人；③复现命令序列（评审员 10 分钟内可跑通）：<code>apktool d app.apk -o o &amp;&amp; grep -rn 'secret' o/smali*/com/xx/net/</code>。</li><li><b>验证结论</b>：有效 →"已于 X.X.X.X 登录成功（截图已脱敏）"；未验证 → 写明理由（如"超出授权范围"）。</li><li><b>影响</b>：该凭据可访问的资产与角色，并入 VOL-06-内网的攻击路径图。</li><li><b>修复建议</b>：凭据迁服务端下发/系统凭据库（Windows DPAPI、Android Keystore）；已泄露凭据立即轮换；明确告知"加壳/混淆只是提高提取成本，不是修复"。</li><li><b>样本指纹</b>：原始样本 SHA-256、分析时间与环境（客户升级后仍可对账）。</li></ul>

@@ -72,6 +72,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <p>核心心法：审计员最强的不是找洞，而是<b>知道"这个洞对应的那个请求长什么样"</b>。黑盒打点杂乱无章时，你永远可以先构造假设再验证。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="1-有源码时-入口点优先审计法">1. 有源码时：入口点优先审计法</h2>
+<blockquote>🧭 <b>导读</b>：折算表看完，你现在站在全卷最熟悉的地形上——手里有源码。这一章最终只交付一样东西：一张黑盒可以直接下手的打点清单。带着这个目标走，§1 结束时你的 Burp 里就该躺着第一批待发请求了。</blockquote>
 <h3 id="1-1-路由-过滤器-鉴权中间件先行">1.1 路由/过滤器/鉴权中间件先行</h3>
 <p><span class="bdg bdg-p">原理</span>漏洞成立的前提是<b>可达</b>：外部请求→中间件链→路由分发→handler→sink。审计员的肌肉记忆是直接 grep sink（如 <code>readObject</code>），这在黑盒交付里是倒着的——先回答"哪些入口没被中间件挡住"，sink 审计才有优先级。鉴权逻辑通常不写在每个 handler 里，而是集中在前置层（过滤器 Filter、拦截器 Interceptor、中间件 Middleware），而集中式鉴权最常见的缺陷是<b>前缀白名单漏配</b>：放行 <code>/static/**</code> 的通配把 <code>/static/../api/</code> 或 <code>/api;/static/</code> 一起带过。</p>
 <p><span class="bdg bdg-o">操作</span>按顺序执行，产出一张「路由×鉴权」表：</p>
@@ -119,6 +120,7 @@ curl -s http://127.0.0.1:7001/_async/AsyncResponseService?wsdl | head -40
 <p><b><span class="bdg bdg-x">练习</span></b> ① <code>vulhub/shiro/CVE-2016-4437</code>：先读 vulhub 说明里的原理，再黑盒验证（发 <code>rememberMe=1</code> 看 <code>deleteMe</code> 响应头），体会"代码知道默认 AES Key → 黑盒只发一个 Cookie"的降维；② <code>vulhub/fastjson/1.2.47-rce</code> 完成 §1.2 全流程；③ <code>vulhub/weblogic/CVE-2017-10271</code> 完成 SOAP 面。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="2-无源码时反推">2. 无源码时反推</h2>
+<blockquote>🧭 <b>导读</b>：从这页起，源码被收走了——这是全卷最大的一次换挡。审计时你从 main 一路往下读，现在得倒着来：用报错、前端 JS、指纹三块碎片，把当初那份调用图拼回去。别慌，你读堆栈的速度，就是别人手里的源码。</blockquote>
 <h3 id="2-1-报错信息利用与堆栈泄露分析">2.1 报错信息利用与堆栈泄露分析</h3>
 <p><span class="bdg bdg-p">原理</span>异常处理框架（Exception Handler）会把内部结构带出边界：Java 堆栈每行都是「包名+类名」，包名即 Maven/Gradle 坐标——等于对方免费给了你依赖清单；调试模式页（Laravel APP_DEBUG=true、Django DEBUG=true、Spring Boot /error、Actuator 端点）则直接送配置与环境变量。审计员读堆栈的速度和读自己项目一样快，这是纯黑盒选手不具备的。</p>
 <p><span class="bdg bdg-o">操作</span>主动、受控地触发报错并采集：</p>
@@ -150,6 +152,7 @@ grep -RniE "api/|debug|internal|token|role" ./restored_src/ | head -50</code></p
 <p>登录后再重复一遍①②：认证后的 chunk（<code>chunk-*.js</code>）里才有管理员接口。</p>
 <p><span class="bdg bdg-v">验证</span>对枚举出的端点用<b>未认证会话</b>逐一探测：<code>httpx -l endpoints.txt -status-code -title</code>（参数见 https://github.com/projectdiscovery/httpx）；返回非 401/403 的即"前端可见、后端未设防"候选。隐藏功能验证=接口直接调用成功。</p>
 <p><span class="bdg bdg-t">陷阱</span>① 只分析首页 JS——登录后 chunk、设置页懒加载 chunk 才是增量信息；② .map 404 不代表不存在：构建产物换 CDN 目录后老路径仍可能留存，用 fffuf/ffuf 对 <code>/static/js/*.js.map</code> 做历史文件名探测要克制；③ 压缩代码先格式化再 grep（js-beautify），否则变量名混淆导致关键词搜不到；④ 枚举出的"测试接口"必须验证，不能凭 JS 出现就写报告。</p>
+<blockquote>🧭 <b>导读</b>：§2.1、§2.2 你一直在做苦力——重建服务端真相。翻翻刚攒下的产出：err1.txt 里的包名、endpoints.txt 里的组件痕迹，它们就是下一节的钥匙。从这里不再逐条拼图，而是换赛道：指纹一命中，直接跳到现成的 CVE 与 PoC。</blockquote>
 <h3 id="2-3-指纹识别-版本-已知-cve-比对">2.3 指纹识别→版本→已知 CVE 比对</h3>
 <p><span class="bdg bdg-p">原理</span>这是无源码时效率最高的路径：指纹（Fingerprinting）给出组件与<b>版本区间</b>→区间映射到 CVE→nuclei-templates 本身就是可执行的 PoC 仓库。审计员的优势是拿到组件名+版本后能<b>秒判该 CVE 需要的前置条件</b>（该路由是否启用、该配置是否默认），避免盲打。</p>
 <p><span class="bdg bdg-o">操作</span></p>
@@ -170,6 +173,7 @@ nuclei -u https://example.com -t /path/to/template.yaml   # 单模板定向验�
 <p><b><span class="bdg bdg-x">练习</span></b> ① <code>vulhub/laravel/CVE-2021-3129</code>（Ignition 调试面 RCE）：先 §2.1 触发报错确认 debug 开启，再按模板 payload 利用；② HTB 机器 Sau（Easy）：完整走"指纹识别 request-baskets → SSRF 暴露内网 Maltrail → 比对公开漏洞完成利用"的指纹→CVE→PoC 链条。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="3-半黑盒-安装包里的服务端代码">3. 半黑盒：安装包里的服务端代码</h2>
+<blockquote>🧭 <b>导读</b>：§2 刚被收走的源码，这一章会还你一部分——"无源码"经常是伪命题，客户官网或许就挂着真相的快照。为什么是现在：§2.3 指纹只给了你版本区间，正需要一份真实代码来对账，两条线在这里合流。</blockquote>
 <p><span class="bdg bdg-p">原理</span>"无源码"经常是伪命题：客户官网的<b>历史版本安装包</b>（war/jar/安装器/移动 App）就是服务端真相的快照。war/jar 是 ZIP，解开即 .class 与配置文件；App 客户端内嵌 API 地址与密钥；桌面/Agent 安装包里的二进制藏着硬编码凭据（Hardcoded Credentials）与加密密钥——二进制逆向部分见 VOL-05（见 VOL-05-binary-reverse，二进制与硬编码提取）。半黑盒的定位：用发行包建立<b>精确假设</b>，回线上黑盒验证。</p>
 <p><span class="bdg bdg-o">操作</span>以 Java Web 发行包为例：</p>
 <pre class="cb"><span class="lang">bash</span><code># ① 取包：客户官网历史版本页 / Maven Central / 官方 GitHub Release（注意授权范围）
@@ -190,6 +194,7 @@ strings -n 8 agent.bin | grep -iE "key|pass|token|jdbc" | sort -u | head -20</co
 <p><b><span class="bdg bdg-x">练习</span></b> 任选一个开源 Java 系统的官方发行包（例如若依 RuoYi 的 Release jar），完成"解包→凭据/依赖审计→本地 <code>java -jar</code> 起服务→黑盒验证假设"四步；再用 <code>vulhub/weblogic/weak_password</code> 体会默认凭据打点。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="4-联动工作流-白盒假设-黑盒验证-证据留存闭环">4. 联动工作流：白盒假设→黑盒验证→证据留存闭环</h2>
+<blockquote>🧭 <b>导读</b>：到这里，三条路你都已走过一遍：翻译、反推、半黑盒。最后这章不加新武器，只解决一人红队的真瓶颈——发现隔天换机还能复现。你写了五年"复现步骤"的手感，就是这一章全部的底子。</blockquote>
 <p><span class="bdg bdg-p">原理</span>一人红队的瓶颈不是技术而是<b>产出可复现性</b>：审计员习惯了"复现步骤"文化，把它产品化为「假设卡」工作法——每个发现走三段：<b>白盒假设</b>（哪个入口/什么参数/预期什么行为）、<b>黑盒验证</b>（一条请求+判定标准）、<b>证据留存</b>（原始报文+时间戳+截图入交战目录）。三段缺一就不算发现，只能算线索。目录结构与字段对应交战目录 findings 流程（见 VOL-01-engagement，交战工程与交付）。</p>
 <p><span class="bdg bdg-o">操作</span>标准模板与完整示例：</p>
 <pre class="cb"><code>findings/03-shiro-default-key/
