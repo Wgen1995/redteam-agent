@@ -1,0 +1,81 @@
+**用中文思考。**
+
+识别 {target_work_dir} 下所有攻击面，仅做识别不做深入分析。一个攻击面一个文件。每发现一个，在 {target_work_dir}/.vuln_agent_output/discovered_surfaces/ 下生成独立文件。
+
+{extra_prompt}
+
+## 核心原则
+
+**攻击面 = 信任边界穿越点**：攻击者可控数据进入系统的入口。
+
+**典型入口**：Web Controller/Handler、gRPC/MQ/WebSocket handler、SDK 导出公共 API、CLI main、独立脚本、自定义协议服务端。配置文件/模型/纯工具类/内部 Service/定时任务/Filter 不计；SDK 导出 API 和部署配置（Dockerfile 等）必须识别。
+
+## 识别流程
+
+1. **判断项目类型**：按根目录标志文件判断（Web/SDK/CLI/独立应用/混合），不同类型入口形态不同。
+2. **大型项目**：代码量大、模块众多时，按模块拆分为独立子任务逐一识别，确保全覆盖。
+3. **验证收录**：确认有外部入口 + 可控输入 → 生成文件。完成后**反向自检**是否遗漏。**来源**：精确到文件路径:行号:函数名，REST 定位到 Controller 入口代码。
+
+## 输出格式
+
+每发现一个攻击面，在 {target_work_dir}/.vuln_agent_output/discovered_surfaces/ 下创建一个文件，命名规则：
+
+```
+{target_work_dir}/.vuln_agent_output/discovered_surfaces/{type}-{category}-{slug}.md
+```
+
+- `{type}` = `iface`（接口）或 `noniface`（非接口）
+- `{category}` = REST / MQ / SCRIPT / TOOL / CRON / CLI 等
+- `{slug}` = 简短英文标识，小写字母+连字符
+
+文件内容格式包含**通用字段**和**按分类的补充字段**：
+
+通用字段（所有类型必填）：
+
+```markdown
+# 攻击面条目
+
+- **类型**：iface（或 noniface）
+- **分类**：REST（或 SCRIPT 等）
+- **URL**：（能取到时必填）接口访问路径，如 `GET /api/users/{id}`、`/ws/chat`；非接口类型无 URL 时不填
+- **参数**：（有参数时填写）格式为 `{位置}: {参数名}({约束})`；从 Swagger/OpenAPI YAML 发现时必须完整提取全部校验约束（required/类型/min/maxLength/pattern/enum 等），不可省略
+- **来源**：/src/main/java/com/acme/UserController.java:48 list()
+- **描述**：查询用户列表
+- **发现**：（可选）识别过程中看到的值得注意的信息，如涉及高危操作
+```
+
+按分类的补充字段（根据实际类型选填对应的字段集）：
+
+| 分类 | 补充字段 |
+|------|---------|
+| REST | `**入口**`：`src/main/java/com/acme/UserController.java:48 listUsers()`、`**接口定义**`：`api/swagger.yaml` |
+| MQ | `**队列/Topic**`：order.created、`**消费者**`：OrderHandler.onCreated() |
+| gRPC | `**服务**`：UserService、`**方法**`：GetUser、`**Proto**`：user.proto |
+| WebSocket | `**端点**`：/ws/chat、`**处理器**`：ChatHandler |
+| GraphQL | `**类型**`：Query/Mutation、`**字段**`：users、`**Resolver**`：UserResolver |
+| SCRIPT | `**脚本名**`：backup.sh、`**语言**`：bash、`**入口**`：/opt/scripts/backup.sh |
+| TOOL | `**工具名**`：agent、`**语言**`：Go、`**入口**`：/opt/app/cmd/agent/main.go:15 main() |
+| CRON | `**表达式**`：`*/5 * * * *`、`**命令**`：/opt/app/healthcheck.sh、`**文件**`：/etc/cron.d/healthcheck |
+| CLI | `**命令名**`：agent、`**入口**`：/opt/app/cli/main.go:8 main() |
+| SDK | `**包名**`：`@acme/sdk`、`**导出**`：`createUser(data: UserInput)`、`**入口**`：`src/index.ts:12 createUser()` |
+| DEPLOY | `**文件**`：`Dockerfile`、`**类别**`：容器/编排/网关、`**暴露**`：对外端口、入口命令 |
+
+补充字段如实填写，没有的信息不写，不要编造。
+
+`slug` 为文件名去掉 `.md` 后缀，如 `REST-api-users-list.md` 的 slug 为 `REST-api-users-list`。
+
+**如未发现任何攻击面，不得在 discovered_surfaces/ 下创建任何文件。**
+
+## 排除记录
+
+扫描中遇到被排除的非目标文件（测试代码、构建脚本等），写入 {target_work_dir}/.vuln_agent_output/meta/excluded-paths.md：
+
+```
+# 已排除的非目标路径
+
+## 测试代码
+- {路径}
+
+## 构建 / CI 脚本
+- {路径}
+```
