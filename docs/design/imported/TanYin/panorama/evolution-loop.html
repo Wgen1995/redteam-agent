@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图谱演进循环图 · 探隐 TanYin</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#1f2329;line-height:1.65;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}.sub{font-size:13px;color:#64748b}
+.step{background:#fff;border-radius:14px;padding:16px 20px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:10px 0;border-left:5px solid #16a34a}
+.step h2{font-size:15px;margin-bottom:8px;color:#1e293b}
+.step p{font-size:13px;color:#475569;margin:4px 0}
+.step .why{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:6px;padding:8px 12px;font-size:12.5px;color:#14532d;margin-top:8px}
+.step .why b{color:#15803d}
+.arrow{text-align:center;color:#16a34a;font-size:16px;margin:2px 0;font-weight:700}
+.conv{background:linear-gradient(135deg,#064e3b,#059669);color:#fff;border-radius:14px;padding:20px 24px;margin:14px 0;box-shadow:0 8px 24px rgba(5,150,105,.3)}
+.conv h2{font-size:17px;margin-bottom:8px}.conv p{font-size:13.5px;opacity:.95}
+.budget{background:linear-gradient(135deg,#7c2d12,#ea580c);color:#fff;border-radius:14px;padding:20px 24px;margin:14px 0;box-shadow:0 8px 24px rgba(234,88,12,.3)}
+.budget h2{font-size:17px;margin-bottom:8px}.budget p{font-size:13.5px;opacity:.95}
+.phase{background:#fff;border-radius:14px;padding:16px 20px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:12px 0}
+.phase h2{font-size:16px;margin-bottom:10px;color:#1e293b}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
+.note{background:#fffbeb;border-left:4px solid #d97706;border-radius:8px;padding:10px 14px;font-size:13px;color:#78350f;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:30px}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:12.5px}
+.topnav a{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:4px 14px;color:#334155;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.topnav a:hover{border-color:#0d9488;color:#0f766e}
+.topnav a.on{border-color:#16a34a;color:#15803d;font-weight:600}
+.states{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.stx{flex:1 1 140px;background:#fff;border-radius:10px;padding:10px 12px;font-size:12.5px;border-top:4px solid #94a3b8;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.stx b{display:block;font-size:14px;margin-bottom:3px}
+.stx.x{border-top-color:#16a34a}.stx.q{border-top-color:#d97706}.stx.m{border-top-color:#94a3b8}.stx.e{border-top-color:#dc2626}.stx.k{border-top-color:#0284c7}
+</style></head><body><div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:8px 14px;font-size:12.5px;color:#92400e;margin-bottom:14px">📋 内容状态：2026-09-17（五专家审计修订同步·Loop 范式核心视图：循环机制+收敛加固+预算终态+Phase 门+五态标记）｜ <a href="index.html" style="color:#b45309">蓝图总览</a> · <a href="../docs/superpowers/specs/2026-09-17-tanyin-design.md" style="color:#b45309">主设计文档</a></div><div class="wrap">
+<nav class="topnav">
+<a href="index.html">← 总览导览</a><a href="agent-philosophies.html">🧭 工程哲学</a>
+<a href="system-architecture.html">🏗️ 架构</a>
+<a href="evolution-loop.html" class="on">🔄 演进循环</a>
+<a href="domain-model.html">🗄️ 领域模型</a>
+<a href="engine-contract.html">🔒 引擎契约</a>
+<a href="knowledge-flywheel.html">📈 知识飞轮</a>
+<a href="security-discipline.html">🛡️ 安全纪律</a>
+</nav>
+<h1>🔄 图谱演进循环 <span style="font-size:13px;color:#94a3b8">· Loop 范式核心 · P3 阶段 · GenCPT 式头脑风暴</span></h1>
+<div class="sub">像真人头脑风暴：侦测到信息 → 分析 → 攻击面演进 → 不断往后推导和验证 → 数据完成即测试完成。<b>图谱完成态 = 测试完成态</b>——把「测到什么程度算完」从主观判断变成数据判定。<b style="color:#dc2626">收敛加固：条件触发风暴 + 预算合法终态 + 机械去重</b>。</div>
+<div class="step"><h2>⓪ Checkpoint + 预算检查 </h2>
+<p><b>机制</b>：每轮循环开始，循环状态写 session/&lt;goal-id&gt;/state.md（当前轮/active intents/下轮动作）；预算三元组（token/请求数/时间窗）检查——任一耗尽 → 终态 budget-exhausted（转 P4 降级流程）。</p>
+<div class="why"><b>设计思想</b>：上下文生命周期受管（Context 范式落位）——受管重启（每 N 轮或超阈值主动换会话，从 state.md+账本恢复）把「断电恢复」升级为常规操作；预算耗尽是<b>显式合法终态</b>而非事故性终止（AutoGPT 教训的完整吸收）。</div></div>
+<div class="arrow">↓</div>
+<div class="step"><h2>① 扫描图谱 — 找驱动信号（账本命令，非手工 grep）</h2>
+<p><b>机制</b>：ledger-unconsumed-facts / ledger-pending-intents / ledger-matrix-gaps 三条查询命令——<b>未消费 fact</b>（无 derived_from 出边的事实）和<b>未验证假设</b>（pending intent / 矩阵空格）。输出摘要化（计数+top-N+ID 列表，禁止全量回灌上下文）。</p>
+<p><b>原理逻辑</b>：把「接下来该测什么」变成图查询而非 LLM 即兴发挥。每条 fact 要么被消费、要么显式标记不消费（附理由），不存在「看见了但没人管」的暗区。</p>
+<div class="why"><b>设计思想</b>：探索完整性可计算。传统工具的「下一步」藏在代码流程里；探隐的「下一步」是账本里的显式数据——可审计、可中断、可恢复。查询是命令不是 LLM 手工 join——万行账本下 grep join 出错率随行数上升。</div></div>
+<div class="step"><h2>② 假设风暴 — 条件触发 ，五路扩张（基于知识图谱的增强检索与推理）</h2>
+<p><b>触发条件（收敛加固）</b>：仅当存在未消费 fact 或矩阵空格时执行——风暴是工作信号的后果，不是无条件心跳（防 LLM 联想永不枯竭导致的震荡）。</p>
+<p><b>机制</b>：五路同时开火，每路是不同的知识检索/推理通道，产出 candidate intent（带 origin/score/via/dedup_key 落账）：</p>
+<table style="font-size:12px"><tr><th>路</th><th>机制</th><th>例子</th></tr>
+<tr><td><b>① 实体页检索</b></td><td>fact 提取技术实体 → 查 knowledge/entities/</td><td>fact「shiro 1.2.4」→ 实体页列出 rememberMe 反序列化等 2 模式 → 2 个 candidate</td></tr>
+<tr><td><b>② 技法页检索</b></td><td>矩阵空格 × concepts/ 技法适用条件匹配</td><td>矩阵格「认证绕过×API」空 → 技法页「JWT 弱密钥」适用 → candidate</td></tr>
+<tr><td><b>③ 先例注入</b></td><td>目标指纹匹配 precedents/先例绑定 (client, scope_asset, 授权窗口) 三元组，禁止跨客户匹配</td><td>指纹命中「Java 单体+Shiro」→ 注入该类 3 条已知攻击链</td></tr>
+<tr><td><b>④ 图邻接推理</b></td><td>图查询：N 跳路径/共享资产/未连接 finding 对</td><td>finding A(文件读)+B(路径泄露)→ 1 跳共享 asset → attack 链 candidate</td></tr>
+<tr><td><b>⑤ LLM 自由联想</b></td><td>总控语义推导必须引用触发 fact ID（无引用自动 rejected）；可按相关性回读 artifact 片段（token 预算内）；每轮硬上限+分数阈值随轮数单调上升</td><td>「无速率限制+弱密码策略+会话不过期」→ 撞库+会话固定 candidate</td></tr></table>
+<p><b>打分与晋升（拆分）</b>：先验分 = 确定性因子（origin 权重×矩阵空格优先级×last_verified 新鲜度，<b>命令计算</b>）+ LLM 同分候选语义排序（LLM 不做绝对打分——数值自评有校准病）→ top-N 晋升 pending；低分 rejected（附理由）/ deferred（附<b>结构化激活谓词</b> field;op;value，命令评估）——全部留痕，被拒假设可被后续事实翻案（<b>翻案须引用触发 fact ID；翻案扫描每轮上限</b>）。</p>
+<p><b>去重</b>：candidate 落账时 dedup_key（资产+技法类）由命令计算，重复键机械拒收——LLM 只提议不判重（语义判重不可靠且 O(N²)）。</p>
+<div class="why"><b>设计思想</b>：头脑风暴扩张感的工程化——五路检索通道（知识库×图谱×矩阵×先例×联想）同时扩张假设空间，打分排序决定探索预算。检索增强（RAG）+ 图推理 + LLM 联想三者咬合。收敛加固后，「随图谱饱和自然收敛」从假设变成机制：条件触发砍掉无信号风暴、机械去重砍掉重复膨胀、阈值递增保证产出单调递减。</div></div>
+<div class="arrow">↓</div>
+<div class="step"><h2>③ 调度 — 批量并行派发 + 单写者落账 </h2>
+<p><b>机制</b>：intent 带 engine 字段，总控按字段路由。互不依赖的 intent <b>一条消息并发委派、同回合收集</b>（宿主原生模式，不假设异步原语）；有依赖的等前置事实回注。委派带六要素：目标、授权范围（scope 摘要）、待验证任务、相关事实摘要、可引用资产 ID、预算份额。</p>
+<p><b>子代理返回结构化 schema（定死）</b>：status 枚举（done/no-findings/failed/blocked）+ ≤N 条 facts 摘要（detail≤200 字）+ findings + evidence 路径 + 新 assets；超限内容进盘。<b>子代理/引擎只写 submissions/&lt;intent-id&gt;/ 提交文件，总控验收后经账本命令统一落账</b>——单写者模式（并发锁/ID 撞号/校验集中化三个问题一次解决）。</p>
+<div class="why"><b>设计思想</b>：指挥官协议。总控是唯一拍板者<b>和唯一账本写者</b>；结构化回传防上下文爆炸；提交文件是注入遏制层（敌意内容困在文件里，不进总控指令流）——子代理隔离是安全边界，不只是成本优化。学 dsh-pentest 指挥官模式 + GenSift 编排纪律。</div></div>
+<div class="arrow">↓</div>
+<div class="step"><h2>④ 验证落账 — 结果结构化入账</h2>
+<p><b>机制</b>：引擎结果经账本命令写入：fact（新事实，落账时即脱敏）/ finding（漏洞，强制可复现步骤+Evidence+两维评级）/ asset（新资产，scope-check 内联）+ 对应边。命中先例的 finding 同步更新实体页 last_verified（知识保鲜）。</p>
+<p><b>新资产落账触发资产事件处理器</b>：无条件自动 spawn 测绘 intents（端口/服务/参数枚举，origin=recon-event，直接 pending——不进风暴打分：测绘是信息补全，被阈值卡住新资产会「裸奔」）+ 子矩阵初始化（matrix.tsv 追加新行，reason 前缀 submatrix:）→ 新空格进入下轮扫描触发风暴②路。闭环：新资产→自动测绘→新 facts→风暴→攻击又可能发现新资产→再次触发——发散性由事件链机械保证。成本护栏：测绘计入预算；单资产测绘上限；out_of_scope 资产只记 fact（进范围外观察附录）不 spawn。</p>
+<p><b>原理逻辑</b>：落账即验证闭环——intent 状态流转 pending→active→done/blocked（事件溯源追加）；无可复现步骤的观察一律是 fact 而非 finding（铁律 4：证据即漏洞）。负结果（防护有效）同样入账——回归测试的基线。</p>
+<div class="why"><b>设计思想</b>：反幻觉。LLM 说「发现漏洞」不算数，账本里有 repro_command + content_hash 才算数。</div></div>
+<div class="arrow">↓</div>
+<div class="step"><h2>⑤ 链构建 — 攻击链推理与跨引擎关联</h2>
+<p><b>机制</b>：总控分析 finding 间可组合性 → 建 attack 边（利用 A→获得凭据→访问 B→发现 C，链式可达性评估）；跨引擎数据 → 建 cross_ref 边（Web 端点 ↔ 白盒 sink）。</p>
+<p><b>原理逻辑</b>：单个漏洞的严重性 ≠ 组合后的严重性（低危+低危可能=高危链）。attack 边让「攻击链」从报告里的叙述变成图谱里的可查询路径。</p>
+<div class="why"><b>设计思想</b>：GenCPT 图谱推理精髓。cross_ref 边是总控编排的独有增值——单引擎产品看不见跨域组合。</div></div>
+<div class="arrow">↓</div>
+<div class="step"><h2>⑥ 收敛判定 — 数据判定完成（ledger-converge-check）</h2>
+<p><b>机制</b>：四条件全满足 → 收敛（测试完成）：无未消费 fact ∧ 无 pending/active intent ∧ candidate 池空 ∧ 矩阵无空格。active 长期不归（超时/连续失败）→ 转 blocked 附原因（<b>blocked 不可自动复活，复活须人工</b>——防死循环且防假复活）。</p>
+<div class="why"><b>设计思想</b>：何时停止=数据判定，非「token 用完」或「模型觉得够了」。这是 AI 渗透从演示到工程的关键一步。</div></div>
+<div class="conv"><h2>✅ 图谱收敛 = 测试完成</h2>
+<p>收敛条件可计算：无未消费 fact ∧ 无 pending/active intent ∧ candidate 池空 ∧ 矩阵无空格。四条件分别对应<b>探索完整性</b>（没有看见不管的）、<b>执行完整性</b>（没有许诺不做的）、<b>假设完整性</b>（风暴无新产出）、<b>覆盖完整性</b>（没有不知道的格子）。收敛后进入 P4 汇总。</p></div>
+<div class="budget"><h2>⏹ budget-exhausted = 预算耗尽的合法终态 </h2>
+<p>预算三元组（token/请求数/时间窗）任一耗尽 → <b>合法终态</b>：产出中期报告 + 未闭合格显式披露清单（哪些格没测、哪些 intent 没跑）——诚实终止，不是事故。真实大目标上预算必然先于收敛耗尽；没有这个终态，最常见的中止方式反而是设计外的「事故性终止」（恰是 AutoGPT 的死法）。收敛与预算耗尽之外，唯一结束方式是事故熔断（见安全纪律图）。</p></div>
+<h2 style="font-size:20px;margin:30px 0 12px;padding-left:14px;border-left:5px solid #0d9488">Phase 门 P0-P6（循环的外壳）</h2>
+<div class="phase"><table><tr><th>Phase</th><th>职责</th><th>出口门禁</th><th>门禁原理</th></tr>
+<tr><td><b>P0 授权门</b></td><td><b>八问</b>问卷（目标/范围排除/RoE/语言/<b>时间窗/紧急联系人/测试账号与数据分级/备份确认</b>）+ 业务问卷 → goal 落账（结构化授权+预算+rate_limit）+ scope.tsv + SKILL 版本哈希</td><td>无结构化授权禁止任何主动操作；scope.tsv 缺失禁止 P1</td><td>授权是测试的合法性来源，先于一切技术动作；结构化授权+scope 硬门是法律边界</td></tr>
+<tr><td><b>P1 测绘</b></td><td>侦察子代理 → assets/facts 落账（<b>每资产过 scope-check 命令</b>）</td><td>资产树 parent 边完整 + 全部资产 scope 判定完成</td><td>资产树是攻击面推导的结构基础；scope 机械判定防授权边界漂移</td></tr>
+<tr><td><b>P2 规划</b></td><td>读账本+知识库指纹匹配 → 矩阵（<b>列从 VOCAB.md（WSTG 基线）钉死；攻击面按模板折叠</b>）</td><td>matrix.tsv 落盘 + <b>冻结版本号</b></td><td>矩阵把「不知道不知道什么」显式化；词表单源过拟合是召回天花板</td></tr>
+<tr><td><b>P3 演进循环</b></td><td>循环（本图主体，条件触发风暴+预算看护）</td><td>图谱收敛 <b>或 budget-exhausted</b>（两者皆合法终态）</td><td>收敛四条件=探索/执行/假设/覆盖完整性</td></tr>
+<tr><td><b>P4 汇总</b></td><td>账本校验（<b>哈希链</b>/格式/引用闭合/去重）→ finding 合并（supersede）→ <b>"-"/"!" 格抽查</b> → 异常检测（矩阵批量置态与 fact 密度不符告警）</td><td>校验失败阻止报告</td><td>报告的数据质量门——脏账本不出报告；抽查防「刷不适用」廉价闭合</td></tr>
+<tr><td><b>P5 报告</b></td><td>执行摘要+漏洞清单（<b>confidence×impact 双列</b>）+矩阵+修复建议+<b>范围外观察附录+免责条款</b></td><td>终态门禁（无空格）或 budget-exhausted 披露清单</td><td>覆盖不可谈判；免责与两维评级让报告经得起客户复核</td></tr>
+<tr><td><b>P5.5 签发门 </b></td><td><b>人审+签名</b>：报告经用户审批，签名落 approvals 表</td><td><b>未签发报告禁止导出</b></td><td>正式渗透报告是法律声明——AI 生成报告不经人审直接交付是行业红线</td></tr>
+<tr><td><b>P6.0 清理门 </b></td><td>从 timeline 提取全部写操作生成 cleanup checklist 逐项核销（上传文件/测试账号/webshell/配置改动）；报告附清理声明</td><td>清理清单全核销或显式声明残留+理由</td><td>客户拿清理声明对账；出事时能证明哪些痕迹是测试方的</td></tr>
+<tr><td><b>P6 沉淀</b></td><td>脱敏提取（<b>反向验证</b>）→ journal 草稿 → 用户审批（落 approvals）→ 知识库更新</td><td>审批通过才写入</td><td>知识库是资产，入库必须有人把关；反向验证防跨客户泄漏</td></tr></table></div>
+<h2 style="font-size:20px;margin:30px 0 12px;padding-left:14px;border-left:5px solid #0d9488">五态标记（矩阵格状态机）</h2>
+<div class="states">
+<div class="stx x"><b>x 已确认</b>已测试且确认状态（有 finding 或有负结果证据）</div>
+<div class="stx q"><b>? 疑似</b>有线索未定论（关联 fact，待验证 intent）</div>
+<div class="stx m"><b>- 不适用</b>附理由（如目标无该组件）——<b>进 P4 抽查队列</b></div>
+<div class="stx e"><b>! 环境干扰</b>附记录（如 WAF 拦截、网络不通）——<b>进 P4 抽查队列</b>；blocked intent 映射此态</div>
+<div class="stx k"><b>空 未检查</b>必须消灭——终态门禁要求报告前矩阵无空格</div></div>
+<div class="note"><b>五态的原理</b>：矩阵的价值不在「测了多少」而在「每个格子都有判定」。「-」和「!」是诚实通道——但加抽查防博弈：收敛压力下给所有格刷「-」是最廉价的闭合方式，LLM 有动机合理化，所以 "-"/"!" 格按比例语义复核。<b>矩阵基线冻结规则</b>：P2 定稿后主矩阵不随新资产扩张，新资产走子矩阵——否则收敛可无限回退；冻结的是覆盖率锚点（闭合率对固定基线算才有意义），探索不冻结——新资产入账触发资产事件处理器：自动 spawn 测绘 intents（无条件，不进风暴打分）+子矩阵初始化→新空格→触发风暴，发散性由事件链机械保证。<b>词表钉死</b>：列从 shared/VOCAB.md（OWASP WSTG v4.2 全集基线）读取并版本化——矩阵列集合的召回=总召回天花板，不能源自单一项目样本。来源：CNPEN 全景图实践 + GenCPT 五态机制 + 审计加固。</div>
+<div class="note"><b>断点续传 → 受管重启</b>：循环状态全在账本+state.md。任何时刻中断，重进后总控扫描账本即恢复循环位置；更进一步——每 N 轮或上下文超阈值<b>主动</b>换新会话（受管重启），把恢复从事故应对变成常规操作。LLM 会话易失，磁盘持久。</div>
+<footer>图谱演进循环图 · Loop 范式视图 · 2026-09-17（五专家审计修订同步）</footer>
+</div></body></html>

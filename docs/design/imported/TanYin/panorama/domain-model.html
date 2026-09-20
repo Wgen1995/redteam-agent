@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>领域模型图 · 探隐 TanYin</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#1f2329;line-height:1.65;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}.sub{font-size:13px;color:#64748b}
+.sec{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:12px 0}
+.sec h2{font-size:16px;margin-bottom:10px;color:#1e293b}
+.sec p{font-size:13px;color:#475569;margin:4px 0}
+.why{background:#eff6ff;border-left:3px solid #3b82f6;border-radius:6px;padding:8px 12px;font-size:12.5px;color:#1e3a5f;margin-top:8px}
+.why b{color:#1d4ed8}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
+.tables{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:900px){.tables{grid-template-columns:1fr}}
+.tb{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:12.5px;color:#475569}
+.tb b{display:block;font-size:14px;color:#1e293b;margin-bottom:4px}
+.tb code{background:#e2e8f0;border-radius:4px;padding:1px 5px;font-size:11.5px;color:#334155}
+.tb.new{border:1px solid #fca5a5;background:#fff7f7}
+.tb.new b::after{content:"新";font-size:10px;background:#dc2626;color:#fff;border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.edges{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.eg{flex:1 1 240px;background:#fff;border-radius:10px;padding:10px 12px;font-size:12.5px;border-top:4px solid #0284c7;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.eg b{display:block;font-size:13.5px;margin-bottom:3px}.eg .src{font-size:11px;color:#94a3b8}
+.eg.g2{border-top-color:#16a34a}.eg.g3{border-top-color:#dc2626}.eg.g4{border-top-color:#7c3aed}.eg.g5{border-top-color:#d97706}.eg.g6{border-top-color:#0f766e}
+.note{background:#fffbeb;border-left:4px solid #d97706;border-radius:8px;padding:10px 14px;font-size:13px;color:#78350f;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:30px}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:12.5px}
+.topnav a{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:4px 14px;color:#334155;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.topnav a:hover{border-color:#0d9488;color:#0f766e}
+.topnav a.on{border-color:#0284c7;color:#0369a1;font-weight:600}
+.sev{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.sv{flex:1 1 180px;background:#fff;border-radius:10px;padding:10px 12px;font-size:12.5px;box-shadow:0 2px 8px rgba(0,0,0,.05);border-top:4px solid #94a3b8}
+.sv b{display:block;font-size:14px;margin-bottom:3px}
+.sv.c1{border-top-color:#dc2626}.sv.c2{border-top-color:#d97706}.sv.c3{border-top-color:#eab308}.sv.neg{border-top-color:#16a34a}.sv.imp{border-top-color:#7c3aed}
+</style></head><body><div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:8px 14px;font-size:12.5px;color:#92400e;margin-bottom:14px">📋 内容状态：2026-09-17（五专家审计修订同步·Graph 范式核心视图：八表+十边+证据契约+两维评级）｜ <a href="index.html" style="color:#b45309">蓝图总览</a> · <a href="../docs/superpowers/specs/2026-09-17-tanyin-design.md" style="color:#b45309">主设计文档</a></div><div class="wrap">
+<nav class="topnav">
+<a href="index.html">← 总览导览</a><a href="agent-philosophies.html">🧭 工程哲学</a>
+<a href="system-architecture.html">🏗️ 架构</a>
+<a href="evolution-loop.html">🔄 演进循环</a>
+<a href="domain-model.html" class="on">🗄️ 领域模型</a>
+<a href="engine-contract.html">🔒 引擎契约</a>
+<a href="knowledge-flywheel.html">📈 知识飞轮</a>
+<a href="security-discipline.html">🛡️ 安全纪律</a>
+</nav>
+<h1>🗄️ 领域模型 <span style="font-size:13px;color:#94a3b8">· Graph 范式核心 · session 目录 = 单一事实源</span></h1>
+<div class="sub">八表 TSV 账本 + E-index + matrix + timeline 构成探索链路图。<b>图谱既是记录（全程可回放可审计）也是推理引擎（未消费 fact 可查询、收敛可计算）</b>。一切状态落盘，LLM 不依赖会话记忆。<b style="color:#dc2626">单写者模式——总控是唯一账本写者，子代理/引擎只产提交文件</b>。</div>
+<div class="sec"><h2>八表账本（TSV · 事件溯源/追加写 · 账本命令是唯一写入口 · 写前拒收）</h2>
+<div class="tables">
+<div class="tb"><b>goals 目标</b><code>id, target, objective, auth_doc, auth_sha256, signer, valid_from/until, rate_limit, window, emergency_contact, budget, business_context…</code><br>结构化授权（授权书 sha256+签署方+有效窗口）+ 预算三元组（token/请求/时间窗）+ 速率上限 + 业务问卷摘要。</div>
+<div class="tb new"><b>scope 授权范围</b><code>id, kind(include/exclude), matcher, note</code><br>授权白名单硬门：支持 CIDR/域名后缀/通配。<b>资产落账命令强制对照本表</b>，界外标记 out_of_scope 且账本级禁止派生 intent——授权边界是机械判定，非 LLM 语义判断。</div>
+<div class="tb"><b>intents 意图</b><code>id, title, detail, status, engine, origin, score, via, dedup_key, activation</code><br>事件溯源（追加状态变更行）；dedup_key 机械拒重；deferred 激活条件是结构化谓词（field;op;value，命令评估）；blocked 不可自动复活。</div>
+<div class="tb"><b>facts 事实</b><code>id, intent_id, kind, target, detail, confidence</code><br>kind: port/service/http/info/vuln-clue；<b>落账时即脱敏</b>（凭据/PII 占位符化——运行时数据纪律）。</div>
+<div class="tb"><b>findings 漏洞</b><code>id, intent_id, title, confidence, impact, description, reproducible_steps, affected_asset_id, evidence_ids, control_evidence_ids, status</code><br>reproducible_steps≥1 强制；<b>两维评级 confidence×impact</b>；control_evidence_ids=差分对照组；合并=supersedes 边+tombstone（不删行）。</div>
+<div class="tb"><b>assets 资产</b><code>id, type, value, meta, in_scope</code><br>type: root-domain/subdomain/ip/service/app/endpoint/source-code；in_scope 由 scope-check 命令判定（CIDR/后缀机械匹配）。</div>
+<div class="tb"><b>edges 边</b><code>id, kind, source_id, target_id, provenance</code><br>十种边词汇（见下）+ 来源标注——图谱推理的骨架。</div>
+<div class="tb new"><b>approvals 审批</b><code>id, command_hash, decision, approver, timestamp, note</code><br>审批账本：L3 逐条审批、P5.5 报告签发、P6 知识审批全部落此表；command_hash 绑定原始命令串（审批的是原文，非 LLM 摘述）。</div></div>
+<div class="why"><b>原理逻辑</b>：TSV 而非数据库——零依赖、人类可直接读、diff 友好（决策 6：换 JSONL 不解决状态机/并发问题，SQLite 破坏零代码宪法）。<b>事件溯源</b>（intents/matrix）：追加状态变更行，"取最新状态"是账本命令——追加写与可变状态的矛盾由此消解。<b>写前拒收</b>：每条写命令自带行级校验（列数/枚举/引用闭合/dedup_key 唯一），畸形拒绝写入——校验不晚绑定到 P4。<b>ID 铸造</b>：总控统一铸造 {前缀}-{goal}-{四位序号}，定宽零填充。</div></div>
+<div class="sec"><h2>十种边（图谱推理的骨架）</h2>
+<div class="edges">
+<div class="eg"><b>spawns</b>goal → intent<br>目标派生探索意图<span class="src">dsh-pentest</span></div>
+<div class="eg"><b>yields</b>intent → fact<br>意图执行产出事实<span class="src">dsh-pentest</span></div>
+<div class="eg g2"><b>derived_from</b>fact → intent<br>事实推导新意图（推导留痕，可回溯）<span class="src">dsh-pentest</span></div>
+<div class="eg g2"><b>proves</b>intent → finding<br>意图验证出漏洞<span class="src">dsh-pentest</span></div>
+<div class="eg"><b>parent</b>asset → asset<br>资产树（域→子域→IP→服务→端点）<span class="src">dsh-pentest</span></div>
+<div class="eg g3"><b>attack</b>finding/asset → asset/finding<br>攻击链推理：利用A→获得凭据→访问B<span class="src">GenCPT</span></div>
+<div class="eg g4"><b>cross_ref</b>跨引擎关联<br>Web 端点 ↔ 白盒 sink<span class="src">GenCPT</span></div>
+<div class="eg g5"><b>evidences</b>finding → E-index<br>漏洞关联证据索引条目<span class="src">reverse-skill</span></div>
+<div class="eg g6"><b>supersedes</b>finding → finding<br>合并/更新（tombstone 语义，不删行）<span class="src">新增</span></div></div>
+<div class="why"><b>原理逻辑</b>：边词汇是受控的（closed vocabulary）——图谱可查询、可校验、可推理的前提是边类型有限且语义明确。「未消费 fact」= 无 derived_from 出边的事实，这个图查询就是 P3 循环的驱动信号。attack 边让攻击链从报告叙述变成可查询路径；cross_ref 边承载跨引擎知识流动；supersedes 让 finding 合并保持 append-only 审计完整。</div></div>
+<div class="sec"><h2>Evidence 契约（shared/EVIDENCE.md · E-index 索引 + 外置文件）</h2>
+<p><b>机制</b>：E-index.tsv 是证据引用单一来源；超长内容外置 evidence/EV-*.md。每条证据：title / observed_at / source_type / source_ref / <b>repro_command</b>（凭据用 {{vault:cred-N}} 占位符——打码与可复现两全）/ <b>repro_kind</b>（single/sequence/concurrent，时序类漏洞引用脚本）/ <b>content_hash 双轨</b>（raw+normalized，归一化去动态字段）/ artifact_path（session 相对，只增不覆盖，重跑另存 -r2）/ <b>pair_group</b>（差分举证组）/ raw_excerpt（脱敏+定长截断）。P4 门禁：hash 命令重算复核 + <b>全量引用闭合检查</b>。</p>
+<div class="why"><b>设计思想：反幻觉 + 可交付 + 差分严谨</b>——LLM 说「发现漏洞」不算数，账本里有可复现命令+内容哈希才算数；对照组证据（证明防护有效的负结果）与实验组共享 pair_group，「已修复」与「被 WAF 拦了」在账本里可区分。凭据保险库（session 内加密文件）解决凭据打码与第三方复现的矛盾。来源：dsh-reverse-skill Evidence 契约 + 审计修订。</div></div>
+<div class="sec"><h2>两维评级（shared/SEVERITY.md · confidence × impact 正交）</h2>
+<div class="sev">
+<div class="sv c1"><b>C1 实证复现</b>已在线复现，证据链完整</div>
+<div class="sv c2"><b>C2 条件实证</b>原语已证实，利用需条件——<b>必须附条件可达性证据</b>，否则降 C3</div>
+<div class="sv c3"><b>C3 风险线索</b>结构性风险/配置缺陷，未实证</div>
+<div class="sv neg"><b>➖ 不可利用 / 🛑 已阻断</b>差分对照组证明防护有效——负结果同样入账（回归基线）</div>
+<div class="sv imp"><b>impact 高/中/低</b>CVSS 式影响域判定——与 confidence 正交的另一维</div></div>
+<div class="why"><b>设计思想：确定性 ≠ 危害</b>——「我多确定它存在」（confidence）与「它造成多大影响」（impact）是两个问题。已实证的弱密码策略是 C1+低；需内网位置的条件实证 RCE 是 C2+高。压成一维会系统性误导修复优先级（审计修正：原 C1→高危映射是范畴错误）。报告双列呈现+传统等级映射列供非技术干系人。</div></div>
+<div class="sec"><h2>字段编码与状态机（命令层强制）</h2>
+<p><b>编码规范</b>：UTF-8 无 BOM + LF 钉死；字段内禁字面 tab/CR/LF（\t/\n/\\ 转义，命令转义 LLM 不手工）；多值字段 ; 分隔；<b>账本命令参数化</b>（临时文件传参，禁止字符串拼接——目标数据是注入载体，不得进命令层）。</p>
+<p><b>timeline 审计链</b>：每条含 prev_hash+hash 链式哈希——改任何历史行即断链可见；actor 区分总控/子代理/人工；P0 落账 SKILL 版本+文件哈希。</p>
+<div class="why"><b>原理逻辑</b>：转义/编码/并发写是文件账本的三大工程雷（审计确认）。解法不是换格式而是命令层强制：写命令统一转义与校验（写前拒收）、单写者模式消灭并发写、链式哈希让审计链防篡改。LLM 只调用命令，不碰底层格式。</div></div>
+<div class="sec"><h2>session 目录全景</h2>
+<p><code>session/&lt;goal-id&gt;/</code>：八表 TSV · E-index.tsv · matrix.tsv（事件溯源）· timeline.md（链式哈希）· state.md（P3 checkpoint/受管重启恢复点）· scope.tsv · approvals.tsv · submissions/&lt;intent-id&gt;/（子代理提交）· evidence/ + vault/（凭据保险库）· report/（签发后）· .gitignore（敏感数据标识+保留策略）</p>
+<div class="why"><b>原理逻辑</b>：一个目录=一次测试的全部状态。断点续传与受管重启（重进扫描账本即恢复）、黄金夹具（固定样本规范化比对账本命令输出）、烛龙接入（导入 session 目录即落库，schema_version 协商）都建立在这个「目录即状态」的约定上。</div></div>
+<div class="note"><b>与工程范式的关系</b>：本图是 Graph 范式的落位——结构化数据+关系推理，状态显式建模。八表+十边同时服务于 Loop（未消费 fact 查询驱动循环）和 Harness（TSV 文件任何宿主都能读写）和 Context（状态在盘所以受管重启无损）。</div>
+<footer>领域模型图 · Graph 范式视图 · 2026-09-17（五专家审计修订同步）</footer>
+</div></body></html>

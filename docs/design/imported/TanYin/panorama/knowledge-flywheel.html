@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识飞轮与召回率 · 探隐 TanYin</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#1f2329;line-height:1.65;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}.sub{font-size:13px;color:#64748b}
+.sec{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:12px 0}
+.sec h2{font-size:16px;margin-bottom:10px;color:#1e293b}
+.sec p{font-size:13px;color:#475569;margin:4px 0}
+.why{background:#fffbeb;border-left:3px solid #d97706;border-radius:6px;padding:8px 12px;font-size:12.5px;color:#78350f;margin-top:8px}
+.why b{color:#b45309}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
+.mechs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:900px){.mechs{grid-template-columns:1fr}}
+.mk{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 14px;font-size:12.5px;color:#78350f}
+.mk b{display:block;font-size:14px;margin-bottom:4px;color:#92400e}
+.fw{display:flex;align-items:stretch;gap:0;margin:14px 0;flex-wrap:wrap}
+.fw .node{flex:1 1 150px;background:#fff;border-radius:10px;padding:12px;font-size:12.5px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-top:4px solid #d97706}
+.fw .node b{display:block;font-size:13.5px;margin-bottom:3px}
+.fw .arr{display:flex;align-items:center;padding:0 6px;color:#d97706;font-size:18px;font-weight:700}
+.layers{display:flex;gap:10px;margin:10px 0;flex-wrap:wrap}
+.ly{flex:1 1 240px;background:#fff;border-radius:10px;padding:12px 14px;font-size:12.5px;box-shadow:0 2px 8px rgba(0,0,0,.05);border-top:4px solid #0284c7}
+.ly b{display:block;font-size:14px;margin-bottom:4px}
+.ly.l2{border-top-color:#16a34a}.ly.l3{border-top-color:#7c3aed}.ly.l4{border-top-color:#dc2626}
+.note{background:#fffbeb;border-left:4px solid #d97706;border-radius:8px;padding:10px 14px;font-size:13px;color:#78350f;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:30px}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:12.5px}
+.topnav a{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:4px 14px;color:#334155;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.topnav a:hover{border-color:#0d9488;color:#0f766e}
+.topnav a.on{border-color:#d97706;color:#b45309;font-weight:600}
+</style></head><body><div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:8px 14px;font-size:12.5px;color:#92400e;margin-bottom:14px">📋 内容状态：2026-09-17（五专家审计修订同步·知识复利机制+治理加固+召回率三层度量+Loop 演进提升路径）｜ <a href="index.html" style="color:#b45309">蓝图总览</a> · <a href="../docs/superpowers/specs/2026-09-17-tanyin-design.md" style="color:#b45309">主设计文档</a></div><div class="wrap">
+<nav class="topnav">
+<a href="index.html">← 总览导览</a><a href="agent-philosophies.html">🧭 工程哲学</a>
+<a href="system-architecture.html">🏗️ 架构</a>
+<a href="evolution-loop.html">🔄 演进循环</a>
+<a href="domain-model.html">🗄️ 领域模型</a>
+<a href="engine-contract.html">🔒 引擎契约</a>
+<a href="knowledge-flywheel.html" class="on">📈 知识飞轮</a>
+<a href="security-discipline.html">🛡️ 安全纪律</a>
+</nav>
+<h1>📈 知识飞轮与召回率 <span style="font-size:13px;color:#94a3b8">· L1 知识体系 · 越用越强的机制与度量</span></h1>
+<div class="sub">「不断增强」不是口号，是四条具体机制 + 三层度量。<b style="color:#dc2626">治理加固：ingest 走 staging 审批门、脱敏反向验证、先例绑定客户三元组（三元组=「哪个客户+哪个授权资产+哪次授权时间窗」，三字段全同才可复用——跨客户复用=拿 A 的授权打 B，越权事故；窗口过期先例自动失效）、词表 WSTG 基线多元化</b>。攻击知识有复利也有衰减——知识库「越用越准」而非「越用越臃肿」。</div>
+<div class="sec"><h2>知识库结构（knowledge/ · 治理）</h2>
+<table><tr><th>目录</th><th>内容</th><th>作用</th></tr>
+<tr><td><b>entities/</b></td><td>技术实体页（shiro/fastjson/camunda…）：出现目标/有效模式/已见修复/last_verified——<b>目标字段用脱敏代号 CLIENT-NN，映射表单独存放</b></td><td>跨目标复利的索引——「fastjson：第 3 个目标出现，模式 P 在 2 目标有效，1 已修复」</td></tr>
+<tr><td><b>concepts/</b></td><td>攻击技法页（反序列化/认证绕过/密钥复用）</td><td>方法论抽象层</td></tr>
+<tr><td><b>targets/</b></td><td>目标指纹页（脱敏代号化）</td><td>P2 指纹匹配的依据——命中即注入已知模式</td></tr>
+<tr><td><b>precedents/</b></td><td>先例库（脱敏实战链路+命令模式+<b>客户三元组绑定</b>——三元组=「哪个客户+哪个授权资产+哪次授权时间窗」，三字段全同才可复用：跨客户复用=拿 A 的授权打 B，越权事故；窗口过期先例自动失效）</td><td>P3 先例注入 + 安全先例机制——<b>禁止跨客户匹配</b></td></tr>
+<tr><td><b>patterns/</b></td><td>core/（核心模式）+ learned/（学习模式）</td><td>漏洞模式库，learned 四门槛晋升 core</td></tr>
+<tr><td><b>graph.ndjson </b></td><td>跨 session 知识图谱（<b>逐行 NDJSON，行级可合并</b>）</td><td>全局关联查询；多会话预留</td></tr>
+<tr><td><b>staging/ </b></td><td>ingest 产物暂存区（审批前）</td><td>知识投毒防线——lint+用户审批后才入正式区</td></tr>
+<tr><td><b>format_version </b></td><td>顶层版本标记</td><td>SKILL 升级兼容判定；版本不匹配拒绝恢复并提示迁移</td></tr>
+<tr><td><b>raw/ → sources/</b></td><td>外部素材摄入（历史报告/CVE/厂商文档）</td><td>ingest 的原料区</td></tr></table></div>
+<div class="sec"><h2>四条复利机制（加固）</h2>
+<div class="mechs">
+<div class="mk"><b>① ingest 摄入 </b>「用探隐摄入 &lt;路径&gt;」：任意文档 → raw/ → 自动提炼 → <b>staging/ 暂存 → lint 报告+用户审批 → 入正式区</b>。<b>初始知识库 = CNPEN 82 漏洞（走同一审批门）+ nuclei 模板库 + PortSwigger WSA 分类</b>——词表基线多元化，防单源过拟合。</div>
+<div class="mk"><b>② P6 脱敏沉淀 </b>session 结束：脱敏提取（域名/IP/凭据→占位符）→ <b>反向验证（session 内出现过的域名/IP/凭据/token 在草稿中零命中才放行）</b> → journal 草稿 → 用户审批（落 approvals 表）→ 写入。实体页自动累积更新。</div>
+<div class="mk"><b>③ 进化门槛（learned→core）</b>复现≥2 次 + 跨目标有效（实体页数据判定）+ 人工审批 + 无目标指纹泄漏（反向验证）。四条全过才晋升。防一次性巧合污染核心库。</div>
+<div class="mk"><b>④ lint 保鲜 </b>每 pattern 带 last_verified；session 开始 lint 报告陈旧模式；新 session 反证自动标记矛盾 → learned 降级队列——<b>降级需 N≥2 次独立反证，且区分「防护拦截」与「代码修复」（依赖差分证据 pair_group）</b>。攻击知识有衰减机制。</div></div>
+<div class="why"><b>设计思想</b>：知识复利的关键不是「存得多」而是「信得过」——<b>staging 审批门（ingest 与 P6 对称，防投毒）</b>+ 进化门槛（多次验证才转正）+ 保鲜机制（过期自动降级）+ 反向验证（防跨客户泄漏）四道闸，让知识库随使用越来越准。来源：llm-wiki-agent + GenCPT + dsh-reverse-skill + 审计加固。</div></div>
+<div class="sec"><h2>知识飞轮（数据流）</h2>
+<div class="fw">
+<div class="node"><b>测试 N</b>目标类型 A<br>矩阵基线+通用模式</div><div class="arr">→</div>
+<div class="node"><b>P6 沉淀</b>脱敏+反向验证<br>→审批→入库</div><div class="arr">→</div>
+<div class="node"><b>知识库</b>precedents/entities<br/>patterns/graph.ndjson</div><div class="arr">→</div>
+<div class="node"><b>测试 N+1</b>同类型目标<br>先例全量注入 P2/P3</div><div class="arr">↻</div></div>
+<div class="why"><b>度量指标</b>：先例命中率（多少 finding 来自先例库）↑ · 矩阵空格 ↓ · 收敛轮数 ↓——同类型目标 session 对比即知识复利的直接证据。</div></div>
+<div class="sec"><h2>召回率度量框架（从「看运气」到「可度量」· 四层）</h2>
+<div class="layers">
+<div class="ly"><b>① 矩阵层 — 覆盖完整性</b>攻击面×漏洞类型矩阵，五态标记，终态门禁：空格必须消灭。<b>列从 VOCAB.md（WSTG v4.2 全集基线）钉死并版本化</b>——矩阵列集合的召回=总召回天花板，不能源自单一项目样本；"-"/"!" 格进 P4 抽查防廉价闭合。</div>
+<div class="ly l2"><b>② 图谱层 — 探索完整性</b>收敛条件可计算：无未消费 fact ∧ 无 pending/active intent ∧ candidate 池空 ∧ 矩阵无空格。何时停止=数据判定，非主观感觉。</div>
+<div class="ly l3"><b>③ 知识层 — 复利度量</b>先例命中率 / 新模式晋升率（learned→core）/ 同类型目标对比（空格↓ 收敛轮数↓）——知识库质量的直接指标。</div>
+<div class="ly l4"><b>④ 靶场层 — 检出率 </b>靶场种 20 个已知漏洞测检出率——过程完整性之外唯一的诚实召回数字。三层框架度量的是过程，这层度量的是结果。</div></div>
+<div class="why"><b>诚实边界</b>：探隐不承诺「找到全部漏洞」（渗透测试本质是抽样），承诺的是<b>覆盖可度量</b>（每格有判定，词表 WSTG 基线防单源过拟合）+ <b>复利</b>（同类型目标越测越全）+ <b>可回归</b>（负结果入账，修复验证有基线）+ <b>可检验</b>（靶场检出率）。</div></div>
+<div class="sec"><h2>Loop 演进对召回率的提升路径</h2>
+<table><tr><th>阶段</th><th>召回来源</th><th>机制</th></tr>
+<tr><td>第 1 次测目标类型 A</td><td>矩阵基线 + 通用模式</td><td>知识库冷启动（CNPEN 82 漏洞 + nuclei 模板 + WSA 分类 ingest 后已有厚底子）</td></tr>
+<tr><td>第 N 次测目标类型 A</td><td>+ 先例库（A 类已知模式全注入，<b>客户三元组内匹配</b>）<br>+ 实体页（组件级模式，跨目标验证过）<br>+ 失效模式排除（省 token 花在新攻击面）</td><td>P2 指纹匹配注入 + P3 先例注入 + lint 保鲜排除</td></tr>
+<tr><td>度量方式</td><td>同类型目标 session 对比</td><td>先例命中率↑ · 矩阵空格↓ · 收敛轮数↓</td></tr></table>
+<div class="why"><b>原理逻辑</b>：召回率提升的来源不是「模型变聪明」而是「知识库变厚且变准」——每次测试都在为同类型目标积累先例，且失效模式被自动排除（不浪费预算在已知无效路径上）。</div></div>
+<div class="note"><b>与工程范式的关系</b>：知识飞轮是 Loop 范式在跨 session 尺度上的延伸——单 session 内循环到图谱收敛，跨 session 循环到知识复利。Graph（graph.ndjson 全局关联）与 Harness（纯 markdown 知识页，任何宿主可读）为它提供载体；staging 审批门是安全纪律在知识层的延伸（守门能力贯穿测试与知识两个环节）。</div>
+<footer>知识飞轮与召回率 · L1 知识体系视图 · 2026-09-17（五专家审计修订同步）</footer>
+</div></body></html>

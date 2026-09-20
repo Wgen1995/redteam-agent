@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>探隐 TanYin · 全类型 AI 渗透测试总控 — 项目演进总览</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#1f2329;line-height:1.7;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+header{background:linear-gradient(135deg,#0f172a,#134e4a 55%,#0d9488);color:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 10px 30px rgba(13,148,136,.28)}
+header h1{font-size:24px;margin-bottom:6px}header .sub{opacity:.92;font-size:14px}
+header .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+header .tags span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;font-size:12.5px}
+h2{font-size:20px;margin:36px 0 14px;padding-left:14px;border-left:5px solid #0d9488}
+p{font-size:14px;color:#475569;margin-bottom:10px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:14px;padding:22px 20px;box-shadow:0 4px 16px rgba(0,0,0,.07);text-decoration:none;color:inherit;transition:transform .18s,box-shadow .18s;border-top:5px solid #0d9488;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(13,148,136,.18)}
+.card.arch{border-top-color:#7c3aed}.card.flow{border-top-color:#16a34a}.card.data{border-top-color:#0284c7}.card.eng{border-top-color:#dc2626}.card.know{border-top-color:#d97706}.card.sec{border-top-color:#0ea5e9}.card.ctx{border-top-color:#64748b}
+.card .icon{font-size:30px;margin-bottom:10px}.card h4{font-size:17px;margin-bottom:6px;color:#1e293b}
+.card p{font-size:13px;color:#64748b;margin:0;flex:1}.card .go{margin-top:12px;font-size:13px;font-weight:600;color:#0d9488}
+.card.arch .go{color:#7c3aed}.card.flow .go{color:#16a34a}.card.data .go{color:#0284c7}.card.eng .go{color:#dc2626}.card.know .go{color:#d97706}.card.sec .go{color:#0284c7}.card.ctx .go{color:#475569}
+.summary{background:#fff;border-radius:14px;padding:24px 26px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:18px 0}
+.summary ul{list-style:none;padding:0}.summary li{font-size:14px;color:#475569;padding:7px 0 7px 28px;position:relative;border-bottom:1px solid #f1f5f9}
+.summary li:last-child{border-bottom:none}.summary li::before{content:"✓";position:absolute;left:0;top:7px;color:#16a34a;font-weight:700}
+.summary li b{color:#1e293b}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
+.done{color:#16a34a;font-weight:600}.todo{color:#94a3b8}
+.note{background:#fffbeb;border-left:4px solid #d97706;border-radius:8px;padding:12px 16px;font-size:13.5px;color:#78350f;margin:14px 0}
+.review{background:#fef2f2;border-left:4px solid #dc2626;border-radius:8px;padding:12px 16px;font-size:13.5px;color:#7f1d1d;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
+.topnav{display:flex;gap:10px;margin:0 0 14px;flex-wrap:wrap}.topnav a{background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;color:#0f766e;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+</style></head><body><div class="wrap">
+<nav class="topnav"><a href="../docs/superpowers/specs/2026-09-17-tanyin-design.md">📄 主设计文档</a><a href="../docs/REQUIREMENTS.md">📋 需求总纲</a><a href="../docs/PRINCIPLES.md">🧬 原理与因果链</a><a href="../docs/DECISIONS.md">🧭 决策论证</a><a href="../docs/superpowers/specs/reviews/2026-09-17-five-expert-review-summary.md">🔍 五专家审计决议</a><a href="../docs/panorama/PANORAMA.md">📝 全景活文档</a></nav>
+<header><h1>探隐 TanYin · 全类型 AI 渗透测试总控</h1>
+<div class="sub">AI 挖 · 纪律管 · 图谱推 · 知识长 —— 纯 SKILL 套件（零代码 · 复制即装 · 任意编码 agent 可用）· 图谱收敛 = 测试完成 · 覆盖可度量 · 知识跨会话复利 · <b>五专家联合审计修订版</b></div>
+<div class="tags"><span>纯 SKILL 编排（Harness-native 薄总控·单写者）</span><span>八表账本 + 十种边（Graph）</span><span>图谱演进循环 + 预算合法终态（Loop）</span><span>引擎契约总线（数据形状+执行语义）</span><span>知识复利飞轮（staging 审批+反向验证）</span><span>四级纪律 + deny-list + 注入防护 + 速率熔断</span><span>两维评级 confidence×impact</span><span>实时可视化（session-viz·projector）</span><span>烛龙预留接入（schema_version 协商）</span><span>CNPEN 82 漏洞方法论产品化</span></div></header>
+<h2>蓝图规范 <span style="font-size:12px;color:#94a3b8">· 本目录的组织法 · 2026-09-17 立 · 五专家审计修订</span></h2>
+<p style="font-size:13.5px;color:#475569">panorama 回答五个问题：<b>这是什么</b>（定位与完整形态）· <b>怎么构成怎么运转</b>（架构视图）· <b>现在到哪了</b>（进度与缺口）· <b>内容对不对</b>（与主文档一致）· <b>接下来怎么走</b>（路线）。统一状态词汇：<b style="color:#16a34a">✅ 定稿</b>（主文档已确认）· <b style="color:#d97706">🟡 呈现中</b> · <b style="color:#94a3b8">⚪ 待展开</b> · <b style="color:#0284c7">🟢 已实现</b>（进入开发期后启用）。内容权威链：主设计文档 → 本页 → 子图；子图=同一系统不同关注点的视图，同一事实跨图口径必须一致。</p>
+<table><tr><th>视图</th><th>关注点边界</th></tr>
+<tr><td>index（本页）</td><td>定位 · 进度 · 蓝图总表 · 工程哲学导览 —— 唯一入口</td></tr>
+<tr><td>工程哲学图</td><td>Graph/Loop/Harness/<b>Context</b> 四支柱深度分析：立场/原理/谱系/边界/选型 + 咬合矩阵</td></tr>
+<tr><td>系统架构图</td><td>五层（六边形表述）与层间依赖（用户/编排/领域模型/引擎契约/知识纪律）</td></tr>
+<tr><td>演进循环图</td><td>Loop 范式：P3 图谱演进循环 · 收敛加固 · 预算终态 · Phase 门 P0-P6（含 P5.5/P6.0）· 五态标记</td></tr>
+<tr><td>领域模型图</td><td>Graph 范式：八表账本 · 十种边 · Evidence 契约 · 两维评级 · 编码规范与事件溯源</td></tr>
+<tr><td>引擎契约图</td><td>Harness 范式：契约双轴（数据形状+执行语义）· 三类引擎 · 提交文件协议 · 跨引擎知识流动</td></tr>
+<tr><td>知识飞轮图</td><td>知识复利机制（治理加固）· 召回率四层度量 · Loop 演进提升路径</td></tr>
+<tr><td>安全纪律图</td><td>四级纪律 · 命令双维度上下文 · deny-list · 注入防护 · 速率熔断 · 授权门八问 · 审计链</td></tr>
+<tr><td>原理与 E2E 图</td><td>为什么这样设计（主因果链+12 条因果链详解）· 概念词典人话版 · E2E 全流程推演（示例商城·双终态）</td></tr>
+<tr><td>运行时执行图</td><td>AI 实际怎么干活：六泳道角色分工 · P0-P6 全程时序 · 总控一回合解剖 · 执行通道 8 步生命周期 · 受管重启时序</td></tr></table>
+<h2>AI Agent 工程哲学 <span style="font-size:12px;color:#94a3b8">· Graph / Loop / Harness / Context · 深度分析与架构选型 · 专属视图</span></h2>
+<p style="font-size:13.5px;color:#475569">四支柱不是功能模块，而是四种回答「<b>agent 的复杂性应该放在哪里</b>」的立场：Graph 放状态、Loop 放过程、Harness 放基础设施、<b>Context 放上下文生命周期（补立——原设计最弱处恰是三大哲学里没有名字的那一个）</b>。每节六段深析：哲学立场→解决什么→架构原理→业界谱系→代价边界→探隐选型。</p>
+<div class="cards">
+<a class="card arch" href="agent-philosophies.html"><div class="icon">🧭</div><h4>工程哲学深度分析（总览）</h4><p>Graph / Loop / Harness / Context 四支柱逐一深析：哲学立场、解决的 LLM 根本缺陷、架构原理（受控词汇/循环体/薄控制面/常驻集与受管重启）、业界谱系（LangGraph 与 o1/R1 标注为类比）、代价与边界、探隐选型理由 + 四者咬合逻辑矩阵。</p><div class="go">查看哲学分析 →</div></a>
+<a class="card data" href="domain-model.html"><div class="icon">🕸️</div><h4>Graph 落位 → 领域模型图</h4><p><b>立场</b>：复杂性放「状态」里。<br/><b>原理</b>：受控词汇（十种边）·图查询即推理·状态外置。<br/><b>选型</b>：八表 TSV+十边（+scope/approvals/E-index/supersedes），事件溯源+写前拒收，图谱收敛=测试完成。</p><div class="go">查看 Graph 落位 →</div></a>
+<a class="card flow" href="evolution-loop.html"><div class="icon">🔁</div><h4>Loop 落位 → 演进循环图</h4><p><b>立场</b>：复杂性放「过程」里。<br/><b>原理</b>：循环体·可计算终止条件·预算控制。<br/><b>选型</b>：P3 演进循环+假设风暴（条件触发+机械去重+阈值递增），收敛或 budget-exhausted 皆合法终态。</p><div class="go">查看 Loop 落位 →</div></a>
+<a class="card eng" href="engine-contract.html"><div class="icon">⚙️</div><h4>Harness 落位 → 引擎契约图 + 架构图 L5</h4><p><b>立场</b>：复杂性放「基础设施」里，尽量用现成的。<br/><b>原理</b>：薄控制面（五不原则）·契约而非集成·渐进加载+常驻集。<br/><b>选型</b>：纯 SKILL 全宿主通吃，契约双轴（数据形状+执行语义）。</p><div class="go">查看 Harness 落位 →</div></a>
+<a class="card ctx" href="evolution-loop.html"><div class="icon">🧠</div><h4>Context 落位 → 演进循环图⓪ + 契约图提交协议</h4><p><b>立场</b>：复杂性放「上下文生命周期」里。<br/><b>原理</b>：常驻集/按需集·受管重启·摘要纪律·注入遏制。<br/><b>选型</b>：state.md checkpoint+受管重启+子代理结构化返回+查询摘要化——立为显式支柱。</p><div class="go">查看 Context 落位 →</div></a></div>
+<div class="note"><b>四者咬合</b>：Graph 给 Loop 状态载体与收敛判据；Loop 给 Graph 演进动力；Harness 给运行环境；Context 给可持续性（状态在盘所以重启无损、摘要纪律所以循环不溢出、常驻集所以纪律不衰减）。抽掉任何一个，其余都退化。</div>
+<h2>可视化导览</h2><p>九张图从<b>工程哲学</b>、<b>系统架构</b>、<b>演进循环</b>、<b>领域模型</b>、<b>引擎契约</b>、<b>知识飞轮与召回</b>、<b>安全纪律</b>、<b>原理与 E2E</b>、<b>运行时执行</b>九个维度呈现探隐全景——每图页首有内容状态横幅（标注该图新鲜度边界）。工程哲学的深度分析见上方区块。</p>
+<div class="cards">
+<a class="card arch" href="system-architecture.html"><div class="icon">🏗️</div><h4>系统架构图</h4><p>五层（六边形表述：L3 领域核/L4 应用编排/L2 适配器/L1 共享内核+政策）：宿主 harness → 总控编排（单写者·常驻集）→ 领域模型（八表+链式哈希审计链）→ 引擎契约总线（三类引擎）→ 知识与纪律（staging 治理）。烛龙接入只换 runner（schema_version 协商）。</p><div class="go">查看架构图 →</div></a>
+<a class="card flow" href="evolution-loop.html"><div class="icon">🔄</div><h4>图谱演进循环图</h4><p>Loop 范式核心：checkpoint+预算检查 → 扫描未消费 fact → <b>假设风暴（条件触发）</b>五路扩张 → 批量并行派发 → submissions 验收落账 → 链构建 → 收敛判定或 budget-exhausted。含 Phase 门 P0-P6（八问/P5.5 签发/P6.0 清理）与五态标记（抽查+冻结+词表钉死）。</p><div class="go">查看循环图 →</div></a>
+<a class="card data" href="domain-model.html"><div class="icon">🗄️</div><h4>领域模型图</h4><p>Graph 范式核心：八表 TSV 账本（goals/scope/intents/facts/findings/assets/edges/approvals）+ E-index + matrix + timeline（链式哈希）+ 十种边。事件溯源状态机·写前拒收·ID 铸造·字段编码规范。Evidence 契约（双 hash+差分 pair_group+凭据保险库）+ 两维评级。</p><div class="go">查看数据模型 →</div></a>
+<a class="card eng" href="engine-contract.html"><div class="icon">🔒</div><h4>引擎契约图</h4><p>Harness 范式核心：契约双轴（数据形状+执行语义）· 三类引擎（skill/cli/projector）· 提交文件协议（submissions/→总控验收落账）· CLI 纪律能力声明 · web-blackbox（含差分判定）/ vuln-agent（OS 参数化+操作日志）/ session-viz（projector）· 跨引擎知识流动。</p><div class="go">查看引擎全景 →</div></a>
+<a class="card know" href="knowledge-flywheel.html"><div class="icon">📈</div><h4>知识飞轮与召回率</h4><p>越用越强机制（治理加固）：ingest 走 staging 审批门（CNPEN 82 漏洞+nuclei+WSA）· 先例客户三元组绑定（客户+授权资产+授权窗口全同才复用，跨客户=越权） · 实体页脱敏代号 · learned→core 四门槛 · lint 保鲜（N≥2 反证）。召回率四层度量（矩阵/图谱/知识/<b>靶场检出率</b>）+ Loop 演进提升路径。</p><div class="go">查看知识飞轮 →</div></a>
+<a class="card sec" href="security-discipline.html"><div class="icon">🛡️</div><h4>安全纪律图</h4><p>四级纪律（结构化授权+scope 硬门/规则/审批落账/链式哈希审计）· 命令双维度上下文 + <b>deny-list 机械拦截</b> · <b>注入防护四层</b> · <b>速率与熔断（事故快照）</b> · 授权门八问 · 先例三元组 · 守门诚实边界三层声明。</p><div class="go">查看纪律体系 →</div></a>
+<a class="card ctx" href="e2e-flow.html"><div class="icon">🧬</div><h4>原理与 E2E 全流程推演</h4><p>为什么这样设计：主因果链总纲（四根本问题+元问题⑤）· <b>概念词典人话版</b>（八表/三特殊文件/四目录/流程机制全部行话——一句话人话→类比→真实示例→为什么存在）· E2E 深度推演（示例商城多资产场景·P3 三轮迭代·跨引擎流动·受管重启·双终态）· 12 条因果链详解 · 自检三问。对应 markdown 权威源 docs/PRINCIPLES.md。</p><div class="go">查看原理与推演 →</div></a>
+<a class="card flow" href="execution-flow.html"><div class="icon">⚡</div><h4>运行时执行视图（AI 怎么干活）</h4><p>跑起来时谁在什么时刻干什么活：<b>六泳道角色分工</b>（用户/总控 LLM/子代理 LLM/账本命令/引擎 CLI/skill 引擎——判断归 LLM、记账拦截归命令）· <b>P0-P6 全程时序</b>（每阶段动作+门禁+产出）· <b>总控一回合解剖</b>（读盘→查账→思考→派活→收活→记账→存档）· <b>执行通道 8 步生命周期</b>（委派→引擎加载→deny-list→取票执行→原始落盘→结构化提取→提交→验收落账，7 个机械关卡）· <b>受管重启时序</b>。</p><div class="go">查看运行时执行 →</div></a></div>
+<div class="review"><b>🔍 五专家联合审计与修订（2026-09-17）</b>：渗透测试 6.5 / Agent 工程 7 / 软件工程 6 / 架构 7.5 / 安全合规 6。共识高危十项（收敛不可靠/纪律无机械执行/并发写/TSV 转义/注入零防护/词表过拟合/C 级混淆/无限速/知识库泄漏/凭据矛盾）→ <b>A1-A20 阻断级全部落入设计</b>（单写者/账本命令集附录/事件溯源/编码规范/收敛加固/两维评级/WSTG 词表/速率熔断/scope 硬门/凭据保险库/注入防护/差分举证/清理门/审计链/两层验收/契约执行语义/知识治理/平台基底/上下文生命周期/签发门）+ B1-B17 简化采纳 + D1-D5 不采纳（TSV 保留/守卫脚本不做，附论证）。审计原文见 docs/superpowers/specs/reviews/。</div>
+<h2>设计共创进度板 <span style="font-size:12px;color:#94a3b8">· 每节确认后更新 · 始于 2026-09-17</span></h2>
+<div class="summary"><ul>
+<li><b>当前状态（2026-09-18）</b>：<b style="color:#059669">设计定稿（五专家审计修订版）+ PRINCIPLES.md（原理与因果链·含 E2E 推演）+ 运行时执行视图完成，待用户终审</b>——需求总纲 + 设计定稿（八表十边/收敛加固/契约执行语义/知识治理/注入防护/附录 A 账本命令集）+ 决策论证（四支柱/七决策）+ <b>PRINCIPLES.md（主因果链+概念词典人话版+E2E 推演+12 条因果链）</b> + 五份审计原文+汇总决议 + 本 panorama 九视图同步（含 e2e-flow.html/execution-flow.html）。实现未开始。</li>
+<li><b>AI Agent 工程四支柱落位</b>：Graph（八表+十边，收敛可计算）· Loop（演进循环+条件触发风暴+预算终态）· Harness（纯 SKILL 全宿主，契约双轴）· <b>Context（checkpoint+受管重启+摘要纪律+常驻集——显式立柱）</b>。四者咬合，抽掉任何一个其余都退化。</li>
+<li><b>后续管线</b>：✅ 业界调研 → ✅ 架构方案 A 确认 → ✅ 设计定稿初版 → ✅ 五专家联合审计（A/B/C/D 四级决议）→ ✅ 审计修订落入 → ✅ PRINCIPLES.md（原理+概念词典+E2E 推演）→ ✅ 运行时执行视图（execution-flow.html）→ ⏳ 用户终审 → ⏳ 实施计划（writing-plans）→ B1 骨架（目录+SKILL.md+shared/ 六件）→ B2 领域模型（账本命令+两层黄金夹具）→ B3 引擎契约+web-blackbox+session-viz → B4 vuln-agent 适配器 → B5 知识体系（staging ingest+lint）→ B6 phases P0-P6（含 P5.5/P6.0）→ 验证（两层夹具+纪律注入测试+干跑+授权靶场含 budget-exhausted 演练+种 20 漏洞测检出率+双宿主）。</li>
+</ul></div>
+<h2>整体蓝图与状态 <span style="font-size:12px;color:#94a3b8">· 内容随定稿逐块刷新 · 与主文档始终一致</span></h2>
+<table><tr><th>域</th><th>设计内容（设计定稿 · 2026-09-17）</th><th>实施落点</th></tr>
+<tr><td><b>总控编排（L4）</b></td><td>SKILL.md 常驻集+指挥官协议（权威薄认知厚·单写者）· phases/ P0-P6 阶段门（八问/P5.5 签发/P6.0 清理）· 图谱演进循环（条件触发风暴+预算看护）· 四条铁律（薄总控+单写者/状态落盘+受管重启/覆盖+预算终态/证据+两维评级）· 执行通道间接层</td><td class="todo">⚪ B1 / B6</td></tr>
+<tr><td><b>领域模型（L3）</b></td><td>八表 TSV 账本 + E-index + matrix（事件溯源）+ timeline（链式哈希）· 十种边 · Evidence 契约（双 hash+差分 pair_group+凭据保险库）· 两维评级 confidence×impact · 五态标记（抽查+冻结+WSTG 词表）· 字段编码规范 · 附录 A 账本命令集（写前拒收+摘要化查询）</td><td class="todo">⚪ B2</td></tr>
+<tr><td><b>引擎契约（L2）</b></td><td>CONTRACT.md 双轴（数据形状+执行语义：skill/cli/projector+纪律能力声明+提交文件协议）· web-blackbox（SKILL 型·含差分判定规则）· vuln-agent（CLI 型·OS 参数化+操作日志）· session-viz（projector 型）· gencpt 契约预留 · 跨引擎知识流动（cross_ref）· 烛龙一致性夹具</td><td class="todo">⚪ B3 / B4</td></tr>
+<tr><td><b>知识体系（L1）</b></td><td>wiki 目录（entities 脱敏代号/concepts/targets/precedents 三元组/patterns/graph.ndjson+staging/+format_version）· ingest staging 审批门（CNPEN 82+nuclei+WSA）· P6 反向验证沉淀 · learned→core 四门槛 · lint 保鲜（N≥2 反证+防护/修复区分）</td><td class="todo">⚪ B5</td></tr>
+<tr><td><b>安全纪律（L1）</b></td><td>授权门八问+结构化授权+scope.tsv 硬门 · 四级纪律 · 命令双维度上下文+deny-list 机械拦截 · 注入防护四层 · 速率与熔断（rate_limit/退避/事故快照）· 先例三元组+参数白名单 · approvals 审批账本 · 守门诚实边界三层</td><td class="todo">⚪ B1</td></tr>
+<tr><td><b>验证与交付</b></td><td>两层黄金夹具（确定性规范化比对+行为结构断言）· 纪律注入测试集+负向用例 · 干跑（P0-P2）· 授权靶场全流程（含 budget-exhausted 演练）· 种 20 漏洞测检出率 · ingest 抽查 · walcode+CodeBuddy 双宿主安装自检</td><td class="todo">⚪ 验证批</td></tr></table>
+<div class="note"><b>目录说明</b>：本 panorama 目录是探隐演进的<b>活文档</b>——设计期每项定稿逐块刷新本页；实现期每个功能落地/每次迭代同步更新（状态流转「设计中→已实现」）；任何时刻打开看到的=项目真实状态。进度权威链：主设计文档（内容）→ 本页（蓝图/进度投影）→ 九子图（深入视图）。会话恢复用 markdown 活文档：docs/panorama/PANORAMA.md。</div>
+<footer>探隐 TanYin · 全类型 AI 渗透测试总控 · 演进全景 · 持续更新</footer>
+</div></body></html>

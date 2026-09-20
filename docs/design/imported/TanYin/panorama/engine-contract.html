@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>引擎契约图 · 探隐 TanYin</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#1f2329;line-height:1.65;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}.sub{font-size:13px;color:#64748b}
+.sec{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:12px 0}
+.sec h2{font-size:16px;margin-bottom:10px;color:#1e293b}
+.sec p{font-size:13px;color:#475569;margin:4px 0}
+.why{background:#fef2f2;border-left:3px solid #dc2626;border-radius:6px;padding:8px 12px;font-size:12.5px;color:#7f1d1d;margin-top:8px}
+.why b{color:#b91c1c}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
+.engs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:900px){.engs{grid-template-columns:1fr}}
+.en{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:12.5px;color:#475569}
+.en b{display:block;font-size:14px;color:#1e293b;margin-bottom:4px}
+.en .st{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;float:right}
+.st{background:#dcfce7;color:#16a34a}.st.res{background:#e0e7ff;color:#4338ca}.st.fut{background:#f1f5f9;color:#94a3b8}
+.flow{background:#fff;border-radius:10px;padding:12px 14px;font-size:12.5px;border:1px dashed #dc2626;margin:10px 0;color:#7f1d1d}
+.note{background:#fffbeb;border-left:4px solid #d97706;border-radius:8px;padding:10px 14px;font-size:13px;color:#78350f;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:30px}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:12.5px}
+.topnav a{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:4px 14px;color:#334155;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.topnav a:hover{border-color:#0d9488;color:#0f766e}
+.topnav a.on{border-color:#dc2626;color:#b91c1c;font-weight:600}
+</style></head><body><div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:8px 14px;font-size:12.5px;color:#92400e;margin-bottom:14px">📋 内容状态：2026-09-17（五专家审计修订同步·Harness 范式核心视图：契约数据形状+执行语义+三类引擎+提交文件协议）｜ <a href="index.html" style="color:#b45309">蓝图总览</a> · <a href="../docs/superpowers/specs/2026-09-17-tanyin-design.md" style="color:#b45309">主设计文档</a></div><div class="wrap">
+<nav class="topnav">
+<a href="index.html">← 总览导览</a><a href="agent-philosophies.html">🧭 工程哲学</a>
+<a href="system-architecture.html">🏗️ 架构</a>
+<a href="evolution-loop.html">🔄 演进循环</a>
+<a href="domain-model.html">🗄️ 领域模型</a>
+<a href="engine-contract.html" class="on">🔒 引擎契约</a>
+<a href="knowledge-flywheel.html">📈 知识飞轮</a>
+<a href="security-discipline.html">🛡️ 安全纪律</a>
+</nav>
+<h1>🔒 引擎契约总线 <span style="font-size:13px;color:#94a3b8">· Harness 范式核心 · L2 层 · 文件契约总线</span></h1>
+<div class="sub">全类型渗透需要多种能力，全部自研不现实也没必要。探隐只定义契约——引擎异构（skill/cli/projector 三类），<b>数据形状+执行语义</b>双轴定义，提交文件协议统一，总控单写者落账。含 session-viz 实时可视化生成器。</div>
+<div class="sec"><h2>契约双轴（engines/CONTRACT.md · 数据形状 + 执行语义）</h2>
+<table><tr><th>要素</th><th>内容</th><th>原理</th></tr>
+<tr><td><b>manifest 清单</b></td><td><b>kind（skill/cli/projector）</b> · 适用场景 · 参数 · 产物路径 · <b>超时/重试策略/幂等键（intent_id）</b> · <b>纪律能力声明</b>（CLI 引擎：max_op_level+视角上限）</td><td>自描述——总控读 manifest 即知怎么调、能调什么；纪律能力声明让 CLI 黑盒不成为纪律旁路</td></tr>
+<tr><td><b>输入</b></td><td>session 目录 + 目标描述 + 已有 facts 摘要</td><td>facts 摘要是跨引擎知识流动的入口（引擎不重复发现已知）</td></tr>
+<tr><td><b>输出（提交文件协议 ）</b></td><td>统一提交文件 → <b>session/&lt;goal-id&gt;/submissions/&lt;intent-id&gt;/</b>（schema 定死：findings[title/confidence/impact/reproducible_steps/evidence_refs/location] + facts[] + assets[] + edges[]），<b>由总控验收后经账本命令统一落账</b>——引擎不直接写账本</td><td>单写者模式：并发锁/ID 撞号/校验集中化一次解决；提交文件是断点续传的额外恢复点；总控「验收格式」职责成立</td></tr></table>
+<p><b>执行语义（第二轴）</b>：<b>skill 型</b>——LLM 子代理执行，失败=格式漂移/上下文耗尽，超时=回合预算；<b>cli 型</b>——OS 进程执行，失败=非零退出/超时/部分产物，<b>必须声明纪律能力上限，总控据此路由（超限 intent 拒绝派发；黑盒工具默认最高风险级，仅 L0/L1 视角 intent 可派）</b>，适配器须输出操作日志供审计回放；<b>projector 型</b>——只读账本、产物不回写。</p>
+<div class="why"><b>设计思想：文件契约总线</b>——不引入进程间通信/消息队列/数据库，契约就是「目录+文件格式+执行语义」。零依赖、零部署、任何宿主可用。学烛龙「参数契约+产物映射器」语义，但落到纯文件形态。修正：引擎「零改动」过强——准确表述是<b>契约内零改动</b>（满足契约即插即用；契约演进时引擎跟版本）。</div></div>
+<div class="sec"><h2>引擎矩阵（首批 + 预留）</h2>
+<div class="engs">
+<div class="en"><b>web-blackbox <span class="st">新写</span></b>SKILL 型。CNPEN 方法论产品化：侦察 → 攻击面测绘 → 矩阵测试 → <b>差分举证（判定规则写入契约：同请求基线±单变量+errorCode 语义分析+内容类型验证）</b>。装进子代理按角色 recon/web 执行。<b>引擎级详细设计已定稿</b>（2026-09-18-web-blackbox-engine.md：目录结构 SKILL.md+phases 四段+patterns 提交模板；intent.kind→段映射；上下文预算——工具输出零进上下文；失败语义五类——格式漂移/上下文耗尽/超时/环境受阻/工具失败；CNPEN 82 漏洞素材→引擎/技法页/先例库映射）。</div>
+<div class="en"><b>vuln-agent <span class="st">接入</span></b>CLI 型适配器。已有成熟白盒工具：<b>启动命令按 OS 参数化（Windows: python / POSIX: python3）</b> → .vuln_agent_output/ → 适配器归一化成提交文件；<b>max_op_level: read + 操作日志输出</b>。</div>
+<div class="en"><b>session-viz <span class="st">新写</span></b><b>projector 型</b>可视化生成器（归类修正：只读账本、产物不回写）。读 session 账本（八表+矩阵+timeline）→ Cytoscape.js 交互式 HTML（离线自包含）。统计栏/Pipeline 时间轴/图谱区/攻击链面板/未消费 fact 清单/预算消耗进度条——实时感知渗透测试现状。账本即数据源，零额外状态。</div>
+<div class="en"><b>gencpt <span class="st res">契约预留</span></b>容器/K8s 渗透 SKILL。契约已兼容（SKILL 型），暂不接入。</div>
+<div class="en"><b>未来引擎 <span class="st fut">扩展位</span></b>AD 域 / 移动 / 云配置审计…新增引擎=写 manifest（含执行语义+纪律声明）+适配说明，<b>契约内</b>总控零改动。</div></div>
+<div class="why"><b>原理逻辑</b>：为什么 web-blackbox 新写而 vuln-agent 复用？——CNPEN 方法论（82 漏洞实战验证）没有现成产品化实现，是探隐的差异化核心，必须新写；vuln_agent 已是成熟工具，适配器接入成本远低于重写。<b>方法论层自研、工程模式层复用、引擎层契约接入</b>。</div></div>
+<div class="sec"><h2>实时可视化（session-viz · projector · 测试现状直读）</h2>
+<p><b>机制</b>：账本即数据源——session 目录的八表 TSV + E-index + matrix + timeline 就是可视化输入，<b>不需要额外记录</b>。`用探隐可视化` 命令随时重新生成；HTML 离线自包含（Cytoscape 内嵌），单文件可发送任何人。</p>
+<p><b>呈现</b>：统计栏（资产/fact/finding 按 confidence×impact 分色/攻击链/矩阵覆盖率/收敛进度/<b>预算三元组消耗进度条</b>/风暴指标——candidate 池大小、五路产出分布、deferred 池）· Pipeline 时间轴（P0-P6 含 P5.5 签发/P6.0 清理门状态，当前阶段高亮）· 图谱区（节点按类型着色、finding 按 confidence×impact 发光、attack 链金色动画、cross_ref 虚线、supersedes 点线；<b>candidate intent 半透明虚线节点</b>——风暴中的假设 vs 已验证实线节点；过滤/搜索/布局切换）· 右侧面板（节点详情/攻击链步骤展开/<b>未消费 fact 清单</b>/<b>假设风暴面板</b>——五路产出列表，每 candidate 显示 origin 徽章+score+via 引用，rejected/deferred 折叠可查/<b>清理清单视图</b>——P6.0 核销状态）。</p>
+<div class="why"><b>设计思想</b>：账本是单一事实源，可视化只是它的一个投影——零额外状态、零同步成本、重新生成即最新（断点续传/受管重启后同样反映恢复点状态）。把「图谱收敛=测试完成」从账本查询变成肉眼可见。来源：GenCPT graph-viz（Cytoscape 模板+离线自包含）。</div></div>
+<div class="sec"><h2>跨引擎知识流动（总控独有增值）</h2>
+<div class="flow">Web 黑盒发现端点清单 → 注入白盒审计重点（cross_ref 边：这个端点的处理代码在哪，重点看）<br>白盒发现硬编码密钥 → 注入 Web 测试素材（cross_ref 边：拿这个密钥去试认证绕过/签名伪造）<br>finding A（任意文件读）+ finding B（配置泄露路径）→ attack 边：组合成攻击链</div>
+<div class="why"><b>设计思想</b>：单引擎产品看不见跨域组合——Web 扫描器不知道源码里有个密钥，白盒工具不知道线上有个端点。总控让两类信息在同一账本汇合，组合推理（P3 第⑤步链构建）产生 1+1&gt;2 的发现。这是「编排」相对「堆工具」的本质区别。</div></div>
+<div class="sec"><h2>工具调用分层（Kali 工具箱怎么接——不逐工具写引擎）</h2>
+<table style="font-size:12px"><tr><th>层</th><th>什么工具</th><th>接入方式</th><th>纪律</th></tr>
+<tr><td><b>引擎级</b></td><td>大工具，结构化产物，独立能力域（vuln-agent 这类完整引擎）</td><td>kind: cli 契约：manifest 声明纪律能力上限（max_op_level+视角），适配器归一化产物为统一提交格式</td><td>黑盒工具默认最高风险级，仅 L0/L1 视角 intent 可派发；操作日志供审计回放</td></tr>
+<tr><td><b>命令级</b></td><td>小工具：nmap/nuclei/subfinder/httpx/curl…</td><td>SKILL 型引擎与子代理执行任务时<b>经执行通道（宿主 shell）直接调用</b>——工具是命令，不是引擎</td><td>三重门横切：deny-list 机械拦截（执行前置）→ scope-check（intent 派发前置）→ rate_limit（goal 级限速）；对外请求记 timeline request: 事件</td></tr></table>
+<div class="why"><b>设计思想</b>：工具知识归知识库，不写死在代码里——「哪个工具+什么参数+适用什么技法」存 concepts/ 技法页与 precedents/ 命令模式，风暴第②路检索技法页时即获得工具用法。<b>新工具加入 = ingest 一篇用法文档成技法页（走 staging 审批门），不是改代码</b>。分界判据：产物需要独立归一化+独立纪律能力声明→引擎级；只是命令行调用→命令级。方法论级差异（Web 黑盒/源码审计/容器/AD 域）才需要新引擎；攻击手法差异（SQL 注入 vs 越权）只是知识页差异。</div></div>
+<div class="sec"><h2>烛龙对齐（预留接入，不依赖）</h2>
+<p><b>机制</b>：探隐契约 = 烛龙「参数契约+产物映射器」的语义版；TSV 账本 = 烛龙 NDM 的文件版（<b>schema_version 列作为映射协商基础</b>）。接入时 L2 适配器 SKILL 换成烛龙 runner 调用，L3 账本格式不变。探隐独立发布，不依赖烛龙存在。</p>
+<p><b>一致性夹具</b>：烛龙 runner 跑 stub 引擎对黄金 session 产出一致账本——列入烛龙接入批次验收，把「零成本接入」从声明变为可回归的契约测试。</p>
+<div class="why"><b>原理逻辑</b>：分层解耦的兑现——L2 是可替换层。烛龙成熟后，探隐 session 目录可直接导入烛龙平台，获得 GUI/多用户/调度能力；不接入时探隐照常独立工作。诚实修正：两边执行语义此前都未定义，对齐无从谈起——现在探隐侧已定义（契约双轴），夹具让对齐可验证。</div></div>
+<div class="note"><b>与工程范式的关系</b>：本图是 Harness 范式的落位——不重造引擎、不重造运行时，站在成熟工具（vuln_agent）与成熟宿主（walcode/CodeBuddy）上，探隐只做它们都不做的那一层：契约与编排。提交文件协议同时是 Context 范式的落位（结构化摘要进上下文，超限进盘）。</div>
+<footer>引擎契约图 · Harness 范式视图 · 2026-09-17（五专家审计修订同步）</footer>
+</div></body></html>

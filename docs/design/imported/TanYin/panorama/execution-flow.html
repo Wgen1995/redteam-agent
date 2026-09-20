@@ -1,0 +1,625 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>运行时执行视图 · AI 一步一步怎么渗透 · 探隐 TanYin</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#1f2329;line-height:1.7;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}.sub{font-size:13px;color:#64748b}
+h2{font-size:19px;margin:32px 0 12px;padding-left:14px;border-left:5px solid #0d9488}
+h3{font-size:15.5px;margin:18px 0 8px;color:#1e293b}
+p{font-size:13.5px;color:#475569;margin:6px 0}
+.sec{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:12px 0}
+.sec h2{border:none;padding-left:0;margin-top:0}
+code{background:#e2e8f0;border-radius:4px;padding:1px 6px;font-family:Consolas,monospace;font-size:12px;color:#0f172a}
+/* 架构图 */
+.arch{background:#0f172a;color:#e2e8f0;border-radius:14px;padding:16px 18px;font-family:Consolas,"Courier New",monospace;font-size:11.5px;line-height:1.75;margin:12px 0;overflow-x:auto;white-space:pre}
+.arch b{color:#5eead4}.arch .u{color:#c4b5fd}.arch .m{color:#5eead4}.arch .s{color:#93c5fd}.arch .c{color:#94a3b8}.arch .x{color:#fdba74}.arch .e{color:#f9a8d4}.arch .k{color:#fde047}.arch .r{color:#fca5a5}.arch .g{color:#86efac}.arch .dim{color:#64748b}
+/* 流程总览大图 */
+.bigflow{display:flex;flex-direction:column;gap:0;margin:14px 0}
+.bf{display:flex;align-items:stretch;gap:10px}
+.bf .no{flex:0 0 86px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0f172a;color:#5eead4;border-radius:10px;font-family:Consolas,monospace;font-size:11px;padding:8px 4px;text-align:center;line-height:1.4}
+.bf .no b{font-size:15px;color:#fff}
+.bf .bx{flex:1;background:#fff;border:1px solid #e2e8f0;border-left:5px solid #0d9488;border-radius:10px;padding:10px 14px;font-size:12.5px;color:#475569}
+.bf .bx b{color:#1e293b;font-size:13.5px}
+.bf .bx .who{font-size:11px}
+.bf .bx .out{color:#0369a1;font-size:11.5px;margin-top:3px}
+.bf.p0{--c:#7c3aed}.bf.p1{--c:#0ea5e9}.bf.p2{--c:#0284c7}.bf.p3{--c:#0d9488}.bf.p4{--c:#475569}.bf.p5{--c:#b45309}.bf.p6{--c:#be185d}
+.bf .bx{border-left-color:var(--c)}.bf .no{background:var(--c)}
+.bf .gap{flex:0 0 86px;display:flex;justify-content:center;color:#94a3b8;font-size:15px;padding:2px 0}
+.bfarrow{display:flex;justify-content:center;color:#94a3b8;font-size:16px;margin:1px 0}
+/* 角色标签 */
+.actor{display:inline-block;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap}
+.a-user{background:#7c3aed}.a-master{background:#0d9488}.a-sub{background:#2563eb}.a-cmd{background:#475569}.a-cli{background:#b45309}.a-eng{background:#be185d}
+/* 步骤卡 */
+.st{background:#fff;border-radius:14px;padding:14px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:10px 0;border-left:5px solid var(--c,#0d9488)}
+.st h4{font-size:14px;color:#1e293b;margin-bottom:6px}
+.st h4 .n{display:inline-block;background:#0f172a;color:#5eead4;border-radius:6px;font-family:Consolas,monospace;font-size:12px;padding:1px 8px;margin-right:8px}
+.st .do{font-size:12.5px;color:#475569;margin:5px 0}
+.st .do b{color:#0f766e}
+/* 数据流标注 */
+.io{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;font-size:11.5px;margin:8px 0;line-height:1.8}
+.io .in{color:#7c3aed}.io .act{color:#475569}.io .out{color:#0369a1}
+.io b{font-weight:700}
+.io .sep{color:#94a3b8;margin:0 4px}
+.st .gate{background:#fef2f2;border-left:3px solid #dc2626;border-radius:6px;padding:5px 10px;font-size:12px;color:#7f1d1d;margin:6px 0}
+.st .gate b{color:#b91c1c}
+.st .next{background:#eff6ff;border-left:3px solid #3b82f6;border-radius:6px;padding:5px 10px;font-size:12px;color:#1e3a5f;margin:6px 0}
+.st .next b{color:#1d4ed8}
+/* 代码块 */
+.code{background:#1e293b;color:#e2e8f0;border-radius:10px;padding:12px 16px;font-family:Consolas,"Courier New",monospace;font-size:11px;line-height:1.7;margin:8px 0;overflow-x:auto;white-space:pre}
+.code .c{color:#64748b}.code .k{color:#5eead4}.code .r{color:#fca5a5}.code .y{color:#fde047}.code .g{color:#86efac}.code .b{color:#93c5fd}
+/* 文件树 */
+.tree{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;font-family:Consolas,monospace;font-size:11.5px;line-height:1.8;color:#334155;margin:8px 0;overflow-x:auto;white-space:pre}
+.tree .new{color:#059669;font-weight:700}.tree .c{color:#94a3b8}
+/* 通道流水线 */
+.pipe{display:flex;flex-wrap:wrap;gap:4px;align-items:stretch;margin:12px 0}
+.pipe .pstation{flex:1;min-width:130px;background:#fff;border:1px solid #cbd5e1;border-top:4px solid #2563eb;border-radius:10px;padding:8px 10px;font-size:11px;color:#475569}
+.pipe .pstation b{display:block;font-size:12px;color:#1e293b;margin-bottom:3px}
+.pipe .pstation .who{font-size:10px;font-weight:600;border-radius:3px;padding:0 5px;color:#fff;display:inline-block;margin-bottom:3px}
+.pipe .pstation .who.master{background:#0d9488}.pipe .pstation .who.sub{background:#2563eb}.pipe .pstation .who.cmd{background:#475569}.pipe .pstation .who.cli{background:#b45309}
+.pipe .pstation .gd{color:#b91c1c;font-size:10px;margin-top:3px}
+.pipe .par{align-self:center;color:#94a3b8;font-weight:700;font-size:14px}
+/* 时序图 */
+.seq{background:#0f172a;color:#e2e8f0;border-radius:14px;padding:16px 20px;font-family:Consolas,"Courier New",monospace;font-size:11.5px;line-height:1.85;margin:12px 0;overflow-x:auto;white-space:pre}
+.seq b{color:#5eead4}.seq .u{color:#c4b5fd}.seq .m{color:#5eead4}.seq .s{color:#93c5fd}.seq .c{color:#94a3b8}.seq .x{color:#fdba74}.seq .e{color:#f9a8d4}.seq .r{color:#fca5a5}.seq .dim{color:#64748b}
+.note{background:#fffbeb;border-left:4px solid #d97706;border-radius:8px;padding:10px 14px;font-size:13px;color:#78350f;margin:14px 0}
+.phasehead{background:linear-gradient(135deg,#0f172a,#134e4a);color:#fff;border-radius:12px;padding:12px 18px;margin:22px 0 10px;box-shadow:0 6px 18px rgba(15,23,42,.25)}
+.phasehead h3{color:#5eead4;margin:0;font-size:16px}
+.phasehead p{color:#cbd5e1;font-size:12.5px;margin:4px 0 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:30px}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:12.5px}
+.topnav a{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:4px 14px;color:#334155;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.topnav a:hover{border-color:#0d9488;color:#0f766e}
+.topnav a.on{border-color:#0d9488;color:#0f766e;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;font-size:12px;color:#475569;align-items:center}
+</style></head><body><div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:8px 14px;font-size:12.5px;color:#92400e;margin-bottom:14px">📋 内容状态：2026-09-18（运行时执行视图·完整架构图+41 步全流程逐步推演·图文并茂版）｜ <a href="index.html" style="color:#b45309">蓝图总览</a> · <a href="../docs/superpowers/specs/2026-09-17-tanyin-design.md" style="color:#b45309">权威源：设计定稿</a></div><div class="wrap">
+<nav class="topnav">
+<a href="index.html">← 总览导览</a><a href="agent-philosophies.html">🧭 工程哲学</a>
+<a href="system-architecture.html">🏗️ 架构</a>
+<a href="evolution-loop.html">🔄 演进循环</a>
+<a href="domain-model.html">🗄️ 领域模型</a>
+<a href="engine-contract.html">🔒 引擎契约</a>
+<a href="knowledge-flywheel.html">📈 知识飞轮</a>
+<a href="security-discipline.html">🛡️ 安全纪律</a>
+<a href="e2e-flow.html">🧬 原理与E2E</a>
+<a href="execution-flow.html" class="on">⚡ 运行时执行</a>
+</nav>
+<h1>⚡ 运行时执行视图 <span style="font-size:13px;color:#94a3b8">· 完整架构图 + 41 步全流程 · 看 AI 一步一步做渗透测试</span></h1>
+<div class="sub">本页用「装配流水线」的方式展示探隐跑起来的真实样子：<b>§1 总架构图</b>（组件怎么连接、文件放在哪）→ <b>§2 全流程一张图</b>（P0 到 P6 共 41 步的顺序总览）→ <b>§3 逐步推演</b>（每一步谁在动、执行什么命令、账本多了哪一行、过什么门禁——配真实 TSV 数据）→ <b>§4 执行通道放大</b>（单个测试任务的 8 站流水线）→ <b>§5 受管重启</b>。场景沿用「示例商城」虚构案例。</div>
+<div class="legend"><b>角色：</b>
+<span class="actor a-user">👤 用户</span>
+<span class="actor a-master">🧠 总控 LLM</span>
+<span class="actor a-sub">🤖 子代理 LLM</span>
+<span class="actor a-cmd">⚙️ 账本命令</span>
+<span class="actor a-cli">💻 引擎 CLI</span>
+<span class="actor a-eng">🔬 skill 引擎</span>
+</div>
+<h2>1. 总架构图：组件怎么连、文件放在哪</h2>
+<div class="sec">
+<p>先看全景。下面这张图是探隐安装后+运行时的完整结构：<b>左边是装在宿主里的 SKILL 套件（静态），中间是运行时长出来的 session 目录（动态），右边是外部世界（目标系统+知识库）</b>。箭头标注了数据流向和文件路径。</p>
+<div class="arch">
+┌─────────────────────────── 宿主（walcode / CodeBuddy / Claude Code）───────────────────────────┐
+│                                                                                              │
+│  <span class="u">┌─────────────────────── 静态：探隐 SKILL 套件（复制即装）───────────────────────┐</span>          │
+│  <span class="u">│</span>  <b>SKILL.md</b> ──── 总控常驻集（安全规则/四铁律/循环骨架/命令索引）      <span class="u">│</span>          │
+│  <span class="u">│</span>  <b>phases/</b> ──── P0-P6 阶段指令（按阶段加载，用完卸载）              <span class="u">│</span>          │
+│  <span class="u">│</span>  <b>commands/</b> ── 账本命令实现（ledger-add-*/query/validate）          <span class="u">│</span>          │
+│  <span class="u">│</span>  <b>engines/</b> ─── 引擎契约+引擎 SKILL（web-blackbox 等）               <span class="u">│</span>          │
+│  <span class="u">│</span>  <b>shared/</b> ──── DISCIPLINE/EVIDENCE/SEVERITY/LEDGER/VOCAB/DENYLIST   <span class="u">│</span>          │
+│  <span class="u">│</span>  <b>knowledge/</b> ─ entities/concepts/precedents/targets/patterns       <span class="u">│</span>          │
+│  <span class="u">│</span>              + staging/（新知识隔离区）+ graph.ndjson                  <span class="u">│</span>          │
+│  <span class="u">└────────────────────────────────────────────────────────────────┘</span>          │
+│          │加载                    │读写                                │检索/沉淀              │
+│          ▼                        ▼                                    ▼                     │
+│  <span class="m">┌──────────── 动态：session/G-g1/（每次测试一个目录，一切状态在此）────────────┐</span>        │
+│  <span class="m">│</span>                                                                        <span class="m">│</span>        │
+│  <span class="m">│</span>  <span class="k">八表账本（TSV，追加式）</span>      <span class="k">三个特殊文件</span>              <span class="k">四个目录</span>        <span class="m">│</span>        │
+│  <span class="m">│</span>  goals.tsv      <span class="dim">← 立项档案</span>     matrix.tsv  <span class="dim">← 覆盖矩阵</span>   submissions/ <span class="dim">← 子代理交作业</span> <span class="m">│</span>        │
+│  <span class="m">│</span>  scope.tsv      <span class="dim">← 授权白名单</span>   timeline.tsv <span class="dim">← 防篡改流水</span>  evidence/    <span class="dim">← 证据本体</span>   <span class="m">│</span>        │
+│  <span class="m">│</span>  intents.tsv    <span class="dim">← 嫌疑名单</span>     E-index.tsv  <span class="dim">← 证据索引</span>     vault/       <span class="dim">← 凭据保险库</span> <span class="m">│</span>        │
+│  <span class="m">│</span>  facts.tsv      <span class="dim">← 原始观察</span>     state.md    <span class="dim">← 循环书签</span>     artifacts/   <span class="dim">← 原始输出</span>   <span class="m">│</span>        │
+│  <span class="m">│</span>  findings.tsv   <span class="dim">← 证实漏洞</span>                                          <span class="m">│</span>        │
+│  <span class="m">│</span>  assets.tsv     <span class="dim">← 资产清单</span>                                          <span class="m">│</span>        │
+│  <span class="m">│</span>  edges.tsv      <span class="dim">← 关系图</span>     approvals.tsv <span class="dim">← 审批记录</span>                          <span class="m">│</span>        │
+│  <span class="m">│</span>                                                                        <span class="m">│</span>        │
+│  <span class="m">└────────────────────────────────────────────────────────────────────────┘</span>        │
+│          │                                                            │                     │
+│          │ 派发（六要素委派书）                          提交（submission.json） │ 只读投影            │
+│          ▼                                                            ▼                     ▼             │
+│  <span class="s">┌── 子代理 1 ──┐  ┌── 子代理 2 ──┐  ┌── 子代理 3 ──┐</span>   <span class="x">┌─ CLI 引擎 ─┐</span>  <span class="e">┌─ projector ─┐</span>   │
+│  <span class="s">│ 加载 web-blackbox│ │ 加载 web-blackbox│ │ 加载 web-blackbox│</span>   <span class="x">│ vuln-agent  │</span>  <span class="e">│ session-viz │</span>   │
+│  <span class="s">│ (skill 型引擎) │  │ (skill 型引擎) │  │ (skill 型引擎) │</span>   <span class="x">│ python run.py│</span>  <span class="e">│ 只读不回写  │</span>   │
+│  <span class="s">└───────┬───────┘  └───────┬───────┘  └───────┬───────┘</span>   <span class="x">└──────┬──────┘</span>  <span class="e">└─────────────┘</span>   │
+│          │                   │                   │                │                        │
+│          └───────────────────┴─────────┬─────────┴────────────────┘                        │
+│                                        │ 全部对外请求先取票（rate_limit 节流）+deny-list 检查 │
+└────────────────────────────────────────┼────────────────────────────────────────────────────┘
+</div>
+<p><b>读图要点（文字解说）</b>：</p>
+<p>① <b>静态与动态分离</b>——左边 SKILL 套件是「工具箱」，装一次用永远；中间 session 目录是「工地」，每次测试新建一个，测试的全部状态（测到哪、发现了什么、还剩什么没测）都在这里的文件里，不在 AI 的会话记忆里。<b>会话断了随便断，文件在就能恢复</b>。</p>
+<p>② <b>总控不直接碰目标</b>——图里没有任何箭头从总控直达目标系统。总控只做四件事：跑账本命令、派子代理、验收提交文件、语义推导。真正发请求的是子代理（加载 web-blackbox 引擎 SKILL 后按引擎指导干活）和 CLI 引擎。</p>
+<p>③ <b>子代理只写 submissions/，不写账本</b>——所有子代理的产出先落在自己的提交目录，总控验收后才由账本命令写入八表。<b>单写者模式</b>：并发写账本的踩踏问题从结构上不存在。</p>
+<p>④ <b>对外请求有统一关卡</b>——任何请求先过 deny-list 机械检查+取票限速，多子代理共享一个速率配额，不会把目标打挂。</p>
+<h3>session 目录的生长过程（看着它长大）</h3>
+<p>session 目录不是一开始就有的——它随流程一步步长出来。下面四个快照对应四个时刻，<span style="color:#059669;font-weight:700">绿色</span>是该时刻新增的：</p>
+<div class="tree"><span class="c">━━ P0 结束时（授权落账完毕）━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+session/G-g1/
+├── <span class="new">goals.tsv</span>          <span class="c"># 1 行：立项档案（授权/预算/限速/时间窗）</span>
+├── <span class="new">scope.tsv</span>          <span class="c"># 4 行：include/exclude 白名单</span>
+├── <span class="new">timeline.tsv</span>       <span class="c"># 2 行：P0 落账事件（链式哈希起点）</span>
+└── <span class="new">evidence/</span>
+<span class="c">━━ P1 结束时（测绘完毕）━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+session/G-g1/
+├── goals.tsv  scope.tsv  timeline.tsv          <span class="c">#（已有）</span>
+├── <span class="new">assets.tsv</span>         <span class="c"># 9 行：资产树（含 1 个 out_of_scope）</span>
+├── <span class="new">facts.tsv</span>          <span class="c"># 14 行：侦察观察（已脱敏）</span>
+├── <span class="new">intents.tsv</span>        <span class="c"># 3 行：侦察 intent 记录</span>
+├── <span class="new">edges.tsv</span>          <span class="c"># 8 行：资产树 parent 边</span>
+└── submissions/
+<span class="c">━━ P3 第 1 轮结束时（发动机转了一圈）━━━━━━━━━━━━━━━━━━</span>
+session/G-g1/
+├── ...（已有全部）
+├── <span class="new">matrix.tsv</span>         <span class="c"># 200 行：10 格已判定，190 空</span>
+├── <span class="new">state.md</span>           <span class="c"># 「第 1 轮完成/下轮: 扫描」</span>
+├── intents.tsv        <span class="c"># +12 行：风暴产出的 candidate/pending</span>
+├── findings.tsv       <span class="new"># 1 行：FD-g1-0001 Shiro RCE！</span>
+├── <span class="new">E-index.tsv</span>        <span class="c"># 2 行：证据索引</span>
+├── submissions/
+│   ├── INT-g1-0001/
+│   ├── <span class="new">INT-g1-0007/</span>   <span class="c"># Shiro 验证子代理提交</span>
+│   ├── <span class="new">INT-g1-0009/</span>   <span class="c"># 速率限制检测提交</span>
+│   └── <span class="new">INT-g1-0011/</span>   <span class="c"># API 越权预研提交</span>
+└── evidence/
+<span class="c">━━ 测试结束时（P6 沉淀完毕）━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+session/G-g1/
+├── goals/scope/assets/facts/intents/findings/edges/approvals.tsv   <span class="c"># 八表全量</span>
+├── matrix.tsv         <span class="c"># 200/200 全判定</span>
+├── E-index.tsv        <span class="c"># 证据索引全量</span>
+├── timeline.tsv       <span class="c"># 完整防篡改审计链</span>
+├── state.md           <span class="c"># 「converged @ 第 9 轮」</span>
+├── <span class="new">report/</span>
+│   ├── <span class="new">report-draft.md</span> <span class="c"># P5 报告草稿</span>
+│   └── <span class="new">report-signed.md</span><span class="c"># P5.5 签发版（command_hash 绑定）</span>
+├── <span class="new">cleanup.md</span>        <span class="c"># P6.0 清理核销清单</span>
+└── submissions/ evidence/ vault/ artifacts/   <span class="c"># 全部留档</span></div>
+<p><b>这四个快照就是「AI 工作的物理痕迹」</b>——每一步操作都变成文件里的一行或一个新文件，事后可以完整回放（timeline.tsv 记录了每一步的顺序和哈希）。</p>
+</div>
+<h2>2. 全流程一张图：41 步顺序总览</h2>
+<div class="sec">
+<p>下面是从用户一句话到知识沉淀的<b>完整步骤序列</b>。先纵览一遍建立整体感，§3 再逐步展开细节（每步的命令/账本变化/门禁）。</p>
+<div class="bigflow">
+<div class="bf p0"><div class="no"><b>S1</b>P0</div><div class="bx"><b>用户发起</b>：一句话+授权依据　<span class="who"><span class="actor a-user">👤 用户</span></span><div class="out">→ 触发探隐加载</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p0"><div class="no"><b>S2</b>P0</div><div class="bx"><b>总控加载常驻集，发起八问问卷+业务问卷</b>　<span class="actor a-master">🧠 总控</span><div class="out">→ 8 个问题+电商业务流确认</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p0"><div class="no"><b>S3</b>P0</div><div class="bx"><b>用户逐项回答</b>（目标/范围/排除/RoE/语言/时间窗/紧急联系人/账号分级）　<span class="actor a-user">👤 用户</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p0"><div class="no"><b>S4</b>P0</div><div class="bx"><b>结构化落账</b>：ledger-add-goal（字段空=REJECT）　<span class="actor a-master">🧠</span>+<span class="actor a-cmd">⚙️</span><div class="out">→ goals.tsv 第 1 行</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p0"><div class="no"><b>S5</b>P0</div><div class="bx"><b>授权白名单落账+授权书存证</b>：ledger-add-scope ×4 → scope.tsv；授权书入 evidence/；timeline 链启动　<span class="actor a-cmd">⚙️</span><div class="out">→ ⛔门禁：goals 字段完整+scope 齐备</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p1"><div class="no"><b>S6</b>P1</div><div class="bx"><b>组装侦察委派书（六要素）并派发侦察子代理</b>　<span class="actor a-master">🧠 总控</span><div class="out">→ submissions 通道建立</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p1"><div class="no"><b>S7</b>P1</div><div class="bx"><b>子代理加载 web-blackbox 侦察段，被动信息收集</b>（子域/端口/指纹——每请求先 deny-list+取票）　<span class="actor a-sub">🤖 子代理</span>+<span class="actor a-eng">🔬</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p1"><div class="no"><b>S8</b>P1</div><div class="bx"><b>原始输出落盘 artifacts/</b>（不进上下文）　<span class="actor a-sub">🤖</span><div class="out">→ artifacts/ 原始数据</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p1"><div class="no"><b>S9</b>P1</div><div class="bx"><b>提炼结构化提交</b>：submission.json（assets[]+facts[]）　<span class="actor a-sub">🤖</span><div class="out">→ submissions/INT-g1-0001/</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p1"><div class="no"><b>S10</b>P1</div><div class="bx"><b>总控验收+逐条落账</b>：ledger-add-asset（<b>内联 scope-check：界外资产当场标 out_of_scope</b>）+ ledger-add-fact（落账即脱敏）　<span class="actor a-master">🧠</span>+<span class="actor a-cmd">⚙️</span><div class="out">→ assets.tsv 9 行+facts.tsv 14 行 → ⛔门禁：资产树完整+scope 全判定</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p2"><div class="no"><b>S11</b>P2</div><div class="bx"><b>指纹匹配</b>：读 assets 摘要+检索知识库（命中「Java 单体+Shiro」先例页）　<span class="actor a-master">🧠 总控</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p2"><div class="no"><b>S12</b>P2</div><div class="bx"><b>生成覆盖矩阵</b>：matrix-init（列=WSTG 词表钉死，行=资产折叠）　<span class="actor a-cmd">⚙️</span><div class="out">→ matrix.tsv 200 行（全空格）</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p2"><div class="no"><b>S13</b>P2</div><div class="bx"><b>冻结矩阵版本号</b>（新资产走子矩阵不回填）　<span class="actor a-cmd">⚙️</span><div class="out">→ ⛔门禁：矩阵行覆盖全部攻击面</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S14</b>P3</div><div class="bx"><b>【第 1 轮】checkpoint</b>：state.md 写「第 1 轮/active:无/下轮:扫描」　<span class="actor a-master">🧠</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S15</b>P3</div><div class="bx"><b>预算检查</b>：ledger-budget-check → token 95%/请求 99%/时间 98%　<span class="actor a-cmd">⚙️</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S16</b>P3</div><div class="bx"><b>扫描工作信号</b>：ledger-unconsumed-facts（14 条）+ ledger-matrix-gaps（200 空）——<b>摘要输出不回灌全文</b>　<span class="actor a-cmd">⚙️</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S17</b>P3</div><div class="bx"><b>条件触发假设风暴（五路并发检索）</b>：①实体页（Shiro→2 个）②技法页（空格×技法→1 个）③先例（三元组内→3 个）④图邻接（0 个）⑤LLM 联想（引用 F-g1-0012→1 个）　<span class="actor a-master">🧠</span>+知识库</div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S18</b>P3</div><div class="bx"><b>打分+机械去重</b>：确定性因子算分+dedup_key 拒重（③路与①路同键→REJECT 后到者）　<span class="actor a-cmd">⚙️</span><div class="out">→ intents.tsv +7 行 candidate</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S19</b>P3</div><div class="bx"><b>晋升 top-N 为 pending</b>（低分 rejected 附理由/deferred 附激活谓词）　<span class="actor a-cmd">⚙️</span><div class="out">→ intents.tsv +3 行 pending</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S20</b>P3</div><div class="bx"><b>批量并行委派 3 个子代理</b>（一条消息并发，各带六要素委派书）　<span class="actor a-master">🧠 总控</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S21</b>P3</div><div class="bx"><b>子代理执行</b>：deny-list 前置→取票→参数化请求→原始响应落 artifacts→提炼结论+证据（双哈希）　<span class="actor a-sub">🤖</span>×3</div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S22</b>P3</div><div class="bx"><b>提交返回</b>：submissions/INT-*/submission.json（status: done/no-findings）　<span class="actor a-sub">🤖</span><div class="out">→ 子代理会话销毁</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S23</b>P3</div><div class="bx"><b>总控验收落账（单写者）</b>：写前拒收校验→next-id 铸造→findings/facts/edges 落账→matrix 置格→timeline 链式追加　<span class="actor a-master">🧠</span>+<span class="actor a-cmd">⚙️</span><div class="out">→ FD-g1-0001（C1 高危）+matrix 10 格判定</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S24</b>P3</div><div class="bx"><b>收敛判定</b>：ledger-converge-check → running（还有 11 条未消费 fact）→ 回 S14 第 2 轮　<span class="actor a-cmd">⚙️</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S25</b>P3</div><div class="bx"><b>【第 2 轮】跨引擎流动</b>：源码包 fact 命中实体页→candidate「白盒审计硬编码密钥」→按 manifest 路由 vuln-agent（CLI 型，max_op_level: read）　<span class="actor a-master">🧠</span>+<span class="actor a-cli">💻</span><div class="out">→ FD-g1-0004（C2）+cross_ref 边（白盒密钥↔Web 端点）</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S26</b>P3</div><div class="bx"><b>图邻接推理触发</b>：FD-g1-0004 与 F-g1-0012 一跳共享资产→attack 链 candidate「泄露密钥伪造 token 打 API」　<span class="actor a-master">🧠</span><div class="out">→ attack 边：C2 中危+C1 中危 → 链成 C1 高危</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S27</b>P3</div><div class="bx"><b>【第 3 轮】上下文超阈值→受管重启</b>：state.md 存档→换新会话→常驻集重载→从「下轮:收敛判定」续跑（详见 §5）　<span class="actor a-master">🧠</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S28</b>P3</div><div class="bx"><b>【第 4-9 轮】循环继续</b>：每轮 S14-S24 节奏，矩阵空格递减，未消费 fact 递减……　<span class="actor a-master">🧠</span>+<span class="actor a-sub">🤖</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p3"><div class="no"><b>S29</b>P3</div><div class="bx"><b>终态 A：converged</b>（四条件全满足）或 <b>终态 B：budget-exhausted</b>（预算三元组任一耗尽→中期报告+显式披露）　<span class="actor a-cmd">⚙️</span><div class="out">→ ⛔门禁：退出循环进 P4</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p4"><div class="no"><b>S30</b>P4</div><div class="bx"><b>全表校验</b>：ledger-validate（格式/转义/枚举/引用闭合/dedup_key 唯一）　<span class="actor a-cmd">⚙️</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p4"><div class="no"><b>S31</b>P4</div><div class="bx"><b>哈希链校验</b>：ledger-verify-chain（timeline 断链=篡改告警）　<span class="actor a-cmd">⚙️</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p4"><div class="no"><b>S32</b>P4</div><div class="bx"><b>证据哈希重算</b>：ledger-hash-recheck（E-index 全量比对）　<span class="actor a-cmd">⚙️</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p4"><div class="no"><b>S33</b>P4</div><div class="bx"><b>矩阵抽查+异常检测</b>：ledger-matrix-audit（"-"/"!" 格抽查+fact 密度对照——批量置态与密度不符=疑似注入/廉价闭合，阻断）　<span class="actor a-cmd">⚙️</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p4"><div class="no"><b>S34</b>P4</div><div class="bx"><b>finding 合并</b>：同根因→supersede 边+旧行 tombstone（不删行）　<span class="actor a-master">🧠</span>+<span class="actor a-cmd">⚙️</span><div class="out">→ ⛔门禁：四命令全 PASS</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p5"><div class="no"><b>S35</b>P5</div><div class="bx"><b>生成报告</b>：执行摘要/漏洞清单（confidence×impact 双列）/矩阵覆盖视图/修复建议/范围外附录/免责条款　<span class="actor a-master">🧠 总控</span><div class="out">→ report/report-draft.md</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p5"><div class="no"><b>S36</b>P5.5</div><div class="bx"><b>签发门</b>：用户人审→批准→ledger-approve（command_hash 绑定报告哈希）　<span class="actor a-user">👤 用户</span>+<span class="actor a-cmd">⚙️</span><div class="out">→ ⛔门禁：未签发禁止导出</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p6"><div class="no"><b>S37</b>P6.0</div><div class="bx"><b>清理门</b>：ledger-cleanup-checklist 从 timeline 提取全部写操作→逐项核销（测试账号已删/上传已清/无 webshell）　<span class="actor a-cmd">⚙️</span>+<span class="actor a-master">🧠</span><div class="out">→ cleanup.md+报告附清理声明</div></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p6"><div class="no"><b>S38</b>P6</div><div class="bx"><b>脱敏提炼</b>：session 先例/实体/模式→知识草稿（域名→CLIENT-07，IP/凭据→占位符）　<span class="actor a-master">🧠</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p6"><div class="no"><b>S39</b>P6</div><div class="bx"><b>反向验证</b>：本次全部域名/IP/凭据在草稿中零命中才放行（有命中=泄漏打回）　<span class="actor a-cmd">⚙️</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p6"><div class="no"><b>S40</b>P6</div><div class="bx"><b>用户审批入库</b>：ledger-approve→precedents/entities/graph.ndjson 追加　<span class="actor a-user">👤</span>+<span class="actor a-cmd">⚙️</span></div></div>
+<div class="bfarrow">▼</div>
+<div class="bf p6"><div class="no"><b>S41</b>P6</div><div class="bx"><b>lint 保鲜信号</b>：本次反证的模式记录（再 1 次独立反证则降级出 core）　<span class="actor a-cmd">⚙️</span><div class="out">→ 知识库变厚且变准 → 下次测试的 S11/S17 更强（复利闭环）</div></div></div>
+</div>
+<div class="note"><b>怎么读这张图</b>：颜色=阶段（紫 P0 授权→蓝 P1 测绘→深蓝 P2 规划→青 P3 循环→灰 P4 校验→橙 P5 报告→粉 P6 沉淀）。左列编号 S1-S41 是稳定步骤号，§3 逐步详解用同一编号。<b>P3（S14-S29）是发动机</b>——S14-S24 这 11 步构成一个循环回合，第 2、3、4…轮重复这个节奏，只是每轮的数据不同（空格变少、fact 被消费、finding 变多）。</div>
+</div>
+<h2>3. 逐步推演：每一步谁在动、命令是什么、账本多了哪一行</h2>
+<div class="sec">
+<p>现在放大每一步。每张步骤卡四段：<b>谁+做什么</b>（具体动作和命令）→ <b>账本/文件变化</b>（真实 TSV 行，<span style="color:#059669;font-weight:600">绿色=新增</span>）→ <b>⛔门禁</b>（不过不放行）→ <b>下一步</b>。</p>
+<div class="phasehead"><h3>P0 授权门（S1-S5）：把「接活儿」变成结构化数据</h3><p>为什么先做这个：授权是法律边界。语义授权会漂移、出纠纷无据——所以第一件事是把授权变成机器可读的表格。</p></div>
+<div class="st" style="--c:#7c3aed"><h4><span class="n">S1</span>用户发起 <span class="actor a-user">👤 用户</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：用户一句话（目标 URL+授权依据+范围+排除项）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：宿主识别「探隐」关键词，加载 SKILL.md 常驻集</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：总控上下文就位（安全规则/四铁律/循环骨架/命令索引）</span></div>
+<div class="do">用户在宿主（walcode）里说一句话：<code>用探隐测试 https://shop.example.com，授权依据=合同HT-2026-081，范围=*.shop.example.com 和源码包，排除生产库网段</code>。</div>
+<div class="next"><b>下一步</b>：常驻集就位，总控立即进入 P0 问卷（不先做任何探测——无授权不测试）。</div></div>
+<div class="st" style="--c:#7c3aed"><h4><span class="n">S2</span>八问问卷+业务问卷 <span class="actor a-master">🧠 总控</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：phases/P0.md 阶段指令（从 SKILL 套件按需加载）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：总控按指令发起 8+1 项问卷</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：问卷问题列表（对话消息，等待用户回答）</span></div>
+<div class="do">总控按 phases/P0.md 指令发起问卷——<b>八问</b>：①目标？②范围？③排除？④RoE（交战规则）？⑤报告语言？⑥时间窗？⑦紧急联系人？⑧测试账号与数据分级？外加<b>业务问卷</b>：这是什么业务系统、核心业务流是什么。</div>
+<div class="code"><span class="c"># 总控输出（对话形式）：</span>
+<span class="b">[探隐·P0 授权门]</span> 开始前需要确认 8 项：
+1. 测试目标？        <span class="c">→ 已知：https://shop.example.com + 源码包</span>
+2. 测试范围？        <span class="c">→ 已知：*.shop.example.com + 源码包</span>
+3. 明确排除？        <span class="c">→ 已知：10.10.2.0/24</span>
+4. RoE 交战规则？    <span class="c">→ 例：发现高危先报告再继续；凭据只测不存</span>
+5. 报告语言？        <span class="c">→ 例：中文</span>
+6. <span class="y">时间窗？</span>          <span class="c">→ 例：09-18 至 09-25，每日 09:00-18:00</span>
+7. <span class="y">紧急联系人？</span>      <span class="c">→ 例：李四（安全负责人）</span>
+8. <span class="y">测试账号与数据分级？</span> <span class="c">→ 例：客户提供 test-01；数据允许流向内部 LLM API</span>
+[业务问卷] 系统类型与核心业务流？ <span class="c">→ 例：电商：下单/支付/退款/优惠券</span></div>
+<div class="next"><b>下一步</b>：等用户逐项回答（S3）。</div></div>
+<div class="st" style="--c:#7c3aed"><h4><span class="n">S3</span>用户回答 <span class="actor a-user">👤 用户</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：问卷问题列表</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：用户逐项确认（人在回路——授权信息不允许 AI 猜测补全）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：8+1 项答案（对话消息，待 S4 结构化）</span></div></div>
+<div class="st" style="--c:#7c3aed"><h4><span class="n">S4</span>立项落账 <span class="actor a-master">🧠</span>+<span class="actor a-cmd">⚙️ ledger-add-goal</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：S3 的 8+1 项答案 + 授权书文件（contracts/HT-2026-081.pdf）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：总控组装参数执行 ledger-add-goal（<b>写前拒收</b>：授权/预算/时间窗/紧急联系人为空→REJECT）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：goals.tsv 第 1 行（预算三元组 2M;50000;40 将被 S15 每轮对照）</span></div>
+<div class="do">命令内置校验——授权字段不完整直接拒绝写入，不存在「先记上再补」。</div>
+<div class="code"><span class="c"># 命令（示意）：</span>
+ledger-add-goal --target https://shop.example.com --type "全量Web+白盒" \
+--contract contracts/HT-2026-081.pdf --sha256 a3f5e8... --signer 张三 \
+--window "2026-09-18~09-25 09:00-18:00" --emergency 李四 \
+--rate-limit 5 --budget "2M;50000;40" --lang zh --biz "电商:下单/支付/退款/优惠券"
+<span class="c"># goals.tsv 追加（<span style="color:#86efac">第 1 行</span>）：</span>
+<span class="g">G-g1 | https://shop.example.com | 全量Web+白盒 | contracts/HT-2026-081.pdf | a3f5e8... | 张三 | 2026-09-18 | 2026-09-25 | 5 | 09:00-18:00 | 李四 | 2M;50000;40 | zh | 电商:下单/支付/退款/优惠券 | 1 | 2026-09-18T09:00</span></div>
+<div class="next"><b>下一步</b>：授权白名单落账（S5）。goals 里的预算三元组（2M token/5 万请求/40 小时）将成为 S15 每轮预算检查的对照物。</div></div>
+<div class="st" style="--c:#7c3aed"><h4><span class="n">S5</span>范围白名单+存证 <span class="actor a-cmd">⚙️ ledger-add-scope / ledger-append-timeline</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：S3 答案中的范围/排除项 + 授权书扫描件</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：授权书存 evidence/（算双哈希）；ledger-add-scope 逐条落账；timeline 记 P0 事件（链式哈希起点）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：scope.tsv 4 行 + timeline.tsv 2 行 + evidence/HT-2026-081.pdf（scope.tsv 将被 S10 每个资产的 scope-check 对照）</span></div>
+<div class="code"><span class="c"># scope.tsv（4 行）：</span>
+<span class="g">S-g1-001 | include | *.shop.example.com | 主域及全部子域</span>
+<span class="g">S-g1-002 | include | source-code:shop-backend-src.zip | 客户提供的源码包</span>
+<span class="g">S-g1-003 | exclude | 10.10.2.0/24 | 生产数据库网段</span>
+<span class="g">S-g1-004 | exclude | /pay/callback | 支付回调接口</span>
+<span class="c"># timeline.tsv（链式哈希启动）：</span>
+<span class="g">2026-09-18T09:00 | 总控 | P0 | ledger-add-goal G-g1 | prev:GENESIS | hash:4e7d...</span>
+<span class="g">2026-09-18T09:01 | 总控 | P0 | ledger-add-scope ×4 | prev:4e7d... | hash:8a1f...</span></div>
+<div class="gate"><b>⛔ P0 出口门禁</b>：goals 行字段完整（授权/预算/限速/时间窗/紧急联系人全非空）+ scope 表 include/exclude 齐备 → 放行进 P1。</div>
+<div class="next"><b>下一步</b>：P1 测绘（S6）。</div></div>
+<div class="phasehead"><h3>P1 测绘（S6-S10）：建立攻击面的结构基础</h3><p>为什么做这个：矩阵的「行」需要资产清单；更关键——侦察会发现界外资产（CDN 共享 IP），必须当场判定，不能等派发时靠 LLM 记得。</p></div>
+<div class="st" style="--c:#0ea5e9"><h4><span class="n">S6</span>组装委派书并派发侦察子代理 <span class="actor a-master">🧠 总控</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：goals.tsv（目标/预算）+ scope.tsv（范围摘要）——从账本读，不从对话记忆读</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：按指挥官协议组装六要素委派书，派侦察子代理（新开隔离 LLM 会话）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：委派书（随子代理 prompt 下发）+ submissions/INT-g1-0001/ 目录建立</span></div>
+<div class="code"><span class="c"># 委派书（六要素，随子代理 prompt 下发）：</span>
+{
+<span class="b">"target"</span>:      "https://shop.example.com + shop-backend-src.zip",
+<span class="b">"scope_summary"</span>: "include: *.shop.example.com, 源码包 | exclude: 10.10.2.0/24, /pay/callback",
+<span class="b">"task"</span>:        "被动信息收集：子域枚举/端口指纹/技术栈识别（不发攻击 payload）",
+<span class="b">"facts_brief"</span>:  "（首轮无历史 fact）",
+<span class="b">"asset_ids"</span>:    "（首轮无已知资产）",
+<span class="b">"budget_share"</span>: "3% token / 2000 请求"
+}</div>
+<div class="next"><b>下一步</b>：子代理开始干活（S7）。</div></div>
+<div class="st" style="--c:#0ea5e9"><h4><span class="n">S7</span>子代理被动收集 <span class="actor a-sub">🤖 子代理</span>+<span class="actor a-eng">🔬 web-blackbox 侦察段</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：委派书 + engines/web-blackbox/SKILL.md（引擎指导）+ 目标系统（DNS/HTTP/端口数据）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：DNS 枚举/证书日志/端口扫描/HTTP 指纹——每请求先过 deny-list 比对+取 request-ticket（全局 5 req/s 共享）；命令参数化（数据经临时文件传参）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：原始响应/扫描结果（待 S8 落盘）</span></div>
+<div class="code"><span class="c"># 子代理执行的命令（示意，参数化）：</span>
+curl -s -I https://shop.example.com/          <span class="c"># {视角:L0 观察, 级别:只读} → 自动放行</span>
+dig cdn.shop.example.com CNAME               <span class="c"># → cdn-provider.example.net</span>
+nmap -sV -p 80,443 203.0.113.7               <span class="c"># {视角:L0, 级别:只读} → 取票后执行</span></div>
+<div class="next"><b>下一步</b>：原始输出落盘（S8）。</div></div>
+<div class="st" style="--c:#0ea5e9"><h4><span class="n">S8</span>原始输出落盘 <span class="actor a-sub">🤖</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：S7 的原始响应/扫描输出</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：原样写入 artifacts/ 目录（不进任何 LLM 上下文——体积大+可能含敌意内容）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：submissions/INT-g1-0001/artifacts/ 下 4 个原始文件（S9 的提炼原料）</span></div>
+<div class="tree">session/G-g1/submissions/INT-g1-0001/
+└── <span class="new">artifacts/</span>
+<div class="next"><b>下一步</b>：提炼结构化提交（S9）。</div></div>
+<div class="st" style="--c:#0ea5e9"><h4><span class="n">S9</span>结构化提交 <span class="actor a-sub">🤖</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：artifacts/ 原始文件（子代理读文件提炼，不凭记忆）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：提炼成固定 schema——assets[]（资产）+facts[]（观察）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：submissions/INT-g1-0001/submission.json（S10 验收输入；子代理不写账本）</span></div>
+<div class="code"><span class="c"># submissions/INT-g1-0001/submission.json：</span>
+{
+"status": "done",
+<span class="b">"assets"</span>: [
+],
+<span class="b">"facts"</span>: [
+]
+}</div>
+<div class="next"><b>下一步</b>：总控验收（S10）。子代理会话到此销毁——上下文不残留。</div></div>
+<div class="st" style="--c:#0ea5e9"><h4><span class="n">S10</span>验收落账+scope 硬门 <span class="actor a-master">🧠</span>+<span class="actor a-cmd">⚙️ ledger-add-asset / ledger-add-fact</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：submission.json + scope.tsv（scope-check 对照源）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：总控逐条验收；ledger-add-asset <b>内联 scope-check</b>（CIDR/后缀机械匹配，界外当场标 out_of_scope 且禁止派生 intent）；ledger-add-fact 落账即脱敏</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：assets.tsv 9 行+facts.tsv 14 行+edges.tsv 8 行（assets 是 S11 指纹匹配和 S12 矩阵行的输入）</span></div>
+<div class="code"><span class="c"># assets.tsv（9 行，节选）：</span>
+<span class="g">AST-g1-001 | root-domain | shop.example.com | ... | in_scope</span>
+<span class="g">AST-g1-002 | subdomain | cdn.shop.example.com | CNAME→cdn-provider | in_scope</span>
+<span class="g">AST-g1-003 | ip | 203.0.113.7 | cdn 共享 IP | <span class="r">out_of_scope</span></span>  <span class="c">← scope-check：IP 不在授权域名后缀内</span>
+<span class="g">AST-g1-004 | app | shop-backend-src | Java8+SpringBoot+Fastjson1.2.24 | in_scope</span>
+<span class="g">AST-g1-009 | endpoint | /api/login | Express 独立服务 | in_scope</span>
+<span class="c"># facts.tsv（14 行，节选）：</span>
+<span class="g">F-g1-0001 | INT-g1-0001 | http | / | Set-Cookie: rememberMe=deleteMe → 疑似 Shiro | 0.8</span>
+<span class="g">F-g1-0012 | INT-g1-0003 | http | /api/login | X-Powered-By: Express（独立服务） | 0.9</span></div>
+<div class="code"><span class="c"># edges.tsv（8 行，节选——P1 主要是资产树 parent 边）：</span>
+<span class="g">E-g1-0001 | parent | AST-g1-001 | AST-g1-002 | intent      <span class="c">← 域→子域</span></span>
+<span class="g">E-g1-0002 | parent | AST-g1-002 | AST-g1-003 | intent      <span class="c">← 子域→IP</span></span>
+<span class="g">E-g1-0003 | parent | AST-g1-004 | AST-g1-009 | intent      <span class="c">← 应用→端点</span></span>
+<span class="g">E-g1-0004 | yields | INT-g1-0001 | F-g1-0001 | intent      <span class="c">← 侦察 intent 产出 fact</span></span></div>
+<div class="gate"><b>⛔ P1 出口门禁</b>：资产树 parent 边完整（域→子域→IP→服务→端点）+ 全部资产 scope 判定完成 + 侦察 facts 落账。</div>
+<div class="next"><b>下一步</b>：P2 规划（S11）。F-g1-0001 的「Shiro」将在 S17 风暴第①路命中知识库实体页。</div></div>
+<div class="phasehead"><h3>P2 规划（S11-S13）：把「测什么」变成一张可度量的表</h3><p>为什么做这个：覆盖要可度量，先得定义「全」是什么。列（漏洞类型）从 WSTG 全集词表钉死——否则召回上限被本次样本锁死。</p></div>
+<div class="st" style="--c:#0284c7"><h4><span class="n">S11</span>指纹匹配 <span class="actor a-master">🧠 总控</span>+知识库</h4>
+<div class="io"><span class="in"><b>📥 输入</b>：assets.tsv 摘要（技术栈指纹）+ knowledge/precedents/（先例库检索）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：指纹「Java单体+Shiro+Express API」命中先例页（<b>客户三元组内匹配</b>，禁止跨客户。客户三元组=「哪个客户+哪个授权资产+哪次授权时间窗」——先例只在这三个字段都相同时才注入：A 客户批过的操作不代表 B 客户批过，跨客户复用=拿 A 的授权打 B，是越权事故；授权窗口过期后旧先例自动失效）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：3 条已知攻击链（注入 S17 风暴第③路）</span></div></div>
+<div class="st" style="--c:#0284c7"><h4><span class="n">S12</span>生成矩阵 <span class="actor a-cmd">⚙️ matrix-init</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：assets.tsv（矩阵行=资产折叠）+ shared/VOCAB.md（矩阵列=WSTG v4.2 全集词表钉死）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：matrix-init 生成攻击面×漏洞类矩阵，**基线冻结**（冻结的是覆盖率锚点，不是探索——新资产走子矩阵，见 S17b）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：matrix.tsv 200 行全空格（空格是 S17 风暴第②路输入；闭合率是 S29 收敛条件④）</span></div>
+<div class="code"><span class="c"># matrix.tsv（长表格式，节选——初始全空）：</span>
+<span class="g">/api/login | 暴力破解 | 空 | |</span>
+<span class="g">/api/login | 凭证填充 | 空 | |</span>
+<span class="g">/api/login | 会话固定 | 空 | |</span>
+<span class="g">*.shop.example.com | Shiro反序列化 | 空 | |</span>
+<span class="g">shop-backend-src | 硬编码密钥 | 空 | |</span>
+<span class="g">shop-backend-src | SQL注入-sink | 空 | |</span>
+<span class="c">...（共 200 行）</span></div></div>
+<div class="st" style="--c:#0284c7"><h4><span class="n">S13</span>冻结版本 <span class="actor a-cmd">⚙️</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：matrix.tsv（刚生成）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：锁定版本号（新资产走子矩阵不回填旧格——否则收敛可无限回退）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：冻结标记（后续轮次只减空格不加行）</span></div>
+<div class="gate"><b>⛔ P2 出口门禁</b>：矩阵行覆盖全部攻击面×适用漏洞类，无遗漏资产。</div>
+<div class="next"><b>下一步</b>：进入 P3 发动机（S14）。</div></div>
+<div class="phasehead"><h3>P3 图谱演进循环（S14-S29）：发动机——每轮 11 步，转到收敛为止</h3><p>这是全系统核心。每轮节奏固定：checkpoint→预算→扫描→风暴→打分→晋升→派发→执行→提交→落账→收敛判定。下面完整推演第 1 轮，然后讲第 2、3 轮的关键差异。</p></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S14</span>【第 1 轮】checkpoint <span class="actor a-master">🧠</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：当前循环状态（轮次/在跑 intent/下轮动作）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：写 state.md 存档</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：state.md（任何时刻断会话，新会话从这里续上）</span></div>
+<div class="code"><span class="c"># state.md：</span>
+<span class="g">round: 1
+active_intents: []
+next_action: scan
+storm_threshold: 0.5        <span class="c"># 联想路分数阈值（随轮数递增）</span>
+budget_snapshot: token 95% / requests 99% / window 98%</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S15</span>预算检查 <span class="actor a-cmd">⚙️ ledger-budget-check</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：goals.tsv 预算三元组（2M;50000;40）+ budget.tsv 累计消耗（每轮/每次派发后由 ledger-budget-log 记账的增量流水）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：命令算余量对照（任一耗尽→立即转 budget-exhausted 终态，不存在「再跑一轮看看」）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：余量摘要「token 95%/请求 99%/时间 98% → 继续」</span></div>
+<div class="code"><span class="c"># budget.tsv（增量流水，节选）：</span>
+<span class="g">2026-09-18T09:00 | 0 | 0 | 0 | P0 立项</span>
+<span class="g">2026-09-18T10:30 | 120000 | 3200 | 1.5 | P1 侦察+P2 规划</span>
+<span class="g">2026-09-18T11:40 | 80000 | 1500 | 0.8 | P3 第 1 轮（3 子代理）</span>
+<span class="c"># ledger-budget-check 输出：</span>
+<span class="g">token: 1900000/2000000 (95%)   requests: 49500/50000 (99%)   hours: 39.2/40 (98%)</span>
+<span class="g">→ 继续（三项均未耗尽）</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S16</span>扫描工作信号 <span class="actor a-cmd">⚙️ ledger-unconsumed-facts / ledger-matrix-gaps</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：facts.tsv（查无 derived_from 出边的行）+ matrix.tsv（查空格）+ intents.tsv（查 pending）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：两条查询命令各返回<b>摘要</b>（计数+ID 列表，不回灌全文——摘要纪律）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：「14 条未消费：F-g1-0001,…」+「200 空格」（S17 风暴的触发信号和检索输入）</span></div>
+<div class="code"><span class="c"># ledger-unconsumed-facts 输出：</span>
+<span class="b">14 条未消费：</span> F-g1-0001, F-g1-0002, F-g1-0003, ..., F-g1-0012, ...
+<span class="c"># ledger-matrix-gaps 输出：</span>
+<span class="b">200 空格</span>（前 5：/api/login×暴力破解, /api/login×凭证填充, ...）</div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S17</span>条件触发假设风暴 <span class="actor a-master">🧠 总控</span>+知识库</h4>
+<div class="io"><span class="in"><b>📥 输入</b>：S16 摘要（未消费 fact ID+空格清单）+ knowledge/entities/、concepts/、precedents/（三路检索源）+ edges.tsv（第④路图邻接）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：条件判定（有未消费 fact 或空格才触发）；五路并发检索扩张假设空间</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：7 个 candidate 提案（S18 打分的输入；⑤路必须引用触发 fact ID）</span></div>
+<div class="code"><span class="c"># 五路检索（每路产出 candidate）：</span>
+<span class="b">①实体页</span>：F-g1-0001 提取实体「Shiro」→ knowledge/entities/shiro.md
+→ rememberMe 反序列化/密钥硬编码 2 模式 → <span class="g">2 个 candidate</span>
+<span class="b">②技法页</span>：空格「/api/login×暴力破解」× concepts/rate-limit.md 适用条件
+→ <span class="g">1 个 candidate</span>
+<span class="b">③先例注入</span>：指纹命中 precedents（本客户三元组内）
+→ 注入 3 条已知链路 → <span class="g">3 个 candidate</span>
+<span class="b">④图邻接</span>：暂无可组合 finding → <span class="g">0 个</span>
+<span class="b">⑤LLM 联想</span>：看 facts 摘要——「登录接口+Express 独立+主站 Java」
+→ 联想「API 与主站会话割裂→越权」，<span class="y">引用触发 fact F-g1-0012</span> → <span class="g">1 个 candidate</span>
+<span class="c"># ⑤路硬上限 3 个/轮，且必须引用 fact ID（无引用自动 rejected）</span></div></div>
+<div class="st" style="--c:#7c3aed"><h4><span class="n">S17b</span>资产事件处理器·新资产自动再测绘 <span class="actor a-cmd">⚙️ ledger-add-asset 触发</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：任意时刻的新资产落账事件（如 P3 攻击过程中发现 admin.shop.example.com 子域名）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：**无条件**（不进风暴打分——测绘是信息补全，被阈值卡住会让新资产「裸奔」）：①按资产类型模板自动 spawn 测绘 intents（子域名→解析+端口/服务指纹+内容抓取）②子矩阵初始化（matrix.tsv 追加新行，reason 前缀 submatrix:）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：测绘 intents（直接 pending）+ 子矩阵新行（新空格进入下轮 matrix-gaps → 触发 S17 风暴②路）</span></div>
+<div class="code"><span class="c"># 闭环：新资产 → 自动测绘 → 新 facts → 风暴（①③④⑤路燃料）→ 攻击又可能发现新资产 → 再次触发</span>
+<span class="c"># 发散性由事件链机械保证——「越测越发现、越发现越测」不依赖 LLM 自觉</span>
+<span class="g">ledger-add-asset host=admin.shop.example.com → 事件触发</span>
+<span class="g">spawn intent: 端口/服务指纹+内容抓取（origin=recon-event，直接 pending）</span>
+<span class="g">matrix.tsv 追加: admin.shop.example.com | ×WSTG 列 | 空 | submatrix:新资产</span>
+<span class="c"># 成本护栏：测绘 intents 计入预算；单资产测绘上限；out_of_scope 资产只记 fact（进范围外观察附录）不 spawn</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S18</span>打分+机械去重 <span class="actor a-cmd">⚙️</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：S17 的 7 个 candidate 提案 + intents.tsv 现有 dedup_key（查重对照）+ 实体页 last_verified（新鲜度因子）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：确定性因子命令算先验分（origin 权重×空格优先级×新鲜度）；dedup_key 机械拒重（同键后到者 REJECT——LLM 只提议不判重）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：intents.tsv +7 行 candidate（带分数/dedup_key/来源）</span></div>
+<div class="code"><span class="c"># intents.tsv 追加（事件溯源——每行一次状态记录）：</span>
+<span class="g">INT-g1-0007 | 验证Shiro rememberMe反序列化 | ... | candidate | web-blackbox | entity | 0.91 | entities/shiro.md | AST-g1-001+shiro-deser | | | 1 | 09-18T10:00</span>
+<span class="g">INT-g1-0009 | 检测登录接口速率限制 | ... | candidate | web-blackbox | concept | 0.72 | concepts/rate-limit.md | AST-g1-009+brute-force | | | 1 | 09-18T10:00</span>
+<span class="g">INT-g1-0011 | API与主站会话割裂越权 | ... | candidate | web-blackbox | llm | 0.68 | F-g1-0012 | AST-g1-009+authz-bypass | | | 1 | 09-18T10:02</span>
+<span class="g">INT-g1-0012 | 内网横向移动预研 | ... | deferred | ... | ... | 0.31 | ... | ... | fact.kind;equals;internal-entry | 分数不足挂起 | 1 | 09-18T10:02</span>
+<span class="c"># INT-g1-0012 带「激活谓词」：发现内网入口 fact 才自动激活</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S19</span>晋升 pending <span class="actor a-cmd">⚙️ ledger-set-intent-status</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：S18 的打分结果</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：top-N 晋升 pending（追加新行不改旧行——事件溯源）；低分 rejected 附理由/deferred 附激活谓词</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：intents.tsv +3 行 pending（S20 委派对象）</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S20</span>批量并行委派 <span class="actor a-master">🧠 总控</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：intents.tsv 的 pending 行（互不依赖判定）+ goals/scope 摘要 + 相关 facts 摘要</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：一条消息并发派 3 个子代理（各带六要素委派书）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：3 个子代理会话启动（S21 开始执行）</span></div>
+<div class="code"><span class="c"># 三个子代理同时出发：</span>
+子代理A ← INT-g1-0007（Shiro 反序列化验证）  engine: web-blackbox
+子代理B ← INT-g1-0009（登录速率限制检测）    engine: web-blackbox
+子代理C ← INT-g1-0011（API 会话割裂越权）    engine: web-blackbox</div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S21</span>子代理执行 <span class="actor a-sub">🤖</span>×3 <span class="actor a-eng">🔬 web-blackbox</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：六要素委派书 + engines/web-blackbox/SKILL.md + 目标系统响应</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：走 §4 的 8 站通道（deny-list→取票→参数化请求→原始落盘→提炼→提交）。以子代理 A 为例：构造 rememberMe payload→发送→响应现反序列化特征→原始响应存证据（双哈希）→提炼 finding</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：evidence/EV-g1-0001.md（证据本体）+ findings 提案（S22 提交）</span></div>
+<div class="code"><span class="c"># 子代理 A 的关键动作：</span>
+1. deny-list 检查 curl 命令 → PASS
+2. 取 request-ticket → OK（当前 2/5 张/秒 已用）
+3. curl 'https://shop.example.com/' -b 'rememberMe=<payload>' --data @payload.bin
+<span class="c"># payload 经临时文件传参（参数化，防注入）</span>
+4. 响应 500 + 堆栈特征 → 疑似反序列化成功
+5. 原始响应 → evidence/EV-g1-0001.md（sha256 + norm_hash 双哈希）
+6. 提炼 finding：title/confidence C1/impact 高/复现步骤 1 步
+# E-index.tsv（证据索引——S23 验收时校验 evidence 引用闭合的对照源）：
+<span class="g">EV-g1-0001 | rememberMe 响应 | a3f2...（raw 哈希） | 7b1c...（归一化哈希） | evidence/EV-g1-0001.md | | | single | 1 | 09-18T10:38</span>
+<span class="g">EV-g1-0002 | 登录锁定对照组 | d4e5... | 9f0a... | evidence/EV-g1-0002.md | | PG-1 | single | 1 | 09-18T10:39</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S22</span>提交返回 <span class="actor a-sub">🤖</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：S21 的执行结果+证据</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：写 submission.json（固定 schema：status/facts/findings/assets/edges）→ 返回一行状态摘要 → 子代理会话销毁</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：submissions/INT-g1-000{7,9,11}/submission.json（S23 验收输入；上下文不残留）</span></div>
+<div class="code"><span class="c"># submissions/INT-g1-0007/submission.json：</span>
+{
+"status": "done",
+"findings": [{
+}],
+"facts": [], "assets": [], "edges": []
+}
+<span class="c"># 子代理 B 返回：status=no-findings + 负结果证据（对照组：登录失败 20 次无锁定→有速率限制，防护有效）</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S23</span>验收落账（单写者） <span class="actor a-master">🧠</span>+<span class="actor a-cmd">⚙️</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：3 份 submission.json + E-index.tsv（证据引用校验源）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：写前拒收（repro≥1 步/evidence 可解析/枚举合法/引用闭合——不合规 REJECT 打回）→ next-id 铸造 → findings/edges 落账 → matrix 置格 → timeline 链式追加</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：findings.tsv +1 行（FD-g1-0001 C1 高危）+ edges +2 行 + matrix 10 格判定 + timeline +1 行（S24 收敛判定的输入）</span></div>
+<div class="code"><span class="c"># findings.tsv：</span>
+<span class="g">FD-g1-0001 | INT-g1-0007 | Shiro rememberMe反序列化RCE | C1 | 高 | ... | 1步 | AST-g1-001 | EV-g1-0001 | | active | 1 | 09-18T10:40</span>
+<span class="c"># edges.tsv：</span>
+<span class="g">E-g1-0100 | proves | INT-g1-0007 | FD-g1-0001 | intent</span>
+<span class="g">E-g1-0101 | evidences | FD-g1-0001 | EV-g1-0001 | intent</span>
+<span class="c"># matrix.tsv（10 格已判定）：</span>
+<span class="g">*.shop.example.com | Shiro反序列化 | x | 已实证 RCE | INT-g1-0007</span>
+<span class="g">/api/login | 暴力破解 | x | 登录失败5次锁定，对照组 EV-g1-0002 | INT-g1-0009</span>  <span class="c"># 负结果也是 x（防护有效）</span>
+<span class="c"># timeline.tsv：</span>
+<span class="g">2026-09-18T10:40:12 | 总控 | P3 | ledger-add-finding FD-g1-0001 | prev:9c2b... | hash:7e1d...</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S24</span>收敛判定 <span class="actor a-cmd">⚙️ ledger-converge-check</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：facts.tsv（未消费数）+ intents.tsv（pending/active 数）+ candidate 池 + matrix.tsv（空格数）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：四条件图查询（无未消费 fact ∧ 无 pending/active ∧ 池空 ∧ 无空格）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：「11/3/0/190 → RUNNING」→ 回 S14 第 2 轮；或「0/0/0/0 → CONVERGED」→ 转 P4</span></div>
+<div class="code"><span class="c"># ledger-converge-check 输出：</span>
+unconsumed_facts: <span class="r">11</span>   pending_intents: <span class="r">3</span>   candidate_pool: 0   matrix_gaps: <span class="r">190</span>
+→ <span class="r">RUNNING</span>（第 2 轮开始）</div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S25</span>【第 2 轮】跨引擎流动 <span class="actor a-master">🧠</span>+<span class="actor a-cli">💻 vuln-agent</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：源码包相关 fact（风暴第①路命中）+ engines/manifest（vuln-agent 声明 max_op_level: read）+ shop-backend-src/ 源码目录</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：路由判定（intent 需求 L1 ≤ 引擎上限 read → 允许）→ python run.py 白盒扫描 → 适配器归一化输出</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：FD-g1-0004（C2 硬编码 JWT 密钥）+ cross_ref 边（白盒密钥↔Web 端点——S26 图邻接推理的输入）</span></div>
+<div class="code"><span class="c"># CLI 通道（与 skill 通道终点相同——同一 schema 提交文件）：</span>
+总控执行: python run.py shop-backend-src/     <span class="c"># Windows 参数化</span>
+vuln-agent 扫描 → .vuln_agent_output/
+适配器归一化 → submissions/INT-g1-0013/submission.json + operations.log
+<span class="c"># 白盒发现落账：</span>
+<span class="g">FD-g1-0004 | INT-g1-0013 | application.properties 硬编码 JWT 密钥 | C2 | 中 | ... | AST-g1-004 | EV-g1-0009 | | active | 1 | 09-18T11:20</span>
+<span class="g">E-g1-0205 | cross_ref | AST-g1-004 | AST-g1-009 | vuln-agent</span>  <span class="c"># 白盒密钥 ↔ Web 登录端点</span></div>
+<div class="next"><b>cross_ref 的下游</b>：下一轮 S17 第④路（图邻接）发现 FD-g1-0004 与 F-g1-0012 一跳共享资产 → attack 链 candidate（S26）。</div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S26</span>图邻接推理→攻击链 <span class="actor a-master">🧠</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：edges.tsv 图查询（FD-g1-0004 与 F-g1-0012 一跳共享资产的 cross_ref 边）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：风暴第④路生成 attack 链 candidate「泄露密钥伪造 token 打 API 越权」→ 派发验证 → 成功落 attack 边</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：attack 边 E-g1-0301（C2 中+C1 中 → 链式升级 C1 高——报告攻击链章节的数据源）</span></div>
+<div class="code"><span class="c"># attack 边（单个看是两个中危，链起来是高危）：</span>
+<span class="g">E-g1-0301 | attack | FD-g1-0004 | FD-g1-0007 | intent</span>  <span class="c"># JWT密钥→伪造token→API越权</span>
+<span class="c"># FD-g1-0004（C2 中）+ FD-g1-0007（C1 中）→ 链式升级：C1 高（可达管理员越权）</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S27</span>【第 3 轮】受管重启 <span class="actor a-master">🧠</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：上下文水位检测（超阈值）+ 当前循环状态</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：state.md 存档 → 主动结束会话 → 新会话加载常驻集 → 读 state.md+账本摘要续跑（详见 §5）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：新会话从「next: converge-check」续上，纪律强度与第 1 轮相同</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S28</span>【第 4-9 轮】循环继续</h4>
+<div class="io"><span class="in"><b>📥 输入</b>：每轮同 S14-S24（数据不同：空格变少/fact 被消费/finding 变多）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：重复循环节奏；⑤路联想阈值随轮数递增（后期只接受高分假设）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：矩阵空格 190→152→…→0 单调递减</span></div></div>
+<div class="st" style="--c:#0d9488"><h4><span class="n">S29</span>终态判定 <span class="actor a-cmd">⚙️ ledger-converge-check</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：四表状态（同 S24）+ budget.tsv（预算判定）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：第 9 轮末四条件全满足 → converged；<b>分支</b>：预算先耗尽 → budget-exhausted（P4 照常校验+P5 首节强制披露未闭合格+免责注明中期报告）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：终态标记（state.md 记「converged @ round 9」）→ 转 P4</span></div>
+<div class="code"><span class="c"># converged 输出：</span>
+unconsumed_facts: 0   pending_intents: 0   candidate_pool: 0   matrix_gaps: 0
+→ <span class="g">CONVERGED</span> @ round 9（转 P4）</div>
+<div class="gate"><b>⛔ P3 出口门禁</b>：converged 或 budget-exhausted（两者皆合法终态）。</div>
+<div class="code"><span class="c"># 完备性三支柱（「如何确保测全是」的诚实回答）：</span>
+<span class="b">列完备</span>（构造保证）：矩阵列=WSTG v4.2 全集钉死——漏洞类型维度不缺类
+<span class="b">格完备</span>（门禁保证）：收敛=矩阵无空格+无未消费 fact——组合不留暗角
+<span class="b">资产全集</span>（诚实边界）：资产全集不可知是渗透本质——范围外观察附录披露+S17b 保证「发现了就测」</div></div>
+<div class="phasehead"><h3>P4 汇总校验（S30-S34）：脏账本不出报告</h3><p>为什么做这个：P3 跑了 9 轮、几百行账——任何坏行/悬空引用/哈希不符，报告的数据质量就是假的。四道机械校验全过才放行。</p></div>
+<div class="st" style="--c:#475569"><h4><span class="n">S30-S33</span>四道校验命令 <span class="actor a-cmd">⚙️</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：八表全量+E-index+timeline+matrix（S23 落账的全部数据）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：S30 ledger-validate（格式/转义/枚举/引用闭合/dedup_key 唯一）· S31 ledger-verify-chain（timeline 哈希链——断链=篡改告警）· S32 ledger-hash-recheck（证据哈希重算比对）· S33 ledger-matrix-audit（"-"/"!" 抽查+fact 密度异常检测——批量置态与密度不符=疑似廉价闭合/被注入）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：四命令 PASS/FAIL（任一 FAIL 阻断报告）</span></div>
+<div class="code"><span class="c"># S30 全表校验：</span>
+ledger-validate   → <span class="g">PASS</span>（格式/转义/枚举/引用闭合/dedup_key 唯一）
+<span class="c"># S31 哈希链校验：</span>
+ledger-verify-chain → <span class="g">PASS</span>（timeline 链完整；断链=篡改告警，阻断报告）
+<span class="c"># S32 证据哈希重算：</span>
+ledger-hash-recheck → <span class="g">PASS</span>（E-index 全量比对）
+<span class="c"># S33 矩阵抽查+异常检测：</span>
+ledger-matrix-audit → <span class="g">PASS</span>（"-"/"!" 格抽查清单；矩阵大量置"-"但对应资产 fact 密度高=疑似廉价闭合/被注入→告警）</div></div>
+<div class="st" style="--c:#475569"><h4><span class="n">S34</span>finding 合并 <span class="actor a-master">🧠</span>+<span class="actor a-cmd">⚙️ ledger-supersede-finding</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：findings.tsv（找同根因对——FD-g1-0002 与 FD-g1-0007）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：新 finding+supersedes 边+旧行 tombstone（标记弃用不删行——历史可回放）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：合并后的 findings.tsv（S35 报告数据源）</span></div>
+<div class="gate"><b>⛔ P4 出口门禁</b>：四命令全 PASS+异常检测无告警。</div></div>
+<div class="phasehead"><h3>P5 报告+P5.5 签发门（S35-S36）：AI 写报告，人签字</h3><p>为什么有签发门：正式渗透报告是测试方的法律声明——AI 生成报告不经人审直接交付是行业红线。</p></div>
+<div class="st" style="--c:#b45309"><h4><span class="n">S35</span>生成报告 <span class="actor a-master">🧠 总控</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：findings.tsv（含 supersedes 合并后）+ matrix.tsv（覆盖视图）+ assets.tsv（范围外附录）+ goals.tsv（免责/授权信息）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：总控从账本组装报告（执行摘要/漏洞清单 confidence×impact 双列/覆盖视图/修复建议/范围外附录/免责条款）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：report/report-draft.md（S36 人审输入）</span></div>
+<div class="tree">session/G-g1/report/
+└── <span class="new">report-draft.md</span>   <span class="c"># 漏洞清单 23 项：C1高 3 / C2高 4 / C1中 7 / ... 矩阵闭合 100%</span></div></div>
+<div class="st" style="--c:#b45309"><h4><span class="n">S36</span>签发门 <span class="actor a-user">👤 用户</span>+<span class="actor a-cmd">⚙️ ledger-approve</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：report-draft.md（人审对象）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：用户人审→批准→ledger-approve 落账（command_hash 绑定报告文件哈希——批的就是这份文件，不可抵赖）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：approvals.tsv +1 行 + report-signed.md（未签发禁止导出）</span></div>
+<div class="code"><span class="c"># approvals.tsv：</span>
+<span class="g">AP-g1-0002 | 9c2b... | approved | 王五 | 2026-09-25 14:22 | 签发报告 report-signed.md</span></div>
+<div class="gate"><b>⛔ P5.5 门禁</b>：未签发报告禁止导出。</div></div>
+<div class="phasehead"><h3>P6.0 清理门+P6 沉淀（S37-S41）：战场打扫+知识复利</h3><p>为什么做这个：客户拿清理声明对账；本次测试的打法沉淀成知识，下次同类型目标更强（复利闭环）。</p></div>
+<div class="st" style="--c:#be185d"><h4><span class="n">S37</span>清理门 <span class="actor a-cmd">⚙️ ledger-cleanup-checklist</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：timeline.tsv（提取全部写操作——本身防篡改）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：生成清理清单→逐项核销（测试账号已删/上传已清/无 webshell）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：cleanup.md+报告附清理声明（客户对账依据）</span></div>
+<div class="code"><span class="c"># cleanup.md：</span>
+☑ 注册测试账号 test-01（已删除，凭证 EV-g1-0100 截图）
+☑ 上传头像文件 3 个（已删除）
+☑ 无 webshell / 无配置改动 / 无持久化后门
+→ 报告附清理声明</div></div>
+<div class="st" style="--c:#be185d"><h4><span class="n">S38-S40</span>脱敏→反向验证→审批入库 <span class="actor a-master">🧠</span>+<span class="actor a-cmd">⚙️</span>+<span class="actor a-user">👤</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：session 全部账本（先例/实体/模式提炼源）+ 本次出现过的全部域名/IP/凭据（反向验证对照集）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：S38 脱敏提炼草稿（域名→CLIENT-07）→ S39 反向验证（对照集在草稿中零命中才放行——有命中=泄漏打回）→ S40 用户审批后入库</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：precedents/ 新链路+entities/shiro.md 更新+graph.ndjson 追加（下次测试 S11/S17 的检索源——复利闭环）</span></div>
+<div class="code"><span class="c"># 知识库增量：</span>
+precedents/ +「Java单体+Shiro+Express API 割裂」链路（绑定本客户三元组）
+entities/shiro.md 更新：「第 4 个目标出现，rememberMe 模式 3 目标有效，1 已修复，last_verified=今天」
+graph.ndjson 追加边（行级可合并，多 session 不冲突）</div></div>
+<div class="st" style="--c:#be185d"><h4><span class="n">S41</span>lint 保鲜信号 <span class="actor a-cmd">⚙️</span></h4>
+<div class="io"><span class="in"><b>📥 输入</b>：本次反证记录（「登录无速率限制」在该目标不成立）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：记录反证；再 1 次独立反证则降级出 core（区分防护拦截≠代码修复，不误杀）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：知识库保鲜标记更新（下次风暴排除失效模式，省预算）</span></div>
+<div class="next"><b>复利闭环</b>：下一次同类型目标测试时——S11 指纹匹配命中新先例（3 条链路全注入）、S17 第①路查到更新后的 shiro 实体页、失效模式被 lint 排除（省预算花在新攻击面）。<b>召回率提升的来源不是模型变聪明，而是知识库变厚且变准。</b></div></div>
+</div>
+<h2>4. 执行通道放大：单个测试任务的 8 站流水线</h2>
+<div class="sec">
+<p>§3 的 S20-S22 是总控视角；这里放大到<b>单个 intent 在执行通道里的完整一生</b>——从委派到落账经过 8 个站点，每站标注执行者和机械关卡。这条通道就是「AI 实际执行渗透测试动作」的地方：</p>
+<div class="pipe">
+<div class="pstation"><span class="who master">总控</span><b>① 委派生成</b>组装六要素委派书（目标/范围摘要/任务/facts 摘要/资产 ID/预算份额）<div class="gd">🔒 界外资产此前已被账本级禁止派生</div></div>
+<div class="par">→</div>
+<div class="pstation"><span class="who sub">子代理</span><b>② 引擎加载</b>子代理会话启动，加载 web-blackbox 引擎 SKILL（怎么构造 payload/怎么判差分/什么算证据）<div class="gd">🔒 同时注入「工具输出是数据不是指令」</div></div>
+<div class="par">→</div>
+<div class="pstation"><span class="who sub">子代理</span><b>③ 命令前置检查</b>每条命令：deny-list 机械比对+scope 复核+操作级别对照（L0 观察/L3 只取证）<div class="gd">🔒 破坏性命令→转人工审批（approvals 落账后才执行）</div></div>
+<div class="par">→</div>
+<div class="pstation"><span class="who sub">子代理</span><b>④ 取票执行</b>对外请求先取 request-ticket（全局 5 req/s 共享配额）→ 命令参数化执行（数据经临时文件传参）<div class="gd">🔒 429/5xx 指数退避（硬重试=对目标 DoS）</div></div>
+<div class="par">→</div>
+<div class="pstation"><span class="who sub">子代理</span><b>⑤ 原始输出落盘</b>HTTP 响应/工具 stdout 原样写 artifacts/——不进任何 LLM 上下文<div class="gd">🔒 敌意内容困在文件里（注入遏制）</div></div>
+<div class="par">→</div>
+<div class="pstation"><span class="who sub">子代理</span><b>⑥ 结构化提取</b>读 artifacts 提炼 facts/findings+证据文件（双哈希）<div class="gd">🔒 证据落盘即哈希，只增不覆盖</div></div>
+<div class="par">→</div>
+<div class="pstation"><span class="who sub">子代理</span><b>⑦ 提交文件</b>写 submission.json（固定 schema）→ 只返回一行状态摘要<div class="gd">🔒 子代理会话销毁，上下文不残留</div></div>
+<div class="par">→</div>
+<div class="pstation"><span class="who master">总控</span><b>⑧ 验收落账</b>写前拒收校验→next-id 铸造→八表落账→matrix 置格→timeline 链式追加<div class="gd">🔒 不合规 REJECT 打回，绝不「先记上再改」</div></div>
+</div>
+<p><b>CLI 通道变体</b>（vuln-agent）：②-⑦ 替换为「总控调 <code>python run.py</code>（Windows 参数化）→ CLI 白盒扫描 → 适配器归一化输出成同一 schema 的 submission.json+操作日志」——<b>终点与 skill 通道完全相同</b>，总控的验收逻辑不区分引擎类型。CLI 全程 max_op_level: read（只读分析，无对外请求）。</p>
+<div class="note"><b>通道安全密度</b>：8 站共 <b>7 个机械关卡</b>+2 个 LLM 纪律点。越界/注入/超速/脏数据四类事故每个至少被两道独立关卡覆盖——「纪律不是 prompt 而是机制」在运行时的样子。</div>
+</div>
+<h2>5. 上下文三层策略：压缩容忍 + 受管重启 + 断电恢复</h2>
+<div class="sec">
+<p>长测试必然撞上下文上限。宿主（walcode 等）会<b>自动压缩</b>会话——但压缩时机不可控、摘要有损。探隐的答案不是二选一，是<b>三层策略共用同一恢复协议</b>（从盘上重定向：读 state.md+账本摘要+常驻集重载）——「节奏和状态」本来就不在会话里，在盘上：</p>
+<table style="font-size:12px"><tr><th>层</th><th>触发</th><th>性质</th></tr>
+<tr><td><b>① 压缩容忍</b>（基线，永远在线）</td><td>宿主自动压缩（时机不可控）</td><td>每轮开头重定向协议：checkpoint（state.md）+账本扫描（unconsumed-facts/pending-intents/matrix-gaps）重建事实基准——<b>压缩后下一轮边界自动恢复节奏</b>。P3 每轮开头本来就从盘上重建基准，压缩损失被轮边界截断；轮中间被压缩的进行中分析由 checkpoint 兜底</td></tr>
+<tr><td><b>② 受管重启</b>（优选）</td><td>上下文超阈值（0.75）/每 N 轮——<b>在宿主压缩触发之前</b></td><td>干净轮末边界主动换会话（下方时序图）——压缩是有损兜底，重启是无损优选；阈值前移使平时几乎不依赖①</td></tr>
+<tr><td><b>③ 断电恢复</b>（事故）</td><td>崩溃/断电/会话意外终止</td><td>同一恢复协议，state.md 是锚点——断电恢复是受管重启的特例</td></tr></table>
+<p><b>为什么不能只靠宿主自动压缩</b>：①时机不可控（可能轮中间触发，进行中状态丢失）②有损摘要（fact ID/差分判定细节可能被摘要掉或摘错，不可验证）③纪律稀释（会话消息级注入的指令被摘要稀释——所以常驻集必须系统级注入）④注意力质量（在被压缩的长历史上推理，不如新会话+从盘上读精确状态）。三层策略把压缩降级为「可容忍的兜底」，无损恢复留给②。</p>
+</div>
+<h2>5a. 受管重启时序：上下文满了怎么无损换会话</h2>
+<div class="sec">
+<p>第②层的完整时序——每 N 轮或超阈值<b>主动</b>换会话：</p>
+<div class="seq"><b>[旧会话 · 第 12 轮末]</b>
+<span class="m">总控</span> 检测上下文超阈值（或到达每 N 轮检查点）
+↓
+<span class="m">总控</span> 写 state.md：<span class="c">「round:12 / active:INT-g1-0021 / next:converge-check / threshold:0.75」</span>
+↓
+<span class="m">总控</span> 输出结束语（会话正常结束——<span class="dim">不是崩溃，是存档换机</span>）
+<b>[新会话 · 立即]</b>
+<span class="k">自动档</span>（宿主支持 headless 会话生成——自检探测，walcode run/serve 已实测可用）：<span class="m">总控</span> 在旧会话内经执行通道 spawn <span class="c">walcode run "继续探隐 session G-g1"</span>——<span class="dim">无人值守，用户随时 walcode attach 观看</span>
+↓
+<span class="y">兜底档</span>（宿主无此能力）：总控输出精确恢复命令，<span class="u">用户</span> 粘贴一次「继续探隐 session G-g1」——<span class="dim">一次按键，不是流程中断</span>
+↓
+<span class="m">总控</span> 加载常驻集（SKILL.md：安全规则/铁律/循环骨架/命令索引——<span class="dim">永远不卸载的部分</span>）
+↓
+<span class="m">总控</span> 读 state.md + 账本摘要（ledger-intent-status / matrix-gaps——<span class="dim">恢复的是「状态」不是「记忆」</span>）
+↓
+<span class="m">总控</span> 从「next: converge-check」续上——<span class="dim">第 13 轮开始，纪律强度与第 1 轮完全相同</span>
+<b>[恢复后]</b>
+<span class="x">session-viz</span> 重新投影（projector 只读账本——视图反映恢复点状态）
+<span class="c">timeline</span> 追加「managed-restart」事件（重启本身也留痕）</div>
+<p><b>为什么这是设计核心而不是补丁</b>：上下文溢出的实际表现不是干净失败，而是注意力衰减→纪律违反率上升→账本写错——恰好发生在最需要严谨的会话尾部。受管重启把「最虚弱的时刻」从会话尾部挪到会话开头（常驻集刚加载、纪律最完整的时刻）。<b>状态在盘上所以重启无损；摘要纪律在所以新会话不被历史淹没</b>——这就是 Context 支柱的运行时形态。</p>
+<p><b>档位由自检决定，不由用户选</b>：安装自检（B14）探测宿主 headless 会话生成能力——支持（如 walcode run/serve、claude -p）→默认自动档；不支持→兜底档（一次粘贴）。两档都无损：状态全在盘上，自动化是体验优化，不是正确性依赖。<b>自动档护栏（防 spawn 失控）</b>：①重启计入预算（budget.tsv 记 token 消耗）②重启速率上限（1 次/N 分钟——新会话若立即崩溃不会无限递归 spawn）③timeline 记 managed-restart 事件含 spawn 方式（auto/manual）④单活跃会话约束（同一 session 同时只有一个总控会话在跑）。</p>
+<p><b>压缩容忍层在时序图里的位置</b>：若宿主在旧会话第 12 轮<b>中间</b>就自动压缩了（未到 0.75 阈值）——第 12 轮剩余步骤靠 checkpoint 兜底完成，第 13 轮开头照常「读 state.md+账本扫描」重建基准，节奏自动恢复。①②③三层在运行时是叠加的：①永远在线兜住②的阈值前空窗，②在干净边界优选触发，③兜住一切意外——三者共用「从盘上重定向」，无需任何一层理解其他两层。</p>
+</div>
+<div class="note"><b>与其他视图的关系</b>：本图是「运行时动态视角」——架构图（system-architecture.html）是静态结构、演进循环图（evolution-loop.html）是循环机制、e2e-flow.html 是因果故事，本图补上「实际跑起来谁在什么时刻干什么活」。同一事实跨图口径一致，权威源为设计定稿。</div>
+<footer>运行时执行视图 · 完整架构图+41 步全流程 · 2026-09-18</footer>
+</div></body></html>

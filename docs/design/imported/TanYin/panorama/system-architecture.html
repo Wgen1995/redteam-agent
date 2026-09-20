@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系统架构图 · 探隐 TanYin</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#1f2329;line-height:1.65;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}.sub{font-size:13px;color:#64748b}
+.layer{background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin:0}
+.layer h2{font-size:16px;margin-bottom:10px;color:#1e293b}
+.boxes{display:flex;flex-wrap:wrap;gap:8px}
+.bx{flex:1 1 200px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;font-size:12.5px;color:#475569}
+.bx b{display:block;color:#1e293b;margin-bottom:3px;font-size:13px}
+.bx.dim{background:#f1f5f9;color:#94a3b8}.bx.hl{border-color:#0d9488;background:#f0fdfa}
+.st{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600}
+.st.done{background:#dcfce7;color:#16a34a}.st.doing{background:#ffedd5;color:#c2410c}.st.plan{background:#e0e7ff;color:#4338ca}
+.arrow{text-align:center;color:#0d9488;font-size:14px;margin:6px 0;font-weight:600}
+.cols{display:flex;gap:8px;margin-top:10px}
+.col{flex:1;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px 12px;font-size:12.5px;color:#3730a3}
+.think{background:#f0fdfa;border-left:4px solid #0d9488;border-radius:8px;padding:10px 14px;font-size:13px;color:#134e4a;margin:10px 0}
+.think b{color:#0f766e}
+.mech{background:#eff6ff;border-left:4px solid #3b82f6;border-radius:8px;padding:10px 14px;font-size:13px;color:#1e3a5f;margin:10px 0}
+.mech b{color:#1d4ed8}
+.note{background:#fffbeb;border-left:4px solid #d97706;border-radius:8px;padding:10px 14px;font-size:13px;color:#78350f;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:30px}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:12.5px}
+.topnav a{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:4px 14px;color:#334155;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.topnav a:hover{border-color:#0d9488;color:#0f766e}
+.topnav a.on{border-color:#0d9488;color:#0f766e;font-weight:600}
+</style></head><body><div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:8px 14px;font-size:12.5px;color:#92400e;margin-bottom:14px">📋 内容状态：2026-09-17（五专家审计修订同步·五层全展开：每层=构成 → 机制 → 原理逻辑 → 设计思想·六边形表述）｜ <a href="index.html" style="color:#b45309">蓝图总览</a> · <a href="../docs/superpowers/specs/2026-09-17-tanyin-design.md" style="color:#b45309">主设计文档</a></div><div class="wrap">
+<nav class="topnav">
+<a href="index.html">← 总览导览</a><a href="agent-philosophies.html">🧭 工程哲学</a>
+<a href="system-architecture.html" class="on">🏗️ 架构</a>
+<a href="evolution-loop.html">🔄 演进循环</a>
+<a href="domain-model.html">🗄️ 领域模型</a>
+<a href="engine-contract.html">🔒 引擎契约</a>
+<a href="knowledge-flywheel.html">📈 知识飞轮</a>
+<a href="security-discipline.html">🛡️ 安全纪律</a>
+</nav>
+<h1>🏗️ 系统架构图 <span style="font-size:13px;color:#94a3b8">· 五层（六边形）· 每层含设计细节/机制/原理/思想 · 2026-09-17</span></h1>
+<div class="sub">本图=探隐建成后的<b>目标结构</b>。<b style="color:#dc2626">六边形表述：数据依赖向下，政策权威向上横切（L1 纪律/词表/deny-list 对全层生效）</b>；引擎契约内可插拔；知识库独立生长。每层先列构成，再给运转机制，然后解释原理逻辑，最后点明设计思想。</div>
+<div class="layer"><h2>L5 用户层 / 宿主 Harness <span class="st plan">复用宿主不重造</span></h2><div class="boxes">
+<div class="bx"><b>构成</b>安全工程师 + 任意编码 agent（walcode / CodeBuddy / Claude Code）。用户在宿主对话中发起：「用探隐测试 https://target，授权依据=合同XXX」。</div>
+<div class="bx"><b>机制</b>探隐以 SKILL 目录形态装入宿主的技能机制（复制即装）。宿主提供：子代理并发派发、命令执行与权限控制、上下文管理。探隐不自带任何运行时。<b>安装自检命令：探测宿主能力矩阵，输出降级建议</b>。</div>
+<div class="bx"><b>原理逻辑</b>编码 agent 已解决的三件事（工具调用、多代理、权限门）恰好是渗透编排的全部基础设施——重造即维护负担。宿主差异（并发模型/权限粒度）被 L4 的指挥官协议吸收。</div>
+<div class="bx hl"><b>设计思想：Harness-native</b>「站在成熟宿主上做方法论」。对比业界：PentestCode fork 宿主成独立二进制（承担全部维护成本）；dsh 做宿主插件（绑定单一宿主）。探隐选第三条路：方法论与宿主解耦，装进谁都能跑。</div></div>
+<div class="mech"><b>跨层机制：渐进加载 + 常驻集</b>——SKILL.md 只含总控纪律与 Phase 索引；phases/P0-P6 各阶段指令按需读取；引擎 SKILL 只在调度时加载。<b>常驻集（安全规则/铁律/循环骨架/命令索引/授权状态）不得被渐进加载挤掉</b>——纪律不随上下文压力衰减。</div></div>
+<div class="arrow">▼ <small>自然语言指令 + 子代理委派（目标/授权范围/待验证任务/事实摘要/资产 ID/预算份额）</small></div>
+<div class="layer"><h2>L4 总控编排层（应用编排） <span class="st plan">薄总控（权威薄·认知厚）+ 指挥官协议</span></h2><div class="boxes">
+<div class="bx"><b>构成</b>SKILL.md（总控入口：常驻集+Phase 门+循环纪律卡）+ phases/（P0 授权门→P1 测绘→P2 规划→P3 演进循环→P4 汇总→P5 报告→<b>P5.5 签发门→P6.0 清理门</b>→P6 沉淀）。</div>
+<div class="bx"><b>机制</b>总控<b>权威</b>只做四件事：跑命令（账本命令）、派子代理（按角色）、验收格式（提交文件 schema 校验）、语义推导（分析 fact→提出新 intent，产出必须经账本命令落盘）。<b>认知可以厚重</b>（读账本做推导），但一切落盘权威收敛于账本命令。</div>
+<div class="bx"><b>原理逻辑</b>LLM 的判断力用在刀刃上（推导攻击假设），确定性交给账本（状态读写全走命令）。凡涉及账本读写而无对应命令的步骤一律不得执行——把「技能缺陷」变成可检测的终止条件而非静默漂移。<b>命令经「执行通道」命名（当前直通宿主 shell，沙箱化只换通道实现）</b>。</div>
+<div class="bx hl"><b>设计思想：确定性来自账本，智能来自 LLM</b>四条铁律之首「薄总控」+ <b>单写者模式：总控是唯一账本写者，子代理/引擎只产提交文件</b>——并发锁/ID 撞号/校验集中化一次解决。GenSift 生产验证的模式。</div></div>
+<div class="cols">
+<div class="col"><b>指挥官协议（委派纪律）</b>总控是唯一拍板者；委派带六要素（目标/授权范围/待验证任务/相关事实摘要/可引用资产 ID/预算份额）；<b>批量并行派发-同回合收集（宿主原生模式）</b>；互不依赖的 intent 并发、有依赖的等前置事实回注；偏离授权范围的 intent 必须拒绝（scope-check 前置）。</div>
+<div class="col"><b>Phase 门（阶段纪律）</b>每 Phase 有入口门与出口门禁：P0 八问+结构化授权+scope.tsv；P1 出口=资产树完整+scope 判定完成；P2 出口=矩阵落盘+冻结；P3 出口=<b>收敛或 budget-exhausted</b>；P4 出口=校验+抽查+异常检测通过；P5 出口=终态门禁；<b>P5.5 出口=签发（未签发禁止导出）；P6.0 出口=清理核销</b>；P6 出口=审批。</div></div>
+<div class="mech"><b>跨层机制：受管重启</b>——P3 每轮 checkpoint 写 state.md；每 N 轮或上下文超阈值<b>主动</b>换新会话，从 state.md+账本恢复——断电恢复与受管重启是同一机制，前者是后者的特例。原理：LLM 会话是易失的，磁盘是持久的——一切状态落盘。</div></div>
+<div class="arrow">▼ <small>账本命令读写（单写者串行·写前拒收） · 证据落盘 · 图谱边构建</small></div>
+<div class="layer"><h2>L3 领域模型层（领域核） <span class="st plan">session 目录 = 单一事实源</span></h2><div class="boxes">
+<div class="bx"><b>构成</b>每次测试一个 session 目录：<b>八表 TSV 账本（goals/scope/intents/facts/findings/assets/edges/approvals）+ E-index + matrix + timeline（链式哈希）+ state.md + submissions/ + evidence/ + vault/</b>。</div>
+<div class="bx"><b>机制</b>追加写（append-only）+ <b>事件溯源（intents/matrix：追加状态变更行，取最新=账本命令）</b>；账本命令是唯一写入口（<b>写前拒收：列数/枚举/引用闭合/dedup_key 唯一</b>）；每条 finding 强制关联 Evidence（repro_command + 双 hash + 两维评级）。</div>
+<div class="bx"><b>原理逻辑</b>TSV 而非数据库（决策 6）：零依赖、人类可直接读、diff 友好——换 JSONL 不解决状态机/并发问题，SQLite 破坏零代码宪法。图谱十种边让「探索过程」本身结构化——未消费 fact 可被查询，这是 P3 循环的驱动信号。<b>字段编码规范命令层强制（UTF-8 无 BOM+LF+转义+参数化）</b>。</div>
+<div class="bx hl"><b>设计思想：图谱既是记录也是推理引擎</b>记录价值=全程可回放可审计（<b>timeline 链式哈希防篡改</b>）；推理价值=图谱完成态（收敛）可计算。dsh-pentest 六表模型 + GenCPT 图谱演进的综合 + 审计加固。</div></div>
+<div class="mech"><b>跨层机制：两维评级</b>——账本内部存 confidence（C1/C2/C3/➖🛑）× impact（高/中/低）两维正交；报告双列呈现+传统等级映射列。原理：确定性≠危害——「我多确定它存在」与「它造成多大影响」是两个问题，压成一维会误导修复优先级。</div></div>
+<div class="arrow">▼ <small>引擎调度（intent.engine 路由·纪律能力过滤） · 提交文件协议（总控验收后落账）</small></div>
+<div class="layer"><h2>L2 引擎契约层（适配器） <span class="st plan">契约总线（数据形状+执行语义）+ 跨引擎知识流动</span></h2><div class="boxes">
+<div class="bx"><b>构成</b>engines/CONTRACT.md（契约双轴）+ web-blackbox（SKILL 型·新写·含差分判定规则）+ vuln-agent（CLI 型适配器·纪律能力声明+操作日志）+ session-viz（<b>projector 型</b>·只读不回写）+ gencpt（契约预留）。</div>
+<div class="bx"><b>机制</b>每引擎：manifest（<b>kind: skill/cli/projector</b>/场景/参数/超时/重试/幂等键/<b>纪律能力声明</b>）、输入（session 目录+目标+facts 摘要）、输出（<b>提交文件→submissions/&lt;intent-id&gt;/，总控验收后统一落账</b>）。</div>
+<div class="bx"><b>原理逻辑</b>引擎异构（SKILL 是给 LLM 的指令、CLI 是给 shell 的程序、projector 只读投影），但提交格式统一——总控不需要理解引擎内部，只验收格式。<b>CLI 引擎声明 max_op_level+视角上限，总控据此路由——黑盒工具不成为纪律旁路</b>。</div>
+<div class="bx hl"><b>设计思想：文件契约总线</b>不引入进程间通信/消息队列——契约就是「目录+文件格式+执行语义」。<b>契约内</b>新增引擎总控零改动。跨引擎知识流动（Web 端点→白盒重点、白盒密钥→Web 素材，cross_ref 边）是总控相对单引擎产品的核心增值。</div></div>
+<div class="mech"><b>跨层机制：烛龙对齐</b>——契约=烛龙「参数契约+产物映射器」的语义版；账本=烛龙 NDM 的文件版（schema_version 协商）。接入烛龙时 L2 适配器换成烛龙 runner 调用，L3 格式不变——<b>一致性夹具让「零成本接入」从声明变为可回归的契约测试</b>。</div></div>
+<div class="arrow">▼ <small>先例/实体/模式注入（P2/P3 读·客户三元组内匹配——三元组=「哪个客户+哪个授权资产+哪次授权时间窗」，三字段全同才注入，跨客户=越权） · 脱敏沉淀回写（P6 反向验证+审批后） · 纪律规则全程横切约束</small></div>
+<div class="layer"><h2>L1 知识与纪律层（共享内核+横切政策） <span class="st plan">知识复利（治理加固）+ 四级纪律（守门强化）</span></h2><div class="boxes">
+<div class="bx"><b>构成（知识）</b>knowledge/：entities（技术实体页·<b>脱敏代号 CLIENT-NN</b>）/concepts（技法）/targets（目标指纹）/precedents（先例·<b>客户三元组绑定</b>：客户+授权资产+授权窗口三字段全同才可复用）/patterns（core+learned）/<b>graph.ndjson（行级可合并）+ staging/（审批暂存区）+ format_version</b>。</div>
+<div class="bx"><b>机制（知识）</b>ingest 摄入（<b>staging 审批门</b>；CNPEN 82 漏洞+nuclei 模板+WSA 分类→初始库）· P6 脱敏沉淀（<b>反向验证</b>+审批门）· learned→core 四门槛 · lint 保鲜（<b>降级需 N≥2 独立反证+区分防护拦截/代码修复</b>）。</div>
+<div class="bx"><b>构成（纪律）</b>shared/：DISCIPLINE（四级）/EVIDENCE（证据契约）/SEVERITY（两维评级）/<b>LEDGER（账本命令集）/VOCAB（WSTG 词表）/DENYLIST（命令黑名单）</b>。</div>
+<div class="bx"><b>机制（纪律）</b>授权门八问→结构化授权+scope 硬门→规则（只读优先/破坏性只取证/凭据保险库/运行时数据分级/速率纪律）→分级审批（<b>展示原始命令原文·落 approvals</b>）→审计留痕（<b>timeline 链式哈希</b>）。命令带双维度标签+<b>deny-list 机械拦截+注入防护四层</b>。</div>
+<div class="bx hl"><b>设计思想：知识有复利也有衰减；安全是设计约束不是事后补丁</b>攻击知识会过期——保鲜+反证降级让知识库「越用越准」。<b>守门诚实边界（决策 7）：账本级硬门（可验证）+prompt 级约束（非绝对）+宿主权限规则（真进程级防线）三层，不夸大安全性</b>。</div></div></div>
+<div class="note"><b>五层咬合逻辑（一页话）</b>：L5 提供基础设施（Harness 复用）→ L4 提供判断与调度（薄总控：智能归 LLM、确定性归账本、单写者）→ L3 提供状态与推理载体（图谱收敛=测试完成）→ L2 提供能力扩展（契约总线，跨引擎流动）→ L1 提供记忆与边界（知识复利+纪律横切）。任何一层可独立演进：换宿主不动 L4-L1；<b>契约内</b>加引擎不动总控；知识库可单独生长。<b>六边形表述：L3 是领域核，L4 是应用编排，L2 是适配器，L1 是共享内核+政策——数据依赖向下，政策权威向上横切。</b></div>
+<footer>系统架构图 · 结构视图 · 2026-09-17（五专家审计修订同步）</footer>
+</div></body></html>
