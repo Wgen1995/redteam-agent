@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>探隐 TanYin · 设计全景｜红队成长全景图</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.7;padding:24px 14px 60px}
+.wrap{max-width:min(1560px,94vw);margin:0 auto}
+header{background:linear-gradient(135deg,#0f172a,#7f1d1d 55%,#b91c1c);color:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 10px 30px rgba(185,28,28,.28)}
+header h1{font-size:24px;margin-bottom:6px}header .sub{opacity:.92;font-size:14px}
+header .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+header .tags span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;font-size:12.5px}
+h2{font-size:20px;margin:36px 0 14px;padding-left:14px;border-left:5px solid #b91c1c}
+p{font-size:14px;color:#475569;margin-bottom:10px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:14px;padding:22px 20px;box-shadow:0 4px 16px rgba(0,0,0,.07);transition:transform .18s,box-shadow .18s;border-top:5px solid #b91c1c;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(185,28,28,.18)}
+.card .icon{font-size:30px;margin-bottom:10px}.card h4{font-size:17px;margin-bottom:6px;color:#1e293b}
+.card p{font-size:13px;color:#64748b;margin:0;flex:1}.card .go{margin-top:12px;font-size:13px;font-weight:600;color:#b91c1c}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
+.lv{color:#b91c1c;font-weight:600}.core{color:#0369a1;font-weight:600}.adv{color:#7c3aed;font-weight:600}
+.note{background:#fef2f2;border-left:4px solid #b91c1c;border-radius:8px;padding:12px 16px;font-size:13.5px;color:#7f1d1d;margin:14px 0}
+footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
+.topnav{display:flex;gap:10px;margin:0 0 14px;flex-wrap:wrap}.topnav a{background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.phase{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin:16px 0}
+.phase .step{flex:1;min-width:130px;background:#fff;border:1px solid #e2e8f0;padding:14px 10px;text-align:center;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.phase .step b{display:block;font-size:14px;color:#1e293b;margin-bottom:4px}
+.phase .step span{font-size:12px;color:#64748b}
+h3{font-size:16px;margin:26px 0 4px;color:#1e293b}
+h3 em{font-style:normal;font-size:12.5px;color:#94a3b8;font-weight:400}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;padding:1px 5px;word-break:break-all;color:#0f172a}
+.topnav a.on{background:linear-gradient(135deg,#b91c1c,#7f1d1d);color:#fff;box-shadow:0 2px 8px rgba(185,28,28,.3)}
+.tblwrap{overflow-x:auto;margin:12px 0}
+.tblwrap table{margin:0;min-width:820px}
+.cards.levels{grid-template-columns:1fr}
+.card .lhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card .lhead h4{margin:0}
+.card .lhead .lno{font-size:12px;font-weight:700;color:#fff;background:#b91c1c;border-radius:6px;padding:1px 9px;letter-spacing:.5px}
+.card .sec{font-size:12px;font-weight:700;color:#b91c1c;margin:11px 0 3px;letter-spacing:1px}
+.card ul{list-style:none;margin:0;padding:0}
+.card ul li{font-size:13px;color:#64748b;padding:1.5px 0 1.5px 13px;position:relative}
+.card ul li::before{content:"›";position:absolute;left:1px;color:#b91c1c;font-weight:700}
+.card ul.chk li::before{content:"□";font-size:11px;top:1px}
+.card .accept{background:#f8fafc;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:13px;color:#334155;border:1px solid #e2e8f0}
+.card .accept .sec{margin-top:0}
+.fill{color:#cbd5e1;letter-spacing:1px}
+</style>
+<style>.tblwrap{overflow-x:auto}@media(max-width:760px){table{display:block;overflow-x:auto;max-width:100%}p,li,td{overflow-wrap:anywhere}}.cards.trio{grid-template-columns:repeat(3,1fr)}@media(max-width:900px){.cards.trio{grid-template-columns:1fr}}</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="topnav">
+  <a href="index.html">总览</a>
+  <a href="methodology.html">思路逻辑</a>
+  <a href="techstack.html">技术栈</a>
+  <a href="toolchain.html">工具链</a>
+  <a href="roadmap.html">成长路线</a>
+  <a href="ai-pentest.html">🤖 AI 渗透</a>
+  <a href="design.html" class="on">设计全景</a>
+</nav>
+
+<header>
+  <h1>探隐 TanYin · 设计全景</h1>
+  <div class="sub">纯 SKILL 形态的全类型 AI 渗透总控——AI 负责挖、纪律负责管、图谱负责推、知识负责长。图谱收敛＝测试完成 · 覆盖可度量 · 知识跨会话复利。</div>
+  <div class="tags">
+    <span>形态：纯 SKILL 套件 · 零代码 · 复制即装（任意编码 agent 可用）</span>
+    <span>状态：设计中 · 待融合（综合设计 v2 待用户拍板）</span>
+    <span>首发引擎：web-blackbox（SKILL 型）＋ vuln_agent（CLI 适配器）</span>
+  </div>
+</header>
+
+<div class="note"><b>本页是什么：</b>探隐设计材料的<b>速览导航层</b>——三张定位卡＋九张机制速览卡＋原版全景十页入口表＋设计文档链。机制描述均浓缩自两份消化抽取（26 域核心设计＋24 节原则与流程），<b>口径冲突时一律以文档链原文为准</b>（REQUIREMENTS.md 最高权威 → 设计定稿唯一权威源）；深读直接进原版全景对应页。</div>
+
+<h2>定位：是什么 · 现在在哪 · 怎么读</h2>
+<div class="cards trio">
+
+  <div class="card">
+    <div class="icon">🔭</div>
+    <h4>是什么：一句话愿景＋四支柱</h4>
+    <div class="sec">一句话愿景</div>
+    <p>把已实战验证的渗透方法论（CNPEN 82 漏洞）固化为纯 SKILL 套件，装进任意编码 agent 即可按纪律执行全类型渗透：图谱账本驱动测试演进（图谱收敛＝测试完成），引擎契约编排异构引擎，知识库跨会话复利。</p>
+    <div class="sec">四支柱：复杂性分别放在哪里</div>
+    <ul>
+      <li><b>Graph 图谱工程</b>——放在「状态」里：世界建模为显式节点与关系，推理变成可执行的图查询；状态外置、结构化、可检验</li>
+      <li><b>Loop 循环工程</b>——放在「过程」里：感知→决策→行动→落账闭环持续演进，计划是活的；终止条件可计算，配预算控制</li>
+      <li><b>Harness 脚手架工程</b>——放在「基础设施」里且尽量用现成的：不重写 agent 运行时，与宿主／引擎的耦合收敛为契约</li>
+      <li><b>Context 上下文工程</b>——放在「上下文生命周期」里：什么常驻、什么按需、何时压缩、何时重启——上下文是被设计出来的</li>
+    </ul>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/agent-philosophies.html">深读 · agent-philosophies 四支柱深析 →</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🚧</div>
+    <h4>现在在哪：导入 → 消化 → 融合裁决 → v2 拍板</h4>
+    <div class="sec">四步进度</div>
+    <ul>
+      <li>✅ <b>导入</b>——TanYin 设计文档链＋原版全景十页已入库 <code>docs/design/imported/TanYin/</code>（REQUIREMENTS／PRINCIPLES／architecture／设计定稿／引擎设计）</li>
+      <li>✅ <b>消化</b>——两份结构化 JSON 抽取完成：<code>.research/tanyin/</code> 26 域核心设计＋24 节原则与流程，十页全景全部消化</li>
+      <li>🔄 <b>融合裁决进行中</b>——TanYin 全机制 × 方案 B′ 12 条 must-haves 逐条对照裁决，融合分析文档正在撰写</li>
+      <li>⏳ <b>综合设计 v2 待用户拍板</b>——融合结论定稿后产出综合设计 v2，本页届时同步更新</li>
+    </ul>
+    <a class="go" href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">查看 · 融合分析文档（撰写中）→</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🧭</div>
+    <h4>怎么用它读：速览 → 深读 → 查权威</h4>
+    <div class="sec">三层读法</div>
+    <ul>
+      <li><b>① 本页速览</b>——三张定位卡定「是什么／在哪／怎么读」，九张机制卡定骨架，十页入口表当地图</li>
+      <li><b>② 按主题进原版全景深读</b>——每张机制卡带「深读」链接进 TanYin 原版对应页：因果链、S1-S41 执行流、字段级定义都在原版</li>
+      <li><b>③ 需要权威原文走文档链</b>——REQUIREMENTS.md（最高权威）→ 设计定稿（设计唯一权威源）→ 引擎设计 → architecture.md；PRINCIPLES.md 看因果链宪法</li>
+    </ul>
+    <a class="go" href="../docs/design/imported/TanYin/REQUIREMENTS.md">直达 · REQUIREMENTS.md 需求总纲 →</a>
+  </div>
+</div>
+
+<h2>核心机制速览：九张小卡，每卡深读原版对应页</h2>
+<p>探隐的核心机制咬合成链：授权定义边界 → 测绘建立结构 → 矩阵定义「全」→ 循环消灭未知 → 证据定义「真」→ 签发定义「交付」→ 沉淀定义「复利」。下列九卡是这条主因果链上的关键齿轮。</p>
+<div class="cards trio">
+
+  <div class="card">
+    <div class="icon">🏛️</div>
+    <h4>五层六边形架构</h4>
+    <p>L5 用户 → L4 总控编排 → L3 领域模型（session 目录＝单一事实源）→ L2 引擎契约 → L1 知识纪律。真实形态是以 L3 为领域核的六边形：L4 是应用编排、L2 是可替换适配器、L1 纪律／词表政策全层横切。</p>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/system-architecture.html">深读 · system-architecture 系统架构 →</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">📒</div>
+    <h4>12 表 TSV 账本＋事件溯源</h4>
+    <p>八张实体表（goals／scope／intents／facts／findings／assets／edges／approvals）＋ E-index／matrix／timeline／budget 共 12 个 TSV：全表带 schema_version，intents 与 matrix 事件溯源，timeline 链式哈希防篡改；总控单写者、ID 统一铸造。</p>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/domain-model.html">深读 · domain-model 领域模型 →</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🚪</div>
+    <h4>九个 Phase 门</h4>
+    <p>P0 授权门 → P1 测绘 → P2 规划 → P3 演进循环 → P4 汇总 → P5 报告 → P5.5 签发门 → P6.0 清理门 → P6 沉淀。每道门都有明确职责与硬门禁（如 scope.tsv 缺失禁止 P1、未签发禁止导出）——过不了门就不许往下走。</p>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/evolution-loop.html">深读 · evolution-loop 演进循环 →</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🎯</div>
+    <h4>五态覆盖矩阵与图谱收敛</h4>
+    <p>攻击面×漏洞类型矩阵（列从 VOCAB.md 钉死、基线冻结），每格五态：x 已确认／? 疑似／- 不适用／! 环境干扰／空 未检查——空格必须消灭；图谱收敛（收敛四条件）与 budget-exhausted 是仅有的两种合法终态。</p>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/e2e-flow.html">深读 · e2e-flow 端到端 →</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🔄</div>
+    <h4>知识飞轮四机制</h4>
+    <p>ingest 摄入（staging 审批门）→ distill 蒸馏（脱敏＋反向验证）→ freshness 保鲜（last_verified＋反证降级）→ promotion 晋升（复现≥2×跨目标×人工审批×无指纹泄漏）。先例绑定 (client, scope_asset, 授权窗口) 三元组，跨会话复利。</p>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/knowledge-flywheel.html">深读 · knowledge-flywheel 知识飞轮 →</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🔌</div>
+    <h4>引擎契约插拔</h4>
+    <p>engines/CONTRACT.md 以「数据形状＋执行语义」双轴定义契约，skill／cli／projector 三类引擎契约内即插即用——换引擎不改账本；烛龙接入时只是把 L2 适配器替换为烛龙 runner，L3 格式不变。</p>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/engine-contract.html">深读 · engine-contract 引擎契约 →</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🛡️</div>
+    <h4>四级纪律＋八问表＋{{vault:cred-N}}</h4>
+    <p>L1 授权门／L2 纪律规则／L3 分级审批／L4 审计留痕四级体系；P0 八问问卷（目标／范围与排除／RoE／时间窗／紧急联系人／测试账号与数据分级／备份状态…）定结构化授权；凭据只存加密 vault，账本与报告一律以 <code>{{vault:cred-N}}</code> 占位符引用。</p>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/security-discipline.html">深读 · security-discipline 安全纪律 →</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">♻️</div>
+    <h4>上下文受管重启</h4>
+    <p>三层策略共用同一恢复协议（读 state.md＋账本摘要＋常驻集重载）：① 压缩容忍（基线，每轮从盘上重建事实基准）② 受管重启（优选，超 0.75 阈值或每 N 轮主动换会话）③ 断电恢复——「节奏和状态」本来就在盘上，不在会话里。</p>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/execution-flow.html">深读 · execution-flow 执行流 S1-S41 →</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🧪</div>
+    <h4>黄金夹具验收</h4>
+    <p>确定性层：固定 session 目录样本做夹具，账本命令输出经规范化（剥时间戳／ID 重映射／行排序稳定化）后字节级比对；行为层再加结构断言＋纪律注入对抗测试＋负向用例——账本命令是全系统地基，没有夹具的改动＝盲改。</p>
+    <a class="go" href="../docs/design/imported/TanYin/panorama/index.html">深读 · index 总览（验证与交付）→</a>
+  </div>
+</div>
+
+<h2>TanYin 原版全景：十页入口表</h2>
+<p>原版全景共十页（index＋九视图），位于 <code>docs/design/imported/TanYin/panorama/</code>，内容与 PRINCIPLES.md／设计定稿同源。每页一句话如下，按主题直达：</p>
+<div class="tblwrap">
+<table>
+  <tr><th>页面</th><th>一句话</th></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/index.html">index · 总览</a></b></td><td>项目演进唯一入口：蓝图规范、四支柱导览、九视图索引、五专家审计决议摘要与进度板、验证与交付域表</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/system-architecture.html">system-architecture · 系统架构</a></b></td><td>五层架构的六边形表述（L5→L1）：每层构成／机制／原理逻辑／设计思想＋跨层机制</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/domain-model.html">domain-model · 领域模型</a></b></td><td>账本表字段级定义、边词汇及来源、Evidence 契约、两维评级、编码规范与状态机、session 目录全景</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/engine-contract.html">engine-contract · 引擎契约</a></b></td><td>契约双轴、引擎矩阵、session-viz 可视化、跨引擎知识流动、工具调用分层与烛龙对齐</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/e2e-flow.html">e2e-flow · 端到端</a></b></td><td>PRINCIPLES 的 HTML 同内容版：四个根本问题、因果总图、概念词典、E2E 推演、12 条关键因果链</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/execution-flow.html">execution-flow · 执行流 S1-S41</a></b></td><td>运行时执行视图：session 目录生长四快照、S1-S41 全 41 步逐步推演（含命令与 TSV 行）、执行通道 8 站、受管重启时序</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/security-discipline.html">security-discipline · 安全纪律</a></b></td><td>四级纪律、命令双维度安全上下文、deny-list、注入防护四层、速率与熔断、先例机制、授权门八问表、诚实边界</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/knowledge-flywheel.html">knowledge-flywheel · 知识飞轮</a></b></td><td>知识库结构表、四条复利机制、飞轮数据流、召回率四层度量、Loop 演进提升路径</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/evolution-loop.html">evolution-loop · 演进循环</a></b></td><td>P3 图谱演进循环⓪-⑥步、Phase 门 P0-P6 表、五态标记、矩阵基线冻结、断点续传→受管重启</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/panorama/agent-philosophies.html">agent-philosophies · agent 哲学</a></b></td><td>Graph／Loop／Harness／Context 四支柱六段深析＋咬合矩阵——「agent 的复杂性应该放在哪里」的四种立场</td></tr>
+</table>
+</div>
+
+<h2>设计文档链：权威从高到低</h2>
+<p>冲突裁决顺序：<b>REQUIREMENTS.md（需求总纲，最高权威）→ 设计定稿（设计唯一权威源）→ 引擎设计（spec §5.2 的引擎级展开，冲突以 spec 为准）→ architecture.md（汇报版）</b>；PRINCIPLES.md 是因果链宪法，panorama 十页是它的视图化。全部位于 <code>docs/design/imported/TanYin/</code>：</p>
+<div class="tblwrap">
+<table>
+  <tr><th>文档</th><th>角色</th></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/REQUIREMENTS.md">REQUIREMENTS.md</a></b></td><td><span class="lv">需求总纲 · 最高权威</span>——用户诉求与验收标准的最终裁决源，任何冲突以它为准</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/PRINCIPLES.md">PRINCIPLES.md</a></b></td><td><span class="core">488 行设计宪法</span>——四个根本问题→四条铁律→因果总图；概念词典人话版、E2E 全流程推演、12 条关键因果链详解、自检三问</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/architecture.md">architecture.md</a></b></td><td><span class="core">架构原理与决策论证（汇报版）</span>——四支柱工程哲学、七个关键决策、开源资产谱系</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/doc/2026-09-17-tanyin-design.md">doc/2026-09-17-tanyin-design.md</a></b></td><td><span class="adv">设计定稿 · 设计唯一权威源</span>——26 域设计全部落入（五专家审计 A1-A20 阻断级＋B1-B17 简化已全部采纳）</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/doc/2026-09-18-web-blackbox-engine.md">doc/2026-09-18-web-blackbox-engine.md</a></b></td><td><span class="adv">web-blackbox 首发引擎详细设计</span>——引擎级展开：四段流程骨架、渐进加载、提交文件协议、验收</td></tr>
+  <tr><td><b><a href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">2026-09-20-tanyin-bprime-fusion.md</a></b></td><td><span class="lv">融合分析（正在撰写）</span>——TanYin 全机制 × 方案 B′ 12 条 must-haves 逐条裁决 → 综合设计 v2</td></tr>
+</table>
+</div>
+
+<div class="note"><b>与手册 <a href="../docs/learning/html/VOL-09A-ai-pentest-tracks.html">VOL-09</a>B（十大架构模式）的对照：</b>探隐的机制是 <a href="../docs/learning/html/VOL-09B-ai-pentest-patterns.html#vol-09b-ai-渗透-十大架构模式深度剖析">VOL-09B《AI 渗透·十大架构模式深度剖析》</a>里那十个模式的一次完整工程化实践——Graph 图谱工程是知识图谱／RAG 系模式的落地，Loop 循环工程对应 ReAct／plan-execute 系，Harness 脚手架工程对应工具编排与运行时复用，Context 上下文工程对应上下文管理系；图谱账本进一步把「模式」变成了可验收的数据结构（黄金夹具字节级比对）。读完模式再读探隐，能看到「模式 → 机制 → 账本 → 夹具」的完整落地路径。</div>
+
+<footer>红队成长全景 · 持续更新</footer>
+</div>
+</body>
+</html>
