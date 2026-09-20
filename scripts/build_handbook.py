@@ -22,13 +22,13 @@ HANDBOOK = {
     'title_suffix': '· 红队学习手册',
     'sidebar_homes': [
         ('../../../panorama/index.html', '🗺️ 全景图总览'),
-        ('../../../panorama/design.html', '🧩 设计全景'),
+        ('../../../panorama/design.html', '🧩 设计'),
         ('index.html', '📚 手册首页'),
     ],
     'topnav': [
         ('../../../panorama/index.html', '🗺️ 总览'),
         ('index.html', '📚 手册'),
-        ('../../../panorama/design.html', '🧩 设计全景'),
+        ('../../../panorama/design.html', '🧩 设计'),
     ],
     'station_title': '📚 红队学习手册',
     'station_sub': '从源码审计到一人红队 · 每知识点【原理】【操作】【验证】【陷阱】四段 · 靶场练习全部核实',
@@ -61,14 +61,14 @@ DESIGN = {
     'title_suffix': '· 探隐设计文档',
     'sidebar_homes': [
         ('../../../panorama/index.html', '🗺️ 全景图总览'),
-        ('../../../panorama/design.html', '🧩 设计全景'),
+        ('../../../panorama/design.html', '🧩 设计'),
         ('../../learning/html/index.html', '📚 手册首页'),
         ('index.html', '📐 设计文档首页'),
     ],
     'topnav': [
         ('../../../panorama/index.html', '🗺️ 总览'),
         ('../../learning/html/index.html', '📚 手册'),
-        ('../../../panorama/design.html', '🧩 设计全景'),
+        ('../../../panorama/design.html', '🧩 设计'),
     ],
     'station_title': '📐 探隐设计文档站',
     'station_sub': 'TanYin v1 原稿 → 融合裁决 → v2 定稿 · 当前唯一权威：2026-09-21 v2 定稿',
