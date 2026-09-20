@@ -71,7 +71,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#8-goad-靶场分模块练习路径">8. GOAD 靶场分模块练习路径</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="VOL-02-web-app-part2.html">← VOL-02-web-app-part2</a><a href="VOL-04-source-assist.html">VOL-04-source-assist →</a><span class="crumb">› VOL-03 · 内网渗透：从打点到域控</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><span class="crumb">› VOL-03 · 内网渗透：从打点到域控</span></nav>
   <article class="doc">
   <h1 id="vol-03-内网渗透-从打点到域控">VOL-03 · 内网渗透：从打点到域控</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-03-intranet</div>
   
@@ -256,7 +256,7 @@ dir \\winterfell\c$
 <ul><li>A 打点：castelblack 的 IIS 允许 asp 上传 → webshell（§1、§2：Defender 关，正好练 frp 与信息收集）</li><li>B 提权：IIS 应用池 SeImpersonate → PrintSpoofer → SYSTEM → 抓 lsass（§3、§4）</li><li>C 数据库：castelblack MSSQL，arya.stark EXECUTE AS USER 模拟 → dbo → xp_cmdshell；MSSQL 链路（link）由 jon.snow 通向 braavos 的 sa（§5.1 思想）</li><li>D 凭据攻击：brandon.stark AS-REP；rickon.stark 口令喷洒 WinterYYYY；hodor 弱口令；jon.snow Kerberoast（§5.4）</li><li>E 中继与委派：GOAD 内置机器人 eddard.stark 每 5 分钟发 LLMNR 请求 → Responder/中继；sansa.stark 非约束委派；samwell.tarly 的 GPO 滥用（STARKWALLPAPER）（§6）</li><li>F 拿 DC：north 域 DA 后对 winterfell DCSync → 黄金票据 → 跨信任打 sevenkingdoms（tywin→jaime→joffrey 的 ACE 链）→ cersei.lannister（DA）→ kingslanding（§5.5、§6）</li></ul>
 <p>资源紧张：GOAD-Light（3 VM）替代完整版；只练单机打点用 MINILAB；进阶盲打用 NHA/DRACARYS（官方不提供拓扑）。 <span class="bdg bdg-v">验证</span>结业标准：能独立画出自己的完整路径图（打点机→凭据→横向→DA→DC），并在每个节点标注对应的 Windows 事件 ID。 <span class="bdg bdg-t">陷阱</span>① GOAD 官方警告"极其易受攻击"——只准跑在隔离虚拟网络；② Windows 评估版 180 天到期需重建；③ 场景随版本演进，动手前以官方文档当期列表为准。</p>
 <p>（本卷完。打点入口见 VOL-01-web-app-part1 / VOL-02-web-app-part2；白盒联动见 VOL-04-source-assist；客户端情报见 VOL-05-client-package；方法论与报告交付见 VOL-07-08-methodology-reporting。）</p>
-  <div class="pn"><a href="VOL-02-web-app-part2.html"><span>← 上一篇</span>VOL-02-web-app-part2</a><a href="VOL-04-source-assist.html"><span>下一篇 →</span>VOL-04-source-assist</a></div>
+  <div class="pn"><a href="VOL-02-web-app-part2.html"><span>← 上一篇</span>VOL-02 Web 应用渗透（下）：越权、逻辑漏洞与利用构造</a><a href="VOL-04-source-assist.html"><span>下一篇 →</span>VOL-04 源码审计→黑盒联动：审计员优势的降维打法</a></div>
   </article>
   <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
 </div></div>

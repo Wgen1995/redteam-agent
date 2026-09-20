@@ -65,7 +65,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#6-前-30-分钟速查清单">6. 前 30 分钟速查清单</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="VOL-04-source-assist.html">← VOL-04-source-assist</a><a href="VOL-06-toolchain.html">VOL-06-toolchain →</a><span class="crumb">› VOL-05 安装包与客户端分析（够用深度）</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><span class="crumb">› VOL-05 安装包与客户端分析（够用深度）</span></nav>
   <article class="doc">
   <h1 id="vol-05-安装包与客户端分析-够用深度">VOL-05 安装包与客户端分析（够用深度）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-05-client-package</div>
   
@@ -172,7 +172,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <p>拿到任意 EXE/APK 的动作序列：</p>
 <ol><li><code>file</code>/DIE 识别：架构、壳、框架（.NET/Electron/加固）——决定走哪条支线；</li><li>解包：7z → innoextract / upx -d / unshield / msiexec /a；APK：apktool d + jadx；</li><li>双编码 strings（<code>-n 8</code> 与 <code>-e l</code>）+ apkleaks/gitleaks 一把梭；</li><li>分桶 grep：URL / 内网 IP / 端口 / 凭据关键词 / 云 key 特征；</li><li>反编译只啃加密类与网络类（dnSpy / jadx-gui）；</li><li>产出三件套：资产补充清单、疑似凭据表（含位置证据）、协议疑点列表；</li><li>按 §5 写卡，按 VOL-02-Web / VOL-06-内网 卷衔接下一步打点。</li></ol>
 <p>（本卷完。交叉引用卷号以系列最终目录为准。）</p>
-  <div class="pn"><a href="VOL-04-source-assist.html"><span>← 上一篇</span>VOL-04-source-assist</a><a href="VOL-06-toolchain.html"><span>下一篇 →</span>VOL-06-toolchain</a></div>
+  <div class="pn"><a href="VOL-04-source-assist.html"><span>← 上一篇</span>VOL-04 源码审计→黑盒联动：审计员优势的降维打法</a><a href="VOL-06-toolchain.html"><span>下一篇 →</span>VOL-06 工具链详解手册</a></div>
   </article>
   <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
 </div></div>

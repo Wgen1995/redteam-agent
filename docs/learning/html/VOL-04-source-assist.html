@@ -59,7 +59,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#4-联动工作流-白盒假设-黑盒验证-证据留存闭环">4. 联动工作流：白盒假设→黑盒验证→证据留存闭环</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="VOL-03-intranet.html">← VOL-03-intranet</a><a href="VOL-05-client-package.html">VOL-05-client-package →</a><span class="crumb">› VOL-04 源码审计→黑盒联动：审计员优势的降维打法</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><span class="crumb">› VOL-04 源码审计→黑盒联动：审计员优势的降维打法</span></nav>
   <article class="doc">
   <h1 id="vol-04-源码审计-黑盒联动-审计员优势的降维打法">VOL-04 源码审计→黑盒联动：审计员优势的降维打法</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-04-source-assist</div>
   
@@ -212,7 +212,7 @@ strings -n 8 agent.bin | grep -iE "key|pass|token|jdbc" | sort -u | head -20</co
 <p><b><span class="bdg bdg-x">练习</span></b> HTB 机器 Bizness（Easy）：完整走一遍闭环——指纹识别 OFBiz → 检索其未授权 RCE 公开通告（CVE-2023-51467）→ 按 nuclei 模板与公开分析构造假设卡 → 黑盒验证 → findings 模板归档（user/root flag 即最终证据）。进阶：把同一闭环套到 GOAD（Game of Active Directory，https://github.com/Orange-Cyberdefense/GOAD）内网场景，为后续内网卷做衔接。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <blockquote>下一卷衔接：二进制与硬编码凭据提取（见 VOL-05-binary-reverse）。本卷所有四段结构中的命令若与官方文档冲突，以官方文档为准。</blockquote>
-  <div class="pn"><a href="VOL-03-intranet.html"><span>← 上一篇</span>VOL-03-intranet</a><a href="VOL-05-client-package.html"><span>下一篇 →</span>VOL-05-client-package</a></div>
+  <div class="pn"><a href="VOL-03-intranet.html"><span>← 上一篇</span>VOL-03 · 内网渗透：从打点到域控</a><a href="VOL-05-client-package.html"><span>下一篇 →</span>VOL-05 安装包与客户端分析（够用深度）</a></div>
   </article>
   <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
 </div></div>

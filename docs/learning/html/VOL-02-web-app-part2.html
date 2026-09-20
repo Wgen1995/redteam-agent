@@ -69,7 +69,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l3" href="#5-2-漏洞卡片规范-finding-卡">5.2 漏洞卡片规范（finding 卡）</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="VOL-01-web-app-part1.html">← VOL-01-web-app-part1</a><a href="VOL-03-intranet.html">VOL-03-intranet →</a><span class="crumb">› VOL-02 Web 应用渗透（下）：越权、逻辑漏洞与利用构造</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><span class="crumb">› VOL-02 Web 应用渗透（下）：越权、逻辑漏洞与利用构造</span></nav>
   <article class="doc">
   <h1 id="vol-02-web-应用渗透-下-越权-逻辑漏洞与利用构造">VOL-02 Web 应用渗透（下）：越权、逻辑漏洞与利用构造</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-02-web-app-part2</div>
   
@@ -205,7 +205,7 @@ while :; do curl -s -d 'cmd=echo md5(1);' http://t/uploads/race.php; done</code>
 <p><b><span class="bdg bdg-v">验证</span></b> 卡片质量自检=同事盲测：只给卡不给口头说明，15 分钟复现成功且定级一致。</p>
 <p><b><span class="bdg bdg-t">陷阱</span></b> ①步骤写"用 Burp 改包"这种半截话，必须到字段与值；②截图含真实用户数据=二次泄露，脱敏后入库；③POC 与 EXP 混写在同一步，复现者会直接跳到利用；④修复建议写"加强鉴权"等于没写——给可执行改法，这是你源码审计背景最能拉开差距的地方。</p>
 <p><b><span class="bdg bdg-x">练习</span></b>（第 5 节）：从第 4 节练习挑 3 个环境，各产出一张合规 finding 卡+一个参数化 EXP（默认无害模式），请同事盲测后按 VOL-08-报告交付 的骨架组装一页样例报告。</p>
-  <div class="pn"><a href="VOL-01-web-app-part1.html"><span>← 上一篇</span>VOL-01-web-app-part1</a><a href="VOL-03-intranet.html"><span>下一篇 →</span>VOL-03-intranet</a></div>
+  <div class="pn"><a href="VOL-01-web-app-part1.html"><span>← 上一篇</span>VOL-01 · Web 应用渗透（上）：侦察、指纹与注入类漏洞</a><a href="VOL-03-intranet.html"><span>下一篇 →</span>VOL-03 · 内网渗透：从打点到域控</a></div>
   </article>
   <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
 </div></div>

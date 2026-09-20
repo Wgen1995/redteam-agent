@@ -69,7 +69,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#6-工具组合战术矩阵">6. 工具组合战术矩阵</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="VOL-05-client-package.html">← VOL-05-client-package</a><a href="VOL-07-08-methodology-reporting.html">VOL-07-08-methodology-reporting →</a><span class="crumb">› VOL-06 工具链详解手册</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><span class="crumb">› VOL-06 工具链详解手册</span></nav>
   <article class="doc">
   <h1 id="vol-06-工具链详解手册">VOL-06 工具链详解手册</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-06-toolchain</div>
   
@@ -349,7 +349,7 @@ print(r.text[:200])   # 证据输出，随后截图入笔记</code></pre>
 <h2 id="6-工具组合战术矩阵">6. 工具组合战术矩阵</h2>
 <table><thead><tr><th>场景</th><th>工具链</th><th>关键输出物</th></tr></thead><tbody><tr><td>外网资产测绘</td><td>subfinder/OneForAll → httpx 存活指纹 → nmap -sV（真实 IP）</td><td>存活资产表（url/title/技术栈/IP/端口）</td></tr><tr><td>Web 打点</td><td>ffuf 目录+参数 → Burp Repeater 手工验证 → sqlmap -r 提数</td><td>finding 卡 + 请求响应证据对</td></tr><tr><td>已知漏洞批量验证</td><td>httpx → nuclei（高危过滤）→ 命中项手工复核</td><td>高危漏洞清单（附模板依据）</td></tr><tr><td>App/客户端攻击面</td><td>VOL-05 逆向提取服务端 → mitmproxy 抓包</td><td>API 接口清单 + 通信结构</td></tr><tr><td>内网首探</td><td>fscan -ao 摸底 → fscan -nobr 定向 → nmap 精扫</td><td>去噪后的内网服务清单</td></tr><tr><td>横向与跳板</td><td>msf autoroute + socks_proxy 或 frp socks5 → proxychains</td><td>可达性验证记录 + 隧道拓扑</td></tr><tr><td>证据整理</td><td>CyberChef/jq 清洗 → 笔记卡+截图规范</td><td>报告附录证据包（见 VOL-07-08）</td></tr></tbody></table>
 <blockquote>一人红队心法：每条链路的最后一站永远是"证据落盘"。工具只是把发现变成可交付输出的管道——发现不了价值的不是工具差，是链路没接到交付物上。</blockquote>
-  <div class="pn"><a href="VOL-05-client-package.html"><span>← 上一篇</span>VOL-05-client-package</a><a href="VOL-07-08-methodology-reporting.html"><span>下一篇 →</span>VOL-07-08-methodology-reporting</a></div>
+  <div class="pn"><a href="VOL-05-client-package.html"><span>← 上一篇</span>VOL-05 安装包与客户端分析（够用深度）</a><a href="VOL-07-08-methodology-reporting.html"><span>下一篇 →</span>VOL-07-08 方法论·报告交付·成长路线（合并卷）</a></div>
   </article>
   <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
 </div></div>

@@ -44,7 +44,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <div class="layout">
 <aside class="sidebar">
   <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计全景</a><a class="home" href="../../learning/html/index.html">📚 手册首页</a><a class="home" href="index.html">📐 设计文档首页</a>
-  <h3>本卷目录</h3>
+  <h3>本文目录</h3>
   <nav><a class="l2" href="#0-决策记录-adr">0 决策记录（ADR）</a>
 <a class="l3" href="#0-1-本次用户拍板四条-最高约束-全文不可违背">0.1 本次用户拍板四条（最高约束，全文不可违背）</a>
 <a class="l3" href="#0-2-融合十大裁决一览表-全部生效-4-10-为对-tanyin-的推翻项">0.2 融合十大裁决一览表（全部生效；#4/#10 为对 TanYin 的推翻项）</a>
@@ -109,7 +109,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#12-残余风险登记册-融合七项-v2-新增五项-逐项缓解与残余">12 残余风险登记册（融合七项 + v2 新增五项；逐项缓解与残余）</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="2026-09-20-tanyin-bprime-fusion.html">2026-09-20-tanyin-bprime-fusion →</a><span class="crumb">› 探隐 TanYin v2 · 综合设计定稿</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><span class="crumb">› 探隐 TanYin v2 · 综合设计定稿</span></nav>
   <article class="doc">
   <h1 id="探隐-tanyin-v2-综合设计定稿">探隐 TanYin v2 · 综合设计定稿</h1><div class="meta">探隐设计文档站 · 2026-09-21-tanyin-v2-design</div>
   <div class="guide">🧭 <b>导读</b>：这一份是<b>唯一权威</b>：探隐 v2 综合设计定稿。TanYin v1 与方案 B′ 都已归档，冲突处以它为准。先读 §0 决策记录（四条拍板+十大裁决），再按 §4 账本 → §5 九门 → §8 纪律执法的顺序深入；§11 批次表是跟踪实施的进度尺。</div>
@@ -454,7 +454,7 @@ back_edges:
 <table><thead><tr><th>#</th><th>风险</th><th>等级</th><th>缓解</th><th>残余</th></tr></thead><tbody><tr><td>R1</td><td>弱模型对 37 命令协议遵循率未验证（模型间差 20+pt，T.<code>headline.best_model</code>）</td><td>高</td><td>机制分档（§8.8）+evals 开关矩阵+负向用例（未给出命令的步骤终止报告可检测）；<b>首发限定模型档位清单</b></td><td>首发清单外模型组合未背书</td></tr><tr><td>R2</td><td>账本命令箱 PS 5.1→python3 迁移引入实现 bug</td><td>中</td><td>黄金夹具字节级回归先行（批次 1 验收）；夹具覆盖度即语义漂移防线</td><td>夹具未覆盖分支仍可能漂移</td></tr><tr><td>R3</td><td>四层执法分档致安全水位因宿主而异</td><td>中</td><td>报告守门声明披露档位事实（铁律 5）；canary 按档位进 evals；Tier 0+1 恒在</td><td>egress/hook 缺席档的本机残余暴露面须明示（无法消除）</td></tr><tr><td>R4</td><td>13 表+九门+37 命令首版体量（数周级）</td><td>中</td><td>批次 0 契约冻结+批次切分；身份矩阵/⑤路等可档位化后置</td><td>首个可用版本时点后移已由批次排序接受</td></tr><tr><td>R5</td><td>evals 靶场与真实目标分布偏差（定性判定局限）</td><td>中</td><td>种 20 漏洞 ground truth+TSecBench 六域外部对齐双轨</td><td>召回声明仍属「授权环境口径」</td></tr><tr><td>R6</td><td>多交战并行与 graph.ndjson 锁协议（探知项）</td><td>低</td><td>首发单 session 串行+目录级隔离；行级合并预留</td><td>多开需求出现前不设计</td></tr><tr><td>R7</td><td>烛龙接入语义漂移</td><td>低</td><td>一致性夹具 C6 列入批次 7 验收</td><td>接入时点未定（批次 7 可选）</td></tr><tr><td><b>R8（新）</b></td><td>五宿主首批验证风险：walcode/CodeBuddy 无环境实测，hook 挂载点/常驻集注入/子代理并发行为未知</td><td>中</td><td>§10.3：静态验证六项（CI 宿主无关）+用户手测脚本回传机制；该两宿主默认保守披露 Tier 1；DSH 侧全链路实测先行</td><td>首个实测回传前的兼容性声明带「待实测」标记</td></tr><tr><td><b>R9（新）</b></td><td>egress 默认开带来安装摩擦（代理组件依赖/网络受限环境），用户倾向跳过</td><td>中</td><td>安装器自动探测：可承载→Tier 3；不可承载→显式降档确认+披露；DSH 之外宿主降档不阻塞安装但入守门声明</td><td>降档交战的暴露面教育成本长期存在</td></tr><tr><td><b>R10（新）</b></td><td>canary 误报（诱饵域名被本机其他进程/CDN 解析触碰）</td><td>低</td><td>canary 判定绑定「本交战进程凭证+时间窗」非裸 DNS 查询；误报进 evals 基线校准</td><td>极端共享环境仍有告警噪音</td></tr><tr><td><b>R11（新）</b></td><td>报告确定性重建的模板法务审查未做（免责条款/等保占位段合规表述）</td><td>低</td><td>批次 6 出口前人工法务过审一次；模板版本化留痕</td><td>各客户法务差异需交付时二次确认</td></tr><tr><td><b>R12（新）</b></td><td>身份矩阵差分对写型接口的误触（角色重放产生数据写入）</td><td>中</td><td>差分默认仅对幂等读接口；写接口差分须 account-grant permitted_actions 显式覆盖+L3 逐条审批（§6.6 护栏）</td><td>客户未声明写授权时认证后写漏洞只能报告为 C3 线索</td></tr></tbody></table>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <p><b>自检对照</b>：拍板四条→§0.1/§2/§3.2/§8.5/§10/§11；13 表字段齐全→§4（含 CB-1 口径裁定）；九门×phases.yaml 语义完整→§5.2；五宿主矩阵含验证方案→§10（含盲区 §10.3）；批次 0 接口清单完整→§11 批次 0 行（十六项）。本文档为唯一权威；后续修订走 schema_version+迁移命令+演进记录（docs/panorama 同步刷新）。</p>
-  <div class="pn"><span></span><a href="2026-09-20-tanyin-bprime-fusion.html"><span>下一篇 →</span>2026-09-20-tanyin-bprime-fusion</a></div>
+  <div class="pn"><span></span><a href="2026-09-20-tanyin-bprime-fusion.html"><span>下一篇 →</span>TanYin 探隐 × 方案 B′ 融合裁决分析</a></div>
   </article>
   <footer>红队成长全景 · 设计文档站由 scripts/build_handbook.py 构建</footer>
 </div></div>

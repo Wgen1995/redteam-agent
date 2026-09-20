@@ -34,6 +34,7 @@ HANDBOOK = {
     'station_sub': '从源码审计到一人红队 · 每知识点【原理】【操作】【验证】【陷阱】四段 · 靶场练习全部核实',
     'station_search': '搜索全部章节标题（如：越权 / Kerberos / nuclei / 反序列化）…',
     'station_footer': '红队成长全景 · 手册站由 scripts/build_handbook.py 构建 · MD 源在 docs/learning/',
+    'toc_label': '本卷目录',
 }
 
 DESIGN_DOCS = [
@@ -73,6 +74,7 @@ DESIGN = {
     'station_sub': 'TanYin v1 原稿 → 融合裁决 → v2 定稿 · 当前唯一权威：2026-09-21 v2 定稿',
     'station_search': '搜索设计章节标题（如：creds / 九门 / egress / 黄金夹具 / 批次）…',
     'station_footer': '红队成长全景 · 设计文档站 · v1 原稿保真收录 · v2 为唯一权威',
+    'toc_label': '本文目录',
     'groups': [
         ('g1', '当前权威', 'v2 定稿与融合裁决——实施期间以这两份为准，冲突处以 v2 为准。'),
         ('g2', 'TanYin v1 原稿（参考）', '另一台电脑的原始设计，保真收录：理解出发点与机制基因用，口径矛盾以 v2 消解为准。'),
@@ -315,7 +317,7 @@ def render(site, out_name, title, blocks, headings, prev, nxt, guide):
         'meta': site['meta_line'] % out_name,
         'guide': ('<div class="guide">🧭 <b>导读</b>：%s</div>' % guide) if guide else '',
         'body': '\n'.join(body), 'pn0': pn[0], 'pn1': pn[1],
-        'footer': site['footer'], 'js': JS,
+        'footer': site['footer'], 'js': JS, 'toc_label': site.get('toc_label', '本卷目录'),
     }
 
 TPL = '''<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -323,11 +325,11 @@ TPL = '''<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta nam
 <div class="layout">
 <aside class="sidebar">
   %(homes)s
-  <h3>本卷目录</h3>
+  <h3>%(toc_label)s</h3>
   <nav>%(toc)s</nav>
 </aside>
 <div class="main">
-  <nav class="topnav">%(topnav)s%(prev)s%(next)s<span class="crumb">› %(crumb)s</span></nav>
+  <nav class="topnav">%(topnav)s<span class="crumb">› %(crumb)s</span></nav>
   <article class="doc">
   <h1 id="%(h1_id)s">%(h1)s</h1><div class="meta">%(meta)s</div>
   %(guide)s
@@ -402,11 +404,14 @@ def build_handbook():
     vols = sorted(f for f in os.listdir(LEARN) if f.endswith('.md'))
     anchors = {}
     meta = []
+    vol_titles = {}
+    for f in vols:
+        vol_titles[f] = open(os.path.join(LEARN, f), encoding='utf-8').readline().lstrip('#').strip() or f[:-3]
     for idx, f in enumerate(vols):
         path = os.path.join(LEARN, f)
         title, blocks, headings = parse_md(path)
-        prev = ((vols[idx-1][:-3] + '.html'), vols[idx-1][:-3]) if idx > 0 else None
-        nxt = ((vols[idx+1][:-3] + '.html'), vols[idx+1][:-3]) if idx+1 < len(vols) else None
+        prev = ((vols[idx-1][:-3] + '.html'), vol_titles[vols[idx-1]]) if idx > 0 else None
+        nxt = ((vols[idx+1][:-3] + '.html'), vol_titles[vols[idx+1]]) if idx+1 < len(vols) else None
         html = render(HANDBOOK, f[:-3], title, blocks, headings, prev, nxt, None)
         open(os.path.join(OUT, f[:-3] + '.html'), 'w', encoding='utf-8').write(html)
         anchors[f[:-3] + '.html'] = headings
@@ -447,12 +452,15 @@ def build_design():
     docs = DESIGN_DOCS
     anchors = {}
     titles = {}
+    for out_name0, src0, _g0, _gd0 in docs:
+        first = open(os.path.join(BASE, src0), encoding='utf-8').readline().lstrip('#').strip()
+        titles[out_name0] = first or out_name0
     for idx, (out_name, src, grp, guide) in enumerate(docs):
         path = os.path.join(BASE, src)
         title, blocks, headings = parse_md(path)
         titles[out_name] = title
         prev = ((docs[idx-1][0] + '.html'), titles[docs[idx-1][0]]) if idx > 0 else None
-        nxt = ((docs[idx+1][0] + '.html'), docs[idx+1][0]) if idx+1 < len(docs) else None
+        nxt = ((docs[idx+1][0] + '.html'), titles.get(docs[idx+1][0], docs[idx+1][0])) if idx+1 < len(docs) else None
         html = render(DESIGN, out_name, title, blocks, headings, prev, nxt, guide)
         open(os.path.join(DOUT, out_name + '.html'), 'w', encoding='utf-8').write(html)
         anchors[out_name + '.html'] = headings

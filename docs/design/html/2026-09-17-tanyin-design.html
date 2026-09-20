@@ -44,7 +44,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <div class="layout">
 <aside class="sidebar">
   <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计全景</a><a class="home" href="../../learning/html/index.html">📚 手册首页</a><a class="home" href="index.html">📐 设计文档首页</a>
-  <h3>本卷目录</h3>
+  <h3>本文目录</h3>
   <nav><a class="l2" href="#0-一句话定位">0. 一句话定位</a>
 <a class="l2" href="#1-设计宪法-四条铁律">1. 设计宪法（四条铁律）</a>
 <a class="l2" href="#2-五层架构-六边形表述">2. 五层架构（六边形表述）</a>
@@ -90,7 +90,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l3" href="#a-4-校验命令-p4-门禁">A.4 校验命令（P4 门禁）</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="architecture.html">← 探隐 TanYin — 架构原理与决策论证（汇报版）</a><a href="2026-09-18-web-blackbox-engine.html">2026-09-18-web-blackbox-engine →</a><span class="crumb">› 探隐 TanYin — 全类型 AI 渗透测试总控 · 设计定稿</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><span class="crumb">› 探隐 TanYin — 全类型 AI 渗透测试总控 · 设计定稿</span></nav>
   <article class="doc">
   <h1 id="探隐-tanyin-全类型-ai-渗透测试总控-设计定稿">探隐 TanYin — 全类型 AI 渗透测试总控 · 设计定稿</h1><div class="meta">探隐设计文档站 · 2026-09-17-tanyin-design</div>
   <div class="guide">🧭 <b>导读</b>：v1 设计定稿全文（另一台电脑原作），v2 的骨架来源：12 表账本、九个 Phase 门、引擎契约的最初完整定义。阅读坐标——v2 修订集中在形态（薄 CLI）、执法（四层）与账本（13 表）。</div>
@@ -260,7 +260,7 @@ session/&lt;goal-id&gt;/        # 单一事实源（每次测试一个）
 <table><thead><tr><th>命令</th><th>输出</th></tr></thead><tbody><tr><td>ledger-unconsumed-facts</td><td>无 derived_from 出边的 fact：计数+ID 列表+每条一行摘要</td></tr><tr><td>ledger-pending-intents</td><td>pending/active intent：计数+ID+状态+引擎</td></tr><tr><td>ledger-matrix-gaps</td><td>空格清单：计数+格坐标（attack_surface×vuln_class）</td></tr><tr><td>ledger-converge-check</td><td>四条件逐项判定 + 总判定（converged / budget-exhausted / running）</td></tr><tr><td>ledger-next-id</td><td>表前缀 → 下一个 ID（原子）</td></tr><tr><td>ledger-intent-status</td><td>intent_id → 最新状态行（事件溯源取最新）</td></tr><tr><td>ledger-matrix-get</td><td>格坐标 → 最新五态+理由</td></tr><tr><td>ledger-scope-check</td><td>资产值 → in_scope/out_of_scope（CIDR/后缀机械匹配，非 LLM）</td></tr><tr><td>ledger-budget-check</td><td>三元组消耗进度+剩余（数据源 budget.tsv）</td></tr><tr><td>ledger-cleanup-checklist</td><td>从 timeline 提取全部写操作 → cleanup checklist（P6.0 输入）</td></tr></tbody></table>
 <h3 id="a-4-校验命令-p4-门禁">A.4 校验命令（P4 门禁）</h3>
 <table><thead><tr><th>命令</th><th>语义</th></tr></thead><tbody><tr><td>ledger-validate</td><td>全表格式/转义/枚举/引用闭合/dedup_key 唯一——失败阻止报告</td></tr><tr><td>ledger-verify-chain</td><td>timeline 哈希链完整性（断链=篡改告警）</td></tr><tr><td>ledger-hash-recheck</td><td>E-index 全量 content_hash 命令重算比对</td></tr><tr><td>ledger-matrix-audit</td><td>"-"/"!" 格清单+fact 密度对照（异常检测输入）</td></tr></tbody></table>
-  <div class="pn"><a href="architecture.html"><span>← 上一篇</span>探隐 TanYin — 架构原理与决策论证（汇报版）</a><a href="2026-09-18-web-blackbox-engine.html"><span>下一篇 →</span>2026-09-18-web-blackbox-engine</a></div>
+  <div class="pn"><a href="architecture.html"><span>← 上一篇</span>探隐 TanYin — 架构原理与决策论证（汇报版）</a><a href="2026-09-18-web-blackbox-engine.html"><span>下一篇 →</span>web-blackbox 引擎详细设计（B3 前置设计对齐）</a></div>
   </article>
   <footer>红队成长全景 · 设计文档站由 scripts/build_handbook.py 构建</footer>
 </div></div>
