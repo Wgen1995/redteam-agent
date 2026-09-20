@@ -66,9 +66,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#5-综合练习路线">5. 综合练习路线</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-02-web-app-part2.html">VOL-02-web-app-part2 →</a><span class="crumb">› vol-01-web-应用渗透-上-侦察-指纹与注入类漏洞</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-02-web-app-part2.html">VOL-02-web-app-part2 →</a><span class="crumb">› VOL-01 · Web 应用渗透（上）：侦察、指纹与注入类漏洞</span></nav>
   <article class="doc">
-  <h1 id="VOL-01 · Web 应用渗透（上）：侦察、指纹与注入类漏洞">VOL-01-web-app-part1.md</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/<blockquote>读者：5 年代码审计/产品安全、刚转黑盒渗透的一人红队。本卷解决"从域名到可利用漏洞"的最短路径；越权、上传、反序列化、逻辑漏洞（见 VOL-02-web-app-part2），内网横向（见 VOL-03-intranet-pivot），报告交付（见 VOL-04-report-delivery）。所有靶场仅限本地 vulhub 与授权环境复现。</blockquote>
+  <h1 id="vol-01-web-应用渗透-上-侦察-指纹与注入类漏洞">VOL-01 · Web 应用渗透（上）：侦察、指纹与注入类漏洞</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-01-web-app-part1.md</div>
+  <blockquote>读者：5 年代码审计/产品安全、刚转黑盒渗透的一人红队。本卷解决"从域名到可利用漏洞"的最短路径；越权、上传、反序列化、逻辑漏洞（见 VOL-02-web-app-part2），内网横向（见 VOL-03-intranet-pivot），报告交付（见 VOL-04-report-delivery）。所有靶场仅限本地 vulhub 与授权环境复现。</blockquote>
 <h2 id="目录">目录</h2>
 <ol><li>外部信息收集：子域 / 端口与指纹 / 目录爆破 / JS 提取</li><li>攻击面建立：入口点清单、参数枚举、指纹→CVE</li><li>认证机制分析：Session / JWT / OAuth</li><li>注入类深讲：SQL 注入 / 命令注入 / XSS / SSTI / SSRF</li><li>综合练习路线</li></ol>
 <h2 id="1-外部信息收集-reconnaissance">1. 外部信息收集（Reconnaissance）</h2>
@@ -202,9 +203,12 @@ AWS:    http://169.254.169.254/latest/meta-data/iam/security-credentials/
 gopherus --exploit redis</code></pre>
 <p><span class="bdg bdg-v">验证</span>VPS 日志出现目标 IP 的 GET；元数据接口返回 AccessKeyId/Token；gopher 利用后 Redis 中出现写入的 key 或计划任务。 <span class="bdg bdg-t">陷阱</span>①过滤 127.0.0.1 时依次试：127.1、0177.0.0.1（八进制）、0x7f.1、[::1]、DNS 重绑定（Rebinding）；②302 跳转绕过校验：自有 VPS 302 到内网/file://，成败取决于服务端是否跟随跳转；③AWS IMDSv2 已强制 token，失败不代表无洞；④盲 SSRF 无响应内容，只能靠时间/长度差异+OOB 判定。 【练习·4.5】vulhub/weblogic/ssrf（经典：借 SSRF 探测内网结构）+ PortSwigger SSRF lab。</p>
 <h2 id="5-综合练习路线">5. 综合练习路线</h2>
-<p>一周节奏：D1–D2 本地 vulhub 把本卷各节靶机全打一遍并截图留档；D3 用 HTB Shocker/Nibbles 复盘"侦察→指纹→利用→提权"全链路；D4–D5 PortSwigger SQLi/XSS/SSTI/SSRF lab 补手工 payload 内功；D6–D7 把每个洞按"原理/复现步骤/影响面/修复建议"四段写成报告（交付模板见 VOL-04-report-delivery）。工具不确定的参数一律 <code>--help</code> 或官方文档核实；本卷命令已对官方仓库核验，个别标注"以官方文档为准"处请自行复核。</p></div>
-  <span></span>
-  <div class="pn"><a href="VOL-02-web-app-part2.html"><span>下一卷 →</span>VOL-02-web-app-part2</a>
+<p>一周节奏：D1–D2 本地 vulhub 把本卷各节靶机全打一遍并截图留档；D3 用 HTB Shocker/Nibbles 复盘"侦察→指纹→利用→提权"全链路；D4–D5 PortSwigger SQLi/XSS/SSTI/SSRF lab 补手工 payload 内功；D6–D7 把每个洞按"原理/复现步骤/影响面/修复建议"四段写成报告（交付模板见 VOL-04-report-delivery）。工具不确定的参数一律 <code>--help</code> 或官方文档核实；本卷命令已对官方仓库核验，个别标注"以官方文档为准"处请自行复核。</p>
+  <div class="pn"><span></span><a href="VOL-02-web-app-part2.html"><span>下一卷 →</span>VOL-02-web-app-part2</a></div>
+  </article>
+  <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
+</div></div>
+<script>
 document.addEventListener('DOMContentLoaded',function(){
   var links=[].slice.call(document.querySelectorAll('.sidebar nav a'));
   if(!links.length)return;
@@ -218,8 +222,4 @@ document.addEventListener('DOMContentLoaded',function(){
   },{rootMargin:'0% 0% -80% 0%'});
   heads.forEach(function(h){obs.observe(h);});
 });
-</div>
-  </article>
-  <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
-</div></div>
-<script>VOL-01 · Web 应用渗透（上）：侦察、指纹与注入类漏洞</script></body></html>
+</script></body></html>

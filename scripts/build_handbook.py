@@ -232,7 +232,8 @@ def render(name, title, blocks, headings, prev, nxt):
         H.escape(title), CSS, '\n'.join(toc),
         ('<a href="%s">← %s</a>' % (prev[0], H.escape(prev[1]))) if prev else '',
         ('<a href="%s">%s →</a>' % (nxt[0], H.escape(nxt[1]))) if nxt else '',
-        h1_id, H.escape(title), name, '\n'.join(body), pn[0], pn[1], JS, H.escape(title))
+        H.escape(title),
+        h1_id, H.escape(title), name, '\n'.join(body), pn[0], pn[1], JS)
 
 def build():
     os.makedirs(OUT, exist_ok=True)

@@ -114,9 +114,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#修订记录">修订记录</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-10-engagement-walkthrough.html">← VOL-10-engagement-walkthrough</a><span class="crumb">› vol-11-零售生态渗透专题-大厂产品生态里的渗透测试</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-10-engagement-walkthrough.html">← VOL-10-engagement-walkthrough</a><span class="crumb">› VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试</span></nav>
   <article class="doc">
-  <h1 id="VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试">VOL-11-retail-ecosystem.md</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/<blockquote>受众：5 年源码审计经验、刚入职深圳某大型零售企业任渗透测试工程师的读者；已读完 VOL-01~10（Web 渗透 VOL-01/02、内网 VOL-03、源码联动 VOL-04、安装包 VOL-05、工具链 VOL-06、方法论与报告 VOL-07-08、AI 三部曲 VOL-09A/B/C、完整交战 VOL-10）。 本卷任务：完成从「一人红队·外部授权」到「企业内部·产品生态渗透」的地形换装。前十章你面对的是一段客户资产；本卷你身处一家零售企业的产品生态内部：四层地形、三类身份、五条业务链、真实资金流与法规红线。交付四样东西：零售生态地形图与测绘法、18 个可枚举的业务逻辑场景（五链全覆盖）、支付与合规的负面清单、企业内部渗透的工程流程，最后与 redteam-agent 的工程契约衔接。</blockquote>
+  <h1 id="vol-11-零售生态渗透专题-大厂产品生态里的渗透测试">VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-11-retail-ecosystem.md</div>
+  <blockquote>受众：5 年源码审计经验、刚入职深圳某大型零售企业任渗透测试工程师的读者；已读完 VOL-01~10（Web 渗透 VOL-01/02、内网 VOL-03、源码联动 VOL-04、安装包 VOL-05、工具链 VOL-06、方法论与报告 VOL-07-08、AI 三部曲 VOL-09A/B/C、完整交战 VOL-10）。 本卷任务：完成从「一人红队·外部授权」到「企业内部·产品生态渗透」的地形换装。前十章你面对的是一段客户资产；本卷你身处一家零售企业的产品生态内部：四层地形、三类身份、五条业务链、真实资金流与法规红线。交付四样东西：零售生态地形图与测绘法、18 个可枚举的业务逻辑场景（五链全覆盖）、支付与合规的负面清单、企业内部渗透的工程流程，最后与 redteam-agent 的工程契约衔接。</blockquote>
 <h2 id="卷首-虚构声明-形态转换与读法">卷首：虚构声明、形态转换与读法</h2>
 <h3 id="虚构声明-先读这一段">虚构声明（先读这一段）</h3>
 <p>本卷所有示例均为<b>虚构教学构造</b>：示例公司一律使用虚构的「南华优选（虚构）」，域名统一 <code>*.nanhua.example</code>（<code>.example</code> 为 RFC 2606 保留域），IP 使用 RFC 5737 与文档专用段，账号、接口、报文、响应均为按真实形态手工构造的示例，不指向、不影射任何真实机构、系统或个人；对号入座皆误。全部内容为<b>行业公开知识形态</b>：业务逻辑漏洞类别、公开合规框架（PCI DSS、PIPL 等）、通用技术栈识别要点；不含任何真实企业的内部信息、系统名或架构细节。对真实目标执行文中任何动作前，你必须持有书面授权。</p>
@@ -487,9 +488,12 @@ remediation_ref: "VOL-11 第二章 R-TX-01【修复】"</code></pre>
 <p>一人红队教你的"单点突破、一次交付"，企业生态要的是"常态过账、闭环修复、全程留痕"。地形换了，底稿纪律不换——场景库是科目表，覆盖台账是试算平衡，交战目录是审计底稿，红线章节是职业道德。祝你过账顺利。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="修订记录">修订记录</h2>
-<table><thead><tr><th>版本</th><th>说明</th></tr></thead><tbody><tr><td>v1.0</td><td>初版：六章 + 两附录；五链 18 场景六段结构；PCI/PIPL 红线；SSO 生态攻击面；企业工作流；redteam-agent 衔接</td></tr></tbody></table></div>
-  <a href="VOL-10-engagement-walkthrough.html"><span>← 上一卷</span>VOL-10-engagement-walkthrough</a>
-  <div class="pn"><span></span>
+<table><thead><tr><th>版本</th><th>说明</th></tr></thead><tbody><tr><td>v1.0</td><td>初版：六章 + 两附录；五链 18 场景六段结构；PCI/PIPL 红线；SSO 生态攻击面；企业工作流；redteam-agent 衔接</td></tr></tbody></table>
+  <div class="pn"><a href="VOL-10-engagement-walkthrough.html"><span>← 上一卷</span>VOL-10-engagement-walkthrough</a><span></span></div>
+  </article>
+  <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
+</div></div>
+<script>
 document.addEventListener('DOMContentLoaded',function(){
   var links=[].slice.call(document.querySelectorAll('.sidebar nav a'));
   if(!links.length)return;
@@ -503,8 +507,4 @@ document.addEventListener('DOMContentLoaded',function(){
   },{rootMargin:'0% 0% -80% 0%'});
   heads.forEach(function(h){obs.observe(h);});
 });
-</div>
-  </article>
-  <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
-</div></div>
-<script>VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试</script></body></html>
+</script></body></html>
