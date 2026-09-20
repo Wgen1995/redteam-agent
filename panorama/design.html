@@ -48,6 +48,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 .card .accept{background:#f8fafc;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:13px;color:#334155;border:1px solid #e2e8f0}
 .card .accept .sec{margin-top:0}
 .fill{color:#cbd5e1;letter-spacing:1px}
+.tag.ok{background:#dcfce7;color:#166534}.tag.eng{background:#e0e7ff;color:#3730a3}.tag.v1{background:#f1f5f9;color:#475569}
 </style>
 <style>.tblwrap{overflow-x:auto}@media(max-width:760px){table{display:block;overflow-x:auto;max-width:100%}p,li,td{overflow-wrap:anywhere}}.cards.trio{grid-template-columns:repeat(3,1fr)}@media(max-width:900px){.cards.trio{grid-template-columns:1fr}}</style>
 <style>@media(max-width:760px){.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}</style>
@@ -158,10 +159,10 @@ blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border
     <div class="sec">三层读法</div>
     <ul>
       <li><b>① v2 速览（本页）</b>——下方「v2 权威视图」区：四张决策卡定路线、11 张机制卡定骨架、批次进度条定节奏</li>
-      <li><b>② 设计文档站（构建中）</b>——v2 定稿与融合裁决的 HTML 版；本页各卡「详见」链接均指向站内对应章节，暂可读 MD 原文</li>
+      <li><b>② 设计文档站（已建成）</b>——四组：当前权威（v2 定稿+融合裁决）／引擎专项（vuln_agent+web-blackbox）／v1 原稿五篇；本页各卡「详见」均指向站内章节</li>
       <li><b>③ v1 原版参考（降级保留）</b>——TanYin 原版十页全景入口表＋原版文档链：字段级定义与因果链深读底本，口径以 v2 为准</li>
     </ul>
-    <a class="go" href="../docs/design/html/index.html">进入 · 设计文档站（构建中，路径先放）→</a>
+    <a class="go" href="../docs/design/html/index.html">进入 · 设计文档站 →</a>
   </div>
 </div>
 
@@ -368,12 +369,14 @@ blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border
 <h2>设计文档站 · 入口</h2>
 <div class="cards" style="grid-template-columns:1fr">
   <div class="card">
-    <div class="lhead"><span class="lno">DOCS</span><h4>设计文档站（构建中，路径先放）</h4></div>
-    <p>设计文档的 HTML 阅读版站点位于 <code>../docs/design/html/</code>——本页所有「详见」链接的目标。站点构建完成前，三个入口先按最终路径放置（暂不可达），原文现可读 MD：</p>
+    <div class="lhead"><span class="lno">DOCS</span><h4>设计文档站（已建成 · 四组）</h4></div>
+    <p>设计文档的 HTML 阅读版站点位于 <code>../docs/design/html/</code>——本页所有「详见」链接的目标，站内 230+ 章节标题可搜。直达：</p>
     <ul class="doclinks">
-      <li><span class="tag pend">构建中</span><a href="../docs/design/html/index.html"><b>index.html · 文档站首页</b></a>——设计文档导航总入口</li>
-      <li><span class="tag pend">构建中</span><a href="../docs/design/html/2026-09-21-tanyin-v2-design.html"><b>2026-09-21-tanyin-v2-design.html · v2 综合设计定稿</b></a>（唯一权威 · 701 行）｜ <a href="../docs/design/2026-09-21-tanyin-v2-design.md">MD 原文现可读 →</a></li>
-      <li><span class="tag pend">构建中</span><a href="../docs/design/html/2026-09-20-tanyin-bprime-fusion.html"><b>2026-09-20-tanyin-bprime-fusion.html · 融合裁决</b></a>（v2 上游 · 401 行）｜ <a href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">MD 原文现可读 →</a></li>
+      <li><span class="tag ok">权威</span><a href="../docs/design/html/2026-09-21-tanyin-v2-design.html"><b>v2 综合设计定稿</b></a>——唯一权威 · 701 行</li>
+      <li><span class="tag ok">权威</span><a href="../docs/design/html/2026-09-20-tanyin-bprime-fusion.html"><b>融合裁决</b></a>——v2 上游 · 401 行</li>
+      <li><span class="tag eng">引擎</span><a href="../docs/design/html/2026-09-22-vuln-agent-engine.html"><b>vuln_agent 引擎专项</b></a>——源码分析引擎 · 八段管道 · 最新源码定稿</li>
+      <li><span class="tag eng">引擎</span><a href="../docs/design/html/2026-09-18-web-blackbox-engine.html"><b>web-blackbox 引擎专项</b></a>——黑盒引擎 · 首批一号</li>
+      <li><span class="tag v1">v1</span><a href="../docs/design/html/index.html"><b>文档站首页</b></a>——含 TanYin v1 原稿五篇与全文搜索</li>
     </ul>
   </div>
 </div>
