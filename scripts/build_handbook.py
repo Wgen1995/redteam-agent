@@ -535,7 +535,7 @@ def relink():
 
 def check_links():
     errs = []
-    root_sets = [(PANO, 'panorama'), (OUT, 'learning-html'), (DOUT, 'design-html')]
+    root_sets = [(PANO, 'panorama'), (OUT, 'learning-html'), (DOUT, 'design-html'), (os.path.join(DOUT, '..', 'imported', 'TanYin', 'panorama'), 'tanyin-v1')]
     anchor_maps = {}
     for r2, _ in root_sets:
         ap = os.path.join(r2, 'anchors.json')
