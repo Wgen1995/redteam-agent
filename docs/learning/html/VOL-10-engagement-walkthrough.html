@@ -32,7 +32,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
 .doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
 .doc th{background:#f1f5f9;font-size:12px}
-.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}.guide{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 18px;font-size:13.5px;color:#78350f}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
 .bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
@@ -43,8 +43,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 </style></head><body>
 <div class="layout">
 <aside class="sidebar">
-  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a>
-  <a class="home" href="index.html">📚 手册首页</a>
+  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计全景</a><a class="home" href="index.html">📚 手册首页</a>
   <h3>本卷目录</h3>
   <nav><a class="l2" href="#卷首-怎么读这一卷">卷首：怎么读这一卷</a>
 <a class="l3" href="#虚构声明-先读这一段">虚构声明（先读这一段）</a>
@@ -150,9 +149,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#本卷小结">本卷小结</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-09C-ai-pentest-practice.html">← VOL-09C-ai-pentest-practice</a><a href="VOL-11-retail-ecosystem.html">VOL-11-retail-ecosystem →</a><span class="crumb">› VOL-10 实战全流程实例：一场完整交战的上帝视角</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="VOL-09C-ai-pentest-practice.html">← VOL-09C-ai-pentest-practice</a><a href="VOL-11-retail-ecosystem.html">VOL-11-retail-ecosystem →</a><span class="crumb">› VOL-10 实战全流程实例：一场完整交战的上帝视角</span></nav>
   <article class="doc">
-  <h1 id="vol-10-实战全流程实例-一场完整交战的上帝视角">VOL-10 实战全流程实例：一场完整交战的上帝视角</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-10-engagement-walkthrough.md</div>
+  <h1 id="vol-10-实战全流程实例-一场完整交战的上帝视角">VOL-10 实战全流程实例：一场完整交战的上帝视角</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-10-engagement-walkthrough</div>
+  
   <blockquote>受众：5 年源码审计经验、转岗一人红队的工程师；已读完 VOL-01~09（Web 渗透 VOL-01/02、内网 VOL-03、源码联动 VOL-04、安装包 VOL-05、工具链 VOL-06、方法论与报告 VOL-07-08、AI 三部曲 VOL-09A/B/C）。 本卷任务：把零散知识串成一场<b>完整交战</b>——让你看到全过程的真实节奏、每一步的决策因果与工程细节。前九卷给的是武器与条令，这一卷是一场仗。</blockquote>
 <h2 id="卷首-怎么读这一卷">卷首：怎么读这一卷</h2>
 <h3 id="虚构声明-先读这一段">虚构声明（先读这一段）</h3>
@@ -912,7 +912,7 @@ $ curl -s -X POST https://oms.yunfan.example/api/v2/field/webhook/test -H "Autho
 <ol><li>授权文本逐字翻译成可执行规则，比多测十个接口更值钱。</li><li>负结果也是资产：直连不可达直接催生了第五幕的合规路径。</li><li>应然矩阵先行：没有"应该怎样"，差分就没有靶子。</li><li>证据先于结论落盘；结论先于报告签字。</li><li>克制写进台账（ruled_out），冲动只写进事故报告。</li></ol>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="附录-a-全程命令速查">附录 A 全程命令速查</h2>
-<table><thead><tr><th>阶段</th><th>命令</th><th>用途（本卷出处）</th></tr></thead><tbody><tr><td>契约</td><td><code>mkdir -p eng/{secrets,sessions,assets,leads,coverage,poc,recon,evidence,logs,handoff,reports}</code></td><td>目录骨架（第 0 幕）</td></tr><tr><td>契约</td><td><code>echo '{"ts":…}' &gt;&gt; journal.jsonl</code></td><td>每步落账（全卷）</td></tr><tr><td>侦察</td><td><code>dig +short &lt;域&gt;</code> / `whois &lt;IP&gt;</td><td>grep -iE "orgname</td><td>netname"`</td><td>解析与归属（第一幕）</td></tr><tr><td>侦察</td><td>`curl -s "https://crt.sh/?q=%25.&lt;域&gt;&amp;output=json"</td><td>jq -r '.[].name_value'</td><td>sort -u`</td><td>子域（先过 scope_check）</td></tr><tr><td>侦察</td><td><code>httpx -u &lt;域&gt; -title -tech-detect -status-code -rate-limit 10</code></td><td>存活与指纹（第一幕）</td></tr><tr><td>侦察</td><td><code>nmap -sn &lt;段&gt; --max-rate 30 -oA recon/backend-direct</code></td><td>可达性（仅 r1 允许的动作）</td></tr><tr><td>认证后</td><td>`echo '&lt;jwt&gt;'</td><td>cut -d. -f2</td><td>base64 -d`</td><td>claims 目检（第二幕）</td></tr><tr><td>认证后</td><td>`cat app.js</td><td>grep -oE 'path:"[^"]+"</td><td>roles:[[^]]*]'</td><td>paste - -`</td><td>前端路由→应然矩阵</td></tr><tr><td>IDOR</td><td><code>python3 poc/f01_idor_sample.py &lt;token&gt;</code></td><td>限速采样+脱敏（第三幕）</td></tr><tr><td>APK</td><td><code>apksigner verify --print-certs &lt;apk&gt;</code> / <code>jadx -d src &lt;apk&gt; --no-res</code></td><td>验签+反编译（第四幕）</td></tr><tr><td>APK</td><td>`grep -rhoE 'https?://[a-zA-Z0-9./_-]+' src</td><td>sort -u`</td><td>URL 分桶（VOL-05 §2.4）</td></tr><tr><td>SSRF</td><td><code>curl -s -X POST &lt;api&gt; -H "Authorization: Bearer $T" -d '{"url":"http://10.10.20.31:8080/"}'</code></td><td>服务端侧信道（第五幕）</td></tr><tr><td>逻辑</td><td>状态机对照表：期望（应然矩阵）×实测（Burp）×证据（条目号）</td><td>第六幕</td></tr><tr><td>证据</td><td><code>sha256sum evidence/* &gt; evidence/MANIFEST.sha256</code></td><td>哈希清单（第七幕）</td></tr><tr><td>证据</td><td>`grep -rE "密码</td><td>Bearer eyJ</td><td>AK-" reports/ findings.jsonl`</td><td>脱敏终检（第七/八幕）</td></tr><tr><td>报告</td><td><code>cvss-local calc "CVSS:3.1/AV:N/…"</code></td><td>本地重算定级（第八幕）</td></tr><tr><td>复测</td><td><code>dsh replay poc/F-0X.yaml --session fresh</code></td><td>原卡重放（第九幕）</td></tr></tbody></table>
+<table><thead><tr><th>阶段</th><th>命令</th><th>用途（本卷出处）</th></tr></thead><tbody><tr><td>契约</td><td><code>mkdir -p eng/{secrets,sessions,assets,leads,coverage,poc,recon,evidence,logs,handoff,reports}</code></td><td>目录骨架（第 0 幕）</td></tr><tr><td>契约</td><td><code>echo '{"ts":…}' &gt;&gt; journal.jsonl</code></td><td>每步落账（全卷）</td></tr><tr><td>侦察</td><td><code>httpx -u &lt;域&gt; -title -tech-detect -status-code -rate-limit 10</code></td><td>存活与指纹（第一幕）</td></tr><tr><td>侦察</td><td><code>nmap -sn &lt;段&gt; --max-rate 30 -oA recon/backend-direct</code></td><td>可达性（仅 r1 允许的动作）</td></tr><tr><td>IDOR</td><td><code>python3 poc/f01_idor_sample.py &lt;token&gt;</code></td><td>限速采样+脱敏（第三幕）</td></tr><tr><td>APK</td><td><code>apksigner verify --print-certs &lt;apk&gt;</code> / <code>jadx -d src &lt;apk&gt; --no-res</code></td><td>验签+反编译（第四幕）</td></tr><tr><td>SSRF</td><td><code>curl -s -X POST &lt;api&gt; -H "Authorization: Bearer $T" -d '{"url":"http://10.10.20.31:8080/"}'</code></td><td>服务端侧信道（第五幕）</td></tr><tr><td>逻辑</td><td>状态机对照表：期望（应然矩阵）×实测（Burp）×证据（条目号）</td><td>第六幕</td></tr><tr><td>证据</td><td><code>sha256sum evidence/* &gt; evidence/MANIFEST.sha256</code></td><td>哈希清单（第七幕）</td></tr><tr><td>报告</td><td><code>cvss-local calc "CVSS:3.1/AV:N/…"</code></td><td>本地重算定级（第八幕）</td></tr><tr><td>复测</td><td><code>dsh replay poc/F-0X.yaml --session fresh</code></td><td>原卡重放（第九幕）</td></tr></tbody></table>
 <h2 id="附录-b-交战目录最终树">附录 B 交战目录最终树</h2>
 <pre class="cb"><span class="lang">text</span><code>~/redteam-engagements/2026-09-07-yunfan-oms/
 ├── engagement-snapshot.json      # skill/契约版本；resume 兼容性检查
@@ -954,7 +954,7 @@ $ curl -s -X POST https://oms.yunfan.example/api/v2/field/webhook/test -H "Autho
 <h2 id="本卷小结">本卷小结</h2>
 <ul><li>一场交战 = <b>边界（scope）→攻击面（assets）→身份（矩阵）→差分（越权）→侧信道（SSRF/内网边缘）→业务流（逻辑）→证据（卡片）→交付（报告）→闭环（复测四态）</b>的因果链，每步由上一步的未闭合缺口驱动（VOL-07-08 A1）。</li><li>上帝视角不在战时，在工程：journal/assets/coverage 让你<b>事后</b>拥有全局——目录即状态契约（VOL-09C §3.3）。</li><li>克制是能力：r1/r2/r3 三条红线各自"少做了什么"，全部转化为覆盖台账的 ruled_out 与客户信任。</li><li>AI 交产能（约省 1.5 个工作日），人守判定（scope/定级/归因/资金动作/四态签字），每一分都体现在台账里（VOL-09A/B/C）。</li></ul>
 <blockquote>交叉引用：Web 打点细节见 VOL-01/VOL-02；内网深入（本卷刻意止步之处）见 VOL-03；源码联动见 VOL-04；安装包流水线见 VOL-05；工具链锁定见 VOL-06；决策模型、POC 卡与 B2/B6 交付规范见 VOL-07-08；AI 协作纪律见 VOL-09A/B/C。  <b>虚构声明（重复）</b>：本卷全部目标、域名、IP、账号、输出均为虚构教学构造（<code>.example</code> 保留域、RFC 5737 测试段），不指向任何真实机构；对真实目标执行文中任何操作前，你必须持有书面授权。</blockquote>
-  <div class="pn"><a href="VOL-09C-ai-pentest-practice.html"><span>← 上一卷</span>VOL-09C-ai-pentest-practice</a><a href="VOL-11-retail-ecosystem.html"><span>下一卷 →</span>VOL-11-retail-ecosystem</a></div>
+  <div class="pn"><a href="VOL-09C-ai-pentest-practice.html"><span>← 上一篇</span>VOL-09C-ai-pentest-practice</a><a href="VOL-11-retail-ecosystem.html"><span>下一篇 →</span>VOL-11-retail-ecosystem</a></div>
   </article>
   <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
 </div></div>

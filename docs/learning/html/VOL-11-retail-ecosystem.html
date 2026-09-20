@@ -32,7 +32,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
 .doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
 .doc th{background:#f1f5f9;font-size:12px}
-.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}.guide{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 18px;font-size:13.5px;color:#78350f}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
 .bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
@@ -43,8 +43,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 </style></head><body>
 <div class="layout">
 <aside class="sidebar">
-  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a>
-  <a class="home" href="index.html">📚 手册首页</a>
+  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计全景</a><a class="home" href="index.html">📚 手册首页</a>
   <h3>本卷目录</h3>
   <nav><a class="l2" href="#卷首-虚构声明-形态转换与读法">卷首：虚构声明、形态转换与读法</a>
 <a class="l3" href="#虚构声明-先读这一段">虚构声明（先读这一段）</a>
@@ -114,9 +113,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#修订记录">修订记录</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-10-engagement-walkthrough.html">← VOL-10-engagement-walkthrough</a><span class="crumb">› VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="VOL-10-engagement-walkthrough.html">← VOL-10-engagement-walkthrough</a><span class="crumb">› VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试</span></nav>
   <article class="doc">
-  <h1 id="vol-11-零售生态渗透专题-大厂产品生态里的渗透测试">VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-11-retail-ecosystem.md</div>
+  <h1 id="vol-11-零售生态渗透专题-大厂产品生态里的渗透测试">VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-11-retail-ecosystem</div>
+  
   <blockquote>受众：5 年源码审计经验、刚入职深圳某大型零售企业任渗透测试工程师的读者；已读完 VOL-01~10（Web 渗透 VOL-01/02、内网 VOL-03、源码联动 VOL-04、安装包 VOL-05、工具链 VOL-06、方法论与报告 VOL-07-08、AI 三部曲 VOL-09A/B/C、完整交战 VOL-10）。 本卷任务：完成从「一人红队·外部授权」到「企业内部·产品生态渗透」的地形换装。前十章你面对的是一段客户资产；本卷你身处一家零售企业的产品生态内部：四层地形、三类身份、五条业务链、真实资金流与法规红线。交付四样东西：零售生态地形图与测绘法、18 个可枚举的业务逻辑场景（五链全覆盖）、支付与合规的负面清单、企业内部渗透的工程流程，最后与 redteam-agent 的工程契约衔接。</blockquote>
 <h2 id="卷首-虚构声明-形态转换与读法">卷首：虚构声明、形态转换与读法</h2>
 <h3 id="虚构声明-先读这一段">虚构声明（先读这一段）</h3>
@@ -489,7 +489,7 @@ remediation_ref: "VOL-11 第二章 R-TX-01【修复】"</code></pre>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="修订记录">修订记录</h2>
 <table><thead><tr><th>版本</th><th>说明</th></tr></thead><tbody><tr><td>v1.0</td><td>初版：六章 + 两附录；五链 18 场景六段结构；PCI/PIPL 红线；SSO 生态攻击面；企业工作流；redteam-agent 衔接</td></tr></tbody></table>
-  <div class="pn"><a href="VOL-10-engagement-walkthrough.html"><span>← 上一卷</span>VOL-10-engagement-walkthrough</a><span></span></div>
+  <div class="pn"><a href="VOL-10-engagement-walkthrough.html"><span>← 上一篇</span>VOL-10-engagement-walkthrough</a><span></span></div>
   </article>
   <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
 </div></div>

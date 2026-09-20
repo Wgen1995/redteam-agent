@@ -51,6 +51,44 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 </style>
 <style>.tblwrap{overflow-x:auto}@media(max-width:760px){table{display:block;overflow-x:auto;max-width:100%}p,li,td{overflow-wrap:anywhere}}.cards.trio{grid-template-columns:repeat(3,1fr)}@media(max-width:900px){.cards.trio{grid-template-columns:1fr}}</style>
 <style>@media(max-width:760px){.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}</style>
+<style>
+/* ---- v2 权威视图新增组件 ---- */
+.zone{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px 22px;margin:16px 0;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.zone > h3:first-child{margin-top:0}
+.cards.adr{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.cards.adr{grid-template-columns:1fr}}
+.card .lhead .lno.ado{background:#0f172a}
+.batches{margin:16px 0 6px}
+.btrack{height:12px;border-radius:6px;background:#e2e8f0;overflow:hidden;border:1px solid #cbd5e1}
+.btrack .fill0{height:100%;width:0%;background:linear-gradient(90deg,#b91c1c,#7f1d1d)}
+.blab{display:flex;justify-content:space-between;font-size:12px;color:#64748b;margin:6px 0 10px;flex-wrap:wrap;gap:4px}
+.bgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+.bseg{background:#fff;border:1px solid #e2e8f0;border-top:4px solid #cbd5e1;border-radius:10px;padding:10px 6px;text-align:center}
+.bseg .bno{display:inline-block;font-size:11px;font-weight:700;color:#64748b;background:#f1f5f9;border-radius:6px;padding:0 8px;letter-spacing:.5px}
+.bseg b{display:block;font-size:12.5px;color:#1e293b;margin:5px 0 3px}
+.bseg .bst{font-size:11px;color:#94a3b8}
+.bnote{font-size:12.5px;color:#94a3b8;margin-top:8px}
+@media(max-width:1000px){.bgrid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:560px){.bgrid{grid-template-columns:repeat(2,1fr)}}
+.evo{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0}
+.evo .enode{background:#fff;border:1px solid #e2e8f0;border-top:4px solid #94a3b8;border-radius:12px;padding:14px 14px;box-shadow:0 2px 8px rgba(0,0,0,.04);position:relative;display:flex;flex-direction:column}
+.evo .enode.cur{border-top-color:#b91c1c;box-shadow:0 6px 18px rgba(185,28,28,.16)}
+.evo .evo-step{font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:4px}
+.evo .enode.cur .evo-step{color:#b91c1c}
+.evo .enode b{font-size:14.5px;color:#1e293b;display:block;margin-bottom:5px}
+.evo .enode p{font-size:12.5px;color:#64748b;margin:0;flex:1}
+.evo .enode .go{margin-top:10px;font-size:12.5px;font-weight:600;color:#b91c1c}
+.evo .enode:not(:last-child)::after{content:"›";position:absolute;right:-13px;top:46%;font-size:20px;font-weight:700;color:#cbd5e1;z-index:1}
+@media(max-width:960px){.evo{grid-template-columns:1fr 1fr}.evo .enode:not(:last-child)::after{content:""}}
+@media(max-width:560px){.evo{grid-template-columns:1fr}}
+.doclinks{list-style:none;margin:0;padding:0}
+.doclinks li{font-size:13.5px;color:#334155;padding:6px 0;border-bottom:1px dashed #e2e8f0;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.doclinks li:last-child{border-bottom:none}
+.doclinks .tag{font-size:11px;font-weight:700;color:#fff;background:#0369a1;border-radius:6px;padding:1px 8px;white-space:nowrap}
+.doclinks .tag.pend{background:#94a3b8}
+.doclinks code{font-size:11px}
+blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -67,129 +105,231 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 
 <header>
   <h1>探隐 TanYin · 设计全景</h1>
-  <div class="sub">纯 SKILL 形态的全类型 AI 渗透总控——AI 负责挖、纪律负责管、图谱负责推、知识负责长。图谱收敛＝测试完成 · 覆盖可度量 · 知识跨会话复利。</div>
+  <div class="sub">v2 权威视图——TanYin 骨架 × B′ 门禁的融合定稿：skill 主体负责认知决策、薄 CLI 工具箱负责确定性与执法、档位化 hook／egress 负责进程级防线。图谱收敛＝测试完成 · 覆盖可度量 · 知识跨会话复利。</div>
   <div class="tags">
-    <span>形态：纯 SKILL 套件 · 零代码 · 复制即装（任意编码 agent 可用）</span>
-    <span>状态：设计中 · 待融合（综合设计 v2 待用户拍板）</span>
-    <span>首发引擎：web-blackbox（SKILL 型）＋ vuln_agent（CLI 适配器）</span>
+    <span>形态：skill 主体 ＋ 薄 CLI 工具箱（python3 标准库）＋ 档位化 hook／egress</span>
+    <span>状态：v2 定稿待实施（2026-09-21 · 701 行 · 批次 0-7 全部待启动）</span>
+    <span>首批五宿主：DSH · opencode · codex · walcode · CodeBuddy</span>
   </div>
 </header>
 
-<div class="note"><b>本页是什么：</b>探隐设计材料的<b>速览导航层</b>——三张定位卡＋九张机制速览卡＋原版全景十页入口表＋设计文档链。机制描述均浓缩自两份消化抽取（26 域核心设计＋24 节原则与流程），<b>口径冲突时一律以文档链原文为准</b>（REQUIREMENTS.md 最高权威 → 设计定稿唯一权威源）；深读直接进原版全景对应页。</div>
+<blockquote>🧭 <b>导读</b>：你已走到整套全景的<b>工程图纸层</b>——前面六页回答「学什么、用什么」，这一页回答「我们要造什么、按什么规格造」。走法：先看下方三张定位卡定方位 → 进「v2 权威视图」从决策卡读到批次条（为什么长这样 → 长成什么样 → 何时动手）→ 有疑义再下探「v1 原版参考」对口径。与实施的关系：当前是<b>图纸定稿、工地未开工</b>（批次 0-7 全部待启动）——开工后本页即进度看板，每完成一批回来点亮一格。</blockquote>
+
+<div class="note"><b>本页是什么：</b>探隐设计的<b>双区权威视图</b>——主体区「<b>v2 权威视图</b>」（四张决策卡＋11 张机制速览卡＋批次 0-7 进度追踪），参考区「<b>v1 原版参考</b>」（原版十页全景入口与文档链，降级保留）。内容浓缩自 <a href="../docs/design/2026-09-21-tanyin-v2-design.md">v2 综合设计定稿</a>（701 行，唯一权威）与<a href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">融合裁决</a>（401 行），<b>口径冲突时一律以 v2 定稿原文为准</b>；深读走设计文档站（构建中）或 MD 原文。</div>
 
 <h2>定位：是什么 · 现在在哪 · 怎么读</h2>
 <div class="cards trio">
 
   <div class="card">
     <div class="icon">🔭</div>
-    <h4>是什么：一句话愿景＋四支柱</h4>
-    <div class="sec">一句话愿景</div>
-    <p>把已实战验证的渗透方法论（CNPEN 82 漏洞）固化为纯 SKILL 套件，装进任意编码 agent 即可按纪律执行全类型渗透：图谱账本驱动测试演进（图谱收敛＝测试完成），引擎契约编排异构引擎，知识库跨会话复利。</p>
-    <div class="sec">四支柱：复杂性分别放在哪里</div>
+    <h4>是什么：v2 一句话定稿</h4>
+    <div class="sec">一句话</div>
+    <p><b>TanYin 骨架 ＋ B′ 门禁的融合定稿</b>——以 TanYin 完整设计（图谱账本／九门／引擎契约／知识飞轮）为骨架，嫁接方案 B′ 的实证门禁（四层执法／凭据治理／重放门／身份矩阵），形成唯一权威的 v2 设计。</p>
+    <div class="sec">三件咬合（v2 形态）</div>
     <ul>
-      <li><b>Graph 图谱工程</b>——放在「状态」里：世界建模为显式节点与关系，推理变成可执行的图查询；状态外置、结构化、可检验</li>
-      <li><b>Loop 循环工程</b>——放在「过程」里：感知→决策→行动→落账闭环持续演进，计划是活的；终止条件可计算，配预算控制</li>
-      <li><b>Harness 脚手架工程</b>——放在「基础设施」里且尽量用现成的：不重写 agent 运行时，与宿主／引擎的耦合收敛为契约</li>
-      <li><b>Context 上下文工程</b>——放在「上下文生命周期」里：什么常驻、什么按需、何时压缩、何时重启——上下文是被设计出来的</li>
+      <li><b>skill 主体</b>——认知与决策面：总控 SKILL.md＋phases／engines／knowledge／shared，一切「判断」发生在这里</li>
+      <li><b>薄 CLI 工具箱</b>——确定性与执法面：账本唯一写入口，python3 标准库实现，tools.lock 锁定，「LLM 只调用不实现」</li>
+      <li><b>档位化 hook／egress</b>——进程级防线：scope.tsv 编译为 ACL，实际档位写入报告守门声明</li>
     </ul>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/agent-philosophies.html">深读 · agent-philosophies 四支柱深析 →</a>
+    <div class="sec">取代关系</div>
+    <p>取代 TanYin 原稿（docs/design/imported/TanYin/ 全套）与方案 B′ 十二条 must-haves，冲突处以 v2 为准；四支柱工程哲学（Graph／Loop／Harness／Context）不变。</p>
+    <a class="go" href="../docs/design/2026-09-21-tanyin-v2-design.md">直达 · v2 综合设计定稿（701 行）→</a>
   </div>
 
   <div class="card">
     <div class="icon">🚧</div>
-    <h4>现在在哪：导入 → 消化 → 融合裁决 → v2 拍板</h4>
-    <div class="sec">四步进度</div>
+    <h4>现在在哪：v2 已定稿 · 待批次 0 启动</h4>
+    <div class="sec">里程碑</div>
     <ul>
-      <li>✅ <b>导入</b>——TanYin 设计文档链＋原版全景十页已入库 <code>docs/design/imported/TanYin/</code>（REQUIREMENTS／PRINCIPLES／architecture／设计定稿／引擎设计）</li>
-      <li>✅ <b>消化</b>——两份结构化 JSON 抽取完成：<code>.research/tanyin/</code> 26 域核心设计＋24 节原则与流程，十页全景全部消化</li>
-      <li>🔄 <b>融合裁决进行中</b>——TanYin 全机制 × 方案 B′ 12 条 must-haves 逐条对照裁决，融合分析文档正在撰写</li>
-      <li>⏳ <b>综合设计 v2 待用户拍板</b>——融合结论定稿后产出综合设计 v2，本页届时同步更新</li>
+      <li>✅ <b>融合裁决</b>——2026-09-20（401 行）：概念对齐（同／叠／独）＋十大裁决＋十个拍板点蓝图</li>
+      <li>✅ <b>用户拍板</b>——ADR-P1~P4 四条最高约束落定，融合文档 §6.5 十个拍板点全部关闭</li>
+      <li>✅ <b>v2 综合设计定稿</b>——2026-09-21（701 行）：设计无分期＋批次解耦＋探知项机制，唯一权威设计文档</li>
+      <li>⏳ <b>待批次 0 启动</b>——契约冻结（16 项接口清单）纸面定死再动手；实现进度 0／8 个批次</li>
     </ul>
-    <a class="go" href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">查看 · 融合分析文档（撰写中）→</a>
+    <div class="sec">下一步</div>
+    <p>评审通过即批次 0 出口：13 表 schema／10 边／37 命令签名／占位符语法／phases.yaml schema 等全部冻结，此后任何变更走 schema_version＋迁移命令。</p>
+    <a class="go" href="../docs/design/2026-09-21-tanyin-v2-design.md">查看 · v2 §11 实施批次 0-7 →</a>
   </div>
 
   <div class="card">
     <div class="icon">🧭</div>
-    <h4>怎么用它读：速览 → 深读 → 查权威</h4>
+    <h4>怎么读：v2 速览 → 设计文档站 → 原版参考</h4>
     <div class="sec">三层读法</div>
     <ul>
-      <li><b>① 本页速览</b>——三张定位卡定「是什么／在哪／怎么读」，九张机制卡定骨架，十页入口表当地图</li>
-      <li><b>② 按主题进原版全景深读</b>——每张机制卡带「深读」链接进 TanYin 原版对应页：因果链、S1-S41 执行流、字段级定义都在原版</li>
-      <li><b>③ 需要权威原文走文档链</b>——REQUIREMENTS.md（最高权威）→ 设计定稿（设计唯一权威源）→ 引擎设计 → architecture.md；PRINCIPLES.md 看因果链宪法</li>
+      <li><b>① v2 速览（本页）</b>——下方「v2 权威视图」区：四张决策卡定路线、11 张机制卡定骨架、批次进度条定节奏</li>
+      <li><b>② 设计文档站（构建中）</b>——v2 定稿与融合裁决的 HTML 版；本页各卡「详见」链接均指向站内对应章节，暂可读 MD 原文</li>
+      <li><b>③ v1 原版参考（降级保留）</b>——TanYin 原版十页全景入口表＋原版文档链：字段级定义与因果链深读底本，口径以 v2 为准</li>
     </ul>
-    <a class="go" href="../docs/design/imported/TanYin/REQUIREMENTS.md">直达 · REQUIREMENTS.md 需求总纲 →</a>
+    <a class="go" href="../docs/design/html/index.html">进入 · 设计文档站（构建中，路径先放）→</a>
   </div>
 </div>
 
-<h2>核心机制速览：九张小卡，每卡深读原版对应页</h2>
-<p>探隐的核心机制咬合成链：授权定义边界 → 测绘建立结构 → 矩阵定义「全」→ 循环消灭未知 → 证据定义「真」→ 签发定义「交付」→ 沉淀定义「复利」。下列九卡是这条主因果链上的关键齿轮。</p>
-<div class="cards trio">
+<h2>v2 权威视图 · 唯一权威定稿（2026-09-21）</h2>
+<blockquote>🧭 <b>导语</b>：本区是全页主体，按「先定方向、再看骨架、最后对节奏」走——四张决策卡回答为什么这样定（值得逐字读），11 张机制卡当索引用（每卡一句，深读走「详见」），批次进度条只盯一件事：什么时候轮到你动手。</blockquote>
+<p>本区是页面主体：决策记录（用户拍板四条最高约束）→ 核心机制速览（11 张卡，每卡一句＋详见）→ 实施批次进度追踪（0-7）。全部浓缩自 v2 定稿，执法权威与口径以原文为准。</p>
+
+<div class="zone">
+<h3>决策记录 · ADR-P1~P4（用户拍板四条，全文不可违背）<em>详见 v2 §0</em></h3>
+<div class="cards adr">
 
   <div class="card">
-    <div class="icon">🏛️</div>
-    <h4>五层六边形架构</h4>
-    <p>L5 用户 → L4 总控编排 → L3 领域模型（session 目录＝单一事实源）→ L2 引擎契约 → L1 知识纪律。真实形态是以 L3 为领域核的六边形：L4 是应用编排、L2 是可替换适配器、L1 纪律／词表政策全层横切。</p>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/system-architecture.html">深读 · system-architecture 系统架构 →</a>
+    <div class="lhead"><span class="lno ado">ADR-P1</span><h4>融合路线：融合出 v2</h4></div>
+    <p>TanYin 完整设计为骨架 ＋ B′ 实证门禁嫁接：融合十大裁决全部生效，TanYin A1-A20／B1-B17 审计落点继承（4 项改落点见融合文档 §5.5）；与原稿及 B′ 冲突处一律以 v2 为准。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#0-决策记录-adr">详见 · v2 §0 决策记录（文档站）→</a>
   </div>
 
   <div class="card">
+    <div class="lhead"><span class="lno ado">ADR-P2</span><h4>宿主：五宿主一起进首批</h4></div>
+    <p>DSH／opencode／codex／walcode／CodeBuddy 五宿主首批安装矩阵：TanYin「双宿主」承诺与 B′「三后端」并列合流；验收含 walcode／CodeBuddy 验证盲区方案（静态验证＋手测脚本回传）。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#10-安装矩阵-五宿主首批-adr-p2">详见 · v2 §10 安装矩阵（文档站）→</a>
+  </div>
+
+  <div class="card">
+    <div class="lhead"><span class="lno ado">ADR-P3</span><h4>宪法：skill 主体＋薄 CLI＋档位化执法</h4></div>
+    <p>接受「skill 主体＋薄 CLI 工具箱＋档位化 hook／egress」，<b>推翻 TanYin 纯零代码 D 决议</b>（守卫脚本不做→分档做）：账本命令载体 PS 5.1 → python3 标准库薄 CLI；「LLM 只调用不实现」「凡未给出命令的步骤不得执行」两条真纪律原样保留。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#2-设计宪法-铁律清单">详见 · v2 §2 设计宪法（文档站）→</a>
+  </div>
+
+  <div class="card">
+    <div class="lhead"><span class="lno ado">ADR-P4</span><h4>其余七点：按融合建议执行</h4></div>
+    <p>① TSV 外置卡片 ② python3 only ③ 身份矩阵批次 0 契约、批次 4 落地 ④ egress 默认开、DSH 可降档 ⑤ 弱模型档位化、默认档覆盖不可谈判 ⑥ 预算 $ 维度默认关 ⑦ evals 三层验收含 TSecBench 对齐——分别落位于 §4.11／§2 铁律 7／§11／§8.5／§8.8／§8.7／§9。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#0-决策记录-adr">详见 · v2 §0.1 拍板四条（文档站）→</a>
+  </div>
+</div>
+
+<h3 style="margin-top:30px">v2 核心机制速览 · 11 卡<em>每卡一句话，详见进设计文档站对应章节</em></h3>
+<div class="cards trio">
+
+  <div class="card">
     <div class="icon">📒</div>
-    <h4>12 表 TSV 账本＋事件溯源</h4>
-    <p>八张实体表（goals／scope／intents／facts／findings／assets／edges／approvals）＋ E-index／matrix／timeline／budget 共 12 个 TSV：全表带 schema_version，intents 与 matrix 事件溯源，timeline 链式哈希防篡改；总控单写者、ID 统一铸造。</p>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/domain-model.html">深读 · domain-model 领域模型 →</a>
+    <h4>13 表 TSV 账本 · 新增 creds</h4>
+    <p>TanYin 12 表＋新增 creds.tsv（static-cred／session 双 kind 单表），timeline.tsv 兼任 journal（第一事实源＋可全量重建），嵌套复杂度走「TSV 索引行＋外置卡片」双轨。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#4-账本设计-13-表全字段定义">详见 · v2 §4 账本设计（文档站）→</a>
   </div>
 
   <div class="card">
     <div class="icon">🚪</div>
-    <h4>九个 Phase 门</h4>
-    <p>P0 授权门 → P1 测绘 → P2 规划 → P3 演进循环 → P4 汇总 → P5 报告 → P5.5 签发门 → P6.0 清理门 → P6 沉淀。每道门都有明确职责与硬门禁（如 scope.tsv 缺失禁止 P1、未签发禁止导出）——过不了门就不许往下走。</p>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/evolution-loop.html">深读 · evolution-loop 演进循环 →</a>
-  </div>
-
-  <div class="card">
-    <div class="icon">🎯</div>
-    <h4>五态覆盖矩阵与图谱收敛</h4>
-    <p>攻击面×漏洞类型矩阵（列从 VOCAB.md 钉死、基线冻结），每格五态：x 已确认／? 疑似／- 不适用／! 环境干扰／空 未检查——空格必须消灭；图谱收敛（收敛四条件）与 budget-exhausted 是仅有的两种合法终态。</p>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/e2e-flow.html">深读 · e2e-flow 端到端 →</a>
-  </div>
-
-  <div class="card">
-    <div class="icon">🔄</div>
-    <h4>知识飞轮四机制</h4>
-    <p>ingest 摄入（staging 审批门）→ distill 蒸馏（脱敏＋反向验证）→ freshness 保鲜（last_verified＋反证降级）→ promotion 晋升（复现≥2×跨目标×人工审批×无指纹泄漏）。先例绑定 (client, scope_asset, 授权窗口) 三元组，跨会话复利。</p>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/knowledge-flywheel.html">深读 · knowledge-flywheel 知识飞轮 →</a>
-  </div>
-
-  <div class="card">
-    <div class="icon">🔌</div>
-    <h4>引擎契约插拔</h4>
-    <p>engines/CONTRACT.md 以「数据形状＋执行语义」双轴定义契约，skill／cli／projector 三类引擎契约内即插即用——换引擎不改账本；烛龙接入时只是把 L2 适配器替换为烛龙 runner，L3 格式不变。</p>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/engine-contract.html">深读 · engine-contract 引擎契约 →</a>
+    <h4>九门 × phases.yaml · 37 命令</h4>
+    <p>P0-P6 九门语义全部数据化为 phases.yaml 状态机（执法权威仍在账本命令），37 条命令＝TanYin 31 条签名冻结＋新增 6 条（add-cred／set-cred-status／amend-scope／redact-scan／state-rebuild／set-replay-state）。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#5-流程设计-九个-phase-门-phases-yaml-数据状态机">详见 · v2 §5 流程设计（文档站）→</a>
   </div>
 
   <div class="card">
     <div class="icon">🛡️</div>
-    <h4>四级纪律＋八问表＋{{vault:cred-N}}</h4>
-    <p>L1 授权门／L2 纪律规则／L3 分级审批／L4 审计留痕四级体系；P0 八问问卷（目标／范围与排除／RoE／时间窗／紧急联系人／测试账号与数据分级／备份状态…）定结构化授权；凭据只存加密 vault，账本与报告一律以 <code>{{vault:cred-N}}</code> 占位符引用。</p>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/security-discipline.html">深读 · security-discipline 安全纪律 →</a>
+    <h4>四层执法档位 · egress 默认开</h4>
+    <p>L-账本(Tier 0)→L-执行通道(Tier 1)→L-宿主 hook(Tier 2)→L-egress 代理(Tier 3) 纵深分档：Tier 0+1 恒在不可关，Tier 3 默认开启（DSH 可显式降档），实际档位写入 goals.guard_tier 并进报告守门声明。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#8-5-四层-scope-执法-档位表-r7-adr-p3-p4④">详见 · v2 §8.5 四层执法（文档站）→</a>
   </div>
 
   <div class="card">
-    <div class="icon">♻️</div>
-    <h4>上下文受管重启</h4>
-    <p>三层策略共用同一恢复协议（读 state.md＋账本摘要＋常驻集重载）：① 压缩容忍（基线，每轮从盘上重建事实基准）② 受管重启（优选，超 0.75 阈值或每 N 轮主动换会话）③ 断电恢复——「节奏和状态」本来就在盘上，不在会话里。</p>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/execution-flow.html">深读 · execution-flow 执行流 S1-S41 →</a>
+    <div class="icon">🔑</div>
+    <h4>{{vault:cred-N}} 四关卡</h4>
+    <p>唯一占位符语法贯穿全链路：执行前回注→落盘前掩码→上下文前 tokenize→交付前终检（redact-scan），加输出兜底重 tokenize 与 withheld 降级不拒绝——凭据真值永不进账本。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#8-4-vault-cred-n-四关卡-r3-全链路落地">详见 · v2 §8.4 凭据治理（文档站）→</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🌳</div>
+    <h4>预算树 · $ 默认关</h4>
+    <p>token／requests／hours 三元组树化（goal 为根、intent 预算份额为叶），$ 第四维默认关（dollars_delta 默认 0）；先验分＝确定性因子×期望 impact÷预估成本全部由命令计算，budget-exhausted 是唯一预算终态。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#8-7-预算树-r4-adr-p4⑥">详见 · v2 §8.7 预算树（文档站）→</a>
   </div>
 
   <div class="card">
     <div class="icon">🧪</div>
-    <h4>黄金夹具验收</h4>
-    <p>确定性层：固定 session 目录样本做夹具，账本命令输出经规范化（剥时间戳／ID 重映射／行排序稳定化）后字节级比对；行为层再加结构断言＋纪律注入对抗测试＋负向用例——账本命令是全系统地基，没有夹具的改动＝盲改。</p>
-    <a class="go" href="../docs/design/imported/TanYin/panorama/index.html">深读 · index 总览（验证与交付）→</a>
+    <h4>POC 四要素＋独立重放门</h4>
+    <p>network_position／preconditions／raw_request／expected.matcher 进 EV 卡片 front-matter；P4 由 fresh 隔离子代理只拿卡片盲重放，VERIFIED／REPAIRED／REJECTED 三态落账，REJECTED 降 C3 或转 fact。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#4-11-findings-外置卡片契约-b-六字段映射-adr-p4①-tsv-索引-外置卡片-双轨">详见 · v2 §4.11 卡片契约（文档站）→</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🎯</div>
+    <h4>三层验收 · TSecBench 对齐</h4>
+    <p>L1 黄金夹具（账本命令字节级回归）→ L2 交战级 evals（CI 门禁：金标召回／canary 零容忍／kill-9 保真／token 效率）→ L3 TSecBench 六域外部对齐（多阶段渗透为主指标），不绿不合入。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#9-验收体系-三层-全部-ci-门禁化-r5-adr-p4⑦">详见 · v2 §9 验收体系（文档站）→</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🖥️</div>
+    <h4>五宿主安装矩阵</h4>
+    <p>单权威目录＋幂等安装器＋符号链接＋tools.lock 供应链锁定：DSH 本仓可实测、opencode／codex 有公开环境 CI 可测、walcode／CodeBuddy 验证盲区走静态验证＋用户手测脚本回传。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#10-安装矩阵-五宿主首批-adr-p2">详见 · v2 §10 安装矩阵（文档站）→</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🧱</div>
+    <h4>批次 0-7 · 接口批次 0 定死</h4>
+    <p>八个实施批次解耦推进，批次 0 纸面冻结 16 项接口清单（13 表 schema／10 边／37 命令签名／占位符语法／phases.yaml schema 等），每批出口跑黄金夹具、不绿不放行。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#11-实施批次-0-7-批次间接口批次-0-定死-每批出口跑黄金夹具-不绿不放行">详见 · v2 §11 实施批次（文档站）→</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">♻️</div>
+    <h4>知识飞轮＋CNPEN 82 语料</h4>
+    <p>ingest staging 审批／P6 脱敏沉淀／learned→core 四门槛／lint 保鲜四机制不变，CNPEN 82 五类素材与 B′ 语料（BugHunter／Threatswarm／CEP，均 MIT）过同一道 staging 审批入库，CVE 联网核验不信任训练数据。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#7-知识系统-飞轮四机制-ingest-staging-审批-cnpen-82-入库">详见 · v2 §7 知识系统（文档站）→</a>
+  </div>
+
+  <div class="card">
+    <div class="icon">🧬</div>
+    <h4>身份矩阵差分</h4>
+    <p>B′ 独有吸收：creds 一等实体＋受保护端点×角色逐对差分重放，复用 pair_group 差分机制与 matrix 的 authz-diff 置格语义——批次 0 定契约、批次 4 落地，全行业空白、单人收益密度最高。</p>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#6-6-身份矩阵差分子流程-b-独有吸收-契约批次-0-定死-实现批次-4-adr-p4③">详见 · v2 §6.6 身份矩阵（文档站）→</a>
   </div>
 </div>
 
-<h2>TanYin 原版全景：十页入口表</h2>
+<h3 style="margin-top:30px">实施批次 0-7 · 进度追踪<em>批次间接口批次 0 定死；每批出口跑黄金夹具，不绿不放行</em></h3>
+<div class="batches">
+  <div class="btrack"><div class="fill0"></div></div>
+  <div class="blab"><span><b>总进度：0 / 8 批次完成</b>（v2 定稿 · 全部待启动）</span><span>批次 0 契约冻结是下一步——纸面全部定死再动手</span></div>
+  <div class="bgrid">
+    <div class="bseg"><span class="bno">批次 0</span><b>契约冻结</b><span class="bst">⬜ 待启动</span></div>
+    <div class="bseg"><span class="bno">批次 1</span><b>账本命令箱＋夹具</b><span class="bst">⬜ 待启动</span></div>
+    <div class="bseg"><span class="bno">批次 2</span><b>门禁层</b><span class="bst">⬜ 待启动</span></div>
+    <div class="bseg"><span class="bno">批次 3</span><b>总控＋图谱循环</b><span class="bst">⬜ 待启动</span></div>
+    <div class="bseg"><span class="bno">批次 4</span><b>引擎＋身份矩阵</b><span class="bst">⬜ 待启动</span></div>
+    <div class="bseg"><span class="bno">批次 5</span><b>知识飞轮＋语料</b><span class="bst">⬜ 待启动</span></div>
+    <div class="bseg"><span class="bno">批次 6</span><b>evals＋安装＋交付</b><span class="bst">⬜ 待启动</span></div>
+    <div class="bseg"><span class="bno">批次 7</span><b>烛龙接入（可选）</b><span class="bst">⬜ 待启动</span></div>
+  </div>
+  <div class="bnote">💡 每批次完成即点亮：出口验收通过（黄金夹具全绿）后将对应分段由灰点亮为红、并推进总进度条。</div>
+</div>
+</div>
+
+<h2>设计演进链：v1 原稿 → 导入消化 → 融合裁决 → v2 定稿</h2>
+<blockquote>🧭 <b>导语</b>：这条链是 v2 的来路，从左往右四步、越靠右越权威；赶时间只看最右一格，想弄清「为什么推翻纯零代码、凭什么五宿主」，回头读第二、三格的输入与裁决。</blockquote>
+<p>四步走到今天的唯一权威定稿——前三步是输入与裁决，第四步是当前态。</p>
+<div class="evo">
+  <div class="enode">
+    <div class="evo-step">NODE 1 · 起点</div>
+    <b>TanYin v1（另一电脑原稿）</b>
+    <p>纯 SKILL 渗透总控设计：五层架构／12 表 TSV 账本／九个 Phase 门／引擎契约／知识飞轮／黄金夹具；五专家审计 A1-A20＋B1-B17 落入。</p>
+    <a class="go" href="../docs/design/imported/TanYin/REQUIREMENTS.md">原稿 · REQUIREMENTS.md →</a>
+  </div>
+  <div class="enode">
+    <div class="evo-step">NODE 2 · 入库</div>
+    <b>导入消化（两份 JSON）</b>
+    <p>全套文档链＋原版全景十页入库 <code>docs/design/imported/TanYin/</code>；结构化抽取 <code>A-core-design.json</code>（26 域核心设计）与 <code>B-principles-panorama.json</code>（24 节原则与流程）。</p>
+    <a class="go" href="../.research/tanyin/A-core-design.json">A-core-design.json →</a>
+  </div>
+  <div class="enode">
+    <div class="evo-step">NODE 3 · 裁决</div>
+    <b>融合裁决（401 行）</b>
+    <p>2026-09-20：TanYin 全机制 × 方案 B′ 12 条 must-haves 逐条对照——概念对齐（同／叠／独三分类）→ 十大裁决（含两项推翻）→ §6 蓝图＋十个拍板点。</p>
+    <a class="go" href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">融合裁决全文（MD）→</a>
+  </div>
+  <div class="enode cur">
+    <div class="evo-step">NODE 4 · 当前</div>
+    <b>v2 定稿（701 行）</b>
+    <p>2026-09-21：融合蓝图经用户拍板 ADR-P1~P4 后的落地定稿，取代 TanYin 原稿与方案 B′——与两者冲突处以本文为准；批次 0-7 待启动。</p>
+    <a class="go" href="../docs/design/2026-09-21-tanyin-v2-design.md">v2 定稿全文（MD）→</a>
+  </div>
+</div>
+
+<h2>v1 原版参考（降级保留）</h2>
+<div class="note"><b>降级说明：</b>以下为 TanYin v1（融合前原稿）材料，是 v2 的骨架来源与字段级深读底本；与 v2 冲突处以 v2 为准——典型演进：12 表 → <b>13 表</b>（新增 creds）、纯零代码 → <b>薄 CLI 工具箱</b>、账本命令 PS 5.1 → <b>python3 标准库</b>、「不做守卫脚本」→ <b>四层执法分档</b>、双宿主 → <b>五宿主</b>。</div>
+
+<h3>TanYin 原版全景：十页入口表</h3>
 <p>原版全景共十页（index＋九视图），位于 <code>docs/design/imported/TanYin/panorama/</code>，内容与 PRINCIPLES.md／设计定稿同源。每页一句话如下，按主题直达：</p>
 <div class="tblwrap">
 <table>
@@ -207,18 +347,34 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 </table>
 </div>
 
-<h2>设计文档链：权威从高到低</h2>
-<p>冲突裁决顺序：<b>REQUIREMENTS.md（需求总纲，最高权威）→ 设计定稿（设计唯一权威源）→ 引擎设计（spec §5.2 的引擎级展开，冲突以 spec 为准）→ architecture.md（汇报版）</b>；PRINCIPLES.md 是因果链宪法，panorama 十页是它的视图化。全部位于 <code>docs/design/imported/TanYin/</code>：</p>
+<h3>原版文档链（v1 权威从高到低）</h3>
+<p>原稿内部冲突裁决顺序：<b>REQUIREMENTS.md（需求总纲，最高权威）→ 设计定稿（设计唯一权威源）→ 引擎设计（spec §5.2 的引擎级展开，冲突以 spec 为准）→ architecture.md（汇报版）</b>；PRINCIPLES.md 是因果链宪法，panorama 十页是它的视图化。全部位于 <code>docs/design/imported/TanYin/</code>：</p>
 <div class="tblwrap">
 <table>
   <tr><th>文档</th><th>角色</th></tr>
-  <tr><td><b><a href="../docs/design/imported/TanYin/REQUIREMENTS.md">REQUIREMENTS.md</a></b></td><td><span class="lv">需求总纲 · 最高权威</span>——用户诉求与验收标准的最终裁决源，任何冲突以它为准</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/REQUIREMENTS.md">REQUIREMENTS.md</a></b></td><td><span class="lv">v1 需求总纲 · 最高权威</span>——用户诉求与验收标准的最终裁决源（v2 继承 D1-D7 并修订 D1 形态条款）</td></tr>
   <tr><td><b><a href="../docs/design/imported/TanYin/PRINCIPLES.md">PRINCIPLES.md</a></b></td><td><span class="core">488 行设计宪法</span>——四个根本问题→四条铁律→因果总图；概念词典人话版、E2E 全流程推演、12 条关键因果链详解、自检三问</td></tr>
   <tr><td><b><a href="../docs/design/imported/TanYin/architecture.md">architecture.md</a></b></td><td><span class="core">架构原理与决策论证（汇报版）</span>——四支柱工程哲学、七个关键决策、开源资产谱系</td></tr>
-  <tr><td><b><a href="../docs/design/imported/TanYin/doc/2026-09-17-tanyin-design.md">doc/2026-09-17-tanyin-design.md</a></b></td><td><span class="adv">设计定稿 · 设计唯一权威源</span>——26 域设计全部落入（五专家审计 A1-A20 阻断级＋B1-B17 简化已全部采纳）</td></tr>
+  <tr><td><b><a href="../docs/design/imported/TanYin/doc/2026-09-17-tanyin-design.md">doc/2026-09-17-tanyin-design.md</a></b></td><td><span class="adv">v1 设计定稿 · 设计唯一权威源</span>——26 域设计全部落入（五专家审计 A1-A20 阻断级＋B1-B17 简化已全部采纳）</td></tr>
   <tr><td><b><a href="../docs/design/imported/TanYin/doc/2026-09-18-web-blackbox-engine.md">doc/2026-09-18-web-blackbox-engine.md</a></b></td><td><span class="adv">web-blackbox 首发引擎详细设计</span>——引擎级展开：四段流程骨架、渐进加载、提交文件协议、验收</td></tr>
-  <tr><td><b><a href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">2026-09-20-tanyin-bprime-fusion.md</a></b></td><td><span class="lv">融合分析（正在撰写）</span>——TanYin 全机制 × 方案 B′ 12 条 must-haves 逐条裁决 → 综合设计 v2</td></tr>
+  <tr><td><b><a href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">2026-09-20-tanyin-bprime-fusion.md</a></b></td><td><span class="lv">融合裁决（401 行，已完成）</span>——TanYin 全机制 × 方案 B′ 逐条裁决 → 十大裁决＋十个拍板点；v2 定稿的上游输入，冲突处以 v2 为准</td></tr>
 </table>
+</div>
+
+<!-- 设计文档站（docs/design/html/）构建约定：本页决策卡/机制卡的「详见」链接统一指向
+     2026-09-21-tanyin-v2-design.html 的章节锚点，锚点命名规则 #sec-N[-M] 对应该 MD 的章节号
+     （如 #8-5-四层-scope-执法-档位表-r7-adr-p3-p4④ = §8.5 四层执法、#6-6-身份矩阵差分子流程-b-独有吸收-契约批次-0-定死-实现批次-4-adr-p4③ = §6.6 身份矩阵差分）。站点构建时请按此约定生成章节 id。 -->
+<h2>设计文档站 · 入口</h2>
+<div class="cards" style="grid-template-columns:1fr">
+  <div class="card">
+    <div class="lhead"><span class="lno">DOCS</span><h4>设计文档站（构建中，路径先放）</h4></div>
+    <p>设计文档的 HTML 阅读版站点位于 <code>../docs/design/html/</code>——本页所有「详见」链接的目标。站点构建完成前，三个入口先按最终路径放置（暂不可达），原文现可读 MD：</p>
+    <ul class="doclinks">
+      <li><span class="tag pend">构建中</span><a href="../docs/design/html/index.html"><b>index.html · 文档站首页</b></a>——设计文档导航总入口</li>
+      <li><span class="tag pend">构建中</span><a href="../docs/design/html/2026-09-21-tanyin-v2-design.html"><b>2026-09-21-tanyin-v2-design.html · v2 综合设计定稿</b></a>（唯一权威 · 701 行）｜ <a href="../docs/design/2026-09-21-tanyin-v2-design.md">MD 原文现可读 →</a></li>
+      <li><span class="tag pend">构建中</span><a href="../docs/design/html/2026-09-20-tanyin-bprime-fusion.html"><b>2026-09-20-tanyin-bprime-fusion.html · 融合裁决</b></a>（v2 上游 · 401 行）｜ <a href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">MD 原文现可读 →</a></li>
+    </ul>
+  </div>
 </div>
 
 <div class="note"><b>与手册 <a href="../docs/learning/html/VOL-09A-ai-pentest-tracks.html">VOL-09</a>B（十大架构模式）的对照：</b>探隐的机制是 <a href="../docs/learning/html/VOL-09B-ai-pentest-patterns.html#vol-09b-ai-渗透-十大架构模式深度剖析">VOL-09B《AI 渗透·十大架构模式深度剖析》</a>里那十个模式的一次完整工程化实践——Graph 图谱工程是知识图谱／RAG 系模式的落地，Loop 循环工程对应 ReAct／plan-execute 系，Harness 脚手架工程对应工具编排与运行时复用，Context 上下文工程对应上下文管理系；图谱账本进一步把「模式」变成了可验收的数据结构（黄金夹具字节级比对）。读完模式再读探隐，能看到「模式 → 机制 → 账本 → 夹具」的完整落地路径。</div>

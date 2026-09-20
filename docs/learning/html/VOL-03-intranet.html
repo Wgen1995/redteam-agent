@@ -32,7 +32,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
 .doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
 .doc th{background:#f1f5f9;font-size:12px}
-.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}.guide{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 18px;font-size:13.5px;color:#78350f}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
 .bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
@@ -43,8 +43,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 </style></head><body>
 <div class="layout">
 <aside class="sidebar">
-  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a>
-  <a class="home" href="index.html">📚 手册首页</a>
+  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计全景</a><a class="home" href="index.html">📚 手册首页</a>
   <h3>本卷目录</h3>
   <nav><a class="l2" href="#目录">目录</a>
 <a class="l2" href="#1-打点后第一件事-本机信息收集">1. 打点后第一件事：本机信息收集</a>
@@ -72,9 +71,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#8-goad-靶场分模块练习路径">8. GOAD 靶场分模块练习路径</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-02-web-app-part2.html">← VOL-02-web-app-part2</a><a href="VOL-04-source-assist.html">VOL-04-source-assist →</a><span class="crumb">› VOL-03 · 内网渗透：从打点到域控</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="VOL-02-web-app-part2.html">← VOL-02-web-app-part2</a><a href="VOL-04-source-assist.html">VOL-04-source-assist →</a><span class="crumb">› VOL-03 · 内网渗透：从打点到域控</span></nav>
   <article class="doc">
-  <h1 id="vol-03-内网渗透-从打点到域控">VOL-03 · 内网渗透：从打点到域控</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-03-intranet.md</div>
+  <h1 id="vol-03-内网渗透-从打点到域控">VOL-03 · 内网渗透：从打点到域控</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-03-intranet</div>
+  
   <blockquote>受众：5 年源码审计/产品安全、刚转岗一人红队的工程师。Web 打点见 VOL-01-web-app-part1 / VOL-02-web-app-part2——你拿到的是一只 webshell 或低权限 shell，本卷解决"之后怎么办"：立足 → 隧道 → 凭据 → 提权 → 横向 → 域控 → 合规收尾。报告交付见 VOL-07-08-methodology-reporting。所有命令仅用于授权环境与本地靶场。</blockquote>
 <h2 id="目录">目录</h2>
 <ol><li>打点后第一件事：本机信息收集与域判断</li><li>隧道与代理：正向/反向 shell 与代理链</li><li>凭据获取：SAM/LSASS/DPAPI/Linux/浏览器</li><li>权限提升：Windows 四条主干与 Linux 判断流程</li><li>横向移动：非域环境与域环境（Kerberos 一页讲透）</li><li>域控攻防路径全景矩阵</li><li>痕迹处理与收尾（合规边界）</li><li>GOAD 靶场分模块练习路径</li></ol>
@@ -256,7 +256,7 @@ dir \\winterfell\c$
 <ul><li>A 打点：castelblack 的 IIS 允许 asp 上传 → webshell（§1、§2：Defender 关，正好练 frp 与信息收集）</li><li>B 提权：IIS 应用池 SeImpersonate → PrintSpoofer → SYSTEM → 抓 lsass（§3、§4）</li><li>C 数据库：castelblack MSSQL，arya.stark EXECUTE AS USER 模拟 → dbo → xp_cmdshell；MSSQL 链路（link）由 jon.snow 通向 braavos 的 sa（§5.1 思想）</li><li>D 凭据攻击：brandon.stark AS-REP；rickon.stark 口令喷洒 WinterYYYY；hodor 弱口令；jon.snow Kerberoast（§5.4）</li><li>E 中继与委派：GOAD 内置机器人 eddard.stark 每 5 分钟发 LLMNR 请求 → Responder/中继；sansa.stark 非约束委派；samwell.tarly 的 GPO 滥用（STARKWALLPAPER）（§6）</li><li>F 拿 DC：north 域 DA 后对 winterfell DCSync → 黄金票据 → 跨信任打 sevenkingdoms（tywin→jaime→joffrey 的 ACE 链）→ cersei.lannister（DA）→ kingslanding（§5.5、§6）</li></ul>
 <p>资源紧张：GOAD-Light（3 VM）替代完整版；只练单机打点用 MINILAB；进阶盲打用 NHA/DRACARYS（官方不提供拓扑）。 <span class="bdg bdg-v">验证</span>结业标准：能独立画出自己的完整路径图（打点机→凭据→横向→DA→DC），并在每个节点标注对应的 Windows 事件 ID。 <span class="bdg bdg-t">陷阱</span>① GOAD 官方警告"极其易受攻击"——只准跑在隔离虚拟网络；② Windows 评估版 180 天到期需重建；③ 场景随版本演进，动手前以官方文档当期列表为准。</p>
 <p>（本卷完。打点入口见 VOL-01-web-app-part1 / VOL-02-web-app-part2；白盒联动见 VOL-04-source-assist；客户端情报见 VOL-05-client-package；方法论与报告交付见 VOL-07-08-methodology-reporting。）</p>
-  <div class="pn"><a href="VOL-02-web-app-part2.html"><span>← 上一卷</span>VOL-02-web-app-part2</a><a href="VOL-04-source-assist.html"><span>下一卷 →</span>VOL-04-source-assist</a></div>
+  <div class="pn"><a href="VOL-02-web-app-part2.html"><span>← 上一篇</span>VOL-02-web-app-part2</a><a href="VOL-04-source-assist.html"><span>下一篇 →</span>VOL-04-source-assist</a></div>
   </article>
   <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
 </div></div>

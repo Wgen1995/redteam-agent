@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>红队学习手册</title><style>
+<title>📚 红队学习手册</title><style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.75}
 .layout{display:flex;min-height:100vh}
@@ -32,7 +32,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
 .doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
 .doc th{background:#f1f5f9;font-size:12px}
-.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}.guide{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 18px;font-size:13.5px;color:#78350f}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
 .bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
@@ -46,7 +46,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 .station .sub{color:#64748b;font-size:14px;margin-bottom:18px}
 .search{width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:12px;font-size:15px;margin:14px 0 6px;background:#fff}
 .search:focus{outline:none;border-color:#b91c1c}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.grp{margin-top:28px}
+.grp h3{font-size:17px;color:#1e293b;border-left:4px solid #b91c1c;padding-left:10px;margin-bottom:4px}
+.grp .gl{color:#64748b;font-size:13px;margin-bottom:12px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
 @media(max-width:720px){.cards{grid-template-columns:1fr}}
 .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 3px 14px rgba(0,0,0,.06);text-decoration:none;color:inherit;border-top:4px solid #b91c1c}
 .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(185,28,28,.15)}
@@ -58,23 +61,17 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 #hits a b{color:#b91c1c}
 #hits a span{color:#94a3b8;font-size:11.5px;margin-left:8px}
 </style></head><body><div class="station">
-<nav class="topnav" style="display:flex;gap:8px;margin-bottom:12px"><a href="../../../panorama/index.html" style="background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)">🗺️ 全景图总览</a></nav>
+<nav class="topnav" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><a href="../../../panorama/index.html" style="background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)">🗺️ 总览</a><a href="index.html" style="background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)">📚 手册</a><a href="../../../panorama/design.html" style="background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)">🧩 设计全景</a></nav>
 <h1>📚 红队学习手册</h1>
 <div class="sub">从源码审计到一人红队 · 每知识点【原理】【操作】【验证】【陷阱】四段 · 靶场练习全部核实</div>
 <input class="search" id="q" placeholder="搜索全部章节标题（如：越权 / Kerberos / nuclei / 反序列化）…">
 <div id="hits"></div>
-<div class="cards"><a class="card" href="VOL-01-web-app-part1.html"><h4>VOL-01 · Web 应用渗透（上）：侦察、指纹与注入类漏洞</h4><p>【原理】子域是打点的第一资产面，来源四类：①证书透明度（Certificate Transparency，CT）：CA 签发的证书必须公示，crt.sh 等可查；②被动 DNS（Passive DNS）：VirusTotal、Securit</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-02-web-app-part2.html"><h4>VOL-02 Web 应用渗透（下）：越权、逻辑漏洞与利用构造</h4><p>失效的访问控制（Broken Access Control）居 OWASP Top 10 2021 首位（A01），对一人红队产出最高：不需要新漏洞类型，只要&quot;两把账号+对照实验&quot;。</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-03-intranet.html"><h4>VOL-03 · 内网渗透：从打点到域控</h4><p>【原理】域（Domain）成员机的三个硬特征：机器账户在域控制器（Domain Controller, DC）注册、DNS 指向 DC、时间与 DC 同步（Kerberos 要求偏移 ≤5 分钟）。三者都留下可查询痕迹，无需任何工具即可判断</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-04-source-assist.html"><h4>VOL-04 源码审计→黑盒联动：审计员优势的降维打法</h4><p>核心心法：审计员最强的不是找洞，而是**知道&quot;这个洞对应的那个请求长什么样&quot;**。黑盒打点杂乱无章时，你永远可以先构造假设再验证。</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-05-client-package.html"><h4>VOL-05 安装包与客户端分析（够用深度）</h4><p>固定流水线：识别（file/DIE）→ 解包/脱壳（7z/innoextract/upx -d/asar/apktool）→ 双编码字符串提取 → 分桶 grep → 反编译只啃&quot;加密类+网络类&quot; → 验证凭据 → 按 §5 写 findi</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-06-toolchain.html"><h4>VOL-06 工具链详解手册</h4><p>【原理】默认 SYN 半开扫描（`-sS`）：只发 TCP 握手前两步，收到 SYN/ACK 即判开放并 RST 断开，主机应用层多半无感知。`-sV` 服务识别：向开放端口发协议探针（probe），响应与签名库 `nmap-service</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-07-08-methodology-reporting.html"><h4>VOL-07-08 方法论·报告交付·成长路线（合并卷）</h4><p>**受众**：5 年源码审计/产品安全、刚转岗一人红队的工程师：懂漏洞原理与代码，缺黑盒打点、内网、工具链实战与客户交付。</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-09A-ai-pentest-tracks.html"><h4>VOL-09A AI 渗透·赛道地图与项目档案</h4><p>讲「AI 渗透」之前，先把「传统渗透」的账摊开。本章不谈 AI 能做什么，只回答一个问题：**一人红队的作业流上，痛点有多少、根子在哪、现有工具补到了哪一格**。每条痛点固定四段：**表现**（一人红队场景白描）→ **根因** → **现</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-09B-ai-pentest-patterns.html"><h4>VOL-09B AI 渗透·十大架构模式深度剖析</h4><p>传统做法里，交战状态散落在三个地方：人脑+笔记、各工具自己的工作目录、聊天/会话上下文。这三个存储各有致命缺陷：</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-09C-ai-pentest-practice.html"><h4>VOL-09C AI 渗透·AI 辅助实战指南</h4><p>把 AI 用在渗透里的正确心智模型：**它是一个知识渊博、反应极快、但会自信编造、并且不能替你承担任何责任的远程同事**。对这样的同事，你的全部管理动作归为三件：**喂养**（给它正确的上下文——它只能基于你给的东西推理）、**提示**（让</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-10-engagement-walkthrough.html"><h4>VOL-10 实战全流程实例：一场完整交战的上帝视角</h4><p>本卷所有内容均为**虚构教学构造**：客户&quot;云帆科技&quot;、域名 `oms.yunfan.example`（`.example` 为 RFC 2606 保留域）、后端段 `10.10.20.0/24`（文档专用虚构内网段）、公网 IP 使用 R</p><div class="go">进入阅读 →</div></a>
-<a class="card" href="VOL-11-retail-ecosystem.html"><h4>VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试</h4><p>本卷所有示例均为**虚构教学构造**：示例公司一律使用虚构的「南华优选（虚构）」，域名统一 `*.nanhua.example`（`.example` 为 RFC 2606 保留域），IP 使用 RFC 5737 与文档专用段，账号、接口、</p><div class="go">进入阅读 →</div></a></div>
+<div class="grp"><h3>基础与 Web</h3><div class="gl">🧭 立足源码审计老本行打下的地基：请求怎么看、参数怎么传、Web 漏洞怎么验证——后面所有卷都在这两卷的语言上说话。</div><div class="cards"><a class="card" href="VOL-01-web-app-part1.html"><h4>VOL-01 · Web 应用渗透（上）：侦察、指纹与注入类漏洞</h4><p>【原理】子域是打点的第一资产面，来源四类：①证书透明度（Certificate Transparency，CT）：CA 签发的证书必须公示，crt.sh 等可查；②被动 DNS（Passive DNS）：VirusTotal、Securit</p><div class="go">进入阅读 →</div></a><a class="card" href="VOL-02-web-app-part2.html"><h4>VOL-02 Web 应用渗透（下）：越权、逻辑漏洞与利用构造</h4><p>失效的访问控制（Broken Access Control）居 OWASP Top 10 2021 首位（A01），对一人红队产出最高：不需要新漏洞类型，只要&quot;两把账号+对照实验&quot;。</p><div class="go">进入阅读 →</div></a></div></div>
+<div class="grp"><h3>内网与源码</h3><div class="gl">🧭 从边界跳进内网的地形学：域、Kerberos、横向移动；以及源码在手时怎么把审计思维变成渗透路线。</div><div class="cards"><a class="card" href="VOL-03-intranet.html"><h4>VOL-03 · 内网渗透：从打点到域控</h4><p>【原理】域（Domain）成员机的三个硬特征：机器账户在域控制器（Domain Controller, DC）注册、DNS 指向 DC、时间与 DC 同步（Kerberos 要求偏移 ≤5 分钟）。三者都留下可查询痕迹，无需任何工具即可判断</p><div class="go">进入阅读 →</div></a><a class="card" href="VOL-04-source-assist.html"><h4>VOL-04 源码审计→黑盒联动：审计员优势的降维打法</h4><p>核心心法：审计员最强的不是找洞，而是**知道&quot;这个洞对应的那个请求长什么样&quot;**。黑盒打点杂乱无章时，你永远可以先构造假设再验证。</p><div class="go">进入阅读 →</div></a></div></div>
+<div class="grp"><h3>客户端与工具</h3><div class="gl">🧭 拿不到 Web 入口时的另一扇门：APK/小程序/客户端包的取证式拆解；再配一把称手的工具兵器谱。</div><div class="cards"><a class="card" href="VOL-05-client-package.html"><h4>VOL-05 安装包与客户端分析（够用深度）</h4><p>固定流水线：识别（file/DIE）→ 解包/脱壳（7z/innoextract/upx -d/asar/apktool）→ 双编码字符串提取 → 分桶 grep → 反编译只啃&quot;加密类+网络类&quot; → 验证凭据 → 按 §5 写 findi</p><div class="go">进入阅读 →</div></a><a class="card" href="VOL-06-toolchain.html"><h4>VOL-06 工具链详解手册</h4><p>【原理】默认 SYN 半开扫描（`-sS`）：只发 TCP 握手前两步，收到 SYN/ACK 即判开放并 RST 断开，主机应用层多半无感知。`-sV` 服务识别：向开放端口发协议探针（probe），响应与签名库 `nmap-service</p><div class="go">进入阅读 →</div></a></div></div>
+<div class="grp"><h3>方法论与报告</h3><div class="gl">🧭 把散招收编为交战流程：侦察到报告的完整生命周期，和能让甲方点头、能让复测闭环的报告写法。</div><div class="cards"><a class="card" href="VOL-07-08-methodology-reporting.html"><h4>VOL-07-08 方法论·报告交付·成长路线（合并卷）</h4><p>**受众**：5 年源码审计/产品安全、刚转岗一人红队的工程师：懂漏洞原理与代码，缺黑盒打点、内网、工具链实战与客户交付。</p><div class="go">进入阅读 →</div></a></div></div>
+<div class="grp"><h3>AI 渗透三部曲</h3><div class="gl">🧭 赛道地图与项目档案 → 十大架构模式 → AI 辅助实战协作位：认识生态、吃透机制、落地到自己工作流的三步走。</div><div class="cards"><a class="card" href="VOL-09A-ai-pentest-tracks.html"><h4>VOL-09A AI 渗透·赛道地图与项目档案</h4><p>讲「AI 渗透」之前，先把「传统渗透」的账摊开。本章不谈 AI 能做什么，只回答一个问题：**一人红队的作业流上，痛点有多少、根子在哪、现有工具补到了哪一格**。每条痛点固定四段：**表现**（一人红队场景白描）→ **根因** → **现</p><div class="go">进入阅读 →</div></a><a class="card" href="VOL-09B-ai-pentest-patterns.html"><h4>VOL-09B AI 渗透·十大架构模式深度剖析</h4><p>传统做法里，交战状态散落在三个地方：人脑+笔记、各工具自己的工作目录、聊天/会话上下文。这三个存储各有致命缺陷：</p><div class="go">进入阅读 →</div></a><a class="card" href="VOL-09C-ai-pentest-practice.html"><h4>VOL-09C AI 渗透·AI 辅助实战指南</h4><p>把 AI 用在渗透里的正确心智模型：**它是一个知识渊博、反应极快、但会自信编造、并且不能替你承担任何责任的远程同事**。对这样的同事，你的全部管理动作归为三件：**喂养**（给它正确的上下文——它只能基于你给的东西推理）、**提示**（让</p><div class="go">进入阅读 →</div></a></div></div>
+<div class="grp"><h3>实战与行业</h3><div class="gl">🧭 一场虚构交战的上帝视角全程实录，和零售生态（交易/促销/退款/会员/供应链五链）的行业地形——学完直接对接日常工作。</div><div class="cards"><a class="card" href="VOL-10-engagement-walkthrough.html"><h4>VOL-10 实战全流程实例：一场完整交战的上帝视角</h4><p>本卷所有内容均为**虚构教学构造**：客户&quot;云帆科技&quot;、域名 `oms.yunfan.example`（`.example` 为 RFC 2606 保留域）、后端段 `10.10.20.0/24`（文档专用虚构内网段）、公网 IP 使用 R</p><div class="go">进入阅读 →</div></a><a class="card" href="VOL-11-retail-ecosystem.html"><h4>VOL-11 零售生态渗透专题：大厂产品生态里的渗透测试</h4><p>本卷所有示例均为**虚构教学构造**：示例公司一律使用虚构的「南华优选（虚构）」，域名统一 `*.nanhua.example`（`.example` 为 RFC 2606 保留域），IP 使用 RFC 5737 与文档专用段，账号、接口、</p><div class="go">进入阅读 →</div></a></div></div>
 <footer style="text-align:center;color:#94a3b8;font-size:12px;margin-top:34px">红队成长全景 · 手册站由 scripts/build_handbook.py 构建 · MD 源在 docs/learning/</footer>
 </div>
 <script>

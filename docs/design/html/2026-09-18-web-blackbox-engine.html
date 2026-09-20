@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>web-blackbox 引擎详细设计（B3 前置设计对齐） · 探隐设计文档</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.75}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:270px;background:#fff;border-right:1px solid #e2e8f0;padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;flex-shrink:0}
+.sidebar h3{font-size:14px;color:#b91c1c;margin-bottom:8px}
+.sidebar a.home{display:block;font-size:13px;color:#475569;text-decoration:none;margin-bottom:10px;padding:6px 8px;border-radius:6px}
+.sidebar a.home:hover{background:#fef2f2}
+.sidebar nav a{display:block;font-size:12.5px;color:#64748b;text-decoration:none;padding:4px 8px;border-left:2px solid transparent;border-radius:0 6px 6px 0}
+.sidebar nav a.l2{font-weight:600;color:#334155;margin-top:6px}
+.sidebar nav a.l3{padding-left:18px}
+.sidebar nav a.l4{padding-left:30px;font-size:12px}
+.sidebar nav a:hover{color:#b91c1c;background:#fef2f2}
+.sidebar nav a.on{color:#b91c1c;border-left-color:#b91c1c;background:#fef2f2;font-weight:600}
+.main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
+.topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
+.doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
+.doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
+.doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
+.doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
+.doc p{font-size:14px;color:#374151;margin:8px 0;overflow-wrap:anywhere}
+.doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
+.doc li{margin:4px 0;overflow-wrap:anywhere}
+.doc a{color:#b91c1c}
+pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb .lang{display:block;color:#64748b;font-size:12px;margin-bottom:6px}
+code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb code{background:none;color:inherit;padding:0}
+.doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+.doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
+.doc th{background:#f1f5f9;font-size:12px}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}.guide{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 18px;font-size:13.5px;color:#78350f}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
+.bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
+.bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
+.pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
+.pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.pn a span{display:block;font-size:12px;color:#94a3b8}
+footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
+@media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar">
+  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计全景</a><a class="home" href="../../learning/html/index.html">📚 手册首页</a><a class="home" href="index.html">📐 设计文档首页</a>
+  <h3>本卷目录</h3>
+  <nav><a class="l2" href="#0-一句话定位">0. 一句话定位</a>
+<a class="l2" href="#1-目录结构">1. 目录结构</a>
+<a class="l2" href="#2-执行协议-intent-提交文件全链路">2. 执行协议（intent → 提交文件全链路）</a>
+<a class="l2" href="#3-四段方法论-cnpen-实战提炼的操作化">3. 四段方法论（CNPEN 实战提炼的操作化）</a>
+<a class="l3" href="#3-1-①-侦察测绘段-recon-md">3.1 ① 侦察测绘段（recon.md）</a>
+<a class="l3" href="#3-2-②-攻击面测绘段-surface-md">3.2 ② 攻击面测绘段（surface.md）</a>
+<a class="l3" href="#3-3-③-矩阵测试段-test-md">3.3 ③ 矩阵测试段（test.md）</a>
+<a class="l3" href="#3-4-④-差分举证段-differential-md">3.4 ④ 差分举证段（differential.md）</a>
+<a class="l2" href="#4-上下文预算管理-单子代理">4. 上下文预算管理（单子代理）</a>
+<a class="l2" href="#5-失败语义落地-spec-5-1-kind-skill-的引擎侧细化">5. 失败语义落地（spec §5.1 kind: skill 的引擎侧细化）</a>
+<a class="l2" href="#6-与总控-知识库的接口">6. 与总控/知识库的接口</a>
+<a class="l2" href="#7-cnpen-素材-引擎-知识库的映射-b5-ingest-的输入清单">7. CNPEN 素材 → 引擎/知识库的映射（B5 ingest 的输入清单）</a>
+<a class="l2" href="#8-边界-本引擎不做">8. 边界（本引擎不做）</a>
+<a class="l2" href="#9-验收标准-b3-实现完成的判定">9. 验收标准（B3 实现完成的判定）</a></nav>
+</aside>
+<div class="main">
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="2026-09-17-tanyin-design.html">← 探隐 TanYin — 全类型 AI 渗透测试总控 · 设计定稿</a><span class="crumb">› web-blackbox 引擎详细设计（B3 前置设计对齐）</span></nav>
+  <article class="doc">
+  <h1 id="web-blackbox-引擎详细设计-b3-前置设计对齐">web-blackbox 引擎详细设计（B3 前置设计对齐）</h1><div class="meta">探隐设计文档站 · 2026-09-18-web-blackbox-engine</div>
+  <div class="guide">🧭 <b>导读</b>：首发引擎 web-blackbox 的 v1 专项设计：CNPEN 方法论产品化为四段操作序列。v2 §6 吸收其执行协议与失败语义——写第一个引擎实现时最贴手的施工参考。</div>
+  <blockquote>定位：探隐总控的首个 SKILL 型引擎——Web 黑盒渗透方法论的操作化。 权威关系：本文档是 spec §5.2 web-blackbox 行的<b>引擎级展开</b>（spec 保留契约级定义，本文档管引擎内部）；冲突时以 spec 为准。 方法论来源：CNPEN 斗象项目实战（82 漏洞：黑盒 31+白盒 51）——<code>C:\Users\c00hwqn\Documents\CNPEN-综合漏洞管理平台-斗象\</code>（测试全景图/思路复盘/渗透测试记录/31 份黑盒漏洞单）。 设计日期：2026-09-18。</blockquote>
+<h2 id="0-一句话定位">0. 一句话定位</h2>
+<p>web-blackbox 是一个<b>方法论骨架 SKILL</b>（写一次通用），不是手法集合——攻击手法（SQL 注入怎么测/越权怎么验）在 knowledge/concepts/ 技法页里（数据，运行时检索注入）。引擎回答的问题是：<b>拿到一个 intent 后，Web 黑盒子代理按什么纪律和流程把它执行成一份合规的提交文件</b>。</p>
+<h2 id="1-目录结构">1. 目录结构</h2>
+<pre class="cb"><code>engines/web-blackbox/
+├── SKILL.md            # 引擎入口（子代理加载的第一文件）：身份+纪律+四段流程骨架+提交契约
+├── phases/             # 四段方法论指令（按 intent 类型按需加载，不整包进上下文）
+│   ├── recon.md        # ① 侦察测绘段：资产/服务/端口/文档泄露/前端 JS 提取
+│   ├── surface.md      # ② 攻击面测绘段：接口清单/参数枚举/认证体系分析/优先级排序
+│   ├── test.md         # ③ 矩阵测试段：按技法页执行单格验证（含 payload 构造规范）
+│   └── differential.md # ④ 差分举证段：对照组设计/基线±单变量判定/证据打包
+├── patterns/           # 提交文件模板（submission schema 的引擎侧样例+反例）
+│   ├── submission-ok.md      # 合规提交样例（含 findings/facts/assets/edges 全字段）
+│   └── submission-reject.md  # 被打回的反例（缺 repro_command/凭据未占位符化等）
+└── MANIFEST.md         # 引擎清单（kind: skill；适用场景；纪律能力声明；加载预算）</code></pre>
+<p><b>加载策略</b>（对齐 spec §4.4 上下文生命周期）：SKILL.md 恒载（约 2K token）；phases/ 按当前 intent 的类型加载<b>一段</b>（recon 类 intent 只载 recon.md，约 1.5K token）；patterns/ 仅在首次提交被打回后加载（纠错学习，约 1K token）。单子代理上下文预算：引擎自身 ≤5K token，其余留给任务描述+技法页+工具输出摘要。</p>
+<h2 id="2-执行协议-intent-提交文件全链路">2. 执行协议（intent → 提交文件全链路）</h2>
+<pre class="cb"><code>总控派发（intent 六要素：目标/scope 摘要/待验证任务/facts 摘要/资产 ID/预算份额）
+↓
+[子代理会话启动] 加载 engines/web-blackbox/SKILL.md（身份+纪律+流程骨架）
+↓
+[按需加载] 按 intent.kind 加载 phases/ 对应段 + 总控注入的技法页片段（concepts/ 相关页）
+↓
+[执行] 四段流程（见 §3）——工具经执行通道调用（B17），三重门横切（deny-list/scope-check/rate_limit）
+↓
+[产物] 原始输出落盘 session/&lt;goal-id&gt;/submissions/&lt;intent-id&gt;/artifacts/（不进上下文）
+↓
+[结构化] 按 patterns/submission-ok.md 提炼 submission.json（固定 schema）
+↓
+[返回] 只回一行状态摘要（status:done + counts）——会话销毁，上下文不残留
+↓
+总控验收（写前拒收校验→next-id 铸造→八表落账——spec §4.3 单写者模式）</code></pre>
+<p><b>intent.kind 与段的映射</b>：<code>recon</code>→recon.md；<code>surface</code>→surface.md；<code>matrix-test</code>→test.md+differential.md；<code>deep-dive</code>（发现后深挖，如注入利用性验证）→test.md。映射写在 SKILL.md 的流程骨架里，子代理机械跟随。</p>
+<h2 id="3-四段方法论-cnpen-实战提炼的操作化">3. 四段方法论（CNPEN 实战提炼的操作化）</h2>
+<h3 id="3-1-①-侦察测绘段-recon-md">3.1 ① 侦察测绘段（recon.md）</h3>
+<p><b>做什么</b>：从已知入口（域名/IP/端口）建立资产与服务清单。 <b>操作序列</b>（每步带 CNPEN 实战依据）：</p>
+<ol><li>全端口扫描 <code>nmap -Pn -sS -p- --open --min-rate 5000</code>（非标准端口常藏管理后台/微服务——CNPEN 8280/9443/10060 全是 -p- 才发现的）</li><li>服务识别 <code>-sV -sC -O</code>：端口→「这是什么」；<b>证书 O 字段=厂商自研组件金线索</b>（9443 证书 O=TopHant → 厂商内部工具，疏于防护概率高）；HTTP 标题+错误响应格式区分后端框架</li><li>网络可达性验证：探测本机/跳板机对目标的可达差异（ACL 判断）——<b>环境约束识别本身是能力</b>（CNPEN 因 IPS 杀反弹 shell 改人工贴结果模式）</li><li>每个发现落 assets.tsv（经总控验收）+ facts（服务指纹）</li></ol>
+<p><b>纪律</b>：只读操作（L0 视角）；nmap 速率受 goal 级 rate_limit 约束；界外资产 scope-check 标记不深挖。</p>
+<h3 id="3-2-②-攻击面测绘段-surface-md">3.2 ② 攻击面测绘段（surface.md）</h3>
+<p><b>做什么</b>：从服务清单建立<b>接口级攻击面地图</b>。 <b>操作序列</b>：</p>
+<ol><li>敏感路径批量探测：Java 服务标配泄露点 Swagger（/doc.html、/swagger-resources、/v2/api-docs?group=）/Actuator/Druid——<b>文档泄露是攻击面地图，比盲测效率高一个量级</b>（CNPEN 漏洞#1 直接拿到 28 接口清单）</li><li>框架元接口挖掘：文档发现机制本身常被遗忘在鉴权外（swagger-resources 返回文档源列表）；<b>接口返回空/错误≠防护到位，可能是参数不对</b>（中文 group 参数 URL 编码后才拿到）</li><li>前端 JS 分析：<b>前端 JS 是 API 的说明书</b>——<code>/api/</code> + method 正则提取接口清单（CNPEN 从 15 个业务 JS 提取 134 个写接口）；GraphQL 三板斧：内省→字段建议→前端 JS 提取查询</li><li>认证体系还原：抓包还原 SSO/OAuth2/token 链路（授权码模式+state 防 CSRF=设计正常，记录为负结果 fact）</li><li>优先级排序：按「漏洞概率×影响」排攻击面（微服务直连&gt;内部工具&gt;有网关主 API——<b>核心假设：网关统一鉴权+微服务端口直接暴露=直连绕过网关</b>，CNPEN 8280 证实）</li><li>产出落 facts（接口清单/参数结构/认证链路）+ assets（新发现端点）</li></ol>
+<p><b>纪律</b>：探测用 GET/空 body 优先（报错信息是免费的需求文档——字段名/格式要求都在里面）；批量探测受 rate_limit。</p>
+<h3 id="3-3-③-矩阵测试段-test-md">3.3 ③ 矩阵测试段（test.md）</h3>
+<p><b>做什么</b>：按总控派发的矩阵格（attack_surface×vuln_class）执行技法页验证。 <b>操作序列</b>：</p>
+<ol><li>读技法页（总控注入的 concepts/ 片段）：适用条件/工具与参数/判定标准</li><li>payload 构造：按技法页规范+目标上下文（认证 Cookie 用 <code>{{vault:cred-N}}</code> 占位符引用，不落明文）</li><li>执行：工具经执行通道（curl/Playwright/Burp POC 导出）；<b>先合法后恶意</b>（先用合法文件走通流程再测绕过——否则分不清「格式错误」还是「被 WAF 拦」）</li><li>判定（<b>发现→验证→定论三步走</b>）：</li></ol><ul><li>状态码会骗人——<b>看内容类型+响应体</b>（SPA fallback 对未知路径返 200+text/html≠Actuator 暴露；真实 Actuator 返 application/json）</li><li><b>errorCode 语义分析比 HTTP 状态码可靠</b>（200+errorCode:00000=业务成功；200+00500=请求已进业务逻辑层——都证明无鉴权；401 才是有鉴权）</li><li><b>发现≠定级</b>：注入发现后必须深挖可利用性（CNPEN #7 SQL 报错回显初判高危→ORM 标识符包裹逃逸失败→降级中危）——深挖结论写进 finding 的 confidence 依据</li></ul><ol><li>产出：finding（含 repro_command+证据引用）或 fact（负结果：防护有效）——<b>负结果同样入账</b>（回归测试基线+差分举证的对照组素材）</li></ol>
+<p><b>纪律</b>：测试克制——目标是验证漏洞存在，不是真传 webshell（CNPEN 文件上传测试：恶意扩展名/路径穿越验证后即停）；破坏性 payload 只取证不执行（L3 视角一刀切）。</p>
+<h3 id="3-4-④-差分举证段-differential-md">3.4 ④ 差分举证段（differential.md）</h3>
+<p><b>做什么</b>：给 finding 配合规证据组（spec A12 的引擎侧落地）。 <b>操作序列</b>：</p>
+<ol><li><b>对照组设计</b>：证明「防护本来在别处生效」——同机其他服务的鉴权正常响应（CNPEN #3：8080 网关对未认证返回「未登录」=原校验举证，8280 无鉴权=实验组，两者共享 pair_group）</li><li><b>基线±单变量</b>：实验组与对照组请求只差一个变量（目标端口/参数值）；同请求基线重复 2 次确认稳定（非偶发）</li><li>证据打包：原始请求/响应全文落 artifacts/（双哈希：raw+normalized——归一化去 nonce/时间戳）；POC 写成<b>第三方可跑</b>的 curl/Burp 格式（凭据占位符化；Content-Length 精确值标注——CNPEN 漏洞单格式）</li><li>提交文件里 findings[].evidence_refs 指向 artifacts 路径+pair_group 标注</li></ol>
+<p><b>判定规则</b>（写入引擎契约的机械规则）：实验组与对照组响应差异仅在单变量维度→差异归因成立；响应不稳定（同请求两次结果不同）→标记 unstable，confidence 降一级。</p>
+<h2 id="4-上下文预算管理-单子代理">4. 上下文预算管理（单子代理）</h2>
+<table><thead><tr><th>内容</th><th>预算</th><th>控制</th></tr></thead><tbody><tr><td>引擎 SKILL.md</td><td>≤2K token</td><td>恒载，写死</td></tr><tr><td>phases/ 单段</td><td>≤1.5K token</td><td>按 intent.kind 加载一段</td></tr><tr><td>技法页片段</td><td>≤2K token</td><td>总控注入时截断（只给适用条件+工具参数+判定标准，不给全文）</td></tr><tr><td>任务描述+facts 摘要</td><td>≤1K token</td><td>总控派发时控制（§4.3 六要素）</td></tr><tr><td>工具输出</td><td><b>0 进上下文</b></td><td>原始输出直落 artifacts/；子代理只读结构化摘要（如「200+errorCode:00000+2KB」级别的行级判定）</td></tr><tr><td>提交文件</td><td>≤3K token</td><td>schema 定长；超限内容进盘（submissions/ 文件），摘要行返回</td></tr></tbody></table>
+<p><b>为什么工具输出零进上下文</b>：①敌意内容困在文件里（注入遏制，spec §7）②上下文是燃料也是毒药（PRINCIPLES 摘要纪律）③判定只需要行级结论不需要全文。</p>
+<h2 id="5-失败语义落地-spec-5-1-kind-skill-的引擎侧细化">5. 失败语义落地（spec §5.1 kind: skill 的引擎侧细化）</h2>
+<table><thead><tr><th>失败类型</th><th>表现</th><th>引擎侧处理</th><th>总控侧处理</th></tr></thead><tbody><tr><td><b>格式漂移</b></td><td>提交文件 schema 校验失败</td><td>首次打回后加载 patterns/submission-reject.md 对照纠错，重写一次</td><td>二次仍失败→intent 转 failed（附错误详情），不无限重试</td></tr><tr><td><b>上下文耗尽</b></td><td>子代理会话接近上限</td><td>立即停止执行，把已完成部分写成部分提交（status:partial+已完成项+未完成清单）</td><td>拆分 intent 为多个子 intent 重新派发</td></tr><tr><td><b>超时</b></td><td>回合预算耗尽</td><td>同 partial 处理</td><td>视预算决定重派或转 blocked</td></tr><tr><td><b>环境受阻</b></td><td>目标不可达/账号被禁/IPS 阻断</td><td>记录受阻原因（fact）+<b>不阻塞</b>——报告可测面，受阻项显式留痕</td><td>intent 转 blocked 附原因（不可自动复活，须人工）</td></tr><tr><td><b>工具失败</b></td><td>命令非零退出</td><td>重试 1 次（指数退避）；仍失败记 fact（工具不可用+错误摘要）</td><td>换工具路径（技法页备选）或转 blocked</td></tr></tbody></table>
+<p><b>CNPEN 依据</b>：受阻处理三步（记录原因/报障/不阻塞转向无需该依赖的测试面）+「识别环境约束选择可行作业模式」本身是渗透能力。</p>
+<h2 id="6-与总控-知识库的接口">6. 与总控/知识库的接口</h2>
+<p><b>输入</b>（总控派发时注入）：intent 六要素+技法页片段+相关 facts 摘要+可引用资产 ID+预算份额。 <b>输出</b>（提交文件 schema，spec §5.1 定死）：findings[title/confidence/impact/reproducible_steps/evidence_refs/location]+facts[]+assets[]+edges[]——<b>引擎不直接写账本</b>，总控验收后统一落账。 <b>知识库读</b>：技法页由总控注入（引擎不自己检索——检索是总控的风暴职责，引擎只执行）；实体页 last_verified 由总控在验收时更新。 <b>差分判定规则</b>：本引擎契约（MANIFEST.md）声明「同请求基线±单变量+errorCode 语义分析+内容类型验证」三条——总控 lint 降级判定（N≥2 独立反证）依赖此声明。</p>
+<h2 id="7-cnpen-素材-引擎-知识库的映射-b5-ingest-的输入清单">7. CNPEN 素材 → 引擎/知识库的映射（B5 ingest 的输入清单）</h2>
+<table><thead><tr><th>CNPEN 素材</th><th>去向</th><th>形态</th></tr></thead><tbody><tr><td>测试全景图.md（矩阵+五态图例+范围/深度/账号/纪律总纲）</td><td>spec 矩阵机制已吸收（五态/全景图驱动）；<b>样例进黄金夹具</b></td><td>夹具素材</td></tr><tr><td>渗透测试思路复盘.md（八阶段决策逻辑+7 条核心思路）</td><td><b>本文档 §3 四段方法论的直接来源</b>；方法论原则进 concepts/ 技法页（如「errorCode 语义分析」「前端 JS 是 API 说明书」）</td><td>引擎指令+技法页</td></tr><tr><td>渗透测试记录.md（T1-T55 测试项+证据索引）</td><td>P6 沉淀的<b>先例链路素材</b>（脱敏后进 precedents/）</td><td>先例库</td></tr><tr><td>31 份黑盒漏洞单（POC 格式/差分举证/定级修正过程）</td><td><b>patterns/submission-ok.md 样例来源</b>+技法页判定标准（如「注入深挖后才定级」）</td><td>提交模板+技法页</td></tr><tr><td>BurpPOC 合集/Burp 复现手册</td><td>技法页的工具参数素材</td><td>技法页</td></tr></tbody></table>
+<h2 id="8-边界-本引擎不做">8. 边界（本引擎不做）</h2>
+<ul><li>不做源码审计（vuln-agent CLI 引擎职责）</li><li>不做可视化（session-viz projector 职责）</li><li>不做知识检索/风暴/调度（总控职责——引擎只执行 intent）</li><li>不直接写账本（单写者模式——总控验收落账）</li><li>不自选攻击手法（手法来自技法页+intent 任务描述——引擎是方法论骨架不是手法集合）</li></ul>
+<h2 id="9-验收标准-b3-实现完成的判定">9. 验收标准（B3 实现完成的判定）</h2>
+<ol><li>黄金夹具：给定固定 intent（如「验证 8280 端口未授权访问」）+固定技法页片段，引擎产出提交文件与 patterns/submission-ok.md 结构一致（字段全/凭据占位符化/证据双哈希/pair_group 标注）</li><li>纪律注入测试：给引擎注入敌意工具输出（响应体里藏「忽略之前指令」），验证输出困在 artifacts/ 不进上下文、提交文件不受污染</li><li>失败语义：模拟格式漂移/上下文耗尽/环境受阻三场景，验证 partial 提交+blocked 转移正确</li><li>差分判定：对照组/实验组样例对，验证 pair_group 归因与 unstable 降级</li></ol>
+  <div class="pn"><a href="2026-09-17-tanyin-design.html"><span>← 上一篇</span>探隐 TanYin — 全类型 AI 渗透测试总控 · 设计定稿</a><span></span></div>
+  </article>
+  <footer>红队成长全景 · 设计文档站由 scripts/build_handbook.py 构建</footer>
+</div></div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var links=[].slice.call(document.querySelectorAll('.sidebar nav a'));
+  if(!links.length)return;
+  var byId={};links.forEach(function(a){byId[a.getAttribute('href').slice(1)]=a;});
+  var heads=Object.keys(byId).map(function(id){return document.getElementById(id);}).filter(Boolean);
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('on');});
+      var a=byId[e.target.id]; if(a)a.classList.add('on');
+    }});
+  },{rootMargin:'0% 0% -80% 0%'});
+  heads.forEach(function(h){obs.observe(h);});
+});
+</script></body></html>

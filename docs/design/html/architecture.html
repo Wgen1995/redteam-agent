@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>探隐 TanYin — 架构原理与决策论证（汇报版） · 探隐设计文档</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.75}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:270px;background:#fff;border-right:1px solid #e2e8f0;padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;flex-shrink:0}
+.sidebar h3{font-size:14px;color:#b91c1c;margin-bottom:8px}
+.sidebar a.home{display:block;font-size:13px;color:#475569;text-decoration:none;margin-bottom:10px;padding:6px 8px;border-radius:6px}
+.sidebar a.home:hover{background:#fef2f2}
+.sidebar nav a{display:block;font-size:12.5px;color:#64748b;text-decoration:none;padding:4px 8px;border-left:2px solid transparent;border-radius:0 6px 6px 0}
+.sidebar nav a.l2{font-weight:600;color:#334155;margin-top:6px}
+.sidebar nav a.l3{padding-left:18px}
+.sidebar nav a.l4{padding-left:30px;font-size:12px}
+.sidebar nav a:hover{color:#b91c1c;background:#fef2f2}
+.sidebar nav a.on{color:#b91c1c;border-left-color:#b91c1c;background:#fef2f2;font-weight:600}
+.main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
+.topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
+.doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
+.doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
+.doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
+.doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
+.doc p{font-size:14px;color:#374151;margin:8px 0;overflow-wrap:anywhere}
+.doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
+.doc li{margin:4px 0;overflow-wrap:anywhere}
+.doc a{color:#b91c1c}
+pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb .lang{display:block;color:#64748b;font-size:12px;margin-bottom:6px}
+code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb code{background:none;color:inherit;padding:0}
+.doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+.doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
+.doc th{background:#f1f5f9;font-size:12px}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}.guide{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 18px;font-size:13.5px;color:#78350f}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
+.bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
+.bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
+.pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
+.pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.pn a span{display:block;font-size:12px;color:#94a3b8}
+footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
+@media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar">
+  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计全景</a><a class="home" href="../../learning/html/index.html">📚 手册首页</a><a class="home" href="index.html">📐 设计文档首页</a>
+  <h3>本卷目录</h3>
+  <nav><a class="l2" href="#1-为什么做-问题与机会">1. 为什么做：问题与机会</a>
+<a class="l2" href="#2-ai-agent-工程哲学-深度分析与架构选型">2. AI Agent 工程哲学：深度分析与架构选型</a>
+<a class="l3" href="#2-1-graph-engineering-图谱工程">2.1 Graph Engineering（图谱工程）</a>
+<a class="l3" href="#2-2-loop-engineering-循环工程">2.2 Loop Engineering（循环工程）</a>
+<a class="l3" href="#2-3-harness-engineering-脚手架工程">2.3 Harness Engineering（脚手架工程）</a>
+<a class="l3" href="#2-4-context-engineering-上下文工程-第四支柱">2.4 Context Engineering（上下文工程）——第四支柱</a>
+<a class="l3" href="#2-5-四者关系-正交互补-咬合成完整工程">2.5 四者关系：正交互补，咬合成完整工程</a>
+<a class="l2" href="#3-为什么这么设计-五个关键决策">3. 为什么这么设计：五个关键决策</a>
+<a class="l3" href="#决策-1-纯-skill-不做代码-插件-二进制">决策 1：纯 SKILL，不做代码/插件/二进制</a>
+<a class="l3" href="#决策-2-图谱账本驱动-而非流程流水线驱动">决策 2：图谱账本驱动，而非流程流水线驱动</a>
+<a class="l3" href="#决策-3-引擎契约总线-不重写引擎">决策 3：引擎契约总线，不重写引擎</a>
+<a class="l3" href="#决策-4-知识库-wiki-先例-模式进化-保鲜">决策 4：知识库 = wiki + 先例 + 模式进化 + 保鲜</a>
+<a class="l3" href="#决策-5-安全是设计约束-不是事后补丁">决策 5：安全是设计约束，不是事后补丁</a>
+<a class="l3" href="#决策-6-账本格式保留-tsv-不改-jsonl-sqlite">决策 6：账本格式保留 TSV，不改 JSONL/SQLite</a>
+<a class="l3" href="#决策-7-守门机制的诚实边界-账本级硬门-非进程级硬门">决策 7：守门机制的诚实边界——账本级硬门，非进程级硬门</a>
+<a class="l2" href="#4-为什么直接用开源资产">4. 为什么直接用开源资产</a>
+<a class="l2" href="#5-漏洞标记与召回率-如何度量-找得全">5. 漏洞标记与召回率：如何度量&quot;找得全&quot;</a>
+<a class="l3" href="#5-1-标记体系-每个漏洞两维正交评级">5.1 标记体系（每个漏洞两维正交评级）</a>
+<a class="l3" href="#5-2-召回率框架-覆盖度量的三层">5.2 召回率框架（覆盖度量的三层）</a>
+<a class="l3" href="#5-3-loop-演进对召回率的提升路径">5.3 Loop 演进对召回率的提升路径</a>
+<a class="l2" href="#6-汇报一页话">6. 汇报一页话</a></nav>
+</aside>
+<div class="main">
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="PRINCIPLES.html">← 探隐 TanYin — 原理逻辑与因果链 · 含 E2E 全流程推演</a><a href="2026-09-17-tanyin-design.html">2026-09-17-tanyin-design →</a><span class="crumb">› 探隐 TanYin — 架构原理与决策论证（汇报版）</span></nav>
+  <article class="doc">
+  <h1 id="探隐-tanyin-架构原理与决策论证-汇报版">探隐 TanYin — 架构原理与决策论证（汇报版）</h1><div class="meta">探隐设计文档站 · architecture</div>
+  <div class="guide">🧭 <b>导读</b>：v1 架构汇报稿：五层六边形与四支柱工程哲学的原始论述。适合讲清楚「这套系统为什么这么分层」时取材——v2 §3 在此基础上重排了三件咬合。</div>
+  <blockquote>用途：向领导/同事讲清楚探隐是什么、为什么这么设计、为什么用这些开源资产、AI Agent 工程思路如何体现、漏洞标记与召回如何度量。 配图：见 panorama/architecture.md（mermaid 源码，可直接渲染） 修订（2026-09-17）：按五专家联合审计修订——§2 补第四支柱 Context Engineering、谱系标注修正；§3 决策 2/3 更新；新增决策 6（TSV 保留）与决策 7（守门机制边界）。</blockquote>
+<h2 id="1-为什么做-问题与机会">1. 为什么做：问题与机会</h2>
+<p><b>现状痛点</b>：</p>
+<ol><li>AI（编码 agent）做渗透测试已经可行（CNPEN 实战：AI 辅助挖掘 82 个漏洞），但方法论活在测试者脑子里——换会话丢失、换人不可复用</li><li>业界 AI 渗透产品要么重（PentestCode：fork 宿主成独立二进制；dsh-pentester：Docker 工具箱+插件体系），要么散（社区 skill 包无纪律无状态）</li><li>没有产品把"测试过程"本身数据化——测到什么程度算完成、覆盖了什么没覆盖什么，全凭感觉</li></ol>
+<p><b>探隐的回答</b>：把已验证的方法论固化成<b>纯 SKILL 套件</b>（零代码、复制即装、任意编码 agent 可用），用<b>图谱账本</b>让测试过程本身成为数据——图谱收敛即测试完成，覆盖可度量，知识可复利。</p>
+<h2 id="2-ai-agent-工程哲学-深度分析与架构选型">2. AI Agent 工程哲学：深度分析与架构选型</h2>
+<p>业界 AI Agent 工程哲学（Graph Engineering / Loop Engineering / Harness Engineering / Context Engineering），不是功能模块，而是几种回答「agent 的复杂性应该放在哪里」的哲学立场。逐一深析，再讲选型。</p>
+<h3 id="2-1-graph-engineering-图谱工程">2.1 Graph Engineering（图谱工程）</h3>
+<p><b>哲学立场：复杂性放在「状态」里。</b> 把世界建模为显式的节点与关系，让推理变成可执行的图查询——状态外置、结构化、可检验。 <b>它解决什么</b>：LLM 的两个根本缺陷——①上下文易失（会话断了状态就没了）；②推理不可检验（说「我分析出 X」但无法审计分析过程）。图谱把「知道什么」和「怎么知道的」都变成磁盘上的数据。 <b>架构原理</b>：</p>
+<ul><li><b>受控词汇</b>（closed vocabulary）：节点类型和边类型有限且语义明确——这是可查询、可校验、可推理的前提。开放词汇=自由文本=回到不可检验</li><li><b>图查询即推理</b>：「未消费 fact」= 无 derived_from 出边的 fact；「攻击链」= attack 边路径；这些是 grep/图遍历可回答的问题，不依赖 LLM 即兴</li><li><b>状态外置</b>：agent 的大脑在磁盘不在会话——断点续传、多代理共享、事后审计全部自然获得</li></ul>
+<p><b>业界谱系</b>：知识图谱/RAG 检索增强（向量检索是软图）→ GenCPT 知识图谱驱动渗透（节点=资产/发现/攻击，边=关系/验证）→ dsh-pentest 六表模型（探索链路显式建模）→ LangGraph（<b>类比</b>：图结构编排 workflow，非知识状态外置——标注为类比而非谱系，防技术评审争议）。 <b>代价与边界</b>：建模成本（不是所有知识都值得结构化）；查询能力受限于词汇表设计；图 schema 错了重构贵——所以词汇表要小而稳（探隐十种边）。 <b>探隐选型</b>：八表 TSV 账本 + 十种边（spawns/yields/derived_from/proves/parent/attack/cross_ref/evidences/supersedes）。图谱既是记录（append-only 可回放）也是推理引擎（未消费 fact 扫描驱动循环、图邻接推理撮合攻击链、收敛四条件可计算）。<b>图谱收敛=测试完成</b>——把「何时停止」从 LLM 主观判断变成图查询。</p>
+<h3 id="2-2-loop-engineering-循环工程">2.2 Loop Engineering（循环工程）</h3>
+<p><b>哲学立场：复杂性放在「过程」里。</b> 不一次规划死，而是观察→思考→行动→观察的闭环持续演进——计划是活的，随信息增长而重规划。 <b>它解决什么</b>：一次性规划（plan-then-execute）在开放环境必然失效——渗透测试的本质是探索式推理，下一步测什么取决于刚发现了什么。固定流水线（recon→scan→exploit→report）在真实目标面前是削足适履。 <b>架构原理</b>：</p>
+<ul><li><b>循环体</b>：感知（扫描状态）→ 决策（生成/排序假设）→ 行动（执行验证）→ 落账（更新状态）——每轮循环状态都变，决策依据永远最新</li><li><b>终止条件</b>：循环必须有可计算的收敛判定，否则要么死循环要么靠 token 耗尽这种事故性终止</li><li><b>预算控制</b>：假设空间是指数的，循环里必须有打分/排序/淘汰机制（先验分、top-N 晋升、deferred 池）——这是「头脑风暴的扩张感」与「工程收敛性」的调和点</li></ul>
+<p><b>业界谱系</b>：ReAct（Reason+Act 交替）→ AutoGPT 式自主循环（缺收敛判定的教训）→ GenCPT 图谱演进循环（图谱状态驱动循环直到收敛）→ o1/R1 式推理时扩展（<b>类比</b>：test-time scaling 是隐藏 CoT 循环，非环境交互循环——标注为类比而非谱系）。 <b>代价与边界</b>：循环轮数=成本（每轮都是 LLM 调用+工具执行）；循环可能震荡（同一假设反复生成——需要<b>机械去重键</b>，语义判重不可靠）；无收敛判定的循环是灾难——所以收敛条件必须与状态模型（Graph）联动，且必须有预算合法终态（预算耗尽≠事故，是显式模式）。 <b>探隐选型</b>：P3 图谱演进循环——扫描未消费 fact → <b>假设风暴</b>（条件触发：仅存在未消费 fact 或矩阵空格时执行；五路扩张：实体页检索/技法页检索/先例注入/图邻接推理/LLM 自由联想 → candidate 打分晋升——确定性因子命令计算，LLM 只做同分排序；rejected/deferred 留痕可翻案，翻案须引用触发 fact）→ 调度引擎 → 验证落账 → attack/cross_ref 链构建 → 收敛判定（四条件）或 budget-exhausted（预算三元组耗尽的合法终态，产出中期报告+未闭合格披露）。</p>
+<h3 id="2-3-harness-engineering-脚手架工程">2.3 Harness Engineering（脚手架工程）</h3>
+<p><b>哲学立场：复杂性放在「基础设施」里，而且尽量用现成的。</b> 不重写 agent 运行时，站在成熟宿主上做增量——工具调用、权限控制、沙箱、并发调度这些工程重活交给 harness，自己只做宿主不做的那一层。 <b>它解决什么</b>：agent 基础设施（工具协议、上下文管理、多代理、权限门）是重工程，且在快速演化——自建=永远在追平；而且方法论产品（如探隐）的价值在领域知识不在基础设施，重造轮子是资源错配。 <b>架构原理</b>：</p>
+<ul><li><b>薄控制面</b>：自己的代码/指令面越小越好，宿主能力面用得越满越好——「五不原则」（不要求宿主改/不规定宿主内部/不干涉宿主调度/不假设宿主能力/不锁死宿主）</li><li><b>契约而非集成</b>：与宿主的耦合点收敛为契约（探隐：SKILL 目录格式+账本文件格式）；与引擎的耦合点收敛为契约（manifest+统一产物格式）——换宿主/换引擎都不动核心</li><li><b>渐进加载</b>：常驻上下文最小化（SKILL.md &lt;2K token），按需加载 phases/——上下文是宿主最稀缺资源</li></ul>
+<p><b>业界谱系</b>：Claude Code/walcode/CodeBuddy 等 coding agent 成为通用 harness → MCP 工具协议标准化 → dsh-pentester Docker 工具箱（重 harness 路线）→ 烛龙 HarnessExecutor（spawn harness CLI 跑 skill）→ PentestCode fork 宿主（反面教材：承担全部 fork 维护成本）。 <b>代价与边界</b>：受宿主能力上限约束（并发模型/上下文窗口/权限粒度因宿主而异）；宿主差异需要适配层吸收（探隐：指挥官协议吸收并发模型差异）；宿主停更/变协议是外部风险——所以契约面要小。 <b>探隐选型</b>：纯 SKILL 形态——不 fork 宿主、不做运行时、零代码依赖。walcode/CodeBuddy/Claude Code 是 harness；子代理并发、命令执行、权限控制全复用宿主；引擎侧同理（vuln_agent 契约接入不重写）。烛龙成熟后 L2 适配器换成烛龙 runner，账本格式不变。</p>
+<h3 id="2-4-context-engineering-上下文工程-第四支柱">2.4 Context Engineering（上下文工程）——第四支柱</h3>
+<p><b>哲学立场：复杂性放在「上下文生命周期管理」里。</b> 上下文是 agent 最稀缺资源——它不是"装进来的"，是"被设计出来的"：什么常驻、什么按需、何时压缩、何时重启。 <b>它解决什么</b>：长循环 agent 的必然死法——上下文溢出或注意力衰减。溢出的实际表现不是干净恢复，而是纪律违反率上升、账本写错，恰好发生在会话尾部最需要严谨的阶段。 <b>架构原理</b>：</p>
+<ul><li><b>常驻集 vs 按需集</b>：安全规则/循环骨架/命令索引常驻（不得被渐进加载挤掉）；phases/知识页/契约按需</li><li><b>受管重启</b>：每 N 轮或超阈值主动换会话，从盘上状态恢复——把"断电恢复"升级为常规操作（与状态外置联动：因为状态在盘上，所以重启无损）</li><li><b>摘要纪律</b>：子代理返回结构化定长摘要（超限内容进盘）；查询命令输出摘要化（计数+top-N，禁止全量回灌）</li><li><b>注入遏制</b>：敌意内容困在提交文件里，不进总控指令流——子代理隔离是安全边界，不只是成本优化</li></ul>
+<p><b>业界谱系</b>：Anthropic 语境下 compaction/structured note-taking/sub-agent isolation 已是独立学科 → MemGPT/Letta 分页式工作记忆 → Claude Code 的 /compact 与 subagent 隔离。 <b>代价与边界</b>：摘要是有损压缩（原始响应的"气味"丢失——允许按相关性回读 artifact 片段补偿）；checkpoint 写入有成本；重启有恢复延迟。 <b>探隐选型</b>：P3 每轮 checkpoint（state.md）+ 受管重启 + 子代理结构化返回 schema + 查询摘要化 + 常驻集清单——设计最弱处（审计确认），立为显式支柱。</p>
+<h3 id="2-5-四者关系-正交互补-咬合成完整工程">2.5 四者关系：正交互补，咬合成完整工程</h3>
+<table><thead><tr><th></th><th>Graph</th><th>Loop</th><th>Harness</th><th>Context</th></tr></thead><tbody><tr><td>复杂性放在</td><td>状态</td><td>过程</td><td>基础设施</td><td>上下文生命周期</td></tr><tr><td>回答的问题</td><td>知道什么、怎么知道的</td><td>接下来做什么、何时停</td><td>在哪跑、用什么跑</td><td>记住什么、忘掉什么</td></tr><tr><td>失效模式（单独用）</td><td>死档案：记录完就完</td><td>失忆循环：每轮丢状态</td><td>空转轮子：有能力没方法</td><td>溢出/衰减：越跑越糊涂</td></tr><tr><td>探隐落位</td><td>L3 八表十边</td><td>P3 演进循环+假设风暴</td><td>L5 宿主+L2 契约总线</td><td>state.md+受管重启+摘要纪律</td></tr></tbody></table>
+<p><b>咬合逻辑</b>：Graph 给 Loop 提供状态载体与收敛判据（循环每轮读写图谱，收敛=图查询）；Loop 给 Graph 提供演进动力（图谱不会自己长，循环驱动它长到收敛）；Harness 给两者提供运行环境（图谱是文件所以任何宿主可读写，循环是 LLM 指令所以任何宿主可执行）；Context 给三者提供可持续性（状态在盘上所以重启无损，摘要纪律所以循环不溢出，常驻集所以纪律不衰减）。<b>四者中抽掉任何一个，另外三个都退化</b>——这就是为什么探隐的架构选型是四者全取、各取其长、显式落位。</p>
+<h2 id="3-为什么这么设计-五个关键决策">3. 为什么这么设计：五个关键决策</h2>
+<h3 id="决策-1-纯-skill-不做代码-插件-二进制">决策 1：纯 SKILL，不做代码/插件/二进制</h3>
+<table><thead><tr><th>选项</th><th>放弃理由</th></tr></thead><tbody><tr><td>独立二进制（PentestCode 路线）</td><td>fork 宿主=承担全部维护成本；方法论迭代要发版</td></tr><tr><td>宿主插件（dsh 路线）</td><td>绑定单一宿主（dsh），walcode/CodeBuddy 装不了</td></tr><tr><td>Python 管道（vuln_agent 路线）</td><td>有运行时依赖；装不进纯 agent 环境</td></tr><tr><td><b>纯 SKILL（选定）</b></td><td>复制即装、全宿主通吃、方法论迭代只改 markdown</td></tr></tbody></table>
+<p>确定性风险（无代码怎么保证不乱）由<b>账本纪律</b>解决：状态全落 TSV、总控只跑命令/派子代理/验收格式、凡未给出命令的步骤不得执行。此模式已被 GenSift 在生产验证。</p>
+<h3 id="决策-2-图谱账本驱动-而非流程流水线驱动">决策 2：图谱账本驱动，而非流程流水线驱动</h3>
+<p>传统渗透工具是固定流水线（recon→scan→exploit→report），AI 渗透的本质却是<b>探索式推理</b>——不知道下一步测什么，取决于刚发现了什么。探隐把探索过程建模为图谱演进：</p>
+<ul><li>每个 fact（事实）要么被消费（推导出新 intent），要么显式标记不消费（附理由）</li><li>每个 intent（意图）要么验证出结果，要么 blocked（附原因；不可自动复活）</li><li><b>收敛条件可计算</b>：无未消费 fact ∧ 无 pending intent ∧ candidate 池空 ∧ 矩阵无空格</li><li><b>预算耗尽是合法终态</b>（budget-exhausted）：token/请求数/时间窗三元组任一耗尽 → 中期报告+未闭合格显式披露——诚实终止，不是事故</li></ul>
+<p>这解决了 AI 渗透最大的工程问题：<b>何时停止</b>。不是"token 用完"或"模型觉得够了"，而是数据判定；且唯一备选终态（预算耗尽）也是显式模式而非事故性终止——这是对 AutoGPT 教训的完整吸收。</p>
+<h3 id="决策-3-引擎契约总线-不重写引擎">决策 3：引擎契约总线，不重写引擎</h3>
+<p>全类型渗透需要多种能力（Web 黑盒/源码审计/容器/AD...），全部自研不现实也没必要。探隐只定义契约（manifest+输入+统一提交格式+执行语义），引擎三种形态接入：</p>
+<ul><li>SKILL 型（web-blackbox 新写——CNPEN 方法论没有现成产品化实现）</li><li>CLI 型（vuln_agent 适配器包裹——已有成熟工具直接复用；须声明纪律能力上限，黑盒工具默认最高风险级）</li><li>projector 型（session-viz——只读账本产可视化，不回写）</li></ul>
+<p><b>跨引擎知识流动是总控独有增值</b>：Web 发现的端点清单自动成为白盒审计重点（cross_ref 边），白盒发现的硬编码密钥自动成为 Web 测试素材。单引擎产品做不到。 <b>边界修正</b>：引擎"零改动"过强——准确表述是<b>契约内零改动</b>（引擎只要满足契约就即插即用；契约本身演进时引擎需跟版本）。</p>
+<h3 id="决策-4-知识库-wiki-先例-模式进化-保鲜">决策 4：知识库 = wiki + 先例 + 模式进化 + 保鲜</h3>
+<p>"不断增强"不是口号，是四条具体机制：</p>
+<ul><li><b>ingest</b>：任意外部素材（历史报告/CVE 分析）丢进 raw/ 自动提炼成知识页——CNPEN 82 漏洞直接变成初始知识库</li><li><b>entities 聚合</b>：技术实体页（shiro/fastjson...）累积"在 N 个目标见过、模式 X 有效、Y 已修复"——跨目标复利的索引</li><li><b>进化门槛</b>：新模式复现≥2次+跨目标有效+人工审批才入 core——防一次性巧合污染</li><li><b>lint 保鲜</b>：模式带 last_verified，陈旧模式自动警告，失效自动降级——攻击知识有衰减机制（厂商会打补丁，去年有效今年未必）</li></ul>
+<h3 id="决策-5-安全是设计约束-不是事后补丁">决策 5：安全是设计约束，不是事后补丁</h3>
+<p>四级纪律（授权门/规则/分级审批/审计留痕）+ 命令双维度安全上下文（操作级别 × 攻击者视角 L0-L3，L3 理论推演一刀切只取证不执行）+ 先例机制（已授权常规操作免逐条确认，条目绑定客户三元组——「哪个客户+哪个授权资产+哪次授权时间窗」三字段全同才可复用，跨客户=拿 A 的授权打 B 的越权事故+参数白名单）+ 命令 deny-list（机械拦截，不依赖 LLM 标签）+ 注入防护（工具输出是数据不是指令）+ 速率与熔断（rate_limit/退避/事故快照）。<b>安全边界显式记录</b>（哪些是账本级硬门、哪些是命令层校验、哪些是 prompt 级约束——学 dsh-pentester 的诚实）。</p>
+<h3 id="决策-6-账本格式保留-tsv-不改-jsonl-sqlite">决策 6：账本格式保留 TSV，不改 JSONL/SQLite</h3>
+<p>审计建议改 JSONL 或 SQLite（转义生态/查询能力更强）。<b>不采纳，理由</b>：</p>
+<ol><li>黄金夹具与可读性问题已按"规范化比对+命令层校验"解决，换格式收益缩水</li><li>换 JSONL 不解决真正的病灶——状态机语义（事件溯源）与并发写（单写者）是格式无关的，必须靠账本命令集解决</li><li>SQLite 破坏零代码宪法（产品定位）；混合格式（结构表 TSV/富文本表 JSONL）引入双解析栈，成本大于收益</li><li>TSV 的 grep 可读性对"人类直接打开账本"场景（安全工程师复核）仍是最高</li></ol>
+<p><b>代价承认</b>：转义规范必须命令层强制（LLM 不手工转义）；富文本超长内容外置 Evidence 文件，TSV 只存引用。</p>
+<h3 id="决策-7-守门机制的诚实边界-账本级硬门-非进程级硬门">决策 7：守门机制的诚实边界——账本级硬门，非进程级硬门</h3>
+<p>审计指出 prompt 级纪律无 enforcement。<b>处置</b>：不引入守卫脚本/守护进程（破坏零代码宪法），而是把校验下沉到<b>账本命令层</b>——写前拒收（列数/枚举/引用闭合/dedup_key 唯一）、scope-check 内联资产落账、deny-list 数据文件前置检查。<b>诚实边界</b>：这是"事后可审计+事前可拒收"，不是"事前不可绕过"——LLM 理论上仍可绕过命令直接写文件（宿主权限规则是真正的进程级防线，列为探知项 C3 按宿主能力配置）。此边界已写入 DISCIPLINE 并在报告中声明。</p>
+<h2 id="4-为什么直接用开源资产">4. 为什么直接用开源资产</h2>
+<table><thead><tr><th>资产</th><th>用什么</th><th>为什么不自己写</th></tr></thead><tbody><tr><td>CNPEN 方法论（自有）</td><td>方法论本体 + 初始知识库</td><td>已被实战验证（82 漏洞），是探隐的差异化核心</td></tr><tr><td>GenSift 模式</td><td>编排器纪律/TSV 账本/黄金夹具</td><td>生产验证的"LLM 语义+账本确定性"模式，自研必踩同样的坑</td></tr><tr><td>dsh-pentest 领域模型</td><td>六表+边词汇+指挥官协议</td><td>开源验证的模型，且 MIT</td></tr><tr><td>reverse-skill</td><td>Evidence 契约/field-journal/先例</td><td>高星标上游的成熟实践（星标数以实时核实为准）</td></tr><tr><td>vuln_agent（自有/内部）</td><td>白盒引擎</td><td>已有成熟工具，适配器接入成本远低于重写</td></tr><tr><td>llm-wiki-agent</td><td>知识 wiki 机制</td><td>知识管理是通用问题，模式已验证</td></tr></tbody></table>
+<p><b>原则</b>：方法论层自研（这是差异化），工程模式层复用（已被验证的开源实践），引擎层契约接入（不重造轮子）。所有借鉴均在设计文档中显式标注来源——可审计、可升级、可替换。</p>
+<h2 id="5-漏洞标记与召回率-如何度量-找得全">5. 漏洞标记与召回率：如何度量"找得全"</h2>
+<p>这是 AI 渗透从"看运气"到"可度量"的关键设计：</p>
+<h3 id="5-1-标记体系-每个漏洞两维正交评级">5.1 标记体系（每个漏洞两维正交评级）</h3>
+<ul><li><b>confidence（确定性）</b>：C1 实证复现 / C2 条件实证（附条件可达性证据）/ C3 风险线索 / ➖🛑 负结果（防护有效同样入账——回归测试基线）</li><li><b>impact（影响）</b>：高/中/低（CVSS 式影响域判定）</li><li>两维正交呈现（报告双列）——"我多确定它存在"与"它造成多大影响"是两个问题，压成一维会系统性误导修复优先级</li></ul>
+<h3 id="5-2-召回率框架-覆盖度量的三层">5.2 召回率框架（覆盖度量的三层）</h3>
+<ol><li><b>矩阵层</b>（攻击面×漏洞类型）：五态标记（x/?/-/!/空），空格必须消灭——<b>"不知道不知道什么"被矩阵显式化</b>（CNPEN 全景图方法论）</li><li><b>图谱层</b>：收敛条件可计算（无未消费 fact/无 pending intent/candidate 池空）——探索完整性有数据判定</li><li><b>知识层</b>：先例命中率（本次测试多少 finding 来自先例库 vs 新发现）——知识复利的直接度量；新模式晋升率（learned→core）——知识库质量指标</li></ol>
+<h3 id="5-3-loop-演进对召回率的提升路径">5.3 Loop 演进对召回率的提升路径</h3>
+<pre class="cb"><code>第 1 次测试目标类型 A：召回 = 矩阵基线 + 通用模式
+第 N 次测试目标类型 A：召回 += 先例库（A 类目标已知模式全注入）
+度量：同类型目标的 session 对比——先例命中率↑、矩阵空格↓、收敛轮数↓</code></pre>
+<p><b>召回率的诚实边界</b>：探隐不承诺"找到全部漏洞"（渗透测试本质是抽样），承诺的是<b>覆盖可度量</b>（每格有判定，词表以 WSTG 全集为基线防单源过拟合）+ <b>复利</b>（同类型目标越测越全）+ <b>可回归</b>（负结果入账，修复验证有基线）+ <b>可检验</b>（靶场种已知漏洞测检出率——过程完整性之外的诚实召回数字）。</p>
+<h2 id="6-汇报一页话">6. 汇报一页话</h2>
+<blockquote>探隐是把我们实战验证的 AI 渗透方法论（82 漏洞）产品化的纯 SKILL 套件：装进任意编码 agent 即用。它用知识图谱驱动测试演进（图谱收敛=测试完成，覆盖可度量），用引擎契约编排全类型测试（Web/白盒/容器，跨引擎知识流动），用先例库实现越用越强（每次测试自动沉淀，跨目标复利）。工程上站在 AI Agent 工程范式肩上：Graph 管状态推理、Loop 管演进、Harness 复用宿主不重造轮子、Context 管上下文生命周期。安全上四级纪律+命令级上下文+账本级硬门（授权/审计链/清理门/签发门），授权与审计全程留痕。设计经五专家联合审计修订（渗透/Agent 工程/软工/架构/安全合规），阻断级问题全部落入设计。</blockquote>
+  <div class="pn"><a href="PRINCIPLES.html"><span>← 上一篇</span>探隐 TanYin — 原理逻辑与因果链 · 含 E2E 全流程推演</a><a href="2026-09-17-tanyin-design.html"><span>下一篇 →</span>2026-09-17-tanyin-design</a></div>
+  </article>
+  <footer>红队成长全景 · 设计文档站由 scripts/build_handbook.py 构建</footer>
+</div></div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var links=[].slice.call(document.querySelectorAll('.sidebar nav a'));
+  if(!links.length)return;
+  var byId={};links.forEach(function(a){byId[a.getAttribute('href').slice(1)]=a;});
+  var heads=Object.keys(byId).map(function(id){return document.getElementById(id);}).filter(Boolean);
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('on');});
+      var a=byId[e.target.id]; if(a)a.classList.add('on');
+    }});
+  },{rootMargin:'0% 0% -80% 0%'});
+  heads.forEach(function(h){obs.observe(h);});
+});
+</script></body></html>

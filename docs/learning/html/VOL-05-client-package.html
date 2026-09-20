@@ -32,7 +32,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
 .doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
 .doc th{background:#f1f5f9;font-size:12px}
-.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}.guide{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 18px;font-size:13.5px;color:#78350f}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
 .bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
@@ -43,8 +43,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 </style></head><body>
 <div class="layout">
 <aside class="sidebar">
-  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a>
-  <a class="home" href="index.html">📚 手册首页</a>
+  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计全景</a><a class="home" href="index.html">📚 手册首页</a>
   <h3>本卷目录</h3>
   <nav><a class="l2" href="#目录">目录</a>
 <a class="l2" href="#1-定位与总流水线">1. 定位与总流水线</a>
@@ -66,9 +65,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#6-前-30-分钟速查清单">6. 前 30 分钟速查清单</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-04-source-assist.html">← VOL-04-source-assist</a><a href="VOL-06-toolchain.html">VOL-06-toolchain →</a><span class="crumb">› VOL-05 安装包与客户端分析（够用深度）</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="VOL-04-source-assist.html">← VOL-04-source-assist</a><a href="VOL-06-toolchain.html">VOL-06-toolchain →</a><span class="crumb">› VOL-05 安装包与客户端分析（够用深度）</span></nav>
   <article class="doc">
-  <h1 id="vol-05-安装包与客户端分析-够用深度">VOL-05 安装包与客户端分析（够用深度）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-05-client-package.md</div>
+  <h1 id="vol-05-安装包与客户端分析-够用深度">VOL-05 安装包与客户端分析（够用深度）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-05-client-package</div>
+  
   <blockquote>受众：5 年源码审计/产品安全、刚转岗一人红队。本卷只解决一件事：拿到 Windows 安装包（EXE）或 Android 安装包（APK）后，按固定流水线提取四类情报——服务端地址、硬编码凭据、加密密钥、通信协议结构——反哺 Web 与内网测试，并按交付标准写成 finding 卡。本质是"没有源码的代码审计"，你的审计经验全部可迁移。</blockquote>
 <h2 id="目录">目录</h2>
 <ul><li>1. 定位与总流水线</li><li>2. Windows EXE 分析</li><li>2.1 PE 文件基础：节表与导入表</li><li>2.2 壳识别与 UPX 脱壳</li><li>2.3 安装器提取：Inno Setup / NSIS / InstallShield / MSI</li><li>2.4 字符串与硬编码提取：grep 战术</li><li>2.5 .NET 程序 dnSpy 反编译要点</li><li>2.6 Electron 应用 asar 提取</li><li>3. APK 分析</li><li>3.1 apktool / jadx 逐步</li><li>3.2 AndroidManifest 权限与组件暴露</li><li>3.3 硬编码与加密 key 提取</li><li>3.4 证书与签名校验缺陷</li><li>3.5 抓包与证书锁定绕过（原理层）</li><li>4. 通信协议分析：从安装包到自定义协议</li><li>5. 产出规范：硬编码凭据 finding 卡</li><li>6. 前 30 分钟速查清单</li></ul>
@@ -172,7 +172,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <p>拿到任意 EXE/APK 的动作序列：</p>
 <ol><li><code>file</code>/DIE 识别：架构、壳、框架（.NET/Electron/加固）——决定走哪条支线；</li><li>解包：7z → innoextract / upx -d / unshield / msiexec /a；APK：apktool d + jadx；</li><li>双编码 strings（<code>-n 8</code> 与 <code>-e l</code>）+ apkleaks/gitleaks 一把梭；</li><li>分桶 grep：URL / 内网 IP / 端口 / 凭据关键词 / 云 key 特征；</li><li>反编译只啃加密类与网络类（dnSpy / jadx-gui）；</li><li>产出三件套：资产补充清单、疑似凭据表（含位置证据）、协议疑点列表；</li><li>按 §5 写卡，按 VOL-02-Web / VOL-06-内网 卷衔接下一步打点。</li></ol>
 <p>（本卷完。交叉引用卷号以系列最终目录为准。）</p>
-  <div class="pn"><a href="VOL-04-source-assist.html"><span>← 上一卷</span>VOL-04-source-assist</a><a href="VOL-06-toolchain.html"><span>下一卷 →</span>VOL-06-toolchain</a></div>
+  <div class="pn"><a href="VOL-04-source-assist.html"><span>← 上一篇</span>VOL-04-source-assist</a><a href="VOL-06-toolchain.html"><span>下一篇 →</span>VOL-06-toolchain</a></div>
   </article>
   <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
 </div></div>

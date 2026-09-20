@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>探隐 TanYin — 需求总纲（用户诉求最高权威） · 探隐设计文档</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.75}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:270px;background:#fff;border-right:1px solid #e2e8f0;padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;flex-shrink:0}
+.sidebar h3{font-size:14px;color:#b91c1c;margin-bottom:8px}
+.sidebar a.home{display:block;font-size:13px;color:#475569;text-decoration:none;margin-bottom:10px;padding:6px 8px;border-radius:6px}
+.sidebar a.home:hover{background:#fef2f2}
+.sidebar nav a{display:block;font-size:12.5px;color:#64748b;text-decoration:none;padding:4px 8px;border-left:2px solid transparent;border-radius:0 6px 6px 0}
+.sidebar nav a.l2{font-weight:600;color:#334155;margin-top:6px}
+.sidebar nav a.l3{padding-left:18px}
+.sidebar nav a.l4{padding-left:30px;font-size:12px}
+.sidebar nav a:hover{color:#b91c1c;background:#fef2f2}
+.sidebar nav a.on{color:#b91c1c;border-left-color:#b91c1c;background:#fef2f2;font-weight:600}
+.main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
+.topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
+.doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
+.doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
+.doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
+.doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
+.doc p{font-size:14px;color:#374151;margin:8px 0;overflow-wrap:anywhere}
+.doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
+.doc li{margin:4px 0;overflow-wrap:anywhere}
+.doc a{color:#b91c1c}
+pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb .lang{display:block;color:#64748b;font-size:12px;margin-bottom:6px}
+code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb code{background:none;color:inherit;padding:0}
+.doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+.doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
+.doc th{background:#f1f5f9;font-size:12px}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}.guide{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 18px;font-size:13.5px;color:#78350f}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
+.bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
+.bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
+.pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
+.pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.pn a span{display:block;font-size:12px;color:#94a3b8}
+footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
+@media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar">
+  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计全景</a><a class="home" href="../../learning/html/index.html">📚 手册首页</a><a class="home" href="index.html">📐 设计文档首页</a>
+  <h3>本卷目录</h3>
+  <nav><a class="l2" href="#1-一句话愿景">1. 一句话愿景</a>
+<a class="l2" href="#2-产品定位与形态">2. 产品定位与形态</a>
+<a class="l2" href="#3-核心诉求-用户原话提炼">3. 核心诉求（用户原话提炼）</a>
+<a class="l2" href="#4-方法论来源-已验证资产">4. 方法论来源（已验证资产）</a>
+<a class="l2" href="#5-交付物形态">5. 交付物形态</a>
+<a class="l2" href="#6-工作方法论-铁律">6. 工作方法论（铁律）</a>
+<a class="l2" href="#7-验收标准">7. 验收标准</a></nav>
+</aside>
+<div class="main">
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计全景</a><a href="2026-09-20-tanyin-bprime-fusion.html">← TanYin 探隐 × 方案 B′ 融合裁决分析</a><a href="PRINCIPLES.html">PRINCIPLES →</a><span class="crumb">› 探隐 TanYin — 需求总纲（用户诉求最高权威）</span></nav>
+  <article class="doc">
+  <h1 id="探隐-tanyin-需求总纲-用户诉求最高权威">探隐 TanYin — 需求总纲（用户诉求最高权威）</h1><div class="meta">探隐设计文档站 · REQUIREMENTS</div>
+  <div class="guide">🧭 <b>导读</b>：TanYin v1 需求总纲——用户诉求最高权威的原始表述。二十分钟读完，看到 v2 保留了什么（D2-D7 全部）、修订了什么（D1 宿主与形态）。读它是为了理解出发点，而不是照它实施。</div>
+  <blockquote>本文档是项目所有决策的最高层需求陈述。任何设计/实现/流程冲突时以本文为准。 定稿：2026-09-17</blockquote>
+<h2 id="1-一句话愿景">1. 一句话愿景</h2>
+<p>构建「探隐 TanYin · 全类型 AI 渗透测试总控」：一个纯 SKILL 形态、复制即装的渗透测试套件——AI 负责挖（引擎执行）、纪律负责管（契约约束）、图谱负责推（演进驱动）、知识负责长（先例复利）。装进 walcode/CodeBuddy/Claude Code 等任意编码 agent 即可使用。</p>
+<h2 id="2-产品定位与形态">2. 产品定位与形态</h2>
+<ul><li><b>生态位</b>：全类型渗透总控（Web 黑盒 + 白盒源码审计 + 未来容器/AD 等），不是单引擎</li><li><b>技术形态</b>：纯 SKILL 编排（零代码依赖、零运行时、复制即装），LLM 语义驱动 + 账本确定性</li><li><b>与烛龙关系</b>：独立优先，预留接入（引擎契约对齐烛龙插件体系，后期零成本接入）</li><li><b>首批引擎</b>：web-blackbox（新写，CNPEN 方法论产品化）+ vuln_agent（CLI 适配器接入）；GenCPT 契约预留不接入</li><li><b>目标用户</b>：安全团队渗透测试工程师（在编码 agent 中使用）</li></ul>
+<h2 id="3-核心诉求-用户原话提炼">3. 核心诉求（用户原话提炼）</h2>
+<ol><li><b>通用可复用</b>：直接安装到 walcode、CodeBuddy 等使用</li><li><b>全类型渗透</b>：不止 Web，编排多引擎</li><li><b>不断增强</b>：每次测试的知识跨会话沉淀复利（wiki 摄入 + 先例回写 + 模式进化）</li><li><b>图谱驱动</b>：像真人头脑风暴——侦测信息→分析→攻击面演进→推导验证→图谱收敛即测试完成</li><li><b>安全纪律</b>：授权门 + 分级审批 + 命令安全上下文（攻击者视角分级）</li><li><b>覆盖可度量</b>：五态标记、矩阵闭合、终态门禁——从"看运气"变"可度量"</li><li><b>工程化管理</b>：蓝图→设计→进度→账本（参考烛龙开发模式）</li></ol>
+<h2 id="4-方法论来源-已验证资产">4. 方法论来源（已验证资产）</h2>
+<table><thead><tr><th>来源</th><th>贡献</th></tr></thead><tbody><tr><td>CNPEN 斗象 VMS 实战（82 漏洞）</td><td>方法论本体：全景图矩阵/T编号/差分举证/证据留底/思路复盘；初始知识库素材</td></tr><tr><td>GenSift</td><td>编排器纪律 + TSV 账本 + 覆盖不可谈判</td></tr><tr><td>GenCPT</td><td>图谱演进循环/五态标记/命令安全上下文/模式进化门槛</td></tr><tr><td>dsh-pentest</td><td>六表领域模型/指挥官协议/finding 强制复现步骤</td></tr><tr><td>dsh-pentester</td><td>五问授权问卷/stage 门/安全让步显式记录</td></tr><tr><td>dsh-reverse-skill</td><td>Evidence 契约/field-journal 脱敏回写/先例库/skill 供应链门闩</td></tr><tr><td>llm-wiki-agent</td><td>知识 wiki 体系：ingest/entities/lint 保鲜/graph</td></tr><tr><td>烛龙 ZhuLong</td><td>工程方法论：蓝图/panorama/批次推进/设计宪法</td></tr></tbody></table>
+<h2 id="5-交付物形态">5. 交付物形态</h2>
+<p>可安装的 SKILL 套件（git 管理）+ 设计文档链（本总纲→设计定稿→实施计划）+ panorama 活文档 + 演进记录 + 架构原理图（汇报用）。</p>
+<h2 id="6-工作方法论-铁律">6. 工作方法论（铁律）</h2>
+<ol><li>设计无分期：所有层一次性完整设计到无二义；唯一分步=实现批次解耦（批次间接口已定死）</li><li>探知项机制：实现期才能知道的细节显式列清单，发现后回写</li><li>superpowers 流程：一次一主题、先问用户预期、用户点头才落档</li><li>全景活文档：panorama/ 随演进强制同步</li><li>会话纪律：一切状态落文件，新会话从文件无损恢复</li></ol>
+<h2 id="7-验收标准">7. 验收标准</h2>
+<ul><li>黄金夹具校验通过（账本命令输出逐字节一致）</li><li>授权靶场全流程跑通并产出报告</li><li>CNPEN 82 漏洞 ingest 后知识库抽查正确</li><li>在 walcode 与 CodeBuddy 双宿主实际安装可用</li></ul>
+  <div class="pn"><a href="2026-09-20-tanyin-bprime-fusion.html"><span>← 上一篇</span>TanYin 探隐 × 方案 B′ 融合裁决分析</a><a href="PRINCIPLES.html"><span>下一篇 →</span>PRINCIPLES</a></div>
+  </article>
+  <footer>红队成长全景 · 设计文档站由 scripts/build_handbook.py 构建</footer>
+</div></div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var links=[].slice.call(document.querySelectorAll('.sidebar nav a'));
+  if(!links.length)return;
+  var byId={};links.forEach(function(a){byId[a.getAttribute('href').slice(1)]=a;});
+  var heads=Object.keys(byId).map(function(id){return document.getElementById(id);}).filter(Boolean);
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('on');});
+      var a=byId[e.target.id]; if(a)a.classList.add('on');
+    }});
+  },{rootMargin:'0% 0% -80% 0%'});
+  heads.forEach(function(h){obs.observe(h);});
+});
+</script></body></html>
