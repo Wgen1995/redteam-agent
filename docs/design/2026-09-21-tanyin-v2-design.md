@@ -36,6 +36,18 @@
 | 9 | 身份矩阵 | B′ 独有、必须吸收：creds 一等实体 + 身份矩阵差分子流程，**复用 pair_group 差分机制落地**（§4.10/§6.6）；批次 0 定契约、批次 4 落地（ADR-P4③） | 全行业空白、单人收益密度最高（expert/pentest #1，severity high） |
 | 10 | 平台载体 | 账本命令 PS 5.1 → **跨平台薄 CLI（python3 标准库）**，tools.lock 锁定；「LLM 只调用不实现」不变 | PS 5.1 与五宿主冲突；迁移同时消掉 TanYin 探知项第一条（融合 §5.3） |
 
+### 0.3 v2 对融合文档的口径修订清单（冲突处以本文为准，逐项标注）
+
+| # | 融合文档表述 | v2 定稿口径 | 理由 |
+|---|---|---|---|
+| 1 | 「12 表 + creds/sessions」（§0-9/§6.1） | **13 表**：creds 单表双 kind（static-cred/session），sessions 不单设表（§4.2 CB-1） | session=短时效凭据，字段同构；守 13 表口径 |
+| 2 | 「31 命令」（批次 1） | **37 命令**：31 条签名冻结原样 + 新增 6 条（add-cred/set-cred-status/amend-scope/redact-scan/state-rebuild/set-replay-state）（§5.3） | creds/修订审计/交付终检/重建校验/重放门需要落点 |
+| 3 | 「budget.tsv 流水」 | budget.tsv 增加 scope 列（goal/INT-id）与 dollars_delta 列（默认 0）（§4.10） | 预算树父子切割与 $ 第四维关停需要载体 |
+| 4 | 「timeline 扩展 revert_cmd」（R9） | 定稿为 timeline.tsv 第 5 列，哈希输入含全行字段（§4.10） | A14 哈希输入随之定义 |
+| 5 | 「session/<goal-id>/ 在 skill 根内」（TanYin 目录） | 交战区移出安装树：$TANYIN_HOME/engagements/<goal-id>/（§3.4） | B′ devops #1（git pull 冲突/状态混居程序文件） |
+| 6 | 「报告守门声明」概念性提及 | 定稿为固定段落（执法层清单+各层拦截计数+canary 结果），数据出自 goals.guard_tier+timeline（铁律 5） | 可实现性 |
+| 7 | matrix 事件溯源表 | 明确 authz-diff 置格语义（reason 前缀 authz-diff:），不设身份矩阵独立表（§4.10/§6.6） | 复用既有矩阵机制，词汇表不膨胀 |
+
 ---
 
 ## 1 需求总纲 v2（继承 TanYin REQUIREMENTS，标注修订）
@@ -293,7 +305,7 @@ expected:                             # 四要素之四：matcher/extractor（sc
     - {type: word, words: ["errorCode:00000"]}
     - {type: status, status: [200]}
   extractors:
-    - {type: regex, name: user_count, regex: ['"total":(\\d+)']}
+    - {type: regex, name: user_count, regex: ['"total":(\d+)']}
 cleanup: "revert_cmd@timeline 事件引用"          # 清理并入 revert 登记（R9），不另设字段
 pair_group: PG-7
 role: admin                           # authz-diff 证据专用：本请求使用的角色

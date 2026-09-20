@@ -44,7 +44,7 @@ pre.cb code{background:none;color:inherit;padding:0}
 .doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
 .doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
 .doc th{background:#f1f5f9;font-size:12px}
-.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
 .bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
 .bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
 .pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
