@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>探隐 vuln_agent — 源码安全分析引擎（最新源码定稿） · 探隐设计文档</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.75}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:270px;background:#fff;border-right:1px solid #e2e8f0;padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;flex-shrink:0}
+.sidebar h3{font-size:14px;color:#b91c1c;margin-bottom:8px}
+.sidebar a.home{display:block;font-size:13px;color:#475569;text-decoration:none;margin-bottom:10px;padding:6px 8px;border-radius:6px}
+.sidebar a.home:hover{background:#fef2f2}
+.sidebar nav a{display:block;font-size:12.5px;color:#64748b;text-decoration:none;padding:4px 8px;border-left:2px solid transparent;border-radius:0 6px 6px 0;overflow-wrap:anywhere}
+.sidebar nav a.l2{font-weight:600;color:#334155;margin-top:6px}
+.sidebar nav a.l3{padding-left:18px}
+.sidebar nav a.l4{padding-left:30px;font-size:12px}
+.sidebar nav a:hover{color:#b91c1c;background:#fef2f2}
+.sidebar nav a.on{color:#b91c1c;border-left-color:#b91c1c;background:#fef2f2;font-weight:600}
+.main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
+.topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
+.doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
+.doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
+.doc h3{font-size:17px;margin:24px 0 10px;color:#334155}
+.doc h4{font-size:15px;margin:18px 0 8px;color:#475569}
+.doc p{font-size:14px;color:#374151;margin:8px 0;overflow-wrap:anywhere}
+.doc ul,.doc ol{margin:8px 0 8px 24px;font-size:14px;color:#374151}
+.doc li{margin:4px 0;overflow-wrap:anywhere}
+.doc a{color:#b91c1c}
+pre.cb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.8px;line-height:1.6;margin:12px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb .lang{display:block;color:#64748b;font-size:12px;margin-bottom:6px}
+code{background:#fee2e2;color:#991b1b;border-radius:4px;padding:1px 5px;font-size:12.8px;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb code{background:none;color:inherit;padding:0}
+.doc table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
+.doc th,.doc td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}
+.doc th{background:#f1f5f9;font-size:12px}
+.doc blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:13.5px;overflow-wrap:anywhere}.guide{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0 18px;font-size:13.5px;color:#78350f}@media(max-width:760px){.doc table{display:block;overflow-x:auto;max-width:100%}.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}
+.bdg{display:inline-block;padding:0 7px;border-radius:6px;font-size:12px;font-weight:700;margin-right:4px}
+.bdg-p{background:#dbeafe;color:#1e40af}.bdg-o{background:#dcfce7;color:#166534}.bdg-v{background:#fef9c3;color:#854d0e}.bdg-t{background:#fee2e2;color:#991b1b}.bdg-x{background:#f3e8ff;color:#6b21a8}
+.pn{display:flex;justify-content:space-between;margin-top:44px;gap:10px}
+.pn a{background:#fff;border-radius:10px;padding:10px 16px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.pn a span{display:block;font-size:12px;color:#94a3b8}
+footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
+@media(max-width:860px){.layout{display:block}.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid #e2e8f0}.main{padding:18px 16px 60px}}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar">
+  <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计</a><a class="home" href="../../learning/html/index.html">📚 手册首页</a><a class="home" href="index.html">📐 设计文档首页</a>
+  <h3>本文目录</h3>
+  <nav><a class="l2" href="#1-项目定位">1 项目定位</a>
+<a class="l2" href="#2-架构全景">2 架构全景</a>
+<a class="l3" href="#2-1-总览图-最新源码实测">2.1 总览图（最新源码实测）</a>
+<a class="l3" href="#2-2-llm-调用闭环-每段触发">2.2 LLM 调用闭环（每段触发）</a>
+<a class="l2" href="#3-执行流程-八段管道">3 执行流程：八段管道</a>
+<a class="l3" href="#3-1-串并联总图">3.1 串并联总图</a>
+<a class="l3" href="#3-2-phase-1-surface_discover-攻击面识别">3.2 Phase 1 — surface_discover（攻击面识别）</a>
+<a class="l3" href="#3-3-phase-1-5-surface_split-复合面拆分-新增">3.3 Phase 1.5 — surface_split（复合面拆分）【新增】</a>
+<a class="l3" href="#3-4-phase-1-6-surface_rank-优先级排序-新增-条件触发">3.4 Phase 1.6 — surface_rank（优先级排序）【新增·条件触发】</a>
+<a class="l3" href="#3-5-phase-2-surface_analyze-业务流深度分析">3.5 Phase 2 — surface_analyze（业务流深度分析）</a>
+<a class="l3" href="#3-6-phase-2-5-vuln_planner-漏洞任务规划">3.6 Phase 2.5 — vuln_planner（漏洞任务规划）</a>
+<a class="l3" href="#3-7-phase-3-vuln_analyze-漏洞分析">3.7 Phase 3 — vuln_analyze（漏洞分析）</a>
+<a class="l3" href="#3-8-phase-3-5-review_vuln-对抗复核">3.8 Phase 3.5 — review_vuln（对抗复核）</a>
+<a class="l3" href="#3-9-phase-4-vuln_postprocess-自定义后处理-新增">3.9 Phase 4 — vuln_postprocess（自定义后处理）【新增】</a>
+<a class="l2" href="#4-llm-调用隔离-opencode_wrapper">4 LLM 调用隔离（opencode_wrapper）</a>
+<a class="l2" href="#5-持久化与幂等-workspace-py">5 持久化与幂等（workspace.py）</a>
+<a class="l2" href="#6-结论前缀与分级体系-现行版">6 结论前缀与分级体系（现行版）</a>
+<a class="l2" href="#7-与-v1-整理稿差异对照">7 与 v1 整理稿差异对照</a>
+<a class="l2" href="#8-与探隐-v2-的衔接">8 与探隐 v2 的衔接</a></nav>
+</aside>
+<div class="main">
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计</a><span class="crumb">› 探隐 vuln_agent — 源码安全分析引擎（最新源码定稿）</span></nav>
+  <article class="doc">
+  <h1 id="探隐-vuln_agent-源码安全分析引擎-最新源码定稿">探隐 vuln_agent — 源码安全分析引擎（最新源码定稿）</h1><div class="meta">探隐设计文档站 · 2026-09-22-vuln-agent-engine</div>
+  <div class="guide">🧭 <b>导读</b>：vuln_agent 引擎专项（最新源码定稿）：八段管道全景/每段模板与幂等/LLM 隔离五层/前缀体系/与 v1 整理稿差异五条/接入 v2 的适配要点。先读 §2 全景图与 §7 差异表最快。</div>
+  <blockquote><b>这份是什么</b>：vuln_agent 的引擎专项设计页——探隐 v2 首批二号引擎（cli 型适配器）的原稿全景。 <b>怎么读</b>：先看 §1 定位与 §2 架构全景建立整体感，再按 §3 八段管道逐段下钻；§7 是"v1 整理稿 vs 最新源码"差异对照，§8 讲它怎么接进探隐 v2。 <b>以谁为准</b>：本文以 <code>docs/design/imported/vuln-agent/vuln_agent-main/</code> 最新源码考古结果为准（事实带文件:行号证据），叙述骨架沿用用户 v1 整理稿。</blockquote>
+<h2 id="1-项目定位">1 项目定位</h2>
+<p>vuln_agent 是一款基于 LLM 的多阶段源码安全分析管道，通过 <b>8 段串并联管道</b>从目标源码中自动发现攻击面、拆分与排序、追踪数据流、规划并分析潜在漏洞，最后以对抗式复核验证结论。</p>
+<p><b>核心依赖</b>：</p>
+<ul><li>子进程 CLI 执行器（opencode wrapper：临时 profile 隔离 + 8 个禁用环境变量 + skill deny-all 白名单；后期新增 codeagent 3.0 / GLM-5.1-Alpha-Auto 支持）</li><li>Python 3 双线程池并发控制（pool(max_workers) + vpool(vuln_workers)）</li><li>提示词模板 + <code>{include:}</code> 规则引用机制（prompts/ 与 references/ 分离）</li></ul>
+<p><b>一句话</b>：发现攻击面 → 拆分/排序 → 业务流分析 → 漏洞规划 → 漏洞分析 → 对抗复核 → 用户自定义后处理，全部 LLM 交互经子进程 CLI 完成。</p>
+<h2 id="2-架构全景">2 架构全景</h2>
+<h3 id="2-1-总览图-最新源码实测">2.1 总览图（最新源码实测）</h3>
+<pre class="cb"><span class="lang">text</span><code>+----------------------------------------------------------------+
+|                     vuln_agent (最新版)                         |
+|                                                                |
+|  run.py (CLI 入口)                                             |
+|    +- biz_recon/runner.py (兼容壳: 读 yaml 配置)               |
+|         +- biz_recon/pipeline.py::run()  &lt;- 真正的管道调度器    |
+|              双线程池 pool(max_workers) + vpool(vuln_workers)   |
+|                                                                |
+|  +- Phase 1    surface_discover  攻击面识别   (每 work_dir) -+  |
+|  +- Phase 1.5  surface_split     复合面拆分   (每 surface)   |  |
+|  +- Phase 1.6  surface_rank      优先级排序   (&gt;30 才触发)   |  |
+|  +- Phase 2    surface_analyze   业务流深析   (每 surface)   |  |
+|  +- Phase 2.5  vuln_planner      漏洞任务规划 (每 surface)   |  |
+|  +- Phase 3    vuln_analyze      漏洞分析     (每 task)      |  |
+|  +- Phase 3.5  review_vuln       对抗复核     (每 finding)   |  |
+|  +- Phase 4    vuln_postprocess  自定义后处理 (每 review)    |  |
+|  +------------------------------------------------------------+  |
+|                                                                |
+|  opencode_wrapper.py   LLM 调用隔离封装（核心工程亮点）          |
+|  workspace.py          纯文件持久化 + 幂等标记（db.py 已移除）   |
+|  report.py / collect.py 单页静态报告 / 多目标收集               |
++----------------------------------------------------------------+</code></pre>
+<h3 id="2-2-llm-调用闭环-每段触发">2.2 LLM 调用闭环（每段触发）</h3>
+<pre class="cb"><span class="lang">text</span><code>Stage 模块 (如 surface_analyze.py)
+    |  {target_work_dir} {surface_file} 等模板变量
+    v
+prompt.py (加载 prompts/*.txt 模板 + 解析 {include:} 引用)
+    v
+biz_recon/references/*.md (FALSE-rules / vuln_rules_index / constraints …)
+    v
+opencode_wrapper.py (临时 profile -&gt; 子进程 CLI -&gt; LLM)
+    v
+输出文件 (.md) 写入 .vuln_agent_output/{stage}/</code></pre>
+<h2 id="3-执行流程-八段管道">3 执行流程：八段管道</h2>
+<h3 id="3-1-串并联总图">3.1 串并联总图</h3>
+<pre class="cb"><span class="lang">text</span><code>Phase1 discover -&gt; 1.5 split -&gt; 1.6 rank -&gt; Phase2 analyze -&gt; 2.5 planner
+  (每 work_dir)   (每 surface) (&gt;30触发)   (每 surface)   (每 surface)
+                                                   |
+                          Phase3 vuln_analyze &lt;-----+ (每 task · vpool)
+                                | 流式：高危 finding 先行提交复核
+                          Phase3.5 review (每 finding · 内联于逐 surface 循环)
+                                |
+                          Phase4 postprocess (每 review)
+
+输入: 目标源码目录
+输出: .vuln_agent_output/
+      |- discovered_surfaces/   (Phase 1)
+      |- analyzed_surfaces/     (Phase 2)
+      |- vuln_plans/&lt;stem&gt;/     (Phase 2.5)
+      |- vuln_findings/         (Phase 3)
+      |- vuln_reviews/          (Phase 3.5)
+      |- vuln_postprocess/      (Phase 4)
+      |- meta/  (priority.jsonl / excluded-paths.md / error/)
+      +- thinking/ (thinking_manifest.jsonl)</code></pre>
+<p>并发档位：代码默认双池 5/5；随附 yaml 配置 <b>3/5</b>（实际生效以 yaml 为准）。各 Stage 模块函数签名默认 max_workers=3，但全管道模式下以 workers=1 逐 surface 调用——并行度统一由外层双池承担。</p>
+<h3 id="3-2-phase-1-surface_discover-攻击面识别">3.2 Phase 1 — surface_discover（攻击面识别）</h3>
+<p><b>目标</b>：智能分析项目结构，按体量选择识别策略，枚举所有攻击面（REST/MQ/gRPC/WebSocket/GraphQL/SCRIPT/TOOL/CRON/CLI）。</p>
+<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>模板</td><td>prompts/identify-surfaces.txt</td></tr><tr><td>变量</td><td>{target_work_dir} {extra_prompt}</td></tr><tr><td>输出</td><td>discovered_surfaces/*.md + meta/excluded-paths.md</td></tr><tr><td>幂等</td><td>.surface_discover_done 存在即跳过</td></tr></tbody></table>
+<p>检测逻辑（单次 LLM 调用每 work_dir）：</p>
+<ol><li>扫描目录结构、文件规模、技术栈（Spring Boot/Django/Go…），评估代码体量</li><li>制定派发策略：小项目单次完整识别；中项目按顶层模块分批；大项目按子目录派发子任务独立识别后汇总</li><li>枚举攻击面（仅识别不深析），每条目写 discovered_surfaces/{type}-{category}-{slug}.md</li></ol>
+<p>产物示例：</p>
+<pre class="cb"><span class="lang">markdown</span><code># 攻击面条目
+- **类型**：noniface
+- **分类**：CLI
+- **来源**：/mntr.go:19
+- **描述**：untar工具 - 文件解压操作
+- **发现**：涉及文件操作，可能存在路径遍历风险</code></pre>
+<h3 id="3-3-phase-1-5-surface_split-复合面拆分-新增">3.3 Phase 1.5 — surface_split（复合面拆分）【新增】</h3>
+<p><b>目标</b>：把混装多个攻击面的条目原地拆干净，保证后续每 surface 分析粒度一致。</p>
+<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>模板</td><td>prompts/split-surface.txt</td></tr><tr><td>触发</td><td>仅全管道模式执行；完成后刷新 all_surfaces</td></tr><tr><td>幂等</td><td>.surface_split_done；--force-surface 重跑时删除重做</td></tr></tbody></table>
+<p>检测逻辑：多攻击面信号 = 多个"# 攻击面条目"标题/多组字段块。agent 拆分写出新文件，Python 校验落盘成功后删除原文件（LLM 写、代码验）。</p>
+<h3 id="3-4-phase-1-6-surface_rank-优先级排序-新增-条件触发">3.4 Phase 1.6 — surface_rank（优先级排序）【新增·条件触发】</h3>
+<p><b>目标</b>：攻击面 <b>&gt;30 个</b>时才触发（每 work_dir 一次全局 LLM 排序），产出分发顺序，把有限预算花在刀刃上。</p>
+<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>模板</td><td>prompts/rank-surfaces.txt</td></tr><tr><td>输出</td><td>meta/surface-priority.jsonl（存在即复用，删除即重排）</td></tr></tbody></table>
+<p>排序信号：暴露/可达性（REST/Web &gt; MQ/gRPC &gt; CLI/脚本）、"发现"字段高危操作信号、输入丰富度、信任边界。</p>
+<h3 id="3-5-phase-2-surface_analyze-业务流深度分析">3.5 Phase 2 — surface_analyze（业务流深度分析）</h3>
+<p><b>目标</b>：对每个攻击面独立深度分析，绘制 Mermaid 流程图，追踪入参流向，检查关键控制点。</p>
+<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>模板</td><td>prompts/analyze-surface.txt（{include:flow-principles.md}）</td></tr><tr><td>输出</td><td>analyzed_surfaces/{同名 surface 文件}</td></tr><tr><td>幂等</td><td>同名分析文件存在即跳过</td></tr></tbody></table>
+<p>检测逻辑（每 surface 一次 LLM 调用）：</p>
+<ol><li>入参维度分析：path/query/header/body 参数树；注解式校验（@NotNull/@Size/@Pattern/@Valid）</li><li>关键控制点清单：文件上传（后缀/MIME 白名单、路径规范化）、命令执行（拼接/白名单）、SQL 操作（参数化 #{} vs 拼接 +）、HTTP 外呼（TLS/主机名/URL 拼接）、文件 I/O、认证鉴权</li><li>数据流追踪：常量传播（static final/@Value 代入）、变量标记（运行时输入保留 {var}）、边界记录（三方库断点记函数名+文件+行号）</li><li>Mermaid 流程图：红高 = 高危操作 + 拼接外部用户输入；黄低 = 高危操作但无外部输入</li></ol>
+<p>产物示例（cli-go-entry.md 关于 untar 工具）：</p>
+<pre class="cb"><span class="lang">markdown</span><code>### 关键控制点
+**文件写入**：
+    // untar.go:96
+    dstName := filepath.Join(dst, hdr.Name)  // 用户输入dst + hdr.Name拼接
+    // untar.go:103
+    dstFile, os.OpenFile(dstName, O_CREATE|O_RDWR, hdr.Mode)
+
+**关键发现**：路径遍历风险——tar 包内文件名 hdr.Name 直接拼接到目标目录路径，
+未做 ../ 过滤</code></pre>
+<h3 id="3-6-phase-2-5-vuln_planner-漏洞任务规划">3.6 Phase 2.5 — vuln_planner（漏洞任务规划）</h3>
+<p><b>目标</b>：根据 Phase 2 分析结果，为每个攻击面规划具体漏洞测试任务。（旧名 plan_vuln_tasks，已改名。）</p>
+<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>模板</td><td>prompts/vuln-planner.txt（最高优先级引用 FALSE-rules.md）</td></tr><tr><td>幂等</td><td>vuln_plans/&lt;stem&gt;/ 目录存在即跳过</td></tr></tbody></table>
+<p>任务划分规则：一个疑点一个任务（独立验证互不重复）；同一敏感操作的多个参数合并为一个任务；同一参数流向多个敏感操作必须拆分；C/C++ 额外规划内存安全任务。计划文件只述疑点不展开论证。</p>
+<p>产物示例：</p>
+<pre class="cb"><span class="lang">markdown</span><code># untar工具 - 路径遍历漏洞
+**验证目标**：路径穿越
+**疑点位置**：r.go:96
+**疑点原因**：tar包内文件名hdr.Name直接拼接到目标目录路径，未做 ../ 过滤
+**优先级**：高</code></pre>
+<h3 id="3-7-phase-3-vuln_analyze-漏洞分析">3.7 Phase 3 — vuln_analyze（漏洞分析）</h3>
+<p><b>目标</b>：对每个规划任务执行具体分析，输出结论标签。</p>
+<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>模板</td><td>prompts/analyze-vulnerability.txt（引用 vuln_rules_index.md + constraints.md）</td></tr><tr><td>并发</td><td>vpool(vuln_workers)；高危 finding 流式先行提交复核</td></tr></tbody></table>
+<p>认定三档（现行版）：</p>
+<table><thead><tr><th>档位</th><th>条件</th><th>前缀</th></tr></thead><tbody><tr><td>确认有漏洞</td><td>有实际漏洞代码路径 + 确认无防护</td><td>VULN-</td></tr><tr><td>确认无漏洞</td><td>有风险但防护有效 / 不涉高危操作</td><td>NOVULN-</td></tr><tr><td>无法确认</td><td>信息不足无法判断</td><td>SUSPECTED-</td></tr></tbody></table>
+<p>举证要求（每条结论须代码级事实支撑）：路径穿越 = 拼接代码 + 无规范化/无 ../ 校验；命令注入 = 用户输入拼接 + 无转义/白名单；SQL 注入 = 拼接而非参数化。仅"确认"档做 Payload 迭代验证。</p>
+<p>产物示例：</p>
+<pre class="cb"><span class="lang">markdown</span><code># untar工具 - 路径遍历漏洞
+**类型**：路径穿越    **位置**：r.go:96
+**CVSS 评分**：8.1    **严重性**：高
+**触发条件**：命令行传入恶意构造的 tar 包，包内文件名包含 ../
+**Payload**：
+    echo "test content" &gt; test.txt
+    tar -cvf malicious.tar ../test.txt
+    ./untar malicious.tar /opt/pkgs/a/
+    # 文件被写到 /opt/test.txt 而非 /opt/pkgs/a/test.txt
+**事实依据**：
+    // untar.go:96 - 路径拼接无 ../ 过滤
+    dstName := filepath.Join(dst, hdr.Name)</code></pre>
+<h3 id="3-8-phase-3-5-review_vuln-对抗复核">3.8 Phase 3.5 — review_vuln（对抗复核）</h3>
+<p><b>目标</b>：以<b>挑战者姿态</b>审查 Phase 3 每个结论，降低误报（独立于分析 agent，逐 finding 一次调用，内联于逐 surface 循环）。</p>
+<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>模板</td><td>prompts/review-vulnerability.txt（{include:verify-principle.md}，参考 non-vuln-scenarios.md）</td></tr><tr><td>语义</td><td><b>复核改名即结论变更</b>，可嵌套（如 VULN-VULN-…）</td></tr></tbody></table>
+<p>质疑清单：业务场景下真的成立吗（补偿措施）？payload 能否绕过中间校验？攻击步骤是否完整可实施？分层架构里有没有没考虑的防护层？</p>
+<p>验证原则：文件输入一般后台固定（除非有篡改证据）；环境变量一般后台写死（除非外部可控）；认证缺失不必然是漏洞（可能在网关统一处理）；注入输入来自数据库无法判外部可控 → SUSPECTED。</p>
+<p>复核理由示例（VULN-cli-go-entry-1-1）：filepath.Join 会处理 .. 组件，但 tar 内文件名 ../../etc/passwd 拼接 /opt/pkgs/a/ 结果为 /opt/etc/passwd——仍可写到目标目录父级，属真实路径穿越。</p>
+<h3 id="3-9-phase-4-vuln_postprocess-自定义后处理-新增">3.9 Phase 4 — vuln_postprocess（自定义后处理）【新增】</h3>
+<p><b>目标</b>：每份复核结论接一段<b>用户自定义后处理钩子</b>（模板化 prompt，输出 POST-{review_stem}.md）——留给使用者的扩展位（如按客户口径改写、内部知识库归档格式）。</p>
+<h2 id="4-llm-调用隔离-opencode_wrapper">4 LLM 调用隔离（opencode_wrapper）</h2>
+<p>工程亮点：LLM 调用全部经子进程 CLI 隔离封装，五层防线：</p>
+<ol><li><b>临时 profile</b>：每次 run() 用 tempfile.mkdtemp 建独立 profile（config/data/cache/logs/state），结束 rmtree 清理</li><li><b>8 个禁用环境变量</b>：OPENCODE_DISABLE_CLAUDE_CODE(_SKILLS/_PROMPT)/DEFAULT_PLUGINS/AUTOUPDATE/MODELS_FETCH/PRUNE + SKIP_SAFE_CHECK</li><li><b>skill deny-all 白名单</b>：permission.skill 默认对 * 拒绝，仅放行本次选中 skills，屏蔽系统/.claude/插件 skills</li><li><b>超时硬杀</b>：按进程组 SIGKILL，无自动重试（失败显式暴露）</li><li><b>遗留说明</b>：--pure 隔离模式仅存于已不被调用的 _run_direct() 路径（历史层）；后期新增 codeagent 3.0 / GLM-5.1-Alpha-Auto 执行器</li></ol>
+<h2 id="5-持久化与幂等-workspace-py">5 持久化与幂等（workspace.py）</h2>
+<p><b>SQLite db.py 已整体移除</b>（全仓 grep 零命中），改为纯文件系统状态机：</p>
+<ul><li>目录树：.vuln_agent_output/{discovered_surfaces, analyzed_surfaces, vuln_plans/&lt;stem&gt;/, vuln_findings, vuln_reviews, vuln_postprocess, meta/error, thinking/}</li><li>幂等标记：.surface_discover_done / .surface_split_done / .phase3_done（Phase 3 中低危整段完成标记，存在即跳过；删除即重做）</li><li>排序缓存：meta/surface-priority.jsonl 存在即复用</li><li>skip-if-exists：分析同名文件存在跳过；vuln_plans/&lt;stem&gt;/ 目录存在跳过</li><li>thinking_manifest.jsonl：思考过程索引，报告阶段把 thinking 挂回 surface/finding</li></ul>
+<p>报告层：report.py 扫描输出目录生成单页静态报告（report-data.js + report.html + assets：marked/highlight/mermaid）；collect.py 多目标收集成 dashboard。</p>
+<h2 id="6-结论前缀与分级体系-现行版">6 结论前缀与分级体系（现行版）</h2>
+<table><thead><tr><th>层</th><th>前缀</th><th>语义</th></tr></thead><tbody><tr><td>分析</td><td>VULN-</td><td>确认有漏洞</td></tr><tr><td>分析</td><td>NOVULN-</td><td>确认无漏洞（承担旧 DISMISSED-/CLEAN- 的"排除"语义）</td></tr><tr><td>分析</td><td>SUSPECTED-</td><td>无法确认（承担旧"存疑"语义）</td></tr><tr><td>复核</td><td>{前缀}-{分析文件名}</td><td>复核改名即结论变更，可嵌套</td></tr><tr><td>后处理</td><td>POST-</td><td>自定义后处理产物</td></tr></tbody></table>
+<p>代码侧正则多方一致：vuln_analyze.py / review_vuln.py / report.py / workspace.py 均只认 VULN/NOVULN/SUSPECTED 三前缀。旧稿的 DISMISSED-/CLEAN- 在本版零命中。</p>
+<h2 id="7-与-v1-整理稿差异对照">7 与 v1 整理稿差异对照</h2>
+<table><thead><tr><th>#</th><th>旧整理稿</th><th>最新源码</th><th>证据</th></tr></thead><tbody><tr><td>1</td><td>五 Stage：discover/analyze/plan_vuln_tasks/vuln_analyze/review</td><td><b>八段</b>：+split/+rank/+postprocess；plan_vuln_tasks 改名 <b>vuln_planner</b></td><td>pipeline.py:95-310；旧名仅存 prompts-ext 未接线文档</td></tr><tr><td>2</td><td>SQLite db.py 持久化</td><td><b>db.py 已移除</b>，workspace.py 纯文件幂等状态机</td><td>全仓 sqlite 零命中</td></tr><tr><td>3</td><td>ThreadPoolExecutor max_workers=3</td><td><b>双池</b>：代码默认 5/5，随附 yaml 3/5；管道内逐 surface workers=1</td><td>pipeline.py:96-97；analysis-config.yaml:27-30</td></tr><tr><td>4</td><td>前缀 VULN-/DISMISSED-/CLEAN-/SUSPECTED-</td><td>DISMISSED-/CLEAN- 零命中，现行 VULN-/NOVULN-/SUSPECTED- + 复核嵌套 + POST-</td><td>analyze-vulnerability.txt:37-47 等</td></tr><tr><td>5</td><td>LLM 经 opencode CLI --pure 隔离</td><td>--pure 仅存遗留死路径；现行隔离=临时 profile+8 env+skill deny-all</td><td>opencode_wrapper.py:373-379 vs 180-224</td></tr></tbody></table>
+<h2 id="8-与探隐-v2-的衔接">8 与探隐 v2 的衔接</h2>
+<p>v2（§6.4 引擎契约）把 vuln_agent 定为首批二号引擎、<b>cli 型适配器接入</b>：</p>
+<ul><li><b>统一提交 schema</b>：本引擎产物（facts/findings/assets/edges）由适配器转 submission.json，引擎不直接写 13 表账本；总控命令重算 dedup_key 与铸 ID</li><li><b>结论三档映射两维评级</b>：VULN/NOVULN/SUSPECTED 映射 confidence（C1/C2/C3/无-禁），impact 由复核证据补齐</li><li><b>纪律能力声明</b>：manifest 声明 max_op_level 与视角上限；源码分析属内部视角，适配器需在提交中标注视角层级</li><li><b>证据双哈希</b>：Payload/事实依据段（repro_command）进 E-index 四要素（network_position 由执行环境注入）</li><li><b>批次归属</b>：v2 批次 3（引擎接入批）；web-blackbox 先行、vuln_agent 随后复用同一契约</li></ul>
+  <div class="pn"><a href="2026-09-17-tanyin-design.html"><span>← 上一篇</span>探隐 TanYin — 全类型 AI 渗透测试总控 · 设计定稿</a><a href="2026-09-18-web-blackbox-engine.html"><span>下一篇 →</span>web-blackbox 引擎详细设计（B3 前置设计对齐）</a></div>
+  </article>
+  <footer>红队成长全景 · 设计文档站由 scripts/build_handbook.py 构建</footer>
+</div></div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var links=[].slice.call(document.querySelectorAll('.sidebar nav a'));
+  if(!links.length)return;
+  var byId={};links.forEach(function(a){byId[a.getAttribute('href').slice(1)]=a;});
+  var heads=Object.keys(byId).map(function(id){return document.getElementById(id);}).filter(Boolean);
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('on');});
+      var a=byId[e.target.id]; if(a)a.classList.add('on');
+    }});
+  },{rootMargin:'0% 0% -80% 0%'});
+  heads.forEach(function(h){obs.observe(h);});
+});
+</script></body></html>

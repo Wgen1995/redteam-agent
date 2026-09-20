@@ -50,7 +50,9 @@ DESIGN_DOCS = [
      'v1 架构汇报稿：五层六边形与四支柱工程哲学的原始论述。适合讲清楚「这套系统为什么这么分层」时取材——v2 §3 在此基础上重排了三件咬合。'),
     ('2026-09-17-tanyin-design', 'docs/design/imported/TanYin/doc/2026-09-17-tanyin-design.md', 'g2',
      'v1 设计定稿全文（另一台电脑原作），v2 的骨架来源：12 表账本、九个 Phase 门、引擎契约的最初完整定义。阅读坐标——v2 修订集中在形态（薄 CLI）、执法（四层）与账本（13 表）。'),
-    ('2026-09-18-web-blackbox-engine', 'docs/design/imported/TanYin/doc/2026-09-18-web-blackbox-engine.md', 'g2',
+    ('2026-09-22-vuln-agent-engine', 'docs/design/2026-09-22-vuln-agent-engine.md', 'g3',
+     'vuln_agent 引擎专项（最新源码定稿）：八段管道全景/每段模板与幂等/LLM 隔离五层/前缀体系/与 v1 整理稿差异五条/接入 v2 的适配要点。先读 §2 全景图与 §7 差异表最快。'),
+    ('2026-09-18-web-blackbox-engine', 'docs/design/imported/TanYin/doc/2026-09-18-web-blackbox-engine.md', 'g3',
      '首发引擎 web-blackbox 的 v1 专项设计：CNPEN 方法论产品化为四段操作序列。v2 §6 吸收其执行协议与失败语义——写第一个引擎实现时最贴手的施工参考。'),
 ]
 
@@ -78,6 +80,7 @@ DESIGN = {
     'groups': [
         ('g1', '当前权威', 'v2 定稿与融合裁决——实施期间以这两份为准，冲突处以 v2 为准。'),
         ('g2', 'TanYin v1 原稿（参考）', '另一台电脑的原始设计，保真收录：理解出发点与机制基因用，口径矛盾以 v2 消解为准。'),
+        ('g3', '引擎专项', '首批两台引擎的设计页：vuln_agent（源码分析·八段管道）与 web-blackbox（黑盒引擎）。引擎细节以这两页为准，契约归 v2 §6。'),
     ],
 }
 
