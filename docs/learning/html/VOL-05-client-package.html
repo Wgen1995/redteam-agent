@@ -14,7 +14,7 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .sidebar nav a:hover{color:#b91c1c;background:#fef2f2}
 .sidebar nav a.on{color:#b91c1c;border-left-color:#b91c1c;background:#fef2f2;font-weight:600}
 .main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
-.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
 .topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
 .doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
@@ -66,10 +66,9 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#6-前-30-分钟速查清单">6. 前 30 分钟速查清单</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">全景图</a><a href="index.html">手册首页</a><a href="VOL-04-source-assist.html">← VOL-04-source-assist</a><a href="VOL-06-toolchain.html">VOL-06-toolchain →</a></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-04-source-assist.html">← VOL-04-source-assist</a><a href="VOL-06-toolchain.html">VOL-06-toolchain →</a><span class="crumb">› vol-05-安装包与客户端分析-够用深度</span></nav>
   <article class="doc">
-  <h1 id="vol-05-安装包与客户端分析-够用深度">VOL-05 安装包与客户端分析（够用深度）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-05-client-package.md</div>
-  <blockquote>受众：5 年源码审计/产品安全、刚转岗一人红队。本卷只解决一件事：拿到 Windows 安装包（EXE）或 Android 安装包（APK）后，按固定流水线提取四类情报——服务端地址、硬编码凭据、加密密钥、通信协议结构——反哺 Web 与内网测试，并按交付标准写成 finding 卡。本质是"没有源码的代码审计"，你的审计经验全部可迁移。</blockquote>
+  <h1 id="VOL-05 安装包与客户端分析（够用深度）">VOL-05-client-package.md</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/<blockquote>受众：5 年源码审计/产品安全、刚转岗一人红队。本卷只解决一件事：拿到 Windows 安装包（EXE）或 Android 安装包（APK）后，按固定流水线提取四类情报——服务端地址、硬编码凭据、加密密钥、通信协议结构——反哺 Web 与内网测试，并按交付标准写成 finding 卡。本质是"没有源码的代码审计"，你的审计经验全部可迁移。</blockquote>
 <h2 id="目录">目录</h2>
 <ul><li>1. 定位与总流水线</li><li>2. Windows EXE 分析</li><li>2.1 PE 文件基础：节表与导入表</li><li>2.2 壳识别与 UPX 脱壳</li><li>2.3 安装器提取：Inno Setup / NSIS / InstallShield / MSI</li><li>2.4 字符串与硬编码提取：grep 战术</li><li>2.5 .NET 程序 dnSpy 反编译要点</li><li>2.6 Electron 应用 asar 提取</li><li>3. APK 分析</li><li>3.1 apktool / jadx 逐步</li><li>3.2 AndroidManifest 权限与组件暴露</li><li>3.3 硬编码与加密 key 提取</li><li>3.4 证书与签名校验缺陷</li><li>3.5 抓包与证书锁定绕过（原理层）</li><li>4. 通信协议分析：从安装包到自定义协议</li><li>5. 产出规范：硬编码凭据 finding 卡</li><li>6. 前 30 分钟速查清单</li></ul>
 <blockquote>交叉引用：本系列卷号以最终目录为准，本文以 VOL-01-信息收集、VOL-02-Web、VOL-06-内网、VOL-08-报告交付 指代对应主题卷。</blockquote>
@@ -171,12 +170,9 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <h2 id="6-前-30-分钟速查清单">6. 前 30 分钟速查清单</h2>
 <p>拿到任意 EXE/APK 的动作序列：</p>
 <ol><li><code>file</code>/DIE 识别：架构、壳、框架（.NET/Electron/加固）——决定走哪条支线；</li><li>解包：7z → innoextract / upx -d / unshield / msiexec /a；APK：apktool d + jadx；</li><li>双编码 strings（<code>-n 8</code> 与 <code>-e l</code>）+ apkleaks/gitleaks 一把梭；</li><li>分桶 grep：URL / 内网 IP / 端口 / 凭据关键词 / 云 key 特征；</li><li>反编译只啃加密类与网络类（dnSpy / jadx-gui）；</li><li>产出三件套：资产补充清单、疑似凭据表（含位置证据）、协议疑点列表；</li><li>按 §5 写卡，按 VOL-02-Web / VOL-06-内网 卷衔接下一步打点。</li></ol>
-<p>（本卷完。交叉引用卷号以系列最终目录为准。）</p>
-  <div class="pn"><a href="VOL-04-source-assist.html"><span>← 上一卷</span>VOL-04-source-assist</a><a href="VOL-06-toolchain.html"><span>下一卷 →</span>VOL-06-toolchain</a></div>
-  </article>
-  <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
-</div></div>
-<script>
+<p>（本卷完。交叉引用卷号以系列最终目录为准。）</p></div>
+  <a href="VOL-04-source-assist.html"><span>← 上一卷</span>VOL-04-source-assist</a>
+  <div class="pn"><a href="VOL-06-toolchain.html"><span>下一卷 →</span>VOL-06-toolchain</a>
 document.addEventListener('DOMContentLoaded',function(){
   var links=[].slice.call(document.querySelectorAll('.sidebar nav a'));
   if(!links.length)return;
@@ -190,4 +186,8 @@ document.addEventListener('DOMContentLoaded',function(){
   },{rootMargin:'0% 0% -80% 0%'});
   heads.forEach(function(h){obs.observe(h);});
 });
-</script></body></html>
+</div>
+  </article>
+  <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
+</div></div>
+<script>VOL-05 安装包与客户端分析（够用深度）</script></body></html>

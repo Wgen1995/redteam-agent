@@ -14,7 +14,7 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .sidebar nav a:hover{color:#b91c1c;background:#fef2f2}
 .sidebar nav a.on{color:#b91c1c;border-left-color:#b91c1c;background:#fef2f2;font-weight:600}
 .main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
-.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
 .topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
 .doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
@@ -63,10 +63,9 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#b6-复测与回归验证流程">B6 复测与回归验证流程</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">全景图</a><a href="index.html">手册首页</a><a href="VOL-06-toolchain.html">← VOL-06-toolchain</a><a href="VOL-09A-ai-pentest-tracks.html">VOL-09A-ai-pentest-tracks →</a></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a><a href="VOL-06-toolchain.html">← VOL-06-toolchain</a><a href="VOL-09A-ai-pentest-tracks.html">VOL-09A-ai-pentest-tracks →</a><span class="crumb">› vol-07-08-方法论-报告交付-成长路线-合并卷</span></nav>
   <article class="doc">
-  <h1 id="vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08 方法论·报告交付·成长路线（合并卷）</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/VOL-07-08-methodology-reporting.md</div>
-  <p><b>受众</b>：5 年源码审计/产品安全、刚转岗一人红队的工程师：懂漏洞原理与代码，缺黑盒打点、内网、工具链实战与客户交付。</p>
+  <h1 id="VOL-07-08 方法论·报告交付·成长路线（合并卷）">VOL-07-08-methodology-reporting.md</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/<p><b>受众</b>：5 年源码审计/产品安全、刚转岗一人红队的工程师：懂漏洞原理与代码，缺黑盒打点、内网、工具链实战与客户交付。</p>
 <p><b>交叉引用</b>：Web 打点见 VOL-01/VOL-02，内网与域见 VOL-03，源码联动见 VOL-04，客户端见 VOL-05，工具链见 VOL-06。</p>
 <h2 id="目录">目录</h2>
 <ul><li>PART A 方法论与成长模型</li><li>A1 渗透测试思维全景：四大框架 + 黑盒信息渐进决策模型</li><li>A2 审计员→渗透者思维转换表</li><li>A3 能力阶梯 L0–L5（能力里程碑制）</li><li>A4 学习材料索引</li><li>PART B 报告与交付</li><li>B1 中文渗透测试报告标准结构</li><li>B2 POC 卡片规范＝可复现标准</li><li>B3 CVSS 3.1 评级实操</li><li>B4 证据留存与脱敏</li><li>B5 等保语境下的报告要点</li><li>B6 复测与回归验证流程</li></ul>
@@ -178,12 +177,9 @@ Authorization: Bearer &lt;userA的token&gt;</code></pre>
 <p><span class="bdg bdg-t">陷阱</span>①"不弹了"就判修复——可能是 WAF 拦截或网络策略变化，换编码/路径/网络位置再验证；②只测原端点不测同类端点；③复测窗口没重新拿授权；④风险接受无书面记录，事后争议说不清。</p>
 <p><span class="bdg bdg-x">练习</span>在 vulhub 的 mysql/CVE-2012-2122（MariaDB 认证绕过）上模拟全流程：出卡片→实施"修复"（限制访问来源或更换镜像）→按六步走完并产出复测报告。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
-<p><b>本卷小结</b>：方法论给骨架与路径，PART B 六件交付物（报告结构/POC 卡片/CVSS 评级/证据脱敏/等保映射/复测回归）就是一人红队的全部家当。黑盒打点（见 VOL-01-web-app-part1、VOL-02-web-app-part2）、内网与 AD（见 VOL-03-intranet）、工具与 C2 概念边界（见 VOL-06-toolchain）。</p>
-  <div class="pn"><a href="VOL-06-toolchain.html"><span>← 上一卷</span>VOL-06-toolchain</a><a href="VOL-09A-ai-pentest-tracks.html"><span>下一卷 →</span>VOL-09A-ai-pentest-tracks</a></div>
-  </article>
-  <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
-</div></div>
-<script>
+<p><b>本卷小结</b>：方法论给骨架与路径，PART B 六件交付物（报告结构/POC 卡片/CVSS 评级/证据脱敏/等保映射/复测回归）就是一人红队的全部家当。黑盒打点（见 VOL-01-web-app-part1、VOL-02-web-app-part2）、内网与 AD（见 VOL-03-intranet）、工具与 C2 概念边界（见 VOL-06-toolchain）。</p></div>
+  <a href="VOL-06-toolchain.html"><span>← 上一卷</span>VOL-06-toolchain</a>
+  <div class="pn"><a href="VOL-09A-ai-pentest-tracks.html"><span>下一卷 →</span>VOL-09A-ai-pentest-tracks</a>
 document.addEventListener('DOMContentLoaded',function(){
   var links=[].slice.call(document.querySelectorAll('.sidebar nav a'));
   if(!links.length)return;
@@ -197,4 +193,8 @@ document.addEventListener('DOMContentLoaded',function(){
   },{rootMargin:'0% 0% -80% 0%'});
   heads.forEach(function(h){obs.observe(h);});
 });
-</script></body></html>
+</div>
+  </article>
+  <footer>红队成长全景 · 手册站由 scripts/build_handbook.py 构建</footer>
+</div></div>
+<script>VOL-07-08 方法论·报告交付·成长路线（合并卷）</script></body></html>

@@ -26,7 +26,7 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .sidebar nav a:hover{color:#b91c1c;background:#fef2f2}
 .sidebar nav a.on{color:#b91c1c;border-left-color:#b91c1c;background:#fef2f2;font-weight:600}
 .main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
-.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
 .topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
 .doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
@@ -220,7 +220,7 @@ def render(name, title, blocks, headings, prev, nxt):
   <nav>%s</nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">全景图</a><a href="index.html">手册首页</a>%s%s</nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="index.html">📚 手册</a>%s%s<span class="crumb">› %s</span></nav>
   <article class="doc">
   <h1 id="%s">%s</h1><div class="meta">红队学习手册 · 持续更新 · 源文件 docs/learning/%s</div>
   %s
@@ -232,7 +232,7 @@ def render(name, title, blocks, headings, prev, nxt):
         H.escape(title), CSS, '\n'.join(toc),
         ('<a href="%s">← %s</a>' % (prev[0], H.escape(prev[1]))) if prev else '',
         ('<a href="%s">%s →</a>' % (nxt[0], H.escape(nxt[1]))) if nxt else '',
-        h1_id, H.escape(title), name, '\n'.join(body), pn[0], pn[1], JS)
+        h1_id, H.escape(title), name, '\n'.join(body), pn[0], pn[1], JS, H.escape(title))
 
 def build():
     os.makedirs(OUT, exist_ok=True)
