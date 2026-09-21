@@ -127,7 +127,7 @@
 
 - **TanYin 形态**：P0-P6+P5.5+P6.0 共九门，每门入口门+出口门禁，门禁=账本命令判定（P0 无授权 REJECT / P2 matrix-freeze / P3 converge-check / P4 四校验命令 / P5 终态门禁），指令在 phases/*.md 渐进加载（A.`orchestration.phaseGates`）。
 - **B′ 形态**：phases.yaml 数据化状态机——阶段序列/entry/exit 断言/门禁点/回边，单一事实源（L§7.2 ①；expert/architect #1；先例 Caldera facts 闭环+回边、Osmedeus DAG、CEP 六阶段）。
-- **裁决**：**双层合体：phases.yaml 为状态机单一事实源（数据），TanYin 九门语义全部数据化进去——每门 exit 断言=一条账本查询命令的调用（如 P3 出口=`ledger-converge-check ∈ {converged, budget-exhausted}`）；phases/*.md 保留为人读方法论指令，由状态机按当前阶段调度加载。回边显式化：budget-exhausted→P4 降级流（TanYin S29 分支已有）、新资产→子矩阵（事件回边）。执法权威不搬家：仍在一、R7 的执行层，yaml 只是可 diff 的声明层。**
+- **裁决**：**双层合体：phases.yaml 为状态机单一事实源（数据），TanYin 九门语义全部数据化进去——每门 exit 断言=一条账本查询命令的调用（如 P3 出口=`ledger-converge-check ∈ {converged, budget-exhausted}`）；phases/*.md 保留为人读方法论指令，由状态机按当前阶段调度加载。回边显式化：budget-exhausted→P4 降级流（TanYin S29 分支已有）、新资产→子矩阵（事件回边）、cred-obtained → authz-diff 候选（凭据事件回边）。执法权威不搬家：仍在一、R7 的执行层，yaml 只是可 diff 的声明层。**
 - **理由**：TanYin 的门禁语义已可判定（每门出口均对应命令），但散在 markdown 里机器不可枚举——B′ 恰好补此层；B′ 无九门的业务语义深度（P5.5 签发/P6.0 清理/八问授权均为 TanYin 独有深度）。
 - **证据**：A.`orchestration.phaseGates`（design §4.1）；B.`phase_gates`；L§7.2 ①、P§P1.3.3（方法学数据化）。
 

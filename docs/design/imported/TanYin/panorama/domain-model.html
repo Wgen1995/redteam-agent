@@ -55,6 +55,9 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:30px}
 <div class="tables">
 <div class="tb"><b>goals 目标</b><code>id, target, objective, auth_doc, auth_sha256, signer, valid_from/until, rate_limit, window, emergency_contact, budget, business_context…</code><br>结构化授权（授权书 sha256+签署方+有效窗口）+ 预算三元组（token/请求/时间窗）+ 速率上限 + 业务问卷摘要。</div>
 <div class="tb new"><b>scope 授权范围</b><code>id, kind(include/exclude), matcher, note</code><br>授权白名单硬门：支持 CIDR/域名后缀/通配。<b>资产落账命令强制对照本表</b>，界外标记 out_of_scope 且账本级禁止派生 intent——授权边界是机械判定，非 LLM 语义判断。</div>
+<div style="margin:18px 0;padding:12px 16px;border-left:4px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;font-size:14px;line-height:1.7">
+🧩 <b>v2 语义补注（探索迭代）</b>：<br/>三层「范围」各司其职——授权边界（可修订，本表）/资产图谱（append-only 生长）/矩阵锚点（冻结度量）；见 v2 §4.4 与 §5.4 对照。
+</div>
 <div class="tb"><b>intents 意图</b><code>id, title, detail, status, engine, origin, score, via, dedup_key, activation</code><br>事件溯源（追加状态变更行）；dedup_key 机械拒重；deferred 激活条件是结构化谓词（field;op;value，命令评估）；blocked 不可自动复活。</div>
 <div class="tb"><b>facts 事实</b><code>id, intent_id, kind, target, detail, confidence</code><br>kind: port/service/http/info/vuln-clue；<b>落账时即脱敏</b>（凭据/PII 占位符化——运行时数据纪律）。</div>
 <div class="tb"><b>findings 漏洞</b><code>id, intent_id, title, confidence, impact, description, reproducible_steps, affected_asset_id, evidence_ids, control_evidence_ids, status</code><br>reproducible_steps≥1 强制；<b>两维评级 confidence×impact</b>；control_evidence_ids=差分对照组；合并=supersedes 边+tombstone（不删行）。</div>

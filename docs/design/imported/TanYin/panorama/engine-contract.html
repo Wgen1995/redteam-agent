@@ -50,6 +50,9 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:30px}
 <tr><td><b>输出（提交文件协议 ）</b></td><td>统一提交文件 → <b>session/&lt;goal-id&gt;/submissions/&lt;intent-id&gt;/</b>（schema 定死：findings[title/confidence/impact/reproducible_steps/evidence_refs/location] + facts[] + assets[] + edges[]），<b>由总控验收后经账本命令统一落账</b>——引擎不直接写账本</td><td>单写者模式：并发锁/ID 撞号/校验集中化一次解决；提交文件是断点续传的额外恢复点；总控「验收格式」职责成立</td></tr></table>
 <p><b>执行语义（第二轴）</b>：<b>skill 型</b>——LLM 子代理执行，失败=格式漂移/上下文耗尽，超时=回合预算；<b>cli 型</b>——OS 进程执行，失败=非零退出/超时/部分产物，<b>必须声明纪律能力上限，总控据此路由（超限 intent 拒绝派发；黑盒工具默认最高风险级，仅 L0/L1 视角 intent 可派）</b>，适配器须输出操作日志供审计回放；<b>projector 型</b>——只读账本、产物不回写。</p>
 <div class="why"><b>设计思想：文件契约总线</b>——不引入进程间通信/消息队列/数据库，契约就是「目录+文件格式+执行语义」。零依赖、零部署、任何宿主可用。学烛龙「参数契约+产物映射器」语义，但落到纯文件形态。修正：引擎「零改动」过强——准确表述是<b>契约内零改动</b>（满足契约即插即用；契约演进时引擎跟版本）。</div></div>
+<div style="margin:18px 0;padding:12px 16px;border-left:4px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;font-size:14px;line-height:1.7">
+🧩 <b>v2 语义补注（探索迭代）</b>：<br/>引擎侧闭环——执行中发现新资产/新凭据不是丢给总控就结束：统一提交后触发资产事件回边（asset-added/cred-obtained），引擎自身可被再派发（v2 §5.4）；引擎不是固定流水线执行器，是探索循环的感知末端。
+</div>
 <div class="sec"><h2>引擎矩阵（首批 + 预留）</h2>
 <div class="engs">
 <div class="en"><b>web-blackbox <span class="st">新写</span></b>SKILL 型。CNPEN 方法论产品化：侦察 → 攻击面测绘 → 矩阵测试 → <b>差分举证（判定规则写入契约：同请求基线±单变量+errorCode 语义分析+内容类型验证）</b>。装进子代理按角色 recon/web 执行。<b>引擎级详细设计已定稿</b>（2026-09-18-web-blackbox-engine.md：目录结构 SKILL.md+phases 四段+patterns 提交模板；intent.kind→段映射；上下文预算——工具输出零进上下文；失败语义五类——格式漂移/上下文耗尽/超时/环境受阻/工具失败；CNPEN 82 漏洞素材→引擎/技法页/先例库映射）。</div>

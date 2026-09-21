@@ -122,6 +122,9 @@ checkpoint+预算检查   <span class="c">因为：上下文会满、预算会�
 <b>知识库</b>（staging 审批入库）<span class="c">因为：错误知识会污染所有后续测试</span>
 ▼
 下一次测试的 P2/P3：先例注入+实体页检索 <span class="c">因果链闭环——复利</span></div>
+<div style="margin:18px 0;padding:12px 16px;border-left:4px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;font-size:14px;line-height:1.7">
+🧩 <b>v2 语义补注（探索迭代）</b>：<br/>冻结的是覆盖率锚点，不是探索——主矩阵分母不动，新资产经 submatrix: 行挂载，闭合率口径=主矩阵+子矩阵（v2 §4.10/§5.4）。
+</div>
 <p><b>一句话总结因果链</b>：授权定义边界 → 测绘建立结构 → 矩阵定义「全」→ 循环消灭未知 → 证据定义「真」→ 签发定义「交付」→ 沉淀定义「复利」。每一步的存在理由都是上一步的产出特性，每一步的产出都是下一步的输入。</p>
 </div>
 <h2>2. 概念词典：session 目录里的每样东西（人话版）</h2>
@@ -259,8 +262,14 @@ E-g1-0301 | <span class="k">attack</span> | FD-g1-0004 | FD-g1-0007 | intent   <
 <p>单个看 FD-g1-0004 是 C2 中危、FD-g1-0007 是 C1 中危——<b>链起来是 C1 高危</b>（组合后可达管理员越权）。attack 边让这个升级从「报告叙述」变成「图谱可查询路径」。</p>
 <h3 style="color:#0f766e">第 3 轮（快进讲受管重启）</h3>
 <p>上下文接近上限（子代理返回累积+五路检索）。<b>受管重启</b>：state.md 写入「第 3 轮/active: INT-g1-0021/下轮: 收敛判定」→ 总控主动结束本会话 → 新会话从 state.md+账本恢复（常驻集重新加载）——<b>这不是事故恢复，是常规操作</b>。恢复后 viz 重新生成，反映的就是恢复点状态。</p></div>
+<div style="margin:18px 0;padding:12px 16px;border-left:4px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;font-size:14px;line-height:1.7">
+🧩 <b>v2 语义补注（探索迭代）</b>：<br/>asset-added 事件实况演示：若第 3 轮侦察发现新子域 admin-internal.shop.example——①fact 落账（kind=recon-event）；②事件回边 asset-added 触发重规划，origin=recon-event 的测绘 intent 直接 pending；③matrix-freeze 不解冻，新资产走 reason 前缀 submatrix: 的子矩阵行；④新假设风暴对新面展开——这正是「像真人头脑风暴」的机制化身（v2 §5.4 五条生长通路）。
+</div>
 <div class="conv"><h3>✅ 终态 A：自然收敛</h3>
 <p>若干轮后 ledger-converge-check 返回 <b>converged</b>——无未消费 fact（每条都被消费或显式标记不消费附理由）、无 pending/active intent、candidate 池空、矩阵无空格。<b>因果链的收口</b>：四个「完整性」同时达成——探索完整（没有看见不管的）、执行完整（没有许诺不做的）、假设完整（风暴无新产出）、覆盖完整（没有不知道的格子）。<b>何时停止从主观判断变成数据判定</b>——这是对 AutoGPT 式事故性终止的完整回答。</p></div>
+<div style="margin:18px 0;padding:12px 16px;border-left:4px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;font-size:14px;line-height:1.7">
+🧩 <b>v2 语义补注（探索迭代）</b>：<br/>完备性三支柱=矩阵无空格+intents 全闭合+未消费 fact 清零；冻结≠探索，详见 PRINCIPLES.md 4.2 与 v2 §5.4。
+</div>
 <div class="budget"><h3>⏹ 终态 B：budget-exhausted（分支推演）</h3>
 <p>换一个更大的目标：第 25 轮时请求预算 5 万只剩 300——ledger-budget-check 触发 → 终态 <b>budget-exhausted</b> → 转 P4 降级流程：账本质量不因预算放松；P5 报告<b>首节强制披露</b>未闭合格清单（「cdn.shop.example.com×缓存投毒：未测，原因=请求预算耗尽」）、未跑 intent 清单、矩阵闭合率 87%；免责条款注明「中期报告」。<b>为什么这是合法终态而非事故</b>：真实大目标上预算必然先于收敛耗尽。没有这个终态，最常见的中止方式反而是设计外的「token 烧穿」——恰是 DECISIONS 里自己批评的 AutoGPT 死法。诚实终止+显式披露，客户可决定追加预算续测。</p></div>
 <div class="step"><h3>3.7 P4 汇总——脏账本不出报告</h3>

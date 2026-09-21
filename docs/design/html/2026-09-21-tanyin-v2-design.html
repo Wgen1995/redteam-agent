@@ -77,6 +77,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l3" href="#5-1-状态机语义-r2-裁决落地">5.1 状态机语义（R2 裁决落地）</a>
 <a class="l3" href="#5-2-phases-yaml-定稿语义-九门全量">5.2 phases.yaml（定稿语义，九门全量）</a>
 <a class="l3" href="#5-3-命令集-37-条-tanyin-31-条签名冻结原样-新增-6-条">5.3 命令集（37 条 = TanYin 31 条签名冻结原样 + 新增 6 条）</a>
+<a class="l3" href="#5-4-探索迭代语义总纲-图谱生长与锚点冻结-头脑风暴不变式">5.4 探索迭代语义总纲：图谱生长与锚点冻结（头脑风暴不变式）</a>
 <a class="l2" href="#6-引擎契约-manifest-统一提交-schema-三类执行语义">6 引擎契约：manifest / 统一提交 schema / 三类执行语义</a>
 <a class="l3" href="#6-1-契约双轴-engines-contract-md">6.1 契约双轴（engines/CONTRACT.md）</a>
 <a class="l3" href="#6-2-工具两层接入-继承-供应链锁定">6.2 工具两层接入（继承+供应链锁定）</a>
@@ -126,8 +127,9 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="1-需求总纲-v2-继承-tanyin-requirements-标注修订">1 需求总纲 v2（继承 TanYin REQUIREMENTS，标注修订）</h2>
 <p>继承 TanYin 七条核心诉求 D1-D7（A.<code>coreDemands</code>），v2 仅对 D1 与形态条款修订，其余语义不变：</p>
-<table><thead><tr><th>需求</th><th>TanYin 原文要点</th><th>v2 修订标注</th></tr></thead><tbody><tr><td>D1 通用可复用</td><td>直接安装到 walcode、CodeBuddy 等使用</td><td><b>修订</b>：首批安装矩阵 = DSH / opencode / codex / walcode / CodeBuddy 五宿主（ADR-P2）；复制即装承诺不变，但「装」= 幂等安装器（§10.1）建立权威目录 + 符号链接 + tools.lock 校验</td></tr><tr><td>D1.1 形态条款</td><td>纯 SKILL：零代码、零运行时、复制即装</td><td><b>修订（ADR-P3）</b>：skill 主体（markdown+数据文件）+ 单一薄 CLI 工具箱（python3 ≥3.9 标准库实现，零第三方依赖，tools.lock 锁定哈希+ECDSA 验签）+ 按宿主档位启用的 hook/egress。「零代码」重述为「零第三方运行时依赖、复制即装」</td></tr><tr><td>D2 全类型渗透</td><td>不止 Web，编排多引擎</td><td>不变（引擎契约 §6；首批 web-blackbox + vuln_agent）</td></tr><tr><td>D3 不断增强</td><td>知识跨会话沉淀复利</td><td>不变（§7；新增 B′ 语料入库与 CVE 联网核验）</td></tr><tr><td>D4 图谱驱动</td><td>图谱收敛=测试完成</td><td>不变（§5/§4；十边口径钉死）</td></tr><tr><td>D5 安全纪律</td><td>授权门+分级审批+命令安全上下文</td><td>不变并<b>加强</b>（§8：四层执法分档 + canary + 占位符四关卡）</td></tr><tr><td>D6 覆盖可度量</td><td>五态标记、矩阵闭合、终态门禁</td><td>不变（§8.8 弱模型档位化以「覆盖不可谈判」为不可裁剪底线，ADR-P4⑤）</td></tr><tr><td>D7 工程化管理</td><td>蓝图→设计→进度→账本</td><td>不变（本文即蓝图定稿；批次推进见 §11）</td></tr><tr><td>验收（req §7）</td><td>黄金夹具 / 授权靶场 / 82 漏洞 ingest 抽查 / 双宿主可用</td><td><b>修订</b>：双宿主 → <b>五宿主安装矩阵验证</b>（§10，含盲区静态验证+手测脚本）；其余三条并入三层验收体系（§9）</td></tr></tbody></table>
+<table><thead><tr><th>需求</th><th>TanYin 原文要点</th><th>v2 修订标注</th></tr></thead><tbody><tr><td>D1 通用可复用</td><td>直接安装到 walcode、CodeBuddy 等使用</td><td><b>修订</b>：首批安装矩阵 = DSH / opencode / codex / walcode / CodeBuddy 五宿主（ADR-P2）；复制即装承诺不变，但「装」= 幂等安装器（§10.1）建立权威目录 + 符号链接 + tools.lock 校验</td></tr><tr><td>D1.1 形态条款</td><td>纯 SKILL：零代码、零运行时、复制即装</td><td><b>修订（ADR-P3）</b>：skill 主体（markdown+数据文件）+ 单一薄 CLI 工具箱（python3 ≥3.9 标准库实现，零第三方依赖，tools.lock 锁定哈希+ECDSA 验签）+ 按宿主档位启用的 hook/egress。「零代码」重述为「零第三方运行时依赖、复制即装」</td></tr><tr><td>D2 全类型渗透</td><td>不止 Web，编排多引擎</td><td>不变（引擎契约 §6；首批 web-blackbox + vuln_agent）</td></tr><tr><td>D3 不断增强</td><td>知识跨会话沉淀复利</td><td>不变（§7；新增 B′ 语料入库与 CVE 联网核验）</td></tr><tr><td>D4 图谱驱动</td><td>像真人头脑风暴——侦测信息→分析→攻击面演进→推导验证，图谱收敛=测试完成</td><td>不变并恢复 v1 原话（§5/§4；十边口径钉死；探索语义总纲见 §5.4）</td></tr><tr><td>D5 安全纪律</td><td>授权门+分级审批+命令安全上下文</td><td>不变并<b>加强</b>（§8：四层执法分档 + canary + 占位符四关卡）</td></tr><tr><td>D6 覆盖可度量</td><td>五态标记、矩阵闭合、终态门禁</td><td>不变（§8.8 弱模型档位化以「覆盖不可谈判」为不可裁剪底线，ADR-P4⑤）</td></tr><tr><td>D7 工程化管理</td><td>蓝图→设计→进度→账本</td><td>不变（本文即蓝图定稿；批次推进见 §11）</td></tr><tr><td>验收（req §7）</td><td>黄金夹具 / 授权靶场 / 82 漏洞 ingest 抽查 / 双宿主可用</td><td><b>修订</b>：双宿主 → <b>五宿主安装矩阵验证</b>（§10，含盲区静态验证+手测脚本）；其余三条并入三层验收体系（§9）</td></tr></tbody></table>
 <p><b>不做的边界（继承并修订）</b>：宿主插件、独立二进制、多 agent 运行时、GUI（烛龙是 GUI 未来）、多 session 并行（首发单 session 串行，graph.ndjson 行级合并预留）、业务逻辑漏洞全自动发现（biz 标记+人工为主）。原「不做执行沙箱/守卫」修订为「沙箱仍不做、<b>守卫以执行通道级 CLI + 宿主 hook + egress 分档形式做</b>」（ADR-P3）。</p>
+<p><b>开局不定死（探索迭代总纲句，详 §5.4）</b>：P0-P2 只铸三类锚点——授权边界（可修订）/词表/矩阵基线；攻击面生命周期=整个交战：P3 循环全程经 asset-added / cred-obtained / scope-amended 事件回边生长图谱与子矩阵，「像真人头脑风暴」是 D4 的原始承诺，测绘与规划不是一次性前置步骤。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="2-设计宪法-铁律清单">2 设计宪法（铁律清单）</h2>
 <p>四条 TanYin 铁律原文保留（B.<code>iron_laws</code>；cross_view #8 消解——全文收录），新增三条 v2 铁律。<b>铁律高于一切机制设计；机制与铁律冲突时改机制。</b></p>
@@ -281,7 +283,8 @@ gates:
   P1:
     title: 测绘
     entry: {require: P0.exit}
-    duty: "侦察子代理（六要素委派）→ assets/facts 落账（每资产 scope-check 内联；facts 即脱敏）"
+    duty: "侦察子代理（六要素委派）→ assets/facts 落账（每资产 scope-check 内联；facts 即脱敏）
+           ；测绘不终于 P1——P3 全程可经 asset-added 事件续测（§5.4 生长通路①）"
     exit:
       assert:
         - {cmd: "ledger-tree-check --complete parent", expect: PASS}        # 资产树完整
@@ -290,7 +293,8 @@ gates:
       on_pass: P2
   P2:
     title: 规划
-    duty: "读账本+知识库指纹匹配（先例三元组内）→ matrix-init（列从 VOCAB WSTG v4.2 钉死）→ 冻结"
+    duty: "读账本+知识库指纹匹配（先例三元组内）→ matrix-init（列从 VOCAB WSTG v4.2 钉死）→ 冻结
+           （锚点冻结≠探索冻结——分母不动，新资产走子矩阵，§4.10/§5.4）"
     exit:
       assert:
         - {cmd: "ledger-matrix-freeze", expect: "frozen（不可重复冻结）"}
@@ -305,6 +309,9 @@ gates:
       asset-added: {action: "spawn 测绘 intents（origin=recon-event，直接 pending，不打分）+子矩阵初始化",
                     guardrails: "计入预算/单资产测绘上限/out_of_scope 只记 fact 不 spawn"}
       cred-obtained: {action: "登记 creds(kind=session) → 触发 authz-diff 候选（批次 4 起）"}
+      scope-amended: {action: "amend-scope 落账（amendment_of 链+approvals 强制）→ tanyin-egress compile
+                     重编译 ACL/DNS pinning/OOB 白名单 → out_of_scope 资产复判（转正则子矩阵初始化）→ canary 复测",
+                     guardrails: "修订未经审批=账本级 REJECT；修订史进报告守门声明"}
     exit:
       assert:
         - {cmd: "ledger-converge-check", expect: "converged | budget-exhausted"}
@@ -327,7 +334,8 @@ gates:
   P5:
     title: 报告
     duty: "tanyin-report 聚合器从 13 表确定性重建正文（模板+账本数据，零 LLM 方差；LLM 仅写执行摘要
-           与修复建议叙述段，须引用 finding ID）→ report-draft.md"
+           与修复建议叙述段，须引用 finding ID）→ report-draft.md（附「范围外观察」附录：
+           out_of_scope facts 列示供客户扩授权决策——B4 恢复，接 §5.4 边界生长闭环）"
     exit:
       assert:
         - {cmd: "ledger-terminal-gate", expect: "矩阵无空格 | degraded 披露清单完备"}   # 终态门禁
@@ -362,11 +370,20 @@ gates:
       on_pass: END
 back_edges:
   - {from: P3, to: P4, when: budget-exhausted, mode: degraded}   # 账本质量不降，P5 首节强制披露未闭合格
-  - {from: P3, to: P3, when: "asset-added | cred-obtained", type: event}
+  - {from: P3, to: P3, when: "asset-added | cred-obtained | scope-amended", type: event}
   - {from: P4, to: P4, when: "重放=REPAIRED（修复 POC 卡片后重放）", max_retry: 2}</code></pre>
 <p>补充语义：P0「无授权只许读文档」由 Tier 0 硬门实现（无 goals 行时一切写命令 REJECT）；受管重启自动档护栏=重启计入预算、重启速率上限（1 次/N 分钟防递归 spawn）、timeline 记 managed-restart 事件、单活跃会话约束；工件即缓存幂等续跑=intent done 且 <code>submissions/&lt;intent-id&gt;/submission.json</code> 存在则重入跳过（R8 吸收）。</p>
 <h3 id="5-3-命令集-37-条-tanyin-31-条签名冻结原样-新增-6-条">5.3 命令集（37 条 = TanYin 31 条签名冻结原样 + 新增 6 条）</h3>
 <ul><li><b>写命令 18</b>：add-goal / add-scope / add-intent / set-intent-status / add-fact / add-finding / supersede-finding / add-asset / add-edge / add-evidence / approve / matrix-set / checkpoint / append-timeline / matrix-freeze / budget-log + <b>新增</b> add-cred、amend-scope。</li><li><b>查询命令 12</b>：unconsumed-facts / pending-intents / matrix-gaps / converge-check / next-id / intent-status / matrix-get / scope-check / budget-check / cleanup-checklist + <b>新增</b> set-cred-status（creds 事件溯源状态查询/变更）、redact-scan（交付前终检）。</li><li><b>校验命令 6</b>：validate / verify-chain / hash-recheck / matrix-audit + <b>新增</b> state-rebuild（state.md 与账本重建一致性）、set-replay-state（重放门三态 VERIFIED/REPAIRED/REJECTED 落账，REJECTED→confidence 降 C3 或转 fact）。</li><li><b>特殊</b>：matrix-init（P2 生成矩阵）。合计 18+12+6+1=<b>37</b>。</li><li>通用纪律（继承）：写前拒收；查询输出摘要化（计数+top-N+ID 列表，禁全量回灌）；命令幂等；对外请求类前置 request-ticket。实现载体=cli/tanyin-ledger（python3 标准库）；签名清单批次 0 冻结进 shared/LEDGER.md 附录 A。</li></ul>
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
+<h3 id="5-4-探索迭代语义总纲-图谱生长与锚点冻结-头脑风暴不变式">5.4 探索迭代语义总纲：图谱生长与锚点冻结（头脑风暴不变式）</h3>
+<blockquote>设计意图：恢复 D4 原话「像真人头脑风暴——侦测信息→分析→攻击面演进→推导验证」。P0-P2 只铸三类锚点（授权边界/词表/矩阵基线），<b>攻击面生命周期=整个交战</b>；测绘不终于 P1，规划不锁死探索。本节把散在 §4.4/§4.10/§5.2/§6.6/§8.7 的生长机制收拢为一张总表——「开局不定死」是显式设计承诺，不是机制副产品。</blockquote>
+<p><b>五条生长通路（每路四元组：触发→命令动作→回边落点→预算护栏）</b>：</p>
+<table><thead><tr><th>#</th><th>通路</th><th>触发</th><th>命令动作</th><th>回边落点</th><th>预算护栏</th></tr></thead><tbody><tr><td>①</td><td>资产生长</td><td>侦察/引擎提交发现新资产（in-scope）</td><td>add-asset/add-fact → 测绘 intents（origin=recon-event 直接 pending 不打分）</td><td>P3 events: asset-added</td><td>计入预算/单资产测绘上限</td></tr><tr><td>②</td><td>凭据生长</td><td>获得登录态/攻击凭据</td><td>add-cred（kind=session，parent_cred 链）→ authz-diff 候选</td><td>P3 events: cred-obtained</td><td>vault 占位符四关卡</td></tr><tr><td>③</td><td>范围生长</td><td>客户扩授权</td><td>amend-scope（amendment_of 链+approvals）→ tanyin-egress compile 重编译 ACL/DNS/OOB → 界外资产复判转正 → 子矩阵初始化 → canary 复测</td><td>P3 events: scope-amended</td><td>未审批=账本级 REJECT；修订史进报告</td></tr><tr><td>④</td><td>事实消化</td><td>存在未消费 fact</td><td>derived_from 强制出边（派生 intent 或显式不消费附理由）</td><td>P3 ①扫描步</td><td>「看见不管」暗区被收敛判定消灭</td></tr><tr><td>⑤</td><td>延迟复活</td><td>deferred 的 activation 谓词命中</td><td>set-intent-status 复活为 pending</td><td>P3 ①扫描步</td><td>复活同样过 dedup/预算份额</td></tr></tbody></table>
+<p><b>锚点冻结语义（与 §4.10 呼应）</b>：matrix.freeze 冻结的是主矩阵分母（覆盖率锚点），submatrix: 前缀行承载新资产覆盖；闭合率口径=主矩阵+子矩阵合并计算。收敛四条件与持续生长共存：<b>发散由事件链保证（新面不断进入），收敛由锚点+风暴阈值递增保证（旧面消耗快于新面产生）</b>——收敛是动态平衡，不是静止。</p>
+<p><b>边界生长闭环（B4 恢复）</b>：范围外观察 → P5「范围外观察」附录列示 → 客户决策扩授权 → amend-scope 修订链 → egress recompile+canary 复测 → 界外资产复判转正 → 子矩阵生成。授权边界的变更是留痕闭环，不是重启交战。</p>
+<p><b>生长护栏清单</b>：测绘计入预算/单资产测绘上限/风暴阈值随轮数递增/⑤路 LLM 联想 quota（弱模型档=0）/重启速率上限——生长有界，故可收敛。</p>
+<p><b>验收挂钩</b>：evals 注入场景（交战中途投喂新资产/新凭据/范围修订，断言重规划发生且账本出现对应回边与子矩阵行）；黄金夹具覆盖 submatrix: 行与 amendment 链（含 egress recompile 幂等）。</p>
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
 <h2 id="6-引擎契约-manifest-统一提交-schema-三类执行语义">6 引擎契约：manifest / 统一提交 schema / 三类执行语义</h2>
 <h3 id="6-1-契约双轴-engines-contract-md">6.1 契约双轴（engines/CONTRACT.md）</h3>
