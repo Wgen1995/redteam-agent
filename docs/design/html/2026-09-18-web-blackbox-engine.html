@@ -129,7 +129,6 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <ul><li>不做源码审计（vuln-agent CLI 引擎职责）</li><li>不做可视化（session-viz projector 职责）</li><li>不做知识检索/风暴/调度（总控职责——引擎只执行 intent）</li><li>不直接写账本（单写者模式——总控验收落账）</li><li>不自选攻击手法（手法来自技法页+intent 任务描述——引擎是方法论骨架不是手法集合）</li></ul>
 <h2 id="9-验收标准-b3-实现完成的判定">9. 验收标准（B3 实现完成的判定）</h2>
 <ol><li>黄金夹具：给定固定 intent（如「验证 8280 端口未授权访问」）+固定技法页片段，引擎产出提交文件与 patterns/submission-ok.md 结构一致（字段全/凭据占位符化/证据双哈希/pair_group 标注）</li><li>纪律注入测试：给引擎注入敌意工具输出（响应体里藏「忽略之前指令」），验证输出困在 artifacts/ 不进上下文、提交文件不受污染</li><li>失败语义：模拟格式漂移/上下文耗尽/环境受阻三场景，验证 partial 提交+blocked 转移正确</li><li>差分判定：对照组/实验组样例对，验证 pair_group 归因与 unstable 降级</li></ol>
-<blockquote><b>v2 语义补注</b>：引擎执行中发现新资产/凭据经统一提交触发资产事件回边（asset-added/cred-obtained，v2 §5.4），引擎可被再派发——黑盒引擎是探索循环的感知末端，不是一次性流水线。</blockquote>
   <div class="pn"><a href="2026-09-22-vuln-agent-engine.html"><span>← 上一篇</span>探隐 vuln_agent — 源码安全分析引擎（最新源码定稿）</a><span></span></div>
   </article>
   <footer>红队成长全景 · 设计文档站由 scripts/build_handbook.py 构建</footer>

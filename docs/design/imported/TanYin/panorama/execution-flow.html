@@ -251,9 +251,6 @@ session/G-g1/
 <div class="bf p3"><div class="no"><b>S28</b>P3</div><div class="bx"><b>【第 4-9 轮】循环继续</b>：每轮 S14-S24 节奏，矩阵空格递减，未消费 fact 递减……　<span class="actor a-master">🧠</span>+<span class="actor a-sub">🤖</span></div></div>
 <div class="bfarrow">▼</div>
 <div class="bf p3"><div class="no"><b>S29</b>P3</div><div class="bx"><b>终态 A：converged</b>（四条件全满足）或 <b>终态 B：budget-exhausted</b>（预算三元组任一耗尽→中期报告+显式披露）　<span class="actor a-cmd">⚙️</span><div class="out">→ ⛔门禁：退出循环进 P4</div></div></div>
-<div style="margin:18px 0;padding:12px 16px;border-left:4px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;font-size:14px;line-height:1.7">
-🧩 <b>v2 语义补注（探索迭代）</b>：<br/>S17b 事件分支——asset-added / cred-obtained / scope-amended 三类事件各自触发重规划回边（v2 §5.2 back_edges 与 §5.4）：循环不是只减空格的收敛漏斗，是「生长+收敛」双轮。
-</div>
 <div class="bfarrow">▼</div>
 <div class="bf p4"><div class="no"><b>S30</b>P4</div><div class="bx"><b>全表校验</b>：ledger-validate（格式/转义/枚举/引用闭合/dedup_key 唯一）　<span class="actor a-cmd">⚙️</span></div></div>
 <div class="bfarrow">▼</div>
@@ -397,12 +394,9 @@ nmap -sV -p 80,443 203.0.113.7               <span class="c"># {视角:L0, 级�
 <span class="g">shop-backend-src | SQL注入-sink | 空 | |</span>
 <span class="c">...（共 200 行）</span></div></div>
 <div class="st" style="--c:#0284c7"><h4><span class="n">S13</span>冻结版本 <span class="actor a-cmd">⚙️</span></h4>
-<div class="io"><span class="in"><b>📥 输入</b>：matrix.tsv（刚生成）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：锁定版本号（新资产走子矩阵不回填旧格——否则收敛可无限回退）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：冻结标记（后续轮次只减空格不加行）</span></div>
+<div class="io"><span class="in"><b>📥 输入</b>：matrix.tsv（刚生成）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：锁定版本号（新资产走子矩阵不回填旧格——否则收敛可无限回退）</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：冻结标记（后续轮次只减空格；新资产经子矩阵另行加行）</span></div>
 <div class="gate"><b>⛔ P2 出口门禁</b>：矩阵行覆盖全部攻击面×适用漏洞类，无遗漏资产。</div>
 <div class="next"><b>下一步</b>：进入 P3 发动机（S14）。</div></div>
-<div style="margin:18px 0;padding:12px 16px;border-left:4px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;font-size:14px;line-height:1.7">
-🧩 <b>v2 语义补注（探索迭代）</b>：<br/>v2 修正口径——主矩阵不加行，但子矩阵另行加行：新资产/新凭据触发的覆盖走 reason 前缀 submatrix: 的新行（S17b 与本句的矛盾在 v2 §4.10 已消解，以 v2 为准）。
-</div>
 <div class="phasehead"><h3>P3 图谱演进循环（S14-S29）：发动机——每轮 11 步，转到收敛为止</h3><p>这是全系统核心。每轮节奏固定：checkpoint→预算→扫描→风暴→打分→晋升→派发→执行→提交→落账→收敛判定。下面完整推演第 1 轮，然后讲第 2、3 轮的关键差异。</p></div>
 <div class="st" style="--c:#0d9488"><h4><span class="n">S14</span>【第 1 轮】checkpoint <span class="actor a-master">🧠</span></h4>
 <div class="io"><span class="in"><b>📥 输入</b>：当前循环状态（轮次/在跑 intent/下轮动作）</span><span class="sep">→</span><span class="act"><b>⚙️ 动作</b>：写 state.md 存档</span><span class="sep">→</span><span class="out"><b>📤 输出</b>：state.md（任何时刻断会话，新会话从这里续上）</span></div>

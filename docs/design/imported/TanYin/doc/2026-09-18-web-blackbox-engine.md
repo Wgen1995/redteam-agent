@@ -122,4 +122,3 @@ engines/web-blackbox/
 3. 失败语义：模拟格式漂移/上下文耗尽/环境受阻三场景，验证 partial 提交+blocked 转移正确
 4. 差分判定：对照组/实验组样例对，验证 pair_group 归因与 unstable 降级
 
-> **v2 语义补注**：引擎执行中发现新资产/凭据经统一提交触发资产事件回边（asset-added/cred-obtained，v2 §5.4），引擎可被再派发——黑盒引擎是探索循环的感知末端，不是一次性流水线。
