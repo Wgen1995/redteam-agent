@@ -52,8 +52,7 @@ footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:30px}
 <div class="sub">AI 做渗透测试的第一质疑是「怎么保证它不越界」。探隐的答案：四级递进纪律 + 命令级双维度上下文 + <b style="color:#dc2626">deny-list 机械拦截 + 注入防护 + 速率熔断 + 链式哈希审计链</b>——从入口到过程到出口全覆盖，且守门能力有诚实边界声明。</div>
 <div class="sec"><h2>四级纪律（shared/DISCIPLINE.md · 强化）</h2>
 <div class="lvls">
-<div class="lv"><b>L1 授权门（入口）</b><b>八问</b>问卷 + <b>结构化授权</b>（授权书 sha256+签署方+有效窗口）写入 goal + <b>scope.tsv 硬白名单</b> + 报告留痕 + SKILL 版本哈希落账。<b>无授权只许读文档；资产落账命令强制 scope 对照</b>——界外资产账本级禁止派生 intent。</div>
-<p>界外≠终点——范围外观察进报告附录（B4 恢复）→客户扩授权→amend-scope 修订链（amendment_of+approvals）→egress recompile+canary 复测→界外资产复判转正；授权边界是可生长的闭环。</p>
+<div class="lv"><b>L1 授权门（入口）</b><b>八问</b>问卷 + <b>结构化授权</b>（授权书 sha256+签署方+有效窗口）写入 goal + <b>scope.tsv 硬白名单</b> + 报告留痕 + SKILL 版本哈希落账。<b>无授权只许读文档；资产落账命令强制 scope 对照</b>——界外资产账本级禁止派生 intent。<br><b style="color:#2563eb">界外≠终点</b>——范围外观察进报告附录（B4 恢复）→客户扩授权→amend-scope 修订链（amendment_of+approvals）→egress recompile+canary 复测→界外资产复判转正；授权边界是可生长的闭环</div>
 <div class="lv"><b>L2 纪律规则（过程）</b>只读优先 · 无害写 · 破坏性原语只取证不执行 · <b>凭据入保险库（{{vault:cred-N}} 占位符引用）</b> · 测试数据自建自清（P6.0 清理门核销）· <b>运行时数据分级</b>（凭据/PII 进上下文前占位符化，facts 落账时即脱敏）· <b>速率纪律</b>（rate_limit/退避/熔断）。</div>
 <div class="lv"><b>L3 分级审批（交互）</b>读操作自动执行；写操作批量确认；破坏性操作逐条人工审批——<b>审批展示原始命令原文</b>（非 LLM 摘述），决定落 approvals 表（command_hash 绑定）。</div>
 <div class="lv"><b>L4 审计留痕（出口）</b>Evidence 契约 + timeline <b>链式哈希</b>（prev_hash+hash，改历史行即断链可见）+ actor 区分（总控/子代理/人工）+ approvals 审批账本。</div></div>

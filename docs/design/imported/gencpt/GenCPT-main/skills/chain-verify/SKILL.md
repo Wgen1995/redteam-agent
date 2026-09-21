@@ -55,6 +55,7 @@ description: >
 - 超时降级规则：审批超时自动降级为理论验证，标记⚠️
 - L5 被拒绝时：ATK-CAND 降级为"高风险线索"，不得以任何方式绕过继续该攻击路径
 - 审批记录必须写入 chain_verification.md，包含时间、级别、结果
+- **子代理内部审批**：子代理遇到 L3/L4 破坏性步骤时，直接用 question 工具向用户请求审批，不再返回给入口 LLM 请求审批。审批通过后继续执行，审批拒绝则降级为理论验证
 
 ### 安全熔断机制（兜底防护）
 
@@ -71,6 +72,26 @@ description: >
 **注意**：熔断机制不改变审批级别定义，只在异常频率时插入一个暂停点。正常频率的 L3/L4 操作不受影响。
 
 ## 核心工作流
+
+### KG 节点存在性校验（本 Phase 通用约束）
+
+本 Phase 在验证过程中如需写入任何边（如验证后更新 attack.json 中边的 status），**必须**先执行以下校验：
+
+1. **检查节点存在性**：对每条待更新/写入边的 `from_node` 和 `to_node`，检查是否存在于 `knowledge_graph/nodes/` 下的任一 JSON 文件中
+2. **不存在且是 Pod/Container**：
+   - **强制补采**：`ssh_execute(server, "kubectl get pod <name> -n <ns> -o json")` 或 `crictl inspect <id>` 获取 spec
+   - 写入对应 nodes JSON 文件（pods.json / containers.json）
+   - 更新 `knowledge_graph/edges/infra.json`（补采的 Pod 需补建 runs_on / container_in 等边）
+   - 补采后重新校验节点存在性
+3. **不存在且是抽象节点**（如 `attack-xxx`、`CHAIN-xxx`）：
+   - `attack-*` → 补建到 attacks.json，node_type: "attack"
+   - `CHAIN-*` → 补建到 chains.json，node_type: "chain"（如不存在则创建）
+4. **禁止跳过补建直接写悬空边** — 53 条悬空边问题已修复
+5. **禁止绕过 KG 直接 SSH 验证** — 所有验证结果必须通过 KG 边记录
+
+**校验执行时机**：在步骤 1 逐链验证开始前，先读取 chain_builder.md 中所有链引用的节点，校验其在 KG 中的存在性。
+
+---
 
 ### 步骤 1：逐链验证
 
@@ -394,11 +415,10 @@ C2 条件实证 ✅
 
 ## 上下文控制
 
-- 上下文预算 ≤100k tokens
 - 先读 `knowledge_graph/edges/_index.md` 定位必要数据
 - 只读当前验证链涉及的 ATK-CAND 数据和攻击模式
 - 分析结果立即写盘到 chain_verification.md，释放上下文
-- 返回 supervisory-agent 的摘要 ≤500 tokens
+- 返回 supervisory-agent 的摘要不携带原始数据，详细数据写盘后以文件路径引用
 
 ## 独立运行参数
 

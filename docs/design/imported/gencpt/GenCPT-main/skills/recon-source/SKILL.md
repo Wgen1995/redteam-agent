@@ -35,6 +35,13 @@ description: >
 
 \* `source_path` 与 `source_url` 二选一，必须提供其中一个。当前仅支持 `source_path`（本地目录路径）。
 
+## 前置条件校验
+
+1. `source_path` 目录存在且可读
+2. `knowledge_graph/nodes/pods.json` 存在（Phase 1a 已完成）— 用于 source_to_runtime 边关联
+   - 如果 pods.json 不存在，source_to_runtime 边无法创建，只产 source_findings 节点
+   - 在 source_analysis.md 中标注"Phase 1a 未完成，source_to_runtime 边未创建"
+
 ## 核心工作流
 
 ### 步骤1：扫描范围确定
@@ -125,12 +132,6 @@ description: >
 ## [文件路径] (行数: N)
 - **类型**: K8s-Deployment | 无显著安全问题
 ```
-
-**Token 预算硬约束**：
-- 每个文件摘要 5-10 行
-- 总摘要大小 **≤ 8000 tokens**
-- 遇到压缩风险时，优先保留 Critical 和 High 严重性问题
-- Low 严重性发现可合并为一行汇总
 
 ### 步骤4：数据写入
 
@@ -357,14 +358,6 @@ description: >
 | 排名 | 文件类型 | Critical+High 数 | 总发现数 |
 |------|---------|-------------------|---------|
 | 1 | ... | ... | ... |
-
-## Token 预算使用
-
-| 指标 | 值 |
-|------|-----|
-| 总摘要 Token 数 | N / 8000 |
-| 压缩执行的 | 是/否 |
-| 被压缩的严重性级别 | Low/Medium |
 ```
 
 ## 检查点
@@ -384,7 +377,6 @@ description: >
 
 3. **③ QA 结构校验通过**
    - 4 个 MUST 输出文件全部存在且非空
-   - Token 预算未超限（总摘要 ≤ 8000 tokens）
    - 严重性标注全部来自 {Critical, High, Medium, Low} 集合
    - 无占位符未替换（无 `【xxx】`、`...`、`+N` 等）
    - finding ID 连续无遗漏
@@ -402,4 +394,4 @@ description: >
 - **只读操作**：本 Phase 不使用 SSH，不执行任何远程命令，不修改任何运行时环境
 - **不扫描业务代码**：只扫描容器安全相关文件类型，不碰 Java/Python/Go/JS 等业务源码
 - **不泄露密钥内容**：.env 和 CI/CD 中发现的密钥只记录"存在密钥类型"，不记录密钥值本身
-- **摘要大小硬约束**：总摘要 ≤ 8000 tokens，超出时压缩 Low 严重性条目
+- **摘要不携带原始源码**：详细数据写盘后以文件路径引用，摘要不携带原始源码内容

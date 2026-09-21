@@ -38,6 +38,7 @@
 | `evidence/poc/summaries/` | 7 | WU 摘要 |
 | `evidence/evolve/` | 9 | 攻击模式进化报告 |
 | `evidence/qa/` | 8c | QA 抽检、回溯、工具上传日志 |
+| `evidence/qa/raw/` | 8c | QA 语义抽检的原始 SSH 输出 |
 
 > 注意：`cross-ref` 用连字符（约定例外），其他证据子目录用下划线或单段名。
 
@@ -60,6 +61,17 @@
 - `reports/poc_package/`（Phase 8b 打包 POC）
 - `reports/pentest_report.md` + `.json`（Phase 8c 综合报告）
 - `reports/coverage_report.md`（Phase 8c 全景报告）
+
+### 1.5 raw 文件命名规范（所有 Phase 统一）
+
+格式：`{phase_id}_{batch_or_target}_{timestamp}.{ext}`
+
+示例：
+- `recon_pods_kube-system_20260728T160500.json`
+- `k8s-compliance_WU-2a-01_G1_api-server_20260728T162800.txt`
+- `attack-pattern_ATK-CAND-042_pre_20260728T211500.md`
+- `chain-verify_CHAIN-001_step1_20260728T223000.md`
+- `qa-semantic_K8s-1.2.20_20260728T235900.txt`
 
 ---
 
@@ -85,7 +97,7 @@
 - `knowledge_graph/edges/infra.json`
 - `knowledge_graph/edges/_index.md`
 - `evidence/recon/recon_summary.md`
-- `evidence/recon/raw/`（非空，每个原始 SSH 输出带来源与时间戳）
+- `evidence/recon/raw/`（文件数 ≥ SSH 命令批次数，每个原始 SSH 输出带来源与时间戳）
 - `session_config.json`（必须含 `env_fingerprint`：见 §4.4）
 
 ### Phase 1b — 源码扫描
@@ -107,7 +119,7 @@
 
 - `evidence/compliance/k8s/results.json`
 - `evidence/compliance/k8s/summary.md`
-- `evidence/compliance/k8s/raw/`（每条 CIS 规则的原始命令输出）
+- `evidence/compliance/k8s/raw/`（文件数 ≥ SSH 命令批次数，每条 CIS 规则的原始命令输出）
 - `knowledge_graph/nodes/findings_k8s.json`（K8s 平台分片，写入实际违规项，禁止与其他平台共享文件）
 - `knowledge_graph/edges/compliance_k8s.json`（K8s 平台分片，禁止与其他平台共享文件）
 
@@ -123,7 +135,7 @@
 
 - `evidence/compliance/docker/results.json`
 - `evidence/compliance/docker/summary.md`
-- `evidence/compliance/docker/raw/`
+- `evidence/compliance/docker/raw/`（文件数 ≥ SSH 命令批次数）
 - `knowledge_graph/nodes/findings_docker.json`（Docker 平台分片，禁止与其他平台共享文件）
 - `knowledge_graph/edges/compliance_docker.json`（Docker 平台分片，禁止与其他平台共享文件）
 
@@ -135,7 +147,7 @@
 
 - `evidence/compliance/containerd/results.json`
 - `evidence/compliance/containerd/summary.md`
-- `evidence/compliance/containerd/raw/`
+- `evidence/compliance/containerd/raw/`（文件数 ≥ SSH 命令批次数）
 - `knowledge_graph/nodes/findings_containerd.json`（containerd 平台分片，禁止与其他平台共享文件）
 - `knowledge_graph/edges/compliance_containerd.json`（containerd 平台分片，禁止与其他平台共享文件）
 
@@ -269,7 +281,6 @@
 
 ### 3.3 约束
 
-- **长度上限 ≤500 tokens**（按整段摘要计，含字段名与标点）。超出必须只保留 `summary` / `critical_findings` 的核心条目，详细数据写盘后以文件路径引用。
 - 摘要**不携带原始 SSH 输出**、原始证据内容；这些只能写盘后以文件路径引用。
 - 禁止省略词：「等」「...」「+(数量后缀)」「大致」「约」。
 - 所有 `【xxx】` 占位符必须替换为实际值，不得留空。
@@ -352,49 +363,77 @@
 
 ### 4.3 attack 边（强制字段）
 
-`edge_type: "attack"` 的边**必须**包含以下字段，否则 QA 结构校验失败：
+`edge_type: "attack"` 的边**必须**将所有强制字段放入 `attrs` 对象内，顶层只保留 `edge_type` / `from_node` / `to_node` / `attrs` / `timestamp`，否则 QA 结构校验失败：
 
 ```json
 {
   "edge_type": "attack",
   "from_node": "container-abc123",
   "to_node": "host-node-01",
-  "source": "pattern_library",
-  "atk_cand_id": "ATK-CAND-001",
-  "status": "confirmed",
-  "verification_level": "C1",
-  "execution_context_max": "L2",
-  "steps": [
-    {
-      "step": 1,
-      "action": "探测 docker.sock 可用性",
-      "command": "kubectl exec abc123 -- ls -la /var/run/docker.sock",
-      "output": "srw-rw---- 1 root 999 /var/run/docker.sock",
-      "meaning": "容器内存在 Docker 套接字文件",
-      "context": "L1"
-    },
-    {
-      "step": 2,
-      "action": "验证逃逸路径",
-      "command": "kubectl exec abc123 -- docker run -v /:/host alpine ls /host/etc/shadow",
-      "output": "root:x:0:0:...",
-      "meaning": "可读取宿主机密码文件",
-      "context": "L2"
-    }
-  ]
+  "attrs": {
+    "source": "pattern_library",
+    "atk_cand_id": "ATK-CAND-001",
+    "status": "confirmed",
+    "verification_level": "C1",
+    "execution_context_max": "L2",
+    "pattern_ref": "escape/docker-sock-escape",
+    "target": "host-node-01",
+    "severity": "critical",
+    "confidence": 0.95,
+    "prerequisites_met": ["docker.sock 挂载可见"],
+    "prerequisites_unmet": [],
+    "trigger_rules": ["K8s-5.2.3"],
+    "hypothesis_refs": ["ATK-HYP-001"],
+    "five_state": "[x]",
+    "context": "L2",
+    "steps": [
+      {
+        "step": 1,
+        "action": "探测 docker.sock 可用性",
+        "command": "kubectl exec abc123 -- ls -la /var/run/docker.sock",
+        "output": "srw-rw---- 1 root 999 /var/run/docker.sock",
+        "meaning": "容器内存在 Docker 套接字文件",
+        "context": "L1"
+      },
+      {
+        "step": 2,
+        "action": "验证逃逸路径",
+        "command": "kubectl exec abc123 -- docker run -v /:/host alpine ls /host/etc/shadow",
+        "output": "root:x:0:0:...",
+        "meaning": "可读取宿主机密码文件",
+        "context": "L2"
+      }
+    ],
+    "evidence_files": [
+      "evidence/attack/raw/ATK-CAND-001_step1_20260728T211500.txt",
+      "evidence/attack/raw/ATK-CAND-001_step2_20260728T211700.txt"
+    ]
+  },
+  "timestamp": "2026-07-28T21:17:30Z"
 }
 ```
 
-**强制字段汇总**：
+**强制字段汇总**（均在 `attrs` 内）：
 
 | 字段 | 取值 | 说明 |
 |------|------|------|
 | `verification_level` | `C1` / `C2` / `C3` | 确认层级。C1：单点可观测；C2：满足攻击确认门槛 5 项；C3：满足差分证明。详见设计文档 §15 |
-| `context`（`steps[].context`） | `L0` / `L1` / `L2` / `L3` | 执行上下文层级。L0 宿主机观察；L1 容器内观察；L2 容器内攻击验证；L3 条件验证（不实际执行破坏性操作） |
+| `context`（`attrs.steps[].context`） | `L0` / `L1` / `L2` / `L3` | 执行上下文层级。L0 宿主机观察；L1 容器内观察；L2 容器内攻击验证；L3 条件验证（不实际执行破坏性操作） |
 | `execution_context_max` | `L0`/`L1`/`L2`/`L3` | 本攻击边内最高上下文层级；SSH root 仅可用于 L0 侦察与条件核实，不得用于替代 L1/L2 攻击者视角 |
 | `source` | `pattern_library` / `llm_reasoning` / `learned` / `cross_ref` / `chain` | 命中来源。Phase 4a 写 `pattern_library`；Phase 4b 追加 `llm_reasoning`；进化晋升的模式命中写 `learned`；Phase 3 交叉关联写 `cross_ref`；Phase 5 链式边写 `chain` |
 | `atk_cand_id` | `ATK-CAND-NNN` | 攻击候选编号。`[x]` 与 `[?]` 必须生成编号；`[-]`/`[!]` 不生成但须写依据 |
 | `status` | `confirmed` / `high_risk_lead` / `disproven` / `blocked` | confirmed 必须满足攻击确认门槛 5 项 + 差分证明；缺失任一项降级为 `high_risk_lead` |
+| `pattern_ref` | 模式路径 | 命中的攻击模式库路径，如 `escape/docker-sock-escape` |
+| `target` | 节点 ID | 攻击目标节点 ID |
+| `severity` | `critical` / `high` / `medium` / `low` / `info` | 严重性等级 |
+| `confidence` | 0-1 数值 | 置信度评分 |
+| `prerequisites_met` | 字符串数组 | 已满足的前置条件列表 |
+| `prerequisites_unmet` | 字符串数组 | 未满足的前置条件列表 |
+| `trigger_rules` | 字符串数组 | 触发本攻击的合规规则 ID 列表 |
+| `hypothesis_refs` | 字符串数组 | 关联的攻击假设 ID 列表 |
+| `five_state` | `[x]`/`[?]`/`[-]`/`[!]` | 五态标记（不可为 `[ ]`） |
+| `steps` | 对象数组 | 攻击步骤序列，每步含 step/action/command/output/meaning/context |
+| `evidence_files` | 字符串数组 | 证据文件相对路径列表 |
 
 ### 4.4 cross_ref 边
 
@@ -403,14 +442,17 @@
   "edge_type": "cross_ref",
   "from_node": "container-abc123",
   "to_node": "finding-k8s-5-2-3",
-  "reason": "容器挂载 docker.sock 与合规违规 K8s-5.2.3 一致，确认攻击前置条件被合规违规满足",
-  "severity": "critical"
+  "attrs": {
+    "reason": "容器挂载 docker.sock 与合规违规 K8s-5.2.3 一致，确认攻击前置条件被合规违规满足",
+    "severity": "critical"
+  },
+  "timestamp": "2026-06-19T08:42:00Z"
 }
 ```
 
-- `severity`：`critical` / `high` / `medium` / `low` / `info`。
-- 去重 key：`from_node` + `to_node` + `reason` 语义 hash，避免语义相同文字略有差异的边重复。
-- `attack_chain` 类边（Phase 5 追加）额外字段：`chain_id`、`chain_order`、`prerequisite_met_by`（指向上游节点 ID）。
+- `attrs.severity`：`critical` / `high` / `medium` / `low` / `info`。
+- 去重 key：`from_node` + `to_node` + `attrs.reason` 语义 hash，避免语义相同文字略有差异的边重复。
+- `attack_chain` 类边（Phase 5 追加）额外 attrs 字段：`chain_id`、`chain_order`、`prerequisite_met_by`（指向上游节点 ID）。
 
 ### 4.5 session_config.json
 
@@ -419,8 +461,10 @@
   "session_id": "sess-20260619-001",
   "server": "prod-cluster-01",
   "mode": "compliance+attack",
-  "scope": ["k8s", "docker", "containerd"],
-  "approval_level": 3,
+  "scope": "all",
+  "approval": "standard",
+  "suite_version": "V1.2",
+  "auto_high_risk_exec_count": 0,
   "baseline": null,
   "env_fingerprint": {
     "os_type": "linux",
@@ -529,7 +573,7 @@ kube-proxy-abcde                 false
 本标准的设计直接服务于 QA 三层校验。子技能写盘后自查，QA 在 Phase 8c 做结构校验：
 
 1. **结构校验**：遍历 §2 每个 Phase 的 MUST 输出，逐项检查文件存在且非空；缺失或空文件 → QA 报告为该 Phase 结构失败。
-2. **字段校验**：`attack.json` 不含 `verification_level` / `context` 强制字段的边 → 视为非法边；`session_config.json` 缺 `env_fingerprint` → 视为 Phase 1a 未完成。
+2. **字段校验**：`attack.json` 中边的 `attrs` 不含 `verification_level` / `context` 等强制字段的边 → 视为非法边；强制字段不在 `attrs` 内而在顶层的边 → 视为格式非法；`session_config.json` 缺 `env_fingerprint` → 视为 Phase 1a 未完成。
 3. **五态闭环校验**：`pentest_report.md` 与 `coverage_report.md` 中残留 `[ ]` → QA 报告为质量门禁未通过。
 4. **去重仲裁**：见设计文档 §16，重复节点/边按去重 key 与时间戳合并。
 

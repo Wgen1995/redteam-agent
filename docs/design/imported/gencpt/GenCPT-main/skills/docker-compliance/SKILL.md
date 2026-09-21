@@ -135,6 +135,39 @@ description: >
 - 边格式见 OUTPUT_STANDARD §4.2
 - **禁止**与其他平台共享文件
 
+**步骤 4b：对象级 compliance 边**
+
+除原有的 `host → finding` 边外，**必须**为每个 finding 追加对象级 compliance 边：
+
+1. 从 finding 的 `judgment` 字段提取违规对象名（Container/Pod/SA/Secret）
+2. 对每个违规对象追加 compliance 边：
+   ```json
+   {
+     "edge_type": "compliance",
+     "from_node": "container-app-container",
+     "to_node": "finding-docker-34",
+     "attrs": {
+       "rule_id": "Docker-34",
+       "status": "fail",
+       "relation": "violates",
+       "platform": "docker"
+     }
+   }
+   ```
+3. 原有 `host → finding` 边保留，`attrs.relation` 固定为 `"violates"`
+4. 对象节点不存在于 KG 时按节点存在性校验补采
+
+**步骤 4c：finding evidence 字段**
+
+每个 finding 节点的 `data.evidence` 字段**必须非空**，包含：
+- `command`：原始 SSH 命令
+- `output_summary`：输出摘要
+- `raw_ref`：指向 `evidence/compliance/docker/raw/` 下的原始输出文件路径
+- `context`：执行上下文（L0）
+- `timestamp`：执行时间
+
+`data.evidence` 为空或缺失 → 该 finding 校验失败。
+
 ### 数据写入策略（防并发 + 防丢数据）
 
 1. **JSON Lines 追加模式**：每条规则检测完成后立即追加写入 `evidence/compliance/docker/results.jsonl`（每行一条 JSON），禁止累积满批再写：
@@ -191,7 +224,6 @@ description: >
 
 ### 上下文控制
 
-- 每个 WU 上下文预算 ≤100k tokens
 - Read 规则文件时只读当前 WU 需要的分组，不预读全部
 - SSH 命令分批执行：5-7 条/批，间隔 2 秒
 - WU 完成后写盘摘要到 `evidence/compliance/docker/raw/summaries/`，释放上下文
@@ -312,7 +344,7 @@ WU 完成后立即检查：
 1. 写盘 MUST 输出文件
 2. 更新 `progress.json` 中对应 WU 状态为 `complete`
 3. 写 WU 摘要到 `evidence/compliance/docker/raw/summaries/`
-4. 返回 ≤500 tokens 摘要给 supervisory-agent
+4. 返回摘要给 supervisory-agent
 
 ---
 

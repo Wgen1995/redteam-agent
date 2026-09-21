@@ -182,6 +182,7 @@ gencpt-<session_id>/
 │   │   └── summaries/
 │   ├── evolve/
 │   └── qa/
+│       └── raw/
 ├── reports/
 │   ├── compliance/
 │   ├── attack/
@@ -198,8 +199,27 @@ gencpt-<session_id>/
 部分环境（opencode / Claude Code）的 Write 工具对已存在的文件要求先 Read 后 Write。初始化时用 bash 创建空 stub + 完整目录树：
 
 ```bash
-# Linux/macOS — 一次性创建所有目录
-mkdir -p {session-dir}/{evidence/{recon/{raw,summaries},compliance/{k8s/{raw},docker/{raw},containerd/{raw}},attack/{raw,summaries},chains/{raw,summaries},poc/{poc_scripts,summaries},evolve,qa},reports/{compliance,attack,summary,panorama},knowledge_graph/{nodes,edges},tmp}
+# Linux/macOS — 一次性创建所有目录（平铺，避免 zsh 嵌套大括号展开问题）
+mkdir -p "{session-dir}/evidence/recon/raw" \
+         "{session-dir}/evidence/recon/summaries" \
+         "{session-dir}/evidence/compliance/k8s/raw" \
+         "{session-dir}/evidence/compliance/docker/raw" \
+         "{session-dir}/evidence/compliance/containerd/raw" \
+         "{session-dir}/evidence/attack/raw" \
+         "{session-dir}/evidence/attack/summaries" \
+         "{session-dir}/evidence/chains/raw" \
+         "{session-dir}/evidence/chains/summaries" \
+         "{session-dir}/evidence/poc/poc_scripts" \
+         "{session-dir}/evidence/poc/summaries" \
+         "{session-dir}/evidence/evolve" \
+         "{session-dir}/evidence/qa/raw" \
+         "{session-dir}/reports/compliance" \
+         "{session-dir}/reports/attack" \
+         "{session-dir}/reports/summary" \
+         "{session-dir}/reports/panorama" \
+         "{session-dir}/knowledge_graph/nodes" \
+         "{session-dir}/knowledge_graph/edges" \
+         "{session-dir}/tmp"
 # 初始化空 stub 文件
 echo '{}' > {session-dir}/session_config.json
 echo '{"phases":{}}' > {session-dir}/progress.json
@@ -224,7 +244,7 @@ for d in evidence/recon/raw evidence/recon/summaries \
          evidence/attack/raw evidence/attack/summaries \
          evidence/chains/raw evidence/chains/summaries \
          evidence/poc/poc_scripts evidence/poc/summaries \
-         evidence/evolve evidence/qa \
+         evidence/evolve evidence/qa evidence/qa/raw \
          reports/compliance reports/attack reports/summary reports/panorama \
          knowledge_graph/nodes knowledge_graph/edges tmp; do
   [ -d {session-dir}/$d ] || { echo "MISSING: $d"; mkdir -p {session-dir}/$d; }
@@ -255,7 +275,7 @@ done
   },
   "source_path": null,
   "baseline": null,
-  "suite_version": "V1.1",
+  "suite_version": "V1.2",
   "auto_high_risk_exec_count": 0,
   "created_at": "<ISO8601>"
 }
@@ -285,6 +305,7 @@ done
     "4b": {"status": "pending", "batches": {}, "current_wu": null},
     "5": {"status": "pending", "batches": {}, "current_wu": null},
     "6": {"status": "pending", "batches": {}, "current_wu": null},
+    "6.5": {"status": "pending", "batches": {}, "current_wu": null},
     "7": {"status": "pending", "batches": {}, "current_wu": null},
     "8a": {"status": "pending", "batches": {}, "current_wu": null},
     "8b": {"status": "pending", "batches": {}, "current_wu": null},
@@ -298,10 +319,12 @@ done
 
 ### 断点续传规则（batch级粒度）
 
-1. 每个WU完成后由Phase子代理更新progress.json中对应WU状态为complete
+> **注意**：Phase 级状态（pending→in_progress→complete）由入口 LLM 统一写入（见 §4 断点续传）。以下规则仅针对 WU/batch 级粒度的续传。
+
+1. 每个WU完成后由Phase子代理更新progress.json中对应WU的batches状态为complete
 2. WU崩溃/中断时，status保持in_progress，下次恢复时重跑该WU（从results.jsonl已有行续传）
 3. 已complete的WU永不重跑
-4. 每完成一个WU后立即写盘progress.json（不等整个Phase完成）
+4. 每完成一个WU后立即写盘progress.json的batches字段（不等整个Phase完成）
 5. 会话压缩后，LLM必须先Read progress.json恢复进度，从第一个非complete的WU继续
 
 ---
@@ -317,13 +340,16 @@ done
 
 ### 调度原则
 
-1. **顺序执行**：按 Phase 1a → 1b → 2 → 3 → 4a → 4b → 5 → 6 → 7 → 8 → 9 顺序调度
+1. **顺序执行**：按 Phase 1a → 1b → 2a → 2b → 2c → 3 → 4a → 4b → 5 → 6 → 6.5 → 7 → 8a → 8b → 8c → 8d → 9 顺序调度
 2. **断点续传**：每个 Phase 开始前读取 `progress.json`，跳过已完成的 Phase
 3. **失败处理**：某 Phase 失败时记录到 progress.json 并询问用户是否继续
 4. **数据传递**：Phase 间不直接传数据，通过 `knowledge_graph/` 目录的 JSON 文件传递
-5. **mode=fast 时跳过**：跳过 Phase 3-7（交叉关联、攻击验证、链构建、链验证、POC），只执行 Phase 1a → 2 → 8a → 8c
+5. **mode=fast 时跳过**：跳过 Phase 3-7+6.5（交叉关联、攻击验证、链构建、链验证、对抗验证、POC），只执行 Phase 1a → 2 → 8a → 8c → 8d
 9. **并发能力确认（大集群必须）**：Phase 内部分批时用子代理调用启动并发执行。若当前运行环境**无法创建独立子代理**，LLM **不许顺序模拟冒充完整流水线**——写 `{session-dir}/pipeline_blocked.md` 说明实际阻塞环节、已落盘产物、未运行 Phase 和继续条件，终止。大集群顺序跑会上下文压缩丢数据，必须真实并发或阻塞。
 10. **blocked 状态传播**：任一 Phase 标 `blocked`，后续依赖该 Phase 产出的所有 Phase 也标 `blocked`，不许带着缺失依赖继续跑产出垃圾候选。
+11. **并发调度重试**：并发调度的子代理若返回空结果或被 cancel，自动重试 1 次；重试仍失败则退化为单独顺序调度；仍失败则标记该 Phase 为 `failed` 并询问用户。适用于 Phase 级并发（如 2a+2c、8a+8b）和 WU 级并发。
+12. **Todo 强制更新**：每个 Phase 完成后入口 LLM 必须更新 TodoWrite（标记该 Phase 为 completed），不许跨多个 Phase 不更新。
+13. **审计日志**：每个 Phase 调度前，入口 LLM 向 `audit_log.json` 追加一条 `{"phase": "<id>", "action": "dispatch", "timestamp": "<ISO8601>", "status": "in_progress"}`；完成后追加 `{"phase": "<id>", "action": "complete", "timestamp": "<ISO8601>", "status": "complete", "wu_summary": "<摘要>"}`；失败时追加 `{"phase": "<id>", "action": "failed", "timestamp": "<ISO8601>", "error": "<错误描述>"}`。
 
 ### 调度流程
 
@@ -369,20 +395,32 @@ Task(subagent_type="general", prompt="  ← Claude Code 写法
 | 8 | Phase 4b LLM 推理 | `skills/attack-reasoning/SKILL.md` | ❌ 跳过 |
 | 9 | Phase 5 链构建 | `skills/chain-builder/SKILL.md` | ❌ 跳过 |
 | 10 | Phase 6 链验证 | `skills/chain-verify/SKILL.md` | ❌ 跳过 |
+| 10.5 | Phase 6.5 对抗性验证 | `skills/adversary-verify/SKILL.md` | ❌ 跳过 |
 | 11 | Phase 7 POC 生成 | `skills/poc-generator/SKILL.md` | ❌ 跳过 |
 | 12 | Phase 8a 合规报告 | `skills/report-compliance/SKILL.md` | ✅ 执行 |
 | 13 | Phase 8b 攻击报告 | `skills/report-attack/SKILL.md` | ❌ 跳过 |
 | 14 | Phase 8c 全景报告 | `skills/report-summary/SKILL.md` | ✅ 执行 |
-| 15 | Phase 9 模式进化 | `skills/evolve/SKILL.md` | ❌ 跳过（仅 --evolve 时） |
+| 15 | Phase 8d 知识图谱可视化（可选） | `skills/graph-viz/SKILL.md` | ✅ 执行（Phase 8c 完成后） |
+| 16 | Phase 9 模式进化 | `skills/evolve/SKILL.md` | ❌ 跳过（仅 --evolve 时） |
 
-### 断点续传
+### 断点续传（入口 LLM 统一接管）
 
-每个 Phase 调用前：
+每个 Phase 调用前（入口 LLM 执行）：
 1. 读取 `progress.json`，检查该 Phase 状态
 2. 若状态为 `complete`，跳过
 3. 若状态为 `in_progress` 或 `failed`，询问用户是否重新执行
-4. 执行前将状态更新为 `in_progress`
-5. 子代理返回后，若成功更新为 `complete`，若失败更新为 `failed`
+4. **入口 LLM** 将该 Phase 状态更新为 `in_progress`（写 `progress.json`）
+5. **入口 LLM** 调度子代理（`Task(subagent_type="general", prompt=...)`）
+
+子代理返回后（入口 LLM 执行）：
+5b. **入口 LLM** 验证该 Phase 的 MUST 输出文件存在且非空
+5c. 验证通过 → **入口 LLM** 将状态更新为 `complete`
+5d. 验证失败 → **入口 LLM** 将状态更新为 `failed`，询问用户是否重试
+
+**关键变更**：
+- step 4/5 明确主语为"入口 LLM"
+- 子代理不再负责 progress.json 更新
+- 新增 step 5b：MUST 输出验证才写 complete
 
 ### Phase 间进度反馈
 
@@ -397,7 +435,21 @@ Task(subagent_type="general", prompt="  ← Claude Code 写法
 ✅ Phase 1a 完成 — 环境侦察 — 3节点/45Pod/12SA 已收集
 ✅ Phase 2a 完成 — K8s合规 — 134条规则检测，12项fail
 ✅ Phase 4a 完成 — 模式匹配 — 5个模式触发，2个C1确认
+✅ Phase 8d 完成 — 知识图谱可视化 — 149节点/179边 已生成 knowledge_graph_viz.html
 ```
+
+### Phase 8d 知识图谱可视化（可选，Phase 8c 完成后）
+
+Phase 8c 完成后，运行可视化生成脚本（非子代理调用，直接 bash 执行）：
+
+```bash
+# 离线模式（推荐，完全自包含，不依赖网络）
+python3 {套件根}/skills/graph-viz/generate_viz.py -s {session_dir} --offline
+```
+
+生成成功后输出文件路径：`{session_dir}/knowledge_graph_viz.html`
+
+此步为可选能力，失败不阻塞 Pipeline。脚本自动修复知识图谱 JSON 中的常见语法错误。
 
 ### 可选：gencpt-supervisor 增强调度
 
@@ -427,7 +479,24 @@ Task(gencpt-supervisor, params={...})
 - 合规报告：`reports/compliance/<report>.md`
 - 攻击报告：`reports/attack/<report>.md`
 - 全景报告：`reports/summary/panorama.md`
+- 知识图谱可视化：`knowledge_graph_viz.html`（Phase 8d 可选产出）
 - POC 包：`evidence/poc/`
+
+---
+
+## 跨平台兼容性
+
+本套件必须兼容以下运行环境：
+- opencode（opencode CLI + ssh-manager MCP）
+- Claude Code（Claude Code CLI + ssh-manager MCP）
+
+兼容性规则：
+1. Task 调用：两种环境都用 `Task(subagent_type="general", prompt="...")`
+2. question 工具：两种环境都有交互式 question 工具
+3. 文件操作：两种环境都有 Read/Write/Edit/Bash 工具
+4. SSH 操作：两种环境都通过 ssh-manager MCP 工具执行
+5. 禁止使用任一环境独有的 API 或语法
+6. Phase 6 审批：子代理内部用 question 工具请求审批（不拆调度）
 
 ---
 

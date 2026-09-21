@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GenCPT 知识图谱可视化 — k3s-20260722-100843</title>
+__CYTOSCAPE_LIB__
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body { font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: #0d1117; color: #c9d1d9; overflow: hidden; display: flex; flex-direction: column; }
+
+/* ====== 顶部统计栏 ====== */
+#stats-bar {
+  display: flex; align-items: center; gap: 20px; padding: 8px 16px;
+  background: #161b22; border-bottom: 1px solid #30363d; font-size: 13px; flex-shrink: 0;
+}#stats-bar .stat-item { display: flex; align-items: center; gap: 6px; }
+#stats-bar .stat-label { color: #8b949e; }
+#stats-bar .stat-value { font-weight: 700; font-size: 15px; }
+#stats-bar .stat-value.critical { color: #f85149; }
+#stats-bar .stat-value.high { color: #d29922; }
+#stats-bar .stat-value.chain { color: #58a6ff; }
+#stats-bar .stat-value.score { color: #f85149; font-size: 18px; }
+#stats-bar .session-info { margin-left: auto; color: #8b949e; font-size: 12px; }
+
+/* ====== Pipeline 时间轴 ====== */
+#pipeline-bar {
+  display: flex; align-items: center; gap: 4px; padding: 6px 16px;
+  background: #161b22; border-bottom: 1px solid #30363d; flex-shrink: 0;
+  overflow-x: auto; white-space: nowrap;
+}
+#pipeline-bar .phase-label { color: #8b949e; font-size: 11px; margin-right: 8px; flex-shrink: 0; }
+.phase-chip {
+  display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px;
+  border-radius: 12px; font-size: 11px; cursor: pointer; flex-shrink: 0;
+  border: 1px solid #30363d; transition: all 0.2s;
+}
+.phase-chip:hover { border-color: #58a6ff; background: #1f2937; }
+.phase-chip.active { border-color: #58a6ff; background: #1a2332; box-shadow: 0 0 8px rgba(88,166,255,0.3); }
+.phase-chip .phase-icon { font-size: 13px; }
+.phase-chip .phase-num { color: #8b949e; }
+.phase-chip .phase-name { color: #c9d1d9; }
+.phase-chip .phase-time { color: #6e7681; font-size: 10px; }
+
+/* ====== 工具栏 ====== */
+#toolbar {
+  display: flex; align-items: center; gap: 12px; padding: 6px 16px;
+  background: #161b22; border-bottom: 1px solid #30363d; flex-shrink: 0; flex-wrap: wrap;
+}
+#toolbar .filter-group { display: flex; align-items: center; gap: 4px; }
+#toolbar .filter-group .group-label { color: #8b949e; font-size: 11px; margin-right: 4px; }
+#toolbar .filter-btn {
+  padding: 2px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;
+  border: 1px solid #30363d; background: #0d1117; color: #c9d1d9; transition: all 0.15s;
+}
+#toolbar .filter-btn:hover { border-color: #58a6ff; }
+#toolbar .filter-btn.active { border-color: #58a6ff; background: #1a2332; color: #58a6ff; }
+#toolbar .filter-btn.node-btn .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 3px; vertical-align: middle; }
+#toolbar select, #toolbar input {
+  padding: 3px 8px; border-radius: 4px; font-size: 11px;
+  border: 1px solid #30363d; background: #0d1117; color: #c9d1d9;
+}
+#toolbar .search-box { width: 180px; }
+#toolbar .layout-btn { margin-left: auto; }
+
+/* ====== 主布局 ====== */
+#main-layout { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+
+/* ====== 图区域 ====== */
+#cy-container { flex: 1; position: relative; min-width: 0; }
+#cy { width: 100%; height: 100%; position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+
+/* 旋转按钮 */
+#rotate-btn { background:none; border:1px solid #30363d; color:#c9d1d9; border-radius:4px; padding:2px 10px; cursor:pointer; font-size:11px; margin-left:8px; transition:all 0.2s; }
+#rotate-btn:hover { border-color:#58a6ff; color:#58a6ff; }
+#rotate-btn.active { border-color:#58a6ff; color:#58a6ff; background:#1a2332; box-shadow:0 0 6px rgba(88,166,255,0.3); }
+#rotate-speed { width:50px; accent-color:#58a6ff; margin-left:4px; }
+#speed-label { color:#8b949e; font-size:10px; min-width:28px; }
+
+/* 图例 */
+#legend {
+  position: absolute; bottom: 12px; left: 12px; background: rgba(22,27,34,0.95);
+  border: 1px solid #30363d; border-radius: 8px; padding: 10px 12px; font-size: 11px;
+  max-height: 400px; overflow-y: auto; z-index: 100; max-width: 280px;
+}
+#legend .legend-title { font-weight: 700; margin-bottom: 6px; color: #58a6ff; cursor: pointer; }
+#legend .legend-section { margin-bottom: 6px; }
+#legend .legend-section h4 { font-size: 11px; color: #8b949e; margin-bottom: 3px; }
+#legend .legend-row { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+#legend .legend-shape { width: 14px; height: 14px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+#legend .legend-text { color: #c9d1d9; }
+#legend.collapsed .legend-body { display: none; }
+
+/* ====== 右侧面板 ====== */
+#side-panel {
+  width: 400px; min-width: 400px; background: #161b22; border-left: 1px solid #30363d;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+#side-panel .panel-section { border-bottom: 1px solid #30363d; }
+#side-panel .panel-header {
+  padding: 8px 12px; font-size: 13px; font-weight: 700; color: #58a6ff;
+  background: #161b22; cursor: pointer; display: flex; align-items: center; gap: 6px;
+}
+#side-panel .panel-header .toggle { font-size: 10px; color: #8b949e; margin-left: auto; }
+#side-panel .panel-body { padding: 8px 12px; overflow-y: auto; }
+#side-panel .panel-body.collapsed { display: none; }
+
+/* 详情面板 */
+#detail-panel .panel-body { flex: 1; }
+#detail-panel .detail-empty { color: #6e7681; font-size: 12px; text-align: center; padding: 20px; }
+#detail-panel .detail-id { font-size: 12px; color: #58a6ff; word-break: break-all; margin-bottom: 4px; }
+#detail-panel .detail-type { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+#detail-panel .detail-props { font-size: 12px; }
+#detail-panel .detail-props .prop-row { display: flex; padding: 2px 0; border-bottom: 1px solid #21262d; }
+#detail-panel .detail-props .prop-key { color: #8b949e; width: 120px; flex-shrink: 0; }
+#detail-panel .detail-props .prop-val { color: #c9d1d9; word-break: break-all; }
+#detail-panel .detail-edges { margin-top: 8px; }
+#detail-panel .detail-edges h4 { font-size: 11px; color: #8b949e; margin-bottom: 4px; }
+#detail-panel .edge-item {
+  font-size: 11px; padding: 3px 6px; margin-bottom: 2px; border-radius: 4px;
+  background: #0d1117; border-left: 3px solid #30363d; cursor: pointer; transition: all 0.15s;
+}
+#detail-panel .edge-item:hover { background: #1f2937; }
+#detail-panel .edge-item .edge-dir { color: #8b949e; }
+#detail-panel .edge-item .edge-type { font-weight: 700; }
+#detail-panel .edge-item .edge-target { color: #58a6ff; }
+
+/* 攻击链面板 */
+#chain-panel .chain-item {
+  padding: 6px 0; border-bottom: 1px solid #21262d; cursor: pointer;
+}
+#chain-panel .chain-item:hover { background: #1f2937; }
+#chain-panel .chain-id { font-size: 12px; font-weight: 700; color: #f0883e; }
+#chain-panel .chain-desc { font-size: 11px; color: #8b949e; margin: 2px 0; }
+#chain-panel .chain-meta { display: flex; gap: 8px; font-size: 10px; }
+#chain-panel .chain-meta .badge { padding: 1px 5px; border-radius: 3px; }
+#chain-panel .chain-meta .badge.conf { background: #1f2937; color: #58a6ff; }
+#chain-panel .chain-meta .badge.sev { background: #3d1419; color: #f85149; }
+#chain-panel .chain-steps { margin-top: 4px; display: none; }
+#chain-panel .chain-item.expanded .chain-steps { display: block; }
+#chain-panel .chain-step {
+  display: flex; align-items: center; gap: 6px; font-size: 11px; padding: 2px 0;
+}
+#chain-panel .chain-step .step-num { width: 18px; height: 18px; border-radius: 50%; background: #21262d; color: #8b949e; text-align: center; line-height: 18px; font-size: 10px; flex-shrink: 0; }
+#chain-panel .chain-step .step-name { color: #c9d1d9; }
+#chain-panel .chain-step .step-conf { font-size: 10px; color: #8b949e; margin-left: auto; }
+#chain-panel .chain-step .step-status { font-size: 10px; }
+
+/* 节点类型颜色 */
+.type-host { background: #4A5568; }
+.type-pod { background: #38a169; }
+.type-container { background: #B7791F; }
+.type-service { background: #3182CE; }
+.type-sa { background: #805AD5; }
+.type-secret { background: #E53E3E; }
+.type-finding { background: #d29922; }
+.type-attack { background: #C53030; }
+.type-chain { background: #2D3748; }
+
+/* ====== 覆盖率面板 ====== */
+#coverage-panel .coverage-table { width: 100%; font-size: 11px; border-collapse: collapse; }
+#coverage-panel .coverage-table th { color: #8b949e; padding: 4px 6px; text-align: left; border-bottom: 1px solid #30363d; font-weight: 600; }
+#coverage-panel .coverage-table td { padding: 3px 6px; border-bottom: 1px solid #21262d; color: #c9d1d9; }
+#coverage-panel .coverage-table td.cov-full { color: #f85149; font-weight: 700; }
+#coverage-panel .coverage-table td.cov-partial { color: #d29922; }
+#coverage-panel .coverage-table td.cov-none { color: #6e7681; }
+
+/* ====== 可信度分布面板 ====== */
+#confidence-panel .conf-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 11px; }
+#confidence-panel .conf-label { width: 80px; color: #8b949e; flex-shrink: 0; }
+#confidence-panel .conf-track { flex: 1; height: 14px; background: #0d1117; border-radius: 3px; overflow: hidden; }
+#confidence-panel .conf-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+#confidence-panel .conf-count { width: 30px; text-align: right; color: #c9d1d9; font-weight: 700; flex-shrink: 0; }
+
+/* ====== 视图标签页 ====== */
+#view-tabs { display: flex; gap: 2px; padding: 4px 16px; background: #161b22; border-bottom: 1px solid #30363d; flex-shrink: 0; }
+#view-tabs .view-tab { padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 12px; cursor: pointer; border: 1px solid transparent; color: #8b949e; transition: all 0.15s; }
+#view-tabs .view-tab:hover { color: #c9d1d9; }
+#view-tabs .view-tab.active { color: #58a6ff; border-color: #30363d; border-bottom-color: #161b22; background: #0d1117; }
+
+/* ====== 思维导图视图 ====== */
+#mindmap-container { display: none; flex: 1; overflow-y: auto; padding: 16px 24px; background: #0d1117; }
+#mindmap-container.active { display: block; }
+#mindmap-container ul { list-style: none; padding-left: 20px; }
+#mindmap-container > ul { padding-left: 0; }
+#mindmap-container li { margin: 4px 0; }
+#mindmap-container .mm-node { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+#mindmap-container .mm-node:hover { background: #1f2937; color: #58a6ff; }
+#mindmap-container .mm-toggle { cursor: pointer; color: #8b949e; font-size: 11px; user-select: none; width: 14px; display: inline-block; text-align: center; }
+#mindmap-container .mm-children { display: none; }
+#mindmap-container .mm-children.expanded { display: block; }
+#mindmap-container .mm-root { font-size: 15px; font-weight: 700; color: #58a6ff; }
+#mindmap-container .mm-phase { font-weight: 600; }
+#mindmap-container .mm-leaf { color: #c9d1d9; }
+</style>
+</head>
+<body>
+
+<!-- 统计栏 -->
+<div id="stats-bar"></div>
+
+<!-- Pipeline 时间轴 -->
+<div id="pipeline-bar">
+  <span class="phase-label">Pipeline:</span>
+</div>
+
+<!-- 工具栏 -->
+<div id="toolbar"></div>
+
+<!-- 视图标签页 -->
+<div id="view-tabs">
+  <div class="view-tab active" data-view="cytoscape">Cytoscape 图</div>
+  <div class="view-tab" data-view="mindmap">思维导图</div>
+</div>
+
+<!-- 主布局 -->
+<div id="main-layout">
+  <div id="cy-container">
+    <div id="cy"></div>
+    <div id="legend">
+      <div class="legend-title" onclick="document.getElementById('legend').classList.toggle('collapsed')">图例 ▾</div>
+      <div class="legend-body">
+        <div class="legend-section">
+          <h4>节点类型</h4>
+          <div class="legend-row"><span class="legend-shape" style="background:#4A5568;border-radius:3px"></span><span class="legend-text">Host 主机 (圆角矩形)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#38a169;border-radius:50%"></span><span class="legend-text">Pod (椭圆, 按 ns 着色)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#B7791F"></span><span class="legend-text">Container 容器 (矩形)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#3182CE;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)"></span><span class="legend-text">Service 服务 (六边形)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#805AD5;clip-path:polygon(50% 0,100% 100%,0 100%)"></span><span class="legend-text">ServiceAccount (三角形)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#E53E3E;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)"></span><span class="legend-text">Secret (菱形)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#f85149;border-radius:3px;box-shadow:0 0 6px #f85149"></span><span class="legend-text">Finding (圆角矩形, severity 着色)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#C53030;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">Attack 📚C1 ✅ (模式库, confirmed)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#C53030;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%);opacity:0.7"></span><span class="legend-text">Attack 📚C2 ⚡ (模式库, conditional)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#9B59B6;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">Attack 🧠 (LLM 推理, Phase 4b)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#E91E63;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">Attack 📚🧠 (模式库+LLM)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#d29922;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">Attack ⚠️ C3 (风险线索)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#6e7681;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">Attack 🛑 blocked / ❓ unverified</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#2D3748;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);box-shadow:0 0 6px #D69E2E"></span><span class="legend-text">Chain 攻击链 (星形, 金色发光)</span></div>
+        </div>
+        <div class="legend-section">
+          <h4>五态着色 (Pod/Container)</h4>
+          <div class="legend-row"><span class="legend-shape" style="background:#f85149;border-radius:50%"></span><span class="legend-text">[x] 已确认可利用</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#d29922;border-radius:50%"></span><span class="legend-text">[?] 疑似/待验证</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#3fb950;border-radius:50%"></span><span class="legend-text">[-] 已证伪/不可利用</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#e3b341;border-radius:50%"></span><span class="legend-text">[!] 已阻断（安全机制）</span></div>
+        </div>
+        <div class="legend-section">
+          <h4>边类型</h4>
+          <div class="legend-row"><span style="color:#718096">━━</span><span class="legend-text">runs_on / container_in</span></div>
+          <div class="legend-row"><span style="color:#3182CE">┄┄</span><span class="legend-text">exposes</span></div>
+          <div class="legend-row"><span style="color:#E53E3E">━━</span><span class="legend-text">host_path_mount</span></div>
+          <div class="legend-row"><span style="color:#805AD5">━━</span><span class="legend-text">uses_sa</span></div>
+          <div class="legend-row"><span style="color:#d29922">┈┈</span><span class="legend-text">compliance (host→finding)</span></div>
+          <div class="legend-row"><span style="color:#d29922">┈┈</span><span class="legend-text">对象违规 (container/pod→finding) [派生]</span></div>
+          <div class="legend-row"><span style="color:#D69E2E">┄┄</span><span class="legend-text">交叉关联 / 假设激活 (finding→attack) [派生]</span></div>
+          <div class="legend-row"><span style="color:#C53030">━━</span><span class="legend-text">attack_verify (confirmed)</span></div>
+          <div class="legend-row"><span style="color:#C53030">┄┄</span><span class="legend-text">attack_verify (conditional)</span></div>
+          <div class="legend-row"><span style="color:#d29922">┈┈</span><span class="legend-text">attack_verify (risk_clue)</span></div>
+          <div class="legend-row"><span style="color:#6e7681">┈┈</span><span class="legend-text">attack_verify (blocked)</span></div>
+          <div class="legend-row"><span style="color:#D69E2E">━▶</span><span class="legend-text">attack_chain (金色动画)</span></div>
+          <div class="legend-row"><span style="color:#D69E2E">━▶</span><span class="legend-text">链步骤串联 (attack→attack) [派生]</span></div>
+        </div>
+        <div class="legend-section">
+          <h4>Namespace 着色 (Pod)</h4>
+          <div class="legend-row"><span class="legend-shape" style="background:#38a169;border-radius:50%"></span><span class="legend-text">kube-system</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#e53e3e;border-radius:50%"></span><span class="legend-text">vuln-apps</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#d69e2e;border-radius:50%"></span><span class="legend-text">vuln-data</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#ed8936;border-radius:50%"></span><span class="legend-text">vuln-infra</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#718096;border-radius:50%"></span><span class="legend-text">default</span></div>
+        </div>
+        <div class="legend-section">
+          <h4>特殊标记</h4>
+          <div class="legend-row"><span class="legend-shape" style="background:#e53e3e;border-radius:50%;border:2px solid #f85149;box-shadow:0 0 6px #f85149"></span><span class="legend-text">特权 Pod (红色边框)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#f85149;border-radius:3px;border:2px solid #f85149;box-shadow:0 0 8px #f85149"></span><span class="legend-text">Critical Finding (发光)</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#805AD5;clip-path:polygon(50% 0,100% 100%,0 100%);border:2px solid #f0883e"></span><span class="legend-text">high-priv-app-sa (橙色边框)</span></div>
+        </div>
+        <div class="legend-section">
+          <h4>Attack 来源与状态</h4>
+          <div class="legend-row"><span class="legend-shape" style="background:#C53030;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">📚 Phase 4a 模式库</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#9B59B6;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">🧠 Phase 4b LLM 推理</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#E91E63;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">📚🧠 模式库+LLM</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#d29922;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">⚠️ C3 风险线索</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#6e7681;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%)"></span><span class="legend-text">🛑 已阻断</span></div>
+          <div class="legend-row"><span class="legend-shape" style="background:#6e7681;clip-path:polygon(0 0,100% 50%,0 100%,50% 50%);border:2px dashed #8b949e;opacity:0.6"></span><span class="legend-text">❓ 未验证 (cross_ref 假设)</span></div>
+          <div class="legend-row"><span style="color:#8b949e;font-size:10px">✅ confirmed C1/C2 | ⚡ conditional | ⚠️ risk | 🛑 blocked | ❓ unverified</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 思维导图容器 -->
+  <div id="mindmap-container"></div>
+
+  <!-- 右侧面板 -->
+  <div id="side-panel">
+    <div id="detail-panel" class="panel-section" style="flex:1 1 auto; overflow:hidden; display:flex; flex-direction:column;">
+      <div class="panel-header">节点/边详情 <span class="toggle">▾</span></div>
+      <div class="panel-body" style="overflow-y:auto; flex:1;">
+        <div class="detail-empty">点击图中节点查看详情</div>
+      </div>
+    </div>
+    <div id="confidence-panel" class="panel-section" style="flex:0 0 auto; overflow:hidden;">
+      <div class="panel-header">可信度分布 <span class="toggle">▾</span></div>
+      <div class="panel-body" style="max-height:200px; overflow-y:auto;">
+        <div style="color:#6e7681;font-size:12px;">加载中...</div>
+      </div>
+    </div>
+    <div id="coverage-panel" class="panel-section" style="flex:0 0 auto; overflow:hidden;">
+      <div class="panel-header">攻击面覆盖率 <span class="toggle">▾</span></div>
+      <div class="panel-body" style="max-height:250px; overflow-y:auto;">
+        <div style="color:#6e7681;font-size:12px;">加载中...</div>
+      </div>
+    </div>
+    <div id="chain-panel" class="panel-section" style="flex:0 1 auto; overflow:hidden;">
+      <div class="panel-header">攻击链 (5) <span class="toggle">▾</span></div>
+      <div class="panel-body" style="max-height:60vh; overflow-y:auto;">
+        <div style="color:#6e7681;font-size:12px;">加载中...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== DATA INJECTION POINT ======
+__GRAPH_DATA__
+</script>
+
+<script>
+// ====== 主逻辑 ======
+(function() {
+  const data = graphData;
+  const nodes = data.nodes;
+  const edges = data.edges;
+  const progress = data.progress;
+  const sessionConfig = data.session_config;
+
+  // ====== 节点类型元数据（已知类型 + 未知类型自动兜底） ======
+  const NODE_TYPES = {
+    host:            { color: '#4A5568', shape: 'round-rectangle', size: 60, label: 'Host' },
+    pod:             { color: '#38a169', shape: 'ellipse',         size: 40, label: 'Pod' },
+    container:       { color: '#B7791F', shape: 'rectangle',       size: 30, label: 'Container' },
+    service:         { color: '#3182CE', shape: 'hexagon',         size: 35, label: 'Service' },
+    service_account: { color: '#805AD5', shape: 'triangle',        size: 30, label: 'SA' },
+    secret:          { color: '#E53E3E', shape: 'diamond',         size: 28, label: 'Secret' },
+    finding:         { color: '#d29922', shape: 'round-rectangle', size: 25, label: 'Finding' },
+    source_finding:  { color: '#2B6CB0', shape: 'round-rectangle', size: 25, label: 'SrcFinding' },
+    attack:          { color: '#C53030', shape: 'vee',             size: 35, label: 'Attack' },
+    chain:           { color: '#2D3748', shape: 'star',            size: 50, label: 'Chain' },
+  };
+
+  // 未知节点类型的自动配色池
+  const FALLBACK_COLORS = ['#2B6CB0', '#319795', '#B83280', '#6B46C1', '#DD6B20', '#38A169', '#718096'];
+  function getNodeTypeMeta(type) {
+    if (NODE_TYPES[type]) return NODE_TYPES[type];
+    // 未知类型自动分配颜色和默认形状
+    const idx = Object.keys(NODE_TYPES).length % FALLBACK_COLORS.length;
+    return { color: FALLBACK_COLORS[idx], shape: 'ellipse', size: 30, label: type };
+  }
+
+  // Namespace 颜色（已知 + 自动分配）
+  const NS_COLORS = {
+    'kube-system': '#38a169',
+    'vuln-apps':   '#e53e3e',
+    'vuln-data':   '#d69e2e',
+    'vuln-infra':  '#ed8936',
+    'default':     '#718096',
+  };
+  const NS_FALLBACK = ['#319795', '#B83280', '#6B46C1', '#DD6B20', '#2B6CB0', '#D69E2E', '#718096'];
+  let nsColorIdx = 0;
+  function getNsColor(ns) {
+    if (NS_COLORS[ns]) return NS_COLORS[ns];
+    // 未知 namespace 自动分配颜色
+    const color = NS_FALLBACK[nsColorIdx % NS_FALLBACK.length];
+    NS_COLORS[ns] = color; // 缓存，同一 ns 用同一颜色
+    nsColorIdx++;
+    return color;
+  }
+
+  // Severity 颜色（已知 + 兜底）
+  const SEV_COLORS = {
+    critical: '#f85149',
+    high:     '#d29922',
+    medium:   '#e3b341',
+    low:      '#768390',
+    info:     '#58a6ff',
+  };
+  function getSevColor(sev) {
+    return SEV_COLORS[sev] || '#d29922';
+  }
+
+  // 边类型样式（已知类型精确匹配 + 未知类型兜底）
+  function getEdgeStyle(edge) {
+    const rel = edge.attrs?.relation || edge.edge_type;
+    const etype = edge.edge_type;
+
+    // 基础设施边
+    if (etype === 'infra') {
+      if (rel === 'runs_on')      return { color: '#718096', width: 1, style: 'solid' };
+      if (rel === 'container_in') return { color: '#A0AEC0', width: 1, style: 'solid' };
+      if (rel === 'exposes')      return { color: '#3182CE', width: 2, style: 'dashed' };
+      if (rel === 'host_path_mount') return { color: '#E53E3E', width: 3, style: 'solid', label: edge.attrs?.hostPath || '' };
+      if (rel === 'uses_sa')      return { color: '#805AD5', width: 2, style: 'solid' };
+    }
+
+    // 合规边
+    if (etype === 'compliance') {
+      const sev = edge.attrs?.status === 'fail' ? '#f85149' : '#d29922';
+      return { color: sev, width: 1, style: 'dotted' };
+    }
+
+    // 交叉关联边（显示 XREF-001/002/003 标签）
+    if (etype === 'cross_ref') {
+      const sev = edge.attrs?.severity || 'high';
+      const query = edge.attrs?.query || '';
+      return { color: getSevColor(sev), width: 2, style: 'dashed', label: query };
+    }
+
+    // 攻击验证边
+    if (etype === 'attack_verify') {
+      const status = edge.attrs?.status || 'confirmed';
+      if (status === 'confirmed')            return { color: '#C53030', width: 3, style: 'solid' };
+      if (status === 'confirmed_conditional') return { color: '#C53030', width: 2, style: 'dashed' };
+      if (status === 'risk_clue')             return { color: '#d29922', width: 1, style: 'dotted' };
+      if (status === 'blocked')               return { color: '#6e7681', width: 1, style: 'dotted' };
+      return { color: '#C53030', width: 2, style: 'solid' };
+    }
+
+    // 攻击链边
+    if (etype === 'attack_chain') {
+      return { color: '#D69E2E', width: 4, style: 'solid', animated: true };
+    }
+
+    // 派生边：合规对象关联（container/pod → finding）
+    if (etype === 'compliance_object') {
+      return { color: '#d29922', width: 1, style: 'dotted' };
+    }
+
+    // 派生边：finding → attack 假设激活
+    if (etype === 'finding_to_attack') {
+      return { color: '#D69E2E', width: 2, style: 'dashed' };
+    }
+
+    // 派生边：攻击链步骤串联（attack → attack）
+    if (etype === 'chain_step') {
+      return { color: '#D69E2E', width: 3, style: 'solid', animated: true };
+    }
+
+    // 未知边类型兜底
+    return { color: '#6e7681', width: 1, style: 'solid' };
+  }
+
+  // ====== 构建节点标签 ======
+  function getNodeLabel(node) {
+    const d = node.data || {};
+    switch (node.node_type) {
+      case 'host':            return d.hostname || node.id;
+      case 'pod':             return d.name || node.id;
+      case 'container':       return d.name || node.id;
+      case 'service':         return d.name || node.id;
+      case 'service_account': return d.name || node.id;
+      case 'secret':          return d.name || node.id;
+      case 'finding':         return (d.rule_id ? d.rule_id + ': ' : '') + (d.title || node.id.replace(/^finding-/, ''));
+      case 'attack':          {
+        const name = d.name || node.id.replace(/^attack-/, '');
+        const atk = d.atk_cand ? d.atk_cand + ' ' : '';
+        const conf = d.confidence ? ' ' + d.confidence : '';
+        const src = d.source === 'llm_reasoning' ? '🧠' : (d.source === 'both' ? '📚🧠' : '📚');
+        const statusIcon = !d.status || d.status === 'unknown' ? '❓' :
+                          d.status === 'blocked' ? '🛑' :
+                          d.status === 'risk_clue' || d.status === 'high_risk_clue' ? '⚠️' :
+                          d.status === 'confirmed' ? '✅' :
+                          d.status === 'confirmed_conditional' || d.status === 'condition_met' ? '⚡' : '';
+        return atk + name + conf + ' ' + src + statusIcon;
+      }
+      case 'chain':           return d.chain_id || node.id;
+      default:                return node.id;
+    }
+  }
+
+  // ====== 构建节点颜色 ======
+  function getNodeColor(node) {
+    // 五态着色（Pod/Container 节点按 security_context 五态标记）
+    if (node.node_type === 'pod' || node.node_type === 'container') {
+      const sc = node.data?.security_context;
+      if (sc) {
+        // 检查五态标记，优先级：[x] > [!] > [?] > [-]
+        for (const key of Object.keys(sc)) {
+          const val = String(sc[key]);
+          if (val.includes('[x]')) return '#f85149'; // 红色 — 已确认可利用
+        }
+        for (const key of Object.keys(sc)) {
+          const val = String(sc[key]);
+          if (val.includes('[!]')) return '#e3b341'; // 黄色 — 已阻断
+        }
+        for (const key of Object.keys(sc)) {
+          const val = String(sc[key]);
+          if (val.includes('[?]')) return '#d29922'; // 橙色 — 疑似/待验证
+        }
+        for (const key of Object.keys(sc)) {
+          const val = String(sc[key]);
+          if (val.includes('[-]')) return '#3fb950'; // 绿色 — 已证伪
+        }
+      }
+    }
+    if (node.node_type === 'pod') {
+      const ns = node.data?.namespace || 'default';
+      return getNsColor(ns);
+    }
+    if (node.node_type === 'finding') {
+      const sev = node.data?.severity || 'medium';
+      return getSevColor(sev);
+    }
+    if (node.node_type === 'attack') {
+      const status = node.data?.status;
+      const source = node.data?.source || node.data?._source;
+      // 未验证（cross_ref 假设但无 attack_verify）
+      if (!status || status === 'unknown' || status === 'unverified') return '#6e7681';
+      // 已阻断
+      if (status === 'blocked') return '#6e7681';
+      // 风险线索
+      if (status === 'risk_clue' || status === 'high_risk_clue') return '#d29922';
+      // LLM 推理来源（Phase 4b）
+      if (source === 'llm_reasoning') return '#9B59B6';
+      // 模式库 + LLM（两者）
+      if (source === 'both' || (source && source !== 'pattern_library' && source !== 'llm_reasoning')) return '#E91E63';
+      // 模式库来源（Phase 4a）— 默认深红
+      return '#C53030';
+    }
+    if (node.node_type === 'chain') return '#2D3748';
+    return getNodeTypeMeta(node.node_type).color;
+  }
+
+  // ====== 判断特权 Pod ======
+  function isPrivilegedPod(node) {
+    if (node.node_type !== 'pod') return false;
+    const sc = node.data?.security_context;
+    if (!sc) return false;
+    return sc.privileged === '[x] true' || sc.privileged === true;
+  }
+
+  // ====== 构建 Cytoscape 元素 ======
+  function buildElements() {
+    // 收集所有边的端点，找出缺失的虚拟节点（attack_*/chain_* 边的 to_node 不在 nodes 中）
+    const nodeIds = new Set(nodes.map(n => n.id));
+    const virtualNodes = [];
+
+    // 假设改名映射：Phase 4b LLM 推理可能改变攻击名（如 etcd-data-exposure → kine-db-exposure）
+    // cross_ref 中保留原始假设名，attack_verify 中用新名 → 需要重定向边引用
+    const verifiedAttackNames = new Set();
+    edges.forEach(e => {
+      if (e.edge_type === 'attack_verify' && e.to_node.startsWith('attack-')) {
+        verifiedAttackNames.add(e.to_node.replace(/^attack-/, ''));
+      }
+    });
+    const attackNameAlias = {};
+    // etcd-data-exposure → kine-db-exposure（k3s 用 Kine SQLite 替代 etcd）
+    if (!verifiedAttackNames.has('etcd-data-exposure') && verifiedAttackNames.has('kine-db-exposure')) {
+      attackNameAlias['attack-etcd-data-exposure'] = 'attack-kine-db-exposure';
+    }
+
+    // 构建 cross_ref attack → query 映射（用于 attack 虚拟节点的 source 字段）
+    const attackQueryMap = {};
+    edges.forEach(e => {
+      if (e.edge_type === 'cross_ref' && e.to_node?.startsWith('attack-') && e.attrs?.query) {
+        attackQueryMap[e.to_node] = e.attrs.query;
+      }
+    });
+
+    // target-pod/* 别名映射：XREF-002 中的 target-pod/{name} → 真实 Pod
+    const targetAlias = {};
+    nodes.forEach(n => {
+      if (n.node_type === 'pod') {
+        const name = n.data?.name || '';
+        const s1 = name.replace(/-[a-z0-9]+-[a-z0-9]+$/, '');
+        const s2 = name.replace(/-[a-z0-9]+$/, '');
+        targetAlias['target-pod/' + name] = n.id;
+        if (s1 !== name) targetAlias['target-pod/' + s1] = n.id;
+        if (s2 !== name && s2 !== s1) targetAlias['target-pod/' + s2] = n.id;
+      }
+    });
+
+    edges.forEach(e => {
+      // 检查 from_node 和 to_node 是否都存在
+      [e.from_node, e.to_node].forEach(id => {
+        // 应用别名映射：有别名的不创建虚拟节点
+        if (attackNameAlias[id]) return;
+        if (targetAlias[id]) return;
+        if (!nodeIds.has(id)) {
+          // 判断虚拟节点类型
+          let vType = 'unknown';
+          let vData = {};
+
+          if (e.edge_type === 'attack_verify' && e.to_node === id) {
+            vType = 'attack';
+            // 收集所有指向这个 attack 的 attack_verify 边的 source
+            // 无 source 字段的边视为 pattern_library（Phase 4a 默认）
+            const sources = new Set();
+            edges.forEach(e2 => {
+              if (e2.edge_type === 'attack_verify' && e2.to_node === id) {
+                sources.add(e2.attrs?.source || 'pattern_library');
+              }
+            });
+            let source = 'pattern_library';
+            if (sources.size === 2 && sources.has('pattern_library') && sources.has('llm_reasoning')) source = 'both';
+            else if (sources.has('llm_reasoning')) source = 'llm_reasoning';
+            vData = {
+              name: id.replace(/^attack-/, ''),
+              status: e.attrs?.status || 'unknown',
+              confidence: e.attrs?.confidence || '',
+              atk_cand: e.attrs?.atk_cand || '',
+              level: e.attrs?.level || '',
+              source: source,
+            };
+          } else if (e.edge_type === 'attack_chain' && e.to_node === id) {
+            vType = 'chain';
+            vData = {
+              chain_id: e.attrs?.chain_id || id,
+              confidence: e.attrs?.confidence || '',
+              severity: e.attrs?.impact?.severity || 'Critical',
+              steps: e.attrs?.steps || [],
+              description: e.attrs?.description || e.reason || '',
+            };
+          } else if (e.edge_type === 'attack_chain' && e.from_node === id) {
+            // from_node 可能是 host-id-IP 格式，也派生为 host 虚拟节点
+            if (id.startsWith('host-')) {
+              vType = 'host';
+              const parts = id.replace(/^host-/, '').split('-');
+              vData = { hostname: parts[0] || id, ip: parts.slice(1).join('.') || '' };
+            }
+          } else if (e.edge_type === 'attack_verify' && e.from_node === id) {
+            // 可能是 rbac-* 或其他虚拟节点
+            if (id.startsWith('rbac-')) {
+              vType = 'attack';
+              vData = { name: id.replace(/^rbac-/, ''), status: e.attrs?.status || 'unknown' };
+            } else if (id.startsWith('secret-')) {
+              vType = 'secret';
+              vData = { name: id.replace(/^secret-/, '') };
+            } else {
+              vType = 'attack';
+              vData = { name: id, status: 'unverified', source: attackQueryMap[id] || 'cross_ref' };
+            }
+          } else if (e.edge_type === 'cross_ref' && (e.from_node === id || e.to_node === id)) {
+            // cross_ref 边可能引用 compliance-* / target-* / amplification-* / container-* / secret-* / sa-* 虚拟节点
+            if (id.startsWith('compliance-')) {
+              vType = 'finding';
+              vData = { rule_id: id.replace(/^compliance-/, '').replace(/-/g, '.'), severity: e.attrs?.severity || 'high', platform: 'k8s' };
+            } else if (id.startsWith('target-') || id.startsWith('amplification-')) {
+              vType = 'attack';
+              vData = { name: id.replace(/^(target-|amplification-)/, ''), status: 'unverified', source: attackQueryMap[id] || 'cross_ref' };
+            } else if (id.startsWith('container-')) {
+              vType = 'container';
+              vData = { name: id.replace(/^container-/, '') };
+            } else if (id.startsWith('secret-')) {
+              vType = 'secret';
+              vData = { name: id.replace(/^secret-/, '') };
+            } else if (id.startsWith('sa-')) {
+              vType = 'service_account';
+              vData = { name: id.replace(/^sa-/, '') };
+            } else if (id.startsWith('host-')) {
+              vType = 'host';
+              vData = { hostname: id.replace(/^host-/, '') };
+            } else {
+              vType = 'attack';
+              vData = { name: id.replace(/^rbac-/, ''), status: 'unverified', source: attackQueryMap[id] || 'cross_ref' };
+            }
+          }
+
+          if (vType !== 'unknown' && !nodeIds.has(id)) {
+            nodeIds.add(id);
+            virtualNodes.push({
+              id: id,
+              node_type: vType,
+              data: vData,
+              _virtual: true,
+              session_id: '',
+            });
+          }
+        }
+      });
+    });
+
+    const allNodes = [...nodes, ...virtualNodes];
+
+    const cyNodes = allNodes.map(n => {
+      const meta = getNodeTypeMeta(n.node_type);
+      const color = getNodeColor(n);
+      const label = getNodeLabel(n);
+      const isPriv = isPrivilegedPod(n);
+      const isCritical = n.node_type === 'finding' && n.data?.severity === 'critical';
+      const isHighPrivSA = n.node_type === 'service_account' && n.data?.name === 'high-priv-app-sa';
+      const isSecretVuln = n.node_type === 'secret' && n.data?.name === 'app-db-credentials';
+      const isChain = n.node_type === 'chain';
+
+      let borderColor = color;
+      let borderWidth = 1;
+      let glow = '';
+
+      if (isPriv) { borderColor = '#f85149'; borderWidth = 3; }
+      if (isCritical) { borderColor = '#f85149'; borderWidth = 3; glow = 'data(criticalGlow)'; }
+      if (isHighPrivSA) { borderColor = '#f0883e'; borderWidth = 3; }
+      if (isSecretVuln) { borderColor = '#f85149'; borderWidth = 3; }
+      if (isChain) { borderColor = '#D69E2E'; borderWidth = 3; }
+
+      return {
+        data: {
+          id: n.id,
+          nodeType: n.node_type,
+          raw: n,
+          label: label.length > 50 ? label.substring(0, 48) + '..' : label,
+          fullLabel: label,
+          color: color,
+          shape: meta.shape,
+          size: meta.size,
+          borderColor: borderColor,
+          borderWidth: borderWidth,
+          isPrivileged: isPriv,
+          isCritical: isCritical,
+          namespace: n.data?.namespace || '',
+          severity: n.data?.severity || '',
+          status: n.data?.status || '',
+          criticalGlow: isCritical ? 8 : 0,
+        }
+      };
+    });
+
+    // 过滤边时应用别名映射：如果 to_node 是已改名的 attack，重定向到新名
+    const cyEdges = edges.filter(e => {
+      const fromResolved = targetAlias[e.from_node] || e.from_node;
+      const fromOk = nodeIds.has(fromResolved);
+      let toNode = e.to_node;
+      if (attackNameAlias[toNode]) toNode = attackNameAlias[toNode];
+      return fromOk && nodeIds.has(toNode);
+    }).map((e, i) => {
+      let targetNode = e.to_node;
+      if (attackNameAlias[targetNode]) targetNode = attackNameAlias[targetNode];
+      let sourceNode = targetAlias[e.from_node] || e.from_node;
+      const style = getEdgeStyle(e);
+      return {
+        data: {
+          id: 'e' + i,
+          source: sourceNode,
+          target: targetNode,
+          edgeType: e.edge_type,
+          relation: e.attrs?.relation || '',
+          raw: e,
+          color: style.color,
+          width: style.width,
+          lineStyle: style.style,
+          animated: style.animated || false,
+          label: style.label || '',
+        }
+      };
+    });
+
+    // ====== 派生边：从现有数据中按 GenCPT 渐进式增强逻辑派生关联边 ======
+    const derivedEdges = [];
+    let derivedIdx = 10000;
+
+    // 构建 name → node_id 映射（用于从 judgment 文本匹配具体对象）
+    const nameToId = {};
+    allNodes.forEach(n => {
+      const name = n.data?.name || '';
+      if (name) nameToId[name] = n.id;
+      // pod 简短名（如 docker-sock-escape-84c4f876df-vgm2j → docker-sock-escape）
+      if (n.node_type === 'pod') {
+        const short = name.replace(/-[a-f0-9]+-.*$/, '');
+        if (short !== name) nameToId[short] = n.id;
+      }
+    });
+
+    // 0a. 派生 uses_sa 边：从 Pod.serviceAccountName 按 namespace+name 匹配 SA 节点
+    //     Phase 1a 只为高风险 SA 建 uses_sa，这里补全所有 Pod→SA 关联
+    const saByNsName = {};
+    allNodes.forEach(n => {
+      if (n.node_type === 'service_account') {
+        const ns = n.data?.namespace || '';
+        const name = n.data?.name || '';
+        saByNsName[ns + '/' + name] = n.id;
+      }
+    });
+    const existingUsesSa = new Set();
+    edges.forEach(e => {
+      if (e.edge_type === 'infra' && e.attrs?.relation === 'uses_sa')
+        existingUsesSa.add(e.from_node + '→' + e.to_node);
+    });
+    allNodes.filter(n => n.node_type === 'pod').forEach(p => {
+      const saName = p.data?.serviceAccountName || '';
+      const ns = p.data?.namespace || '';
+      const saId = saByNsName[ns + '/' + saName];
+      if (saId && !existingUsesSa.has(p.id + '→' + saId)) {
+        derivedEdges.push({
+          data: {
+            id: 'de' + (derivedIdx++),
+            source: p.id, target: saId,
+            edgeType: 'infra', relation: 'uses_sa',
+            raw: { edge_type: 'infra', from_node: p.id, to_node: saId, attrs: { relation: 'uses_sa' } },
+            color: '#805AD5', width: 2, lineStyle: 'solid', animated: false, label: '',
+          }
+        });
+      }
+    });
+
+    // 0b. Pending Pod 不创建虚拟 host（Pending 状态 = 未调度到任何节点，这是正确的）
+
+    // 1. 合规对象关联：container/pod/SA → finding
+    //    解析 finding 的 judgment 文本中提到的具体对象名
+    //    用完整词匹配（词边界），避免子串误匹配（如 traefik 匹配到 helm-traefik）
+    //    对 SA 名为 default 的，只用 namespace/default 格式精确匹配，不单独匹配 "default" 这个词
+    function wordMatch(word, text) {
+      // 完整词匹配：word 前后是非字母数字字符或字符串边界
+      // 连字符 - 和下划线 _ 视为词内字符（如 privileged-escape-target 是一个词）
+      const pattern = '(?:^|[^a-zA-Z0-9_-])' + word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:$|[^a-zA-Z0-9_-])';
+      return new RegExp(pattern, 'i').test(text);
+    }
+    allNodes.filter(n => n.node_type === 'finding' && n.data?.status === 'fail').forEach(f => {
+      const j = (f.data?.judgment || '') + ' ' + (f.data?.title || '');
+      allNodes.forEach(n => {
+        if (n.node_type === 'pod' || n.node_type === 'container' || n.node_type === 'service_account' || n.node_type === 'secret') {
+          const name = n.data?.name || '';
+          const short = name.replace(/-[a-f0-9]+-.*$/, '');
+          const ns = n.data?.namespace || '';
+          let matched = false;
+          // SA 名为 default 时，只用 namespace/default 精确匹配（不单独匹配 "default" 这个通用词）
+          if (n.node_type === 'service_account' && name === 'default') {
+            const patterns = [ns + '/default', ns + ' default', ns + '.*default SA', ns + '.*default.*automount', ns + '.*default.*token'];
+            for (const p of patterns) {
+              if (new RegExp(p, 'i').test(j)) { matched = true; break; }
+            }
+          } else {
+            // 非 default SA：用完整词匹配
+            if (name && name.length > 2 && wordMatch(name, j)) {
+              matched = true;
+            }
+            if (!matched && short && short !== name && short.length > 2 && wordMatch(short, j)) {
+              matched = true;
+            }
+          }
+          if (matched) {
+            derivedEdges.push({
+              data: {
+                id: 'de' + (derivedIdx++),
+                source: n.id,
+                target: f.id,
+                edgeType: 'compliance_object',
+                relation: 'violates',
+                raw: { edge_type: 'compliance_object', from_node: n.id, to_node: f.id, attrs: { relation: 'violates', rule_id: f.data?.rule_id } },
+                color: '#d29922', width: 1, lineStyle: 'dotted', animated: false, label: '',
+              }
+            });
+          }
+        }
+      });
+    });
+
+    // 2. finding → attack 假设激活
+    //    从 cross_ref 中的 compliance-* → attack-* 精确映射到 finding 节点
+    //    compliance-K8s-7.1.1 → finding-k8s-k8s-7-1-1（rule 的 . 替换为 -，不重复 k8s 前缀）
+    const findingHasAttack = new Set();
+    edges.forEach(e => {
+      if (e.edge_type === 'cross_ref' && e.from_node.startsWith('compliance-')) {
+        const rule = e.from_node.replace('compliance-', '');  // K8s-7.1.1
+        const parts = rule.split('-');  // ['K8s', '7.1.1']
+        const plat = parts[0].toLowerCase();  // k8s
+        const ver = parts.slice(1).join('-').toLowerCase().replace(/\./g, '-');  // 7-1-1
+        const findingId = 'finding-' + plat + '-' + plat + '-' + ver;  // finding-k8s-k8s-7-1-1
+        if (nodeIds.has(findingId) && nodeIds.has(e.to_node)) {
+          findingHasAttack.add(findingId);
+          derivedEdges.push({
+            data: {
+              id: 'de' + (derivedIdx++),
+              source: findingId,
+              target: e.to_node,
+              edgeType: 'finding_to_attack',
+              relation: 'activates',
+              raw: { edge_type: 'finding_to_attack', from_node: findingId, to_node: e.to_node, attrs: { severity: e.attrs?.severity || 'high', source: 'cross_ref' } },
+              color: '#D69E2E', width: 2, lineStyle: 'dashed', animated: false, label: '',
+            }
+          });
+        }
+      }
+    });
+
+    // 2b. finding → attack 通过 attack_surface 映射（Phase 4a/4b 覆盖）
+    //     finding 有 attack_surface 字段（GenCPT Phase 2 打的标签），关联到同攻击面的已验证 attack
+    //     这是 GenCPT 的设计逻辑：同攻击面的合规违规被已验证的 attack 覆盖
+    const AS_TO_ATTACKS = {
+      'AS-1': ['privileged-container-escape','hostpath-mount-escape','capability-privesc','socket-escape','hostpid-hostipc-escape','hostnetwork-abuse'],
+      'AS-2': ['k8s-rbac-abuse','k8s-sa-exploit','k8s-anonymous-access','kubelet-api-abuse'],
+      'AS-3': ['lateral-move'],
+      'AS-4': ['secret-exfil','env-credential-leak','kine-db-exposure','configmap-data-exposure'],
+      'AS-5': ['resource-abuse'],
+    };
+    const verifiedAttacks = new Set();
+    edges.forEach(e => {
+      if (e.edge_type === 'attack_verify' && e.to_node.startsWith('attack-')) {
+        verifiedAttacks.add(e.to_node.replace(/^attack-/, ''));
+      }
+    });
+    allNodes.filter(n => n.node_type === 'finding' && n.data?.status === 'fail' && n.data?.attack_surface).forEach(f => {
+      if (findingHasAttack.has(f.id)) return; // 已有精确映射，跳过
+      const aas = f.data.attack_surface;
+      const attackNames = AS_TO_ATTACKS[aas] || [];
+      attackNames.forEach(an => {
+        const attackId = 'attack-' + an;
+        if (verifiedAttacks.has(an) && nodeIds.has(attackId)) {
+          derivedEdges.push({
+            data: {
+              id: 'de' + (derivedIdx++),
+              source: f.id,
+              target: attackId,
+              edgeType: 'finding_to_attack',
+              relation: 'activates',
+              raw: { edge_type: 'finding_to_attack', from_node: f.id, to_node: attackId, attrs: { severity: f.data?.severity || 'high', source: 'attack_surface' } },
+              color: '#D69E2E', width: 1, lineStyle: 'dotted', animated: false, label: '',
+            }
+          });
+        }
+      });
+    });
+
+    // 2c. finding → attack 通过共同关联对象映射（更精确的补充）
+    //     finding 的 judgment 中提到了具体对象，该对象有 attack_verify 边到某个 attack
+    //     这种关联比 attack_surface 更精确，用更粗的线区分
+    const objectToAttacks = {};
+    edges.forEach(e => {
+      if (e.edge_type === 'attack_verify') {
+        if (!objectToAttacks[e.from_node]) objectToAttacks[e.from_node] = [];
+        objectToAttacks[e.from_node].push(e.to_node.replace(/^attack-/, ''));
+      }
+    });
+    allNodes.filter(n => n.node_type === 'finding' && n.data?.status === 'fail').forEach(f => {
+      const j = (f.data?.judgment || '') + ' ' + (f.data?.title || '');
+      allNodes.forEach(n => {
+        if (n.node_type === 'pod' || n.node_type === 'container' || n.node_type === 'service_account' || n.node_type === 'secret') {
+          const name = n.data?.name || '';
+          const short = name.replace(/-[a-f0-9]+-.*$/, '');
+          const ns = n.data?.namespace || '';
+          let matched = false;
+          if (n.node_type === 'service_account' && name === 'default') {
+            const patterns = [ns + '/default', ns + ' default', ns + '.*default SA', ns + '.*default.*automount', ns + '.*default.*token'];
+            for (const p of patterns) { if (new RegExp(p, 'i').test(j)) { matched = true; break; } }
+          } else {
+            if (name && name.length > 2 && wordMatch(name, j)) matched = true;
+            if (!matched && short && short !== name && short.length > 2 && wordMatch(short, j)) matched = true;
+          }
+          if (matched) {
+            const attacks = objectToAttacks[n.id] || [];
+            attacks.forEach(an => {
+              const attackId = 'attack-' + an;
+              if (verifiedAttacks.has(an) && nodeIds.has(attackId)) {
+                // 避免和 attack_surface 重复
+                const exists = derivedEdges.some(de => de.data.source === f.id && de.data.target === attackId);
+                if (!exists) {
+                  derivedEdges.push({
+                    data: {
+                      id: 'de' + (derivedIdx++),
+                      source: f.id,
+                      target: attackId,
+                      edgeType: 'finding_to_attack',
+                      relation: 'activates',
+                      raw: { edge_type: 'finding_to_attack', from_node: f.id, to_node: attackId, attrs: { severity: f.data?.severity || 'high', source: 'object_bridge' } },
+                      color: '#D69E2E', width: 2, lineStyle: 'dashed', animated: false, label: '',
+                    }
+                  });
+                }
+              }
+            });
+          }
+        }
+      });
+    });
+
+    // 3. 攻击链步骤串联：attack step1 → attack step2 → ...
+    //    从 attack_chain 边的 steps 数组派生步骤间边
+    //    对于只存在于 chain steps 中但无 attack_verify 边的 attack，创建虚拟节点并加入 cyNodes
+    edges.forEach(e => {
+      if (e.edge_type === 'attack_chain' && e.attrs?.steps) {
+        const steps = e.attrs.steps;
+        // 先确保所有 step 的 attack 虚拟节点存在
+        steps.forEach(s => {
+          const aid = 'attack-' + s.attack_name;
+          if (!nodeIds.has(aid)) {
+            nodeIds.add(aid);
+            const vNode = {
+              id: aid, node_type: 'attack',
+              data: { name: s.attack_name, status: s.status || 'unknown', confidence: s.verification_level || '', atk_cand: s.atk_cand_id || '' },
+              _virtual: true, session_id: '',
+            };
+            virtualNodes.push(vNode);
+            allNodes.push(vNode);
+            // 同时加入 cyNodes
+            const meta = getNodeTypeMeta('attack');
+            const color = getNodeColor(vNode);
+            const label = getNodeLabel(vNode);
+            cyNodes.push({
+              data: {
+                id: vNode.id, nodeType: 'attack', raw: vNode,
+                label: label.length > 50 ? label.substring(0, 48) + '..' : label,
+                fullLabel: label, color: color, shape: meta.shape, size: meta.size,
+                borderColor: color, borderWidth: 1,
+                isPrivileged: false, isCritical: false,
+                namespace: '', severity: '', criticalGlow: 0,
+              }
+            });
+          }
+        });
+        // 再创建步骤间边
+        for (let i = 0; i < steps.length - 1; i++) {
+          const a1 = 'attack-' + steps[i].attack_name;
+          const a2 = 'attack-' + steps[i+1].attack_name;
+          derivedEdges.push({
+            data: {
+              id: 'de' + (derivedIdx++),
+              source: a1,
+              target: a2,
+              edgeType: 'chain_step',
+              relation: 'chain_step_' + steps[i].step + '_' + steps[i+1].step,
+              raw: { edge_type: 'chain_step', from_node: a1, to_node: a2, attrs: { chain_id: e.attrs.chain_id, step: steps[i].step } },
+              color: '#D69E2E', width: 3, lineStyle: 'solid', animated: true, label: '',
+            }
+          });
+        }
+      }
+    });
+
+    return [...cyNodes, ...cyEdges, ...derivedEdges];
+  }
+
+  // ====== 渲染统计栏 ======
+  function renderStats() {
+    const nodeCount = nodes.length;
+    const edgeCount = edges.length;
+    const findings = nodes.filter(n => n.node_type === 'finding');
+    const criticalCount = findings.filter(f => f.data?.severity === 'critical').length;
+    const chains = edges.filter(e => e.edge_type === 'attack_chain');
+    const confirmedAttacks = edges.filter(e => e.edge_type === 'attack_verify' && (e.attrs?.status === 'confirmed' || e.attrs?.status === 'confirmed_conditional'));
+
+    const sc = sessionConfig;
+    const target = sc.target || {};
+    const env = sc.env_fingerprint || {};
+
+    // 综合评分动态计算（基于合规通过率和攻击面覆盖）
+    let score = 'N/A';
+    if (findings.length > 0) {
+      const failRate = findings.length / (findings.length + 50); // 粗略估算
+      const confirmedRate = confirmedAttacks.length / Math.max(confirmedAttacks.length, 1);
+      const raw = 10 - (failRate * 6 + confirmedRate * 2.5);
+      score = Math.max(1, Math.round(raw * 10) / 10).toFixed(1) + '/10';
+    }
+
+    document.getElementById('stats-bar').innerHTML = `
+      <div class="stat-item"><span class="stat-label">节点</span><span class="stat-value">${nodeCount}</span></div>
+      <div class="stat-item"><span class="stat-label">边</span><span class="stat-value">${edgeCount}</span></div>
+      <div class="stat-item"><span class="stat-label">合规违规</span><span class="stat-value critical">${findings.length}</span></div>
+      <div class="stat-item"><span class="stat-label">Critical</span><span class="stat-value critical">${criticalCount}</span></div>
+      <div class="stat-item"><span class="stat-label">攻击链</span><span class="stat-value chain">${chains.length}</span></div>
+      <div class="stat-item"><span class="stat-label">确认攻击</span><span class="stat-value chain">${confirmedAttacks.length}</span></div>
+      <div class="stat-item"><span class="stat-label">综合评分</span><span class="stat-value score">${score}</span></div>
+      <div class="session-info">${env.k8s_version || env.containerd_version || ''} · ${env.node_count || '?'}节点 · ${env.pod_count || '?'}Pod · ${target.host || ''}</div>
+    `;
+  }
+
+  // ====== 渲染 Pipeline 时间轴 ======
+  function renderPipeline() {
+    // 显式定义 Phase 顺序（不依赖 Object.keys 排序）
+    const PHASE_ORDER = [
+      '1a', '1b', '2a', '2b', '2c', '3', '4a', '4b',
+      '5', '6', '7', '8a', '8b', '8c', '9'
+    ];
+    const phaseNames = {
+      '1a': '环境侦察', '1b': '源码扫描', '2a': 'K8s合规', '2b': 'Docker合规',
+      '2c': 'Containerd合规', '3': '交叉关联', '4a': '模式匹配', '4b': 'LLM推理',
+      '5': '链构建', '6': '链验证', '7': 'POC生成', '8a': '合规报告',
+      '8b': '攻击报告', '8c': '全景报告', '9': '模式进化',
+    };
+
+    const phaseProducts = {
+      '1a': { nodes: ['host','pod','container','service','service_account','secret'], edges: ['infra'] },
+      '2a': { nodes: ['finding_k8s'], edges: ['compliance_k8s'] },
+      '2b': { nodes: ['finding_docker'], edges: ['compliance_docker'] },
+      '2c': { nodes: ['finding_containerd'], edges: ['compliance_containerd'] },
+      '3':  { nodes: [], edges: ['cross_ref'] },
+      '4a': { nodes: [], edges: ['attack_verify_pattern'] },
+      '4b': { nodes: [], edges: ['attack_verify_llm'] },
+      '5':  { nodes: ['chain'], edges: ['attack_chain'] },
+      '6':  { nodes: [], edges: [] },
+      '7':  { nodes: [], edges: [] },
+      '8a': { nodes: [], edges: [] },
+      '8b': { nodes: [], edges: [] },
+      '8c': { nodes: [], edges: [] },
+      '9':  { nodes: [], edges: [] },
+    };
+
+    const phases = progress.phases || {};
+    let html = '<span class="phase-label">Pipeline:</span>';
+
+    PHASE_ORDER.forEach(pid => {
+      const p = phases[pid];
+      if (!p) return;
+      const icon = p.status === 'complete' ? '✅' : (p.status === 'skipped' ? '⏭️' : '❌');
+      const name = phaseNames[pid] || pid;
+      const time = p.last_updated ? p.last_updated.substring(11, 16) : '';
+      const wuCount = Object.keys(p.batches || {}).length;
+
+      html += `<span class="phase-chip" data-phase="${pid}" title="${name} (${p.status}, ${wuCount} WU${time ? ', '+time : ''})">
+        <span class="phase-icon">${icon}</span>
+        <span class="phase-num">${pid}</span>
+        <span class="phase-name">${name}</span>
+        ${time ? `<span class="phase-time">${time}</span>` : ''}
+      </span>`;
+    });
+
+    document.getElementById('pipeline-bar').innerHTML = html;
+
+    // 点击 Phase 高亮
+    document.querySelectorAll('.phase-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const pid = chip.dataset.phase;
+        document.querySelectorAll('.phase-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        highlightPhase(pid);
+      });
+    });
+  }
+
+  // ====== Phase 高亮 ======
+  function highlightPhase(pid) {
+    const oldTip = document.getElementById('phase-tip');
+    if (oldTip) oldTip.remove();
+    const phaseMap = {
+      '1a': () => {
+        cy.elements().removeClass('faded');
+        const types = ['host', 'pod', 'container', 'service', 'service_account', 'secret'];
+        cy.nodes().forEach(n => {
+          if (!types.includes(n.data('nodeType'))) n.addClass('faded');
+        });
+        cy.edges().forEach(e => {
+          if (e.data('edgeType') !== 'infra') e.addClass('faded');
+        });
+      },
+      '2a': () => {
+        cy.elements().removeClass('faded');
+        cy.nodes().forEach(n => {
+          if (!(n.data('nodeType') === 'finding' && n.data('raw')?.data?.platform === 'k8s')) n.addClass('faded');
+        });
+        cy.edges().forEach(e => {
+          if (e.data('edgeType') !== 'compliance' && e.data('edgeType') !== 'compliance_object') e.addClass('faded');
+          else if (e.data('edgeType') === 'compliance' && e.data('raw')?.attrs?.platform !== 'k8s') e.addClass('faded');
+        });
+        // 高亮 host 和违规对象
+        cy.nodes().forEach(n => {
+          if (n.data('nodeType') === 'host') n.removeClass('faded');
+          // 有 compliance_object 边连接的 pod/container 也高亮
+          let hasObjEdge = false;
+          n.connectedEdges().forEach(e => { if (e.data('edgeType') === 'compliance_object' && !e.hasClass('faded')) hasObjEdge = true; });
+          if (hasObjEdge) n.removeClass('faded');
+        });
+      },
+      '2b': () => {
+        cy.elements().removeClass('faded');
+        const dockerFindings = cy.nodes().filter(n => n.data('nodeType') === 'finding' && n.data('raw')?.data?.platform === 'docker');
+        if (dockerFindings.length === 0) {
+          // 无 Docker finding（环境无 Docker），全部淡化并显示提示
+          cy.elements().addClass('faded');
+          const statsBar = document.getElementById('stats-bar');
+          const oldTip = document.getElementById('phase-tip');
+          if (oldTip) oldTip.remove();
+          const tip = document.createElement('div');
+          tip.id = 'phase-tip';
+          tip.style.cssText = 'position:fixed;top:120px;left:50%;transform:translateX(-50%);background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 20px;color:#8b949e;font-size:14px;z-index:9999;';
+          tip.innerHTML = 'Docker 合规检测：64 条规则全部 NA（此环境无 Docker）';
+          document.body.appendChild(tip);
+        } else {
+          cy.nodes().forEach(n => {
+            if (!(n.data('nodeType') === 'finding' && n.data('raw')?.data?.platform === 'docker')) n.addClass('faded');
+          });
+        }
+      },
+      '2c': () => {
+        cy.elements().removeClass('faded');
+        cy.nodes().forEach(n => {
+          if (!(n.data('nodeType') === 'finding' && n.data('raw')?.data?.platform === 'containerd')) n.addClass('faded');
+        });
+        cy.edges().forEach(e => {
+          if (e.data('edgeType') !== 'compliance' && e.data('edgeType') !== 'compliance_object') e.addClass('faded');
+          else if (e.data('edgeType') === 'compliance' && e.data('raw')?.attrs?.platform !== 'containerd') e.addClass('faded');
+        });
+        cy.nodes().forEach(n => {
+          if (n.data('nodeType') === 'host') n.removeClass('faded');
+          let hasObjEdge = false;
+          n.connectedEdges().forEach(e => { if (e.data('edgeType') === 'compliance_object' && !e.hasClass('faded')) hasObjEdge = true; });
+          if (hasObjEdge) n.removeClass('faded');
+        });
+      },
+      '3': () => {
+        cy.elements().removeClass('faded');
+        cy.edges().forEach(e => {
+          if (e.data('edgeType') !== 'cross_ref' && e.data('edgeType') !== 'finding_to_attack') {
+            e.addClass('faded');
+          } else if (e.data('edgeType') === 'cross_ref' && e.data('raw')?.attrs?.query !== 'XREF-001') {
+            if (!e.data('raw')?.attrs?.query?.startsWith('XREF')) e.addClass('faded');
+          }
+        });
+        cy.nodes().forEach(n => {
+          let connected = false;
+          n.connectedEdges().forEach(e => {
+            if (!e.hasClass('faded')) connected = true;
+          });
+          if (!connected && n.data('nodeType') !== 'finding' && n.data('nodeType') !== 'host') n.addClass('faded');
+        });
+      },
+      '4a': () => {
+        cy.elements().removeClass('faded');
+        cy.edges().forEach(e => {
+          if (e.data('edgeType') !== 'attack_verify') e.addClass('faded');
+          else if (e.data('raw')?.attrs?.source === 'llm_reasoning') e.addClass('faded');
+        });
+        fadeUnconnected();
+      },
+      '4b': () => {
+        cy.elements().removeClass('faded');
+        cy.edges().forEach(e => {
+          if (e.data('edgeType') !== 'attack_verify') e.addClass('faded');
+          else if (e.data('raw')?.attrs?.source !== 'llm_reasoning') e.addClass('faded');
+        });
+        fadeUnconnected();
+      },
+      '5': () => {
+        cy.elements().removeClass('faded');
+        cy.edges().forEach(e => {
+          if (e.data('edgeType') !== 'attack_chain' && e.data('edgeType') !== 'chain_step') e.addClass('faded');
+        });
+        // 也显示 chain 节点和 attack 节点
+        cy.nodes().forEach(n => {
+          let connected = false;
+          n.connectedEdges().forEach(e => {
+            if (e.data('edgeType') === 'attack_chain') connected = true;
+          });
+          if (!connected) n.addClass('faded');
+        });
+      },
+    };
+
+    if (phaseMap[pid]) {
+      phaseMap[pid]();
+    } else {
+      cy.elements().removeClass('faded');
+    }
+  }
+
+  function fadeUnconnected() {
+    cy.nodes().forEach(n => {
+      let connected = false;
+      n.connectedEdges().forEach(e => { if (!e.hasClass('faded')) connected = true; });
+      if (!connected) n.addClass('faded');
+    });
+  }
+
+  // ====== 渲染工具栏 ======
+  function renderToolbar() {
+    const nodeFilters = [
+      { key: 'host', label: 'Host', color: '#4A5568' },
+      { key: 'pod', label: 'Pod', color: '#38a169' },
+      { key: 'container', label: 'Container', color: '#B7791F' },
+      { key: 'service', label: 'Service', color: '#3182CE' },
+      { key: 'service_account', label: 'SA', color: '#805AD5' },
+      { key: 'secret', label: 'Secret', color: '#E53E3E' },
+      { key: 'finding', label: 'Finding', color: '#d29922' },
+      { key: 'attack', label: 'Attack', color: '#C53030' },
+      { key: 'chain', label: 'Chain', color: '#2D3748' },
+    ];
+
+    const edgeFilters = [
+      { key: 'infra', label: '基础设施' },
+      { key: 'compliance', label: '合规' },
+      { key: 'compliance_object', label: '对象违规' },
+      { key: 'cross_ref', label: '交叉关联' },
+      { key: 'finding_to_attack', label: '假设激活' },
+      { key: 'attack_verify', label: '攻击验证' },
+      { key: 'attack_chain', label: '攻击链' },
+      { key: 'chain_step', label: '链步骤' },
+    ];
+
+    let html = '';
+
+    // 节点类型过滤
+    html += '<div class="filter-group"><span class="group-label">节点:</span>';
+    nodeFilters.forEach(f => {
+      html += `<button class="filter-btn node-btn active" data-nfilter="${f.key}"><span class="dot" style="background:${f.color}"></span>${f.label}</button>`;
+    });
+    html += '</div>';
+
+    // 边类型过滤
+    html += '<div class="filter-group"><span class="group-label">边:</span>';
+    edgeFilters.forEach(f => {
+      html += `<button class="filter-btn active" data-efilter="${f.key}">${f.label}</button>`;
+    });
+    html += '</div>';
+
+    // Namespace 过滤
+    html += '<div class="filter-group"><span class="group-label">NS:</span>';
+    html += '<select id="ns-filter"><option value="">全部</option>';
+    Object.keys(NS_COLORS).forEach(ns => {
+      html += `<option value="${ns}">${ns}</option>`;
+    });
+    html += '</select></div>';
+
+    // Severity 过滤
+    html += '<div class="filter-group"><span class="group-label">严重度:</span>';
+    html += '<select id="sev-filter"><option value="">全部</option>';
+    html += '<option value="critical">Critical</option><option value="high">High</option><option value="medium">Medium</option>';
+    html += '</select></div>';
+
+    // 搜索
+    html += '<input type="text" class="search-box" id="search-box" placeholder="搜索节点 ID/名称...">';
+
+    // 布局切换
+    html += '<select id="layout-select" class="layout-btn">';
+    html += '<option value="concentric">Concentric (默认)</option>';
+    html += '<option value="cose">CoSE (力导向)</option>';
+    html += '<option value="dagre">Dagre (分层)</option>';
+    html += '<option value="breadthfirst">BFS (广度优先)</option>';
+    html += '</select>';
+
+    html += '<button id="rotate-btn">星云旋转 OFF</button>';
+    html += '<input type="range" id="rotate-speed" min="5" max="180" value="60">';
+    html += '<span id="speed-label">60s</span>';
+
+    document.getElementById('toolbar').innerHTML = html;
+
+    // 绑定事件
+    document.querySelectorAll('[data-nfilter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+        applyFilters();
+      });
+    });
+
+    document.querySelectorAll('[data-efilter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+        applyFilters();
+      });
+    });
+
+    document.getElementById('ns-filter').addEventListener('change', applyFilters);
+    document.getElementById('sev-filter').addEventListener('change', applyFilters);
+
+    document.getElementById('search-box').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      if (!term) {
+        cy.elements().removeClass('faded');
+        applyFilters();
+        return;
+      }
+      cy.nodes().forEach(n => {
+        const id = n.id().toLowerCase();
+        const label = (n.data('fullLabel') || '').toLowerCase();
+        if (id.includes(term) || label.includes(term)) {
+          n.removeClass('faded');
+          n.connectedEdges().forEach(e => e.removeClass('faded'));
+        } else {
+          n.addClass('faded');
+        }
+      });
+    });
+
+    document.getElementById('layout-select').addEventListener('change', (e) => {
+      runLayout(e.target.value);
+    });
+  }
+
+  // ====== 过滤逻辑 ======
+  function applyFilters() {
+    const activeNodes = new Set();
+    document.querySelectorAll('[data-nfilter].active').forEach(btn => activeNodes.add(btn.dataset.nfilter));
+
+    const activeEdges = new Set();
+    document.querySelectorAll('[data-efilter].active').forEach(btn => activeEdges.add(btn.dataset.efilter));
+
+    const nsFilter = document.getElementById('ns-filter').value;
+    const sevFilter = document.getElementById('sev-filter').value;
+
+    cy.nodes().forEach(n => {
+      const type = n.data('nodeType');
+      let visible = activeNodes.has(type);
+
+      if (visible && nsFilter && type === 'pod') {
+        visible = n.data('namespace') === nsFilter;
+      }
+      if (visible && sevFilter && type === 'finding') {
+        visible = n.data('severity') === sevFilter;
+      }
+
+      if (visible) n.removeClass('faded');
+      else n.addClass('faded');
+    });
+
+    cy.edges().forEach(e => {
+      const etype = e.data('edgeType');
+      let visible = false;
+      for (const ae of activeEdges) {
+        if (etype === ae) { visible = true; break; }
+        // attack_chain 也归入 cross_ref 文件但 edge_type 是 attack_chain
+      }
+
+      if (visible) {
+        const src = cy.getElementById(e.data('source'));
+        const tgt = cy.getElementById(e.data('target'));
+        if (src.hasClass('faded') || tgt.hasClass('faded')) {
+          e.addClass('faded');
+        } else {
+          e.removeClass('faded');
+        }
+      } else {
+        e.addClass('faded');
+      }
+    });
+  }
+
+  // ====== 布局 ======
+  let currentLayout = null;
+  function runLayout(name) {
+    if (currentLayout) currentLayout.stop();
+
+    let layoutOpts;
+    switch(name) {
+      case 'cose':
+        layoutOpts = {
+          name: 'cose',
+          animate: true,
+          nodeRepulsion: 8000,
+          idealEdgeLength: 100,
+          nodeOverlap: 20,
+          randomize: true,
+          fit: true,
+          padding: 80,
+        };
+        break;
+      case 'dagre':
+        layoutOpts = {
+          name: 'dagre',
+          rankDir: 'TB',
+          nodeSep: 50,
+          rankSep: 80,
+          fit: true,
+          padding: 80,
+        };
+        break;
+      case 'breadthfirst':
+        layoutOpts = {
+          name: 'breadthfirst',
+          directed: true,
+          spacingFactor: 1.2,
+          fit: true,
+          padding: 80,
+        };
+        break;
+      default: // concentric
+        layoutOpts = {
+          name: 'concentric',
+          concentric: function(node) {
+            const type = node.data('nodeType');
+            if (type === 'host') return 10;
+            if (type === 'pod') return 8;
+            if (type === 'container') return 6;
+            if (type === 'service' || type === 'service_account' || type === 'secret') return 5;
+            if (type === 'finding') return 3;
+            return 1;
+          },
+          levelWidth: () => 1,
+          minNodeSpacing: 30,
+          animate: true,
+          fit: true,
+          padding: 80,
+        };
+    }
+
+    currentLayout = cy.layout(layoutOpts);
+    currentLayout.run();
+  }
+
+  // ====== 详情面板 ======
+  function showNodeDetail(node) {
+    const raw = node.data('raw');
+    const d = raw.data || {};
+    const panel = document.querySelector('#detail-panel .panel-body');
+
+    let typeBadge = `<span class="detail-type" style="background:${node.data('color')}">${node.data('nodeType')}</span>`;
+    let propsHtml = '';
+
+    // 优先展示字段顺序（未知字段自动追加在后面）
+    const propPriority = {
+      'host': ['hostname','ip','osImage','arch','kernelVersion','containerRuntimeVersion','kubeletVersion','role','ssh_reachable'],
+      'pod': ['namespace','name','ip','node','serviceAccountName','status','containers','envFrom_secrets','envFrom_configmap','volumes'],
+      'container': ['name','image','pod_id','status','envFrom_secrets','envFrom_configmaps'],
+      'service': ['namespace','name','type','clusterIP','externalIP','ports'],
+      'service_account': ['namespace','name','automountServiceAccountToken'],
+      'secret': ['namespace','name','type'],
+      'finding': ['rule_id','platform','status','severity','title','judgment','host','attack_surface'],
+      'attack': ['name','status','confidence','atk_cand','level','source'],
+      'chain': ['chain_id','confidence','severity','description','steps'],
+    };
+
+    // 构建字段列表：优先字段 + 数据中存在但不在优先列表中的字段
+    const priority = propPriority[raw.node_type] || [];
+    const allKeys = Object.keys(d);
+    const keys = [...priority.filter(k => d[k] !== undefined), ...allKeys.filter(k => !priority.includes(k))];
+    keys.forEach(k => {
+      if (d[k] !== undefined && d[k] !== null) {
+        let val = d[k];
+        if (typeof val === 'object') val = JSON.stringify(val, null, 2);
+        if (typeof val === 'string' && val.length > 200) val = val.substring(0, 200) + '...';
+        propsHtml += `<div class="prop-row"><span class="prop-key">${k}</span><span class="prop-val">${escapeHtml(String(val))}</span></div>`;
+      }
+    });
+
+    // 安全上下文特殊展示
+    if (d.security_context) {
+      propsHtml += '<div class="prop-row"><span class="prop-key">security_context</span></div>';
+      Object.keys(d.security_context).forEach(k => {
+        const v = d.security_context[k];
+        const color = (typeof v === 'string' && v.startsWith('[x]')) ? '#f85149' : '#c9d1d9';
+        propsHtml += `<div class="prop-row"><span class="prop-key">  ${k}</span><span class="prop-val" style="color:${color}">${escapeHtml(String(v))}</span></div>`;
+      });
+    }
+
+    // 入出边
+    const inEdges = [];
+    const outEdges = [];
+    node.connectedEdges().forEach(e => {
+      const isOut = e.source().id() === node.id();
+      const other = isOut ? e.target() : e.source();
+      const edgeRaw = e.data('raw') || {};
+      const edgeQuery = edgeRaw.attrs?.query || '';
+      const edgeReason = edgeRaw.reason || '';
+      const edgeInfo = {
+        dir: isOut ? '→' : '←',
+        type: e.data('edgeType'),
+        relation: e.data('relation'),
+        query: edgeQuery,
+        reason: edgeReason,
+        otherId: other.id(),
+        otherLabel: other.data('fullLabel') || other.id(),
+        otherType: other.data('nodeType'),
+      };
+      if (isOut) outEdges.push(edgeInfo);
+      else inEdges.push(edgeInfo);
+    });
+
+    let edgesHtml = '';
+    if (inEdges.length > 0) {
+      edgesHtml += '<h4>入边 (' + inEdges.length + ')</h4>';
+      inEdges.forEach(e => {
+        const queryTag = e.query ? ` <span style="color:#D69E2E;font-size:10px">[${e.query}]</span>` : '';
+        const reasonTag = e.reason ? ` <span style="color:#6e7681;font-size:10px">${escapeHtml(e.reason.substring(0,50))}</span>` : '';
+        edgesHtml += `<div class="edge-item" data-target="${e.otherId}">
+          <span class="edge-dir">${e.dir}</span>
+          <span class="edge-type" style="color:${getEdgeColorByType(e.type)}">${e.type}${e.relation ? '/' + e.relation : ''}</span>${queryTag}
+          <span class="edge-target">${escapeHtml(e.otherLabel)}</span>${reasonTag}
+        </div>`;
+      });
+    }
+    if (outEdges.length > 0) {
+      edgesHtml += '<h4>出边 (' + outEdges.length + ')</h4>';
+      outEdges.forEach(e => {
+        const queryTag = e.query ? ` <span style="color:#D69E2E;font-size:10px">[${e.query}]</span>` : '';
+        const reasonTag = e.reason ? ` <span style="color:#6e7681;font-size:10px">${escapeHtml(e.reason.substring(0,50))}</span>` : '';
+        edgesHtml += `<div class="edge-item" data-target="${e.otherId}">
+          <span class="edge-dir">${e.dir}</span>
+          <span class="edge-type" style="color:${getEdgeColorByType(e.type)}">${e.type}${e.relation ? '/' + e.relation : ''}</span>${queryTag}
+          <span class="edge-target">${escapeHtml(e.otherLabel)}</span>${reasonTag}
+        </div>`;
+      });
+    }
+
+    panel.innerHTML = `
+      <div class="detail-id">${escapeHtml(raw.id)}</div>
+      ${typeBadge}
+      <div class="detail-props" style="margin-top:6px;">${propsHtml}</div>
+      <div class="detail-edges">${edgesHtml}</div>
+    `;
+
+    // 边点击跳转
+    panel.querySelectorAll('.edge-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const targetId = item.dataset.target;
+        const targetNode = cy.getElementById(targetId);
+        if (targetNode.length > 0) {
+          cy.animate({ center: { eles: targetNode } }, { duration: 300 });
+          targetNode.select();
+          showNodeDetail(targetNode);
+        }
+      });
+    });
+  }
+
+  // ====== 边详情 ======
+  function showEdgeDetail(edge) {
+    const raw = edge.data('raw') || {};
+    const attrs = raw.attrs || {};
+    const panel = document.querySelector('#detail-panel .panel-body');
+
+    let propsHtml = '';
+    const edgeFields = {
+      'edge_type': raw.edge_type || edge.data('edgeType'),
+      'relation': attrs.relation || edge.data('relation'),
+      'from_node': raw.from_node || edge.source().id(),
+      'to_node': raw.to_node || edge.target().id(),
+      'query': attrs.query || '',
+      'severity': attrs.severity || '',
+      'status': attrs.status || '',
+      'confidence': attrs.confidence || '',
+      'atk_cand': attrs.atk_cand || '',
+      'level': attrs.level || '',
+      'source': attrs.source || '',
+      'chain_id': attrs.chain_id || '',
+      'violation_count': attrs.violation_count || '',
+      'amplification_level': attrs.amplification_level || '',
+      'hostPath': attrs.hostPath || '',
+      'reason': raw.reason || '',
+    };
+
+    Object.entries(edgeFields).forEach(([k, v]) => {
+      if (v !== '' && v !== undefined && v !== null) {
+        let val = v;
+        if (typeof val === 'object') val = JSON.stringify(val, null, 2);
+        if (typeof val === 'string' && val.length > 200) val = val.substring(0, 200) + '...';
+        propsHtml += `<div class="prop-row"><span class="prop-key">${k}</span><span class="prop-val">${escapeHtml(String(val))}</span></div>`;
+      }
+    });
+
+    // 如果有 steps（attack_chain），展示步骤
+    let stepsHtml = '';
+    if (attrs.steps && attrs.steps.length > 0) {
+      stepsHtml = '<h4 style="margin-top:8px;">攻击链步骤 (' + attrs.steps.length + ')</h4>';
+      attrs.steps.forEach(s => {
+        const statusIcon = s.status === 'confirmed' ? '✅' : (s.status === 'confirmed_conditional' ? '⚡' : '⚠️');
+        const srcIcon = s.source === 'llm_reasoning' ? '🧠' : '📚';
+        stepsHtml += `<div class="edge-item">
+          <span style="color:#8b949e">Step ${s.step}</span>
+          <span class="edge-target">${escapeHtml(s.attack_name)}</span>
+          <span style="font-size:10px">${statusIcon} ${srcIcon} ${s.verification_level || ''}</span>
+        </div>`;
+      });
+    }
+
+    const fromLabel = edge.source().data('fullLabel') || edge.source().id();
+    const toLabel = edge.target().data('fullLabel') || edge.target().id();
+
+    panel.innerHTML = `
+      <div class="detail-id">${escapeHtml(fromLabel)} → ${escapeHtml(toLabel)}</div>
+      <span class="detail-type" style="background:${edge.data('color') || '#6e7681'}">${edge.data('edgeType')}</span>
+      <div class="detail-props" style="margin-top:6px;">${propsHtml}</div>
+      ${stepsHtml}
+    `;
+  }
+
+  function getEdgeColorByType(type) {
+    const map = {
+      infra: '#718096',
+      compliance: '#d29922',
+      cross_ref: '#D69E2E',
+      attack_verify: '#C53030',
+      attack_chain: '#D69E2E',
+    };
+    return map[type] || '#6e7681';
+  }
+
+  // ====== 攻击链面板 ======
+  function renderChainPanel() {
+    const chainEdges = edges.filter(e => e.edge_type === 'attack_chain');
+    const panel = document.querySelector('#chain-panel .panel-body');
+
+    if (chainEdges.length === 0) {
+      panel.innerHTML = '<div style="color:#6e7681;font-size:12px;">无攻击链数据</div>';
+      return;
+    }
+
+    let html = '';
+    chainEdges.forEach((ce, idx) => {
+      const attrs = ce.attrs || {};
+      const chainId = attrs.chain_id || `CHAIN-${idx+1}`;
+      const steps = attrs.steps || [];
+      const confidence = attrs.confidence || 'C2';
+      const severity = attrs.impact?.severity || 'Critical';
+      const desc = attrs.description || ce.reason || '';
+      const feasibility = attrs.feasibility || 'feasible';
+
+      html += `<div class="chain-item" data-chain-id="${chainId}">
+        <div class="chain-id">${chainId}</div>
+        <div class="chain-desc">${escapeHtml(desc.substring(0, 120))}${desc.length > 120 ? '...' : ''}</div>
+        <div class="chain-meta">
+          <span class="badge conf">${confidence}</span>
+          <span class="badge sev">${severity}</span>
+          <span class="badge" style="background:#1f2937;color:#7ee78b">${feasibility}</span>
+          <span class="badge" style="background:#1f2937;color:#8b949e">${steps.length}步</span>
+        </div>
+        <div class="chain-steps">`;
+
+      steps.forEach(s => {
+        const statusIcon = s.status === 'confirmed' ? '✅' : (s.status === 'confirmed_conditional' ? '⚡' : '⚠️');
+        const sourceIcon = s.source === 'pattern_library' ? '📚' : (s.source === 'llm_reasoning' ? '🧠' : '🔄');
+        html += `<div class="chain-step">
+          <span class="step-num">${s.step}</span>
+          <span class="step-name">${escapeHtml(s.attack_name)}</span>
+          <span class="step-status">${statusIcon}</span>
+          <span class="step-conf">${sourceIcon} ${s.verification_level}</span>
+        </div>`;
+      });
+
+      html += `</div></div>`;
+    });
+
+    panel.innerHTML = html;
+
+    // 点击展开/收起 + 高亮链路径
+    panel.querySelectorAll('.chain-item').forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('expanded');
+        const chainId = item.dataset.chainId;
+        highlightChain(chainId);
+      });
+    });
+  }
+
+  // ====== 高亮攻击链 ======
+  function highlightChain(chainId) {
+    cy.elements().removeClass('faded chain-highlight');
+
+    const chainEdge = edges.find(e => e.edge_type === 'attack_chain' && e.attrs?.chain_id === chainId);
+    if (!chainEdge) return;
+
+    const chainCyEdge = cy.edges().filter(e => {
+      const raw = e.data('raw');
+      return raw.edge_type === 'attack_chain' && raw.attrs?.chain_id === chainId;
+    });
+
+    const connectedNodes = new Set();
+    connectedNodes.add(chainEdge.from_node);
+    connectedNodes.add(chainEdge.to_node);
+
+    // 也找到链中涉及的所有 attack_verify 边和节点
+    const steps = chainEdge.attrs?.steps || [];
+    const stepAttackNames = steps.map(s => s.attack_name);
+
+    // 找到相关的 attack_verify 边
+    const relatedEdges = cy.edges().filter(e => {
+      const raw = e.data('raw');
+      if (raw.edge_type === 'attack_verify') {
+        const toNode = raw.to_node;
+        return stepAttackNames.some(name => toNode.includes(name) || toNode === name);
+      }
+      if (raw.edge_type === 'attack_chain' && raw.attrs?.chain_id === chainId) return true;
+      return false;
+    });
+
+    // 高亮
+    cy.elements().addClass('faded');
+
+    chainCyEdge.removeClass('faded').addClass('chain-highlight');
+    relatedEdges.removeClass('faded');
+
+    // 高亮链的起点和终点节点
+    connectedNodes.forEach(id => {
+      const n = cy.getElementById(id);
+      if (n.length > 0) n.removeClass('faded');
+    });
+
+    // 高亮相关边的端点
+    relatedEdges.forEach(e => {
+      e.source().removeClass('faded');
+      e.target().removeClass('faded');
+    });
+  }
+
+  // ====== 工具函数 ======
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  // ====== 初始化 Cytoscape ======
+  const cy = cytoscape({
+    container: document.getElementById('cy'),
+    elements: buildElements(),
+    style: [
+      {
+        selector: 'node',
+        style: {
+          'label': 'data(label)',
+          'text-valign': 'bottom',
+          'text-halign': 'center',
+          'text-max-width': '160px',
+          'text-wrap': 'wrap',
+          'font-size': '9px',
+          'color': '#c9d1d9',
+          'text-outline-width': 2,
+          'text-outline-color': '#0d1117',
+          'background-color': 'data(color)',
+          'shape': 'data(shape)',
+          'width': 'data(size)',
+          'height': 'data(size)',
+          'border-width': 'data(borderWidth)',
+          'border-color': 'data(borderColor)',
+          'opacity': 1,
+        }
+      },
+      {
+        selector: 'node[isCritical = true]',
+        style: {
+          'border-width': 4,
+          'border-color': '#f85149',
+          'shadow-blur': 12,
+          'shadow-color': '#f85149',
+          'shadow-opacity': 0.8,
+          'font-weight': 'bold',
+        }
+      },
+      {
+        selector: 'node[isPrivileged = true]',
+        style: {
+          'border-width': 3,
+          'border-color': '#f85149',
+          'shadow-blur': 8,
+          'shadow-color': '#f85149',
+          'shadow-opacity': 0.5,
+        }
+      },
+      {
+        selector: 'node[nodeType = "chain"]',
+        style: {
+          'border-width': 4,
+          'border-color': '#D69E2E',
+          'shadow-blur': 15,
+          'shadow-color': '#D69E2E',
+          'shadow-opacity': 0.7,
+          'font-weight': 'bold',
+          'font-size': '11px',
+          'color': '#D69E2E',
+          'z-index': 100,
+        }
+      },
+      {
+        selector: 'node[nodeType = "attack"]',
+        style: {
+          'font-size': '8px',
+          'color': '#f85149',
+        }
+      },
+      {
+        selector: 'node[nodeType = "attack"][status = "unverified"]',
+        style: {
+          'border-style': 'dashed',
+          'border-width': 2,
+          'border-color': '#6e7681',
+          'color': '#8b949e',
+          'opacity': 0.6,
+        }
+      },
+      {
+        selector: 'edge',
+        style: {
+          'width': 'data(width)',
+          'line-color': 'data(color)',
+          'target-arrow-color': 'data(color)',
+          'target-arrow-shape': 'triangle',
+          'curve-style': 'bezier',
+          'line-style': 'data(lineStyle)',
+          'opacity': 0.7,
+          'font-size': '7px',
+          'color': '#8b949e',
+          'text-background-color': '#0d1117',
+          'text-background-opacity': 0.8,
+          'text-background-padding': '1px',
+          'label': 'data(label)',
+        }
+      },
+      {
+        selector: 'edge[animated = true]',
+        style: {
+          'line-dash-pattern': [6, 3],
+          'line-dash-offset': 0,
+          'transition-property': 'line-dash-offset',
+          'transition-duration': 0.5,
+        }
+      },
+      {
+        selector: '.faded',
+        style: {
+          'opacity': 0.08,
+          'text-opacity': 0,
+        }
+      },
+      {
+        selector: '.chain-highlight',
+        style: {
+          'width': 6,
+          'line-color': '#D69E2E',
+          'target-arrow-color': '#D69E2E',
+          'opacity': 1,
+          'z-index': 999,
+        }
+      },
+      {
+        selector: ':selected',
+        style: {
+          'border-width': 5,
+          'border-color': '#58a6ff',
+          'shadow-blur': 10,
+          'shadow-color': '#58a6ff',
+        }
+      },
+    ],
+    layout: { name: 'concentric', animate: false },
+    wheelSensitivity: 0.2,
+  });
+
+  // 动画攻击链边
+  let dashOffset = 0;
+  setInterval(() => {
+    dashOffset -= 6;
+    cy.edges().filter('[animated = true]').style('line-dash-offset', dashOffset);
+  }, 80);
+
+  // 面板折叠/展开
+  document.querySelectorAll('#side-panel .panel-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const body = header.nextElementSibling;
+      if (body) {
+        body.classList.toggle('collapsed');
+        const toggle = header.querySelector('.toggle');
+        if (toggle) toggle.textContent = body.classList.contains('collapsed') ? '▸' : '▾';
+      }
+    });
+  });
+
+  // 节点点击
+  cy.on('tap', 'node', (evt) => {
+    showNodeDetail(evt.target);
+  });
+
+  // 边点击
+  cy.on('tap', 'edge', (evt) => {
+    showEdgeDetail(evt.target);
+  });
+
+  // 空白点击取消高亮
+  cy.on('tap', (evt) => {
+    if (evt.target === cy) {
+      cy.elements().removeClass('faded');
+      applyFilters();
+      document.querySelectorAll('.phase-chip').forEach(c => c.classList.remove('active'));
+      const tip = document.getElementById('phase-tip');
+      if (tip) tip.remove();
+    }
+  });
+
+  // 双击攻击链节点高亮
+  cy.on('dbltap', 'node', (evt) => {
+    const node = evt.target;
+    const raw = node.data('raw');
+    if (raw.id && raw.id.startsWith('CHAIN-')) {
+      highlightChain(raw.id);
+    }
+    // 双击攻击面节点（AS-1~AS-7）高亮追溯链
+    if (raw.node_type === 'attack' && raw.data?.attack_surface) {
+      const as = raw.data.attack_surface;
+      if (as.startsWith('AS-')) highlightAttackSurfaceTrace(raw.id, as);
+    }
+  });
+
+  // ====== 高亮攻击面追溯链 ======
+  function highlightAttackSurfaceTrace(attackNodeId, attackSurface) {
+    cy.elements().removeClass('faded');
+    cy.elements().addClass('faded');
+
+    // 高亮目标 attack 节点
+    const attackNode = cy.getElementById(attackNodeId);
+    if (attackNode.length > 0) attackNode.removeClass('faded');
+
+    // 向上游追溯：attack → finding (via finding_to_attack) → compliance (via compliance_object) → host
+    const upstreamNodes = new Set([attackNodeId]);
+    const upstreamEdges = new Set();
+
+    function traceUpward(nodeId) {
+      const cyNode = cy.getElementById(nodeId);
+      if (cyNode.length === 0) return;
+      cyNode.connectedEdges().forEach(e => {
+        const eType = e.data('edgeType');
+        const raw = e.data('raw');
+        // finding_to_attack, cross_ref, compliance_object 边
+        if (e.target().id() === nodeId && (eType === 'finding_to_attack' || eType === 'cross_ref' || eType === 'compliance_object' || eType === 'compliance')) {
+          upstreamEdges.add(e.id());
+          const otherNode = e.source();
+          if (!upstreamNodes.has(otherNode.id())) {
+            upstreamNodes.add(otherNode.id());
+            otherNode.removeClass('faded');
+            e.removeClass('faded');
+            traceUpward(otherNode.id());
+          } else {
+            e.removeClass('faded');
+          }
+        }
+      });
+    }
+    traceUpward(attackNodeId);
+
+    // 向下游追溯：attack → attack_chain → chain → chain steps
+    const downstreamNodes = new Set();
+    cyNode = cy.getElementById(attackNodeId);
+    if (cyNode.length > 0) {
+      cyNode.connectedEdges().forEach(e => {
+        if (e.source().id() === attackNodeId && (e.data('edgeType') === 'attack_chain' || e.data('edgeType') === 'chain_step')) {
+          e.removeClass('faded').addClass('chain-highlight');
+          e.target().removeClass('faded');
+          downstreamNodes.add(e.target().id());
+        }
+      });
+    }
+
+    // 高亮所有追溯链上的节点和边
+    upstreamNodes.forEach(id => {
+      const n = cy.getElementById(id);
+      if (n.length > 0) n.removeClass('faded');
+    });
+  }
+
+  // ====== 渲染所有 UI ======
+  renderStats();
+  renderPipeline();
+  renderToolbar();
+  renderChainPanel();
+  renderConfidencePanel();
+  renderCoveragePanel();
+  renderMindmap();
+  bindViewTabs();
+
+  // ====== 可信度分布面板 ======
+  function renderConfidencePanel() {
+    const attackEdges = edges.filter(e => e.edge_type === 'attack_verify');
+    const confidences = { 'C1': 0, 'C2': 0, 'C3': 0, 'disproved': 0, 'blocked': 0 };
+    attackEdges.forEach(e => {
+      const conf = e.attrs?.confidence || '';
+      const status = e.attrs?.status || '';
+      if (status === 'blocked') confidences.blocked++;
+      else if (status === 'disproved' || status === 'unverifiable') confidences.disproved++;
+      else if (conf === 'C1') confidences.C1++;
+      else if (conf === 'C2') confidences.C2++;
+      else if (conf === 'C3') confidences.C3++;
+    });
+    const total = attackEdges.length || 1;
+    const colors = { 'C1': '#f85149', 'C2': '#d29922', 'C3': '#e3b341', 'disproved': '#3fb950', 'blocked': '#6e7681' };
+    const labels = { 'C1': 'C1 实证复现', 'C2': 'C2 条件实证', 'C3': 'C3 风险线索', 'disproved': '不可利用', 'blocked': '已阻断' };
+    let html = '';
+    Object.keys(confidences).forEach(key => {
+      const count = confidences[key];
+      const pct = (count / total * 100).toFixed(0);
+      html += `<div class="conf-bar">
+        <span class="conf-label">${labels[key]}</span>
+        <div class="conf-track"><div class="conf-fill" style="width:${pct}%;background:${colors[key]}"></div></div>
+        <span class="conf-count">${count}</span>
+      </div>`;
+    });
+    document.querySelector('#confidence-panel .panel-body').innerHTML = html;
+  }
+
+  // ====== 覆盖率面板 ======
+  function renderCoveragePanel() {
+    const AS_NAMES = {
+      'AS-1': '逃逸', 'AS-2': '认证', 'AS-3': '网络',
+      'AS-4': '数据泄露', 'AS-5': '拒绝服务', 'AS-6': '供应链', 'AS-7': '持久化'
+    };
+    const AS_TO_ATTACKS = {
+      'AS-1': ['privileged-container-escape','hostpath-mount-escape','capability-privesc','socket-escape','hostpid-hostipc-escape','hostnetwork-abuse'],
+      'AS-2': ['k8s-rbac-abuse','k8s-sa-exploit','k8s-anonymous-access','kubelet-api-abuse'],
+      'AS-3': ['lateral-move'],
+      'AS-4': ['secret-exfil','env-credential-leak','kine-db-exposure','configmap-data-exposure'],
+      'AS-5': ['resource-abuse'],
+      'AS-6': ['image-tag-mutation','registry-poison'],
+      'AS-7': ['webhook-backdoor','cronjob-persist'],
+    };
+    const verifiedAttacks = new Set();
+    const llmAttacks = new Set();
+    edges.forEach(e => {
+      if (e.edge_type === 'attack_verify' && e.to_node.startsWith('attack-')) {
+        verifiedAttacks.add(e.to_node.replace(/^attack-/, ''));
+        if (e.attrs?.source === 'llm_reasoning') llmAttacks.add(e.to_node.replace(/^attack-/, ''));
+      }
+    });
+    let html = '<table class="coverage-table"><thead><tr><th>攻击面</th><th>模式库</th><th>LLM推理</th><th>总覆盖</th></tr></thead><tbody>';
+    Object.keys(AS_NAMES).forEach(as => {
+      const attacks = AS_TO_ATTACKS[as] || [];
+      const total = attacks.length;
+      const patternHits = attacks.filter(a => verifiedAttacks.has(a) && !llmAttacks.has(a)).length;
+      const llmHits = attacks.filter(a => llmAttacks.has(a)).length;
+      const totalHits = attacks.filter(a => verifiedAttacks.has(a)).length;
+      const patternPct = total ? (patternHits / total * 100).toFixed(0) + '%' : '—';
+      const llmPct = total ? (llmHits / total * 100).toFixed(0) + '%' : '—';
+      const totalPct = total ? (totalHits / total * 100).toFixed(0) + '%' : '—';
+      const totalClass = totalPct === '100%' ? 'cov-full' : (totalHits > 0 ? 'cov-partial' : 'cov-none');
+      html += `<tr><td>${as} ${AS_NAMES[as]}</td><td>${patternPct}</td><td>${llmPct}</td><td class="${totalClass}">${totalPct}</td></tr>`;
+    });
+    html += '</tbody></table>';
+    document.querySelector('#coverage-panel .panel-body').innerHTML = html;
+  }
+
+  // ====== 思维导图视图 ======
+  function renderMindmap() {
+    const sc = sessionConfig;
+    const sessionId = sc.session_id || 'unknown';
+    const phases = progress.phases || {};
+
+    function mmToggle() {
+      return '<span class="mm-toggle" onclick="this.parentElement.parentElement.classList.toggle(\'expanded\');this.textContent=this.textContent===\'▶\'?\'▼\':\'▶\'">▶</span>';
+    }
+    function mmLeaf(label, nodeId) {
+      return `<span class="mm-node mm-leaf" data-node-id="${nodeId || ''}" onclick="if('${nodeId||''}'){const n=cy.getElementById('${nodeId}');if(n.length>0){n.select();n.trigger('tap');switchView('cytoscape');}}">${escapeHtml(label)}</span>`;
+    }
+    function mmChildren(items) {
+      return '<ul class="mm-children">' + items.map(i => '<li>' + i + '</li>').join('') + '</ul>';
+    }
+
+    // 环境侦察子节点
+    const reconItems = [];
+    const hosts = nodes.filter(n => n.node_type === 'host');
+    const pods = nodes.filter(n => n.node_type === 'pod');
+    const containers = nodes.filter(n => n.node_type === 'container');
+    if (hosts.length) reconItems.push(mmLeaf(`Host (${hosts.length})`, ''));
+    if (pods.length) reconItems.push(mmLeaf(`Pod (${pods.length})`, ''));
+    if (containers.length) reconItems.push(mmLeaf(`Container (${containers.length})`, ''));
+
+    // 合规检测子节点
+    const findings = nodes.filter(n => n.node_type === 'finding');
+    const failCount = findings.filter(f => f.data?.status === 'fail').length;
+    const complianceItems = [mmLeaf(`Findings: ${findings.length} (fail: ${failCount})`, '')];
+
+    // 交叉关联子节点
+    const crossRefEdges = edges.filter(e => e.edge_type === 'cross_ref');
+    const crossRefItems = [mmLeaf(`交叉关联边: ${crossRefEdges.length}`, '')];
+
+    // 攻击验证子节点
+    const attackEdges = edges.filter(e => e.edge_type === 'attack_verify');
+    const c1Count = attackEdges.filter(e => e.attrs?.confidence === 'C1').length;
+    const c2Count = attackEdges.filter(e => e.attrs?.confidence === 'C2').length;
+    const c3Count = attackEdges.filter(e => e.attrs?.confidence === 'C3').length;
+    const attackItems = [
+      mmLeaf(`ATK-CAND: ${attackEdges.length} (C1:${c1Count} C2:${c2Count} C3:${c3Count})`, ''),
+    ];
+
+    // 攻击链子节点
+    const chainEdges = edges.filter(e => e.edge_type === 'attack_chain');
+    const chainItems = chainEdges.map(ce => mmLeaf(ce.attrs?.chain_id || 'CHAIN', ce.to_node));
+
+    // 报告子节点
+    const reportItems = [mmLeaf('合规报告 + 攻击报告 + 全景报告', '')];
+
+    const tree = `
+      <ul>
+        <li><span class="mm-node mm-root">渗透测试会话 ${escapeHtml(sessionId)}</span>
+          <ul class="mm-children expanded">
+            <li><span class="mm-node mm-phase">${mmToggle()} 环境侦察 (Phase 1a)</span>${mmChildren(reconItems)}</li>
+            <li><span class="mm-node mm-phase">${mmToggle()} 合规检测 (Phase 2)</span>${mmChildren(complianceItems)}</li>
+            <li><span class="mm-node mm-phase">${mmToggle()} 交叉关联 (Phase 3)</span>${mmChildren(crossRefItems)}</li>
+            <li><span class="mm-node mm-phase">${mmToggle()} 攻击验证 (Phase 4)</span>${mmChildren(attackItems)}</li>
+            <li><span class="mm-node mm-phase">${mmToggle()} 攻击链 (Phase 5-6)</span>${mmChildren(chainItems)}</li>
+            <li><span class="mm-node mm-phase">${mmToggle()} 报告 (Phase 8)</span>${mmChildren(reportItems)}</li>
+          </ul>
+        </li>
+      </ul>
+    `;
+    document.getElementById('mindmap-container').innerHTML = tree;
+  }
+
+  // ====== 视图标签页切换 ======
+  function bindViewTabs() {
+    document.querySelectorAll('#view-tabs .view-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        switchView(tab.dataset.view);
+      });
+    });
+  }
+  function switchView(view) {
+    document.querySelectorAll('#view-tabs .view-tab').forEach(t => t.classList.toggle('active', t.dataset.view === view));
+    const cyContainer = document.getElementById('cy-container');
+    const mindmap = document.getElementById('mindmap-container');
+    const legend = document.getElementById('legend');
+    if (view === 'mindmap') {
+      cyContainer.style.display = 'none';
+      mindmap.classList.add('active');
+      if (legend) legend.style.display = 'none';
+    } else {
+      cyContainer.style.display = '';
+      mindmap.classList.remove('active');
+      if (legend) legend.style.display = '';
+    }
+  }
+
+  // ====== 星云旋转 ======
+  let rotating = false;
+  let rotationTimer = null;
+  function rotateNebula() {
+    const speed = parseInt(document.getElementById('rotate-speed').value) || 60;
+    const step = (2 * Math.PI) / (speed * 25);
+    const container = document.getElementById('cy');
+    const cx = container.clientWidth / 2;
+    const cy_h = container.clientHeight / 2;
+    const cos = Math.cos(step);
+    const sin = Math.sin(step);
+    cy.nodes().forEach(node => {
+      const pos = node.position();
+      const dx = pos.x - cx;
+      const dy = pos.y - cy_h;
+      node.position({ x: cx + dx * cos - dy * sin, y: cy_h + dx * sin + dy * cos });
+    });
+  }
+  document.getElementById('rotate-btn').addEventListener('click', function() {
+    rotating = !rotating;
+    if (rotating) {
+      rotationTimer = setInterval(rotateNebula, 40);
+      this.textContent = '星云旋转 ON';
+      this.classList.add('active');
+    } else {
+      clearInterval(rotationTimer);
+      rotationTimer = null;
+      this.textContent = '星云旋转 OFF';
+      this.classList.remove('active');
+    }
+  });
+  document.getElementById('rotate-speed').addEventListener('input', function() {
+    document.getElementById('speed-label').textContent = this.value + 's';
+  });
+
+  // 初始布局
+  setTimeout(() => {
+    runLayout('concentric');
+    // 收起详情面板的入出边默认
+  }, 100);
+
+  // 暴露到全局方便调试
+  window.cy = cy;
+  window.graphData = graphData;
+
+  })();
+</script>
+</script>
+</body>
+</html>

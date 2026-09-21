@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>探隐 GenCPT — 容器与 K8s 渗透测试技能套件（最新源码定稿） · 探隐设计文档</title><style>
+<title>探隐 GenCPT — 容器与 K8s 渗透测试技能套件（完整定稿） · 探隐设计文档</title><style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.75}
 .layout{display:flex;min-height:100vh}
@@ -46,85 +46,73 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
   <a class="home" href="../../../panorama/index.html">🗺️ 全景图总览</a><a class="home" href="../../../panorama/design.html">🧩 设计</a><a class="home" href="../../learning/html/index.html">📚 手册首页</a><a class="home" href="index.html">📐 设计文档首页</a>
   <h3>本文目录</h3>
   <nav><a class="l2" href="#1-项目定位">1 项目定位</a>
-<a class="l2" href="#2-架构全景">2 架构全景</a>
-<a class="l3" href="#2-1-五层架构">2.1 五层架构</a>
-<a class="l3" href="#2-2-llm-调用闭环">2.2 LLM 调用闭环</a>
-<a class="l2" href="#3-执行流程-9-阶段-11-段位">3 执行流程：9 阶段（11 段位）</a>
-<a class="l2" href="#4-15-项设计机制">4 15 项设计机制</a>
-<a class="l2" href="#5-知识图谱-phase-间唯一数据媒介">5 知识图谱（Phase 间唯一数据媒介）</a>
-<a class="l2" href="#6-知识资产盘点-实测">6 知识资产盘点（实测）</a>
+<a class="l2" href="#2-五层架构">2 五层架构</a>
+<a class="l2" href="#3-执行流程-全部-phase-13-段位">3 执行流程：全部 Phase（13 段位）</a>
+<a class="l2" href="#4-设计机制全表-15-项核心-工程加固">4 设计机制全表（15 项核心 + 工程加固）</a>
+<a class="l2" href="#5-知识图谱">5 知识图谱</a>
+<a class="l2" href="#6-知识资产-实测核验">6 知识资产（实测核验）</a>
 <a class="l2" href="#7-安全机制">7 安全机制</a>
 <a class="l2" href="#8-模式自进化-p9">8 模式自进化（P9）</a>
-<a class="l2" href="#9-与探隐-v2-的同构对照">9 与探隐 v2 的同构对照</a>
-<a class="l2" href="#10-实测核验与陈旧口径-readme-纠偏">10 实测核验与陈旧口径（README 纠偏）</a>
+<a class="l2" href="#9-工程质量与实测核验">9 工程质量与实测核验</a>
+<a class="l2" href="#10-与探隐-v2-的同构对照">10 与探隐 v2 的同构对照</a>
 <a class="l2" href="#11-你的-v2-计划评审差距-2026-08-01-外部文档">11 你的 V2 计划评审差距（2026-08-01，外部文档）</a></nav>
 </aside>
 <div class="main">
-  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计</a><span class="crumb">› 探隐 GenCPT — 容器与 K8s 渗透测试技能套件（最新源码定稿）</span></nav>
+  <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计</a><span class="crumb">› 探隐 GenCPT — 容器与 K8s 渗透测试技能套件（完整定稿）</span></nav>
   <article class="doc">
-  <h1 id="探隐-gencpt-容器与-k8s-渗透测试技能套件-最新源码定稿">探隐 GenCPT — 容器与 K8s 渗透测试技能套件（最新源码定稿）</h1><div class="meta">探隐设计文档站 · 2026-09-22-gencpt-suite</div>
+  <h1 id="探隐-gencpt-容器与-k8s-渗透测试技能套件-完整定稿">探隐 GenCPT — 容器与 K8s 渗透测试技能套件（完整定稿）</h1><div class="meta">探隐设计文档站 · 2026-09-22-gencpt-suite</div>
   <div class="guide">🧭 <b>导读</b>：GenCPT 容器/K8s 渗透技能套件（最新源码定稿）：五层架构×9 Phase×15 机制×知识图谱×49 攻击模式×226 合规规则实测核验；含与探隐 v2 同构对照和你的 V2 计划评审差距。先读 §2 架构与 §9 对照最快。</div>
-  <blockquote><b>这份是什么</b>：GenCPT（Gen=生成式 AI + CPT=Container Penetration Test）的专项设计页——容器/K8s 场景的全流程渗透技能套件全景，探隐生态的容器引擎/知识源候选。 <b>怎么读</b>：先 §1 定位与 §2 五层架构，再 §3 九阶段流程逐段下钻；§9 与探隐 v2 的同构对照、§10 实测核验（README 陈旧口径纠偏）、§11 你自己的 v2 计划评审差距。 <b>以谁为准</b>：以 docs/design/imported/gencpt/GenCPT-main/ 源码考古为准（事实带文件:行号证据），规模计数全部实测核验。</blockquote>
+  <blockquote><b>这份是什么</b>：GenCPT（Gen=生成式 AI + CPT=Container Penetration Test）的专项设计页——容器/K8s 场景的全流程渗透技能套件全景，探隐生态的容器引擎/知识源候选。以 docs/design/imported/gencpt/GenCPT-main/ 当前源码为准（188 文件实测）。 <b>怎么读</b>：§1 定位 → §2 五层架构 → §3 全部 Phase → §4 机制全表 → §5 知识图谱 → §6 知识资产（49 模式全名单+条件触发表）→ §7 安全 → §8 自进化 → §9 工程质量 → §10 与探隐 v2 对照。</blockquote>
 <h2 id="1-项目定位">1 项目定位</h2>
-<p>GenCPT 是一套基于 LLM 语义驱动的容器与 Kubernetes 渗透测试技能套件：通过 SSH 远程对 K8s/Docker/containerd 环境执行 <b>合规检测 → 攻击验证 → 链式攻击 → POC 生成 → 报告交付</b> 全流程渗透测试，支持攻击模式库自我进化。</p>
-<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>运行形态</td><td>纯 Markdown SKILL 体系（零 Python 判定脚本），寄宿于 opencode CLI / Claude Code 等 AI 编码代理</td></tr><tr><td>组成</td><td>1 个 Pipeline 入口 SKILL + 15 个 Phase 子技能 + 6 个共享规范 + 知识库</td></tr><tr><td>执行单元</td><td>每 Phase 以 Task(general) 独立子代理执行（独立上下文窗口），SSH 命令经 ssh-manager MCP 唯一出口</td></tr><tr><td>产物</td><td>Markdown 报告（合规/攻击/全景三份）+ JSON 知识图谱</td></tr><tr><td>规模实测</td><td>163 文件（134 md）/ 49 攻击模式 / 226 合规规则 / 188 假设条目 / 15+5 机制</td></tr></tbody></table>
-<h2 id="2-架构全景">2 架构全景</h2>
-<h3 id="2-1-五层架构">2.1 五层架构</h3>
+<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>一句话</td><td>基于 LLM 语义驱动的容器与 Kubernetes 渗透测试技能套件：SSH 远程对 K8s/Docker/containerd 执行「合规检测→攻击验证→链式攻击→POC 生成→报告交付」全流程</td></tr><tr><td>运行形态</td><td>纯 Markdown SKILL 体系（不是代码程序），寄宿 opencode CLI / Claude Code 等 AI 编码代理；SKILL 全中文指令</td></tr><tr><td>组成</td><td>1 个 Pipeline 入口 SKILL + <b>17 个子技能</b> + 6 个共享规范 + supervisor 代理 + 知识库</td></tr><tr><td>执行单元</td><td>每 Phase 独立子代理（Task general·独立上下文），SSH 命令经 ssh-manager MCP 唯一出口</td></tr><tr><td>产物</td><td>Markdown 报告三份（合规/攻击/全景）+ JSON 知识图谱 + 可视化（graph-viz）</td></tr><tr><td>规模实测</td><td>188 文件 / 17 子技能 / 9+2 Phase 段位 / 49 攻击模式 / 226 合规规则 / 188 假设条目</td></tr></tbody></table>
+<h2 id="2-五层架构">2 五层架构</h2>
 <pre class="cb"><span class="lang">text</span><code>+--------------------------------------------------------------+
 | ① 接入层  opencode CLI（用户入口）+ ssh-manager MCP            |
-|           -&gt; SSH 远程服务器 -&gt; 目标环境 K8s/Docker/containerd  |
-|              （所有远程命令唯一出口）                          |
+|           -&gt; SSH 远程服务器 -&gt; K8s/Docker/containerd 目标环境  |
 +--------------------------------------------------------------+
 | ② 编排层  Pipeline 入口 SKILL：参数收集·环境验证·初始化        |
-|           suite_version·熔断计数器·环境指纹                    |
-|           progress.json 状态机：pending-&gt;in_progress-&gt;complete |
-|           （batch 级断点续传，中断后从最后 WU 恢复）           |
+|           progress.json 状态机（Phase 级状态由入口 LLM 统一    |
+|           接管——子代理输出经验证才写 complete）                |
+|           audit_log.json 审计·并发调度重试·Todo 强制更新       |
 +--------------------------------------------------------------+
-| ③ 执行层  9 个 Phase 检测流程（P1a...P9，见 §3）              |
-|           每 Phase 独立子代理·独立上下文                       |
+| ③ 执行层  全部 Phase：P1a/P1b/P2/P3/P4a/P4b/P5/P6.5/P6/P7/    |
+|           P8a/P8b/P8c/P8d/P9（见 §3）                         |
 +--------------------------------------------------------------+
-| ④ 知识库层 knowledge_graph/（Phase 间数据传递唯一媒介）        |
+| ④ 知识库层 knowledge_graph/（Phase 间唯一数据媒介）            |
 |           attack-patterns/ 49 模式·compliance-rules/ 226 条   |
 |           hypothesis-libraries/ 188 条·_learned/ 自进化区      |
 +--------------------------------------------------------------+
-| ⑤ 规范层  6 个共享规范（输出标准/证据标准/审批分级/...）       |
+| ⑤ 规范层  6 个共享规范（输出标准/证据标准/审批分级/质量模板…） |
 +--------------------------------------------------------------+
   贯穿链路 A（基础设施）：ssh-manager MCP -&gt; SSH -&gt; 目标环境
   贯穿链路 B（检测原理）：合规 fail -&gt; 三库联动映射攻击前置
-                          -&gt; L0 探测 + L1 验证前置 -&gt; L2 差分攻击证明</code></pre>
-<h3 id="2-2-llm-调用闭环">2.2 LLM 调用闭环</h3>
-<p>每 Phase = 独立子代理（Task general）+ 独立上下文窗口；命令经 ssh-manager MCP（ssh_execute/ssh_execute_background）下发，输出回读语义判定；Phase 间零耦合——只通过知识图谱 JSON 节点/边传递数据，后续 Phase 按节点 ID 反查不重跑收集。</p>
-<h2 id="3-执行流程-9-阶段-11-段位">3 执行流程：9 阶段（11 段位）</h2>
-<pre class="cb"><span class="lang">text</span><code>P1a 环境侦察 -&gt; P1b 源码扫描(可选) -&gt; P2 合规检测(226条) -&gt; P3 交叉关联
-   -&gt; P4a 模式匹配 -&gt; P4b LLM推理补盲 -&gt; P5 链构建 -&gt; P6 链验证
-   -&gt; P7 POC生成 -&gt; P8 报告交付(8a/8b/8c) -&gt; P9 模式进化</code></pre>
-<table><thead><tr><th>Phase</th><th>职责</th><th>关键机制</th></tr></thead><tbody><tr><td>P1a</td><td>环境建模：指纹（OS/arch/kernel/runtime + env_hash）、集群结构分批收集</td><td>不审漏洞不跑攻击；env_hash=sha256(k8s+docker+node+pod+sa_count)</td></tr><tr><td>P1b</td><td>源码层配置风险（Dockerfile/K8s manifest/Helm/CI-CD/.env）</td><td>默认不启用，需 source-path；补运行时侦察盲区</td></tr><tr><td>P2</td><td>CIS 全量逐条：K8s 134（4 WU）+ Docker 64（2 WU）+ Containerd 28（1 WU）</td><td>每条 LLM 读 SSH 原始输出语义判定；分批 WU+三重校验</td></tr><tr><td>P3</td><td>三库联动：Phase 2 fail × 侦察交叉比对，产 ATK-CAND</td><td>静态库优先、LLM 动态推理补盲（只标 [?]）</td></tr><tr><td>P4a</td><td>条件触发表把 [?] 变 [x]：按需加载命中模式 SKILL</td><td>不读全部 49 个；platforms 过滤；L0/L1 探测前置-&gt;L2 攻击验证+差分证明</td></tr><tr><td>P4b</td><td>漏报最后防线：未匹配/证据不全/盲区候选</td><td>CoT+ReAct 循环（&lt;=10 轮）从零动态推理新路径</td></tr><tr><td>P5</td><td>组合多步链 CHAIN-xxx + 可达性评估</td><td>如 socket-escape-&gt;secret-exfil-&gt;lateral-move</td></tr><tr><td>P6</td><td>逐链逐步骤终判：前置验证-&gt;审批门控攻击-&gt;差分证明</td><td>5 项门槛综合判 C1/C2/C3；被阻断读模式"绕过策略"</td></tr><tr><td>P7</td><td>confirmed/condition_met 链生成可执行 POC</td><td>C3/不可利用/被阻断一律不产；POC 是证据不是武器；每步标注 [L0]/[L1]/[L2]</td></tr><tr><td>P8</td><td>8a 平台合规报告+阈值矩阵；8b 每链详情+修复建议；8c 全景 10 章</td><td>盲区提示 Top3+覆盖矩阵+QA 三层校验+置信度评分+更新情节记忆</td></tr><tr><td>P9</td><td>insights 经 4 门槛+用户审批晋升永久模式写入 _learned/</td><td>纯 Markdown 读写，不执行 SSH；4 级自净+三库一致性检查</td></tr></tbody></table>
-<h2 id="4-15-项设计机制">4 15 项设计机制</h2>
-<table><thead><tr><th>#</th><th>机制</th><th>一句话</th></tr></thead><tbody><tr><td>①</td><td>攻击者视角 L0-L3 分层</td><td>root 仅做 L0 宿主机只读侦察，攻击验证必须 L1/L2 容器内视角复现，L3 破坏性只理论推导——解决"root 跑攻击证明不了逃逸"的 BAS 通病</td></tr><tr><td>②</td><td>可信度 C1/C2/C3 分级</td><td>以证据充分度定级：C1 实证复现（5 门槛+L2 差分）/C2 条件实证/C3 风险线索，另有不可利用与已阻断两态</td></tr><tr><td>③</td><td>三库联动</td><td>合规 fail 自动反查 CHK-CAND -&gt; 关联 ATK-HYP -&gt; 静态不命中走 LLM 动态推理，把"配置不合规"升级为"满足攻击前置条件"</td></tr><tr><td>④</td><td>模式自我进化</td><td>4b insights -&gt; 4 门槛 -&gt; 用户审批 -&gt; _learned/ -&gt; 更新三库索引+一致性检查</td></tr><tr><td>⑤</td><td>全景覆盖报告</td><td>7 攻击面覆盖矩阵+盲区提示 Top3+不可利用项必入矩阵，从"看运气"变"可度量"</td></tr><tr><td>⑥</td><td>反幻觉 6 条硬约束 + 三层 QA</td><td>不凭记忆出命令/不伪造 SSH 输出（禁"等/大致/约"）/无证据不写确认态/占位符必替换/超审批即停/baseline 永不替代当前</td></tr><tr><td>⑦</td><td>方法 C 混合渐进</td><td>原生命令优先 -&gt; 专用工具按需上传+SHA256 校验 -&gt; 失败回退原生命令 -&gt; 会话结束自动清理</td></tr><tr><td>⑧</td><td>知识图谱解耦</td><td>Phase 间不直接传数据，只经图谱 JSON 节点/边；Secret 节点绝不存内容</td></tr><tr><td>⑨</td><td>断点续传</td><td>progress.json 状态机每 WU 落盘，崩溃从 results.jsonl 已写行续传</td></tr><tr><td>⑩</td><td>五态标记闭环</td><td>[x]/[?]/[-]/[!]/[ ] 交付前 [ ] 必消灭；[x][?] 必有编号、[-] 必有证伪依据</td></tr><tr><td>⑪</td><td>条件触发表按需加载</td><td>4a 只读命中模式，省 15-20k token</td></tr><tr><td>⑫</td><td>分批 WU + 三重校验</td><td>每批完成立即校验规则数/判定/依据，不等全部完成才发现错</td></tr><tr><td>⑬</td><td>SSH 限速+重试</td><td>最大并行 3、批次间隔 2s、单次超时 30s；读重试 3 次、写不重试标 [!]</td></tr><tr><td>⑭</td><td>baseline 版本兼容</td><td>版本一致逐条 diff、不一致降级趋势对比；baseline 永不替代当前结果</td></tr><tr><td>⑮</td><td>环境指纹+跨会话</td><td>env_hash 记录环境特征，作工具选择依据与 P9 进化过滤条件</td></tr></tbody></table>
-<p>docs 补充 5 项实现级机制：平台分片并发写保护 / LOOP_POLICY / 强制交互确认 / 套件根 Glob / pipeline_blocked。</p>
-<h2 id="5-知识图谱-phase-间唯一数据媒介">5 知识图谱（Phase 间唯一数据媒介）</h2>
-<ul><li><b>节点</b>：OUTPUT_STANDARD.md 实际定义 8 类节点文件（hosts/pods/containers/services/SA/secrets/findings + source_findings；README 全景图称 7 类——口径差已标注）</li><li><b>边 5 类</b>：infra（宿主-&gt;容器包含）/compliance（资产-&gt;规则）/cross_ref（跨库关联）/attack（链式攻击）/source（源码-&gt;运行时映射）</li><li><b>情节记忆</b>：session_history + recommendations，跨会话累积</li><li><b>流转</b>：10 步 Phase 间图谱流转（每 Phase 产什么节点/边、下游怎么反查）</li><li><b>红线</b>：Secret 节点绝不存内容</li></ul>
-<h2 id="6-知识资产盘点-实测">6 知识资产盘点（实测）</h2>
-<table><thead><tr><th>资产</th><th>规模</th><th>组织</th></tr></thead><tbody><tr><td>攻击模式库</td><td><b>49 个</b>（AS-1~AS-7 七攻击面）</td><td>49/49 均为 8 段式结构+MITRE 映射；destructive=true 仅 5 个（全名单见下表）</td></tr><tr><td>合规规则库</td><td><b>226 条</b>精确核验（K8s 134 / Docker 64 / Containerd 28；41 分组=29+7+5，逐组吻合）</td><td>规则 8 字段 schema</td></tr><tr><td>假设库</td><td><b>188 条</b>（CHK-CAND 136 + ATK-HYP 49 + XREF 3）</td><td>README 旧口径 35/25 已标不符</td></tr><tr><td>自进化区</td><td>_learned/（P9 晋升产物）</td><td>与三库索引联动</td></tr></tbody></table>
-<p>模式 SKILL.md 内部结构（抽读 5 个全文样本：socket-escape/k8s-sa-exploit/fork-bomb/cloud-metadata/webhook-backdoor）：frontmatter（platforms/scope/destructive/MITRE）+ 8 段式正文（前置条件/检测/验证/攻击步骤/差分证明/绕过策略/修复建议/参考）。</p>
-<p><b>49 模式全名单（AS-1~AS-7）</b>：</p>
+                          -&gt; L0 探测+L1 验证前置 -&gt; L2 差分攻击证明</code></pre>
+<h2 id="3-执行流程-全部-phase-13-段位">3 执行流程：全部 Phase（13 段位）</h2>
+<table><thead><tr><th>Phase</th><th>职责</th><th>关键机制</th></tr></thead><tbody><tr><td>P1a</td><td>环境建模：指纹（OS/arch/kernel/runtime + env_hash）、集群结构分批收集</td><td><b>9 项采集完整性门控</b>（kubectl 实数 vs jq 采集数逐项比对，≤2 次补采否则 blocked）</td></tr><tr><td>P1b</td><td>源码层配置风险（Dockerfile/K8s manifest/Helm/CI-CD/.env）</td><td>默认不启用需 source-path；补运行时盲区</td></tr><tr><td>P2</td><td>CIS 全量逐条：K8s 134（4 WU）+ Docker 64（2 WU）+ Containerd 28（1 WU）</td><td>每条 LLM 读 SSH 原始输出语义判定；分批 WU+三重校验</td></tr><tr><td>P3</td><td>三库联动：fail × 侦察交叉比对，产 ATK-CAND</td><td>静态库优先、LLM 动态补盲只标 [?]；改名回写 cross_ref</td></tr><tr><td>P4a</td><td>条件触发表把 [?] 变 [x]：按需加载命中模式 SKILL</td><td>不读全部 49 个；platforms 过滤；L0/L1 探测前置-&gt;L2 攻击+差分证明</td></tr><tr><td>P4b</td><td>漏报最后防线：未匹配/证据不全/盲区候选</td><td>CoT+ReAct 循环（&lt;=10 轮）动态推理新路径</td></tr><tr><td>P5</td><td>组合多步链 CHAIN-xxx + 可达性评估</td><td>如 socket-escape-&gt;secret-exfil-&gt;lateral-move</td></tr><tr><td><b>P6.5</b></td><td><b>对抗性验证（adversary-verify）</b>：独立子代理对全部 C1 结论做只读 L0/L1 定向证伪</td><td>overturned 则降级 C1-&gt;C2 并回写 attack.json——攻击结论也要被挑战</td></tr><tr><td>P6</td><td>逐链逐步骤终判：前置验证-&gt;审批门控攻击-&gt;差分证明</td><td>5 项门槛综合判 C1/C2/C3；被阻断读模式"绕过策略"</td></tr><tr><td>P7</td><td>confirmed/condition_met 链生成可执行 POC</td><td>C3/不可利用/被阻断一律不产；POC 是证据不是武器；每步标 [L0]/[L1]/[L2]</td></tr><tr><td>P8a/b/c</td><td>平台合规报告+阈值矩阵 / 每链详情+修复建议 / 全景 10 章</td><td>QA 三层校验+<b>覆盖率硬阈值</b>（226 规则与 49 模式 100%、证据链 &gt;=90%）</td></tr><tr><td><b>P8d</b></td><td><b>可视化（graph-viz）</b>：知识图谱渲染（生成脚本+Cytoscape）</td><td>派生边写回 _derived.json，不改原始图谱</td></tr><tr><td>P9</td><td>insights 经 4 门槛+用户审批晋升永久模式写入 _learned/</td><td>纯 Markdown 读写不执行 SSH；4 级自净+三库一致性</td></tr></tbody></table>
+<h2 id="4-设计机制全表-15-项核心-工程加固">4 设计机制全表（15 项核心 + 工程加固）</h2>
+<p><b>核心 15 项</b>：</p>
+<table><thead><tr><th>#</th><th>机制</th><th>一句话</th></tr></thead><tbody><tr><td>①</td><td>攻击者视角 L0-L3 分层</td><td>root 仅做 L0 宿主机只读侦察，攻击验证必须 L1/L2 容器内视角复现，L3 破坏性只理论推导</td></tr><tr><td>②</td><td>可信度 C1/C2/C3 分级</td><td>以证据充分度定级：C1 实证复现（5 门槛+L2 差分）/C2 条件实证/C3 风险线索，另有不可利用与已阻断两态</td></tr><tr><td>③</td><td>三库联动</td><td>合规 fail 反查 CHK-CAND -&gt; 关联 ATK-HYP -&gt; 静态不命中走 LLM 动态推理</td></tr><tr><td>④</td><td>模式自我进化</td><td>4b insights -&gt; 4 门槛 -&gt; 用户审批 -&gt; _learned/ -&gt; 三库索引+一致性检查</td></tr><tr><td>⑤</td><td>全景覆盖报告</td><td>7 攻击面覆盖矩阵+盲区提示 Top3+不可利用项必入矩阵</td></tr><tr><td>⑥</td><td>反幻觉 6 条硬约束+三层 QA</td><td>不凭记忆出命令/不伪造 SSH 输出（禁"等/大致/约"）/无证据不写确认态/占位符必替换/超审批即停/baseline 永不替代当前</td></tr><tr><td>⑦</td><td>方法 C 混合渐进</td><td>原生命令优先 -&gt; 专用工具按需上传+SHA256 校验 -&gt; 失败回退 -&gt; 会话结束自动清理</td></tr><tr><td>⑧</td><td>知识图谱解耦</td><td>Phase 间只经图谱 JSON 节点/边传递；Secret 节点绝不存内容</td></tr><tr><td>⑨</td><td>断点续传</td><td>progress.json 状态机每 WU 落盘，崩溃续传；<b>Phase 级 complete 由入口 LLM 验证后统一写入</b></td></tr><tr><td>⑩</td><td>五态标记闭环</td><td>[x]/[?]/[-]/[!]/[ ] 交付前 [ ] 必消灭；[x][?] 必有编号、[-] 必有证伪依据</td></tr><tr><td>⑪</td><td>条件触发表按需加载</td><td>4a 只读命中模式，省 15-20k token</td></tr><tr><td>⑫</td><td>分批 WU+三重校验</td><td>每批完成立即校验规则数/判定/依据</td></tr><tr><td>⑬</td><td>SSH 限速+重试</td><td>最大并行 3、批次间隔 2s、超时 30s；读重试 3 次、写不重试标 [!]</td></tr><tr><td>⑭</td><td>baseline 版本兼容</td><td>版本一致逐条 diff、不一致降级趋势对比；baseline 永不替代当前结果</td></tr><tr><td>⑮</td><td>环境指纹+跨会话</td><td>env_hash 作工具选择依据与 P9 进化过滤条件</td></tr></tbody></table>
+<p><b>工程加固（现行源码已内置）</b>：</p>
+<ul><li><b>KG 自洽三修复</b>：attack-pattern/cross-ref/chain-builder/chain-verify 四个写边 Phase 强制「节点存在性校验+补采」（历史 53 条悬空边已修复）；unverified 边 5 类归因；4b 改名回写 cross_ref</li><li><b>attack 边结构化</b>：attrs{} 嵌套，强制字段 7-&gt;17（差分证据/审批记录/层级标注等全落边属性）</li><li><b>编排收权</b>：progress.json 主权归入口 LLM + audit_log.json 全程审计 + 并发调度重试 + Todo 强制更新；子代理 L3/L4 审批改就地 question（不再中断等外部输入）</li><li><b>token 预算废除</b>：原「&lt;=500 tokens/&lt;=30k/&lt;=8000」等 11 文件 20 处硬限额全删，改为「详细数据写盘+路径引用」纪律（上限交给写盘，不交给上下文）</li><li><b>可视化派生隔离</b>：graph-viz 派生边只写 _derived.json，原始图谱零污染</li></ul>
+<h2 id="5-知识图谱">5 知识图谱</h2>
+<ul><li><b>节点</b>：OUTPUT_STANDARD.md 定义 8 类节点文件（hosts/pods/containers/services/SA/secrets/findings + source_findings）</li><li><b>边 5 类</b>：infra（宿主-&gt;容器）/compliance（资产-&gt;规则）/cross_ref（跨库）/attack（链式攻击）/source（源码-&gt;运行时）；attack 边带 attrs{} 17 强制字段</li><li><b>情节记忆</b>：session_history + recommendations 跨会话累积</li><li><b>红线</b>：Secret 节点绝不存内容；派生数据（可视化）与原始图谱分离</li></ul>
+<h2 id="6-知识资产-实测核验">6 知识资产（实测核验）</h2>
+<table><thead><tr><th>资产</th><th>规模</th><th>说明</th></tr></thead><tbody><tr><td>攻击模式库</td><td>49 个（AS-1~AS-7）</td><td>49/49 均为 8 段式+MITRE 映射；destructive=true 仅 5 个</td></tr><tr><td>合规规则库</td><td>226 条（K8s 134/Docker 64/Containerd 28；41 分组）</td><td>规则 8 字段 schema</td></tr><tr><td>假设库</td><td>188 条（CHK-CAND 136 + ATK-HYP 49 + XREF 3）</td><td>README 旧口径 35/25 已核偏</td></tr><tr><td>跨会话命中记录</td><td>_index.md 尾部 29 条（2 个实跑会话）</td><td>模式库实战使用痕迹</td></tr><tr><td>自进化区</td><td>_learned/</td><td>P9 晋升产物，与三库索引联动</td></tr></tbody></table>
+<p><b>49 模式全名单</b>：</p>
 <table><thead><tr><th>攻击面</th><th>模式</th></tr></thead><tbody><tr><td>AS-1 逃逸（12）</td><td>docker.sock 逃逸 · cgroup 逃逸 · procfs 逃逸 · runc 逃逸 · hostPath 挂载 · capability 提权 · containerd-shim 逃逸 · 特权容器逃逸 · hostPID/hostIPC 逃逸 · hostNetwork 滥用 · shareProcessNamespace 滥用 · sysctl 滥用</td></tr><tr><td>AS-2 认证授权（14）</td><td>K8s SA 滥用 · RBAC 提权 · 匿名访问 · Docker API 认证绕过 · K8s exec 滥用 · containerd ctr 滥用 · Ephemeral Container 注入 · Kubelet API 滥用 · etcd 未授权访问 · etcd 证书窃取 · CSR API 滥用 · 节点身份提权 · TokenRequest API 滥用 · Aggregated APIServer 滥用</td></tr><tr><td>AS-3 网络（7）</td><td>横向移动 · 云元数据泄露 · DNS 外发 · NTFS ALPN 协议攻击 · Node Proxy/Port-Forward 滥用 · NetworkPolicy 绕过 · kubectl port-forward 滥用</td></tr><tr><td>AS-4 数据泄露（6）</td><td>Secret 外发 · 环境变量凭据泄露 · 镜像层敏感信息 · 云提供商凭证窃取 · ConfigMap 数据泄露 · etcd 数据泄露</td></tr><tr><td>AS-5 拒绝服务（2）</td><td>资源滥用 · fork 炸弹</td></tr><tr><td>AS-6 供应链（2）</td><td>镜像标签篡改 · 仓库投毒</td></tr><tr><td>AS-7 持久化（6）</td><td>Webhook 后门 · CronJob 持久化 · Docker Volume 持久化 · MutatingWebhook 持久化 · DaemonSet 持久化 · Deployment 镜像覆盖</td></tr></tbody></table>
-<p><b>条件触发表（信号 → 模式，Phase 4a 先读合规+侦察结果再选模式；铁律：不准凭记忆出攻击命令，必须 Read 对应 SKILL.md）代表性映射</b>：</p>
+<p><b>条件触发表（信号-&gt;模式；铁律：不准凭记忆出攻击命令，必须 Read 对应 SKILL.md）代表性映射</b>：</p>
 <table><thead><tr><th>触发信号</th><th>来源</th><th>读取模式</th></tr></thead><tbody><tr><td>K8s-7.1.1 privileged=true</td><td>合规 G_7</td><td>socket-escape / capability-privesc / hostpath-mount</td></tr><tr><td>docker.sock 挂载</td><td>侦察</td><td>socket-escape</td></tr><tr><td>/proc/1/cgroup 可见</td><td>侦察</td><td>cgroup-escape</td></tr><tr><td>/proc mounted rw</td><td>侦察</td><td>procfs-escape</td></tr><tr><td>runc 版本 &lt;1.0-rc91</td><td>合规</td><td>runc-escape</td></tr><tr><td>containerd-shim socket 可访问</td><td>侦察</td><td>containerd-shim-escape</td></tr><tr><td>K8s SA token 可读取</td><td>侦察</td><td>k8s-sa-exploit</td></tr><tr><td>K8s RBAC 过宽 / pods/exec 权限</td><td>合规 G_8/侦察</td><td>k8s-rbac-abuse / k8s-exec-abuse</td></tr><tr><td>容器网络无 NetworkPolicy</td><td>合规 G_6</td><td>lateral-move</td></tr><tr><td>云元数据可访问 / DNS 可解析外部</td><td>侦察</td><td>cloud-metadata / dns-exfil</td></tr><tr><td>Secret 明文环境变量 / 环境变量含凭证</td><td>侦察/合规</td><td>secret-exfil / env-credential-leak</td></tr><tr><td>镜像历史含 Secret / tag 非固定</td><td>侦察/合规</td><td>image-layer-secret / image-tag-mutation</td></tr><tr><td>特权容器+无 pid 限制</td><td>合规 G_7</td><td>fork-bomb</td></tr></tbody></table>
 <h2 id="7-安全机制">7 安全机制</h2>
-<ul><li><b>5 级审批门控</b>：攻击验证逐级审批（读/探测/L1 验证/L2 差分/破坏性禁止）</li><li><b>熔断计数器</b>：超限即停</li><li><b>SSH 限速</b>：并行 3 / 间隔 2s / 超时 30s；rate limited 自动降级串行</li><li><b>反幻觉 6 条硬约束</b>（见机制⑥）+ QA 三层校验（结构-&gt;语义-&gt;覆盖）</li><li><b>POC 纪律</b>：只有 C1/C2 链产 POC；POC 是证据不是武器；每步标执行层级</li></ul>
+<p>5 级审批门控（读/探测/L1 验证/L2 差分/破坏性禁止）· 熔断计数器 · SSH 限速（并行 3/间隔 2s/超时 30s，超载自动降级串行）· 反幻觉 6 条硬约束+QA 三层（结构-&gt;语义-&gt;覆盖，覆盖率硬阈值）· POC 纪律（仅 C1/C2 链产 POC，POC 是证据不是武器，每步标执行层级）· <b>对抗性验证（P6.5 对自己的 C1 结论做定向证伪）</b>。</p>
 <h2 id="8-模式自进化-p9">8 模式自进化（P9）</h2>
-<p>晋升流水线：Phase 4b insights.md -&gt; <b>4 项晋升门槛</b>评估 -&gt; 用户审批 -&gt; 写入 _learned/ -&gt; 更新三库索引+一致性检查。自净 4 级：hit&gt;=5 升 high / 连续 15 次未命中问用户归档 / 证伪剔除 / 格式重建。</p>
-<h2 id="9-与探隐-v2-的同构对照">9 与探隐 v2 的同构对照</h2>
-<table><thead><tr><th>GenCPT 机制</th><th>探隐 v2 对应</th><th>关系</th></tr></thead><tbody><tr><td>知识图谱解耦（Phase 间唯一媒介）</td><td>13 表 TSV 账本+10 边图谱</td><td>同构思想，载体不同（JSON vs TSV）</td></tr><tr><td>五态标记闭环 [x][?][-][!][ ]</td><td>matrix 五态+终态门禁空格消灭</td><td>几乎逐字同构</td></tr><tr><td>可信度 C1/C2/C3+不可利用+已阻断</td><td>两维评级 confidence 四态×impact</td><td>GenCPT 单维，v2 更细</td></tr><tr><td>断点续传 progress.json</td><td>受管重启+resume_kit</td><td>同构</td></tr><tr><td>模式自进化 4 门槛+用户审批</td><td>知识飞轮 staging 审批入库</td><td>同构（v2 多反向验证脱敏）</td></tr><tr><td>零 Python 判定脚本</td><td>v1 纯 SKILL 立场；v2 已修订为薄 CLI</td><td><b>分叉点</b>：GenCPT 保持零代码，探隐 v2 走确定性 CLI 执法</td></tr><tr><td>env_hash 环境指纹</td><td>P0 落账 SKILL 版本+tools.lock 哈希</td><td>同构（指纹换锚点）</td></tr></tbody></table>
-<p><b>接入路径</b>（v2 批次 3+ 引擎批之后）：容器场景的候选引擎/知识源——49 攻击模式的 8 段式+MITRE 结构可平移为 knowledge/ 先例语料（staging 审批入库），226 合规规则可作 vuln_class 词表扩展源；图谱 schema 对接统一提交 schema（facts/findings/edges 三桶）。</p>
-<h2 id="10-实测核验与陈旧口径-readme-纠偏">10 实测核验与陈旧口径（README 纠偏）</h2>
-<table><thead><tr><th>README 说法</th><th>实测</th><th>判定</th></tr></thead><tbody><tr><td>假设库 35 CHK-CAND / 25 ATK-HYP</td><td>136 / 49</td><td>陈旧口径</td></tr><tr><td>29 个攻击模式</td><td>49</td><td>陈旧</td></tr><tr><td>总文件数 106</td><td>163</td><td>陈旧</td></tr><tr><td>7 类图谱节点</td><td>OUTPUT_STANDARD 定义 8 类（含 source_findings）</td><td>口径差，已标注</td></tr><tr><td>60 卡片</td><td>与实际结构不对应</td><td>陈旧</td></tr></tbody></table>
-<p>另 6 条 uncertain 已存档（k8s-sa-exploit 的 T1525 MITRE 映射可疑 / /tmp 工具目录命名不一致 / attack-surface-model.md 停在 25 模式旧口径等）。</p>
+<p>insights -&gt; <b>4 项晋升门槛</b> -&gt; 用户审批 -&gt; _learned/ -&gt; 三库索引+一致性检查。自净 4 级：hit&gt;=5 升 high / 连续 15 次未命中问用户归档 / 证伪剔除 / 格式重建。</p>
+<h2 id="9-工程质量与实测核验">9 工程质量与实测核验</h2>
+<ul><li>suite_version 自证：本轮源码自带「修复 39 个问题」的工程修复记录（docs/superpowers/plans/）</li><li>5 个超长 SKILL 拆出 references/ 子目录（15 个），长文指令模块化</li><li>README 陈旧口径已核偏：假设库 35/25-&gt;实测 136/49、29 模式-&gt;49、106 文件-&gt;188、60 卡片口径失效、图谱 7 类-&gt;OUTPUT_STANDARD 实际 8 类</li><li>uncertain 存档：k8s-sa-exploit 的 T1525 MITRE 映射可疑 / 工具目录命名不一致等 6 条</li></ul>
+<h2 id="10-与探隐-v2-的同构对照">10 与探隐 v2 的同构对照</h2>
+<table><thead><tr><th>GenCPT 机制</th><th>探隐 v2 对应</th><th>关系</th></tr></thead><tbody><tr><td>知识图谱解耦（Phase 间唯一媒介）</td><td>13 表 TSV 账本+10 边图谱</td><td>同构思想，载体不同（JSON vs TSV）</td></tr><tr><td>五态标记闭环 [x][?][-][!][ ]</td><td>matrix 五态+终态门禁空格消灭</td><td>几乎逐字同构</td></tr><tr><td>可信度 C1/C2/C3+不可利用+已阻断</td><td>两维评级 confidence 四态×impact</td><td>GenCPT 单维，v2 更细</td></tr><tr><td>P6.5 对抗性验证</td><td>P4 独立重放门（fresh 子代理盲重放）</td><td>同构：结论必须被独立挑战</td></tr><tr><td>断点续传+编排收权</td><td>受管重启+resume_kit+单写者</td><td>同构</td></tr><tr><td>模式自进化 4 门槛+用户审批</td><td>知识飞轮 staging 审批入库</td><td>同构（v2 多反向验证脱敏）</td></tr><tr><td>attack 边 attrs 17 字段</td><td>边 provenance+timeline 链式哈希</td><td>同构方向（v2 更强：哈希链）</td></tr><tr><td>零 Python 判定（除可视化脚本）</td><td>v1 纯 SKILL；v2 修订为薄 CLI</td><td>分叉点</td></tr></tbody></table>
+<p><b>接入路径</b>：容器场景候选引擎/知识源——49 攻击模式 8 段式+MITRE 可平移为 knowledge/ 先例语料，226 合规规则可作 vuln_class 词表扩展源，KG schema 对接统一提交 schema。</p>
 <h2 id="11-你的-v2-计划评审差距-2026-08-01-外部文档">11 你的 V2 计划评审差距（2026-08-01，外部文档）</h2>
-<p>评审对象是 GenCPT V2 重写计划（10 份设计/计划文档），结论：整体写作质量高（实现契约到函数体级、三向 Finding 绑定、每任务 5 步 TDD），但存在 <b>4 处实质写漏 + 3 处边界项</b>：</p>
-<ol><li>【最重要】Wave 2/3/4 的"安装+回滚 smoke"没有落实为任务（仅 Wave 1 完整实现；rollback-manifest 全库仅命中 wave1）——照计划执行则 alpha2/beta1/beta2 的可交付声明无实现证据</li><li>威胁模型/安全边界文档缺失（设计规格 §4.4 要求，五波无对应任务）</li><li>Session 归档/retention 只有命令名没有语义</li><li>（第 4 项及 3 处边界项详见 docs/design/imported/gencpt/2026-08-01-gencpt-v2-plan-review-gaps.md 原文）</li></ol>
-<blockquote>差距稿全文已保真收录：docs/design/imported/gencpt/2026-08-01-gencpt-v2-plan-review-gaps.md——若启动 GenCPT V2 重写，先补这四处再动工。</blockquote>
+<p>GenCPT V2 重写计划（10 份文档）评审结论：质量高（契约到函数体级、三向 Finding 绑定、每任务 5 步 TDD），但 <b>4 实质写漏+3 边界项</b>：Wave 2/3/4 安装+回滚 smoke 无任务落地、威胁模型文档缺失、Session 归档只有命令名等——全文见 docs/design/imported/gencpt/2026-08-01-gencpt-v2-plan-review-gaps.md。若启动重写先补四处再动工。</p>
   <div class="pn"><a href="2026-09-17-tanyin-design.html"><span>← 上一篇</span>探隐 TanYin — 全类型 AI 渗透测试总控 · 设计定稿</a><a href="2026-09-22-vuln-agent-engine.html"><span>下一篇 →</span>探隐 vuln_agent — 源码安全分析引擎（最新源码定稿）</a></div>
   </article>
   <footer>红队成长全景 · 设计文档站由 scripts/build_handbook.py 构建</footer>

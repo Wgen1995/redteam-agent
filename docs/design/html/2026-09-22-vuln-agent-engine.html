@@ -230,7 +230,7 @@ opencode_wrapper.py (临时 profile -&gt; 子进程 CLI -&gt; LLM)
 <h2 id="8-与探隐-v2-的衔接">8 与探隐 v2 的衔接</h2>
 <p>v2（§6.4 引擎契约）把 vuln_agent 定为首批二号引擎、<b>cli 型适配器接入</b>：</p>
 <ul><li><b>统一提交 schema</b>：本引擎产物（facts/findings/assets/edges）由适配器转 submission.json，引擎不直接写 13 表账本；总控命令重算 dedup_key 与铸 ID</li><li><b>结论三档映射两维评级</b>：VULN/NOVULN/SUSPECTED 映射 confidence（C1/C2/C3/无-禁），impact 由复核证据补齐</li><li><b>纪律能力声明</b>：manifest 声明 max_op_level 与视角上限；源码分析属内部视角，适配器需在提交中标注视角层级</li><li><b>证据双哈希</b>：Payload/事实依据段（repro_command）进 E-index 四要素（network_position 由执行环境注入）</li><li><b>批次归属</b>：v2 批次 3（引擎接入批）；web-blackbox 先行、vuln_agent 随后复用同一契约</li></ul>
-  <div class="pn"><a href="2026-09-22-gencpt-suite.html"><span>← 上一篇</span>探隐 GenCPT — 容器与 K8s 渗透测试技能套件（最新源码定稿）</a><a href="2026-09-18-web-blackbox-engine.html"><span>下一篇 →</span>web-blackbox 引擎详细设计（B3 前置设计对齐）</a></div>
+  <div class="pn"><a href="2026-09-22-gencpt-suite.html"><span>← 上一篇</span>探隐 GenCPT — 容器与 K8s 渗透测试技能套件（完整定稿）</a><a href="2026-09-18-web-blackbox-engine.html"><span>下一篇 →</span>web-blackbox 引擎详细设计（B3 前置设计对齐）</a></div>
   </article>
   <footer>红队成长全景 · 设计文档站由 scripts/build_handbook.py 构建</footer>
 </div></div>

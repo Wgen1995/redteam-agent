@@ -72,6 +72,29 @@ jq -s 'add' compliance_k8s.json compliance_docker.json compliance_containerd.jso
 
 ## 核心工作流（4 步）
 
+### KG 节点存在性校验（本 Phase 通用约束）
+
+本 Phase 写入任何边到 `knowledge_graph/edges/cross_ref.json` 之前，**必须**执行以下校验：
+
+1. **检查节点存在性**：对每条待写入边的 `from_node` 和 `to_node`，检查是否存在于 `knowledge_graph/nodes/` 下的任一 JSON 文件中
+2. **不存在且是 Pod/Container**：
+   - **强制补采**：`ssh_execute(server, "kubectl get pod <name> -n <ns> -o json")` 或 `crictl inspect <id>` 获取 spec
+   - 写入对应 nodes JSON 文件（pods.json / containers.json）
+   - 更新 `knowledge_graph/edges/infra.json`（补采的 Pod 需补建 runs_on / container_in 等边）
+   - 补采后重新校验节点存在性
+3. **不存在且是抽象节点**（如 `attack-xxx`、`compliance-xxx`、`target-xxx`、`amplification-xxx`）：
+   - 补建节点到 `knowledge_graph/nodes/` 对应文件，`node_type` 按前缀判断
+   - `attack-*` → node_type: "attack"
+   - `compliance-*` → node_type: "compliance_rule"
+   - `target-*` → node_type: "target"（引用真实 Pod/Container 的别名节点）
+   - `amplification-*` → node_type: "amplification"
+4. **禁止跳过补建直接写悬空边** — 53 条悬空边问题已修复
+5. **禁止绕过 KG 直接 SSH 验证** — 所有关联结果必须通过 KG 边记录
+
+**校验执行时机**：在步骤 4 写入 cross_ref.json 之前，对每条待写入边执行节点存在性校验。
+
+---
+
 ### 步骤 1：读取输入数据
 
 按以下顺序读取，遵循按需读取原则：
@@ -88,6 +111,12 @@ jq -s 'add' compliance_k8s.json compliance_docker.json compliance_containerd.jso
 10. 读取 `evidence/recon/recon_summary.md`（提取关键发现摘要）
 
 **写盘规则**：读取后立即提取需要的字段，原始内容不在上下文中累积。每个 WU 完成后立即写盘分析结果。
+
+**步骤 1b：compliance-hypotheses.md 分批读取**
+- 文件超过 50KB 时按假设卡片分隔符分批读取
+- 每批读取 20 张卡片，匹配完成后释放上下文
+- 匹配结果立即写入 evidence/cross-ref/temp_matches.jsonl
+- 全部匹配完成后汇总为 cross_ref.json
 
 ---
 
@@ -113,8 +142,7 @@ jq -s 'add' compliance_k8s.json compliance_docker.json compliance_containerd.jso
    - **输入**：所有 fail/warn 规则列表 + 所有攻击模式 SKILL.md 的"## 1. 前置条件"字段
    - **执行逻辑**：LLM 语义模糊匹配——对每条 fail/warn 规则，语义判断是否满足某个攻击模式的前置条件（即使静态假设库未收录该映射）
    - **输出**：标记为 `[?] LLM推理关联`，source 标记为 `llm_reasoning`
-   - **优先级**：静态库命中（步骤2-3）优先级更高；LLM 推理结果为补充，需 Phase 4a 额外验证
-- **token 预算**：此步骤 ≤3000 tokens（读取49个模式的前置条件字段）
+    - **优先级**：静态库命中（步骤2-3）优先级更高；LLM 推理结果为补充，需 Phase 4a 额外验证
     - **约束**：不生成攻击命令；只产生关联映射建议
     - **落盘**：LLM动态推理结果写入 `evidence/cross-ref/llm_reasoning.json`，格式为[{rule_id, pattern_name, source: 'llm_reasoning', confidence: 'low'}]
 

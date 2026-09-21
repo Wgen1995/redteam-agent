@@ -112,6 +112,10 @@ Task(general, prompt="
 - Task(general): 读取 `skills/chain-verify/SKILL.md` 执行 → 产出 evidence/chains/chain_verification.md
 - 完成后输出：`✅ Phase 5-6 完成 — 攻击链 — {chain_count}条链，{c1_count}个C1确认`
 
+### Todo 7.5: Phase 6.5 — 对抗性验证（仅当 mode=full）
+- Task(general): 读取 `skills/adversary-verify/SKILL.md` 执行 → 产出 evidence/chains/adversary_verification.md
+- 完成后输出：`✅ Phase 6.5 完成 — 对抗验证 — {c1_count}个C1证伪，{upheld}个upheld`
+
 ### Todo 8: Phase 7 — POC 生成
 - Task(general): 读取 `skills/poc-generator/SKILL.md` 执行
 - 产出检查：evidence/poc/poc_scripts/ + evidence/poc/poc_readme.md
@@ -128,6 +132,8 @@ Task(general, prompt="
 - 产出检查：evidence/evolve/evolve_report.md
 
 ## 断点续传
+
+> **注意**：默认调度路径下，progress.json 的更新由入口 LLM 统一接管（见入口 SKILL.md §4 断点续传）。以下逻辑仅在显式使用 supervisor agent 时生效。
 
 - 每个Phase开始前读取 progress.json，跳过已完成的Phase
 - 每个Phase完成后更新 progress.json

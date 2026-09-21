@@ -44,6 +44,27 @@ description: >
 
 ## 核心工作流
 
+### KG 节点存在性校验（本 Phase 通用约束）
+
+本 Phase 写入任何 `attack_chain` 边到 `knowledge_graph/edges/cross_ref.json` 之前，**必须**执行以下校验：
+
+1. **检查节点存在性**：对每条待写入边的 `from_node` 和 `to_node`，以及 steps 数组中引用的每个 ATK-CAND 对应的节点，检查是否存在于 `knowledge_graph/nodes/` 下的任一 JSON 文件中
+2. **不存在且是 Pod/Container**：
+   - **强制补采**：`ssh_execute(server, "kubectl get pod <name> -n <ns> -o json")` 或 `crictl inspect <id>` 获取 spec
+   - 写入对应 nodes JSON 文件（pods.json / containers.json）
+   - 更新 `knowledge_graph/edges/infra.json`（补采的 Pod 需补建 runs_on / container_in 等边）
+   - 补采后重新校验节点存在性
+3. **不存在且是抽象节点**（如 `attack-xxx`、`CHAIN-xxx`、`host-xxx`）：
+   - `attack-*` → 补建到 attacks.json，node_type: "attack"
+   - `CHAIN-*` → 补建到 chains.json，node_type: "chain"（如不存在则创建）
+   - `host-*` → 补建到 hosts.json，node_type: "host"
+4. **禁止跳过补建直接写悬空边** — 53 条悬空边问题已修复
+5. **禁止绕过 KG 直接 SSH 验证** — 所有链构建结果必须通过 KG 边记录
+
+**校验执行时机**：在步骤 4.4 写入 attack_chain 边到 cross_ref.json 之前执行。
+
+---
+
 ### 步骤 1：识别链起点
 
 从 `knowledge_graph/edges/attack.json` 中查找 status 为 `confirmed` 或 `condition_met` 的 ATK-CAND 作为链起点。
@@ -214,6 +235,8 @@ Low:          无逃逸且无提权
 - 链中任何一步为 C3 → 整条链降级为 C3
 - 链中任何一步前置条件依赖理论推导（非实际验证）→ 降级为 C2
 - 链中所有步骤 C1 且所有前置条件被实际验证满足 → C1
+- 任一步骤缺少清理命令 → 该步骤不得标 C1（即使前置条件和差分证明都满足）
+- chain-builder 标的 C1 是"候选 C1"，chain-verify 做最终判定
 
 #### 4.3 链编号
 
@@ -299,10 +322,9 @@ Low:          无逃逸且无提权
 
 ## 上下文控制
 
-- 上下文预算 ≤100k tokens
 - 先读 _index.md 定位必要数据，只读当前分析需要的文件
 - 分析结果立即写盘，释放上下文
-- 返回 supervisory-agent 的摘要 ≤500 tokens
+- 返回 supervisory-agent 的摘要不携带原始数据，详细数据写盘后以文件路径引用
 
 ## 独立运行参数
 

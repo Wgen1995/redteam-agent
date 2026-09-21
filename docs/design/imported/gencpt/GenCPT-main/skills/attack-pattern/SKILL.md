@@ -64,6 +64,27 @@ description: >
 
 ## 核心工作流（4 步）
 
+### KG 节点存在性校验（本 Phase 通用约束）
+
+本 Phase 写入任何边到 `knowledge_graph/edges/attack.json` 之前，**必须**执行以下校验：
+
+1. **检查节点存在性**：对每条待写入边的 `from_node` 和 `to_node`，检查是否存在于 `knowledge_graph/nodes/` 下的任一 JSON 文件中
+2. **不存在且是 Pod/Container**：
+   - **强制补采**：`ssh_execute(server, "kubectl get pod <name> -n <ns> -o json")` 或 `crictl inspect <id>` 获取 spec
+   - 写入对应 nodes JSON 文件（pods.json / containers.json）
+   - 更新 `knowledge_graph/edges/infra.json`（补采的 Pod 需补建 runs_on / container_in 等边）
+   - 补采后重新校验节点存在性
+3. **不存在且是抽象节点**（如 `attack-xxx`、`compliance-xxx`）：
+   - 补建节点到 `knowledge_graph/nodes/` 对应文件，`node_type` 按前缀判断
+   - `attack-*` → node_type: "attack"，写入新建 `knowledge_graph/nodes/attacks.json`（如不存在则创建）
+   - `compliance-*` → node_type: "compliance_rule"，写入 `knowledge_graph/nodes/compliance_rules.json`（如不存在则创建）
+4. **禁止跳过补建直接写悬空边** — 53 条悬空边问题已修复
+5. **禁止绕过 KG 直接 SSH 验证** — 所有验证结果必须通过 KG 边记录，不得只在报告中提及
+
+**校验执行时机**：在步骤 2.5 生成 ATK-CAND 并准备写入 attack.json 之前执行。
+
+---
+
 ### 步骤 1：扫描触发条件
 
 1. 读取 `evidence/compliance/*/results.json`，收集所有 `fail` 和 `warn` 规则
@@ -77,9 +98,8 @@ description: >
    - 读取 `_index.md` 中所有模式的名称 + frontmatter 的 `mapped_compliance_families` 字段
    - 基于语义判断：是否有 fail/warn 规则或侦察发现在静态触发表中未覆盖、但可能相关
    - 特别关注 `_learned/` 目录下的新模式（静态表可能未及时收录）
-   - 命中的模式标记为 `[?] 疑似相关`，source 标记为 `llm_supplementary_scan`
-   - **约束**：此步骤只筛选不生成命令，命中的模式仍需 Read 完整 SKILL.md 后才执行探测
-   - **token 预算**：此步骤 ≤500 tokens（只读模式名+摘要，不读完整8段）
+    - 命中的模式标记为 `[?] 疑似相关`，source 标记为 `llm_supplementary_scan`
+    - **约束**：此步骤只筛选不生成命令，命中的模式仍需 Read 完整 SKILL.md 后才执行探测
 
 **关键规则**：**不准凭记忆出攻击命令！必须 Read 对应的模式 SKILL.md。** 每个模式的探测命令、攻击验证步骤、差分证明方法只存在于模式文件中，禁止从上下文记忆中提取。
 
@@ -126,7 +146,9 @@ Read 模式 SKILL.md（如 `attack-patterns/escape/socket-escape/SKILL.md`），
 - L3 步骤：标注 ⚠️，只做条件组合分析，不实际执行破坏性操作
 - 所有命令输出**立即写盘**到 `evidence/attack/raw/`，五元组标注
 
-#### 2.3 判断前置条件
+#### 2.3 判断前置条件（含反方辩论模式 — ARE 应用点 1）
+
+**前置条件检查（L0+L1）**
 
 ```
 前置条件检查（L0+L1）
@@ -137,8 +159,23 @@ Read 模式 SKILL.md（如 `attack-patterns/escape/socket-escape/SKILL.md`），
     ├─ 部分满足 → [?] C3 风险线索
     │   标记未满足的前置条件
     │
-    └─ 满足 → 继续攻击验证
+    └─ 满足 → 进入反方辩论 → 继续攻击验证
 ```
+
+**反方辩论模式（ARE 应用点 1）** — 前置条件满足时触发：
+
+- **攻击方**（当前子代理）：尝试证明前置条件满足、攻击成立
+- **防御方**（独立 Task(general) 子代理）：持"攻击不成立"立场，基于同一份 SSH 输出和 KG 事实寻找安全机制证据：
+  - 检查 seccompProfile 是否阻断 nsenter
+  - 检查 AppArmor 是否限制 capability
+  - 检查 NetworkPolicy 是否隔离网络
+  - 检查 OPA/Kyverno 准入控制是否拦截
+- **裁判**（当前子代理综合判定）：
+  - 防御方找到攻击方漏看的安全机制 → 降级 C1→C2 或标 [-] 证伪
+  - 防御方未找到额外安全机制 → 维持原判定
+  - 防御方找到部分阻断 → 标 [!] 已阻断
+- 防御方判定必须附 SSH 输出证据
+- 防御方独立调度，不共享攻击方上下文
 
 #### 2.4 执行攻击验证（L2）
 
@@ -222,6 +259,44 @@ Read 模式 SKILL.md（如 `attack-patterns/escape/socket-escape/SKILL.md`），
    ```
 2. 标记为 `[?]`，明确标注"无法匹配现有模式，需 LLM 推理"
 3. 写入 `evidence/attack/unmatched_signals.md`
+
+#### 步骤 3b：无法验证的 attack 标记 unverified 边
+
+对于有 cross_ref 假设边但**无法在本环境验证**的 attack（如环境限制、工具缺失、审批被拒、前置条件不满足、超出范围），**必须**在 `knowledge_graph/edges/attack.json` 中追加 unverified 边：
+
+```json
+{
+  "edge_type": "attack_verify",
+  "from_node": "compliance-K8s-8.2.10",
+  "to_node": "attack-cloud-metadata",
+  "attrs": {
+    "atk_cand": "ATK-CAND-009",
+    "status": "unverified",
+    "confidence": "N/A",
+    "level": "L0",
+    "source": "pattern_library",
+    "unverified_reason": "环境限制: Orbstack非云环境, 169.254.169.254不可达",
+    "unverified_category": "environment_limitation"
+  }
+}
+```
+
+**unverified_category 字段取值**：
+
+| 类别 | 含义 | 示例 |
+|------|------|------|
+| `environment_limitation` | 环境限制 | 非云环境无法验证云元数据攻击 |
+| `tool_missing` | 工具缺失 | sqlite3 不可用 |
+| `approval_blocked` | 审批被拒 | 高风险操作未获批准 |
+| `condition_not_met` | 前置条件不满足 | docker.sock 不存在 |
+| `out_of_scope` | 超出检测范围 | 需要跨集群访问权限 |
+
+**约束**：
+- 无法验证的 attack **必须**追加 unverified 边，不允许只在报告中提及而不写入 KG
+- `attrs.unverified_reason` 必须写明具体原因
+- `attrs.unverified_category` 必须从上述 5 个类别中选取
+- 原有 cross_ref 假设边保留，不删除
+- 此步骤确保知识图谱中可区分"4a 漏了"和"环境限制无法验证"
 
 ---
 

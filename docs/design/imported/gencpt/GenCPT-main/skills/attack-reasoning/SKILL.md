@@ -144,7 +144,8 @@ description: >
   "prerequisites_met": ["no_network_policy", "pod_in_same_namespace"],
   "prerequisites_unmet": ["direct_access_to_sensitive_data"],
   "evidence_files": [
-    "evidence/attack/reasoning-hits_raw_ATK-CAND-010_20260619T090000.md"
+    "evidence/attack/raw/attack-pattern_ATK-CAND-010_pre_20260619T090000.md",
+    "evidence/attack/raw/attack-pattern_ATK-CAND-010_post_20260619T090000.md"
   ],
   "five_state": "[?]",
   "unmatched_signal_refs": ["K8s-NetworkPolicy-missing"],
@@ -152,11 +153,49 @@ description: >
 }
 ```
 
+**evidence 文件命名统一为与 4a 相同格式**：
+- `evidence/attack/raw/attack-pattern_ATK-CAND-NNN_pre_时间戳.md`
+- `evidence/attack/raw/attack-pattern_ATK-CAND-NNN_post_时间戳.md`
+
 **ATK-CAND 编号规则**：
 - **编号必须连续** — 从 Phase 4a 最大编号 +1 开始，无断号
 - source 字段标记为 `llm_reasoning`（区别于 Phase 3 的 `cross_ref` 和 Phase 4a 的 `pattern_library`）
 - 每个 `[x]` 和 `[?]` 必须有独一无二的 ATK-CAND 编号
 - reasoning 字段必须写明 LLM 推理逻辑（不是"可能"，而是基于什么环境数据推导）
+
+#### 步骤 3b：改名回写 cross_ref（Phase 4b 改名场景）
+
+如果 Phase 4b 验证的 `attack_name`（写入 attack.json 的 `to_node`）与 `cross_ref.json` 中已有假设边的 `to_node`（`attack-{name}`）不一致（即 Phase 4b 发现实际攻击名与 Phase 3 假设名不同），**必须**执行改名回写：
+
+**检测改名**：
+1. 读取 `knowledge_graph/edges/cross_ref.json`，获取所有 `edge_type: "cross_ref"` 且 `to_node` 以 `attack-` 开头的边
+2. 对每条 cross_ref 假设边，检查其 `to_node`（如 `attack-etcd-data-exposure`）是否在本次 Phase 4b 生成的 attack.json 边的 `to_node` 中存在
+3. 如果存在 cross_ref 假设指向 `attack-{old_name}` 但 Phase 4b 验证写入的是 `attack-{new_name}`，且 `attack-{old_name}` 无对应的 attack_verify 边 → 识别为改名场景
+
+**回写规则**：
+1. 在 `cross_ref.json` 中追加新边，`from_node` 指向原合规规则，`to_node` 指向新 attack_name：
+   ```json
+   {
+     "edge_type": "cross_ref",
+     "from_node": "compliance-K8s-1.2.20",
+     "to_node": "attack-kine-db-exposure",
+     "attrs": {
+       "query": "XREF-001",
+       "severity": "critical",
+       "renamed_from": "attack-etcd-data-exposure",
+       "renamed_by": "phase_4b_llm_reasoning"
+     },
+     "timestamp": "2026-06-19T09:30:00Z"
+   }
+   ```
+2. `attrs.renamed_from` 标注原 attack_name（如 `attack-etcd-data-exposure`）
+3. `attrs.renamed_by` 固定为 `phase_4b_llm_reasoning`
+4. **保留旧边** — 原 `compliance-K8s-1.2.20 → attack-etcd-data-exposure` 边不删除，作为历史记录
+5. 回写后确保追溯链不断裂：`合规规则 → cross_ref(新) → attack(验证)`
+
+**约束**：
+- 改名场景**必须**回写 cross_ref，不允许只在 attack.json 中用新名而不更新 cross_ref
+- 此步骤修复"改名悬空"问题（attack-etcd-data-exposure 有假设但无验证，attack-kine-db-exposure 有验证但无假设）
 
 ---
 
@@ -179,6 +218,17 @@ description: >
 
 情节记忆用于跨会话累积：下次会话中类似环境可优先关注。
 **重要**：情节记忆仅影响优先级排序，绝不影响检测范围 — 不能因为上次未命中就跳过某个攻击面。
+
+---
+
+### 步骤 9：对抗性审查 loop（ARE 应用点 2）
+
+- 4b 生成 insights 后，独立子代理（Task(general)）审查每个 insight：
+  - 推理链是否有逻辑跳跃（Thought 到 action 缺中间推理）
+  - 结论是否有 SSH 输出支撑
+  - 是否与现有 49 模式重复（4b 应该是新模式）
+- 发现问题→返回 4b 修正→第二轮审查
+- ≤2 轮，每轮独立子代理（不共享上轮上下文，遵循 LOOP_POLICY self-contained 原则）
 
 ---
 

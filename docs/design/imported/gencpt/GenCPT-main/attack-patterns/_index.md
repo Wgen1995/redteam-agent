@@ -158,3 +158,39 @@ platforms: [k8s, docker, containerd]
 3. **晋升流程**：用户审批通过后，模式从 `_learned/` 移到对应攻击面正式目录，`confidence` 升级为 `high`
 4. **自净规则**：`hit_count ≥ 5` 且跨 `≥ 2` 环境晋升为 high；连续 5 次未命中降为 medium；连续 10 次降为 stale；连续 15 次问用户是否归档到 `_archived/`
 5. **索引同步**：晋升或归档后，须同步更新本 `_index.md` 各表格
+
+## 跨会话命中记录
+
+> 最新会话: sess-20260729141821
+
+| 模式名 | 命中会话 | 本次结果 | 累计命中 |
+|--------|---------|---------|---------|
+| privileged-container-escape | sess-20260729141821 | C1 confirmed | 2 |
+| capability-privesc | sess-20260729141821 | C1 confirmed | 2 |
+| hostpid-hostipc-escape | sess-20260729141821 | C1 confirmed | 2 |
+| hostnetwork-abuse | sess-20260729141821 | C2 confirmed | 2 |
+| hostpath-mount | sess-20260729141821 | C1 confirmed | 2 |
+| containerd-shim-escape | gencpt-20260728-155446 | C2 confirmed (L3) | 1 |
+| socket-escape | sess-20260729141821 | C2 confirmed | 2 |
+| k8s-rbac-abuse | gencpt-20260728-155446 | C1 confirmed | 1 |
+| k8s-anonymous-access | gencpt-20260728-155446 | C3 high_risk | 1 |
+| k8s-sa-exploit | gencpt-20260728-155446 | C2 confirmed | 1 |
+| ctr-tool-abuse | sess-20260729141821 | C1 confirmed | 2 |
+| lateral-move | sess-20260729141821 | C1 confirmed | 2 |
+| cloud-metadata | gencpt-20260728-155446 | disproved (非云环境) | 1 (證偽) |
+| secret-exfil | sess-20260729141821 | C1 confirmed | 2 |
+| etcd-data-exposure | sess-20260729141821 | C3 high_risk (SQLite) | 2 |
+| image-tag-mutation | sess-20260729141821 | C3 high_risk | 2 |
+| env-credential-leak | sess-20260729141821 | C1 confirmed | 1 |
+| resource-abuse | sess-20260729141821 | C3 high_risk | 1 |
+| fork-bomb | sess-20260729141821 | C3 high_risk | 1 |
+| configmap-data-exposure | gencpt-20260728-155446 | C3 high_risk (LLM) | 1 |
+| webhook-backdoor | gencpt-20260728-155446 | C3 high_risk (LLM) | 1 |
+| mutating-webhook-persist | gencpt-20260728-155446 | C3 high_risk (LLM) | 1 |
+| cronjob-persist | gencpt-20260728-155446 | C3 high_risk (LLM) | 1 |
+| daemonset-persist | gencpt-20260728-155446 | C3 high_risk (LLM) | 1 |
+| deployment-image-override | gencpt-20260728-155446 | C3 high_risk (LLM) | 1 |
+| k8s-ephemeral-container | gencpt-20260728-155446 | C3 high_risk (LLM) | 1 |
+| k8s-proxy-abuse | gencpt-20260728-155446 | C3 high_risk (LLM) | 1 |
+| kubectl-portforward-abuse | sess-20260729141821 | C2 confirmed | 2 |
+| tokenrequest-api-abuse | sess-20260729141821 | C2 confirmed | 2 |

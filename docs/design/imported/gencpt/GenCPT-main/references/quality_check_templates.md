@@ -53,7 +53,7 @@
 | # | 校验项 | 通过标准 |
 |---|-------|---------|
 | 1 | 源码发现非空（有源码时） | source_findings.json 含 ≥1 个发现节点 |
-| 2 | 扫描产物总大小 ≤8000 tokens | source_analysis.md 大小在限制内 |
+| 2 | source_analysis.md 含结构化摘要 | 每个发现 5-10 行摘要，详细数据写盘后以文件路径引用 |
 | 3 | source_scan_stats.md 含完整统计 | 含 scanned_files、high_value_files、findings_count |
 | 4 | 边引用的节点存在 | source_edges.json 中 from_node/to_node 在对应 nodes 文件中存在 |
 
@@ -283,6 +283,28 @@
 | 4 | 五态标记无 `[ ]` 残留 | 所有检查项有明确判定 |
 | 5 | QA 语义抽检完成 | qa_summary_report.md 含置信度评分 |
 | 6 | QA-OVERRIDE 数量 ≤3 | 回溯验证 override 超过 3 条标注为低置信 |
+
+---
+
+### Phase 8b — 攻击报告（report-attack）
+
+**MUST 输出文件**：
+
+| # | 文件路径 | 非空要求 |
+|---|---------|---------|
+| 1 | `reports/attack_report.md` | 含攻击验证结果 |
+| 2 | `reports/attack_report.json` | 含攻击验证结构化数据 |
+| 3 | `reports/poc_package/` | 打包 Phase 7 的 POC |
+
+**校验项**：
+
+| # | 校验项 | 通过标准 |
+|---|-------|---------|
+| 1 | 所有 ATK-CAND 有呈现 | attack_report.md/json 包含 Phase 4a/4b 产生的全部 ATK-CAND，无遗漏 |
+| 2 | 不可利用项有证伪依据 | 标记为"不可利用"的 ATK-CAND 附带 L0+ 证伪依据（SSH 命令输出证明前置条件不满足） |
+| 3 | 已阻断项有阻断机制 | 标记为"已阻断"的 ATK-CAND 写明阻断机制名称（AppArmor / Seccomp / NetworkPolicy 等） |
+| 4 | POC 包完整 | `reports/poc_package/` 含 Phase 7 全部 confirmed/condition_met 的 POC 脚本 + README + 清理步骤 |
+| 5 | 漏洞来源标识 | 每个 ATK-CAND 标注来源（pattern_library / llm_reasoning / learned / cross_ref / chain） |
 
 ---
 

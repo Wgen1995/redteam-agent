@@ -20,6 +20,12 @@
 | COMP-CAND 编号连续无遗漏 | COMP-CAND 从 001 起连续递增，无跳号无重复 | 写入 `evidence/qa/qa_structure_issues.md`，需补充缺失编号 |
 | 五态标记无 `[ ]` 残留 | 最终报告前所有 `[ ]` 必须闭环为 `[x]` / `[?]` / `[-]` / `[!]` | 阻断报告生成，返回对应 Phase 补充闭环 |
 | 合规判定覆盖全部规则 | `scope` 内所有平台规则均有判定结果（pass / fail / warn / na），总条数 = 规则总数 | 写入 `evidence/qa/qa_structure_issues.md`，需补充缺失判定 |
+| 采集完整性 | pods.json 节点数 = SSH `kubectl get pods -A --no-headers \| wc -l`；SA/Secret/Container/Service/NetworkPolicy 同理 | 返回 Phase 1a 补采 |
+| 证据完整性 | 每个 Phase 的 `raw/` 目录文件数 ≥ SSH 命令批次数 | 返回对应 Phase 补落盘 |
+| 证据链完整性 | 每个 `[x]` finding 节点的 `evidence` 字段非空且指向实际文件 | 返回对应 Phase 补证据 |
+| 节点字段完整性 | Pod security_context 含全部 13 字段；SA 有 secrets 字段；finding 有 evidence 字段 | 返回 Phase 1a/2 补字段 |
+| 边格式一致性 | 所有边用 `attrs{}` 嵌套，强制字段在 attrs 内 | 返回对应 Phase 修正格式 |
+| KG 节点引用完整性 | 所有边的 from_node/to_node 在 nodes 中存在 | 返回对应 Phase 补建节点 |
 
 **结构校验输出**：`evidence/qa/qa_structure_check_{phase}.md`
 
@@ -81,10 +87,12 @@
 
 | 校验维度 | 校验规则 | 失败处理 |
 |---------|---------|---------|
-| 攻击面覆盖矩阵无空白 | 7 大攻击面 × 子类型的每个单元格都有验证等级标注 | 阻断报告生成 |
-| 合规覆盖矩阵无空白 | CIS Benchmark 每组每条规则都有判定状态 | 阻断报告生成 |
-| "不可利用"有证伪依据 | 矩阵中标记为"不可利用"的单元格必须附带 L0+ 证伪依据 | 标记为校验失败 |
-| "未检测"有原因和建议补充 | 矩阵中标记为"未检测"的单元格必须注明原因和建议补充措施 | 标记为校验警告 |
+| 合规规则覆盖率 | 100%（226 条全有判定） | 返回 Phase 2 补缺失规则 |
+| 攻击面模式覆盖率 | 100%（49 模式都有验证结论） | 返回 Phase 4a/4b 补缺失模式 |
+| 五态标记闭环率 | 100%（无 `[ ]` 残留） | 返回对应 Phase 补闭环 |
+| ATK-CAND 编号连续性 | 100%（无跳号无重复） | 补缺失编号 |
+| 证据链完整率 | ≥90%（`[x]` 节点有 evidence 字段） | 返回对应 Phase 补证据 |
+| KG 节点引用完整性 | 100%（所有边引用的节点在 nodes 中存在） | 返回对应 Phase 补建节点 |
 
 ---
 
