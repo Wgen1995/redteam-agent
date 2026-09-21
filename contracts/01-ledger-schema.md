@@ -98,7 +98,7 @@
 | detail | 文本 | — | 详情 |
 | status | 枚举 | candidate→pending→active→done/blocked，或 candidate→rejected（附理由）/deferred（附激活谓词）；blocked 不可自动复活，复活须 approvals 引用 | 状态机 |
 | engine | 文本 | 目标引擎名 | 派发引擎 |
-| kind | 枚举 | ∈{recon,surface,matrix-test,deep-dive,authz-diff} | 引擎段映射 §6.3 |
+| kind | 枚举 | ∈{recon,surface,matrix-test,deep-dive,authz-diff/nday-verify} | 引擎段映射 §6.3 |
 | origin | 枚举 | ∈{entity,concept,precedent,adjacency,llm,recon-event,mixed} | 假设来源 |
 | score | 浮点 | 0-1 | 先验分（命令计算，公式见 §8.7） |
 | via | 文本 | 命中知识页引用 | 知识溯源 |
@@ -140,6 +140,7 @@
 | exploitation_status | 枚举 | ∈{verified,suspected,ruled_out} | Strix 三态；由 P4 重放门维护：VERIFIED 才维持 C1，REJECTED 降 C3 或转 fact |
 | auth_context | 文本 | 空（未认证）或 `CRED-{id}` | 身份矩阵差分产物 |
 | dedup_key | 文本 | affected_asset+vuln_class+variant；命令计算 | finding 级键 |
+| vuln_ref | 多值 | CVE/CWE/GHSA 编号（`;` 分隔）；非 Nday finding 留空 | Nday 结构化引用（v2 勘误 2026-09-23）：可聚合/复判/沉淀；编号真实性由 P6 联网核验把关 |
 | scope_check | 枚举 | ∈{in_scope,boundary-verified} | 范围判定 |
 | description_brief | 文本 | ≤200 字 | 叙述进卡片 |
 | reproducible_steps | 多值 | ≥1 强制 | 无可复现步骤的观察一律是 fact（铁律 4） |

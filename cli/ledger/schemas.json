@@ -67,6 +67,7 @@
   "exploitation_status",
   "auth_context",
   "dedup_key",
+  "vuln_ref",
   "scope_check",
   "description_brief",
   "reproducible_steps",

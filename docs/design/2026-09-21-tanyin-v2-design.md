@@ -65,7 +65,7 @@
 
 **不做的边界**：宿主插件、独立二进制、多 agent 运行时、GUI（烛龙是 GUI 未来）、多 session 并行（首发单 session 串行，graph.ndjson 行级合并预留）、业务逻辑漏洞全自动发现（biz 标记+人工为主）、执行沙箱。守卫以执行通道级 CLI + 宿主 hook + egress 分档形式做（ADR-P3）。
 
-**开局不定死（探索迭代总纲句，详 §5.4）**：P0-P2 只铸三类锚点——授权边界（可修订）/词表/矩阵基线；攻击面生命周期=整个交战：P3 循环全程经 asset-added / cred-obtained / scope-amended 事件回边生长图谱与子矩阵，「像真人头脑风暴」是 D4 的原始承诺，测绘与规划不是一次性前置步骤。
+**开局不定死（探索迭代总纲句，详 §5.4）**：P0-P2 只铸三类锚点——授权边界（可修订）/词表/矩阵基线；攻击面生命周期=整个交战：P3 循环全程经 asset-added / cred-obtained / scope-amended 事件回边生长图谱与子矩阵，「像真人头脑风暴」是 D4 的原始承诺，测绘与规划不是一次性前置步骤。；asset-added 携带组件指纹（CPE/版本入 assets.meta）时触发 Nday 通路：知识库先例页+本地 CVE 快照匹配→自动生成 kind=nday-verify 候选 intent（P3 生长第四源；匹配源离线，测试中不依赖联网——联网仅 P6 技法页核验）
 
 ---
 
@@ -225,7 +225,7 @@ tanyin/                                  ├── engagements/<goal-id>/       
 字段：`id, title, detail, status, engine, kind, origin, score, via, dedup_key, budget_share, activation, reason, schema_version, created`
 
 - status：candidate→pending→active→done/blocked，或 candidate→rejected(附理由)/deferred(附激活谓词)；blocked 不可自动复活，复活须 approvals 引用。
-- engine=目标引擎名；kind∈{recon,surface,matrix-test,deep-dive,**authz-diff**}（引擎段映射 §6.3）；origin∈{entity,concept,precedent,adjacency,llm,recon-event,mixed}；score=先验分 0-1（命令计算，公式见 §8.7）；不打分的 intent（如 authz-diff 候选）score 留空=未评估，聚合时排除；via=命中知识页引用；dedup_key=资产+技法类（命令机械计算，重复键 REJECT——LLM 只提议不判重）；**budget_share=`token;requests;hours[;dollars]`**（预算树叶节点）；activation=结构化谓词 `field;op;value`（deferred 用，命令评估）；reason=状态变更原因（rejected/blocked/deferred 强制）。
+- engine=目标引擎名；kind∈{recon,surface,matrix-test,deep-dive,**authz-diff**,nday-verify}（引擎段映射 §6.3）；origin∈{entity,concept,precedent,adjacency,llm,recon-event,mixed}；score=先验分 0-1（命令计算，公式见 §8.7）；不打分的 intent（如 authz-diff 候选）score 留空=未评估，聚合时排除；via=命中知识页引用；dedup_key=资产+技法类（命令机械计算，重复键 REJECT——LLM 只提议不判重）；**budget_share=`token;requests;hours[;dollars]`**（预算树叶节点）；activation=结构化谓词 `field;op;value`（deferred 用，命令评估）；reason=状态变更原因（rejected/blocked/deferred 强制）。
 
 ### 4.6 facts.tsv
 
@@ -233,12 +233,12 @@ tanyin/                                  ├── engagements/<goal-id>/       
 
 ### 4.7 findings.tsv
 
-字段：`id, intent_id, title, confidence, impact, exploitation_status, auth_context, dedup_key, scope_check, description_brief, reproducible_steps, affected_asset_id, evidence_ids, control_evidence_ids, card_path, status, schema_version, created`
+字段：`id, intent_id, title, confidence, impact, exploitation_status, auth_context, dedup_key, vuln_ref, scope_check, description_brief, reproducible_steps, affected_asset_id, evidence_ids, control_evidence_ids, card_path, status, schema_version, created`
 
 - 两维评级：confidence∈{C1 实证复现, C2 条件实证（须附条件可达性证据否则降 C3）, C3 风险线索, ➖🛑 不可利用/已阻断（负结果同样入账）} × impact∈{高,中,低}（CVSS 式影响域）。
 - **exploitation_status**∈{verified,suspected,ruled_out}（Strix 三态；由 P4 重放门维护：VERIFIED 才维持 C1，REJECTED 降 C3 或转 fact）。
 - **auth_context**=空（未认证）或 `CRED-{id}`（身份矩阵差分产物）。
-- dedup_key=finding 级键（affected_asset+vuln_class+variant，命令计算）；scope_check∈{in_scope,boundary-verified}；description_brief≤200 字（叙述进卡片）；reproducible_steps≥1 强制；evidence_ids/control_evidence_ids 多值 `;` 分隔（control≡counterevidence 统一命名）；card_path=findings-cards/FD-{id}.md；status∈{active,superseded}（合并=tombstone 不删行）。
+- dedup_key=finding 级键（affected_asset+vuln_class+variant，命令计算）；vuln_ref=Nday 结构化引用（CVE/CWE/GHSA，`;` 分隔，非 Nday 留空——机器可聚合/复判，编号真实性由 P6 联网核验把关）；scope_check∈{in_scope,boundary-verified}；description_brief≤200 字（叙述进卡片）；reproducible_steps≥1 强制；evidence_ids/control_evidence_ids 多值 `;` 分隔（control≡counterevidence 统一命名）；card_path=findings-cards/FD-{id}.md；status∈{active,superseded}（合并=tombstone 不删行）。
 
 ### 4.8 assets.tsv / edges.tsv / approvals.tsv
 

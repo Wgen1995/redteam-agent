@@ -44,3 +44,7 @@
 5. PG 规范形 / budget scope 分工 / score 空值语义 / 四要素卡片承载 / walcode·CodeBuddy Tier 1 起步。
 6. vault 条目格式与 hash-recheck 范围等推导项随 02a/03 转正（【推导】标注保留可追溯）。
 7. state.md 结构留批次 3 冻结；知识库 schema 留批次 5。
+
+## v2 勘误（2026-09-23·批次 1 施工期）
+
+- findings + 列（CVE/CWE/GHSA  分隔，非 Nday 留空）；intents kind 枚举 +；P3 第四生成源=组件指纹→Nday 候选 intent（匹配源离线=先例页+本地 CVE 快照，联网仅 P6 核验）。字段总数 146→**147**。零存量数据期勘误，不升 schema_version。

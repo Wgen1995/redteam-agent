@@ -16,7 +16,7 @@ class T1Core(unittest.TestCase):
 
     def test_schemas_frozen(self):
         self.assertEqual(len(core.TABLES), 13)
-        self.assertEqual(sum(len(v) for v in core.TABLES.values()), 146)
+        self.assertEqual(sum(len(v) for v in core.TABLES.values()), 147)
         self.assertIn("schema_version", core.TABLES["timeline.tsv"])
         self.assertIn("frozen_at", core.TABLES["matrix.tsv"])
         self.assertIn("material", core.TABLES["creds.tsv"])
