@@ -1,0 +1,1 @@
+EV-g1-0001	子域清单	command	2026-09-23T01:00:00Z	internet	curl -s https://crt.example/q?d=shop.example	single	cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc	dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd		evidence/EV-g1-0001.md		PG-g1-0001	12 subdomains	2	

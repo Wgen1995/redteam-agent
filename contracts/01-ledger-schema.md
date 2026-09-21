@@ -231,6 +231,7 @@
 | intent_id | 文本（行 id 引用） | 引用 INT | 置态来源 intent |
 | schema_version | 整数 | =2（§4.1） | 定稿值 |
 | updated | 时间戳 | — | 更新时间（本表用 updated 非 created，定稿字段清单即如此） |
+| frozen_at | 时间戳 | 锚点行冻结时间戳，空=未冻结（§5.4 锚点冻结载体） | 终审裁决补列（contracts-v2） |
 
 补充约束（§4.10）：空必须消灭（终态门禁）；「-」「!」进 P4 抽查（比例 §5.2 常量 p4_sample_ratio=0.2）；基线冻结（P2 后主矩阵不随新资产扩张，新资产走子矩阵行 reason 前缀 `submatrix:`，冻结的是覆盖率锚点不是探索）；身份矩阵差分按标准格落账（reason 前缀 `authz-diff:`），不设独立矩阵表；闭合率=已置态格/全格，按 WSTG 全集报告。
 
@@ -247,6 +248,7 @@
 | revert_cmd | 文本 | 分层登记：外部副作用操作（碰目标系统：发请求/落文件/改配置）必填；无逆者填 `irreversible` 并强制 L3 逐条审批；纯账本状态变化留空——其逆=追加新行（§0.3 口径4/§5.5 P6.0） | 该写操作的逆操作命令 |
 | prev_hash | 文本（hex） | 链式哈希前值 | 链 |
 | hash | 文本（hex） | **哈希输入=本行全部字段含 revert_cmd**——改任何历史行即断链可见 | 链式哈希 |
+| schema_version | 枚举 | =2（全表覆盖） | 终审裁决补列（contracts-v2） |
 
 补充约束（§4.10）：timeline.tsv 是第一事实源，全部 13 表可由 timeline+提交文件全量重建（§4.1 journal 职能）。
 
@@ -263,6 +265,7 @@
 | dollars_delta | 数值 | 默认 0 | 第四维关闭不累计；开启后由 driver/宿主计费回填 |
 | scope | 文本 | =`goal` 或 `INT-{id}` | 预算树：intent 消耗计入自身份额并上卷 goal 根 |
 | note | 文本 | — | 备注 |
+| schema_version | 枚举 | =2（全表覆盖） | 终审裁决补列（contracts-v2） |
 
 补充约束（§4.10）：ledger-budget-check 对照 goals 三元组+各叶份额输出树形余量。
 
@@ -287,6 +290,7 @@
 | note | 文本 | — | 备注 |
 | schema_version | 整数 | =2（§4.1） | 定稿值 |
 | created | 时间戳 | — | 创建时间 |
+| material | 枚举 | ntlm-hash|ssh-key|x509|空（材质标注，kind 二分不变） | 终审裁决补列（contracts-v2） |
 
 补充约束（§4.10）：
 - 硬门：派发 authz-diff intent 前总控校验引用的 CRED 行 status=active 且 permitted_actions 覆盖计划动作；凭据失效→依赖 intent 转 blocked 附原因。

@@ -1,0 +1,2 @@
+S-g1-0001	include	*.shop.example				主域及子域	2	
+S-g1-0002	include	10.10.0.0/16	admin\;operator	read\;probe		内网分区A	2	
