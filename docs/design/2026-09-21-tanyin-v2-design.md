@@ -40,7 +40,7 @@
 | 1 | creds/sessions 实体建模 | **13 表**：creds 单表双 kind（static-cred/session），sessions 不单设表（§4.2 CB-1） | session=短时效凭据，字段同构；单表避免重复校验逻辑、守住 13 表口径 |
 | 2 | 账本命令面 | **37 命令**（§5.3）：含 add-cred/set-cred-status/amend-scope/redact-scan/state-rebuild/set-replay-state 六条专用命令 | creds/修订审计/交付终检/重建校验/重放门需要命令落点 |
 | 3 | budget.tsv 结构 | budget.tsv 含 scope 列（goal/INT-id）与 dollars_delta 列（默认 0）（§4.10） | 预算树父子切割与 $ 第四维关停需要载体 |
-| 4 | revert_cmd 落位 | timeline.tsv 第 5 列，哈希输入含全行字段（§4.10） | 逆操作登记进哈希链，改任何历史行即断链可见 |
+| 4 | revert_cmd 落位（分层） | 外部副作用操作（碰目标系统：发请求/落文件/改配置）必须登记 revert_cmd（timeline 第 5 列，哈希输入含全行）；纯账本状态变化免登记，其逆=追加新行（§4.10/§5.5 P6.0） | 危险操作逐条可逆可审计；账本内噪音减半 |
 | 5 | 交战区位置 | 交战区在安装树外：$TANYIN_HOME/engagements/<goal-id>/（§3.4） | git pull/升级不冲突，状态不混居程序文件 |
 | 6 | 报告守门声明 | 固定段落（执法层清单+各层拦截计数+canary 结果），数据出自 goals.guard_tier+timeline（铁律 5） | 声明可由账本确定性重建，可实现可验证 |
 | 7 | 身份矩阵落账 | authz-diff 置格语义（reason 前缀 authz-diff:），不设身份矩阵独立表（§4.10/§6.6） | 复用既有矩阵机制，词汇表不膨胀 |
@@ -255,12 +255,13 @@ tanyin/                                  ├── engagements/<goal-id>/       
 ### 4.10 matrix.tsv / timeline.tsv / budget.tsv / creds.tsv
 
 - **matrix.tsv**（长表）：`attack_surface, vuln_class, state, reason, intent_id, schema_version, updated`——state∈{x 已确认（含负结果）, ? 疑似, - 不适用附理由, ! 环境干扰附记录, 空=未检查}；vuln_class 从 shared/VOCAB.md（WSTG v4.2 全集，版本化）钉死；空必须消灭（终态门禁）；「-」「!」进 P4 抽查（比例 §5.2 常量）；**基线冻结**（P2 后主矩阵不随新资产扩张，新资产走子矩阵行 reason 前缀 `submatrix:`，冻结的是覆盖率锚点不是探索）；身份矩阵差分按标准格落账（reason 前缀 `authz-diff:`），不设独立矩阵表；闭合率=已置态格/全格，按 WSTG 全集报告。
-- **timeline.tsv**：`timestamp, actor, phase, event, revert_cmd, prev_hash, hash`——第一事实源+审计链+清理台账三职合一；actor∈{总控,子代理,CLI,人工}；**revert_cmd**=该写操作的逆操作命令（所有写操作强制登记；无逆操作者填 `irreversible` 并强制 L3 逐条审批）；prev_hash+hash 链式哈希（**哈希输入=本行全部字段含 revert_cmd**——改任何历史行即断链可见）；对外请求记 `request:` 事件；P0 落账 SKILL 版本+tools.lock 哈希；managed-restart 事件记 spawn 方式（auto/manual）。
+- **timeline.tsv**：`timestamp, actor, phase, event, revert_cmd, prev_hash, hash`——第一事实源+审计链+清理台账三职合一；actor∈{总控,子代理,CLI,人工}；**revert_cmd**=该写操作的逆操作命令（分层登记：外部副作用操作必填，无逆者填 `irreversible` 并强制 L3 逐条审批；纯账本状态变化留空——其逆=追加新行）；prev_hash+hash 链式哈希（**哈希输入=本行全部字段含 revert_cmd**——改任何历史行即断链可见）；对外请求记 `request:` 事件；P0 落账 SKILL 版本+tools.lock 哈希；managed-restart 事件记 spawn 方式（auto/manual）。
 - **budget.tsv**：`timestamp, token_delta, requests_delta, hours_delta, dollars_delta, scope, note`——scope=`goal` 或 `INT-{id}`（**预算树**：intent 消耗计入自身份额并上卷 goal 根）；dollars_delta 默认 0（第四维关闭不累计；开启后由 driver/宿主计费回填）；ledger-budget-check 对照 goals 三元组+各叶份额输出树形余量。
 - **creds.tsv（新增）**：`id, kind, role, username_ref, secret_ref, scope_asset, obtained_via_intent, parent_cred, valid_from, valid_until, status, permitted_actions, note, schema_version, created`
   - kind∈{`static-cred`（客户提供：账号密码/API key）,`session`（登录态：cookie/token，由 static-cred 换取或攻击所得）}；role=业务角色标签（`admin/operator/user/anonymous`…，合法集合由 P0 八问⑧+account-grant 行确定）。
   - username_ref=账号名或脱敏代号；**secret_ref=`{{vault:cred-N}}` 占位符→vault/ 加密条目**（真值永不进账本，N=creds 行序号）；scope_asset=凭据适用资产；obtained_via_intent=获取来源（攻击所得凭据可追溯）；parent_cred=会话的父凭据 id；status∈{active,expired,invalidated,revoked}（事件溯源）；permitted_actions=该身份允许动作（对照 account-grant）。
   - 硬门：派发 authz-diff intent 前总控校验引用的 CRED 行 status=active 且 permitted_actions 覆盖计划动作；凭据失效→依赖 intent 转 blocked 附原因。
+  - 材质约定（kind 二分不变）：NTLM hash／私钥／客户端证书等特殊材料仍记 static-cred，材质用 meta 位标注（如 material=ntlm-hash|ssh-key|x509）——批次 4 差分配对按 role×端点，不按材质。
 
 ### 4.11 findings 外置卡片契约（「TSV 索引+外置卡片」双轨，ADR-P4①）
 
@@ -425,7 +426,7 @@ gates:
       note: "未签发报告禁止导出（cli 层：导出命令校验签发行）"
   P6.0:
     title: 清理门
-    duty: "ledger-cleanup-checklist 从 timeline 提取全部写操作（含 revert_cmd）→ 逆序执行 revert_cmd
+    duty: "ledger-cleanup-checklist 从 timeline 提取全部外部副作用写操作（revert_cmd 非空行）→ 逆序执行 revert_cmd；纯账本状态行无需回滚
            +结果验证 → 全核销或人工豁免（approvals 落账）→ cleanup.md 清理声明附报告"
     exit:
       assert:
