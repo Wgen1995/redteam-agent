@@ -49,6 +49,12 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 .card .accept .sec{margin-top:0}
 .fill{color:#cbd5e1;letter-spacing:1px}
 .tag.ok{background:#dcfce7;color:#166534}.tag.eng{background:#e0e7ff;color:#3730a3}.tag.v1{background:#f1f5f9;color:#475569}
+.zonebar{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 8px}
+.zonebar a{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border:1.5px solid #e2e8f0;border-radius:12px;background:#fff;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:border-color .15s}
+.zonebar a:hover{border-color:#b91c1c}
+.zonebar b{color:#b91c1c;font-size:15px}
+.zonebar small{color:#64748b;font-size:12px}
+@media(max-width:760px){.zonebar{grid-template-columns:1fr}}
 </style>
 <style>.tblwrap{overflow-x:auto}@media(max-width:760px){table{display:block;overflow-x:auto;max-width:100%}p,li,td{overflow-wrap:anywhere}}.cards.trio{grid-template-columns:repeat(3,1fr)}@media(max-width:900px){.cards.trio{grid-template-columns:1fr}}</style>
 <style>@media(max-width:760px){.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}</style>
@@ -115,6 +121,12 @@ blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border
   </div>
 </header>
 
+<div class="zonebar">
+  <a href="#v2zone"><b>① v2 权威视图</b><small>本页下方 · 唯一权威定稿</small></a>
+  <a href="../docs/design/html/index.html"><b>② 设计文档站</b><small>四组文档 · 230+ 章节可搜</small></a>
+  <a href="../docs/design/imported/TanYin/panorama/index.html"><b>③ TanYin v1 原版十页</b><small>另一台电脑原稿 · 参考保留</small></a>
+</div>
+
 <blockquote>🧭 <b>导读</b>：你已走到整套全景的<b>工程图纸层</b>——前面六页回答「学什么、用什么」，这一页回答「我们要造什么、按什么规格造」。走法：先看下方三张定位卡定方位 → 进「v2 权威视图」从决策卡读到批次条（为什么长这样 → 长成什么样 → 何时动手）→ 有疑义再下探「v1 原版参考」对口径。与实施的关系：当前是<b>图纸定稿、工地未开工</b>（批次 0-7 全部待启动）——开工后本页即进度看板，每完成一批回来点亮一格。</blockquote>
 
 <div class="note"><b>本页是什么：</b>探隐设计的<b>双区权威视图</b>——主体区「<b>v2 权威视图</b>」（四张决策卡＋12 张机制速览卡＋批次 0-7 进度追踪），参考区「<b>v1 原版参考</b>」（原版十页全景入口与文档链，降级保留）。内容浓缩自 <a href="../docs/design/2026-09-21-tanyin-v2-design.md">v2 综合设计定稿</a>（701 行，唯一权威）与<a href="../docs/design/2026-09-20-tanyin-bprime-fusion.md">融合裁决</a>（401 行），<b>口径冲突时一律以 v2 定稿原文为准</b>；深读走设计文档站（构建中）或 MD 原文。</div>
@@ -166,7 +178,7 @@ blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border
   </div>
 </div>
 
-<h2>v2 权威视图 · 唯一权威定稿（2026-09-21）</h2>
+<h2 id="v2zone">v2 权威视图 · 唯一权威定稿（2026-09-21）</h2>
 <blockquote>🧭 <b>导语</b>：本区是全页主体，按「先定方向、再看骨架、最后对节奏」走——四张决策卡回答为什么这样定（值得逐字读），12 张机制卡当索引用（每卡一句，深读走「详见」；第 12 卡「探索迭代」是这套设计的灵魂——头脑风暴不变式），批次进度条只盯一件事：什么时候轮到你动手。</blockquote>
 <p>本区是页面主体：决策记录（用户拍板四条最高约束）→ 核心机制速览（12 张卡，每卡一句＋详见）→ 实施批次进度追踪（0-7）。全部浓缩自 v2 定稿，执法权威与口径以原文为准。</p>
 
