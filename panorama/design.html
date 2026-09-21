@@ -227,35 +227,35 @@ blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border
     <div class="icon">🛡️</div>
     <h4>四层执法档位 · egress 默认开</h4>
     <p>L-账本(Tier 0)→L-执行通道(Tier 1)→L-宿主 hook(Tier 2)→L-egress 代理(Tier 3) 纵深分档：Tier 0+1 恒在不可关，Tier 3 默认开启（DSH 可显式降档），实际档位写入 goals.guard_tier 并进报告守门声明。</p>
-    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#8-5-四层-scope-执法-档位表-r7-adr-p3-p4④">详见 · v2 §8.5 四层执法（文档站）→</a>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#8-5-四层-scope-执法-档位表-adr-p3-p4④">详见 · v2 §8.5 四层执法（文档站）→</a>
   </div>
 
   <div class="card">
     <div class="icon">🔑</div>
     <h4>{{vault:cred-N}} 四关卡</h4>
     <p>唯一占位符语法贯穿全链路：执行前回注→落盘前掩码→上下文前 tokenize→交付前终检（redact-scan），加输出兜底重 tokenize 与 withheld 降级不拒绝——凭据真值永不进账本。</p>
-    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#8-4-vault-cred-n-四关卡-r3-全链路落地">详见 · v2 §8.4 凭据治理（文档站）→</a>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#8-4-vault-cred-n-四关卡-全链路落地">详见 · v2 §8.4 凭据治理（文档站）→</a>
   </div>
 
   <div class="card">
     <div class="icon">🌳</div>
     <h4>预算树 · $ 默认关</h4>
     <p>token／requests／hours 三元组树化（goal 为根、intent 预算份额为叶），$ 第四维默认关（dollars_delta 默认 0）；先验分＝确定性因子×期望 impact÷预估成本全部由命令计算，budget-exhausted 是唯一预算终态。</p>
-    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#8-7-预算树-r4-adr-p4⑥">详见 · v2 §8.7 预算树（文档站）→</a>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#8-7-预算树-adr-p4⑥">详见 · v2 §8.7 预算树（文档站）→</a>
   </div>
 
   <div class="card">
     <div class="icon">🧪</div>
     <h4>POC 四要素＋独立重放门</h4>
     <p>network_position／preconditions／raw_request／expected.matcher 进 EV 卡片 front-matter；P4 由 fresh 隔离子代理只拿卡片盲重放，VERIFIED／REPAIRED／REJECTED 三态落账，REJECTED 降 C3 或转 fact。</p>
-    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#4-11-findings-外置卡片契约-b-六字段映射-adr-p4①-tsv-索引-外置卡片-双轨">详见 · v2 §4.11 卡片契约（文档站）→</a>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#4-11-findings-外置卡片契约-tsv-索引-外置卡片-双轨-adr-p4①">详见 · v2 §4.11 卡片契约（文档站）→</a>
   </div>
 
   <div class="card">
     <div class="icon">🎯</div>
     <h4>三层验收 · TSecBench 对齐</h4>
     <p>L1 黄金夹具（账本命令字节级回归）→ L2 交战级 evals（CI 门禁：金标召回／canary 零容忍／kill-9 保真／token 效率）→ L3 TSecBench 六域外部对齐（多阶段渗透为主指标），不绿不合入。</p>
-    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#9-验收体系-三层-全部-ci-门禁化-r5-adr-p4⑦">详见 · v2 §9 验收体系（文档站）→</a>
+    <a class="go" href="../docs/design/html/2026-09-21-tanyin-v2-design.html#9-验收体系-三层-全部-ci-门禁化-adr-p4⑦">详见 · v2 §9 验收体系（文档站）→</a>
   </div>
   <div class="card" style="border:1.5px solid #2563eb">
     <div class="icon">🧠</div>
@@ -378,7 +378,7 @@ blockquote{border-left:4px solid #b91c1c;background:#fef2f2;color:#7f1d1d;border
 
 <!-- 设计文档站（docs/design/html/）构建约定：本页决策卡/机制卡的「详见」链接统一指向
      2026-09-21-tanyin-v2-design.html 的章节锚点，锚点命名规则 #sec-N[-M] 对应该 MD 的章节号
-     （如 #8-5-四层-scope-执法-档位表-r7-adr-p3-p4④ = §8.5 四层执法、#6-6-身份矩阵差分子流程-契约批次-0-定死-实现批次-4-adr-p4③ = §6.6 身份矩阵差分）。站点构建时请按此约定生成章节 id。 -->
+     （如 #8-5-四层-scope-执法-档位表-adr-p3-p4④ = §8.5 四层执法、#6-6-身份矩阵差分子流程-契约批次-0-定死-实现批次-4-adr-p4③ = §6.6 身份矩阵差分）。站点构建时请按此约定生成章节 id。 -->
 <h2>设计文档站 · 入口</h2>
 <div class="cards" style="grid-template-columns:1fr">
   <div class="card">
