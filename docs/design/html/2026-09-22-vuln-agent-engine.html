@@ -62,6 +62,7 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 <a class="l2" href="#4-llm-调用隔离-opencode_wrapper">4 LLM 调用隔离（opencode_wrapper）</a>
 <a class="l2" href="#5-持久化与幂等-workspace-py">5 持久化与幂等（workspace.py）</a>
 <a class="l2" href="#6-结论前缀与分级体系-现行版">6 结论前缀与分级体系（现行版）</a>
+<a class="l2" href="#6a-判定规则库-哨兵模式-按需加载">6A 判定规则库（哨兵模式·按需加载）</a>
 <a class="l2" href="#7-与-v1-整理稿差异对照">7 与 v1 整理稿差异对照</a>
 <a class="l2" href="#8-与探隐-v2-的衔接">8 与探隐 v2 的衔接</a></nav>
 </aside>
@@ -136,6 +137,10 @@ opencode_wrapper.py (临时 profile -&gt; 子进程 CLI -&gt; LLM)
 <h3 id="3-2-phase-1-surface_discover-攻击面识别">3.2 Phase 1 — surface_discover（攻击面识别）</h3>
 <p><b>目标</b>：智能分析项目结构，按体量选择识别策略，枚举所有攻击面（REST/MQ/gRPC/WebSocket/GraphQL/SCRIPT/TOOL/CRON/CLI）。</p>
 <table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>模板</td><td>prompts/identify-surfaces.txt</td></tr><tr><td>变量</td><td>{target_work_dir} {extra_prompt}</td></tr><tr><td>输出</td><td>discovered_surfaces/*.md + meta/excluded-paths.md</td></tr><tr><td>幂等</td><td>.surface_discover_done 存在即跳过</td></tr></tbody></table>
+<p><b>判定标准（prompt 原文口径）</b>：攻击面 = 信任边界穿越点（攻击者可控数据进入系统的入口）。典型入口：Web Controller/Handler、gRPC/MQ/WebSocket handler、SDK 导出公共 API、CLI main、独立脚本、自定义协议服务端。<b>不计入</b>：配置文件、数据模型、纯工具类、内部 Service、定时任务、Filter；<b>必须识别</b>：SDK 导出 API 与部署配置（Dockerfile 等）。</p>
+<p><b>11 类攻击面与每类补充字段</b>（输出文件 {type}-{category}-{slug}.md，type=iface/noniface）：</p>
+<table><thead><tr><th>分类</th><th>补充字段</th></tr></thead><tbody><tr><td>REST</td><td>入口（Controller 文件:行号:函数）、接口定义（swagger.yaml）</td></tr><tr><td>MQ</td><td>队列/Topic（order.created）、消费者（OrderHandler.onCreated）</td></tr><tr><td>gRPC</td><td>服务（UserService）、方法（GetUser）、Proto（user.proto）</td></tr><tr><td>WebSocket</td><td>端点（/ws/chat）、处理器（ChatHandler）</td></tr><tr><td>GraphQL</td><td>类型（Query/Mutation）、字段（users）、Resolver（UserResolver）</td></tr><tr><td>SCRIPT</td><td>脚本名（backup.sh）、语言、入口路径</td></tr><tr><td>TOOL</td><td>工具名、语言、入口（cmd/agent/main.go:15 main()）</td></tr><tr><td>CRON</td><td>表达式（*/5 * * * *）、命令、crontab 文件</td></tr><tr><td>CLI</td><td>命令名、入口（cli/main.go:8 main()）</td></tr><tr><td>SDK</td><td>包名（@acme/sdk）、导出（createUser(data)）、入口</td></tr><tr><td>DEPLOY</td><td>文件（Dockerfile）、类别（容器/编排/网关）、暴露端口与入口命令</td></tr></tbody></table>
+<p>通用字段必填：类型/分类/URL（接口类）/参数（{位置}: {参数名}({约束})，Swagger 发现时校验约束全提取）/来源（文件:行号:函数名）/描述/发现。</p>
 <p>检测逻辑（单次 LLM 调用每 work_dir）：</p>
 <ol><li>扫描目录结构、文件规模、技术栈（Spring Boot/Django/Go…），评估代码体量</li><li>制定派发策略：小项目单次完整识别；中项目按顶层模块分批；大项目按子目录派发子任务独立识别后汇总</li><li>枚举攻击面（仅识别不深析），每条目写 discovered_surfaces/{type}-{category}-{slug}.md</li></ol>
 <p>产物示例：</p>
@@ -215,6 +220,11 @@ opencode_wrapper.py (临时 profile -&gt; 子进程 CLI -&gt; LLM)
 <h2 id="6-结论前缀与分级体系-现行版">6 结论前缀与分级体系（现行版）</h2>
 <table><thead><tr><th>层</th><th>前缀</th><th>语义</th></tr></thead><tbody><tr><td>分析</td><td>VULN-</td><td>确认有漏洞</td></tr><tr><td>分析</td><td>NOVULN-</td><td>确认无漏洞（承担旧 DISMISSED-/CLEAN- 的"排除"语义）</td></tr><tr><td>分析</td><td>SUSPECTED-</td><td>无法确认（承担旧"存疑"语义）</td></tr><tr><td>复核</td><td>{前缀}-{分析文件名}</td><td>复核改名即结论变更，可嵌套</td></tr><tr><td>后处理</td><td>POST-</td><td>自定义后处理产物</td></tr></tbody></table>
 <p>代码侧正则多方一致：vuln_analyze.py / review_vuln.py / report.py / workspace.py 均只认 VULN/NOVULN/SUSPECTED 三前缀。旧稿的 DISMISSED-/CLEAN- 在本版零命中。</p>
+<h2 id="6a-判定规则库-哨兵模式-按需加载">6A 判定规则库（哨兵模式·按需加载）</h2>
+<p><b>哨兵纪律</b>：规则索引只列需特别关注的模式，不是完整清单；命中才按需加载 references/vuln_rules/ 对应规则文件，<b>禁止一次性加载全部规则文件</b>（省 token）。</p>
+<p><b>代码特征哨兵（14 个规则文件）</b>：</p>
+<table><thead><tr><th>触发特征</th><th>规则文件</th></tr></thead><tbody><tr><td>Java 数组方式执行命令</td><td>java-command-array.md</td></tr><tr><td>代码中直接看到 /tmp 路径（非变量引用）</td><td>tmp-privesc.md</td></tr><tr><td>HTTP 参数作为循环条件</td><td>http-loop-dos.md</td></tr><tr><td>发送 HTTP 请求读取 header/响应</td><td>http-forward-response-dos.md</td></tr><tr><td>监听端口</td><td>port-binding-check.md</td></tr><tr><td>修改第三方对接信息（含认证凭据）</td><td>thirdparty-credential-leak.md</td></tr><tr><td>软件包签名校验</td><td>package-signature-bypass.md</td></tr><tr><td>数字签名校验</td><td>digital-signature.md</td></tr><tr><td>解压压缩包</td><td>zip-bomb.md</td></tr><tr><td>执行命令参数可控</td><td>cmd-param-injection.md</td></tr><tr><td>解密并赋值变量</td><td>decrypt-memory-cleanup.md</td></tr><tr><td>正则表达式用户可控</td><td>redos-check.md</td></tr><tr><td>日志记录调用点</td><td>log-sensitive-info.md</td></tr><tr><td>本地权限操作</td><td>local-privilege-escalation.md</td></tr></tbody></table>
+<p><b>FALSE-rules（命中直接跳过，最高优先级）11 条</b>：JSON 类反序列化（Jackson/Fastjson；仅 ObjectInputStream.readObject/pickle.loads 等高危函数例外）；日志注入（影响太小）；路径类环境变量（部署配置来源，攻击者不可控）；敏感信息认定收窄（仅认证凭据/电话/邮箱；内容无法确定时按敏感处理）；CRLF 注入（框架已统一过滤）；查询参数注入（框架已处理）；资源标识仅做存在性查询；<b>局部模块缺认证鉴权</b>（可能在网关/过滤器统一处理，完整独立系统才算）；日志记录响应内容；HOFS 已拒绝 ../ 解析。</p>
 <h2 id="7-与-v1-整理稿差异对照">7 与 v1 整理稿差异对照</h2>
 <table><thead><tr><th>#</th><th>旧整理稿</th><th>最新源码</th><th>证据</th></tr></thead><tbody><tr><td>1</td><td>五 Stage：discover/analyze/plan_vuln_tasks/vuln_analyze/review</td><td><b>八段</b>：+split/+rank/+postprocess；plan_vuln_tasks 改名 <b>vuln_planner</b></td><td>pipeline.py:95-310；旧名仅存 prompts-ext 未接线文档</td></tr><tr><td>2</td><td>SQLite db.py 持久化</td><td><b>db.py 已移除</b>，workspace.py 纯文件幂等状态机</td><td>全仓 sqlite 零命中</td></tr><tr><td>3</td><td>ThreadPoolExecutor max_workers=3</td><td><b>双池</b>：代码默认 5/5，随附 yaml 3/5；管道内逐 surface workers=1</td><td>pipeline.py:96-97；analysis-config.yaml:27-30</td></tr><tr><td>4</td><td>前缀 VULN-/DISMISSED-/CLEAN-/SUSPECTED-</td><td>DISMISSED-/CLEAN- 零命中，现行 VULN-/NOVULN-/SUSPECTED- + 复核嵌套 + POST-</td><td>analyze-vulnerability.txt:37-47 等</td></tr><tr><td>5</td><td>LLM 经 opencode CLI --pure 隔离</td><td>--pure 仅存遗留死路径；现行隔离=临时 profile+8 env+skill deny-all</td><td>opencode_wrapper.py:373-379 vs 180-224</td></tr></tbody></table>
 <h2 id="8-与探隐-v2-的衔接">8 与探隐 v2 的衔接</h2>

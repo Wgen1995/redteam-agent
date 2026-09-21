@@ -99,6 +99,26 @@ Phase1 discover -> 1.5 split -> 1.6 rank -> Phase2 analyze -> 2.5 planner
 | 输出 | discovered_surfaces/*.md + meta/excluded-paths.md |
 | 幂等 | .surface_discover_done 存在即跳过 |
 
+**判定标准（prompt 原文口径）**：攻击面 = 信任边界穿越点（攻击者可控数据进入系统的入口）。典型入口：Web Controller/Handler、gRPC/MQ/WebSocket handler、SDK 导出公共 API、CLI main、独立脚本、自定义协议服务端。**不计入**：配置文件、数据模型、纯工具类、内部 Service、定时任务、Filter；**必须识别**：SDK 导出 API 与部署配置（Dockerfile 等）。
+
+**11 类攻击面与每类补充字段**（输出文件 {type}-{category}-{slug}.md，type=iface/noniface）：
+
+| 分类 | 补充字段 |
+|---|---|
+| REST | 入口（Controller 文件:行号:函数）、接口定义（swagger.yaml） |
+| MQ | 队列/Topic（order.created）、消费者（OrderHandler.onCreated） |
+| gRPC | 服务（UserService）、方法（GetUser）、Proto（user.proto） |
+| WebSocket | 端点（/ws/chat）、处理器（ChatHandler） |
+| GraphQL | 类型（Query/Mutation）、字段（users）、Resolver（UserResolver） |
+| SCRIPT | 脚本名（backup.sh）、语言、入口路径 |
+| TOOL | 工具名、语言、入口（cmd/agent/main.go:15 main()） |
+| CRON | 表达式（*/5 * * * *）、命令、crontab 文件 |
+| CLI | 命令名、入口（cli/main.go:8 main()） |
+| SDK | 包名（@acme/sdk）、导出（createUser(data)）、入口 |
+| DEPLOY | 文件（Dockerfile）、类别（容器/编排/网关）、暴露端口与入口命令 |
+
+通用字段必填：类型/分类/URL（接口类）/参数（{位置}: {参数名}({约束})，Swagger 发现时校验约束全提取）/来源（文件:行号:函数名）/描述/发现。
+
 检测逻辑（单次 LLM 调用每 work_dir）：
 
 1. 扫描目录结构、文件规模、技术栈（Spring Boot/Django/Go…），评估代码体量
@@ -283,6 +303,31 @@ Phase1 discover -> 1.5 split -> 1.6 rank -> Phase2 analyze -> 2.5 planner
 | 计划 | {high|medium|low|none}-risk-{n} | 任务风险档位 |
 
 代码侧正则多方一致：vuln_analyze.py / review_vuln.py / report.py / workspace.py 均只认 VULN/NOVULN/SUSPECTED 三前缀。旧稿的 DISMISSED-/CLEAN- 在本版零命中。
+
+## 6A 判定规则库（哨兵模式·按需加载）
+
+**哨兵纪律**：规则索引只列需特别关注的模式，不是完整清单；命中才按需加载 references/vuln_rules/ 对应规则文件，**禁止一次性加载全部规则文件**（省 token）。
+
+**代码特征哨兵（14 个规则文件）**：
+
+| 触发特征 | 规则文件 |
+|---|---|
+| Java 数组方式执行命令 | java-command-array.md |
+| 代码中直接看到 /tmp 路径（非变量引用） | tmp-privesc.md |
+| HTTP 参数作为循环条件 | http-loop-dos.md |
+| 发送 HTTP 请求读取 header/响应 | http-forward-response-dos.md |
+| 监听端口 | port-binding-check.md |
+| 修改第三方对接信息（含认证凭据） | thirdparty-credential-leak.md |
+| 软件包签名校验 | package-signature-bypass.md |
+| 数字签名校验 | digital-signature.md |
+| 解压压缩包 | zip-bomb.md |
+| 执行命令参数可控 | cmd-param-injection.md |
+| 解密并赋值变量 | decrypt-memory-cleanup.md |
+| 正则表达式用户可控 | redos-check.md |
+| 日志记录调用点 | log-sensitive-info.md |
+| 本地权限操作 | local-privilege-escalation.md |
+
+**FALSE-rules（命中直接跳过，最高优先级）11 条**：JSON 类反序列化（Jackson/Fastjson；仅 ObjectInputStream.readObject/pickle.loads 等高危函数例外）；日志注入（影响太小）；路径类环境变量（部署配置来源，攻击者不可控）；敏感信息认定收窄（仅认证凭据/电话/邮箱；内容无法确定时按敏感处理）；CRLF 注入（框架已统一过滤）；查询参数注入（框架已处理）；资源标识仅做存在性查询；**局部模块缺认证鉴权**（可能在网关/过滤器统一处理，完整独立系统才算）；日志记录响应内容；HOFS 已拒绝 ../ 解析。
 
 ## 7 与 v1 整理稿差异对照
 

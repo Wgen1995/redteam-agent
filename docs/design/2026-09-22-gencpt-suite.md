@@ -105,12 +105,42 @@ docs 补充 5 项实现级机制：平台分片并发写保护 / LOOP_POLICY / �
 
 | 资产 | 规模 | 组织 |
 |---|---|---|
-| 攻击模式库 | **49 个**（escape 12 / auth 14 / network 7 / data 6 / dos 2 / supply 2 / persist 6） | 七类；49/49 均为 8 段式结构+MITRE 映射；destructive=true 仅 5 个 |
+| 攻击模式库 | **49 个**（AS-1~AS-7 七攻击面） | 49/49 均为 8 段式结构+MITRE 映射；destructive=true 仅 5 个（全名单见下表） |
 | 合规规则库 | **226 条**精确核验（K8s 134 / Docker 64 / Containerd 28；41 分组=29+7+5，逐组吻合） | 规则 8 字段 schema |
 | 假设库 | **188 条**（CHK-CAND 136 + ATK-HYP 49 + XREF 3） | README 旧口径 35/25 已标不符 |
 | 自进化区 | _learned/（P9 晋升产物） | 与三库索引联动 |
 
 模式 SKILL.md 内部结构（抽读 5 个全文样本：socket-escape/k8s-sa-exploit/fork-bomb/cloud-metadata/webhook-backdoor）：frontmatter（platforms/scope/destructive/MITRE）+ 8 段式正文（前置条件/检测/验证/攻击步骤/差分证明/绕过策略/修复建议/参考）。
+
+**49 模式全名单（AS-1~AS-7）**：
+
+| 攻击面 | 模式 |
+|---|---|
+| AS-1 逃逸（12） | docker.sock 逃逸 · cgroup 逃逸 · procfs 逃逸 · runc 逃逸 · hostPath 挂载 · capability 提权 · containerd-shim 逃逸 · 特权容器逃逸 · hostPID/hostIPC 逃逸 · hostNetwork 滥用 · shareProcessNamespace 滥用 · sysctl 滥用 |
+| AS-2 认证授权（14） | K8s SA 滥用 · RBAC 提权 · 匿名访问 · Docker API 认证绕过 · K8s exec 滥用 · containerd ctr 滥用 · Ephemeral Container 注入 · Kubelet API 滥用 · etcd 未授权访问 · etcd 证书窃取 · CSR API 滥用 · 节点身份提权 · TokenRequest API 滥用 · Aggregated APIServer 滥用 |
+| AS-3 网络（7） | 横向移动 · 云元数据泄露 · DNS 外发 · NTFS ALPN 协议攻击 · Node Proxy/Port-Forward 滥用 · NetworkPolicy 绕过 · kubectl port-forward 滥用 |
+| AS-4 数据泄露（6） | Secret 外发 · 环境变量凭据泄露 · 镜像层敏感信息 · 云提供商凭证窃取 · ConfigMap 数据泄露 · etcd 数据泄露 |
+| AS-5 拒绝服务（2） | 资源滥用 · fork 炸弹 |
+| AS-6 供应链（2） | 镜像标签篡改 · 仓库投毒 |
+| AS-7 持久化（6） | Webhook 后门 · CronJob 持久化 · Docker Volume 持久化 · MutatingWebhook 持久化 · DaemonSet 持久化 · Deployment 镜像覆盖 |
+
+**条件触发表（信号 → 模式，Phase 4a 先读合规+侦察结果再选模式；铁律：不准凭记忆出攻击命令，必须 Read 对应 SKILL.md）代表性映射**：
+
+| 触发信号 | 来源 | 读取模式 |
+|---|---|---|
+| K8s-7.1.1 privileged=true | 合规 G_7 | socket-escape / capability-privesc / hostpath-mount |
+| docker.sock 挂载 | 侦察 | socket-escape |
+| /proc/1/cgroup 可见 | 侦察 | cgroup-escape |
+| /proc mounted rw | 侦察 | procfs-escape |
+| runc 版本 <1.0-rc91 | 合规 | runc-escape |
+| containerd-shim socket 可访问 | 侦察 | containerd-shim-escape |
+| K8s SA token 可读取 | 侦察 | k8s-sa-exploit |
+| K8s RBAC 过宽 / pods/exec 权限 | 合规 G_8/侦察 | k8s-rbac-abuse / k8s-exec-abuse |
+| 容器网络无 NetworkPolicy | 合规 G_6 | lateral-move |
+| 云元数据可访问 / DNS 可解析外部 | 侦察 | cloud-metadata / dns-exfil |
+| Secret 明文环境变量 / 环境变量含凭证 | 侦察/合规 | secret-exfil / env-credential-leak |
+| 镜像历史含 Secret / tag 非固定 | 侦察/合规 | image-layer-secret / image-tag-mutation |
+| 特权容器+无 pid 限制 | 合规 G_7 | fork-bomb |
 
 ## 7 安全机制
 
