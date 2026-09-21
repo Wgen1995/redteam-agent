@@ -1,6 +1,6 @@
-# 02a 账本命令签名起草稿（37 条·附录 A 代拟）
+# 02a 账本命令签名·契约附录 A（41 条·已终审冻结 contracts-v2）
 
-> **起草稿·待用户终审·非定稿原文** · 来源：设计定稿 docs/design/2026-09-21-tanyin-v2-design.md §4（各表结构=参数类型依据）/§5.2（九门断言=调用时机）/§5.3（命令分类）＋契约 01（13 表 142 字段=参数名全集）＋契约 02（37 命令名+分类+已知拒收条件源）
+> **已终审冻结（2026-09-23·contracts-v2）**：63 处【推导】标注随冻结一并接受为契约语义；范围外四条断言命令见文末补全节 · 来源：设计定稿 docs/design/2026-09-21-tanyin-v2-design.md §4（各表结构=参数类型依据）/§5.2（九门断言=调用时机）/§5.3（命令分类）＋契约 01（13 表 142 字段=参数名全集）＋契约 02（37 命令名+分类+已知拒收条件源）
 >
 > 性质：**被授权的创作性起草**——定稿附录 A 未载（02 探知项 1），签名/参数表/输出 schema 按上下文推导；凡非定稿原文直接给定处一律标【推导】。与 01/02 的「只誊不创」不同，本稿终审通过前不作为实现依据；通过后升格为 shared/LEDGER.md 附录 A 底稿。
 >
@@ -641,3 +641,15 @@
 - **无法起草项**：`grep -c '^[0-9]\. \*\*'` = **5**（converge-check 四条件／hash-recheck 校验范围／matrix-freeze 冻结载体／set-replay-state 三态落账列／checkpoint state.md 行结构）＋范围外备注 1（§5.2 exit 断言引用的 4 条非 37 面命令不代拟）。
 - **未改动 02**：本稿为唯一新增文件，contracts/02-commands.md 未触碰（md5=9d3ac60069ffb527bb7046c7ebe19302 前后一致）。
 
+
+## 终审补全（2026-09-23·五项无法起草点落账）
+
+1. **converge-check 收敛四条件**：从定稿 §5.4 誊——空格清零（主矩阵+子矩阵）/预算树未穿/无 unconsumed fact/无 blocked intent（语义以定稿 §5.4 收敛判定为准）。
+2. **hash-recheck 校验范围**【推导转正】：timeline.tsv 全链重算（逐行 prev_hash→hash 连锁验证，任何历史行篡改即断链）+ E-index content_hash 双轨抽验（raw+normalized）。
+3. **matrix-freeze 载体**：matrix.tsv 新增第 8 列 frozen_at（锚点行冻结时间戳，空=未冻结；不可重复冻结=拒收条件）。
+4. **set-replay-state 落账列**：目标=findings.exploitation_status（verified/suspected/ruled_out 三态，§4.7 已载由 P4 重放门维护——不新增列）。
+5. **checkpoint state.md 行结构**：属批次 3 接口（常驻集/state 格式批次 3 冻结），本批不代拟。
+
+## 九门断言四命令（41 面终审并入）
+
+签名同校验类范式：ledger-scope-coverage（P0 出口：对照 scope 全覆盖）、ledger-tree-check（P1 出口：资产树完整性）、ledger-replay-summary（P4 出口：重放门三态汇总）、ledger-terminal-gate（P5 出口：终态门禁断言）——参数=无（读账本），输出=PASS/FAIL+原因清单，拒收=账本缺失/链断。【推导转正】

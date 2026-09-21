@@ -98,3 +98,9 @@
 - **专用六条**：`grep -c '专用六条之一' contracts/02-commands.md` = **6**/6（add-cred/set-cred-status/amend-scope/redact-scan/state-rebuild/set-replay-state 逐条带标，另有 §5 汇总视图）。
 - **缺源标注**：`grep -c '定稿未载→探知项' contracts/02-commands.md` = **38**（37 条签名列全标＋总览缺源说明）。
 - 探知项=6。
+
+## 终审裁决（2026-09-23·contracts-v2）
+
+- 命令面 37→**41**：并入九门断言专用四条 ledger-scope-coverage / ledger-tree-check / ledger-replay-summary / ledger-terminal-gate（校验类 6→10，签名见 02a 终审补全节）。
+- set-cred-status 归**写入**（写 18→19、查询 12→11）：改 creds.status 属状态变更。
+- 本文件探知项中与上述相关的条目视为已裁决；37 签名起草稿在 02a（已终审转正）。

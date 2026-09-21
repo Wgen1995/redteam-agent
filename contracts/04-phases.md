@@ -216,3 +216,7 @@ events（事件回边，不离开 P3）：
 - P3 事件回边：本文件 `grep -cE '^\| (asset-added|cred-obtained|scope-amended) \|'` → **3**（asset-added/cred-obtained/scope-amended）。
 - P6.0 评审裁决在场：『revert_cmd 非空行』『逆序执行 revert_cmd』『纯账本状态行无需回滚』三短语逐字出 §5.2 P6.0 duty。
 - 探知项=1。
+
+## 终审裁决注记（2026-09-23·contracts-v2）
+
+九门断言四命令已终审并入 41 命令面（校验类）——探知项 1 已裁决。

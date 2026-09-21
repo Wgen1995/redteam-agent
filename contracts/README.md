@@ -1,6 +1,6 @@
 # 探隐契约冻结（批次 0）
 
-> **状态**：初稿抽取中 · schema_version=2 · 来源：docs/design/2026-09-21-tanyin-v2-design.md（评审通过版）
+> **状态**：✅ 已冻结（git tag contracts-v2 · 2026-09-23）· schema_version=2 · 来源：docs/design/2026-09-21-tanyin-v2-design.md（评审通过版+当日终审裁决）
 > **冻结规则**：①只誊不创——定稿为唯一来源，契约不得新增/删减语义；②抽取中发现定稿内部矛盾→登记文末"探知项"待仲裁；③冻结（git tag contracts-v2）后任何变更走 schema_version 递增+迁移命令，禁止直接改。
 
 ## 16 项接口 ↔ 契约文件对照
@@ -34,3 +34,13 @@
 
 - 知识库契约（技法页/先例页 front-matter、graph.ndjson 格式、四门槛晋升）按定稿设计**留批次 5 冻结**——批次 1-4 不依赖，非缺失。
 - 37 条账本命令逐条签名：定稿仅载命令名与分类（附录 A 缺位），签名属起草项，处理方式待终审仲裁。
+
+## 终审裁决记录（2026-09-23·冻结时并入）
+
+1. 命令面 37→**41**（九门断言四条并入校验类；set-cred-status 归写入：写19/查11/校验10）。
+2. kind 定死四值；amendment 走 amendment_of 链。
+3. egress compile 输出四成分。
+4. timeline/budget 补 schema_version、matrix 补 frozen_at、creds 补 material（142→146 字段）。
+5. PG 规范形 / budget scope 分工 / score 空值语义 / 四要素卡片承载 / walcode·CodeBuddy Tier 1 起步。
+6. vault 条目格式与 hash-recheck 范围等推导项随 02a/03 转正（【推导】标注保留可追溯）。
+7. state.md 结构留批次 3 冻结；知识库 schema 留批次 5。

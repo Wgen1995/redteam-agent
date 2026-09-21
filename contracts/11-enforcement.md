@@ -84,3 +84,7 @@ accounts+permitted_actions、oob_endpoints 申报、append-only amendments（§4
 - canary 口径：`grep -cE '^\| (部署时机|诱饵形态|失败判定|结果落点|误报防护|evals 门|工具落位) '` → **7** 项。
 - guard_tier 枚举：定稿 `grep -n 'guard_tier∈{T1,T2,T3}' 定稿` → 行 211（goals.tsv 字段语义）；本文件 §2 引用同枚举。
 - 探知项=1。
+
+## 终审裁决注记（2026-09-23·contracts-v2）
+
+egress compile 输出定四成分（ACL+DNS pinning+OOB+基础设施白名单）——探知项已裁决。

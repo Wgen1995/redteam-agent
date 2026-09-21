@@ -87,3 +87,7 @@ P0 八问中涉 scope 的落账接线（§8.1）：
 - 三层语义：`grep -cE '^\| (授权边界|资产图谱|矩阵锚点) '` → **3**（可修订授权边界/append-only 资产图谱/锚点冻结+子矩阵）。
 - amend-scope 接线：`grep -cE '^\| [1-4] \| (amend-scope|tanyin-egress|out_of_scope|canary)'` → **4** 步（落账→egress 重编译→复判→canary）。
 - 探知项=1。
+
+## 终审裁决注记（2026-09-23·contracts-v2）
+
+kind 定死四值；amendment 走 amendment_of 链+amend-scope 命令——探知项已裁决。

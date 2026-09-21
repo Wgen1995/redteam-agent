@@ -38,7 +38,7 @@
 | # | 口径点 | 本设计的选择 | 为什么 |
 |---|---|---|---|
 | 1 | creds/sessions 实体建模 | **13 表**：creds 单表双 kind（static-cred/session），sessions 不单设表（§4.2 CB-1） | session=短时效凭据，字段同构；单表避免重复校验逻辑、守住 13 表口径 |
-| 2 | 账本命令面 | **37 命令**（§5.3）：含 add-cred/set-cred-status/amend-scope/redact-scan/state-rebuild/set-replay-state 六条专用命令 | creds/修订审计/交付终检/重建校验/重放门需要命令落点 |
+| 2 | 账本命令面 | **41 命令**（§5.3；2026-09-23 终审并入九门断言专用四条）：含 add-cred/set-cred-status/amend-scope/redact-scan/state-rebuild/set-replay-state 六条专用命令 | creds/修订审计/交付终检/重建校验/重放门需要命令落点 |
 | 3 | budget.tsv 结构 | budget.tsv 含 scope 列（goal/INT-id）与 dollars_delta 列（默认 0）（§4.10） | 预算树父子切割与 $ 第四维关停需要载体 |
 | 4 | revert_cmd 落位（分层） | 外部副作用操作（碰目标系统：发请求/落文件/改配置）必须登记 revert_cmd（timeline 第 5 列，哈希输入含全行）；纯账本状态变化免登记，其逆=追加新行（§4.10/§5.5 P6.0） | 危险操作逐条可逆可审计；账本内噪音减半 |
 | 5 | 交战区位置 | 交战区在安装树外：$TANYIN_HOME/engagements/<goal-id>/（§3.4） | git pull/升级不冲突，状态不混居程序文件 |
@@ -122,7 +122,7 @@ L5 宿主层     DSH / opencode / codex / walcode / CodeBuddy（首批五宿主�
              └─ 安装自检：宿主×模型双档探测 → 执法档位（Tier 0-3）+ 机制分档（强/弱模型档）
 L4 总控编排层 SKILL.md 路由器（常驻 <2K token）+ phases.yaml 数据状态机（九门+回边）
              └─ phases/*.md 方法论指令（按需加载）+ 指挥官协议（六要素委派/单写者）
-L3 领域核     13 表 TSV 账本 + 薄 CLI 账本命令箱（37 命令 + guard/redact/replay/report，
+L3 领域核     13 表 TSV 账本 + 薄 CLI 账本命令箱（41 命令 + guard/redact/replay/report，
              tools.lock 锁定）+ timeline 链式哈希（journal 职能 + revert_cmd）
              + state.md（≤200 行 handoff + resume_kit 恢复注入白名单）
 L2 引擎契约层 CONTRACT.md 双轴：web-blackbox（skill 型）· vuln-agent（cli 型）
@@ -225,7 +225,7 @@ tanyin/                                  ├── engagements/<goal-id>/       
 字段：`id, title, detail, status, engine, kind, origin, score, via, dedup_key, budget_share, activation, reason, schema_version, created`
 
 - status：candidate→pending→active→done/blocked，或 candidate→rejected(附理由)/deferred(附激活谓词)；blocked 不可自动复活，复活须 approvals 引用。
-- engine=目标引擎名；kind∈{recon,surface,matrix-test,deep-dive,**authz-diff**}（引擎段映射 §6.3）；origin∈{entity,concept,precedent,adjacency,llm,recon-event,mixed}；score=先验分 0-1（命令计算，公式见 §8.7）；via=命中知识页引用；dedup_key=资产+技法类（命令机械计算，重复键 REJECT——LLM 只提议不判重）；**budget_share=`token;requests;hours[;dollars]`**（预算树叶节点）；activation=结构化谓词 `field;op;value`（deferred 用，命令评估）；reason=状态变更原因（rejected/blocked/deferred 强制）。
+- engine=目标引擎名；kind∈{recon,surface,matrix-test,deep-dive,**authz-diff**}（引擎段映射 §6.3）；origin∈{entity,concept,precedent,adjacency,llm,recon-event,mixed}；score=先验分 0-1（命令计算，公式见 §8.7）；不打分的 intent（如 authz-diff 候选）score 留空=未评估，聚合时排除；via=命中知识页引用；dedup_key=资产+技法类（命令机械计算，重复键 REJECT——LLM 只提议不判重）；**budget_share=`token;requests;hours[;dollars]`**（预算树叶节点）；activation=结构化谓词 `field;op;value`（deferred 用，命令评估）；reason=状态变更原因（rejected/blocked/deferred 强制）。
 
 ### 4.6 facts.tsv
 
@@ -250,18 +250,18 @@ tanyin/                                  ├── engagements/<goal-id>/       
 
 字段：`id, title, source_type, observed_at, network_position, repro_command, repro_kind, content_hash_raw, content_hash_norm, artifact_path, card_path, linked_finding, pair_group, raw_excerpt, schema_version, created`
 
-- source_type∈{command,capture,file,log,manual}；**network_position**∈{internet,intranet,same-host,jumphost:<name>}（POC 四要素之一进列——网络位置声明是中文报告被质疑复现不了的第一大原因）；repro_command 第三方可跑（凭据一律 `{{vault:cred-N}}` 占位符）；repro_kind∈{single,sequence,concurrent}（时序类引用 artifact 内并发脚本）；content_hash 双轨（raw+normalized：归一化去 nonce/时间戳后哈希）；artifact_path 只增不覆盖（重跑另存 -r2）；pair_group=差分组；raw_excerpt 脱敏+定长截断；card_path→外置证据卡片（嵌套四要素部分，§4.11）。
+- source_type∈{command,capture,file,log,manual}；**network_position**∈{internet,intranet,same-host,jumphost:<name>}（POC 四要素索引字段进列——网络位置声明是中文报告被质疑复现不了的第一大原因；四要素全量在 EV/FD 卡片承载）；repro_command 第三方可跑（凭据一律 `{{vault:cred-N}}` 占位符）；repro_kind∈{single,sequence,concurrent}（时序类引用 artifact 内并发脚本）；content_hash 双轨（raw+normalized：归一化去 nonce/时间戳后哈希）；artifact_path 只增不覆盖（重跑另存 -r2）；pair_group=差分组；raw_excerpt 脱敏+定长截断；card_path→外置证据卡片（嵌套四要素部分，§4.11）。
 
 ### 4.10 matrix.tsv / timeline.tsv / budget.tsv / creds.tsv
 
-- **matrix.tsv**（长表）：`attack_surface, vuln_class, state, reason, intent_id, schema_version, updated`——state∈{x 已确认（含负结果）, ? 疑似, - 不适用附理由, ! 环境干扰附记录, 空=未检查}；vuln_class 从 shared/VOCAB.md（WSTG v4.2 全集，版本化）钉死；空必须消灭（终态门禁）；「-」「!」进 P4 抽查（比例 §5.2 常量）；**基线冻结**（P2 后主矩阵不随新资产扩张，新资产走子矩阵行 reason 前缀 `submatrix:`，冻结的是覆盖率锚点不是探索）；身份矩阵差分按标准格落账（reason 前缀 `authz-diff:`），不设独立矩阵表；闭合率=已置态格/全格，按 WSTG 全集报告。
-- **timeline.tsv**：`timestamp, actor, phase, event, revert_cmd, prev_hash, hash`——第一事实源+审计链+清理台账三职合一；actor∈{总控,子代理,CLI,人工}；**revert_cmd**=该写操作的逆操作命令（分层登记：外部副作用操作必填，无逆者填 `irreversible` 并强制 L3 逐条审批；纯账本状态变化留空——其逆=追加新行）；prev_hash+hash 链式哈希（**哈希输入=本行全部字段含 revert_cmd**——改任何历史行即断链可见）；对外请求记 `request:` 事件；P0 落账 SKILL 版本+tools.lock 哈希；managed-restart 事件记 spawn 方式（auto/manual）。
-- **budget.tsv**：`timestamp, token_delta, requests_delta, hours_delta, dollars_delta, scope, note`——scope=`goal` 或 `INT-{id}`（**预算树**：intent 消耗计入自身份额并上卷 goal 根）；dollars_delta 默认 0（第四维关闭不累计；开启后由 driver/宿主计费回填）；ledger-budget-check 对照 goals 三元组+各叶份额输出树形余量。
+- **matrix.tsv**（长表）：`attack_surface, vuln_class, state, reason, intent_id, schema_version, updated, frozen_at`（锚点行冻结时间戳，空=未冻结——锚点冻结的机器载体）——state∈{x 已确认（含负结果）, ? 疑似, - 不适用附理由, ! 环境干扰附记录, 空=未检查}；vuln_class 从 shared/VOCAB.md（WSTG v4.2 全集，版本化）钉死；空必须消灭（终态门禁）；「-」「!」进 P4 抽查（比例 §5.2 常量）；**基线冻结**（P2 后主矩阵不随新资产扩张，新资产走子矩阵行 reason 前缀 `submatrix:`，冻结的是覆盖率锚点不是探索）；身份矩阵差分按标准格落账（reason 前缀 `authz-diff:`），不设独立矩阵表；闭合率=已置态格/全格，按 WSTG 全集报告。
+- **timeline.tsv**：`timestamp, actor, phase, event, revert_cmd, prev_hash, hash, schema_version`——第一事实源+审计链+清理台账三职合一；actor∈{总控,子代理,CLI,人工}；**revert_cmd**=该写操作的逆操作命令（分层登记：外部副作用操作必填，无逆者填 `irreversible` 并强制 L3 逐条审批；纯账本状态变化留空——其逆=追加新行）；prev_hash+hash 链式哈希（**哈希输入=本行全部字段含 revert_cmd**——改任何历史行即断链可见）；对外请求记 `request:` 事件；P0 落账 SKILL 版本+tools.lock 哈希；managed-restart 事件记 spawn 方式（auto/manual）。
+- **budget.tsv**：`timestamp, token_delta, requests_delta, hours_delta, dollars_delta, scope, note, schema_version`——scope=`goal`（目标级总预算字面量，区别于具体目标行 G-{id}——两写法并存分工）或 `INT-{id}`（**预算树**：intent 消耗计入自身份额并上卷 goal 根）；dollars_delta 默认 0（第四维关闭不累计；开启后由 driver/宿主计费回填）；ledger-budget-check 对照 goals 三元组+各叶份额输出树形余量。
 - **creds.tsv（新增）**：`id, kind, role, username_ref, secret_ref, scope_asset, obtained_via_intent, parent_cred, valid_from, valid_until, status, permitted_actions, note, schema_version, created`
   - kind∈{`static-cred`（客户提供：账号密码/API key）,`session`（登录态：cookie/token，由 static-cred 换取或攻击所得）}；role=业务角色标签（`admin/operator/user/anonymous`…，合法集合由 P0 八问⑧+account-grant 行确定）。
   - username_ref=账号名或脱敏代号；**secret_ref=`{{vault:cred-N}}` 占位符→vault/ 加密条目**（真值永不进账本，N=creds 行序号）；scope_asset=凭据适用资产；obtained_via_intent=获取来源（攻击所得凭据可追溯）；parent_cred=会话的父凭据 id；status∈{active,expired,invalidated,revoked}（事件溯源）；permitted_actions=该身份允许动作（对照 account-grant）。
   - 硬门：派发 authz-diff intent 前总控校验引用的 CRED 行 status=active 且 permitted_actions 覆盖计划动作；凭据失效→依赖 intent 转 blocked 附原因。
-  - 材质约定（kind 二分不变）：NTLM hash／私钥／客户端证书等特殊材料仍记 static-cred，材质用 meta 位标注（如 material=ntlm-hash|ssh-key|x509）——批次 4 差分配对按 role×端点，不按材质。
+  - 材质约定（kind 二分不变）：NTLM hash／私钥／客户端证书等特殊材料仍记 static-cred，材质用独立 material 列标注（第 16 列，枚举 ntlm-hash|ssh-key|x509 或空）——批次 4 差分配对按 role×端点，不按材质。
 
 ### 4.11 findings 外置卡片契约（「TSV 索引+外置卡片」双轨，ADR-P4①）
 
@@ -278,7 +278,7 @@ impact: 高
 auth_context: CRED-g1-0003                       # 字段⑤：与 TSV 列同值
 control_evidence_ids: [EV-g1-0042]               # 字段⑥：≡control_evidence_ids（统一命名）
 evidence_ids: [EV-g1-0041, EV-g1-0042]
-pair_group: PG-7
+pair_group: PG-g1-0007
 affected_asset_id: AST-g1-009
 ---
 ## 漏洞叙述（LLM 撰写，只能引用账本已有数据，禁新增事实）
@@ -307,7 +307,7 @@ expected:                             # 四要素之四：matcher/extractor（sc
   extractors:
     - {type: regex, name: user_count, regex: ['"total":(\d+)']}
 cleanup: "revert_cmd@timeline 事件引用"          # 清理并入 revert 登记，不另设字段
-pair_group: PG-7
+pair_group: PG-g1-0007
 role: admin                           # authz-diff 证据专用：本请求使用的角色
 ---
 ## 原始响应摘录（脱敏+定长）与判定依据
@@ -451,9 +451,9 @@ back_edges:
 
 ### 5.3 命令集（37 条，签名批次 0 冻结）
 
-- **写命令 18**：add-goal / add-scope / add-intent / set-intent-status / add-fact / add-finding / supersede-finding / add-asset / add-edge / add-evidence / approve / matrix-set / checkpoint / append-timeline / matrix-freeze / budget-log + add-cred、amend-scope。
-- **查询命令 12**：unconsumed-facts / pending-intents / matrix-gaps / converge-check / next-id / intent-status / matrix-get / scope-check / budget-check / cleanup-checklist + set-cred-status（creds 事件溯源状态查询/变更）、redact-scan（交付前终检）。
-- **校验命令 6**：validate / verify-chain / hash-recheck / matrix-audit + state-rebuild（state.md 与账本重建一致性）、set-replay-state（重放门三态 VERIFIED/REPAIRED/REJECTED 落账，REJECTED→confidence 降 C3 或转 fact）。
+- **写命令 19**（含 set-cred-status：改 creds.status 属状态变更，归写入）：add-goal / add-scope / add-intent / set-intent-status / add-fact / add-finding / supersede-finding / add-asset / add-edge / add-evidence / approve / matrix-set / checkpoint / append-timeline / matrix-freeze / budget-log + add-cred、amend-scope。
+- **查询命令 11**：unconsumed-facts / pending-intents / matrix-gaps / converge-check / next-id / intent-status / matrix-get / scope-check / budget-check / cleanup-checklist、redact-scan（交付前终检）。
+- **校验命令 10**（含九门断言专用四条：ledger-scope-coverage / ledger-tree-check / ledger-replay-summary / ledger-terminal-gate）：validate / verify-chain / hash-recheck / matrix-audit + state-rebuild（state.md 与账本重建一致性）、set-replay-state（重放门三态 VERIFIED/REPAIRED/REJECTED 落账，REJECTED→confidence 降 C3 或转 fact）。
 - **特殊**：matrix-init（P2 生成矩阵）。合计 18+12+6+1=**37**。
 - 通用纪律：写前拒收；查询输出摘要化（计数+top-N+ID 列表，禁全量回灌）；命令幂等；对外请求类前置 request-ticket。实现载体=cli/tanyin-ledger（python3 标准库）；签名清单批次 0 冻结进 shared/LEDGER.md 附录 A。
 
@@ -681,7 +681,7 @@ goal 落账 rate_limit（req/s）+ request-ticket 全局取票（多子代理共
 | **DSH** | skill 会话技能装载 + AGENTS.md 系统级注入常驻集 | 宿主命令策略层+bash 沙箱档位承载 Tier 2（以实测为准；无原生 hook API 时降 Tier 1+沙箱白名单并披露） | **默认 Tier 3，可显式降档**（--no-egress；降档落 timeline+报告披露；ADR-P4④） | 夹具全量/evals 全量/canary×4 档/受管重启自动档/报告流水线——**五宿主最全链路** | **本仓可实测** |
 | **opencode** | 符号链接入其 skill/agent 目录+AGENTS.md | 插件与工具权限配置承载 Tier 2（命令执行前拦截 fail-closed） | 默认 Tier 3；代理组件不可用时自检降档披露 | 夹具/evals/canary/headless（opencode run） | 有公开环境，CI 可测 |
 | **codex** | 符号链接+AGENTS.md+config 注入 | sandbox 模式+审批策略承载 Tier 2（workspace-write 边界与 guard 协同） | 默认 Tier 3（sandbox 网络面与代理叠加；不可叠加时披露） | 夹具/evals/canary/headless（codex exec） | 有公开环境，CI 可测 |
-| **walcode** | 其技能目录符号链接（headless：walcode run/serve 实测可用） | 按其 hook/权限机制探测挂载；无则 Tier 1+披露 | 默认 Tier 3（组件可运行时）；否则降档披露 | 夹具/干跑/headless 自动档/受管重启演练 | **验证盲区**（无环境，§10.3） |
+| **walcode** | 其技能目录符号链接（headless：walcode run/serve 实测可用） | 按其 hook/权限机制探测挂载；无则 Tier 1+披露 | 默认 Tier 1+披露（未实测保守档；拿到环境实测后升 Tier 3） | 夹具/干跑/headless 自动档/受管重启演练 | **验证盲区**（无环境，§10.3） |
 | **CodeBuddy** | 其技能/规则目录符号链接 | 按其机制探测；无则 Tier 1+披露 | 同上 | 夹具/干跑/常驻集注入验证（系统级 vs 会话级） | **验证盲区**（无环境，§10.3） |
 
 常驻集注入要求全部宿主：系统级（AGENTS.md/skill 系统注入）而非会话消息级（否则宿主自动压缩稀释纪律）——各宿主装载机制差异由安装器模板吸收，skill 主体不改。
@@ -700,7 +700,7 @@ goal 落账 rate_limit（req/s）+ request-ticket 全局取票（多子代理共
 
 | 批次 | 范围 | 出口验收 | 批次间接口（批次 0 定死） |
 |---|---|---|---|
-| **0 契约冻结**（纸面，全部定死再动手） | **接口清单（完整 16 项）**：①13 表 schema+schema_version=2 全字段（§4）；②10 边词汇；③37 条账本命令签名（附录 A 冻结）；④`{{vault:cred-N}}` 占位符语法+vault 条目格式；⑤phases.yaml schema+九门断言（§5.2）；⑥scope schema（include/exclude/oob/account-grant/amendment）；⑦POC 四要素+EV/FD 卡片 front-matter 契约（§4.11）；⑧findings 字段+FD 卡片六字段映射；⑨统一提交 schema（§6.1）；⑩manifest 模板（含纪律能力声明）；⑪CLI 工具箱命令面+铁律 7 边界（§2.4）；⑫tools.lock 格式+ECDSA 验签流程；⑬**creds 契约**（含 authz-diff intent kind 与差分语义+material meta 位定义（ntlm-hash|ssh-key|x509 等材质标注，kind 二分不变），ADR-P4③）；⑭四层执法档位表+egress compile 输入输出；⑮安装矩阵布局+交战区路径约定；⑯报告模板章节骨架（中文合规段：授权与范围声明/方法学映射（WSTG↔章节）/覆盖度与局限性/技术×业务风险分级/整改优先级与复测建议/等保占位段） | 本文档评审通过=出口；契约冻结后任何变更走 schema_version+迁移命令 | 本身即接口 |
+| **0 契约冻结**（纸面，全部定死再动手） | **接口清单（完整 16 项）**：①13 表 schema+schema_version=2 全字段（§4）；②10 边词汇；③41 条账本命令签名（附录 A 冻结；含九门断言专用四条）；④`{{vault:cred-N}}` 占位符语法+vault 条目格式；⑤phases.yaml schema+九门断言（§5.2）；⑥scope schema（kind 四值 include/exclude/oob/account-grant；修订走 amendment_of 链+amend-scope 命令，非 kind 值）；⑦POC 四要素+EV/FD 卡片 front-matter 契约（§4.11）；⑧findings 字段+FD 卡片六字段映射；⑨统一提交 schema（§6.1）；⑩manifest 模板（含纪律能力声明）；⑪CLI 工具箱命令面+铁律 7 边界（§2.4）；⑫tools.lock 格式+ECDSA 验签流程；⑬**creds 契约**（含 authz-diff intent kind 与差分语义+material meta 位定义（ntlm-hash|ssh-key|x509 等材质标注，kind 二分不变），ADR-P4③）；⑭四层执法档位表+egress compile 输入输出；⑮安装矩阵布局+交战区路径约定；⑯报告模板章节骨架（中文合规段：授权与范围声明/方法学映射（WSTG↔章节）/覆盖度与局限性/技术×业务风险分级/整改优先级与复测建议/等保占位段） | 本文档评审通过=出口；契约冻结后任何变更走 schema_version+迁移命令 | 本身即接口 |
 | **1 账本命令箱+黄金夹具** | cli/tanyin-ledger 37 命令（python3 标准库）+tanyin-guard/tanyin-redact+夹具框架 | **夹具字节级回归全绿**（含账本语义回归对齐）；负向用例全 REJECT | 对上：37 签名；对下：命令输出 schema |
 | **2 门禁层** | 四层执法档位实现（guard 包装器/hook 模板/egress compile+代理）+canary 集+凭据网关四关卡+预算树+速率熔断 | canary 各档位零容忍通过；redact-scan 拦截率 100%（注入样本）；预算树限额拒绝可测 | guard/egress ACL 输入=scope.tsv 编译产物 schema |
 | **3 总控 skill+图谱循环** | SKILL.md 路由器+phases.yaml 引擎+P3 演进循环（风暴五路/资产事件/收敛判定）+受管重启（自动/兜底档+护栏：计入预算/速率上限/单活跃会话）+state.md（≤200 行）+resume-kit 恢复注入白名单+**工件即缓存幂等续跑**（intent done 且 submission.json 存在→重入跳过） | 干跑 P0-P2 零对外请求；kill -9 保真度 eval 通过；token 效率达标；常驻集 <2K token | phases.yaml 断言→命令调用协议；常驻集清单 |

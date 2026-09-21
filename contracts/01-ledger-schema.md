@@ -309,6 +309,10 @@
 | 8 | evidences | finding→EV | EV=证据（E-index.tsv，§4.9） |
 | 9 | supersedes | finding→finding | finding 合并=supersedes 边+tombstone，不删行（§4.1/§4.7） |
 | 10 | scope-rel | asset→scope | §2.5：边种类官方口径 10 边（scope-rel 入列） |
+| material | 枚举 | ntlm-hash|ssh-key|x509|空（终审补列，独立第16列） | 终审裁决补列 | 
+| frozen_at | 字符串 | 锚点行冻结时间戳，空=未冻结（终审补列） | 终审裁决补列 | 
+| schema_version | 字符串 | =2（终审补列） | 终审裁决补列 | 
+| schema_version | 字符串 | =2（终审补列） | 终审裁决补列 | 
 
 ## 探知项（待仲裁）
 
@@ -324,3 +328,9 @@
 - **timeline 哈希输入范围**：`grep -c '哈希输入=本行全部字段含 revert_cmd'` = 1（§3.11 hash 行与补充约束双载）；`grep -c 'irreversible'` = 1；`grep -c 'submatrix:'` = 2（matrix reason 前缀两处）。
 - **matrix 长表格式**（§3.10：attack_surface×vuln_class 长表行键+五态+submatrix:/authz-diff: 前缀）、**budget scope 列**（§3.12：goal 或 INT-{id}+上卷语义）、**creds 全字段含 §4.10 材质约定行**（§3.13：15 字段+material=ntlm-hash|ssh-key|x509 meta 位+硬门+CB-1）均落文。
 - 探知项=3。
+
+## 终审裁决（2026-09-23·contracts-v2）
+
+- timeline/budget 补 schema_version 列（7→8）；matrix 补 frozen_at（7→8）；creds 补 material（15→16）——字段总数 142→146。
+- 命令面 37→41（九门断言四条并入校验类）；set-cred-status 归写入（写19/查11/校验10）。
+- PG 规范形 PG-{goal-id}-{四位序号}；budget.scope 字面量 goal=目标级总预算。

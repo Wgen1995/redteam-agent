@@ -121,3 +121,9 @@ session-viz 身份矩阵视图=**role×endpoint 覆盖投影**——从 creds×f
 - **关键枚举/机制命中（grep）**：kind 二分 static-cred/session 均命中；status 四态 active/expired/invalidated/revoked 全命中；material 三值 ntlm-hash/ssh-key/x509 全命中；四关卡 `awk '/^## 2 vault 四关卡/,/^## 3 /' … | grep -c '^| [0-9] |'` = **4**；`grep -c '{{vault:cred-N}}'` = 7；`grep -c 'withheld'` = 1；`grep -c '重 tokenize'` = 1；`grep -c '一次性解密通道'` = 1；`grep -c 'authz-diff'` = 11；`grep -c 'pair_group'` = 5。
 - **§6.6 五步流程** = 5 行（§5 步骤表）；**差分判定三规则** = 3（§5.1）；评审裁决三条（kind 二分不变/material meta 位/差分配对按 role×端点）落 §7 裁定表=3 行齐。
 - 探知项=3。
+
+## 终审裁决（2026-09-23·contracts-v2）
+
+- material 为 creds 独立第 16 列（枚举 ntlm-hash|ssh-key|x509|空），不落 note。
+- vault 条目格式【推导转正】：`vault/cred-N.enc`（对称加密负载：username/secret/material 注记）+ `vault/manifest.tsv`（N→creds 行序号+created+algo+ECDSA 签名）；加解密经 tools.lock 锁定的 openssl（python3 标准库无加密原语），guard 解密注入、真值永不进账本。
+- 不打分 intent（authz-diff 候选）score 留空=未评估。
