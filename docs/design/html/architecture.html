@@ -16,6 +16,10 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
 .topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
 .topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.znav{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:-6px 0 14px}
+.znav .zl{color:#64748b;font-size:12px}
+.znav a{background:#fff1f2;border:1px solid #fecaca;border-radius:8px;padding:4px 10px;font-size:12.5px;color:#b91c1c;text-decoration:none}
+.znav a.on{background:#b91c1c;color:#fff}
 .doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
 .doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
@@ -69,9 +73,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 </aside>
 <div class="main">
   <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计</a><span class="crumb">› 探隐 TanYin — 架构原理与决策论证（汇报版）</span></nav>
+"<nav class="znav"><span class="zl">🧩 设计域：</span><a href="../../../panorama/design.html">权威定稿</a><a href="index.html">设计文档站</a><span class="zl">引擎：</span><a href="2026-09-22-vuln-agent-engine.html">vuln_agent</a><a href="2026-09-22-gencpt-suite.html">GenCPT</a><a href="2026-09-18-web-blackbox-engine.html">web-blackbox</a><a href="../imported/TanYin/panorama/index.html">前作参考·十页</a></nav>"
   <article class="doc">
   <h1 id="探隐-tanyin-架构原理与决策论证-汇报版">探隐 TanYin — 架构原理与决策论证（汇报版）</h1><div class="meta">探隐设计文档站 · architecture</div>
-  <div class="guide">🧭 <b>导读</b>：v1 架构汇报稿：五层六边形与四支柱工程哲学的原始论述。适合讲清楚「这套系统为什么这么分层」时取材——v2 §3 在此基础上重排了三件咬合。</div>
+  <div class="guide">🧭 <b>导读</b>：前作架构汇报稿：五层六边形与四支柱工程哲学的完整论述。适合讲清楚「这套系统为什么这么分层」时取材。</div>
   <blockquote>用途：向领导/同事讲清楚探隐是什么、为什么这么设计、为什么用这些开源资产、AI Agent 工程思路如何体现、漏洞标记与召回如何度量。 配图：见 panorama/architecture.md（mermaid 源码，可直接渲染） 修订（2026-09-17）：按五专家联合审计修订——§2 补第四支柱 Context Engineering、谱系标注修正；§3 决策 2/3 更新；新增决策 6（TSV 保留）与决策 7（守门机制边界）。</blockquote>
 <h2 id="1-为什么做-问题与机会">1. 为什么做：问题与机会</h2>
 <p><b>现状痛点</b>：</p>

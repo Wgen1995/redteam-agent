@@ -30,6 +30,7 @@ HANDBOOK = {
         ('index.html', '📚 手册'),
         ('../../../panorama/design.html', '🧩 设计'),
     ],
+    'zstrip': '"<nav class="znav"><span class="zl">📚 学习域：</span><a href="index.html">手册目录</a><a href="../../../panorama/methodology.html">思路逻辑</a><a href="../../../panorama/techstack.html">技术栈</a><a href="../../../panorama/toolchain.html">工具链</a><a href="../../../panorama/roadmap.html">成长路线</a><a href="../../../panorama/ai-pentest.html">AI渗透</a></nav>"',
     'station_title': '📚 红队学习手册',
     'station_sub': '从源码审计到一人红队 · 每知识点【原理】【操作】【验证】【陷阱】四段 · 靶场练习全部核实',
     'station_search': '搜索全部章节标题（如：越权 / Kerberos / nuclei / 反序列化）…',
@@ -39,23 +40,23 @@ HANDBOOK = {
 
 DESIGN_DOCS = [
     ('2026-09-21-tanyin-v2-design', 'docs/design/2026-09-21-tanyin-v2-design.md', 'g1',
-     '这一份是<b>唯一权威</b>：探隐 v2 综合设计定稿。TanYin v1 与方案 B′ 都已归档，冲突处以它为准。先读 §0 决策记录（四条拍板+十大裁决），再按 §4 账本 → §5 九门 → §8 纪律执法的顺序深入；§11 批次表是跟踪实施的进度尺。'),
+     '这一份是<b>唯一权威</b>：探隐综合设计定稿（13 表账本／九门／四层执法／五宿主矩阵）。先读 §0 决策记录（四条拍板+十项核心设计决策），再按 §4 账本 → §5 九门 → §8 纪律执法的顺序深入；§11 批次表是跟踪实施的进度尺。'),
     ('2026-09-20-tanyin-bprime-fusion', 'docs/design/2026-09-20-tanyin-bprime-fusion.md', 'g1',
-     '401 行融合裁决，v2 的直接上游：TanYin 骨架 × B′ 门禁 × TSecBench 证据的逐项对质记录。想弄清「为什么 v2 这么定」，尤其是复杂度之辩（状态复杂度是解药、prompt 复杂度是毒药），来这里找判决书。'),
+     '401 行设计论证：全机制 × 门禁需求 × TSecBench 实测证据的逐项对质记录。复杂度之辩（状态复杂度是解药、prompt 复杂度是毒药）的完整推演在这里。'),
     ('REQUIREMENTS', 'docs/design/imported/TanYin/REQUIREMENTS.md', 'g2',
-     'TanYin v1 需求总纲——用户诉求最高权威的原始表述。二十分钟读完，看到 v2 保留了什么（D2-D7 全部）、修订了什么（D1 宿主与形态）。读它是为了理解出发点，而不是照它实施。'),
+     '前作需求总纲——项目诉求的原始表述，二十分钟读完。定稿沿用其中 D2-D7 全部决策、仅重定 D1（宿主与形态）。读它是为了理解出发点，而不是照它实施。'),
     ('PRINCIPLES', 'docs/design/imported/TanYin/PRINCIPLES.md', 'g2',
-     '488 行设计宪法：四条铁律、十二因果链、S1-S41 执行流、四级纪律八问表——v1 最厚的一份。当参考手册用：v2 每条机制几乎都能在这里找到基因；口径矛盾以 v2 消解为准。'),
+     '488 行设计宪法：四条铁律、十二因果链、S1-S41 执行流、四级纪律八问表——前作中最厚的一份。当参考手册用：定稿每条机制几乎都能在这里找到基因；口径矛盾以定稿消解为准。'),
     ('architecture', 'docs/design/imported/TanYin/architecture.md', 'g2',
-     'v1 架构汇报稿：五层六边形与四支柱工程哲学的原始论述。适合讲清楚「这套系统为什么这么分层」时取材——v2 §3 在此基础上重排了三件咬合。'),
+     '前作架构汇报稿：五层六边形与四支柱工程哲学的完整论述。适合讲清楚「这套系统为什么这么分层」时取材。'),
     ('2026-09-17-tanyin-design', 'docs/design/imported/TanYin/doc/2026-09-17-tanyin-design.md', 'g2',
-     'v1 设计定稿全文（另一台电脑原作），v2 的骨架来源：12 表账本、九个 Phase 门、引擎契约的最初完整定义。阅读坐标——v2 修订集中在形态（薄 CLI）、执法（四层）与账本（13 表）。'),
+     '前作设计定稿全文（另一台电脑原作）：12 表账本、九个 Phase 门、引擎契约的完整定义。与实施定稿的差异集中在形态（薄 CLI）、执法（四层）与账本（13 表）三处。'),
     ('2026-09-22-gencpt-suite', 'docs/design/2026-09-22-gencpt-suite.md', 'g3',
-     'GenCPT 容器/K8s 渗透技能套件（最新源码定稿）：五层架构×9 Phase×15 机制×知识图谱×49 攻击模式×226 合规规则实测核验；含与探隐 v2 同构对照和你的 V2 计划评审差距。先读 §2 架构与 §9 对照最快。'),
+     'GenCPT 容器/K8s 渗透技能套件（最新源码定稿）：五层架构×9 Phase×15 机制×知识图谱×49 攻击模式×226 合规规则实测核验；含与探隐设计定稿的同构对照和重写计划评审差距。先读 §2 架构与 §9 对照最快。'),
     ('2026-09-22-vuln-agent-engine', 'docs/design/2026-09-22-vuln-agent-engine.md', 'g3',
-     'vuln_agent 引擎专项（最新源码定稿）：八段管道全景/每段模板与幂等/LLM 隔离五层/前缀体系/与 v1 整理稿差异五条/接入 v2 的适配要点。先读 §2 全景图与 §7 差异表最快。'),
+     'vuln_agent 引擎专项（最新源码定稿）：八段管道全景/每段模板与幂等/LLM 隔离五层/前缀体系/与整理稿差异五条/接入 v2 的适配要点。先读 §2 全景图与 §7 差异表最快。'),
     ('2026-09-18-web-blackbox-engine', 'docs/design/imported/TanYin/doc/2026-09-18-web-blackbox-engine.md', 'g3',
-     '首发引擎 web-blackbox 的 v1 专项设计：CNPEN 方法论产品化为四段操作序列。v2 §6 吸收其执行协议与失败语义——写第一个引擎实现时最贴手的施工参考。'),
+     '首发引擎 web-blackbox 的 v1 专项设计：CNPEN 方法论产品化为四段操作序列。设计定稿 §6 吸收其执行协议与失败语义——写第一个引擎实现时最贴手的施工参考。'),
 ]
 
 DESIGN = {
@@ -74,14 +75,15 @@ DESIGN = {
         ('../../learning/html/index.html', '📚 手册'),
         ('../../../panorama/design.html', '🧩 设计'),
     ],
+    'zstrip': '"<nav class="znav"><span class="zl">🧩 设计域：</span><a href="../../../panorama/design.html">权威定稿</a><a href="index.html">设计文档站</a><span class="zl">引擎：</span><a href="2026-09-22-vuln-agent-engine.html">vuln_agent</a><a href="2026-09-22-gencpt-suite.html">GenCPT</a><a href="2026-09-18-web-blackbox-engine.html">web-blackbox</a><a href="../imported/TanYin/panorama/index.html">前作参考·十页</a></nav>"',
     'station_title': '📐 探隐设计文档站',
-    'station_sub': 'TanYin v1 原稿 → 融合裁决 → v2 定稿 · 当前唯一权威：2026-09-21 v2 定稿',
+    'station_sub': '前作原稿 → 融合裁决 → 权威定稿 · 当前唯一权威：2026-09-21 v2 定稿',
     'station_search': '搜索设计章节标题（如：creds / 九门 / egress / 黄金夹具 / 批次）…',
-    'station_footer': '红队成长全景 · 设计文档站 · v1 原稿保真收录 · v2 为唯一权威',
+    'station_footer': '红队成长全景 · 设计文档站 · 前作保真收录 · 定稿为唯一权威',
     'toc_label': '本文目录',
     'groups': [
         ('g1', '当前权威', 'v2 定稿与融合裁决——实施期间以这两份为准，冲突处以 v2 为准。'),
-        ('g2', 'TanYin v1 原稿（参考）', '另一台电脑的原始设计，保真收录：理解出发点与机制基因用，口径矛盾以 v2 消解为准。'),
+        ('g2', '前作原稿（TanYin 初版）（参考）', '另一台电脑的原始设计，保真收录：理解出发点与机制基因用，口径矛盾以 v2 消解为准。'),
         ('g3', '引擎与套件专项', 'vuln_agent（源码分析·八段管道）/ web-blackbox（黑盒引擎）/ GenCPT（容器与 K8s 技能套件）。引擎细节以这些页为准，契约归 v2 §6。'),
     ],
 }
@@ -120,6 +122,10 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
 .topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
 .topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.znav{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:-6px 0 14px}
+.znav .zl{color:#64748b;font-size:12px}
+.znav a{background:#fff1f2;border:1px solid #fecaca;border-radius:8px;padding:4px 10px;font-size:12.5px;color:#b91c1c;text-decoration:none}
+.znav a.on{background:#b91c1c;color:#fff}
 .doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
 .doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
@@ -315,7 +321,7 @@ def render(site, out_name, title, blocks, headings, prev, nxt, guide):
     topnav = ''.join('<a href="%s">%s</a>' % (h, H.escape(t)) for h, t in site['topnav'])
     return TPL % {
         'title': H.escape(title), 'suffix': site['title_suffix'], 'css': CSS,
-        'homes': homes, 'toc': '\n'.join(toc), 'topnav': topnav,
+        'homes': homes, 'toc': '\n'.join(toc), 'topnav': topnav, 'zstrip': site.get('zstrip', ''),
         'prev': ('<a href="%s">← %s</a>' % (prev[0], H.escape(prev[1]))) if prev else '',
         'next': ('<a href="%s">%s →</a>' % (nxt[0], H.escape(nxt[1]))) if nxt else '',
         'crumb': H.escape(title), 'h1_id': h1_id, 'h1': H.escape(title),
@@ -335,6 +341,7 @@ TPL = '''<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta nam
 </aside>
 <div class="main">
   <nav class="topnav">%(topnav)s<span class="crumb">› %(crumb)s</span></nav>
+%(zstrip)s
   <article class="doc">
   <h1 id="%(h1_id)s">%(h1)s</h1><div class="meta">%(meta)s</div>
   %(guide)s
@@ -368,6 +375,7 @@ STATION_TPL = '''<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><
 #hits a span{color:#94a3b8;font-size:11.5px;margin-left:8px}
 </style></head><body><div class="station">
 <nav class="topnav" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">%(tnav)s</nav>
+%(zstrip)s
 <h1>%(stitle)s</h1>
 <div class="sub">%(ssub)s</div>
 <input class="search" id="q" placeholder="%(sph)s">
@@ -395,7 +403,7 @@ q.addEventListener('input',function(){
 def build_station(site, out_dir, groups_html, idx_search):
     tnav = ''.join('<a href="%s" style="background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)">%s</a>' % (h, H.escape(t)) for h, t in site['topnav'])
     html = STATION_TPL % {
-        'stitle': site['station_title'], 'css': CSS, 'tnav': tnav,
+        'stitle': site['station_title'], 'css': CSS, 'tnav': tnav, 'zstrip': site.get('zstrip', ''),
         'ssub': site['station_sub'], 'sph': site['station_search'],
         'groups': groups_html, 'idx': json.dumps(idx_search, ensure_ascii=False),
         'sfoot': site['station_footer'],

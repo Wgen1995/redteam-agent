@@ -16,6 +16,10 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
 .topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
 .topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.znav{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:-6px 0 14px}
+.znav .zl{color:#64748b;font-size:12px}
+.znav a{background:#fff1f2;border:1px solid #fecaca;border-radius:8px;padding:4px 10px;font-size:12.5px;color:#b91c1c;text-decoration:none}
+.znav a.on{background:#b91c1c;color:#fff}
 .doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
 .doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
@@ -90,9 +94,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 </aside>
 <div class="main">
   <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计</a><span class="crumb">› 探隐 TanYin — 原理逻辑与因果链 · 含 E2E 全流程推演</span></nav>
+"<nav class="znav"><span class="zl">🧩 设计域：</span><a href="../../../panorama/design.html">权威定稿</a><a href="index.html">设计文档站</a><span class="zl">引擎：</span><a href="2026-09-22-vuln-agent-engine.html">vuln_agent</a><a href="2026-09-22-gencpt-suite.html">GenCPT</a><a href="2026-09-18-web-blackbox-engine.html">web-blackbox</a><a href="../imported/TanYin/panorama/index.html">前作参考·十页</a></nav>"
   <article class="doc">
   <h1 id="探隐-tanyin-原理逻辑与因果链-含-e2e-全流程推演">探隐 TanYin — 原理逻辑与因果链 · 含 E2E 全流程推演</h1><div class="meta">探隐设计文档站 · PRINCIPLES</div>
-  <div class="guide">🧭 <b>导读</b>：488 行设计宪法：四条铁律、十二因果链、S1-S41 执行流、四级纪律八问表——v1 最厚的一份。当参考手册用：v2 每条机制几乎都能在这里找到基因；口径矛盾以 v2 消解为准。</div>
+  <div class="guide">🧭 <b>导读</b>：488 行设计宪法：四条铁律、十二因果链、S1-S41 执行流、四级纪律八问表——前作中最厚的一份。当参考手册用：定稿每条机制几乎都能在这里找到基因；口径矛盾以定稿消解为准。</div>
   <blockquote>用途：讲清楚<b>探隐为什么能工作</b>——每个机制因某个失效模式而存在（因），每个机制的产出是下一个机制的输入（果），E2E 推演把这条因果链从头到尾走一遍变成具体故事。 受众：汇报讲解 + 工程自检兼顾。叙事主线讲因果故事，机制咬合处保持严密。 上游：设计定稿（superpowers/specs/2026-09-17-tanyin-design.md·技术唯一权威源）；决策论证（DECISIONS.md·为什么选这个）；本文回答"为什么它能工作"。 配图：panorama/e2e-flow.html（同内容 HTML 版，浏览器直接打开）。</blockquote>
 <h2 id="0-读前须知-这份文档怎么读">0. 读前须知：这份文档怎么读</h2>
 <ul><li><b>第 1 章</b>是总纲：四个根本问题 → 四条铁律 → 因果总图。5 分钟读完，讲给领导听就是这一章。</li><li><b>第 2 章</b>是概念词典：session 目录里每样东西的人话解释。看不懂某个名词时回来查。</li><li><b>第 3 章</b>是 E2E 推演（主体）：一个虚构测试从授权到沉淀的完整故事，因果链落到每一行数据上。</li><li><b>第 4 章</b>是 12 条关键因果链详解：每条按"失效模式 → 为什么是这个机制 → 为什么不是替代方案 → 它使能了什么"展开。</li></ul>

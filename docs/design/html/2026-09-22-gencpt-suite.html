@@ -16,6 +16,10 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
 .topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
 .topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.znav{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:-6px 0 14px}
+.znav .zl{color:#64748b;font-size:12px}
+.znav a{background:#fff1f2;border:1px solid #fecaca;border-radius:8px;padding:4px 10px;font-size:12.5px;color:#b91c1c;text-decoration:none}
+.znav a.on{background:#b91c1c;color:#fff}
 .doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
 .doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
@@ -59,9 +63,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 </aside>
 <div class="main">
   <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计</a><span class="crumb">› 探隐 GenCPT — 容器与 K8s 渗透测试技能套件（完整定稿）</span></nav>
+"<nav class="znav"><span class="zl">🧩 设计域：</span><a href="../../../panorama/design.html">权威定稿</a><a href="index.html">设计文档站</a><span class="zl">引擎：</span><a href="2026-09-22-vuln-agent-engine.html">vuln_agent</a><a href="2026-09-22-gencpt-suite.html">GenCPT</a><a href="2026-09-18-web-blackbox-engine.html">web-blackbox</a><a href="../imported/TanYin/panorama/index.html">前作参考·十页</a></nav>"
   <article class="doc">
   <h1 id="探隐-gencpt-容器与-k8s-渗透测试技能套件-完整定稿">探隐 GenCPT — 容器与 K8s 渗透测试技能套件（完整定稿）</h1><div class="meta">探隐设计文档站 · 2026-09-22-gencpt-suite</div>
-  <div class="guide">🧭 <b>导读</b>：GenCPT 容器/K8s 渗透技能套件（最新源码定稿）：五层架构×9 Phase×15 机制×知识图谱×49 攻击模式×226 合规规则实测核验；含与探隐 v2 同构对照和你的 V2 计划评审差距。先读 §2 架构与 §9 对照最快。</div>
+  <div class="guide">🧭 <b>导读</b>：GenCPT 容器/K8s 渗透技能套件（最新源码定稿）：五层架构×9 Phase×15 机制×知识图谱×49 攻击模式×226 合规规则实测核验；含与探隐设计定稿的同构对照和重写计划评审差距。先读 §2 架构与 §9 对照最快。</div>
   <blockquote><b>这份是什么</b>：GenCPT（Gen=生成式 AI + CPT=Container Penetration Test）的专项设计页——容器/K8s 场景的全流程渗透技能套件全景，探隐生态的容器引擎/知识源候选。以 docs/design/imported/gencpt/GenCPT-main/ 当前源码为准（188 文件实测）。 <b>怎么读</b>：§1 定位 → §2 五层架构 → §3 全部 Phase → §4 机制全表 → §5 知识图谱 → §6 知识资产（49 模式全名单+条件触发表）→ §7 安全 → §8 自进化 → §9 工程质量 → §10 与探隐 v2 对照。</blockquote>
 <h2 id="1-项目定位">1 项目定位</h2>
 <table><thead><tr><th>项</th><th>值</th></tr></thead><tbody><tr><td>一句话</td><td>基于 LLM 语义驱动的容器与 Kubernetes 渗透测试技能套件：SSH 远程对 K8s/Docker/containerd 执行「合规检测→攻击验证→链式攻击→POC 生成→报告交付」全流程</td></tr><tr><td>运行形态</td><td>纯 Markdown SKILL 体系（不是代码程序），寄宿 opencode CLI / Claude Code 等 AI 编码代理；SKILL 全中文指令</td></tr><tr><td>组成</td><td>1 个 Pipeline 入口 SKILL + <b>17 个子技能</b> + 6 个共享规范 + supervisor 代理 + 知识库</td></tr><tr><td>执行单元</td><td>每 Phase 独立子代理（Task general·独立上下文），SSH 命令经 ssh-manager MCP 唯一出口</td></tr><tr><td>产物</td><td>Markdown 报告三份（合规/攻击/全景）+ JSON 知识图谱 + 可视化（graph-viz）</td></tr><tr><td>规模实测</td><td>188 文件 / 17 子技能 / 9+2 Phase 段位 / 49 攻击模式 / 226 合规规则 / 188 假设条目</td></tr></tbody></table>

@@ -16,6 +16,10 @@ body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-s
 .main{flex:1;min-width:0;padding:26px 34px 80px;max-width:920px;margin:0 auto}
 .topnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.topnav .crumb{color:#94a3b8;font-size:12px;align-self:center;margin-left:4px}
 .topnav a{background:#fff;border-radius:8px;padding:5px 11px;font-size:12.5px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.znav{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:-6px 0 14px}
+.znav .zl{color:#64748b;font-size:12px}
+.znav a{background:#fff1f2;border:1px solid #fecaca;border-radius:8px;padding:4px 10px;font-size:12.5px;color:#b91c1c;text-decoration:none}
+.znav a.on{background:#b91c1c;color:#fff}
 .doc h1{font-size:26px;margin:6px 0 4px;color:#111827}
 .doc .meta{font-size:12.5px;color:#94a3b8;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
 .doc h2{font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:5px solid #b91c1c;color:#1e293b}
@@ -55,9 +59,10 @@ footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:30px}
 </aside>
 <div class="main">
   <nav class="topnav"><a href="../../../panorama/index.html">🗺️ 总览</a><a href="../../learning/html/index.html">📚 手册</a><a href="../../../panorama/design.html">🧩 设计</a><span class="crumb">› 探隐 TanYin — 需求总纲（用户诉求最高权威）</span></nav>
+"<nav class="znav"><span class="zl">🧩 设计域：</span><a href="../../../panorama/design.html">权威定稿</a><a href="index.html">设计文档站</a><span class="zl">引擎：</span><a href="2026-09-22-vuln-agent-engine.html">vuln_agent</a><a href="2026-09-22-gencpt-suite.html">GenCPT</a><a href="2026-09-18-web-blackbox-engine.html">web-blackbox</a><a href="../imported/TanYin/panorama/index.html">前作参考·十页</a></nav>"
   <article class="doc">
   <h1 id="探隐-tanyin-需求总纲-用户诉求最高权威">探隐 TanYin — 需求总纲（用户诉求最高权威）</h1><div class="meta">探隐设计文档站 · REQUIREMENTS</div>
-  <div class="guide">🧭 <b>导读</b>：TanYin v1 需求总纲——用户诉求最高权威的原始表述。二十分钟读完，看到 v2 保留了什么（D2-D7 全部）、修订了什么（D1 宿主与形态）。读它是为了理解出发点，而不是照它实施。</div>
+  <div class="guide">🧭 <b>导读</b>：前作需求总纲——项目诉求的原始表述，二十分钟读完。定稿沿用其中 D2-D7 全部决策、仅重定 D1（宿主与形态）。读它是为了理解出发点，而不是照它实施。</div>
   <blockquote>本文档是项目所有决策的最高层需求陈述。任何设计/实现/流程冲突时以本文为准。 定稿：2026-09-17</blockquote>
 <h2 id="1-一句话愿景">1. 一句话愿景</h2>
 <p>构建「探隐 TanYin · 全类型 AI 渗透测试总控」：一个纯 SKILL 形态、复制即装的渗透测试套件——AI 负责挖（引擎执行）、纪律负责管（契约约束）、图谱负责推（演进驱动）、知识负责长（先例复利）。装进 walcode/CodeBuddy/Claude Code 等任意编码 agent 即可使用。</p>
