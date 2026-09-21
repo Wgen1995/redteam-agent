@@ -1,0 +1,486 @@
+# GenCPT 检测逻辑视图
+
+> 9 Phase Pipeline 全景检测逻辑图 — 宏观结构关系 + 微观数据信号传递 + 校验门控
+
+---
+
+## 全景 Mermaid 图
+
+```mermaid
+graph TD
+    %% ────────── Phase 1a 环境侦察（横向排列）──────────
+    subgraph P1a["Phase 1a 环境侦察"]
+        direction LR
+        input1("输入: --server prod-k8s-01<br/>--scope k8s,docker"):::input
+        batch1("1. 环境指纹识别<br/>kubectl version, docker version,<br/>uname -r, uname -m, cat /etc/os-release<br/>→ session_config.json"):::step
+        batch2("2. 集群节点扫描: kubectl get nodes -o wide → nodes/hosts.json"):::step
+        batch3("3. Pod 全量扫描: kubectl get pods --all-namespaces -o json → nodes/pods.json (精简)"):::step
+        batch4("4. ServiceAccount 扫描: kubectl get serviceaccounts --all-namespaces -o json → nodes/service_accounts.json"):::step
+        batch5("5. Secret 列表扫描: kubectl get secrets --all-namespaces -o json → nodes/secrets.json (无内容)"):::step
+        batch6("6. 基础设施边构建<br/>从第3步的 pods_full.json 中提取关系 → edges/infra.json"):::step_nq
+        batch7("7. 生成侦察摘要 → evidence/recon/recon_summary.md"):::step
+        recon_output("输出: knowledge_graph/nodes/*, edges/infra.json, recon_summary.md"):::signal
+
+        input1 --> batch1 --> batch2 --> batch3 --> batch4 --> batch5 --> batch6 --> batch7 --> recon_output
+    end
+
+    %% ────────── Phase 2a K8s 合规检测 ──────────
+    subgraph P2a["Phase 2a K8s 合规检测"]
+        direction TB
+        step2a_1("1. 读取规则索引: compliance-rules/kubernetes/_index.md → 确定 WU 拆分"):::step
+        step2a_2("2. 分批执行检测: WU-2a-1~4，每批40-50条规则，SSH执行 → LLM 语义判定 pass/fail/warn/na"):::step
+        step2a_3("3. 第一重校验: 每批完成后检查规则覆盖、判定完整、依据充分"):::step_check
+        step2a_4("4. 合规假设映射<br/>读取 compliance-hypotheses.md，将 fail 规则映射到攻击假设"):::step
+        step2a_5("5. 写入合规边与发现节点 → edges/compliance.json + nodes/findings.json"):::step_write
+        step2a_6("6. 第二重校验: 全 Phase 规则数、判定、五态标记完整性校验"):::step_check
+        step2a_7("7. 生成检查点报告 → reports/compliance_checkpoint_report.md"):::step
+        step2a_8("8. 更新 progress.json: Phase 2a → completed"):::step
+        compliance_edges("输出: edges/compliance.json (所有 fail 边)"):::signal
+
+        step2a_1 --> step2a_2 --> step2a_3 --> step2a_4 --> step2a_5 --> step2a_6 --> step2a_7 --> step2a_8 --> compliance_edges
+    end
+
+    %% ────────── Phase 3 交叉关联 (三库联动) ──────────
+    subgraph P3["Phase 3 交叉关联 (三库联动)"]
+        direction TB
+        step3_1("1. 读取交叉关联查询库 cross-ref-queries.md"):::step
+        step3_2("2. 执行 XREF-001（合规违规 → 攻击假设前置条件）<br/>读取 fail 合规边 → 攻击假设库 → 资产比对 → prerequisite_signals.md (compliance_driven)"):::step
+        step3_3("3. 执行 XREF-003 增量比对<br/>先排除 XREF-001 已覆盖的 (攻击假设,Pod)，遍历剩余攻击假设×资产 → prerequisite_signals.md 追加 (env_driven)"):::step
+        step3_4("4. 执行 XREF-002: 同一目标多种违规叠加 → risk_amplification.md"):::step
+        step3_5("5. 写入交叉关联边 → edges/cross_ref.json"):::step
+        step3_6("6. 生成交叉关联摘要 → cross_ref_summary.md"):::step
+        step3_7("7. Checkpoint 门控: 边非空、高关联度发现≥1、三库一致、结构校验"):::step_check
+        step3_out("输出: prerequisite_signals.md, edges/cross_ref.json"):::signal
+
+        step3_1 --> step3_2 --> step3_3 --> step3_4 --> step3_5 --> step3_6 --> step3_7 --> step3_out
+    end
+
+    %% ────────── Phase 4a 已知模式匹配与验证 ──────────
+    subgraph P4a["Phase 4a 已知模式匹配与验证"]
+        direction TB
+        step4a_1("1. 读取攻击信号: prerequisite_signals.md → 确定验证范围"):::step
+        step4a_2("2. 条件触发读取 SKILL.md: 按 _index.md 触发表 + 平台过滤，不准凭记忆出攻击命令"):::step
+        step4a_3("3. 执行探测命令 (L0/L1): 验证前置条件"):::step
+        step4a_4("4. 审批门控: 按攻击模式审批级别 + 超时降级"):::step_check
+        step4a_5("5. 执行攻击验证 (L2/L3)<br/>攻击前后状态记录 → 差分证明"):::step
+        step4a_6("6. 方法C工具上传<br/>原生命令不可用时按需上传，失败回退 fallback_native"):::step_nq
+        step4a_7("7. 写入攻击边与发现节点 → edges/attack.json + nodes/findings.json"):::step_write
+        step4a_8("8. 处理未匹配/验证失败信号<br/>→ unmatched_signals.md，前置条件部分满足或验证失败 → Phase 4b"):::step
+        step4a_9("9. 生成 Phase 4a 摘要 → evidence/attack/summaries/"):::step
+        step4a_out("输出: ATK-CAND 列表 (已验证), unmatched_signals.md"):::signal
+
+        step4a_1 --> step4a_2 --> step4a_3 --> step4a_4 --> step4a_5 --> step4a_6 --> step4a_7 --> step4a_8 --> step4a_9 --> step4a_out
+    end
+
+    %% ────────── Phase 4b LLM 推理攻击验证 ──────────
+    subgraph P4b["Phase 4b LLM 推理攻击验证"]
+        direction TB
+        step1("1. 确定推理范围: 合并去重三类信号"):::step
+        step2("2. 读取攻击面穷举框架 attack-surface-model.md"):::step
+        step3("3. 读取环境完整信息 knowledge_graph"):::step
+        step4("4. 逐信号 LLM 推理: 结合环境与攻击面分析"):::step
+        step5("5. 生成推理命中报告 reasoning-hits.md"):::step
+        step6("6. 写入攻击边与发现节点: edges/attack.json + nodes/findings.json"):::step
+        step7("7. 更新情节记忆 recommendations.md"):::step
+        step8("8. Checkpoint 门控: 信号闭环与结构校验"):::step
+        insights("insights.md (推理条目)"):::signal
+        atk_cand_4b("ATK-CAND 列表 (llm_reasoning)"):::signal
+
+        step1 --> step2 --> step3 --> step4 --> step5 --> step6 --> step7 --> step8
+        step4 -.-> insights
+        step8 --> atk_cand_4b
+    end
+
+    %% ────────── Phase 5 攻击链构建 ──────────
+    subgraph P5["Phase 5 攻击链构建"]
+        direction TB
+        all_atk("edges/attack.json (所有 ATK-CAND)"):::signal
+        step5_1("1. 读取攻击候选池: 所有来源的 ATK-CAND"):::step
+        step5_2("2. 识别链起点: 独立可达的攻击"):::step
+        step5_3("3. 查找可达下一步: 知识图谱查询 infra/compliance"):::step
+        step5_4("4. 构建链并评估置信度: CHAIN-xxx 编号"):::step
+        step5_5("5. 写入攻击链边 → cross_ref.json 追加"):::step_write
+        step5_6("6. 链与候选映射一致性检查<br/>所有 confirmed ATK-CAND 有归属"):::step_check
+        step5_7("7. 生成链构建摘要 → chain_builder.md"):::step
+        step5_8("8. Checkpoint 门控"):::step_check
+        chain_output("输出: 攻击链边 (cross_ref.json)"):::signal
+
+        all_atk --> step5_1 --> step5_2 --> step5_3 --> step5_4 --> step5_5 --> step5_6 --> step5_7 --> step5_8 --> chain_output
+    end
+
+    %% ────────── Phase 6 攻击链验证与审批门控 ──────────
+    subgraph P6["Phase 6 攻击链验证与审批门控"]
+        direction TB
+        step6_1("1. 加载待验证链: 筛选 attack_chain 边 status≠verified"):::step
+        step6_2("2. 逐步骤验证: 已确认步骤复查 / 新步骤首次执行<br/>审批门控 (L1-5 + 超时降级)"):::step
+        step6_3("3. 差分证明与结果记录: 原始输出 → evidence/chains/raw/"):::step
+        step6_4("4. 更新链状态: verified / broken → cross_ref.json 更新"):::step_write
+        step6_5("5. 生成链验证摘要 → chain_verification.md"):::step
+        step6_6("6. Checkpoint 门控: 链状态完整、审批记录完整、证据齐全"):::step_check
+        verified_chains("验证结果 (含4b推理的首次验证)"):::signal
+
+        step6_1 --> step6_2 --> step6_3 --> step6_4 --> step6_5 --> step6_6 --> verified_chains
+    end
+
+    %% ────────── Phase 7 POC 生成 ──────────
+    subgraph P7["Phase 7 POC 生成"]
+        direction TB
+        step7_1("1. 确定 POC 范围: 筛选 confirmed/condition_met"):::step
+        step7_2("2. 收集完整执行记录: 从 attack.json 提取步骤"):::step
+        step7_3("3. 生成 POC 脚本: .sh + _README.md (C1/C2 区别处理)"):::step
+        step7_4("4. 生成 POC 总览 → poc_readme.md"):::step
+        step7_5("5. POC 可执行性自检: 静态检查命令、清理、安全边界"):::step_check
+        step7_6("6. Checkpoint 门控: 数量一致、文件完整、自检通过"):::step_check
+        poc_output("输出: POC 脚本包 (evidence/poc/)"):::signal
+
+        step7_1 --> step7_2 --> step7_3 --> step7_4 --> step7_5 --> step7_6 --> poc_output
+    end
+
+    %% ────────── Phase 8a 合规报告生成 ──────────
+    subgraph P8a["Phase 8a 合规报告生成"]
+        direction TB
+        step8a_1("1. 读取合规检测结果: results.json (K8s/Docker/Containerd)"):::step
+        step8a_2("2. 读取攻击关联: cross_ref.json + attack.json"):::step
+        step8a_3("3. 生成合规报告 MD: 检测概览、严重违规详情、修复建议"):::step
+        step8a_4("4. 生成合规报告 JSON: 结构化数据 + 攻击关联"):::step
+        step8a_5("5. 第三重校验: 规则覆盖、判定完整、数字自洽"):::step_check
+        step8a_6("6. Checkpoint 门控: 报告 MD/JSON 生成、校验通过"):::step_check
+        compliance_report("输出: compliance_report.md + .json"):::signal
+
+        step8a_1 --> step8a_2 --> step8a_3 --> step8a_4 --> step8a_5 --> step8a_6 --> compliance_report
+    end
+
+    %% ────────── Phase 8b 攻击报告生成 ──────────
+    subgraph P8b["Phase 8b 攻击报告生成"]
+        direction TB
+        step8b_1("1. 读取攻击结果: attack.json + cross_ref.json"):::step
+        step8b_2("2. 读取攻击链: chain_builder.md + chain_verification.md"):::step
+        step8b_3("3. 生成攻击报告 MD: 确认漏洞、攻击链、POC引用"):::step
+        step8b_4("4. 生成攻击报告 JSON: 结构化攻击数据"):::step
+        step8b_5("5. Checkpoint 门控: 报告 MD/JSON 生成、所有 ATK-CAND 有呈现"):::step_check
+        attack_report("输出: attack_report.md + .json"):::signal
+
+        step8b_1 --> step8b_2 --> step8b_3 --> step8b_4 --> step8b_5 --> attack_report
+    end
+
+    %% ────────── Phase 8c 综合报告 + 全景报告 + QA 语义抽检 ──────────
+    subgraph P8c["Phase 8c 综合报告 + 全景报告<br/>+ QA 语义抽检"]
+        direction TB
+        step8c_1("1. 生成综合渗透报告: pentest_report.md + .json"):::step
+        step8c_2("2. 生成全景覆盖报告: coverage_report.md"):::step
+        step8c_3("3. QA 语义抽检: 5条合规 + 3条攻击 + 2条通过重新验证"):::step_check
+        step8c_4("4. 更新跨会话历史: session_history.md"):::step
+        step8c_5("5. Checkpoint 门控: 全部报告生成、QA置信度评定"):::step_check
+        final_report("输出: pentest_report, coverage_report, QA报告"):::signal
+
+        step8c_1 --> step8c_2 --> step8c_3 --> step8c_4 --> step8c_5 --> final_report
+    end
+
+    %% ────────── Phase 9 攻击模式进化 ──────────
+    subgraph P9["Phase 9 攻击模式进化"]
+        direction TB
+        step9_1("1. 收集待评估洞察: 读取 insights.md + session_history.md"):::step
+        step9_2("2. 逐条评估晋升资格: 与现有模式比对 + 4项门槛检查"):::step
+        step9_3("3. 处理候选观察列表: 满足前3项但跨会话不足 → recommendations.md"):::step
+        step9_4("4. 晋升流程 (跨会话命中≥2): 用户审批 → 生成 SKILL.md → 更新_index.md + attack-hypotheses.md"):::step_write
+        step9_5("5. 生命周期管理 (自净): 扫描 _learned_index.md → 降级/归档"):::step
+        step9_6("6. 三库一致性检查: LLM 语义检查合规假设库↔攻击假设库↔模式库"):::step_check
+        step9_7("7. 生成进化报告 + Checkpoint 门控 → evolve_report.md"):::step_check
+        evolve_output("输出: 新 SKILL.md, 更新索引, evolve_report.md"):::signal
+
+        step9_1 --> step9_2 --> step9_3 --> step9_4 --> step9_5 --> step9_6 --> step9_7 --> evolve_output
+    end
+
+    %% ═══════════ 宏观层：Phase 之间的结构关系（实线）═══════════
+    P1a -->|"交接 1a→2a"| P2a
+    P2a -->|"交接 2a→3"| P3
+    P3 -->|"交接 3→4a"| P4a
+    P3 -->|"交接 3→4b"| P4b
+    P4a -->|"交接 4a→4b"| P4b
+    P4b -->|"交接 4b→5"| P5
+    P5 -->|"交接 5→6"| P6
+    P6 -->|"交接 6→7"| P7
+    P6 -->|"交接 6→9"| P9
+
+    %% ═══════════ 微观层：具体数据的信号传递（虚线）═══════════
+    recon_output -.->|"提供 nodes/* 和 infra.json 作为检测对象"| step2a_1
+    note1a_2("校验: 节点/边文件非空，环境指纹已生成")
+    P1a -.- note1a_2
+
+    compliance_edges -.->|"按 from_node 分组枚举"| step3_2
+    note2a_3("校验: fail 边数 = findings.json 中对应 finding 数")
+    P2a -.- note2a_3
+
+    step3_out -.->|"完全满足信号 (compliance_driven + env_driven)"| step4a_1
+    note3_4a("校验: 信号数 = 4a ATK-CAND 数 + 未匹配信号数")
+    P3 -.- note3_4a
+
+    step3_out -.->|"部分满足 + 风险放大信号"| step1
+    note3_4b("校验: 信号数 = 4b 推理结论数")
+    P3 -.- note3_4b
+
+    step4a_8 -.->|"unmatched_signals.md"| step1
+    note4a_4b("校验: 同 3→4b")
+    P4a -.- note4a_4b
+
+    step4a_out -.->|"按 ATK-CAND ID 枚举"| all_atk
+    atk_cand_4b -.->|"推理发现 ATK-CAND"| all_atk
+    note4b_5("校验: 4a ATK-CAND 数 + 4b ATK-CAND 数 = 总 ATK-CAND 数")
+    P4b -.- note4b_5
+
+    chain_output -.->|"攻击链边"| step6_1
+    note5_6("校验: 攻击链数 ≥ 1 (存在 confirmed ATK-CAND 时)")
+    P5 -.- note5_6
+
+    verified_chains -.->|"提供 ATK-CAND 状态和证据"| step7_1
+    note6_7("校验: POC 数 = confirmed + condition_met 数")
+    P6 -.- note6_7
+
+    compliance_edges -.->|"合规数据"| step8a_1
+
+    step4a_out -.->|"攻击数据"| step8b_1
+    atk_cand_4b -.->|"推理攻击数据"| step8b_1
+    poc_output -.->|"POC 脚本包"| step8b_1
+
+    compliance_report -.->|"合规报告"| step8c_1
+
+    attack_report -.->|"攻击报告"| step8c_1
+
+    insights -.->|"推理条目"| step9_1
+    verified_chains -.->|"筛选 source=llm_reasoning 且 status=confirmed"| step9_2
+    note6_9("校验: 晋升候选数 ≤ confirmed 的 llm_reasoning 数")
+    P6 -.- note6_9
+
+    %% ═══════════ 样式 ═══════════
+    classDef phase fill:#e3f2fd,stroke:#1565c0,color:#0d47a1,font-weight:bold
+    classDef signal fill:#fff3e0,stroke:#ef6c00,color:#e65100,font-weight:bold
+    classDef step fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20,font-weight:bold
+    classDef step_check fill:#fff8e1,stroke:#f57f17,color:#e65100,font-weight:bold
+    classDef step_write fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20,font-weight:bold
+    classDef step_nq fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20,font-weight:bold,stroke-dasharray:5
+    classDef note fill:#fce4ec,stroke:#c62828,color:#b71c1c,font-style:italic
+    classDef input fill:#f3e5f5,stroke:#4a148c,color:#4a148c,font-weight:bold
+
+    class P1a,P2a,P3,P4a,P4b,P5,P6,P7,P8a,P8b,P8c,P9 phase
+    class recon_output,compliance_edges,step3_out,step4a_out,atk_cand_4b,insights,all_atk,verified_chains,chain_output,poc_output,compliance_report,attack_report,final_report,evolve_output signal
+    class batch1,batch2,batch3,batch4,batch5,batch6,batch7,step2a_1,step2a_2,step2a_4,step3_1,step3_2,step3_3,step3_4,step3_5,step3_6,step4a_1,step4a_2,step4a_3,step4a_5,step4a_6,step4a_8,step4a_9,step5_1,step5_2,step5_3,step5_4,step5_7,step6_1,step6_2,step6_3,step6_5,step7_1,step7_2,step7_3,step7_4,step8a_1,step8a_2,step8a_3,step8a_4,step8b_1,step8b_2,step8b_3,step8b_4,step8c_1,step8c_2,step8c_4,step9_1,step9_2,step9_3,step9_5,step1,step2,step3,step4,step5,step6,step7,step8 step
+    class step2a_3,step2a_6,step3_7,step4a_4,step5_6,step5_8,step6_6,step7_5,step7_6,step8a_5,step8a_6,step8b_5,step8c_3,step8c_5,step9_6,step9_7 step_check
+    class step2a_5,step2a_7,step2a_8,step4a_7,step5_5,step6_4,step9_4 step_write
+    class input1 input
+    class note1a_2,note2a_3,note3_4a,note3_4b,note4a_4b,note4b_5,note5_6,note6_7,note6_9 note
+
+```
+
+---
+
+## 图例
+
+| 颜色 | 节点类型 | 说明 |
+|------|---------|------|
+| 🟦 蓝色 | Phase 容器 | 每个 subgraph 代表一个 Phase |
+| 🟩 绿色 | 执行步骤 | 常规检测/分析步骤 |
+| 🟩 绿色(虚边) | 非强制步骤 | 可选步骤（如工具上传） |
+| 🟨 黄色 | 校验门控 | Checkpoint / 审批 / 三重校验 |
+| 🟧 橙色 | 信号节点 | Phase 输出产物（传递给下游） |
+| 🟪 紫色 | 输入节点 | 会话参数输入 |
+| 🟥 红色(斜体) | 校验注记 | Phase 间数据一致性校验点 |
+
+### 连线含义
+
+| 线型 | 含义 |
+|------|------|
+| **实线 `-->`** | Phase 内部步骤顺序执行 |
+| **实线带标签 `-->｜"标签"｜`** | Phase 之间的宏观交接关系 |
+| **虚线 `-.->`** | 微观数据信号传递（具体文件/产物） |
+| **点线 `-.-`** | 校验注记关联到 Phase |
+
+---
+
+## Phase 间数据流校验点
+
+9 个红色校验注记节点，标注 Phase 交接时的一致性校验：
+
+| # | 校验点 | 位置 | 校验内容 |
+|---|--------|------|---------|
+| 1 | note1a_2 | P1a→P2a | 节点/边文件非空，环境指纹已生成 |
+| 2 | note2a_3 | P2a→P3 | fail 边数 = findings.json 中对应 finding 数 |
+| 3 | note3_4a | P3→P4a | 信号数 = 4a ATK-CAND 数 + 未匹配信号数 |
+| 4 | note3_4b | P3→P4b | 信号数 = 4b 推理结论数 |
+| 5 | note4a_4b | P4a→P4b | 同 3→4b（unmatched_signals 闭环） |
+| 6 | note4b_5 | P4b→P5 | 4a ATK-CAND 数 + 4b ATK-CAND 数 = 总 ATK-CAND 数 |
+| 7 | note5_6 | P5→P6 | 攻击链数 ≥ 1（存在 confirmed ATK-CAND 时） |
+| 8 | note6_7 | P6→P7 | POC 数 = confirmed + condition_met 数 |
+| 9 | note6_9 | P6→P9 | 晋升候选数 ≤ confirmed 的 llm_reasoning 数 |
+
+---
+
+## 各 Phase 步骤摘要
+
+### Phase 1a — 环境侦察（7 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 环境指纹识别（uname/kubectl/docker version） | session_config.json |
+| 2 | 集群节点扫描 | nodes/hosts.json |
+| 3 | Pod 全量扫描（按 namespace 分批） | nodes/pods.json |
+| 4 | ServiceAccount 扫描 | nodes/service_accounts.json |
+| 5 | Secret 列表扫描（仅名称+类型） | nodes/secrets.json |
+| 6 | 基础设施边构建 | edges/infra.json |
+| 7 | 生成侦察摘要 | recon_summary.md |
+
+### Phase 2a — K8s 合规检测（8 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 读取规则索引 | WU 拆分方案 |
+| 2 | 分批执行检测（WU-2a-1~4，每批 40-50 条） | SSH 原始输出 |
+| 3 | 第一重校验 | 规则覆盖/判定完整/依据充分 |
+| 4 | 合规假设映射 | fail→攻击假设关联 |
+| 5 | 写入合规边与发现节点 | edges/compliance.json + nodes/findings.json |
+| 6 | 第二重校验 | 全 Phase 规则数/五态标记完整性 |
+| 7 | 生成检查点报告 | compliance_checkpoint_report.md |
+| 8 | 更新 progress.json | Phase 2a → completed |
+
+### Phase 3 — 交叉关联（7 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 读取交叉关联查询库 | cross-ref-queries.md |
+| 2 | XREF-001：合规违规→攻击假设前置条件 | prerequisite_signals.md (compliance_driven) |
+| 3 | XREF-003 增量比对 | prerequisite_signals.md 追加 (env_driven) |
+| 4 | XREF-002：叠加放大分析 | risk_amplification.md |
+| 5 | 写入交叉关联边 | edges/cross_ref.json |
+| 6 | 生成交叉关联摘要 | cross_ref_summary.md |
+| 7 | Checkpoint 门控 | 边非空/高关联度≥1/三库一致 |
+
+### Phase 4a — 已知模式匹配与验证（9 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 读取攻击信号 | 验证范围 |
+| 2 | 条件触发读取 SKILL.md | 待验证模式列表 |
+| 3 | 执行探测命令（L0/L1） | 前置条件验证结果 |
+| 4 | 审批门控 | 审批记录 |
+| 5 | 执行攻击验证（L2/L3） | 差分证明 |
+| 6 | 方法 C 工具上传（可选） | 工具上传日志 |
+| 7 | 写入攻击边与发现节点 | edges/attack.json + nodes/findings.json |
+| 8 | 处理未匹配信号 | unmatched_signals.md → Phase 4b |
+| 9 | 生成 Phase 4a 摘要 | summaries/ |
+
+### Phase 4b — LLM 推理攻击验证（8 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 确定推理范围 | 合并去重三类信号 |
+| 2 | 读取攻击面穷举框架 | attack-surface-model.md |
+| 3 | 读取环境完整信息 | knowledge_graph |
+| 4 | 逐信号 LLM 推理 | insights.md |
+| 5 | 生成推理命中报告 | reasoning-hits.md |
+| 6 | 写入攻击边与发现节点 | edges/attack.json（追加） |
+| 7 | 更新情节记忆 | recommendations.md |
+| 8 | Checkpoint 门控 | 信号闭环/结构校验 |
+
+### Phase 5 — 攻击链构建（8 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 读取攻击候选池 | 所有 ATK-CAND |
+| 2 | 识别链起点 | 独立可达的攻击 |
+| 3 | 查找可达下一步 | 知识图谱查询 infra/compliance |
+| 4 | 构建链并评估置信度 | CHAIN-xxx 编号 |
+| 5 | 写入攻击链边 | cross_ref.json（追加 attack_chain） |
+| 6 | 链与候选映射一致性检查 | 所有 confirmed ATK-CAND 有归属 |
+| 7 | 生成链构建摘要 | chain_builder.md |
+| 8 | Checkpoint 门控 | 链编号连续/置信度完整 |
+
+### Phase 6 — 攻击链验证与审批门控（6 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 加载待验证链 | status≠verified 的 attack_chain 边 |
+| 2 | 逐步骤验证（审批门控 L1-5 + 超时降级） | 验证记录 |
+| 3 | 差分证明与结果记录 | evidence/chains/raw/ |
+| 4 | 更新链状态 | cross_ref.json 更新 verified/broken |
+| 5 | 生成链验证摘要 | chain_verification.md |
+| 6 | Checkpoint 门控 | 链状态完整/审批记录完整/证据齐全 |
+
+### Phase 7 — POC 生成（6 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 确定 POC 范围 | confirmed/condition_met 列表 |
+| 2 | 收集完整执行记录 | 从 attack.json 提取步骤 |
+| 3 | 生成 POC 脚本 | .sh + _README.md（C1/C2 区别处理） |
+| 4 | 生成 POC 总览 | poc_readme.md |
+| 5 | POC 可执行性自检 | 静态检查命令/清理/安全边界 |
+| 6 | Checkpoint 门控 | 数量一致/文件完整/自检通过 |
+
+### Phase 8a — 合规报告生成（6 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 读取合规检测结果 | results.json |
+| 2 | 读取攻击关联 | cross_ref.json + attack.json |
+| 3 | 生成合规报告 MD | 检测概览/严重违规详情/修复建议 |
+| 4 | 生成合规报告 JSON | 结构化数据 + 攻击关联 |
+| 5 | 第三重校验 | 规则覆盖/判定完整/数字自洽 |
+| 6 | Checkpoint 门控 | 报告 MD/JSON 生成/校验通过 |
+
+### Phase 8b — 攻击报告生成（5 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 读取攻击结果 | attack.json + cross_ref.json |
+| 2 | 读取攻击链 | chain_builder.md + chain_verification.md |
+| 3 | 生成攻击报告 MD | 确认漏洞/攻击链/POC 引用 |
+| 4 | 生成攻击报告 JSON | 结构化攻击数据 |
+| 5 | Checkpoint 门控 | 报告 MD/JSON 生成/所有 ATK-CAND 有呈现 |
+
+### Phase 8c — 综合报告 + 全景报告 + QA（5 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 生成综合渗透报告 | pentest_report.md + .json |
+| 2 | 生成全景覆盖报告 | coverage_report.md |
+| 3 | QA 语义抽检 | 5 条合规 + 3 条攻击 + 2 条通过重新验证 |
+| 4 | 更新跨会话历史 | session_history.md |
+| 5 | Checkpoint 门控 | 全部报告生成/QA 置信度评定 |
+
+### Phase 9 — 攻击模式进化（7 步）
+
+| 步骤 | 操作 | 产出 |
+|------|------|------|
+| 1 | 收集待评估洞察 | insights.md + session_history.md |
+| 2 | 逐条评估晋升资格 | 与现有模式比对 + 4 项门槛检查 |
+| 3 | 处理候选观察列表 | recommendations.md |
+| 4 | 晋升流程（跨会话命中≥2） | 新 SKILL.md + 更新 _index.md + attack-hypotheses.md |
+| 5 | 生命周期管理（自净） | 降级/归档 |
+| 6 | 三库一致性检查 | 合规假设库↔攻击假设库↔模式库 |
+| 7 | 生成进化报告 | evolve_report.md |
+
+---
+
+## Phase 交接关系
+
+```
+P1a → P2a → P3 → P4a → P4b → P5 → P6 → P7
+                                  ↓
+                                  P9
+                                  
+P6 → P8a → P8b → P8c（报告三阶段顺序执行）
+```
+
+| 交接 | 上游产出 | 下游消费 |
+|------|---------|---------|
+| 1a→2a | nodes/*, edges/infra.json | 合规检测的目标对象 |
+| 2a→3 | edges/compliance.json (fail 边) | XREF-001 按 from_node 分组枚举 |
+| 3→4a | prerequisite_signals.md (完全满足) | 模式匹配验证范围 |
+| 3→4b | prerequisite_signals.md (部分满足+放大) | LLM 推理范围 |
+| 4a→4b | unmatched_signals.md | 未匹配信号交 4b 推理 |
+| 4b→5 | edges/attack.json (所有 ATK-CAND) | 攻击链候选池 |
+| 5→6 | attack_chain 边 | 待验证链 |
+| 6→7 | verified_chains | POC 生成范围 |
+| 6→9 | source=llm_reasoning 且 confirmed | 晋升候选 |
+| 6→8a | 合规数据 | 合规报告 |
+| 6→8b | 攻击数据 + POC | 攻击报告 |
+| 8a+8b→8c | 合规报告 + 攻击报告 | 综合报告 + QA |
