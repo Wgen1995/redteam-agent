@@ -1,0 +1,42 @@
+OK	AP-g1-0002	approvals.tsv
+AP-g1-0002	bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb	approved	user	TS		2
+== E-index.tsv ==
+EV-g1-0001	子域清单	command	TS	internet	curl -s https://crt.example/q?d=shop.example	single	cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc	dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd		evidence/EV-g1-0001.md		PG-g1-0001	12 subdomains	2	
+== approvals.tsv ==
+AP-g1-0001	bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb	approved	user	TS	L3 高危命令	2
+AP-g1-0002	bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb	approved	user	TS		2
+== assets.tsv ==
+AST-g1-0001	root-domain	shop.example		1	2	
+AST-g1-0002	subdomain	admin-internal.shop.example		1	2	
+AST-g1-0003	subdomain	vpn.shop.example		0	2	
+== budget.tsv ==
+TS	12000	40	0.2	0	goal	P1 recon	2
+TS	8000	25	0.1	0	INT-g1-0002	authz-diff	2
+== creds.tsv ==
+CRED-g1-0001	static-cred	admin	admin	{{vault:cred-1}}	AST-g1-0002				2026-09-30	active	read\;probe		2		ntlm-hash
+== edges.tsv ==
+E-g1-0001	spawns	G-g1-0001	INT-g1-0001	P1	2	
+E-g1-0002	yields	INT-g1-0001	F-g1-0001	recon	2	
+== facts.tsv ==
+F-g1-0001	INT-g1-0001	info	shop.example	12 子域	0.9	2	
+F-g1-0002	INT-g1-0001	service	admin-internal.shop.example	nginx/1.25	0.9	2	
+== findings.tsv ==
+FD-g1-0001	INT-g1-0002	admin 面板匿名可读	C3	高	suspected		admin-anon-read		in_scope	未登录可读订单列表							2	
+== goals.tsv ==
+G-g1-0001	shop.example	授权渗透：商城内网分区	auth/G-g1-0001.pdf	aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	client-cso	2026-09-01	2026-09-30	600/10m	09:00-19:00	ops@example.com	2M\;50000\;40	0			high	T3	2	TS
+== intents.tsv ==
+INT-g1-0001	子域枚举	crt.sh+被动	done	web-blackbox		P1-recon	0.8	CNPEN-SD-01	sd-enumer	0.1			2	
+INT-g1-0002	admin 面板未授权访问	authz-diff	pending	web-blackbox		P3-loop		CNPEN-AUTH-02	admin-authz	0.2	cred:CRED-g1-0001		2	
+== matrix.tsv ==
+web.admin-panel	authn.missing	?		INT-g1-0002	2		
+web.admin-panel	authz.diff	x	FD-g1-0001	INT-g1-0002	2		TS
+web.api	inj.sql	 			2		
+== scope.tsv ==
+S-g1-0001	include	*.shop.example				主域及子域	2	
+S-g1-0002	include	10.10.0.0/16	admin\;operator	read\;probe		内网分区A	2	
+== timeline.tsv ==
+TS	CLI		approve AP-g1-0002(approved)		7a4296f793261c152b2a86402a2e08c62ac4907939ebdb0861347ce331b170d7	d765e24ac06bec7c2789f3d3803258ff070307e9aa4da6091c3cdeba7a7f5821	2
+TS	CLI	P1	add-scope S-g1-0001		bf66342040082e0788fe98e9105995db2d3cbc15c920f96785b6996fe3affb82	3507197ebc8a1e9e8a84661f4790963838ccf9b8e20ae427014986dabfe7ec72	2
+TS	子代理	P3	add-fact F-g1-0001		3507197ebc8a1e9e8a84661f4790963838ccf9b8e20ae427014986dabfe7ec72	e053904a40ed4aec348ea256e1c1e593f18bc99f43b5a0c0d3c639c18e13a604	2
+TS	总控	P1	add-goal G-g1-0001	irreversible	0000000000000000000000000000000000000000000000000000000000000000	bf66342040082e0788fe98e9105995db2d3cbc15c920f96785b6996fe3affb82	2
+TS	总控	P3	matrix-freeze web.admin-panel/authz.diff		e053904a40ed4aec348ea256e1c1e593f18bc99f43b5a0c0d3c639c18e13a604	7a4296f793261c152b2a86402a2e08c62ac4907939ebdb0861347ce331b170d7	2

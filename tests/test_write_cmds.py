@@ -880,6 +880,47 @@ class TestSetCredStatus(Base):
                             "--approval=AP-g1-0001", "--timestamp=" + TS))
 
 
+class TestErrataV2(unittest.TestCase):
+    """v2 勘误护栏：findings.vuln_ref 列（dedup_key 之后）+ intents.kind+nday-verify。"""
+
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory()
+        self.addCleanup(self.td.cleanup)
+        self.gd = shutil.copytree(FIX, os.path.join(self.td.name, "G-g1"))
+
+    def test_schema_dynamic_and_vuln_ref_present(self):
+        f = T["findings.tsv"]
+        self.assertIn("vuln_ref", f)
+        self.assertEqual(f.index("vuln_ref"), f.index("dedup_key") + 1)
+        self.assertEqual(sum(len(v) for v in T.values()), 147)
+        self.assertIn("nday-verify", {"recon", "surface", "matrix-test", "deep-dive",
+                                      "authz-diff", "nday-verify"})
+
+    def test_add_finding_writes_vuln_ref_dynamically(self):
+        before = len(read(self.gd, "findings.tsv"))
+        res = call("add-finding", self.gd, "--intent-id=INT-g1-0002", "--title=Nday 组件漏洞",
+                   "--confidence=C1", "--impact=中", "--exploitation-status=verified",
+                   "--scope-check=in_scope", "--description-brief=Nginx 已知漏洞",
+                   "--reproducible-steps=curl -s https://shop.example", "--affected-asset-id=AST-g1-0002",
+                   "--evidence-ids=EV-g1-0001", "--vuln-ref=CVE-2024-1234;CWE-89", "--timestamp=" + TS)
+        self.assertEqual(res[0], 0, res[1] + res[2])
+        fd = read(self.gd, "findings.tsv")
+        self.assertEqual(len(fd), before + 1)
+        self.assertEqual(len(fd[-1]), len(T["findings.tsv"]))
+        self.assertEqual(fd[-1][T["findings.tsv"].index("vuln_ref")], "CVE-2024-1234;CWE-89")
+
+    def test_add_intent_nday_verify_kind_accepted(self):
+        before = len(read(self.gd, "intents.tsv"))
+        res = call("add-intent", self.gd, "--title=Nday 核验", "--engine=nday",
+                   "--kind=nday-verify", "--origin=precedent", "--budget-share=100;10;1",
+                   "--timestamp=" + TS)
+        self.assertEqual(res[0], 0, res[1] + res[2])
+        it = read(self.gd, "intents.tsv")
+        self.assertEqual(len(it), before + 1)
+        self.assertEqual(it[-1][T["intents.tsv"].index("kind")], "nday-verify")
+        self.assertEqual(core.Session(self.gd).validate(), [])
+
+
 class TestTier0AndWiring(unittest.TestCase):
     def setUp(self):
         self.td = tempfile.TemporaryDirectory()

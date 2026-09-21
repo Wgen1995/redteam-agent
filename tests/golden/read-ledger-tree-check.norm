@@ -1,0 +1,3 @@
+FAIL
+AST-g1-0002(type=subdomain) 缺 parent 边
+AST-g1-0003(type=subdomain) 缺 parent 边

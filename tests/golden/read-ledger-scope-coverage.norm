@@ -1,0 +1,3 @@
+FAIL
+scope 缺 kind=exclude 行
+scope 缺 kind=oob 行
