@@ -12,7 +12,7 @@
 | ADR | 决策 | 内容 | 对设计的直接后果 |
 |---|---|---|---|
 | **P1** | 路线：一体化 skill 体系 | 认知（skill 主体）+ 确定性（薄 CLI 账本）+ 执法（hook/egress 分层）三面一体成型 | §0.2 十项核心设计决策全部生效并落位正文各节；审计落点 A1-A20／B1-B17 全部落位（其中 4 项落点按本文定稿口径调整） |
-| **P2** | 宿主：五宿主一起进首批安装矩阵 | DSH / opencode / codex / walcode / CodeBuddy | §10 安装矩阵五宿主首批；验收含 walcode/CodeBuddy 验证盲区方案（§10.3） |
+| **P2** | 宿主：五宿主进安装矩阵，首批实测三宿主 | 安装矩阵五宿主全量；**首批实测 DSH / opencode / codex**（有环境可 CI），walcode / CodeBuddy 定位为「装得上+披露未验证」，拿到环境再补实测（§10.3） | §10 安装矩阵五宿主；验证等级如实标注 |
 | **P3** | 宪法：「skill 主体 + 薄 CLI 工具箱 + 档位化 hook/egress」 | 形态不是纯零代码：确定性运算与机械执法进 CLI，语义判断留在 skill | §2 铁律 5/7；账本命令实现载体=python3 标准库薄 CLI；四层执法分档（§8.5）；「LLM 只调用不实现」「凡未给出命令的步骤不得执行」两条纪律全文有效 |
 | **P4** | 七项配套机制定型 | ①TSV 外置卡片 ②python3 only ③身份矩阵批次 0 契约、批次 4 落地 ④egress 默认开、DSH 可降档 ⑤弱模型档位化、默认档覆盖不可谈判 ⑥预算 $ 维度默认关 ⑦evals 三层验收含 TSecBench 对齐 | 分别落位于 §4.11、§2 铁律 7、§11 批次 0 与批次 4、§8.5、§8.8/§2 铁律 6、§8.7、§9 |
 
@@ -647,7 +647,7 @@ goal 落账 rate_limit（req/s）+ request-ticket 全局取票（多子代理共
 | POC 机器复放率（重放门三态分布） | C1 finding 100% 可重放或已降级处置 | §5.2 P4 重放门 |
 | **scope canary 零容忍（Tier 0-3 各档位分别跑）** | 任一界外触达=fail | §8.5 |
 | kill -9 续跑保真度（随机断点恢复后账本/矩阵/state 无损） | state-rebuild PASS | §4.1/§5.2 |
-| **token 效率：每闭合一个矩阵格的 token 成本** | 对标 CHYing 量级（15.78M/85.14% 参照），超阈值告警 | TSecBench |
+| **token 效率：每闭合一个矩阵格的 token 成本** | 对标 CHYing 量级（15.78M/85.14% 参照），首版只告警不 fail（无自家基线先收集数据），批次 6 前依实测基线转硬门 | TSecBench |
 | 纪律注入红队集（敌意工具输出/诱导越权/绕账本写） | 系统行为不变 | §8.3 注入防护四层 |
 | 负向用例（无授权跑 P0-P2→timeline 零主动命令；界外资产喂 add-intent→REJECT） | 必须失败 | §8.1/§8.2 |
 | 弱模型档遵循率（最低档模型跑协议负向用例） | 「未给出命令的步骤终止报告」可检测 | §8.8 |
@@ -688,6 +688,8 @@ goal 落账 rate_limit（req/s）+ request-ticket 全局取票（多子代理共
 
 ### 10.3 walcode/CodeBuddy 验证盲区处理（无环境时的方案）
 
+**首批定位**：两家不进首批实测门——安装矩阵保留五宿主全量（安装器/符号链接/降档披露照常交付），但 CI 实测与验收签发只覆盖 DSH/opencode/codex；walcode/CodeBuddy 的验证状态在报告中如实标注「未实测」。拿到环境后按本节方案补测升格。
+
 - **静态验证（CI 可跑，宿主无关）**：①命令索引一致性——phases/*.md 与 engines/ 中引用的命令 ⊆ shared/LEDGER.md 附录 A 37 条签名；②编码规范 lint（TSV 样本 UTF-8 无 BOM+LF+转义）；③phases.yaml schema 校验+九门断言命令存在性；④目录布局断言（安装区/交战区分离、符号链接目标存在）；⑤tools.lock 验签；⑥黄金夹具全量（CLI 层）。合并为 `tanyin-selfcheck --static`，CI 对五宿主同跑。
 - **用户手测脚本（`tanyin-selfcheck --host <name> --guided`）**：输出一页引导——安装命令→能力探测（子代理并发/shell/headless/系统级注入/hook 挂载点逐项自动探测+人工确认）→冒烟清单（`用探隐自检` 干跑 P0-P2：零对外请求，产出 goals/scope/matrix 样本+timeline）→**回传模板**（探测结果 JSON+干跑产物哈希+异常截图），用户贴回 issue 即计入该宿主验证记录。
 - **发布口径**：walcode/CodeBuddy 标注「静态验证通过+待实测」；首个实测回传前其执法档位声明默认 **Tier 1（保守披露）**；实测回传后按探测结果更新档位与能力矩阵。
@@ -698,7 +700,7 @@ goal 落账 rate_limit（req/s）+ request-ticket 全局取票（多子代理共
 
 | 批次 | 范围 | 出口验收 | 批次间接口（批次 0 定死） |
 |---|---|---|---|
-| **0 契约冻结**（纸面，全部定死再动手） | **接口清单（完整 16 项）**：①13 表 schema+schema_version=2 全字段（§4）；②10 边词汇；③37 条账本命令签名（附录 A 冻结）；④`{{vault:cred-N}}` 占位符语法+vault 条目格式；⑤phases.yaml schema+九门断言（§5.2）；⑥scope schema（include/exclude/oob/account-grant/amendment）；⑦POC 四要素+EV/FD 卡片 front-matter 契约（§4.11）；⑧findings 字段+FD 卡片六字段映射；⑨统一提交 schema（§6.1）；⑩manifest 模板（含纪律能力声明）；⑪CLI 工具箱命令面+铁律 7 边界（§2.4）；⑫tools.lock 格式+ECDSA 验签流程；⑬**creds 契约**（含 authz-diff intent kind 与差分语义，ADR-P4③）；⑭四层执法档位表+egress compile 输入输出；⑮安装矩阵布局+交战区路径约定；⑯报告模板章节骨架（中文合规段：授权与范围声明/方法学映射（WSTG↔章节）/覆盖度与局限性/技术×业务风险分级/整改优先级与复测建议/等保占位段） | 本文档评审通过=出口；契约冻结后任何变更走 schema_version+迁移命令 | 本身即接口 |
+| **0 契约冻结**（纸面，全部定死再动手） | **接口清单（完整 16 项）**：①13 表 schema+schema_version=2 全字段（§4）；②10 边词汇；③37 条账本命令签名（附录 A 冻结）；④`{{vault:cred-N}}` 占位符语法+vault 条目格式；⑤phases.yaml schema+九门断言（§5.2）；⑥scope schema（include/exclude/oob/account-grant/amendment）；⑦POC 四要素+EV/FD 卡片 front-matter 契约（§4.11）；⑧findings 字段+FD 卡片六字段映射；⑨统一提交 schema（§6.1）；⑩manifest 模板（含纪律能力声明）；⑪CLI 工具箱命令面+铁律 7 边界（§2.4）；⑫tools.lock 格式+ECDSA 验签流程；⑬**creds 契约**（含 authz-diff intent kind 与差分语义+material meta 位定义（ntlm-hash|ssh-key|x509 等材质标注，kind 二分不变），ADR-P4③）；⑭四层执法档位表+egress compile 输入输出；⑮安装矩阵布局+交战区路径约定；⑯报告模板章节骨架（中文合规段：授权与范围声明/方法学映射（WSTG↔章节）/覆盖度与局限性/技术×业务风险分级/整改优先级与复测建议/等保占位段） | 本文档评审通过=出口；契约冻结后任何变更走 schema_version+迁移命令 | 本身即接口 |
 | **1 账本命令箱+黄金夹具** | cli/tanyin-ledger 37 命令（python3 标准库）+tanyin-guard/tanyin-redact+夹具框架 | **夹具字节级回归全绿**（含账本语义回归对齐）；负向用例全 REJECT | 对上：37 签名；对下：命令输出 schema |
 | **2 门禁层** | 四层执法档位实现（guard 包装器/hook 模板/egress compile+代理）+canary 集+凭据网关四关卡+预算树+速率熔断 | canary 各档位零容忍通过；redact-scan 拦截率 100%（注入样本）；预算树限额拒绝可测 | guard/egress ACL 输入=scope.tsv 编译产物 schema |
 | **3 总控 skill+图谱循环** | SKILL.md 路由器+phases.yaml 引擎+P3 演进循环（风暴五路/资产事件/收敛判定）+受管重启（自动/兜底档+护栏：计入预算/速率上限/单活跃会话）+state.md（≤200 行）+resume-kit 恢复注入白名单+**工件即缓存幂等续跑**（intent done 且 submission.json 存在→重入跳过） | 干跑 P0-P2 零对外请求；kill -9 保真度 eval 通过；token 效率达标；常驻集 <2K token | phases.yaml 断言→命令调用协议；常驻集清单 |
