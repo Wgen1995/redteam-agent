@@ -66,260 +66,229 @@
 <g><rect x="660" y="584" width="640" height="60" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.4"/><text x="980" y="605" font-size="12" font-weight="700" fill="#cbf5d8" text-anchor="middle">回填覆盖矩阵</text><text x="980" y="621" font-size="9.6" fill="#7fd49a" text-anchor="middle">新资产 → matrix 长行 → 进入收敛判定的分母</text><text x="980" y="634" font-size="9.6" fill="#7fd49a" text-anchor="middle">资产发现驱动矩阵生长，矩阵驱动循环继续</text></g>
 <line x1="600" y1="614" x2="660" y2="614" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/><text x="630" y="609" font-size="9" fill="#e3b341" text-anchor="middle">asset-added 续测</text>
 <!-- Band B P3 循环 -->
-<rect x="40" y="660" width="1240" height="700" rx="12" fill="none" stroke="#39c5cf" stroke-dasharray="7 5"/>
-<text x="56" y="682" fill="#39c5cf" font-size="12.5" font-weight="600">② P3 探索迭代循环 —— 头脑风暴不变式：事实只增不删 · 结论必附证据 · 范围变更留痕（开局不定死，全程可生长）</text>
-<g>
-<text x="70" y="718" fill="#8b949e" font-size="10.5">四生成源</text>
-<g><title>实体派生 entity</title><rect x="70" y="726" width="150" height="24" rx="12" fill="#0c3038" stroke="#39c5cf"/><text x="145" y="742" fill="#a8e6ee" font-size="9.5" text-anchor="middle">实体派生 entity</text></g>
-<g><title>概念触发 concept</title><rect x="70" y="756" width="150" height="24" rx="12" fill="#0c3038" stroke="#39c5cf"/><text x="145" y="772" fill="#a8e6ee" font-size="9.5" text-anchor="middle">概念触发 concept</text></g>
-<g><title>先例匹配 precede（知识库）</title><rect x="70" y="786" width="150" height="24" rx="12" fill="#0c3038" stroke="#39c5cf"/><text x="145" y="802" fill="#a8e6ee" font-size="9.5" text-anchor="middle">先例匹配 precede（知识库）</text></g>
-<g><title>组件指纹→Nday 候选</title><rect x="70" y="816" width="150" height="24" rx="12" fill="#0f2e1b" stroke="#3fb950"/><text x="145" y="832" fill="#9fe8b6" font-size="9.5" text-anchor="middle">组件指纹→Nday 候选</text></g>
-<line x1="220" y1="790" x2="278" y2="790" stroke="#39c5cf" stroke-width="1.2" marker-end="url(#ar)"/>
-
-<rect x="280" y="736" width="240" height="110" rx="8" fill="#241b38" stroke="#bc8cff"/>
-<text x="400" y="756" fill="#eadfff" font-size="12.5" text-anchor="middle" font-weight="600">intents.tsv 假设账本</text>
-<text x="400" y="772" fill="#c2a8ee" font-size="9.5" text-anchor="middle">状态一变就追加一行，查最新=看最后一行</text>
-<text x="400" y="786" fill="#c2a8ee" font-size="9.5" text-anchor="middle">六类：侦察/面测绘/矩阵项/深挖/权限差分</text>
-<text x="400" y="799" fill="#c2a8ee" font-size="9.5" text-anchor="middle">以及 Nday 已知洞验证</text>
-<text x="400" y="815" fill="#c2a8ee" font-size="9.5" text-anchor="middle">自带防重键·预算份额·优先分(空=未评)</text>
-<text x="400" y="831" fill="#c2a8ee" font-size="9.5" text-anchor="middle">测权限前：所引账号必须启用中</text>
-<text x="400" y="843" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">AI 的作战计划账：打算测什么、状态到哪，一行一意图</text>
-
-<line x1="520" y1="756" x2="588" y2="730" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ar)"/>
-<text x="552" y="734" fill="#e3b341" font-size="9" text-anchor="middle">yields · add-fact</text>
-<rect x="590" y="696" width="220" height="72" rx="8" fill="#16233a" stroke="#58a6ff"/>
-<text x="700" y="716" fill="#dbe7ff" font-size="12" text-anchor="middle" font-weight="600">facts.tsv 客观事实</text>
-<text x="700" y="732" fill="#8fb4e8" font-size="9.5" text-anchor="middle">只追加；记看到的，不记推断</text>
-<text x="700" y="746" fill="#8fb4e8" font-size="9.5" text-anchor="middle">没用过的事实=下一个假设的线索</text>
-<text x="700" y="758" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">只记观察到的事实，不记结论——新假设的燃料库</text>
-<path d="M 640 206 C 560 168, 440 190, 392 242" fill="none" stroke="#58a6ff" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#ar)"/>
-<text x="500" y="666" fill="#58a6ff" font-size="9" text-anchor="middle">derived_from 反哺新假设（探索循环的引擎）</text>
-
-<line x1="470" y1="820" x2="588" y2="858" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ar)"/>
-<text x="525" y="850" fill="#e3b341" font-size="9" text-anchor="middle">add-finding（经引擎验证）</text>
-<rect x="590" y="826" width="220" height="100" rx="8" fill="#16233a" stroke="#58a6ff"/>
-<text x="700" y="846" fill="#dbe7ff" font-size="12" text-anchor="middle" font-weight="600">findings.tsv 结论</text>
-<text x="700" y="862" fill="#8fb4e8" font-size="9.5" text-anchor="middle">重复发现=标记被取代，永不删行</text>
-<text x="700" y="876" fill="#8fb4e8" font-size="9.5" text-anchor="middle">防重键=资产+漏洞类+变体，命令自动算</text>
-<text x="700" y="890" fill="#8fb4e8" font-size="9.5" text-anchor="middle">漏洞编号 CVE/CWE/GHSA，已知洞可聚合</text>
-<text x="700" y="904" fill="#8fb4e8" font-size="9.5" text-anchor="middle">置信×严重度两维评级；没打穿也入账</text>
-<text x="700" y="920" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">疑似漏洞清单：每个结论必须挂证据编号，不带证据不立</text>
-
-<rect x="70" y="960" width="200" height="100" rx="8" fill="#16233a" stroke="#58a6ff"/>
-<text x="170" y="980" fill="#dbe7ff" font-size="12" text-anchor="middle" font-weight="600">assets.tsv 资产图谱</text>
-<text x="170" y="996" fill="#8fb4e8" font-size="9.5" text-anchor="middle">记类型/取值/是否范围内</text>
-<text x="170" y="1010" fill="#8fb4e8" font-size="9.5" text-anchor="middle">存产品名+版本，匹配已知漏洞</text>
-<text x="170" y="1024" fill="#8fb4e8" font-size="9.5" text-anchor="middle">新资产随时入账续测，不停在开工时</text>
-<text x="170" y="1038" fill="#8fb4e8" font-size="9.5" text-anchor="middle">界外资产也记账，标『范围外』</text>
-<text x="170" y="1054" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">侦察出的资产地图：域名/IP/端口，界内外标记</text>
-
-<rect x="70" y="1090" width="200" height="110" rx="8" fill="#241b38" stroke="#bc8cff"/>
-<text x="170" y="1110" fill="#eadfff" font-size="12" text-anchor="middle" font-weight="600">creds.tsv 凭据账本</text>
-<text x="170" y="1126" fill="#c2a8ee" font-size="9.5" text-anchor="middle">凭据状态全程留痕：启用/停用/过期</text>
-<text x="170" y="1140" fill="#c2a8ee" font-size="9.5" text-anchor="middle">两类：缴获凭据/测试账号，绑定端点</text>
-<text x="170" y="1154" fill="#c2a8ee" font-size="9.5" text-anchor="middle">形态：哈希/SSH密钥/证书</text>
-<text x="170" y="1168" fill="#c2a8ee" font-size="9.5" text-anchor="middle">谁有什么权限——越权测试的骨架</text>
-<text x="170" y="1182" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">拿到的凭据/身份账，配对端点——权限差分的骨架</text>
-<line x1="270" y1="1138" x2="308" y2="1138" stroke="#e3b341" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#ar)"/>
-<line x1="308" y1="1158" x2="270" y2="1158" stroke="#e3b341" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#ar)"/>
-<rect x="310" y="1090" width="170" height="110" rx="8" fill="#33270c" stroke="#e3b341" stroke-dasharray="5 3"/>
-<text x="395" y="1110" fill="#ffe9b0" font-size="11.5" text-anchor="middle" font-weight="600">vault/ 保险库</text>
-<text x="395" y="1126" fill="#d9c37e" font-size="9.5" text-anchor="middle">账本只见代号 cred-N，不见真值</text>
-<text x="395" y="1140" fill="#d9c37e" font-size="9.5" text-anchor="middle">执行瞬间解密注入，真值永不落账</text>
-<text x="395" y="1154" fill="#d9c37e" font-size="9.5" text-anchor="middle">四关卡：入库→取用→注入→归零</text>
-<text x="395" y="1168" fill="#d9c37e" font-size="9.5" text-anchor="middle">交付前终检：全文扫描泄漏</text>
-<text x="395" y="1182" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">凭据保险柜：AI 只见代号，执行瞬间才解密</text>
-
-<rect x="590" y="960" width="220" height="100" rx="8" fill="#33270c" stroke="#e3b341"/>
-<text x="700" y="980" fill="#ffe9b0" font-size="12" text-anchor="middle" font-weight="600">E-index.tsv 证据索引</text>
-<text x="700" y="996" fill="#d9c37e" font-size="9.5" text-anchor="middle">只增不覆盖；重跑另存新版本</text>
-<text x="700" y="1010" fill="#d9c37e" font-size="9.5" text-anchor="middle">双指纹：原文+去随机数归一化</text>
-<text x="700" y="1024" fill="#d9c37e" font-size="9.5" text-anchor="middle">附复现命令，第三方也能跑通</text>
-<text x="700" y="1038" fill="#d9c37e" font-size="9.5" text-anchor="middle">记录从哪个网络位置打的（复现要素）</text>
-<text x="700" y="1054" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">证据目录：原件+双哈希，防调包、第三方可复核</text>
-<line x1="700" y1="1060" x2="700" y2="1070" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ar)"/>
-<text x="726" y="1076" fill="#e3b341" font-size="9">evidences</text>
-<rect x="850" y="960" width="230" height="124" rx="8" fill="#0c3038" stroke="#39c5cf"/>
-<text x="965" y="980" fill="#a8e6ee" font-size="12" text-anchor="middle" font-weight="600">EV / FD 证据卡片 evidence/*.md</text>
-<text x="965" y="996" fill="#6fc3d0" font-size="9.5" text-anchor="middle">每张卡固定四要素：</text>
-<text x="965" y="1010" fill="#6fc3d0" font-size="9.5" text-anchor="middle">前置条件/原始请求(标注长度)</text>
-<text x="965" y="1024" fill="#6fc3d0" font-size="9.5" text-anchor="middle">命中判据/提取规则/网络位置</text>
-<text x="965" y="1038" fill="#6fc3d0" font-size="9.5" text-anchor="middle">原文摘录已脱敏·差分对比分组</text>
-<text x="965" y="1052" fill="#6fc3d0" font-size="9.5" text-anchor="middle">索引进账本一行，全量内容在卡片</text>
-<text x="965" y="1068" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">证据原件的完整档案：怎么打中的、原始报文在此</text>
-
-<rect x="850" y="696" width="230" height="86" rx="8" fill="#33270c" stroke="#e3b341"/>
-<text x="965" y="716" fill="#ffe9b0" font-size="12" text-anchor="middle" font-weight="600">budget.tsv 预算树</text>
-<text x="965" y="732" fill="#d9c37e" font-size="9.5" text-anchor="middle">项目总预算→按意图分份额（可上卷）</text>
-<text x="965" y="746" fill="#d9c37e" font-size="9.5" text-anchor="middle">四维：令牌/请求数/工时/美元</text>
-<text x="965" y="760" fill="#d9c37e" font-size="9.5" text-anchor="middle">超支即拒派新任务（硬门不可越）</text>
-<text x="965" y="774" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">资源水表：token/请求/工时，花超自动停</text>
-<rect x="850" y="826" width="230" height="100" rx="8" fill="#0c3038" stroke="#39c5cf"/>
-<text x="965" y="846" fill="#a8e6ee" font-size="11.5" text-anchor="middle" font-weight="600">submissions/&lt;INT-id&gt;/submission.json</text>
-<text x="965" y="862" fill="#6fc3d0" font-size="9.5" text-anchor="middle">子代理唯一交作业口，不许直改账本</text>
-<text x="965" y="876" fill="#6fc3d0" font-size="9.5" text-anchor="middle">总控验收后才入账（单写者纪律）</text>
-<text x="965" y="890" fill="#6fc3d0" font-size="9.5" text-anchor="middle">统一 9 字段格式，按判据收货</text>
-<text x="965" y="904" fill="#6fc3d0" font-size="9.5" text-anchor="middle">重复提交不重复入账（幂等）</text>
-<text x="965" y="920" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">子代理唯一交作业口：总控验收后才落账</text>
-<rect x="850" y="1090" width="230" height="110" rx="8" fill="#0c3038" stroke="#39c5cf"/>
-<text x="965" y="1110" fill="#a8e6ee" font-size="12" text-anchor="middle" font-weight="600">引擎三件套（总控调度）</text>
-<text x="965" y="1126" fill="#6fc3d0" font-size="9.5" text-anchor="middle">判定引擎：代码级判定+14 个误报哨兵</text>
-<text x="965" y="1140" fill="#6fc3d0" font-size="9.5" text-anchor="middle">生成引擎：49 攻击模式×13 难度档</text>
-<text x="965" y="1154" fill="#6fc3d0" font-size="9.5" text-anchor="middle">测绘引擎：攻击面+权限差分</text>
-<text x="965" y="1168" fill="#6fc3d0" font-size="9.5" text-anchor="middle">清单化执行/只读优先/无害写分级</text>
-<text x="965" y="1182" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">三个执行引擎：判定/生成/测绘，各管一摊</text>
-
-
-<!-- timeline 底座 -->
-<line x1="400" y1="846" x2="400" y2="1258" stroke="#e3b341" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#ar)"/>
-<line x1="700" y1="926" x2="700" y2="1258" stroke="#e3b341" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#ar)"/>
-<line x1="170" y1="1200" x2="170" y2="1258" stroke="#e3b341" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#ar)"/>
-<line x1="1165" y1="592" x2="1165" y2="670" stroke="#e3b341" stroke-width="0" />
-<rect x="70" y="1260" width="1180" height="90" rx="8" fill="#33270c" stroke="#e3b341" stroke-width="1.6"/>
-<text x="660" y="1282" fill="#ffe9b0" font-size="13" text-anchor="middle" font-weight="600">timeline.tsv 审计链 —— 第一事实源（一切写入的地基）</text>
-<text x="660" y="1298" fill="#d9c37e" font-size="9.5" text-anchor="middle">每行记：时间·谁·阶段·事件·回滚命令·前条指纹·本条指纹</text>
-<text x="660" y="1314" fill="#d9c37e" font-size="9.5" text-anchor="middle">每条写命令先落链再执行（篡改任何历史行，链即断）· 13 张表可由时间线+提交文件全量重建 · 断电重启可校验一致</text>
-<text x="660" y="1336" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">一切写操作的时间线：改一个字、断一条链——审计的地基</text>
+<!-- ④ 作战循环轮辐图（v13 重绘）：竖椭圆环 + 8 器官 + 总控 hub + 外圈挂件 + 自主继续大回环 -->
+<text x="40" y="690" fill="#e2e8f0" font-size="13.5" font-weight="700">④ 作战循环 —— AI 自主渗透的心脏（转一圈=一轮，转到收敛才停）</text>
+<text x="40" y="707" fill="#6fc3d0" font-size="10">顺时针读：找信号→召回→派子代理→过门执行→先落原始→提取结构化落账→更新知识库→判收敛→再转一圈；悬浮任意框看该步完整机制</text>
+<g><title>幽灵环 1：下一轮的投影——循环不因一轮结束而停，转到收敛才停</title><ellipse cx="680" cy="2250" rx="480" ry="640" fill="none" stroke="#58a6ff" stroke-width="1.2" stroke-dasharray="6 7" opacity="0.25"/></g>
+<g><title>幽灵环 2：再下一轮的投影——自主继续的视觉暗示</title><ellipse cx="680" cy="2250" rx="545" ry="725" fill="none" stroke="#58a6ff" stroke-width="1" stroke-dasharray="4 8" opacity="0.12"/></g>
+<g><title>自主继续大回环：从 ⑧ 收敛判定弯回 ① 读图找信号——只要 matrix 未闭合、还有未消费信号，AI 自动再转一圈，不需要人推；转到收敛才出环去写报告</title>
+<path class="bigloop" d="M 228 1862 C 120 1900 32 2000 32 2200 L 32 3210 C 32 3380 160 3480 330 3480 L 1030 3480 C 1200 3480 1322 3380 1322 3210 L 1322 1250 C 1322 1000 1200 868 950 868 L 480 868 C 300 868 240 1000 250 1150 C 260 1300 420 1380 520 1420 C 620 1460 685 1540 688 1636" fill="none" stroke="#e3b341" stroke-width="2.2" opacity="0.85" marker-end="url(#ah)"/>
+<text x="680" y="3440" fill="#e3b341" font-size="12" font-weight="700" text-anchor="middle">自主继续·转到收敛</text>
+<text x="150" y="2005" fill="#8b949e" font-size="8.5" text-anchor="middle">轮次 n→n+1</text>
 </g>
-
-
-<!-- Band B2: 10 边 -->
-<text x="40" y="1388" fill="#8b949e" font-size="12" font-weight="600">③ edges.tsv —— 10 边词汇：图上每根实线箭头都是一行边（谁→谁 · 什么关系 · 解决什么问题）</text>
-<text x="40" y="1502" fill="#a5d6ff" font-size="9.5" font-style="italic">十种关系把 13 张表连成一张可查询的图——『这个发现被什么证据撑着？』一句话可答</text>
-<g font-size="9.5">
-<g><title>spawns 派生：项目→意图</title><rect x="40" y="1398" width="236" height="40" rx="6" fill="#16233a"/><text x="50" y="1414" fill="#dbe7ff" font-weight="600">spawns 派生：项目→意图</text><text x="50" y="1428" fill="#8fb4e8">每个任务可追溯到来处</text></g>
-<g><title>yields 产出：意图→事实</title><rect x="284" y="1398" width="236" height="40" rx="6" fill="#16233a"/><text x="294" y="1414" fill="#dbe7ff" font-weight="600">yields 产出：意图→事实</text><text x="294" y="1428" fill="#8fb4e8">假设必须兑现成事实</text></g>
-<g><title>derived_from：事实→新意图</title><rect x="528" y="1398" width="236" height="40" rx="6" fill="#16233a"/><text x="538" y="1414" fill="#dbe7ff" font-weight="600">derived_from：事实→新意图</text><text x="538" y="1428" fill="#8fb4e8">事实反哺新假设（循环引擎）</text></g>
-<g><title>proves 证明：证据→发现</title><rect x="772" y="1398" width="236" height="40" rx="6" fill="#16233a"/><text x="782" y="1414" fill="#dbe7ff" font-weight="600">proves 证明：证据→发现</text><text x="782" y="1428" fill="#8fb4e8">结论-证据链闭合可查</text></g>
-<g><title>evidences 举证：证据卡→发现</title><rect x="1016" y="1398" width="236" height="40" rx="6" fill="#16233a"/><text x="1026" y="1414" fill="#dbe7ff" font-weight="600">evidences 举证：证据卡→发现</text><text x="1026" y="1428" fill="#8fb4e8">索引与卡片的引用关系</text></g>
-<g><title>parent 归属：资产→子资产</title><rect x="40" y="1444" width="236" height="40" rx="6" fill="#16233a"/><text x="50" y="1460" fill="#dbe7ff" font-weight="600">parent 归属：资产→子资产</text><text x="50" y="1474" fill="#8fb4e8">资产树：根域→子域→主机</text></g>
-<g><title>attack 攻击：发现→命中资产</title><rect x="284" y="1444" width="236" height="40" rx="6" fill="#16233a"/><text x="294" y="1460" fill="#dbe7ff" font-weight="600">attack 攻击：发现→命中资产</text><text x="294" y="1474" fill="#8fb4e8">发现定位到受影响资产</text></g>
-<g><title>cross_ref 跨表引用</title><rect x="528" y="1444" width="236" height="40" rx="6" fill="#16233a"/><text x="538" y="1460" fill="#dbe7ff" font-weight="600">cross_ref 跨表引用</text><text x="538" y="1474" fill="#8fb4e8">跨表关联防重复发现</text></g>
-<g><title>supersedes：新发现取代旧发现</title><rect x="772" y="1444" width="236" height="40" rx="6" fill="#16233a"/><text x="782" y="1460" fill="#dbe7ff" font-weight="600">supersedes：新发现取代旧发现</text><text x="782" y="1474" fill="#8fb4e8">结论合并不丢历史（旧行立墓碑）</text></g>
-<g><title>scope-rel：范围↔资产关联</title><rect x="1016" y="1444" width="236" height="40" rx="6" fill="#16233a"/><text x="1026" y="1460" fill="#dbe7ff" font-weight="600">scope-rel：范围↔资产关联</text><text x="1026" y="1474" fill="#8fb4e8">界内界外机器可判</text></g>
+<ellipse cx="680" cy="2250" rx="420" ry="560" fill="none" stroke="#8b949e" stroke-width="1" stroke-dasharray="1 7" opacity="0.45"/>
+<g><title>①→② 账本命令：kb-match 召回先例——用本轮指纹查知识库，命中即派生意图</title><path class="rarc" d="M 849.1 1737.4 A 420 560 0 0 1 923.8 1794" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/></g>
+<g><title>①→② 账本命令：kb-match 召回先例——用本轮指纹查知识库，命中即派生意图</title><text class="arclab" x="864.8" y="1803.1" fill="#e3b341" font-size="9" font-weight="600" text-anchor="middle">kb-match·召回先例</text></g>
+<g><title>②→③ 账本命令：add-intent 立意图——派生的打法登记进 intents.tsv 才能派发</title><path class="rarc" d="M 1016 1914.1 A 420 560 0 0 1 1097.6 2189.9" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/></g>
+<g><title>②→③ 账本命令：add-intent 立意图——派生的打法登记进 intents.tsv 才能派发</title><text class="arclab" x="1028" y="2061.5" fill="#e3b341" font-size="9" font-weight="600" text-anchor="middle">add-intent·立意图</text></g>
+<g><title>③→④ 账本命令：guard-exec 过门执行——子代理命令全部经 guard 五关放行</title><path class="rarc" d="M 1097.6 2310.1 A 420 560 0 0 1 1016 2585.9" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/></g>
+<g><title>③→④ 账本命令：guard-exec 过门执行——子代理命令全部经 guard 五关放行</title><text class="arclab" x="1028" y="2438.5" fill="#e3b341" font-size="9" font-weight="600" text-anchor="middle">guard-exec·过五关</text></g>
+<g><title>④→⑤ 账本命令：put-raw 先落原始——执行产出原件落 submissions/ 与 evidence/</title><path class="rarc" d="M 923.8 2706 A 420 560 0 0 1 849.1 2762.6" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/></g>
+<g><title>④→⑤ 账本命令：put-raw 先落原始——执行产出原件落 submissions/ 与 evidence/</title><text class="arclab" x="864.8" y="2696.9" fill="#e3b341" font-size="9" font-weight="600" text-anchor="middle">put-raw·先落原件</text></g>
+<g><title>⑤→⑥ 账本命令：claim-submissions 验收提取——总控从原始数据提取结构化行</title><path class="rarc" d="M 510.9 2762.6 A 420 560 0 0 1 436.2 2706" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/></g>
+<g><title>⑤→⑥ 账本命令：claim-submissions 验收提取——总控从原始数据提取结构化行</title><text class="arclab" x="495.2" y="2704.9" fill="#e3b341" font-size="9" font-weight="600" text-anchor="middle">验收提取·结构化</text></g>
+<g><title>⑥→⑦ 账本命令：stage-play 暂存打法——脱敏后的打法进暂存区等四门槛</title><path class="rarc" d="M 344 2585.9 A 420 560 0 0 1 262.4 2310.1" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/></g>
+<g><title>⑥→⑦ 账本命令：stage-play 暂存打法——脱敏后的打法进暂存区等四门槛</title><text class="arclab" x="332" y="2446.5" fill="#e3b341" font-size="9" font-weight="600" text-anchor="middle">stage-play·暂存打法</text></g>
+<g><title>⑦→⑧ 账本命令：check-matrix 查闭合——对照覆盖矩阵判定还有没有空格</title><path class="rarc" d="M 262.4 2189.9 A 420 560 0 0 1 344 1914.1" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/></g>
+<g><title>⑦→⑧ 账本命令：check-matrix 查闭合——对照覆盖矩阵判定还有没有空格</title><text class="arclab" x="332" y="2061.5" fill="#e3b341" font-size="9" font-weight="600" text-anchor="middle">check-matrix·查闭合</text></g>
+<g><title>⑧→① 账本命令：next-round 再转——未收敛则自动开始下一轮，无需人推</title><path class="rarc" d="M 436.2 1794 A 420 560 0 0 1 442.2 1788.4" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/></g>
+<g><title>⑧→① 账本命令：next-round 再转——未收敛则自动开始下一轮，无需人推</title><text class="arclab" x="465.6" y="1828.9" fill="#e3b341" font-size="9" font-weight="600" text-anchor="middle">next-round·再转</text></g>
+<g><title>总控 hub：读 facts/intents/matrix 与知识图谱定打法；派子代理执行；只有它能验收写账（单写者）。8 个器官由它辐射调度——轮辐图的轴心</title>
+<rect x="520" y="2188" width="320" height="124" rx="14" fill="#161b22" stroke="#58a6ff" stroke-width="2"/>
+<rect x="628" y="2179" width="104" height="18" rx="9" fill="#0d2246" stroke="#58a6ff" stroke-width="1"/>
+<text class="btext" x="680" y="2192" fill="#a5c8ff" font-size="8.5" font-weight="700" text-anchor="middle">指挥官·单写者</text>
+<text x="680" y="2236" fill="#e2e8f0" font-size="13.5" font-weight="700" text-anchor="middle">总控 AI · 指挥官 · 单写者</text>
+<text x="680" y="2260" fill="#c9d1d9" font-size="9.6" text-anchor="middle">读账定计划 · 派活 · 验收落账</text>
+<text x="680" y="2278" fill="#c9d1d9" font-size="9.6" text-anchor="middle">唯一写者：验收后才写三本账</text>
+<text x="680" y="2296" fill="#a5d6ff" font-size="9.2" font-style="italic" text-anchor="middle">辐射 8 器官——轮辐轴心</text>
 </g>
-
-
-<text x="40" y="1512" fill="#39c5cf" font-size="13" font-weight="700">④.0 知识图谱本体 —— 推理=图上走（系统的灵魂）</text>
-<text x="40" y="1529" fill="#6fc3d0" font-size="10">13 实体节点 + 12 种关系边 = 可查询本体；一切智能问题都是图查询/图路径——不靠 AI 上下文记忆（防幻觉根源）；悬浮任一节点/边=该元素的完整设计说明</text>
-<g><title>目标拆成可执行意图；每条意图可回溯到目标行——审计链的起点</title><line x1="190" y1="1600" x2="620" y2="1580" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>spawns 派生</title><rect x="380" y="1580" width="49" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="405" y="1590" font-size="8.2" fill="#8b949e" text-anchor="middle">spawns 派生</text></g>
-<g><title>意图执行后的观测事实；事实不带结论，只带证据指针</title><line x1="600.0" y1="1580" x2="600.0" y2="1720" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>yields 产出</title><rect x="520.0" y="1644.0" width="49" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="545.0" y="1654.0" font-size="8.2" fill="#8b949e" text-anchor="middle">yields 产出</text></g>
-<g><title>未消费事实触发新假设——探索引擎：图自己长出下一步</title><line x1="648.0" y1="1720" x2="648.0" y2="1580" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>derived_from 反哺</title><rect x="662.0" y="1664.0" width="77" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="700.0" y="1674.0" font-size="8.2" fill="#8b949e" text-anchor="middle">derived_from 反哺</text></g>
-<g><title>每个发现必须有证据边；无证据边=不成立，直接拒收</title><line x1="1050" y1="1800" x2="1050" y2="1640" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>proves 证实</title><rect x="1025" y="1710" width="49" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="1050" y="1720" font-size="8.2" fill="#8b949e" text-anchor="middle">proves 证实</text></g>
-<g><title>资产是矩阵行的父节点；新资产→新行→分母生长</title><line x1="190" y1="1860" x2="620" y2="2240" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>parent 归属</title><rect x="380" y="2040" width="49" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="405" y="2050" font-size="8.2" fill="#8b949e" text-anchor="middle">parent 归属</text></g>
-<g><title>发现挂回受影响资产；攻击链沿这条边即时重建</title><line x1="1050" y1="1640" x2="190" y2="1860" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>attack 攻击</title><rect x="595" y="1740" width="49" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="620" y="1750" font-size="8.2" fill="#8b949e" text-anchor="middle">attack 攻击</text></g>
-<g><title>脱敏+四门槛后进知识库；下场开局指纹匹配召回</title><line x1="1050" y1="1640" x2="1050" y2="1560" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>入库→召回</title><rect x="949.0" y="1590.0" width="31" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="965.0" y="1600.0" font-size="8.2" fill="#8b949e" text-anchor="middle">入库→召回</text></g>
-<g><title>先例直接生成初始意图——为什么老手快：不从零开始</title><line x1="1050" y1="1560" x2="620" y2="1580" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>召回派生</title><rect x="822" y="1560" width="26" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="835" y="1570" font-size="8.2" fill="#8b949e" text-anchor="middle">召回派生</text></g>
-<g><title>界外资产格标 N/A——边界由数据决定，不靠 AI 判断</title><line x1="190" y1="1730" x2="620" y2="2240" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>范围关联</title><rect x="392" y="1975" width="26" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="405" y="1985" font-size="8.2" fill="#8b949e" text-anchor="middle">范围关联</text></g>
-<g><title>哪个意图用哪个凭据；配对错了 vault 拒发</title><line x1="190" y1="1990" x2="620" y2="1580" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>身份配对</title><rect x="392" y="1775" width="26" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="405" y="1785" font-size="8.2" fill="#8b949e" text-anchor="middle">身份配对</text></g>
-<g><title>总控单写者：9 字段判据收货，合格才进账本</title><line x1="190" y1="2120" x2="620" y2="1720" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>验收落账</title><rect x="392" y="1910" width="26" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="405" y="1920" font-size="8.2" fill="#8b949e" text-anchor="middle">验收落账</text></g>
-<g><title>一切账本可从时间线+提交文件重算——灾难恢复的底气</title><line x1="1050" y1="2100" x2="1050" y2="1640" stroke="#8b949e" stroke-width="1.3" marker-end="url(#ah)"/></g>
-<g><title>全量重建</title><rect x="1037" y="1860" width="26" height="14" rx="4" fill="#0d1117" opacity="0.92"/><text x="1050" y="1870" font-size="8.2" fill="#8b949e" text-anchor="middle">全量重建</text></g>
-<g><title>这是啥：交战档案袋。为啥：无档案不开工。机制：add-goal 问询落账，字段缺一拒收；预算四维（总额/单发现/高危/会话）入账，预算门每轮读它</title><circle cx="190" cy="1600" r="30" fill="#161b22" stroke="#e3b341" stroke-width="2"/><text x="190" y="1599" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">goals</text><text x="190" y="1612" font-size="8.4" fill="#8b949e" text-anchor="middle">项目</text></g>
-<text x="190" y="1642" font-size="8" fill="#6e7681" text-anchor="middle">记目标/时间窗/预算；一切预算判断的源头</text>
-<g><title>这是啥：机器可判定的边界。为啥：越界不能靠自觉。机制：add-scope 只加行；guard 每条命令查它；修订必须走审批留痕</title><circle cx="190" cy="1730" r="30" fill="#161b22" stroke="#e3b341" stroke-width="2"/><text x="190" y="1729" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">scope</text><text x="190" y="1742" font-size="8.4" fill="#8b949e" text-anchor="middle">白名单</text></g>
-<text x="190" y="1772" font-size="8" fill="#6e7681" text-anchor="middle">允许打哪些/排除哪些</text>
-<g><title>这是啥：侦察成果。为啥：覆盖分母的行来源。机制：界外资产也记账标范围外；新资产触发矩阵长行续测</title><circle cx="190" cy="1860" r="30" fill="#161b22" stroke="#58a6ff" stroke-width="2"/><text x="190" y="1859" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">assets</text><text x="190" y="1872" font-size="8.4" fill="#8b949e" text-anchor="middle">资产</text></g>
-<text x="190" y="1902" font-size="8" fill="#6e7681" text-anchor="middle">资产图谱：类型/取值/界内界外</text>
-<g><title>这是啥：授权凭据台账。为啥：真值不落账。机制：存 vault；AI 全程只见 {{vault:cred-N}} 代号；执行瞬间解密注入</title><circle cx="190" cy="1990" r="30" fill="#161b22" stroke="#bc8cff" stroke-width="2"/><text x="190" y="1989" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">creds</text><text x="190" y="2002" font-size="8.4" fill="#8b949e" text-anchor="middle">凭据</text></g>
-<text x="190" y="2032" font-size="8" fill="#6e7681" text-anchor="middle">账号/密钥（只见代号）</text>
-<g><title>这是啥：交作业区。为啥：单写者原则。机制：子代理只写这里；总控按 9 字段判据验收；合格才落 facts/findings</title><circle cx="190" cy="2120" r="30" fill="#161b22" stroke="#8b949e" stroke-width="2"/><text x="190" y="2119" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">submissions</text><text x="190" y="2132" font-size="8.4" fill="#8b949e" text-anchor="middle">交作业</text></g>
-<text x="190" y="2162" font-size="8" fill="#6e7681" text-anchor="middle">子代理原始产出等待验收</text>
-<g><title>这是啥：AI 作战计划账。为啥：计划可审计。机制：⓪检查→③派发前落账；断点续跑按它跳过已完成；derived_from 反哺生成新行</title><circle cx="620" cy="1580" r="30" fill="#161b22" stroke="#bc8cff" stroke-width="2"/><text x="620" y="1579" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">intents</text><text x="620" y="1592" font-size="8.4" fill="#8b949e" text-anchor="middle">意图</text></g>
-<text x="620" y="1622" font-size="8" fill="#6e7681" text-anchor="middle">打算测什么+状态+预算份额</text>
-<g><title>这是啥：观测事实。为啥：发现的地基。机制：只增不删；未消费事实=图上信号，驱动下一轮假设</title><circle cx="620" cy="1720" r="30" fill="#161b22" stroke="#58a6ff" stroke-width="2"/><text x="620" y="1719" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">facts</text><text x="620" y="1732" font-size="8.4" fill="#8b949e" text-anchor="middle">事实</text></g>
-<text x="620" y="1762" font-size="8" fill="#6e7681" text-anchor="middle">可复用的事实碎片</text>
-<g><title>这是啥：覆盖总表。为啥：测全没有可度量。机制：列 freeze 钉死分母；每格五态演进；全格有归属=收敛停机</title><circle cx="620" cy="2240" r="30" fill="#161b22" stroke="#3fb950" stroke-width="2"/><text x="620" y="2239" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">matrix</text><text x="620" y="2252" font-size="8.4" fill="#8b949e" text-anchor="middle">矩阵</text></g>
-<text x="620" y="2282" font-size="8" fill="#6e7681" text-anchor="middle">资产×漏洞类覆盖五态</text>
-<g><title>这是啥：跨会话记忆。为啥：复利。机制：四门槛入库；开局指纹子图匹配召回；先例直接派生意图</title><circle cx="1050" cy="1560" r="30" fill="#161b22" stroke="#3fb950" stroke-width="2"/><text x="1050" y="1559" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">knowledge</text><text x="1050" y="1572" font-size="8.4" fill="#8b949e" text-anchor="middle">知识库</text></g>
-<text x="1050" y="1602" font-size="8" fill="#6e7681" text-anchor="middle">脱敏打法先例</text>
-<g><title>这是啥：结论账。为啥：结论必附证据。机制：防重键+supersedes；置信×严重两维；只有总控验收后能写</title><circle cx="1050" cy="1640" r="30" fill="#161b22" stroke="#f85149" stroke-width="2"/><text x="1050" y="1639" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">findings</text><text x="1050" y="1652" font-size="8.4" fill="#8b949e" text-anchor="middle">发现</text></g>
-<text x="1050" y="1682" font-size="8" fill="#6e7681" text-anchor="middle">疑似漏洞+两维评级</text>
-<g><title>这是啥：证据目录。为啥：防调包。机制：先哈希后登记；重放门按索引独立重跑；第三方复核入口</title><circle cx="1050" cy="1800" r="30" fill="#161b22" stroke="#39c5cf" stroke-width="2"/><text x="1050" y="1799" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">E-index</text><text x="1050" y="1812" font-size="8.4" fill="#8b949e" text-anchor="middle">证据</text></g>
-<text x="1050" y="1842" font-size="8" fill="#6e7681" text-anchor="middle">证据卡索引+双指纹</text>
-<g><title>这是啥：追加式时间线。为啥：篡改必断。机制：每条写命令先落链再执行；13 表可全量重建；断电校验一致</title><circle cx="1050" cy="2100" r="30" fill="#161b22" stroke="#8b949e" stroke-width="2"/><text x="1050" y="2099" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">timeline</text><text x="1050" y="2112" font-size="8.4" fill="#8b949e" text-anchor="middle">审计链</text></g>
-<text x="1050" y="2142" font-size="8" fill="#6e7681" text-anchor="middle">一切写操作+链式哈希</text>
-<g><title>这是啥：人的点头记录。为啥：高危必须人批。机制：第3层闸要求时拦截等待；审批本身也落账</title><circle cx="1050" cy="2240" r="30" fill="#161b22" stroke="#8b949e" stroke-width="2"/><text x="1050" y="2239" font-size="9.4" font-weight="700" fill="#e2e8f0" text-anchor="middle">approvals</text><text x="1050" y="2252" font-size="8.4" fill="#8b949e" text-anchor="middle">审批</text></g>
-<text x="1050" y="2282" font-size="8" fill="#6e7681" text-anchor="middle">高危命令人工审批</text>
-<line x1="1050" y1="1800" x2="1050" y2="1640" stroke="#39c5cf" stroke-width="3.6" opacity="0.8"/>
-<line x1="1050" y1="1640" x2="190" y2="1860" stroke="#39c5cf" stroke-width="3.6" opacity="0.8"/>
-<line x1="620" y1="1720" x2="620" y2="1580" stroke="#bc8cff" stroke-width="3.6" opacity="0.8"/>
-<line x1="190" y1="1860" x2="620" y2="2240" stroke="#3fb950" stroke-width="3.6" opacity="0.8"/>
-<line x1="1050" y1="1560" x2="620" y2="1580" stroke="#3fb950" stroke-width="3.6" opacity="0.8"/>
-<rect x="60" y="2300" width="1240" height="42" rx="9" fill="#161b22" stroke="#39c5cf" stroke-width="1.3"/><circle cx="80" cy="2321" r="6" fill="#39c5cf"/><text x="96" y="2317" font-size="10.4" font-weight="600" fill="#e2e8f0">问：这个发现被什么证据撑着？</text><text x="96" y="2334" font-size="9.2" fill="#8b949e">沿 proves 边回溯到证据卡（防『我觉得』）</text>
-<rect x="60" y="2352" width="1240" height="42" rx="9" fill="#161b22" stroke="#bc8cff" stroke-width="1.3"/><circle cx="80" cy="2373" r="6" fill="#bc8cff"/><text x="96" y="2369" font-size="10.4" font-weight="600" fill="#e2e8f0">问：从这个事实能推出什么新假设？</text><text x="96" y="2386" font-size="9.2" fill="#8b949e">derived_from 反哺新意图——探索引擎</text>
-<rect x="60" y="2404" width="1240" height="42" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.3"/><circle cx="80" cy="2425" r="6" fill="#3fb950"/><text x="96" y="2421" font-size="10.4" font-weight="600" fill="#e2e8f0">问：测完了吗？</text><text x="96" y="2438" font-size="9.2" fill="#8b949e">matrix 每格是否有归属边（收敛=图属性）；召回=指纹子图匹配</text>
-<text x="40" y="2470" font-size="9.6" fill="#7fd49a">图生长：每轮 P3 循环=图加节点加边（幽灵→第 N 轮落账变实）——推理不靠记忆，靠图越滚越大；悬浮任意节点/边看完整设计</text>
-<text x="40" y="2550.0" fill="#8b949e" font-size="13" font-weight="700">④.1 P3 循环七步环 —— AI 作战发动机（evolution-loop 图化）</text><text x="40" y="2567.0" fill="#6fc3d0" font-size="10">每轮 11 步，转到收敛才停；每步右侧注明 AI 在干什么</text>
-<g><title>⓪ 预算/断点检查</title><rect x="265" y="2611.0" width="130" height="34" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="330" y="2625.0" font-size="9.6" font-weight="600" fill="#a8e6ee" text-anchor="middle">⓪ 预算/断点检查</text><text x="330" y="2638.0" font-size="8.2" fill="#6fc3d0" text-anchor="middle">超支拒立项·跳过已完成</text></g>
-<g><title>① 扫图谱找信号</title><rect x="382" y="2667.0" width="130" height="34" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="447" y="2681.0" font-size="9.6" font-weight="600" fill="#a8e6ee" text-anchor="middle">① 扫图谱找信号</text><text x="447" y="2694.0" font-size="8.2" fill="#6fc3d0" text-anchor="middle">读账本命令，非手工翻</text></g>
-<g><title>② 假设风暴五路</title><rect x="411" y="2794.0" width="130" height="34" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="476" y="2808.0" font-size="9.6" font-weight="600" fill="#a8e6ee" text-anchor="middle">② 假设风暴五路</text><text x="476" y="2821.0" font-size="8.2" fill="#6fc3d0" text-anchor="middle">知识图谱增强检索推理</text></g>
-<g><title>③ 并行派发+单写者</title><rect x="330" y="2896.0" width="130" height="34" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="395" y="2910.0" font-size="9.6" font-weight="600" fill="#a8e6ee" text-anchor="middle">③ 并行派发+单写者</text><text x="395" y="2923.0" font-size="8.2" fill="#6fc3d0" text-anchor="middle">批量派发·验收才落账</text></g>
-<g><title>④ 验证落账</title><rect x="199" y="2896.0" width="130" height="34" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="264" y="2910.0" font-size="9.6" font-weight="600" fill="#a8e6ee" text-anchor="middle">④ 验证落账</text><text x="264" y="2923.0" font-size="8.2" fill="#6fc3d0" text-anchor="middle">结果结构化入账</text></g>
-<g><title>⑤ 链构建</title><rect x="118" y="2794.0" width="130" height="34" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="183" y="2808.0" font-size="9.6" font-weight="600" fill="#a8e6ee" text-anchor="middle">⑤ 链构建</text><text x="183" y="2821.0" font-size="8.2" fill="#6fc3d0" text-anchor="middle">攻击链推理跨引擎关联</text></g>
-<g><title>⑥ 收敛判定</title><rect x="147" y="2667.0" width="130" height="34" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="212" y="2681.0" font-size="9.6" font-weight="600" fill="#a8e6ee" text-anchor="middle">⑥ 收敛判定</text><text x="212" y="2694.0" font-size="8.2" fill="#6fc3d0" text-anchor="middle">格全有归属→停机</text></g>
-<text x="330" y="2774.0" font-size="11" font-weight="700" fill="#39c5cf" text-anchor="middle">转到收敛</text><text x="330" y="2790.0" font-size="9" fill="#6fc3d0" text-anchor="middle">每轮 11 步</text>
-<path d="M330,2278.0 m 150,0 a150,150 0 1,1 -30,-140" fill="none" stroke="#39c5cf" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#ah)"/>
-<text x="40" y="3030.0" fill="#8b949e" font-size="13" font-weight="700">④.2 引擎三列 —— 输入 → 加工 → 输出（总控调度，子代理无直写权）</text><text x="40" y="3047.0" fill="#6fc3d0" font-size="10">所有产出汇入 submissions 交作业区，总控验收后才落账</text>
-<g><rect x="40" y="3054.0" width="396" height="74" rx="9" fill="#241b38" stroke="#bc8cff" stroke-width="1.4"/><text x="238" y="3075.0" font-size="12" font-weight="700" fill="#eadfff" text-anchor="middle">判定引擎</text><text x="238" y="3091.0" font-size="9.6" fill="#c2a8ee" text-anchor="middle">输入：候选发现+代码上下文</text><text x="238" y="3104.0" font-size="9.6" fill="#c2a8ee" text-anchor="middle">加工：代码级判定 + 14 误报哨兵</text><text x="238" y="3118.0" font-size="9.6" fill="#c2a8ee" text-anchor="middle">输出：判定结论入 submissions</text></g>
-<g><rect x="450" y="3054.0" width="396" height="74" rx="9" fill="#241b38" stroke="#bc8cff" stroke-width="1.4"/><text x="648" y="3075.0" font-size="12" font-weight="700" fill="#eadfff" text-anchor="middle">生成引擎</text><text x="648" y="3091.0" font-size="9.6" fill="#c2a8ee" text-anchor="middle">输入：意图+目标特征</text><text x="648" y="3104.0" font-size="9.6" fill="#c2a8ee" text-anchor="middle">加工：49 攻击模式 × 13 难度档</text><text x="648" y="3118.0" font-size="9.6" fill="#c2a8ee" text-anchor="middle">输出：POC 草稿 → 对抗验证把关</text></g>
-<g><rect x="860" y="3054.0" width="396" height="74" rx="9" fill="#241b38" stroke="#bc8cff" stroke-width="1.4"/><text x="1058" y="3075.0" font-size="12" font-weight="700" fill="#eadfff" text-anchor="middle">测绘引擎</text><text x="1058" y="3091.0" font-size="9.6" fill="#c2a8ee" text-anchor="middle">输入：范围白名单</text><text x="1058" y="3104.0" font-size="9.6" fill="#c2a8ee" text-anchor="middle">加工：攻击面测绘 + 权限差分</text><text x="1058" y="3118.0" font-size="9.6" fill="#c2a8ee" text-anchor="middle">输出：资产/事实入 submissions</text></g>
-<line x1="436" y1="3128.0" x2="470" y2="3128.0" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/><text x="453" y="3123.0" font-size="9" fill="#e3b341" text-anchor="middle">submissions</text>
-<g><rect x="900" y="3054.0" width="400" height="74" rx="9" fill="#16233a" stroke="#58a6ff" stroke-width="1.4"/><text x="1100" y="3075.0" font-size="12" font-weight="700" fill="#dbe7ff" text-anchor="middle">总控验收（单写者）</text><text x="1100" y="3091.0" font-size="9.6" fill="#8fb4e8" text-anchor="middle">统一 9 字段格式按判据收货 · 合格才落 findings/E-index</text><text x="1100" y="3104.0" font-size="9.6" fill="#8fb4e8" text-anchor="middle">不合格打回重做 · 重复提交不重复入账（幂等）</text></g>
-<line x1="850" y1="2591.0" x2="900" y2="2591.0" stroke="#8b949e" stroke-width="1.6" marker-end="url(#ah)"/>
-<text x="40" y="3192.0" fill="#39c5cf" font-size="13" font-weight="700">④.5 AI 实战打法 —— 一场渗透的样本解剖</text><text x="40" y="3209.0" fill="#6fc3d0" font-size="10">ReAct 螺旋：观察 → 推理 → 行动 → 所得；五环一条链，每环旁注=哪个引擎在干活、图谱上哪条边在生长</text>
-<g><title>环1 测绘：先建分母。测绘引擎干活，assets 节点生长</title><rect x="40" y="3230.0" width="300" height="46" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="48" y="3244.0" font-size="8.6" font-weight="700" fill="#a8e6ee">观察</text><text x="48" y="3261.0" font-size="8.8" fill="#c9d1d9">读 goals/scope/matrix：白名单与预算</text></g>
-<line x1="340" y1="2753" x2="370" y2="2753" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>推理</title><rect x="370" y="3230.0" width="300" height="46" rx="8" fill="#241b38" stroke="#bc8cff" stroke-width="1.2"/><text x="378" y="3244.0" font-size="8.6" font-weight="700" fill="#eadfff">推理</text><text x="378" y="3261.0" font-size="8.8" fill="#c9d1d9">先测绘，建覆盖分母</text></g>
-<line x1="670" y1="2753" x2="700" y2="2753" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>行动</title><rect x="700" y="3230.0" width="300" height="46" rx="8" fill="#16233a" stroke="#58a6ff" stroke-width="1.2"/><text x="708" y="3244.0" font-size="8.6" font-weight="700" fill="#dbe7ff">行动</text><text x="708" y="3261.0" font-size="8.8" fill="#c9d1d9">子域枚举+端口扫描（经 guard）</text></g>
-<line x1="1000" y1="2753" x2="1030" y2="2753" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>所得</title><rect x="1030" y="3230.0" width="300" height="46" rx="8" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.2"/><text x="1038" y="3244.0" font-size="8.6" font-weight="700" fill="#cbf5d8">所得</text><text x="1038" y="3261.0" font-size="8.8" fill="#c9d1d9">12 子域·3 开放端口 → 落 assets</text></g>
-<text x="40" y="3290.0" font-size="8.6" fill="#7fd49a">环1 ｜ 测绘引擎干活 · assets 节点生长</text>
-<g><title>环2 指纹召回：知识库匹配历史技法，facts/evid 边生长</title><rect x="40" y="3326.0" width="300" height="46" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="48" y="3340.0" font-size="8.6" font-weight="700" fill="#a8e6ee">观察</text><text x="48" y="3357.0" font-size="8.8" fill="#c9d1d9">assets 冒出 :8080 Jenkins</text></g>
-<line x1="340" y1="2849" x2="370" y2="2849" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>推理</title><rect x="370" y="3326.0" width="300" height="46" rx="8" fill="#241b38" stroke="#bc8cff" stroke-width="1.2"/><text x="378" y="3340.0" font-size="8.6" font-weight="700" fill="#eadfff">推理</text><text x="378" y="3357.0" font-size="8.8" fill="#c9d1d9">图谱指纹匹配历史技法「未授权面板」</text></g>
-<line x1="670" y1="2849" x2="700" y2="2849" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>行动</title><rect x="700" y="3326.0" width="300" height="46" rx="8" fill="#16233a" stroke="#58a6ff" stroke-width="1.2"/><text x="708" y="3340.0" font-size="8.6" font-weight="700" fill="#dbe7ff">行动</text><text x="708" y="3357.0" font-size="8.8" fill="#c9d1d9">GET /manage（无害读）</text></g>
-<line x1="1000" y1="2849" x2="1030" y2="2849" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>所得</title><rect x="1030" y="3326.0" width="300" height="46" rx="8" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.2"/><text x="1038" y="3340.0" font-size="8.6" font-weight="700" fill="#cbf5d8">所得</text><text x="1038" y="3357.0" font-size="8.8" fill="#c9d1d9">200 未授权 → 落 fact+证据卡</text></g>
-<text x="40" y="3386.0" font-size="8.6" fill="#7fd49a">环2 ｜ 知识库召回 · facts/evid 边生长</text>
-<g><title>环3 假设验证：生成引擎+无害写门，derived_from 边生长</title><rect x="40" y="3422.0" width="300" height="46" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="48" y="3436.0" font-size="8.6" font-weight="700" fill="#a8e6ee">观察</text><text x="48" y="3453.0" font-size="8.8" fill="#c9d1d9">fact 未消费（图上信号）</text></g>
-<line x1="340" y1="2945" x2="370" y2="2945" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>推理</title><rect x="370" y="3422.0" width="300" height="46" rx="8" fill="#241b38" stroke="#bc8cff" stroke-width="1.2"/><text x="378" y="3436.0" font-size="8.6" font-weight="700" fill="#eadfff">推理</text><text x="378" y="3453.0" font-size="8.8" fill="#c9d1d9">面板或可执行脚本 → 新假设</text></g>
-<line x1="670" y1="2945" x2="700" y2="2945" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>行动</title><rect x="700" y="3422.0" width="300" height="46" rx="8" fill="#16233a" stroke="#58a6ff" stroke-width="1.2"/><text x="708" y="3436.0" font-size="8.6" font-weight="700" fill="#dbe7ff">行动</text><text x="708" y="3453.0" font-size="8.8" fill="#c9d1d9">尝试 whoami（无害写门放行）</text></g>
-<line x1="1000" y1="2945" x2="1030" y2="2945" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>所得</title><rect x="1030" y="3422.0" width="300" height="46" rx="8" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.2"/><text x="1038" y="3436.0" font-size="8.6" font-weight="700" fill="#cbf5d8">所得</text><text x="1038" y="3453.0" font-size="8.8" fill="#c9d1d9">jenkin 用户 → 落 finding C2</text></g>
-<text x="40" y="3482.0" font-size="8.6" fill="#7fd49a">环3 ｜ 生成引擎 · derived_from 边生长</text>
-<g><title>环4 链推理：判定引擎+预算/断点/防重三查，intents 节点生长</title><rect x="40" y="3518.0" width="300" height="46" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="48" y="3532.0" font-size="8.6" font-weight="700" fill="#a8e6ee">观察</text><text x="48" y="3549.0" font-size="8.8" fill="#c9d1d9">finding→attack→资产（链推理）</text></g>
-<line x1="340" y1="3041" x2="370" y2="3041" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>推理</title><rect x="370" y="3518.0" width="300" height="46" rx="8" fill="#241b38" stroke="#bc8cff" stroke-width="1.2"/><text x="378" y="3532.0" font-size="8.6" font-weight="700" fill="#eadfff">推理</text><text x="378" y="3549.0" font-size="8.8" fill="#c9d1d9">凭据可能横向复用</text></g>
-<line x1="670" y1="3041" x2="700" y2="3041" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>行动</title><rect x="700" y="3518.0" width="300" height="46" rx="8" fill="#16233a" stroke="#58a6ff" stroke-width="1.2"/><text x="708" y="3532.0" font-size="8.6" font-weight="700" fill="#dbe7ff">行动</text><text x="708" y="3549.0" font-size="8.8" fill="#c9d1d9">派生新意图（查预算/断点/防重）</text></g>
-<line x1="1000" y1="3041" x2="1030" y2="3041" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>所得</title><rect x="1030" y="3518.0" width="300" height="46" rx="8" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.2"/><text x="1038" y="3532.0" font-size="8.6" font-weight="700" fill="#cbf5d8">所得</text><text x="1038" y="3549.0" font-size="8.8" fill="#c9d1d9">intents 新行 → 下一轮循环</text></g>
-<text x="40" y="3578.0" font-size="8.6" fill="#7fd49a">环4 ｜ 判定引擎 · intents 节点生长</text>
-<g><title>环5 收敛停机：图属性达成，报告组装，人工签发</title><rect x="40" y="3614.0" width="300" height="46" rx="8" fill="#0c3038" stroke="#39c5cf" stroke-width="1.2"/><text x="48" y="3628.0" font-size="8.6" font-weight="700" fill="#a8e6ee">观察</text><text x="48" y="3645.0" font-size="8.8" fill="#c9d1d9">矩阵剩余格全 N/A/-</text></g>
-<line x1="340" y1="3137" x2="370" y2="3137" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>推理</title><rect x="370" y="3614.0" width="300" height="46" rx="8" fill="#241b38" stroke="#bc8cff" stroke-width="1.2"/><text x="378" y="3628.0" font-size="8.6" font-weight="700" fill="#eadfff">推理</text><text x="378" y="3645.0" font-size="8.8" fill="#c9d1d9">收敛=图属性达成 → 停</text></g>
-<line x1="670" y1="3137" x2="700" y2="3137" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>行动</title><rect x="700" y="3614.0" width="300" height="46" rx="8" fill="#16233a" stroke="#58a6ff" stroke-width="1.2"/><text x="708" y="3628.0" font-size="8.6" font-weight="700" fill="#dbe7ff">行动</text><text x="708" y="3645.0" font-size="8.8" fill="#c9d1d9">停机 → 组装报告（六要素）</text></g>
-<line x1="1000" y1="3137" x2="1030" y2="3137" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
-<g><title>所得</title><rect x="1030" y="3614.0" width="300" height="46" rx="8" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.2"/><text x="1038" y="3628.0" font-size="8.6" font-weight="700" fill="#cbf5d8">所得</text><text x="1038" y="3645.0" font-size="8.8" fill="#c9d1d9">人工签发交付</text></g>
-<text x="40" y="3674.0" font-size="8.6" fill="#7fd49a">环5 ｜ 收敛判定 · 图停止生长</text>
-<text x="1330" y="3470.0" font-size="8.6" fill="#6fc3d0" text-anchor="middle" transform="rotate(90 1330 2970)">↑ 每环所得回灌观察：螺旋深入，直到收敛</text>
+<line x1="680" y1="2182" x2="680" y2="1730" stroke="#58a6ff" stroke-width="0.9" stroke-dasharray="3 4" opacity="0.55"/>
+<line x1="731.1" y1="2181.9" x2="946.8" y2="1894.2" stroke="#58a6ff" stroke-width="0.9" stroke-dasharray="3 4" opacity="0.55"/>
+<line x1="846.1" y1="2250" x2="950.9" y2="2250" stroke="#58a6ff" stroke-width="0.9" stroke-dasharray="3 4" opacity="0.55"/>
+<line x1="731.1" y1="2318.1" x2="946.8" y2="2605.8" stroke="#58a6ff" stroke-width="0.9" stroke-dasharray="3 4" opacity="0.55"/>
+<line x1="680" y1="2318" x2="680" y2="2770" stroke="#58a6ff" stroke-width="0.9" stroke-dasharray="3 4" opacity="0.55"/>
+<line x1="628.9" y1="2318.1" x2="413.2" y2="2605.8" stroke="#58a6ff" stroke-width="0.9" stroke-dasharray="3 4" opacity="0.55"/>
+<line x1="513.9" y1="2250" x2="409.1" y2="2250" stroke="#58a6ff" stroke-width="0.9" stroke-dasharray="3 4" opacity="0.55"/>
+<line x1="628.9" y1="2181.9" x2="413.2" y2="1894.2" stroke="#58a6ff" stroke-width="0.9" stroke-dasharray="3 4" opacity="0.55"/>
+<g><title>推理=图上走——信号来自账本查询，不靠上下文记忆</title>
+<rect class="organ" x="525" y="1644" width="310" height="92" rx="10" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
+<rect x="636" y="1635" width="88" height="18" rx="9" fill="#0d2246" stroke="#58a6ff" stroke-width="1"/>
+<text class="btext" x="680" y="1647.8" fill="#a5c8ff" font-size="8.5" font-weight="700" text-anchor="middle">总控</text>
+<text x="543" y="1674" fill="#e2e8f0" font-size="12" font-weight="700">读图找信号</text>
+<text x="543" y="1692" fill="#c9d1d9" font-size="9.6">扫 facts/intents/matrix+知识图谱</text>
+<text x="543" y="1708" fill="#c9d1d9" font-size="9.6">哪格没测·哪条事实未消费</text>
+</g>
+<g><title>开局+每轮都可召回；先例派生意图，老手不从零开始</title>
+<rect class="organ" x="822" y="1808" width="310" height="92" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<rect x="933" y="1799" width="88" height="18" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<text class="btext" x="977" y="1811.8" fill="#cbf5d8" font-size="8.5" font-weight="700" text-anchor="middle">召回</text>
+<text x="840" y="1838" fill="#e2e8f0" font-size="12" font-weight="700">查知识库·召回</text>
+<text x="840" y="1856" fill="#c9d1d9" font-size="9.6">指纹匹配历史先例</text>
+<text x="840" y="1872" fill="#c9d1d9" font-size="9.6">本轮打法直接派生</text>
+</g>
+<g><title>子代理无账本写权；领活前过预算/断点/防重三查</title>
+<rect class="organ" x="945" y="2204" width="310" height="92" rx="10" fill="#161b22" stroke="#bc8cff" stroke-width="1.6"/>
+<rect x="1056" y="2195" width="88" height="18" rx="9" fill="#241b38" stroke="#bc8cff" stroke-width="1"/>
+<text class="btext" x="1100" y="2207.8" fill="#d9c2ff" font-size="8.5" font-weight="700" text-anchor="middle">派发</text>
+<text x="963" y="2234" fill="#e2e8f0" font-size="12" font-weight="700">派子代理</text>
+<text x="963" y="2252" fill="#c9d1d9" font-size="9.6">总控派 1..N 个子代理</text>
+<text x="963" y="2268" fill="#c9d1d9" font-size="9.6">各领一条意图·扇形散开</text>
+</g>
+<g><title>guard 是命令唯一出口；界外/拼接/危险全拒</title>
+<rect class="organ" x="822" y="2600" width="310" height="92" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<rect x="933" y="2591" width="88" height="18" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<text class="btext" x="977" y="2603.8" fill="#cbf5d8" font-size="8.5" font-weight="700" text-anchor="middle">门禁</text>
+<path d="M 838 2620 V 2676 M 866 2620 V 2676 M 838 2620 H 866" fill="none" stroke="#3fb950" stroke-width="1.8"/>
+<text x="880" y="2630" fill="#e2e8f0" font-size="12" font-weight="700">经 guard 执行</text>
+<text x="840" y="2648" fill="#c9d1d9" font-size="9.6">每条命令过五关</text>
+<text x="840" y="2664" fill="#c9d1d9" font-size="9.6">黑名单→范围→留票→参数化→脱敏</text>
+</g>
+<g><title>先落原始，不管能不能用先存档，防篡改可复核——"事实只增不删"的物理层</title>
+<rect x="522" y="2761" width="316" height="98" rx="13" fill="none" stroke="#e3b341" stroke-width="1" opacity="0.35"/>
+<rect class="organ" x="525" y="2764" width="310" height="92" rx="10" fill="#161b22" stroke="#e3b341" stroke-width="2.2"/>
+<rect x="636" y="2755" width="88" height="18" rx="9" fill="#3a2c0e" stroke="#e3b341" stroke-width="1"/>
+<text class="btext" x="680" y="2767.8" fill="#ffe9b0" font-size="8.5" font-weight="700" text-anchor="middle">落地</text>
+<text x="543" y="2794" fill="#e2e8f0" font-size="12" font-weight="700">★ 原始数据先落地</text>
+<text x="543" y="2812" fill="#c9d1d9" font-size="9.6">原始输出→submissions/ 交作业区</text>
+<text x="543" y="2828" fill="#c9d1d9" font-size="9.6">证据原件→evidence/ 外置库</text>
+<text x="543" y="2844" fill="#c9d1d9" font-size="9.6">请求响应全存+双指纹防篡改</text>
+</g>
+<g><title>单写者：只有总控验收后能写账本；三本账各司其职</title>
+<rect x="225" y="2597" width="316" height="98" rx="13" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.35"/>
+<rect class="organ" x="228" y="2600" width="310" height="92" rx="10" fill="#161b22" stroke="#58a6ff" stroke-width="2.2"/>
+<rect x="339" y="2591" width="88" height="18" rx="9" fill="#0d2246" stroke="#58a6ff" stroke-width="1"/>
+<text class="btext" x="383" y="2603.8" fill="#a5c8ff" font-size="8.5" font-weight="700" text-anchor="middle">单写者</text>
+<text x="246" y="2630" fill="#e2e8f0" font-size="12" font-weight="700">★ 总控提取结构化</text>
+<text x="246" y="2648" fill="#c9d1d9" font-size="9.6">从原始数据提取结构化行</text>
+<text x="246" y="2664" fill="#c9d1d9" font-size="9.6">三支箭头分落三本账（左下）</text>
+<text x="246" y="2680" fill="#c9d1d9" font-size="9.6">验收后才写·单写者</text>
+</g>
+<g><title>循环内即时暂存+战后批量入库；四门槛=可复现/有证据/已脱敏/已评审</title>
+<rect class="organ" x="105" y="2204" width="310" height="92" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<rect x="216" y="2195" width="88" height="18" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<text class="btext" x="260" y="2207.8" fill="#cbf5d8" font-size="8.5" font-weight="700" text-anchor="middle">飞轮</text>
+<circle cx="135" cy="2254" r="13" fill="none" stroke="#3fb950" stroke-width="1.5"/>
+<path d="M 129 2248 A 8 8 0 1 1 141 2246" fill="none" stroke="#3fb950" stroke-width="1.3" marker-end="url(#ah)"/>
+<text x="161" y="2234" fill="#e2e8f0" font-size="12" font-weight="700">知识库更新</text>
+<text x="123" y="2252" fill="#c9d1d9" font-size="9.6">脱敏打法→暂存区即时暂存</text>
+<text x="123" y="2268" fill="#c9d1d9" font-size="9.6">战后过四门槛批量入库</text>
+</g>
+<g><title>收敛=图属性；每轮 11 步</title>
+<rect class="organ" x="228" y="1808" width="310" height="92" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<rect x="339" y="1799" width="88" height="18" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<text class="btext" x="383" y="1811.8" fill="#cbf5d8" font-size="8.5" font-weight="700" text-anchor="middle">收敛</text>
+<text x="246" y="1838" fill="#e2e8f0" font-size="12" font-weight="700">收敛判定</text>
+<text x="246" y="1856" fill="#c9d1d9" font-size="9.6">matrix 有空格/未消费→回 1</text>
+<text x="246" y="1872" fill="#c9d1d9" font-size="9.6">全闭合→出环去报告</text>
+</g>
+<g><title>子代理：无账本写权；领活前过预算/断点/防重三查；产出只进 submissions/，由总控验收</title>
+<rect x="1092" y="2008" width="176" height="46" rx="8" fill="#161b22" stroke="#bc8cff" stroke-width="1.2" stroke-dasharray="5 3"/>
+<text x="1101" y="2025" fill="#d9c2ff" font-size="10" font-weight="700">子代理α·领意图A</text>
+<text x="1101" y="2042" fill="#c9d1d9" font-size="8.4">面测绘·产出交作业区</text>
+<line x1="1162" y1="2054" x2="1162" y2="2204" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+</g>
+<g><title>子代理：无账本写权；领活前过预算/断点/防重三查；产出只进 submissions/，由总控验收</title>
+<rect x="1185" y="2130" width="115" height="46" rx="8" fill="#161b22" stroke="#bc8cff" stroke-width="1.2" stroke-dasharray="5 3"/>
+<text x="1194" y="2147" fill="#d9c2ff" font-size="10" font-weight="700">子代理β·领意图B</text>
+<text x="1194" y="2164" fill="#c9d1d9" font-size="8.4">深挖权限差分</text>
+<line x1="1245" y1="2176" x2="1252" y2="2204" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+</g>
+<g><title>子代理：无账本写权；领活前过预算/断点/防重三查；产出只进 submissions/，由总控验收</title>
+<rect x="1124" y="2366" width="176" height="46" rx="8" fill="#161b22" stroke="#bc8cff" stroke-width="1.2" stroke-dasharray="5 3"/>
+<text x="1133" y="2383" fill="#d9c2ff" font-size="10" font-weight="700">子代理γ·领意图C</text>
+<text x="1133" y="2400" fill="#c9d1d9" font-size="8.4">Nday 已知洞验证</text>
+<line x1="1250" y1="2366" x2="1250" y2="2296" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+</g>
+<g><title>submissions/ 交作业区：子代理原始输出先落这里——不管能不能用先存档，只增不删，带时间戳</title>
+<rect x="455" y="2900" width="190" height="72" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.4"/>
+<text x="465" y="2920" fill="#ffe9b0" font-size="11" font-weight="700">submissions/ 交作业区</text>
+<text x="465" y="2938" fill="#c9d1d9" font-size="9.4">子代理原始输出先落这</text>
+<text x="465" y="2954" fill="#c9d1d9" font-size="9.4">只增不删·带时间戳</text>
+<line x1="600" y1="2856" x2="556" y2="2900" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
+</g>
+<g><title>evidence/ 外置证据库：请求响应原件+双指纹登记——防调包、可复核、可重放</title>
+<rect x="715" y="2900" width="190" height="72" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.4"/>
+<text x="725" y="2920" fill="#ffe9b0" font-size="11" font-weight="700">evidence/ 外置库</text>
+<text x="725" y="2938" fill="#c9d1d9" font-size="9.4">请求响应原件+双指纹</text>
+<text x="725" y="2954" fill="#c9d1d9" font-size="9.4">防篡改·可复核重放</text>
+<line x1="760" y1="2856" x2="804" y2="2900" stroke="#8b949e" stroke-width="1.4" marker-end="url(#ah)"/>
+</g>
+<g><title>facts.tsv：一行一事实碎片——落它是为了喂下一轮推理，未消费事实=下轮信号源</title>
+<path class="flow" d="M 300 2692 L 300 2912 L 284 2912" fill="none" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="100" y="2876" width="180" height="72" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="1.4"/>
+<rect x="106" y="2884" width="4" height="56" rx="2" fill="#58a6ff"/>
+<text x="118" y="2898" fill="#a5c8ff" font-size="11" font-weight="700">facts.tsv 事实账</text>
+<text x="118" y="2916" fill="#c9d1d9" font-size="9.4">一行一事实碎片</text>
+<text x="118" y="2932" fill="#c9d1d9" font-size="9.4">来源·状态·消费位</text>
+<text x="400" y="2790" fill="#e3b341" font-size="8.8" font-weight="600">→喂下一轮推理</text>
+</g>
+<g><title>findings.tsv：发现+两维评级（严重×置信）——落它是为了喂最终报告，必附证据指针</title>
+<path class="flow" d="M 330 2692 L 330 3016 L 284 3016" fill="none" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="100" y="2980" width="180" height="72" rx="8" fill="#161b22" stroke="#f85149" stroke-width="1.4"/>
+<rect x="106" y="2988" width="4" height="56" rx="2" fill="#f85149"/>
+<text x="118" y="3002" fill="#ffd7d5" font-size="11" font-weight="700">findings.tsv 发现账</text>
+<text x="118" y="3020" fill="#c9d1d9" font-size="9.4">发现+两维评级</text>
+<text x="118" y="3036" fill="#c9d1d9" font-size="9.4">必附证据指针</text>
+<text x="392" y="2962" fill="#e3b341" font-size="8.8" font-weight="600">→喂报告</text>
+</g>
+<g><title>E-index.tsv：证据索引+指纹+复现命令——落它是为了喂 P4 独立重放复核</title>
+<path class="flow" d="M 360 2692 L 360 3120 L 284 3120" fill="none" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="100" y="3084" width="180" height="72" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.4"/>
+<rect x="106" y="3092" width="4" height="56" rx="2" fill="#e3b341"/>
+<text x="118" y="3106" fill="#ffe9b0" font-size="11" font-weight="700">E-index.tsv 证据索引</text>
+<text x="118" y="3124" fill="#c9d1d9" font-size="9.4">证据指针+双指纹</text>
+<text x="118" y="3140" fill="#c9d1d9" font-size="9.4">复现命令</text>
+<text x="400" y="3112" fill="#e3b341" font-size="8.8" font-weight="600">→喂重放复核</text>
+</g>
+<g><title>guard 门（器官 4 旁强化）：命令唯一出口——黑名单→范围→留票→参数化→脱敏五关，界外/拼接/危险全拒，拒绝本身留痕</title>
+<path d="M 1120 2564 L 1120 2452 L 1300 2452 L 1300 2564" fill="none" stroke="#3fb950" stroke-width="2.2"/>
+<rect x="1124" y="2456" width="172" height="104" rx="0" fill="#161b22" stroke="none"/>
+<rect x="1188" y="2443" width="76" height="18" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<text class="btext" x="1226" y="2456.8" fill="#cbf5d8" font-size="8.5" font-weight="700" text-anchor="middle">唯一出口</text>
+<text x="1136" y="2480" fill="#e2e8f0" font-size="12" font-weight="700">guard 门·命令出口</text>
+<text x="1136" y="2498" fill="#c9d1d9" font-size="8.8">五关：黑名单→范围→留票</text>
+<text x="1136" y="2512" fill="#c9d1d9" font-size="8.8">→参数化→脱敏</text>
+<text x="1136" y="2526" fill="#c9d1d9" font-size="8.8">界外/拼接/危险全拒</text>
+<text x="1136" y="2544" fill="#7fd49a" font-size="8.6" font-style="italic">器官4每条命令都从此门过</text>
+<line class="hook" x1="1095" y1="2600" x2="1180" y2="2564" stroke="#3fb950" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+</g>
+<g><title>预算/断点检查站（器官 1 入口前小关隘）：预算三元组（token/请求/工时）余量、断点续传状态、防重键三查——任一不过，循环不开始或立即安全停机</title>
+<rect x="360" y="1432" width="184" height="92" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<rect x="402" y="1423" width="100" height="18" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<text class="btext" x="452" y="1436.8" fill="#cbf5d8" font-size="8.5" font-weight="700" text-anchor="middle">入口关隘</text>
+<text x="372" y="1462" fill="#e2e8f0" font-size="12" font-weight="700">预算/断点检查站</text>
+<text x="372" y="1480" fill="#c9d1d9" font-size="9.2">领活前三查：预算/断点/防重</text>
+<text x="372" y="1496" fill="#c9d1d9" font-size="9.2">三查不过·循环不启动</text>
+<line class="hook" x1="452" y1="1524" x2="560" y2="1644" stroke="#3fb950" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+</g>
+<g><title>timeline.tsv 审计链：每次落账（任何写操作）自动记链式哈希——环环相扣，改任何一条后面全部断链暴露；重放/审计/重建都靠它</title>
+<line x1="350" y1="3237" x2="1030" y2="3237" stroke="#30363d" stroke-width="1.4"/>
+<rect x="350" y="3228" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="405" y="3232" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="460" y="3228" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="515" y="3232" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="570" y="3228" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="625" y="3232" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="680" y="3228" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="735" y="3232" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="790" y="3228" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="845" y="3232" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="900" y="3228" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="955" y="3232" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<rect x="1010" y="3228" width="20" height="12" rx="6" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<text x="690" y="3276" fill="#7fd49a" font-size="10" text-anchor="middle">每次落账自动记链式哈希</text>
+<text x="940" y="3218" fill="#e3b341" font-size="8.5" text-anchor="middle">timeline.tsv 审计链</text>
+<line class="hook" x1="680" y1="2856" x2="680" y2="3228" stroke="#3fb950" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>
+</g>
+<g><title>四门槛批量入库（环出口外挂）：循环内先暂存，战后过四门槛——可复现/有证据/已脱敏/已评审——才批量进正式知识库</title>
+<rect x="50" y="2400" width="180" height="80" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="1.4"/>
+<rect x="83" y="2391" width="114" height="18" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1"/>
+<text class="btext" x="140" y="2404.8" fill="#cbf5d8" font-size="8.5" font-weight="700" text-anchor="middle">出口外挂·四门槛</text>
+<text x="60" y="2428" fill="#e2e8f0" font-size="11" font-weight="700">四门槛·批量入库</text>
+<text x="60" y="2446" fill="#c9d1d9" font-size="8.6">可复现/有证据/已脱敏/已评审</text>
+<text x="60" y="2460" fill="#c9d1d9" font-size="8.6">循环内暂存·战后入库</text>
+<line class="hook" x1="140" y1="2296" x2="140" y2="2400" stroke="#3fb950" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+</g>
 <!-- Band C 验证与交付 -->
 <text x="40" y="3850.0" fill="#8b949e" font-size="12" font-weight="600">④ 验证与交付（P4→P6.0）——结论先过重放门，报告先过签发门，副作用先过回滚账</text>
 <g>
