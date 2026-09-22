@@ -275,7 +275,6 @@
 <!-- Band C 验证与交付 -->
 <text x="40" y="3850.0" fill="#8b949e" font-size="12" font-weight="600">④ 验证与交付（P4→P6.0）——结论先过重放门，报告先过签发门，副作用先过回滚账</text>
 <g>
-<line x1="700" y1="2742.0" x2="380" y2="3362.0" stroke="#8b949e" stroke-width="0"/>
 <rect x="60" y="3862.0" width="260" height="96" rx="8" fill="#3a1214" stroke="#f85149"/>
 <text x="190" y="3882.0" fill="#ffd7d5" font-size="12.5" text-anchor="middle" font-weight="600">P4 独立重放门</text>
 <text x="190" y="3898.0" fill="#c98a8a" font-size="9.5" text-anchor="middle">独立进程按卡片要素原样重打一遍</text>
@@ -319,7 +318,7 @@
 <g><title>已学习区</title><rect x="730" y="4160.0" width="110" height="56" rx="8" fill="#0f2e1b" stroke="#3fb950"/><text x="785" y="4182.0" fill="#cbf5d8" font-size="10.5" text-anchor="middle">已学习区</text><text x="785" y="4198.0" fill="#7fd49a" font-size="9" text-anchor="middle">试用期</text></g>
 <g><title>正式知识库</title><rect x="870" y="4160.0" width="110" height="56" rx="8" fill="#0f2e1b" stroke="#3fb950"/><text x="925" y="4182.0" fill="#cbf5d8" font-size="10.5" text-anchor="middle">正式知识库</text><text x="925" y="4198.0" fill="#7fd49a" font-size="9" text-anchor="middle">graph.ndjson</text></g>
 <text x="530" y="4250.0" fill="#7fd49a" font-size="9.5" text-anchor="middle">技法页=先例三元组（资产特征·手法·证据形态）· 涉及 CVE 必须联网对照 NVD/KEV 更新 last_verified——明确不信任训练数据 · 词表版本化（WSTG v4.2 钉死）</text>
-<text x="430" y="4410.0" fill="#3fb950" font-size="10.5" text-anchor="middle" font-weight="600">飞轮回环：下次交战 P1 直接以知识库指纹匹配开局 · 先例直接派生 intent · Nday 候选秒出 —— 越用越强</text>
+<text x="530" y="4773.0" fill="#3fb950" font-size="10.5" text-anchor="middle" font-weight="600">飞轮回环：下次交战 P1 直接以知识库指纹匹配开局 · 先例直接派生 intent · Nday 候选秒出 —— 越用越强</text>
 <text x="530" y="4316.0" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">入库有四门槛（可复现/有证据/已脱敏/已评审）——经验在库不在人脑，越用越强</text>
 </g>
 <rect x="1020" y="4120.0" width="280" height="170" rx="12" fill="#0c3038" stroke="#39c5cf"/>
@@ -339,15 +338,18 @@
 <g><title>暂存区</title><rect x="393" y="4585.0" width="120" height="28" rx="8" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.2"/><text x="453" y="4603.0" font-size="9.4" font-weight="600" fill="#cbf5d8" text-anchor="middle">暂存区</text></g>
 <g><title>检查+用户审批</title><rect x="346" y="4731.0" width="120" height="28" rx="8" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.2"/><text x="406" y="4749.0" font-size="9.4" font-weight="600" fill="#cbf5d8" text-anchor="middle">检查+用户审批</text></g>
 <g><title>四门槛→正式库</title><rect x="193" y="4731.0" width="120" height="28" rx="8" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.2"/><text x="253" y="4749.0" font-size="9.4" font-weight="600" fill="#cbf5d8" text-anchor="middle">四门槛→正式库</text></g>
-<path d="M330,4140.0 m 130,0 a130,130 0 1,1 -26,-120" fill="none" stroke="#3fb950" stroke-width="1.7" stroke-dasharray="5 3" marker-end="url(#ag)"/>
-<text x="392" y="4643.0" font-size="9" fill="#7fd49a" text-anchor="middle">开局指纹匹配先例</text>
+<text x="408" y="4643.0" font-size="9" fill="#7fd49a" text-anchor="middle">开局指纹匹配先例</text>
 <text x="299" y="4696.0" font-size="9" fill="#7fd49a" text-anchor="middle">先例直接派生意图</text>
 <text x="299" y="4589.0" font-size="9" fill="#7fd49a" text-anchor="middle">Nday 候选秒出</text>
 <circle cx="330" cy="4640.0" r="34" fill="#0f2e1b" stroke="#3fb950"/><text x="330" y="4638.0" font-size="10" font-weight="700" fill="#cbf5d8" text-anchor="middle">越用</text><text x="330" y="4652.0" font-size="10" font-weight="700" fill="#cbf5d8" text-anchor="middle">越强</text>
+<line x1="240" y1="4731" x2="270" y2="4510" stroke="#8b949e" stroke-width="1.2" marker-end="url(#ah)"/><!-- 四门槛→正式库→脱敏产物：轮盘闭环（自顶边出，不切框角） -->
+<line x1="310" y1="4524" x2="299" y2="4578" stroke="#8b949e" stroke-width="1.2" marker-end="url(#ah)"/><!-- 外圈→内圈：Nday 召回 -->
+<line x1="415" y1="4613" x2="408" y2="4631" stroke="#8b949e" stroke-width="1.2" marker-end="url(#ah)"/><!-- 外圈→内圈：开局指纹召回 -->
+<line x1="380" y1="4731" x2="330" y2="4700" stroke="#8b949e" stroke-width="1.2" marker-end="url(#ah)"/><!-- 外圈→内圈：先例派生召回 -->
+<line x1="330" y1="4674" x2="378" y2="4729" stroke="#8b949e" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#ah)"/><!-- 中心复利→外圈回流（虚线示意） -->
 <g><rect x="700" y="4570.0" width="600" height="44" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.4"/><text x="1000" y="4591.0" font-size="12" font-weight="700" fill="#cbf5d8" text-anchor="middle">四条复利机制</text><text x="1000" y="4607.0" font-size="9.6" fill="#7fd49a" text-anchor="middle">先例复用 · Nday聚合 · 技法沉淀 · 召回提速</text></g>
 <g><rect x="700" y="4624.0" width="600" height="44" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.4"/><text x="1000" y="4645.0" font-size="12" font-weight="700" fill="#cbf5d8" text-anchor="middle">召回率四层度量（从看运气到可度量）</text><text x="1000" y="4661.0" font-size="9.6" fill="#7fd49a" text-anchor="middle">定义 → 采集 → 门槛 → 报表；Loop 演进对召回率的提升路径可查</text></g>
 <!-- Band E 执法 -->
-<text x="40" y="4538.0" fill="#8b949e" font-size="12" font-weight="600" x="40" y="4538.0" opacity="0"></text>
 <rect x="40" y="4780.0" width="1240" height="96" rx="12" fill="none" stroke="#f85149" stroke-dasharray="7 5"/>
 <text x="56" y="4802.0" fill="#f85149" font-size="12.5" font-weight="600">⑦ 恒在执法（四层闸，贯穿全程不可关）—— 结构化授权 → 纪律规则（只读优先/无害写/凭据入保险柜/限速）→ 高危命令人工审批并落账</text>
 <g font-size="9.5">
@@ -362,31 +364,31 @@
 <g><title>第2层 命令边界：参数化禁拼接——目标数据可能藏注入</title><rect x="140" y="5150.0" width="1040" height="36" rx="7" fill="#161b22" stroke="#f0883e" stroke-width="1.3"/><text x="660" y="5173.0" font-size="10.4" font-weight="600" fill="#e2e8f0" text-anchor="middle">第2层 命令边界：参数化禁拼接——目标数据可能藏注入</text></g>
 <g><title>第3层 宿主拦截：执行前拦，拦不住按失败算</title><rect x="240" y="5194.0" width="840" height="36" rx="7" fill="#161b22" stroke="#d29922" stroke-width="1.3"/><text x="660" y="5217.0" font-size="10.4" font-weight="600" fill="#e2e8f0" text-anchor="middle">第3层 宿主拦截：执行前拦，拦不住按失败算</text></g>
 <g><title>第4层 出网代理：白名单+域名锁定+禁外联+诱饵巡检</title><rect x="340" y="5238.0" width="640" height="36" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="1.3"/><text x="660" y="5261.0" font-size="10.4" font-weight="600" fill="#e2e8f0" text-anchor="middle">第4层 出网代理：白名单+域名锁定+禁外联+诱饵巡检</text></g>
-<g><rect x="700" y="5106.0" width="600" height="72" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.4"/><text x="1000" y="5127.0" font-size="12" font-weight="700" fill="#cbf5d8" text-anchor="middle">canary 界外诱饵演习</text><text x="1000" y="5143.0" font-size="9.6" fill="#7fd49a" text-anchor="middle">自造假目标当靶子，四档位分别探测四层闸</text><text x="1000" y="5156.0" font-size="9.6" fill="#7fd49a" text-anchor="middle">界外请求四层全拦 5/5 · 结果写进守门声明随报告交付</text></g>
+<g><rect x="40" y="5294" width="600" height="72" rx="9" fill="#0f2e1b" stroke="#3fb950" stroke-width="1.4"/><text x="340" y="5315" font-size="12" font-weight="700" fill="#cbf5d8" text-anchor="middle">canary 界外诱饵演习</text><text x="340" y="5331" font-size="9.6" fill="#7fd49a" text-anchor="middle">自造假目标当靶子，四档位分别探测四层闸</text><text x="340" y="5344" font-size="9.6" fill="#7fd49a" text-anchor="middle">界外请求四层全拦 5/5 · 结果写进守门声明随报告交付</text></g>
 <!-- Band H 断点续传（演进新增）-->
-<rect x="40" y="5380.0" width="1240" height="118" rx="12" fill="none" stroke="#db61a2" stroke-dasharray="7 5"/>
-<text x="56" y="5402.0" fill="#db61a2" font-size="12.5" font-weight="600">⑧ 断点续传（打不死的战役）—— 会话会断、上下文会满、机器会掉电；进度在账本和快照里，换会话接着干</text>
+<rect x="40" y="5392.0" width="1240" height="118" rx="12" fill="none" stroke="#db61a2" stroke-dasharray="7 5"/>
+<text x="56" y="5414.0" fill="#db61a2" font-size="12.5" font-weight="600">⑧ 断点续传（打不死的战役）—— 会话会断、上下文会满、机器会掉电；进度在账本和快照里，换会话接着干</text>
 <g font-size="9.5">
-<rect x="60" y="5414.0" width="360" height="66" rx="8" fill="#2d1224" stroke="#db61a2"/>
-<text x="240" y="5434.0" fill="#ffd7ea" font-size="12" text-anchor="middle" font-weight="600">state.md 断点快照</text>
-<text x="240" y="5450.0" fill="#d2a8c5" font-size="9.5" text-anchor="middle">每轮循环结束落一版（≤200 行）：到哪步/下一步/关键结论</text>
-<text x="240" y="5464.0" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">一整场战役的进度存档——重启后第一读物</text>
+<rect x="60" y="5426.0" width="360" height="66" rx="8" fill="#2d1224" stroke="#db61a2"/>
+<text x="240" y="5446.0" fill="#ffd7ea" font-size="12" text-anchor="middle" font-weight="600">state.md 断点快照</text>
+<text x="240" y="5462.0" fill="#d2a8c5" font-size="9.5" text-anchor="middle">每轮循环结束落一版（≤200 行）：到哪步/下一步/关键结论</text>
+<text x="240" y="5476.0" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">一整场战役的进度存档——重启后第一读物</text>
 </g>
-<line x1="420" y1="4947.0" x2="478" y2="4947.0" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ar)"/>
-<text x="449" y="5439.0" fill="#e3b341" font-size="9" text-anchor="middle">读快照</text>
+<line x1="420" y1="5459.0" x2="478" y2="5459.0" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ar)"/>
+<text x="449" y="5451.0" fill="#e3b341" font-size="9" text-anchor="middle">读快照</text>
 <g font-size="9.5">
-<rect x="480" y="5414.0" width="360" height="66" rx="8" fill="#2d1224" stroke="#db61a2"/>
-<text x="660" y="5434.0" fill="#ffd7ea" font-size="12" text-anchor="middle" font-weight="600">resume-kit 恢复注入</text>
-<text x="660" y="5450.0" fill="#d2a8c5" font-size="9.5" text-anchor="middle">新会话装机清单：快照+台账要点按白名单注入</text>
-<text x="660" y="5464.0" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">只带关键状态上岗，不带旧噪音</text>
+<rect x="480" y="5426.0" width="360" height="66" rx="8" fill="#2d1224" stroke="#db61a2"/>
+<text x="660" y="5446.0" fill="#ffd7ea" font-size="12" text-anchor="middle" font-weight="600">resume-kit 恢复注入</text>
+<text x="660" y="5462.0" fill="#d2a8c5" font-size="9.5" text-anchor="middle">新会话装机清单：快照+台账要点按白名单注入</text>
+<text x="660" y="5476.0" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">只带关键状态上岗，不带旧噪音</text>
 </g>
-<line x1="840" y1="4947.0" x2="898" y2="4947.0" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ar)"/>
-<text x="869" y="5439.0" fill="#e3b341" font-size="9" text-anchor="middle">幂等续跑</text>
+<line x1="840" y1="5459.0" x2="898" y2="5459.0" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ar)"/>
+<text x="869" y="5451.0" fill="#e3b341" font-size="9" text-anchor="middle">幂等续跑</text>
 <g font-size="9.5">
-<rect x="900" y="5414.0" width="360" height="66" rx="8" fill="#2d1224" stroke="#db61a2"/>
-<text x="1080" y="5434.0" fill="#ffd7ea" font-size="12" text-anchor="middle" font-weight="600">工件即缓存 · 幂等续跑</text>
-<text x="1080" y="5450.0" fill="#d2a8c5" font-size="9.5" text-anchor="middle">已完成意图/证据全在台账：跳过不重做</text>
-<text x="1080" y="5464.0" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">续传不是从头再来——账本就是缓存</text>
+<rect x="900" y="5426.0" width="360" height="66" rx="8" fill="#2d1224" stroke="#db61a2"/>
+<text x="1080" y="5446.0" fill="#ffd7ea" font-size="12" text-anchor="middle" font-weight="600">工件即缓存 · 幂等续跑</text>
+<text x="1080" y="5462.0" fill="#d2a8c5" font-size="9.5" text-anchor="middle">已完成意图/证据全在台账：跳过不重做</text>
+<text x="1080" y="5476.0" fill="#a5d6ff" font-size="9.5" font-style="italic" text-anchor="middle">续传不是从头再来——账本就是缓存</text>
 </g>
 
 <text x="40" y="5580.0" fill="#8b949e" font-size="13" font-weight="700">⑨ 系统的记忆 —— 九本账：记什么 · 谁写 · 给谁用</text><text x="40" y="5597.0" fill="#6fc3d0" font-size="10">字段状态机：ID 由命令铸造 · 状态变更=追加新行（查最新=看最后一行）· 删除=立墓碑不抹行</text>
@@ -399,7 +401,7 @@
 <g><title>记：一切写操作+链式哈希。写：自动每条命令先落链。读：验链+重建+审计</title><rect x="40" y="5740.0" width="396" height="64" rx="8" fill="#161b22" stroke="#30363d"/><rect x="46" y="5748.0" width="4" height="48" rx="2" fill="#e3b341"/><text x="58" y="5758.0" font-size="11" font-weight="700" fill="#ffe9b0">timeline.tsv 审计链</text><text x="58" y="5776.0" font-size="9.4" fill="#c9d1d9">记：一切写操作+链式哈希</text><text x="58" y="5792.0" font-size="9" fill="#8b949e">写：自动(每条命令先落链) · 读：验链·全量重建·审计</text></g>
 <g><title>记：高危命令人工审批。写：人。读：第3层闸放行依据</title><rect x="450" y="5740.0" width="396" height="64" rx="8" fill="#161b22" stroke="#30363d"/><rect x="456" y="5748.0" width="4" height="48" rx="2" fill="#e3b341"/><text x="468" y="5758.0" font-size="11" font-weight="700" fill="#ffe9b0">approvals.tsv 审批账</text><text x="468" y="5776.0" font-size="9.4" fill="#c9d1d9">记：高危命令的人工审批</text><text x="468" y="5792.0" font-size="9" fill="#8b949e">写：人(第3层闸要求时) · 读：高危放行依据</text></g>
 <g><title>记：脱敏打法先例。写：飞轮入库流水。读：开局指纹匹配+派生意图</title><rect x="860" y="5740.0" width="396" height="64" rx="8" fill="#161b22" stroke="#30363d"/><rect x="866" y="5748.0" width="4" height="48" rx="2" fill="#e3b341"/><text x="878" y="5758.0" font-size="11" font-weight="700" fill="#ffe9b0">knowledge/ 知识库</text><text x="878" y="5776.0" font-size="9.4" fill="#c9d1d9">记：脱敏打法先例(四门槛过滤)</text><text x="878" y="5792.0" font-size="9" fill="#8b949e">写：飞轮入库流水 · 读：开局指纹匹配·派生意图</text></g>
-<text x="40" y="5800.0" fill="#8b949e" font-size="10">图例：金=用户(人) · 蓝=总控AI · 紫=子代理AI · 绿=系统底座 · 金标签=账本命令 · 实线=数据流 · 虚线=机制区/回环/反哺 · 悬浮框=完整机制深度</text>
+<text x="40" y="5818.0" fill="#8b949e" font-size="10">图例：金=用户(人) · 蓝=总控AI · 紫=子代理AI · 绿=系统底座 · 金标签=账本命令 · 实线=数据流 · 虚线=机制区/回环/反哺 · 悬浮框=完整机制深度</text>
 </svg>
 </div>
 <h2 class="sec">术语小字典</h2><p class="secsub">页面和命令里出现的词，这里一句人话讲清——分享时不用再口述补课。</p>
