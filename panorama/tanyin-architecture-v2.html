@@ -201,24 +201,44 @@
 #ledgerGraph .lg-tip{display:none;position:absolute;z-index:7;max-width:260px;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:8px 11px;font-size:11.5px;color:#c9d1d9;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.55);line-height:1.55}
 #ledgerGraph .lg-tip b{display:block;font-size:12.5px;color:#e2e8f0;margin-bottom:2px}
 #ledgerGraph .lg-tip small{display:block;color:#58a6ff;font-size:10.5px;margin-top:4px}
+#ledgerGraph .lg-speed{display:inline-flex;gap:4px;margin-left:8px}
+#ledgerGraph .lg-speed button,#ledgerGraph .lg-step,#ledgerGraph .lg-reset{background:#161b22;border:1px solid #30363d;color:#8b949e;border-radius:6px;font-size:11px;padding:3px 8px;cursor:pointer;font-weight:600}
+#ledgerGraph .lg-speed button.on{color:#e3b341;border-color:#e3b341}
+#ledgerGraph .lg-speed button:hover,#ledgerGraph .lg-step:hover,#ledgerGraph .lg-reset:hover{color:#e2e8f0;border-color:#58a6ff}
+#ledgerGraph .lg-report{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;margin:8px 0 0;padding:8px 12px;border:1px solid #30363d;border-left:3px solid #e3b341;border-radius:8px;background:#0d1117}
+#ledgerGraph .lg-rt{color:#ffe9b0;font-size:12.5px;font-weight:700}
+#ledgerGraph .lg-rc{color:#7d8794;font-size:11px}
+#ledgerGraph .lg-cy{position:relative}
+#ledgerGraph .lg-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:#58a6ff;box-shadow:0 0 6px #58a6ff;pointer-events:none;z-index:30}
+#ledgerGraph .lg-ring{position:absolute;width:44px;height:44px;border:3px solid #e3b341;border-radius:50%;pointer-events:none;z-index:29;animation:lgRing 1.15s ease-out forwards}
+#ledgerGraph .lg-tag{position:absolute;background:#3a2c0e;color:#ffe9b0;border:1px solid #e3b341;border-radius:6px;font-size:11px;font-weight:700;padding:1px 6px;pointer-events:none;z-index:31;animation:lgTag 1.5s ease-out forwards;white-space:nowrap}
+@keyframes lgRing{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.9);opacity:0}}
+@keyframes lgTag{0%{opacity:0;transform:translateY(6px)}15%{opacity:1;transform:translateY(0)}75%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
 </style>
 <div id="ledgerGraph" role="region" aria-label="账本图谱交互区">
 <div class="lg-bar">
 <span class="lg-title">账本图谱<small>测试＝图谱演化 · 演化完成＝该测的全测完</small></span>
 <div class="lg-rounds" role="group" aria-label="轮次切换">
 <button type="button" data-r="0">开局</button>
-<button type="button" data-r="1">第1轮</button>
-<button type="button" data-r="2">第2轮</button>
-<button type="button" data-r="3">第3轮</button>
-<button type="button" data-r="4" class="fin">…收敛</button>
+<button type="button" data-r="1">1 侦察</button>
+<button type="button" data-r="2">2 派活</button>
+<button type="button" data-r="3">3 动手</button>
+<button type="button" data-r="4">4 提炼</button>
+<button type="button" data-r="5">5 深入</button>
+<button type="button" data-r="6">6 复核</button>
+<button type="button" data-r="7" class="fin">…收敛</button>
 </div>
-<button type="button" class="lg-play" aria-pressed="false">▶ 播放</button>
+<button type="button" class="lg-play" aria-pressed="false">▶ 模拟一场仗</button>
+<span class="lg-speed" role="group" aria-label="播放速度"><button type="button" data-s="0.5">慢 0.5×</button><button type="button" data-s="1" class="on">1×</button><button type="button" data-s="2">快 2×</button></span>
+<button type="button" class="lg-step">⏭ 步进</button>
+<button type="button" class="lg-reset">↺ 重置</button>
 <span class="lg-count">4 / 13 本账 · 2 / 4 类知识 · 2 / 28 条关系在场</span>
 </div>
 <div class="lg-cap">开局＝授权+骨架：档案/白名单/矩阵/审计链四本先在场；记忆自带——打法先例库与 Nday 候选库随身就位</div>
+<div class="lg-report" role="status"><span class="lg-rt">开局：授权书+问卷落账，范围锁定——只有骨架（授权三本+时间线亮起）</span><span class="lg-rc">账本 4/13 · 关系 2/28 · 打法先例库+Nday 候选库随身就位</span></div>
 <div class="lg-banner">图谱演化完成 · 该测的全测完 · 测试结束 → 出报告</div>
       <div class="lg-panel"><span class="lg-pt">本轮图谱长出了什么</span><span class="lg-pb"></span></div>
-      <div class="lg-stats">演化统计：3 轮 · 节点 4→13 本账 · 边 2→28 全部接通 · 未消费线索 0</div>
+      <div class="lg-stats">演化统计：开局+6 轮+收敛 · 节点 4→13 本账 · 边 2→28 全部接通 · 未消费线索 0</div>
 <div class="lg-cy"></div>
 <div class="lg-legend"><span><i style="background:#e3b341"></i>输入·授权骨架</span><span><i style="background:#58a6ff"></i>过程·作战流转</span><span><i style="background:#bc8cff"></i>结论·证据发现</span><span><i style="background:#3fb950"></i>记忆·跨场复用</span><span><i style="background:#3fb950"></i>知识库·四类内容</span><span><i style="background:#6e7681"></i>外部·情报与标准</span><span><i style="background:#0d1117;border:2px dashed #39c5cf"></i>支撑账·虚线粗框</span><span class="lg-hint">图面已自足 · 滚轮缩放 · 拖节点 · 点击＝工程师对照与更深细节</span></div>
 <div class="lg-tip"></div>
@@ -271,20 +291,20 @@ N("goals","项目档案","记目标/时间窗/预算；预算判断源头","输�
 N("scope","授权白名单","允许打哪些/排除哪些——每条命令都来对它","输入","k135",0),
 N("matrix","覆盖矩阵","资产×漏洞类每格一状态——测全与收敛的判定标准","输入","k136",0),
 N("timeline","审计链","一切写操作+链式哈希——改一条，后面全断","记忆","k140",0),
-N("intents","任务台账","打算测什么+状态+预算份额","过程","k137",1),
+N("intents","任务台账","打算测什么+状态+预算份额","过程","k137",2),
 N("assets","资产台账","资产图谱：类型/取值/界内界外","过程","k143",1),
-N("creds","凭据台账","账号/密钥——AI 只见代号，真值锁保险库","过程","k144",1),
-N("submissions","交作业区","子代理原始产出等待验收","过程","k146",1),
-N("facts","事实账","测到的原始情况，不带结论","过程","k145",1),
+N("creds","凭据台账","账号/密钥——AI 只见代号，真值锁保险库","过程","k144",3),
+N("submissions","交作业区","子代理原始产出等待验收","过程","k146",3),
+N("facts","事实账","测到的原始情况，不带结论","过程","k145",4),
 N("approvals","审批账","高危命令人工审批","过程","k141",2),
-N("E-index","证据索引","证据卡索引+双重指纹——防调包","结论","k139",2),
-N("findings","发现台账","疑似漏洞+两维评级——结论必附证据","结论","k138",2),
-N("knowledge","知识库","脱敏打法先例——下次开局直接召回","记忆","k142",3),
+N("E-index","证据索引","证据卡索引+双重指纹——防调包","结论","k139",5),
+N("findings","发现台账","疑似漏洞+两维评级——结论必附证据","结论","k138",5),
+N("knowledge","知识库","脱敏打法先例——下次开局直接召回","记忆","k142",7),
 {data:{id:"precedents",label:"打法先例库",sub:"以前打过的：目标指纹+打法+结论，脱敏后入库",group:"记忆",color:GC["记忆"],k:"k147",round:0,kind:"kb"},classes:"kb"},
 {data:{id:"nday",label:"Nday 候选库",sub:"外部漏洞情报映射到资产的已知洞候选",group:"记忆",color:GC["记忆"],k:"k148",round:0,kind:"kb"},classes:"kb"},
 {data:{id:"baseline",label:"方法论基准",sub:"行业标准测试清单——覆盖矩阵的底线",group:"记忆",color:GC["记忆"],k:"k149",round:1,kind:"kb"},classes:"kb"},
-{data:{id:"rules",label:"工程规则库",sub:"攻击模式库+误报哨兵——引擎的内置规则",group:"记忆",color:GC["记忆"],k:"k150",round:1,kind:"kb"},classes:"kb"},
-{data:{id:"gate",label:"机器检查+人工审",sub:"入库前的双闸：机器查格式，人判价值",group:"记忆",color:GC["记忆"],k:"k108",round:3,kind:"gate"},classes:"gate"},
+{data:{id:"rules",label:"工程规则库",sub:"攻击模式库+误报哨兵——引擎的内置规则",group:"记忆",color:GC["记忆"],k:"k150",round:2,kind:"kb"},classes:"kb"},
+{data:{id:"gate",label:"机器检查+人工审",sub:"入库前的双闸：机器查格式，人判价值",group:"记忆",color:GC["记忆"],k:"k108",round:7,kind:"gate"},classes:"gate"},
 {data:{id:"extIntel",label:"外部漏洞情报",sub:"权威漏洞库的公开情报",group:"外部",color:GC["外部"],k:"",round:1,kind:"ext"},classes:"ext"},
 {data:{id:"extStd",label:"行业标准",sub:"业内公认的安全测试清单",group:"外部",color:GC["外部"],k:"",round:1,kind:"ext"},classes:"ext"},
 {data:{id:"extEng",label:"工程内置",sub:"平台自带的攻击模式与误报规则",group:"外部",color:GC["外部"],k:"",round:1,kind:"ext"},classes:"ext"}];
@@ -292,38 +312,42 @@ N("knowledge","知识库","脱敏打法先例——下次开局直接召回","�
 var EDGES=[
 E("e01","scope","matrix","范围决定边界","k94",0),
 E("e02","timeline","goals","时间线记录一切","",0),
-E("e03","goals","intents","拆成要测的任务","k86",1),
+E("e03","goals","intents","拆成要测的任务","k86",2),
 E("e04","assets","matrix","新资产挂进覆盖表","k90",1),
-E("e05","creds","intents","身份与任务配对","k95",1),
-E("e06","submissions","facts","验收后才可写入","k96",1),
-E("e07","intents","facts","产出观测事实","k87",1),
-E("e08","facts","intents","线索引出新猜测","k88",2),
-E("e09","E-index","findings","证据支撑结论","k89",2),
-E("e10","findings","assets","漏洞影响资产","k91",2),
-{data:{id:"e11",source:"findings",target:"knowledge",label:"打法入库下次直接用",k:"k92",round:3,kind:"rel",postwar:1}},
-E("e12","knowledge","intents","老打法直接变任务","k93",3),
-E("e13","timeline","findings","账本可全部重算","k97",3),
-{data:{id:"s1",source:"findings",target:"gate",label:"怎么来的·战后脱敏",k:"k106",round:3,kind:"src",postwar:1},classes:"src"},
-{data:{id:"s2",source:"gate",target:"precedents",label:"怎么来的·四道门槛",k:"k109",round:3,kind:"src",postwar:1},classes:"src"},
+E("e05","creds","intents","身份与任务配对","k95",3),
+E("e06","submissions","facts","验收后才可写入","k96",4),
+E("e07","intents","facts","产出观测事实","k87",4),
+E("e08","facts","intents","线索引出新猜测","k88",4),
+E("e09","E-index","findings","证据支撑结论","k89",5),
+E("e10","findings","assets","漏洞影响资产","k91",5),
+{data:{id:"e11",source:"findings",target:"knowledge",label:"打法入库下次直接用",k:"k92",round:7,kind:"rel",postwar:1}},
+E("e12","knowledge","intents","老打法直接变任务","k93",7),
+E("e13","timeline","findings","账本可全部重算","k97",6),
+{data:{id:"s1",source:"findings",target:"gate",label:"怎么来的·战后脱敏",k:"k106",round:7,kind:"src",postwar:1},classes:"src"},
+{data:{id:"s2",source:"gate",target:"precedents",label:"怎么来的·四道门槛",k:"k109",round:7,kind:"src",postwar:1},classes:"src"},
 {data:{id:"s3",source:"extIntel",target:"nday",label:"怎么来的·筛选映射",k:"",round:1,kind:"src"},classes:"src"},
 {data:{id:"s4",source:"extStd",target:"baseline",label:"怎么来的·内置对齐",k:"",round:1,kind:"src"},classes:"src"},
-{data:{id:"s5",source:"extEng",target:"rules",label:"怎么来的·工程内置",k:"",round:1,kind:"src"},classes:"src"},
-{data:{id:"u1",source:"precedents",target:"intents",label:"在哪用·开局指纹匹配出首批任务",k:"k111",round:1,kind:"use"},classes:"use"},
-{data:{id:"u2",source:"nday",target:"intents",label:"在哪用·开局秒出已知洞候选",k:"k110",round:1,kind:"use"},classes:"use"},
-{data:{id:"u3",source:"precedents",target:"intents",label:"在哪用·循环中的假设风暴",k:"",round:2,kind:"use"},classes:"use"},
-{data:{id:"u4",source:"rules",target:"intents",label:"在哪用·模式库喂生成引擎",k:"",round:1,kind:"use"},classes:"use"},
-{data:{id:"u5",source:"rules",target:"findings",label:"在哪用·哨兵喂判定引擎",k:"",round:2,kind:"use"},classes:"use"},
+{data:{id:"s5",source:"extEng",target:"rules",label:"怎么来的·工程内置",k:"",round:2,kind:"src"},classes:"src"},
+{data:{id:"u1",source:"precedents",target:"intents",label:"在哪用·开局指纹匹配出首批任务",k:"k111",round:2,kind:"use"},classes:"use"},
+{data:{id:"u2",source:"nday",target:"intents",label:"在哪用·开局秒出已知洞候选",k:"k110",round:2,kind:"use"},classes:"use"},
+{data:{id:"u3",source:"precedents",target:"intents",label:"在哪用·循环中的假设风暴",k:"",round:4,kind:"use"},classes:"use"},
+{data:{id:"u4",source:"rules",target:"intents",label:"在哪用·模式库喂生成引擎",k:"",round:2,kind:"use"},classes:"use"},
+{data:{id:"u5",source:"rules",target:"findings",label:"在哪用·哨兵喂判定引擎",k:"",round:5,kind:"use"},classes:"use"},
 {data:{id:"u6",source:"baseline",target:"matrix",label:"在哪用·定覆盖矩阵底线",k:"",round:1,kind:"use"},classes:"use"},
-{data:{id:"c1",source:"knowledge",target:"precedents",label:"",k:"",round:3,kind:"contain"},classes:"contain"},
-{data:{id:"c2",source:"knowledge",target:"nday",label:"",k:"",round:3,kind:"contain"},classes:"contain"},
-{data:{id:"c3",source:"knowledge",target:"baseline",label:"",k:"",round:3,kind:"contain"},classes:"contain"},
-{data:{id:"c4",source:"knowledge",target:"rules",label:"",k:"",round:3,kind:"contain"},classes:"contain"}];
+{data:{id:"c1",source:"knowledge",target:"precedents",label:"",k:"",round:7,kind:"contain"},classes:"contain"},
+{data:{id:"c2",source:"knowledge",target:"nday",label:"",k:"",round:7,kind:"contain"},classes:"contain"},
+{data:{id:"c3",source:"knowledge",target:"baseline",label:"",k:"",round:7,kind:"contain"},classes:"contain"},
+{data:{id:"c4",source:"knowledge",target:"rules",label:"",k:"",round:7,kind:"contain"},classes:"contain"}];
 var META=[
-{r:0,d:"开局＝授权+骨架：档案/白名单/矩阵/审计链四本先在场；记忆自带——打法先例库与 Nday 候选库随身就位"},
-{r:1,d:"第1轮＝侦察盘点+首批任务：资产/凭据/任务/交作业/事实五本长出来；基准与规则库上线，召回+情报出首批任务"},
-{r:2,d:"第2轮＝线索回环+证据落袋：证据索引/发现台账/审批账入场；先例×账本图上推理，假设风暴成形"},
-{r:3,d:"第3轮＝打法入库+回环收紧：知识库本体入场、四类内容聚齐，老打法直接变任务——图谱接近闭合"},
-{r:4,d:"收敛＝全部在场、关系全接通：该测的全测完——测试结束转报告；战后打法脱敏过门槛沉淀回库（金色高亮）"}];
+{d:"开局＝授权+骨架：档案/白名单/矩阵/审计链四本先在场；记忆自带——打法先例库与 Nday 候选库随身就位",rep:"开局：授权书+问卷落账，范围锁定——只有骨架（授权三本+时间线亮起）",cnt:"账本 4/13 · 关系 2/28 · 打法先例库+Nday 候选库随身就位",drops:[["goals","+1 份"],["scope","+1 份"],["matrix","+4 格"],["timeline","+1 条"]],flows:["e01","e02"]},
+{d:"第1轮＝侦察盘点：资产探测入账，攻击面发现，覆盖清单长出第一批格子",rep:"第1轮·侦察：资产探测入账——攻击面发现，覆盖清单长出第一批格子",cnt:"资产账 +5 条 · 覆盖矩阵 +6 格 · 外部情报/基准对齐 3 类",drops:[["assets","+5 条"],["matrix","+6 格"]],flows:["e04","u6","s3"]},
+{d:"第2轮＝派活：老打法匹配→直接派生任务单——知识库召回标记，意图账+审批账入场",rep:"第2轮·派活：老打法匹配→直接派生任务单——知识库召回标记",cnt:"意图账 +3 张任务单 · 先例召回 2 次 · 规则库喂生成引擎",drops:[["intents","+3 张"],["approvals","+1 条"]],flows:["e03","u1","u2","u4","s5"]},
+{d:"第3轮＝动手：子代理过五道安检执行——交作业区原始件（双指纹）+命令时间线落账，凭据代号注入",rep:"第3轮·动手：子代理过五道安检执行——交作业区+3份原始件（双指纹），命令时间线+12条",cnt:"交作业区 +3 份原始件 · 时间线 +12 条命令 · 凭据代号注入 2 组",drops:[["submissions","+3 份"],["timeline","+12 条"],["creds","+2 组"]],flows:["e05"]},
+{d:"第4轮＝提炼：总控验收提取事实，线索派生新任务单，覆盖再长格子",rep:"第4轮·提炼：总控验收提取——事实账+6条，2条线索派生新任务单，覆盖+3格",cnt:"事实账 +6 条 · 意图账 +2 张（线索派生）· 覆盖矩阵 +3 格",drops:[["facts","+6 条"],["intents","+2 张"],["matrix","+3 格"]],flows:["e06","e07","e08","u3"]},
+{d:"第5轮＝深入：攻击链成型——发现账疑似漏洞+证据索引证据卡落袋，链构建边亮起",rep:"第5轮·深入：攻击链成型——发现账+2条疑似漏洞，证据索引+2张证据卡，链构建边亮起",cnt:"发现账 +2 条疑似 · 证据索引 +2 张证据卡 · 攻击链边 2 条亮起",drops:[["findings","+2 条"],["E-index","+2 张"]],flows:["e09","e10","u5"]},
+{d:"第6轮＝复核：账本可全部重算——独立复现门复算，证实/存疑分流，链校验绿",rep:"第6轮·复核：独立复现门复算——1条证实/1条存疑回炉，时间线链校验绿",cnt:"复现门复算：1 条证实 · 1 条存疑回炉 · 时间线链式哈希校验通过（绿）",drops:[["timeline","链校验 ✓"],["findings","1 证实"]],flows:["e13"]},
+{d:"收敛＝全部在场、关系全接通：该测的全测完——测试结束转报告；战后打法脱敏过门槛沉淀回库（金色高亮）",rep:"收敛：该测的全测完——图谱停止生长，测试结束→出报告；战后：打法脱敏入库（知识库脉冲）",cnt:"图谱 21 节点 · 28 边全部在场 · 打法脱敏入库 ×1 · 该测的全测完",drops:[["knowledge","+1 套打法"],["gate","+1 次过闸"]],flows:["e11","s1","s2","e12"]}
+];
 window.__LEDGER_GRAPH_DATA={nodes:NODES,edges:EDGES,groups:GC,meta:META};
 
 window.__ledgerGraphInit=function(openDrawer){
@@ -373,7 +397,11 @@ window.__ledgerGraphInit=function(openDrawer){
   });
   try{cy.layout({name:"cose",animate:false,idealEdgeLength:100,nodeRepulsion:7500,componentSpacing:120,padding:36,randomize:true,nodeOverlap:14}).run()}catch(e){}
 
-  var cur=-1,shown={},timer=null,playing=false;
+  var step=host.querySelector(".lg-step"),reset=host.querySelector(".lg-reset"),report=host.querySelector(".lg-report"),cvn=host.querySelector(".lg-cy");
+  function ovEl(cls,txt,ms){var d=document.createElement("div");d.className=cls;if(txt){d.textContent=txt}cvn.appendChild(d);setTimeout(function(){if(d.parentNode){d.parentNode.removeChild(d)}},ms);return d}
+  function drop(id,txt){try{var n=cy.getElementById(id);if(n.empty()||n.hasClass("later")){return}var p=n.renderedPosition();var r=ovEl("lg-ring","",1300);r.style.left=(p.x-22)+"px";r.style.top=(p.y-22)+"px";var t=ovEl("lg-tag",txt,1600);t.style.left=(p.x+12)+"px";t.style.top=Math.max(2,p.y-30)+"px"}catch(e){}}
+  function flow(fid){try{var e=cy.getElementById(fid);if(e.empty()||e.hasClass("later")){return}var sp=e.source().renderedPosition(),tp=e.target().renderedPosition();for(var i=0;i<2;i++){(function(ix){var d=ovEl("lg-dot","",2100);d.style.left=(sp.x-3.5)+"px";d.style.top=(sp.y-3.5)+"px";d.style.transition="left 1.4s linear,top 1.4s linear";d.style.transitionDelay=(ix*0.36)+"s";requestAnimationFrame(function(){requestAnimationFrame(function(){d.style.left=(tp.x-3.5)+"px";d.style.top=(tp.y-3.5)+"px"})})})(i)}}catch(e){}}
+  var cur=-1,shown={},timer=null,playing=false,speed=1;
   function vis(r){return cy.elements().filter(function(el){return el.data("round")<=r})}
   function pulse(el){
     try{
@@ -400,13 +428,15 @@ window.__ledgerGraphInit=function(openDrawer){
           if(!first){el.style("opacity",0);el.animate({style:{opacity:1}},{duration:560});pulse(el)}}
       }else if(!shown[id]){el.addClass("later")}
     });
-    if(r>=4){cy.edges().addClass("conv");cy.edges().filter(function(el){return el.data("postwar")}).addClass("postwar");banner.classList.add("on");if(stats)stats.classList.add("on")}
+    if(r>=7){cy.edges().addClass("conv");cy.edges().filter(function(el){return el.data("postwar")}).addClass("postwar");banner.classList.add("on");if(stats)stats.classList.add("on")}
     else{cy.edges().removeClass("conv");cy.edges().removeClass("postwar");banner.classList.remove("on");if(stats)stats.classList.remove("on")}
     btns.forEach(function(b){b.classList.toggle("on",+b.getAttribute("data-r")===r)});
     var nv=cy.nodes().filter(function(el){return el.data("round")<=r&&!el.data("kind")}).length;var kv=cy.nodes().filter(function(el){return el.data("kind")==="kb"&&el.data("round")<=r}).length;
     var ev=cy.edges().filter(function(el){return el.data("round")<=r}).length;
     count.textContent=nv+" / 13 本账 · "+kv+" / 4 类知识 · "+ev+" / 28 条关系在场";
     cap.textContent=META[r].d;
+    if(report){report.querySelector(".lg-rt").textContent=META[r].rep;report.querySelector(".lg-rc").textContent=META[r].cnt}
+    if(!first){var ph=META[r]||{};(ph.drops||[]).forEach(function(x){drop(x[0],x[1])});(ph.flows||[]).forEach(function(fid){flow(fid)})}
     if(panel){var nn=0,ne=0,labs=[];
       fresh.forEach(function(f){if(f.isNode()){nn++}else{ne++}if(f.data("label")){labs.push(f.data("label"))}});
       var pb=r===0?"只有骨架：授权三本+时间线（+4 节点 · +2 边）":"+"+nn+" 节点 · +"+ne+" 条边 ｜ 示例：+"+(labs.slice(0,3).join(" · +")||"—");
@@ -414,13 +444,17 @@ window.__ledgerGraphInit=function(openDrawer){
       panel.classList.remove("on");void panel.offsetWidth;panel.classList.add("on")}
     try{if(first){cy.fit(vis(r),36)}else{cy.animate({fit:{eles:vis(r),padding:36}},{duration:540})}}catch(e){}
   }
-  function stopPlay(){playing=false;play.textContent="▶ 播放";play.classList.remove("on");play.setAttribute("aria-pressed","false");if(timer){clearInterval(timer);timer=null}}
+  function stopPlay(){playing=false;play.textContent="▶ 模拟一场仗";play.classList.remove("on");play.setAttribute("aria-pressed","false");if(timer){clearInterval(timer);timer=null}}
+  function tick(){if(cur>=7){stopPlay();return}applyRound(cur+1)}
   play.addEventListener("click",function(){
     if(playing){stopPlay();return}
     playing=true;play.textContent="⏸ 暂停";play.classList.add("on");play.setAttribute("aria-pressed","true");
-    if(cur>=4){applyRound(0)}
-    timer=setInterval(function(){if(cur>=4){stopPlay();return}applyRound(cur+1)},1750);
+    if(cur>=7){applyRound(0)}
+    timer=setInterval(tick,1750/speed);
   });
+  [].slice.call(host.querySelectorAll(".lg-speed button")).forEach(function(sb){sb.addEventListener("click",function(){speed=+sb.getAttribute("data-s");[].slice.call(host.querySelectorAll(".lg-speed button")).forEach(function(x){x.classList.toggle("on",x===sb)});if(playing){clearInterval(timer);timer=setInterval(tick,1750/speed)}})});
+  if(step){step.addEventListener("click",function(){stopPlay();applyRound(cur>=7?0:cur+1)})}
+  if(reset){reset.addEventListener("click",function(){stopPlay();cur=-1;shown={};try{cy.elements().removeClass("later")}catch(e){};applyRound(0)})}
   btns.forEach(function(b){b.addEventListener("click",function(){stopPlay();applyRound(+b.getAttribute("data-r"))})});
 
   function showTip(n){
@@ -443,7 +477,7 @@ window.__ledgerGraphInit=function(openDrawer){
   cy.on("tap","edge",function(e){var k=e.target.data("k");if(k&&openDrawer){openDrawer(k)}});
 
   var dash=0;
-  setInterval(function(){if(cur<4){return}dash-=4;cy.edges().style("line-dash-offset",dash)},90);
+  setInterval(function(){if(cur<7){return}dash-=4;cy.edges().style("line-dash-offset",dash)},90);
   window.addEventListener("resize",function(){try{cy.resize();cy.fit(vis(cur),36)}catch(e){}});
 
   applyRound(0);
