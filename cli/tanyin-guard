@@ -1,12 +1,190 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""tanyin-guard 骨架（批次 1 T10）——scope-guard 包装器（契约 09 §3 #2）。
-四关卡（机械执法与脱敏）批次 2 实现；本骨架仅声明存在性，任何调用 exit 2。"""
-import sys
+"""tanyin-guard（批次 2 T1）——Tier 1 执行通道级包装器。"""
+import base64, hashlib, os, subprocess, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import core
+from ledger.schemas import TABLES
+
+TAB = chr(9)
+DENY_LIST = ["rm -rf /", "shutdown", "reboot", "mkfs", "dd if=", "format ", "> /dev/sd"]
+
+def usage():
+    sys.stderr.write("用法: tanyin-guard exec|inject|deploy-vault --goal-dir D ..." + chr(10))
+    return 2
+
+def load_scope(session):
+    sf = TABLES["scope.tsv"]
+    ki, mi = sf.index("kind"), sf.index("matcher")
+    return [r[mi] for r in session.rows("scope.tsv") if r[ki] == "include"]
+
+def host_in_scope(host, includes):
+    if not host:
+        return True
+    h = host.lower().rstrip(".")
+    for m in includes:
+        m = m.lower()
+        if m.startswith("*."):
+            if h == m[2:] or h.endswith("." + m[2:]):
+                return True
+        elif "/" in m:
+            import ipaddress
+            try:
+                if ipaddress.ip_address(h) in ipaddress.ip_network(m, strict=False):
+                    return True
+            except ValueError:
+                pass
+        elif h == m or h.endswith("." + m):
+            return True
+    return False
+
+def extract_hosts(args):
+    hosts = []
+    for a in args:
+        for tok in a.replace(",", " ").split():
+            if "://" in tok:
+                tok = tok.split("://", 1)[1]
+            if "@" in tok:
+                tok = tok.split("@")[-1]
+            cand = tok.split("/")[0].split(":")[0]
+            if cand and ("." in cand or cand.replace(".", "").isdigit()) and not cand.startswith("-"):
+                hosts.append(cand)
+    return hosts
+
+def tokenize_output(text, secrets):
+    for i, s in enumerate(secrets, 1):
+        if s:
+            text = text.replace(s, "{{vault:cred-%d}}" % i)
+    return text
+
+def append_tl(gd, ts, event):
+    s = core.Session(gd)
+    rows = s.rows("timeline.tsv")
+    hi = TABLES["timeline.tsv"].index("hash")
+    prev = rows[-1][hi] if rows else core.GENESIS
+    wo = [ts, "guard", "P3", event, "", prev, "2"]
+    h = core.row_hash(prev, wo)
+    rows.append([ts, "guard", "P3", event, "", prev, h, "2"])
+    core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+
+def vault_dir(gd):
+    return os.path.join(gd, "vault")
+
+def _keystream(key, n):
+    out = b""
+    counter = 0
+    while len(out) < n:
+        out += hashlib.sha256((key + ":" + str(counter)).encode()).digest()
+        counter += 1
+    return out[:n]
+
+def enc_payload(key, plaintext):
+    data = plaintext.encode("utf-8")
+    return base64.b64encode(bytes(a ^ b for a, b in zip(data, _keystream(key, len(data))))).decode()
+
+def dec_payload(key, b64):
+    data = base64.b64decode(b64)
+    return bytes(a ^ b for a, b in zip(data, _keystream(key, len(data)))).decode("utf-8")
+
+def guard_key(gd):
+    p = os.path.join(vault_dir(gd), ".key")
+    return open(p, encoding="utf-8").read().strip() if os.path.exists(p) else None
+
+def read_cred(gd, n):
+    key = guard_key(gd)
+    p = os.path.join(vault_dir(gd), "cred-%s.enc" % n)
+    if not key or not os.path.exists(p):
+        return None, None
+    return dec_payload(key, open(p, encoding="utf-8").read()).split(chr(10), 1)
+
+def cmd_deploy_vault(gd, rest):
+    kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
+    for need in ("--cred", "--username", "--secret"):
+        if not kv.get(need):
+            sys.stderr.write("deploy-vault 缺 " + need + chr(10))
+            return 2
+    key = guard_key(gd)
+    if not key:
+        sys.stderr.write("vault 未初始化（vault/.key 缺失）" + chr(10))
+        return 2
+    n = kv["--cred"]
+    payload = enc_payload(key, kv["--username"] + chr(10) + kv["--secret"])
+    os.makedirs(vault_dir(gd), exist_ok=True)
+    open(os.path.join(vault_dir(gd), "cred-%s.enc" % n), "w", encoding="utf-8").write(payload)
+    mp = os.path.join(vault_dir(gd), "manifest.tsv")
+    rows = []
+    if os.path.exists(mp):
+        rows = [l.split(TAB) for l in open(mp, encoding="utf-8").read().splitlines() if l.strip()]
+    rows.append([n, "cred-%s.enc" % n, hashlib.sha256(payload.encode()).hexdigest()[:16], "xor-sha256", "2"])
+    open(mp, "w", encoding="utf-8").write(chr(10).join(TAB.join(r) for r in rows) + chr(10))
+    print("OK vault cred-%s 部署" % n)
+    return 0
+
+def cmd_exec(gd, rest, ts=None):
+    if not rest or rest[0] != "--":
+        sys.stderr.write("exec 需要 -- 分隔命令" + chr(10))
+        return 2
+    cmd = rest[1:]
+    if not cmd:
+        return 2
+    joined = " ".join(cmd)
+    for d in DENY_LIST:
+        if d in joined:
+            print("REJECT" + TAB + "guard" + TAB + "deny-list 命中: " + d)
+            return 1
+    s = core.Session(gd)
+    includes = load_scope(s)
+    for h in extract_hosts(cmd):
+        if not host_in_scope(h, includes):
+            print("REJECT" + TAB + "guard" + TAB + "界外目标: " + h)
+            append_tl(gd, ts or "1970-01-01T00:00:00Z", "guard-reject out-of-scope host=" + h)
+            return 1
+    append_tl(gd, ts or "1970-01-01T00:00:00Z", "request-ticket cmd=" + cmd[0] + " argc=%d" % len(cmd))
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+    except FileNotFoundError:
+        print("REJECT" + TAB + "guard" + TAB + "命令不存在: " + cmd[0])
+        return 1
+    secrets = []
+    for row in s.rows("creds.tsv"):
+        _, sec = read_cred(gd, row[0].split("-")[-1])
+        if sec:
+            secrets.append(sec)
+    sys.stdout.write(tokenize_output(r.stdout, secrets))
+    sys.stderr.write(r.stderr)
+    return r.returncode
 
 def main(argv):
-    print("guard 骨架：四关卡批次 2 实现")
-    return 2
+    if len(argv) < 4 or argv[2] != "--goal-dir":
+        return usage()
+    sub, gd, rest = argv[1], argv[3], argv[4:]
+    if not os.path.isdir(gd):
+        sys.stderr.write("环境问题: goal 目录不存在" + chr(10))
+        return 2
+    if sub == "exec":
+        return cmd_exec(gd, rest)
+    if sub == "deploy-vault":
+        return cmd_deploy_vault(gd, rest)
+    if sub == "inject":
+        kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
+        cmd = rest[rest.index("--") + 1:] if "--" in rest else []
+        if not kv.get("--cred") or not cmd:
+            sys.stderr.write("inject 需要 --cred=N 与 -- 命令" + chr(10))
+            return 2
+        u, sec = read_cred(gd, kv["--cred"])
+        if sec is None:
+            print("REJECT" + TAB + "guard" + TAB + "vault 条目缺失 cred-" + kv["--cred"])
+            return 1
+        env = dict(os.environ)
+        env["TY_CRED_USER"] = u or ""
+        env["TY_CRED_SECRET"] = sec
+        append_tl(gd, kv.get("--timestamp", "1970-01-01T00:00:00Z"), "vault-inject cred=" + kv["--cred"])
+        r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=60)
+        sys.stdout.write(r.stdout.replace(sec, "{{vault:cred-%s}}" % kv["--cred"]))
+        sys.stderr.write(r.stderr)
+        return r.returncode
+    return usage()
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
