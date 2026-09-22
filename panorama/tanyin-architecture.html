@@ -68,7 +68,7 @@ footer{margin-top:30px;font-size:12px;color:#94a3b8;text-align:center}
 <i>界外诱饵四层全拦 5/5</i>
 <i>注入样本拦截率 100%·零误报</i>
 </div></div>
-<h2 class="sec">全景图：七个环节怎么接起来</h2><p class="secsub">纵向即真实时序：从接活到交付；每个环节顶部彩色条是内部运转机制（机制微图）；下方卡片=该环节的关键角色（绿=台账：系统的记事本）。</p>
+<h2 class="sec">全景图：八个环节怎么接起来</h2><p class="secsub">纵向即真实时序：从接活到交付；每个环节顶部彩色条是内部运转机制（机制微图）；下方卡片=该环节的关键角色（绿=台账：系统的记事本）。</p>
 <div class="band" style="border-left:5px solid #7c3aed"><h3>授权与立项 <em>把接活儿变成受控的数据——先有边界，再开工</em></h3><div class=flow>
 <b style="background:#7c3aed">授权书存证</b>
 <s>→</s>
@@ -177,6 +177,12 @@ footer{margin-top:30px;font-size:12px;color:#94a3b8;text-align:center}
 <div class="node" style="border-top:3px solid #065f46"><h4>四层纵深</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>账本→执行→宿主→网络，层层独立设卡</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>任何单层都可能被绕过，纵深保证漏一层还有下一层</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>定期放界外诱饵演习：任何一层放行=事故级失败</p></div>
 <div class="node" style="border-top:3px solid #065f46"><h4>canary 界外诱饵</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>系统自己生成一批假目标当靶子去打</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>拦不拦得住要实证，不能靠声明</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>四档位分别探测，结果写进报告守门声明</p></div>
 </div></div>
+<div class="conn">▼ <b>执法之下仍能断点续跑——长战役打不死</b> ▼</div>
+<div class="band" style="border-left:5px solid #9d174d"><h3>断点续传（打不死的战役） <em>上下文会满、会话会断、机器会掉电——战役不丢、接着干</em></h3><div class=flow><b style="background:#9d174d">上下文将满/会话中断</b><s>→</s><b style="background:#9d174d">state.md 快照存档</b><s>→</s><b style="background:#9d174d">开新会话</b><s>→</s><b style="background:#9d174d">resume-kit 白名单注入</b><s>→</s><b style="background:#9d174d">幂等续跑（不重做已完成）</b></div><div class=nodes>
+<div class="node" style="border-top:3px solid #9d174d"><h4>state.md 断点快照</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>整场战役的一页进度存档：进行到哪步、下一步干嘛、关键结论在哪</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>AI 会话有寿命（上下文窗口会满），活不能跟着会话一起死</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>每轮循环结束落一版快照（不超过 200 行），重启后第一件事就是读它</p></div>
+<div class="node" style="border-top:3px solid #9d174d"><h4>resume-kit 恢复注入</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>新会话开机时的装机清单，只注入白名单内的关键状态</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>全量历史既塞不进新会话，也会把旧噪音带进来污染判断</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>快照+台账要点按白名单注入，其余一概不带——新会话干净上岗</p></div>
+<div class="node" style="border-top:3px solid #9d174d"><h4>工件即缓存（幂等续跑）</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>已完成的意图和证据全在台账里，重启后直接跳过不重做</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>断点续传不是从头再来，得能接着上次的进度</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>重放=重读不重算；已完成的意图不再派发，账本本身就是缓存</p></div>
+</div></div>
 <h2 class="sec">逐步推演：每一步谁在动、命令是什么、账本多了哪一行</h2><p class="secsub">十个关键步骤贯穿 P0 授权 → P6 沉淀；绿条=账本真实新增的行；红字=不过不放行的门禁。</p><div class="steps">
 <div class="st"><h4><i>S1</i>立项落账</h4><div><b>谁+输入：</b>总控 + 用户问卷答案（目标/时间窗/预算/紧急联系人）</div><div><b>动作：</b></div><code>add-goal --target https://shop.example --budget 2000000;50000;40 ...</code><div><b>账本新增：</b></div><div class="tsv">goals.tsv 新增：G-g1 | https://shop.example | 全量Web+白盒 | 时间窗 09-18~09-25 | 预算 2M;50000;40</div><div class="gate"><b>⛔ 门禁：</b>授权字段不全（无合同指纹/无签署人）直接拒收</div><div class="nxt">→ 下一步：范围白名单落账（S2）</div></div>
 <div class="st"><h4><i>S2</i>范围白名单</h4><div><b>谁+输入：</b>总控 + 问卷中的范围/排除项</div><div><b>动作：</b></div><code>add-scope --kind=include --matcher=*.shop.example；--kind=exclude --matcher=10.10.2.0/24</code><div><b>账本新增：</b></div><div class="tsv">scope.tsv 新增：S-g1-001 include *.shop.example；S-g1-002 exclude 10.10.2.0/24（生产库网段）</div><div class="gate"><b>⛔ 门禁：</b>格式非法拒收；此后改范围必须走审批链命令</div><div class="nxt">→ 下一步：覆盖矩阵初始化（S3）</div></div>
@@ -206,6 +212,9 @@ footer{margin-top:30px;font-size:12px;color:#94a3b8;text-align:center}
 <tr><td>知识飞轮</td><td>每场测试的打法沉淀入库、下次召回复用——经验复利机制</td></tr>
 <tr><td>单写者</td><td>同一时间只允许一个组件写账本（命令箱），从机制上消灭并发写坏</td></tr>
 <tr><td>红队（red team）</td><td>攻方视角的安全测试：在授权范围内模拟真实攻击者找漏洞</td></tr>
+<tr><td>断点续传/受管重启</td><td>AI 会话断了或上下文满了，系统自动存档、换新会话接着干——战役进度不丢</td></tr>
+<tr><td>state.md</td><td>断点快照：一页纸写清战役进行到哪、下一步是什么——重启后的第一读物</td></tr>
+<tr><td>幂等续跑</td><td>已完成的工作在台账里直接复用，重放只重读不重算——不从零再来</td></tr>
 </table>
 <div class="note">想看更深：右上角切<b>工程模式</b>看 v1 原图（全部表名字段）；完整 41 步推演与各层机制专图见 <a href="../docs/design/imported/TanYin/panorama/execution-flow.html">执行流全解</a> · <a href="../docs/design/imported/TanYin/panorama/evolution-loop.html">演进循环</a> · <a href="../docs/design/imported/TanYin/panorama/knowledge-flywheel.html">知识飞轮</a>。</div>
 </div>
