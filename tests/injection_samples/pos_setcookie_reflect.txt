@@ -1,0 +1,1 @@
+Set-Cookie: PHPSESSID=d96v6r0g7q1j3f5h9k2m4n8p; Path=/; HttpOnly

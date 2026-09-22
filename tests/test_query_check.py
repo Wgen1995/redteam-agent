@@ -500,13 +500,13 @@ class RedactScan(Base):
 # ------------------------------------------------------------- T10 tanyin-guard
 
 class GuardSkeleton(unittest.TestCase):
+    """批次 2 起 guard 为真实现（见 tests/test_guard.py）；此处仅保留入口用法契约。"""
     def test_skeleton(self):
         for args in ([], ["anything"]):
             r = subprocess.run([sys.executable, GUARD] + args,
                                capture_output=True, text=True)
             self.assertEqual(r.returncode, 2)
-            self.assertIn("guard 骨架", r.stdout)
-            self.assertIn("批次 2", r.stdout)
+            self.assertIn("用法", r.stderr)
 
 
 if __name__ == "__main__":

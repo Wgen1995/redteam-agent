@@ -1,0 +1,1 @@
+postgresql://svc_report:Fj9wQ2eR@db-internal.prod:5432/analytics

@@ -1,0 +1,1 @@
+mysql://root:Str0ngPw!@10.10.0.12:3306/appdb

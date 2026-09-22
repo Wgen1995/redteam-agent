@@ -1,0 +1,174 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-budgetctl（批次 2 T5）——预算树余量门（enforce）+ 速率滑窗熔断（rate）。
+
+enforce --intent-id：add-intent 前置门（§8.7）。goals.budget 三元组 vs budget.tsv 已耗上卷聚合
+  （只读复用批次 1 query_cmds.budget_tree）；任一维 used>=limit=REJECT budget-exhausted（exit 1，
+  零余量即拒派——不存在「再跑一轮看看」）；limit<=0 或 None 的维视为未启用跳过
+  （$ 第四维默认关=夹具 dollar_budget "0"；converge-check 联动：超支 used>limit 必 REJECT）。
+  intent 已在账则并查份额叶（share 同律）；不在账=待铸 id，仅查根门。
+rate：goals.rate_limit（如 600/10m）滑窗聚合 budget.tsv.requests_delta，窗（now-window, now]
+  左开右闭；now=--now 或 budget.tsv 最大时间戳（无行=当前 UTC，可重放口径）；used>limit=REJECT
+  exit 1。REJECT 落 timeline budgetctl-reject（链式续写）；PASS 只读不落账（查询面零副作用）。
+退出码：0=OK 1=REJECT 2=用法/环境（批次纪律）。
+"""
+import datetime, json, os, sys, time
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import core, query_cmds
+from ledger.schemas import TABLES
+
+TAB = chr(9)
+EPOCH = "1970-01-01T00:00:00Z"
+DIMS = ("token", "requests", "hours", "dollars")
+
+
+def usage():
+    sys.stderr.write("用法: tanyin-budgetctl enforce --goal-dir D --intent-id <id> [--timestamp=T]"
+                     " | rate --goal-dir D [--now=TS] [--timestamp=T]" + chr(10))
+    return 2
+
+
+def append_tl(gd, ts, event):
+    s = core.Session(gd)
+    rows = s.rows("timeline.tsv")
+    hi = TABLES["timeline.tsv"].index("hash")
+    prev = rows[-1][hi] if rows else core.GENESIS
+    wo = [ts, "budgetctl", "P3", event, "", prev, "2"]
+    rows.append([ts, "budgetctl", "P3", event, "", prev, core.row_hash(prev, wo), "2"])
+    core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+
+
+def parse_ts(tok):
+    t = tok.strip()
+    if t.endswith("Z"):
+        t = t[:-1] + "+00:00"
+    dt = datetime.datetime.fromisoformat(t)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=datetime.timezone.utc)
+    return dt.timestamp()
+
+
+def fmt(x):
+    return str(int(x)) if float(x).is_integer() else ("%.6g" % x)
+
+
+def parse_rate(tok):
+    """'600/10m' -> (600.0, 600)；单位 s/m/h，缺省=秒。"""
+    n, _, w = tok.strip().partition("/")
+    if not n:
+        raise ValueError("rate_limit 空")
+    limit = query_cmds.parse_num(n)
+    mult = {"s": 1, "m": 60, "h": 3600}
+    w = w.strip()
+    if w and w[-1].lower() in mult:
+        secs = int(w[:-1]) * mult[w[-1].lower()]
+    else:
+        secs = int(w) if w else 0
+    return limit, secs
+
+
+def _reject(gd, ts, js, line):
+    print(line)
+    append_tl(gd, ts, "budgetctl-reject " + json.dumps(js, ensure_ascii=False, separators=(",", ":")))
+    return 1
+
+
+def cmd_enforce(gd, rest):
+    kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
+    iid = kv.get("--intent-id")
+    if not iid:
+        sys.stderr.write("enforce 缺 --intent-id" + chr(10))
+        return 2
+    ts = kv.get("--timestamp", EPOCH)
+    tree = query_cmds.budget_tree(core.Session(gd))
+    if tree["goal"] is None:
+        sys.stderr.write("环境问题: goals.tsv 无预算行" + chr(10))
+        return 2
+    for k in DIMS:  # 根门：goal 任一维余量耗尽
+        lim = tree["goal"]["limit"][k]
+        if lim is None or lim <= 0:
+            continue
+        used = tree["goal"]["used"][k]
+        if used >= lim:
+            return _reject(gd, ts, {"mode": "enforce", "intent": iid, "level": "goal", "dim": k,
+                                    "used": used, "limit": lim},
+                           "REJECT" + TAB + "budget-exhausted" + TAB + "goal" + TAB + k +
+                           TAB + "used=" + fmt(used) + TAB + "limit=" + fmt(lim))
+    leaf = next((i for i in tree["intents"] if i["id"] == iid), None)
+    if leaf and leaf["share"]:  # 叶门：intent 份额（§8.7 intent 超份额→拒派）
+        for k in DIMS:
+            lim = leaf["share"][k]
+            if lim is None or lim <= 0:
+                continue
+            used = leaf["used"][k]
+            if used >= lim:
+                return _reject(gd, ts, {"mode": "enforce", "intent": iid, "level": "intent", "dim": k,
+                                        "used": used, "share": lim},
+                               "REJECT" + TAB + "budget-exhausted" + TAB + "intent=" + iid +
+                               TAB + k + TAB + "used=" + fmt(used) + TAB + "share=" + fmt(lim))
+    gl = tree["goal"]["limit"]
+    gu = tree["goal"]["used"]
+    print("OK" + TAB + "enforce" + TAB + "intent=" + iid + TAB +
+          "leaf=" + ("y" if leaf else "n") + TAB + "goal-left=" +
+          ",".join("%s:%s" % (k, fmt(gl[k] - gu[k])) for k in ("token", "requests", "hours")))
+    return 0
+
+
+def cmd_rate(gd, rest):
+    kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
+    s = core.Session(gd)
+    grows = s.rows("goals.tsv")
+    if not grows:
+        sys.stderr.write("环境问题: goals.tsv 缺失" + chr(10))
+        return 2
+    rate_raw = grows[0][TABLES["goals.tsv"].index("rate_limit")]
+    if not rate_raw.strip():
+        sys.stderr.write("环境问题: goals.rate_limit 未配置" + chr(10))
+        return 2
+    try:
+        limit, wsecs = parse_rate(rate_raw)
+    except ValueError:
+        sys.stderr.write("环境问题: rate_limit 不可解析: " + rate_raw + chr(10))
+        return 2
+    brows = s.rows("budget.tsv")
+    try:
+        stamps = [parse_ts(r[0]) for r in brows]
+    except ValueError as e:
+        sys.stderr.write("环境问题: budget.tsv 时间戳不可解析: %s" % e + chr(10))
+        return 2
+    if kv.get("--now"):
+        now = parse_ts(kv["--now"])
+    elif stamps:
+        now = max(stamps)  # 可重放口径：缺省锚定账本最新流水时间
+    else:
+        now = time.time()
+    ri = TABLES["budget.tsv"].index("requests_delta")
+    used = sum(query_cmds.parse_num(r[ri]) for r, t in zip(brows, stamps)
+               if now - wsecs < t <= now)
+    if used > limit:
+        return _reject(gd, kv.get("--timestamp", EPOCH),
+                       {"mode": "rate", "used": used, "limit": limit, "window": wsecs},
+                       "REJECT" + TAB + "rate-limit" + TAB + "used=" + fmt(used) +
+                       TAB + "limit=" + fmt(limit) + TAB + "window=" + str(wsecs) + "s")
+    print("OK" + TAB + "rate" + TAB + "limit=" + fmt(limit) + "/" + str(wsecs) + "s" +
+          TAB + "used=" + fmt(used) + TAB + "left=" + fmt(limit - used))
+    return 0
+
+
+def main(argv):
+    if len(argv) < 4 or argv[2] != "--goal-dir":
+        return usage()
+    sub, gd, rest = argv[1], argv[3], argv[4:]
+    if not os.path.isdir(gd):
+        sys.stderr.write("环境问题: goal 目录不存在" + chr(10))
+        return 2
+    if sub == "enforce":
+        return cmd_enforce(gd, rest)
+    if sub == "rate":
+        return cmd_rate(gd, rest)
+    return usage()
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

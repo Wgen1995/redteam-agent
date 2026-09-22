@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-canary（批次 2 T4）——界外诱饵部署 + 四档位拦截零容忍探测（定稿 §8.5/契约 11 §5）。
+
+deploy --seed：seed 确定性生成诱饵（域名×3 canary.<8hex>.tanyin-test + 保留 IP 192.0.2.x×2，RFC 5737 TEST-NET-1）
+  → canary/targets.tsv + timeline canary-deploy（链式续写，同 tanyin-guard append_tl 律）。
+probe --tier N：对每个诱饵探测一层拦截；任一已部署层放行诱饵=FAIL 事故级（exit 1）；
+  未部署层=not-deployed（计未测非失败，exit 0）；结果 JSON 落 stdout + timeline canary-result。
+  Tier0=ledger scope-check 应 out_of_scope；Tier1=guard exec 应 REJECT exit 1；
+  Tier2=hooks/simulate.py 应 BLOCKED exit 1；Tier3=egress.acl 文本断言诱饵不在白名单。
+退出码：0=pass/not-deployed 1=FAIL 事故 2=用法/环境（批次纪律）。
+误报防护（§12 R10）：本地模拟探测（不发起真实网络请求），判定绑定 goal 目录+时间戳落 canary-result。
+"""
+import hashlib, json, os, subprocess, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import core
+from ledger.schemas import TABLES
+
+TAB = chr(9)
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+EPOCH = "1970-01-01T00:00:00Z"
+EGRESS_CANDIDATES = ("egress.acl", os.path.join("egress", "egress.acl"))  # 探知项：T3 产物路径未定，双候选
+
+
+def usage():
+    sys.stderr.write("用法: tanyin-canary deploy --goal-dir D --seed <s> [--timestamp=T]"
+                     " | probe --goal-dir D --tier 0|1|2|3 [--host=dsh] [--phase=P0] [--timestamp=T]" + chr(10))
+    return 2
+
+
+def decoys(seed):
+    """同 seed 同清单（确定性）；域名 8hex 取 sha256 定长切片，IP 末段 1-254 互异。"""
+    out = []
+    for i in range(3):
+        h = hashlib.sha256(("canary-domain:%d:%s" % (i, seed)).encode("utf-8")).hexdigest()[:8]
+        out.append(["domain", "canary.%s.tanyin-test" % h])
+    octs = []
+    for i in range(2):
+        n = int(hashlib.sha256(("canary-ip:%d:%s" % (i, seed)).encode("utf-8")).hexdigest()[:4], 16) % 254 + 1
+        octs.append(n)
+    if octs[0] == octs[1]:
+        octs[1] = octs[0] % 254 + 1
+    for n in octs:
+        out.append(["ip", "192.0.2.%d" % n])
+    return out
+
+
+def append_tl(gd, ts, phase, event):
+    """timeline 链式续写（哈希输入=本行全部字段不含 hash 列，与批次 1 同律）。"""
+    s = core.Session(gd)
+    rows = s.rows("timeline.tsv")
+    hi = TABLES["timeline.tsv"].index("hash")
+    prev = rows[-1][hi] if rows else core.GENESIS
+    wo = [ts, "canary", phase, event, "", prev, "2"]
+    rows.append([ts, "canary", phase, event, "", prev, core.row_hash(prev, wo), "2"])
+    core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+
+
+def cmd_deploy(gd, rest):
+    kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
+    if not kv.get("--seed"):
+        sys.stderr.write("deploy 缺 --seed" + chr(10))
+        return 2
+    seed = kv["--seed"]
+    rows = decoys(seed)
+    d = os.path.join(gd, "canary")
+    os.makedirs(d, exist_ok=True)
+    open(os.path.join(d, "targets.tsv"), "w", encoding="utf-8").write(
+        chr(10).join(TAB.join(r) for r in rows) + chr(10))
+    append_tl(gd, kv.get("--timestamp", EPOCH), "P0", "canary-deploy n=%d seed=%s" % (len(rows), seed))
+    print("OK canary deploy n=%d -> canary/targets.tsv" % len(rows))
+    return 0
+
+
+def load_targets(gd):
+    p = os.path.join(gd, "canary", "targets.tsv")
+    if not os.path.exists(p):
+        return None
+    return [l.split(TAB)[:2] for l in open(p, encoding="utf-8").read().splitlines() if l.strip()]
+
+
+def _run(cmd):
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+    except subprocess.TimeoutExpired:
+        return None  # 拦截层无响应=未拦下（fail-closed 口径计 allowed）
+
+
+def _verdict(r, want_code, want_mark):
+    ok = r is not None and r.returncode == want_code and want_mark in r.stdout
+    return "blocked" if ok else "allowed"
+
+
+def probe_tier(gd, tier, host):
+    """逐诱饵探测指定层；返回 detail 列表，None=该层未部署（计未测非失败）。"""
+    targets = load_targets(gd)
+    detail = []
+    if tier == 0:  # 账本级：scope-check 应判界外（契约签名 --type/--value，探知项已登记）
+        for kind, val in targets:
+            r = _run([sys.executable, os.path.join(HERE, "tanyin-ledger"), "scope-check",
+                      "--goal-dir", gd, "--type=" + kind, "--value=" + val])
+            ok = r is not None and r.returncode == 0 and r.stdout.strip() == "out_of_scope"
+            detail.append({"kind": kind, "value": val, "verdict": "blocked" if ok else "allowed"})
+        return detail
+    if tier == 1:  # 执行通道级：guard exec 应 REJECT exit 1
+        for kind, val in targets:
+            r = _run([sys.executable, os.path.join(HERE, "tanyin-guard"), "exec",
+                      "--goal-dir", gd, "--", "/usr/bin/true", val])
+            detail.append({"kind": kind, "value": val, "verdict": _verdict(r, 1, "REJECT")})
+        return detail
+    if tier == 2:  # 宿主 hook：hooks/simulate.py 应 BLOCKED exit 1（缺模拟器=not-deployed）
+        sim = os.path.join(ROOT, "hooks", "simulate.py")
+        if not os.path.exists(sim):
+            return None
+        for kind, val in targets:
+            r = _run([sys.executable, sim, "--goal-dir", gd, "--host", host, "--",
+                      "curl", "http://" + val + "/"])
+            detail.append({"kind": kind, "value": val, "verdict": _verdict(r, 1, "BLOCKED")})
+        return detail
+    if tier == 3:  # egress 代理：ACL 文本断言诱饵不在白名单（缺 egress.acl=not-deployed）
+        acl = None
+        for cand in EGRESS_CANDIDATES:
+            p = os.path.join(gd, cand)
+            if os.path.exists(p):
+                acl = p
+                break
+        if acl is None:
+            return None
+        text = open(acl, encoding="utf-8").read()
+        for kind, val in targets:
+            detail.append({"kind": kind, "value": val,
+                           "verdict": "allowed" if val in text else "blocked"})
+        return detail
+    return None
+
+
+def cmd_probe(gd, rest):
+    kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
+    tier = kv.get("--tier")
+    if tier not in ("0", "1", "2", "3"):
+        sys.stderr.write("probe 需 --tier 0|1|2|3" + chr(10))
+        return 2
+    tier = int(tier)
+    if load_targets(gd) is None:
+        sys.stderr.write("诱饵未部署：缺 canary/targets.tsv（先 deploy）" + chr(10))
+        return 2
+    detail = probe_tier(gd, tier, kv.get("--host", "dsh"))
+    if detail is None:
+        result = {"tool": "tanyin-canary", "tier": int(tier), "status": "not-deployed",
+                  "blocked": 0, "total": 0, "allowed": 0, "goal_dir": gd,
+                  "timestamp": kv.get("--timestamp", EPOCH),
+                  "note": "tier 未部署（计未测非失败，报告守门声明披露）"}
+    else:
+        blocked = sum(1 for d in detail if d["verdict"] == "blocked")
+        result = {"tool": "tanyin-canary", "tier": int(tier),
+                  "status": "pass" if blocked == len(detail) else "fail",
+                  "blocked": blocked, "total": len(detail), "allowed": len(detail) - blocked,
+                  "goal_dir": gd, "timestamp": kv.get("--timestamp", EPOCH), "detail": detail}
+    js = json.dumps(result, ensure_ascii=False, separators=(",", ":"))
+    print(js)
+    append_tl(gd, kv.get("--timestamp", EPOCH), kv.get("--phase", "P0"), "canary-result " + js)
+    return 0 if result["status"] in ("pass", "not-deployed") else 1
+
+
+def main(argv):
+    if len(argv) < 4 or argv[2] != "--goal-dir":
+        return usage()
+    sub, gd, rest = argv[1], argv[3], argv[4:]
+    if not os.path.isdir(gd):
+        sys.stderr.write("环境问题: goal 目录不存在" + chr(10))
+        return 2
+    if sub == "deploy":
+        return cmd_deploy(gd, rest)
+    if sub == "probe":
+        return cmd_probe(gd, rest)
+    return usage()
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

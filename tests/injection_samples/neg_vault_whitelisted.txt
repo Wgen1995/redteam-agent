@@ -1,0 +1,1 @@
+curl -H 'X-Auth: {{vault:cred-1}}' https://shop.example/

@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-egress（批次 2 T3）——Tier 3 出口编译器：scope.tsv 生效链 -> egress.acl 四成分。
+compile：include 展开 allow / exclude 展开 deny / oob 行白名单 / 基础设施白名单（内置清单【推导】可配置）。
+     确定性：排序稳定、无时间戳；文件头带 source 指纹 + 自指纹（两遍法）。
+verify：重编译与现存 egress.acl 字节比对（scope 修订后 drift 检测，exit 1）。
+dry-run：打印代理启动命令模板（实代理=批次 6 靶场，诚实披露）。
+"""
+import hashlib, os, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import core
+
+INFRA = ["api.github.com", "crt.sh", "nvd.nist.gov", "osv.dev", "pypi.org", "registry.npmjs.org"]
+
+
+def usage():
+    sys.stderr.write("用法: tanyin-egress compile|verify|dry-run --goal-dir D [--out P]" + chr(10))
+    return 2
+
+
+def scope_rows(gd):
+    sf = core.TABLES["scope.tsv"]
+    ki, mi, ai = sf.index("kind"), sf.index("matcher"), sf.index("amendment_of")
+    rows = core.Session(gd).rows("scope.tsv")
+    eff = {}
+    order = []
+    for r in rows:  # amendment_of 链语义：后行覆盖先行（同 matcher）
+        m = r[mi]
+        if m not in eff:
+            order.append(m)
+        eff[m] = r[ki]
+    return [(eff[m], m) for m in order]
+
+
+def build_acl(gd):
+    rows = scope_rows(gd)
+    inc = sorted(m for k, m in rows if k == "include")
+    exc = sorted(m for k, m in rows if k == "exclude")
+    oob = sorted(m for k, m in rows if k == "oob")
+    src_sha = hashlib.sha256(open(os.path.join(gd, "scope.tsv"), "rb").read()).hexdigest()[:16]
+    L = ["# tanyin egress.acl v2 (deny-by-default)"]
+    L.append("# source: scope.tsv sha16=" + src_sha)
+    L.append("# self: PENDING")
+    L.append("")
+    L.append("[acl]")
+    L.append("default deny")
+    for m in exc:
+        L.append("deny " + m)
+    for m in inc:
+        L.append("allow " + m)
+    L.append("")
+    L.append("[dns-pinning]")
+    for m in inc:
+        if "/" not in m:
+            L.append("pin " + m)
+    L.append("")
+    L.append("[oob]")
+    for m in oob:
+        L.append("allow-oob " + m)
+    L.append("")
+    L.append("[infra]")
+    for m in INFRA:
+        L.append("allow-infra " + m)
+    body = chr(10).join(L[3:])
+    self_sha = hashlib.sha256(body.encode("utf-8")).hexdigest()[:16]
+    L[2] = "# self: sha16=" + self_sha
+    return chr(10).join(L) + chr(10)
+
+
+def cmd_compile(gd, out):
+    text = build_acl(gd)
+    p = out or os.path.join(gd, "egress.acl")
+    open(p, "w", encoding="utf-8").write(text)
+    print("OK egress compile -> " + p + " (" + str(len(text.splitlines())) + " lines)")
+    return 0
+
+
+def cmd_verify(gd):
+    p = os.path.join(gd, "egress.acl")
+    if not os.path.exists(p):
+        print("REJECT egress verify 无现存 egress.acl（先 compile）")
+        return 1
+    want = build_acl(gd)
+    have = open(p, encoding="utf-8").read()
+    if want == have:
+        print("OK egress verify 一致（scope 无漂移）")
+        return 0
+    print("REJECT egress verify 漂移：scope.tsv 已修订，须 recompile+canary 复测（定稿 §7 闭环）")
+    return 1
+
+
+def cmd_dryrun():
+    print("# 代理启动模板（dry-run；实代理验证=批次 6 靶场）")
+    print("# 成分: [acl]=L3 过滤规则 [dns-pinning]=解析器 pin 表 [oob]=带外白名单 [infra]=基础设施直连白名单")
+    print("tanyin-proxy --acl egress.acl --mode deny-by-default --log goal_dir/timeline 事件=egress-deny")
+    return 0
+
+
+def main(argv):
+    if len(argv) < 4 or argv[2] != "--goal-dir":
+        return usage()
+    sub, gd = argv[1], argv[3]
+    if not os.path.isdir(gd):
+        sys.stderr.write("环境问题: goal 目录不存在" + chr(10))
+        return 2
+    out = None
+    for a in argv[4:]:
+        if a.startswith("--out="):
+            out = a.split("=", 1)[1]
+    if sub == "compile":
+        return cmd_compile(gd, out)
+    if sub == "verify":
+        return cmd_verify(gd)
+    if sub == "dry-run":
+        return cmd_dryrun()
+    return usage()
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

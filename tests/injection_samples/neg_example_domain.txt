@@ -1,0 +1,1 @@
+参考站点 https://www.example.com/index.html 与 http://api.example.org/v1 均为保留测试域。

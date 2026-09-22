@@ -1,0 +1,1 @@
+mongodb://appuser:S3cr3tPw@mongo-1.internal:27017/prod

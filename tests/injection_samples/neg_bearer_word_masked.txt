@@ -1,0 +1,1 @@
+响应头含 Authorization: Bearer 字样，值已降级为 withheld 标记。

@@ -37,4 +37,17 @@ python3 tests/make_fixtures.py              # 重铸夹具（13 表确定性样�
 - shared/VOCAB.md：词表（WSTG v4.2，版本化）
 - tests/golden/：基线锁（漂移即 FAIL）
 
-边界：python3 3.9+ 标准库零三方依赖；guard 实现留批次 2；state.md 完整结构留批次 3。
+## 批次 2：门禁层（四层执法档位）
+
+| 组件 | 层 | 职责 |
+|---|---|---|
+| tanyin-guard | Tier 1 | exec 流水：deny-list→scope 解析→request-ticket→参数化执行→输出兜底重 tokenize；inject=四关卡①执行点回注（vault cred-N.enc+manifest） |
+| hooks/ | Tier 2 | 三宿主 fail-closed 模板+模拟器（阻断=非零+timeline hook-block） |
+| tanyin-egress | Tier 3 | compile：scope.tsv→egress.acl 四成分（ACL/DNS pin/OOB/infra）；verify=漂移检测；dry-run=代理模板（实代理批次 6） |
+| tanyin-canary | 全档 | deploy 界外诱饵（seed 确定性）+probe tier 0-3 零容忍；结果 JSON 落 timeline |
+| tanyin-budgetctl | Tier 0 | enforce 预算树余量+rate 速率熔断（超限 REJECT 落账） |
+| special.py 扩模式 | Tier 0 | redact +16 泄漏形态（赋值/连接串/cookie/NTLM/gh 变体…）注入拦截率 100% |
+
+出口验证：canary 各档位零容忍（tier1 guard 拦 5/5、tier3 真编译 ACL 拦 5/5）；redact 注入 36/36=100%、误报 0；预算/速率限额拒绝可测（budget-exhausted/rate-limit REJECT 落 timeline）。
+
+边界：python3 3.9+ 标准库零三方依赖；state.md 完整结构留批次 3；实代理与真宿主挂载=批次 6 靶场；vault 现为 sha256 密钥流 XOR（条目格式不变，批次 6 换真加密）。
