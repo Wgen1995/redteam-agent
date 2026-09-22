@@ -1,61 +1,7 @@
-<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="utf-8"><title>探隐 TanYin · 全景架构（第二稿·双模式）</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;background:#f6f7f9;color:#1e293b;line-height:1.65}
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 80px}
-header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}
-h1{font-size:26px;color:#0f172a}h1 small{display:block;font-size:13px;color:#64748b;font-weight:400;margin-top:4px}
-.modes{display:flex;gap:8px}
-.modes button{border:1.5px solid #cbd5e1;background:#fff;border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;font-weight:600;color:#475569}
-.modes button.on{background:#0f172a;color:#fff;border-color:#0f172a}
-body.tech #plainSec{display:none}body:not(.tech) #techSec{display:none}
-.leader{background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#e2e8f0;border-radius:14px;padding:22px 24px;margin-bottom:26px}
-.leader .what{font-size:17px;font-weight:600;margin-bottom:14px}
-.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
-.pillar{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:12px 14px}
-.pillar b{display:block;color:#7dd3fc;font-size:14px;margin-bottom:6px}
-.pillar span{font-size:12.5px;color:#cbd5e1}
-.leader .value{margin-top:14px;font-size:14px;color:#fde68a;font-weight:600}
-.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.stats i{font-style:normal;font-size:11.5px;background:rgba(125,211,252,.15);border:1px solid rgba(125,211,252,.3);color:#bae6fd;border-radius:99px;padding:3px 10px}
-h2.sec{font-size:19px;margin:34px 0 6px;color:#0f172a;border-left:5px solid #0d9488;padding-left:10px}
-p.secsub{font-size:13px;color:#64748b;margin-bottom:16px}
-.band{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px}
-.band h3{font-size:16px;color:#334155}
-.band h3 em{font-style:normal;font-size:12.5px;color:#64748b;font-weight:400;margin-left:8px}
-.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0 14px}
-.flow b{font-size:11.5px;font-weight:600;color:#fff;border-radius:99px;padding:4px 11px}
-.flow s{text-decoration:none;color:#94a3b8;font-size:13px}
-.nodes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
-.node{border:1px solid #e2e8f0;border-radius:10px;padding:11px 13px;background:#f8fafc}
-.node h4{font-size:13.5px;margin-bottom:7px}
-.node p{font-size:12px;margin:3px 0;color:#475569}
-.node .lbl{display:inline-block;font-size:10px;border-radius:4px;padding:1px 5px;margin-right:5px;font-weight:700}
-.conn{text-align:center;padding:4px 0;color:#94a3b8;font-size:12px}
-.conn b{color:#475569}
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}
-.st{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;border-top:4px solid #0d9488}
-.st h4{font-size:14px;color:#0f172a;margin-bottom:8px}
-.st h4 i{font-style:normal;background:#0f172a;color:#fff;border-radius:6px;font-size:11px;padding:2px 7px;margin-right:7px}
-.st div{font-size:12.3px;margin:5px 0;color:#475569}
-.st div b{color:#0f172a}
-.st code{display:block;background:#0f172a;color:#a5f3fc;border-radius:7px;padding:7px 10px;font-size:11.5px;margin:6px 0;font-family:ui-monospace,Menlo,monospace;word-break:break-all}
-.st .tsv{background:#f0fdf4;border:1px dashed #86efac;color:#166534;border-radius:7px;padding:6px 10px;font-size:11.5px;font-family:ui-monospace,Menlo,monospace;word-break:break-all}
-.st .gate{color:#be123c}.st .nxt{color:#0d9488;font-weight:600}
-table.dict{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:13px}
-table.dict th{background:#0f172a;color:#e2e8f0;text-align:left;padding:8px 12px;font-size:12.5px}
-table.dict td{border-bottom:1px solid #e2e8f0;padding:8px 12px;color:#475569}
-table.dict td:first-child{color:#0f172a;font-weight:600;white-space:nowrap}
-.note{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:10px 14px;font-size:12.5px;color:#92400e;margin-top:18px}
-.note a{color:#b45309}
-footer{margin-top:30px;font-size:12px;color:#94a3b8;text-align:center}
-#techSec{background:#0f172a;border-radius:12px;padding:14px;overflow:auto}
-#techSec p{color:#94a3b8;font-size:12px;margin-bottom:8px;text-align:center}
-@media print{.modes{display:none}}
-</style></head><body>
-<div class="wrap"><header class="top"><h1>探隐 TanYin · 全景架构<small>红队工程平台 · 单页全景 · 第二稿 —— 每块三行白话：这是啥 / 为啥存在 / 怎么运转</small></h1><div class="modes"><button id="bPlain" class="on" onclick="setMode(false)">汇报模式</button><button id="bTech" onclick="setMode(true)">工程模式（v1 原图）</button></div></header>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>探隐 TanYin · 全景架构</title><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;background:#f6f7f9;color:#1e293b;line-height:1.65}.wrap{max-width:1220px;margin:0 auto;padding:26px 20px 80px}header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}h1{font-size:26px;color:#0f172a}h1 small{display:block;font-size:13px;color:#64748b;font-weight:400;margin-top:4px}.modes{display:flex;gap:8px}.modes button{border:1.5px solid #cbd5e1;background:#fff;border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;font-weight:600;color:#475569}.modes button.on{background:#0f172a;color:#fff;border-color:#0f172a}body.tech #plainSec{display:none}body:not(.tech) #techSec{display:none}.leader{background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#e2e8f0;border-radius:14px;padding:22px 24px;margin-bottom:26px}.leader .what{font-size:17px;font-weight:600;margin-bottom:14px}.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}.pillar{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:12px 14px}.pillar b{display:block;color:#7dd3fc;font-size:14px;margin-bottom:6px}.pillar span{font-size:12.5px;color:#cbd5e1}.leader .value{margin-top:14px;font-size:14px;color:#fde68a;font-weight:600}.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.stats i{font-style:normal;font-size:11.5px;background:rgba(125,211,252,.15);border:1px solid rgba(125,211,252,.3);color:#bae6fd;border-radius:99px;padding:3px 10px}h2.sec{font-size:19px;margin:34px 0 6px;color:#0f172a;border-left:5px solid #0d9488;padding-left:10px}p.secsub{font-size:13px;color:#64748b;margin-bottom:16px}.svgwrap{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:6px;overflow-x:auto}.panel{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px;margin-top:14px;min-height:120px}.panel .ph{display:flex;align-items:center;gap:10px;margin-bottom:10px}.panel .badge{color:#fff;font-size:12px;border-radius:99px;padding:3px 12px;font-weight:600}.panel h3{font-size:16px;color:#0f172a}.panel .pflow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 12px}.panel .pflow b{font-size:11px;color:#fff;border-radius:99px;padding:4px 11px}.panel .pflow s{text-decoration:none;color:#94a3b8}.panel p{font-size:13px;margin:7px 0;color:#334155}.panel p b{color:#0f172a}.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}.st{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;border-top:4px solid #0d9488}.st h4{font-size:14px;color:#0f172a;margin-bottom:8px}.st h4 i{font-style:normal;background:#0f172a;color:#fff;border-radius:6px;font-size:11px;padding:2px 7px;margin-right:7px}.st div{font-size:12.3px;margin:5px 0;color:#475569}.st div b{color:#0f172a}.st code{display:block;background:#0f172a;color:#a5f3fc;border-radius:7px;padding:7px 10px;font-size:11.5px;margin:6px 0;font-family:ui-monospace,Menlo,monospace;word-break:break-all}.st .tsv{background:#f0fdf4;border:1px dashed #86efac;color:#166534;border-radius:7px;padding:6px 10px;font-size:11.5px;font-family:ui-monospace,Menlo,monospace;word-break:break-all}.st .gate{color:#be123c}.st .nxt{color:#0d9488;font-weight:600}table.dict{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:13px}table.dict th{background:#0f172a;color:#e2e8f0;text-align:left;padding:8px 12px;font-size:12.5px}table.dict td{border-bottom:1px solid #e2e8f0;padding:8px 12px;color:#475569}table.dict td:first-child{color:#0f172a;font-weight:600;white-space:nowrap}.note{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:10px 14px;font-size:12.5px;color:#92400e;margin-top:18px}.note a{color:#b45309}footer{margin-top:30px;font-size:12px;color:#94a3b8;text-align:center}#techSec{background:#0f172a;border-radius:12px;padding:14px;overflow:auto}#techSec p{color:#94a3b8;font-size:12px;margin-bottom:8px;text-align:center}@media print{.modes{display:none}}</style>
+</head><body>
+<div class="wrap"><header class="top"><h1>探隐 TanYin · 全景架构<small>红队工程平台 · 一整张图：八环节从接活到交付 · 框内白话=这是啥 · 点框看为啥/怎么运转</small></h1><div class="modes"><button id="bPlain" class="on" onclick="setMode(false)">汇报模式</button><button id="bTech" onclick="setMode(true)">工程模式（v1 原图）</button></div></header>
 <div id="plainSec">
 <div class="leader"><div class="what">探隐 TanYin —— 让 AI 自动做渗透测试、但每一步都被系统管住的工程平台。</div><div class=pillars>
 <div class=pillar><b>每一步留痕</b><span>AI 的每个动作、看到的每个结果，都当场写进 13 本电子台账；记录之间用密码学哈希串成链，事后改一个字都会暴露。</span></div>
@@ -68,123 +14,337 @@ footer{margin-top:30px;font-size:12px;color:#94a3b8;text-align:center}
 <i>界外诱饵四层全拦 5/5</i>
 <i>注入样本拦截率 100%·零误报</i>
 </div></div>
-<h2 class="sec">全景图：八个环节怎么接起来</h2><p class="secsub">纵向即真实时序：从接活到交付；每个环节顶部彩色条是内部运转机制（机制微图）；下方卡片=该环节的关键角色（绿=台账：系统的记事本）。</p>
-<div class="band" style="border-left:5px solid #7c3aed"><h3>授权与立项 <em>把接活儿变成受控的数据——先有边界，再开工</em></h3><div class=flow>
-<b style="background:#7c3aed">授权书存证</b>
-<s>→</s>
-<b style="background:#7c3aed">add-goal 立项落账</b>
-<s>→</s>
-<b style="background:#7c3aed">scope 白名单</b>
-<s>→</s>
-<b style="background:#7c3aed">矩阵钉列+冻结</b>
-</div><div class=nodes>
-<div class="node" style="border-top:3px solid #7c3aed"><h4>授权书+指纹</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>本次测试的合同/授权扫描件，附内容指纹</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>授权是法律边界，开工前先存证防抵赖</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>双哈希入证据库，事后任何篡改可验出</p></div>
-<div class="node" style="border-top:3px solid #7c3aed"><h4>goals.tsv 项目档案</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>本次测试的一页档案袋：目标、时间窗、预算、紧急联系人</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>无档案不开工——先有约束再干活</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>一条命令写入，字段缺一直接拒收，没有先记上再补</p></div>
-<div class="node" style="border-top:3px solid #7c3aed"><h4>scope.tsv 授权白名单</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>允许打哪些域名/网段、明确排除哪些</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>越界必须有机器可判的定义</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>只加行不删行；改范围必须留审批链，历史可追</p></div>
-<div class="node" style="border-top:3px solid #7c3aed"><h4>matrix 覆盖矩阵</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>覆盖率总表：资产乘以漏洞类型，每格为未测/已证实/不适用</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>测全了没有要可度量，先定义分母</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>列由行业词表 WSTG v4.2 钉死，开工即冻结，收敛判定有基准</p></div>
-</div></div>
-<div class="conn">▼ <b>立项完成、矩阵分母冻结 → 发动机启动</b> ▼</div>
-<div class="band" style="border-left:5px solid #0d9488"><h3>P3 演进循环（发动机） <em>每轮固定节奏，转到收敛或预算尽为止</em></h3><div class=flow>
-<b style="background:#0d9488">⓪预算/断点检查</b>
-<s>→</s>
-<b style="background:#0d9488">①扫台账找信号</b>
-<s>→</s>
-<b style="background:#0d9488">②假设风暴(五路)</b>
-<s>→</s>
-<b style="background:#0d9488">③并行派发</b>
-<s>→</s>
-<b style="background:#0d9488">④验证落账</b>
-<s>→</s>
-<b style="background:#0d9488">⑤攻击链推理</b>
-<s>→</s>
-<b style="background:#0d9488">⑥收敛判定→回⓪</b>
-</div><div class=nodes>
-<div class="node" style="border-top:3px solid #0d9488"><h4>intents.tsv 攻击意图台账</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>每个『我打算测什么』一行，带状态与去向</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>AI 的计划本身要可审计、可复查</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>派发前查预算余量，超支直接拒立项</p></div>
-<div class="node" style="border-top:3px solid #0d9488"><h4>findings.tsv 发现台账</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>疑似漏洞清单：在哪个资产、什么等级、挂哪些证据</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>结论必须挂证据，不允许『我觉得』</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>不带证据编号的发现直接拒收（铁律）</p></div>
-<div class="node" style="border-top:3px solid #0d9488"><h4>E-index.tsv 证据索引</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>每条原始证据（报文/截图）一行索引+双哈希</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>证据防篡改、报告引用可回溯到原件</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>工件先算哈希再登记，复核时可重算比对</p></div>
-</div></div>
-<div class="conn">▼ <b>循环产生的记录连成图谱 → 出口统一验证</b> ▼</div>
-<div class="band" style="border-left:5px solid #b45309"><h3>十种边（台账连成推理图谱） <em>单表是清单，连起来才有推理：攻击链、归因、知识召回</em></h3><div class=flow>
-<b style="background:#b45309">意图 spawns 派生</b>
-<s>→</s>
-<b style="background:#b45309">技法 yields 产出</b>
-<s>→</s>
-<b style="background:#b45309">证据 proves 证实</b>
-<s>→</s>
-<b style="background:#b45309">发现 supersedes 合并</b>
-<s>→</s>
-<b style="background:#b45309">先例 derived_from 引用</b>
-</div><div class=nodes>
-<div class="node" style="border-top:3px solid #b45309"><h4>边=台账间的引用关系</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>台账 A 的某行指向台账 B 的某行，共 10 种有方向的边</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>连点成网后才能问：这条发现被什么证据撑着、这招上次在哪用过</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>加边也是一条命令，方向错了拒收，图谱永不乱指</p></div>
-<div class="node" style="border-top:3px solid #b45309"><h4>攻击链样例</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>意图→技法→证据→发现→影响，五连成链</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>领导要的『这个漏洞怎么打出来的』一句话可答</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>链由账本数据即时重建，不是事后手写的故事</p></div>
-</div></div>
-<div class="conn">▼ <b>图谱通过四道终检 → 才允许出报告</b> ▼</div>
-<div class="band" style="border-left:5px solid #be123c"><h3>验证与交付（脏账不出报告） <em>P3 转了几十轮几百行账——出口前全部重新验一遍</em></h3><div class=flow>
-<b style="background:#be123c">validate 全表校验</b>
-<s>→</s>
-<b style="background:#be123c">hash-recheck 证据重算</b>
-<s>→</s>
-<b style="background:#be123c">converge-check 收敛判定</b>
-<s>→</s>
-<b style="background:#be123c">redact-scan 密钥终检</b>
-<s>→</s>
-<b style="background:#be123c">人签发</b>
-</div><div class=nodes>
-<div class="node" style="border-top:3px solid #be123c"><h4>timeline.tsv 时间线+哈希链</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>所有写操作的事件流，每条含前一条的指纹</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>追加式历史：事后篡改或删记录必然断链</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>每条写命令自动记事件；验链命令随时全量复验</p></div>
-<div class="node" style="border-top:3px solid #be123c"><h4>报告门</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>导出前的四道终检+人工签发</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>正式渗透报告是法律文书，出口必须守门</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>任一检失败=阻断导出；签发动作本身落账留痕</p></div>
-</div></div>
-<div class="conn">▼ <b>交付后经验入库 → 反哺下一轮循环</b> ▼</div>
-<div class="band" style="border-left:5px solid #4338ca"><h3>知识飞轮（打一仗强一次） <em>经验在人脑里会流失，在库里会复利</em></h3><div class=flow>
-<b style="background:#4338ca">本次发现</b>
-<s>→</s>
-<b style="background:#4338ca">staging 暂存</b>
-<s>→</s>
-<b style="background:#4338ca">四门槛评审</b>
-<s>→</s>
-<b style="background:#4338ca">技法/先例知识库</b>
-<s>→</s>
-<b style="background:#4338ca">下次风暴召回</b>
-</div><div class=nodes>
-<div class="node" style="border-top:3px solid #4338ca"><h4>知识沉淀管线</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>每场测试的打法、先例结构化入库</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>第二次遇到同类系统直接召回打法，不从零开始</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>入库有门槛：可复现、非重复、有证据、已脱敏——垃圾进不来</p></div>
-</div></div>
-<div class="conn">▼ <b>知识就位，进入日常运转层</b> ▼</div>
-<div class="band" style="border-left:5px solid #0369a1"><h3>运行时（执行通道） <em>账本上拒绝不等于技术上拦住——执行层要真拦</em></h3><div class=flow>
-<b style="background:#0369a1">危险命令黑名单</b>
-<s>→</s>
-<b style="background:#0369a1">界外目标拒执行</b>
-<s>→</s>
-<b style="background:#0369a1">取执行票(留痕)</b>
-<s>→</s>
-<b style="background:#0369a1">参数化执行</b>
-<s>→</s>
-<b style="background:#0369a1">输出自动抹密钥</b>
-</div><div class=nodes>
-<div class="node" style="border-top:3px solid #0369a1"><h4>guard 包装器</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>所有对外命令的必经之门（五段流水）</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>AI 生成命令不可直接上系统，必须过闸</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>黑名单→范围校验→留票→无 shell 拼接执行→输出兜底脱敏</p></div>
-<div class="node" style="border-top:3px solid #0369a1"><h4>vault 凭据保险柜</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>客户账号密码加密存放，AI 全程只见代号</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>密钥永不进对话、永不进报告</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>执行瞬间才解密注入；输出里出现真值立即还原成代号</p></div>
-</div></div>
-<div class="conn">▼ <b>执行与知识都在四层执法之下</b> ▼</div>
-<div class="band" style="border-left:5px solid #065f46"><h3>恒在执法（四层关卡） <em>同一条授权边界，四道独立的闸纵深叠防</em></h3><div class=flow>
-<b style="background:#065f46">界外请求</b>
-<s>→</s>
-<b style="background:#065f46">Tier0 账本拒收</b>
-<s>→</s>
-<b style="background:#065f46">Tier1 guard 拒执行</b>
-<s>→</s>
-<b style="background:#065f46">Tier2 宿主拦截</b>
-<s>→</s>
-<b style="background:#065f46">Tier3 网络出口白名单</b>
-</div><div class=nodes>
-<div class="node" style="border-top:3px solid #065f46"><h4>四层纵深</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>账本→执行→宿主→网络，层层独立设卡</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>任何单层都可能被绕过，纵深保证漏一层还有下一层</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>定期放界外诱饵演习：任何一层放行=事故级失败</p></div>
-<div class="node" style="border-top:3px solid #065f46"><h4>canary 界外诱饵</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>系统自己生成一批假目标当靶子去打</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>拦不拦得住要实证，不能靠声明</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>四档位分别探测，结果写进报告守门声明</p></div>
-</div></div>
-<div class="conn">▼ <b>执法之下仍能断点续跑——长战役打不死</b> ▼</div>
-<div class="band" style="border-left:5px solid #9d174d"><h3>断点续传（打不死的战役） <em>上下文会满、会话会断、机器会掉电——战役不丢、接着干</em></h3><div class=flow><b style="background:#9d174d">上下文将满/会话中断</b><s>→</s><b style="background:#9d174d">state.md 快照存档</b><s>→</s><b style="background:#9d174d">开新会话</b><s>→</s><b style="background:#9d174d">resume-kit 白名单注入</b><s>→</s><b style="background:#9d174d">幂等续跑（不重做已完成）</b></div><div class=nodes>
-<div class="node" style="border-top:3px solid #9d174d"><h4>state.md 断点快照</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>整场战役的一页进度存档：进行到哪步、下一步干嘛、关键结论在哪</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>AI 会话有寿命（上下文窗口会满），活不能跟着会话一起死</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>每轮循环结束落一版快照（不超过 200 行），重启后第一件事就是读它</p></div>
-<div class="node" style="border-top:3px solid #9d174d"><h4>resume-kit 恢复注入</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>新会话开机时的装机清单，只注入白名单内的关键状态</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>全量历史既塞不进新会话，也会把旧噪音带进来污染判断</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>快照+台账要点按白名单注入，其余一概不带——新会话干净上岗</p></div>
-<div class="node" style="border-top:3px solid #9d174d"><h4>工件即缓存（幂等续跑）</h4><p><span class="lbl" style="background:#e0f2fe;color:#0369a1">这是啥</span>已完成的意图和证据全在台账里，重启后直接跳过不重做</p><p><span class="lbl" style="background:#fef3c7;color:#b45309">为啥存在</span>断点续传不是从头再来，得能接着上次的进度</p><p><span class="lbl" style="background:#dcfce7;color:#166534">怎么运转</span>重放=重读不重算；已完成的意图不再派发，账本本身就是缓存</p></div>
-</div></div>
-<h2 class="sec">逐步推演：每一步谁在动、命令是什么、账本多了哪一行</h2><p class="secsub">十个关键步骤贯穿 P0 授权 → P6 沉淀；绿条=账本真实新增的行；红字=不过不放行的门禁。</p><div class="steps">
-<div class="st"><h4><i>S1</i>立项落账</h4><div><b>谁+输入：</b>总控 + 用户问卷答案（目标/时间窗/预算/紧急联系人）</div><div><b>动作：</b></div><code>add-goal --target https://shop.example --budget 2000000;50000;40 ...</code><div><b>账本新增：</b></div><div class="tsv">goals.tsv 新增：G-g1 | https://shop.example | 全量Web+白盒 | 时间窗 09-18~09-25 | 预算 2M;50000;40</div><div class="gate"><b>⛔ 门禁：</b>授权字段不全（无合同指纹/无签署人）直接拒收</div><div class="nxt">→ 下一步：范围白名单落账（S2）</div></div>
+<h2 class="sec">全景图（一整张）：八个环节怎么接起来</h2><p class="secsub">框=关键角色（框内白话一句=这是啥）；彩色步骤条=环节内部机制；箭头=顺序与依赖；底部图例=五类角色配色。点任意框 → 下方显示它的为啥存在/怎么运转深度详解。</p><div class="svgwrap">
+<svg height="1371" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1780 1371" font-family="-apple-system,PingFang SC,Microsoft YaHei,sans-serif" style="background:#0b1220;border-radius:12px">
+<defs><marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+<style>g.nd{cursor:pointer}g.nd:hover rect.bx{stroke-width:2.6}</style>
+<rect x="8" y="12" width="1764" height="142" rx="14" fill="#101a30" stroke="#1e293b"/>
+<rect x="8" y="12" width="5" height="142" rx="2.5" fill="#7c3aed"/>
+<text x="24" y="37" font-size="15" font-weight="700" fill="#e2e8f0">A · 授权与立项</text>
+<text x="24" y="56" font-size="10" fill="#7d8db0">把接活儿变成受控数据——先</text>
+<text x="24" y="69" font-size="10" fill="#7d8db0">有边界再开工</text>
+<rect x="178" y="26" width="70" height="20" rx="10" fill="#7c3aed"/>
+<text x="213" y="40" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">授权书存证</text>
+<text x="253" y="40" font-size="11" fill="#94a3b8">→</text>
+<rect x="266" y="26" width="112" height="20" rx="10" fill="#7c3aed"/>
+<text x="322" y="40" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">add-goal 立项落账</text>
+<text x="383" y="40" font-size="11" fill="#94a3b8">→</text>
+<rect x="396" y="26" width="84" height="20" rx="10" fill="#7c3aed"/>
+<text x="438" y="40" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">scope 白名单</text>
+<text x="486" y="40" font-size="11" fill="#94a3b8">→</text>
+<rect x="499" y="26" width="85" height="20" rx="10" fill="#7c3aed"/>
+<text x="541" y="40" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">矩阵钉列+冻结</text>
+<g class="nd" onclick="showDetail('A0')">
+<rect class="bx" x="178" y="68" width="363" height="74" rx="10" fill="#e3f1fb" stroke="#0369a1" stroke-width="1.4"/>
+<rect x="190" y="76" width="79" height="4" rx="2" fill="#0369a1"/>
+<text x="359" y="96" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">授权书+指纹</text>
+<text x="359" y="114" font-size="10.5" fill="#334155" text-anchor="middle">本次测试的合同/授权扫描件，附内容指纹</text>
+<text x="531" y="134" font-size="9.5" fill="#0369a1" text-anchor="end">▸详解</text>
+</g>
+<line x1="545" y1="105" x2="573" y2="105" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('A1')">
+<rect class="bx" x="581" y="68" width="363" height="74" rx="10" fill="#e7f9f0" stroke="#059669" stroke-width="1.4"/>
+<rect x="593" y="76" width="132" height="4" rx="2" fill="#059669"/>
+<text x="763" y="96" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">goals.tsv 项目档案</text>
+<text x="763" y="114" font-size="10.5" fill="#334155" text-anchor="middle">本次测试的档案袋：目标、时间窗、预算、紧急联系人</text>
+<text x="935" y="134" font-size="9.5" fill="#059669" text-anchor="end">▸详解</text>
+</g>
+<line x1="949" y1="105" x2="977" y2="105" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('A2')">
+<rect class="bx" x="985" y="68" width="363" height="74" rx="10" fill="#e7f9f0" stroke="#059669" stroke-width="1.4"/>
+<rect x="997" y="76" width="145" height="4" rx="2" fill="#059669"/>
+<text x="1166" y="96" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">scope.tsv 授权白名单</text>
+<text x="1166" y="114" font-size="10.5" fill="#334155" text-anchor="middle">允许打哪些域名网段、明确排除哪些</text>
+<text x="1338" y="134" font-size="9.5" fill="#059669" text-anchor="end">▸详解</text>
+</g>
+<line x1="1352" y1="105" x2="1380" y2="105" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('A3')">
+<rect class="bx" x="1388" y="68" width="363" height="74" rx="10" fill="#e7f9f0" stroke="#059669" stroke-width="1.4"/>
+<rect x="1400" y="76" width="110" height="4" rx="2" fill="#059669"/>
+<text x="1570" y="96" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">matrix 覆盖矩阵</text>
+<text x="1570" y="114" font-size="10.5" fill="#334155" text-anchor="middle">覆盖率总表：资产x漏洞类型，每格未测/已证实/不适用</text>
+<text x="1742" y="134" font-size="9.5" fill="#059669" text-anchor="end">▸详解</text>
+</g>
+<line x1="965" y1="155" x2="965" y2="174" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="973" y="169" font-size="10.5" fill="#94a3b8" text-anchor="middle">▼ 立项完成分母冻结，发动机启动</text>
+<rect x="8" y="179" width="1764" height="142" rx="14" fill="#101a30" stroke="#1e293b"/>
+<rect x="8" y="179" width="5" height="142" rx="2.5" fill="#0d9488"/>
+<text x="24" y="204" font-size="15" font-weight="700" fill="#e2e8f0">B · P3 演进循环</text>
+<text x="24" y="223" font-size="10" fill="#7d8db0">发动机——转到收敛或预算尽</text>
+<text x="24" y="236" font-size="10" fill="#7d8db0">为止</text>
+<rect x="178" y="193" width="85" height="20" rx="10" fill="#0d9488"/>
+<text x="220" y="207" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">预算/断点检查</text>
+<text x="268" y="207" font-size="11" fill="#94a3b8">→</text>
+<rect x="281" y="193" width="80" height="20" rx="10" fill="#0d9488"/>
+<text x="321" y="207" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">扫台账找信号</text>
+<text x="366" y="207" font-size="11" fill="#94a3b8">→</text>
+<rect x="379" y="193" width="80" height="20" rx="10" fill="#0d9488"/>
+<text x="419" y="207" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">假设风暴五路</text>
+<text x="464" y="207" font-size="11" fill="#94a3b8">→</text>
+<rect x="477" y="193" width="60" height="20" rx="10" fill="#0d9488"/>
+<text x="507" y="207" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">并行派发</text>
+<text x="542" y="207" font-size="11" fill="#94a3b8">→</text>
+<rect x="555" y="193" width="60" height="20" rx="10" fill="#0d9488"/>
+<text x="585" y="207" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">验证落账</text>
+<text x="620" y="207" font-size="11" fill="#94a3b8">→</text>
+<rect x="633" y="193" width="70" height="20" rx="10" fill="#0d9488"/>
+<text x="668" y="207" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">攻击链推理</text>
+<text x="708" y="207" font-size="11" fill="#94a3b8">→</text>
+<rect x="721" y="193" width="80" height="20" rx="10" fill="#0d9488"/>
+<text x="761" y="207" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">收敛判定回环</text>
+<g class="nd" onclick="showDetail('B0')">
+<rect class="bx" x="178" y="235" width="498" height="74" rx="10" fill="#e7f9f0" stroke="#059669" stroke-width="1.4"/>
+<rect x="190" y="243" width="147" height="4" rx="2" fill="#059669"/>
+<text x="427" y="263" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">intents.tsv 意图台账</text>
+<text x="427" y="281" font-size="10.5" fill="#334155" text-anchor="middle">每个我打算测什么一行，带状态与去向</text>
+<text x="666" y="301" font-size="9.5" fill="#059669" text-anchor="end">▸详解</text>
+</g>
+<line x1="680" y1="272" x2="708" y2="272" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('B1')">
+<rect class="bx" x="716" y="235" width="498" height="74" rx="10" fill="#e7f9f0" stroke="#059669" stroke-width="1.4"/>
+<rect x="728" y="243" width="154" height="4" rx="2" fill="#059669"/>
+<text x="965" y="263" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">findings.tsv 发现台账</text>
+<text x="965" y="281" font-size="10.5" fill="#334155" text-anchor="middle">疑似漏洞清单：在哪个资产、什么等级、挂哪些证据</text>
+<text x="1204" y="301" font-size="9.5" fill="#059669" text-anchor="end">▸详解</text>
+</g>
+<line x1="1218" y1="272" x2="1246" y2="272" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('B2')">
+<rect class="bx" x="1254" y="235" width="498" height="74" rx="10" fill="#e7f9f0" stroke="#059669" stroke-width="1.4"/>
+<rect x="1266" y="243" width="147" height="4" rx="2" fill="#059669"/>
+<text x="1503" y="263" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">E-index.tsv 证据索引</text>
+<text x="1503" y="281" font-size="10.5" fill="#334155" text-anchor="middle">每条原始证据一行索引+双哈希</text>
+<text x="1742" y="301" font-size="9.5" fill="#059669" text-anchor="end">▸详解</text>
+</g>
+<line x1="965" y1="322" x2="965" y2="341" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="973" y="336" font-size="10.5" fill="#94a3b8" text-anchor="middle">▼ 循环记录连成图谱，出口统一验证</text>
+<rect x="8" y="346" width="1764" height="142" rx="14" fill="#101a30" stroke="#1e293b"/>
+<rect x="8" y="346" width="5" height="142" rx="2.5" fill="#b45309"/>
+<text x="24" y="371" font-size="15" font-weight="700" fill="#e2e8f0">C · 十种边图谱</text>
+<text x="24" y="390" font-size="10" fill="#7d8db0">单表是清单，连起来才有推</text>
+<text x="24" y="403" font-size="10" fill="#7d8db0">理</text>
+<rect x="178" y="360" width="106" height="20" rx="10" fill="#b45309"/>
+<text x="231" y="374" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">意图 spawns 派生</text>
+<text x="289" y="374" font-size="11" fill="#94a3b8">→</text>
+<rect x="302" y="360" width="106" height="20" rx="10" fill="#b45309"/>
+<text x="355" y="374" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">技法 yields 产出</text>
+<text x="413" y="374" font-size="11" fill="#94a3b8">→</text>
+<rect x="426" y="360" width="106" height="20" rx="10" fill="#b45309"/>
+<text x="479" y="374" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">证据 proves 证实</text>
+<text x="538" y="374" font-size="11" fill="#94a3b8">→</text>
+<rect x="551" y="360" width="129" height="20" rx="10" fill="#b45309"/>
+<text x="616" y="374" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">发现 supersedes 合并</text>
+<text x="685" y="374" font-size="11" fill="#94a3b8">→</text>
+<rect x="698" y="360" width="141" height="20" rx="10" fill="#b45309"/>
+<text x="769" y="374" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">先例 derived_from 引用</text>
+<g class="nd" onclick="showDetail('C0')">
+<rect class="bx" x="178" y="402" width="767" height="74" rx="10" fill="#ebeefc" stroke="#4338ca" stroke-width="1.4"/>
+<rect x="190" y="410" width="117" height="4" rx="2" fill="#4338ca"/>
+<text x="561" y="430" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">边=台账间引用关系</text>
+<text x="561" y="448" font-size="10.5" fill="#334155" text-anchor="middle">台账 A 的行指向台账 B 的行，共 10 种有方向的边</text>
+<text x="935" y="468" font-size="9.5" fill="#4338ca" text-anchor="end">▸详解</text>
+</g>
+<line x1="949" y1="439" x2="977" y2="439" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('C1')">
+<rect class="bx" x="985" y="402" width="767" height="74" rx="10" fill="#ebeefc" stroke="#4338ca" stroke-width="1.4"/>
+<rect x="997" y="410" width="72" height="4" rx="2" fill="#4338ca"/>
+<text x="1368" y="430" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">攻击链样例</text>
+<text x="1368" y="448" font-size="10.5" fill="#334155" text-anchor="middle">意图→技法→证据→发现→影响，五连成链</text>
+<text x="1742" y="468" font-size="9.5" fill="#4338ca" text-anchor="end">▸详解</text>
+</g>
+<line x1="965" y1="489" x2="965" y2="508" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="973" y="503" font-size="10.5" fill="#94a3b8" text-anchor="middle">▼ 图谱过四道终检才允许出报告</text>
+<rect x="8" y="513" width="1764" height="142" rx="14" fill="#101a30" stroke="#1e293b"/>
+<rect x="8" y="513" width="5" height="142" rx="2.5" fill="#be123c"/>
+<text x="24" y="538" font-size="15" font-weight="700" fill="#e2e8f0">D · 验证与交付</text>
+<text x="24" y="557" font-size="10" fill="#7d8db0">脏账不出报告</text>
+<rect x="178" y="527" width="112" height="20" rx="10" fill="#be123c"/>
+<text x="234" y="541" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">validate 全表校验</text>
+<text x="295" y="541" font-size="11" fill="#94a3b8">→</text>
+<rect x="308" y="527" width="135" height="20" rx="10" fill="#be123c"/>
+<text x="375" y="541" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">hash-recheck 证据重算</text>
+<text x="448" y="541" font-size="11" fill="#94a3b8">→</text>
+<rect x="461" y="527" width="127" height="20" rx="10" fill="#be123c"/>
+<text x="525" y="541" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">converge-check 收敛</text>
+<text x="593" y="541" font-size="11" fill="#94a3b8">→</text>
+<rect x="606" y="527" width="129" height="20" rx="10" fill="#be123c"/>
+<text x="671" y="541" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">redact-scan 密钥终检</text>
+<text x="741" y="541" font-size="11" fill="#94a3b8">→</text>
+<rect x="754" y="527" width="50" height="20" rx="10" fill="#be123c"/>
+<text x="779" y="541" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">人签发</text>
+<g class="nd" onclick="showDetail('D0')">
+<rect class="bx" x="178" y="569" width="767" height="74" rx="10" fill="#e7f9f0" stroke="#059669" stroke-width="1.4"/>
+<rect x="190" y="577" width="157" height="4" rx="2" fill="#059669"/>
+<text x="561" y="597" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">timeline 时间线+哈希链</text>
+<text x="561" y="615" font-size="10.5" fill="#334155" text-anchor="middle">所有写操作的事件流，每条含前一条指纹</text>
+<text x="935" y="635" font-size="9.5" fill="#059669" text-anchor="end">▸详解</text>
+</g>
+<line x1="949" y1="606" x2="977" y2="606" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('D1')">
+<rect class="bx" x="985" y="569" width="767" height="74" rx="10" fill="#fde8ee" stroke="#be123c" stroke-width="1.4"/>
+<rect x="997" y="577" width="47" height="4" rx="2" fill="#be123c"/>
+<text x="1368" y="597" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">报告门</text>
+<text x="1368" y="615" font-size="10.5" fill="#334155" text-anchor="middle">导出前四道终检+人工签发</text>
+<text x="1742" y="635" font-size="9.5" fill="#be123c" text-anchor="end">▸详解</text>
+</g>
+<line x1="965" y1="656" x2="965" y2="675" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="973" y="670" font-size="10.5" fill="#94a3b8" text-anchor="middle">▼ 交付后经验入库反哺下轮</text>
+<rect x="8" y="680" width="1764" height="142" rx="14" fill="#101a30" stroke="#1e293b"/>
+<rect x="8" y="680" width="5" height="142" rx="2.5" fill="#4338ca"/>
+<text x="24" y="705" font-size="15" font-weight="700" fill="#e2e8f0">E · 知识飞轮</text>
+<text x="24" y="724" font-size="10" fill="#7d8db0">经验在人脑流失，在库复利</text>
+<rect x="178" y="694" width="60" height="20" rx="10" fill="#4338ca"/>
+<text x="208" y="708" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">本次发现</text>
+<text x="243" y="708" font-size="11" fill="#94a3b8">→</text>
+<rect x="256" y="694" width="86" height="20" rx="10" fill="#4338ca"/>
+<text x="299" y="708" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">staging 暂存</text>
+<text x="347" y="708" font-size="11" fill="#94a3b8">→</text>
+<rect x="360" y="694" width="70" height="20" rx="10" fill="#4338ca"/>
+<text x="395" y="708" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">四门槛评审</text>
+<text x="435" y="708" font-size="11" fill="#94a3b8">→</text>
+<rect x="448" y="694" width="90" height="20" rx="10" fill="#4338ca"/>
+<text x="493" y="708" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">技法先例知识库</text>
+<text x="543" y="708" font-size="11" fill="#94a3b8">→</text>
+<rect x="556" y="694" width="80" height="20" rx="10" fill="#4338ca"/>
+<text x="596" y="708" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">下次风暴召回</text>
+<g class="nd" onclick="showDetail('E0')">
+<rect class="bx" x="178" y="736" width="1574" height="74" rx="10" fill="#ebeefc" stroke="#4338ca" stroke-width="1.4"/>
+<rect x="190" y="744" width="85" height="4" rx="2" fill="#4338ca"/>
+<text x="965" y="764" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">知识沉淀管线</text>
+<text x="965" y="782" font-size="10.5" fill="#334155" text-anchor="middle">每场测试的打法先例结构化入库</text>
+<text x="1742" y="802" font-size="9.5" fill="#4338ca" text-anchor="end">▸详解</text>
+</g>
+<line x1="965" y1="823" x2="965" y2="842" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="973" y="837" font-size="10.5" fill="#94a3b8" text-anchor="middle">▼ 知识就位，进入日常运转层</text>
+<rect x="8" y="847" width="1764" height="142" rx="14" fill="#101a30" stroke="#1e293b"/>
+<rect x="8" y="847" width="5" height="142" rx="2.5" fill="#0369a1"/>
+<text x="24" y="872" font-size="15" font-weight="700" fill="#e2e8f0">F · 运行时执行通道</text>
+<text x="24" y="891" font-size="10" fill="#7d8db0">账本上拒绝不等于技术上拦</text>
+<text x="24" y="904" font-size="10" fill="#7d8db0">住</text>
+<rect x="178" y="861" width="90" height="20" rx="10" fill="#0369a1"/>
+<text x="223" y="875" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">危险命令黑名单</text>
+<text x="273" y="875" font-size="11" fill="#94a3b8">→</text>
+<rect x="286" y="861" width="90" height="20" rx="10" fill="#0369a1"/>
+<text x="331" y="875" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">界外目标拒执行</text>
+<text x="381" y="875" font-size="11" fill="#94a3b8">→</text>
+<rect x="394" y="861" width="80" height="20" rx="10" fill="#0369a1"/>
+<text x="434" y="875" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">取执行票留痕</text>
+<text x="479" y="875" font-size="11" fill="#94a3b8">→</text>
+<rect x="492" y="861" width="70" height="20" rx="10" fill="#0369a1"/>
+<text x="527" y="875" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">参数化执行</text>
+<text x="567" y="875" font-size="11" fill="#94a3b8">→</text>
+<rect x="580" y="861" width="90" height="20" rx="10" fill="#0369a1"/>
+<text x="625" y="875" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">输出自动抹密钥</text>
+<g class="nd" onclick="showDetail('F0')">
+<rect class="bx" x="178" y="903" width="767" height="74" rx="10" fill="#e3f1fb" stroke="#0369a1" stroke-width="1.4"/>
+<rect x="190" y="911" width="91" height="4" rx="2" fill="#0369a1"/>
+<text x="561" y="931" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">guard 包装器</text>
+<text x="561" y="949" font-size="10.5" fill="#334155" text-anchor="middle">所有对外命令的必经之门，五段流水</text>
+<text x="935" y="969" font-size="9.5" fill="#0369a1" text-anchor="end">▸详解</text>
+</g>
+<line x1="949" y1="940" x2="977" y2="940" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('F1')">
+<rect class="bx" x="985" y="903" width="767" height="74" rx="10" fill="#e3f1fb" stroke="#0369a1" stroke-width="1.4"/>
+<rect x="997" y="911" width="116" height="4" rx="2" fill="#0369a1"/>
+<text x="1368" y="931" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">vault 凭据保险柜</text>
+<text x="1368" y="949" font-size="10.5" fill="#334155" text-anchor="middle">客户账号密码加密存放，AI 只见代号</text>
+<text x="1742" y="969" font-size="9.5" fill="#0369a1" text-anchor="end">▸详解</text>
+</g>
+<line x1="965" y1="990" x2="965" y2="1009" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="973" y="1004" font-size="10.5" fill="#94a3b8" text-anchor="middle">▼ 执行与知识都在四层执法之下</text>
+<rect x="8" y="1014" width="1764" height="142" rx="14" fill="#101a30" stroke="#1e293b"/>
+<rect x="8" y="1014" width="5" height="142" rx="2.5" fill="#065f46"/>
+<text x="24" y="1039" font-size="15" font-weight="700" fill="#e2e8f0">G · 恒在执法</text>
+<text x="24" y="1058" font-size="10" fill="#7d8db0">同一条边界四道独立的闸</text>
+<rect x="178" y="1028" width="60" height="20" rx="10" fill="#065f46"/>
+<text x="208" y="1042" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">界外请求</text>
+<text x="243" y="1042" font-size="11" fill="#94a3b8">→</text>
+<rect x="256" y="1028" width="94" height="20" rx="10" fill="#065f46"/>
+<text x="303" y="1042" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">Tier0 账本拒收</text>
+<text x="355" y="1042" font-size="11" fill="#94a3b8">→</text>
+<rect x="368" y="1028" width="119" height="20" rx="10" fill="#065f46"/>
+<text x="428" y="1042" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">Tier1 guard 拒执行</text>
+<text x="493" y="1042" font-size="11" fill="#94a3b8">→</text>
+<rect x="506" y="1028" width="94" height="20" rx="10" fill="#065f46"/>
+<text x="553" y="1042" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">Tier2 宿主拦截</text>
+<text x="606" y="1042" font-size="11" fill="#94a3b8">→</text>
+<rect x="619" y="1028" width="124" height="20" rx="10" fill="#065f46"/>
+<text x="681" y="1042" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">Tier3 网络出口白名单</text>
+<g class="nd" onclick="showDetail('G0')">
+<rect class="bx" x="178" y="1070" width="767" height="74" rx="10" fill="#fde8ee" stroke="#be123c" stroke-width="1.4"/>
+<rect x="190" y="1078" width="60" height="4" rx="2" fill="#be123c"/>
+<text x="561" y="1098" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">四层纵深</text>
+<text x="561" y="1116" font-size="10.5" fill="#334155" text-anchor="middle">账本执行宿主网络层层独立设卡</text>
+<text x="935" y="1136" font-size="9.5" fill="#be123c" text-anchor="end">▸详解</text>
+</g>
+<line x1="949" y1="1107" x2="977" y2="1107" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('G1')">
+<rect class="bx" x="985" y="1070" width="767" height="74" rx="10" fill="#fde8ee" stroke="#be123c" stroke-width="1.4"/>
+<rect x="997" y="1078" width="110" height="4" rx="2" fill="#be123c"/>
+<text x="1368" y="1098" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">canary 界外诱饵</text>
+<text x="1368" y="1116" font-size="10.5" fill="#334155" text-anchor="middle">系统自造假目标当靶子去打</text>
+<text x="1742" y="1136" font-size="9.5" fill="#be123c" text-anchor="end">▸详解</text>
+</g>
+<line x1="965" y1="1157" x2="965" y2="1176" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="973" y="1171" font-size="10.5" fill="#94a3b8" text-anchor="middle">▼ 执法之下仍能断点续跑，长战役打不死</text>
+<rect x="8" y="1181" width="1764" height="142" rx="14" fill="#101a30" stroke="#1e293b"/>
+<rect x="8" y="1181" width="5" height="142" rx="2.5" fill="#9d174d"/>
+<text x="24" y="1206" font-size="15" font-weight="700" fill="#e2e8f0">H · 断点续传</text>
+<text x="24" y="1225" font-size="10" fill="#7d8db0">会话断上下文满掉电——战役</text>
+<text x="24" y="1238" font-size="10" fill="#7d8db0">不丢</text>
+<rect x="178" y="1195" width="100" height="20" rx="10" fill="#9d174d"/>
+<text x="228" y="1209" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">上下文将满或中断</text>
+<text x="283" y="1209" font-size="11" fill="#94a3b8">→</text>
+<rect x="296" y="1195" width="92" height="20" rx="10" fill="#9d174d"/>
+<text x="342" y="1209" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">state.md 快照</text>
+<text x="393" y="1209" font-size="11" fill="#94a3b8">→</text>
+<rect x="406" y="1195" width="60" height="20" rx="10" fill="#9d174d"/>
+<text x="436" y="1209" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">开新会话</text>
+<text x="471" y="1209" font-size="11" fill="#94a3b8">→</text>
+<rect x="484" y="1195" width="133" height="20" rx="10" fill="#9d174d"/>
+<text x="551" y="1209" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">resume-kit 白名单注入</text>
+<text x="623" y="1209" font-size="11" fill="#94a3b8">→</text>
+<rect x="636" y="1195" width="90" height="20" rx="10" fill="#9d174d"/>
+<text x="681" y="1209" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">幂等续跑不重做</text>
+<g class="nd" onclick="showDetail('H0')">
+<rect class="bx" x="178" y="1237" width="498" height="74" rx="10" fill="#fbe9f2" stroke="#9d174d" stroke-width="1.4"/>
+<rect x="190" y="1245" width="125" height="4" rx="2" fill="#9d174d"/>
+<text x="427" y="1265" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">state.md 断点快照</text>
+<text x="427" y="1283" font-size="10.5" fill="#334155" text-anchor="middle">整场战役一页进度存档：到哪步下一步</text>
+<text x="666" y="1303" font-size="9.5" fill="#9d174d" text-anchor="end">▸详解</text>
+</g>
+<line x1="680" y1="1274" x2="708" y2="1274" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('H1')">
+<rect class="bx" x="716" y="1237" width="498" height="74" rx="10" fill="#fbe9f2" stroke="#9d174d" stroke-width="1.4"/>
+<rect x="728" y="1245" width="139" height="4" rx="2" fill="#9d174d"/>
+<text x="965" y="1265" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">resume-kit 恢复注入</text>
+<text x="965" y="1283" font-size="10.5" fill="#334155" text-anchor="middle">新会话装机清单，只注入白名单关键状态</text>
+<text x="1204" y="1303" font-size="9.5" fill="#9d174d" text-anchor="end">▸详解</text>
+</g>
+<line x1="1218" y1="1274" x2="1246" y2="1274" stroke="#64748b" stroke-width="1.6" marker-end="url(#ah)"/>
+<g class="nd" onclick="showDetail('H2')">
+<rect class="bx" x="1254" y="1237" width="498" height="74" rx="10" fill="#fbe9f2" stroke="#9d174d" stroke-width="1.4"/>
+<rect x="1266" y="1245" width="122" height="4" rx="2" fill="#9d174d"/>
+<text x="1503" y="1265" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">工件即缓存幂等续跑</text>
+<text x="1503" y="1283" font-size="10.5" fill="#334155" text-anchor="middle">已完成意图证据都在台账，重启跳过不重做</text>
+<text x="1742" y="1303" font-size="9.5" fill="#9d174d" text-anchor="end">▸详解</text>
+</g>
+<text x="178" y="1347" font-size="11.5" font-weight="700" fill="#e2e8f0">图例</text>
+<rect x="218" y="1335" width="15" height="15" rx="4" fill="#e7f9f0" stroke="#059669"/>
+<text x="239" y="1347" font-size="11" fill="#94a3b8">台账=系统记事本</text>
+<rect x="345" y="1335" width="15" height="15" rx="4" fill="#e3f1fb" stroke="#0369a1"/>
+<text x="366" y="1347" font-size="11" fill="#94a3b8">工具/通道</text>
+<rect x="439" y="1335" width="15" height="15" rx="4" fill="#fde8ee" stroke="#be123c"/>
+<text x="460" y="1347" font-size="11" fill="#94a3b8">门禁/执法</text>
+<rect x="534" y="1335" width="15" height="15" rx="4" fill="#ebeefc" stroke="#4338ca"/>
+<text x="555" y="1347" font-size="11" fill="#94a3b8">流程/知识</text>
+<rect x="628" y="1335" width="15" height="15" rx="4" fill="#fbe9f2" stroke="#9d174d"/>
+<text x="649" y="1347" font-size="11" fill="#94a3b8">韧性机制</text>
+<text x="730" y="1347" font-size="11" fill="#7dd3fc">箭头=顺序依赖 · 点框看深度详解(为啥/怎么运转)</text>
+</svg>
+</div>
+<div class="panel" id="detailPanel"><div class="ph"><span id="dpBadge" class="badge" style="background:#64748b">点击图中任意框</span><h3 id="dpTitle">详解面板</h3></div><p id="dpBody" style="color:#64748b">主图已含每个角色的一句话白话（这是啥）与环节机制步骤条；点击框查看：为啥存在 · 怎么运转 · 所属环节机制全貌。</p></div>
+<h2 class="sec">逐步推演：每一步谁在动、命令是什么、账本多了哪一行</h2><p class="secsub">十个关键步骤贯穿 P0 授权 → P6 沉淀；绿条=账本真实新增的行；红字=不过不放行的门禁。</p>
+<div class="steps"><div class="st"><h4><i>S1</i>立项落账</h4><div><b>谁+输入：</b>总控 + 用户问卷答案（目标/时间窗/预算/紧急联系人）</div><div><b>动作：</b></div><code>add-goal --target https://shop.example --budget 2000000;50000;40 ...</code><div><b>账本新增：</b></div><div class="tsv">goals.tsv 新增：G-g1 | https://shop.example | 全量Web+白盒 | 时间窗 09-18~09-25 | 预算 2M;50000;40</div><div class="gate"><b>⛔ 门禁：</b>授权字段不全（无合同指纹/无签署人）直接拒收</div><div class="nxt">→ 下一步：范围白名单落账（S2）</div></div>
 <div class="st"><h4><i>S2</i>范围白名单</h4><div><b>谁+输入：</b>总控 + 问卷中的范围/排除项</div><div><b>动作：</b></div><code>add-scope --kind=include --matcher=*.shop.example；--kind=exclude --matcher=10.10.2.0/24</code><div><b>账本新增：</b></div><div class="tsv">scope.tsv 新增：S-g1-001 include *.shop.example；S-g1-002 exclude 10.10.2.0/24（生产库网段）</div><div class="gate"><b>⛔ 门禁：</b>格式非法拒收；此后改范围必须走审批链命令</div><div class="nxt">→ 下一步：覆盖矩阵初始化（S3）</div></div>
 <div class="st"><h4><i>S3</i>矩阵钉列冻结</h4><div><b>谁+输入：</b>总控 + 行业词表 WSTG v4.2</div><div><b>动作：</b></div><code>matrix-init --vocab shared/VOCAB.md</code><div><b>账本新增：</b></div><div class="tsv">matrix.tsv 生成：web.api x wstg-authn = 未测 …… 共 24 格（资产类 x 漏洞类）</div><div class="gate"><b>⛔ 门禁：</b>词表版本钉死；分母冻结后『测全了』才有基准</div><div class="nxt">→ 下一步：开工侦察（S4）</div></div>
 <div class="st"><h4><i>S4</i>侦察发现资产</h4><div><b>谁+输入：</b>测绘引擎 + 域名/端口扫描结果</div><div><b>动作：</b></div><code>add-asset --name=api.shop.example --type=webapi</code><div><b>账本新增：</b></div><div class="tsv">assets.tsv 新增：AST-g1-0002 | api.shop.example | webapi | 互联网可达</div><div class="gate"><b>⛔ 门禁：</b>界外资产会被 scope-check 标记，不进矩阵分母</div><div class="nxt">→ 下一步：生成攻击意图（S5）</div></div>
@@ -195,7 +355,8 @@ footer{margin-top:30px;font-size:12px;color:#94a3b8;text-align:center}
 <div class="st"><h4><i>S9</i>收敛判定</h4><div><b>谁+输入：</b>总控</div><div><b>动作：</b></div><code>converge-check</code><div><b>账本新增：</b></div><div class="tsv">输出：矩阵还有 3 格未测 / 2 个意图 pending → 继续循环；全绿 → 进交付</div><div class="gate"><b>⛔ 门禁：</b>有未测格、悬空引用 → 不放行出报告</div><div class="nxt">→ 下一步：交付终检（S10）</div></div>
 <div class="st"><h4><i>S10</i>交付终检+签发</h4><div><b>谁+输入：</b>总控 + 报告 + 人</div><div><b>动作：</b></div><code>redact-scan（全文密钥扫描）→ approve --verify-signoff</code><div><b>账本新增：</b></div><div class="tsv">timeline 新增：redact-scan leaks=0 → signoff 事件（谁在何时批准交付）</div><div class="gate"><b>⛔ 门禁：</b>任何密钥残留=阻断导出；未签发=阻断导出</div><div class="nxt">→ 下一步：归档+知识飞轮入库</div></div>
 </div>
-<h2 class="sec">术语小字典</h2><p class="secsub">页面和命令里出现的词，这里一句人话讲清——分享时不用再口述补课。</p><table class="dict"><tr><th>术语</th><th>人话</th></tr>
+<h2 class="sec">术语小字典</h2><p class="secsub">页面和命令里出现的词，这里一句人话讲清——分享时不用再口述补课。</p>
+<table class="dict"><tr><th>术语</th><th>人话</th></tr>
 <tr><td>台账/账本（ledger）</td><td>TSV 表格文件，追加式记录一类事实（项目、范围、意图、发现、证据等共 13 本），是系统的唯一事实来源</td></tr>
 <tr><td>追加写</td><td>只许新增行、不许改旧行——历史不可篡改，错了也是追加一行更正</td></tr>
 <tr><td>哈希链</td><td>每条记录内含前一条的指纹，环环相扣——改任何一条，后面全部断链暴露</td></tr>
@@ -218,8 +379,7 @@ footer{margin-top:30px;font-size:12px;color:#94a3b8;text-align:center}
 </table>
 <div class="note">想看更深：右上角切<b>工程模式</b>看 v1 原图（全部表名字段）；完整 41 步推演与各层机制专图见 <a href="../docs/design/imported/TanYin/panorama/execution-flow.html">执行流全解</a> · <a href="../docs/design/imported/TanYin/panorama/evolution-loop.html">演进循环</a> · <a href="../docs/design/imported/TanYin/panorama/knowledge-flywheel.html">知识飞轮</a>。</div>
 </div>
-<div id="techSec"><p>v1 工程图（表名/字段/命令全细节，原样保留）——横向滚动查看</p>
-<svg viewBox="0 0 1360 1500" width="100%" xmlns="http://www.w3.org/2000/svg">
+<div id="techSec"><p>v1 工程图（表名/字段/命令全细节，原样保留）——横向滚动查看</p><svg viewBox="0 0 1360 1500" width="100%" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker>
 <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker>
@@ -452,9 +612,9 @@ footer{margin-top:30px;font-size:12px;color:#94a3b8;text-align:center}
 <rect x="672" y="1424" width="290" height="52" rx="6" fill="#3a1214"/><text x="682" y="1442" fill="#ffd7d5" font-weight="600">Tier 2 宿主拦截</text><text x="682" y="1457" fill="#c98a8a">命令执行前拦截 fail-closed（宿主权限机制承载）</text>
 <rect x="978" y="1424" width="290" height="52" rx="6" fill="#3a1214"/><text x="988" y="1442" fill="#ffd7d5" font-weight="600">Tier 3 egress 代理</text><text x="988" y="1457" fill="#c98a8a">白名单四成分：ACL+DNS pin+OOB+基础设施 · 金丝雀巡检</text>
 </g>
-</svg>
-</div>
-<footer>探隐 TanYin · contracts-v2 · 批次 0-2 已交付 · 本页为第二稿（同页双模式：汇报=白话+机制+推演，工程=v1 原图）</footer>
-</div>
-<script>function setMode(t){document.body.classList.toggle("tech",t);document.getElementById("bPlain").classList.toggle("on",!t);document.getElementById("bTech").classList.toggle("on",t);}</script>
-</body></html>
+</svg></div>
+<footer>探隐 TanYin · contracts-v2 · 批次 0-2 已交付 · 一整张图 v3</footer></div>
+<script>
+var DETAIL={"A0": {"name": "授权书+指纹", "what": "本次测试的合同/授权扫描件，附内容指纹", "why": "授权是法律边界，开工先存证防抵赖", "how": "双哈希入证据库，篡改可验出", "band": "A · 授权与立项", "color": "#7c3aed", "typ": "tool", "flow": ["授权书存证", "add-goal 立项落账", "scope 白名单", "矩阵钉列+冻结"]}, "A1": {"name": "goals.tsv 项目档案", "what": "本次测试的档案袋：目标、时间窗、预算、紧急联系人", "why": "无档案不开工——先有约束再干活", "how": "一条命令写入，字段缺一直接拒收", "band": "A · 授权与立项", "color": "#7c3aed", "typ": "ledger", "flow": ["授权书存证", "add-goal 立项落账", "scope 白名单", "矩阵钉列+冻结"]}, "A2": {"name": "scope.tsv 授权白名单", "what": "允许打哪些域名网段、明确排除哪些", "why": "越界必须有机器可判的定义", "how": "只加行不删行，改范围须留审批链", "band": "A · 授权与立项", "color": "#7c3aed", "typ": "ledger", "flow": ["授权书存证", "add-goal 立项落账", "scope 白名单", "矩阵钉列+冻结"]}, "A3": {"name": "matrix 覆盖矩阵", "what": "覆盖率总表：资产x漏洞类型，每格未测/已证实/不适用", "why": "测全了没有要可度量，先定分母", "how": "词表 WSTG 钉死，开工即冻结分母", "band": "A · 授权与立项", "color": "#7c3aed", "typ": "ledger", "flow": ["授权书存证", "add-goal 立项落账", "scope 白名单", "矩阵钉列+冻结"]}, "B0": {"name": "intents.tsv 意图台账", "what": "每个我打算测什么一行，带状态与去向", "why": "AI 的计划本身要可审计可复查", "how": "派发前查预算余量，超支拒立项", "band": "B · P3 演进循环", "color": "#0d9488", "typ": "ledger", "flow": ["预算/断点检查", "扫台账找信号", "假设风暴五路", "并行派发", "验证落账", "攻击链推理", "收敛判定回环"]}, "B1": {"name": "findings.tsv 发现台账", "what": "疑似漏洞清单：在哪个资产、什么等级、挂哪些证据", "why": "结论必须挂证据，不允许我觉得", "how": "不带证据编号的发现直接拒收", "band": "B · P3 演进循环", "color": "#0d9488", "typ": "ledger", "flow": ["预算/断点检查", "扫台账找信号", "假设风暴五路", "并行派发", "验证落账", "攻击链推理", "收敛判定回环"]}, "B2": {"name": "E-index.tsv 证据索引", "what": "每条原始证据一行索引+双哈希", "why": "证据防篡改、引用可回溯到原件", "how": "工件先算哈希再登记，复核可重算", "band": "B · P3 演进循环", "color": "#0d9488", "typ": "ledger", "flow": ["预算/断点检查", "扫台账找信号", "假设风暴五路", "并行派发", "验证落账", "攻击链推理", "收敛判定回环"]}, "C0": {"name": "边=台账间引用关系", "what": "台账 A 的行指向台账 B 的行，共 10 种有方向的边", "why": "连成网才能问：发现被什么证据撑着", "how": "加边也是命令，方向错拒收不乱指", "band": "C · 十种边图谱", "color": "#b45309", "typ": "flow", "flow": ["意图 spawns 派生", "技法 yields 产出", "证据 proves 证实", "发现 supersedes 合并", "先例 derived_from 引用"]}, "C1": {"name": "攻击链样例", "what": "意图→技法→证据→发现→影响，五连成链", "why": "领导问怎么打出来的，一句话可答", "how": "链由账本数据即时重建，非手写故事", "band": "C · 十种边图谱", "color": "#b45309", "typ": "flow", "flow": ["意图 spawns 派生", "技法 yields 产出", "证据 proves 证实", "发现 supersedes 合并", "先例 derived_from 引用"]}, "D0": {"name": "timeline 时间线+哈希链", "what": "所有写操作的事件流，每条含前一条指纹", "why": "追加式历史，篡改删记录必断链", "how": "写命令自动记事件，验链随时复验", "band": "D · 验证与交付", "color": "#be123c", "typ": "ledger", "flow": ["validate 全表校验", "hash-recheck 证据重算", "converge-check 收敛", "redact-scan 密钥终检", "人签发"]}, "D1": {"name": "报告门", "what": "导出前四道终检+人工签发", "why": "正式报告是法律文书，出口守门", "how": "任一检失败阻断导出，签发落账留痕", "band": "D · 验证与交付", "color": "#be123c", "typ": "gate", "flow": ["validate 全表校验", "hash-recheck 证据重算", "converge-check 收敛", "redact-scan 密钥终检", "人签发"]}, "E0": {"name": "知识沉淀管线", "what": "每场测试的打法先例结构化入库", "why": "同类系统直接召回打法，不从零开始", "how": "入库有门槛：可复现有证据已脱敏", "band": "E · 知识飞轮", "color": "#4338ca", "typ": "flow", "flow": ["本次发现", "staging 暂存", "四门槛评审", "技法先例知识库", "下次风暴召回"]}, "F0": {"name": "guard 包装器", "what": "所有对外命令的必经之门，五段流水", "why": "AI 命令不可直上系统，必须过闸", "how": "黑名单范围校验留票执行兜底脱敏", "band": "F · 运行时执行通道", "color": "#0369a1", "typ": "tool", "flow": ["危险命令黑名单", "界外目标拒执行", "取执行票留痕", "参数化执行", "输出自动抹密钥"]}, "F1": {"name": "vault 凭据保险柜", "what": "客户账号密码加密存放，AI 只见代号", "why": "密钥永不进对话永不进报告", "how": "执行瞬间才解密注入，输出还原代号", "band": "F · 运行时执行通道", "color": "#0369a1", "typ": "tool", "flow": ["危险命令黑名单", "界外目标拒执行", "取执行票留痕", "参数化执行", "输出自动抹密钥"]}, "G0": {"name": "四层纵深", "what": "账本执行宿主网络层层独立设卡", "why": "单层可被绕过，纵深漏一层有下一层", "how": "定期界外诱饵演习，放行即事故", "band": "G · 恒在执法", "color": "#065f46", "typ": "gate", "flow": ["界外请求", "Tier0 账本拒收", "Tier1 guard 拒执行", "Tier2 宿主拦截", "Tier3 网络出口白名单"]}, "G1": {"name": "canary 界外诱饵", "what": "系统自造假目标当靶子去打", "why": "拦不拦得住要实证不能靠声明", "how": "四档位分别探测，结果进守门声明", "band": "G · 恒在执法", "color": "#065f46", "typ": "gate", "flow": ["界外请求", "Tier0 账本拒收", "Tier1 guard 拒执行", "Tier2 宿主拦截", "Tier3 网络出口白名单"]}, "H0": {"name": "state.md 断点快照", "what": "整场战役一页进度存档：到哪步下一步", "why": "AI 会话有寿命，活不能跟着死", "how": "每轮落一版快照，重启先读它", "band": "H · 断点续传", "color": "#9d174d", "typ": "resil", "flow": ["上下文将满或中断", "state.md 快照", "开新会话", "resume-kit 白名单注入", "幂等续跑不重做"]}, "H1": {"name": "resume-kit 恢复注入", "what": "新会话装机清单，只注入白名单关键状态", "why": "全量历史塞不下还污染判断", "how": "快照台账要点注入，其余不带", "band": "H · 断点续传", "color": "#9d174d", "typ": "resil", "flow": ["上下文将满或中断", "state.md 快照", "开新会话", "resume-kit 白名单注入", "幂等续跑不重做"]}, "H2": {"name": "工件即缓存幂等续跑", "what": "已完成意图证据都在台账，重启跳过不重做", "why": "续传不是从头再来", "how": "重放重读不重算，账本即缓存", "band": "H · 断点续传", "color": "#9d174d", "typ": "resil", "flow": ["上下文将满或中断", "state.md 快照", "开新会话", "resume-kit 白名单注入", "幂等续跑不重做"]}};
+function showDetail(id){var d=DETAIL[id];if(!d)return;var p=document.getElementById("detailPanel");var bc={ledger:"#059669",tool:"#0369a1",gate:"#be123c",flow:"#4338ca",resil:"#9d174d"}[d.typ]||"#64748b";var chips=d.flow.map(function(f){return '<b style="background:'+d.color+'">'+f+"</b>"}).join("<s>→</s>");p.innerHTML='<div class="ph"><span class="badge" style="background:'+d.color+'">'+d.band+'</span><h3>'+d.name+'</h3></div>'+'<div class="pflow">'+chips+"</div>"+'<p><b>这是啥：</b>'+d.what+"</p>"+'<p><b>为啥存在：</b>'+d.why+"</p>"+'<p><b>怎么运转：</b>'+d.how+"</p>";}function setMode(t){document.body.classList.toggle("tech",t);document.getElementById("bPlain").classList.toggle("on",!t);document.getElementById("bTech").classList.toggle("on",t);}
+</script></body></html>
