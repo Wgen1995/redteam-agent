@@ -28,6 +28,7 @@
 2026-09-24｜子代理 T4｜批次3 T4：state.md v2 行结构冻结（10 固定键+handoff≤200 行硬顶+tmp+os.replace 原子写；cli/ledger/state_md.py 单一实现）+checkpoint 升级（--session 必填/--release 旗标/--round/--note/--spawn+单活跃会话锁+snapshot 确定性投影）；TDD 先红后绿 10 新用例，全套 264 绿+金样 PASS（write-checkpoint.state 有意刷新=旧三行格式作废；run_golden VALS 补 --session=golden-s）｜95a79b0
 2026-09-24｜子代理 T5｜批次3 T5：state-rebuild v2 对账升级（链一致+parse_state 结构/枚举/200 行+revision==timeline 行数+snapshot 与账本重算一致——对账实质；FAIL 提示统一指向 rebuild-state）+tanyin-phases rebuild-state 对账重建（链断拒绝自愈 halt/tmp 残留清扫/重建即锁释放 session=rebuilt+released+spawn=manual）；TDD 先红后绿 6 新用例（含自加 snapshot 篡改钉死例），全套 270 绿+金样 PASS（read-state-rebuild.norm 有意刷新=absent 态信息移第二行，首行字节不变；test_query_check 旧例 v2 适配）｜acb1114
 2026-09-24｜子代理 T6｜批次3 T6：受管重启护栏四件套（①verify-chain ②速率上限 RESTART_RATE_MINUTES=10 ③单活跃会话：auto 禁接管 foreign 锁+manual 须 state-rebuild PASS 凭据+takeover-of 留痕 ④budget-log 计入 RESTART_TOKEN_COST=2000 ⑤checkpoint 新锁+managed-restart 事件 actor=总控 ⑥resume-kit 接通点留锚）；TDD 先红后绿 10 新用例（计划 7+自加 3：用法退出码 2/事件 actor=总控/收尾对账一致不变式），全套 280 绿+金样 PASS 零漂移（T6 无新金样）｜26e38e7
+2026-09-24｜子代理 T7｜批次3 T7：resume-kit 恢复注入白名单生成器（注入白名单四件套：state.md/kit 本体/当前门方法论单载/四查询摘要各一次+禁注入清单+幂等续跑表——cache_lines 按 T8 接口形状落地）+先对账再干活（链断拒生成 exit 1）+tmp+os.replace 原子写+--timestamp 缺省取 timeline 末行（确定性）+restart⑥ 接通（重启收尾重生成 kit）；TDD 先红后绿 8 新用例（计划 5+自加 3：缺省时间戳/用法退出码 2/金样字节锁定），全套 288 绿+金样 PASS 零漂移（新增 phases-resume-kit.norm 静态基线，/tmp 拷贝件上生成——fixtures/ 零触碰）｜5fffeaa
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -90,3 +91,10 @@
 - Ruling（用法健壮性⑥）：--rate-minutes/--token-cost 非法值→退出码 2 用法错误而非裸 ValueError 崩溃（退出码纪律 0/1/2）；--timestamp 非 ISO8601 同判 2；空 state.md（fields={} 且 errs=[]）视同损坏 REJECT 提示 rebuild-state（T5 裁决④同型防御）。自加 test_usage_errors_exit_2 钉死。
 - 探知项状态（G-3/G-4，按派遣指令记账）：两口径均照计划落模块常量并带参数覆盖——RESTART_RATE_MINUTES=10（--rate-minutes 覆盖，evals 可重放）、RESTART_TOKEN_COST=2000（--token-cost 覆盖）；处置维持计划原案：G-3 待契约 v3 增 restart_rate_minutes 常量回注、G-4 待批次 6 evals 实测基线定标后回写契约。G-5（manual 接管 stale 锁无跨平台进程存活探测）本任务落地其缓解对（state-rebuild PASS+takeover-of 留痕可审计）。均待 T13 归并 docs/design/2026-09-24-b3-discovery-notes.md。
 - 附注：护栏②对 manual 同样生效（速率上限不分 spawn 档——重启循环症状与 spawn 方式无关，进程级入口实测确认）；T6 无新金样（计划 Files 未列），金样零触碰零漂移。
+
+## 2026-09-24 批次 3 T7 裁决（实现者记）
+- Ruling（模板 END 分支①·T5 裁决③同型）：T7 冻结模板「phases/<current_gate>.md」在 _current_gate=END（P6 已收官）时直译产出 phases/END.md 悬空引用（九门 md 只有 P0..P6，T10 交付面）——按「收官态由 timeline gate-exit:P6 事实承载」语义，END 分支改写为「- phases/（END：九门已收官，无当前门方法论单载）」；P0..P6 分支逐字保模板（金样 P4 基线字节锁定，夹具不落 END 分支）。
+- Ruling（金样机制②·T3 裁决同型）：phases-resume-kit.norm=产物文件内容基线（resume-kit.md 本体，非 CLI stdout——计划文件结构表明示「内容基线」）；不接 run_golden PHASES 面（该面无 --goal-dir 通道，接入须对 tests/fixtures/G-g1 写=违反 make_fixtures 纪律）——测试内双目录字节一致+金样字节锁定补偿回归力；建档经 /tmp 拷贝件生成，fixtures/ 零触碰实测确认。
+- Ruling（--timestamp 缺省③）：计划明示「缺省取 timeline 最后一行时间戳——确定性」；timeline 为空时无缺省可用→退出 2 用法错误（fail-closed，不猜、不落 datetime.now）。自加 test_default_timestamp_from_timeline_tail 钉死（夹具末行 2026-09-23T03:05:00Z）。
+- Ruling（restart⑥ 失败语义④）：write_resume_kit 在⑥失败按 halt 退出 1——①已验链+⑤已写 state 之后仅剩环境级故障可达；非 REJECT（「REJECT=零副作用」承诺只覆盖校验类拒绝段，T6 裁决③口径）。restart 输出随之多一行 OK resume-kit（在 OK restart 之前），既有断言全为 contains 型不受影响。
+- 附注：cache_lines 落地为 T8 接口形状 cache_lines(s, goal_dir) -> list[(iid, SKIP|RUN)]（计划 Interfaces 明示 T8 提为独立函数后共用——单一实现，T8 cmd_cached 直接消费不重写）；自加 test_usage_error_exit_2（退出码纪律 0/1/2，T6 同型）；契约 09 第 11 工具子命令面已含 resume-kit（T2 G-1 增补时登记），无契约回注需求。
