@@ -48,3 +48,7 @@
 ## v2 勘误（2026-09-23·批次 1 施工期）
 
 - findings + 列（CVE/CWE/GHSA  分隔，非 Nday 留空）；intents kind 枚举 +；P3 第四生成源=组件指纹→Nday 候选 intent（匹配源离线=先例页+本地 CVE 快照，联网仅 P6 核验）。字段总数 146→**147**。零存量数据期勘误，不升 schema_version。
+
+## v2 勘误补记（2026-09-24·批次 3 施工期）
+
+- 契约⑨（09-cli-surface.md）工具面 10→**11**：增补第 11 工具 tanyin-phases（phases.yaml 确定性状态机运算；G-1 裁决，允许类=四类允许之首「确定性账本运算」）。微版本勘误通道，不升 schema_version——详见该文件文末勘误补记。

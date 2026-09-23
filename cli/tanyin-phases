@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-phases（批次 3）——phases.yaml 引擎 CLI 侧：确定性状态机运算（铁律 7 类 1）。
+子命令：validate / gate / restart / resume-kit / cached / rebuild-state（后五个需 --goal-dir）。
+退出码：0=通过 1=门禁失败（halt） 2=用法/环境（对齐 Strix）。"""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import phases_engine
+from ledger.core import ensure_utf8_stdio
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8（py -3 等价入口同样生效）
+
+USAGE = ("用法: tanyin-phases validate [--phases=P] | "
+         "<gate|restart|resume-kit|cached|rebuild-state> --goal-dir D [参数]  "
+         "(契约: contracts/04 + phases/PROTOCOL.md)")
+
+
+def main(argv):
+    if len(argv) < 2:
+        sys.stderr.write(USAGE + chr(10)); return 2
+    if argv[1] == "validate":
+        return phases_engine.dispatch("validate", None, argv[2:])
+    if len(argv) < 4 or argv[2] != "--goal-dir":
+        sys.stderr.write(USAGE + chr(10)); return 2
+    sub, gd, rest = argv[1], argv[3], argv[4:]
+    if not os.path.isdir(gd):
+        sys.stderr.write("环境问题: goal 目录不存在 " + gd + chr(10)); return 2
+    return phases_engine.dispatch(sub, gd, rest)
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

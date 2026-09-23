@@ -31,3 +31,25 @@ def lookup(cmd):
         if cmd in h:
             return h[cmd]
     return None
+
+
+def all_commands():
+    """枚举 41 命令基名——引擎「九门断言命令存在性」检查的单源（批次 3 T2）。
+
+    HANDLERS 里的 ledger- 前缀键分两种：有无前缀孪生键的=双前缀注册别名（剔出基名集，
+    如 ledger-add-goal之于add-goal）；无孪生的=原生名本就带前缀的四条校验命令
+    （ledger-scope-coverage/ledger-tree-check/ledger-replay-summary/ledger-terminal-gate，
+    计入基名）。builtin 三条（validate/verify-chain/next-id）一并计入——合计 41。"""
+    names = {"validate", "verify-chain", "next-id"}
+    keys = set()
+    for m in _MODULES:
+        try:
+            mod = importlib.import_module("ledger." + m)
+        except ImportError:
+            continue
+        keys |= set(getattr(mod, "HANDLERS", {}))
+    for k in keys:
+        if k.startswith("ledger-") and k[len("ledger-"):] in keys:
+            continue   # 双前缀别名，非基名
+        names.add(k)
+    return names

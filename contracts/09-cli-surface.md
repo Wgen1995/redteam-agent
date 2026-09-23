@@ -13,12 +13,12 @@
 
 | 允许类 | 判据 | 工具 |
 |---|---|---|
-| 确定性账本运算 | 输入输出可字节级回归（黄金夹具可钉死） | tanyin-ledger（37 条账本命令） |
+| 确定性账本运算 | 输入输出可字节级回归（黄金夹具可钉死） | tanyin-ledger（37 条账本命令）、tanyin-phases（phases 引擎：validate/gate/restart/resume-kit/cached/rebuild-state） |
 | 机械执法与脱敏 | 规则是数据文件非语义判断 | tanyin-guard（scope-guard 包装器）、tanyin-redact、tanyin-canary、tanyin-egress |
 | 确定性重建与投影 | 从账本零 LLM 方差生成 | tanyin-report（聚合器）、tanyin-viz、tanyin-replay（重放驱动） |
 | 安装与自检 | 环境探测、验签 | tanyin-install、tanyin-selfcheck |
 
-## 3 命令面清单（工具箱 10 工具）
+## 3 命令面清单（工具箱 11 工具；10→11 见文末 2026-09-24 勘误补记）
 
 | # | 工具 | 允许类 | 职责（§2.4 口径） |
 |---|---|---|---|
@@ -32,6 +32,7 @@
 | 8 | tanyin-replay | 确定性重建与投影 | 重放驱动 |
 | 9 | tanyin-install | 安装与自检 | 安装器 |
 | 10 | tanyin-selfcheck | 安装与自检 | 自检 |
+| 11 | tanyin-phases | 确定性账本运算 | phases.yaml 确定性状态机运算（validate/gate/restart/resume-kit/cached/rebuild-state；批次 3 交付，断言→命令调用协议见 phases/PROTOCOL.md） |
 
 ## 4 铁律 7 边界
 
@@ -106,3 +107,9 @@
 ## 终审裁决注记（2026-09-23·contracts-v2）
 
 set-cred-status 终审归写入（写19/查11/校验10=41）——探知项已裁决。
+
+## v2 勘误补记（2026-09-24·批次 3 施工期·G-1 裁决）
+
+- 工具箱 10→**11** 工具：增补 #11 tanyin-phases。允许类=四类允许之首「确定性账本运算」（铁律 7 §2 判据：输入输出可字节级回归——引擎测试全部金样化，phases-validate.norm 已入黄金回归）。理由：phases.yaml 断言执行（gate/restart/resume-kit/cached/rebuild-state）需要独立运行时载体，并入 tanyin-selfcheck 面不可行（运行态运算非安装期自检）。
+- 勘误通道：微版本勘误（零存量数据期，同批次 1「v2 勘误」先例），schema_version 保持 =2 不递增；本补记日期 2026-09-24。
+- 自验复跑：工具表 `grep -cE '^\| [0-9]+ \| tanyin-' contracts/09-cli-surface.md` → **11**（§「自验」原有 10 为 2026-09-23 冻结时点基线，保留可追溯）。

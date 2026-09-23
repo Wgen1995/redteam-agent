@@ -188,3 +188,87 @@ def load_phases(path=None):
         raise PhasesSyntaxError("phases.yaml 未找到: " + p)
     with open(p, encoding="utf-8") as f:
         return parse_yaml(f.read())
+
+
+# ---------------------------------------------------------------- T2：schema 校验
+FROZEN_CONSTANTS = {
+    "restart_context_threshold": "0.75", "restart_every_n_rounds": "10",
+    "storm_score_threshold_base": "0.5", "llm_association_quota": "5",
+    "reversal_scan_quota": "3", "p4_sample_ratio": "0.2",
+    "single_active_session": "true", "budget_dollars_enabled": "false",
+}
+EXTRA_TOOLS = {"tanyin-report", "tanyin-redact"}   # P5/P6 断言引用的非 ledger 入口
+
+
+def _known_cmd(head, known):
+    """断言命令存在性判定（PROTOCOL.md §1「双前缀注册均可查」语义）：
+    先试原词，再试剥 ledger- 前缀词——yaml 断言首词统一带前缀，known 为基名集。"""
+    if head in known:
+        return True
+    return head.startswith("ledger-") and head[len("ledger-"):] in known
+
+
+def validate_phases(data, known):
+    """契约 04 schema 校验（§10.3 静态验证③先行交付）。返回错误清单，空=合法。"""
+    errs = []
+    if str(data.get("format_version")) != "2":
+        errs.append("format_version!=2")
+    if [str(x) for x in (data.get("states") or [])] != list(GATE_ORDER):
+        errs.append("states != 九门全序 %s" % (GATE_ORDER,))
+    if data.get("initial") != "P0":
+        errs.append("initial != P0")
+    c = data.get("constants") or {}
+    if set(c) != set(FROZEN_CONSTANTS):
+        errs.append("constants 键集 != 冻结 8 项")
+    for k, v in FROZEN_CONSTANTS.items():
+        if str(c.get(k)) != v:
+            errs.append("constants.%s=%r != 冻结值 %r" % (k, c.get(k), v))
+    gates = data.get("gates") or {}
+    if set(gates) != set(GATE_ORDER):
+        errs.append("gates 键集 != 九门（缺/多: %s）"
+                    % sorted(set(GATE_ORDER) ^ set(gates)))
+    for g in GATE_ORDER:
+        ex = ((gates.get(g) or {}).get("exit") or {}).get("assert") or []
+        if not ex:
+            errs.append("gates.%s.exit.assert 空" % g)
+        for i, a in enumerate(ex, 1):
+            head = str(a.get("cmd", "")).split()[:1]
+            if not head or not _known_cmd(head[0], known):
+                errs.append("gates.%s.exit.assert[%d] 命令不在命令面: %r" % (g, i, a.get("cmd")))
+    if len(data.get("back_edges") or []) != 3:
+        errs.append("back_edges != 3 条")
+    ev = ((gates.get("P3") or {}).get("events") or {})
+    if set(ev) != {"asset-added", "cred-obtained", "scope-amended"}:
+        errs.append("P3.events 三事件键缺失: %s" % sorted(set(ev)))
+    return errs
+
+
+def cmd_validate(rest):
+    path = None
+    for tok in rest:
+        if tok.startswith("--phases="):
+            path = tok.split("=", 1)[1]
+        else:
+            sys.stderr.write("用法: tanyin-phases validate [--phases=<路径>]\n"); return 2
+    try:
+        data = load_phases(path)
+    except PhasesSyntaxError as e:
+        sys.stderr.write("环境问题: %s\n" % e); return 2
+    from . import registry
+    known = registry.all_commands() | EXTRA_TOOLS
+    errs = validate_phases(data, known)
+    if errs:
+        print("FAIL\tphases.yaml 违规 %d 项" % len(errs))
+        for e in errs:
+            print("  " + e)
+        return 1
+    n = sum(len(((data["gates"][g] or {}).get("exit") or {}).get("assert") or [])
+            for g in GATE_ORDER)
+    print("PASS\tphases.yaml 契约04合法 gates=9 asserts=%d constants=8 back_edges=3" % n)
+    return 0
+
+
+def dispatch(sub, goal_dir, rest):
+    if sub == "validate":
+        return cmd_validate(rest)
+    sys.stderr.write("未知子命令: " + sub + chr(10)); return 2

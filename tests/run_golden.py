@@ -57,6 +57,16 @@ def run_cli(gd, name, args):
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
+# 批次 3 T2：tanyin-phases 确定性面（无 goal-dir，读仓库 phases/phases.yaml）——金样走同一机制
+PHASES_CLI = os.path.join(HERE, "..", "cli", "tanyin-phases")
+PHASES_CMDS = [["validate"]]
+
+
+def run_phases(args):
+    return subprocess.run([sys.executable, PHASES_CLI] + args,
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+
 def fresh(tmp):
     d = os.path.join(tmp, "G-g1")
     if os.path.exists(d):
@@ -188,13 +198,28 @@ def main():
                 inits.append(name)
             elif open(gp, encoding="utf-8").read().strip() != (o1 + chr(10) + s1).strip():
                 fails.append(name + "(状态漂移)")
+        for spec in PHASES_CMDS:
+            a1 = run_phases(spec)
+            a2 = run_phases(spec)
+            o1, o2 = norm_read(a1.stdout), norm_read(a2.stdout)
+            if a1.returncode != 0 or o1 != o2:
+                fails.append("phases-" + spec[0] + "(不确定性或非零退出)")
+                continue
+            gp = os.path.join(GOLD, "phases-" + spec[0] + ".norm")
+            if not os.path.exists(gp):
+                with open(gp, "w", encoding="utf-8", newline="\n") as f:
+                    f.write(o1)
+                inits.append("phases-" + spec[0])
+            elif open(gp, encoding="utf-8").read().strip() != o1:
+                fails.append("phases-" + spec[0] + "(输出漂移)")
     for n in inits:
         print("INIT " + n)
     if fails:
         for f in fails:
             print("FAIL " + f)
         return 1
-    print("PASS golden: %d 读面 + %d 写面 全部锁定且确定" % (len(READ_CMDS), len(WRITE_CMDS)))
+    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 全部锁定且确定"
+          % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS)))
     return 0
 
 
