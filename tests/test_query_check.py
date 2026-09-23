@@ -315,17 +315,38 @@ class CheckCommands(Base):
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
         self.assertIn("INT-g1-0001", r.stdout)
 
+    def _write_v2_state(self, revision, snapshot=None):
+        # 批次 3 T5 适配：state-rebuild 升级为 v2 全结构对账（键序/枚举/revision/snapshot），
+        # 旧「单行 revision: N」文件=损坏态——正例须写真 v2 结构（T4 裁决③同型既有面适配）。
+        from ledger import state_md
+        s = core.Session(self.g)
+        fields = {
+            "revision": str(revision),
+            "goal": s.rows("goals.tsv")[0][0] if s.rows("goals.tsv") else "",
+            "phase": "", "round": "0", "session": "legacy", "session_status": "released",
+            "spawn": "manual", "updated": "2026-09-23T07:00:00Z",
+            "resume_kit": "resume-kit.md",
+            "snapshot": snapshot if snapshot is not None
+            else state_md.snapshot_from_session(s),
+        }
+        state_md.write_state(os.path.join(self.g, "state.md"), fields, [])
+
     def test_state_rebuild(self):
         r = self.cli("state-rebuild")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(r.stdout.splitlines()[0], "PASS" + chr(9) + "revision=8")
-        open(os.path.join(self.g, "state.md"), "w", encoding="utf-8").write("revision: 8\n")
+        self._write_v2_state(8)   # v2 结构齐+snapshot 与账本重算一致 → PASS
         r = self.cli("state-rebuild")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-        open(os.path.join(self.g, "state.md"), "w", encoding="utf-8").write("revision: 3\n")
+        self._write_v2_state(3)   # revision 漂移 → FAIL
         r = self.cli("state-rebuild")
         self.assertEqual(r.returncode, 1)
         self.assertTrue(r.stdout.splitlines()[0].startswith("FAIL"))
+        self._write_v2_state(8, snapshot="intents_pending=9;facts_unconsumed=9;"
+                                         "matrix_gaps=9;budget_token_left=9")   # snapshot 漂移 → FAIL
+        r = self.cli("state-rebuild")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("snapshot 漂移", r.stdout)
 
     def test_scope_coverage(self):
         r = self.cli("ledger-scope-coverage")

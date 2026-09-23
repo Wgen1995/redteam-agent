@@ -149,5 +149,87 @@ class TestCheckpointV2(Base):
         self.assertEqual(self.snap(), before)   # 零落账
 
 
+class TestRebuild(Base):
+    """批次 3 T5：state-rebuild v2 对账（snapshot 漂移检测）+ rebuild-state 对账重建。
+
+    撕裂三态（kill -9 保真度语义，设计 §4.1/§5）：
+      A=state.md.tmp 残留（原子写中断）→ rebuild-state 清扫；
+      B=timeline 领先 state（checkpoint 落账后、写盘前被杀）→ state-rebuild FAIL → 重建；
+      C=state.md 缺失（首跑/被清）→ rebuild-state 以账本为准初始化。
+    链断（人为篡改 timeline）≠撕裂：不可自愈，拒绝重建（halt 人工处置）。"""
+
+    def _rebuild_check(self):
+        from ledger import check_cmds
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            code = check_cmds.HANDLERS["state-rebuild"](self.gd, [])
+        return code, buf.getvalue()
+
+    def _rebuild_state(self, *args):
+        from ledger import phases_engine as pe
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            code = pe.dispatch("rebuild-state", self.gd, list(args))
+        return code, buf.getvalue()
+
+    def test_state_rebuild_pass_after_checkpoint(self):
+        self.ck("--session=s-1", "--phase=P3", "--timestamp=" + TS)
+        code, out = self._rebuild_check()
+        self.assertEqual(code, 0)
+        self.assertIn("PASS\trevision=", out)
+
+    def test_state_rebuild_detects_snapshot_drift(self):
+        self.ck("--session=s-1", "--phase=P3", "--timestamp=" + TS)
+        # 撕裂态 B 等价构造：checkpoint 后账本又前进一行（timeline 领先 state）
+        write_cmds.HANDLERS["append-timeline"](self.gd, [
+            "--actor=CLI", "--phase=P3", "--event=drift", "--timestamp=" + TS])
+        code, out = self._rebuild_check()
+        self.assertEqual(code, 1)
+        self.assertIn("rebuild-state", out)
+
+    def test_state_rebuild_detects_snapshot_tamper(self):
+        # T5 对账实质：revision 一致而 snapshot 与账本重算不一致（v2 新增检查项）
+        self.ck("--session=s-1", "--timestamp=" + TS)
+        fields, handoff, errs = self.read_state()
+        self.assertEqual(errs, [])
+        fields["snapshot"] = ("intents_pending=99;facts_unconsumed=99;"
+                              "matrix_gaps=99;budget_token_left=99")
+        state_md.write_state(self.state_path(), fields, handoff)
+        code, out = self._rebuild_check()
+        self.assertEqual(code, 1)
+        self.assertIn("snapshot 漂移", out)
+        self.assertIn("rebuild-state", out)
+
+    def test_rebuild_state_repairs(self):
+        self.ck("--session=s-1", "--phase=P3", "--timestamp=" + TS)
+        os.remove(self.state_path())   # 撕裂态 C：state.md 缺失
+        code, out = self._rebuild_state("--timestamp=" + TS)
+        self.assertEqual(code, 0, out)
+        fields, _, errs = self.read_state()
+        self.assertEqual(errs, [])
+        self.assertEqual(fields["session_status"], "released")   # 重建=锁释放（防双活）
+        self.assertEqual(fields["session"], "rebuilt")
+        self.assertEqual(fields["spawn"], "manual")
+        code, out = self._rebuild_check()   # 重建后再对账=PASS
+        self.assertEqual(code, 0)
+
+    def test_rebuild_state_clears_tmp_leftover(self):
+        self.ck("--session=s-1", "--timestamp=" + TS)
+        with open(self.state_path() + ".tmp", "w", encoding="utf-8", newline="\n") as f:
+            f.write("torn")   # 撕裂态 A：tmp 残留
+        code, out = self._rebuild_state("--timestamp=" + TS)
+        self.assertEqual(code, 0)
+        self.assertFalse(os.path.exists(self.state_path() + ".tmp"))
+
+    def test_rebuild_state_refuses_broken_chain(self):
+        p = os.path.join(self.gd, "timeline.tsv")
+        rows = core.read_tsv(p, 8)
+        rows[2][3] = "tampered"   # 破坏中间事件→断链
+        core.write_tsv(p, rows)
+        code, out = self._rebuild_state("--timestamp=" + TS)
+        self.assertEqual(code, 1)
+        self.assertIn("链", out)
+
+
 if __name__ == "__main__":
     unittest.main()

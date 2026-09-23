@@ -548,6 +548,62 @@ def cmd_denominator_ready(goal_dir, rest):
     return 0
 
 
+# ------------------------------------------------------- T5：rebuild-state 对账重建
+# 恢复协议「先对账再干活」的修复臂：state-rebuild FAIL（撕裂态 B=timeline 领先 /
+# C=state.md 缺失 / A=tmp 残留）后，以账本（第一事实源）为准重建 state.md。
+# 重建即锁释放（session=rebuilt/released）——接管者走 checkpoint 重取锁，防双活。
+
+def rebuild_state(goal_dir, ts, note=""):
+    s = core.Session(goal_dir)
+    ok, bad = s.verify_chain()
+    if not ok:
+        print("FAIL rebuild-state: timeline 断链行=%d——链断不可自愈，人工处置（halt）" % bad)
+        return 1
+    from . import state_md
+    gate = _current_gate(s)
+    # phase 域只收九门枚举或空（v2 冻结格式）：P0=尚未过任何门、END=P6 已收官，
+    # 均为九门工作词汇之外的档位语义，不进 phase 域（否则 parse_state 判损坏，
+    # 重建后 state-rebuild 反不 PASS——违背「rebuild 后对账一致」意图）
+    fields = {
+        "revision": str(len(s.rows("timeline.tsv"))),
+        "goal": s.rows("goals.tsv")[0][0] if s.rows("goals.tsv") else "",
+        "phase": "" if gate in ("P0", "END") else gate,
+        "round": "0",
+        "session": "rebuilt",
+        "session_status": "released",   # 重建=锁必须释放（防双活；接管者走 checkpoint/restart 重取锁）
+        "spawn": "manual",
+        "updated": ts,
+        "resume_kit": "resume-kit.md",
+        "snapshot": state_md.snapshot_from_session(s),
+    }
+    handoff = ["rebuilt from ledger @ " + ts] + ([note] if note else [])
+    tmp = os.path.join(goal_dir, "state.md.tmp")
+    if os.path.exists(tmp):
+        os.remove(tmp)   # 撕裂态 A 清理：tmp 残留一并扫除
+    try:
+        state_md.write_state(os.path.join(goal_dir, "state.md"), fields, handoff)
+    except ValueError as e:
+        print("FAIL rebuild-state: " + str(e))
+        return 1
+    print("OK\trebuild-state\trevision=%s" % fields["revision"])
+    return 0
+
+
+def cmd_rebuild_state(goal_dir, rest):
+    ts, note = None, ""
+    for tok in rest:
+        if tok.startswith("--timestamp="):
+            ts = tok.split("=", 1)[1]
+        elif tok.startswith("--note="):
+            note = tok.split("=", 1)[1]
+        else:
+            sys.stderr.write("用法: tanyin-phases rebuild-state --goal-dir D "
+                             "--timestamp=T [--note=文本]\n"); return 2
+    if not ts:
+        sys.stderr.write("用法错误: --timestamp 必填（ISO8601）\n"); return 2
+    return rebuild_state(goal_dir, ts, note)
+
+
 def dispatch(sub, goal_dir, rest):
     if sub == "validate":
         return cmd_validate(rest)
@@ -555,4 +611,6 @@ def dispatch(sub, goal_dir, rest):
         return cmd_gate(goal_dir, rest)
     if sub == "denominator-ready":
         return cmd_denominator_ready(goal_dir, rest)
+    if sub == "rebuild-state":
+        return cmd_rebuild_state(goal_dir, rest)
     sys.stderr.write("未知子命令: " + sub + chr(10)); return 2

@@ -11,6 +11,7 @@ ledger-terminal-gate，02a 终审补全节【推导转正】）。
 import datetime, hashlib, math, os, re
 
 from . import core
+from . import state_md
 from .schemas import TABLES
 from .query_cmds import (TAB, UsageError, parse_kv, usage_guard, _idx, _cell,
                          latest_intents, latest_matrix, latest_by, unconsumed_facts,
@@ -146,6 +147,10 @@ def h_matrix_audit(goal_dir, rest):
 # ---------------------------------------------------------------- state-rebuild
 
 def h_state_rebuild(goal_dir, rest):
+    """v2 对账（批次 3 T5）：链一致 + 固定段键齐/枚举合法/行数≤200（parse_state）+
+    revision==timeline 行数（既有口径）+ snapshot 与账本重算一致（新增——对账实质）。
+    输出首行 PASS\trevision=<n> 冻结不变（41 面）；追加信息一律第二行。
+    FAIL 提示统一指向 tanyin-phases rebuild-state 对账重建（撕裂态 B/C 的恢复通道）。"""
     args, pos = parse_kv(rest)
     if pos or args:
         raise UsageError("state-rebuild 无参数")
@@ -155,23 +160,32 @@ def h_state_rebuild(goal_dir, rest):
         print("FAIL")
         print(chain_err)
         return 1
-    # 【推导】state.md 行结构批次 3 冻结（02a 终审补全 5）：本批 revision=timeline 行数，
-    # state.md 存在时解析 revision[:=]N 比对
     revision = len(s.rows("timeline.tsv"))
-    state_md = os.path.join(goal_dir, "state.md")
-    if os.path.isfile(state_md):
-        m = re.search(r"(?mi)^#?\s*revision\s*[:=]\s*(\d+)",
-                      open(state_md, encoding="utf-8").read())
-        if not m:
-            print("FAIL")
-            print("state.md 存在但无 revision 行（行结构批次 3 冻结）")
-            return 1
-        if int(m.group(1)) != revision:
-            print("FAIL")
-            print("state.md revision=%s 与账本重建 revision=%d 不一致"
-                  % (m.group(1), revision))
-            return 1
+    st_path = os.path.join(goal_dir, "state.md")
+    if not os.path.isfile(st_path):
+        # 撕裂态 C（state.md 缺失）不是错误：账本为第一事实源，可 rebuild-state 重建
+        print("PASS\trevision=%d" % revision)
+        print("state.md=absent（tanyin-phases rebuild-state 可重建）")
+        return 0
+    fields, handoff, errs = state_md.parse_state(st_path)
+    if errs or not fields:
+        print("FAIL")
+        print("state.md 损坏/空文件（tanyin-phases rebuild-state 对账重建）"
+              if not errs else errs[0] + "（tanyin-phases rebuild-state 对账重建）")
+        return 1
+    if int(fields["revision"]) != revision:
+        print("FAIL")
+        print("state.md revision=%s 与账本重建 revision=%d 不一致（tanyin-phases rebuild-state 对账重建）"
+              % (fields["revision"], revision))
+        return 1
+    expect_snap = state_md.snapshot_from_session(s)
+    if fields["snapshot"] != expect_snap:
+        print("FAIL")
+        print("snapshot 漂移: state=%r 账本重算=%r（tanyin-phases rebuild-state 对账重建）"
+              % (fields["snapshot"], expect_snap))
+        return 1
     print("PASS\trevision=%d" % revision)
+    print("state.md v2 对账一致 session=%s phase=%s" % (fields["session"], fields["phase"]))
     return 0
 
 
