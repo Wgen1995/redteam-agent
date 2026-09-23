@@ -6,6 +6,12 @@
 #   python3 scripts/build_handbook.py --relink       # panorama 链接升级为锚点级（依据 anchors.json）
 import os, re, sys, json, html as H
 
+for _s in (sys.stdout, sys.stderr):  # Windows 控制台默认 GBK：中文/✓ 输出统一 UTF-8（无 reconfigure 则跳过）
+    try:
+        _s.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError, OSError):
+        pass
+
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LEARN = os.path.join(BASE, 'docs', 'learning')
 OUT = os.path.join(LEARN, 'html')
@@ -408,7 +414,7 @@ def build_station(site, out_dir, groups_html, idx_search):
         'groups': groups_html, 'idx': json.dumps(idx_search, ensure_ascii=False),
         'sfoot': site['station_footer'],
     }
-    open(os.path.join(out_dir, 'index.html'), 'w', encoding='utf-8').write(html)
+    open(os.path.join(out_dir, 'index.html'), 'w', encoding='utf-8', newline='\n').write(html)
 
 def build_handbook():
     global FMT_SITE
@@ -426,14 +432,14 @@ def build_handbook():
         prev = ((vols[idx-1][:-3] + '.html'), vol_titles[vols[idx-1]]) if idx > 0 else None
         nxt = ((vols[idx+1][:-3] + '.html'), vol_titles[vols[idx+1]]) if idx+1 < len(vols) else None
         html = render(HANDBOOK, f[:-3], title, blocks, headings, prev, nxt, None)
-        open(os.path.join(OUT, f[:-3] + '.html'), 'w', encoding='utf-8').write(html)
+        open(os.path.join(OUT, f[:-3] + '.html'), 'w', encoding='utf-8', newline='\n').write(html)
         anchors[f[:-3] + '.html'] = headings
         desc = ''
         for b in blocks:
             if b[0] == 'p' and len(b[1]) > 30: desc = b[1][:120]; break
         meta.append({'file': f[:-3] + '.html', 'title': title, 'desc': desc, 'group': hb_group_of(f[:-3])})
         print('built', f, '->', f[:-3] + '.html', '(%d headings)' % len(headings))
-    json.dump(anchors, open(os.path.join(OUT, 'anchors.json'), 'w', encoding='utf-8'), ensure_ascii=False)
+    json.dump(anchors, open(os.path.join(OUT, 'anchors.json'), 'w', encoding='utf-8', newline='\n'), ensure_ascii=False)
     idx_search = []
     for fname, hds in anchors.items():
         for hd in hds:
@@ -475,10 +481,10 @@ def build_design():
         prev = ((docs[idx-1][0] + '.html'), titles[docs[idx-1][0]]) if idx > 0 else None
         nxt = ((docs[idx+1][0] + '.html'), titles.get(docs[idx+1][0], docs[idx+1][0])) if idx+1 < len(docs) else None
         html = render(DESIGN, out_name, title, blocks, headings, prev, nxt, guide)
-        open(os.path.join(DOUT, out_name + '.html'), 'w', encoding='utf-8').write(html)
+        open(os.path.join(DOUT, out_name + '.html'), 'w', encoding='utf-8', newline='\n').write(html)
         anchors[out_name + '.html'] = headings
         print('built', src, '->', out_name + '.html', '(%d headings)' % len(headings))
-    json.dump(anchors, open(os.path.join(DOUT, 'anchors.json'), 'w', encoding='utf-8'), ensure_ascii=False)
+    json.dump(anchors, open(os.path.join(DOUT, 'anchors.json'), 'w', encoding='utf-8', newline='\n'), ensure_ascii=False)
     idx_search = []
     for fname, hds in anchors.items():
         for hd in hds:
@@ -543,7 +549,7 @@ def relink():
         # 其余裸 .md 链接 → .html
         src2 = re.sub(r'(href=")(\.\./docs/learning/)(VOL-[\w-]+)\.md(")', r'\1\2html/\3.html\4', src2)
         if src2 != src:
-            open(p, 'w', encoding='utf-8').write(src2)
+            open(p, 'w', encoding='utf-8', newline='\n').write(src2)
             print('relinked', page)
 
 def check_links():

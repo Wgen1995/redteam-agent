@@ -7,7 +7,8 @@ FIX = os.path.join(HERE, "fixtures", "G-g1")
 
 def run_cmd(args, goal_dir):
     # 入口约定：cmd --goal-dir <dir> 其余参数
-    return subprocess.run([sys.executable, CLI, args[0], "--goal-dir", goal_dir] + args[1:], capture_output=True, text=True)
+    return subprocess.run([sys.executable, CLI, args[0], "--goal-dir", goal_dir] + args[1:],
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 class MatrixInit(unittest.TestCase):
     def setUp(self):

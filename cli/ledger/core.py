@@ -51,9 +51,20 @@ def read_tsv(path, nfields):
 
 def write_tsv(path, rows):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
+    # newline="\n": 账本字节纪律——链式哈希/双指纹按 LF 落盘，Windows 文本模式不得翻译为 CRLF
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
         for r in rows:
             f.write(chr(9).join(esc(c) for c in r) + chr(10))
+
+
+def ensure_utf8_stdio():
+    """入口进程 stdout/stderr 统一 UTF-8（Windows 控制台默认 GBK 会炸中文输出）。
+    老 Python 无 reconfigure 则静默跳过；仅入口脚本调用，库导入无副作用。"""
+    for s in (sys.stdout, sys.stderr):
+        try:
+            s.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError, OSError):
+            pass
 
 PREFIX = {"goals": "G", "scope": "S", "intents": "INT", "facts": "F", "findings": "FD",
           "assets": "AST", "edges": "E", "approvals": "AP", "E-index": "EV",

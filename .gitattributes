@@ -1,0 +1,31 @@
+# Windows 兼容纪律：文本文件一律 LF。
+# 红线：TSV 账本/金样（*.tsv/*.state/*.norm）的链式哈希与双指纹依赖字节精确——
+# CRLF 污染会打爆 verify-chain 与 golden 回归；tests/injection_samples/*.txt 也被
+# test_01 断言「LF 结尾且无 CR」。Windows checkout 因此强制 LF。
+* text=auto eol=lf
+
+# 显式钉死（与上行动语义一致，防 auto 误判）
+*.tsv   text eol=lf
+*.state text eol=lf
+*.norm  text eol=lf
+*.md    text eol=lf
+*.py    text eol=lf
+*.txt   text eol=lf
+*.json  text eol=lf
+*.html  text eol=lf
+*.css   text eol=lf
+*.js    text eol=lf
+*.sh    text eol=lf
+*.cmd   text eol=crlf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.acl   text eol=lf
+
+# 二进制不碰
+*.enc   -text
+*.pdf   -text
+*.png   -text
+*.jpg   -text
+*.jpeg  -text
+*.gif   -text
+*.ico   -text

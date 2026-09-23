@@ -19,7 +19,8 @@ class NegativeMatrix(unittest.TestCase):
                 gd = shutil.copytree(FIX, os.path.join(td, "G-g1"))
                 snap = {f: open(os.path.join(gd, f), "rb").read() for f in os.listdir(gd)}
                 r = subprocess.run([sys.executable, CLI, name, "--goal-dir", gd] + args,
-                                   capture_output=True, text=True)
+                                   capture_output=True, text=True,
+                                   encoding="utf-8", errors="replace")
                 self.assertEqual(r.returncode, 1, name + " 应 exit 1: " + r.stdout)
                 self.assertIn("REJECT", r.stdout + r.stderr, name)
                 after = {f: open(os.path.join(gd, f), "rb").read() for f in os.listdir(gd)}

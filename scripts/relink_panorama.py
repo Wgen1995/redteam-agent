@@ -113,5 +113,5 @@ for page in sorted(os.listdir(PANO)):
     src = src.replace('href="../docs/learning/"', 'href="../docs/learning/html/index.html"')
 
     if src != orig:
-        open(p, 'w', encoding='utf-8').write(src)
+        open(p, 'w', encoding='utf-8', newline='\n').write(src)
         print('relinked', page)

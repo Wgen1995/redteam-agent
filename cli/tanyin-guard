@@ -7,6 +7,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core
 from ledger.enforce import DENY_LIST, load_scope, out_of_scope_hosts
 from ledger.schemas import TABLES
+from ledger.core import ensure_utf8_stdio
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
 TAB = chr(9)
 
@@ -73,13 +76,15 @@ def cmd_deploy_vault(gd, rest):
     n = kv["--cred"]
     payload = enc_payload(key, kv["--username"] + chr(10) + kv["--secret"])
     os.makedirs(vault_dir(gd), exist_ok=True)
-    open(os.path.join(vault_dir(gd), "cred-%s.enc" % n), "w", encoding="utf-8").write(payload)
+    with open(os.path.join(vault_dir(gd), "cred-%s.enc" % n), "w", encoding="utf-8", newline="\n") as f:
+        f.write(payload)
     mp = os.path.join(vault_dir(gd), "manifest.tsv")
     rows = []
     if os.path.exists(mp):
         rows = [l.split(TAB) for l in open(mp, encoding="utf-8").read().splitlines() if l.strip()]
     rows.append([n, "cred-%s.enc" % n, hashlib.sha256(payload.encode()).hexdigest()[:16], "xor-sha256", "2"])
-    open(mp, "w", encoding="utf-8").write(chr(10).join(TAB.join(r) for r in rows) + chr(10))
+    with open(mp, "w", encoding="utf-8", newline="\n") as f:  # TSV 落盘一律 LF
+        f.write(chr(10).join(TAB.join(r) for r in rows) + chr(10))
     print("OK vault cred-%s 部署" % n)
     return 0
 
@@ -96,14 +101,17 @@ def cmd_exec(gd, rest, ts=None):
             print("REJECT" + TAB + "guard" + TAB + "deny-list 命中: " + d)
             return 1
     s = core.Session(gd)
-    bad = out_of_scope_hosts(cmd, load_scope(s))
+    # 界外判定只扫参数（cmd[1:]）：argv[0] 是程序路径而非目标主机；Windows 下
+    # "C:\Program Files\...\python.exe" 会被空白切分误判为主机名（POSIX 绝对路径则碰巧被跳过）
+    bad = out_of_scope_hosts(cmd[1:], load_scope(s))
     if bad:
         print("REJECT" + TAB + "guard" + TAB + "界外目标: " + bad[0])
         append_tl(gd, ts or "1970-01-01T00:00:00Z", "guard-reject out-of-scope host=" + bad[0])
         return 1
     append_tl(gd, ts or "1970-01-01T00:00:00Z", "request-ticket cmd=" + cmd[0] + " argc=%d" % len(cmd))
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=60,
+                           encoding="utf-8", errors="replace")
     except FileNotFoundError:
         print("REJECT" + TAB + "guard" + TAB + "命令不存在: " + cmd[0])
         return 1
@@ -141,7 +149,8 @@ def main(argv):
         env["TY_CRED_USER"] = u or ""
         env["TY_CRED_SECRET"] = sec
         append_tl(gd, kv.get("--timestamp", "1970-01-01T00:00:00Z"), "vault-inject cred=" + kv["--cred"])
-        r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=60)
+        r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=60,
+                           encoding="utf-8", errors="replace")
         sys.stdout.write(r.stdout.replace(sec, "{{vault:cred-%s}}" % kv["--cred"]))
         sys.stderr.write(r.stderr)
         return r.returncode

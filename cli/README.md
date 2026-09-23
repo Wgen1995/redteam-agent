@@ -12,6 +12,23 @@ cli/tanyin-ledger <command> --goal-dir <session-dir> [--key=value ...]
 - 时间戳必填 --timestamp=ISO8601（写命令确定性来源）
 - 一切写命令：写前全量校验，追加目标表行 + timeline 链式哈希事件
 
+## Windows 用法（等价入口）
+
+入口均为带 shebang 的 python 脚本（无扩展名），Windows 下用 `py -3` 等价调用：
+
+```
+py -3 cli\tanyin-ledger validate --goal-dir sessions\G-g1
+py -3 cli\tanyin-guard exec --goal-dir sessions\G-g1 -- python -c pass
+py -3 cli\tanyin-canary probe --goal-dir sessions\G-g1 --tier 1
+py -3 hooks\simulate.py --goal-dir sessions\G-g1 --host dsh -- curl http://x/
+```
+
+- 同目录提供 `tanyin-ledger.cmd` 等六个包装（内容即 `py -3` 调用），可直接 `cli\tanyin-ledger.cmd validate ...`；无 py launcher 时用 `python cli\tanyin-ledger ...`
+- 字节纪律：仓库根 `.gitattributes` 把 *.tsv/*.state/*.norm/*.md/*.py/*.txt 钉死 LF，代码内一切写盘显式 `encoding="utf-8", newline="\n"`——账本/金样跨平台字节一致（链式哈希与双指纹依赖此红线）
+- 控制台：入口启动即把 stdout/stderr 重配为 UTF-8+replace（中文 Windows GBK 控制台不再炸输出；乱码只影响显示，不影响退出码/管道语义）
+- 平台门控：guard exec 界外判定只扫参数（argv[0] 是程序路径，Windows 带空格路径会被误判为主机）；canary tier1 探测载体用 `py -c pass`（原 /usr/bin/true 仅 POSIX）
+- CI：`.github/workflows/ci.yml` 双平台矩阵（windows-latest + ubuntu-latest × Python 3.11/3.12）跑 `python -m unittest discover -s tests`
+
 ## 命令面（41）
 
 | 类 | 条数 | 命令 |

@@ -17,11 +17,12 @@ TAB = chr(9)
 
 def sim(gd, host, *cmd):
     return subprocess.run([PY, SIM, "--goal-dir", gd, "--host", host, "--"] + list(cmd),
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
 def ledger(gd, cmd):
-    return subprocess.run([PY, LEDGER, cmd, "--goal-dir", gd], capture_output=True, text=True)
+    return subprocess.run([PY, LEDGER, cmd, "--goal-dir", gd], capture_output=True, text=True,
+                          encoding="utf-8", errors="replace")
 
 
 class Base(unittest.TestCase):
@@ -34,7 +35,7 @@ class Base(unittest.TestCase):
 
     def timeline(self):
         p = os.path.join(self.gd, "timeline.tsv")
-        return [l.split(TAB) for l in open(p).read().splitlines() if l.strip()]
+        return [l.split(TAB) for l in open(p, encoding="utf-8").read().splitlines() if l.strip()]
 
 
 class SimScope(Base):
@@ -87,12 +88,13 @@ class SimDenyList(Base):
 
 class SimUsage(unittest.TestCase):
     def test_bad_usage_rc2(self):
-        r = subprocess.run([PY, SIM, "--goal-dir", "x"], capture_output=True, text=True)
+        r = subprocess.run([PY, SIM, "--goal-dir", "x"], capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 2)
 
     def test_bad_host_rc2(self):
         r = subprocess.run([PY, SIM, "--goal-dir", ".", "--host", "nope", "--", "ls"],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 2)
 
 

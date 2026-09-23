@@ -54,7 +54,7 @@ KIND_BY_CMD = {"add-scope": "include", "add-cred": "static-cred", "add-intent": 
 
 def run_cli(gd, name, args):
     return subprocess.run([sys.executable, CLI, name, "--goal-dir", gd] + args,
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
 def fresh(tmp):
@@ -95,7 +95,8 @@ def autodrive(name, gd):
             r2[0] = "FD-g1-0002"
             r2[ki] = rows[0][ki]
             rows.append(r2)
-            open(p, "w", encoding="utf-8").write(chr(10).join(chr(9).join(esc(c) for c in r) for r in rows) + chr(10))
+            with open(p, "w", encoding="utf-8", newline="\n") as f:
+                f.write(chr(10).join(chr(9).join(esc(c) for c in r) for r in rows) + chr(10))
         else:
             run_cli(gd, op[0], op[1:])
     if name == "matrix-freeze":  # 预解冻：清全部 frozen_at，冻结盖戳才可正例
@@ -104,7 +105,8 @@ def autodrive(name, gd):
         for r in lines:
             if len(r) >= 8:
                 r[7] = ""
-        open(p, "w", encoding="utf-8").write(chr(10).join(chr(9).join(r) for r in lines) + chr(10))
+        with open(p, "w", encoding="utf-8", newline="\n") as f:
+            f.write(chr(10).join(chr(9).join(r) for r in lines) + chr(10))
     for kill in FIXTURE_PREP.get(name, []):
         p = os.path.join(gd, kill)
         if os.path.exists(p):
@@ -112,7 +114,7 @@ def autodrive(name, gd):
     ov = OVERRIDE.get(name, {})
     args = ["--timestamp=" + TS] + [k + "=" + v for k, v in ov.items()]
     if name == "matrix-init":
-        open(os.path.join(gd, "matrix.tsv"), "w").close()
+        open(os.path.join(gd, "matrix.tsv"), "w", encoding="utf-8").close()
     r = None
     for _ in range(12):
         r = run_cli(gd, name, args)
@@ -160,7 +162,8 @@ def main():
                 continue
             gp = os.path.join(GOLD, "read-" + name + ".norm")
             if not os.path.exists(gp):
-                open(gp, "w", encoding="utf-8").write(o1)
+                with open(gp, "w", encoding="utf-8", newline="\n") as f:
+                    f.write(o1)
                 inits.append(name)
             elif open(gp, encoding="utf-8").read().strip() != o1:
                 fails.append(name + "(输出漂移)")
@@ -180,7 +183,8 @@ def main():
                 continue
             gp = os.path.join(GOLD, "write-" + name + ".state")
             if not os.path.exists(gp):
-                open(gp, "w", encoding="utf-8").write(o1 + chr(10) + s1)
+                with open(gp, "w", encoding="utf-8", newline="\n") as f:
+                    f.write(o1 + chr(10) + s1)
                 inits.append(name)
             elif open(gp, encoding="utf-8").read().strip() != (o1 + chr(10) + s1).strip():
                 fails.append(name + "(状态漂移)")

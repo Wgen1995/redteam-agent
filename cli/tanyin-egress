@@ -10,6 +10,9 @@ import hashlib, os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core
+from ledger.core import ensure_utf8_stdio
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
 INFRA = ["api.github.com", "crt.sh", "nvd.nist.gov", "osv.dev", "pypi.org", "registry.npmjs.org"]
 
@@ -71,7 +74,9 @@ def build_acl(gd):
 def cmd_compile(gd, out):
     text = build_acl(gd)
     p = out or os.path.join(gd, "egress.acl")
-    open(p, "w", encoding="utf-8").write(text)
+    # newline="\n"：自指纹按 LF 主体计算，Windows 不得译成 CRLF（字节精确红线）
+    with open(p, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
     print("OK egress compile -> " + p + " (" + str(len(text.splitlines())) + " lines)")
     return 0
 

@@ -40,7 +40,8 @@ class T2Fixture(unittest.TestCase):
 
     def test_cli_validate_exit0(self):
         r = subprocess.run([sys.executable, os.path.join(HERE, "..", "cli", "tanyin-ledger"),
-                            "validate", "--goal-dir", FIX], capture_output=True, text=True)
+                            "validate", "--goal-dir", FIX], capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
     def test_cli_tamper_exit1(self):
@@ -49,9 +50,11 @@ class T2Fixture(unittest.TestCase):
             p = os.path.join(td, "G-g1", "timeline.tsv")
             lines = open(p, encoding="utf-8").read().splitlines()
             lines[1] = lines[1].replace("add-scope", "add-scopX")
-            open(p, "w", encoding="utf-8").write(chr(10).join(lines) + chr(10))
+            with open(p, "w", encoding="utf-8", newline="\n") as f:
+                f.write(chr(10).join(lines) + chr(10))
             r = subprocess.run([sys.executable, os.path.join(HERE, "..", "cli", "tanyin-ledger"),
-                                "verify-chain", "--goal-dir", os.path.join(td, "G-g1")], capture_output=True, text=True)
+                                "verify-chain", "--goal-dir", os.path.join(td, "G-g1")],
+                               capture_output=True, text=True, encoding="utf-8", errors="replace")
             self.assertEqual(r.returncode, 1)
 
 if __name__ == "__main__":

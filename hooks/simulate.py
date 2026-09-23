@@ -10,6 +10,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(
 from ledger import core
 from ledger import enforce
 from ledger.schemas import TABLES
+from ledger.core import ensure_utf8_stdio
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
 
 def hook_block(gd, host, event):

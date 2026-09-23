@@ -16,16 +16,17 @@ TAB = chr(9)
 
 def canary(gd, *args):
     return subprocess.run([PY, CANARY, args[0], "--goal-dir", gd] + list(args[1:]),
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
 def budgetctl(gd, *args):
     return subprocess.run([PY, BUDGET, args[0], "--goal-dir", gd] + list(args[1:]),
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
 def ledger(gd, cmd):
-    return subprocess.run([PY, LEDGER, cmd, "--goal-dir", gd], capture_output=True, text=True)
+    return subprocess.run([PY, LEDGER, cmd, "--goal-dir", gd], capture_output=True, text=True,
+                          encoding="utf-8", errors="replace")
 
 
 class Base(unittest.TestCase):
@@ -41,14 +42,14 @@ class Base(unittest.TestCase):
 
     def targets(self):
         p = os.path.join(self.gd, "canary", "targets.tsv")
-        return [l.split(TAB) for l in open(p).read().splitlines() if l.strip()]
+        return [l.split(TAB) for l in open(p, encoding="utf-8").read().splitlines() if l.strip()]
 
     def timeline(self):
         p = os.path.join(self.gd, "timeline.tsv")
-        return [l.split(TAB) for l in open(p).read().splitlines() if l.strip()]
+        return [l.split(TAB) for l in open(p, encoding="utf-8").read().splitlines() if l.strip()]
 
     def budget_append(self, *rows):
-        with open(os.path.join(self.gd, "budget.tsv"), "a") as f:
+        with open(os.path.join(self.gd, "budget.tsv"), "a", encoding="utf-8", newline="") as f:
             for r in rows:
                 f.write(TAB.join(r) + chr(10))
 
@@ -140,7 +141,7 @@ class CanaryProbe(Base):
         self.assertEqual(j["total"], 0)
 
     def test_tier3_acl_whitelist_assertion(self):
-        with open(os.path.join(self.gd, "egress.acl"), "w") as f:
+        with open(os.path.join(self.gd, "egress.acl"), "w", encoding="utf-8", newline="\n") as f:
             f.write("allow *.shop.example" + chr(10) + "allow 10.10.0.0/16" + chr(10))
         r = canary(self.gd, "probe", "--tier=3")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
@@ -148,7 +149,7 @@ class CanaryProbe(Base):
         self.assertEqual(j["status"], "pass")
         self.assertEqual((j["blocked"], j["total"]), (5, 5))
         decoy = self.targets()[0][1]
-        with open(os.path.join(self.gd, "egress.acl"), "a") as f:
+        with open(os.path.join(self.gd, "egress.acl"), "a", encoding="utf-8", newline="") as f:
             f.write("allow " + decoy + chr(10))
         r2 = canary(self.gd, "probe", "--tier=3")
         self.assertEqual(r2.returncode, 1)
@@ -220,7 +221,7 @@ class BudgetRate(Base):
     def test_rate_left_open_boundary(self):
         rows = [["2026-09-23T01:00:00Z", "12000", "40", "0.2", "0", "goal", "P1 recon", "2"],
                 ["2026-09-23T02:00:00Z", "8000", "700", "0.1", "0", "goal", "burst", "2"]]
-        with open(os.path.join(self.gd, "budget.tsv"), "w") as f:
+        with open(os.path.join(self.gd, "budget.tsv"), "w", encoding="utf-8", newline="\n") as f:
             f.write("".join(TAB.join(r) + chr(10) for r in rows))
         r = budgetctl(self.gd, "rate", "--now=2026-09-23T02:10:00Z")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
@@ -228,9 +229,10 @@ class BudgetRate(Base):
 
     def test_rate_missing_limit_env2(self):
         gp = os.path.join(self.gd, "goals.tsv")
-        cells = open(gp).read().splitlines()[0].split(TAB)
+        with open(gp, encoding="utf-8") as f:
+            cells = f.read().splitlines()[0].split(TAB)
         cells[8] = ""
-        with open(gp, "w") as f:
+        with open(gp, "w", encoding="utf-8", newline="\n") as f:
             f.write(TAB.join(cells) + chr(10))
         self.assertEqual(budgetctl(self.gd, "rate").returncode, 2)
 

@@ -5,6 +5,9 @@
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import registry
+from ledger.core import ensure_utf8_stdio
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8（py -3 等价入口同样生效）
 
 USAGE = "用法: tanyin-ledger <command> --goal-dir <dir> [参数]  (契约附录 A: contracts/02a)"
 

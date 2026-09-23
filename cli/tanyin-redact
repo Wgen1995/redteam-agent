@@ -6,6 +6,9 @@ import os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger.special import HANDLERS
+from ledger.core import ensure_utf8_stdio
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
 USAGE = "用法: tanyin-redact --goal-dir <dir> [--target=<路径>]"
 

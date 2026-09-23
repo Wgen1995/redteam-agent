@@ -34,7 +34,7 @@ class Base(unittest.TestCase):
 
     def cli(self, cmd, *args):
         return subprocess.run([sys.executable, LEDGER, cmd, "--goal-dir", self.g] + list(args),
-                              capture_output=True, text=True)
+                              capture_output=True, text=True, encoding="utf-8", errors="replace")
 
     def rows(self, t):
         return core.read_tsv(os.path.join(self.g, t), len(T[t]))
@@ -102,7 +102,7 @@ class QueryCommands(Base):
         d = os.path.join(self.td.name, "G-empty")
         os.makedirs(d)
         r = subprocess.run([sys.executable, LEDGER, "pending-intents", "--goal-dir", d],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(r.stdout.splitlines()[0], "#count=0")
 
@@ -481,19 +481,21 @@ class RedactScan(Base):
 
     def test_tanyin_redact_entry(self):
         r = subprocess.run([sys.executable, REDACT, "--goal-dir", FIX],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(r.stdout.splitlines()[0], "PASS" + chr(9) + "leaks=0")
         # 报告文本模式：占位符零泄漏（P5 交付前终检）
         rep = os.path.join(self.td.name, "report")
         os.makedirs(rep)
-        open(os.path.join(rep, "final.md"), "w", encoding="utf-8").write(
-            "凭据 {{vault:cred-1}} 未替换\n")
+        with open(os.path.join(rep, "final.md"), "w", encoding="utf-8", newline="\n") as f:
+            f.write("凭据 {{vault:cred-1}} 未替换\n")
         r = subprocess.run([sys.executable, REDACT, "--goal-dir", FIX,
-                            "--target=" + rep], capture_output=True, text=True)
+                            "--target=" + rep], capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
         self.assertIn("final.md", r.stdout)
-        r = subprocess.run([sys.executable, REDACT], capture_output=True, text=True)
+        r = subprocess.run([sys.executable, REDACT], capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 2)
 
 
@@ -504,7 +506,7 @@ class GuardSkeleton(unittest.TestCase):
     def test_skeleton(self):
         for args in ([], ["anything"]):
             r = subprocess.run([sys.executable, GUARD] + args,
-                               capture_output=True, text=True)
+                               capture_output=True, text=True, encoding="utf-8", errors="replace")
             self.assertEqual(r.returncode, 2)
             self.assertIn("用法", r.stderr)
 

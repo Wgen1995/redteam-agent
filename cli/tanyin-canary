@@ -16,10 +16,14 @@ import hashlib, json, os, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core
 from ledger.schemas import TABLES
+from ledger.core import ensure_utf8_stdio
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文 JSON/提示统一 UTF-8
 
 TAB = chr(9)
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+NOOP_CMD = [sys.executable, "-c", "pass"]  # 跨平台空转载体（原 /usr/bin/true 仅 POSIX）
 EPOCH = "1970-01-01T00:00:00Z"
 EGRESS_CANDIDATES = ("egress.acl", os.path.join("egress", "egress.acl"))  # 探知项：T3 产物路径未定，双候选
 
@@ -67,8 +71,8 @@ def cmd_deploy(gd, rest):
     rows = decoys(seed)
     d = os.path.join(gd, "canary")
     os.makedirs(d, exist_ok=True)
-    open(os.path.join(d, "targets.tsv"), "w", encoding="utf-8").write(
-        chr(10).join(TAB.join(r) for r in rows) + chr(10))
+    with open(os.path.join(d, "targets.tsv"), "w", encoding="utf-8", newline="\n") as f:  # TSV 落盘一律 LF
+        f.write(chr(10).join(TAB.join(r) for r in rows) + chr(10))
     append_tl(gd, kv.get("--timestamp", EPOCH), "P0", "canary-deploy n=%d seed=%s" % (len(rows), seed))
     print("OK canary deploy n=%d -> canary/targets.tsv" % len(rows))
     return 0
@@ -83,7 +87,8 @@ def load_targets(gd):
 
 def _run(cmd):
     try:
-        return subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=60,
+                              encoding="utf-8", errors="replace")
     except subprocess.TimeoutExpired:
         return None  # 拦截层无响应=未拦下（fail-closed 口径计 allowed）
 
@@ -104,10 +109,10 @@ def probe_tier(gd, tier, host):
             ok = r is not None and r.returncode == 0 and r.stdout.strip() == "out_of_scope"
             detail.append({"kind": kind, "value": val, "verdict": "blocked" if ok else "allowed"})
         return detail
-    if tier == 1:  # 执行通道级：guard exec 应 REJECT exit 1
+    if tier == 1:  # 执行通道级：guard exec 应 REJECT exit 1（载体=跨平台 python 空转）
         for kind, val in targets:
             r = _run([sys.executable, os.path.join(HERE, "tanyin-guard"), "exec",
-                      "--goal-dir", gd, "--", "/usr/bin/true", val])
+                      "--goal-dir", gd, "--"] + NOOP_CMD + [val])
             detail.append({"kind": kind, "value": val, "verdict": _verdict(r, 1, "REJECT")})
         return detail
     if tier == 2:  # 宿主 hook：hooks/simulate.py 应 BLOCKED exit 1（缺模拟器=not-deployed）

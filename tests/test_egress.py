@@ -9,7 +9,8 @@ FIX = os.path.join(HERE, "fixtures", "G-g1")
 PY = sys.executable
 
 def eg(gd, *a):
-    return subprocess.run([PY, EG, a[0], "--goal-dir", gd] + list(a[1:]), capture_output=True, text=True)
+    return subprocess.run([PY, EG, a[0], "--goal-dir", gd] + list(a[1:]),
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 class Egress(unittest.TestCase):
     def setUp(self):
@@ -24,7 +25,8 @@ class Egress(unittest.TestCase):
         self.assertEqual(a, open(os.path.join(self.gd, "egress.acl"), "rb").read())
     def test_snapshot_sections(self):
         eg(self.gd, "compile")
-        t = open(os.path.join(self.gd, "egress.acl")).read()
+        with open(os.path.join(self.gd, "egress.acl"), encoding="utf-8") as f:
+            t = f.read()
         for want in ("default deny", "allow *.shop.example", "allow 10.10.0.0/16",
                      "[dns-pinning]", "pin *.shop.example", "[oob]", "[infra]", "allow-infra pypi.org"):
             self.assertIn(want, t)
@@ -33,7 +35,8 @@ class Egress(unittest.TestCase):
         self.assertEqual(eg(self.gd, "verify").returncode, 0)
         r = subprocess.run([PY, LEDGER, "add-scope", "--goal-dir", self.gd,
                             "--kind=include", "--matcher=newhost.example",
-                            "--timestamp=2026-09-23T09:00:00Z"], capture_output=True, text=True)
+                            "--timestamp=2026-09-23T09:00:00Z"], capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         v = eg(self.gd, "verify")
         self.assertEqual(v.returncode, 1)
@@ -42,13 +45,16 @@ class Egress(unittest.TestCase):
     def test_canary_tier3_real_acl(self):
         eg(self.gd, "compile")
         subprocess.run([PY, CANARY, "deploy", "--goal-dir", self.gd, "--seed=s1"], capture_output=True)
-        r = subprocess.run([PY, CANARY, "probe", "--goal-dir", self.gd, "--tier=3"], capture_output=True, text=True)
+        r = subprocess.run([PY, CANARY, "probe", "--goal-dir", self.gd, "--tier=3"],
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         j = json.loads(r.stdout)
         self.assertEqual((j["status"], j["blocked"], j["total"]), ("pass", 5, 5))
-        decoy = [l.split(chr(9))[1] for l in open(os.path.join(self.gd, "canary", "targets.tsv"))][0]
-        with open(os.path.join(self.gd, "egress.acl"), "a") as f:
+        with open(os.path.join(self.gd, "canary", "targets.tsv"), encoding="utf-8") as f:
+            decoy = [l.split(chr(9))[1] for l in f][0]
+        with open(os.path.join(self.gd, "egress.acl"), "a", encoding="utf-8", newline="") as f:
             f.write("allow " + decoy + chr(10))
-        r2 = subprocess.run([PY, CANARY, "probe", "--goal-dir", self.gd, "--tier=3"], capture_output=True, text=True)
+        r2 = subprocess.run([PY, CANARY, "probe", "--goal-dir", self.gd, "--tier=3"],
+                            capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r2.returncode, 1)
         self.assertEqual(json.loads(r2.stdout)["status"], "fail")
     def test_dryrun(self):

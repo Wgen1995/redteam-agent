@@ -17,6 +17,9 @@ import datetime, json, os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core, query_cmds
 from ledger.schemas import TABLES
+from ledger.core import ensure_utf8_stdio
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
 TAB = chr(9)
 EPOCH = "1970-01-01T00:00:00Z"

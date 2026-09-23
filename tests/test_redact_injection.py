@@ -84,7 +84,8 @@ def _run_redact(goal_dir, target=None):
     cmd = [PY, REDACT, "--goal-dir", goal_dir]
     if target:
         cmd.append("--target=" + target)
-    return subprocess.run(cmd, capture_output=True, text=True)
+    return subprocess.run(cmd, capture_output=True, text=True,
+                          encoding="utf-8", errors="replace")
 
 
 def _leak_locs(proc):
@@ -110,14 +111,14 @@ class RedactInjectionSuite(unittest.TestCase):
             cls.f_base = len([l for l in f.read().splitlines() if l.strip()])
         with open(os.path.join(gd, "E-index.tsv"), encoding="utf-8") as f:
             cls.e_base = len([l for l in f.read().splitlines() if l.strip()])
-        with open(os.path.join(gd, "findings.tsv"), "a", encoding="utf-8") as f:
+        with open(os.path.join(gd, "findings.tsv"), "a", encoding="utf-8", newline="") as f:
             for i, st in enumerate(cls.pos_stems, 1):
                 f.write(_findings_row(i, _read_sample(st)) + chr(10))
-        with open(os.path.join(gd, "E-index.tsv"), "a", encoding="utf-8") as f:
+        with open(os.path.join(gd, "E-index.tsv"), "a", encoding="utf-8", newline="") as f:
             for i, st in enumerate(cls.pos_stems, 1):
                 f.write(_eindex_row(i, _read_sample(st)) + chr(10))
         for st in cls.pos_stems:
-            with open(os.path.join(rep, st + ".md"), "w", encoding="utf-8") as f:
+            with open(os.path.join(rep, st + ".md"), "w", encoding="utf-8", newline="\n") as f:
                 f.write(_read_sample(st) + chr(10))
         cls.pos_table = _run_redact(gd)
         cls.pos_text = _run_redact(gd, rep)
@@ -126,15 +127,15 @@ class RedactInjectionSuite(unittest.TestCase):
         shutil.copytree(FIX, gd2)
         rep2 = os.path.join(gd2, "report")
         os.makedirs(rep2)
-        with open(os.path.join(gd2, "findings.tsv"), "a", encoding="utf-8") as f:
+        with open(os.path.join(gd2, "findings.tsv"), "a", encoding="utf-8", newline="") as f:
             for i, st in enumerate(cls.text_neg_stems, 1):
                 f.write(_findings_row(i, _read_sample(st)) + chr(10))
-        with open(os.path.join(gd2, "E-index.tsv"), "a", encoding="utf-8") as f:
+        with open(os.path.join(gd2, "E-index.tsv"), "a", encoding="utf-8", newline="") as f:
             for i, st in enumerate(cls.text_neg_stems, 1):
                 f.write(_eindex_row(i, _read_sample(st)) + chr(10))
             f.write(_eindex_row(99, _read_sample(WHITELIST_NEG), in_repro=True) + chr(10))
         for st in cls.text_neg_stems:
-            with open(os.path.join(rep2, st + ".md"), "w", encoding="utf-8") as f:
+            with open(os.path.join(rep2, st + ".md"), "w", encoding="utf-8", newline="\n") as f:
                 f.write(_read_sample(st) + chr(10))
         cls.neg_table = _run_redact(gd2)
         cls.neg_text = _run_redact(gd2, rep2)

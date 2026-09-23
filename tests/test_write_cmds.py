@@ -960,19 +960,19 @@ class TestTier0AndWiring(unittest.TestCase):
         r = subprocess.run([sys.executable, CLI, "add-fact", "--goal-dir", gd,
                             "--intent-id=INT-g1-0001", "--kind=info", "--target=x.example",
                             "--detail=ok", "--confidence=0.5", "--timestamp=" + TS],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         r = subprocess.run([sys.executable, CLI, "no-such", "--goal-dir", gd],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 2)
         r = subprocess.run([sys.executable, CLI, "add-fact", "--goal-dir", gd,
                             "--intent-id=INT-g1-0001", "--kind=info", "--target=x.example",
                             "--detail=password=TopSecret123", "--confidence=0.5", "--timestamp=" + TS],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 1)
         self.assertIn("REJECT", r.stderr)
         r = subprocess.run([sys.executable, CLI, "verify-chain", "--goal-dir", gd],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0)
 
 

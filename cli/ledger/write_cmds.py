@@ -246,7 +246,7 @@ class Ctx(object):
         d = os.path.dirname(p)
         if d:
             os.makedirs(d, exist_ok=True)
-        with open(p, "w", encoding="utf-8") as f:
+        with open(p, "w", encoding="utf-8", newline="\n") as f:  # LF 字节纪律（Windows 不译 CRLF）
             f.write(text)
 
 
@@ -863,7 +863,7 @@ def _checkpoint(goal_dir, rest):
                     rev = int(m.group(1))
     rev += 1
     tmp = sp + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
         f.write("revision: %d\nphase: %s\nevent: %s\n" % (rev, phase, args.get("event", "")))
     os.replace(tmp, sp)
     ctx.event(args["timestamp"], "checkpoint revision=%d" % rev, phase=phase)
