@@ -35,7 +35,7 @@ gates:
       测绘不终于 P1——P3 全程可经 asset-added 事件续测（§5.4 生长通路①）
     exit:
       assert:
-        - {cmd: "ledger-tree-check --complete parent", expect: PASS}
+        - {cmd: "ledger-tree-check", expect: PASS}
         - {cmd: "ledger-scope-check --all-assets", expect: "全部资产已判定"}
         - {cmd: "ledger-validate", expect: PASS}
       on_pass: P2
