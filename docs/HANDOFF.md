@@ -6,7 +6,7 @@
 - 批次 0 契约冻结：✅ contracts-v2（13 表/41 命令/边词汇/四层档位）
 - 批次 1 账本命令箱+金样：✅（金样字节级回归绿；细节待独立审计确认）
 - 批次 2 门禁层：基本收官——enforce 单源化(500ae44)+Windows 兼容+CI 双平台绿(730d743/70826a5)；181/181 测试绿
-- 批次 3 总控 skill+图谱循环：**计划撰写中**（子代理 c1308136，writing-plans 规范）
+- 批次 3 总控 skill+引擎+受管重启/恢复：**完成（T1-T13 收口，2026-09-24）**——310→317 单测全绿+42 金样面 PASS；出口验收 11 条逐条实测过（第 10 条 CI：workflow 四格矩阵在册+push 已触发，远端绿需 Actions 页面复核）；契约回注三笔=契约09（G-1 工具 10→11）+契约02a（G-6 state.md v2 十键+G-10 checkpoint 签名，微版本勘误通道）；探知项台账 G-1..G-15 终态=docs/design/2026-09-24-b3-discovery-notes.md；Ruling 总索引=文末「批次 3 Ruling 总索引」节
 - 批次 0/1/2 完成度独立审计：**进行中**（子代理 865488fb，出口条款逐条实测）
 - 全景图 v2：定稿（0fbab87 模拟运行；SPEC 三层契约在 docs/design/imported/TanYin/panorama/SPEC.md）
 - 工程纪律：UTF-8+LF 红线/py -3 等价/双平台 CI（.github/workflows/ci.yml）
@@ -14,7 +14,7 @@
 ## 交战区指针
 - 设计定稿：docs/design/2026-09-21-tanyin-v2-design.md（§2 铁律/§5 循环/§11 批次表）
 - 契约：contracts/；CLI：cli/；测试：tests/（unittest+金样 G-g1，入口一律 [sys.executable, path]）
-- 计划：docs/superpowers/plans/（2026-09-23-batch1-ledger-cli.md 已有；b3 计划在写）
+- 计划：docs/superpowers/plans/（2026-09-23-batch1-ledger-cli.md；2026-09-24-b3-master-skill-loop-restart.md——批次 3 计划，T1-T13 已全部执行完毕）
 
 ## 开发流水（追加，一行一笔：日期｜代理｜动作｜证据）
 2026-09-24｜总控（本会话）｜批次2 对账入库：SECW-3 执法单源化 181 测试全绿｜500ae44
@@ -35,6 +35,8 @@
 2026-09-24｜子代理 T10｜批次3 T10：九门方法论 md（P0-P6 结构头统一：duty/entry/exit/回边四段+过门方式声明；P3 全文自计划 2294-2331 行程序化逐字提取——风暴五路/三资产事件/收敛四条件/受管重启触发；P0 附八问表落账对照（设计 §8.1）；P4 注 replay-summary 批次4前 SKIP 披露义务；P5 注 tanyin-report 批次6交付前 ENV-HALT；P2 补分母就绪门前置节=denominator-ready FAIL 清单未清空不得 freeze（G-14 追加件，口径=PROTOCOL §4））；解除 T9 skipUnless 门控——referenced 例转绿（SKILL+九门 md 引用命令⊆已知面实测过）；TDD 先红后绿（红=1 FAIL+3 ERROR 含 un-gated referenced 例，绿=7/7），全套 299 绿+金样 PASS 零漂移（T10 无新金样，hash=a347edd7 前后一致）｜491bcf5
 
 2026-09-24｜子代理 T11｜批次3 T11：干跑 eval——P0-P2 零对外请求（STEPS=总控行为脚本化 13 步：add-goal→budget-check→scope 三行→skill-version 事件→egress compile→gate P0→add-asset→gate P1→matrix-init→gate P2；判定=timeline 零 request:/request-ticket 事件+三门 gate-exit PASS 齐备+verify-chain/state-rebuild PASS+双跑同事件数（T12 底座））+追加件总控纪律三断言（①gate-exit 首现序恰=[P0,P1,P2] ②13 表内容 diff 逐表须有窗口内 timeline 命令事件词可解释（TABLE_EVENTS=ctx.event 落点全集）③budget-check 调用窗日志在位且退出 0）；裁决：P1 断言词 02a 终审签名裁 bare ledger-tree-check+计划测试 bug fresh_drydir 传 td.name；TDD 先红后绿（红₁=TypeError×2，红₂=ENV-HALT gate:P1 tree-check 用法错，红₃=追加件③ hits=[]；绿=5/5），全套 299→304 绿+金样 PASS 零漂移（T11 无新金样，hash=a347edd7 前后一致；phases.yaml 单词改零漂移=validate 计数型输出 asserts=21 不变）｜2df8d81
+2026-09-24｜子代理 T12｜批次3 T12：kill -9 保真度 eval——撕裂三态+POSIX 随机断点（seed 固定）+断点×摘除 22 组合穷举，恢复后 13 表字节指纹零变更+state-rebuild PASS+resume-kit 重生成（304→310；本流水行由 T13 补记——9f6f651 当时只落 T12 裁决节）｜f695210
+2026-09-24｜子代理 T13｜批次3 T13：收口——契约02a回注 G-6/G-10（微版本勘误通道同批次G-1先例；state.md v2 十键表与 state_md.KEY_ORDER 单源钉死+checkpoint 终局签名八参数）+cli/README 批次3节+探知项台账 G-1..G-15 落盘归并+出口验收 11 条逐条实测（310→317 绿+42 金样面 PASS；tests/test_contract_backfill.py 7 例 TDD 先红后绿）｜5c62bd6
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -52,7 +54,8 @@
 - 撕裂三态判定（T12 kill -9 eval 的语义地基）：A=tmp 残留→rebuild-state 先清扫再重建；B=timeline 领先 state（checkpoint 落账后被杀）→state-rebuild FAIL（revision 不齐）→rebuild-state 以账本为准重建；C=state.md 缺失→state-rebuild PASS+absent 标记（非错误，账本第一事实源）→rebuild-state 初始化。链断≠撕裂：verify_chain 不过即拒绝重建（exit 1 halt 人工处置），三态之外零自愈通道。
 
 ## 探知项（实现期发现，回写设计）
-- （待批次3计划/审计子代理回报后登记）
+- 批次 3 台账（G-1..G-15 终态，T13 收口归并）：docs/design/2026-09-24-b3-discovery-notes.md——catalog 单源（计划原文誊录+实施期增补+状态归并+移交清单四节）
+- 批次 0/1/2 审计探知项（vault XOR 无 nonce/withheld 降级/INFRA 白名单硬编码）：见上方「批次 0/1/2 独立审计入账」节（开放，批次 4/6 前定案）
 
 ## 2026-09-24 批次 0/1/2 独立审计入账（审计员 865488fb，只读实测）
 - 批次 0：完成（16/16 接口实体在；Minor×2：冻结后勘误未走版本通道/附录 A 落位与设计文字不符）
@@ -139,4 +142,30 @@
 - 附注（红绿证据链）：红态①=层 B FAILED (failures=1)（子进程缺失 exit 2，Ruling④ 断言拦下）；红态②=补 checkpoint 后层 B 再红（Ruling③ 越位戳记=真发现：截断账本虚戳 P3 触发跳门拒收）；绿态=6/6 OK（层 A 4+层 B 2）。
 - 附注（eval 结果）：层 A 三态（tmp 残留/timeline 领先/state.md 缺失）+工件缺失各 1 例，撕裂 B 走 state-rebuild FAIL→rebuild-state 修复臂→复跑 PASS；层 B seeded 断点 3/13/13/11/3 五例+穷举 22 组合，每例恢复=verify-chain 0+state-rebuild PASS+resume-kit OK+13 表指纹前后相等（保真度定义成立）；机制证据链=T4 原子写（tmp+os.replace 无第三态）+T5 对账重建。
 - 附注（金样/跨平台/纪律）：T12 无新金样（计划 Files 未列），run_golden 42 面 PASS 零漂移；全套 304→310（+6）；层 B 按 skipIf(os.name!="posix") 门控=计划口径（CI ubuntu 跑、Windows 合法跳过）——诚实披露：实际机制=subprocess 断点截断+os.remove 状态摘除（可移植），未投递真实 SIGKILL 信号，kill -9 语义=半写态结果模拟（计划自身设计：撕裂窗口由层 A 三态直接构造，原子写保证无第四态）；tests/_kill9_child.py 不匹配 discover 默认 test*.py 模式不被误导入（模块级即执行驱动）；两文件 UTF-8+LF 零 CR 实测；ResourceWarning（fingerprint open().read()）=T4/T11 附注同款噪音不处理。
+
+## 2026-09-24 批次 3 Ruling 总索引（T13 收口编；详情见各任务裁决节）
+
+- 开工三条：Tier3 代理本体裁批次 6+守门披露；G-1 批准契约 09 增补第 11 工具（微版本通道）；G-2 子矩阵行铸造留 T2 记账不阻塞。
+- T2（3）：①all_commands 只剔双前缀别名孪生键（41 基名钉死）②validate 存在性双前缀归一③phases-validate 金样接入 run_golden 既有机制；另 G-2 预批维持原案记入。
+- T3（6）：①前置门零落账断言=前后计数不变②gate lookup 双前缀归一③EXTRA_TOOLS=ENV-HALT（exit 2 零落账）④写类断言 matrix-freeze 门级 --timestamp 注入⑤追加件 denominator-ready=独立子命令不入 yaml 断言集（asserts=21 基线不动）⑥追加件读侧约定冻结（PROTOCOL §4）。
+- T4（4）：①revision≡本次落账后 timeline 行数②--release 裸旗标本地归一③既有 TestCheckpoint 两例 v2 适配（授权范围内必然后果）④G-6/G-10 契约回注留 T13 统一执行。
+- T5（4+适配）：①absent 态输出移第二行（首行字节不变）②计划测试空 phase 修正③phase 域 END→空映射④空 state.md 防御；test_query_check 旧例 v2 适配（T4③同型）。
+- T6（6）：①auto 本方=spawn 血统语义②managed-restart 事件词走 append-timeline（非 checkpoint --event 复合词）③接管/延续经 rebuild-state 释放 stale 锁④auto 同血统延续同样 state-rebuild 前置⑤phase 域映射沿 T5③⑥用法错误 exit 2；G-3/G-4 常量暂代状态记账。
+- T7（4）：①模板 END 分支改写（防 phases/END.md 悬空引用）②金样=产物内容基线不接 run_golden PHASES 面③--timestamp 缺省=timeline 末行（空=exit 2）④restart⑥失败=halt 非 REJECT。
+- T8（1）：①单查输出恒裸 token SKIP|RUN（可执行冻结层强于描述层）。
+- T9（1）：①referenced 门控=Step4 自我修正优先于 Step1 字面（skipUnless 待 T10）。
+- T10（1）：①P3 断言词 bare 基名 converge-check（静态验证意图；执法在 PROTOCOL §1）。
+- T11（3）：①P1 断言词按 02a 终审签名（参数=无）裁 bare ledger-tree-check②计划测试 bug fresh_drydir 传 td.name③追加件三断言口径（门序精确等/diff 可解释/budget-check 调用窗）。
+- T12（6）：①len(STEPS_N) 计划笔误=STEPS_N=len(STEPS)②子进程补 checkpoint 收尾（防 state 永不存在死码）③checkpoint phase=截断末步实际门（防越位虚戳）④父进程断言子进程 returncode==0（防空转假绿）⑤撕裂 B 构造 --phase=P3（空值拒收同 T5⑤）⑥seed 硬币全废→22 组合确定性穷举。
+- T13（5）：①回注范围=派遣指令+T4④留口（02a 文末勘误+§13 三处就地指针）②G-6 引用位=实际冻结位 state_md.py/金样（非计划建议的 PROTOCOL——无偏差不 bump）③README 速查面=七子命令实况（denominator-ready 标注追加件）④验收⑥命令形态=`=`形实测（判定命令列=示意速记；空格形 exit 2 正确）⑤T12 流水行补记。
+
+## 2026-09-24 批次 3 T13 裁决（实现者记；收口）
+- Ruling（计划↔执行范围①·契约 02a 回注）：计划 T13 Files 节只列 cli/README.md+discovery-notes，G-6/G-10 回注载于探知项「建议裁决」列且 T4 裁决④明文「留 T13 收口统一回注」，派遣指令点名执行——按建议裁决+留口执行：02a 文末「v2 勘误补记（2026-09-24·批次 3 施工期·G-6/G-10 裁决）」，通道=微版本勘误（同批次 G-1·契约⑨先例，schema_version 保持=2 不递增）+contracts/README.md 勘误索引登记；§13 三处就地指针（签名行/依据行/终审补全 5，09 号契约「10→11 见文末」同款最小标记范式）。影响面自验：37 节计数/【推导】63+2 计数/无法起草项 5 计数全不动（勘误节零新增【推导】标记——回注内容全部为已裁决事实）。
+- Ruling（引用位②·G-6）：计划建议「02a §13 补键表（引用 phases/PROTOCOL.md）」，但 T4 实际冻结位=cli/ledger/state_md.py KEY_ORDER 单一实现+tests/golden/write-checkpoint.state 字节基线（PROTOCOL §1-5 不载 state.md 格式；T13 Files 明文「无偏差不动 PROTOCOL」）——按「契约引用实际冻结位」裁决：十键表内联 02a 勘误节（契约自含）+引用 state_md.py 与金样双锚，PROTOCOL 不动不 bump；tests/test_contract_backfill.py::test_state_md_ten_keys_single_source 以 KEY_ORDER 单源对齐钉死（契约↔实现漂移即红）。
+- Ruling（README 速查面③）：计划 Step3 速查表书「六子命令」，T3 追加件 denominator-ready 已是第 7 个在册子命令（PROTOCOL §4+tanyin-phases USAGE 行）——按「文档=交付面实况」裁：表列七行，denominator-ready 标注「T3 追加件」；速查含 --timestamp 确定性说明与 py -3 等价用法（计划明文两项）。
+- Ruling（出口验收⑥命令形态④）：清单判定命令列书空格形 `--phase P2 --timestamp <T>`，引擎实收 `=`形（cmd_gate 逐 tok 前缀解析；PROTOCOL §1.1 空格式归一只施于 yaml 断言词；计划自身 T11 STEPS 即 `--phase=P0`形）——非冲突（判定命令列=示意速记，冻结面=引擎 USAGE 行与测试），按 `=`形实测留证：干跑产物（/tmp 截断驱动 11 步至 matrix-init）首调 exit 0+timeline 增 gate-exit:P2、复调 already-passed、两调后恰 1 条 P2 事件；空格形 exit 2 用法错误=行为正确。
+- Ruling（T12 流水缺行补记⑤）：9f6f651（T12 记账）只落 T12 裁决节未落开发流水行——本任务补记（标注补记+缘由），流水与裁决节对齐。
+- 附注（TDD 红绿）：tests/test_contract_backfill.py 7 例先行——红=6 FAIL+1 ERROR（02a 勘误节/contracts 索引/台账文件/README 批次3节缺位），绿=7/7；全套 310→317 全绿+42 金样面 PASS 零漂移+validate asserts=21 不变（T13 无新金样——计划 Files 未列；纯契约/文档改动+只读 lint 测试，无 OS 分支，CI 双平台同构）。
+- 附注（出口验收实测汇总）：①test_dryrun_p0p2 5/5 ②test_kill9_fidelity 6/6（POSIX；Windows skip=计划口径）③estimate_tokens(SKILL.md)=1321<2000（PROTOCOL §2 冻结口径公式，余量 679）④结构 lint+41 命令索引+引用⊆已知面全过 ⑤validate PASS gates=9 asserts=21 constants=8 back_edges=3+PROTOCOL version=b3-frozen-1 在场 ⑥见 Ruling④ ⑦test_managed_restart 10/10（计划 7+T6 自加 3；四护栏正反例+事件词 actor=总控）⑧test_idempotent_resume 4/4（SKIP/RUN/单查裸 token/只读零副作用）⑨discover 317 OK+golden 42 面 PASS ⑩ci.yml 矩阵 ubuntu+windows×py3.11/3.12 四格在册、push 已触发（远端结果=Actions 页面复核；本环境无 gh CLI）⑪台账 G-1..G-15 cat 可核（含 G-3/G-4 常量暂代、G-6/G-10 已回注、G-15 批次 6 前裁决如实分档）。
+- 附注（收口变更清单）：contracts/02a-command-signatures-draft.md（回注+指针）/contracts/README.md（勘误索引）/cli/README.md（批次3节）/docs/design/2026-09-24-b3-discovery-notes.md（台账，57 行）/tests/test_contract_backfill.py（钉子）/docs/HANDOFF.md（本节+快照+流水+Ruling 总索引）。
 
