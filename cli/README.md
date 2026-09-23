@@ -27,7 +27,7 @@ py -3 hooks\simulate.py --goal-dir sessions\G-g1 --host dsh -- curl http://x/
 - 字节纪律：仓库根 `.gitattributes` 把 *.tsv/*.state/*.norm/*.md/*.py/*.txt 钉死 LF，代码内一切写盘显式 `encoding="utf-8", newline="\n"`——账本/金样跨平台字节一致（链式哈希与双指纹依赖此红线）
 - 控制台：入口启动即把 stdout/stderr 重配为 UTF-8+replace（中文 Windows GBK 控制台不再炸输出；乱码只影响显示，不影响退出码/管道语义）
 - 平台门控：guard exec 界外判定只扫参数（argv[0] 是程序路径，Windows 带空格路径会被误判为主机）；canary tier1 探测载体用 `py -c pass`（原 /usr/bin/true 仅 POSIX）
-- CI：`.github/workflows/ci.yml` 双平台矩阵（windows-latest + ubuntu-latest × Python 3.11/3.12）跑 `python -m unittest discover -s tests`
+- CI：`.github/workflows/ci.yml` 双平台矩阵（windows-latest + ubuntu-latest × Python 3.11/3.12）跑 `python -m unittest discover -s tests`（job 级 `PYTHONUTF8=1`，等价于 Windows 本地 `set PYTHONUTF8=1` 后再跑测试）
 
 ## 命令面（41）
 

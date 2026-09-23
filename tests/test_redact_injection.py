@@ -22,6 +22,13 @@ neg_bearer_word_masked 仅以 withheld 字样作阴性对照）。
 """
 import os, shutil, subprocess, sys, tempfile, unittest
 
+# Windows 控制台默认 GBK/cp1252：本套件 summary print 含中文，先统一 UTF-8（无 reconfigure 则跳过）
+for _s in (sys.stdout, sys.stderr):
+    try:
+        _s.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError, OSError):
+        pass
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 SAMPLES = os.path.join(HERE, "injection_samples")
 FIX = os.path.join(HERE, "fixtures", "G-g1")
