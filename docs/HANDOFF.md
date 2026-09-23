@@ -23,6 +23,7 @@
 2026-09-24｜总控（本会话）｜建立本账本（补记：此前 panorama 马拉松期间账本纪律失守，本行起恢复）｜本文件
 2026-09-24｜子代理（TDD）｜批次2 三 Critical 执法洞修复：exclude/oob 三集语义+egress 单源化、inject 同门链、stderr 双流脱敏；顺手 Important：deny-list 数据化(shared/DENYLIST.md)、主机提取强化、canary 三形态；228 测试全绿+金样零漂移｜a5b4b17
 2026-09-24｜子代理 T1｜批次3 T1：phases.yaml 契约誊录+受限 YAML 子集解析器（stdlib 零依赖，fail-closed；TDD 先红后绿 6 新用例，全套 234 绿+金样 PASS）｜271e814
+2026-09-24｜子代理 T2｜批次3 T2：phases schema 校验器+九门断言命令存在性（all_commands 41 基名单源）+tanyin-phases 入口(+.cmd)；phases-validate 金样接入 run_golden 既有机制；G-1 契约09/README 勘误 10→11；TDD 先红后绿 7 新用例，全套 241 绿+金样 PASS（21读+20写+1phases）｜2350924
 
 ## 探知项（实现期发现，回写设计）
 - （待批次3计划/审计子代理回报后登记）
@@ -44,3 +45,9 @@
 - Ruling: G-1 批准契约 09 增补第 11 工具 tanyin-phases — 确定性校验器符合铁律 7 — 代价：契约版本通道走微版本
 - Ruling: G-2 子矩阵行铸造路径在 T2 实现时裁决并记账 — 不阻塞 — 代价：可能返工 matrix 白名单
 - 执行结构：T1-T13 每任务新子代理+TDD+全量回归；里程碑 T4/T8/T13 加代码评审
+
+## 2026-09-24 批次 3 T2 裁决（实现者记）
+- Ruling（计划↔实现偏差①）：计划 T2 Step3 的 all_commands() 参考实现按字面会剔掉四个原生名带 ledger- 前缀的校验命令（ledger-scope-coverage/tree-check/replay-summary/terminal-gate），与计划自身 Interfaces（41 基名）及 test_repo_yaml_valid 预期冲突——按计划意图裁决：只剔「有无前缀孪生键的双前缀别名」，原生带前缀四命令计入基名，实测恰 41 名（新增 test_all_commands_face_41 钉死防漂移）。
+- Ruling（计划↔实现偏差②）：phases.yaml 断言首词统一带 ledger- 前缀而 known=基名集——validate_phases 存在性判定按 PROTOCOL.md §1「双前缀注册均可查」语义归一（先试原词，再试剥前缀词）。
+- Ruling（金样机制）：计划 T2 Step5 的 phases-validate.norm 为孤立基线文件；按派遣指令+金样零漂移纪律接入 run_golden 既有机制（双跑确定性+缺失自动建档+漂移即 FAIL）——首跑 INIT 建档、次跑锁定 PASS。
+- Ruling（G-2 建议，按预批裁决记入；不实现——批次 4 范围）：T2 未触碰 matrix-set/matrix-init 白名单语义（validate 只做断言命令存在性检查，不改写侧拒收）；裁决建议=维持计划探知项 G-2 原案：matrix-set 放行 reason 前缀 submatrix: 的新键行（新表面×词表全集），批次 4 前落地。
