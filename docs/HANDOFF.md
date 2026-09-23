@@ -31,3 +31,8 @@
 - 批次 2：不达出口——三 Critical 实测洞：exclude 语义缺失（被排除主机 Tier1/Tier2 放行，与 egress compile 解释矛盾）；inject 通道零执法（带凭据执行绕过 deny-list/scope/取票）；stderr 不脱敏（vault 真值回泄）。Important×5：Tier3 代理本体缺/deny-list 仅 7 条硬编码/主机提取盲区/canary 探测形态单一/金样未进 CI
 - 处置：#1#2#3+#5#6#8 修复后才开工批次 3；#4 代理本体建议裁到批次 6 并守门声明披露（待用户确认）；#7 金样严格化+进 CI 随后并行；#9-#12 顺手清
 - 探知项登记：vault XOR 静态密钥流无 nonce（批次 4/6 前定案）；withheld 降级未实现；INFRA 白名单硬编码应随 tools.lock
+
+## 2026-09-24 批次 3 实施计划入账（撰写 c1308136）
+- 计划：docs/superpowers/plans/2026-09-24-b3-master-skill-loop-restart.md（2757 行，13 个 TDD 任务/65 步/29 验证命令/11 条出口验收）｜commit 1761e17
+- 接口缺口探知项 G-1..G-11 已在计划内登记；关键四个：G-1 需第 11 工具 tanyin-phases（契约 09 增补）；G-2 新资产子矩阵行铸造断链（P3 生长通路①，批次 4 前须裁决）；G-3/G-4 重启速率上限与 token 成本口径无契约源（10min/2000 暂代）；G-6/G-10 state.md v2 十键与 checkpoint 新参数需回注契约
+- 执行前置：批次 2 三 Critical 修复（ee43438d 进行中）落地后才执行本计划
