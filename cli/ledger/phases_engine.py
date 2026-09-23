@@ -268,7 +268,291 @@ def cmd_validate(rest):
     return 0
 
 
+# ---------------------------------------------------------------- T3：gate 断言执行器
+# 协议=phases/PROTOCOL.md §1（判定表逐行对应）。两处计划↔实现裁决（HANDOFF 记账）：
+# Ruling A：yaml 断言首词统一带 ledger- 前缀而 validate/verify-chain 等 builtin 只注册
+#   无前缀基名——lookup 按 §1「双前缀注册均可查」语义归一（先原词，再剥前缀），否则
+#   P0 断言 ledger-validate 会误判「未知命令」、计划自己的 test_gate_p0 用例必红。
+# Ruling B：EXTRA_TOOLS（tanyin-report/tanyin-redact）非 ledger 命令、registry 不可达——
+#   按 §1 判定表末行语义（工具未交付=ENV-HALT 退出 2，非门禁失败），不经 gate-fail 落账。
+SKIP_MARK = "批次 4 前=SKIP"
+
+
+def _normalize_argv(tokens):
+    """空格式旗标归一：`--k v`（v 不以 -- 开头）合并为 `--k=v`；裸旗标原样传递。"""
+    out, i = [], 0
+    while i < len(tokens):
+        t = tokens[i]
+        if t.startswith("--") and "=" not in t and i + 1 < len(tokens) \
+                and not tokens[i + 1].startswith("--"):
+            out.append(t + "=" + tokens[i + 1]); i += 2
+        else:
+            out.append(t); i += 1
+    return out
+
+
+def _current_gate(s):
+    """从 gate-exit 序推导当前门：无事件→P0；最大下标门为 P6→END；否则下一门。
+    T5 rebuild-state / T6 restart / T7 resume-kit 复用（计划 Interfaces 声明）。"""
+    seq, _ = s.gate_exit_seq()
+    if not seq:
+        return "P0"
+    top = max(GATE_ORDER.index(g) for g in seq)
+    return "END" if GATE_ORDER[top] == "P6" else GATE_ORDER[top + 1]
+
+
+def _lookup_cmd(head):
+    from . import registry
+    h = registry.lookup(head)
+    if h is None and head.startswith("ledger-"):
+        h = registry.lookup(head[len("ledger-"):])
+    return h
+
+
+def _judge(expect, cmdline, code, out, err, s):
+    name = cmdline.split()[0]
+    if SKIP_MARK in expect:
+        return "skip", "expect 载 SKIP（批次 4 转强制）"
+    if name.endswith("converge-check"):
+        tok = out.strip().splitlines()[0].strip() if out.strip() else ""
+        if code == 0 and tok in ("converged", "budget-exhausted"):
+            return "pass", ("mode=degraded" if tok == "budget-exhausted" else "")
+        return "fail", "converge-check 输出=%r" % tok
+    if name.endswith("matrix-gaps") and "--baseline" in cmdline:
+        m = re.search(r"#baseline_rows=(\d+)", out)
+        if code == 0 and "covered=true" in out and m and int(m.group(1)) > 0:
+            return "pass", ""
+        return "fail", "baseline=%s" % out.strip()[:60]
+    if name.endswith("matrix-freeze") and code == 1:
+        if "already-frozen" in (err + out) and any(
+                r[core.TABLES["timeline.tsv"].index("event")].startswith("matrix-freeze")
+                for r in s.rows("timeline.tsv")):
+            return "pass", "already-frozen 幂等"
+    if code == 2:
+        return "env", (err or out).strip()[:80]
+    return ("pass" if code == 0 else "fail"), (err or out).strip()[:80]
+
+
+def _append_event(goal_dir, phase, event, ts):
+    from . import registry
+    h = registry.lookup("append-timeline")
+    buf_o, buf_e = io.StringIO(), io.StringIO()
+    with redirect_stdout(buf_o), redirect_stderr(buf_e):
+        code = h(goal_dir, ["--actor=总控", "--phase=" + phase,
+                            "--event=" + event, "--timestamp=" + ts])
+    if code != 0:
+        raise RuntimeError("append-timeline 失败: " + buf_e.getvalue())
+
+
+def run_gate(goal_dir, phase, ts, phases_path=None):
+    data = load_phases(phases_path)
+    from . import registry
+    errs = validate_phases(data, registry.all_commands() | EXTRA_TOOLS)
+    if errs:
+        sys.stderr.write("环境问题: phases.yaml 违规 %d 项\n" % len(errs)); return 2
+    if phase not in GATE_ORDER:
+        sys.stderr.write("用法错误: --phase 不在九门\n"); return 2
+    if not ts:
+        sys.stderr.write("用法错误: --timestamp 必填（ISO8601）\n"); return 2
+    s = core.Session(goal_dir)
+    seq, _ = s.gate_exit_seq()
+    if phase in seq:
+        print("OK" + chr(9) + "gate:%s already-passed" % phase); return 0
+    for prev in GATE_ORDER[:GATE_ORDER.index(phase)]:
+        if prev not in seq:
+            print("REJECT" + chr(9) + "gate" + chr(9) + "前置门未过: " + prev)
+            return 1
+    asserts = data["gates"][phase]["exit"]["assert"]
+    skipped, degraded = 0, False
+    for a in asserts:
+        cmdline, expect = str(a.get("cmd", "")), str(a.get("expect", ""))
+        tokens = shlex.split(cmdline)
+        # Ruling C（写类断言时间戳注入）：matrix-freeze 是 yaml 断言集里唯一的写类命令
+        # （PROTOCOL.md §1.4「经自身 handler 落账」），其 --timestamp 必填而 yaml cmd
+        # 不携带——注入门级确定性时间戳（禁 datetime.now 纪律）。读类命令不注入
+        # （converge-check 等「无参数」命令会 UsageError→误 ENV-HALT）。
+        if tokens[0].endswith("matrix-freeze") \
+                and not any(t.startswith("--timestamp=") for t in tokens[1:]):
+            tokens = tokens + ["--timestamp=" + ts]
+        if tokens[0] in EXTRA_TOOLS:
+            print("ENV-HALT gate:%s assert=%s 工具未交付（批次 6）" % (phase, tokens[0]))
+            return 2
+        h = _lookup_cmd(tokens[0])
+        if h is None:
+            _append_event(goal_dir, phase, "gate-fail:%s assert=%s reason=未知命令" % (phase, tokens[0]), ts)
+            print("FAIL gate:%s 未知命令 %s" % (phase, tokens[0])); return 1
+        buf_o, buf_e = io.StringIO(), io.StringIO()
+        with redirect_stdout(buf_o), redirect_stderr(buf_e):
+            code = h(goal_dir, _normalize_argv(tokens[1:]))
+        st, detail = _judge(expect, cmdline, code, buf_o.getvalue(), buf_e.getvalue(), s)
+        if st == "env":
+            print("ENV-HALT gate:%s assert=%s %s" % (phase, tokens[0], detail)); return 2
+        if st == "skip":
+            skipped += 1; continue
+        if "mode=degraded" in detail:
+            degraded = True
+        if st == "fail":
+            _append_event(goal_dir, phase,
+                          "gate-fail:%s assert=%s reason=%s" % (phase, tokens[0], detail or "exit!=0"), ts)
+            print("FAIL gate:%s assert=%s %s" % (phase, tokens[0], detail)); return 1
+    ev = "gate-exit:%s asserts=%d result=PASS" % (phase, len(asserts))
+    if skipped:
+        ev += " skip=%d" % skipped
+    if degraded:
+        ev += " mode=degraded"
+    _append_event(goal_dir, phase, ev, ts)
+    print("OK" + chr(9) + "gate:%s %s" % (phase, ev))
+    return 0
+
+
+def cmd_gate(goal_dir, rest):
+    phase = ts = None
+    for tok in rest:
+        if tok.startswith("--phase="):
+            phase = tok.split("=", 1)[1]
+        elif tok.startswith("--timestamp="):
+            ts = tok.split("=", 1)[1]
+        else:
+            sys.stderr.write("用法: tanyin-phases gate --goal-dir D --phase <门> "
+                             "[--timestamp=T]\n"); return 2
+    return run_gate(goal_dir, phase, ts, None)
+
+
+# ------------------------------------- T3 追加件：分母就绪门（PROTOCOL.md §4）
+DENOM_CLASSES = ("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8")
+DENOM_CLASS_BY_TYPE = {
+    "root-domain": "A1", "subdomain": "A1",      # 标识层
+    "ip": "A2",                                    # 网络层
+    "service": "A3",                               # 服务层
+    "app": "A4", "endpoint": "A4",                 # 应用层
+    "source-code": "A6",                           # 代码与物料（A5/A7 无对应 type，探知项）
+}
+DENOM_NA_PREFIX = "asset-class:"     # 不适用理由：fact(kind=info, target=asset-class:A<k>)
+DENOM_UNVERIFIED_MARK = "unverified"  # 单源未证标记：assets.meta
+DENOM_EXTRAPOLATION_MARKS = ("extrapolated", "外推")   # A8 外推资产标记：assets.meta
+DENOM_QUEUE_STATUS = "pending"        # 在队列
+DENOM_DIG_KIND = "recon"              # 继续挖任务类
+DENOM_INTEGRATION_KINDS = ("parent", "attack", "scope-rel")   # 图谱整合边
+DENOM_IN_SCOPE_VALUES = ("1", "in_scope", "true")
+
+
+def _cell(table, row, field):
+    return row[core.TABLES[table].index(field)]
+
+
+def denominator_ready(goal_dir):
+    """分母就绪门（完备性设计 §1.3①③②三断言，matrix freeze 前置检查）。
+    只读账本（facts/assets/edges/intents），零落账；读侧约定=phases/PROTOCOL.md §4。
+    返回 (fails, stats)：fails 空=就绪。"""
+    s = core.Session(goal_dir)
+    arows, frows = s.rows("assets.tsv"), s.rows("facts.tsv")
+    irows, erows = s.rows("intents.tsv"), s.rows("edges.tsv")
+
+    def meta_has(r, mark):
+        return mark in _cell("assets.tsv", r, "meta")
+
+    def is_extrapolated(r):
+        return any(meta_has(r, m) for m in DENOM_EXTRAPOLATION_MARKS)
+
+    def sources_of(value):
+        return len({_cell("facts.tsv", f, "intent_id") for f in frows
+                    if _cell("facts.tsv", f, "target") == value
+                    and _cell("facts.tsv", f, "intent_id")})
+
+    def bound_intent(aid, value, statuses=None):
+        for it in irows:
+            if statuses and _cell("intents.tsv", it, "status") not in statuses:
+                continue
+            if _cell("intents.tsv", it, "dedup_key").startswith(aid + "+"):
+                return True
+            if value in _cell("intents.tsv", it, "title") \
+                    or value in _cell("intents.tsv", it, "detail"):
+                return True
+        return False
+
+    def integrated(aid):
+        for e in erows:
+            if _cell("edges.tsv", e, "kind") not in DENOM_INTEGRATION_KINDS:
+                continue
+            if aid in (_cell("edges.tsv", e, "source_id"),
+                       _cell("edges.tsv", e, "target_id")):
+                return True
+        return False
+
+    na_classes = set()
+    for f in frows:
+        t = _cell("facts.tsv", f, "target")
+        k = t[len(DENOM_NA_PREFIX):] if t.startswith(DENOM_NA_PREFIX) else ""
+        if k in DENOM_CLASSES and _cell("facts.tsv", f, "detail"):
+            na_classes.add(k)
+
+    class_count = dict.fromkeys(DENOM_CLASSES, 0)
+    for a in arows:
+        c = DENOM_CLASS_BY_TYPE.get(_cell("assets.tsv", a, "type"))
+        if c:
+            class_count[c] += 1
+        if is_extrapolated(a):
+            class_count["A8"] += 1   # A8 关联外推资产（界外也记，设计 §1.1）
+
+    fails = []
+    stats = {"assets": len(arows), "in_scope": 0, "sources_ok": 0,
+             "classes_ok": 0, "extrapolated": 0, "dangling": 0}
+    for a in arows:
+        if _cell("assets.tsv", a, "in_scope") not in DENOM_IN_SCOPE_VALUES:
+            continue   # 界外资产不入①（触发器目录：界外资产→记录不测）
+        stats["in_scope"] += 1
+        aid, value = _cell("assets.tsv", a, "id"), _cell("assets.tsv", a, "value")
+        n_src = sources_of(value)
+        unv = meta_has(a, DENOM_UNVERIFIED_MARK)
+        dig = unv and bound_intent(aid, value, statuses=(DENOM_QUEUE_STATUS,))
+        if n_src >= 2 or dig:
+            stats["sources_ok"] += 1
+        else:
+            fails.append("①来源 %s %s 来源数=%d<2 unverified=%s 在队列继续挖=%s"
+                         % (aid, value, n_src, "是" if unv else "否",
+                            "是" if dig else "否"))
+    for c in DENOM_CLASSES:
+        if class_count[c]:
+            stats["classes_ok"] += 1
+        elif c not in na_classes:
+            fails.append("②类空 %s 类空且无不适用理由"
+                         "（fact target=asset-class:%s detail=理由，或补该类资产）" % (c, c))
+    for a in arows:
+        if not is_extrapolated(a):
+            continue
+        stats["extrapolated"] += 1
+        aid, value = _cell("assets.tsv", a, "id"), _cell("assets.tsv", a, "value")
+        if sources_of(value) or bound_intent(aid, value) or integrated(aid):
+            continue   # 已处理：有采集 fact/绑定 intent（任意状态）/图谱整合边
+        stats["dangling"] += 1
+        fails.append("③悬空 %s %s 外推节点未处理（无采集 fact/绑定 intent/图谱整合边）"
+                     % (aid, value))
+    return fails, stats
+
+
+def cmd_denominator_ready(goal_dir, rest):
+    if rest:
+        sys.stderr.write("用法: tanyin-phases denominator-ready --goal-dir D（只读，无参数）\n")
+        return 2
+    fails, st = denominator_ready(goal_dir)
+    if fails:
+        print("FAIL" + chr(9) + "denominator-ready" + chr(9)
+              + "违规 %d 项（分母就绪门：matrix freeze 前置检查）" % len(fails))
+        for f in fails:
+            print("  " + f)
+        return 1
+    print("PASS" + chr(9) + "denominator-ready" + chr(9)
+          + "assets=%d in_scope=%d sources_ok=%d classes_ok=%d/8 extrapolated=%d dangling=%d"
+          % (st["assets"], st["in_scope"], st["sources_ok"], st["classes_ok"],
+             st["extrapolated"], st["dangling"]))
+    return 0
+
+
 def dispatch(sub, goal_dir, rest):
     if sub == "validate":
         return cmd_validate(rest)
+    if sub == "gate":
+        return cmd_gate(goal_dir, rest)
+    if sub == "denominator-ready":
+        return cmd_denominator_ready(goal_dir, rest)
     sys.stderr.write("未知子命令: " + sub + chr(10)); return 2
