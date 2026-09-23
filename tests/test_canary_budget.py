@@ -121,14 +121,16 @@ class CanaryProbe(Base):
         self.assertEqual(sum(1 for row in self.timeline() if "guard-reject" in row[3]), 5)
         self.assertEqual(ledger(self.gd, "verify-chain").returncode, 0)
 
-    def test_tier2_honest_report(self):
+    def test_tier2_zero_tolerance(self):
+        """SECW-3：Tier 2 零容忍（出口口径）——hook 模拟器须拦 5/5，宽容三态断言曾掩盖 0/5 事故。"""
         r = canary(self.gd, "probe", "--tier=2")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         j = json.loads(r.stdout)
         self.assertEqual(j["tier"], 2)
-        self.assertEqual(j["total"], 5)
-        self.assertIn(j["status"], ("pass", "fail", "not-deployed"))
-        self.assertEqual(r.returncode, 1 if j["status"] == "fail" else 0)
+        self.assertEqual(j["status"], "pass")
+        self.assertEqual((j["blocked"], j["total"]), (5, 5))
         self.assertTrue(any(row[3].startswith("canary-result") for row in self.timeline()))
+        self.assertEqual(ledger(self.gd, "verify-chain").returncode, 0)
 
     def test_tier3_not_deployed(self):
         r = canary(self.gd, "probe", "--tier=3")

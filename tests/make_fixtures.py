@@ -68,11 +68,18 @@ rows["budget.tsv"] = [
     row("budget.tsv", timestamp="2026-09-23T02:00:00Z", token_delta="8000", requests_delta="25", hours_delta="0.1", dollars_delta="0", scope="INT-g1-0002", note="authz-diff", schema_version="2"),
 ]
 tl = []
+# 账本语义对齐（SECW-2）：行 phase 与 §5.2 门序一致——add-goal/add-scope=P0 duty；
+# matrix-freeze=P2 冻结；add-fact=P3 循环；每门 duty 完成后记 gate-exit:PN 门事件
+# （02a §32：门出口断言命令调用必产生 timeline 事件；asserts 数=§5.2 该门 exit 断言条数）。
 events = [
-    ("2026-09-23T01:00:00Z", "总控", "P1", "add-goal G-g1-0001", "irreversible"),
-    ("2026-09-23T01:05:00Z", "CLI", "P1", "add-scope S-g1-0001", ""),
+    ("2026-09-23T01:00:00Z", "总控", "P0", "add-goal G-g1-0001", "irreversible"),
+    ("2026-09-23T01:05:00Z", "CLI", "P0", "add-scope S-g1-0001", ""),
+    ("2026-09-23T01:10:00Z", "总控", "P0", "gate-exit:P0 asserts=3 result=PASS", ""),
+    ("2026-09-23T01:15:00Z", "总控", "P1", "gate-exit:P1 asserts=3 result=PASS", ""),
+    ("2026-09-23T01:20:00Z", "总控", "P2", "matrix-freeze web.admin-panel/authz.diff", ""),
+    ("2026-09-23T01:25:00Z", "总控", "P2", "gate-exit:P2 asserts=2 result=PASS", ""),
     ("2026-09-23T02:00:00Z", "子代理", "P3", "add-fact F-g1-0001", ""),
-    ("2026-09-23T03:00:00Z", "总控", "P3", "matrix-freeze web.admin-panel/authz.diff", ""),
+    ("2026-09-23T03:05:00Z", "总控", "P3", "gate-exit:P3 asserts=1 result=PASS", ""),
 ]
 prev = core.GENESIS
 for ts, actor, phase, ev, rc in events:

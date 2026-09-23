@@ -318,8 +318,8 @@ class CheckCommands(Base):
     def test_state_rebuild(self):
         r = self.cli("state-rebuild")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-        self.assertEqual(r.stdout.splitlines()[0], "PASS" + chr(9) + "revision=4")
-        open(os.path.join(self.g, "state.md"), "w", encoding="utf-8").write("revision: 4\n")
+        self.assertEqual(r.stdout.splitlines()[0], "PASS" + chr(9) + "revision=8")
+        open(os.path.join(self.g, "state.md"), "w", encoding="utf-8").write("revision: 8\n")
         r = self.cli("state-rebuild")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         open(os.path.join(self.g, "state.md"), "w", encoding="utf-8").write("revision: 3\n")
@@ -507,6 +507,95 @@ class GuardSkeleton(unittest.TestCase):
                                capture_output=True, text=True)
             self.assertEqual(r.returncode, 2)
             self.assertIn("用法", r.stderr)
+
+
+# ------------------------------------------------ 02a §32 verify-chain 跳门检测
+
+class VerifyChainGateJump(Base):
+    """SECW-2：九门 exit 断言事件存在性（跳门检测）——缺记录=FAIL＋缺失门事件清单。"""
+
+    def rebuild_chain(self, rows):
+        """重排 timeline 后重建一致链（测试构造用：改历史须重算，否则先断链遮蔽跳门）。"""
+        prev = core.GENESIS
+        out = []
+        cols = T["timeline.tsv"]
+        hi, pi = cols.index("hash"), cols.index("prev_hash")
+        for r in rows:
+            r = list(r)
+            r[pi] = prev
+            wo = [r[cols.index(c)] for c in cols if c != "hash"]
+            r[hi] = core.row_hash(prev, wo)
+            out.append(r)
+            prev = r[hi]
+        self.write("timeline.tsv", out)
+
+    def keep(self, pred):
+        self.rebuild_chain([r for r in self.rows("timeline.tsv")
+                            if pred(r[T["timeline.tsv"].index("event")])])
+
+    def test_pass_on_wellformed_fixture(self):
+        r = self.cli("verify-chain")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("gate_exit=4", r.stdout)
+        self.assertIn("跳门=0", r.stdout)
+
+    def test_all_exits_missing_fail_with_list(self):
+        self.keep(lambda ev: not ev.startswith("gate-exit:"))
+        r = self.cli("verify-chain")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("跳门", r.stdout)
+        for g in ("P0", "P1", "P2"):
+            self.assertIn("缺失门事件:gate-exit:%s（已达 P3）" % g, r.stdout)
+
+    def test_single_exit_missing(self):
+        self.keep(lambda ev: not ev.startswith("gate-exit:P2"))
+        r = self.cli("verify-chain")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        missing = [l for l in r.stdout.splitlines() if l.startswith("缺失门事件:")]
+        self.assertEqual(missing, ["缺失门事件:gate-exit:P2（已达 P3）"])
+
+    def test_out_of_order_exit_fail(self):
+        ev_i = T["timeline.tsv"].index("event")
+        ph_i = T["timeline.tsv"].index("phase")
+        rows = [[c for c in r] for r in self.rows("timeline.tsv")]
+        for r in rows:  # 压低已达门到 P2，构造 gate-exit:P2 先于 gate-exit:P0 的乱序首现序
+            if r[ph_i] == "P3":
+                r[ph_i] = "P2"
+        p2 = next(r for r in rows if r[ev_i].startswith("gate-exit:P2"))
+        p0 = next(r for r in rows if r[ev_i].startswith("gate-exit:P0"))
+        rows.remove(p2)
+        rows.insert(rows.index(p0), p2)
+        self.rebuild_chain(rows)
+        r = self.cli("verify-chain")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("gate-exit 乱序:P0 先于 P2", r.stdout)
+
+    def test_invalid_gate_token_fail(self):
+        self.append_tl("gate-exit:P9", phase="P3")
+        r = self.cli("verify-chain")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("gate-exit 无效门标:P9", r.stdout)
+
+    def test_phase_advance_requires_prior_exits(self):
+        # 夹具 gate-exit:P0..P3 齐备 → 进入 P4 不触发缺门
+        self.append_tl("request: https://api.shop.example/x", revert="curl-none",
+                       phase="P4")
+        self.assertEqual(self.cli("verify-chain").returncode, 0)
+        # 删 gate-exit:P3（重算链保持一致）再进 P4 ⇒ 缺 P3 门事件
+        self.keep(lambda ev: not ev.startswith("gate-exit:P3") and "request:" not in ev)
+        self.append_tl("request: https://api.shop.example/x", revert="curl-none",
+                       phase="P4")
+        r = self.cli("verify-chain")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("缺失门事件:gate-exit:P3（已达 P4）", r.stdout)
+
+    def test_chain_break_reports_before_gate_check(self):
+        rows = self.rows("timeline.tsv")
+        rows[0][T["timeline.tsv"].index("event")] += "X"  # 篡改历史行（不重算链）
+        self.write("timeline.tsv", rows)
+        r = self.cli("verify-chain")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("断链行=1", r.stdout)
 
 
 if __name__ == "__main__":

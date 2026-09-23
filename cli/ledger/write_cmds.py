@@ -17,7 +17,7 @@ import os
 import re
 import sys
 
-from .core import TABLES, SCHEMA_VERSION, GENESIS, esc, next_id, row_hash, write_tsv
+from .core import TABLES, SCHEMA_VERSION, GENESIS, GATE_ORDER, esc, next_id, row_hash, write_tsv
 
 TAB = chr(9)
 
@@ -79,7 +79,7 @@ def _hex64(s):
 
 _INTENT_KINDS = {"recon", "surface", "matrix-test", "deep-dive", "authz-diff", "nday-verify"}  # 01 v2 勘误
 INTENT_ORIGINS = {"entity", "concept", "precedent", "adjacency", "llm", "recon-event", "mixed"}
-GATES = {"P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6.0", "P6"}
+GATES = set(GATE_ORDER)  # 九门枚举单源：core.GATE_ORDER（跳门检测同源）
 EDGE_KINDS = {"spawns", "yields", "derived_from", "proves", "parent", "attack",
               "cross_ref", "evidences", "supersedes", "scope-rel"}
 _EDGE_DIR = {

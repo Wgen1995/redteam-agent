@@ -5,52 +5,14 @@ import base64, hashlib, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core
+from ledger.enforce import DENY_LIST, load_scope, out_of_scope_hosts
 from ledger.schemas import TABLES
 
 TAB = chr(9)
-DENY_LIST = ["rm -rf /", "shutdown", "reboot", "mkfs", "dd if=", "format ", "> /dev/sd"]
 
 def usage():
     sys.stderr.write("用法: tanyin-guard exec|inject|deploy-vault --goal-dir D ..." + chr(10))
     return 2
-
-def load_scope(session):
-    sf = TABLES["scope.tsv"]
-    ki, mi = sf.index("kind"), sf.index("matcher")
-    return [r[mi] for r in session.rows("scope.tsv") if r[ki] == "include"]
-
-def host_in_scope(host, includes):
-    if not host:
-        return True
-    h = host.lower().rstrip(".")
-    for m in includes:
-        m = m.lower()
-        if m.startswith("*."):
-            if h == m[2:] or h.endswith("." + m[2:]):
-                return True
-        elif "/" in m:
-            import ipaddress
-            try:
-                if ipaddress.ip_address(h) in ipaddress.ip_network(m, strict=False):
-                    return True
-            except ValueError:
-                pass
-        elif h == m or h.endswith("." + m):
-            return True
-    return False
-
-def extract_hosts(args):
-    hosts = []
-    for a in args:
-        for tok in a.replace(",", " ").split():
-            if "://" in tok:
-                tok = tok.split("://", 1)[1]
-            if "@" in tok:
-                tok = tok.split("@")[-1]
-            cand = tok.split("/")[0].split(":")[0]
-            if cand and ("." in cand or cand.replace(".", "").isdigit()) and not cand.startswith("-"):
-                hosts.append(cand)
-    return hosts
 
 def tokenize_output(text, secrets):
     for i, s in enumerate(secrets, 1):
@@ -134,12 +96,11 @@ def cmd_exec(gd, rest, ts=None):
             print("REJECT" + TAB + "guard" + TAB + "deny-list 命中: " + d)
             return 1
     s = core.Session(gd)
-    includes = load_scope(s)
-    for h in extract_hosts(cmd):
-        if not host_in_scope(h, includes):
-            print("REJECT" + TAB + "guard" + TAB + "界外目标: " + h)
-            append_tl(gd, ts or "1970-01-01T00:00:00Z", "guard-reject out-of-scope host=" + h)
-            return 1
+    bad = out_of_scope_hosts(cmd, load_scope(s))
+    if bad:
+        print("REJECT" + TAB + "guard" + TAB + "界外目标: " + bad[0])
+        append_tl(gd, ts or "1970-01-01T00:00:00Z", "guard-reject out-of-scope host=" + bad[0])
+        return 1
     append_tl(gd, ts or "1970-01-01T00:00:00Z", "request-ticket cmd=" + cmd[0] + " argc=%d" % len(cmd))
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
