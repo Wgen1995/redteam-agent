@@ -25,6 +25,14 @@
 2026-09-24｜子代理 T1｜批次3 T1：phases.yaml 契约誊录+受限 YAML 子集解析器（stdlib 零依赖，fail-closed；TDD 先红后绿 6 新用例，全套 234 绿+金样 PASS）｜271e814
 2026-09-24｜子代理 T2｜批次3 T2：phases schema 校验器+九门断言命令存在性（all_commands 41 基名单源）+tanyin-phases 入口(+.cmd)；phases-validate 金样接入 run_golden 既有机制；G-1 契约09/README 勘误 10→11；TDD 先红后绿 7 新用例，全套 241 绿+金样 PASS（21读+20写+1phases）｜2350924
 2026-09-24｜子代理 T3｜批次3 T3：gate 断言执行器（断言→命令调用协议落地：判定表/already-passed 幂等/前置门 REJECT/gate-exit+gate-fail 事件）+phases/PROTOCOL.md 冻结接口落盘；追加件：分母就绪门 denominator-ready（多源法定/类覆盖/外推闭包三断言，只读账本零落账）；TDD 先红后绿 13 新用例，全套 254 绿+金样 PASS 零漂移（新增 phases-gate-p0.norm 与 phases-denominator-ready.norm 两静态基线）｜4c8c28a
+2026-09-24｜子代理 T4｜批次3 T4：state.md v2 行结构冻结（10 固定键+handoff≤200 行硬顶+tmp+os.replace 原子写；cli/ledger/state_md.py 单一实现）+checkpoint 升级（--session 必填/--release 旗标/--round/--note/--spawn+单活跃会话锁+snapshot 确定性投影）；TDD 先红后绿 10 新用例，全套 264 绿+金样 PASS（write-checkpoint.state 有意刷新=旧三行格式作废；run_golden VALS 补 --session=golden-s）｜95a79b0
+
+## 2026-09-24 批次 3 T4 裁决（实现者记）
+- Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
+- Ruling（计划↔实现偏差②·--release 旗标）：既有 _parse 只收 --key=value（41 面冻结不动），计划测试用裸 --release——在 _checkpoint 内本地预归一（裸 --release→--release=1），全局解析器零改动。
+- Ruling（既有面适配③）：--session 必填使批次 1 TestCheckpoint 两用例改写（补 session+动态 revision）——属 02a 终审补全 5+G-10 授权范围内的必然后果，非命令面破坏；test_write_cmds 其余 263 用例零触碰。
+- Ruling（G-6/G-10 契约回注）：计划 T4 Files 节未列 contracts/02a——本任务不回注，留 T13 收口统一回注（G-6=state.md v2 十键表引用、G-10=checkpoint 五新参数签名）；commit 消息已按 G-10 处置注明先例。
+- 附注：计划测试的 snap_all 沿用 open().read() 不关句柄（与批次 1 snapshot helper 同款范式），ResourceWarning 为噪音不处理；自加 test_corrupt_state_rejects 补「损坏 state.md→REJECT 提示 rebuild-state」缺口（计划未列但属锁语义前置件）。
 
 ## 探知项（实现期发现，回写设计）
 - （待批次3计划/审计子代理回报后登记）
