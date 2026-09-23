@@ -30,6 +30,7 @@
 2026-09-24｜子代理 T6｜批次3 T6：受管重启护栏四件套（①verify-chain ②速率上限 RESTART_RATE_MINUTES=10 ③单活跃会话：auto 禁接管 foreign 锁+manual 须 state-rebuild PASS 凭据+takeover-of 留痕 ④budget-log 计入 RESTART_TOKEN_COST=2000 ⑤checkpoint 新锁+managed-restart 事件 actor=总控 ⑥resume-kit 接通点留锚）；TDD 先红后绿 10 新用例（计划 7+自加 3：用法退出码 2/事件 actor=总控/收尾对账一致不变式），全套 280 绿+金样 PASS 零漂移（T6 无新金样）｜26e38e7
 2026-09-24｜子代理 T7｜批次3 T7：resume-kit 恢复注入白名单生成器（注入白名单四件套：state.md/kit 本体/当前门方法论单载/四查询摘要各一次+禁注入清单+幂等续跑表——cache_lines 按 T8 接口形状落地）+先对账再干活（链断拒生成 exit 1）+tmp+os.replace 原子写+--timestamp 缺省取 timeline 末行（确定性）+restart⑥ 接通（重启收尾重生成 kit）；TDD 先红后绿 8 新用例（计划 5+自加 3：缺省时间戳/用法退出码 2/金样字节锁定），全套 288 绿+金样 PASS 零漂移（新增 phases-resume-kit.norm 静态基线，/tmp 拷贝件上生成——fixtures/ 零触碰）｜5fffeaa
 2026-09-24｜子代理 T8｜批次3 T8：幂等续跑 cached 派发侧查询（设计 §5.2「工件即缓存」——复用 T7 cache_lines 单一实现不重写：intent done 且 submissions/<id>/submission.json 在位→SKIP、done 无工件→RUN、非 done 不列；全量模式 #count=N+IID<TAB>SKIP|RUN，--intent-id 单查裸 token；只读零副作用 §5.3）+dispatch 接线；TDD 先红后绿 4 新用例，全套 292 绿+金样 PASS 零漂移（T8 无新金样，hash 前后一致）；CLI 进程级实测退出码 0/0/2 全对齐｜24807ee
+2026-09-24｜子代理 T9｜批次3 T9：SKILL.md 总控路由器本体（常驻权威集八节：铁律/九门循环/P3 演进循环/命令索引 41/恢复协议/受管重启/干跑/路由表——认知按需加载 phases/<门>.md，方法论/引擎知识/账本数据不进常驻）+预算与结构断言测试（estimate_tokens 口径随 PROTOCOL §2 冻结：CJK+⌈非CJK/4⌉，实测 1321<2000 余量 679；命令索引 41/41 全覆盖；引用命令⊆已知面例 skipUnless 门控待 T10 落位自动生效）；SKILL.md 全文与测试代码自计划文件程序化逐字提取防转写漂移；TDD 先红后绿（红=3 ERROR 缺文件+1 skip，绿=OK skipped=1），全套 296 绿+金样 PASS 零漂移（T9 无新金样，hash=a347edd7 前后一致）｜6cdcf90
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -103,3 +104,9 @@
 ## 2026-09-24 批次 3 T8 裁决（实现者记）
 - Ruling（计划内部矛盾①·单查「并附注」与冻结骨架互斥）：T8 Interfaces 文字「--intent-id 单查……非 done 或不存在=RUN 并附注」与 Step 3 冻结参考实现（print(st if st else "RUN")——裸单词）及其自身测试（done 无工件单查断言 out.strip()=="RUN" 精确等值，附注必红）互斥——按「可执行冻结层（骨架+测试）强于描述层」裁决（T5 裁决①同型排序）：单查输出恒为裸 token SKIP|RUN，不附注。消费方（SKILL.md P3 ③派发步/resume-kit §3 表）按精确 token 判定，附注破坏机器可解析性且无测试钉死=未冻结行为。CLI 实测：pending（INT-g1-0002）与不存在（INT-g1-9999）单查均裸 RUN 退出 0。
 - 附注：计划 T8 测试块缺尾护 if __name__ == "__main__"（批次 3 各测试文件统一惯例），按仓例补齐——纯脚手架对齐零语义影响；红态实测 4 例中 3 FAIL（test_readonly_no_side_effects 对 dispatch 失败也零写入、哈希不变式空真——绿态后语义成立，即计划本意的最弱钉法，不加强）；T8 无新金样（计划 Files 未列），run_golden 全 42 面零漂移（hash=a347edd7 前后一致）；跨平台：纯 stdlib 只读路径无 OS 分支，Windows 经 tanyin-phases.cmd 同一 dispatch（T2 已建，无需改动——计划 Files 未列入口）。
+
+## 2026-09-24 批次 3 T9 裁决（实现者记）
+- Ruling（计划内部张力①·referenced 门控缺失于 Step1 代码块）：计划 Step 1 测试代码字面无装饰器，而其 Step 4 自我修正明示「正确顺序=本任务先让 SKILL 相关三例绿，referenced 一例依赖 T10，临时用 @unittest.skipUnless(...) 门控，T10 落位后自动生效」——照 Step 1 字面则 T9 交付时该例对缺失 phases/*.md 抛 FileNotFoundError 必红，与本任务出口「测试全绿+基线不回红」矛盾。按 Step 4（含其逐字给定的门控表达式 isdir(PHASES) and isfile(PHASES/P6.0.md)）裁决执行；T10 计划自身 Step 明示「解除 T9 的 skipUnless 门控」，闭环无悬空。实测：红态 FAILED (errors=3, skipped=1) → 绿态 OK (skipped=1)。
+- 附注（token 实测）：计划宣称「预算实测约 1500 token，留 500 余量」——本仓实测 1321（656 CJK + ⌈2659/4⌉=665；总 3315 字符/5032 字节），余量 679；口径=PROTOCOL.md §2 冻结式（测试侧 estimate_tokens 随之冻结）。计划数字为撰写期估值、实测更优，非冲突不裁决。
+- 附注（交付方式）：SKILL.md 全文（计划 2175-2222 行）与测试代码（2103-2164 行）均自计划文件程序化逐字提取落盘（非手抄），消灭转写漂移这一唯一人为风险；两文件 UTF-8+LF、零 CR 实测确认（file+grep -c）。
+- 附注（金样/跨平台/契约）：T9 无新金样（计划 Files 未列），run_golden 42 面零漂移 hash=a347edd7 前后一致；无新 CLI 入口故无 .cmd 配对（SKILL.md=认知文档非可执行入口）；测试纯只读+stdlib 正则无 OS 分支，CI 双平台语义同构；五宿主 AGENTS.md 系统级注入=批次 6 安装器职责（计划 Interfaces 明示），本任务零契约回注需求。
