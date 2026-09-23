@@ -1,0 +1,126 @@
+# 探隐 TanYin · phases.yaml（九门状态机·声明层）
+# 契约：contracts/04-phases.md（schema_version=2）＋设计定稿 §5.2。
+# 执法权威在账本命令：每条 exit 断言=命令调用与返回值判定（phases/PROTOCOL.md）。
+format_version: 2
+constants:
+  restart_context_threshold: 0.75
+  restart_every_n_rounds: 10
+  storm_score_threshold_base: 0.5
+  llm_association_quota: 5
+  reversal_scan_quota: 3
+  p4_sample_ratio: 0.2
+  single_active_session: true
+  budget_dollars_enabled: false
+states: [P0, P1, P2, P3, P4, P5, P5.5, P6.0, P6]
+initial: P0
+gates:
+  P0:
+    title: 授权门
+    entry: {assert: ["交战区目录可用", "无既有 goal 或处于 resume 态（state-rebuild PASS）"]}
+    duty: >-
+      八问问卷+业务问卷（§8.1）→ ledger-add-goal → scope/creds 落账（含 oob/account-grant/amendment 语义）
+      → 授权书扫描件入 evidence（双哈希）→ SKILL 版本+tools.lock 哈希落 timeline → egress compile → canary 部署
+    exit:
+      assert:
+        - {cmd: "ledger-validate --tables goals,scope,creds", expect: PASS}
+        - {cmd: "ledger-scope-coverage", expect: "include+exclude+oob 齐备"}
+        - {cmd: "ledger-verify-chain", expect: PASS}
+      on_pass: P1
+      on_fail: halt
+  P1:
+    title: 测绘
+    entry: {require: "P0.exit"}
+    duty: >-
+      侦察子代理（六要素委派）→ assets/facts 落账（每资产 scope-check 内联；facts 即脱敏）；
+      测绘不终于 P1——P3 全程可经 asset-added 事件续测（§5.4 生长通路①）
+    exit:
+      assert:
+        - {cmd: "ledger-tree-check --complete parent", expect: PASS}
+        - {cmd: "ledger-scope-check --all-assets", expect: "全部资产已判定"}
+        - {cmd: "ledger-validate", expect: PASS}
+      on_pass: P2
+  P2:
+    title: 规划
+    duty: >-
+      读账本+知识库指纹匹配（先例三元组内）→ matrix-init（列从 VOCAB WSTG v4.2 钉死）→ 冻结
+      （锚点冻结≠探索冻结——分母不动，新资产走子矩阵，§4.10/§5.4）
+    exit:
+      assert:
+        - {cmd: "ledger-matrix-freeze", expect: "frozen（不可重复冻结）"}
+        - {cmd: "ledger-matrix-gaps --baseline", expect: "基线行数>0 且覆盖全部 in_scope 攻击面"}
+      on_pass: P3
+  P3:
+    title: 演进循环
+    duty: >-
+      每轮：⓪checkpoint+budget-check → ①扫描（unconsumed-facts/pending-intents/matrix-gaps）
+      → ②条件触发假设风暴（五路+dedup+阈值递增）→ ③批量并行派发（指挥官协议，六要素+预算份额）
+      → ④验收落账（单写者，写前拒收）→ ⑤链构建（attack/cross_ref）→ ⑥收敛判定
+    events:
+      asset-added: {action: "spawn 测绘 intents（origin=recon-event，直接 pending，不打分）+子矩阵初始化", guardrails: "计入预算/单资产测绘上限/out_of_scope 只记 fact 不 spawn"}
+      cred-obtained: {action: "登记 creds(kind=session) → 触发 authz-diff 候选（批次 4 起）", guardrails: ""}
+      scope-amended: {action: "amend-scope 落账（amendment_of 链+approvals 强制）→ tanyin-egress compile 重编译 ACL/DNS pinning/OOB 白名单 → out_of_scope 资产复判（转正则子矩阵初始化）→ canary 复测", guardrails: "修订未经审批=账本级 REJECT；修订史进报告守门声明"}
+    exit:
+      assert:
+        - {cmd: "ledger-converge-check", expect: "converged | budget-exhausted"}
+      on_pass: P4
+    note: "converged 与 budget-exhausted 皆为合法终态；后者置 degraded=true 进入 P4"
+  P4:
+    title: 汇总
+    duty: >-
+      四校验命令 → finding 合并（supersede+tombstone）→ 「-」「!」抽查 → POC 独立重放门
+      （批次 4 起强制：fresh 隔离子代理只拿 EV 卡片盲重放，set-replay-state 三态落账）
+      → 异常检测（批量置态与 fact 密度不符告警）
+    exit:
+      assert:
+        - {cmd: "ledger-validate", expect: PASS}
+        - {cmd: "ledger-verify-chain", expect: PASS}
+        - {cmd: "ledger-hash-recheck", expect: PASS}
+        - {cmd: "ledger-matrix-audit", expect: "抽查通过 且 无告警"}
+        - {cmd: "ledger-replay-summary", expect: "无 REJECTED 未处置项（批次 4 前=SKIP，报告中披露）"}
+      on_pass: P5
+      on_fail: halt
+  P5:
+    title: 报告
+    duty: >-
+      tanyin-report 聚合器从 13 表确定性重建正文（模板+账本数据，零 LLM 方差；LLM 仅写执行摘要
+      与修复建议叙述段，须引用 finding ID）→ report-draft.md（附「范围外观察」附录：
+      out_of_scope facts 列示供客户扩授权决策，接 §5.4 边界生长闭环）
+    exit:
+      assert:
+        - {cmd: "ledger-terminal-gate", expect: "矩阵无空格 | degraded 披露清单完备"}
+        - {cmd: "tanyin-report --lint", expect: "schema lint+脱敏检查 PASS"}
+        - {cmd: "ledger-redact-scan --target report/", expect: "占位符零泄漏"}
+      on_pass: P5.5
+      on_fail: halt
+  P5.5:
+    title: 签发门
+    duty: "人审 → ledger-approve（command_hash 绑定聚合产物文件哈希）→ report-signed.md"
+    exit:
+      assert:
+        - {cmd: "ledger-approve --verify-signoff", expect: "approvals 存在对应 approved 行"}
+      on_pass: P6.0
+    note: "未签发报告禁止导出（cli 层：导出命令校验签发行）"
+  P6.0:
+    title: 清理门
+    duty: >-
+      ledger-cleanup-checklist 从 timeline 提取全部外部副作用写操作（revert_cmd 非空行）→ 逆序执行
+      revert_cmd；纯账本状态行无需回滚 +结果验证 → 全核销或人工豁免（approvals 落账）
+      → cleanup.md 清理声明附报告
+    exit:
+      assert:
+        - {cmd: "ledger-cleanup-checklist --verify", expect: "全部 reverted 或 豁免行齐备"}
+      on_pass: P6
+  P6:
+    title: 沉淀
+    duty: >-
+      脱敏提取（域名→CLIENT-NN，IP/凭据→占位符）→ 反向验证（session 出现过的域名/IP/凭据/token
+      在草稿中零命中）→ 用户审批 → 写入 knowledge（precedents/entities/graph.ndjson）→ lint 保鲜信号
+    exit:
+      assert:
+        - {cmd: "ledger-approve --knowledge", expect: approved}
+        - {cmd: "tanyin-redact --reverse-verify", expect: "零命中"}
+      on_pass: END
+back_edges:
+  - {from: P3, to: P4, when: budget-exhausted, mode: degraded}
+  - {from: P3, to: P3, when: "asset-added | cred-obtained | scope-amended", type: event}
+  - {from: P4, to: P4, when: "重放=REPAIRED（修复 POC 卡片后重放）", max_retry: 2}
