@@ -32,6 +32,8 @@
 2026-09-24｜子代理 T8｜批次3 T8：幂等续跑 cached 派发侧查询（设计 §5.2「工件即缓存」——复用 T7 cache_lines 单一实现不重写：intent done 且 submissions/<id>/submission.json 在位→SKIP、done 无工件→RUN、非 done 不列；全量模式 #count=N+IID<TAB>SKIP|RUN，--intent-id 单查裸 token；只读零副作用 §5.3）+dispatch 接线；TDD 先红后绿 4 新用例，全套 292 绿+金样 PASS 零漂移（T8 无新金样，hash 前后一致）；CLI 进程级实测退出码 0/0/2 全对齐｜24807ee
 2026-09-24｜子代理 T9｜批次3 T9：SKILL.md 总控路由器本体（常驻权威集八节：铁律/九门循环/P3 演进循环/命令索引 41/恢复协议/受管重启/干跑/路由表——认知按需加载 phases/<门>.md，方法论/引擎知识/账本数据不进常驻）+预算与结构断言测试（estimate_tokens 口径随 PROTOCOL §2 冻结：CJK+⌈非CJK/4⌉，实测 1321<2000 余量 679；命令索引 41/41 全覆盖；引用命令⊆已知面例 skipUnless 门控待 T10 落位自动生效）；SKILL.md 全文与测试代码自计划文件程序化逐字提取防转写漂移；TDD 先红后绿（红=3 ERROR 缺文件+1 skip，绿=OK skipped=1），全套 296 绿+金样 PASS 零漂移（T9 无新金样，hash=a347edd7 前后一致）｜6cdcf90
 
+2026-09-24｜子代理 T10｜批次3 T10：九门方法论 md（P0-P6 结构头统一：duty/entry/exit/回边四段+过门方式声明；P3 全文自计划 2294-2331 行程序化逐字提取——风暴五路/三资产事件/收敛四条件/受管重启触发；P0 附八问表落账对照（设计 §8.1）；P4 注 replay-summary 批次4前 SKIP 披露义务；P5 注 tanyin-report 批次6交付前 ENV-HALT；P2 补分母就绪门前置节=denominator-ready FAIL 清单未清空不得 freeze（G-14 追加件，口径=PROTOCOL §4））；解除 T9 skipUnless 门控——referenced 例转绿（SKILL+九门 md 引用命令⊆已知面实测过）；TDD 先红后绿（红=1 FAIL+3 ERROR 含 un-gated referenced 例，绿=7/7），全套 299 绿+金样 PASS 零漂移（T10 无新金样，hash=a347edd7 前后一致）｜491bcf5
+
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
 - Ruling（计划↔实现偏差②·--release 旗标）：既有 _parse 只收 --key=value（41 面冻结不动），计划测试用裸 --release——在 _checkpoint 内本地预归一（裸 --release→--release=1），全局解析器零改动。
@@ -110,3 +112,9 @@
 - 附注（token 实测）：计划宣称「预算实测约 1500 token，留 500 余量」——本仓实测 1321（656 CJK + ⌈2659/4⌉=665；总 3315 字符/5032 字节），余量 679；口径=PROTOCOL.md §2 冻结式（测试侧 estimate_tokens 随之冻结）。计划数字为撰写期估值、实测更优，非冲突不裁决。
 - 附注（交付方式）：SKILL.md 全文（计划 2175-2222 行）与测试代码（2103-2164 行）均自计划文件程序化逐字提取落盘（非手抄），消灭转写漂移这一唯一人为风险；两文件 UTF-8+LF、零 CR 实测确认（file+grep -c）。
 - 附注（金样/跨平台/契约）：T9 无新金样（计划 Files 未列），run_golden 42 面零漂移 hash=a347edd7 前后一致；无新 CLI 入口故无 .cmd 配对（SKILL.md=认知文档非可执行入口）；测试纯只读+stdlib 正则无 OS 分支，CI 双平台语义同构；五宿主 AGENTS.md 系统级注入=批次 6 安装器职责（计划 Interfaces 明示），本任务零契约回注需求。
+
+## 2026-09-24 批次 3 T10 裁决（实现者记）
+- Ruling（计划文本↔自身测试互斥①·P3 断言词前缀）：计划 P3.md 全文「断言=ledger-converge-check」会被其自身 T9 冻结测试 test_referenced_commands_known（本任务解除门控即生效）判为未知命令——KNOWN 里带 ledger- 前缀的仅 ledger-add-edge/ledger-matrix-freeze 两枚（T9 注释明示「速查里可能带前缀引用」例外），且该 lint 无双前缀归一（T2/T3 裁决的 lookup 归一只在引擎侧）。按计划意图（§10.3 静态验证①：引用⊆已知面）裁决：P3.md 该词落 bare 基名 converge-check——语义不变（执法在 PROTOCOL §1 判定行，不在写法），test_yaml_asserts_consistent_with_md 的头词断言同构满足。P3.md 其余全文自计划 2294-2331 行程序化逐字提取（T9 同款防转写漂移），实测该词是全文唯一前缀违例。
+- 附注（追加件 G-14 落地）：P2.md 新增「分母就绪门」节=matrix freeze 前置步骤（tanyin-phases denominator-ready --goal-dir <D>；FAIL 清单未清空不得 freeze），措辞逐点对齐 PROTOCOL §4 冻结口径（只读账本零落账/退出码 0=就绪 1=FAIL 清单 2=用法/三断言全文）；denominator-ready 维持不入 phases.yaml 断言集（T3 裁决原案：asserts=21 基线不动），P2.md 该节定位=声明层人读前置检查单（PROTOCOL §1.5 entry 语义同型，引擎不执法）。
+- 附注（八门同构短文口径）：P0/P1/P2/P4/P5/P5.5/P6.0/P6 按「四段结构头+phases.yaml duty 字符串指令化+本门断言命令清单」撰写；命令引用一律 bare 基名或 tanyin-ledger/tanyin-phases 通道形式（lint 白名单内）；P0 八问表落账对照自设计 §8.1 逐行誊录（备份确认并入第④问 RoE，不设第九问）；「回边」节如实区分——仅 P3（三事件回环）/P4（重放 REPAIRED max_retry=2）在 back_edges 内，其余七门明书「本门无事件回边」防误读。
+- 附注（金样/跨平台/探知项）：T10 无新金样（计划 Files 未列），run_golden 42 面零漂移 hash=a347edd7 前后一致；九门 md=认知文档非可执行入口，无 .cmd 配对（T9 同型）；测试纯只读+stdlib 无 OS 分支，CI 双平台语义同构；G-14 探知项随本任务落地闭环（T13 归并销账）；全套 296→299=计划 3 例+un-gated referenced 例转绿（skip 归零）。
