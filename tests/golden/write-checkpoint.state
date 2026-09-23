@@ -1,4 +1,4 @@
-OK	revision=1
+OK	revision=9
 == E-index.tsv ==
 EV-g1-0001	子域清单	command	TS	internet	curl -s https://crt.example/q?d=shop.example	single	cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc	dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd		evidence/EV-g1-0001.md		PG-g1-0001	12 subdomains	2	
 == approvals.tsv ==
@@ -33,13 +33,21 @@ web.api	inj.sql	 			2
 S-g1-0001	include	*.shop.example				主域及子域	2	
 S-g1-0002	include	10.10.0.0/16	admin\;operator	read\;probe		内网分区A	2	
 == state.md ==
-event: 
+--- handoff ---
+goal: G-g1-0001
 phase: 
-revision: 1
+resume_kit: resume-kit.md
+revision: 9
+round: 0
+session: golden-s
+session_status: active
+snapshot: intents_pending=1;facts_unconsumed=2;matrix_gaps=1;budget_token_left=1980000
+spawn: fresh
+updated: TS
 == timeline.tsv ==
-TS	CLI		checkpoint revision=1		244f4a3e8ef53850e442f7eccee3b866866ffba6f615c0c4627d893e278f715e	d3bb2e8890b5d898ee0be7938df7da8e6fc17ea514217325b97725139e9460cf	2
 TS	CLI	P0	add-scope S-g1-0001		6888cffe2d932467be40b7f293f76b7cb9151859c568350c16b288c388679194	091f18416258e8725f3a306558f3a89a2a36e9c4677d2110ad7e0da566de44cd	2
 TS	子代理	P3	add-fact F-g1-0001		69940325a89bd8c522134ebeb7bf7428729dc441fa7c64c6d105c74302babf5a	11e52476f7a7c1201fe6b2ec0e9ca05dd4d5330d13ab7198cb8b1486f68e3759	2
+TS	总控		checkpoint revision=9		244f4a3e8ef53850e442f7eccee3b866866ffba6f615c0c4627d893e278f715e	c5e8343f9081c3aebe099ea240ec55e090a6779333bd015f04116da9cbd2b476	2
 TS	总控	P0	add-goal G-g1-0001	irreversible	0000000000000000000000000000000000000000000000000000000000000000	6888cffe2d932467be40b7f293f76b7cb9151859c568350c16b288c388679194	2
 TS	总控	P0	gate-exit:P0 asserts=3 result=PASS		091f18416258e8725f3a306558f3a89a2a36e9c4677d2110ad7e0da566de44cd	624d75362974683be635b6425f97f8e702676fe39caed62d5d7fe0e1b30602c6	2
 TS	总控	P1	gate-exit:P1 asserts=3 result=PASS		624d75362974683be635b6425f97f8e702676fe39caed62d5d7fe0e1b30602c6	ba723f02685e778dfad108d537a790e5b4396c7e0fb31476e87c623c0c6985d4	2

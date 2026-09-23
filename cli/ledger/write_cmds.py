@@ -18,6 +18,7 @@ import re
 import sys
 
 from .core import TABLES, SCHEMA_VERSION, GENESIS, GATE_ORDER, esc, next_id, row_hash, write_tsv
+from . import state_md
 
 TAB = chr(9)
 
@@ -846,28 +847,53 @@ def _matrix_set(goal_dir, rest):
 # ---------------------------------------------------------------- 13 checkpoint
 
 def _checkpoint(goal_dir, rest):
-    args = _parse(rest, {"phase", "event", "timestamp"})
-    _req(args, ["timestamp"])
+    # --release 为旗标（02a 终审补全 5 授权追加）：本地归一为 --release=1，不动全局 _parse
+    rest = [("--release=1" if tok == "--release" else tok) for tok in rest]
+    args = _parse(rest, {"phase", "event", "timestamp", "session", "release",
+                         "round", "note", "spawn"})
+    _req(args, ["timestamp", "session"])
     ctx = Ctx(goal_dir)
     ctx.tier0()
     phase = args.get("phase", "")
     if phase and phase not in GATES:
         raise Reject("phase 不在九门枚举 {P0,P1,P2,P3,P4,P5,P5.5,P6.0,P6}: " + phase)
+    release = bool(args.get("release"))
+    spawn = args.get("spawn", "fresh")
+    if spawn not in ("fresh", "auto", "manual"):
+        raise Reject("spawn 不在 {fresh,auto,manual}: " + spawn)
+    handoff = [ln for ln in (args.get("note") or "").split("\n") if ln != ""]
+    if state_md.would_overflow(handoff):   # 预检前置：拒收=timeline 也零变更
+        raise Reject("state.md 将超行数硬顶 200——压缩 handoff")
     sp = os.path.join(ctx.s.dir, "state.md")
-    rev = 0
-    if os.path.exists(sp):
-        with open(sp, encoding="utf-8") as f:
-            for ln in f:
-                m = re.match(r"^revision:\s*(\d+)", ln)
-                if m:
-                    rev = int(m.group(1))
-    rev += 1
-    tmp = sp + ".tmp"
-    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
-        f.write("revision: %d\nphase: %s\nevent: %s\n" % (rev, phase, args.get("event", "")))
-    os.replace(tmp, sp)
-    ctx.event(args["timestamp"], "checkpoint revision=%d" % rev, phase=phase)
+    fields, _, perrs = state_md.parse_state(sp)
+    if perrs:
+        raise Reject("state.md 损坏（先 tanyin-phases rebuild-state 对账重建）: " + perrs[0])
+    if fields and fields["session_status"] == "active" \
+            and fields["session"] != args["session"]:
+        raise Reject("单活跃会话：session=%s 持锁未释放（接管走 tanyin-phases restart --spawn manual）"
+                     % fields["session"])
+    # revision ≡ 落账后 timeline 行数（state-rebuild 对账基准=timeline 行数，既有口径不变）；
+    # timeline 先行（第一事实源）：kill -9 撕裂态=timeline 领先 state → state-rebuild FAIL →
+    # rebuild-state 以 timeline 为准重建（设计 §4.1 快照损坏=对账重建）
+    rev = len(ctx.rows("timeline.tsv")) + 1
+    ev = "checkpoint revision=%d%s" % (rev, " release" if release else "")
+    if args.get("event"):
+        ev += " " + args["event"]
+    ctx.event(args["timestamp"], ev, actor="总控", phase=phase)
     ctx.commit({"timeline.tsv"})
+    new_fields = {
+        "revision": str(rev),
+        "goal": ctx.rows("goals.tsv")[0][0] if ctx.rows("goals.tsv") else "",
+        "phase": phase,
+        "round": args.get("round", "0"),
+        "session": args["session"],
+        "session_status": "released" if release else "active",
+        "spawn": spawn,
+        "updated": args["timestamp"],
+        "resume_kit": "resume-kit.md",
+        "snapshot": state_md.snapshot_from_session(ctx.s),
+    }
+    state_md.write_state(sp, new_fields, handoff)
     print("OK" + TAB + "revision=%d" % rev)
     return 0
 
@@ -1133,8 +1159,10 @@ for _n, _f in _IMPL.items():
 # 4. redact 检出/匹配器语法/定长截断(200)/vuln_ref 编号形态/budget 整数段允许 K/M/G 后缀
 #    （01 示例 2M;50000;40 vs 02a「三段整数」）均为高精确度起草规则。
 # 5. assets.in_scope 落 in_scope/out_of_scope 字面量（夹具旧样本 1/0 兼容读）。
-# 6. checkpoint：state.md 行结构批次 3 冻结→仅 revision/phase/event 三行；单活跃会话的「释放」
-#    机制未载→未启用该拒收（否则每轮 checkpoint 被首个卡死）。
+# 6. checkpoint（批次 3 T4 升级）：state.md v2 行结构已冻结（10 固定键+handoff 段，cli/ledger/state_md.py
+#    单一实现）；新参数 --session/--release/--round/--note/--spawn 为 02a 终审补全 5 授权追加（沿
+#    批次 1 探知注记 1 --timestamp 同型先例；契约 02a §13 回注=探知项 G-10，T13 收口统一回注）。
+#    revision ≡ 落账后 timeline 行数（state-rebuild 对账基准，撕裂态=timeline 领先 state）。
 # 7. append-timeline：request-ticket 前置机制未载→未实现；irreversible 的 approvals 绑定
 #    经 --approval 参数化（同 set-intent-status/amend-scope 范式）。
 # 8. matrix-set：VOCAB 校验由「行键须已存在」承载（shared/VOCAB.md 未在仓库）；新置格行

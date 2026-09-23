@@ -646,21 +646,28 @@ class TestMatrixSet(Base):
 
 
 class TestCheckpoint(Base):
+    """批次 3 T4 起为 state.md v2 写者：--session 必填；revision=落账后 timeline 行数
+    （state-rebuild 对账基准；旧「从 1 计数」口径作废——02a 终审补全 5 授权升级）。"""
+
     def test_positive_revisions(self):
         self.assertFalse(os.path.exists(os.path.join(self.gd, "state.md")))
         before = self.n_tl()
-        res = call("checkpoint", self.gd, "--phase=P3", "--event=round-0", "--timestamp=" + TS)
+        res = call("checkpoint", self.gd, "--session=s-w1", "--phase=P3", "--event=round-0",
+                   "--timestamp=" + TS)
         self.assert_ok(res)
-        self.assertIn("revision=1", res[1])
-        self.assertTrue(open(os.path.join(self.gd, "state.md"), encoding="utf-8").read().startswith("revision: 1"))
-        res = call("checkpoint", self.gd, "--phase=P3", "--event=round-1", "--timestamp=" + TS)
-        self.assertIn("revision=2", res[1])
+        self.assertIn("revision=%d" % (before + 1), res[1])
+        self.assertTrue(open(os.path.join(self.gd, "state.md"), encoding="utf-8")
+                        .read().startswith("revision: %d" % (before + 1)))
+        res = call("checkpoint", self.gd, "--session=s-w1", "--phase=P3", "--event=round-1",
+                   "--timestamp=" + TS)
+        self.assertIn("revision=%d" % (before + 2), res[1])
         self.assertEqual(self.n_tl(), before + 2)
         self.assert_ledger_ok()
 
     def test_reject_bad_phase(self):
         snap = self.snap()
-        self.assert_rej(call("checkpoint", self.gd, "--phase=P9", "--timestamp=" + TS), snap, "九门")
+        self.assert_rej(call("checkpoint", self.gd, "--session=s-w1", "--phase=P9",
+                             "--timestamp=" + TS), snap, "九门")
 
 
 class TestAppendTimeline(Base):

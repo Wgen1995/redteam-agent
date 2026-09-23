@@ -46,7 +46,7 @@ VALS = {
     "--decision": "approved", "--approver": "user", "--token-delta": "100",
     "--requests-delta": "1", "--hours-delta": "0.1", "--dollars-delta": "0",
     "--scope": "goal", "--finding-id": "FD-g1-0001", "--evidence-id": "EV-g1-0001",
-    "--observed-at": TS,
+    "--observed-at": TS, "--session": "golden-s",  # 批次 3 T4：checkpoint --session 必填
 }
 KIND_BY_CMD = {"add-scope": "include", "add-cred": "static-cred", "add-intent": "recon",
                "add-fact": "info", "add-edge": "spawns"}
