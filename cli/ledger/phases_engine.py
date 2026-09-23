@@ -604,6 +604,174 @@ def cmd_rebuild_state(goal_dir, rest):
     return rebuild_state(goal_dir, ts, note)
 
 
+# ------------------------------------------------------------- T6：受管重启（护栏四件套）
+# 护栏链（Interfaces 冻结语义）：① verify-chain PASS ② 速率上限（防递归 spawn）
+# ③ 单活跃会话（auto 不得接管 foreign 锁；manual 须 state-rebuild PASS 凭据）
+# ④ 计入预算（重启吃预算→重启循环最终触达 budget-exhausted 合法终态，护栏闭环）
+# ⑤ managed-restart 事件（actor=总控）+ checkpoint 落 state.md v2 新锁
+# ⑥ resume-kit 重生成（T7 接通点）。
+# 与计划参考实现的三处计划↔实现偏差见 HANDOFF「批次 3 T6 裁决」（本方血统语义/
+# 事件词落账通道/接管死锁的 rebuild-state 释放臂），均为计划自身测试与 T4/T5
+# 冻结接口所迫，语义不越设计 §5.2。
+RESTART_RATE_MINUTES = 10   # 探知项 G-3：契约 04 constants 冻结 8 项无此值；模块常量+--rate-minutes 覆盖
+RESTART_TOKEN_COST = 2000   # 探知项 G-4：重启 token 成本口径缺契约源；默认 2000+--token-cost 覆盖（evals 可重放）
+
+
+def _parse_ts(tok):
+    import datetime
+    t = tok.strip()
+    if t.endswith("Z"):
+        t = t[:-1] + "+00:00"
+    dt = datetime.datetime.fromisoformat(t)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=datetime.timezone.utc)
+    return dt.timestamp()
+
+
+def _last_restart_ts(s):
+    """timeline 最近一条 managed-restart 事件的时间戳（护栏②速率基准）。"""
+    ts_i = core.TABLES["timeline.tsv"].index("timestamp")
+    ev_i = core.TABLES["timeline.tsv"].index("event")
+    out = None
+    for r in s.rows("timeline.tsv"):
+        if r[ev_i].startswith("managed-restart"):
+            out = r[ts_i]
+    return out
+
+
+def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost=None):
+    from . import registry, state_md
+    if spawn not in ("auto", "manual"):
+        sys.stderr.write("用法错误: --spawn 需 auto|manual\n")
+        return 2
+    if not ts:
+        sys.stderr.write("用法错误: --timestamp 必填（ISO8601）\n")
+        return 2
+    try:
+        rate = float(rate_minutes) if rate_minutes not in (None, "") \
+            else float(RESTART_RATE_MINUTES)
+    except ValueError:
+        sys.stderr.write("用法错误: --rate-minutes 须数值: %r\n" % rate_minutes)
+        return 2
+    if token_cost in (None, ""):
+        cost = str(RESTART_TOKEN_COST)
+    else:
+        try:
+            cost = str(int(token_cost))
+        except ValueError:
+            sys.stderr.write("用法错误: --token-cost 须整数: %r\n" % token_cost)
+            return 2
+    try:
+        now = _parse_ts(ts)
+    except ValueError:
+        sys.stderr.write("用法错误: --timestamp 非 ISO8601: %r\n" % ts)
+        return 2
+    # ① 链一致：链断=拒绝重启，要求人工 halt
+    s = core.Session(goal_dir)
+    ok, bad = s.verify_chain()
+    if not ok:
+        print("REJECT\trestart\ttimeline 断链行=%d——人工处置（halt）" % bad)
+        return 1
+    # ② 速率上限：距最近一次 managed-restart 不足 rate 分钟 → REJECT（防递归 spawn）
+    last = _last_restart_ts(s)
+    if last:
+        try:
+            delta_min = (now - _parse_ts(last)) / 60.0
+        except ValueError:
+            sys.stderr.write("环境问题: timeline 时间戳非 ISO8601: %r\n" % last)
+            return 2
+        if delta_min < rate:
+            print("REJECT\trestart\trestart-rate-limit last=%s 距今 %.1f 分钟 < %.0f 分钟"
+                  % (last, delta_min, rate))
+            return 1
+    # ③ 单活跃会话：auto 只可延续自身血统（state.spawn=auto）的锁残留——该场景的
+    # 递归防护即护栏②；foreign 血统（fresh/manual）active 锁 auto 一律不得接管。
+    sp = os.path.join(goal_dir, "state.md")
+    fields, _, perrs = state_md.parse_state(sp)
+    if perrs or (os.path.isfile(sp) and not fields):
+        print("REJECT\trestart\tstate.md 损坏：先 rebuild-state（%s）"
+              % (perrs[0] if perrs else "空文件"))
+        return 1
+    if not session:
+        session = "r-" + core.row_hash(ts, [spawn])[:8]
+    takeover = ""
+    handover = bool(fields) and fields["session_status"] == "active" \
+        and fields["session"] != session
+    if handover:
+        if spawn == "auto" and fields.get("spawn") != "auto":
+            print("REJECT\trestart\t单活跃会话：auto 不得接管 active 锁 session=%s"
+                  "（接管走 --spawn manual）" % fields["session"])
+            return 1
+        # 先对账再干活：manual 接管凭据（计划明文）；auto 同血统延续同款对账前置
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rb = registry.lookup("state-rebuild")(goal_dir, [])
+        if rb != 0:
+            head = buf.getvalue().splitlines()
+            print("REJECT\trestart\t%s state-rebuild 未过（先对账再干活）: %s"
+                  % ("manual 接管前置" if spawn == "manual" else "同血统延续前置",
+                     head[0] if head else "FAIL"))
+            return 1
+        if spawn == "manual":
+            takeover = " takeover-of=" + fields["session"]
+    # ④ 计入预算（既有 budget-log，链一致；restart 只编排既有命令，不自写 TSV）
+    b1, b2 = io.StringIO(), io.StringIO()
+    with redirect_stdout(b1), redirect_stderr(b2):
+        rc = registry.lookup("budget-log")(goal_dir, [
+            "--token-delta=" + cost, "--requests-delta=0", "--hours-delta=0",
+            "--dollars-delta=0", "--scope=goal",
+            "--note=managed-restart spawn=" + spawn, "--timestamp=" + ts])
+    if rc != 0:
+        print("REJECT\trestart\tbudget-log 失败: " + b2.getvalue())
+        return 1
+    # ⑤ timeline 事件词（append-timeline 逐字落账，actor=总控）→ 锁交接 → state.md v2。
+    # checkpoint 必须是最后写者（revision ≡ 落账后 timeline 行数不变式）。
+    gate = _current_gate(core.Session(goal_dir))
+    _append_event(goal_dir, gate, "managed-restart spawn=" + spawn + takeover, ts)
+    if handover:
+        # 重建即锁释放（T5 冻结语义）：stale 锁经理 rebuild-state 释放（session=rebuilt/
+        # released），接管者随后经 checkpoint 重取新锁——防双活，无第三写者。
+        rbuf = io.StringIO()
+        with redirect_stdout(rbuf):
+            rrc = rebuild_state(goal_dir, ts, "restart release" + takeover)
+        if rrc != 0:
+            print("REJECT\trestart\t锁释放重建失败: " + rbuf.getvalue())
+            return 1
+    c1, c2 = io.StringIO(), io.StringIO()
+    with redirect_stdout(c1), redirect_stderr(c2):
+        rc = registry.lookup("checkpoint")(goal_dir, [
+            "--session=" + session, "--spawn=" + spawn,
+            "--phase=" + ("" if gate in ("P0", "END") else gate),
+            "--timestamp=" + ts])
+    if rc != 0:
+        print("REJECT\trestart\tcheckpoint 失败: " + c2.getvalue())
+        return 1
+    rev = state_md.parse_state(sp)[0]["revision"]
+    # ⑥ T7 接通点：write_resume_kit(goal_dir, ts)
+    print("OK\trestart\tspawn=%s\trevision=%s\tsession=%s" % (spawn, rev, session))
+    return 0
+
+
+def cmd_restart(goal_dir, rest):
+    spawn = ts = session = rate = cost = None
+    for tok in rest:
+        if tok.startswith("--spawn="):
+            spawn = tok.split("=", 1)[1]
+        elif tok.startswith("--timestamp="):
+            ts = tok.split("=", 1)[1]
+        elif tok.startswith("--session="):
+            session = tok.split("=", 1)[1]
+        elif tok.startswith("--rate-minutes="):
+            rate = tok.split("=", 1)[1]
+        elif tok.startswith("--token-cost="):
+            cost = tok.split("=", 1)[1]
+        else:
+            sys.stderr.write("用法: tanyin-phases restart --goal-dir D --spawn auto|manual "
+                             "--timestamp=T [--session=S] [--rate-minutes=N] "
+                             "[--token-cost=C]\n"); return 2
+    return run_restart(goal_dir, spawn, ts, session, rate, cost)
+
+
 def dispatch(sub, goal_dir, rest):
     if sub == "validate":
         return cmd_validate(rest)
@@ -613,4 +781,6 @@ def dispatch(sub, goal_dir, rest):
         return cmd_denominator_ready(goal_dir, rest)
     if sub == "rebuild-state":
         return cmd_rebuild_state(goal_dir, rest)
+    if sub == "restart":
+        return cmd_restart(goal_dir, rest)
     sys.stderr.write("未知子命令: " + sub + chr(10)); return 2
