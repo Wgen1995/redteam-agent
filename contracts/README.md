@@ -53,3 +53,7 @@
 
 - 契约⑨（09-cli-surface.md）工具面 10→**11**：增补第 11 工具 tanyin-phases（phases.yaml 确定性状态机运算；G-1 裁决，允许类=四类允许之首「确定性账本运算」）。微版本勘误通道，不升 schema_version——详见该文件文末勘误补记。
 - 契约 02a（02a-command-signatures-draft.md）§13 checkpoint 参数扩展（G-10：--timestamp/--session/--release/--round/--note/--spawn）与 state.md v2 十键行结构（G-6）回注。微版本勘误通道，不升 schema_version——详见该文件文末勘误补记（批次 3 T13 收口）。
+
+## v2 勘误补记（2026-09-24·批次 3 评审收尾）
+
+- 契约⑨（09-cli-surface.md）tanyin-phases 子命令枚举三处 6→**7**：补第 7 子命令 denominator-ready（分母就绪门，PROTOCOL §4；Important-1）。微版本勘误通道，不升 schema_version——详见该文件文末勘误补记。

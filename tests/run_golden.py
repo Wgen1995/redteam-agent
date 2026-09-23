@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-"""黄金回归总驱动（批次 1 T13）——41 命令全覆盖。"""
-import os, re, shutil, subprocess, sys, tempfile
+"""黄金回归总驱动（批次 1 T13）——41 命令全覆盖。
+
+缺金样门槛（批次 3 评审·审计#7）：默认缺金样=FAIL 不落盘（防 CI 首跑/漏提交
+误建档判绿）；--bless 显式建档（INIT）。在场金样漂移即 FAIL，语义不变。"""
+import argparse, os, re, shutil, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "..", "cli", "tanyin-ledger")
@@ -146,6 +149,29 @@ def norm_read(text):
     return ts.sub("TS", text).strip()
 
 
+def parse_args(argv=None):
+    ap = argparse.ArgumentParser(
+        description="黄金回归：双跑确定性+金样比对；缺金样默认 FAIL，--bless 显式建档")
+    ap.add_argument("--bless", action="store_true",
+                    help="缺金样时落盘建档（INIT）；默认缺金样=FAIL 不落盘")
+    return ap.parse_args(argv)
+
+
+def gate_golden(gp, text, label, bless, fails, inits, drift):
+    """金样门槛（批次 3 评审·审计#7）：缺金样无 --bless=FAIL 不落盘；--bless=INIT
+    落盘；在档漂移=FAIL（bless 不豁免）。空白容忍比对=原三处就地语义。"""
+    if not os.path.exists(gp):
+        if bless:
+            with open(gp, "w", encoding="utf-8", newline="\n") as f:
+                f.write(text)
+            inits.append(label)
+        else:
+            fails.append(label + "(缺金样，须 --bless 显式建档)")
+        return
+    if open(gp, encoding="utf-8").read().strip() != text.strip():
+        fails.append(label + "(" + drift + ")")
+
+
 def norm_state(gd):
     ts = re.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z?")
     parts = []
@@ -158,7 +184,8 @@ def norm_state(gd):
     return chr(10).join(parts)
 
 
-def main():
+def main(argv=None):
+    bless = parse_args(argv).bless
     fails, inits = [], []
     with tempfile.TemporaryDirectory() as t1, tempfile.TemporaryDirectory() as t2:
         for spec in READ_CMDS:
@@ -171,12 +198,7 @@ def main():
                 fails.append(name + "(不确定性)")
                 continue
             gp = os.path.join(GOLD, "read-" + name + ".norm")
-            if not os.path.exists(gp):
-                with open(gp, "w", encoding="utf-8", newline="\n") as f:
-                    f.write(o1)
-                inits.append(name)
-            elif open(gp, encoding="utf-8").read().strip() != o1:
-                fails.append(name + "(输出漂移)")
+            gate_golden(gp, o1, name, bless, fails, inits, "输出漂移")
         for name in WRITE_CMDS:
             outs = []
             for t in (t1, t2):
@@ -192,12 +214,7 @@ def main():
                 fails.append(name + "(状态不确定性)")
                 continue
             gp = os.path.join(GOLD, "write-" + name + ".state")
-            if not os.path.exists(gp):
-                with open(gp, "w", encoding="utf-8", newline="\n") as f:
-                    f.write(o1 + chr(10) + s1)
-                inits.append(name)
-            elif open(gp, encoding="utf-8").read().strip() != (o1 + chr(10) + s1).strip():
-                fails.append(name + "(状态漂移)")
+            gate_golden(gp, o1 + chr(10) + s1, name, bless, fails, inits, "状态漂移")
         for spec in PHASES_CMDS:
             a1 = run_phases(spec)
             a2 = run_phases(spec)
@@ -206,12 +223,7 @@ def main():
                 fails.append("phases-" + spec[0] + "(不确定性或非零退出)")
                 continue
             gp = os.path.join(GOLD, "phases-" + spec[0] + ".norm")
-            if not os.path.exists(gp):
-                with open(gp, "w", encoding="utf-8", newline="\n") as f:
-                    f.write(o1)
-                inits.append("phases-" + spec[0])
-            elif open(gp, encoding="utf-8").read().strip() != o1:
-                fails.append("phases-" + spec[0] + "(输出漂移)")
+            gate_golden(gp, o1, "phases-" + spec[0], bless, fails, inits, "输出漂移")
     for n in inits:
         print("INIT " + n)
     if fails:

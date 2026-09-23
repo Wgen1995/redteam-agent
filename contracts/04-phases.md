@@ -66,7 +66,7 @@
 
 | # | cmd | expect |
 |---|---|---|
-| 1 | `ledger-tree-check --complete parent` | PASS（资产树完整） |
+| 1 | `ledger-tree-check --complete parent`（执行断言词=裸 `ledger-tree-check`：02a 终审签名「参数=无（读账本）」，批次 3 T11 裁决——「--complete parent」为设计期语义注记（01 §3.7 同源），yaml/誊录勿复引） | PASS（资产树完整） |
 | 2 | `ledger-scope-check --all-assets` | 全部资产已判定 |
 | 3 | `ledger-validate` | PASS |
 
