@@ -26,6 +26,7 @@
 2026-09-24｜子代理 T2｜批次3 T2：phases schema 校验器+九门断言命令存在性（all_commands 41 基名单源）+tanyin-phases 入口(+.cmd)；phases-validate 金样接入 run_golden 既有机制；G-1 契约09/README 勘误 10→11；TDD 先红后绿 7 新用例，全套 241 绿+金样 PASS（21读+20写+1phases）｜2350924
 2026-09-24｜子代理 T3｜批次3 T3：gate 断言执行器（断言→命令调用协议落地：判定表/already-passed 幂等/前置门 REJECT/gate-exit+gate-fail 事件）+phases/PROTOCOL.md 冻结接口落盘；追加件：分母就绪门 denominator-ready（多源法定/类覆盖/外推闭包三断言，只读账本零落账）；TDD 先红后绿 13 新用例，全套 254 绿+金样 PASS 零漂移（新增 phases-gate-p0.norm 与 phases-denominator-ready.norm 两静态基线）｜4c8c28a
 2026-09-24｜子代理 T4｜批次3 T4：state.md v2 行结构冻结（10 固定键+handoff≤200 行硬顶+tmp+os.replace 原子写；cli/ledger/state_md.py 单一实现）+checkpoint 升级（--session 必填/--release 旗标/--round/--note/--spawn+单活跃会话锁+snapshot 确定性投影）；TDD 先红后绿 10 新用例，全套 264 绿+金样 PASS（write-checkpoint.state 有意刷新=旧三行格式作废；run_golden VALS 补 --session=golden-s）｜95a79b0
+2026-09-24｜子代理 T5｜批次3 T5：state-rebuild v2 对账升级（链一致+parse_state 结构/枚举/200 行+revision==timeline 行数+snapshot 与账本重算一致——对账实质；FAIL 提示统一指向 rebuild-state）+tanyin-phases rebuild-state 对账重建（链断拒绝自愈 halt/tmp 残留清扫/重建即锁释放 session=rebuilt+released+spawn=manual）；TDD 先红后绿 6 新用例（含自加 snapshot 篡改钉死例），全套 270 绿+金样 PASS（read-state-rebuild.norm 有意刷新=absent 态信息移第二行，首行字节不变；test_query_check 旧例 v2 适配）｜acb1114
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -33,6 +34,14 @@
 - Ruling（既有面适配③）：--session 必填使批次 1 TestCheckpoint 两用例改写（补 session+动态 revision）——属 02a 终审补全 5+G-10 授权范围内的必然后果，非命令面破坏；test_write_cmds 其余 263 用例零触碰。
 - Ruling（G-6/G-10 契约回注）：计划 T4 Files 节未列 contracts/02a——本任务不回注，留 T13 收口统一回注（G-6=state.md v2 十键表引用、G-10=checkpoint 五新参数签名）；commit 消息已按 G-10 处置注明先例。
 - 附注：计划测试的 snap_all 沿用 open().read() 不关句柄（与批次 1 snapshot helper 同款范式），ResourceWarning 为噪音不处理；自加 test_corrupt_state_rejects 补「损坏 state.md→REJECT 提示 rebuild-state」缺口（计划未列但属锁语义前置件）。
+
+## 2026-09-24 批次 3 T5 裁决（实现者记）
+- Ruling（计划内部矛盾①·absent 态输出位置）：计划 Step3 参考代码把 state.md=absent 附在首行（PASS<TAB>revision=N<TAB>state.md=absent），与 Global Constraints「state-rebuild 输出保持 PASS<TAB>revision=<n> 首行不变」及 T5 Interfaces「追加信息放第二行」互斥——按接口文字（约束层最强）裁决：absent 标记移至第二行；金样按 Step5 明文预案同步有意刷新（首行 PASS<TAB>revision=8 字节不变，实测比对确认）。
+- Ruling（计划测试 bug②·append-timeline 空 phase）：计划 TestRebuild 撕裂态 B 构造用 --phase= ——_req 拒空值必 Reject，测试会红在无关点；其意图仅「账本再前进一行」，改 --phase=P3（与 checkpoint 同门上下文）。
+- Ruling（计划↔实现偏差③·phase 域 END 映射）：计划代码「"" if gate == "P0" else gate」在 P6 已过（_current_gate→END）时产出 phase=END——v2 冻结格式 phase∈{P0..P6,空}，parse_state 判损坏、重建后 state-rebuild 反 FAIL，违背「rebuild 后对账一致」意图；扩展 END→空（收官态由 timeline gate-exit:P6 事实承载，state.md 不重复编码）。
+- Ruling（健壮性④·空 state.md 防御）：计划代码对空文件/仅 handoff 头的 state.md（parse_state 得 fields={} 且 errs=[]）会 KeyError 裸崩；补「errs or not fields」守卫→FAIL 损坏+rebuild-state 提示（对账 fail-closed 意图的必然延伸，计划测试未列）。
+- 既有面适配（T4 裁决③同型）：test_query_check.test_state_rebuild 旧正例写「单行 revision: 8」文件——v2 对账下=损坏态必红；按 v2 语义改写真 v2 结构（snapshot=账本重算）并补 snapshot 漂移负例。264→270=计划 5 例+自加 test_state_rebuild_detects_snapshot_tamper（revision 一致而 snapshot 不一致——「对账」新检查项唯一直接正红例，防漂移钉死）。
+- 撕裂三态判定（T12 kill -9 eval 的语义地基）：A=tmp 残留→rebuild-state 先清扫再重建；B=timeline 领先 state（checkpoint 落账后被杀）→state-rebuild FAIL（revision 不齐）→rebuild-state 以账本为准重建；C=state.md 缺失→state-rebuild PASS+absent 标记（非错误，账本第一事实源）→rebuild-state 初始化。链断≠撕裂：verify_chain 不过即拒绝重建（exit 1 halt 人工处置），三态之外零自愈通道。
 
 ## 探知项（实现期发现，回写设计）
 - （待批次3计划/审计子代理回报后登记）
