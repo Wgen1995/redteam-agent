@@ -861,6 +861,31 @@ def cmd_resume_kit(goal_dir, rest):
     return write_resume_kit(goal_dir, ts)
 
 
+# ------------------------------------------------------- T8：幂等续跑判定（cached）
+# 设计 §5.2「工件即缓存」派发侧查询面：P3 ③批量并行派发前逐 intent 查 SKIP/RUN，
+# 重入已交付工件（submissions/<id>/submission.json 在位）零重跑。只读零副作用
+# （§5.3 查询纪律）——复用 T7 cache_lines 单一实现，不重复判定逻辑。
+
+def cmd_cached(goal_dir, rest):
+    iid = None
+    for tok in rest:
+        if tok.startswith("--intent-id="):
+            iid = tok.split("=", 1)[1]
+        else:
+            sys.stderr.write("用法错误: cached [--intent-id=INT-...]\n")
+            return 2
+    s = core.Session(goal_dir)
+    rows = cache_lines(s, goal_dir)
+    if iid:
+        st = next((v for k, v in rows if k == iid), None)
+        print(st if st else "RUN")
+        return 0
+    print("#count=%d" % len(rows))
+    for k, v in rows:
+        print(k + chr(9) + v)
+    return 0
+
+
 def dispatch(sub, goal_dir, rest):
     if sub == "validate":
         return cmd_validate(rest)
@@ -874,4 +899,6 @@ def dispatch(sub, goal_dir, rest):
         return cmd_restart(goal_dir, rest)
     if sub == "resume-kit":
         return cmd_resume_kit(goal_dir, rest)
+    if sub == "cached":
+        return cmd_cached(goal_dir, rest)
     sys.stderr.write("未知子命令: " + sub + chr(10)); return 2
