@@ -747,7 +747,10 @@ def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost
         print("REJECT\trestart\tcheckpoint 失败: " + c2.getvalue())
         return 1
     rev = state_md.parse_state(sp)[0]["revision"]
-    # ⑥ T7 接通点：write_resume_kit(goal_dir, ts)
+    # ⑥ resume-kit 重生成（T7 接通点：重启收尾刷新恢复注入白名单——链已①验、
+    # state 已⑤写，此处失败仅剩环境级故障，按 halt 语义退出 1 人工处置）。
+    if write_resume_kit(goal_dir, ts) != 0:
+        return 1
     print("OK\trestart\tspawn=%s\trevision=%s\tsession=%s" % (spawn, rev, session))
     return 0
 
@@ -772,6 +775,92 @@ def cmd_restart(goal_dir, rest):
     return run_restart(goal_dir, spawn, ts, session, rate, cost)
 
 
+# ------------------------------------------------------- T7：resume-kit 白名单生成器
+# 恢复注入白名单（设计 §5.2 受管重启/铁律 2 上下文生命周期受管）：新会话只注入
+# 恢复必需摘要（state.md+本文件+当前门方法论+四查询摘要各一次），禁全量历史回灌。
+# 产物结构=计划 T7 冻结模板；cache_lines 按 T8 接口形状落地（T8 cmd_cached 共用）。
+
+def cache_lines(s, goal_dir):
+    """幂等续跑判定（设计 §5.2「工件即缓存」）：intent done 且
+    submissions/<id>/submission.json 存在→SKIP；其余（含 done 无工件）→RUN。
+    确定性只读（§5.3 查询纪律）——T8 cmd_cached 消费本单一实现。"""
+    from . import query_cmds as q
+    out = []
+    for key, r in sorted(q.latest_intents(s).items()):
+        iid = key[0]
+        if q._cell(r, "intents.tsv", "status") != "done":
+            continue
+        p = os.path.join(goal_dir, "submissions", iid, "submission.json")
+        out.append((iid, "SKIP" if os.path.isfile(p) else "RUN"))
+    return out
+
+
+def write_resume_kit(goal_dir, ts):
+    s = core.Session(goal_dir)
+    ok, bad = s.verify_chain()
+    if not ok:
+        print("FAIL resume-kit: timeline 断链行=%d——先人工处置" % bad)
+        return 1
+    gate = _current_gate(s)
+    goal = s.rows("goals.tsv")[0][0] if s.rows("goals.tsv") else ""
+    # Ruling（T5 裁决③同型·END 分支）：_current_gate 可为 END（P6 已收官），模板直译
+    # 会产出 phases/END.md 悬空引用（九门 md 只有 P0..P6）——收官态无单门方法论可载，
+    # 收官事实由 timeline gate-exit:P6 承载（state.md phase 域同款语义）。
+    gate_md = ("- phases/（END：九门已收官，无当前门方法论单载）"
+               if gate == "END" else "- phases/" + gate + ".md（当前门方法论，单门单载）")
+    lines = [
+        "# resume-kit · 恢复注入白名单（先对账再干活）",
+        "goal: " + goal,
+        "current_gate: " + gate,
+        "updated: " + ts,
+        "",
+        "## 0 对账（必须先过；任一失败=停止并人工，禁止跳到干活）",
+        "1. tanyin-ledger verify-chain --goal-dir <D>       → PASS 才继续",
+        "2. tanyin-ledger state-rebuild --goal-dir <D>      → FAIL 则 tanyin-phases rebuild-state 后复跑本条",
+        "",
+        "## 1 注入白名单（新会话上下文只许进这些）",
+        "- state.md（handoff 与 snapshot）",
+        "- resume-kit.md（本文件）",
+        gate_md,
+        "- 四个查询摘要各一次（计数+top-N，禁全量回灌）：pending-intents / unconsumed-facts / matrix-gaps / budget-check",
+        "",
+        "## 2 禁注入清单（铁律 2 上下文生命周期受管）",
+        "- 13 表 TSV 全量回灌 / 工件原文（artifacts/、*.raw）/ 子代理会话记录",
+        "",
+        "## 3 幂等续跑判定（重入先查此表）",
+    ]
+    cl = cache_lines(s, goal_dir)
+    if not cl:
+        lines.append("- （无 done intent）")
+    for iid, st in cl:
+        lines.append("- %s  %s" % (iid, st))
+    path = os.path.join(goal_dir, "resume-kit.md")
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines) + "\n")
+    os.replace(tmp, path)
+    print("OK\tresume-kit\tgate=%s\tcached=%d" % (gate, len(cl)))
+    return 0
+
+
+def cmd_resume_kit(goal_dir, rest):
+    ts = None
+    for tok in rest:
+        if tok.startswith("--timestamp="):
+            ts = tok.split("=", 1)[1]
+        else:
+            sys.stderr.write("用法: tanyin-phases resume-kit --goal-dir D [--timestamp=T]\n")
+            return 2
+    if not ts:
+        # 缺省时间戳=timeline 最后一行（确定性投影；禁 datetime.now 进产物——金样可重放）
+        rows = core.Session(goal_dir).rows("timeline.tsv")
+        ts = rows[-1][core.TABLES["timeline.tsv"].index("timestamp")] if rows else ""
+    if not ts:
+        sys.stderr.write("用法错误: --timestamp 必填（ISO8601；timeline 空无法取缺省值）\n")
+        return 2
+    return write_resume_kit(goal_dir, ts)
+
+
 def dispatch(sub, goal_dir, rest):
     if sub == "validate":
         return cmd_validate(rest)
@@ -783,4 +872,6 @@ def dispatch(sub, goal_dir, rest):
         return cmd_rebuild_state(goal_dir, rest)
     if sub == "restart":
         return cmd_restart(goal_dir, rest)
+    if sub == "resume-kit":
+        return cmd_resume_kit(goal_dir, rest)
     sys.stderr.write("未知子命令: " + sub + chr(10)); return 2

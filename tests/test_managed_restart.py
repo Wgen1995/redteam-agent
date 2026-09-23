@@ -60,6 +60,9 @@ class TestRestart(Base):
         self.assertEqual(errs, [])
         self.assertEqual(f["spawn"], "auto")
         self.assertEqual(f["session_status"], "active")
+        # ⑥ T7 接通：重启收尾重生成 resume-kit（恢复注入白名单）
+        self.assertIn("恢复注入白名单",
+                      open(os.path.join(self.gd, "resume-kit.md"), encoding="utf-8").read())
 
     def test_rate_limit_second_restart_within_window(self):
         self.restart("--spawn=auto", "--timestamp=" + T0)

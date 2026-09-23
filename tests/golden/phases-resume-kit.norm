@@ -1,0 +1,20 @@
+# resume-kit · 恢复注入白名单（先对账再干活）
+goal: G-g1-0001
+current_gate: P4
+updated: 2026-09-24T11:00:00Z
+
+## 0 对账（必须先过；任一失败=停止并人工，禁止跳到干活）
+1. tanyin-ledger verify-chain --goal-dir <D>       → PASS 才继续
+2. tanyin-ledger state-rebuild --goal-dir <D>      → FAIL 则 tanyin-phases rebuild-state 后复跑本条
+
+## 1 注入白名单（新会话上下文只许进这些）
+- state.md（handoff 与 snapshot）
+- resume-kit.md（本文件）
+- phases/P4.md（当前门方法论，单门单载）
+- 四个查询摘要各一次（计数+top-N，禁全量回灌）：pending-intents / unconsumed-facts / matrix-gaps / budget-check
+
+## 2 禁注入清单（铁律 2 上下文生命周期受管）
+- 13 表 TSV 全量回灌 / 工件原文（artifacts/、*.raw）/ 子代理会话记录
+
+## 3 幂等续跑判定（重入先查此表）
+- INT-g1-0001  RUN
