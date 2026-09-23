@@ -258,7 +258,7 @@
 - 依据：定稿 §4.10/§5.2 P3 置格+events（authz 差分落标准格）／契约01 §3.10。时机：P3 演进循环置格；P2 后新资产一律 submatrix: 行。
 
 ### 13. checkpoint〔写 13/18〕
-- 签名：checkpoint [--phase=<timeline.phase>] [--event=<timeline.event>]【推导：本命令写 state.md（非 13 表），无账本字段可引；phase/event 沿 timeline 同名字段语义标注】
+- 签名：checkpoint [--phase=<timeline.phase>] [--event=<timeline.event>]【推导：本命令写 state.md（非 13 表），无账本字段可引；phase/event 沿 timeline 同名字段语义标注】（批次 3 参数扩展 --timestamp/--session/--release/--round/--note/--spawn 与 state.md v2 十键行结构=文末 2026-09-24 勘误补记·G-6/G-10）
 - 参数：
 
 |参数|类型|必填|取自表.字段|
@@ -269,7 +269,7 @@
 
 - 输出：`OK<TAB>revision=<n>`（state.md 原子替换、revision 递增——kill -9 半写兜底）。
 - 拒收条件：Tier 0 通用基线（无 goals 行=REJECT）；违反单活跃会话约束（single_active_session=true，已有未释放 checkpoint）=REJECT【推导：§5.2 补充语义护栏的写侧形态】；--phase∉九门=REJECT【推导】。
-- 依据：定稿 §5.2 P3 duty⓪+补充语义（受管重启护栏）/§3.3 Context/§4.1；契约01 §1（与 state-rebuild 对偶）。时机：P3 每轮⓪步；受管重启前。state.md 内部行结构定稿未载→文末无法起草项 5。
+- 依据：定稿 §5.2 P3 duty⓪+补充语义（受管重启护栏）/§3.3 Context/§4.1；契约01 §1（与 state-rebuild 对偶）。时机：P3 每轮⓪步；受管重启前。state.md 内部行结构定稿未载→文末无法起草项 5（→ 2026-09-24 勘误补记已回注·G-6/G-10）。
 
 ### 14. append-timeline（ledger-append-timeline）〔写 14/18〕
 - 签名：append-timeline --actor=<timeline.actor> --phase=<timeline.phase> --event=<timeline.event> [--revert-cmd=<timeline.revert_cmd>]
@@ -648,8 +648,39 @@
 2. **hash-recheck 校验范围**【推导转正】：timeline.tsv 全链重算（逐行 prev_hash→hash 连锁验证，任何历史行篡改即断链）+ E-index content_hash 双轨抽验（raw+normalized）。
 3. **matrix-freeze 载体**：matrix.tsv 新增第 8 列 frozen_at（锚点行冻结时间戳，空=未冻结；不可重复冻结=拒收条件）。
 4. **set-replay-state 落账列**：目标=findings.exploitation_status（verified/suspected/ruled_out 三态，§4.7 已载由 P4 重放门维护——不新增列）。
-5. **checkpoint state.md 行结构**：属批次 3 接口（常驻集/state 格式批次 3 冻结），本批不代拟。
+5. **checkpoint state.md 行结构**：属批次 3 接口（常驻集/state 格式批次 3 冻结），本批不代拟。（→ 批次 3 T4 已冻结、2026-09-24 勘误补记回注闭环·G-6/G-10）
 
 ## 九门断言四命令（41 面终审并入）
 
 签名同校验类范式：ledger-scope-coverage（P0 出口：对照 scope 全覆盖）、ledger-tree-check（P1 出口：资产树完整性）、ledger-replay-summary（P4 出口：重放门三态汇总）、ledger-terminal-gate（P5 出口：终态门禁断言）——参数=无（读账本），输出=PASS/FAIL+原因清单，拒收=账本缺失/链断。【推导转正】
+
+## v2 勘误补记（2026-09-24·批次 3 施工期·G-6/G-10 裁决）
+
+批次 3 T4 冻结 state.md v2 行结构并升级 checkpoint（终审补全 5「属批次 3 接口，本批不代拟」的落账），本节按 G-6/G-10 建议裁决回注。勘误通道：微版本勘误（零存量数据期，同批次 1「v2 勘误」与 2026-09-24 契约⑨ G-1 同批次先例），schema_version 保持 =2 不递增；本补记日期 2026-09-24。
+
+### G-10：checkpoint 签名回注（第 13 节参数表补全）
+
+- 签名（终局）：`checkpoint --timestamp=<ISO8601> --session=<会话标识> [--phase=<timeline.phase>] [--event=<timeline.event>] [--release] [--round=<n>] [--note=<handoff 文本>] [--spawn=<fresh|auto|manual>]`
+- 参数追加：--timestamp（必填，批次 1 确定性口径——落账时间戳一律取自参数，禁 datetime.now() 进账本）；--session（必填，单活跃会话锁的持锁方标识）；--release（旗标，命令内本地归一 --release=1：置 session_status=released）；--round（P3 轮次，缺省 0）；--note（多行文本→state.md handoff 段）；--spawn（会话血统枚举 {fresh,auto,manual}，缺省 fresh）。--phase/--event 语义不变（九门枚举/事由）。
+- 输出 schema 不变：`OK<TAB>revision=<n>`（41 面冻结的唯一例外=本命令；例外边界=终审补全 5+批次 3 计划 Global Constraints 明文授权）。
+- 拒收条件补全：--spawn∉{fresh,auto,manual}=REJECT；--note 致 state.md 超 200 行硬顶=REJECT（写前预检，timeline 零变更）；state.md 损坏=REJECT（提示 rebuild-state 对账重建）；单活跃会话锁：state.md session_status=active 且 session≠--session=REJECT（接管走 tanyin-phases restart --spawn manual）。
+- revision 语义（批次 3 裁决钉死）：revision ≡ 本次 checkpoint 落账后 timeline 总行数（state-rebuild 对账基准=timeline 行数，既有口径不变）。
+
+### G-6：state.md v2 键表回注（第 13 节「state.md 内部行结构」补全）
+
+行结构：全文 ≤200 行硬顶；固定段在前、`--- handoff ---` 分隔行、handoff 自由文本行在后；写入=tmp+os.replace 原子替换（kill -9 半写兜底：要么旧版要么新版，无第三态）。冻结单一实现=cli/ledger/state_md.py（KEY_ORDER；checkpoint 与 tanyin-phases rebuild-state 共用，防双份清单漂移），字节基线=tests/golden/write-checkpoint.state：
+
+|序|键|取值/铸造|
+|---|---|---|
+|1|revision|≡ 落账后 timeline 行数（见 G-10 节）|
+|2|goal|goals.tsv 首行 id|
+|3|phase|checkpoint --phase（九门或空；收官态不编码——由 gate-exit:P6 事实承载）|
+|4|round|checkpoint --round（缺省 0）|
+|5|session|checkpoint --session（持锁会话标识）|
+|6|session_status|active / released（--release 置 released）|
+|7|spawn|fresh / auto / manual|
+|8|updated|--timestamp（ISO8601，确定性）|
+|9|resume_kit|常量 resume-kit.md（恢复工件锚）|
+|10|snapshot|intents_pending=N;facts_unconsumed=N;matrix_gaps=N;budget_token_left=N（账本重算投影；无 token 上限时末位留空）|
+
+对账与重建：state-rebuild（校验面，第 35 节）对账 revision≡timeline 行数+snapshot 与账本重算一致+结构/枚举/行数；tanyin-phases rebuild-state（恢复面）以 timeline 为第一事实源对账重建（链断拒绝自愈，halt 人工处置）。

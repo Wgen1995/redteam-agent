@@ -68,3 +68,43 @@ python3 tests/make_fixtures.py              # 重铸夹具（13 表确定性样�
 出口验证：canary 各档位零容忍（tier0 scope-check 5/5、tier1 guard 5/5、tier2 hook 模拟器 5/5、tier3 真编译 ACL 5/5）；redact 注入 36/36=100%、误报 0；预算/速率限额拒绝可测（budget-exhausted/rate-limit REJECT 落 timeline）。
 
 边界：python3 3.9+ 标准库零三方依赖；state.md 完整结构留批次 3；实代理与真宿主挂载=批次 6 靶场；vault 现为 sha256 密钥流 XOR（条目格式不变，批次 6 换真加密）。
+
+## 批次 3：总控 SKILL 路由器 + phases.yaml 引擎 + 受管重启/恢复体系
+
+认知与确定性分离：仓库根 SKILL.md=常驻权威集路由器（<2K token，八节结构）；phases/P0..P6.md=九门方法论按需加载；phases/phases.yaml=九门状态机声明层——执法权威仍在 41 条账本命令，断言→命令调用判定协议冻于 phases/PROTOCOL.md（批次 3 两份批次间接口合订本：协议+常驻集清单，另附干跑口径/分母就绪门）。
+
+### tanyin-phases 子命令速查（第 11 工具；契约 09 勘误 10→11）
+
+| 子命令 | 形态 | 语义 |
+|---|---|---|
+| validate | `tanyin-phases validate [--phases=P]` | phases.yaml 契约 04 合法性（gates=9 asserts=21 constants=8 back_edges=3）；金样 phases-validate.norm 入黄金回归 |
+| gate | `tanyin-phases gate --goal-dir D --phase <门> [--timestamp=T]` | exit 断言执行（PROTOCOL §1 判定表）；already-passed 幂等；前置门缺=REJECT 零落账 |
+| denominator-ready | `tanyin-phases denominator-ready --goal-dir D` | 分母就绪门（T3 追加件，PROTOCOL §4；只读账本，0=就绪/1=FAIL 清单/2=用法） |
+| restart | `tanyin-phases restart --goal-dir D --spawn auto\|manual --timestamp=T [--session=S] [--rate-minutes=N] [--token-cost=C]` | 受管重启护栏（①verify-chain ②速率上限 ③单活跃会话 ④计入预算）+managed-restart 事件+resume-kit 重生成 |
+| resume-kit | `tanyin-phases resume-kit --goal-dir D [--timestamp=T]` | 恢复注入白名单生成器（先对账再干活；缺省时间戳=timeline 末行——确定性） |
+| cached | `tanyin-phases cached --goal-dir D [--intent-id=INT-…]` | 工件即缓存幂等续跑判定（intent done 且 submission.json 在位→SKIP；只读零副作用） |
+| rebuild-state | `tanyin-phases rebuild-state --goal-dir D --timestamp=T [--note=文本]` | state.md 对账重建（timeline 第一事实源；链断拒绝自愈=halt 人工处置） |
+
+- 时间戳确定性：--timestamp=ISO8601 必填处一律显式传入，禁 datetime.now() 进账本/产物（evals 与金样可重放）；Windows 等价入口 `py -3 cli\tanyin-phases validate`（同目录 tanyin-phases.cmd 包装）。
+- 退出码：0=通过 / 1=门禁失败（halt，可重跑） / 2=用法或环境（对齐 Strix）。
+
+### state.md v2 十键速览（契约 02a 勘误补记·G-6/G-10 已回注）
+
+固定键序（全文 ≤200 行硬顶；`--- handoff ---` 分隔自由文本段；tmp+os.replace 原子写——kill -9 半写兜底）：revision（≡本次落账后 timeline 行数）→ goal → phase（九门或空）→ round → session → session_status（active/released）→ spawn（fresh/auto/manual）→ updated → resume_kit → snapshot（intents_pending/facts_unconsumed/matrix_gaps/budget_token_left 账本重算投影）。sanctioned 写者=checkpoint（升级后）与 rebuild-state；state-rebuild 对账（revision≡timeline 行数+snapshot 重算一致）。
+
+### 干跑一屏示例（批次 3 出口①：P0-P2 零对外请求）
+
+```
+python3 cli/tanyin-ledger add-goal --goal-dir <D> … --timestamp=T    # P0 立项（八问落账）
+python3 cli/tanyin-ledger budget-check --goal-dir <D>                 # 预算门在位（立项即读）
+python3 cli/tanyin-ledger add-scope --goal-dir <D> --kind=include|exclude|oob …
+python3 cli/tanyin-egress compile --goal-dir <D>                      # 干跑：只 compile（本地产物）
+python3 cli/tanyin-phases gate --goal-dir <D> --phase P0 --timestamp=T
+python3 cli/tanyin-ledger add-asset --goal-dir <D> --type=root-domain …
+python3 cli/tanyin-phases gate --goal-dir <D> --phase P1 --timestamp=T
+python3 cli/tanyin-ledger matrix-init --goal-dir <D> --timestamp=T
+python3 cli/tanyin-phases gate --goal-dir <D> --phase P2 --timestamp=T    # matrix-freeze 由断言①真跑
+# 判定：timeline 零 request:/request-ticket 事件 + verify-chain PASS（tests/test_dryrun_p0p2.py 5 例）
+```
+
+批次 3 出口验证：干跑 eval+kill -9 保真度 eval（test_kill9_fidelity——恢复后 13 表字节指纹不变+state-rebuild PASS+resume-kit 重生成）+常驻集实测 1321 token<2000+全套单测绿+42 金样面 PASS；探知项台账见 docs/design/2026-09-24-b3-discovery-notes.md（G-1..G-15 终态）。
