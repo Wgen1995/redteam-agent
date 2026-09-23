@@ -10,6 +10,7 @@
 - 批次 0/1/2 完成度独立审计：**进行中**（子代理 865488fb，出口条款逐条实测）
 - 全景图 v2：定稿（0fbab87 模拟运行；SPEC 三层契约在 docs/design/imported/TanYin/panorama/SPEC.md）
 - 工程纪律：UTF-8+LF 红线/py -3 等价/双平台 CI（.github/workflows/ci.yml）
+- 批次 3 评审收尾：✅（2026-09-24）评审结论=可收，Important×2 已清（契约09 枚举补齐+金样进 CI --bless 门槛）；317→322 单测全绿+42 金样面 PASS（详见文末「批次 3 评审收尾入账」节）
 
 ## 交战区指针
 - 设计定稿：docs/design/2026-09-21-tanyin-v2-design.md（§2 铁律/§5 循环/§11 批次表）
@@ -37,6 +38,7 @@
 2026-09-24｜子代理 T11｜批次3 T11：干跑 eval——P0-P2 零对外请求（STEPS=总控行为脚本化 13 步：add-goal→budget-check→scope 三行→skill-version 事件→egress compile→gate P0→add-asset→gate P1→matrix-init→gate P2；判定=timeline 零 request:/request-ticket 事件+三门 gate-exit PASS 齐备+verify-chain/state-rebuild PASS+双跑同事件数（T12 底座））+追加件总控纪律三断言（①gate-exit 首现序恰=[P0,P1,P2] ②13 表内容 diff 逐表须有窗口内 timeline 命令事件词可解释（TABLE_EVENTS=ctx.event 落点全集）③budget-check 调用窗日志在位且退出 0）；裁决：P1 断言词 02a 终审签名裁 bare ledger-tree-check+计划测试 bug fresh_drydir 传 td.name；TDD 先红后绿（红₁=TypeError×2，红₂=ENV-HALT gate:P1 tree-check 用法错，红₃=追加件③ hits=[]；绿=5/5），全套 299→304 绿+金样 PASS 零漂移（T11 无新金样，hash=a347edd7 前后一致；phases.yaml 单词改零漂移=validate 计数型输出 asserts=21 不变）｜2df8d81
 2026-09-24｜子代理 T12｜批次3 T12：kill -9 保真度 eval——撕裂三态+POSIX 随机断点（seed 固定）+断点×摘除 22 组合穷举，恢复后 13 表字节指纹零变更+state-rebuild PASS+resume-kit 重生成（304→310；本流水行由 T13 补记——9f6f651 当时只落 T12 裁决节）｜f695210
 2026-09-24｜子代理 T13｜批次3 T13：收口——契约02a回注 G-6/G-10（微版本勘误通道同批次G-1先例；state.md v2 十键表与 state_md.KEY_ORDER 单源钉死+checkpoint 终局签名八参数）+cli/README 批次3节+探知项台账 G-1..G-15 落盘归并+出口验收 11 条逐条实测（310→317 绿+42 金样面 PASS；tests/test_contract_backfill.py 7 例 TDD 先红后绿）｜5c62bd6
+2026-09-24｜子代理（评审收尾）｜批次3 评审收尾：Important×2 清账——①契约09 tanyin-phases 子命令枚举三处 6→7（补 denominator-ready；微版本勘误通道=文末勘误补记+README 索引登记）②金样回归进 CI（ci.yml 四格矩阵 Golden regression 步；run_golden 缺金样默认 FAIL+--bless 显式建档门槛，单测 5 例 TDD 先红后绿）+顺手 Minor-1（契约04 §69 就地指针：断言词按 02a 终审签名裁 bare ledger-tree-check——T11 裁决）+Minor-5 探知项登记（check_cmds.py:27 _now() 墙钟进账本，契约 v3 前裁决）；discover 317→322 全绿+金样 42 面 PASS 零漂移｜f49c6bc
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -56,6 +58,7 @@
 ## 探知项（实现期发现，回写设计）
 - 批次 3 台账（G-1..G-15 终态，T13 收口归并）：docs/design/2026-09-24-b3-discovery-notes.md——catalog 单源（计划原文誊录+实施期增补+状态归并+移交清单四节）
 - 批次 0/1/2 审计探知项（vault XOR 无 nonce/withheld 降级/INFRA 白名单硬编码）：见上方「批次 0/1/2 独立审计入账」节（开放，批次 4/6 前定案）
+- 批次 3 评审探知项（Minor-5）：check_cmds.py:27 _now() 墙钟进账本（set-replay-state/REJECTED→转 fact 落账无 --timestamp 通道，继承性问题）——契约 v3 前裁决，见文末「批次 3 评审收尾入账」节
 
 ## 2026-09-24 批次 0/1/2 独立审计入账（审计员 865488fb，只读实测）
 - 批次 0：完成（16/16 接口实体在；Minor×2：冻结后勘误未走版本通道/附录 A 落位与设计文字不符）
@@ -168,4 +171,10 @@
 - 附注（TDD 红绿）：tests/test_contract_backfill.py 7 例先行——红=6 FAIL+1 ERROR（02a 勘误节/contracts 索引/台账文件/README 批次3节缺位），绿=7/7；全套 310→317 全绿+42 金样面 PASS 零漂移+validate asserts=21 不变（T13 无新金样——计划 Files 未列；纯契约/文档改动+只读 lint 测试，无 OS 分支，CI 双平台同构）。
 - 附注（出口验收实测汇总）：①test_dryrun_p0p2 5/5 ②test_kill9_fidelity 6/6（POSIX；Windows skip=计划口径）③estimate_tokens(SKILL.md)=1321<2000（PROTOCOL §2 冻结口径公式，余量 679）④结构 lint+41 命令索引+引用⊆已知面全过 ⑤validate PASS gates=9 asserts=21 constants=8 back_edges=3+PROTOCOL version=b3-frozen-1 在场 ⑥见 Ruling④ ⑦test_managed_restart 10/10（计划 7+T6 自加 3；四护栏正反例+事件词 actor=总控）⑧test_idempotent_resume 4/4（SKIP/RUN/单查裸 token/只读零副作用）⑨discover 317 OK+golden 42 面 PASS ⑩ci.yml 矩阵 ubuntu+windows×py3.11/3.12 四格在册、push 已触发（远端结果=Actions 页面复核；本环境无 gh CLI）⑪台账 G-1..G-15 cat 可核（含 G-3/G-4 常量暂代、G-6/G-10 已回注、G-15 批次 6 前裁决如实分档）。
 - 附注（收口变更清单）：contracts/02a-command-signatures-draft.md（回注+指针）/contracts/README.md（勘误索引）/cli/README.md（批次3节）/docs/design/2026-09-24-b3-discovery-notes.md（台账，57 行）/tests/test_contract_backfill.py（钉子）/docs/HANDOFF.md（本节+快照+流水+Ruling 总索引）。
+
+## 2026-09-24 批次 3 评审收尾入账（评审结论：可收）
+- 评审结论：**批次 3 评审可收，Important×2 已清**（f49c6bc）：①契约 09 三处 tanyin-phases 子命令枚举 6→7（:16 允许类行/:35 命令面清单 #11/:113 G-1 勘误补记行——补第 7 子命令 denominator-ready，口径=PROTOCOL §4「独立子命令不入 yaml 断言集」T3 裁决原案；微版本勘误通道=文末新增勘误补记节+contracts/README 勘误索引登记，G-1 同款范式，schema_version 保持 =2；对齐 cli/README 七子命令速查/tanyin-phases USAGE/PROTOCOL §4/test_contract_backfill 四源）②金样回归进 CI（.github/workflows/ci.yml 四格矩阵新增 Golden regression 步=`python tests/run_golden.py`，与 discover 步同 python 入口同 env（PYTHONUTF8=1，setup-python 全平台供给）——Windows 无需 py -3 特判；run_golden.py 缺金样默认 FAIL 不落盘+`--bless` 显式建档门槛，堵「缺金样自动 INIT 落盘」在 CI 首跑/漏提交场景误判绿——三处建档点归一 gate_golden() 单一实现，漂移比对语义逐字节保真；tests/test_run_golden_bless.py 5 例 TDD 先红后绿（红=5 ERROR：gate_golden/parse_args 缺位；绿=5/5，只测纯函数面不跑 42 面全量））。
+- Minor-1 同批清：契约 04 §69 表行就地指针——「ledger-tree-check --complete parent」单元格标注执行断言词=裸 `ledger-tree-check`（02a 终审签名「参数=无（读账本）」，批次 3 T11 裁决；「--complete parent」=设计期语义注记，01 §3.7 同源），防未来誊录者复引设计期注记为执行词。
+- 探知项登记（评审期新增·Minor-5）：check_cmds.py:27 `_now()` 墙钟进账本——set-replay-state（:202 时间戳兜底）与 REJECTED→转 fact（:262 findings.created 盖戳）两处落账无 --timestamp 通道（写命令族均有 --timestamp=TS 通道），继承性/可重放缺口：evals 与金样重放不可复现墙钟值，与「禁 datetime.now() 进账本/产物」纪律（cli/README 批次 3 节）相悖。契约 v3 前裁决：补 --timestamp 通道或豁免注记。非 G-1..G-15 施工期台账成员（该台账 T13 已收口终态），登记于本节+「探知项」节指针。
+- 验收实测：`python3 -m unittest discover -s tests` → Ran 322 tests OK（基线 317+5 新增）；`python3 tests/run_golden.py` → PASS golden: 21 读面+20 写面+1 phases 面全部锁定且确定（零漂移零 INIT）；grep 自验 09 三处（:16/:35/:113）行内 7/7 子命令齐、04:69 指针在场、`grep -c denominator-ready contracts/09-cli-surface.md` → 5（与勘误补记自验行一致）；变更文件全部 CR=0（UTF-8+LF 红线）。
 
