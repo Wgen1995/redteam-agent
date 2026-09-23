@@ -24,6 +24,7 @@
 2026-09-24｜子代理（TDD）｜批次2 三 Critical 执法洞修复：exclude/oob 三集语义+egress 单源化、inject 同门链、stderr 双流脱敏；顺手 Important：deny-list 数据化(shared/DENYLIST.md)、主机提取强化、canary 三形态；228 测试全绿+金样零漂移｜a5b4b17
 2026-09-24｜子代理 T1｜批次3 T1：phases.yaml 契约誊录+受限 YAML 子集解析器（stdlib 零依赖，fail-closed；TDD 先红后绿 6 新用例，全套 234 绿+金样 PASS）｜271e814
 2026-09-24｜子代理 T2｜批次3 T2：phases schema 校验器+九门断言命令存在性（all_commands 41 基名单源）+tanyin-phases 入口(+.cmd)；phases-validate 金样接入 run_golden 既有机制；G-1 契约09/README 勘误 10→11；TDD 先红后绿 7 新用例，全套 241 绿+金样 PASS（21读+20写+1phases）｜2350924
+2026-09-24｜子代理 T3｜批次3 T3：gate 断言执行器（断言→命令调用协议落地：判定表/already-passed 幂等/前置门 REJECT/gate-exit+gate-fail 事件）+phases/PROTOCOL.md 冻结接口落盘；追加件：分母就绪门 denominator-ready（多源法定/类覆盖/外推闭包三断言，只读账本零落账）；TDD 先红后绿 13 新用例，全套 254 绿+金样 PASS 零漂移（新增 phases-gate-p0.norm 与 phases-denominator-ready.norm 两静态基线）｜4c8c28a
 
 ## 探知项（实现期发现，回写设计）
 - （待批次3计划/审计子代理回报后登记）
@@ -51,3 +52,13 @@
 - Ruling（计划↔实现偏差②）：phases.yaml 断言首词统一带 ledger- 前缀而 known=基名集——validate_phases 存在性判定按 PROTOCOL.md §1「双前缀注册均可查」语义归一（先试原词，再试剥前缀词）。
 - Ruling（金样机制）：计划 T2 Step5 的 phases-validate.norm 为孤立基线文件；按派遣指令+金样零漂移纪律接入 run_golden 既有机制（双跑确定性+缺失自动建档+漂移即 FAIL）——首跑 INIT 建档、次跑锁定 PASS。
 - Ruling（G-2 建议，按预批裁决记入；不实现——批次 4 范围）：T2 未触碰 matrix-set/matrix-init 白名单语义（validate 只做断言命令存在性检查，不改写侧拒收）；裁决建议=维持计划探知项 G-2 原案：matrix-set 放行 reason 前缀 submatrix: 的新键行（新表面×词表全集），批次 4 前落地。
+
+## 2026-09-24 批次 3 T3 裁决（实现者记；含追加件·分母就绪门）
+- Ruling（计划↔实现偏差①·前置门零落账断言）：计划 test_predecessor_required 的 `len(tl_events())==0` 与其 keep() 语义自相矛盾（抹门后夹具尚余 4 条非门事件，断言必红）——按注释意图「零落账=REJECT 不新增事件」改为前后计数不变。
+- Ruling（计划↔实现偏差②·双前缀 lookup）：yaml 断言首词统一带 ledger- 前缀而 validate/verify-chain 等 builtin 只注册无前缀基名，计划参考实现的 `registry.lookup(tokens[0])` 会使 P0 首断言误判「未知命令」、其自身 test_gate_p0 必红——按 PROTOCOL §1.1「双前缀注册均可查」归一（先原词再剥前缀；与 T2 裁决②同型）。
+- Ruling（计划↔实现偏差③·EXTRA_TOOLS=ENV-HALT）：tanyin-report/tanyin-redact 非 ledger 命令、registry 不可达，计划代码走 gate-fail——按 §1 判定表末行语义改判 ENV-HALT（退出 2、可重跑、零落账）；断言存在性已被 validate_phases 前置拦截，未知命令分支实际只服务此二工具。
+- Ruling（计划↔实现偏差④·写类断言时间戳注入）：matrix-freeze 是断言集唯一写类命令（§1.4），--timestamp 必填而 yaml cmd 不携带——引擎注入门级确定性时间戳；读类命令不注入（converge-check 等「无参数」命令会 UsageError→误 ENV-HALT）。tmp 沙盘实测发现（计划测试未覆盖 P2 真跑；不修则 T11 干跑 P2 必红）；实测顺带验证 covered=false-但-rc=0 的 stdout 判定行与 already-frozen 幂等容忍行。
+- Ruling（追加件架构·分母就绪门落位）：独立子命令 `tanyin-phases denominator-ready --goal-dir D`，不接入 phases.yaml P2 exit 断言列表——契约 04 逐字誊录/asserts=21 基线/九门语义/既有金样零变动（tanyin-phases validate 实测 asserts=21 不变），且夹具态合法 FAIL 不污染 T11 干跑序列；未来契约 v3 接入 P2 断言走 §1 默认判定行「退出码==0」。完备性设计 §1.3 四关裁三关（②诱饵召回率随批次 4 侦察金丝雀交付——探知项）。
+- Ruling（追加件·读侧约定冻结）：13 表无显式来源/类别列，约定冻于 PROTOCOL.md §4——来源数=指向资产值 fact 的 distinct intent_id 数；unverified 标记=assets.meta；不适用理由=fact(kind=info, target=asset-class:A<k>)；A8 外推=meta 含 extrapolated/外推；在队列继续挖=status=pending+kind=recon+绑定（dedup_key 前缀或 title/detail 含值）；界外资产不入①（触发器目录：界外→记录不测）。
+- Ruling（追加件·金样机制）：phases-gate-p0.norm 按计划 Step6 为静态基线（already-passed 单行）；phases-denominator-ready.norm 同构（夹具 FAIL 清单基线）——不接 run_golden PHASES 面（该面仅收退出 0 的 repo 级命令，夹具态退出 1 会误报「非零退出」）；测试内做双跑确定性+金样字节锁定补偿回归力。
+- 探知项（T3 新增，接计划 G-1..G-11 续编，待 T13 归并）：G-12 A5 存储与云/A7 人的因素在 41 面 type 枚举无对应值（分母就绪门②对该两类只能走不适用理由，批 4 裁决扩枚举或维持）；G-13 诱饵召回率断言（完备性 §1.3②）随批次 4 侦察金丝雀交付；G-14 T10 的 P2.md duty 应把 denominator-ready 写为 matrix-freeze 前置步骤（本任务不改九门 md——T10 范围）。
