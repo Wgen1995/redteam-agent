@@ -40,8 +40,12 @@ def main(argv):
         return 1
     bad = enforce.out_of_scope_hosts(cmd, enforce.load_scope(core.Session(gd)))
     if bad:
-        hook_block(gd, host, "hook-block out-of-scope host=" + bad[0])
-        print("BLOCKED hook(%s) out-of-scope: %s" % (host, bad[0]))
+        # 洞 1：exclude 优先于 include（排除项阻断）；oob=记不测（Tier2 不做主动测试）。
+        h0, verdict = bad[0]
+        hook_block(gd, host, "hook-block out-of-scope host=" + h0
+                   + ("" if verdict == "out" else " reason=" + verdict))
+        print("BLOCKED hook(%s) out-of-scope%s: %s"
+              % (host, "" if verdict == "out" else "(" + verdict + ")", h0))
         return 1
     print("PASS hook(%s)" % host)
     return 0

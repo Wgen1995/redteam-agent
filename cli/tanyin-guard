@@ -12,15 +12,21 @@ from ledger.core import ensure_utf8_stdio
 ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
 TAB = chr(9)
+# 洞 1：scope 判定三态消息（契约 05）——exclude 优先于 include；oob=记不测。
+SCOPE_REASON = {"exclude": "排除目标(exclude 优先于 include)",
+                "oob": "OOB 回连端点(契约05 界外=记不测，非主动测试目标)",
+                "out": "界外目标"}
 
 def usage():
     sys.stderr.write("用法: tanyin-guard exec|inject|deploy-vault --goal-dir D ..." + chr(10))
     return 2
 
 def tokenize_output(text, secrets):
-    for i, s in enumerate(secrets, 1):
+    """vault 真值 -> {{vault:cred-N}} token（洞 3：stdout 与 stderr 双流同脱敏；
+    长值优先替换，防短真值是长真值子串时遮蔽）。"""
+    for n, s in secrets:
         if s:
-            text = text.replace(s, "{{vault:cred-%d}}" % i)
+            text = text.replace(s, "{{vault:cred-%s}}" % n)
     return text
 
 def append_tl(gd, ts, event):
@@ -63,6 +69,22 @@ def read_cred(gd, n):
         return None, None
     return dec_payload(key, open(p, encoding="utf-8").read()).split(chr(10), 1)
 
+def vault_secrets(gd):
+    """全部已部署凭据真值 [(cred号, secret)]——以 vault/manifest.tsv 为准
+    （exec 与 inject 同源；exec 此前按 creds.tsv 行序编号，与 vault 实际凭据号
+    脱节导致真值不脱敏，洞 3）。"""
+    out = []
+    mp = os.path.join(vault_dir(gd), "manifest.tsv")
+    if os.path.exists(mp):
+        for l in open(mp, encoding="utf-8").read().splitlines():
+            if l.strip():
+                n = l.split(TAB)[0]
+                _, sec = read_cred(gd, n)
+                if sec:
+                    out.append((n, sec))
+    out.sort(key=lambda t: -len(t[1]))
+    return out
+
 def cmd_deploy_vault(gd, rest):
     kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
     for need in ("--cred", "--username", "--secret"):
@@ -88,13 +110,12 @@ def cmd_deploy_vault(gd, rest):
     print("OK vault cred-%s 部署" % n)
     return 0
 
-def cmd_exec(gd, rest, ts=None):
-    if not rest or rest[0] != "--":
-        sys.stderr.write("exec 需要 -- 分隔命令" + chr(10))
-        return 2
-    cmd = rest[1:]
-    if not cmd:
-        return 2
+def gate_chain(gd, cmd, ts):
+    """exec/inject 共用门链（洞 2 修复）：deny-list → scope → request-ticket 取票。
+
+    门链先于 vault 取件——越权请求的执法结论不因凭据缺失/存在而改变。
+    通过返回 None；拒绝返回 1（REJECT 已打印、timeline 已落账）。
+    """
     joined = " ".join(cmd)
     for d in DENY_LIST:
         if d in joined:
@@ -105,23 +126,34 @@ def cmd_exec(gd, rest, ts=None):
     # "C:\Program Files\...\python.exe" 会被空白切分误判为主机名（POSIX 绝对路径则碰巧被跳过）
     bad = out_of_scope_hosts(cmd[1:], load_scope(s))
     if bad:
-        print("REJECT" + TAB + "guard" + TAB + "界外目标: " + bad[0])
-        append_tl(gd, ts or "1970-01-01T00:00:00Z", "guard-reject out-of-scope host=" + bad[0])
+        host, verdict = bad[0]
+        print("REJECT" + TAB + "guard" + TAB + SCOPE_REASON.get(verdict, SCOPE_REASON["out"]) + ": " + host)
+        ev = "guard-reject out-of-scope host=" + host + ("" if verdict == "out" else " reason=" + verdict)
+        append_tl(gd, ts, ev)
         return 1
-    append_tl(gd, ts or "1970-01-01T00:00:00Z", "request-ticket cmd=" + cmd[0] + " argc=%d" % len(cmd))
+    append_tl(gd, ts, "request-ticket cmd=" + cmd[0] + " argc=%d" % len(cmd))
+    return None
+
+
+def cmd_exec(gd, rest, ts=None):
+    if not rest or rest[0] != "--":
+        sys.stderr.write("exec 需要 -- 分隔命令" + chr(10))
+        return 2
+    cmd = rest[1:]
+    if not cmd:
+        return 2
+    rc = gate_chain(gd, cmd, ts or "1970-01-01T00:00:00Z")
+    if rc is not None:
+        return rc
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=60,
                            encoding="utf-8", errors="replace")
     except FileNotFoundError:
         print("REJECT" + TAB + "guard" + TAB + "命令不存在: " + cmd[0])
         return 1
-    secrets = []
-    for row in s.rows("creds.tsv"):
-        _, sec = read_cred(gd, row[0].split("-")[-1])
-        if sec:
-            secrets.append(sec)
+    secrets = vault_secrets(gd)
     sys.stdout.write(tokenize_output(r.stdout, secrets))
-    sys.stderr.write(r.stderr)
+    sys.stderr.write(tokenize_output(r.stderr, secrets))  # 洞 3：stderr 同脱敏
     return r.returncode
 
 def main(argv):
@@ -141,6 +173,11 @@ def main(argv):
         if not kv.get("--cred") or not cmd:
             sys.stderr.write("inject 需要 --cred=N 与 -- 命令" + chr(10))
             return 2
+        # 洞 2 修复：inject 执行前走与 exec 完全相同的门链（deny-list→scope→取票），
+        # 只有凭据注入环节不同；门链先于 vault 取件。
+        rc = gate_chain(gd, cmd, kv.get("--timestamp", "1970-01-01T00:00:00Z"))
+        if rc is not None:
+            return rc
         u, sec = read_cred(gd, kv["--cred"])
         if sec is None:
             print("REJECT" + TAB + "guard" + TAB + "vault 条目缺失 cred-" + kv["--cred"])
@@ -149,10 +186,15 @@ def main(argv):
         env["TY_CRED_USER"] = u or ""
         env["TY_CRED_SECRET"] = sec
         append_tl(gd, kv.get("--timestamp", "1970-01-01T00:00:00Z"), "vault-inject cred=" + kv["--cred"])
-        r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=60,
-                           encoding="utf-8", errors="replace")
-        sys.stdout.write(r.stdout.replace(sec, "{{vault:cred-%s}}" % kv["--cred"]))
-        sys.stderr.write(r.stderr)
+        try:
+            r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=60,
+                               encoding="utf-8", errors="replace")
+        except FileNotFoundError:
+            print("REJECT" + TAB + "guard" + TAB + "命令不存在: " + cmd[0])
+            return 1
+        secrets = vault_secrets(gd)
+        sys.stdout.write(tokenize_output(r.stdout, secrets))
+        sys.stderr.write(tokenize_output(r.stderr, secrets))  # 洞 3：stderr 同脱敏
         return r.returncode
     return usage()
 

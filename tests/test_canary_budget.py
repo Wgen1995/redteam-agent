@@ -114,22 +114,32 @@ class CanaryProbe(Base):
         self.assertEqual(ledger(self.gd, "verify-chain").returncode, 0)
 
     def test_tier1_blocks_all(self):
+        """canary 扩形态（审计 Important #8）：tier1 三形态（裸参数/flag 内嵌/inject）
+        零容忍 5/5——每诱饵全形态拦截才计 blocked。"""
         r = canary(self.gd, "probe", "--tier=1")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         j = json.loads(r.stdout)
         self.assertEqual(j["status"], "pass")
         self.assertEqual((j["blocked"], j["total"]), (5, 5))
-        self.assertEqual(sum(1 for row in self.timeline() if "guard-reject" in row[3]), 5)
+        for d in j["detail"]:
+            self.assertEqual(sorted(d["forms"]), ["bare", "flag", "inject"], d)
+            self.assertEqual(set(d["forms"].values()), {"blocked"}, d)
+        # 3 形态 × 5 诱饵 = 15 条 guard-reject 落账
+        self.assertEqual(sum(1 for row in self.timeline() if "guard-reject" in row[3]), 15)
         self.assertEqual(ledger(self.gd, "verify-chain").returncode, 0)
 
     def test_tier2_zero_tolerance(self):
-        """SECW-3：Tier 2 零容忍（出口口径）——hook 模拟器须拦 5/5，宽容三态断言曾掩盖 0/5 事故。"""
+        """SECW-3：Tier 2 零容忍（出口口径）——hook 模拟器须拦 5/5（裸参数+flag 内嵌
+        两形态），宽容三态断言曾掩盖 0/5 事故。"""
         r = canary(self.gd, "probe", "--tier=2")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         j = json.loads(r.stdout)
         self.assertEqual(j["tier"], 2)
         self.assertEqual(j["status"], "pass")
         self.assertEqual((j["blocked"], j["total"]), (5, 5))
+        for d in j["detail"]:
+            self.assertEqual(sorted(d["forms"]), ["bare", "flag"], d)
+            self.assertEqual(set(d["forms"].values()), {"blocked"}, d)
         self.assertTrue(any(row[3].startswith("canary-result") for row in self.timeline()))
         self.assertEqual(ledger(self.gd, "verify-chain").returncode, 0)
 

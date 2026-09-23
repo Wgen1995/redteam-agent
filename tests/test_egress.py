@@ -3,6 +3,7 @@
 import json, os, shutil, subprocess, sys, tempfile, unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 EG = os.path.join(HERE, "..", "cli", "tanyin-egress")
+GUARD = os.path.join(HERE, "..", "cli", "tanyin-guard")
 CANARY = os.path.join(HERE, "..", "cli", "tanyin-canary")
 LEDGER = os.path.join(HERE, "..", "cli", "tanyin-ledger")
 FIX = os.path.join(HERE, "fixtures", "G-g1")
@@ -10,6 +11,10 @@ PY = sys.executable
 
 def eg(gd, *a):
     return subprocess.run([PY, EG, a[0], "--goal-dir", gd] + list(a[1:]),
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+def guard(gd, *a):
+    return subprocess.run([PY, GUARD, a[0], "--goal-dir", gd] + list(a[1:]),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 class Egress(unittest.TestCase):
@@ -57,6 +62,33 @@ class Egress(unittest.TestCase):
                             capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r2.returncode, 1)
         self.assertEqual(json.loads(r2.stdout)["status"], "fail")
+    def test_single_source_exclude_denies_and_guard_rejects(self):
+        """洞 1：账本=执法策略单一事实源——同一 scope.tsv 驱动 Tier3 deny 行与 Tier1 REJECT，
+        消除两层解释矛盾（红：当前 Tier1 半边放行被排除主机）。"""
+        r = subprocess.run([PY, LEDGER, "add-scope", "--goal-dir", self.gd,
+                            "--kind=exclude", "--matcher=prod.shop.example",
+                            "--timestamp=2026-09-23T09:40:00Z"], capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(eg(self.gd, "compile").returncode, 0)
+        acl = open(os.path.join(self.gd, "egress.acl"), encoding="utf-8").read()
+        self.assertIn("deny prod.shop.example", acl)
+        g1 = guard(self.gd, "exec", "--", *([PY, "-c", "pass", "ping", "prod.shop.example"]))
+        self.assertEqual(g1.returncode, 1, g1.stdout + g1.stderr)
+        self.assertIn("exclude", g1.stdout.lower())
+        g2 = guard(self.gd, "exec", "--", *([PY, "-c", "pass", "ping", "api.shop.example"]))
+        self.assertEqual(g2.returncode, 0, g2.stdout + g2.stderr)
+
+    def test_oob_row_compiles_allow_oob(self):
+        r = subprocess.run([PY, LEDGER, "add-scope", "--goal-dir", self.gd,
+                            "--kind=oob", "--matcher=cb.example",
+                            "--timestamp=2026-09-23T09:45:00Z"], capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(eg(self.gd, "compile").returncode, 0)
+        acl = open(os.path.join(self.gd, "egress.acl"), encoding="utf-8").read()
+        self.assertIn("allow-oob cb.example", acl)
+
     def test_dryrun(self):
         r = eg(self.gd, "dry-run")
         self.assertEqual(r.returncode, 0)

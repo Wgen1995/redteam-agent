@@ -98,8 +98,17 @@ def _verdict(r, want_code, want_mark):
     return "blocked" if ok else "allowed"
 
 
+def _forms_all_blocked(forms):
+    return "blocked" if forms and all(v == "blocked" for v in forms.values()) else "allowed"
+
+
 def probe_tier(gd, tier, host):
-    """逐诱饵探测指定层；返回 detail 列表，None=该层未部署（计未测非失败）。"""
+    """逐诱饵探测指定层；返回 detail 列表，None=该层未部署（计未测非失败）。
+
+    canary 扩形态（审计 Important #8）：tier1 三形态（裸参数/flag 内嵌 --target=/
+    inject 带凭据通道）、tier2 两形态（裸参数/flag 内嵌）——诱饵须全形态拦截
+    才计 blocked，防单一形态探测掩盖其余通道漏拦。
+    """
     targets = load_targets(gd)
     detail = []
     if tier == 0:  # 账本级：scope-check 应判界外（契约签名 --type/--value，探知项已登记）
@@ -109,20 +118,41 @@ def probe_tier(gd, tier, host):
             ok = r is not None and r.returncode == 0 and r.stdout.strip() == "out_of_scope"
             detail.append({"kind": kind, "value": val, "verdict": "blocked" if ok else "allowed"})
         return detail
-    if tier == 1:  # 执行通道级：guard exec 应 REJECT exit 1（载体=跨平台 python 空转）
+    if tier == 1:  # 执行通道级：guard exec/inject 应 REJECT exit 1（载体=跨平台 python 空转）
+        guard = os.path.join(HERE, "tanyin-guard")
         for kind, val in targets:
-            r = _run([sys.executable, os.path.join(HERE, "tanyin-guard"), "exec",
-                      "--goal-dir", gd, "--"] + NOOP_CMD + [val])
-            detail.append({"kind": kind, "value": val, "verdict": _verdict(r, 1, "REJECT")})
+            forms = {}
+            probes = (
+                ("bare", [sys.executable, guard, "exec", "--goal-dir", gd, "--"] + NOOP_CMD + [val]),
+                ("flag", [sys.executable, guard, "exec", "--goal-dir", gd, "--"]
+                 + NOOP_CMD + ["--target=" + val]),
+                # inject 形态：--cred=0（凭据缺失不影响执法结论——门链先于 vault 取件）
+                ("inject", [sys.executable, guard, "inject", "--goal-dir", gd, "--cred=0", "--"]
+                 + NOOP_CMD + [val]),
+            )
+            for name, argv in probes:
+                r = _run(argv)
+                ok = (r is not None and r.returncode == 1
+                      and "REJECT" in r.stdout and val in r.stdout)
+                forms[name] = "blocked" if ok else "allowed"
+            detail.append({"kind": kind, "value": val,
+                           "verdict": _forms_all_blocked(forms), "forms": forms})
         return detail
     if tier == 2:  # 宿主 hook：hooks/simulate.py 应 BLOCKED exit 1（缺模拟器=not-deployed）
         sim = os.path.join(ROOT, "hooks", "simulate.py")
         if not os.path.exists(sim):
             return None
         for kind, val in targets:
-            r = _run([sys.executable, sim, "--goal-dir", gd, "--host", host, "--",
-                      "curl", "http://" + val + "/"])
-            detail.append({"kind": kind, "value": val, "verdict": _verdict(r, 1, "BLOCKED")})
+            forms = {}
+            probes = (
+                ("bare", ["curl", "http://" + val + "/"]),
+                ("flag", ["curl", "--target=" + val]),
+            )
+            for name, cmd in probes:
+                r = _run([sys.executable, sim, "--goal-dir", gd, "--host", host, "--"] + cmd)
+                forms[name] = _verdict(r, 1, "BLOCKED")
+            detail.append({"kind": kind, "value": val,
+                           "verdict": _forms_all_blocked(forms), "forms": forms})
         return detail
     if tier == 3:  # egress 代理：ACL 文本断言诱饵不在白名单（缺 egress.acl=not-deployed）
         acl = None

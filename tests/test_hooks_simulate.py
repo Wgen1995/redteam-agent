@@ -20,9 +20,9 @@ def sim(gd, host, *cmd):
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
-def ledger(gd, cmd):
-    return subprocess.run([PY, LEDGER, cmd, "--goal-dir", gd], capture_output=True, text=True,
-                          encoding="utf-8", errors="replace")
+def ledger(gd, cmd, *extra):
+    return subprocess.run([PY, LEDGER, cmd, "--goal-dir", gd] + list(extra), capture_output=True,
+                          text=True, encoding="utf-8", errors="replace")
 
 
 class Base(unittest.TestCase):
@@ -75,6 +75,38 @@ class SimScope(Base):
         r = sim(self.gd, "dsh", "curl", "http://api.shop.example/")
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
         self.assertIn("BLOCKED", r.stdout)
+
+
+class SimScopeExclude(Base):
+    """洞 1（批次 2 审计 Critical #1）：Tier2 同测——exclude 落账后 hook 必须阻断。"""
+
+    def add_scope(self, kind, matcher):
+        r = ledger(self.gd, "add-scope", "--kind=" + kind, "--matcher=" + matcher,
+                   "--timestamp=2026-09-23T09:35:00Z")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+    def test_exclude_blocked(self):
+        self.add_scope("exclude", "banned.shop.example")
+        r = sim(self.gd, "dsh", "curl", "http://banned.shop.example/")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("BLOCKED", r.stdout)
+        self.assertIn("banned.shop.example", r.stdout)
+        self.assertTrue(self.timeline()[-1][3].startswith("hook-block"))
+
+    def test_exclude_priority_over_include(self):
+        self.add_scope("exclude", "*.prod.shop.example")
+        r = sim(self.gd, "dsh", "curl", "http://v2.prod.shop.example/")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        r2 = sim(self.gd, "dsh", "curl", "http://api.shop.example/")
+        self.assertEqual(r2.returncode, 0, r2.stdout + r2.stderr)
+
+    def test_oob_blocked_as_record_not_tested(self):
+        """契约 05：oob 主机=记不测——Tier2 对 oob 端点不做主动测试，须阻断并注明。"""
+        self.add_scope("oob", "cb.example")
+        r = sim(self.gd, "dsh", "curl", "http://cb.example/")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("BLOCKED", r.stdout)
+        self.assertIn("cb.example", r.stdout)
 
 
 class SimDenyList(Base):

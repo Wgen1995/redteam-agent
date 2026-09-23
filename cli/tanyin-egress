@@ -10,6 +10,7 @@ import hashlib, os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core
+from ledger import enforce
 from ledger.core import ensure_utf8_stdio
 
 ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
@@ -22,25 +23,13 @@ def usage():
     return 2
 
 
-def scope_rows(gd):
-    sf = core.TABLES["scope.tsv"]
-    ki, mi, ai = sf.index("kind"), sf.index("matcher"), sf.index("amendment_of")
-    rows = core.Session(gd).rows("scope.tsv")
-    eff = {}
-    order = []
-    for r in rows:  # amendment_of 链语义：后行覆盖先行（同 matcher）
-        m = r[mi]
-        if m not in eff:
-            order.append(m)
-        eff[m] = r[ki]
-    return [(eff[m], m) for m in order]
-
-
 def build_acl(gd):
-    rows = scope_rows(gd)
-    inc = sorted(m for k, m in rows if k == "include")
-    exc = sorted(m for k, m in rows if k == "exclude")
-    oob = sorted(m for k, m in rows if k == "oob")
+    # 洞 1 修复：scope 解析改调 enforce.load_scope 同一函数——账本=执法策略单一
+    # 事实源（amendment 链后行覆盖先行），消除 Tier1/Tier2/Tier3 两层解释矛盾。
+    scope = enforce.load_scope(core.Session(gd))
+    inc = sorted(scope["include"])
+    exc = sorted(scope["exclude"])
+    oob = sorted(scope["oob"])
     src_sha = hashlib.sha256(open(os.path.join(gd, "scope.tsv"), "rb").read()).hexdigest()[:16]
     L = ["# tanyin egress.acl v2 (deny-by-default)"]
     L.append("# source: scope.tsv sha16=" + src_sha)
