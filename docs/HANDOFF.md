@@ -41,6 +41,8 @@
 2026-09-24｜子代理（评审收尾）｜批次3 评审收尾：Important×2 清账——①契约09 tanyin-phases 子命令枚举三处 6→7（补 denominator-ready；微版本勘误通道=文末勘误补记+README 索引登记）②金样回归进 CI（ci.yml 四格矩阵 Golden regression 步；run_golden 缺金样默认 FAIL+--bless 显式建档门槛，单测 5 例 TDD 先红后绿）+顺手 Minor-1（契约04 §69 就地指针：断言词按 02a 终审签名裁 bare ledger-tree-check——T11 裁决）+Minor-5 探知项登记（check_cmds.py:27 _now() 墙钟进账本，契约 v3 前裁决）；discover 317→322 全绿+金样 42 面 PASS 零漂移｜f49c6bc
 2026-09-24｜子代理 T1｜批次4 T1：G-12 裁决落地——assets.type 九值→十一值（+cloud-storage/human-factor 细分落 meta=sub:）+pivot/foothold 启用（§4.8 兑现，原拒收分支退役）；契约01/07/02a+PROTOCOL §4 微版本勘误四笔+README 索引登记；TDD 先红后绿（tests/test_assets_type_b4.py 3 例：pivot/foothold/新两值正例+未知枚举负例；test_write_cmds pivot 用例转正例），全套 325 绿+金样 PASS 零漂移｜a3fd64d
 2026-09-24｜子代理 T2｜批次4 T2：G-2 裁决落地——matrix-set 放行 submatrix: 新键行（四条件：前缀/冻结/全新表面/VOCAB 命中）+原子铸造新表面×VOCAB 全集 12 行（目标行取 --state/--reason/--intent-id，余行 state 空+裸前缀；timeline 事件 submatrix-mint）+前缀首次归类修正（旧空→任意前缀放行/旧非空≠新→REJECT，修 authz-diff 落格潜伏阻塞）；契约02a §12 微版本勘误；TDD 先红后绿（tests/test_submatrix_mint.py 6 例；test_write_cmds 前缀负例按新语义改写），全套 331 绿+金样 PASS 零漂移｜1aace3d
+2026-09-24｜子代理 T3｜批次4 T3：P4 重放门断言转强制——phases.yaml expect 去「批次 4 前=SKIP」+PROTOCOL §1 判定行退役注记+P4.md duty 3/4 强制化+契约04/契约11 §7 微版本勘误两笔+README 索引登记；TDD 先红后绿 2 例，全套 333 绿+金样 42 面 PASS 零漂移｜f569abe（本行由 T4 继任者补记：T3 commit 未落流水行，T12/T13 补记先例）
+2026-09-24｜子代理 T4｜批次4 T4：EV 卡片解析器（ledger/cards.py：parse_yaml 复用+check_consistency 同值性）+matcher 子集评估器（ledger/matchers.py：word/status/regex+AND+fail-closed，R1 落地）+vault 单源抽取（guard 七函数搬 ledger/vault.py，guard 同名 thin delegate 行为零变更；冻结接口 load_key/secret/secrets）；契约06 R1/G-17 微版本勘误+README 索引登记；TDD 先红后绿 9 例（红=ImportError 模块缺位），全套 342 绿+金样 42 面 PASS 零漂移（无金样变动）｜f8054dd
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -194,3 +196,13 @@
   - R-T2-2（夹具现实）：计划 setUp 对 G-g1 直接 matrix-freeze——夹具 matrix.tsv 自带 frozen_at 盖戳行（make_fixtures 模拟 P2 冻结事件）必 REJECT「不可重复冻结」，且 web.api 行 state=" "（伪空态）致 fresh 选择器 StopIteration。修正=prep_matrix 预处理（清全部 frozen_at+空态归一；run_golden autodrive 预解冻先例）再走 CLI 冻结；未冻结负例同法预处理但不冻结。
   - R-T2-3（负例保覆盖）：test_write_cmds 旧前缀负例（空 reason 行设 submatrix:=REJECT）在新规则下属首次归类放行——改写为「先 submatrix: 置格（OK）再 authz-diff: 串类（REJECT 前缀）」，负例覆盖不丢。
   - R-T2-4（笔误修正）：计划代码片段 _matrix_prefix(ctx.val("matrix.tsv", key_rows[-1], "reason)) 引号未闭合——按语法修正落盘。
+
+## 2026-09-24 批次 4 T4 裁决（实现者记·继任现场）
+- 继任经过：前实现者完成 T3（f569abe）后在 T4 中途失败离场，现场已清理——git 工作区仅余未跟踪 tests/test_cards_matchers.py（红态：ImportError 模块不存在，discover 334 例含 1 红）；本任继任，通读计划 T4 全节（含前置裁决 R1 matcher 子集条目）后对齐红测试，确认与计划一致即以之为红态起点，按 TDD 转绿。
+- 验收实测：`python3 -m unittest tests.test_cards_matchers tests.test_guard -v` → Ran 43 tests OK（9 新增+34 guard 既有，guard 行为零变更由既有面背书）；`python3 -m unittest discover -s tests` → Ran 342 tests OK（333+9，无红例残留）；`python3 tests/run_golden.py` → PASS golden: 21 读面+20 写面+1 phases 面 零漂移。金样零变动=T4 预期：guard thin delegate 字节等价、T4 无新金样面（计划 golden 节新面 engine-*/viz-data/replay-envdiff 均为 T5+ 交付物）。
+- Ruling 清单（commit f8054dd 消息内同款记录）：
+  - R-T4-1（红测试对齐）：留下的 tests/test_cards_matchers.py 与计划 Step1 逐字一致（8 例）+前实现者补 TestVault 第 9 例（化解计划测试文件 8 例 vs commit 模板「9 例」的矛盾，方式=vault 冻结接口直测；guard 行为零变更由既有 test_guard 背书）——判定与计划无偏差，采纳为红态起点未改动。
+  - R-T4-2（函数名勘误）：计划称搬「vault_dir/_load_key/_decrypt/vault_secrets 四函数」——guard 实际为 vault_dir/_keystream/enc_payload/dec_payload/guard_key/read_cred/vault_secrets 七函数（_load_key/_decrypt 不存在）。按「单源化+行为零变更」意图整体搬入 ledger/vault.py；guard 留五个活跃调用点同名 thin delegate（dec_payload/_keystream 无 guard 调用点不留 delegate）；冻结接口名=load_key（=原 guard_key）/secret（新增：read_cred 密位，缺条目=None）/secrets（=原 vault_secrets）。
+  - R-T4-3（condition 缺省）：R1 裁决文本未定 word matcher 的 condition 缺省值——按计划实现冻结为**默认 and**（非 nuclei 上游默认 or），契约06 勘误补记明示「condition 可省，默认 and」。
+  - R-T4-4（11 字段口径）：计划 Interfaces 称「11 字段全量；缺字段 raise」而计划实现仅强制 id+network_position/pair_group 标量性——且 T5 测试的最小卡片仅 5 字段须可解析。按计划实现（lenient），「11 字段全量」解读为完整卡片返回形状而非强制项；同值性执法点=check_consistency（G-16：validate 集成不动，重放前校验）。
+  - 附记（T3 流水补记）：f569abe 未落 HANDOFF 流水行——本任务补记（T12/T13 先例，标注补记+缘由）。
