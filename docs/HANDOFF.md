@@ -45,6 +45,7 @@
 2026-09-24｜子代理 T4｜批次4 T4：EV 卡片解析器（ledger/cards.py：parse_yaml 复用+check_consistency 同值性）+matcher 子集评估器（ledger/matchers.py：word/status/regex+AND+fail-closed，R1 落地）+vault 单源抽取（guard 七函数搬 ledger/vault.py，guard 同名 thin delegate 行为零变更；冻结接口 load_key/secret/secrets）；契约06 R1/G-17 微版本勘误+README 索引登记；TDD 先红后绿 9 例（红=ImportError 模块缺位），全套 342 绿+金样 42 面 PASS 零漂移（无金样变动）｜f8054dd
 2026-09-24｜子代理 T5｜批次4 T5：tanyin-replay 重放驱动（铁律 7 对外请求例外#1）——raw_request 自解析直发（R2：不 shell-exec repro_command）+{{vault:cred-N}} 进程内回注（真值不进 argv/不落盘，缺真值 fail-closed REJECT）+scope 门链（amendment 剔除→exclude 命中即界外→include 须命中；界外=REJECT exit 1 且 timeline 留痕）+三态判定（R3：连接层失败=env-diff→REPAIRED 候选/matcher 全中=reproduced→VERIFIED/不中=not-reproduced→REJECTED/无 matcher=manual）+matcher-test 离线评估+tanyin-replay.cmd Windows 等价入口+金样面 replay-envdiff（ENGINE_CMDS 首面）；TDD 先红后绿 4 例（红=脚本不存在 3 FAIL+1 巧合绿；绿含判定产物 1.json+timeline request:/replay-probe 记账断言），全套 346 绿+金样 43 面 PASS（replay-envdiff 有意建档 --bless，存量 42 面零漂移）｜498d8c2
 2026-09-24｜子代理 T6｜批次4 T6：重放门 eval——127.0.0.1 mock 目标（随机端口 socketserver+http.server，跨平台非 POSIX-only 无 skip）三态全链路实测：/ok 200 errorCode:00000→reproduced、/drift 403→not-reproduced、端口 1 拒连→env-diff → set-replay-state 三态落账（VERIFIED/REJECTED/REPAIRED）→ledger-replay-summary PASS（verified=1 repaired=1 rejected=1 pending=0=P4 断言 5 绿）→verify-chain 全链一致（request:/replay-probe/add-scope/add-evidence/replay: 事件入链）；红=计划逐字 setUp add-scope exit 2（argv 契约缝隙），修补两处（--goal-dir 紧随命令名+matcher 127.0.0.1→127.0.0.0/8）后绿；全套 347 绿+金样 43 面 PASS 零变动｜d9f7185
+2026-09-24｜子代理 T7 前置｜批次4 T7 前置（图查询独立 commit）：图谱驱动增补 71d3b7c——graph-neighbors/graph-paths/graph-horizon 三只读图查询（邻接展开 --edge-class 过滤/有向可达路径枚举/可达集×矩阵空格 join）；命令面 41→44 微版本勘误（契约02a 文末补记节+README 索引+SKILL 命令索引+cli README+面数断言 41→44 同步）；金样 graph 三面（replay-envdiff 先例：prep_graph 预织图+--bless 建档，存量 43 面零漂移）；TDD 先红后绿 10 例（红=未实现/未知命令 8 FAIL），全套 357 绿+金样 46 面 PASS｜f87ca25
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -222,3 +223,12 @@
   - R-T6-2（loopback 授权形态）：计划 setUp --matcher=127.0.0.1——add-scope _matcher_ok 冻结校验只认 CIDR/域名后缀/通配（裸 IP 字面量非域名语法）必 REJECT；改语义等价 CIDR 127.0.0.0/8（host_in_scope 经 _match_value CIDR 命中 127.0.0.1，授权意图不变）。
   - R-T6-3（套接字卫生）：tearDownClass 补 server_close()（shutdown 只停 serve_forever 不释放监听套接字）；跨平台声明：socketserver+http.server+127.0.0.1 绑定均 Windows 等价，无诚实 skip 必要。
 - 设计输入对照（docs/design/2026-09-24-fd-report-card-spec.md，仅参照）：raw_request 原文直发语义一致——驱动不 shell-exec、不编辑报文文本、header 按原文字序发送（dict 保序）、body 原文，仅按 R2 在进程内替换 {{vault:cred-N}} 占位符；报告渲染（批次 6）不在本任务范围。
+
+## 2026-09-24 批次 4 T7 前置裁决（图查询三命令·实现者记）
+- 依据：用户批注追加件+设计增补 docs/design/2026-09-24-graph-driven-ops.md（commit 71d3b7c）——计划 T7 未含图查询三命令，按追加件作为 T7 前置子任务先落（独立 commit 注明）。
+- 验收实测：`python3 -m unittest tests.test_graph_cmds -v` → 10/10；discover Ran 357 tests OK（347 基线+10）；`python3 tests/run_golden.py --bless` INIT graph 三面后复跑 PASS 21读+20写+1phases+1engine+3graph 零漂移（金样变动说明：仅新增 graph-graph-{neighbors,paths,horizon}.norm 三面有意建档【--bless】，存量 43 面字节零漂移）。
+- Ruling 清单（commit f87ca25 消息内同款记录）：
+  - R-G-1（面冻结例外）：计划全局约束「41 命令面冻结：本批零新增账本命令」与追加件「41 面增补走微版本勘误同 G-1 先例」冲突——按用户追加件+已批设计增补就该三命令例外放行；只读+确定性账本运算（铁律 7 四类允许之首），无攻击决策/漏洞语义判定；勘误四联动=契约02a/契约README 索引/SKILL.md 命令索引+test_phases_yaml 面数断言（声明层单源一致纪律，T14 收口不再重复改）。
+  - R-G-2（图语义 v1 冻结）：节点=九表行 id（intents/creds 事件溯源 latest 去重入图）；有向攻击可达边=edges.tsv 按记录方向+凭据链（CRED→scope_asset=cred:unlock、parent_cred 父→子=cred:derive）；无向邻里仅 graph-neighbors（「周围有什么」双向视角）。设计文中 infiltrate/priv-esc/pivot/exfil-ability 攻击语义在现行 10 边词汇上 v1 映射为边类 attack={attack,proves,evidences}/asset={parent,scope-rel}/cred=凭据链——细分权重/成本=探知项 G-26（批次 5 知识飞轮定）。
+  - R-G-3（金样 prep 直写）：可达表面空格行直写 matrix.tsv（prep_engine 直写文件先例）——matrix-set 对空 state 必 REJECT（state∈{x,?,-,!}），空态行只由 matrix-init/直写产生；prep 走 CLI add-edge×2+直写空格行一行。
+- 后续咬合：T7 引擎 recon/test 段挂 graph-horizon（可达空格驱动，最小咬合）；P3 派发深调度/收敛补强/攻击路径进 EV=T14（收口接线）与批次 6（渲染）范围。
