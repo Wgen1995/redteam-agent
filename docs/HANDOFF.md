@@ -39,6 +39,8 @@
 2026-09-24｜子代理 T12｜批次3 T12：kill -9 保真度 eval——撕裂三态+POSIX 随机断点（seed 固定）+断点×摘除 22 组合穷举，恢复后 13 表字节指纹零变更+state-rebuild PASS+resume-kit 重生成（304→310；本流水行由 T13 补记——9f6f651 当时只落 T12 裁决节）｜f695210
 2026-09-24｜子代理 T13｜批次3 T13：收口——契约02a回注 G-6/G-10（微版本勘误通道同批次G-1先例；state.md v2 十键表与 state_md.KEY_ORDER 单源钉死+checkpoint 终局签名八参数）+cli/README 批次3节+探知项台账 G-1..G-15 落盘归并+出口验收 11 条逐条实测（310→317 绿+42 金样面 PASS；tests/test_contract_backfill.py 7 例 TDD 先红后绿）｜5c62bd6
 2026-09-24｜子代理（评审收尾）｜批次3 评审收尾：Important×2 清账——①契约09 tanyin-phases 子命令枚举三处 6→7（补 denominator-ready；微版本勘误通道=文末勘误补记+README 索引登记）②金样回归进 CI（ci.yml 四格矩阵 Golden regression 步；run_golden 缺金样默认 FAIL+--bless 显式建档门槛，单测 5 例 TDD 先红后绿）+顺手 Minor-1（契约04 §69 就地指针：断言词按 02a 终审签名裁 bare ledger-tree-check——T11 裁决）+Minor-5 探知项登记（check_cmds.py:27 _now() 墙钟进账本，契约 v3 前裁决）；discover 317→322 全绿+金样 42 面 PASS 零漂移｜f49c6bc
+2026-09-24｜子代理 T1｜批次4 T1：G-12 裁决落地——assets.type 九值→十一值（+cloud-storage/human-factor 细分落 meta=sub:）+pivot/foothold 启用（§4.8 兑现，原拒收分支退役）；契约01/07/02a+PROTOCOL §4 微版本勘误四笔+README 索引登记；TDD 先红后绿（tests/test_assets_type_b4.py 3 例：pivot/foothold/新两值正例+未知枚举负例；test_write_cmds pivot 用例转正例），全套 325 绿+金样 PASS 零漂移｜a3fd64d
+2026-09-24｜子代理 T2｜批次4 T2：G-2 裁决落地——matrix-set 放行 submatrix: 新键行（四条件：前缀/冻结/全新表面/VOCAB 命中）+原子铸造新表面×VOCAB 全集 12 行（目标行取 --state/--reason/--intent-id，余行 state 空+裸前缀；timeline 事件 submatrix-mint）+前缀首次归类修正（旧空→任意前缀放行/旧非空≠新→REJECT，修 authz-diff 落格潜伏阻塞）；契约02a §12 微版本勘误；TDD 先红后绿（tests/test_submatrix_mint.py 6 例；test_write_cmds 前缀负例按新语义改写），全套 331 绿+金样 PASS 零漂移｜1aace3d
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -182,3 +184,13 @@
 ## 2026-09-24 批次 4 开工（executing via subagent-driven-development）
 - 用户批准计划 docs/superpowers/plans/2026-09-24-b4-engine-layer.md（含三裁决 G-2/G-12/G-13 与补充裁决 R1-R6 全案）｜commit 476ce55
 - 执行结构：按域捆绑派发（T1+T2 契约/矩阵→T3+T4 门/EV→T5+T6 重放→T7+T8 引擎/差分→T9+T10 适配/adopt→T11-T13 viz/金丝雀/闭包→T14 收口），每任务 TDD+全量回归，收口后整支评审
+
+## 2026-09-24 批次 4 T1+T2（契约勘误+词表扩展+子矩阵铸行；同域捆绑）
+- 验收实测（两任务各自收口点）：T1 → 全套 discover Ran 325 tests OK（基线 322+3 新增）+ run_golden.py PASS 零漂移；T2 → Ran 331 tests OK（325+6 新增）+ 金样 PASS 零漂移。金样零刷新即预期：金样 matrix-set 场景走既有键（web.api×inj.sql）且 reason 无前缀，不触铸行分支；G-g1 夹具无新 type 行——两任务均为纯放行扩展，无既有面字节变更。
+- Ruling 清单（计划冲突按意图裁决，两笔 commit 消息内同款记录）：
+  - R-T1-1（argv 契约）：计划两份新测试 call() 均把 --goal-dir 尾置——CLI 单入口冻结 argv[2]=="--goal-dir"（cli/tanyin-ledger main），尾置恒 exit 2 用法错。修正=--goal-dir 紧随命令名（tests/test_negative_matrix.py 先例）。
+  - R-T1-2（自洽性）：契约01 §1 变更表第 6 行「type +pivot/foothold（批次 4）」要点随 §3.6 枚举行同步为四值追加（计划 Step5 仅列枚举行+文末节）。
+  - R-T2-1（全量校验前置）：计划实现片段仅前移 state/iid/reason 三赋值，state 枚举/reason 附带/intent 引用闭合校验留在旧键路径——铸行分支将绕过校验。按裁决 A「全量校验后一次写入（写前拒收纪律）」将三校验一并前置到分支前，铸造行同经全量校验。
+  - R-T2-2（夹具现实）：计划 setUp 对 G-g1 直接 matrix-freeze——夹具 matrix.tsv 自带 frozen_at 盖戳行（make_fixtures 模拟 P2 冻结事件）必 REJECT「不可重复冻结」，且 web.api 行 state=" "（伪空态）致 fresh 选择器 StopIteration。修正=prep_matrix 预处理（清全部 frozen_at+空态归一；run_golden autodrive 预解冻先例）再走 CLI 冻结；未冻结负例同法预处理但不冻结。
+  - R-T2-3（负例保覆盖）：test_write_cmds 旧前缀负例（空 reason 行设 submatrix:=REJECT）在新规则下属首次归类放行——改写为「先 submatrix: 置格（OK）再 authz-diff: 串类（REJECT 前缀）」，负例覆盖不丢。
+  - R-T2-4（笔误修正）：计划代码片段 _matrix_prefix(ctx.val("matrix.tsv", key_rows[-1], "reason)) 引号未闭合——按语法修正落盘。
