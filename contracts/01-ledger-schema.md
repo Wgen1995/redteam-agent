@@ -24,7 +24,7 @@
 | 3 | intents.tsv | 事件溯源 | ledger-add-intent / ledger-set-intent-status | +kind / budget_share |
 | 4 | facts.tsv | 纯追加 | ledger-add-fact | kind +authz |
 | 5 | findings.tsv | 纯追加（tombstone） | ledger-add-finding / ledger-supersede-finding | +exploitation_status/auth_context/dedup_key/scope_check/card_path |
-| 6 | assets.tsv | 纯追加 | ledger-add-asset | type +pivot/foothold（批次 4） |
+| 6 | assets.tsv | 纯追加 | ledger-add-asset | type +pivot/foothold/cloud-storage/human-factor（批次 4·G-12 勘误） |
 | 7 | edges.tsv | 纯追加 | ledger-add-edge | 10 边口径钉死 |
 | 8 | approvals.tsv | 纯追加 | ledger-approve | 逐条审批+签发+知识审批+豁免全落此表 |
 | 9 | E-index.tsv | 纯追加（只增不覆盖） | ledger-add-evidence | +network_position/card_path；四要素进卡片 |
@@ -159,7 +159,7 @@
 | 字段 | 类型 | 枚举/约束 | 说明 |
 |---|---|---|---|
 | id | 文本 | 前缀 AST（§4.1） | 资产唯一标识 |
-| type | 枚举 | ∈{root-domain,subdomain,ip,service,app,endpoint,source-code,pivot,foothold} | pivot/foothold 批次 4 启用：内网跳板/立足点，attack 边承载链式语义 |
+| type | 枚举 | ∈{root-domain,subdomain,ip,service,app,endpoint,source-code,pivot,foothold,cloud-storage,human-factor} | pivot/foothold 批次 4 起启用：内网跳板/立足点，attack 边承载链式语义；cloud-storage/human-factor=G-12 勘误新增，细分落 meta=sub:…（文末勘误补记） |
 | value | 文本 | — | 资产值 |
 | meta | 文本 | — | 定稿未单列说明（§4.8 仅列字段名） |
 | in_scope | 布尔/枚举 | 由 scope-check 判定（界外=out_of_scope） | 范围内标记 |
@@ -339,3 +339,7 @@
 - timeline/budget 补 schema_version 列（7→8）；matrix 补 frozen_at（7→8）；creds 补 material（15→16）——字段总数 142→146。
 - 命令面 37→41（九门断言四条并入校验类）；set-cred-status 归写入（写19/查11/校验10）。
 - PG 规范形 PG-{goal-id}-{四位序号}；budget.scope 字面量 goal=目标级总预算。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·G-12 裁决）
+
+assets.type 枚举九值→**十一值**：新增 `cloud-storage`（A5 存储与云：对象桶/数据库暴露/队列/云元数据端点/CDN 源站）与 `human-factor`（A7 人的因素：邮箱/账号名/泄露库命中/第三方 SSO 依赖/供应商入口）；pivot/foothold 同批启用（§4.8「后两类批次 4 启用」兑现——原「批次 4 前启用=REJECT」拒收分支退役）。细分不进枚举、落 meta：`meta=sub:object-bucket|database|queue|cloud-metadata|cdn-origin|email|account|leaked-credential|sso|vendor-portal`（词汇表小而稳，设计 §4.8 边词汇同精神）。勘误通道：微版本勘误（零存量数据期，同批次 1「v2 勘误」先例），schema_version 保持 =2 不递增；§3.6 枚举行与 §1 变更表第 6 行要点一并同步。同批联动勘误：契约 07 §2 assets[].type、契约 02a §8 add-asset 拒收条件、phases/PROTOCOL.md §4 类映射（索引见 contracts/README.md）。

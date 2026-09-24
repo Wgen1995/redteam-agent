@@ -179,7 +179,7 @@
 |（内部）schema_version / created|—|常量/命令铸造|assets.schema_version=2 / assets.created|
 
 - 输出：`OK<TAB>AST-…<TAB>assets.tsv`＋追加行回显（7 字段，in_scope=判定结果）。
-- 拒收条件：type∉{root-domain,subdomain,ip,service,app,endpoint,source-code,pivot,foothold}=REJECT；type∈{pivot,foothold} 在批次 4 前启用=REJECT【推导：§4.8「后两类批次 4 启用」】；value 空=REJECT【推导】；同 type+value 已存在=REJECT【推导：资产判重】；**界外资产不 REJECT**——强制对照 include/exclude，界外自动标 out_of_scope（§4.4 明示，与其他命令相反）。
+- 拒收条件：type∉{root-domain,subdomain,ip,service,app,endpoint,source-code,pivot,foothold,cloud-storage,human-factor}（十一值，G-12 勘误）=REJECT；value 空=REJECT【推导】；同 type+value 已存在=REJECT【推导：资产判重】；**界外资产不 REJECT**——强制对照 include/exclude，界外自动标 out_of_scope（§4.4 明示，与其他命令相反）。（原「type∈{pivot,foothold} 批次 4 前启用=REJECT」分支随批次 4 启用退役；cloud-storage/human-factor 细分落 meta=sub:…——见文末 2026-09-24 勘误补记·G-12。）
 - 依据：定稿 §4.8/§4.4/§5.2 P1 duty+P3 events asset-added／契约01 §3.6 assets.tsv。时机：P1 duty（测绘）/P3 events asset-added（回边生长图谱）。
 
 ### 9. add-edge（ledger-add-edge）〔写 9/18〕
@@ -684,3 +684,7 @@
 |10|snapshot|intents_pending=N;facts_unconsumed=N;matrix_gaps=N;budget_token_left=N（账本重算投影；无 token 上限时末位留空）|
 
 对账与重建：state-rebuild（校验面，第 35 节）对账 revision≡timeline 行数+snapshot 与账本重算一致+结构/枚举/行数；tanyin-phases rebuild-state（恢复面）以 timeline 为第一事实源对账重建（链断拒绝自愈，halt 人工处置）。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·G-12 裁决）
+
+§8 add-asset 拒收条件勘误（微版本，零存量数据期，schema_version 保持 =2 不递增，同上 G-6/G-10 补记先例）：type 枚举九值→**十一值**（+cloud-storage/human-factor；细分落 meta=sub:object-bucket|database|queue|cloud-metadata|cdn-origin|email|account|leaked-credential|sso|vendor-portal）；「type∈{pivot,foothold} 批次 4 前启用=REJECT」分支退役（§4.8「后两类批次 4 启用」兑现）。同批联动：契约 01 §3.6、契约 07 §2、phases/PROTOCOL.md §4（索引见 contracts/README.md）。

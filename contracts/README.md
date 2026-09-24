@@ -57,3 +57,10 @@
 ## v2 勘误补记（2026-09-24·批次 3 评审收尾）
 
 - 契约⑨（09-cli-surface.md）tanyin-phases 子命令枚举三处 6→**7**：补第 7 子命令 denominator-ready（分母就绪门，PROTOCOL §4；Important-1）。微版本勘误通道，不升 schema_version——详见该文件文末勘误补记。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T1/G-12 裁决）
+
+- 契约①（01-ledger-schema.md）§3.6 assets.type 枚举九值→**十一值**（+cloud-storage/human-factor，细分落 meta=sub:…；§1 变更表第 6 行要点同步）。微版本勘误，不升 schema_version。
+- 契约⑨（07-submission.md）§2 assets[].type 枚举串同步十一值。微版本勘误，不升 schema_version。
+- 契约 02a（02a-command-signatures-draft.md）§8 add-asset 拒收条件改十一值枚举；「pivot/foothold 批次 4 前启用=REJECT」分支退役（§4.8 兑现）。微版本勘误，不升 schema_version。
+- phases/PROTOCOL.md §4 类映射补 cloud-storage→A5、human-factor→A7 两行（G 台账 G-12 清账，原「A5/A7 无对应值」注记作废）。

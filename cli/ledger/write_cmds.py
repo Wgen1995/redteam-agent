@@ -616,10 +616,10 @@ def _add_asset(goal_dir, rest):
     ctx = Ctx(goal_dir)
     ctx.tier0()
     atype = args["type"]
-    if atype in {"pivot", "foothold"}:
-        raise Reject("type=%s 批次 4 前启用=REJECT（§4.8）" % atype)
-    if atype not in {"root-domain", "subdomain", "ip", "service", "app", "endpoint", "source-code"}:
-        raise Reject("type 不在九值枚举: " + atype)
+    # 批次4（G-12 裁决）：九值→十一值；pivot/foothold 启用（§4.8）；细分落 meta=sub:…
+    if atype not in {"root-domain", "subdomain", "ip", "service", "app", "endpoint",
+                     "source-code", "pivot", "foothold", "cloud-storage", "human-factor"}:
+        raise Reject("type 不在十一值枚举（G-12 勘误后）: " + atype)
     value = _clean(args["value"])
     if not value:
         raise Reject("value 空=REJECT")

@@ -465,10 +465,10 @@ class TestAddAsset(Base):
         self.assert_ok(res)
         self.assertEqual(self.rows("assets.tsv")[-1][T["assets.tsv"].index("in_scope")], "out_of_scope")
 
-    def test_reject_pivot_and_dup_and_enum(self):
-        snap = self.snap()
-        self.assert_rej(call("add-asset", self.gd, "--type=pivot", "--value=10.10.9.9",
-                             "--timestamp=" + TS), snap, "批次 4")
+    def test_accept_pivot_and_reject_dup_and_enum(self):
+        # 批次4 T1（G-12 勘误）：pivot/foothold 启用——原 REJECT 分支退役，改正例
+        self.assert_ok(call("add-asset", self.gd, "--type=pivot", "--value=10.10.9.9",
+                            "--timestamp=" + TS))
         self.assert_ok(call("add-asset", self.gd, "--type=subdomain", "--value=dev.shop.example",
                             "--timestamp=" + TS))
         self.assert_rej(call("add-asset", self.gd, "--type=subdomain", "--value=dev.shop.example",

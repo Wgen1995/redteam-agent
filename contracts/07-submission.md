@@ -54,7 +54,7 @@
 | findings[] | network_position | ∈{internet,intranet,same-host,jumphost:`<name>`}（§4.9） | POC 四要素之一 |
 | findings[] | preconditions | — | 前置条件（POC 四要素之二，§4.11） |
 | findings[] | expected_matcher | — | 预期匹配（对应 EV 卡片 expected，POC 四要素之四，§4.11） |
-| assets[] | type | ∈{root-domain,subdomain,ip,service,app,endpoint,source-code,pivot,foothold}（§4.8） | 资产类型 |
+| assets[] | type | ∈{root-domain,subdomain,ip,service,app,endpoint,source-code,pivot,foothold,cloud-storage,human-factor}（§4.8+G-12 勘误） | 资产类型 |
 | assets[] | value | — | 资产值 |
 | assets[] | meta | — | 元数据 |
 | edges[] | kind | 10 边词汇（§4.8） | 边类型 |
@@ -108,3 +108,7 @@
 - submission-ok 判据＝**4** 项（字段全/凭据占位符化/证据双哈希/pair_group 标注，§9.1）；失败处置五类＝**5** 行（§4 表）。
 - 幂等：`grep -n 'intent done 且' $D` → **2** 处（L450 §5.2 补充语义、L706 §11 批次 3），口径同一（intent done 且 submission.json 存在→重入跳过）。
 - 探知项＝**0**。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·G-12 裁决）
+
+§2 数组子字段表 assets[].type 枚举同步为十一值：+cloud-storage/human-factor（细分落 assets[].meta=sub:…），pivot/foothold 批次 4 起启用——与契约 01 §3.6 同批微版本勘误（零存量数据期，schema_version 不递增），索引见 contracts/README.md。

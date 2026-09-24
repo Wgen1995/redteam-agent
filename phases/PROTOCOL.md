@@ -66,8 +66,8 @@ exit 断言列表——契约 04 断言集与 asserts=21 基线不动、九门�
 - 在队列继续挖：intents 行 status=pending 且 kind=recon 且绑定该资产
   （dedup_key 以 "<AST-id>+" 开头，或 title/detail 含资产值）。
 - 类映射：root-domain/subdomain→A1；ip→A2；service→A3；app/endpoint→A4；
-  source-code→A6；A5（存储与云）/A7（人的因素）当前 41 面 type 枚举无对应值
-  （探知项：批 4 资产 type 扩枚举或维持理由落账）；A8=meta 含
+  source-code→A6；cloud-storage→A5；human-factor→A7（G-12 勘误后十一值——
+  原「A5/A7 当前 41 面 type 枚举无对应值」注记作废，见文末勘误补记）；A8=meta 含
   "extrapolated"/"外推" 的关联外推资产（界外也记）。
 - 不适用理由：fact(kind=info, target="asset-class:A<k>", detail=理由文本)。
 - 已处理（外推闭环三选一）：有采集 fact（target=资产值）/ 有绑定 intent
@@ -85,3 +85,7 @@ exit 断言列表——契约 04 断言集与 asserts=21 基线不动、九门�
 - 写类断言时间戳注入：matrix-freeze 是断言集唯一写类命令（§1.4），--timestamp
   必填而 yaml cmd 不携带——引擎注入门级 --timestamp（确定性纪律，禁 now()）；
   读类命令不注入（「无参数」类命令会 UsageError→误 ENV-HALT）。
+
+## 勘误补记（2026-09-24·批次 4 施工期）
+
+- §4 类映射补两行：cloud-storage→A5、human-factor→A7（G-12 裁决：assets.type 九值→十一值微版本勘误；原「A5/A7 无对应值」探知项注记随勘误作废——A5/A7 自此有对应 type 值，「不适用理由」兜底仅适用于其余无对应资产类的口径）。
