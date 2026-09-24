@@ -43,6 +43,8 @@
 2026-09-24｜子代理 T2｜批次4 T2：G-2 裁决落地——matrix-set 放行 submatrix: 新键行（四条件：前缀/冻结/全新表面/VOCAB 命中）+原子铸造新表面×VOCAB 全集 12 行（目标行取 --state/--reason/--intent-id，余行 state 空+裸前缀；timeline 事件 submatrix-mint）+前缀首次归类修正（旧空→任意前缀放行/旧非空≠新→REJECT，修 authz-diff 落格潜伏阻塞）；契约02a §12 微版本勘误；TDD 先红后绿（tests/test_submatrix_mint.py 6 例；test_write_cmds 前缀负例按新语义改写），全套 331 绿+金样 PASS 零漂移｜1aace3d
 2026-09-24｜子代理 T3｜批次4 T3：P4 重放门断言转强制——phases.yaml expect 去「批次 4 前=SKIP」+PROTOCOL §1 判定行退役注记+P4.md duty 3/4 强制化+契约04/契约11 §7 微版本勘误两笔+README 索引登记；TDD 先红后绿 2 例，全套 333 绿+金样 42 面 PASS 零漂移｜f569abe（本行由 T4 继任者补记：T3 commit 未落流水行，T12/T13 补记先例）
 2026-09-24｜子代理 T4｜批次4 T4：EV 卡片解析器（ledger/cards.py：parse_yaml 复用+check_consistency 同值性）+matcher 子集评估器（ledger/matchers.py：word/status/regex+AND+fail-closed，R1 落地）+vault 单源抽取（guard 七函数搬 ledger/vault.py，guard 同名 thin delegate 行为零变更；冻结接口 load_key/secret/secrets）；契约06 R1/G-17 微版本勘误+README 索引登记；TDD 先红后绿 9 例（红=ImportError 模块缺位），全套 342 绿+金样 42 面 PASS 零漂移（无金样变动）｜f8054dd
+2026-09-24｜子代理 T5｜批次4 T5：tanyin-replay 重放驱动（铁律 7 对外请求例外#1）——raw_request 自解析直发（R2：不 shell-exec repro_command）+{{vault:cred-N}} 进程内回注（真值不进 argv/不落盘，缺真值 fail-closed REJECT）+scope 门链（amendment 剔除→exclude 命中即界外→include 须命中；界外=REJECT exit 1 且 timeline 留痕）+三态判定（R3：连接层失败=env-diff→REPAIRED 候选/matcher 全中=reproduced→VERIFIED/不中=not-reproduced→REJECTED/无 matcher=manual）+matcher-test 离线评估+tanyin-replay.cmd Windows 等价入口+金样面 replay-envdiff（ENGINE_CMDS 首面）；TDD 先红后绿 4 例（红=脚本不存在 3 FAIL+1 巧合绿；绿含判定产物 1.json+timeline request:/replay-probe 记账断言），全套 346 绿+金样 43 面 PASS（replay-envdiff 有意建档 --bless，存量 42 面零漂移）｜498d8c2
+2026-09-24｜子代理 T6｜批次4 T6：重放门 eval——127.0.0.1 mock 目标（随机端口 socketserver+http.server，跨平台非 POSIX-only 无 skip）三态全链路实测：/ok 200 errorCode:00000→reproduced、/drift 403→not-reproduced、端口 1 拒连→env-diff → set-replay-state 三态落账（VERIFIED/REJECTED/REPAIRED）→ledger-replay-summary PASS（verified=1 repaired=1 rejected=1 pending=0=P4 断言 5 绿）→verify-chain 全链一致（request:/replay-probe/add-scope/add-evidence/replay: 事件入链）；红=计划逐字 setUp add-scope exit 2（argv 契约缝隙），修补两处（--goal-dir 紧随命令名+matcher 127.0.0.1→127.0.0.0/8）后绿；全套 347 绿+金样 43 面 PASS 零变动｜d9f7185
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -206,3 +208,17 @@
   - R-T4-3（condition 缺省）：R1 裁决文本未定 word matcher 的 condition 缺省值——按计划实现冻结为**默认 and**（非 nuclei 上游默认 or），契约06 勘误补记明示「condition 可省，默认 and」。
   - R-T4-4（11 字段口径）：计划 Interfaces 称「11 字段全量；缺字段 raise」而计划实现仅强制 id+network_position/pair_group 标量性——且 T5 测试的最小卡片仅 5 字段须可解析。按计划实现（lenient），「11 字段全量」解读为完整卡片返回形状而非强制项；同值性执法点=check_consistency（G-16：validate 集成不动，重放前校验）。
   - 附记（T3 流水补记）：f569abe 未落 HANDOFF 流水行——本任务补记（T12/T13 先例，标注补记+缘由）。
+
+## 2026-09-24 批次 4 T5+T6 裁决（实现者记；重放驱动+重放门 eval；同域捆绑）
+- 验收实测：T5 → `python3 -m unittest tests.test_replay_driver -v` 4/4；discover Ran 346 tests OK（342 基线+4）；`python3 tests/run_golden.py --bless` INIT replay-envdiff 后复跑 PASS 21读+20写+1phases+1engine 零漂移。T6 → tests.test_replay_gate 1/1（三态+三态落账+summary+verify-chain 全链）；discover Ran 347 tests OK；金样 43 面 PASS 零变动（金样变动说明：仅 T5 新增面 replay-envdiff.norm 有意建档【--bless】，存量 42 面字节零漂移）。
+- Ruling 清单（commit 498d8c2/d9f7185 消息内同款记录）：
+  - R-T5-1（退出码口径）：计划测试 test_unknown_id_exit_two 期望 exit 2，骨架对 E-index 无行 return 1——按接口口径「2=用法或环境问题（可重跑）」取测试侧：未知 EV id=exit 2（调用方输入错误，非执法拒绝、零落账）。
+  - R-T5-2（argv 双形态）：计划测试用「--goal-dir D」「--expected-file P」空格形态，骨架只认「--key=value」等号形态——_kv() 双形态归一（以测试为准）。
+  - R-T5-3（T4 面 None 归一·跨任务修复）：parse_yaml 空值键=None，add-evidence 卡片模板自身产出「pair_group: 」空行——cards.parse_ev_card 原标量守卫对任何默认卡片必 CardError（T5 重放真实工作流的阻断性缺口，T6 Step2「先定位再改实现」条款适用）。修复=守卫两键 None→空串归一（空值=未填，§4.11 TSV 权威、卡片复核只对非空同值执法）；T4 冻结签名与 test_cards_matchers 9 例零触碰（43/43 复跑背书）。
+  - R-T5-4（夹具现实）：计划注释称「G-g1 夹具 E-index 首行卡片在场」，实况夹具无 evidence/ 目录——测试 mint_card 预铸+金样 prep_engine 预铸（卡 Host=10.10.9.9 命中夹具 scope include 10.10.0.0/16：免 DNS、连接层失败确定性；本机实测 10.10.9.9:1 超时 2.0s、127.0.0.1:1 即时拒连，两路径皆 OSError→env-diff）；不动共享夹具=存量面零漂移（T2 夹具预处理先例）。
+  - R-T5-5（fail-closed 补强）：骨架占位符回注 vault.secret 返 None 时 re.sub TypeError 裸崩——改 REJECT exit 1（占位符无真值：vault 缺 key/缺条目/缺密位）；另补 scheme/port/timeout 值域校验（非法=exit 2）、卡片文件 OSError→REJECT、卡片 expected 违 R1 子集→REJECT（matcher-test 同口径）。
+  - R-T5-6（金样归一）：norm_engine 剥 detail（连接层错误消息平台相关/逐次可变）+gd 临时路径→<GD>；判定产物 seq 文件名不入 norm（只增不覆盖，序号随跑数变）——norm 面=判定行字段（id/verdict/matched/status/results/extracted/suggest）。
+  - R-T6-1（argv 契约）：计划 call() 把 --goal-dir 尾置——CLI 单入口冻结 argv[2]=="--goal-dir"（R-T1-1 同款先例），修正=紧随命令名。
+  - R-T6-2（loopback 授权形态）：计划 setUp --matcher=127.0.0.1——add-scope _matcher_ok 冻结校验只认 CIDR/域名后缀/通配（裸 IP 字面量非域名语法）必 REJECT；改语义等价 CIDR 127.0.0.0/8（host_in_scope 经 _match_value CIDR 命中 127.0.0.1，授权意图不变）。
+  - R-T6-3（套接字卫生）：tearDownClass 补 server_close()（shutdown 只停 serve_forever 不释放监听套接字）；跨平台声明：socketserver+http.server+127.0.0.1 绑定均 Windows 等价，无诚实 skip 必要。
+- 设计输入对照（docs/design/2026-09-24-fd-report-card-spec.md，仅参照）：raw_request 原文直发语义一致——驱动不 shell-exec、不编辑报文文本、header 按原文字序发送（dict 保序）、body 原文，仅按 R2 在进程内替换 {{vault:cred-N}} 占位符；报告渲染（批次 6）不在本任务范围。
