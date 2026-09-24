@@ -68,3 +68,8 @@
 ## v2 勘误补记（2026-09-24·批次 4 施工期·T2/G-2 裁决）
 
 - 契约 02a（02a-command-signatures-draft.md）§12 matrix-set 拒收条件勘误：submatrix: 四条件放行新键行铸造（原子铸造新表面×VOCAB 全集行，timeline 事件 submatrix-mint）+reason 前缀规则修正（旧前缀空→任意前缀首次归类放行；旧前缀非空且≠新→REJECT——修 authz-diff 首次落格潜伏阻塞）。微版本勘误，不升 schema_version。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T3/P4 重放门转强制）
+
+- 契约④（04-phases.md）门 5 · P4 断言 5（ledger-replay-summary）expect 文本去「（批次 4 前=SKIP，报告中披露）」——重放门断言转强制（断言数不变 asserts=21 基线不动）；phases/phases.yaml 同步、phases/PROTOCOL.md §1 判定表 SKIP 行加退役注记、phases/P4.md duty 3/4 改强制+历史注记。微版本勘误，不升 schema_version。
+- 契约⑭（11-enforcement.md）§7「P4 出口」行 expect 引用随契约 04 同步去 SKIP 尾注（T3 裁决：计划文件清单未列该引用位，按声明层单源一致+每笔勘误必登记的全局纪律补齐）。微版本勘误，不升 schema_version。

@@ -126,7 +126,7 @@ events（事件回边，不离开 P3）：
 | 2 | `ledger-verify-chain` | PASS |
 | 3 | `ledger-hash-recheck` | PASS |
 | 4 | `ledger-matrix-audit` | 抽查通过 且 无告警 |
-| 5 | `ledger-replay-summary` | 无 REJECTED 未处置项（批次 4 前=SKIP，报告中披露） |
+| 5 | `ledger-replay-summary` | 无 REJECTED 未处置项 |
 
 ### 门 6 · P5（报告）
 
@@ -220,3 +220,7 @@ events（事件回边，不离开 P3）：
 ## 终审裁决注记（2026-09-23·contracts-v2）
 
 九门断言四命令已终审并入 41 命令面（校验类）——探知项 1 已裁决。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T3/P4 重放门转强制）
+
+- 门 5 · P4 exit 断言 5（ledger-replay-summary）expect 文本变更：「无 REJECTED 未处置项（批次 4 前=SKIP，报告中披露）」→「无 REJECTED 未处置项」——P4 重放门断言转强制，SKIP 退役（phases/PROTOCOL.md §1 判定表对应行已加退役注记；phases/phases.yaml 同步；phases/P4.md duty 3 改强制口径=tanyin-replay 驱动三态判定、duty 4 披露义务段改历史注记）。断言数不变，asserts=21 基线不动。微版本勘误通道，零存量数据期不升 schema_version。

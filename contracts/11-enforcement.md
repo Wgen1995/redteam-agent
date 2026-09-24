@@ -69,7 +69,7 @@ accounts+permitted_actions、oob_endpoints 申报、append-only amendments（§4
 | 执行者 | fresh 隔离子代理只拿 EV 卡片盲重放（批次 4 起强制） |
 | 落账 | set-replay-state 三态 VERIFIED/REPAIRED/REJECTED |
 | 效果 | VERIFIED 才维持 C1；REJECTED→confidence 降 C3 或转 fact（exploitation_status 由重放门维护） |
-| P4 出口 | ledger-replay-summary：无 REJECTED 未处置项（批次 4 前=SKIP，报告中披露） |
+| P4 出口 | ledger-replay-summary：无 REJECTED 未处置项 |
 | 回边 | P4→P4 重放=REPAIRED（修复 POC 卡片后重放），max_retry 2 |
 
 ## 探知项（待仲裁）
@@ -88,3 +88,7 @@ accounts+permitted_actions、oob_endpoints 申报、append-only amendments（§4
 ## 终审裁决注记（2026-09-23·contracts-v2）
 
 egress compile 输出定四成分（ACL+DNS pinning+OOB+基础设施白名单）——探知项已裁决。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T3/P4 重放门转强制）
+
+- §7「P4 出口」行 expect 引用随契约 04 勘误同步：「无 REJECTED 未处置项（批次 4 前=SKIP，报告中披露）」→「无 REJECTED 未处置项」（P4 重放门断言转强制，SKIP 退役）。微版本勘误通道，不升 schema_version。

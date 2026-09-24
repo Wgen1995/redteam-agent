@@ -16,7 +16,7 @@ tanyin-phases gate --goal-dir D --phase <门> 是该协议的唯一确定性执�
 | ledger-converge-check | 退出码==0 且 stdout 首词 ∈ {converged, budget-exhausted}；budget-exhausted 时门事件附 `mode=degraded`（设计 §5.2 back_edges） |
 | ledger-matrix-gaps --baseline | 退出码==0 且 stdout 含 `covered=true` 且 `#baseline_rows=<N>` 的 N>0（该命令 covered=false 也退出 0，必须查 stdout——批次 1 实现事实） |
 | ledger-matrix-freeze | 退出码==0（新鲜冻结）；或 退出码==1 且 stderr 含 already-frozen 且 timeline 已有 matrix-freeze 事件（halt 修复后重评的幂等容忍） |
-| expect 文本含「批次 4 前=SKIP」 | 记 skipped，不计失败；门事件附 `skip=<n>`（P4 重放门批次 4 转强制，SKILL/P4.md 负责报告披露） |
+| expect 文本含「批次 4 前=SKIP」 | 记 skipped，不计失败；门事件附 `skip=<n>`（P4 重放门批次 4 转强制，SKILL/P4.md 负责报告披露）【已退役 2026-09-24·批4：P4 expect 文本已去 SKIP 标记，本行保留备查——历史会话 yaml 不再含该词，规则不再触发】 |
 | tanyin-report --lint（P5） | 退出码==2 = 工具未交付（批次 6）→ 门结果=ENV-HALT（引擎退出码 2，可重跑，非门禁失败） |
 
 3. 事件词汇（timeline，链式哈希照常）：

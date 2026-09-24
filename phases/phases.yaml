@@ -76,7 +76,7 @@ gates:
         - {cmd: "ledger-verify-chain", expect: PASS}
         - {cmd: "ledger-hash-recheck", expect: PASS}
         - {cmd: "ledger-matrix-audit", expect: "抽查通过 且 无告警"}
-        - {cmd: "ledger-replay-summary", expect: "无 REJECTED 未处置项（批次 4 前=SKIP，报告中披露）"}
+        - {cmd: "ledger-replay-summary", expect: "无 REJECTED 未处置项"}
       on_pass: P5
       on_fail: halt
   P5:
