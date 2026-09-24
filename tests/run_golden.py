@@ -97,9 +97,25 @@ def prep_graph(gd):
         f.write("admin-internal.shop.example\tinj.sql\t\t\t\t2\t\t\n")
 
 
+# 批次 4 T9：vuln-agent 适配器确定性面（engine 面，replay-envdiff 先例）。
+# norm=submission.json 规范化重 dump——提交内容确定性（POC 时间取自源 md，无墙钟入提交）；
+# operations.log 审计附件不入 norm。out-dir=<GD>（夹具副本上直写，存量面零触碰）。
+VULN_ADAPTER = os.path.join(HERE, "..", "engines", "vuln-agent", "adapter.py")
+VULN_FIXOUT = os.path.join(HERE, "fixtures", "engine", "vuln-agent-out")
+ADAPTER_CMDS = [("engine-vuln-adapter", [sys.executable, VULN_ADAPTER,
+                                         "--intent-id=INT-g1-0099", "--out-dir", "<GD>",
+                                         "--source", VULN_FIXOUT])]
+
+
 def run_engine(cmd, gd):
     return subprocess.run([gd if c == "<GD>" else c for c in cmd],
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+
+def norm_adapter(gd):
+    """适配器面归一：submission.json 排序重 dump（提交自身确定性，无墙钟/临时路径）。"""
+    with open(os.path.join(gd, "submission.json"), encoding="utf-8") as f:
+        return json.dumps(json.load(f), ensure_ascii=False, sort_keys=True)
 
 
 def prep_engine(gd):
@@ -314,14 +330,32 @@ def main(argv=None):
                 continue
             gp = os.path.join(GOLD, "graph-" + name + ".norm")
             gate_golden(gp, outs[0], "graph-" + name, bless, fails, inits, "输出漂移")
+        for label, spec in ADAPTER_CMDS:
+            outs = []
+            for t in (t1, t2):
+                gd = fresh(t)
+                a = run_engine(spec, gd)
+                if a.returncode != 0:
+                    outs = None
+                    break
+                outs.append(norm_adapter(gd))
+            if outs is None:
+                fails.append(label + "(非零退出 rc=%d)" % a.returncode)
+                continue
+            if outs[0] != outs[1]:
+                fails.append(label + "(不确定性)")
+                continue
+            gp = os.path.join(GOLD, label + ".norm")
+            gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
     for n in inits:
         print("INIT " + n)
     if fails:
         for f in fails:
             print("FAIL " + f)
         return 1
-    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 全部锁定且确定"
-          % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS), len(ENGINE_CMDS), len(GRAPH_CMDS)))
+    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 + %d adapter 面 全部锁定且确定"
+          % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS), len(ENGINE_CMDS),
+             len(GRAPH_CMDS), len(ADAPTER_CMDS)))
     return 0
 
 
