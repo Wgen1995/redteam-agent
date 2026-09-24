@@ -1,0 +1,3 @@
+CRED-g1-0001	static-cred	admin	admin	{{vault:cred-1}}	AST-g1-0002				2026-09-30	active	read\;probe		2		ntlm-hash
+CRED-diff-authz-0001	static-cred	admin	admin1	{{vault:cred-2}}	AST-diff-authz-0001					active	read\;probe		2	2026-09-24T10:00:00Z	
+CRED-diff-authz-0002	static-cred	user	user1	{{vault:cred-3}}	AST-diff-authz-0001					active	read		2	2026-09-24T10:00:00Z	

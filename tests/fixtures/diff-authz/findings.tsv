@@ -1,0 +1,2 @@
+FD-g1-0001	INT-g1-0002	admin 面板匿名可读	C3	高	suspected		admin-anon-read		in_scope	未登录可读订单列表							2	
+FD-diff-authz-0001	INT-diff-authz-0001	admin 数据可被 user 角色读取（BOLA）	C2	高	suspected	CRED-diff-authz-0002	AST-diff-authz-0001+admin 数据可被 user 角色读取（BOLA）		in_scope	差分正对：user 越权读 admin 数据	user 会话 GET /admin/api/users→200 errorCode:00000；anonymous→403（同 PG 对照）	AST-diff-authz-0001	EV-diff-authz-0001		findings-cards/FD-diff-authz-0001.md	active	2	2026-09-24T10:00:00Z

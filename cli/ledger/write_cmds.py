@@ -385,8 +385,11 @@ def _add_intent(goal_dir, rest):
     if dedup in {ctx.val("intents.tsv", r, "dedup_key") for r in ctx.rows("intents.tsv")}:
         raise Reject("dedup_key 重复（资产+技法类机械判重）: " + dedup)
     rid = ctx.new_id("intents.tsv", "INT")
+    # R5（批4 前置裁决）：直达 pending 条件=origin=recon-event 或 kind=authz-diff
+    # （cred-obtained 事件处理器语义，设计 §6.6 步 1「直接 pending 不打分」——差分对不参与晋升打分）
+    direct = origin == "recon-event" or kind == "authz-diff"
     row = _row("intents.tsv", id=rid, title=_clean(args["title"]), detail=_clean(args.get("detail", "")),
-               status="pending" if origin == "recon-event" else "candidate", engine=args["engine"],
+               status="pending" if direct else "candidate", engine=args["engine"],
                kind=kind, origin=origin, score="", via=args.get("via", ""), dedup_key=dedup,
                budget_share=args["budget-share"], activation=activation, reason="",
                created=args["timestamp"])

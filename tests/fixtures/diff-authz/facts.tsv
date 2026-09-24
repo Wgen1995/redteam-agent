@@ -1,0 +1,4 @@
+F-g1-0001	INT-g1-0001	info	shop.example	12 子域	0.9	2	
+F-g1-0002	INT-g1-0001	service	admin-internal.shop.example	nginx/1.25	0.9	2	
+F-diff-authz-0001	INT-diff-authz-0001	authz	app.intranet/admin/api/roles	各角色 403 一致（回归基线）	0.9	2	2026-09-24T10:00:00Z
+F-diff-authz-0002	INT-diff-authz-0001	authz	app.intranet/admin/api/audit	各角色 403 一致（回归基线）	0.9	2	2026-09-24T10:00:00Z

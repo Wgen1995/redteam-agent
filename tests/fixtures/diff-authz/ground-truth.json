@@ -1,0 +1,36 @@
+{
+ "planted": [
+  {
+   "id": "POS-1",
+   "endpoint": "app.intranet/admin/api/users",
+   "role": "user",
+   "marker": "errorCode:00000"
+  },
+  {
+   "id": "POS-2",
+   "endpoint": "app.intranet/admin/api/users",
+   "role": "user",
+   "marker": "\"total\":42"
+  },
+  {
+   "id": "POS-3",
+   "endpoint": "app.intranet/admin/api/users",
+   "role": "user",
+   "marker": "anonymous-denied"
+  },
+  {
+   "id": "NEG-1",
+   "endpoint": "app.intranet/admin/api/roles",
+   "role": "*",
+   "marker": "",
+   "polarity": "neg"
+  },
+  {
+   "id": "NEG-2",
+   "endpoint": "app.intranet/admin/api/audit",
+   "role": "*",
+   "marker": "",
+   "polarity": "neg"
+  }
+ ]
+}

@@ -1,0 +1,3 @@
+INT-g1-0001	子域枚举	crt.sh+被动	done	web-blackbox		P1-recon	0.8	CNPEN-SD-01	sd-enumer	0.1			2	
+INT-g1-0002	admin 面板未授权访问	authz-diff	pending	web-blackbox		P3-loop		CNPEN-AUTH-02	admin-authz	0.2	cred:CRED-g1-0001		2	
+INT-diff-authz-0001	authz-diff app.intranet/admin/api/users×user	(app.intranet/admin/api/users, user) 差分对；对照=anonymous	pending	web-blackbox	authz-diff	entity			-+authz-diff+authz-diff app.intranet/admin/api/users×user	10k\;50\;0.5			2	2026-09-24T10:00:00Z

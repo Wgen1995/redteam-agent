@@ -79,7 +79,7 @@
 |--activation|结构化谓词|条件|intents.activation（deferred 语义用）|
 |--cred|文本(行 id 引用)|条件|creds.id（kind=authz-diff 必填）【推导：§4.10 硬门参数化】|
 |（内部）id|文本|命令铸造|intents.id（前缀 INT）|
-|（内部）status|枚举|命令铸造|intents.status（初始 candidate；origin=recon-event 资产事件路径直达 pending）【推导：§4.5 状态机起点+§5.2 events】|
+|（内部）status|枚举|命令铸造|intents.status（初始 candidate；origin=recon-event 资产事件路径或 kind=authz-diff 直达 pending——R5 勘误，见文末）【推导：§4.5 状态机起点+§5.2 events】|
 |（内部）score|浮点|命令计算|intents.score（§8.7 公式；recon-event 不打分）|
 |（内部）dedup_key|文本|命令计算|intents.dedup_key（资产+技法类，机械计算）|
 |（内部）schema_version / created|整数/时间戳|常量/命令铸造|intents.schema_version=2 / intents.created|
@@ -705,3 +705,7 @@
 - **graph-paths**〔查询〕：`--from=<id> --to=<id|scope-root> [--max-hops=N（默认 4）]`。可达路径枚举（**有向**攻击可达边同上）——回答「从当前权限到目标还有几条路」，路径=攻击计划骨架。--to=scope-root 解析为全部 type=root-domain 资产；起点∈目标集=0 跳平凡路径计一条；简单路径（无重复节点）；PATH_CAP=50 截断（`#paths=N（截断至 50）`）。输出：`#paths=N`＋路径行 `id->id->…`（字典序）。
 - **graph-horizon**〔查询〕：`--from=<id>`。当前立足点的可达集（有向）＋可达但未测集合（与矩阵 join：latest 行 state 空 且 attack_surface∈可达资产值）——直接喂 P3 派发排序（可达空格×priority score，深调度属 P3/T14）。输出：`#reachable=N`＋`节点⇥类型` 行＋`#gaps=M`＋`attack_surface⇥vuln_class` 行（均排序确定）。
 - 三命令皆只读零落账：退出码 0=成功（空集合法）/ 2=用法（缺参/非法数值/未知 --edge-class）；不写任何表、不记 timeline。实现位 cli/ledger/graph_cmds.py（registry 单源 all_commands()=44）。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·R5 裁决·authz-diff 直达 pending）
+
+§3 add-intent 直达 pending 条件扩为 `origin=recon-event 或 kind=authz-diff`（cred-obtained 事件处理器语义，设计 §6.6 步 1「直接 pending 不打分」——身份矩阵差分候选不参与晋升打分，前置硬门 CRED active+permitted_actions 覆盖已在本命令执法）。微版本勘误通道，零存量数据期，schema_version 保持 =2 不递增。落地=批次 4 T8（差分样例对夹具语义前置：authz-diff intent origin=entity 亦直达 pending）。

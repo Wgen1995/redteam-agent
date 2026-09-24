@@ -1,0 +1,4 @@
+AST-g1-0001	root-domain	shop.example		1	2	
+AST-g1-0002	subdomain	admin-internal.shop.example		1	2	
+AST-g1-0003	subdomain	vpn.shop.example		0	2	
+AST-diff-authz-0001	endpoint	app.intranet/admin/api/users	protected	out_of_scope	2	2026-09-24T10:00:00Z
