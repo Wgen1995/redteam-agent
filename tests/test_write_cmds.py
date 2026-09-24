@@ -568,6 +568,29 @@ class TestAddEvidence(Base):
                    "--artifact=evidence/y.raw", "--timestamp=" + TS)
         self.assert_ok(res)
 
+    def test_norm_track_roundtrip_hash_recheck(self):
+        """批次4 评审 C-1（红→绿）：真实 add-evidence 铸造含动态字段的文本工件后，
+        hash-recheck 重算必 PASS——写路径落账 content_hash_norm 与查路径重算须单源
+        （哨兵语义=严格侧：动态字段值替换归一，规则冻结于 ledger/norm.py docstring）。"""
+        art = os.path.join(self.gd, "evidence", "dyn.raw")
+        NL = chr(10)
+        with open(art, "w", encoding="utf-8", newline=NL) as f:
+            f.write("HTTP/1.1 200 OK" + NL
+                    + "observed=2026-09-23T12:00:00Z nonce=abc123 csrf:tok-9" + NL
+                    + "static-marker-XYZ" + NL)
+        self.assert_ok(call("add-evidence", self.gd, "--title=动态字段工件",
+                            "--source-type=command", "--observed-at=" + TS,
+                            "--network-position=internet",
+                            "--repro-command=curl -s https://shop.example/api/x",
+                            "--repro-kind=single", "--artifact=evidence/dyn.raw",
+                            "--timestamp=" + TS))
+        from ledger import check_cmds
+        buf_o, buf_e = io.StringIO(), io.StringIO()
+        with redirect_stdout(buf_o), redirect_stderr(buf_e):
+            code = check_cmds.h_hash_recheck(self.gd, [])
+        self.assertEqual(code, 0, "hash-recheck 须 PASS（写/查 norm 单源）：\n"
+                         + buf_o.getvalue() + buf_e.getvalue())
+
 
 class TestApprove(Base):
     def test_positive_write(self):

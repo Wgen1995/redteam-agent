@@ -28,12 +28,18 @@ def canonical_digest(entry):
 
 
 def verify_entry(entry, pubkey_pem):
+    """返回 (ok, reason)；一切「不过」形态（含签名非 hex）=失败对非 raise——
+    「不过=blocked」契约语义（批次 4 评审收尾 fail-closed 形式统一）。"""
     if which("openssl") is None:
         return False, "openssl-missing（ENV：安装 openssl 后复跑）"
+    try:
+        sig = bytes.fromhex(entry["sig"])
+    except (ValueError, TypeError):
+        return False, "sig 非 hex（fail-closed=blocked）: %r" % entry.get("sig", "")[:16]
     with tempfile.TemporaryDirectory() as td:
         dg, sg = os.path.join(td, "d"), os.path.join(td, "s")
         open(dg, "wb").write(canonical_digest(entry))
-        open(sg, "wb").write(bytes.fromhex(entry["sig"]))
+        open(sg, "wb").write(sig)
         r = subprocess.run(["openssl", "pkeyutl", "-verify", "-pubin",
                             "-inkey", pubkey_pem, "-sigfile", sg, "-in", dg],
                            capture_output=True, text=True)

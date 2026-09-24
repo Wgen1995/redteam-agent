@@ -9,7 +9,10 @@ pair_group 列现序+1 铸（next-id 只扫 id 列，对 PG 前缀恒返 0001 �
 ③对照组 EV 经 --linked-finding 回链 finding（add-finding 先验 EV 存在、add-evidence
 后验 finding 存在——先铸实验组 EV→finding→对照组 EV 回链，scorer 取 evidence_ids∪回链并集）；
 ④creds 用 kind=static-cred（kind=session 须 parent_cred——计划 STEPS 未带，static-cred
-语义等价且 role 覆盖投影不依赖 kind）。"""
+语义等价且 role 覆盖投影不依赖 kind）；⑤P4 完备化（批次 4 评审收尾）：双 EV 补
+VERIFIED 重放事件行——G-23 绕道：set-replay-state 无 --timestamp 通道（_now() 墙钟
+禁入夹具），按 core.row_hash 直写链式事件行（引用闭合由铸造序保证；run_golden
+prep_engine 直写先例）；G-23 清账后回 CLI 通道。"""
 import json, os, re, shutil, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -59,6 +62,26 @@ def card(ev, role, lines, matchers, extractors=""):
             "pair_group: %s\nrole: %s\n---\n"
             "## 原始响应摘录（脱敏+定长）与判定依据\n%s\n"
             % (ev, role, TS, lines, matchers, ext, PG, role, lines.splitlines()[-1] if lines else ""))
+
+
+TS2 = "2026-09-24T10:30:00Z"   # ⑤重放事件行时间戳（确定性，晚于铸行 TS）
+
+
+def stamp_replays(ev_ids):
+    """P4 完备化：双 EV 落 replay:<id>:VERIFIED 链式事件行（ledger-replay-summary
+    断言前提——C2 finding 证据并集须含已重放 EV）。G-23 墙钟绕道见模块 docstring⑤。"""
+    sys.path.insert(0, os.path.join(ROOT, "cli"))
+    from ledger import core as ledger_core
+    p = os.path.join(DST, "timeline.tsv")
+    rows = [l.split(chr(9)) for l in open(p, encoding="utf-8").read().splitlines() if l]
+    prev = rows[-1][6]
+    for ev_id in ev_ids:
+        wo = [TS2, "子代理", "P4", "replay:%s:VERIFIED" % ev_id, "", prev, "2"]
+        h = ledger_core.row_hash(prev, wo)
+        rows.append(wo[:6] + [h] + [wo[6]])
+        prev = h
+    with open(p, "w", encoding="utf-8", newline="\n") as f:
+        f.write(chr(10).join(chr(9).join(r) for r in rows) + chr(10))
 
 
 def main():
@@ -129,6 +152,7 @@ def main():
     call("matrix-set", "--attack-surface=web.admin-panel", "--vuln-class=authz.diff", "--state=x",
          "--reason=authz-diff: user 越权读取 admin 数据（BOLA）", "--intent-id=" + iid,
          "--timestamp=" + TS)
+    stamp_replays([ev_exp, ev_ctrl])
 
     gt = {"planted": [
         {"id": "POS-1", "endpoint": EP, "role": "user", "marker": "errorCode:00000"},

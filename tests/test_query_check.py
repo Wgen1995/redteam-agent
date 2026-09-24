@@ -285,6 +285,33 @@ class CheckCommands(Base):
         self.assertEqual(r.returncode, 1)
         self.assertIn("EV-g1-0001", r.stdout)
 
+    def test_norm_single_source_strictness(self):
+        """批次4 评审 C-1：norm 轨单源=ledger/norm.py——严格侧哨兵语义（动态字段
+        值替换归一：nonce/csrf/时间戳值变化 norm 稳定；动态字段外改一字 norm 必变）；
+        查路径 check_cmds.artifact_hashes 须为 norm 单源薄壳（写路径同款）。"""
+        from ledger import norm
+        a = ("HTTP/1.1 200 OK\n"
+             "observed=2026-09-23T12:00:00Z nonce=abc123 csrf:tok-9 epoch=1760000000\n"
+             "static-marker-XYZ\n")
+        b = ("HTTP/1.1 200 OK\n"
+             "observed=2027-01-02T03:04:05Z nonce=zzz999 csrf:tok-1 epoch=1790000000\n"
+             "static-marker-XYZ\n")
+        self.assertEqual(norm.normalize_artifact(a), norm.normalize_artifact(b),
+                         "动态字段值变化须归一稳定")
+        c = a.replace("static-marker-XYZ", "static-marker-XY!")
+        self.assertNotEqual(norm.normalize_artifact(a), norm.normalize_artifact(c),
+                            "静态区单字改动必检出（严格侧哨兵语义）")
+        art_dir = os.path.join(self.g, "artifacts")
+        os.makedirs(art_dir)
+        art = os.path.join(art_dir, "normsrc.txt")
+        with open(art, "w", encoding="utf-8", newline="\n") as f:
+            f.write(a)
+        from ledger import check_cmds
+        with open(art, "rb") as f:
+            data = f.read()
+        self.assertEqual(check_cmds.artifact_hashes(art), norm.artifact_hashes(data),
+                         "查路径 artifact_hashes 须为 norm 单源薄壳")
+
     def test_matrix_audit(self):
         r = self.cli("matrix-audit")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)

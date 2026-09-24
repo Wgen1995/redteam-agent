@@ -1,6 +1,6 @@
-# 批次 4 探知项台账（G-16..G-26·T14 收口终态）
+# 批次 4 探知项台账（G-16..G-28·T14 收口+评审收尾终态）
 
-> 来源：①批次 4 计划「探知项」节原文誊录（G-16..G-23，docs/superpowers/plans/2026-09-24-b4-engine-layer.md——程序化提取防转写漂移）；②设计增补 commit 登记（G-24=fb72cd5 实时发现流与优先级调度／G-25=b0006f2 FD 报告卡片规格／G-26=71d3b7c 图谱驱动全程）；③T14 收口状态归并（本文件=catalog 单源，HANDOFF 快照引用）。
+> 来源：①批次 4 计划「探知项」节原文誊录（G-16..G-23，docs/superpowers/plans/2026-09-24-b4-engine-layer.md——程序化提取防转写漂移）；②设计增补 commit 登记（G-24=fb72cd5 实时发现流与优先级调度／G-25=b0006f2 FD 报告卡片规格／G-26=71d3b7c 图谱驱动全程）；③T14 收口状态归并（本文件=catalog 单源，HANDOFF 快照引用）；④批次 4 评审收尾增补（G-27/G-28+R6 机检缺口，2026-09-24 评审 C-1 批「评审收尾入账」节登记）。
 > 通道纪律：契约回注一律走微版本勘误通道（零存量数据期先例，schema_version 不递增）；状态变更随任务记 HANDOFF 开发流水。
 
 ## 一、计划原文誊录（G-16..G-23，2026-09-24 计划冻结文本）
@@ -40,8 +40,17 @@
 | G-25 | **开放·批次 6** | 本批 HTTP/1.x 文本直发未触边界；渲染器定（FD 卡片规格 §三落点） |
 | G-26 | **开放·批次 5**（v1 映射已冻） | R-G-2 v1 边语义映射冻结（f87ca25）；细分权重/成本=批次 5 知识飞轮 |
 
-## 四、移交清单（后续批次开工前必办）
+## 五、评审收尾增补（G-27/G-28+R6 机检缺口，2026-09-24 评审 C-1 批）
 
-- **批次 5 前必裁决**：G-24（severity_expect 基线表来源——随批落 intents.priority 物理列+CLI 只读算分是否入面）、G-26（边词汇细分权重/成本——边语义 v2）。
+| # | 缺口 | 发现（评审） | 影响 | 本批处置 | 建议裁决 |
+|---|---|---|---|---|---|
+| G-27 | **trigger-audit 逐对配对需 intents cred 绑定列**：②检查 authz-diff 候选现为全局口径（任意 kind=authz-diff intent 即闭），per-cred 精确配对无机械依据——intents 无 cred 物理绑定列（cred 消息现随 detail/派遣上下文携带，R-T13-6 已注记） | cred-obtained 回边的审计粒度停在「有候选」级 | 本批登记（评审 I-1）；per-cred 延后 fact 通道已有（target=authz-diff:<CRED-id>） | 契约 v3 或批次 5：intents 增 cred 绑定列（intents.priority 物理列 R-T14-2 分期同型先例——语义先冻后落列），trigger-audit ②升级逐对配对 |
+| G-28 | **converge 补「无可达未测格」结构性停机+攻击路径进 EV**：converge-check 收敛判定现为矩阵空格/预算口径，无图结构性停机（graph-horizon 可达集×未测格=∅ 应可判 converged）；attack 路径（graph-paths）未作为证据进 EV | 收敛判定缺图结构性依据；图驱动攻击链不成证据链 | 本批登记（评审 I-2，T7 前置「后续咬合」条延伸） | 批次 5：converge-check 增可达未测格结构性停机判据+graph-paths 攻击路径落 EV 卡片/raw_excerpt 通道设计 |
+
+- **R6 cap 机检缺口（挂 G-20）**：AUTHZ_DIFF_PAIR_CAP=24 现为双载文档常量（engines/web-blackbox/phases/differential.md 护栏节+phases/P3.md cred-obtained 回边），零代码常量/零测试锚定（grep 全仓 .py 无引用）——护栏参数漂移无 机检。挂 G-20：契约 v3 增常量时同批落常量机检（代码常量+测试断言锚定，G-3 restart_rate_minutes 落地形态同型）。
+
+## 六、移交清单（后续批次开工前必办）
+
+- **批次 5 前必裁决**：G-24（severity_expect 基线表来源——随批落 intents.priority 物理列+CLI 只读算分是否入面）、G-26（边词汇细分权重/成本——边语义 v2）、G-28（converge 结构性停机+攻击路径进 EV——评审收尾增补）、G-27（intents cred 绑定列——契约 v3 或批次 5 定通道）。
 - **批次 6 前必裁决/定标**：G-22（生产 EC 钥+重签+release.pub 替换+upstream commit 换真）、G-25（Burp 粘贴格式边界——渲染器）、G-21（Cytoscape.js vendor 复裁）；批次 3 遗留定标项 G-4/G-11 同窗。
-- **契约 v3 回注待办**：G-16（validate --with-cards 可选）、G-19（submission 顶层 perspective）、G-20（AUTHZ_DIFF_PAIR_CAP 常量）、G-23（set-replay-state --timestamp）+批次 3 遗留 G-3/G-7/G-8。
+- **契约 v3 回注待办**：G-16（validate --with-cards 可选）、G-19（submission 顶层 perspective）、G-20（AUTHZ_DIFF_PAIR_CAP 常量——随批落 R6 机检）、G-23（set-replay-state --timestamp）、G-27（intents cred 绑定列，若走 v3 通道）+批次 3 遗留 G-3/G-7/G-8。

@@ -11,7 +11,6 @@ contracts/02（终审裁决：写 19/查 11/校验 10）、contracts/02a（41 �
 - Tier 0 硬门：无 goals 行时一切写命令 REJECT，唯 add-goal 豁免（02 探知项 3 起草裁决）；
 - 参数 --key=value（本批）；经临时文件/stdin 传参场景 TODO（契约 01 §1 参数化纪律，待批次补通道）。
 """
-import hashlib
 import ipaddress
 import os
 import re
@@ -19,6 +18,7 @@ import sys
 
 from .core import TABLES, SCHEMA_VERSION, GENESIS, GATE_ORDER, esc, next_id, row_hash, write_tsv
 from . import state_md
+from .norm import artifact_hashes  # norm 轨单源（评审 C-1）：add-evidence 落账与 hash-recheck 同款
 
 TAB = chr(9)
 
@@ -691,29 +691,16 @@ def _add_edge(goal_dir, rest):
 
 # ---------------------------------------------------------------- 10 add-evidence
 
-_NORM_DROP = re.compile(r"(?i)(nonce|timestamp|x-request-id|^date:)")
-_ISO_TS = re.compile(r"\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:?\d{2})?")
-
-
 def _hashes(ctx, artifact):
+    """add-evidence 双指纹——norm 轨单源=ledger.norm.artifact_hashes（批次 4 评审 C-1：
+    查路径 hash-recheck 重算同款；旧整行丢弃+_NORM_DROP/_ISO_TS 本地实现退役，
+    「不可解码=norm 退化 raw」分支同退役——规则冻结见 norm.py 模块 docstring）。"""
     p = os.path.join(ctx.s.dir, artifact) if artifact else None
     data = b""
     if p and os.path.isfile(p):
         with open(p, "rb") as f:
             data = f.read()
-    raw = hashlib.sha256(data).hexdigest()
-    try:
-        text = data.decode("utf-8")
-    except (UnicodeDecodeError, AttributeError):
-        norm = raw
-    else:
-        keep = []
-        for ln in text.splitlines():
-            if _NORM_DROP.search(ln):
-                continue
-            keep.append(_ISO_TS.sub("<TS>", ln))
-        norm = hashlib.sha256(("\n".join(keep)).encode("utf-8")).hexdigest()
-    return raw, norm
+    return artifact_hashes(data)
 
 
 def _add_evidence(goal_dir, rest):

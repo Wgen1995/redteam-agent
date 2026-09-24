@@ -1,6 +1,6 @@
 # tanyin-ledger · 账本命令箱（批次 1）
 
-探隐 TanYin 的 13 表 TSV 账本唯一写入口。契约基线 contracts-v2（41 命令 / 147 字段 / 九门 / 10 边）。
+探隐 TanYin 的 13 表 TSV 账本唯一写入口。契约基线 contracts-v2（44 命令 / 147 字段 / 九门 / 10 边）。
 
 ## 用法
 
@@ -43,7 +43,7 @@ py -3 hooks\simulate.py --goal-dir sessions\G-g1 --host dsh -- curl http://x/
 
 ```
 python3 -m unittest discover -s tests       # 181 单测（含 02a §32 跳门检测 7 例 + Tier2 模拟器 8 例）
-python3 tests/run_golden.py                 # 黄金回归 41 命令，两次执行确定性自证
+python3 tests/run_golden.py                 # 黄金回归 44 命令（21 读+20 写+3 图查询），两次执行确定性自证
 python3 tests/make_fixtures.py              # 重铸夹具（13 表确定性样本）
 ```
 
@@ -71,7 +71,7 @@ python3 tests/make_fixtures.py              # 重铸夹具（13 表确定性样�
 
 ## 批次 3：总控 SKILL 路由器 + phases.yaml 引擎 + 受管重启/恢复体系
 
-认知与确定性分离：仓库根 SKILL.md=常驻权威集路由器（<2K token，八节结构）；phases/P0..P6.md=九门方法论按需加载；phases/phases.yaml=九门状态机声明层——执法权威仍在 41 条账本命令，断言→命令调用判定协议冻于 phases/PROTOCOL.md（批次 3 两份批次间接口合订本：协议+常驻集清单，另附干跑口径/分母就绪门）。
+认知与确定性分离：仓库根 SKILL.md=常驻权威集路由器（<2K token，八节结构）；phases/P0..P6.md=九门方法论按需加载；phases/phases.yaml=九门状态机声明层——执法权威仍在 44 条账本命令，断言→命令调用判定协议冻于 phases/PROTOCOL.md（批次 3 两份批次间接口合订本：协议+常驻集清单，另附干跑口径/分母就绪门）。
 
 ### tanyin-phases 子命令速查（第 11 工具；契约 09 勘误 10→11）
 
@@ -140,7 +140,7 @@ python3 cli/tanyin-phases trigger-audit --goal-dir <D>
 
 ```
 python3 -m unittest discover -s tests       # 全套单测（批 4 收口=395+T14 新增）
-python3 tests/run_golden.py                 # 50 金样面（含 replay-envdiff/engine-*/graph*/viz-data 批 4 新面）
+python3 tests/run_golden.py                 # 51 金样面（含 replay-envdiff/engine-*/graph*/viz-data 批 4 新面+diff-hash-recheck 评审收尾面）
 ```
 
 批次 4 出口验证：引擎级夹具+差分样例对（tests/fixtures/diff-authz 全经命令铸造、重铸逐字节确定）+重放门 eval（127.0.0.1 mock 三态全链路→set-replay-state→replay-summary→verify-chain）+身份矩阵检出率（tests/eval_authz_recall.py recall=5/5）+G-2/G-12/G-13 裁决落地；探知项台账见 docs/design/2026-09-24-b4-discovery-notes.md（G-16..G-26 终态）。

@@ -8,10 +8,11 @@ ledger-terminal-gate，02a 终审补全节【推导转正】）。
 （落账命令归校验组，02 §3 行 6）拒收=stderr 单行 REJECT＋exit 1；
 用法/环境错误 exit 2。参数本批仅 --key=value／旗标。
 """
-import datetime, hashlib, math, os, re
+import datetime, math, os, re
 
 from . import core
 from . import state_md
+from .norm import normalize_artifact, artifact_hashes as _norm_hashes  # norm 轨单源（评审 C-1）
 from .schemas import TABLES
 from .query_cmds import (TAB, UsageError, parse_kv, usage_guard, _idx, _cell,
                          latest_intents, latest_matrix, latest_by, unconsumed_facts,
@@ -35,24 +36,14 @@ def _chain_fail(s):
 
 # ---------------------------------------------------------------- hash-recheck
 
-def normalize_artifact(text):
-    """归一化去 nonce/时间戳【推导】02a 终审补全 2 的 norm 轨实现——批次 2
-    add-evidence 落账 content_hash_norm 须用同款函数。"""
-    t = text.replace("\r", "")
-    t = re.sub(r"\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:?\d{2})?",
-               "<ts>", t)
-    t = re.sub(r"\b1[6-9]\d{8}\b", "<ts>", t)
-    t = re.sub(r"(?i)\b(nonce|csrf)\s*[=:]\s*[^\s;]+", r"\1=<n>", t)
-    return "\n".join(ln.rstrip() for ln in t.split("\n"))
+# normalize_artifact：自 .norm 导入 re-export（既有引用兼容；实现单源=ledger/norm.py，
+# 规则冻结见其模块 docstring——批次 4 评审 C-1 前此处为写/查分叉的查侧副本）
 
 
 def artifact_hashes(path):
-    """E-index content_hash 双轨：raw=原始字节 sha256；norm=归一化后 sha256。"""
-    data = open(path, "rb").read()
-    raw = hashlib.sha256(data).hexdigest()
-    norm = hashlib.sha256(
-        normalize_artifact(data.decode("utf-8", "replace")).encode("utf-8")).hexdigest()
-    return raw, norm
+    """E-index content_hash 双轨：raw=原始字节 sha256；norm=归一化后 sha256
+    （norm 单源=ledger/norm.py——add-evidence 落账与 hash-recheck 重算同款）。"""
+    return _norm_hashes(open(path, "rb").read())
 
 
 def h_hash_recheck(goal_dir, rest):

@@ -139,6 +139,12 @@ VIZ_FIX = os.path.join(HERE, "fixtures", "diff-authz")
 VIZ_CMDS = [("viz-data", [sys.executable, VIZ_CLI, "render", "--goal-dir", "<GD>",
                            "--data-only"])]
 
+# 批次 4 评审收尾（C-1）：diff-authz 真实 add-evidence 铸造工件上 hash-recheck
+# PASS 面（viz 面 fresh_of 同构——夹具副本只读校验零 prep；输出无墙钟=确定性；
+# norm 单源=ledger/norm.py 写/查同款的回归锚）。
+RECHECK_CMDS = [("diff-hash-recheck", [sys.executable, CLI, "hash-recheck",
+                                       "--goal-dir", "<GD>"])]
+
 
 # 批次 4 T9：vuln-agent 适配器确定性面（engine 面，replay-envdiff 先例）。
 # norm=submission.json 规范化重 dump——提交内容确定性（POC 时间取自源 md，无墙钟入提交）；
@@ -425,6 +431,23 @@ def main(argv=None):
                 continue
             gp = os.path.join(GOLD, label + ".norm")
             gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
+        for label, spec in RECHECK_CMDS:   # 批4 评审收尾：diff-authz hash-recheck PASS 面
+            outs = []
+            for t in (t1, t2):
+                gd = fresh_of(t, VIZ_FIX, "diff-authz")
+                a = run_engine(spec, gd)
+                if a.returncode != 0:
+                    outs = None
+                    break
+                outs.append(a.stdout)
+            if outs is None:
+                fails.append(label + "(非零退出 rc=%d)" % a.returncode)
+                continue
+            if outs[0] != outs[1]:
+                fails.append(label + "(不确定性)")
+                continue
+            gp = os.path.join(GOLD, label + ".norm")
+            gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
         for faces, openssl_gated in ((ADAPTER_CMDS, False), (NUCLEI_CMDS, True)):
             if openssl_gated and shutil.which("openssl") is None:
                 for label, _ in faces:
@@ -453,10 +476,10 @@ def main(argv=None):
         for f in fails:
             print("FAIL " + f)
         return 1
-    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 + %d adapter 面 + %d viz 面 全部锁定且确定"
+    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 + %d adapter 面 + %d viz 面 + %d recheck 面 全部锁定且确定"
           % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS) + len(PHASES_DENOM),
              len(ENGINE_CMDS), len(GRAPH_CMDS),
-             len(ADAPTER_CMDS) + len(NUCLEI_CMDS), len(VIZ_CMDS)))
+             len(ADAPTER_CMDS) + len(NUCLEI_CMDS), len(VIZ_CMDS), len(RECHECK_CMDS)))
     return 0
 
 

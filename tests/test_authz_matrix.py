@@ -76,6 +76,16 @@ class TestDiffPair(unittest.TestCase):
                             "verify-chain", "--goal-dir", FIXD], capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
+    def test_hash_recheck_pass(self):
+        """批次4 评审 C-1 补断言：diff-authz 夹具（真实 add-evidence 铸造）上
+        hash-recheck 必 PASS——content_hash_norm 写/查单源（ledger/norm.py）。"""
+        import subprocess
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "cli", "tanyin-ledger"),
+                            "hash-recheck", "--goal-dir", FIXD],
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertTrue(r.stdout.splitlines()[0].startswith("PASS"), r.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

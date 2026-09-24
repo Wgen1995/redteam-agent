@@ -21,8 +21,13 @@ USAGE = "用法: adapter.py --intent-id=I --out-dir=D [--lock=L] " \
 
 
 def verify(lock_path):
-    """返回 (ok, reason)；False→适配器落 blocked 提交（环境受阻语义）。"""
-    lock = supply_chain.load_lock(lock_path)
+    """返回 (ok, reason)；False→适配器落 blocked 提交（环境受阻语义）。
+    lock 解析失败（非五字段行等 ValueError）同=失败对非崩溃——「不过=blocked」
+    exit 0 契约语义（批次 4 评审收尾 fail-closed 形式统一）。"""
+    try:
+        lock = supply_chain.load_lock(lock_path)
+    except ValueError as e:
+        return False, "tools.lock 解析失败（fail-closed=blocked）: %s" % e
     pub = os.path.join(HERE, "release.pub")
     for k in ("nuclei", "nuclei-templates"):
         if k not in lock:
