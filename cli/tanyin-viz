@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-viz（批次 4 T11）——session-viz 投影载体（projector 型；铁律 7 允许类：只读投影）。
+
+render：13 表+timeline 只读 → 单文件自包含 HTML（R4：零依赖 SVG+vanilla JS）；
+--data-only：仅输出数据岛 JSON（金样面 viz-data）。零回写不变式：goal 目录字节不变。
+退出码：0=成功 1=REJECT 2=用法/环境（对齐 Strix）。"""
+import json, os, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import core, viz_render  # noqa: E402
+from ledger.core import ensure_utf8_stdio  # noqa: E402
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文 JSON/提示统一 UTF-8
+
+
+def usage():
+    sys.stderr.write("用法: tanyin-viz render --goal-dir D --out <path.html> [--data-only]"
+                     + chr(10))
+    return 2
+
+
+def _kv(rest):
+    """--key=value 与 --key value 双形态归一（tanyin-replay 同款；--data-only 裸旗标值=空串）。"""
+    out, i = {}, 0
+    while i < len(rest):
+        a = rest[i]
+        if a.startswith("--"):
+            if "=" in a:
+                out[a] = a.partition("=")[2]
+                i += 1
+            elif i + 1 < len(rest):
+                out[a] = rest[i + 1]
+                i += 2
+            else:
+                out[a] = ""
+                i += 1
+        else:
+            i += 1
+    return out
+
+
+def main(argv):
+    if len(argv) < 2 or argv[1] != "render":
+        return usage()
+    kv = _kv(argv[2:])
+    gd = kv.get("--goal-dir", "")
+    if not gd:
+        return usage()
+    if not os.path.isdir(gd):
+        sys.stderr.write("环境问题: goal 目录不存在 " + gd + chr(10))
+        return 2
+    s = core.Session(gd)
+    if "--data-only" in kv:
+        print(json.dumps(viz_render.build_island(s), ensure_ascii=False, sort_keys=True))
+        return 0
+    out = kv.get("--out", "")
+    if not out:
+        return usage()
+    html = viz_render.render_html(s)
+    d = os.path.dirname(os.path.abspath(out))
+    os.makedirs(d, exist_ok=True)
+    with open(out, "w", encoding="utf-8", newline="\n") as f:   # 字节纪律：LF
+        f.write(html)
+    print("OK viz render -> %s (%d bytes)" % (out, len(html.encode("utf-8"))))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

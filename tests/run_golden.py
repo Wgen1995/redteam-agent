@@ -97,6 +97,15 @@ def prep_graph(gd):
         f.write("admin-internal.shop.example\tinj.sql\t\t\t\t2\t\t\n")
 
 
+# 批次 4 T11：session-viz 投影确定性面（viz 面，replay-envdiff 先例）——
+# --data-only=数据岛 JSON（sort_keys 确定性）；夹具=diff-authz（身份矩阵视图非空）。
+# projector 零回写：只读夹具副本，无 prep、无写账本动作。
+VIZ_CLI = os.path.join(HERE, "..", "cli", "tanyin-viz")
+VIZ_FIX = os.path.join(HERE, "fixtures", "diff-authz")
+VIZ_CMDS = [("viz-data", [sys.executable, VIZ_CLI, "render", "--goal-dir", "<GD>",
+                           "--data-only"])]
+
+
 # 批次 4 T9：vuln-agent 适配器确定性面（engine 面，replay-envdiff 先例）。
 # norm=submission.json 规范化重 dump——提交内容确定性（POC 时间取自源 md，无墙钟入提交）；
 # operations.log 审计附件不入 norm。out-dir=<GD>（夹具副本上直写，存量面零触碰）。
@@ -153,6 +162,14 @@ def fresh(tmp):
     if os.path.exists(d):
         shutil.rmtree(d)
     return shutil.copytree(FIX, d)
+
+
+def fresh_of(tmp, src, name):
+    """任意夹具副本（viz 面：diff-authz；fresh 的泛化形态）。"""
+    d = os.path.join(tmp, name)
+    if os.path.exists(d):
+        shutil.rmtree(d)
+    return shutil.copytree(src, d)
 
 
 OVERRIDE = {
@@ -339,6 +356,23 @@ def main(argv=None):
                 continue
             gp = os.path.join(GOLD, "graph-" + name + ".norm")
             gate_golden(gp, outs[0], "graph-" + name, bless, fails, inits, "输出漂移")
+        for label, spec in VIZ_CMDS:
+            outs = []
+            for t in (t1, t2):
+                gd = fresh_of(t, VIZ_FIX, "diff-authz")
+                a = run_engine(spec, gd)
+                if a.returncode != 0:
+                    outs = None
+                    break
+                outs.append(a.stdout)
+            if outs is None:
+                fails.append(label + "(非零退出 rc=%d)" % a.returncode)
+                continue
+            if outs[0] != outs[1]:
+                fails.append(label + "(不确定性)")
+                continue
+            gp = os.path.join(GOLD, label + ".norm")
+            gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
         for faces, openssl_gated in ((ADAPTER_CMDS, False), (NUCLEI_CMDS, True)):
             if openssl_gated and shutil.which("openssl") is None:
                 for label, _ in faces:
@@ -367,9 +401,9 @@ def main(argv=None):
         for f in fails:
             print("FAIL " + f)
         return 1
-    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 + %d adapter 面 全部锁定且确定"
+    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 + %d adapter 面 + %d viz 面 全部锁定且确定"
           % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS), len(ENGINE_CMDS),
-             len(GRAPH_CMDS), len(ADAPTER_CMDS) + len(NUCLEI_CMDS)))
+             len(GRAPH_CMDS), len(ADAPTER_CMDS) + len(NUCLEI_CMDS), len(VIZ_CMDS)))
     return 0
 
 
