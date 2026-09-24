@@ -3,7 +3,7 @@
 
 缺金样门槛（批次 3 评审·审计#7）：默认缺金样=FAIL 不落盘（防 CI 首跑/漏提交
 误建档判绿）；--bless 显式建档（INIT）。在场金样漂移即 FAIL，语义不变。"""
-import argparse, os, re, shutil, subprocess, sys, tempfile
+import argparse, json, os, re, shutil, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "..", "cli", "tanyin-ledger")
@@ -63,6 +63,38 @@ def run_cli(gd, name, args):
 # 批次 3 T2：tanyin-phases 确定性面（无 goal-dir，读仓库 phases/phases.yaml）——金样走同一机制
 PHASES_CLI = os.path.join(HERE, "..", "cli", "tanyin-phases")
 PHASES_CMDS = [["validate"]]
+
+# 批次 4 T5：tanyin-replay 确定性面（engine 面——三态判定产物可金样化）。
+# 夹具无 evidence/ 目录（计划注释与实况不符）：prep_engine 预铸 EV-g1-0001 卡片
+# （autodrive 预处理先例）；Host=10.10.9.9 命中夹具 scope include 10.10.0.0/16（免 DNS）。
+REPLAY_CLI = os.path.join(HERE, "..", "cli", "tanyin-replay")
+REPLAY_CARD = ("---\nid: EV-g1-0001\nnetwork_position: internet\n"
+               "raw_request: |\n  GET /x HTTP/1.1\n  Host: 10.10.9.9\n"
+               "expected: {}\npair_group: \n---\n## 摘\n")
+ENGINE_CMDS = [("replay-envdiff", [sys.executable, REPLAY_CLI, "replay", "--goal-dir", "<GD>",
+                                   "--id=EV-g1-0001", "--scheme=http", "--port=1",
+                                   "--timeout=2", "--timestamp=2026-09-24T09:00:00Z"])]
+
+
+def run_engine(cmd, gd):
+    return subprocess.run([gd if c == "<GD>" else c for c in cmd],
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+
+def prep_engine(gd):
+    d = os.path.join(gd, "evidence")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, "EV-g1-0001.md"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(REPLAY_CARD)
+
+
+def norm_engine(text, gd):
+    """判定行归一：剥连接层 detail（错误消息平台相关/逐次可变）与 gd 临时路径；
+    判定产物 seq 文件名不入 norm（只增不覆盖，序号随跑数变）。"""
+    j = json.loads(text.strip().splitlines()[-1])
+    keep = {k: j.get(k) for k in ("id", "verdict", "matched", "status", "results", "extracted")}
+    keep["suggest"] = j.get("suggest", "").replace(gd, "<GD>")
+    return json.dumps(keep, ensure_ascii=False, sort_keys=True)
 
 
 def run_phases(args):
@@ -224,14 +256,32 @@ def main(argv=None):
                 continue
             gp = os.path.join(GOLD, "phases-" + spec[0] + ".norm")
             gate_golden(gp, o1, "phases-" + spec[0], bless, fails, inits, "输出漂移")
+        for label, spec in ENGINE_CMDS:
+            outs = []
+            for t in (t1, t2):
+                gd = fresh(t)
+                prep_engine(gd)
+                a = run_engine(spec, gd)
+                if a.returncode != 0:
+                    outs = None
+                    break
+                outs.append(norm_engine(a.stdout, gd))
+            if outs is None:
+                fails.append(label + "(非零退出 rc=%d)" % a.returncode)
+                continue
+            if outs[0] != outs[1]:
+                fails.append(label + "(不确定性)")
+                continue
+            gp = os.path.join(GOLD, label + ".norm")
+            gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
     for n in inits:
         print("INIT " + n)
     if fails:
         for f in fails:
             print("FAIL " + f)
         return 1
-    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 全部锁定且确定"
-          % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS)))
+    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 全部锁定且确定"
+          % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS), len(ENGINE_CMDS)))
     return 0
 
 

@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-g1-0001", "matched": null, "results": [], "status": null, "suggest": "tanyin-ledger set-replay-state --goal-dir <GD> --id=EV-g1-0001 --state=REPAIRED --note=环境差异（连接层失败）——修复 EV 卡片 preconditions 网络位置/前置后重放", "verdict": "env-diff"}

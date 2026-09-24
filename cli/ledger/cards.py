@@ -24,6 +24,10 @@ def parse_ev_card(path):
     if not isinstance(fields, dict) or "id" not in fields:
         raise CardError("front-matter 非 mapping 或缺 id: " + path)
     for k in ("network_position", "pair_group"):
+        # parse_yaml 空值键=None（add-evidence 模板即产出 "pair_group: " 空行）：
+        # 空值=未填，等同缺键放行（§4.11 TSV 权威，卡片复核只对非空同值执法）。
+        if fields.get(k) is None:
+            fields[k] = ""
         if k in fields and not isinstance(fields[k], str):
             raise CardError("%s 须为标量: %r" % (k, fields[k]))
     return fields

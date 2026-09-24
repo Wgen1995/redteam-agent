@@ -1,0 +1,254 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-replay（批次 4 T5）——POC 独立重放驱动（铁律 7 对外请求例外#1）。
+
+replay：EV 卡片盲重放——解析 raw_request（HTTP 报文文本）→{{vault:cred-N}} 进程内解密替换
+（真值不进 argv/不落盘，R2）→host 过 scope include/exclude（出界=REJECT exit 1）→http.client
+直发→matcher 评估→三态（R3）：连接层失败=env-diff（REPAIRED 候选）/全中=reproduced
+（VERIFIED）/不中=not-reproduced（REJECTED）/无 matcher=manual。
+每请求落 timeline request: 事件（§4.10）；判定产物 replay/<EV-id>/<seq>.json 只增不覆盖。
+matcher-test：离线评估（REPAIRED 修复循环）。退出码 0/1/2 对齐 Strix。
+
+Ruling（计划骨架勘误，HANDOFF 批次4 T5 节）：未知 EV id=exit 2（用法问题可重跑），
+骨架的 exit 1 与计划测试冲突，按接口口径「2=用法」取测试侧；占位符无真值=REJECT exit 1
+（fail-closed，骨架此处会 TypeError）。"""
+import http.client, json, os, re, socket, ssl, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import cards, core, matchers, vault  # noqa: E402
+from ledger.schemas import TABLES  # noqa: E402
+from ledger.core import ensure_utf8_stdio  # noqa: E402
+
+ensure_utf8_stdio()
+TAB = chr(9)
+EPOCH = "1970-01-01T00:00:00Z"
+PLACEHOLDER = re.compile(r"\{\{vault:cred-(\d+)\}\}")
+REQUEST_LINE = re.compile(r"^([A-Z]+) (\S+) HTTP/(1\.[01])$")
+SUGGEST = {"reproduced": "VERIFIED", "not-reproduced": "REJECTED", "env-diff": "REPAIRED"}
+
+
+class _SecretMissing(Exception):
+    pass
+
+
+def usage():
+    sys.stderr.write("用法: tanyin-replay replay --goal-dir D --id=<EV-id> [--scheme=http|https]"
+                     " [--port=N] [--timeout=10] [--timestamp=T]"
+                     " | matcher-test --expected-file P --response-file F" + chr(10))
+    return 2
+
+
+def _kv(rest):
+    """--key=value 与 --key value 双形态归一（计划测试用空格形态，骨架只认等号形态——
+    以测试为准的 Ruling，见模块 docstring）。"""
+    out, i = {}, 0
+    while i < len(rest):
+        a = rest[i]
+        if a.startswith("--"):
+            if "=" in a:
+                k, _, v = a.partition("=")
+                out[k] = v
+                i += 1
+            elif i + 1 < len(rest):
+                out[a] = rest[i + 1]
+                i += 2
+            else:
+                out[a] = ""
+                i += 1
+        else:
+            i += 1
+    return out
+
+
+def parse_raw_request(text):
+    lines = text.splitlines()
+    m = REQUEST_LINE.match(lines[0].strip())
+    if not m:
+        raise ValueError("raw_request 首行非请求行: %r" % lines[0])
+    headers, i = {}, 1
+    for ln in lines[1:]:
+        if not ln.strip():
+            i += 1
+            break
+        k, _, v = ln.partition(":")
+        headers[k.strip().lower()] = v.strip()
+        i += 1
+    body = "\r\n".join(lines[i:])
+    return m.group(1), m.group(2), headers, body
+
+
+def append_tl(gd, ts, event):
+    """timeline 追加一行链式事件（actor=replay, phase=P4；与 check_cmds._append_timeline 同构）。"""
+    s = core.Session(gd)
+    rows = s.rows("timeline.tsv")
+    hi = TABLES["timeline.tsv"].index("hash")
+    prev = rows[-1][hi] if rows else core.GENESIS
+    wo = [ts, "replay", "P4", event, "", prev, "2"]
+    rows.append([ts, "replay", "P4", event, "", prev, core.row_hash(prev, wo), "2"])
+    core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+
+
+def host_in_scope(gd, host):
+    """scope 门链（R2）：amendment 已废行跳过；exclude 命中=界外；include 至少一行命中。"""
+    from ledger.write_cmds import _match_value
+    s = core.Session(gd)
+    hit = False
+    fi = TABLES["scope.tsv"].index("amendment_of")
+    superseded = {r[fi] for r in s.rows("scope.tsv") if r[fi]}
+    for r in s.rows("scope.tsv"):
+        if r[0] in superseded:
+            continue
+        kind = r[TABLES["scope.tsv"].index("kind")]
+        if kind not in ("include", "exclude"):
+            continue
+        if _match_value(host, r[TABLES["scope.tsv"].index("matcher")]):
+            if kind == "exclude":
+                return False
+            hit = True
+    return hit
+
+
+def cmd_replay(gd, rest):
+    kv = _kv(rest)
+    rid = kv.get("--id", "")
+    if not rid or not rid.startswith("EV-"):
+        return usage()
+    s = core.Session(gd)
+    row = next((r for r in s.rows("E-index.tsv") if r[0] == rid), None)
+    if row is None:
+        sys.stderr.write("用法问题: --id 引用闭合失败（E-index 无此行，可重跑）: %s\n" % rid)
+        return 2
+    card_path = os.path.join(gd, row[TABLES["E-index.tsv"].index("card_path")])
+    try:
+        card = cards.parse_ev_card(card_path)
+    except cards.CardError as e:
+        sys.stderr.write("REJECT\treplay\t卡片不可解析: %s\n" % e)
+        return 1
+    except OSError as e:
+        sys.stderr.write("REJECT\treplay\t卡片文件不可读: %s\n" % e)
+        return 1
+    errs = cards.check_consistency(card, row)
+    if errs:
+        sys.stderr.write("REJECT\treplay\t卡片与 E-index 同值性失败（§4.11）: %s\n" % "; ".join(errs))
+        return 1
+    raw = card.get("raw_request", "") or ""
+    if not raw.strip():
+        sys.stderr.write("REJECT\treplay\traw_request 空——无可重放请求\n")
+        return 1
+    try:
+        method, path, headers, body = parse_raw_request(raw)
+    except ValueError as e:
+        sys.stderr.write("REJECT\treplay\traw_request 不可解析: %s\n" % e)
+        return 1
+    scheme = kv.get("--scheme", "http")
+    if scheme not in ("http", "https"):
+        return usage()
+    try:
+        timeout = float(kv.get("--timeout", "10"))
+        port_arg = kv.get("--port", "")
+        port_override = int(port_arg) if port_arg else None
+    except ValueError:
+        return usage()
+    host = headers.get("host", "")
+    if not host:
+        sys.stderr.write("REJECT\treplay\traw_request 缺 Host 头\n")
+        return 1
+    if ":" in host:
+        host, _, port_s = host.partition(":")
+        port = int(port_s) if port_s.isdigit() else (443 if scheme == "https" else 80)
+    else:
+        port = port_override or (443 if scheme == "https" else 80)
+    ts = kv.get("--timestamp", EPOCH)
+    if not host_in_scope(gd, host):
+        append_tl(gd, ts, "request: %s%s via=replay REJECT=out-of-scope" % (host, path))
+        sys.stderr.write("REJECT\treplay\t目标 host 界外（scope include/exclude 判定）: %s\n" % host)
+        return 1
+
+    # 占位符进程内回注（四关卡①：真值不进 argv/不落盘；缺真值=fail-closed REJECT）
+    def sub(mo):
+        sec = vault.secret(gd, mo.group(1))
+        if sec is None:
+            raise _SecretMissing(mo.group(0))
+        return sec
+
+    try:
+        headers = {k: PLACEHOLDER.sub(sub, v) for k, v in headers.items()}
+        body = PLACEHOLDER.sub(sub, body)
+    except _SecretMissing as e:
+        sys.stderr.write("REJECT\treplay\t占位符无真值（vault 缺 key/缺条目/缺密位）: %s\n" % e)
+        return 1
+    append_tl(gd, ts, "request: %s%s via=replay" % (host, path))
+    try:
+        conn_cls = http.client.HTTPSConnection if scheme == "https" else http.client.HTTPConnection
+        conn = conn_cls(host, port, timeout=timeout)
+        conn.request(method, path, body=body or None, headers=dict(headers))
+        resp = conn.getresponse()
+        status, rheaders, rbody = resp.status, dict(resp.getheaders()), resp.read().decode("utf-8", "replace")
+        conn.close()
+    except (socket.error, ssl.SSLError, OSError, http.client.HTTPException) as e:
+        verdict, out = "env-diff", {"matched": None, "results": [], "extracted": {},
+                                    "detail": "%s: %s" % (type(e).__name__, e)}
+    else:
+        try:
+            ev = matchers.evaluate(card.get("expected") or {}, status,
+                                   {k.lower(): v for k, v in rheaders.items()}, rbody)
+        except matchers.MatcherError as e:
+            sys.stderr.write("REJECT\treplay\t卡片 expected 不在 matcher 子集（R1 fail-closed）: %s\n" % e)
+            return 1
+        verdict = {True: "reproduced", False: "not-reproduced", None: "manual"}[ev["matched"]]
+        out = {"matched": ev["matched"], "status": status, "results": ev["results"],
+               "extracted": ev["extracted"]}
+    note = {"env-diff": "环境差异（连接层失败）——修复 EV 卡片 preconditions 网络位置/前置后重放"}.get(verdict, "")
+    suggest = ("tanyin-ledger set-replay-state --goal-dir %s --id=%s --state=%s%s"
+               % (gd, rid, SUGGEST.get(verdict, "VERIFIED"),
+                  (" --note=" + note) if note else ""))
+    result = {"id": rid, "verdict": verdict}
+    result.update(out)
+    result["suggest"] = suggest if verdict != "manual" else "无 matcher——人工判定后落态"
+    d = os.path.join(gd, "replay", rid)
+    os.makedirs(d, exist_ok=True)
+    seq = len([x for x in os.listdir(d) if x.endswith(".json")]) + 1
+    with open(os.path.join(d, "%d.json" % seq), "w", encoding="utf-8", newline="\n") as f:
+        json.dump(result, f, ensure_ascii=False, sort_keys=True)
+    append_tl(gd, ts, "replay-probe %s verdict=%s" % (rid, verdict))
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+    return 0
+
+
+def cmd_matcher_test(rest):
+    kv = _kv(rest)
+    if not kv.get("--expected-file") or not kv.get("--response-file"):
+        return usage()
+    expected = json.load(open(kv["--expected-file"], encoding="utf-8"))
+    text = open(kv["--response-file"], encoding="utf-8", errors="replace").read()
+    head, _, body = text.partition("\r\n\r\n")
+    parts = head.split(" ")
+    status = int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 0
+    try:
+        r = matchers.evaluate(expected, status, {}, body)
+    except matchers.MatcherError as e:
+        sys.stderr.write("REJECT\tmatcher-test\texpected 不在 matcher 子集: %s\n" % e)
+        return 1
+    print(json.dumps(r, ensure_ascii=False, sort_keys=True))
+    return 0
+
+
+def main(argv):
+    if len(argv) < 2:
+        return usage()
+    sub, rest = argv[1], argv[2:]
+    if sub == "replay":
+        gd = _kv(rest).get("--goal-dir", "")
+        if not gd:
+            return usage()
+        if not os.path.isdir(gd):
+            sys.stderr.write("环境问题: goal 目录不存在 " + gd + chr(10))
+            return 2
+        return cmd_replay(gd, rest)
+    if sub == "matcher-test":
+        return cmd_matcher_test(rest)
+    return usage()
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
