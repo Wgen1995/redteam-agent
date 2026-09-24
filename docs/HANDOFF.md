@@ -46,6 +46,7 @@
 2026-09-24｜子代理 T5｜批次4 T5：tanyin-replay 重放驱动（铁律 7 对外请求例外#1）——raw_request 自解析直发（R2：不 shell-exec repro_command）+{{vault:cred-N}} 进程内回注（真值不进 argv/不落盘，缺真值 fail-closed REJECT）+scope 门链（amendment 剔除→exclude 命中即界外→include 须命中；界外=REJECT exit 1 且 timeline 留痕）+三态判定（R3：连接层失败=env-diff→REPAIRED 候选/matcher 全中=reproduced→VERIFIED/不中=not-reproduced→REJECTED/无 matcher=manual）+matcher-test 离线评估+tanyin-replay.cmd Windows 等价入口+金样面 replay-envdiff（ENGINE_CMDS 首面）；TDD 先红后绿 4 例（红=脚本不存在 3 FAIL+1 巧合绿；绿含判定产物 1.json+timeline request:/replay-probe 记账断言），全套 346 绿+金样 43 面 PASS（replay-envdiff 有意建档 --bless，存量 42 面零漂移）｜498d8c2
 2026-09-24｜子代理 T6｜批次4 T6：重放门 eval——127.0.0.1 mock 目标（随机端口 socketserver+http.server，跨平台非 POSIX-only 无 skip）三态全链路实测：/ok 200 errorCode:00000→reproduced、/drift 403→not-reproduced、端口 1 拒连→env-diff → set-replay-state 三态落账（VERIFIED/REJECTED/REPAIRED）→ledger-replay-summary PASS（verified=1 repaired=1 rejected=1 pending=0=P4 断言 5 绿）→verify-chain 全链一致（request:/replay-probe/add-scope/add-evidence/replay: 事件入链）；红=计划逐字 setUp add-scope exit 2（argv 契约缝隙），修补两处（--goal-dir 紧随命令名+matcher 127.0.0.1→127.0.0.0/8）后绿；全套 347 绿+金样 43 面 PASS 零变动｜d9f7185
 2026-09-24｜子代理 T7 前置｜批次4 T7 前置（图查询独立 commit）：图谱驱动增补 71d3b7c——graph-neighbors/graph-paths/graph-horizon 三只读图查询（邻接展开 --edge-class 过滤/有向可达路径枚举/可达集×矩阵空格 join）；命令面 41→44 微版本勘误（契约02a 文末补记节+README 索引+SKILL 命令索引+cli README+面数断言 41→44 同步）；金样 graph 三面（replay-envdiff 先例：prep_graph 预织图+--bless 建档，存量 43 面零漂移）；TDD 先红后绿 10 例（红=未实现/未知命令 8 FAIL），全套 357 绿+金样 46 面 PASS｜f87ca25
+2026-09-24｜子代理 T7｜批次4 T7：web-blackbox 四段 skill 引擎——MANIFEST（契约08 十二字段）+SKILL 路由 ≤2K+四段 recon/surface/test/differential（recon=A1-A8×通道×落账引擎位表+G-12 新 type 入表+graph-horizon 完备性口径；differential=计划逐字差分四原则+身份矩阵差分五步+护栏 24）+patterns 两件（submission-ok 契约07 九字段全样例+authz 模板/submission-reject 五类失败对照表）；结构 lint 8 例 TDD 先红后绿（计划 7 例逐字+horizon 咬合增补 1 例），全套 365 绿+金样 46 面 PASS 零变动｜4583e7e
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
@@ -232,3 +233,11 @@
   - R-G-2（图语义 v1 冻结）：节点=九表行 id（intents/creds 事件溯源 latest 去重入图）；有向攻击可达边=edges.tsv 按记录方向+凭据链（CRED→scope_asset=cred:unlock、parent_cred 父→子=cred:derive）；无向邻里仅 graph-neighbors（「周围有什么」双向视角）。设计文中 infiltrate/priv-esc/pivot/exfil-ability 攻击语义在现行 10 边词汇上 v1 映射为边类 attack={attack,proves,evidences}/asset={parent,scope-rel}/cred=凭据链——细分权重/成本=探知项 G-26（批次 5 知识飞轮定）。
   - R-G-3（金样 prep 直写）：可达表面空格行直写 matrix.tsv（prep_engine 直写文件先例）——matrix-set 对空 state 必 REJECT（state∈{x,?,-,!}），空态行只由 matrix-init/直写产生；prep 走 CLI add-edge×2+直写空格行一行。
 - 后续咬合：T7 引擎 recon/test 段挂 graph-horizon（可达空格驱动，最小咬合）；P3 派发深调度/收敛补强/攻击路径进 EV=T14（收口接线）与批次 6（渲染）范围。
+
+## 2026-09-24 批次 4 T7 裁决（实现者记·web-blackbox 四段引擎）
+- 验收实测：`python3 -m unittest tests.test_engine_web_blackbox -v` → 8/8；discover Ran 365 tests OK（357+8）；`python3 tests/run_golden.py` → PASS 21读+20写+1phases+1engine+3graph 零漂移（T7 无金样变动：纯新增引擎 md 载体，不触任何命令面）。
+- Ruling 清单（commit 4583e7e 消息内同款记录）：
+  - R-T7-1（MANIFEST 文体冲突）：计划 MANIFEST 全文为纯表格（`| kind | skill（…）|`），其测试 assertIn("kind: skill") 要求字面子串——标题下补一行独立键值 `kind: skill`（表格保留计划逐字），两态并存双双满足。
+  - R-T7-2（horizon 咬合增补例）：计划 Step1 测试 7 例不含图谱增补咬合——按追加件「引擎输出或测试设计引用 horizon 结果（最小咬合）」增补 test_horizon_coupling 1 例（recon/test 两段须挂 graph-horizon 字样）；咬合落点=recon 段「完备性口径：侦察分母=graph-horizon 可达集」+test 段「优先级=可达空格先行（深调度属 P3）」。
+  - R-T7-3（命令引用纪律）：引擎 md 命令引用一律 `tanyin-ledger <cmd>` 形态（bare 命令名不被 lint 正则捕获；`ledger-<cmd>` 前缀形态在 T7 测试 KNOWN 集无 ledger-add-* 别名先例——test_skill_resident 为其显式扩 KNOWN，T7 测试未扩，故避开）。
+- 交付物清单：engines/web-blackbox/{MANIFEST.md,SKILL.md,phases/{recon,surface,test,differential}.md,patterns/{submission-ok,submission-reject}.md}（8 件，UTF-8+LF 全检）；T8 消费=differential.md 五步语义，T14 消费=SKILL.md 路由表引用。
