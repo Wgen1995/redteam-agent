@@ -638,8 +638,12 @@ class TestMatrixSet(Base):
                              "--state=ok", "--timestamp=" + TS), snap)
         self.assert_rej(call("matrix-set", self.gd, "--attack-surface=web.api", "--vuln-class=inj.sql",
                              "--state=-", "--timestamp=" + TS), snapshot(self.gd), "reason")
+        # 批次4 T2 前缀规则修正（裁决 A）：旧前缀空→任意前缀放行（首次归类）——
+        # 原「空 reason 行设 submatrix: 前缀=REJECT」负例随之转正例；串类仍拒收。
+        self.assert_ok(call("matrix-set", self.gd, "--attack-surface=web.api", "--vuln-class=inj.sql",
+                            "--state=x", "--reason=submatrix:新资产", "--timestamp=" + TS))
         self.assert_rej(call("matrix-set", self.gd, "--attack-surface=web.api", "--vuln-class=inj.sql",
-                             "--state=x", "--reason=submatrix:新资产", "--timestamp=" + TS),
+                             "--state=x", "--reason=authz-diff:各角色一致", "--timestamp=" + TS),
                         snapshot(self.gd), "前缀")
         self.assert_rej(call("matrix-set", self.gd, "--attack-surface=web.api", "--vuln-class=inj.sql",
                              "--state=x", "--intent-id=INT-g1-0099", "--timestamp=" + TS), snapshot(self.gd))

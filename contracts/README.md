@@ -64,3 +64,7 @@
 - 契约⑨（07-submission.md）§2 assets[].type 枚举串同步十一值。微版本勘误，不升 schema_version。
 - 契约 02a（02a-command-signatures-draft.md）§8 add-asset 拒收条件改十一值枚举；「pivot/foothold 批次 4 前启用=REJECT」分支退役（§4.8 兑现）。微版本勘误，不升 schema_version。
 - phases/PROTOCOL.md §4 类映射补 cloud-storage→A5、human-factor→A7 两行（G 台账 G-12 清账，原「A5/A7 无对应值」注记作废）。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T2/G-2 裁决）
+
+- 契约 02a（02a-command-signatures-draft.md）§12 matrix-set 拒收条件勘误：submatrix: 四条件放行新键行铸造（原子铸造新表面×VOCAB 全集行，timeline 事件 submatrix-mint）+reason 前缀规则修正（旧前缀空→任意前缀首次归类放行；旧前缀非空且≠新→REJECT——修 authz-diff 首次落格潜伏阻塞）。微版本勘误，不升 schema_version。

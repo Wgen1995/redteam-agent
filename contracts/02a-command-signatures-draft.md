@@ -254,7 +254,7 @@
 |（内部）schema_version / updated|—|常量/命令铸造|matrix.schema_version=2 / matrix.updated（本表用 updated 非 created）|
 
 - 输出：`OK<TAB>置格 <attack_surface>×<vuln_class>=<state>`＋追加置格行回显（事件溯源：同键多行取最新）。
-- 拒收条件：--attack-surface×--vuln-class 行键不存在于 matrix.tsv=REJECT【推导：长表行键须 matrix-init 先铸，不允许置格行外新键】；vuln_class∉VOCAB（WSTG v4.2 版本化全集）=REJECT；state∉{x,?,-,!}=REJECT【推导：空态=未检查由 init 生成，置格命令不接受】；state∈{-,!} 而 reason 空=REJECT【推导：§4.10「不适用附理由/环境干扰附记录」】；reason 前缀与行类别不符（子矩阵行须 submatrix:、身份矩阵差分行须 authz-diff:）=REJECT【推导】；P2 冻结后主矩阵新增行键=REJECT（新资产走子矩阵行）【推导：基线冻结语义】；--intent-id 引用闭合失败=REJECT；置态证据支撑不足不属本命令拒收（P4 matrix-audit 事后抽查）。
+- 拒收条件：--attack-surface×--vuln-class 行键不存在于 matrix.tsv=REJECT【推导：长表行键须 matrix-init 先铸，不允许置格行外新键】（G-2 勘误例外=文末 2026-09-24 补记：四条件齐备放行 submatrix: 铸行）；vuln_class∉VOCAB（WSTG v4.2 版本化全集）=REJECT；state∉{x,?,-,!}=REJECT【推导：空态=未检查由 init 生成，置格命令不接受】；state∈{-,!} 而 reason 空=REJECT【推导：§4.10「不适用附理由/环境干扰附记录」】；reason 前缀与行类别不符（子矩阵行须 submatrix:、身份矩阵差分行须 authz-diff:）=REJECT【推导】（G-2 勘误修正=旧前缀空→任意前缀首次归类放行；旧前缀非空且≠新→REJECT——见文末 2026-09-24 补记）；P2 冻结后主矩阵新增行键=REJECT（新资产走子矩阵行）【推导：基线冻结语义】；--intent-id 引用闭合失败=REJECT；置态证据支撑不足不属本命令拒收（P4 matrix-audit 事后抽查）。
 - 依据：定稿 §4.10/§5.2 P3 置格+events（authz 差分落标准格）／契约01 §3.10。时机：P3 演进循环置格；P2 后新资产一律 submatrix: 行。
 
 ### 13. checkpoint〔写 13/18〕
@@ -688,3 +688,11 @@
 ## v2 勘误补记（2026-09-24·批次 4 施工期·G-12 裁决）
 
 §8 add-asset 拒收条件勘误（微版本，零存量数据期，schema_version 保持 =2 不递增，同上 G-6/G-10 补记先例）：type 枚举九值→**十一值**（+cloud-storage/human-factor；细分落 meta=sub:object-bucket|database|queue|cloud-metadata|cdn-origin|email|account|leaked-credential|sso|vendor-portal）；「type∈{pivot,foothold} 批次 4 前启用=REJECT」分支退役（§4.8「后两类批次 4 启用」兑现）。同批联动：契约 01 §3.6、契约 07 §2、phases/PROTOCOL.md §4（索引见 contracts/README.md）。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·G-2 裁决）
+
+裁决 A（G-2 新资产子矩阵行铸造）落地，§12 拒收条件行按本补记勘误。勘误通道：微版本勘误（零存量数据期，同上先例），schema_version 保持 =2 不递增。
+
+- 行键不存在且 reason 前缀 submatrix: 且基线已冻结且为全新表面→放行：原子铸造该表面×VOCAB 全集行（目标行取 --state/--reason/--intent-id，其余 state 空+裸前缀；timeline 事件 `submatrix-mint <surface> classes=<n> vocab=<ver>@<sha>`）。四条件缺一即 REJECT：reason 前缀非 submatrix:；基线未冻结（无 frozen_at 非空行——submatrix 语义只存在于冻结后）；表面已存在于既有行键（防主矩阵偷扩张）；vuln_class 不在 VOCAB 全集。分母诚实：新表面全词表立即进入闭合率分母，杜绝「少铸行刷闭合率」；全量校验后一次写入（state 枚举/reason 附带/intent 引用闭合对铸造行同样生效）。
+- reason 前缀规则修正=旧前缀空→任意前缀首次归类放行，旧前缀非空且≠新→REJECT（G-2 裁决，2026-09-24）——修正原「前缀与行类别不符=REJECT」对首次归类的潜伏阻塞（init 行 reason 为空→设 authz-diff: 前缀即 REJECT，身份矩阵差分无法落格）。
+- authz-diff: 前缀边界不变：仍限主矩阵既有键（差分落标准格，设计 §4.10）；新表面上的鉴权观察以 submatrix: 前缀落格（差分语义由 intent kind=authz-diff+E-index pair_group 承载，不依赖矩阵前缀）。

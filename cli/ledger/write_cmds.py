@@ -819,21 +819,49 @@ def _matrix_set(goal_dir, rest):
     if not rows:
         raise Reject("matrix.tsv 未初始化（先 matrix-init）")
     key_rows = [r for r in rows if r[0] == args["attack-surface"] and r[1] == args["vuln-class"]]
-    if not key_rows:
-        raise Reject("行键不存在于 matrix.tsv（不允许置格行外新键）: %s×%s"
-                     % (args["attack-surface"], args["vuln-class"]))
     state = args["state"]
+    reason = args.get("reason", "")
+    iid = args.get("intent-id", "")
+    # Ruling（T2）：state/reason 校验与 intent 引用闭合前置到铸行分支之前——
+    # 裁决 A「全量校验后一次写入」要求铸造行同经全量校验（计划片段仅前移赋值）。
     if state not in {"x", "?", "-", "!"}:
         raise Reject("state 不在 {x,?,-,!}（空态=未检查由 init 生成）: " + state)
-    reason = args.get("reason", "")
     if state in {"-", "!"} and not reason:
         raise Reject("state=%s 须附 reason" % state)
-    prev_prefix = _matrix_prefix(ctx.val("matrix.tsv", key_rows[-1], "reason"))
-    if _matrix_prefix(reason) != prev_prefix:
-        raise Reject("reason 前缀与行类别不符（现行类别前缀=%r）: %s" % (prev_prefix or "无", reason))
-    iid = args.get("intent-id", "")
     if iid and ctx.latest("intents.tsv", iid) is None:
         raise Reject("intent_id 引用闭合失败: " + iid)
+    if not key_rows:
+        # G-2 裁决（批4）：新键行铸造仅限 submatrix:（四条件，裁决 A）
+        if not reason.startswith("submatrix:"):
+            raise Reject("行键不存在且 reason 前缀非 submatrix:（不允许置格行外新键）: %s×%s"
+                         % (args["attack-surface"], args["vuln-class"]))
+        if not any(ctx.val("matrix.tsv", r, "frozen_at") for r in rows):
+            raise Reject("子矩阵行铸造须基线已冻结（先 matrix-freeze）")
+        if args["attack-surface"] in {r[0] for r in rows}:
+            raise Reject("表面已存在于既有行键——非新表面，不得 submatrix: 铸造（防主矩阵偷扩张）")
+        from .matrix_init import _load_vocab, DEFAULT_VOCAB
+        classes, ver, vsha = _load_vocab(DEFAULT_VOCAB)
+        if args["vuln-class"] not in classes:
+            raise Reject("vuln_class 不在 VOCAB（WSTG 版本化全集）: " + args["vuln-class"])
+        mint = []
+        for vc in classes:
+            tgt = (vc == args["vuln-class"])
+            mint.append(_row("matrix.tsv",
+                             attack_surface=args["attack-surface"], vuln_class=vc,
+                             state=(state if tgt else ""), reason=(reason if tgt else "submatrix:"),
+                             intent_id=(iid if tgt else ""), updated=args["timestamp"], frozen_at=""))
+        for row in mint:
+            ctx.append("matrix.tsv", row)
+        ctx.event(args["timestamp"],
+                  "submatrix-mint %s classes=%d vocab=%s@%s" % (args["attack-surface"], len(classes), ver, vsha),
+                  phase=args.get("phase", ""))
+        ctx.commit({"matrix.tsv", "timeline.tsv"})
+        _ok_line("铸行 %s（×%d 词表全集）" % (args["attack-surface"], len(classes)), "matrix.tsv", mint)
+        return 0
+    prev_prefix = _matrix_prefix(ctx.val("matrix.tsv", key_rows[-1], "reason"))
+    new_prefix = _matrix_prefix(reason)
+    if prev_prefix and new_prefix != prev_prefix:   # 旧空=首次归类放行（批4修正）；旧非空≠新=REJECT
+        raise Reject("reason 前缀与行类别不符（现行类别前缀=%r）: %s" % (prev_prefix, reason))
     row = _row("matrix.tsv", attack_surface=args["attack-surface"], vuln_class=args["vuln-class"],
                state=state, reason=reason, intent_id=iid, updated=args["timestamp"], frozen_at="")
     ctx.append("matrix.tsv", row)
