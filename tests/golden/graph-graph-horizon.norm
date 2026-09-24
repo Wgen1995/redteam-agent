@@ -1,0 +1,5 @@
+#reachable=2
+AST-g1-0001	asset
+AST-g1-0002	asset
+#gaps=1
+admin-internal.shop.example	inj.sql

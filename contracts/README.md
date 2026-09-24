@@ -77,3 +77,7 @@
 ## v2 勘误补记（2026-09-24·批次 4 施工期·T4/R1 裁决）
 
 - 契约⑥（06-evidence-cards.md）§4 `expected` matcher 子集 v1 冻结（R1/G-17：matchers 仅 word/status＋多 matcher=AND＋未知 type fail-closed；extractors 仅 regex；空 expected＝manual）。微版本勘误，不升 schema_version。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·图谱驱动增补 71d3b7c）
+
+- 契约 02a（02a-command-signatures-draft.md）命令面 41→**44**（查询 11→14）：增补三条只读图查询命令 graph-neighbors/graph-paths/graph-horizon（邻接展开/可达路径枚举/可达集×矩阵空格 join；确定性账本运算，铁律 7 允许类；实现位 cli/ledger/graph_cmds.py，registry all_commands()=44 单源）。微版本勘误通道，零存量数据期，不升 schema_version——详见该文件文末勘误补记节。联动：SKILL.md 命令索引（41→44）/cli/README.md 命令面（查 11→14）/tests/test_phases_yaml.py 面数断言（41→44）随本笔勘误同步（声明层单源一致纪律）。依据：docs/design/2026-09-24-graph-driven-ops.md（用户批准设计增补，commit 71d3b7c）——原「41 命令面冻结：本批零新增账本命令」约束按该增补就该三命令例外放行。

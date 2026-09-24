@@ -75,6 +75,27 @@ ENGINE_CMDS = [("replay-envdiff", [sys.executable, REPLAY_CLI, "replay", "--goal
                                    "--id=EV-g1-0001", "--scheme=http", "--port=1",
                                    "--timeout=2", "--timestamp=2026-09-24T09:00:00Z"])]
 
+# 批次 4 T7 前置（图谱驱动增补 71d3b7c）：图查询三命令确定性面（graph 面，replay-envdiff 先例）。
+# prep_graph 预织图：parent/attack 边经 CLI 落账；可达表面上空格行直写 matrix.tsv
+# （prep_engine 直写文件先例——空态行无法经 matrix-set 铸造，state 空=REJECT）。
+GRAPH_CMDS = [
+    ["graph-neighbors", "--asset=AST-g1-0002", "--depth=2"],
+    ["graph-paths", "--from=CRED-g1-0001", "--to=AST-g1-0002"],
+    ["graph-horizon", "--from=AST-g1-0001"],
+]
+
+
+def prep_graph(gd):
+    ts = "2026-09-24T11:00:00Z"
+    for kind, src, dst in (("parent", "AST-g1-0001", "AST-g1-0002"),
+                           ("attack", "FD-g1-0001", "AST-g1-0002")):
+        r = run_cli(gd, "add-edge", ["--kind=" + kind, "--source-id=" + src,
+                                     "--target-id=" + dst, "--provenance=golden-graph",
+                                     "--timestamp=" + ts])
+        assert r.returncode == 0, r.stdout + r.stderr
+    with open(os.path.join(gd, "matrix.tsv"), "a", encoding="utf-8", newline="\n") as f:
+        f.write("admin-internal.shop.example\tinj.sql\t\t\t\t2\t\t\n")
+
 
 def run_engine(cmd, gd):
     return subprocess.run([gd if c == "<GD>" else c for c in cmd],
@@ -274,14 +295,33 @@ def main(argv=None):
                 continue
             gp = os.path.join(GOLD, label + ".norm")
             gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
+        for spec in GRAPH_CMDS:
+            name = spec[0]
+            outs = []
+            for t in (t1, t2):
+                gd = fresh(t)
+                prep_graph(gd)
+                a = run_cli(gd, name, spec[1:])
+                if a.returncode != 0:
+                    outs = None
+                    break
+                outs.append(norm_read(a.stdout))
+            if outs is None:
+                fails.append(name + "(非零退出 rc=%d)" % a.returncode)
+                continue
+            if outs[0] != outs[1]:
+                fails.append(name + "(不确定性)")
+                continue
+            gp = os.path.join(GOLD, "graph-" + name + ".norm")
+            gate_golden(gp, outs[0], "graph-" + name, bless, fails, inits, "输出漂移")
     for n in inits:
         print("INIT " + n)
     if fails:
         for f in fails:
             print("FAIL " + f)
         return 1
-    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 全部锁定且确定"
-          % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS), len(ENGINE_CMDS)))
+    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 全部锁定且确定"
+          % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS), len(ENGINE_CMDS), len(GRAPH_CMDS)))
     return 0
 
 

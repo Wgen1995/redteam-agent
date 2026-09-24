@@ -1,4 +1,4 @@
-# 02a 账本命令签名·契约附录 A（41 条·已终审冻结 contracts-v2）
+# 02a 账本命令签名·契约附录 A（44 条·已终审冻结 contracts-v2＋微版本勘误）
 
 > **已终审冻结（2026-09-23·contracts-v2）**：63 处【推导】标注随冻结一并接受为契约语义；范围外四条断言命令见文末补全节 · 来源：设计定稿 docs/design/2026-09-21-tanyin-v2-design.md §4（各表结构=参数类型依据）/§5.2（九门断言=调用时机）/§5.3（命令分类）＋契约 01（13 表 142 字段=参数名全集）＋契约 02（37 命令名+分类+已知拒收条件源）
 >
@@ -696,3 +696,12 @@
 - 行键不存在且 reason 前缀 submatrix: 且基线已冻结且为全新表面→放行：原子铸造该表面×VOCAB 全集行（目标行取 --state/--reason/--intent-id，其余 state 空+裸前缀；timeline 事件 `submatrix-mint <surface> classes=<n> vocab=<ver>@<sha>`）。四条件缺一即 REJECT：reason 前缀非 submatrix:；基线未冻结（无 frozen_at 非空行——submatrix 语义只存在于冻结后）；表面已存在于既有行键（防主矩阵偷扩张）；vuln_class 不在 VOCAB 全集。分母诚实：新表面全词表立即进入闭合率分母，杜绝「少铸行刷闭合率」；全量校验后一次写入（state 枚举/reason 附带/intent 引用闭合对铸造行同样生效）。
 - reason 前缀规则修正=旧前缀空→任意前缀首次归类放行，旧前缀非空且≠新→REJECT（G-2 裁决，2026-09-24）——修正原「前缀与行类别不符=REJECT」对首次归类的潜伏阻塞（init 行 reason 为空→设 authz-diff: 前缀即 REJECT，身份矩阵差分无法落格）。
 - authz-diff: 前缀边界不变：仍限主矩阵既有键（差分落标准格，设计 §4.10）；新表面上的鉴权观察以 submatrix: 前缀落格（差分语义由 intent kind=authz-diff+E-index pair_group 承载，不依赖矩阵前缀）。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·图谱驱动增补 71d3b7c·图查询三命令）
+
+命令面 41→**44**（查询 11→14）：增补三条只读图查询命令（设计增补 docs/design/2026-09-24-graph-driven-ops.md；微版本勘误通道，零存量数据期，schema_version 保持 =2 不递增；铁律 7 允许类=四类允许之首「确定性账本运算」同 tanyin-phases 先例，无攻击决策/漏洞语义判定）。标题计数随之 41→44；三命令签名不占正文 37 节序号（以本补记节为签名单源）。
+
+- **graph-neighbors**〔查询〕：`--asset=<id> [--depth=N（默认 1）] [--edge-class=attack|asset|cred（默认 all）]`。邻接展开（无向邻里）——总控研判「这个立足点周围有什么」。节点=九表行 id；边=edges.tsv 十边（按记录方向）+凭据链（CRED→scope_asset=cred:unlock、parent_cred 父→子=cred:derive）；边类映射：attack={attack,proves,evidences}、asset={parent,scope-rel}、cred=凭据链、其余流程边（spawns/yields/derived_from/supersedes/cross_ref）仅在 all 展开。输出摘要化：`#count=N`＋行流 `depth⇥节点⇥类型⇥via(标签:out|in)`，(depth,节点) 排序确定；未知 --asset → `#count=0` 退出 0（intent-status 空集口径）。
+- **graph-paths**〔查询〕：`--from=<id> --to=<id|scope-root> [--max-hops=N（默认 4）]`。可达路径枚举（**有向**攻击可达边同上）——回答「从当前权限到目标还有几条路」，路径=攻击计划骨架。--to=scope-root 解析为全部 type=root-domain 资产；起点∈目标集=0 跳平凡路径计一条；简单路径（无重复节点）；PATH_CAP=50 截断（`#paths=N（截断至 50）`）。输出：`#paths=N`＋路径行 `id->id->…`（字典序）。
+- **graph-horizon**〔查询〕：`--from=<id>`。当前立足点的可达集（有向）＋可达但未测集合（与矩阵 join：latest 行 state 空 且 attack_surface∈可达资产值）——直接喂 P3 派发排序（可达空格×priority score，深调度属 P3/T14）。输出：`#reachable=N`＋`节点⇥类型` 行＋`#gaps=M`＋`attack_surface⇥vuln_class` 行（均排序确定）。
+- 三命令皆只读零落账：退出码 0=成功（空集合法）/ 2=用法（缺参/非法数值/未知 --edge-class）；不写任何表、不记 timeline。实现位 cli/ledger/graph_cmds.py（registry 单源 all_commands()=44）。

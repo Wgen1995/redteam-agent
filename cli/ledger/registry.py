@@ -3,7 +3,7 @@
 入口经 lookup 派发。模块缺失（施工中间态）自动跳过。"""
 import importlib
 
-_MODULES = ["write_cmds", "query_cmds", "check_cmds", "special", "matrix_init"]
+_MODULES = ["write_cmds", "query_cmds", "check_cmds", "special", "matrix_init", "graph_cmds"]
 
 def lookup(cmd):
     from . import core
