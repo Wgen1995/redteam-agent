@@ -33,7 +33,8 @@ class TestTriggerAudit(unittest.TestCase):
 
     def test_catalog_file_versioned(self):
         text = open(os.path.join(ROOT, "phases", "TRIGGERS.md"), encoding="utf-8").read()
-        self.assertIn("version: triggers-v1", text)
+        # T14 勘误：目录版本 v1→v2（高危 finding 即时横向触发器增补，fb72cd5）
+        self.assertIn("version: triggers-v2", text)
         for ev in ("asset-added", "cred-obtained", "scope-amended"):
             self.assertIn(ev, text)
 

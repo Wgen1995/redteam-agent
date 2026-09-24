@@ -4,7 +4,7 @@
 
 ## 差分举证四原则（所有差分测试）
 1. 对照组设计：anonymous 与其他 role 请求作对照；**同端点所有角色请求共享一个 pair_group**
-   （PG 号铸造：tanyin-ledger next-id E-index.tsv PG <goal-id>；提交侧填 pair_group 字段）。
+   （PG 号铸造=同表 pair_group 列现序+1——R-T8-2：next-id 只扫 id 列，不见 pair_group 列存量，PG 前缀恒返 0001 必撞既有 PG；提交侧填 pair_group 字段）。
 2. 基线±单变量：实验组与对照组响应差异仅在单变量维度→归因成立；多变量差异=证据不足，降 confidence。
 3. 同请求重复 2 次确认稳定：两次结果不同→unstable，confidence 降一级（C1→C2）。
 4. errorCode 语义/内容类型验证优先于状态码（契约 03 §5.1 三条机械规则原文有效）。

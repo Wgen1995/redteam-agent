@@ -11,6 +11,7 @@
 - 全景图 v2：定稿（0fbab87 模拟运行；SPEC 三层契约在 docs/design/imported/TanYin/panorama/SPEC.md）
 - 工程纪律：UTF-8+LF 红线/py -3 等价/双平台 CI（.github/workflows/ci.yml）
 - 批次 3 评审收尾：✅（2026-09-24）评审结论=可收，Important×2 已清（契约09 枚举补齐+金样进 CI --bless 门槛）；317→322 单测全绿+42 金样面 PASS（详见文末「批次 3 评审收尾入账」节）
+- 批次 4 引擎层：**完成（T1-T14 收口，2026-09-24）**——409 单测全绿（批 3 基线 322+批 4 新增 87）+50 金样面 PASS 零漂移；出口验收 10 条逐条实测过（第⑧条 CI：push 已触发，四格矩阵在册，远端绿需 Actions 页面复核）；契约勘误七笔（01/02a×2/04/06/07/09+PROTOCOL×3——微版本通道 schema_version=2 不递增）；优先级调度 fb72cd5/图查询 71d3b7c/FD 规格 b0006f2 三设计增补全落；探知项台账 G-16..G-26 终态=docs/design/2026-09-24-b4-discovery-notes.md（G-2/G-12/G-13 在 b3 台账就地注记闭环）；Ruling 总索引=文末「批次 4 Ruling 总索引」节
 
 ## 交战区指针
 - 设计定稿：docs/design/2026-09-21-tanyin-v2-design.md（§2 铁律/§5 循环/§11 批次表）
@@ -79,6 +80,8 @@
 - R-T13-8（egress 事件确定性）：compile 无 --timestamp 参数（build_acl 确定性纪律无时间戳）——事件时间戳取 EPOCH（canary recon-recall 同款先例）、acl=<相对 goal-dir 路径>（防绝对路径跨机漂移）、phase 空（不抬 gate_jump reached）；test_dryrun_p0p2 TABLE_EVENTS 无需扩（计划预留适配分支未触发：egress-compile 仅落 timeline=自证表，干跑「双跑同事件数」断言天然兼容）。
 - 附记（收口移交）：contracts/09 tanyin-phases 子命令枚举 7→8 与 cli/README.md 八子命令面未在本任务动（T14 收口范围，G-18/G-19 先例注记同型）。
 
+2026-09-24｜子代理 T14｜批次4 T14：总控接线收口——SKILL 路由表三引擎+MANIFEST 纪律路由+P0 triggers-catalog 序列+P4 重放门；P3 ③派发规则改写（priority=severity_expect×asset_value×exploitability 降序 Top-K，fb72cd5）+cred-obtained 回边全语义+asset-added G-2 命令形态+budget-exhausted 披露序；TRIGGERS.md v1→v2（高危即时横向）+PROTOCOL §6 勘误；契约 09 子命令 7→8/01 intents.priority/07 nday-verify 注记（G-18 清账）三笔微版本勘误+README 索引；cli/README 批次4节+八子命令面；differential.md PG 铸号教义修正（R-T8-2 移交）；b4 台账 G-16..G-26 落盘+b3 台账 G-2/G-12/G-13 闭环注记；出口验收 10 条逐条实测（见 T14 裁决节）；TDD 先红后绿 14 例（红=13 FAIL+2 例按计划跳过条款先绿），全套 409 绿+金样 50 面 PASS 零漂移｜<hash 随补正笔>（占位循环节=流水行引用自身 commit 的固有环，先提交后补正=批次内既定手法）
+
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。
 - Ruling（计划↔实现偏差②·--release 旗标）：既有 _parse 只收 --key=value（41 面冻结不动），计划测试用裸 --release——在 _checkpoint 内本地预归一（裸 --release→--release=1），全局解析器零改动。
@@ -96,6 +99,7 @@
 
 ## 探知项（实现期发现，回写设计）
 - 批次 3 台账（G-1..G-15 终态，T13 收口归并）：docs/design/2026-09-24-b3-discovery-notes.md——catalog 单源（计划原文誊录+实施期增补+状态归并+移交清单四节）
+- 批次 4 台账（G-16..G-26 终态，T14 收口归并）：docs/design/2026-09-24-b4-discovery-notes.md——同四节结构（计划原文誊录 G-16..G-23+设计增补登记 G-24..G-26+状态归并+移交清单）
 - 批次 0/1/2 审计探知项（vault XOR 无 nonce/withheld 降级/INFRA 白名单硬编码）：见上方「批次 0/1/2 独立审计入账」节（开放，批次 4/6 前定案）
 - 批次 3 评审探知项（Minor-5）：check_cmds.py:27 _now() 墙钟进账本（set-replay-state/REJECTED→转 fact 落账无 --timestamp 通道，继承性问题）——契约 v3 前裁决，见文末「批次 3 评审收尾入账」节
 
@@ -298,3 +302,44 @@
   - R-T10-5（TEST-ONLY 钥/commit 占位·G-22 如实披露）：测试私钥进仓（tests/fixtures/keys/test-signing-key.pem；两钥首行 TEST-ONLY 注记，openssl PEM 解析容忍前导注释行已实测）仅锚定快照结构与验签链路，不构成信任根；生产钥生成/保管/重签+release.pub 替换=批次 6 安装器出口；upstream_commit=40×a 固定样例占位（engines/nuclei/README.md 四步更新流程+G-22 披露节同款声明）——探知项台账登记属 T14 收口范围。
 - 附注（验签链路实现说明）：supply_chain 验签经 openssl pkeyutl 子进程（python3 stdlib 无 ECDSA——契约 10 终审先例）；签名覆盖=行前四字段规范串（键\t版本\tsha256\t）的 sha256 digest，模板 commit 列由 templates.lock 逐文件 sha256+tools.lock 行 sha256（=templates.lock 整文件哈希）独立锁定；supply_chain.py 计划代码逐字落盘（open 未显式 close 的 ResourceWarning=T4/T11 同款噪音不处理，CPython 引用计数即时落盘）。
 - 交付物：engines/vuln-agent/{MANIFEST.md,adapter.py}、engines/nuclei/{MANIFEST.md,adapter.py,README.md,release.pub,templates.lock,templates/*.yaml×3}、cli/ledger/supply_chain.py（批次 6 tanyin-install 复用）、tools.lock、tests/fixtures/{keys,engine/nuclei-jsonl,engine/vuln-agent-out}、tests/test_{engine_vuln_adapter,supply_chain,engine_nuclei}.py、tests/golden/{engine-vuln-adapter,engine-nuclei-adopt}.norm。G-18（契约07 nday-verify→nuclei 无段映射注记）与 G-19（视角顶层字段 v3 裁决）注记未动契约文件=T14 收口/契约 v3 范围。
+
+## 2026-09-24 批次 4 T14 裁决（实现者记·收口）
+- 验收实测（出口 10 条+补充判定，逐条本机实跑，判定命令=计划清单原文）：
+  - ① `python3 tests/run_golden.py` → PASS golden: 21 读面+20 写面+2 phases 面+1 engine 面+3 graph 面+2 adapter 面+1 viz 面（=50 面；连续两次执行输出逐字节一致——确定性自证；批 4 新面 replay-envdiff/engine-vuln-adapter/engine-nuclei-adopt/viz-data/graph×3 全在册）。
+  - ② `python3 -m unittest tests.test_authz_matrix -v` → Ran 6 tests OK；`python3 cli/tanyin-ledger verify-chain --goal-dir tests/fixtures/diff-authz` → PASS verify-chain: 19 行链完整 gate_exit=4 跳门=0（exit 0）。
+  - ③ `python3 -m unittest tests.test_replay_gate -v` → Ran 1 test OK（127.0.0.1 mock 三态全链路→set-replay-state→replay-summary→verify-chain）。
+  - ④ `python3 tests/eval_authz_recall.py --goal-dir tests/fixtures/diff-authz --ground-truth tests/fixtures/diff-authz/ground-truth.json` → recall=5/5（exit 0）。
+  - ⑤ `python3 -m unittest tests.test_submatrix_mint tests.test_assets_type_b4 tests.test_recon_canary -v` → Ran 11 tests OK。
+  - ⑥ `python3 -m unittest discover -s tests` → Ran 409 tests OK（批 3 基线 322+批 4 新增 87=3+6+2+9+4+1+10+8+6+5+6+4+2+7+14；零 skip 除声明 ENV 的 openssl 例）。
+  - ⑦ `python3 tests/run_golden.py`（exit 0）+`git status --short tests/golden/` → 0 行（工作树干净；T14 纯文档/契约层不触命令面，无金样变动）。
+  - ⑧ 四格矩阵在册：ci.yml matrix os=[ubuntu-latest, windows-latest]×python=["3.11","3.12"]（fail-fast:false），Unit tests（ci.yml:24）+Golden regression（ci.yml:26）两步；push origin main 随本笔 commit 后触发——远端绿需 GitHub Actions 页面复核（批次 3 第⑩条同口径；本环境无 gh CLI）。
+  - ⑨ `python3 -m unittest tests.test_skill_resident -v` → Ran 21 tests OK（含 TestBatch4Wiring 4 例+TestBatch4Handoff 10 例；estimate_tokens(SKILL.md)=1465<2000，余量 535；八节/44 索引/引用⊆已知面全过）。
+  - ⑩ `test -f docs/design/2026-09-24-b4-discovery-notes.md` → 在场；`grep -c 'G-1[6-9]\|G-2[0-3]' docs/design/2026-09-24-b4-discovery-notes.md` → 22（≥8）；HANDOFF 开发流水 T1-T14 记账齐（T14=本笔）。
+  - 补充判定（并入⑥口径）：`python3 -m unittest tests.test_trigger_audit tests.test_engine_web_blackbox -v` → Ran 15 tests OK（触发器闭包三检查+A1-A8 通道表+多源法定）。
+- Ruling 清单（commit 消息内同款记录）：
+  - R-T14-1（TRIGGERS 版本化=内容增补必 bump）：高危 finding 即时横向触发器按「版本化」指令落 triggers-v1→triggers-v2（v1=T13 当日冻结；triggers-catalog 事件的版本一致性语义依赖 bump 纪律）。既有面适配=test_trigger_audit.test_catalog_file_versioned 断言 v1→v2（断言意图=目录文件版本化，不裂）；trigger-audit ①-③ 检查面不扩（高危行消费检查=批次 5 与 G-24 同批 evals；目录「复扫 evals（批次 6）」行同型先例）；PROTOCOL §6 版本行就地 v2+勘误补记一行（§6=T13 批 4 追加节非冻结文本）。
+  - R-T14-2（intents.priority 物理列分期落）：设计增补 fb72cd5「intents 增 priority 字段（契约微版本）」全量落列与批 4 计划 Step3「金样零漂移」出口互斥（15→16 列=全套夹具重铸+金样大规模刷新），且 severity_expect 基线表无源（G-24 批次 5 定——落列必造占位语义进写路径）。裁决=本批契约 01 文末勘误冻结字段语义与公式（冻结文本=phases/P3.md「派发优先级算分」节；§3.3 十五字段表不动）；物理列+写路径/查询排序支撑随批次 5 G-24 定案后落；过渡期承载=派发时总控按公式现算（读侧三源 assets.meta/graph-horizon/creds 均有只读命令）；Top-K 选择=总控决策——契约 09 §4 边界 2「任何对『是否漏洞/下一步测什么』的判断」禁入 CLI，派遣指令「确定性算分若需 CLI 支撑」=条件不成立（G-3 常量暂代同型分期先例）。
+  - R-T14-3（路由表 cli 型引擎入口）：计划路由行三引擎统指 engines/<引擎>/SKILL.md，但 vuln-agent/nuclei 无 SKILL.md（cli 型方法论入口=MANIFEST，G-18 裁决原文）——按实际交付面改写（web-blackbox=SKILL.md、vuln-agent/nuclei=MANIFEST.md）；三引擎名+「派发前核 MANIFEST 纪律能力（超 max_op_level/视角上限拒派）」计划语义逐字保持。
+  - R-T14-4（P4.md 零改动）：计划「P4.md 补 tanyin-replay 协议引用——若 T3 已含则跳过」——T3 已落 duty 3（tanyin-replay 驱动+三态落账协议），按跳过条款零触碰（test_p4_replay_protocol_references_driver 红阶段即绿=证）。
+  - R-T14-5（高危横向 intent 不 bypass 打分晋升）：fb72cd5「立即生成同型横向排查 intent」落为「④ 验收落账当刻即提、不等下一轮风暴」（时机语义），不走直达 pending——直达条件=origin=recon-event 或 kind=authz-diff（契约 02a §3 冻结面零扩），正常 add-intent 打分+晋升阈值。
+  - R-T14-6（G-18/G-19 拆分处置）：T9+T10 附记「G-18 注记未动契约文件=T14 收口/契约 v3 范围」——G-18（nday-verify 段映射）随本笔回注契约 07（收口范围）；G-19（perspective 顶层字段）留契约 v3（v3 裁决项非收口项）；两态在 07 勘误节同段披露。
+  - R-T14-7（SKILL P0 落账载体双载）：PROTOCOL §6①「P0 落账 triggers-catalog 事件由 SKILL P0 序列承载」——SKILL.md 九门循环 P0 行+phases/P0.md duty 序列双点同语（常驻集=循环摘要/P0.md=详令；只载详令漏常驻视角）。
+- 移交件落地对照（派遣指令四项）：①契约 09 子命令 7→8（§2/§3/文末勘误三处+自验 grep=4）+cli/README 八子命令速查+SKILL P0 triggers-catalog 序列；②fb72cd5 优先级调度=P3.md ③派发规则+「派发优先级算分」公式节+契约 01 intents.priority 勘误（R-T14-2 分期）+TRIGGERS.md v2 高危即时横向行；③台账终态归并=b4 台账新建（G-16..G-23 计划原文誊录+G-24..G-26 设计增补登记+状态归并+移交清单四节）+b3 台账 G-2/G-12/G-13 就地闭环注记（追加注记不改历史行）+HANDOFF 指针一致（快照+探知项节）；④HANDOFF 批次 4 状态快照行+文末「批次 4 Ruling 总索引」。
+- 附注（TDD 红绿/金样/跨平台）：tests/test_skill_resident.py 扩 TestBatch4Wiring（计划 Step1 逐字 4 例）+TestBatch4Handoff（移交件 10 例）——红=13 FAIL（P4 引用/预算 2 例按计划跳过条款先绿），绿=28/28 含 test_trigger_audit v2 适配；全套 409 绿（395+14）+金样 50 面 PASS 零漂移（无金样变动：纯文档/契约层）；变更文件全部 UTF-8+LF 零 CR（file 实测）；纯 md/契约改动无 OS 分支，CI 四格语义同构。
+
+## 2026-09-24 批次 4 Ruling 总索引（T14 收口编；详情见各任务裁决节）
+
+- 开工：用户批准计划 476ce55（前置裁决 G-2/G-12/G-13+补充裁决 R1-R6 全案）；三设计增补按追加件落地（71d3b7c 图查询/T7 前置、b0006f2 FD 卡片规格/T5/T9 消费、fb72cd5 发现流+优先级调度/T11/T14 落）。
+- T1+T2（5）：R-T1-1 argv 契约（--goal-dir 紧随命令名，后续任务同型不复记）/R-T1-2 契约01 变更表第 6 行同步/R-T2-1 全量校验前置（写前拒收纪律）/R-T2-2 夹具冻结态预处理（prep_matrix）/R-T2-3 前缀负例改写保覆盖/R-T2-4 引号笔误修正。
+- T3（2）：P4.md exit 镜像行随 yaml 同步去 SKIP；契约11 §7 P4 出口引用位+README 勘误索引登记补齐（计划文件清单遗漏，按「每笔勘误必登记」纪律）。
+- T4（4）：vault 七函数整体搬家（计划四函数名与实况不符）+guard thin delegate；word condition 缺省=and；11 字段=返回形状非强制项；继任现场红测试采纳+T3 流水补记。
+- T5+T6（9）：R-T5-1 未知 EV id=exit 2/R-T5-2 argv 双形态归一/R-T5-3 T4 面 None→空串归一（跨任务修复）/R-T5-4 夹具无 evidence 目录预铸/R-T5-5 占位符无真值 fail-closed REJECT/R-T5-6 金样 norm 剥 detail+路径占位/R-T6-1 argv 契约/R-T6-2 loopback 授权 127.0.0.0/8 CIDR/R-T6-3 tearDownClass server_close。
+- T7 前置（3）：R-G-1 「零新增账本命令」约束按用户批准增补就三图查询命令例外放行（勘误四联动）；R-G-2 图语义 v1 冻结（attack/asset/cred 三类边+凭据链）；R-G-3 金样 prep 直写空格行（matrix-set 对空 state 必 REJECT）。
+- T7（3）：MANIFEST 文体两态并存（表格+kind: skill 键值行）；horizon 咬合增补例（recon/test 段挂 graph-horizon）；命令引用 tanyin-ledger 形态（lint KNOWN 面约束）。
+- T8（5）：STEPS 伪码按 write_cmds 实际签名落地；PG 铸号=pair_group 列现序+1（教义修正随 T14 落）；finding⇄EV 鸡后蛋回链序；creds kind=static-cred（session 硬门）；ground-truth polarity 扩展（负对命中规则）。
+- T9（5）：POC 四要素门按 FD 规格 b0006f2 落位（计划三例逐字+VULN-4 降级负例）；argv 双形态；norm=submission.json 排序重 dump；analyzed_surfaces→facts 补齐；四要素携带位（reproducible_steps/evidence_refs/network_position）。
+- T10（5）：guard argv 空格形；--lock 可选覆盖；canned 例 skipUnless(HAVE_OPENSSL)；金样面 openssl 缺失=ENV SKIP；TEST-ONLY 钥+upstream_commit 占位=G-22 如实披露。
+- T11（3）：findings 实时流投影随 T11 落（第六键+置顶分段）；stats 扩展四键（matrix_set/attack_edges/converged/budget）；红态口径（2 FAIL+1 ERROR）。
+- T12（5）：argv 契约；add-fact 必填集补参；金样面归属错配（norm 改锁 PASS 面+prep_denominator 新面）；副本目录名=goal_id 钉死；canary 家族全子命令零网络口径。
+- T13（8）：argv 契约；add-cred 参数组契约对齐；matrix-freeze 幂等 rc∈{0,1}；①检查事件驱动（计划行遍历与自身 baseline 测试冲突——Interfaces 文本裁决）；版本比对补全（缺记非失败）；②全局候选口径+per-cred 延后通道；PROTOCOL 节号 §5→§6（追加序）；egress 事件确定性（EPOCH+相对路径+phase 空）。
+- T14（7）：R-T14-1 目录版本 bump v2/R-T14-2 intents.priority 物理列分期（语义先冻、批次 5 落列）/R-T14-3 cli 型引擎路由入口=MANIFEST/R-T14-4 P4.md 跳过条款零触碰/R-T14-5 高危横向不 bypass 晋升/R-T14-6 G-18 回注与 G-19 留 v3 拆分/R-T14-7 P0 载体双载（SKILL.md+P0.md）。

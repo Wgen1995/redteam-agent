@@ -80,6 +80,7 @@ python3 tests/make_fixtures.py              # 重铸夹具（13 表确定性样�
 | validate | `tanyin-phases validate [--phases=P]` | phases.yaml 契约 04 合法性（gates=9 asserts=21 constants=8 back_edges=3）；金样 phases-validate.norm 入黄金回归 |
 | gate | `tanyin-phases gate --goal-dir D --phase <门> [--timestamp=T]` | exit 断言执行（PROTOCOL §1 判定表）；already-passed 幂等；前置门缺=REJECT 零落账 |
 | denominator-ready | `tanyin-phases denominator-ready --goal-dir D` | 分母就绪门（T3 追加件，PROTOCOL §4；只读账本，0=就绪/1=FAIL 清单/2=用法） |
+| trigger-audit | `tanyin-phases trigger-audit --goal-dir D` | 触发器闭包审计（批4 T13 交付/T14 收口回注契约 09 枚举 7→8，PROTOCOL §6；只读零落账三检查=目录版本一致/触发器闭包/清单，单源目录=phases/TRIGGERS.md triggers-v2） |
 | restart | `tanyin-phases restart --goal-dir D --spawn auto\|manual --timestamp=T [--session=S] [--rate-minutes=N] [--token-cost=C]` | 受管重启护栏（①verify-chain ②速率上限 ③单活跃会话 ④计入预算）+managed-restart 事件+resume-kit 重生成 |
 | resume-kit | `tanyin-phases resume-kit --goal-dir D [--timestamp=T]` | 恢复注入白名单生成器（先对账再干活；缺省时间戳=timeline 末行——确定性） |
 | cached | `tanyin-phases cached --goal-dir D [--intent-id=INT-…]` | 工件即缓存幂等续跑判定（intent done 且 submission.json 在位→SKIP；只读零副作用） |
@@ -108,3 +109,38 @@ python3 cli/tanyin-phases gate --goal-dir <D> --phase P2 --timestamp=T    # matr
 ```
 
 批次 3 出口验证：干跑 eval+kill -9 保真度 eval（test_kill9_fidelity——恢复后 13 表字节指纹不变+state-rebuild PASS+resume-kit 重生成）+常驻集实测 1321 token<2000+全套单测绿+42 金样面 PASS；探知项台账见 docs/design/2026-09-24-b3-discovery-notes.md（G-1..G-15 终态）。
+
+## 批次 4：引擎层（web-blackbox 四段 / vuln-agent 适配器 / nuclei adopt / session-viz / 身份矩阵差分 / POC 重放门 / 侦察完备性）
+
+引擎三型接线（派发前核 engines/<引擎>/MANIFEST.md 纪律能力——超 max_op_level/视角上限的 intent 拒派）：
+
+- web-blackbox（skill 型四段 recon/surface/test/differential——A1-A8×通道×落账引擎位表+身份矩阵差分五步+护栏 AUTHZ_DIFF_PAIR_CAP=24；方法论入口=engines/web-blackbox/SKILL.md）
+- vuln-agent（cli 型适配器：.vuln_agent_output→submission.json 归一化+POC 四要素门——FD 报告卡规格 b0006f2，缺四要素降级 fact 不成 finding；方法论入口=MANIFEST 归一化表，G-18）
+- nuclei（cli 型 adopt：tools.lock 钉 commit+ECDSA 验签先于归一化，不过/nuclei 缺失=blocked 提交绝不自动安装；模板离线快照+templates.lock 逐文件 sha256）
+
+其余交付：
+
+- tanyin-replay（+.cmd）：POC 独立重放驱动三态判定（reproduced/not-reproduced/env-diff/manual→VERIFIED/REJECTED/REPAIRED 候选）；铁律 7 对外请求例外#1（scope 门链+timeline request: 记账）
+- tanyin-viz（+.cmd）：session-viz 只读投影单文件 HTML（零依赖 SVG，R4；findings 实时流第六区——高危置顶▲，fb72cd5）
+- tools.lock 起步版（openssl/nuclei/nuclei-templates 三键，契约 10 五字段；测试钥 TEST-ONLY，生产钥=批次 6 安装器出口，G-22）
+- 侦察金丝雀：tanyin-canary recon-deploy/recon-recall（界内诱饵登记/召回率）+denominator-ready 第④断言（G-13；canary 家族全子命令零网络）
+- 触发器闭包：tanyin-phases trigger-audit（八子命令面收口；目录=phases/TRIGGERS.md 版本化封闭表 triggers-v2——高危 finding 即时横向，SKILL P0 落 triggers-catalog 事件）
+- 优先级调度（fb72cd5）：P3 派发=pending 按 priority=severity_expect×asset_value×exploitability 降序 Top-K（公式冻结=phases/P3.md；intents.priority 契约 01 勘误登记，物理列随 G-24 批次 5 落）
+
+用法四行：
+
+```
+python3 cli/tanyin-replay replay --goal-dir <D> --id=EV-… [--scheme=http|https] [--port=N] [--timeout=10] [--timestamp=T]
+python3 cli/tanyin-viz render --goal-dir <D> --out <path.html> [--data-only]
+python3 cli/tanyin-canary recon-deploy --goal-dir <D> --value <诱饵资产值> --type <assets.type 十一值> [--note=计划编号] --timestamp=T
+python3 cli/tanyin-phases trigger-audit --goal-dir <D>
+```
+
+测试与回归：
+
+```
+python3 -m unittest discover -s tests       # 全套单测（批 4 收口=395+T14 新增）
+python3 tests/run_golden.py                 # 50 金样面（含 replay-envdiff/engine-*/graph*/viz-data 批 4 新面）
+```
+
+批次 4 出口验证：引擎级夹具+差分样例对（tests/fixtures/diff-authz 全经命令铸造、重铸逐字节确定）+重放门 eval（127.0.0.1 mock 三态全链路→set-replay-state→replay-summary→verify-chain）+身份矩阵检出率（tests/eval_authz_recall.py recall=5/5）+G-2/G-12/G-13 裁决落地；探知项台账见 docs/design/2026-09-24-b4-discovery-notes.md（G-16..G-26 终态）。

@@ -85,3 +85,10 @@
 ## v2 勘误补记（2026-09-24·批次 4 施工期·T8/R5 裁决）
 
 - 契约 02a（02a-command-signatures-draft.md）§3 add-intent（内部）status 行勘误：直达 pending 条件 `origin=recon-event` 扩为 `origin=recon-event 或 kind=authz-diff`（cred-obtained 事件处理器语义，设计 §6.6 步 1「直接 pending 不打分」；计划前置裁决 R5 随 T8 差分样例对落地）。微版本勘误，不升 schema_version——详见该文件文末勘误补记节。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T14 收口）
+
+- 契约⑨（09-cli-surface.md）tanyin-phases 子命令枚举三处 7→**8**：补第 8 子命令 trigger-audit（触发器闭包审计，PROTOCOL §6；T13 交付枚举回注随 T14 收口——R-T13 附记移交件）。微版本勘误，不升 schema_version——详见该文件文末勘误补记。
+- 契约①（01-ledger-schema.md）intents 增 **priority** 字段（派发优先级分=priority 公式：severity_expect×asset_value×exploitability，fb72cd5 优先级调度设计增补）：本批冻结语义与公式（冻结文本=phases/P3.md「派发优先级算分」节）；物理列（15→16 字段）与写路径/查询排序支撑随批次 5 G-24 基线表定案后落（T14 裁决：基线无源不落列+零存量数据期外重铸=金样大规模刷新与批 4 出口相抵；Top-K 选择=总控决策，铁律 7 边界 2）。微版本勘误，不升 schema_version。
+- 契约⑨（07-submission.md）kind→段映射补注：nday-verify→引擎=nuclei（cli 型，无 web-blackbox 段映射）——G-18 清账（T9/T10 移交 T14 收口）；视角顶层 perspective 字段留契约 v3（G-19 过渡载体=network_position=same-host）。微版本勘误，不升 schema_version。
+- phases/PROTOCOL.md §6 目录版本 v1→**v2**（TRIGGERS.md 高危 finding 即时横向触发器增补，fb72cd5）+SKILL P0 序列承载 triggers-catalog 事件落账；phases/P3.md 派发规则改写（priority 降序 Top-K+cred-obtained 回边全语义+asset-added G-2 命令形态）；phases/TRIGGERS.md 版本化封闭表 v2。同批声明层联动（SKILL.md 路由表三引擎/cli/README 批次 4 节八子命令面），金样零漂移（纯文档/契约层，不触命令面）。

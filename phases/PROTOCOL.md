@@ -93,7 +93,7 @@ exit 断言列表——契约 04 断言集与 asserts=21 基线不动、九门�
     tanyin-phases trigger-audit --goal-dir D
 
 只读账本（timeline/assets/matrix/intents/facts/creds），零落账。退出码：0=PASS / 1=FAIL
-清单 / 2=用法。三检查（单源目录=phases/TRIGGERS.md 版本化封闭表，版本行 version: triggers-v1）：
+清单 / 2=用法。三检查（单源目录=phases/TRIGGERS.md 版本化封闭表，版本行 version: triggers-v2）：
 
 ① 目录版本一致：TRIGGERS.md version: 行在场；timeline P0 事件 triggers-catalog <ver>
    若已记则须同版本（缺记=提示非失败——P0 落账该事件由 SKILL P0 序列承载）。
@@ -122,3 +122,7 @@ add-asset 事件免检（触发器目录行 2/8）；converge-check「未消费�
   §3 干跑口径「canary 只 deploy」扩为 canary 家族全子命令零网络）；recon-deploy 重复
   value=REJECT exit 1；recon-recall 无参数，stdout=JSON recall=found/planted+清单，
   timeline 事件 recon-decoy-deploy/recon-decoy-recall。
+- §6 目录版本 v1→**v2**（批4 T14 勘误）：TRIGGERS.md 增「高危 finding（impact∈{高,high,critical}）
+  →即时横向排查 intent」行（fb72cd5 设计增补——高危发现不等收敛轮，即时扩面；消费检查留
+  批次 5 与 G-24 同批 evals，trigger-audit ①-③ 检查面不扩）；SKILL P0 序列自此承载
+  triggers-catalog 事件落账（§6①「缺记=提示非失败」的落账载体补齐）。

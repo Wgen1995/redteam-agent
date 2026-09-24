@@ -35,7 +35,7 @@
 | # | 终态 | 证据/落点 |
 |---|---|---|
 | G-1 | **已闭环·契约已回注** | 契约 09 文末「v2 勘误补记」工具面 10→11（微版本勘误通道）；T2 落地；自验复跑=11 |
-| G-2 | **待批次 4 裁决** | T2 Ruling 预批记入：维持原案（matrix-set 放行 reason 前缀 submatrix: 的新键行，新表面×词表全集）；本批 41 面零触碰 |
+| G-2 | **待批次 4 裁决** → **已闭环·批次 4**（T14 收口注记） | T2 Ruling 预批记入：维持原案（matrix-set 放行 reason 前缀 submatrix: 的新键行，新表面×词表全集）；本批 41 面零触碰；批4 T2 落地（1aace3d）：四条件放行+原子铸造新表面×VOCAB 全集+前缀首次归类修正，契约02a §12 微版本勘误 |
 | G-3 | **常量暂代·已落地未回注契约** | T6：模块常量 RESTART_RATE_MINUTES=10 + --rate-minutes 覆盖（evals 可重放）；待契约 v3 增 restart_rate_minutes 常量 |
 | G-4 | **常量暂代·已落地未回注契约** | T6：RESTART_TOKEN_COST=2000 + --token-cost 覆盖；待批次 6 evals 实测基线定标后回写契约 |
 | G-5 | **缓解对已落地·收紧待批次 6** | T6：manual 须 state-rebuild PASS 凭据+takeover-of 留痕可审计；批次 6 安装器带 PID/锁文件探测后再收紧 |
@@ -45,8 +45,8 @@
 | G-9 | **纪律面已落地·机械校验待裁决** | SKILL/P3.md 公式与纪律在册；批次 6 evals 增弱模型遵循用例；set-intent-status --round 机械阈值校验待裁决（改冻结面需版本化） |
 | G-10 | **已闭环·本任务（T13）回注** | 契约 02a 文末勘误补记 checkpoint 终局签名（--timestamp/--session 必填+--phase/--event/--release/--round/--note/--spawn 可选；输出 schema 不变） |
 | G-11 | **口径已冻结·系数校准待批次 6** | PROTOCOL §2+测试冻结公式；SKILL.md 实测 1321 token（余量 679≥400）；批次 6 以真实 tokenizer 基线校准系数 |
-| G-12 | **待批次 4 裁决** | 见第二节 |
-| G-13 | **待批次 4 交付** | 见第二节 |
+| G-12 | **待批次 4 裁决** → **已闭环·批次 4**（T14 收口注记） | 见第二节；批4 T1 落地（a3fd64d）：九值→十一值（+cloud-storage/human-factor）+pivot/foothold 启用，契约01/07/02a+PROTOCOL §4 四笔微版本勘误 |
+| G-13 | **待批次 4 交付** → **已闭环·批次 4**（T14 收口注记） | 见第二节；批4 T12 落地（3c42528）：tanyin-canary recon-deploy/recon-recall+denominator-ready 第④断言，PROTOCOL §4 三断言→四断言微版本勘误 |
 | G-14 | **已闭环（T10）** | 见第二节 |
 | G-15 | **待批次 6 前裁决** | 见第二节 |
 
@@ -54,4 +54,5 @@
 
 - **批次 4 前必裁决**：G-2（新资产子矩阵行铸造路径）、G-12（assets.type 扩枚举或维持理由）、G-13（诱饵召回率载体随侦察金丝雀）。
 - **批次 6 前必裁决/定标**：G-15（approve 裸旗标互斥——P5/P5.5/P6 断言真跑阻塞项）、G-4（RESTART_TOKEN_COST 定标回写）、G-11（token 估算系数校准）、G-5（stale 锁 PID/锁文件探测收紧）、G-9（--round 机械阈值校验是否版本化追加）。
+- **T14 收口注记（2026-09-24）**：批次 4 前必裁决三项已全部闭环——G-2（T2·1aace3d）/G-12（T1·a3fd64d）/G-13（T12·3c42528），状态归并表已就地注记；批次 4 探知项续编 G-16..G-26 见 docs/design/2026-09-24-b4-discovery-notes.md。
 - **契约 v3 回注待办**：G-3（restart_rate_minutes 常量）、G-7（契约 04 事件词汇补注）、G-8（契约 09 canary 参数语义注记）。

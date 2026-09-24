@@ -13,7 +13,7 @@
 
 | 允许类 | 判据 | 工具 |
 |---|---|---|
-| 确定性账本运算 | 输入输出可字节级回归（黄金夹具可钉死） | tanyin-ledger（37 条账本命令）、tanyin-phases（phases 引擎：validate/gate/restart/resume-kit/cached/rebuild-state/denominator-ready） |
+| 确定性账本运算 | 输入输出可字节级回归（黄金夹具可钉死） | tanyin-ledger（37 条账本命令）、tanyin-phases（phases 引擎：validate/gate/restart/resume-kit/cached/rebuild-state/denominator-ready/trigger-audit） |
 | 机械执法与脱敏 | 规则是数据文件非语义判断 | tanyin-guard（scope-guard 包装器）、tanyin-redact、tanyin-canary、tanyin-egress |
 | 确定性重建与投影 | 从账本零 LLM 方差生成 | tanyin-report（聚合器）、tanyin-viz、tanyin-replay（重放驱动） |
 | 安装与自检 | 环境探测、验签 | tanyin-install、tanyin-selfcheck |
@@ -32,7 +32,7 @@
 | 8 | tanyin-replay | 确定性重建与投影 | 重放驱动 |
 | 9 | tanyin-install | 安装与自检 | 安装器 |
 | 10 | tanyin-selfcheck | 安装与自检 | 自检 |
-| 11 | tanyin-phases | 确定性账本运算 | phases.yaml 确定性状态机运算（validate/gate/restart/resume-kit/cached/rebuild-state/denominator-ready；批次 3 交付，断言→命令调用协议见 phases/PROTOCOL.md） |
+| 11 | tanyin-phases | 确定性账本运算 | phases.yaml 确定性状态机运算（validate/gate/restart/resume-kit/cached/rebuild-state/denominator-ready/trigger-audit；批次 3 交付+批4 增补 trigger-audit，断言→命令调用协议见 phases/PROTOCOL.md） |
 
 ## 4 铁律 7 边界
 
@@ -119,3 +119,9 @@ set-cred-status 终审归写入（写19/查11/校验10=41）——探知项已�
 - tanyin-phases 子命令枚举三处补齐 6→**7**：§2 允许类行、§3 命令面清单 #11、上则 G-1 勘误补记行均漏第 7 子命令 **denominator-ready**（分母就绪门，T3 追加件，口径=phases/PROTOCOL.md §4；独立子命令不入 yaml 断言集——T3 裁决原案）——与 cli/README 批次 3 节七子命令速查、tanyin-phases USAGE 行、PROTOCOL §4、tests/test_contract_backfill.py 七子命令断言对齐。
 - 勘误通道：微版本勘误（零存量数据期，同上则 G-1 先例），schema_version 保持 =2 不递增；本补记日期 2026-09-24。
 - 自验复跑：`grep -c denominator-ready contracts/09-cli-surface.md` → **5**（§2/§3/G-1 补记行/本补记首行/本自验行各一）。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T14 收口）
+
+- tanyin-phases 子命令枚举 7→**8**：补第 8 子命令 **trigger-audit**（触发器闭包审计——只读零落账三检查：目录版本一致/触发器闭包/清单输出，口径=phases/PROTOCOL.md §6；单源目录=phases/TRIGGERS.md 版本化封闭表 triggers-v2）。批4 T13 交付（349ac34），子命令枚举回注=本笔（R-T13 附记移交件：契约枚举与 cli/README 速查随 T14 收口对齐，G-18 先例同型）。
+- 勘误通道：微版本勘误（零存量数据期，同上则先例），schema_version 保持 =2 不递增；本补记日期 2026-09-24。
+- 自验复跑：`grep -c trigger-audit contracts/09-cli-surface.md` → **4**（§2/§3/本补记首行/本自验行各一）。

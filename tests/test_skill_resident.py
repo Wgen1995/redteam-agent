@@ -92,5 +92,96 @@ class TestPhasesMd(unittest.TestCase):
                               "%s.md 未提及本门断言命令 %s" % (g, head))
 
 
+class TestBatch4Wiring(unittest.TestCase):
+    """批次 4 T14：总控接线收口（SKILL 路由/P3 回边全语义/P4 重放协议）。"""
+
+    def test_route_table_lists_three_engines(self):
+        text = open(SKILL, encoding="utf-8").read()
+        for eng in ("web-blackbox", "vuln-agent", "nuclei"):
+            self.assertIn(eng, text, "路由表缺引擎 " + eng)
+        self.assertNotIn("（批次 4）", text, "批次标记应摘除（已交付）")
+
+    def test_p3_authz_diff_backedge_full_semantics(self):
+        text = open(os.path.join(PHASES, "P3.md"), encoding="utf-8").read()
+        self.assertIn("kind=authz-diff", text)
+        self.assertNotIn("本批登记 creds 即止", text, "批次 4 前占位语应替换")
+
+    def test_p4_replay_protocol_references_driver(self):
+        text = open(os.path.join(PHASES, "P4.md"), encoding="utf-8").read()
+        self.assertIn("tanyin-replay", text)
+
+    def test_skill_budget_still_under_2k(self):
+        text = open(SKILL, encoding="utf-8").read()
+        self.assertLess(estimate_tokens(text), 2000)
+
+
+class TestBatch4Handoff(unittest.TestCase):
+    """批次 4 T14 移交件：triggers-catalog 序列/优先级调度 fb72cd5/契约勘误/台账终态。"""
+
+    def test_skill_p0_records_triggers_catalog(self):
+        text = open(SKILL, encoding="utf-8").read()
+        self.assertIn("triggers-catalog", text,
+                      "SKILL P0 序列须承载 triggers-catalog 事件落账（PROTOCOL §6①）")
+
+    def test_p3_dispatch_priority_formula(self):
+        text = open(os.path.join(PHASES, "P3.md"), encoding="utf-8").read()
+        for kw in ("severity_expect", "asset_value", "exploitability", "Top-K"):
+            self.assertIn(kw, text, "P3.md 派发规则缺优先级调度要素 " + kw)
+
+    def test_triggers_catalog_v2_highrisk_row(self):
+        text = open(os.path.join(PHASES, "TRIGGERS.md"), encoding="utf-8").read()
+        self.assertIn("version: triggers-v2", text)
+        self.assertIn("高危", text)
+        self.assertIn("即时横向", text)
+
+    def test_contracts09_eight_subcommands(self):
+        t = open(os.path.join(ROOT, "contracts", "09-cli-surface.md"),
+                 encoding="utf-8").read()
+        self.assertIn("7→**8**", t)
+        for sub in ("validate", "gate", "restart", "resume-kit", "cached",
+                    "rebuild-state", "denominator-ready", "trigger-audit"):
+            self.assertIn(sub, t, "契约 09 tanyin-phases 子命令缺 " + sub)
+
+    def test_contract01_priority_erratum(self):
+        t = open(os.path.join(ROOT, "contracts", "01-ledger-schema.md"),
+                 encoding="utf-8").read()
+        self.assertIn("intents.priority", t)
+        self.assertIn("severity_expect", t)
+
+    def test_contract07_nday_verify_mapping_note(self):
+        t = open(os.path.join(ROOT, "contracts", "07-submission.md"),
+                 encoding="utf-8").read()
+        self.assertIn("nday-verify", t)
+        self.assertIn("无 web-blackbox 段映射", t, "G-18 注记缺位（T14 收口回注）")
+
+    def test_cli_readme_batch4_section(self):
+        t = open(os.path.join(ROOT, "cli", "README.md"), encoding="utf-8").read()
+        self.assertIn("批次 4", t)
+        for kw in ("trigger-audit", "tanyin-replay", "tanyin-viz",
+                   "recon-deploy", "severity_expect"):
+            self.assertIn(kw, t, "cli/README 批次 4 节缺 " + kw)
+
+    def test_b4_discovery_notes_ledger(self):
+        p = os.path.join(ROOT, "docs", "design", "2026-09-24-b4-discovery-notes.md")
+        self.assertTrue(os.path.isfile(p), "批 4 探知项台账缺位")
+        t = open(p, encoding="utf-8").read()
+        for g in ("G-16", "G-17", "G-18", "G-19", "G-20", "G-21", "G-22",
+                  "G-23", "G-24", "G-25", "G-26"):
+            self.assertIn(g + " ", t + chr(10), "台账缺 " + g)
+        self.assertIn("已闭环", t)
+
+    def test_b3_ledger_batch4_closure_notes(self):
+        t = open(os.path.join(ROOT, "docs", "design", "2026-09-24-b3-discovery-notes.md"),
+                 encoding="utf-8").read()
+        self.assertIn("已闭环·批次 4", t,
+                      "b3 台账 G-2/G-12/G-13 须就地注记批次 4 闭环（追加注记不改历史行）")
+
+    def test_differential_pg_mint_doctrine_fixed(self):
+        """R-T8-2 移交：PG 铸号教义=pair_group 列现序+1（next-id 只扫 id 列不见存量）。"""
+        t = open(os.path.join(ROOT, "engines", "web-blackbox", "phases",
+                              "differential.md"), encoding="utf-8").read()
+        self.assertIn("pair_group 列现序+1", t)
+
+
 if __name__ == "__main__":
     unittest.main()

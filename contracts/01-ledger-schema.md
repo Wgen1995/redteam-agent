@@ -343,3 +343,7 @@
 ## v2 勘误补记（2026-09-24·批次 4 施工期·G-12 裁决）
 
 assets.type 枚举九值→**十一值**：新增 `cloud-storage`（A5 存储与云：对象桶/数据库暴露/队列/云元数据端点/CDN 源站）与 `human-factor`（A7 人的因素：邮箱/账号名/泄露库命中/第三方 SSO 依赖/供应商入口）；pivot/foothold 同批启用（§4.8「后两类批次 4 启用」兑现——原「批次 4 前启用=REJECT」拒收分支退役）。细分不进枚举、落 meta：`meta=sub:object-bucket|database|queue|cloud-metadata|cdn-origin|email|account|leaked-credential|sso|vendor-portal`（词汇表小而稳，设计 §4.8 边词汇同精神）。勘误通道：微版本勘误（零存量数据期，同批次 1「v2 勘误」先例），schema_version 保持 =2 不递增；§3.6 枚举行与 §1 变更表第 6 行要点一并同步。同批联动勘误：契约 07 §2 assets[].type、契约 02a §8 add-asset 拒收条件、phases/PROTOCOL.md §4 类映射（索引见 contracts/README.md）。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T14/优先级调度 fb72cd5）
+
+intents.tsv 增 **priority** 字段（派发优先级分，intents.priority）：`priority = severity_expect × asset_value × exploitability`（各因子 0-1——severity_expect=目标漏洞类严重度期望·类型基线表来源=G-24 批次 5 定；asset_value=assets.meta 人标业务价值；exploitability=graph-horizon 可达/凭据在手/先例命中。公式冻结文本=phases/P3.md「派发优先级算分」节；P3 派发=pending 按 priority 降序 Top-K，budget-exhausted 披露同公式）。落地分期（批4 T14 裁决）：本批冻结字段语义与公式；**物理列（intents.tsv 15→16 字段）与写路径/查询排序支撑随批次 5 G-24 基线表定案后落**——基线表无源前落列必造占位语义进写路径，且 16 列在零存量数据期外的重铸=全套夹具/金样大规模刷新（批 4 计划出口=金样零漂移）；过渡期承载=派发时总控按公式现算（读侧三源 assets.meta/graph-horizon/creds 均有只读命令），Top-K 选择=总控决策（契约 09 §4 边界 2：「任何对『是否漏洞/下一步测什么』的判断」禁入 CLI）。勘误通道：微版本勘误（零存量数据期先例），schema_version 保持 =2 不递增；§3.3 十五字段表不动（物理列落地时随批次 5 勘误同步）。索引见 contracts/README.md。

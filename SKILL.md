@@ -10,11 +10,11 @@
 5. CLI 边界：攻击决策/假设生成/漏洞判定禁入 CLI——那是你（LLM）的职责。
 
 ## 九门循环（状态机=phases/phases.yaml；断言执法=账本命令）
-P0 授权门（八问→add-goal/add-scope/add-cred/add-evidence→append-timeline 落 SKILL 版本→tanyin-egress compile→tanyin-canary deploy）
+P0 授权门（八问→add-goal/add-scope/add-cred/add-evidence→append-timeline 落 SKILL 版本+触发器目录版本（triggers-catalog <ver>，PROTOCOL §6①）→tanyin-egress compile→tanyin-canary deploy）
 P1 测绘（侦察子代理→add-asset/add-fact→scope-check 内联）
 P2 规划（matrix-init→matrix-freeze 锚点冻结）
 P3 演进循环（见下节）
-P4 汇总（validate/verify-chain/hash-recheck/matrix-audit→supersede-finding→set-replay-state）
+P4 汇总（validate/verify-chain/hash-recheck/matrix-audit→supersede-finding→重放门：fresh 子代理+tanyin-replay 三态→set-replay-state）
 P5 报告（聚合器→ledger-terminal-gate→redact-scan）
 P5.5 签发门（人审→approve --verify-signoff）
 P6.0 清理门（cleanup-checklist→逆序 revert_cmd）
@@ -22,15 +22,15 @@ P6 沉淀（脱敏→tanyin-redact --reverse-verify→approve --knowledge）
 每门 duty 详令按需加载 phases/<门>.md；过门唯一方式=tanyin-phases gate --goal-dir <D> --phase <门> --timestamp <T>。
 
 ## P3 演进循环（每轮）
-⓪ checkpoint+budget-check → ① 扫描（unconsumed-facts/pending-intents/matrix-gaps）→ ② 假设风暴（五路 origin：entity/concept/precedent/adjacency/llm；你只提议，add-intent 算 dedup_key/score；晋升阈值=0.5+0.05*(round-1) 随轮递增；llm 路 quota=5/轮）→ ③ 并行派发（六要素+预算份额；tanyin-budgetctl enforce 前置；tanyin-phases cached 查 SKIP）→ ④ 验收落账（单写者，写前拒收）→ ⑤ 链构建（add-edge attack/cross_ref）→ ⑥ 收敛判定（converge-check：converged|budget-exhausted 皆合法终态）。
-事件回边（不离开 P3）：asset-added→add-intent origin=recon-event（直达 pending）+子矩阵行；cred-obtained→add-cred kind=session；scope-amended→amend-scope（须 approvals）→tanyin-egress compile→界外资产复判→canary 复测。
+⓪ checkpoint+budget-check → ① 扫描（unconsumed-facts/pending-intents/matrix-gaps）→ ② 假设风暴（五路 origin：entity/concept/precedent/adjacency/llm；你只提议，add-intent 算 dedup_key/score；晋升阈值=0.5+0.05*(round-1) 随轮递增；llm 路 quota=5/轮）→ ③ 并行派发（pending 按 priority=severity_expect×asset_value×exploitability 降序 Top-K，公式见 P3.md；六要素+预算份额；tanyin-budgetctl enforce 前置；tanyin-phases cached 查 SKIP；引擎 intent 按 MANIFEST 纪律能力路由，超 max_op_level/视角上限拒派）→ ④ 验收落账（单写者，写前拒收）→ ⑤ 链构建（add-edge attack/cross_ref）→ ⑥ 收敛判定（converge-check：converged|budget-exhausted 皆合法终态）。
+事件回边（不离开 P3）：asset-added→add-intent origin=recon-event（直达 pending）+子矩阵行；cred-obtained→add-cred kind=session→authz-diff 候选；scope-amended→amend-scope（须 approvals）→tanyin-egress compile→界外资产复判→canary 复测。
 
 ## 命令索引（44 条；签名详见 cli/README.md）
 写 19：add-goal add-scope add-intent set-intent-status add-fact add-finding supersede-finding add-asset add-edge add-evidence add-cred set-cred-status amend-scope approve matrix-set matrix-freeze append-timeline budget-log checkpoint
 查 14：unconsumed-facts pending-intents matrix-gaps converge-check next-id intent-status matrix-get scope-check budget-check cleanup-checklist redact-scan graph-neighbors graph-paths graph-horizon
 校验 10：validate verify-chain hash-recheck matrix-audit state-rebuild set-replay-state ledger-scope-coverage ledger-tree-check ledger-replay-summary ledger-terminal-gate
 特殊 1：matrix-init
-执行通道：宿主 shell 直通 cli/tanyin-ledger <命令> --goal-dir <D>；配套：tanyin-guard（一切对外命令）、tanyin-budgetctl、tanyin-canary、tanyin-egress、tanyin-phases。
+执行通道：宿主 shell 直通 cli/tanyin-ledger <命令> --goal-dir <D>；配套：tanyin-guard（一切对外命令）、tanyin-budgetctl、tanyin-canary、tanyin-egress、tanyin-phases、tanyin-replay（重放门驱动）、tanyin-viz（只读投影）。
 
 ## 恢复协议（先对账再干活）
 1. tanyin-ledger verify-chain --goal-dir <D> → FAIL=停+人工（链断不可自愈）。
@@ -45,4 +45,4 @@ P6 沉淀（脱敏→tanyin-redact --reverse-verify→approve --knowledge）
 无目标自检：P0-P2 照常落账，零对外请求——不 tanyin-guard exec、不 canary probe；egress 只 compile、canary 只 deploy。判定=timeline 无 request: 与 request-ticket 事件。
 
 ## 路由表（认知按需加载）
-当前门→加载 phases/<门>.md（单门单载，读完即用）；引擎方法论→engines/<引擎>/SKILL.md（批次 4）；知识检索→knowledge/（批次 5）。其余内容一律不进上下文。
+当前门→加载 phases/<门>.md（单门单载，读完即用）；引擎方法论→web-blackbox=engines/web-blackbox/SKILL.md、vuln-agent/nuclei=engines/<引擎>/MANIFEST.md（cli 型方法论入口=G-18），派发前核 MANIFEST 纪律能力；知识检索→knowledge/（批次 5）。其余内容一律不进上下文。
