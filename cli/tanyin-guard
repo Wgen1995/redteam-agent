@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """tanyin-guard（批次 2 T1）——Tier 1 执行通道级包装器。"""
-import base64, hashlib, os, subprocess, sys
+import hashlib, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ledger import core
+from ledger import core, vault
 from ledger.enforce import DENY_LIST, load_scope, out_of_scope_hosts
 from ledger.schemas import TABLES
 from ledger.core import ensure_utf8_stdio
@@ -39,51 +39,22 @@ def append_tl(gd, ts, event):
     rows.append([ts, "guard", "P3", event, "", prev, h, "2"])
     core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
 
+# vault 逻辑单源=ledger/vault.py（批4 T4 抽取，guard/replay 共用，行为零变更）；
+# 此处同名 thin delegate 保既有调用点与命令输出字节不变。
 def vault_dir(gd):
-    return os.path.join(gd, "vault")
-
-def _keystream(key, n):
-    out = b""
-    counter = 0
-    while len(out) < n:
-        out += hashlib.sha256((key + ":" + str(counter)).encode()).digest()
-        counter += 1
-    return out[:n]
+    return vault.vault_dir(gd)
 
 def enc_payload(key, plaintext):
-    data = plaintext.encode("utf-8")
-    return base64.b64encode(bytes(a ^ b for a, b in zip(data, _keystream(key, len(data))))).decode()
-
-def dec_payload(key, b64):
-    data = base64.b64decode(b64)
-    return bytes(a ^ b for a, b in zip(data, _keystream(key, len(data)))).decode("utf-8")
+    return vault.enc_payload(key, plaintext)
 
 def guard_key(gd):
-    p = os.path.join(vault_dir(gd), ".key")
-    return open(p, encoding="utf-8").read().strip() if os.path.exists(p) else None
+    return vault.load_key(gd)
 
 def read_cred(gd, n):
-    key = guard_key(gd)
-    p = os.path.join(vault_dir(gd), "cred-%s.enc" % n)
-    if not key or not os.path.exists(p):
-        return None, None
-    return dec_payload(key, open(p, encoding="utf-8").read()).split(chr(10), 1)
+    return vault.read_cred(gd, n)
 
 def vault_secrets(gd):
-    """全部已部署凭据真值 [(cred号, secret)]——以 vault/manifest.tsv 为准
-    （exec 与 inject 同源；exec 此前按 creds.tsv 行序编号，与 vault 实际凭据号
-    脱节导致真值不脱敏，洞 3）。"""
-    out = []
-    mp = os.path.join(vault_dir(gd), "manifest.tsv")
-    if os.path.exists(mp):
-        for l in open(mp, encoding="utf-8").read().splitlines():
-            if l.strip():
-                n = l.split(TAB)[0]
-                _, sec = read_cred(gd, n)
-                if sec:
-                    out.append((n, sec))
-    out.sort(key=lambda t: -len(t[1]))
-    return out
+    return vault.secrets(gd)
 
 def cmd_deploy_vault(gd, rest):
     kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))

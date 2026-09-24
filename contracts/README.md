@@ -73,3 +73,7 @@
 
 - 契约④（04-phases.md）门 5 · P4 断言 5（ledger-replay-summary）expect 文本去「（批次 4 前=SKIP，报告中披露）」——重放门断言转强制（断言数不变 asserts=21 基线不动）；phases/phases.yaml 同步、phases/PROTOCOL.md §1 判定表 SKIP 行加退役注记、phases/P4.md duty 3/4 改强制+历史注记。微版本勘误，不升 schema_version。
 - 契约⑭（11-enforcement.md）§7「P4 出口」行 expect 引用随契约 04 同步去 SKIP 尾注（T3 裁决：计划文件清单未列该引用位，按声明层单源一致+每笔勘误必登记的全局纪律补齐）。微版本勘误，不升 schema_version。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T4/R1 裁决）
+
+- 契约⑥（06-evidence-cards.md）§4 `expected` matcher 子集 v1 冻结（R1/G-17：matchers 仅 word/status＋多 matcher=AND＋未知 type fail-closed；extractors 仅 regex；空 expected＝manual）。微版本勘误，不升 schema_version。

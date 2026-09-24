@@ -125,3 +125,7 @@ front-matter 11 字段（六字段以①–⑥标注，映射见 §6）：
 - FD 六字段映射齐全：定稿 §4.7 字段行（L236）逐名 grep → dedup_key=1/scope_check=1/exploitation_status=1/confidence=1/auth_context=1/control_evidence_ids=1（**6/6 命中**）；本文件 §6 映射表 → 7−表头 1＝**6** 行（①–⑥）。
 - POC 四要素＝**4**（§3 表：network_position/preconditions/raw_request/expected）。
 - 探知项＝**1**。
+
+## v2 勘误补记（2026-09-24·批次 4 施工期·T4/R1 裁决）
+
+- §4 POC 四要素之 `expected` 子集 v1 冻结（探知项 G-17 清账，R1 裁决原文）：`expected.matchers` 仅 `{type: word, words[], condition: or|and}`（condition 可省，**默认 and**）与 `{type: status, status[]}`；`expected.extractors` 仅 `{type: regex, name, regex[]}`（评估取 regex[0]：有捕获组取组 1，无捕获组取整体匹配）。多 matcher 语义＝**全部命中**（AND）；type 不在子集＝**REJECT**（fail-closed——评估器 raise MatcherError，由调用方转 REJECT）；`expected` 缺失或空＝**manual**（无 matcher 无法机械判定，人工）。评估单一实现＝cli/ledger/matchers.py（T5 重放三态判定消费）；EV 卡片 front-matter 解析＝cli/ledger/cards.py（复用 phases_engine 受限 YAML 子集；§4.11 同值性校验＝cards.check_consistency，执法点=重放前校验——G-16：validate 集成不动）。微版本勘误，不升 schema_version。
