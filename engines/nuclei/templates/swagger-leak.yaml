@@ -1,0 +1,13 @@
+# swagger-leak.yaml —— 自写模板（MIT/自创；上游 nuclei-templates 仅作结构范本不搬运内容）
+id: tanyin-swagger-leak
+info:
+  name: Swagger API Docs Exposure
+  severity: medium
+http:
+  - method: GET
+    path: ["{{BaseURL}}/v2/api-docs"]
+    matchers:
+      - type: word
+        words: ["swagger"]
+      - type: status
+        status: [200]

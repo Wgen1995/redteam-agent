@@ -1,0 +1,2 @@
+{"template-id": "tanyin-exposed-panel", "template-path": "templates/exposed-panel.yaml", "info": {"name": "Exposed Management Panel", "severity": "medium"}, "host": "http://10.10.9.9:8080", "matched-at": "http://10.10.9.9:8080/admin", "matcher-name": "word-0", "type": "http"}
+{"template-id": "tanyin-actuator-leak", "template-path": "templates/actuator-leak.yaml", "info": {"name": "Spring Boot Actuator Env Exposure", "severity": "high"}, "host": "http://10.10.9.9:8080", "matched-at": "http://10.10.9.9:8080/actuator/env", "matcher-name": "word-0", "type": "http"}

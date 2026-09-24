@@ -1,0 +1,13 @@
+# exposed-panel.yaml —— 自写模板（MIT/自创；上游 nuclei-templates 仅作结构范本不搬运内容）
+id: tanyin-exposed-panel
+info:
+  name: Exposed Management Panel
+  severity: medium
+http:
+  - method: GET
+    path: ["{{BaseURL}}/admin"]
+    matchers:
+      - type: word
+        words: ["管理面板", "admin dashboard"]
+      - type: status
+        status: [200]

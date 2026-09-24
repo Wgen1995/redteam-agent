@@ -107,6 +107,15 @@ ADAPTER_CMDS = [("engine-vuln-adapter", [sys.executable, VULN_ADAPTER,
                                          "--source", VULN_FIXOUT])]
 
 
+# 批次 4 T10：nuclei adopt 面——验签先于归一化，依赖 openssl（缺=ENV SKIP，
+# test_supply_chain skipUnless 同口径；出口验收⑧「openssl 例 skip=ENV」）。
+NUCLEI_ADAPTER = os.path.join(HERE, "..", "engines", "nuclei", "adapter.py")
+NUCLEI_JSONL = os.path.join(HERE, "fixtures", "engine", "nuclei-jsonl", "sample.jsonl")
+NUCLEI_CMDS = [("engine-nuclei-adopt", [sys.executable, NUCLEI_ADAPTER,
+                                        "--intent-id=INT-g1-0100", "--out-dir", "<GD>",
+                                        "--jsonl-file", NUCLEI_JSONL])]
+
+
 def run_engine(cmd, gd):
     return subprocess.run([gd if c == "<GD>" else c for c in cmd],
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -330,23 +339,28 @@ def main(argv=None):
                 continue
             gp = os.path.join(GOLD, "graph-" + name + ".norm")
             gate_golden(gp, outs[0], "graph-" + name, bless, fails, inits, "输出漂移")
-        for label, spec in ADAPTER_CMDS:
-            outs = []
-            for t in (t1, t2):
-                gd = fresh(t)
-                a = run_engine(spec, gd)
-                if a.returncode != 0:
-                    outs = None
-                    break
-                outs.append(norm_adapter(gd))
-            if outs is None:
-                fails.append(label + "(非零退出 rc=%d)" % a.returncode)
+        for faces, openssl_gated in ((ADAPTER_CMDS, False), (NUCLEI_CMDS, True)):
+            if openssl_gated and shutil.which("openssl") is None:
+                for label, _ in faces:
+                    print("SKIP " + label + "(ENV: openssl 缺失——验签面不可跑，skipUnless 同口径)")
                 continue
-            if outs[0] != outs[1]:
-                fails.append(label + "(不确定性)")
-                continue
-            gp = os.path.join(GOLD, label + ".norm")
-            gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
+            for label, spec in faces:
+                outs = []
+                for t in (t1, t2):
+                    gd = fresh(t)
+                    a = run_engine(spec, gd)
+                    if a.returncode != 0:
+                        outs = None
+                        break
+                    outs.append(norm_adapter(gd))
+                if outs is None:
+                    fails.append(label + "(非零退出 rc=%d)" % a.returncode)
+                    continue
+                if outs[0] != outs[1]:
+                    fails.append(label + "(不确定性)")
+                    continue
+                gp = os.path.join(GOLD, label + ".norm")
+                gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
     for n in inits:
         print("INIT " + n)
     if fails:
@@ -355,7 +369,7 @@ def main(argv=None):
         return 1
     print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 + %d adapter 面 全部锁定且确定"
           % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS), len(ENGINE_CMDS),
-             len(GRAPH_CMDS), len(ADAPTER_CMDS)))
+             len(GRAPH_CMDS), len(ADAPTER_CMDS) + len(NUCLEI_CMDS)))
     return 0
 
 
