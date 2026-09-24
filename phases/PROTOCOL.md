@@ -89,3 +89,15 @@ exit 断言列表——契约 04 断言集与 asserts=21 基线不动、九门�
 ## 勘误补记（2026-09-24·批次 4 施工期）
 
 - §4 类映射补两行：cloud-storage→A5、human-factor→A7（G-12 裁决：assets.type 九值→十一值微版本勘误；原「A5/A7 无对应值」探知项注记随勘误作废——A5/A7 自此有对应 type 值，「不适用理由」兜底仅适用于其余无对应资产类的口径）。
+- §4 三断言→**四断言**（2026-09-24·批4 T12，G-13 裁决落地）：第④断言「诱饵召回率」交付——
+  planted>0 时 found==planted 否则 FAIL（比对=canary/recon-decoys.tsv × assets.tsv 同 value 且
+  in_scope）；planted=0 时须披露 fact（target=canary:recon）在场否则 FAIL（§1.3②「100%（或披露）」
+  语义）；stats 增 planted/found 两键（PASS 行同步）。§4 正文「②诱饵召回率随批次 4 侦察金丝雀
+  交付，探知项登记」注记自此清账。载体=tanyin-canary recon-deploy/recon-recall（同工具分表：
+  执法诱饵 targets.tsv 界外零容忍；侦察诱饵 recon-decoys.tsv 界内召回）。
+- G-8 清账（tanyin-canary 参数语义注记，随上条一并）：deploy --seed / probe --tier=执法侧
+  （界外诱饵拦截零容忍，批次 2 冻结面，本地模拟零网络）；recon-deploy --value --type（十一值
+  枚举）[--note] [--timestamp] / recon-recall=侦察侧（批4 T12 新增，本地落表/读账零网络——
+  §3 干跑口径「canary 只 deploy」扩为 canary 家族全子命令零网络）；recon-deploy 重复
+  value=REJECT exit 1；recon-recall 无参数，stdout=JSON recall=found/planted+清单，
+  timeline 事件 recon-decoy-deploy/recon-decoy-recall。

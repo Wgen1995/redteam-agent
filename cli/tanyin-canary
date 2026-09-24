@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""tanyin-canary（批次 2 T4）——界外诱饵部署 + 四档位拦截零容忍探测（定稿 §8.5/契约 11 §5）。
+"""tanyin-canary（批次 2 T4；批4 T12 增侦察金丝雀 G-13）——执法诱饵 + 侦察金丝雀同工具分表。
+
+执法侧（界外诱饵拦截零容忍，定稿 §8.5/契约 11 §5）；侦察侧（界内诱饵召回度量）：
+recon-deploy：登记客户配合植入的界内诱饵（canary/recon-decoys.tsv 只增；本地落表零网络）；
+recon-recall：机械比对诱饵表×assets.tsv（同 value 且 in_scope）出召回率（发现/植入；本地读账零网络）。
+
+原批次 2 执法面（界外诱饵部署 + 四档位拦截零容忍探测，定稿 §8.5/契约 11 §5）：
 
 deploy --seed：seed 确定性生成诱饵（域名×3 canary.<8hex>.tanyin-test + 保留 IP 192.0.2.x×2，RFC 5737 TEST-NET-1）
   → canary/targets.tsv + timeline canary-deploy（链式续写，同 tanyin-guard append_tl 律）。
@@ -30,7 +36,10 @@ EGRESS_CANDIDATES = ("egress.acl", os.path.join("egress", "egress.acl"))  # 探�
 
 def usage():
     sys.stderr.write("用法: tanyin-canary deploy --goal-dir D --seed <s> [--timestamp=T]"
-                     " | probe --goal-dir D --tier 0|1|2|3 [--host=dsh] [--phase=P0] [--timestamp=T]" + chr(10))
+                     " | probe --goal-dir D --tier 0|1|2|3 [--host=dsh] [--phase=P0] [--timestamp=T]"
+                     " | recon-deploy --goal-dir D --value <诱饵资产值> --type <assets.type 十一值>"
+                     " [--note=计划编号] [--timestamp=T]"
+                     " | recon-recall --goal-dir D" + chr(10))
     return 2
 
 
@@ -199,6 +208,60 @@ def cmd_probe(gd, rest):
     return 0 if result["status"] in ("pass", "not-deployed") else 1
 
 
+
+
+# ------------------------------------------------- 批4 T12：侦察金丝雀（G-13 裁决）
+# 完备性设计 §1.3②——界内诱饵召回度量（分母就绪门第④断言载体）；同工具分表：
+# 执法诱饵 canary/targets.tsv（界外零容忍）与侦察诱饵 canary/recon-decoys.tsv
+# （界内召回率）物理分表，互不污染。两子命令均本地落表/读账，零网络（干跑口径）。
+
+RECON_ASSET_TYPES = {"root-domain", "subdomain", "ip", "service", "app", "endpoint",
+                     "source-code", "pivot", "foothold", "cloud-storage", "human-factor"}
+
+
+def cmd_recon_deploy(gd, rest):
+    kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
+    if not kv.get("--value") or not kv.get("--type"):
+        sys.stderr.write("recon-deploy 缺 --value/--type" + chr(10))
+        return 2
+    if kv["--type"] not in RECON_ASSET_TYPES:
+        sys.stderr.write("REJECT type 不在十一值枚举: " + kv["--type"] + chr(10))
+        return 1
+    d = os.path.join(gd, "canary")
+    os.makedirs(d, exist_ok=True)
+    p = os.path.join(d, "recon-decoys.tsv")
+    rows = [l.split(TAB) for l in open(p, encoding="utf-8").read().splitlines()] if os.path.exists(p) else []
+    if any(r[1] == kv["--value"] for r in rows):
+        sys.stderr.write("REJECT 诱饵 value 重复: " + kv["--value"] + chr(10))
+        return 1
+    ts = kv.get("--timestamp", EPOCH)
+    rows.append([kv["--type"], kv["--value"], ts, kv.get("--note", "")])
+    with open(p, "w", encoding="utf-8", newline="\n") as f:   # 只增表重写=追加一行（判重前置）
+        f.write(chr(10).join(TAB.join(r) for r in rows) + chr(10))
+    append_tl(gd, ts, "P1", "recon-decoy-deploy %s type=%s" % (kv["--value"], kv["--type"]))
+    print("OK recon-decoy deploy %s -> canary/recon-decoys.tsv" % kv["--value"])
+    return 0
+
+
+def cmd_recon_recall(gd, rest):
+    p = os.path.join(gd, "canary", "recon-decoys.tsv")
+    if not os.path.exists(p):
+        sys.stderr.write("REJECT 无 recon-decoys.tsv（先 recon-deploy）" + chr(10))
+        return 1
+    decoys = [l.split(TAB)[:2] for l in open(p, encoding="utf-8").read().splitlines() if l.strip()]
+    s = core.Session(gd)
+    ai = TABLES["assets.tsv"].index("in_scope")
+    vi = TABLES["assets.tsv"].index("value")
+    have = {r[vi] for r in s.rows("assets.tsv") if r[ai] in ("in_scope", "1", "true")}
+    found = [d for d in decoys if d[1] in have]
+    missing = [d[1] for d in decoys if d[1] not in have]
+    append_tl(gd, EPOCH, "P1", "recon-decoy-recall found=%d planted=%d" % (len(found), len(decoys)))
+    print(json.dumps({"recall": "%d/%d" % (len(found), len(decoys)),
+                      "found": [d[1] for d in found], "missing": missing},
+                     ensure_ascii=False, sort_keys=True))
+    return 0
+
+
 def main(argv):
     if len(argv) < 4 or argv[2] != "--goal-dir":
         return usage()
@@ -210,6 +273,10 @@ def main(argv):
         return cmd_deploy(gd, rest)
     if sub == "probe":
         return cmd_probe(gd, rest)
+    if sub == "recon-deploy":
+        return cmd_recon_deploy(gd, rest)
+    if sub == "recon-recall":
+        return cmd_recon_recall(gd, rest)
     return usage()
 
 

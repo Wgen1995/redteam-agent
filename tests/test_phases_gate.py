@@ -184,12 +184,14 @@ class DenomBase(Base):
 
 class TestDenominatorReady(DenomBase):
     def test_fixture_fail_list_shape(self):
-        """G-g1 基线＝FAIL 清单：①两条 in_scope 单源（界外 vpn 豁免）②A2-A8 七类空。"""
+        """G-g1 基线＝FAIL 清单：①两条 in_scope 单源（界外 vpn 豁免）②A2-A8 七类空
+        ④无诱饵表且无披露（批4 T12 增——10 项；PASS 形状金样移交 run_golden 四断言面）。"""
         code, out, err = self.dr()
         self.assertEqual(code, 1, out + err)
         self.assertIn("FAIL" + TAB + "denominator-ready", out)
         src = [l for l in self.fail_lines(out) if l.startswith("①")]
         cls = [l for l in self.fail_lines(out) if l.startswith("②")]
+        dec = [l for l in self.fail_lines(out) if l.startswith("④")]
         self.assertEqual(len(src), 2)
         self.assertIn("AST-g1-0001", src[0]); self.assertIn("AST-g1-0002", src[1])
         self.assertTrue(all("AST-g1-0003" not in l for l in src))   # 界外不入①
@@ -197,7 +199,9 @@ class TestDenominatorReady(DenomBase):
         for k in range(2, 9):
             self.assertTrue(any("A%d" % k in l for l in cls), "缺 A%d 行" % k)
         self.assertFalse([l for l in self.fail_lines(out) if l.startswith("③")])
-        self.assertIn("9", out.splitlines()[0])   # 2+7=9 项
+        self.assertEqual(len(dec), 1)                                # 批4 T12：未部署且未披露
+        self.assertIn("canary:recon", dec[0])
+        self.assertIn("10", out.splitlines()[0])   # 2+7+1=10 项（批4 T12：+④）
 
     def test_readonly_zero_side_effects(self):
         before = self.snap_tables()
@@ -229,15 +233,18 @@ class TestDenominatorReady(DenomBase):
         self.assertFalse([l for l in self.fail_lines(out) if l.startswith("①")])
 
     def test_class_na_reason_or_asset_fills_check2(self):
-        """不适用理由落账（fact target=asset-class:A<k>）或该类资产存在。"""
+        """不适用理由落账（fact target=asset-class:A<k>）或该类资产存在；
+        ④配套披露 fact（批4 T12：planted=0 时 target=canary:recon 在场即过）。"""
         for k in range(2, 9):
             self.add_fact("asset-class:A%d" % k, detail="不适用：批注理由", kind="info")
         self.add_intent("补源B")
         self.add_fact("shop.example", intent="INT-g1-0003")
         self.add_fact("admin-internal.shop.example", intent="INT-g1-0003")
+        self.add_fact("canary:recon", detail="客户暂不配合植入（披露）")
         code, out, err = self.dr()
         self.assertEqual(code, 0, out + err)
         self.assertIn("PASS" + TAB + "denominator-ready", out)
+        self.assertIn("planted=0 found=0", out)   # 批4 T12：④的 planted/found 键随 PASS 行披露
 
     def test_dangling_extrapolation_node_check3(self):
         """外推资产（meta=extrapolated）无 fact/绑定 intent/整合边=悬空；补任一即闭环。"""
@@ -285,11 +292,12 @@ class TestDenominatorReady(DenomBase):
                              "--goal-dir", gd2], capture_output=True, text=True,
                             encoding="utf-8", errors="replace")
         self.assertEqual(r.stdout, r2.stdout)
-        # 金样基线（tests/golden/phases-denominator-ready.norm，随本任务建档）
+        # 金样面在档且为四断言 PASS 形状（批4 T12 移交 run_golden 生成/锁定：
+        # norm=「补 fact 使 ①-④ 全过」夹具副本的 PASS 行 planted=0 found=0；
+        # 本夹具 FAIL 形状由 test_fixture_fail_list_shape 断言承载）
         gp = os.path.join(HERE, "golden", "phases-denominator-ready.norm")
         self.assertTrue(os.path.isfile(gp), "金样缺失: " + gp)
-        with open(gp, encoding="utf-8") as f:
-            self.assertEqual(f.read().strip(), r.stdout.strip())
+        self.assertIn("planted=0 found=0", open(gp, encoding="utf-8").read())
 
 
 if __name__ == "__main__":

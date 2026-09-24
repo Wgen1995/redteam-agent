@@ -64,6 +64,40 @@ def run_cli(gd, name, args):
 PHASES_CLI = os.path.join(HERE, "..", "cli", "tanyin-phases")
 PHASES_CMDS = [["validate"]]
 
+# 批次 4 T12：denominator-ready 四断言 PASS 面（phases 面，validate 先例）——
+# prep_denominator 补 fact 使 ①-④ 全过（计划 Step4 有意刷新预案的落地形态：
+# norm=PASS 行含 planted=0 found=0；原 G-g1 FAIL 形状由
+# tests/test_phases_gate.test_fixture_fail_list_shape 断言承载，不再锁 norm）。
+DENOM_TS = "2026-09-24T13:00:00Z"
+PHASES_DENOM = [("phases-denominator-ready",
+                 [sys.executable, PHASES_CLI, "denominator-ready", "--goal-dir", "<GD>"])]
+
+
+def prep_denominator(gd):
+    # ①补第二来源：新 intent（origin=recon-event 直达 pending）+两 in_scope 资产各一条 fact
+    r = run_cli(gd, "add-intent", ["--title=补源B", "--engine=web-blackbox", "--kind=recon",
+                                   "--origin=recon-event", "--budget-share=1;1;1",
+                                   "--timestamp=" + DENOM_TS])
+    assert r.returncode == 0, r.stdout + r.stderr
+    for tgt in ("shop.example", "admin-internal.shop.example"):
+        r = run_cli(gd, "add-fact", ["--intent-id=INT-g1-0003", "--kind=info",
+                                     "--target=" + tgt, "--detail=补第二来源",
+                                     "--confidence=0.9", "--timestamp=" + DENOM_TS])
+        assert r.returncode == 0, r.stdout + r.stderr
+    # ②A2-A8 不适用理由（A1 非空=root-domain+subdomain 在档）
+    for k in range(2, 9):
+        r = run_cli(gd, "add-fact", ["--intent-id=INT-g1-0001", "--kind=info",
+                                     "--target=asset-class:A%d" % k,
+                                     "--detail=不适用：批注理由", "--confidence=0.9",
+                                     "--timestamp=" + DENOM_TS])
+        assert r.returncode == 0, r.stdout + r.stderr
+    # ④planted=0 披露 fact（target=canary:recon）
+    r = run_cli(gd, "add-fact", ["--intent-id=INT-g1-0001", "--kind=info",
+                                 "--target=canary:recon",
+                                 "--detail=客户暂不配合植入（披露）",
+                                 "--confidence=0.9", "--timestamp=" + DENOM_TS])
+    assert r.returncode == 0, r.stdout + r.stderr
+
 # 批次 4 T5：tanyin-replay 确定性面（engine 面——三态判定产物可金样化）。
 # 夹具无 evidence/ 目录（计划注释与实况不符）：prep_engine 预铸 EV-g1-0001 卡片
 # （autodrive 预处理先例）；Host=10.10.9.9 命中夹具 scope include 10.10.0.0/16（免 DNS）。
@@ -319,6 +353,24 @@ def main(argv=None):
                 continue
             gp = os.path.join(GOLD, "phases-" + spec[0] + ".norm")
             gate_golden(gp, o1, "phases-" + spec[0], bless, fails, inits, "输出漂移")
+        for label, spec in PHASES_DENOM:   # 批4 T12：四断言 PASS 面（goal-dir 面，engine 面双副本同构）
+            outs = []
+            for t in (t1, t2):
+                gd = fresh_of(t, FIX, "G-g1")   # 目录名=goal_id：与 fresh 同名（新 id 前缀 INT-g1-*）
+                prep_denominator(gd)
+                a = run_engine(spec, gd)
+                if a.returncode != 0:
+                    outs = None
+                    break
+                outs.append(a.stdout)
+            if outs is None:
+                fails.append(label + "(非零退出 rc=%d)" % a.returncode)
+                continue
+            if outs[0] != outs[1]:
+                fails.append(label + "(不确定性)")
+                continue
+            gp = os.path.join(GOLD, label + ".norm")
+            gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
         for label, spec in ENGINE_CMDS:
             outs = []
             for t in (t1, t2):
@@ -402,8 +454,9 @@ def main(argv=None):
             print("FAIL " + f)
         return 1
     print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 + %d adapter 面 + %d viz 面 全部锁定且确定"
-          % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS), len(ENGINE_CMDS),
-             len(GRAPH_CMDS), len(ADAPTER_CMDS) + len(NUCLEI_CMDS), len(VIZ_CMDS)))
+          % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS) + len(PHASES_DENOM),
+             len(ENGINE_CMDS), len(GRAPH_CMDS),
+             len(ADAPTER_CMDS) + len(NUCLEI_CMDS), len(VIZ_CMDS)))
     return 0
 
 

@@ -496,7 +496,7 @@ def denominator_ready(goal_dir):
 
     fails = []
     stats = {"assets": len(arows), "in_scope": 0, "sources_ok": 0,
-             "classes_ok": 0, "extrapolated": 0, "dangling": 0}
+             "classes_ok": 0, "extrapolated": 0, "dangling": 0, "planted": 0, "found": 0}
     for a in arows:
         if _cell("assets.tsv", a, "in_scope") not in DENOM_IN_SCOPE_VALUES:
             continue   # 界外资产不入①（触发器目录：界外资产→记录不测）
@@ -527,6 +527,25 @@ def denominator_ready(goal_dir):
         stats["dangling"] += 1
         fails.append("③悬空 %s %s 外推节点未处理（无采集 fact/绑定 intent/图谱整合边）"
                      % (aid, value))
+    # ④诱饵召回率（G-13 裁决，完备性 §1.3②——planted>0 须全发现；planted=0 须披露）
+    decoy_p = os.path.join(goal_dir, "canary", "recon-decoys.tsv")
+    planted = []
+    if os.path.exists(decoy_p):
+        ai, vi = core.TABLES["assets.tsv"].index("in_scope"), core.TABLES["assets.tsv"].index("value")
+        have = {r[vi] for r in arows if r[ai] in DENOM_IN_SCOPE_VALUES}
+        planted = [l.split(chr(9))[1] for l in open(decoy_p, encoding="utf-8").read().splitlines()
+                   if l.strip()]
+        missing = [v for v in planted if v not in have]
+        stats["planted"], stats["found"] = len(planted), len(planted) - len(missing)
+        if missing:
+            fails.append("④召回 诱饵未发现 %d/%d：%s（测绘召回率=发现/植入——完备性 §1.2 金丝雀）"
+                         % (len(planted) - len(missing), len(planted), ";".join(missing[:5])))
+    else:
+        stats["planted"], stats["found"] = 0, 0
+        disclosed = any(_cell("facts.tsv", f, "target") == "canary:recon" for f in frows)
+        if not disclosed:
+            fails.append("④召回 未部署侦察诱饵且未披露（tanyin-canary recon-deploy 植入，或 "
+                         "add-fact --target=canary:recon --detail=不配合理由）")
     return fails, stats
 
 
@@ -543,8 +562,9 @@ def cmd_denominator_ready(goal_dir, rest):
         return 1
     print("PASS" + chr(9) + "denominator-ready" + chr(9)
           + "assets=%d in_scope=%d sources_ok=%d classes_ok=%d/8 extrapolated=%d dangling=%d"
+            " planted=%d found=%d"
           % (st["assets"], st["in_scope"], st["sources_ok"], st["classes_ok"],
-             st["extrapolated"], st["dangling"]))
+             st["extrapolated"], st["dangling"], st["planted"], st["found"]))
     return 0
 
 

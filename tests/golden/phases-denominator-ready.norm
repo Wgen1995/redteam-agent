@@ -1,10 +1,1 @@
-FAIL	denominator-ready	违规 9 项（分母就绪门：matrix freeze 前置检查）
-  ①来源 AST-g1-0001 shop.example 来源数=1<2 unverified=否 在队列继续挖=否
-  ①来源 AST-g1-0002 admin-internal.shop.example 来源数=1<2 unverified=否 在队列继续挖=否
-  ②类空 A2 类空且无不适用理由（fact target=asset-class:A2 detail=理由，或补该类资产）
-  ②类空 A3 类空且无不适用理由（fact target=asset-class:A3 detail=理由，或补该类资产）
-  ②类空 A4 类空且无不适用理由（fact target=asset-class:A4 detail=理由，或补该类资产）
-  ②类空 A5 类空且无不适用理由（fact target=asset-class:A5 detail=理由，或补该类资产）
-  ②类空 A6 类空且无不适用理由（fact target=asset-class:A6 detail=理由，或补该类资产）
-  ②类空 A7 类空且无不适用理由（fact target=asset-class:A7 detail=理由，或补该类资产）
-  ②类空 A8 类空且无不适用理由（fact target=asset-class:A8 detail=理由，或补该类资产）
+PASS	denominator-ready	assets=3 in_scope=2 sources_ok=2 classes_ok=1/8 extrapolated=0 dangling=0 planted=0 found=0
