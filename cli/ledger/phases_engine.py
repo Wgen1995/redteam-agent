@@ -568,6 +568,117 @@ def cmd_denominator_ready(goal_dir, rest):
     return 0
 
 
+# ------------------------------------------------------- T13：触发器闭包审计
+# 完备性设计 §3.1——「该触发的是否都触发了」机检；单源目录=phases/TRIGGERS.md
+# （版本化封闭表）。只读零落账；事件词消费=add-asset/add-cred/amend-scope/
+# submatrix-mint/egress-compile（T2/T13 落账面）。
+
+TRIGGERS_MD = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__)))), "phases", "TRIGGERS.md")
+
+
+def trigger_audit(goal_dir):
+    """触发器闭包审计（完备性 §3.1；只读零落账）。返回 (fails, stats)。
+
+    Ruling（T13·①事件驱动）：计划片段按 assets 行全集遍历——与计划自身
+    test_baseline_session_passes（G-g1 预置资产无 add-asset 事件应 PASS）冲突；
+    按 Interfaces「每个 in_scope add-asset 事件」落地：timeline 事件驱动，
+    夹具预置资产（无事件）不入审计、界外事件免检（目录行 2/8）。
+    """
+    s = core.Session(goal_dir)
+    tle = core.TABLES["timeline.tsv"]
+    events = [r[tle.index("event")] for r in s.rows("timeline.tsv")]
+    fails, closed, total = [], 0, 0
+
+    # ① asset-added（in_scope）→ 该表面有 submatrix-mint 事件/子矩阵行/绑定 intent
+    ast_by_id = {r[0]: r for r in s.rows("assets.tsv")}
+    ai, vi = core.TABLES["assets.tsv"].index("in_scope"), core.TABLES["assets.tsv"].index("value")
+    surfaces = {r[0] for r in s.rows("matrix.tsv")}
+    seen = set()
+    for e in events:
+        m = re.match(r"^add-asset (AST-\S+)\((\S+)\)$", e)
+        if not m or m.group(2) not in DENOM_IN_SCOPE_VALUES:
+            continue
+        arow = ast_by_id.get(m.group(1))
+        if arow is None:
+            continue
+        value = arow[vi]
+        if value in seen:
+            continue
+        seen.add(value)
+        total += 1
+        has_sub = value in surfaces or any(
+            e2.startswith("submatrix-mint " + value + " ") for e2 in events)
+        bound = any(_cell("intents.tsv", it, "origin") == "recon-event"
+                    and (value in _cell("intents.tsv", it, "title")
+                         or value in _cell("intents.tsv", it, "detail"))
+                    for it in s.rows("intents.tsv"))
+        if has_sub or bound:
+            closed += 1
+        else:
+            fails.append("①asset-added %s 无子矩阵行/铸行事件/绑定 intent（G-2 通道）" % value)
+
+    # ② cred-obtained（kind=session）→ authz-diff 候选或显式延后 fact
+    ci = core.TABLES["creds.tsv"].index("id")
+    for r in s.rows("creds.tsv"):
+        if _cell("creds.tsv", r, "kind") != "session":
+            continue
+        total += 1
+        cid = r[ci]
+        has_cand = any(_cell("intents.tsv", it, "kind") == "authz-diff"
+                       for it in s.rows("intents.tsv"))
+        deferred = any(_cell("facts.tsv", f, "target") == "authz-diff:" + cid
+                       for f in s.rows("facts.tsv"))
+        if has_cand or deferred:
+            closed += 1
+        else:
+            fails.append("②cred-obtained %s 无 authz-diff 候选/延后 fact（批次4 起强制）" % cid)
+
+    # ③ scope-amended → 其后有 egress-compile 事件（recompile+复测闭环）
+    for i, e in enumerate(events):
+        if not e.startswith("amend-scope"):
+            continue
+        total += 1
+        if any(e2.startswith("egress-compile") for e2 in events[i + 1:]):
+            closed += 1
+        else:
+            fails.append("③scope-amended #%d 后无 egress-compile 事件（recompile+复测闭环）" % i)
+
+    # 目录版本一致：TRIGGERS.md version: 行在场；timeline triggers-catalog 事件若已记须同版本
+    ver = ""
+    if os.path.exists(TRIGGERS_MD):
+        for ln in open(TRIGGERS_MD, encoding="utf-8").read().splitlines():
+            if ln.startswith("version:"):
+                ver = ln.split(":", 1)[1].strip()
+                break
+    if not ver:
+        fails.append("目录版本缺失：phases/TRIGGERS.md 无 version: 行")
+    for e in events:
+        if e.startswith("triggers-catalog "):
+            ev_ver = e.split()[1] if len(e.split()) > 1 else ""
+            if ev_ver != ver:
+                fails.append("目录版本不一致：timeline P0 事件 %s ≠ TRIGGERS.md %s"
+                             % (ev_ver, ver))
+            break
+    return fails, {"closed": closed, "total": total, "version": ver}
+
+
+def cmd_trigger_audit(goal_dir, rest):
+    if rest:
+        sys.stderr.write("用法: tanyin-phases trigger-audit --goal-dir D（只读，无参数）" + chr(10))
+        return 2
+    fails, st = trigger_audit(goal_dir)
+    if fails:
+        print("FAIL" + chr(9) + "trigger-audit" + chr(9)
+              + "未闭合 %d 项（触发器目录 %s）" % (len(fails), st["version"]))
+        for f in fails:
+            print("  " + f)
+        return 1
+    print("PASS" + chr(9) + "trigger-audit" + chr(9) + "triggers=%d closed=%d/%d catalog=%s"
+          % (st["total"], st["closed"], st["total"], st["version"]))
+    return 0
+
+
 # ------------------------------------------------------- T5：rebuild-state 对账重建
 # 恢复协议「先对账再干活」的修复臂：state-rebuild FAIL（撕裂态 B=timeline 领先 /
 # C=state.md 缺失 / A=tmp 残留）后，以账本（第一事实源）为准重建 state.md。
@@ -921,4 +1032,6 @@ def dispatch(sub, goal_dir, rest):
         return cmd_resume_kit(goal_dir, rest)
     if sub == "cached":
         return cmd_cached(goal_dir, rest)
+    if sub == "trigger-audit":
+        return cmd_trigger_audit(goal_dir, rest)
     sys.stderr.write("未知子命令: " + sub + chr(10)); return 2

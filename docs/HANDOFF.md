@@ -57,7 +57,7 @@
 - R-T11-2（stats 扩展键）：计划模板文字要求统计栏含矩阵覆盖率/攻击链数/收敛进度/预算条，而 island stats 计划片段仅 counts/confidence/matrix_rows——按模板意图补 stats.matrix_set（非空 state 格数）/attack_edges/converged/budget 四键（budget.tsv 四列和，全确定性零墙钟）。
 - R-T11-3（红态口径）：计划 Step2 预期「ERROR（入口不存在）」——实测红=2 FAIL+1 ERROR（零回写/确定性两例因计划测试原文不断言 rc 而空转绿，保持逐字不加强断言）；绿=4/4。附记：实现中修复 TEMPLATE svg 元素取值笔误与流排序方向（最新在前）两处自勘，先于测试转绿。
 
-2026-09-24｜子代理 T12｜批次4 T12：G-13 侦察金丝雀——tanyin-canary recon-deploy/recon-recall（界内诱饵登记 canary/recon-decoys.tsv 只增+timeline recon-decoy-deploy/recall 记账；召回率=发现/植入，比对=同 value 且 in_scope；本地零网络）+denominator-ready 第④断言（planted>0 须全发现否则 FAIL 列缺失诱饵；planted=0 须披露 fact target=canary:recon）+stats planted/found 两键（PASS 行同步）+PROTOCOL §4 勘误（三断言→四断言+G-8 canary 参数语义注记一并清账）+P2.md 分母就绪门节④；金样 phases-denominator-ready 有意刷新（norm 改锁四断言 PASS 面 planted=0 found=0，由 run_golden 新增 PHASES_DENOM 面+prep_denominator 生成；原 9 项 FAIL 形状改由 test_phases_gate 形状断言承载，三处适配）；TDD 先红后绿 2 例，全套 388 绿+金样 50 面 PASS｜<hash12>
+2026-09-24｜子代理 T12｜批次4 T12：G-13 侦察金丝雀——tanyin-canary recon-deploy/recon-recall（界内诱饵登记 canary/recon-decoys.tsv 只增+timeline recon-decoy-deploy/recall 记账；召回率=发现/植入，比对=同 value 且 in_scope；本地零网络）+denominator-ready 第④断言（planted>0 须全发现否则 FAIL 列缺失诱饵；planted=0 须披露 fact target=canary:recon）+stats planted/found 两键（PASS 行同步）+PROTOCOL §4 勘误（三断言→四断言+G-8 canary 参数语义注记一并清账）+P2.md 分母就绪门节④；金样 phases-denominator-ready 有意刷新（norm 改锁四断言 PASS 面 planted=0 found=0，由 run_golden 新增 PHASES_DENOM 面+prep_denominator 生成；原 9 项 FAIL 形状改由 test_phases_gate 形状断言承载，三处适配）；TDD 先红后绿 2 例，全套 388 绿+金样 50 面 PASS｜3c42528
 
 ## 2026-09-24 批次 4 T12 裁决（实现者记）
 - R-T12-1（argv 契约，R-T1-1 同型）：计划 run() 助手与内联 subprocess 调用均把 --goal-dir 尾置——tanyin-canary/tanyin-phases/tanyin-ledger 单入口冻结 argv[2]=="--goal-dir"，尾置恒 exit 2。修正=--goal-dir 紧随子命令/命令名（tests/test_negative_matrix.py 先例）；语义断言逐字保持计划原文。
@@ -65,6 +65,19 @@
 - R-T12-3（金样面归属错配）：计划假设 run_golden 持有 phases-denominator-ready.norm——实况该 norm 自批次 3 起由 tests/test_phases_gate.py 的 unittest 锁定（run_golden phases 面仅 validate）。按计划 Step4 预案落地：norm 改锁「补 fact 使 ①-④ 全过」副本的 PASS 行（planted=0 found=0），由 run_golden 新增 goal-dir 面（prep_denominator=补源 intent+两资产 facts/A2-A8 七条不适用理由/canary:recon 披露）生成/锁定（--bless 有意刷新=删旧 FAIL 面重建）；test_phases_gate 三处适配：fail 形状 9→10 项+④行断言、PASS 路径（test_class_na_reason_or_asset_fills_check2）补披露 fact（否则④必挂）、golden-lock 改验 norm 在档且含 planted=0 found=0（FAIL 形状由形状断言承载——双重锁定不降级）。
 - R-T12-4（副本目录名=goal_id）：fresh_of 副本目录名决定新行 id 前缀（G-g1→INT-g1-0003；误用 G-g1-denom→INT-g1-denom-0001 触发 intent 引用闭合 REJECT）——denominator 面副本目录名钉 "G-g1"（fresh 同名先例）。
 - R-T12-5（canary 家族口径）：recon-deploy/recon-recall 全本地落表/读账零网络（执法侧 deploy/probe 同律）——PROTOCOL §3 干跑口径「canary 只 deploy」按 G-8 清账扩为 canary 家族全子命令零网络；recon-deploy --type 校验十一值枚举（G-12 勘误后单源）。
+
+2026-09-24｜子代理 T13｜批次4 T13：触发器闭包审计——phases/TRIGGERS.md 版本化封闭目录（八类事实×触发×后续策略×消费检查，triggers-v1）+tanyin-phases trigger-audit（只读零落账三检查：目录版本一致（TRIGGERS.md version 行+triggers-catalog 事件若已记须同版本，缺记=提示非失败）/触发器闭包（in_scope add-asset 事件→submatrix-mint 或子矩阵行或绑定 intent；add-cred session→authz-diff 候选或延后 fact target=authz-diff:<CRED-id>；amend-scope→其后 egress-compile）/清单 triggers=<n> closed=<n>/<n>；G-2 铸行通道联动验证）+tanyin-egress compile 落 timeline 事件 egress-compile acl=<相对路径> lines=<n>（actor=egress，EPOCH 确定性时间戳）+PROTOCOL §6 新节+tanyin-phases USAGE 第八子命令；TDD 先红后绿 7 例（红=6 FAIL+1 ERROR），回归 test_egress/test_dryrun_p0p2 19 例绿（TABLE_EVENTS 适配分支未触发——egress-compile 仅动 timeline 自证表），全套 395 绿+金样 50 面 PASS 零漂移｜<hash13>
+
+## 2026-09-24 批次 4 T13 裁决（实现者记）
+- R-T13-1（argv 契约，R-T1-1 同型）：计划 run() --goal-dir 尾置——修正=--goal-dir 紧随命令名（单入口 argv[2] 冻结）；语义断言逐字保持。
+- R-T13-2（add-cred 参数组契约对齐）：计划参数组 --secret-ref={{vault:cred-11}} 违反行序号律（G-g1 现有 1 cred→须 cred-2）、缺 --parent-cred（kind=session 必填父凭据）、--permitted-actions=read 无 account-grant 覆盖（G-g1 scope 无该类行→必 REJECT）——修正=--parent-cred=CRED-g1-0001+{{vault:cred-2}}+删 permitted-actions；审计语义断言不变。
+- R-T13-3（matrix-freeze 幂等）：G-g1 基线 matrix.tsv 自带 frozen_at 盖戳行（R-T2-2 同源现实）——计划断言 rc==0 必挂（already-frozen REJECT），改 rc∈{0,1}（PROTOCOL §1 判定表幂等容忍同律）；后续 matrix-set 铸行的「基线已冻结」前置由夹具既有冻结行满足。
+- R-T13-4（①事件驱动·核心裁决）：计划 trigger_audit 参考实现按 assets 行全集遍历 in_scope 资产——与计划自身 test_baseline_session_passes 直接冲突（G-g1 两 in_scope 资产 shop.example/admin-internal.shop.example 无子矩阵行、无 origin=recon-event intent，按行遍历必 FAIL 而 test 期望 PASS）。按 Interfaces 文本「每个 in_scope add-asset 事件→…」裁决：①检查由 timeline 事件 add-asset <AST-id>(<in_scope>) 驱动（AST-id→assets 行解析 value；界外事件免检=目录行 2/8；夹具预置资产无事件不入审计）。事件词取自 write_cmds._add_asset 落账面（"add-asset %s(%s)"）。
+- R-T13-5（版本比对补全）：计划片段未实现 Interfaces①「timeline P0 事件 triggers-catalog <ver> 若已记则须同版本」——补齐（缺记非失败）；自加 test_catalog_version_mismatch_fails（经 append-timeline CLI 铸 triggers-catalog triggers-v0 验不一致 FAIL）。
+- R-T13-6（②全局候选口径+延后通道）：计划片段 has_cand=全局任意 kind=authz-diff intent（非按 cred 配对）——保持计划口径（TRIGGERS.md 行 3 同文）；自加 test_cred_session_deferred_fact_closes 钉死 per-cred 延后 fact 通道（target=authz-diff:<CRED-id>）。按 cred 精确配对（intent context 消费）未扩——G-23 同族留待契约 v3。
+- R-T13-7（节号）：计划称「PROTOCOL §5 trigger-audit 新节」——§5 已被批次 3 T3 实现注记占用，按追加序落 §6（§6 首行 Ruling 注记）。
+- R-T13-8（egress 事件确定性）：compile 无 --timestamp 参数（build_acl 确定性纪律无时间戳）——事件时间戳取 EPOCH（canary recon-recall 同款先例）、acl=<相对 goal-dir 路径>（防绝对路径跨机漂移）、phase 空（不抬 gate_jump reached）；test_dryrun_p0p2 TABLE_EVENTS 无需扩（计划预留适配分支未触发：egress-compile 仅落 timeline=自证表，干跑「双跑同事件数」断言天然兼容）。
+- 附记（收口移交）：contracts/09 tanyin-phases 子命令枚举 7→8 与 cli/README.md 八子命令面未在本任务动（T14 收口范围，G-18/G-19 先例注记同型）。
 
 ## 2026-09-24 批次 3 T4 裁决（实现者记）
 - Ruling（计划内部矛盾①·revision 语义）：计划 T4 参考实现「rev=旧 state revision+1（从 1 计数）」与 T4 接口注释「state-rebuild 对账基准=timeline 行数（既有口径不变）」、T5 全部测试/代码（revision==len(timeline)、rebuild_state 直取行数）、「timeline 先行=第一事实源」撕裂态设计三方互斥——按计划系统意图裁决：**revision ≡ 本次事件落账后 timeline 总行数**（夹具首打=9）。T4 新测试与批次 1 既有 TestCheckpoint 的 revision 断言按此动态化（新增 test_revision_equals_timeline_rows 钉死防漂移）。

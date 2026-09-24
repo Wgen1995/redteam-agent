@@ -86,6 +86,27 @@ exit 断言列表——契约 04 断言集与 asserts=21 基线不动、九门�
   必填而 yaml cmd 不携带——引擎注入门级 --timestamp（确定性纪律，禁 now()）；
   读类命令不注入（「无参数」类命令会 UsageError→误 ENV-HALT）。
 
+# 6 触发器闭包审计（trigger-audit）——批4 追加件（T13）
+
+来源：完备性设计 §3.1（触发器目录八类）；§1-5 冻结文本不动（Ruling：计划称「§5 新节」——§5 已被 T3 实现注记占用，按追加序落 §6）。
+
+    tanyin-phases trigger-audit --goal-dir D
+
+只读账本（timeline/assets/matrix/intents/facts/creds），零落账。退出码：0=PASS / 1=FAIL
+清单 / 2=用法。三检查（单源目录=phases/TRIGGERS.md 版本化封闭表，版本行 version: triggers-v1）：
+
+① 目录版本一致：TRIGGERS.md version: 行在场；timeline P0 事件 triggers-catalog <ver>
+   若已记则须同版本（缺记=提示非失败——P0 落账该事件由 SKILL P0 序列承载）。
+② 触发器闭包（事件驱动）：每个 in_scope add-asset <AST-id>(in_scope) 事件→该表面有
+   submatrix-mint 事件/子矩阵行/绑定 intent（origin=recon-event）；每个 add-cred
+   kind=session→存在 kind=authz-diff intent 或显式延后 fact（target=authz-diff:<CRED-id>）；
+   每个 amend-scope 事件→其后存在 egress-compile 事件。
+③ 清单输出：PASS 行 triggers=<n> closed=<n>/<n> catalog=<ver>。
+
+事件词 egress-compile acl=<path> lines=<n>（actor=egress，tanyin-egress compile 末尾
+落账，相对 goal-dir 路径防绝对路径漂移；幂等重编译=事件只记不判重）。界外
+add-asset 事件免检（触发器目录行 2/8）；converge-check「未消费事实=0」与本审计互补。
+
 ## 勘误补记（2026-09-24·批次 4 施工期）
 
 - §4 类映射补两行：cloud-storage→A5、human-factor→A7（G-12 裁决：assets.type 九值→十一值微版本勘误；原「A5/A7 无对应值」探知项注记随勘误作废——A5/A7 自此有对应 type 值，「不适用理由」兜底仅适用于其余无对应资产类的口径）。
