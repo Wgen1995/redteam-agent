@@ -178,3 +178,7 @@
 - 探知项登记（评审期新增·Minor-5）：check_cmds.py:27 `_now()` 墙钟进账本——set-replay-state（:202 时间戳兜底）与 REJECTED→转 fact（:262 findings.created 盖戳）两处落账无 --timestamp 通道（写命令族均有 --timestamp=TS 通道），继承性/可重放缺口：evals 与金样重放不可复现墙钟值，与「禁 datetime.now() 进账本/产物」纪律（cli/README 批次 3 节）相悖。契约 v3 前裁决：补 --timestamp 通道或豁免注记。非 G-1..G-15 施工期台账成员（该台账 T13 已收口终态），登记于本节+「探知项」节指针。
 - 验收实测：`python3 -m unittest discover -s tests` → Ran 322 tests OK（基线 317+5 新增）；`python3 tests/run_golden.py` → PASS golden: 21 读面+20 写面+1 phases 面全部锁定且确定（零漂移零 INIT）；grep 自验 09 三处（:16/:35/:113）行内 7/7 子命令齐、04:69 指针在场、`grep -c denominator-ready contracts/09-cli-surface.md` → 5（与勘误补记自验行一致）；变更文件全部 CR=0（UTF-8+LF 红线）。
 
+
+## 2026-09-24 批次 4 开工（executing via subagent-driven-development）
+- 用户批准计划 docs/superpowers/plans/2026-09-24-b4-engine-layer.md（含三裁决 G-2/G-12/G-13 与补充裁决 R1-R6 全案）｜commit 476ce55
+- 执行结构：按域捆绑派发（T1+T2 契约/矩阵→T3+T4 门/EV→T5+T6 重放→T7+T8 引擎/差分→T9+T10 适配/adopt→T11-T13 viz/金丝雀/闭包→T14 收口），每任务 TDD+全量回归，收口后整支评审
