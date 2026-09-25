@@ -76,6 +76,22 @@ def scan_table(path, tname):
     return leaks
 
 
+def scan_text(text):
+    """纯文本泄漏形态扫描（批次 5 T10 单源化 API；T13/T15 消费同款）——逐行扫
+    占位符残留与 PLAIN_PATTERNS 明文凭据形态，返回 [(形态名, 行号, 列号)]；
+    占位符行列号为 None（沿用 scan_text_file 原位置格式 %s:%d 不带列）。
+    scan_text_file 改调本函数，行为零变（金样 read-redact-scan 钉死）。"""
+    hits = []
+    for ln, line in enumerate(text.splitlines(), 1):
+        if PLACEHOLDER.search(line):
+            hits.append(("占位符残留", ln, None))
+        for name, pat in PLAIN_PATTERNS:
+            m = pat.search(line)
+            if m:
+                hits.append((name, ln, max(1, m.start() + 1)))
+    return hits
+
+
 def scan_text_file(path, rel):
     leaks = []
     try:
@@ -85,14 +101,11 @@ def scan_text_file(path, rel):
         text = open(path, encoding="utf-8", errors="replace").read()
     except OSError:
         return leaks
-    for ln, line in enumerate(text.splitlines(), 1):
-        if PLACEHOLDER.search(line):
+    for name, ln, col in scan_text(text):
+        if col is None:
             leaks.append(("%s:%d" % (rel, ln), "报告残留占位符（P5 占位符零泄漏）"))
-        for name, pat in PLAIN_PATTERNS:
-            m = pat.search(line)
-            if m:
-                col = max(1, m.start() + 1)
-                leaks.append(("%s:%d:%d" % (rel, ln, col), "明文凭据模式:" + name))
+        else:
+            leaks.append(("%s:%d:%d" % (rel, ln, col), "明文凭据模式:" + name))
     return leaks
 
 
