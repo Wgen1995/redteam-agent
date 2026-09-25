@@ -791,6 +791,11 @@ def _add_evidence(goal_dir, rest):
 # ---------------------------------------------------------------- 11 approve
 
 def _approve(goal_dir, rest):
+    # 批次 5 T15（R-T15-1）：yaml 断言裸旗标本地归一（--release 先例，不动全局
+    # _parse）——P5.5 `--verify-signoff` 与 P6 `--knowledge` 两断言从此真跑。
+    rest = [("--knowledge=1" if tok == "--knowledge"
+             else "--verify-signoff=1" if tok == "--verify-signoff" else tok)
+            for tok in rest]
     args = _parse(rest, {"command-hash", "decision", "approver", "note", "verify-signoff",
                          "knowledge", "timestamp", "phase"})
     ctx = Ctx(goal_dir)

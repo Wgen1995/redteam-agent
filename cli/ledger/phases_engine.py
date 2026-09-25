@@ -198,6 +198,7 @@ FROZEN_CONSTANTS = {
     "single_active_session": "true", "budget_dollars_enabled": "false",
 }
 EXTRA_TOOLS = {"tanyin-report", "tanyin-redact"}   # P5/P6 断言引用的非 ledger 入口
+GATE_HALT_TOOLS = {"tanyin-report"}   # T15（R13）：执行期仍 ENV-HALT（批次 6 交付）
 
 
 def _known_cmd(head, known):
@@ -275,6 +276,8 @@ def cmd_validate(rest):
 #   P0 断言 ledger-validate 会误判「未知命令」、计划自己的 test_gate_p0 用例必红。
 # Ruling B：EXTRA_TOOLS（tanyin-report/tanyin-redact）非 ledger 命令、registry 不可达——
 #   按 §1 判定表末行语义（工具未交付=ENV-HALT 退出 2，非门禁失败），不经 gate-fail 落账。
+#   批次 5 T15 拆分：EXTRA_TOOLS 保留为 validate known 集；执行期 halt 集收窄为
+#   GATE_HALT_TOOLS（tanyin-report），tanyin-redact 分发 special.h_reverse_verify 真跑。
 SKIP_MARK = "批次 4 前=SKIP"
 
 
@@ -374,16 +377,25 @@ def run_gate(goal_dir, phase, ts, phases_path=None):
         if tokens[0].endswith("matrix-freeze") \
                 and not any(t.startswith("--timestamp=") for t in tokens[1:]):
             tokens = tokens + ["--timestamp=" + ts]
-        if tokens[0] in EXTRA_TOOLS:
+        if tokens[0] in GATE_HALT_TOOLS:
+            # R13 拆分半边：tanyin-report 维持 ENV-HALT（批次 6 交付）
             print("ENV-HALT gate:%s assert=%s 工具未交付（批次 6）" % (phase, tokens[0]))
             return 2
-        h = _lookup_cmd(tokens[0])
-        if h is None:
-            _append_event(goal_dir, phase, "gate-fail:%s assert=%s reason=未知命令" % (phase, tokens[0]), ts)
-            print("FAIL gate:%s 未知命令 %s" % (phase, tokens[0])); return 1
+        if tokens[0] == "tanyin-redact":
+            # R13 拆分半边：P6 反向验证断言从此真跑——分发 special handler
+            # （yaml cmd 首词=工具名，argv 补 --reverse-verify 旗标首再归一）
+            from . import special
+            h = special.REVERSE_VERIFY
+            argv = ["--reverse-verify"] + tokens[1:]
+        else:
+            h = _lookup_cmd(tokens[0])
+            if h is None:
+                _append_event(goal_dir, phase, "gate-fail:%s assert=%s reason=未知命令" % (phase, tokens[0]), ts)
+                print("FAIL gate:%s 未知命令 %s" % (phase, tokens[0])); return 1
+            argv = tokens[1:]
         buf_o, buf_e = io.StringIO(), io.StringIO()
         with redirect_stdout(buf_o), redirect_stderr(buf_e):
-            code = h(goal_dir, _normalize_argv(tokens[1:]))
+            code = h(goal_dir, _normalize_argv(argv))
         st, detail = _judge(expect, cmdline, code, buf_o.getvalue(), buf_e.getvalue(), s)
         if st == "env":
             print("ENV-HALT gate:%s assert=%s %s" % (phase, tokens[0], detail)); return 2
@@ -402,6 +414,9 @@ def run_gate(goal_dir, phase, ts, phases_path=None):
         ev += " mode=degraded"
     _append_event(goal_dir, phase, ev, ts)
     print("OK" + chr(9) + "gate:%s %s" % (phase, ev))
+    if phase == "P6":
+        # T15：P6 on_pass=END（phases.yaml）——收官态显式落 stdout（_current_gate 归 END）
+        print("END" + chr(9) + "九门收官（P6 沉淀完成，knowledge 写入放行）")
     return 0
 
 

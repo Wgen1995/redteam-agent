@@ -1141,3 +1141,73 @@ def h_score(ctx, rest):
 def h_neighbors(ctx, rest):
     kv, _pos = parse_kv(rest)
     return neighbors(ctx, kv.get("entity", ""))
+
+
+# ---------------------------------------------------------------------------
+# 批次 5 T15：CLIENT-NN 映射（R12）——运行时文件 client-map.tsv（四列；真值
+# 永不进仓，.gitignore 在册；仓库种子只带 client-map.example.tsv 模板）。
+# ---------------------------------------------------------------------------
+
+CLIENT_MAP_COLS = ("client", "real_ref", "note", "assigned_at")
+
+
+def _client_map_rows(kdir):
+    return _read_tsv(os.path.join(kdir, "client-map.tsv"), CLIENT_MAP_COLS)
+
+
+def client_map_next(kdir):
+    """分配最小未用 CLIENT-NN（两位零填充；已有编号取最小空洞）。"""
+    used = set()
+    for r in _client_map_rows(kdir):
+        m = re.match(r"^CLIENT-(\d+)$", str(r[0]))
+        if m:
+            used.add(int(m.group(1)))
+    n = 1
+    while n in used:
+        n += 1
+    return "CLIENT-%02d" % n
+
+
+def client_map_add(kdir, client, real_ref, note, ts):
+    """登记映射行（client 形态强制 CLIENT-NN；--timestamp 显式传入落 assigned_at
+    ——G-23 禁墙钟同律）。种子库只读由 guard_writable（client-map+add 动词）前置。"""
+    if not CLIENT_RE.match(client or ""):
+        raise Reject("client 非 CLIENT-NN 形态: %r" % (client,))
+    if not ts or not TSV_TS.match(ts):
+        raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
+    rows = _client_map_rows(kdir)
+    if any(r[0] == client for r in rows):
+        raise Reject("client 已登记（一行一 client）: " + client)
+    rows.append([client, real_ref, note, ts])
+    _write_tsv(os.path.join(kdir, "client-map.tsv"), CLIENT_MAP_COLS, rows)
+    _append_log(kdir, ts, "client-map-add", client, "real_ref 入运行时映射表（真值不进仓 R12）")
+    print("OK" + TAB + "client-map" + TAB + client)
+    return 0
+
+
+def client_map_list(kdir):
+    rows = _client_map_rows(kdir)
+    print("#count=%d" % len(rows))
+    for r in rows:
+        print(TAB.join(str(c) for c in r))
+    return 0
+
+
+def h_client_map(ctx, rest):
+    kv, pos = parse_kv(rest)
+    if not pos:
+        raise KnowledgeError(
+            "client-map next|add|list  [add: --client= --real-ref= [--note=] --timestamp=]")
+    verb = pos[0]
+    if verb == "next":
+        print(client_map_next(ctx))
+        return 0
+    if verb == "list":
+        return client_map_list(ctx)
+    if verb == "add":
+        missing = [k for k in ("client", "real-ref", "timestamp") if k not in kv]
+        if missing:
+            raise KnowledgeError("client-map add 缺参数: --" + " --".join(missing))
+        return client_map_add(ctx, kv["client"], kv["real-ref"],
+                              kv.get("note", ""), kv["timestamp"])
+    raise KnowledgeError("client-map 动词不在 {next,add,list}: " + verb)

@@ -9,7 +9,7 @@ E-index.repro_command（§3.9「凭据一律 {{vault:cred-N}} 占位符」）—
 账本模式定位=表:行:列；报告文本模式（--target 指向无 13 表的目录/文件）任何
 {{vault:}} 残留即泄漏。退出码 0=PASS 1=FAIL(leaks>0) 2=用法/环境。
 """
-import os, re
+import os, re, sys
 
 from . import core
 from .schemas import TABLES
@@ -154,4 +154,54 @@ def h_redact_scan(goal_dir, rest):
     return redact_scan(goal_dir, args.get("target") or None)
 
 
+def h_reverse_verify(goal_dir, rest):
+    """批次 5 T15（R13）：反向验证——P6 沉淀门前把草稿对 session 敏感词集反查。
+
+    敏感词三源：assets.value 全集（域名/IP/URL 型资产）+ creds.username_ref +
+    PLAIN_PATTERNS 泄漏形态（单源复用）。形态级只扫明文形态不扫 {{vault:}} 占位符
+    ——占位符是脱敏正当形态（契约 01 creds.secret_ref 白名单同源语义；P6 断言
+    expect=零命中而 P5 redact-scan 面已另行执法占位符零残留，双检语义不同层）。
+    退出码：0=零命中 1=命中清单 2=草稿不存在/用法。"""
+    args, pos = parse_kv(rest)
+    if pos or set(args) - {"reverse-verify", "target"}:
+        raise UsageError("reverse-verify [--target=<draft 路径>]（缺省 report/report-draft.md）")
+    target = args.get("target") or os.path.join("report", "report-draft.md")
+    p = target if os.path.isabs(target) else os.path.join(goal_dir, target)
+    if not os.path.isfile(p):
+        sys.stderr.write("环境问题: 草稿不存在 %s（P5 先产 report-draft）\n" % target)
+        return 2
+    s = core.Session(goal_dir)
+    words = set()
+    for tname, col in (("assets.tsv", "value"), ("creds.tsv", "username_ref")):
+        if not os.path.isfile(os.path.join(goal_dir, tname)):
+            continue
+        ci = TABLES[tname].index(col)
+        for r in s.rows(tname):
+            v = r[ci].strip() if ci < len(r) else ""
+            if v:
+                words.add(v)
+    hits = []
+    with open(p, encoding="utf-8") as f:
+        for i, ln in enumerate(f, 1):
+            ln = ln.rstrip("\r\n")
+            for w in sorted(words):
+                if w in ln:
+                    hits.append("%s:%d:资产/账号值 %s" % (target, i, w))
+            for name, pat in PLAIN_PATTERNS:
+                if pat.search(ln):
+                    hits.append("%s:%d:泄漏形态[%s]" % (target, i, name))
+    if hits:
+        print("FAIL 反向验证命中 %d 处：" % len(hits))
+        for h in hits[:50]:
+            print("  " + h)
+        return 1
+    print("零命中（域名/IP/凭据/token 敏感词 %d 项全未出现）" % len(words))
+    return 0
+
+
 HANDLERS = {"redact-scan": usage_guard(h_redact_scan)}
+# 批次 5 T15（R-T15-2）：reverse-verify 不经 HANDLERS 注册——registry.all_commands()
+# 以 HANDLERS 键集为 44 命令面基名单源（「账本命令零新增」冻结），reverse-verify 是
+# tanyin-redact 旗标（phases.yaml 断言文本 `tanyin-redact --reverse-verify`，R13），
+# 仅 tanyin-redact 入口与 phases_engine 断言回路两处分发，非 tanyin-ledger 子命令。
+REVERSE_VERIFY = usage_guard(h_reverse_verify)

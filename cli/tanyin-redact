@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """tanyin-redact 独立入口（批次 1 T9）——与 tanyin-ledger redact-scan 同一逻辑
-（cli/ledger/special.py 双入口）。退出码 0=PASS 1=FAIL(leaks>0) 2=用法/环境。"""
+（cli/ledger/special.py 双入口）。批次 5 T15 增 --reverse-verify 旗标（R13：P6
+反向验证，phases.yaml 断言载体）。退出码 0=PASS/零命中 1=FAIL 2=用法/环境。"""
 import os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ledger.special import HANDLERS
+from ledger.special import HANDLERS, REVERSE_VERIFY
 from ledger.core import ensure_utf8_stdio
 
 ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
-USAGE = "用法: tanyin-redact --goal-dir <dir> [--target=<路径>]"
+USAGE = "用法: tanyin-redact --goal-dir <dir> [--reverse-verify] [--target=<路径>]"
 
 def main(argv):
     if len(argv) < 3 or argv[1] != "--goal-dir":
@@ -20,6 +21,10 @@ def main(argv):
     if not os.path.isdir(goal_dir):
         sys.stderr.write("环境问题: goal 目录不存在 " + goal_dir + chr(10))
         return 2
+    if "--reverse-verify" in rest:
+        # 批次 5 T15（R13）：旗标先于 redact-scan 分发——P6 反向验证
+        # （R-T15-2：REVERSE_VERIFY 不进 HANDLERS，44 命令面基名单源不破）
+        return REVERSE_VERIFY(goal_dir, rest)
     return HANDLERS["redact-scan"](goal_dir, rest)
 
 if __name__ == "__main__":
