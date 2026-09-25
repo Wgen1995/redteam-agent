@@ -1,3 +1,4 @@
 .research/
 node_modules/
 .DS_Store
+knowledge/client-map.tsv

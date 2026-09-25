@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-knowledge 独立入口（批次 5 T9；工具箱第 12 员，契约 09 勘误 11→12）——
+知识库机械运算 13 子命令。铁律 7：语义提炼禁入（提炼什么页/正文怎么写=LLM+skill
+职责，本工具只做机械校验与确定性运算）。退出码 0=通过 1=门禁失败(Reject)
+2=用法/环境(KnowledgeError)。R7：种子库只读纪律见 ledger/knowledge.py。"""
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import knowledge
+from ledger.core import ensure_utf8_stdio
+
+ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
+
+# 13 子命令（契约 09 §3 工具 12 行；init=T9，其余随批次 5 T10-T15 填充）
+SUBCOMMANDS = ("init", "source-register", "lint", "approve", "commit", "export",
+               "match", "neighbors", "nday-match", "score", "promote", "demote",
+               "client-map")
+
+USAGE = ("用法: tanyin-knowledge <子命令> --knowledge-dir <目录> [参数...]\n"
+         "子命令(13): " + " ".join(SUBCOMMANDS))
+
+
+def parse_kdir(rest):
+    for i, a in enumerate(rest):
+        if a == "--knowledge-dir" and i + 1 < len(rest):
+            return rest[i + 1]
+        if a.startswith("--knowledge-dir="):
+            return a.split("=", 1)[1]
+    return None
+
+
+def main(argv):
+    if len(argv) < 2 or argv[1] not in SUBCOMMANDS:
+        sys.stderr.write(USAGE + chr(10))
+        return 2
+    sub = argv[1]
+    rest = argv[2:]
+    kdir = parse_kdir(rest)
+    if kdir is None:
+        sys.stderr.write(USAGE + chr(10))
+        return 2
+    try:
+        if sub == "init":
+            rc = knowledge.init(kdir)
+            print("init ok: " + kdir)
+            return rc
+        ctx = knowledge.load_ctx(kdir)
+        knowledge.guard_writable(ctx, sub, rest)
+        handler = getattr(knowledge, "h_" + sub, None)
+        if handler is None:
+            raise knowledge.KnowledgeError("子命令 %s 未实现（批次 5 T10-T15 填充）" % sub)
+        return handler(ctx, rest)
+    except knowledge.KnowledgeError as e:
+        sys.stderr.write("环境问题: " + str(e) + chr(10))
+        return 2
+    except knowledge.Reject as e:
+        sys.stderr.write("REJECT: " + str(e) + chr(10))
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
