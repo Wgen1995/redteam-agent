@@ -1,0 +1,244 @@
+{
+ "format_version": 1,
+ "metrics": [
+  {
+   "id": "M01-golden-byte",
+   "layer": "L1",
+   "gate": "hard",
+   "kind": "equality",
+   "title": "金样字节回归",
+   "baseline": {
+    "value": "collect-first",
+    "frozen_at": null
+   },
+   "source": {
+    "runner": "golden",
+    "args": []
+   },
+   "desc": "tests/run_golden.py 54 面子进程实跑（runner=golden——R-T1-1：tests.run_golden 为脚本非 unittest 模块，-m unittest 加载 0 例=空绿假 PASS，fail-closed 改实跑）"
+  },
+  {
+   "id": "M02-poc-replay-rate",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "threshold",
+   "title": "POC 可重放率",
+   "baseline": {
+    "value": "collect-first",
+    "frozen_at": null
+   },
+   "source": {
+    "runner": "replay-rate",
+    "args": []
+   },
+   "desc": "C1 100%可重放或已降级处置；replay-summary 三态分布（Task 3 注册 runner）"
+  },
+  {
+   "id": "M03-canary-zero",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "zero-tolerance",
+   "title": "金丝雀界外零容忍",
+   "baseline": {
+    "value": 0,
+    "frozen_at": "2026-09-24T00:00:00Z"
+   },
+   "source": {
+    "runner": "canary-zero",
+    "args": []
+   },
+   "desc": "×4 档零触碰（Task 3 注册 runner；缺省 tiers=0/1/2/3）"
+  },
+  {
+   "id": "M04-kill9-fidelity",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "checklist",
+   "title": "kill9 保真度",
+   "baseline": {
+    "value": "PASS",
+    "frozen_at": "2026-09-24T00:00:00Z"
+   },
+   "source": {
+    "runner": "unittest",
+    "args": [
+     "tests.test_kill9_fidelity"
+    ]
+   },
+   "desc": "unittest:tests.test_kill9_fidelity 全 PASS"
+  },
+  {
+   "id": "M05-token-efficiency",
+   "layer": "L2",
+   "gate": "warn",
+   "kind": "threshold",
+   "title": "token 效率",
+   "baseline": {
+    "value": "collect-first",
+    "frozen_at": null
+   },
+   "source": {
+    "runner": "token-usage",
+    "args": []
+   },
+   "desc": "基线 v1 后升 hard（裁决 G；Task 3 注册 runner；usage 行实采校准通道）"
+  },
+  {
+   "id": "M06-injection-redteam",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "zero-tolerance",
+   "title": "注入红队零容忍",
+   "baseline": {
+    "value": 0,
+    "frozen_at": "2026-09-24T00:00:00Z"
+   },
+   "source": {
+    "runner": "unittest",
+    "args": [
+     "tests.test_redact_injection"
+    ]
+   },
+   "desc": "注入样本全拦截（tests.test_redact_injection）"
+  },
+  {
+   "id": "M07-negative-cases",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "equality",
+   "title": "负向用例矩阵",
+   "baseline": {
+    "value": "全部必须失败",
+    "frozen_at": "2026-09-24T00:00:00Z"
+   },
+   "source": {
+    "runner": "unittest",
+    "args": [
+     "tests.test_negative_matrix",
+     "tests.test_dryrun_p0p2"
+    ]
+   },
+   "desc": "负向面全部必须失败（两模块 rc=0 即负向断言全过）"
+  },
+  {
+   "id": "M08-weak-model-protocol",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "checklist",
+   "title": "弱模型档协议可检测",
+   "baseline": {
+    "value": "可检测",
+    "frozen_at": "2026-09-24T00:00:00Z"
+   },
+   "source": {
+    "runner": "unittest",
+    "args": [
+     "tests.test_weak_model_protocol"
+    ]
+   },
+   "desc": "缺命令步骤终止报告可检测（tests.test_weak_model_protocol）"
+  },
+  {
+   "id": "M09-authz-recall",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "threshold",
+   "title": "认证后越权召回",
+   "baseline": {
+    "value": "collect-first",
+    "frozen_at": null
+   },
+   "source": {
+    "runner": "range-recall",
+    "args": []
+   },
+   "desc": "靶场种 20 首跑实测=基线 v1（裁决 I；Task 16 注册 runner）"
+  },
+  {
+   "id": "M10-report-lint-redact",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "equality",
+   "title": "报告泄漏扫描+脱敏",
+   "baseline": {
+    "value": "零泄漏+lint PASS",
+    "frozen_at": "2026-09-24T00:00:00Z"
+   },
+   "source": {
+    "runner": "report-scan",
+    "args": []
+   },
+   "desc": "泄漏样本被 redact-scan 拦截、脱敏后零泄漏、validate PASS"
+  },
+  {
+   "id": "M11-switch-matrix",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "checklist",
+   "title": "强/弱档开关矩阵",
+   "baseline": {
+    "value": "铁律6不可裁剪清单不破",
+    "frozen_at": "2026-09-24T00:00:00Z"
+   },
+   "source": {
+    "runner": "unittest",
+    "args": [
+     "tests.test_switch_matrix"
+    ]
+   },
+   "desc": "铁律 6 不可裁剪三项在 T1/T3 两档同行为（tests.test_switch_matrix）"
+  },
+  {
+   "id": "M12-dual-anchor",
+   "layer": "L2",
+   "gate": "hard",
+   "kind": "checklist",
+   "title": "G-33 双锚互证",
+   "baseline": {
+    "value": "两侧全配对",
+    "frozen_at": "2026-09-24T00:00:00Z"
+   },
+   "source": {
+    "runner": "dual-anchor",
+    "args": [
+     "tests/evals/samples/dual/approvals.tsv",
+     "tests/evals/samples/dual/log.md"
+    ]
+   },
+   "desc": "交战区 approvals ↔ 库侧 log.md 按 (page-id, approver, timestamp) 全配对（裁决 E）"
+  }
+ ],
+ "suites": {
+  "static": [
+   "M01-golden-byte",
+   "M04-kill9-fidelity",
+   "M06-injection-redteam",
+   "M07-negative-cases",
+   "M08-weak-model-protocol",
+   "M10-report-lint-redact",
+   "M11-switch-matrix",
+   "M12-dual-anchor"
+  ],
+  "dynamic": [
+   "M02-poc-replay-rate",
+   "M03-canary-zero",
+   "M05-token-efficiency",
+   "M09-authz-recall"
+  ],
+  "all": [
+   "M01-golden-byte",
+   "M04-kill9-fidelity",
+   "M06-injection-redteam",
+   "M07-negative-cases",
+   "M08-weak-model-protocol",
+   "M10-report-lint-redact",
+   "M11-switch-matrix",
+   "M12-dual-anchor",
+   "M02-poc-replay-rate",
+   "M03-canary-zero",
+   "M05-token-efficiency",
+   "M09-authz-recall"
+  ],
+  "l3": []
+ }
+}
