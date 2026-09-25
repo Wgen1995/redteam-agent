@@ -81,5 +81,93 @@ def main(argv):
     return code
 
 
+# ------------------------------------------------- 批次 6 T2：静态 runner 接入
+import subprocess
+import tempfile
+
+from ledger import evals_dual_anchor  # noqa: E402
+
+_REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_ENV = {**os.environ, "PYTHONUTF8": "1"}
+
+
+def _runner_unittest(ctx):
+    mods = ctx["args"]
+    r = subprocess.run([sys.executable, "-m", "unittest"] + mods,
+                       capture_output=True, text=True, timeout=600, cwd=_REPO, env=_ENV)
+    return {"status": "PASS" if r.returncode == 0 else "FAIL", "actual": "rc=%d" % r.returncode}
+
+
+register("unittest")(_runner_unittest)
+
+
+@register("golden")
+def _golden(ctx):
+    # R-T1-1：tests/run_golden.py 为脚本非 unittest 模块——子进程实跑（防空绿假 PASS）
+    r = subprocess.run([sys.executable, os.path.join("tests", "run_golden.py")],
+                       capture_output=True, text=True, timeout=900, cwd=_REPO, env=_ENV)
+    return {"status": "PASS" if r.returncode == 0 else "FAIL", "actual": "rc=%d" % r.returncode}
+
+
+@register("report-scan")
+def _report_scan(ctx):
+    """M10：tempfile 最小会话→泄漏样本被 redact-scan 拦截→脱敏零泄漏→validate PASS。
+
+    步骤任一不符=FAIL（actual 落步骤名）；文件/进程级 OSError 经 _one 转 ENV-SKIP。"""
+    ts = "2026-09-24T00:00:00Z"
+    with tempfile.TemporaryDirectory() as td:
+        gd = os.path.join(td, "g")
+        os.makedirs(gd)  # goal 目录须先在（core 纪律：不代建）
+
+        def led(*args):
+            return subprocess.run([sys.executable, os.path.join(_REPO, "cli", "tanyin-ledger"),
+                                   args[0], "--goal-dir", gd] + list(args[1:]),
+                                  capture_output=True, text=True, encoding="utf-8",
+                                  errors="replace", timeout=120, env=_ENV)
+        r = led("add-goal", "--target=shop.example", "--objective=M10 扫描回归",
+                "--auth-doc=auth/m10.md", "--auth-sha256=" + "a" * 64, "--signer=evals",
+                "--valid-from=2026-09-01", "--valid-until=2026-09-30",
+                "--budget=1M;1000;10", "--model-tier=strong", "--guard-tier=T3",
+                "--timestamp=" + ts)
+        if r.returncode != 0:
+            return {"status": "FAIL", "actual": "add-goal rc=%d" % r.returncode}
+        r = led("add-scope", "--kind=include", "--matcher=shop.example", "--timestamp=" + ts)
+        if r.returncode != 0:
+            return {"status": "FAIL", "actual": "add-scope rc=%d" % r.returncode}
+        draft = os.path.join(td, "draft.md")
+        with open(draft, "w", encoding="utf-8", newline="\n") as f:
+            f.write("# 草稿\ntoken=sk-live-abc123\n")
+        r = led("redact-scan", "--target=" + draft)
+        if r.returncode == 0:
+            return {"status": "FAIL", "actual": "泄漏样本未被拦截(redact-scan rc=0)"}
+        if r.returncode not in (0, 1):
+            return {"status": "FAIL", "actual": "redact-scan rc=%d（用法/环境）" % r.returncode}
+        with open(draft, "w", encoding="utf-8", newline="\n") as f:
+            f.write("# 草稿\ntoken=<redacted>\n")
+        r = led("redact-scan", "--target=" + draft)
+        if r.returncode != 0:
+            return {"status": "FAIL", "actual": "脱敏文本误报 rc=%d" % r.returncode}
+        r = led("validate")
+        if r.returncode != 0:
+            return {"status": "FAIL", "actual": "validate rc=%d" % r.returncode}
+        return {"status": "PASS", "actual": "leak-blocked+clean-zero+validate-ok"}
+
+
+@register("dual-anchor")
+def _dual_anchor(ctx):
+    """M12（裁决 E）：args=[approvals.tsv 路径, log.md 路径]（相对 goal_dir）。
+
+    两 missing 清单皆空=PASS（actual 带 matched 计数）；文件缺=OSError→ENV-SKIP。"""
+    ap_rel, log_rel = ctx["args"][0], ctx["args"][1]
+    with open(os.path.join(ctx["goal_dir"], ap_rel), encoding="utf-8") as f:
+        rows = [ln.rstrip("\r\n").split("\t") for ln in f if ln.strip()]
+    with open(os.path.join(ctx["goal_dir"], log_rel), encoding="utf-8") as f:
+        log_text = f.read()
+    res = evals_dual_anchor.check(rows, log_text)
+    if res["missing_in_ledger"] or res["missing_in_knowledge"]:
+        return {"status": "FAIL", "actual": json.dumps(res, ensure_ascii=False)}
+    return {"status": "PASS", "actual": "matched=%d" % len(res["matched"])}
+
+
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

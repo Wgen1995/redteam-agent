@@ -46,7 +46,8 @@ l3=[]（v1 占位空组——勘误 R-T1-2：L3 对齐 runner=manual 随 Task 3 
 
 ## 5 报告工件
 
-run 落 `<goal-dir>/evals-report-<suite>.json`：{format_version:1, suite, started_at(显式 --timestamp),
+run 报告工件经 --out 显式落盘（CI 接线归 Task 4；骨架期缺省仅 stdout counts——计划代码即
+规格，R-T2-7）：{format_version:1, suite, started_at(显式 --timestamp),
 results:[{id,status(PASS|FAIL|WARN-FAIL|ENV-SKIP),actual,baseline}], counts:{pass,fail,warn_fail,env_skip,candidates}, exit}
 counts.candidates=VulnClaw 第 3 态落点（仅候选数，不入退出码，裁决 A）。
 list 子命令=机读指标清单人读投影；report 子命令骨架期与 run 同面（计划代码即规格，
