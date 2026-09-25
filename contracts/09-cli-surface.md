@@ -13,12 +13,12 @@
 
 | 允许类 | 判据 | 工具 |
 |---|---|---|
-| 确定性账本运算 | 输入输出可字节级回归（黄金夹具可钉死） | tanyin-ledger（37 条账本命令）、tanyin-phases（phases 引擎：validate/gate/restart/resume-kit/cached/rebuild-state/denominator-ready/trigger-audit） |
+| 确定性账本运算 | 输入输出可字节级回归（黄金夹具可钉死） | tanyin-ledger（37 条账本命令）、tanyin-phases（phases 引擎：validate/gate/restart/resume-kit/cached/rebuild-state/denominator-ready/trigger-audit）、tanyin-knowledge（知识库机械运算：init/source-register/lint/approve/commit/export/match/neighbors/nday-match/score/promote/demote/client-map） |
 | 机械执法与脱敏 | 规则是数据文件非语义判断 | tanyin-guard（scope-guard 包装器）、tanyin-redact、tanyin-canary、tanyin-egress |
 | 确定性重建与投影 | 从账本零 LLM 方差生成 | tanyin-report（聚合器）、tanyin-viz、tanyin-replay（重放驱动） |
 | 安装与自检 | 环境探测、验签 | tanyin-install、tanyin-selfcheck |
 
-## 3 命令面清单（工具箱 11 工具；10→11 见文末 2026-09-24 勘误补记）
+## 3 命令面清单（工具箱 12 工具；10→11/11→12 见文末 2026-09-24 勘误补记）
 
 | # | 工具 | 允许类 | 职责（§2.4 口径） |
 |---|---|---|---|
@@ -33,6 +33,7 @@
 | 9 | tanyin-install | 安装与自检 | 安装器 |
 | 10 | tanyin-selfcheck | 安装与自检 | 自检 |
 | 11 | tanyin-phases | 确定性账本运算 | phases.yaml 确定性状态机运算（validate/gate/restart/resume-kit/cached/rebuild-state/denominator-ready/trigger-audit；批次 3 交付+批4 增补 trigger-audit，断言→命令调用协议见 phases/PROTOCOL.md） |
+| 12 | tanyin-knowledge | 确定性账本运算（同型） | 知识库机械运算：init/source-register/lint/approve/commit/export/match/neighbors/nday-match/score/promote/demote/client-map（13 子命令；语义提炼禁入——铁律 7；批量间接口=契约 14） |
 
 ## 4 铁律 7 边界
 
@@ -125,3 +126,9 @@ set-cred-status 终审归写入（写19/查11/校验10=41）——探知项已�
 - tanyin-phases 子命令枚举 7→**8**：补第 8 子命令 **trigger-audit**（触发器闭包审计——只读零落账三检查：目录版本一致/触发器闭包/清单输出，口径=phases/PROTOCOL.md §6；单源目录=phases/TRIGGERS.md 版本化封闭表 triggers-v2）。批4 T13 交付（349ac34），子命令枚举回注=本笔（R-T13 附记移交件：契约枚举与 cli/README 速查随 T14 收口对齐，G-18 先例同型）。
 - 勘误通道：微版本勘误（零存量数据期，同上则先例），schema_version 保持 =2 不递增；本补记日期 2026-09-24。
 - 自验复跑：`grep -c trigger-audit contracts/09-cli-surface.md` → **4**（§2/§3/本补记首行/本自验行各一）。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T1/R7 裁决）
+
+- 工具箱 11→**12** 工具：增补 #12 **tanyin-knowledge**（知识库机械运算 13 子命令：init/source-register/lint/approve/commit/export/match/neighbors/nday-match/score/promote/demote/client-map；允许类=「确定性账本运算」同型——输入输出可字节级回归，export/match 金样化）。理由：知识库确定性运算需独立载体，并入 tanyin-ledger 面不可行——44 账本命令面冻结（账本命令零新增）。语义蒸馏（提炼什么知识页/正文怎么写）不进 CLI=铁律 7 边界 2（知识提炼 ingest 语义层禁入；四门槛质量判断留人审 checklist）；种子库只读纪律（R7：指向仓库 knowledge/ 时一切写子命令 REJECT）。批次间接口=契约 14（14-knowledge-schema.md）。
+- 勘误通道：微版本勘误（零存量数据期，G-1 10→11 先例同通道：11→12），schema_version 保持 =2 不递增；本补记日期 2026-09-24。
+- 自验复跑：工具表 `grep -cE '^\| [0-9]+ \| tanyin-' contracts/09-cli-surface.md` → **12**（§「自验」原有 10 为 2026-09-23 冻结时点基线，保留可追溯）。
