@@ -165,6 +165,35 @@ NUCLEI_CMDS = [("engine-nuclei-adopt", [sys.executable, NUCLEI_ADAPTER,
                                         "--jsonl-file", NUCLEI_JSONL])]
 
 
+# 批次 5 T11：tanyin-knowledge 确定性面（kn 面——非 ledger 入口，ADAPTER_CMDS 先例同型）。
+# prep_knowledge=临时目录 init+预置 fixtures/knowledge 合法 formal 页（PR-0001/EN-0001）；
+# 无墙钟入产物（export created 取 last_verified；match --today 显式）→ 双跑字节一致。
+KN_CLI = os.path.join(HERE, "..", "cli", "tanyin-knowledge")
+KN_FIX = os.path.join(HERE, "fixtures", "knowledge")
+KN_CMDS = [
+    ("kn-export", [sys.executable, KN_CLI, "export", "--knowledge-dir", "<GD>"]),
+    ("kn-match", [sys.executable, KN_CLI, "match", "--knowledge-dir", "<GD>",
+                  "--client=CLIENT-01", "--asset=shop.example", "--today=2026-09-24"]),
+]
+
+
+def prep_knowledge(gd):
+    r = subprocess.run([sys.executable, KN_CLI, "init", "--knowledge-dir", gd],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    assert r.returncode == 0, r.stdout + r.stderr
+    for sub in ("precedents", "entities"):
+        os.makedirs(os.path.join(gd, sub), exist_ok=True)
+    for rel in ("precedents/PR-0001.md", "entities/EN-0001.md"):
+        shutil.copyfile(os.path.join(KN_FIX, rel), os.path.join(gd, rel))
+
+
+def norm_kn(stdout, gd):
+    """kn 面归一：stdout + graph.ndjson 全文（导出行确定性=字节级回归面）。"""
+    g = os.path.join(gd, "graph.ndjson")
+    graph = open(g, encoding="utf-8").read() if os.path.isfile(g) else ""
+    return stdout.strip() + chr(10) + "--" + chr(10) + graph.strip()
+
+
 def run_engine(cmd, gd):
     return subprocess.run([gd if c == "<GD>" else c for c in cmd],
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -470,16 +499,36 @@ def main(argv=None):
                     continue
                 gp = os.path.join(GOLD, label + ".norm")
                 gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
+        for label, spec in KN_CMDS:   # 批次 5 T11：kn 面（tanyin-knowledge 确定性导出/匹配）
+            outs = []
+            for t in (t1, t2):
+                gd = os.path.join(t, "kn-lib")
+                shutil.rmtree(gd, ignore_errors=True)
+                prep_knowledge(gd)
+                a = run_engine(spec, gd)
+                if a.returncode != 0:
+                    outs = None
+                    break
+                outs.append(norm_kn(a.stdout, gd))
+            if outs is None:
+                fails.append(label + "(非零退出 rc=%d)" % a.returncode)
+                continue
+            if outs[0] != outs[1]:
+                fails.append(label + "(不确定性)")
+                continue
+            gp = os.path.join(GOLD, label + ".norm")
+            gate_golden(gp, outs[0], label, bless, fails, inits, "输出漂移")
     for n in inits:
         print("INIT " + n)
     if fails:
         for f in fails:
             print("FAIL " + f)
         return 1
-    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 + %d adapter 面 + %d viz 面 + %d recheck 面 全部锁定且确定"
+    print("PASS golden: %d 读面 + %d 写面 + %d phases 面 + %d engine 面 + %d graph 面 + %d adapter 面 + %d viz 面 + %d recheck 面 + %d kn 面 全部锁定且确定"
           % (len(READ_CMDS), len(WRITE_CMDS), len(PHASES_CMDS) + len(PHASES_DENOM),
              len(ENGINE_CMDS), len(GRAPH_CMDS),
-             len(ADAPTER_CMDS) + len(NUCLEI_CMDS), len(VIZ_CMDS), len(RECHECK_CMDS)))
+             len(ADAPTER_CMDS) + len(NUCLEI_CMDS), len(VIZ_CMDS), len(RECHECK_CMDS),
+             len(KN_CMDS)))
     return 0
 
 

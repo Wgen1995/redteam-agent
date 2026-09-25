@@ -1,0 +1,6 @@
+exported=4
+--
+{"class":"K2","created":"2026-09-01","id":"EN-0001:a0","object":"vendor-portal","predicate":"alias","source":"EN-0001","subject":"favicon-hash:ab12cd"}
+{"class":"K2","created":"2026-09-01","id":"EN-0001:a1","object":"portal-vendor","predicate":"alias","source":"EN-0001","subject":"favicon-hash:ab12cd"}
+{"class":"K2","created":"2026-09-01","id":"PR-0001:t0","object":"order-export","predicate":"exposes","source":"PR-0001","subject":"vendor-portal"}
+{"class":"K2","created":"2026-09-01","id":"PR-0001:t1","object":"client-data","predicate":"impacts","source":"PR-0001","subject":"order-export"}

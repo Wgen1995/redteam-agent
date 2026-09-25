@@ -7,6 +7,7 @@ $TANYIN_HOME/knowledge/）；CLI 一律 --knowledge-dir 参数化；种子库只
 指向仓库 knowledge/ 时一切写子命令（source-register/approve/commit/promote/demote/
 client-map add）REJECT（exit 1，防 CI 误写种子）。退出码对齐 Strix：
 0=通过 / 1=门禁失败（Reject） / 2=用法或环境问题（KnowledgeError）。"""
+import datetime
 import hashlib
 import json
 import os
@@ -437,3 +438,297 @@ def h_source_register(ctx, rest):
 def h_lint(ctx, rest):
     kv, _pos = parse_kv(rest)
     return lint(ctx, kv.get("timestamp", ""))
+
+
+# ---------------------------------------------------------------------------
+# 批次 5 T11：approve/commit/export/match/neighbors
+# ---------------------------------------------------------------------------
+
+COMMIT_TARGET = {"technique": "concepts", "precedent": "precedents",
+                 "entity": "entities", "retro": "retros", "business": "business",
+                 "pattern": "patterns/learned"}
+
+
+def approve(kdir, page, approver, ts, reject=False, reason=""):
+    """staging 页 lint-passed→approved（否则 Reject）；staging.tsv+log.md 双落。"""
+    if not ts or not TSV_TS.match(ts):
+        raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
+    if not reject and not approver:
+        raise KnowledgeError("--approver 必填（人工审批载体）")
+    path = os.path.join(kdir, "staging", "staging.tsv")
+    rows = _read_tsv(path, STAGING_COLS)
+    row = next((r for r in rows if r[1] == page), None)
+    if row is None:
+        raise Reject("staging 无此页: %s" % page)
+    if reject:
+        if row[5] in ("approved", "rejected"):
+            raise Reject("状态机非法迁移: %s → rejected（当前 %s）" % (page, row[5]))
+        row[5] = "rejected"
+        _write_tsv(path, STAGING_COLS, rows)
+        _append_log(kdir, ts, "reject", page, "reason=%s" % (reason or "人审不过"))
+        print("rejected: " + page)
+        return 0
+    if row[5] != "lint-passed":
+        raise Reject("状态机非法迁移: %s → approved（当前 %s；须先 lint 全过）" % (page, row[5]))
+    row[5] = "approved"
+    row[8] = approver
+    row[9] = ts
+    _write_tsv(path, STAGING_COLS, rows)
+    _append_log(kdir, ts, "approve", page, "approver=%s" % approver)
+    print("approved: " + page)
+    return 0
+
+
+def _commit_transform(text, new_id):
+    """页文本变换：id 行改写 + staging_status 摘除（其余字节保留）。"""
+    lines = text.split("\n")
+    out = [lines[0]]
+    i = 1
+    while i < len(lines) and lines[i].strip() != "---":
+        ln = lines[i]
+        if re.match(r"^staging_status\s*:", ln):
+            i += 1
+            continue
+        if re.match(r"^id\s*:", ln):
+            ln = "id: " + new_id
+        out.append(ln)
+        i += 1
+    if i < len(lines):
+        out.extend(lines[i:])
+    return "\n".join(out)
+
+
+def _formal_dedup_keys(kdir, target_dir):
+    keys = {}
+    d = os.path.join(kdir, target_dir)
+    if not os.path.isdir(d):
+        return keys
+    for fn in sorted(os.listdir(d)):
+        if not fn.endswith(".md"):
+            continue
+        fm, _raw, _body = split_page(read_page(os.path.join(d, fn)))
+        if isinstance(fm, dict) and fm:
+            keys[fn] = dedup_key(str(fm.get("kind", "")), str(fm.get("vuln_class", "")),
+                                 str(fm.get("title", "")))
+    return keys
+
+
+def regenerate_index_overview(kdir):
+    """index.md/overview.md 重生成（commit 时；页计数确定性文本）。"""
+    def count_dir(rel):
+        d = os.path.join(kdir, rel)
+        return sum(1 for fn in os.listdir(d) if fn.endswith(".md")) if os.path.isdir(d) else 0
+    cve_lines = 0
+    snap = os.path.join(kdir, "cve", "cve-snapshot.tsv")
+    if os.path.isfile(snap):
+        with open(snap, encoding="utf-8") as f:
+            cve_lines = sum(1 for ln in f if ln.strip())
+    total = (count_dir("precedents") + count_dir("entities") + count_dir("concepts")
+             + count_dir("retros") + count_dir("business")
+             + count_dir("patterns/core") + count_dir("patterns/learned"))
+    lines = [
+        "# 知识库索引（commit 时重生成；确定性文本）",
+        "",
+        "- K1 methodology: %d 页（词表锚 shared/VOCAB.md）" % count_dir("methodology"),
+        "- K2 precedents: %d 页" % count_dir("precedents"),
+        "- K2 entities: %d 页" % count_dir("entities"),
+        "- K3 cve: %d 行" % cve_lines,
+        "- K5 concepts: %d 页" % count_dir("concepts"),
+        "- K6 patterns/core: %d 页" % count_dir("patterns/core"),
+        "- K6 patterns/learned: %d 页" % count_dir("patterns/learned"),
+        "- K7 business: %d 页" % count_dir("business"),
+        "- K8 retros: %d 页" % count_dir("retros"),
+        "- K4 指针: shared/DENYLIST.md（库外既有数据文件）",
+    ]
+    with open(os.path.join(kdir, "index.md"), "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines) + "\n")
+    overview = [
+        "# 检索入口概览",
+        "",
+        "- 词表版本: %s（shared/VOCAB.md version 行）" % (",".join(sorted(vocab_supported())) or "未知"),
+        "- 正文页总数: %d" % total,
+        "- 类目: K1 方法论/K2 先例与实体/K3 CVE 快照/K4 拒绝词表/K5 技法/K6 模式/K7 业务/K8 复盘",
+        "",
+        "（commit 时重生成；检索入口=LLM 摘要化，本文件只承载机器可重算计数）",
+    ]
+    with open(os.path.join(kdir, "overview.md"), "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(overview) + "\n")
+
+
+def commit(kdir, page, ts):
+    """approved→formal：迁类目录（STG→类前缀重号+staging_status 摘除）+dedup 终检
+    （R10）+index/overview 重生成；graph.ndjson 不动（export 独立）。"""
+    if not ts or not TSV_TS.match(ts):
+        raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
+    path = os.path.join(kdir, "staging", "staging.tsv")
+    rows = _read_tsv(path, STAGING_COLS)
+    row = next((r for r in rows if r[1] == page), None)
+    if row is None:
+        raise Reject("staging 无此页: %s" % page)
+    if row[5] != "approved":
+        raise Reject("状态机非法迁移: %s → formal（当前 %s；须先 approve）" % (page, row[5]))
+    src = os.path.join(kdir, "staging", "pages", page + ".md")
+    if not os.path.isfile(src):
+        raise Reject("staging 页文件缺失: %s" % src)
+    fm, _raw, _body = split_page(read_page(src))
+    if not isinstance(fm, dict) or not fm:
+        raise Reject("front-matter 解析失败: %s" % page)
+    kind = fm.get("kind")
+    if kind not in COMMIT_TARGET:
+        raise Reject("kind 不在六类: %r" % (kind,))
+    target_dir = COMMIT_TARGET[kind]
+    new_id = next_id(kdir, target_dir, ID_PREFIX[kind])
+    # dedup 终检（R10）：同键已入 formal 页 → REJECT
+    key = dedup_key(str(kind), str(fm.get("vuln_class", "")), str(fm.get("title", "")))
+    for fn, k in _formal_dedup_keys(kdir, target_dir).items():
+        if k == key:
+            raise Reject("dedup 重复（R10 终检）: 与 %s 同 kind+vuln_class+标题归一" % fn)
+    dst = os.path.join(kdir, target_dir, new_id + ".md")
+    with open(dst, "w", encoding="utf-8", newline="\n") as f:
+        f.write(_commit_transform(read_page(src), new_id))
+    os.remove(src)
+    rows = [r for r in rows if r[1] != page]
+    _write_tsv(path, STAGING_COLS, rows)
+    _append_log(kdir, ts, "commit", new_id, "from=%s" % page)
+    regenerate_index_overview(kdir)
+    print("committed: %s -> %s" % (page, new_id))
+    return 0
+
+
+def export(kdir):
+    """graph.ndjson 全量重建（契约 14 §3）：行序=(source, t 序号) 字典序；实体别名
+    合成为 alias 三元组行；created 取 last_verified（确定性——两次执行字节一致）。"""
+    lines = []
+    for kind_dir in ("precedents", "entities", "concepts", "targets", "business",
+                     "retros", "patterns/core", "patterns/learned"):
+        d = os.path.join(kdir, kind_dir)
+        for fn in sorted(os.listdir(d) if os.path.isdir(d) else []):
+            if not fn.endswith(".md"):
+                continue
+            fm, _raw, _body = split_page(read_page(os.path.join(d, fn)))
+            if not isinstance(fm, dict) or not fm or not fm.get("id"):
+                continue
+            created = str(fm.get("last_verified", ""))
+            pid = str(fm["id"])
+            klass = str(fm.get("class", ""))
+            for i, tr in enumerate(fm.get("triples", []) or []):
+                if isinstance(tr, list) and len(tr) == 3:
+                    lines.append({"id": "%s:t%d" % (pid, i), "subject": tr[0],
+                                  "predicate": tr[1], "object": tr[2],
+                                  "source": pid, "class": klass, "created": created})
+            aliases = [a.strip() for a in str(fm.get("aliases", "")).split(";") if a.strip()]
+            ent = str(fm.get("entity", "")) or pid
+            for i, a in enumerate(aliases):
+                lines.append({"id": "%s:a%d" % (pid, i), "subject": ent,
+                              "predicate": "alias", "object": a,
+                              "source": pid, "class": klass, "created": created})
+    lines.sort(key=lambda x: (x["source"], x["id"]))
+    with open(os.path.join(kdir, "graph.ndjson"), "w", encoding="utf-8", newline="\n") as f:
+        for x in lines:
+            f.write(json.dumps(x, ensure_ascii=False, sort_keys=True,
+                               separators=(",", ":")) + "\n")
+    print("exported=%d" % len(lines))
+    return 0
+
+
+def _is_stale(fm, today):
+    """R11：cve_verified 任一 verified_at 距 --today 超 365 天=stale。"""
+    try:
+        t = datetime.date.fromisoformat(today)
+    except ValueError:
+        return False
+    for v in fm.get("cve_verified", []) or []:
+        if isinstance(v, dict) and v.get("verified_at"):
+            try:
+                if (t - datetime.date.fromisoformat(str(v["verified_at"]))).days > 365:
+                    return True
+            except ValueError:
+                continue
+    return False
+
+
+def match(kdir, client, asset, today):
+    """先例三元组匹配：client 全等 ∧ scope_asset 含 asset 指纹（分号多值任一子串）
+    ∧ window 覆盖 today（start≤today≤end；过期不命中并标注 [expired]）；
+    [stale]=R11 降权标注。--today 必填（G-34 禁墙钟）。"""
+    if not today:
+        raise KnowledgeError("--today 必填（G-34：窗口判定基准日显式传入）")
+    try:
+        datetime.date.fromisoformat(today)
+    except ValueError:
+        raise KnowledgeError("--today 须 ISO 日期: %r" % today)
+    d = os.path.join(kdir, "precedents")
+    hits, expired = [], []
+    for fn in sorted(os.listdir(d) if os.path.isdir(d) else []):
+        if not fn.endswith(".md"):
+            continue
+        fm, _raw, _body = split_page(read_page(os.path.join(d, fn)))
+        if not isinstance(fm, dict) or fm.get("kind") != "precedent":
+            continue
+        if str(fm.get("client", "")) != client:
+            continue
+        scope_vals = [v.strip() for v in str(fm.get("scope_asset", "")).split(";") if v.strip()]
+        if not any(asset in v for v in scope_vals):
+            continue
+        win = str(fm.get("window", ""))
+        if not WINDOW_RE.match(win):
+            continue
+        pid, title = str(fm.get("id", fn[:-3])), str(fm.get("title", ""))
+        stale = " [stale]" if _is_stale(fm, today) else ""
+        start, end = win.split("..", 1)
+        if start <= today <= end:
+            hits.append("%s\t%s\t%s\twindow=%s%s"
+                        % (pid, title, str(fm.get("outcome", "")), win, stale))
+        else:
+            expired.append("[expired] %s %s window=%s" % (pid, title, win))
+    for ln in hits + expired:
+        print(ln)
+    print("matched=%d expired=%d" % (len(hits), len(expired)))
+    return 0
+
+
+def neighbors(kdir, entity):
+    """graph.ndjson 中 subject/object 含实体名的行清单（A8 外推消费入口）。"""
+    p = os.path.join(kdir, "graph.ndjson")
+    if not os.path.isfile(p):
+        raise KnowledgeError("graph.ndjson 不存在——先跑 export")
+    n = 0
+    with open(p, encoding="utf-8") as f:
+        for ln in f:
+            ln = ln.strip()
+            if not ln:
+                continue
+            row = json.loads(ln)
+            if entity in row["subject"] or entity in row["object"]:
+                print("%s\t%s %s %s\tsource=%s"
+                      % (row["id"], row["subject"], row["predicate"],
+                         row["object"], row["source"]))
+                n += 1
+    print("neighbors=%d" % n)
+    return 0
+
+
+def h_approve(ctx, rest):
+    kv, _pos = parse_kv(rest)
+    return approve(ctx, kv.get("page", ""), kv.get("approver", ""),
+                   kv.get("timestamp", ""), reject=bool(kv.get("reject")),
+                   reason=kv.get("reason", ""))
+
+
+def h_commit(ctx, rest):
+    kv, _pos = parse_kv(rest)
+    return commit(ctx, kv.get("page", ""), kv.get("timestamp", ""))
+
+
+def h_export(ctx, rest):
+    return export(ctx)
+
+
+def h_match(ctx, rest):
+    kv, _pos = parse_kv(rest)
+    return match(ctx, kv.get("client", ""), kv.get("asset", ""), kv.get("today", ""))
+
+
+def h_neighbors(ctx, rest):
+    kv, _pos = parse_kv(rest)
+    return neighbors(ctx, kv.get("entity", ""))
