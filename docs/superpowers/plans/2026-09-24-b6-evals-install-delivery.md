@@ -1178,3 +1178,188 @@ def run_guided(host):
 - [ ] **Step 4: 删 Task 5 中间态守卫** —— `install_core._step6_selfcheck_gate` 改为无条件调 selfcheck（`--static --install-root --home`）；`tests/test_install_core.py` 追加端到端六步断言（`install(o)[0] == 0` 且结果含 `selfcheck=0`）。
 - [ ] **Step 5: 跑绿+全套三连+Commit** —— `py -3 cli/tanyin-selfcheck --static` 仓内形态 rc==0 亲测记录 → discover+run_golden 全绿 → `git commit -m "批次6 T6：tanyin-selfcheck 六项静态+guided 手测+交战区分离机检（install 六步端到端）"`
 
+
+### Task 7: G-5 收紧——锁探测 v2（state.md 锁字段+探活快路）
+
+**Files:**
+- Create: `cli/ledger/lock_v2.py`（探活纯函数单源）
+- Modify: `cli/ledger/state_md.py`（session 激活时写 `lock_host/lock_pid/lock_boot/lock_since` 四可选字段；解析端缺省容忍——v1 state 无四字段照常解析）
+- Modify: `cli/ledger/phases_engine.py`（`run_restart` handover 分支接探活快路）
+- Modify: `contracts/04-phases.md`（勘误一行：state.md 锁字段 v2 可选字段+语义）
+- Test: `tests/test_lock_v2.py`
+
+**Interfaces:**
+- Consumes: 既有语义锚点（phases_engine.py:868 handover 判定/:872 auto REJECT/:902 rebuild 释放锁；tests/test_managed_restart.py 七例行为面冻结不动）
+- Produces:
+  - `lock_v2.lock_fields(ts: str) -> dict`——`{"lock_host": platform.node(), "lock_pid": os.getpid(), "lock_boot": boot_id(), "lock_since": ts}`
+  - `lock_v2.boot_id() -> str`——POSIX `/proc/sys/kernel/random/boot_id`；Windows `datetime.now()-GetTickCount64 毫秒` 取整 ISO（同 boot 稳定）
+  - `lock_v2.pid_alive(pid: int) -> bool`——POSIX `os.kill(pid,0)`（ESRCH=死/EPERM=活）；Windows `ctypes OpenProcess(0x1000)` 非零=活
+  - `lock_v2.probe_stale(fields: dict, now_host: str|None=None) -> tuple[str, str]`——返回 (`"dead"`|`"alive"`|`"unknown"`, 理由)；语义：本机同 boot 且 pid 探活死=`dead`；本机同 boot pid 活=`alive`；跨机/跨 boot/字段缺=`unknown`（保守）
+
+**裁决 F 接线语义（不改既有判定，只加快路）：**
+- `dead` → manual 接管免 rebuild-state（快路；timeline 记 `takeover-of=<s> probe=pid-dead`）；auto 仍恒 REJECT（单活跃会话铁律不变）
+- `alive`/`unknown` → 行为与现状逐字节一致：auto REJECT；manual 须 state-rebuild PASS+takeover-of 留痕
+- 全部既有 566 测试零改动须保持绿（`test_auto_cannot_takeover_active_lock`/`test_manual_takeover_with_rebuild_ok` 原样）
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_lock_v2.py
+# -*- coding: utf-8 -*-
+import os, sys, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "cli"))
+from ledger import lock_v2  # noqa: E402
+
+class TestProbe(unittest.TestCase):
+    def test_dead_same_host_dead_pid(self):
+        f = {"lock_host": lock_v2.HOST, "lock_boot": lock_v2.BOOT, "lock_pid": lock_v2.DEAD_PID}
+        self.assertEqual(lock_v2.probe_stale(f)[0], "dead")
+    def test_alive_same_host(self):
+        f = {"lock_host": lock_v2.HOST, "lock_boot": lock_v2.BOOT, "lock_pid": os.getpid()}
+        self.assertEqual(lock_v2.probe_stale(f)[0], "alive")
+    def test_cross_host_unknown(self):
+        f = {"lock_host": "other", "lock_boot": "b", "lock_pid": 1}
+        self.assertEqual(lock_v2.probe_stale(f)[0], "unknown")
+    def test_v1_fields_absent_unknown(self):
+        self.assertEqual(lock_v2.probe_stale({})[0], "unknown")
+    def test_boot_id_stable(self):
+        self.assertEqual(lock_v2.boot_id(), lock_v2.boot_id())
+
+class TestRestartWiring(unittest.TestCase):
+    # 夹具=G-g1 复制（test_managed_restart 同型 setUp）
+    def test_manual_fast_path_no_rebuild(self):
+        # 前置：state.md 手工置 fields 为 dead 锁（本机+死 pid+lock_since=T0）
+        # 调 run_restart(spawn="manual", session="s-new") → OK 且不需要先 rebuild-state
+        # timeline 末行含 "takeover-of=" 与 "probe=pid-dead"
+        ...
+    def test_unknown_lock_manual_still_requires_rebuild(self):
+        # state.md 置跨机锁 → manual 未 rebuild 前 REJECT（现状语义回退断言）
+        ...
+    def test_state_fields_written_on_restart(self):
+        # 正常 restart 后 parse_state fields 含 lock_host/lock_pid/lock_boot/lock_since
+        ...
+```
+（TestRestartWiring 三例按注释意图展开：夹具复制/`state_md.parse_state` 断言与 test_managed_restart.py 同构。）
+
+- [ ] **Step 2: 跑红** —— `py -3 -m unittest tests.test_lock_v2 -v` 红（ModuleNotFoundError+wiring 三例 FAIL）取证。
+- [ ] **Step 3: 实现 lock_v2.py+两处接线** —— 按 Produces 签名实现；`state_md.py` 激活写点（session_status=active 落笔处）追加四字段；`phases_engine.py` handover 分支：
+
+```python
+# run_restart handover 段（:868 附近）改写要点
+probe, why = ("unknown", "v1")
+if fields.get("lock_boot"):                       # v2 锁才探
+    probe, why = lock_v2.probe_stale(fields)
+if spawn == "auto" and handover:
+    ...  # 原 REJECT 逐字保留（probe==dead 也不放行 auto）
+elif spawn == "manual" and handover and probe != "dead" and not rebuilt:
+    ...  # 原「须 state-rebuild PASS」REJECT 保留
+elif spawn == "manual" and handover and probe == "dead":
+    takeover = " takeover-of=%s probe=pid-dead (%s)" % (fields["session"], why)
+    ...  # 免 rebuild 快路；其余护栏（速率/预算/单活跃）照走
+```
+
+- [ ] **Step 4: 跑绿+回归面** —— 新 8 例绿；`tests/test_managed_restart.py` 原样绿（行为零漂移）；discover+run_golden 全绿。
+- [ ] **Step 5: Commit** —— `git commit -m "批次6 T7：G-5 锁收紧（探活快路 dead 免 rebuild；unknown 保守语义不变）"`
+
+### Task 8: 五宿主矩阵落地（AGENTS 系统级注入+宿主清单通道）
+
+**Files:**
+- Create: `cli/ledger/hosts_matrix.py`
+- Create: `install/AGENTS-INJECT.md`（常驻集系统级注入模板）
+- Modify: `install/README.md`（五宿主兼容清单+opencode/codex headless 实测命令行+walcode/CodeBuddy 发布口径）
+- Test: `tests/test_hosts_matrix.py`
+
+**Interfaces:**
+- Consumes: Task 5 `install/hosts/*.json`（egress_default_tier/verification/compat 字段）
+- Produces:
+  - `hosts_matrix.render_agents_inject(repo_root: str, host: str) -> str`（注入块=常驻集内容+该宿主 egress 档位披露行；<2K token 面沿用批次 3 冻结口径）
+  - `hosts_matrix.inject_agents(agents_path: str, block: str) -> None`（`<!--TANYIN:BEGIN-->…<!--TANYIN:END-->` 标记包裹幂等替换）
+  - `hosts_matrix.host_compat(repo_root: str, host: str) -> dict`（模板 compat+verification 直读）
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_hosts_matrix.py
+class TestTemplates(unittest.TestCase):
+    def test_all_five_valid(self):
+        for h in ("dsh", "opencode", "codex", "walcode", "codebuddy"):
+            d = hosts_matrix.host_compat(REPO, h)
+            self.assertIn(d["egress_default_tier"], (1, 3))
+            self.assertTrue(d["compat"])
+    def test_blind_spot_hosts_marked(self):
+        for h in ("walcode", "codebuddy"):
+            self.assertIn("待实测", hosts_matrix.host_compat(REPO, h)["verification"])
+            self.assertEqual(hosts_matrix.host_compat(REPO, h)["egress_default_tier"], 1)
+
+class TestInject(unittest.TestCase):
+    def test_idempotent_block(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "AGENTS.md"); open(p, "w", encoding="utf-8").write("# host config\n")
+            block = hosts_matrix.render_agents_inject(REPO, "dsh")
+            hosts_matrix.inject_agents(p, block)
+            first = open(p, encoding="utf-8").read()
+            hosts_matrix.inject_agents(p, block)
+            self.assertEqual(open(p, encoding="utf-8").read(), first)   # 二次注入零变更
+            self.assertIn("<!--TANYIN:BEGIN-->", first)
+            self.assertIn("Tier 3", first)                              # 档位事实披露在块内（铁律 5）
+    def test_inject_len_capped(self):
+        block = hosts_matrix.render_agents_inject(REPO, "dsh")
+        self.assertLess(len(block), 8000, "常驻注入 <2K token 量级护栏（≈4 char/token）")
+```
+
+- [ ] **Step 2: 跑红 → Step 3: 实现**（模板读+标记替换两函数，~60 行；`AGENTS-INJECT.md` 正文=常驻八条：八问授权门/单写者/四层执法+本宿主档位披露行/预算树/速率熔断/凭据四关卡/九门状态机/kill9 续跑——每条一行命令锚点指向 SKILL.md 对应节）。
+- [ ] **Step 4: 跑绿+全套三连+Commit** —— `git commit -m "批次6 T8：五宿主矩阵（AGENTS 系统级注入幂等+盲区宿主 Tier1 披露）"`
+
+### Task 9: tools.lock 全量化 + G-22 生产钥流程 + G-32 CVE 刷新通道
+
+**Files:**
+- Modify: `tools.lock`（键 3→8：+python/docker/三自写引擎目录清单键；nuclei-templates 第 5 列 upstream_commit 占位换真锚）
+- Create: `install/KEY-MANAGEMENT.md`（G-22 生产钥生成/保管/重签/替换流程）
+- Create: `install/resign-tools-lock.py`（重签脚本，离线机执行）
+- Modify: `cli/tanyin-install`+`cli/ledger/install_core.py`（+`refresh-cve` 子命令）
+- Modify: `knowledge/cve/README.md`（G-32 双通道注记：命令刷新/人工重铸等价）
+- Modify: `contracts/10-toolchain-lock.md`（勘误一行：键清单 3→8+生产钥仪式指 KEY-MANAGEMENT.md）
+- Test: `tests/test_supply_chain_resign.py`+`tests/test_install_core.py` 追加 refresh-cve 例
+
+**Interfaces:**
+- Consumes: `supply_chain.load_lock/canonical_digest/verify_entry/sign_entry`（单源不动）
+- Produces:
+  - `install_core.refresh_cve(src: str, knowledge_dir: str, ts: str) -> tuple[int, str]`——`src`=URL 或 `file://` 路径（离线等价通道）；下载→sha256 记录→落 `<knowledge_dir>/cve/cve-snapshot.tsv`（首行 `# snapshot-date=<ts>` 注记）→复用 tanyin-knowledge lint 七列校验；lint 不过=rc 1 且**不落文件**（先临时文件校验再原子替换）
+  - tools.lock 第 8 键清单：`python`(3.11+-system)/`docker`(24+-system)/`engines-web-blackbox`/`engines-vuln-agent`/`engines-session-viz`(snapshot-1=目录清单 sha256)
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_supply_chain_resign.py
+class TestResign(unittest.TestCase):
+    def test_resign_roundtrip(self):
+        # tempfile 拷 tools.lock+TEST 钥 → resign 脚本 subprocess 跑 → load_lock 全键 verify_entry PASS
+    def test_resign_detects_tamper(self):
+        # resign 后手改一键 sha256 → verify FAIL（信任链未断声明成立）
+    def test_lock_fullness(self):
+        names = {e["name"] for e in supply_chain.load_lock(os.path.join(REPO, "tools.lock"))}
+        self.assertTrue({"python", "docker", "engines-web-blackbox", "engines-vuln-agent",
+                         "engines-session-viz", "openssl", "nuclei", "nuclei-templates"} <= names)
+
+class TestRefreshCve(unittest.TestCase):
+    def test_refresh_from_file_atomic(self):
+        # --from-file 夹具快照（14 行合法七列）→ refresh_cve → 目标文件首行 snapshot-date=--timestamp 值
+        # → tanyin-knowledge lint rc==0；install-log.tsv 追加 refresh-cve 行
+    def test_refresh_rejects_bad_columns(self):
+        # 坏快照（六列）→ rc==1 且目标文件字节不变（原子性反向断言）
+```
+
+- [ ] **Step 2: 跑红 → Step 3: 实现 resign 脚本+refresh_cve+tools.lock 扩键**
+
+```python
+# install/resign-tools-lock.py 核心（~40 行）
+# --lock tools.lock --key <pem> [--out <path>]：逐键 sign_entry(canonical_digest) → 原子写回
+# 非交互纪律：不读 stdin；--allow-online 缺省时打印「须离线介质机执行（KEY-MANAGEMENT.md §3）」提示行后仍可跑（提示非拦截——CI 测试链用 TEST 钥在仓内可重签）
+```
+`KEY-MANAGEMENT.md` 五节定稿：①生成（`openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256`，离线机）②保管（离线介质+恢复口令双控；公钥指纹入 release 记录）③重签（本脚本）④替换（`engines/nuclei/release.pub` 换生产公钥+`tanyin-install --release` 交互确认行）⑤CI 关系（CI 永用 TEST-ONLY 夹具钥，与生产钥无信任关系——测试不因生产钥缺席而红）。
+tools.lock 扩键执行步：`sha256sum` 三引擎目录清单文件（`find engines/<name> -type f | sort | xargs sha256sum | sha256sum`）→ 填入 → TEST 钥整锁重签（resign 脚本自举）→ `verify-lock` 亲测全 PASS。
+
+- [ ] **Step 4: G-22 upstream_commit 换真（执行期实锚步）** —— `git clone --depth 1 https://github.com/projectdiscovery/nuclei-templates .research/repos/nuclei-templates` → `git -C .research/repos/nuclei-templates rev-parse HEAD` → 换 tools.lock 第 5 列占位 → templates.lock 同步四步流程（engines/nuclei/README.md 原文照走）→ 重签+验证。环境不可联网=如实保留占位+KEY-MANAGEMENT 记待锚行（不造数据纪律）。
+- [ ] **Step 5: 跑绿+全套三连+Commit** —— `git commit -m "批次6 T9：tools.lock 全量 8 键+G-22 钥流程+G-32 refresh-cve"`
+
