@@ -618,21 +618,24 @@ def trigger_audit(goal_dir):
         else:
             fails.append("①asset-added %s 无子矩阵行/铸行事件/绑定 intent（G-2 通道）" % value)
 
-    # ② cred-obtained（kind=session）→ authz-diff 候选或显式延后 fact
+    # ② cred-obtained（kind=session）→ 逐对：authz-diff 且 cred=<cid> 的 intent，或延后 fact
+    # （G-27 后半，批次5 T6：全局口径退役——消费 T3 intents.cred 物理列，每 CRED 独立闭合）
     ci = core.TABLES["creds.tsv"].index("id")
     for r in s.rows("creds.tsv"):
         if _cell("creds.tsv", r, "kind") != "session":
             continue
         total += 1
         cid = r[ci]
-        has_cand = any(_cell("intents.tsv", it, "kind") == "authz-diff"
-                       for it in s.rows("intents.tsv"))
+        paired = any(_cell("intents.tsv", it, "kind") == "authz-diff"
+                     and _cell("intents.tsv", it, "cred") == cid
+                     for it in s.rows("intents.tsv"))
         deferred = any(_cell("facts.tsv", f, "target") == "authz-diff:" + cid
                        for f in s.rows("facts.tsv"))
-        if has_cand or deferred:
+        if paired or deferred:
             closed += 1
         else:
-            fails.append("②cred-obtained %s 无 authz-diff 候选/延后 fact（批次4 起强制）" % cid)
+            fails.append("②cred-obtained %s 无逐对 authz-diff 候选（cred=%s）/延后 fact（G-27）"
+                         % (cid, cid))
 
     # ③ scope-amended → 其后有 egress-compile 事件（recompile+复测闭环）
     for i, e in enumerate(events):
@@ -643,6 +646,27 @@ def trigger_audit(goal_dir):
             closed += 1
         else:
             fails.append("③scope-amended #%d 后无 egress-compile 事件（recompile+复测闭环）" % i)
+
+    # ④ 高危 finding 即时横向（triggers-v2 承诺兑现，批次5 T6）：impact∈{高,high,critical}
+    #    落账后须存在引用该 FD-id 的横向 intent（kind∈{matrix-test,deep-dive} 且
+    #    title/detail 内联 FD-id），或 target=lateral:<FD-id> 披露 fact（facts.target
+    #    自由文本新语义值，零 schema 变更）
+    _HAZ = {"高", "high", "critical"}
+    for r in s.rows("findings.tsv"):
+        if _cell("findings.tsv", r, "impact") not in _HAZ:
+            continue
+        fid = r[0]
+        total += 1
+        lateral = any(_cell("intents.tsv", it, "kind") in ("matrix-test", "deep-dive")
+                      and fid in (_cell("intents.tsv", it, "title")
+                                  + _cell("intents.tsv", it, "detail"))
+                      for it in s.rows("intents.tsv"))
+        disclosed = any(_cell("facts.tsv", f, "target") == "lateral:" + fid
+                        for f in s.rows("facts.tsv"))
+        if lateral or disclosed:
+            closed += 1
+        else:
+            fails.append("④高危 finding %s 无横向 intent/披露 fact（triggers-v2 即时横向）" % fid)
 
     # 目录版本一致：TRIGGERS.md version: 行在场；timeline triggers-catalog 事件若已记须同版本
     ver = ""

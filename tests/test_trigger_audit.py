@@ -6,7 +6,10 @@ Ruling（add-cred 契约对齐）：计划参数组（--secret-ref={{vault:cred-
 repo 闭合律——kind=session 须 --parent-cred、secret_ref N=行序号（G-g1 现有 1 cred→
 cred-2）、--permitted-actions 须 account-grant 覆盖（G-g1 无→删该参）。
 Ruling（matrix-freeze 幂等口径）：G-g1 基线已冻结（make_fixtures 模拟 P2 冻结）——
-rc∈{0,1}（already-frozen=幂等容忍，PROTOCOL §1 判定表同律）。"""
+rc∈{0,1}（already-frozen=幂等容忍，PROTOCOL §1 判定表同律）。
+Ruling（批5 T6 检查面 3→5 契约随行）：④高危横向机检落地后，基线 FD-g1-0001（impact=高）
+须横向闭包——setUp 统一补 target=lateral:FD-g1-0001 披露 fact（零夹具/金样改动；
+⑤=目录版本+清单输出合并口径见 PROTOCOL §6）。"""
 import os, shutil, subprocess, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -27,6 +30,12 @@ class TestTriggerAudit(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
         self.gd = shutil.copytree(FIX, os.path.join(self.tmp, "G-g1"))
+        # 批5 T6 ④机检：基线高危 finding 披露 fact（契约随行——见模块 docstring Ruling）
+        r = run(LEDGER, self.gd, "add-fact", "--intent-id=INT-g1-0001", "--kind=info",
+                "--target=lateral:FD-g1-0001",
+                "--detail=披露：高危 finding 轮内已横向排查（批5 T6 机检基线）",
+                "--confidence=0.9", "--timestamp=" + TS)
+        assert r.returncode == 0, r.stdout + r.stderr
 
     def tearDown(self):
         shutil.rmtree(self.tmp)

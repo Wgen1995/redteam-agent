@@ -93,15 +93,21 @@ exit 断言列表——契约 04 断言集与 asserts=21 基线不动、九门�
     tanyin-phases trigger-audit --goal-dir D
 
 只读账本（timeline/assets/matrix/intents/facts/creds），零落账。退出码：0=PASS / 1=FAIL
-清单 / 2=用法。三检查（单源目录=phases/TRIGGERS.md 版本化封闭表，版本行 version: triggers-v2）：
+清单 / 2=用法。五检查（批5 T6 起 3→5；单源目录=phases/TRIGGERS.md 版本化封闭表，版本行
+version: triggers-v2）：
 
-① 目录版本一致：TRIGGERS.md version: 行在场；timeline P0 事件 triggers-catalog <ver>
-   若已记则须同版本（缺记=提示非失败——P0 落账该事件由 SKILL P0 序列承载）。
-② 触发器闭包（事件驱动）：每个 in_scope add-asset <AST-id>(in_scope) 事件→该表面有
-   submatrix-mint 事件/子矩阵行/绑定 intent（origin=recon-event）；每个 add-cred
-   kind=session→存在 kind=authz-diff intent 或显式延后 fact（target=authz-diff:<CRED-id>）；
-   每个 amend-scope 事件→其后存在 egress-compile 事件。
-③ 清单输出：PASS 行 triggers=<n> closed=<n>/<n> catalog=<ver>。
+① asset-added（in_scope）：每个 in_scope add-asset <AST-id>(in_scope) 事件→该表面有
+   submatrix-mint 事件/子矩阵行/绑定 intent（origin=recon-event）。
+② cred-obtained（逐对，G-27）：每个 add-cred kind=session→存在 kind=authz-diff 且
+   cred=<CRED-id> 的 intent，或显式延后 fact（target=authz-diff:<CRED-id>）——逐 CRED
+   独立闭合，全局任一 authz-diff 不再代偿（批5 T6，消费 intents.cred 物理列）。
+③ scope-amended：每个 amend-scope 事件→其后存在 egress-compile 事件。
+④ 高危横向（triggers-v2 承诺兑现）：每个 impact∈{高,high,critical} 的 finding→存在
+   引用该 FD-id 的横向 intent（kind∈{matrix-test,deep-dive} 且 title/detail 内联 FD-id），
+   或披露 fact（target=lateral:<FD-id>，facts.target 自由文本新语义值——零 schema 变更）。
+⑤ 目录版本一致+清单输出：TRIGGERS.md version: 行在场；timeline P0 事件 triggers-catalog
+   <ver> 若已记则须同版本（缺记=提示非失败——P0 落账由 SKILL P0 序列承载）；PASS 行
+   triggers=<n> closed=<n>/<n> catalog=<ver>。
 
 事件词 egress-compile acl=<path> lines=<n>（actor=egress，tanyin-egress compile 末尾
 落账，相对 goal-dir 路径防绝对路径漂移；幂等重编译=事件只记不判重）。界外
@@ -126,3 +132,11 @@ add-asset 事件免检（触发器目录行 2/8）；converge-check「未消费�
   →即时横向排查 intent」行（fb72cd5 设计增补——高危发现不等收敛轮，即时扩面；消费检查留
   批次 5 与 G-24 同批 evals，trigger-audit ①-③ 检查面不扩）；SKILL P0 序列自此承载
   triggers-catalog 事件落账（§6①「缺记=提示非失败」的落账载体补齐）。
+
+## 勘误补记（2026-09-24·批次 5 施工期）
+
+- §6 检查面 3→**5**（批5 T6，G-27 后半+triggers-v2 承诺兑现）：②升逐对配对（每 CRED 须
+  kind=authz-diff 且 cred=<CRED-id> 的 intent 或延后 fact——消费 intents.cred 物理列，全局
+  口径退役）+新增④高危即时横向（横向 intent 内联 FD-id 或 target=lateral:<FD-id> 披露
+  fact）。批4 补记「①-③ 检查面不扩」的暂缓承诺自此兑现作废；TRIGGERS.md 版本不 bump
+  （目录行集合与语义零变，消费检查列文字升级=执法面落地）。
