@@ -48,7 +48,7 @@ def main(argv):
             return rc
         ctx = knowledge.load_ctx(kdir)
         knowledge.guard_writable(ctx, sub, rest)
-        handler = getattr(knowledge, "h_" + sub, None)
+        handler = getattr(knowledge, "h_" + sub.replace("-", "_"), None)
         if handler is None:
             raise knowledge.KnowledgeError("子命令 %s 未实现（批次 5 T10-T15 填充）" % sub)
         return handler(ctx, rest)
