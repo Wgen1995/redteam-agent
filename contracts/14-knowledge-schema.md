@@ -52,6 +52,7 @@
 | outcome | 必 | 结果一句话（finding 计数等） |
 | applied_patterns | 否 | PT-id 列表（四门槛①复现计数载体） |
 | retro_link | 否 | ^RT-\d{4}$ |
+| vocab_version | 必 | ∈支持集（R14 每页必填；R-T17-4 两 PR 页补齐同因） |
 | cost_hint/last_verified/status/source_id | 必 | 同技法页 |
 
 ### 实体页（entities/EN-*.md）——K2
@@ -64,7 +65,7 @@
 
 ### 模式页（patterns/PT-*.md）——K6
 
-字段集：id/kind=pattern/use∈{ok-sample,false-positive}/vuln_class/sample_brief + 四门槛晋升字段 status∈{learned,core,demoted}
+字段集：id/kind=pattern/use∈{ok-sample,false-positive}/vuln_class/sample_brief/vocab_version（R14 每页必填）/last_verified + 四门槛晋升字段 status∈{learned,core,demoted}
 
 ### 业务页（business/BZ-*.md）——K7
 
@@ -78,6 +79,9 @@
 ```
 
 - 行序=（source 页 id, t 序号）字典序；行级可合并预留（多 session 锁协议=R6 残余，维持登记）。
+- 勘误指针（微版本通道）：示例 `created` 注「commit 时间戳」系定稿文本——实现取页
+  `last_verified`（页面自有数据：双跑字节一致+export 免 --timestamp；R-T11-2 在案，
+  cli/README export 行同源），非 commit 墙钟。
 
 ## 4 staging 状态机与入库流水线
 

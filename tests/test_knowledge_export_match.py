@@ -186,6 +186,16 @@ class TestExportMatch(KnowledgeCase):
         r = kn("match", "--knowledge-dir=" + d, "--client=CLIENT-01", "--asset=x")
         self.assertEqual(r.returncode, 2)
 
+    def test_match_client_required(self):
+        # 批次 5 评审 M-3：缺 --client 从静默 matched=0 改 exit 2 用法错误（--today
+        # 必填同款 KnowledgeError 通道）——三元组键①缺失=查询不完整，静默零命中
+        # 会把漏传参数伪装成「无先例」。
+        d = self.make_lib()
+        r = kn("match", "--knowledge-dir=" + d, "--asset=shop.example",
+               "--today=2026-09-24")
+        self.assertEqual(r.returncode, 2)
+        self.assertIn("--client", r.stderr)
+
     def test_match_stale_annotation(self):
         # R11：cve_verified 的 verified_at 距 --today 超 365 天=stale 降权标注
         d = self.make_lib()

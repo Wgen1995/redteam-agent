@@ -102,6 +102,29 @@ class TestCnpenIngest(unittest.TestCase):
         self.assertEqual(open(seed_log, "rb").read(), before,
                          "种子库 log.md 被测试写热（测试隔离泄漏）")
 
+    def test_lint_in_place_on_seed_zero_write(self):
+        # 批次 5 评审 I-1：出口判定命令就地指向仓库 knowledge/，而 lint 实况向 log.md
+        # 逐页追加审计行（R8；knowledge.py lint 无条件 _append_log，WRITE_SUBS 守卫
+        # 不含 lint）——跑一次写热冻结种子库。裁决选 a：种子库=冻结资产，运行时审计
+        # 只落运行时库——lint 对 kdir==仓库种子库根零写入（log.md/staging.tsv 字节
+        # 不变；校验输出与 PASS n 语义零变；运行时库行为不变）。红=本测先红（就地
+        # lint 后 log.md 多出逐页审计行）；绿=修复后就地判定命令可安全执行。
+        log_p = os.path.join(SEED, "log.md")
+        staging_p = os.path.join(SEED, "staging", "staging.tsv")
+        with open(log_p, "rb") as f:
+            log_before = f.read()
+        with open(staging_p, "rb") as f:
+            staging_before = f.read()
+        r = kn("lint", "--knowledge-dir=" + SEED, "--today=2026-09-24")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("PASS", r.stdout)
+        with open(log_p, "rb") as f:
+            self.assertEqual(f.read(), log_before,
+                             "就地 lint 写热种子库 log.md（评审 I-1：冻结资产零写入）")
+        with open(staging_p, "rb") as f:
+            self.assertEqual(f.read(), staging_before,
+                             "就地 lint 写热种子库 staging.tsv（评审 I-1：冻结资产零写入）")
+
     def test_vocab_baseline_is_wstg_only(self):
         # 前向钉子：防 CNPEN 过拟合——全部页 vuln_class 均为 wstg-* 键或 wstg-XX:sub 形
         for p in iter_md("concepts", "precedents"):

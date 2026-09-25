@@ -147,7 +147,7 @@ python3 tests/run_golden.py                 # 51 金样面（含 replay-envdiff/
 
 ## 批次 5：知识飞轮+语料入库（tanyin-knowledge 第 12 工具 / staging 流水线 / 四门槛 / 三元组 / graph.ndjson / CVE 快照）
 
-契约 14（contracts/14-knowledge-schema.md）冻结知识库页 schema 与状态机；仓库 knowledge/=种子库（format_version=kn-v1，批次 6 安装器拷贝至 $TANYIN_HOME/knowledge/），**种子库只读纪律（R7）：写子命令（source-register/approve/commit/promote/demote/client-map add）指向仓库 knowledge/ 即 REJECT exit 1**；一切子命令 --knowledge-dir 参数化，测试与金样在临时副本上跑。
+契约 14（contracts/14-knowledge-schema.md）冻结知识库页 schema 与状态机；仓库 knowledge/=种子库（format_version=kn-v1，批次 6 安装器拷贝至 $TANYIN_HOME/knowledge/），**种子库只读纪律（R7）：写子命令（source-register/approve/commit/promote/demote/client-map add）指向仓库 knowledge/ 即 REJECT exit 1**；一切子命令 --knowledge-dir 参数化，测试与金样在临时副本上跑。批次 5 评审 I-1 起 lint 对种子库=零写入（审计行只落运行时库，出口判定命令可就地执行）。
 
 ### tanyin-knowledge 13 子命令速查
 
@@ -155,11 +155,11 @@ python3 tests/run_golden.py                 # 51 金样面（含 replay-envdiff/
 |---|---|---|
 | init | `init --knowledge-dir D` | 骨架初始化（幂等：已初始化=PASS no-op） |
 | source-register | `source-register --knowledge-dir D --path <原始素材> --origin <六枚举> --license <许可> --note <注> --timestamp=T` | 语源登记（sha256 对原始字节；KP-NNNN 递增扫 SOURCES.tsv 行键） |
-| lint | `lint --knowledge-dir D --timestamp=T \| --today=日期 [--freshness-days=180]` | 机器检查四件（契约 14 schema/脱敏哨兵/dedup 查重 R10/词表版本 R14）+K1 基线覆盖率+K3 快照校验（G-32）+保鲜告警（T13；--timestamp 可由 --today 派生）；staging 过页 staged→lint-passed |
+| lint | `lint --knowledge-dir D --timestamp=T \| --today=日期 [--freshness-days=180]` | 机器检查四件（契约 14 schema/脱敏哨兵/dedup 查重 R10/词表版本 R14）+K1 基线覆盖率+K3 快照校验（G-32）+保鲜告警（T13；--timestamp 可由 --today 派生）；staging 过页 staged→lint-passed；kdir=仓库种子库根时零写入（评审 I-1——log/staging 审计只落运行时库，校验输出零变） |
 | approve | `approve --knowledge-dir D --page STG-NNNN --approver <名> --timestamp=T [--reject --reason=…]` | 人审门（lint-passed→approved/rejected；staging.tsv+log.md 双落） |
 | commit | `commit --knowledge-dir D --page STG-NNNN --timestamp=T` | approved→formal（类前缀重号迁目录+dedup 终检 R10+index/overview 重生成） |
 | export | `export --knowledge-dir D` | graph.ndjson 全量重建（created 取 last_verified——双跑字节一致） |
-| match | `match --knowledge-dir D --client=CLIENT-NN --asset=<指纹> --today=日期` | 先例三元组匹配（client 全等∧scope_asset 子串∧window 覆盖；[expired]/[stale] 标注；--today 必填 G-34） |
+| match | `match --knowledge-dir D --client=CLIENT-NN --asset=<指纹> --today=日期` | 先例三元组匹配（client 全等∧scope_asset 子串∧window 覆盖；[expired]/[stale] 标注；--client/--today 必填，缺=用法错误 exit 2——M-3 前 --client 缺省静默 matched=0） |
 | neighbors | `neighbors --knowledge-dir D --entity=<指纹>` | graph.ndjson 实体邻接清单（A8 外推消费入口；缺导出 exit 2） |
 | nday-match | `nday-match --knowledge-dir D --cpe=cpe:<vendor>:<product> --version=<v>` | K3 快照离线 CPE 匹配（零联网 R11；#snapshot-date 审计行 G-32；零命中 exit 0） |
 | score | `score --knowledge-dir D --goal-dir <交战区> --vuln-class=<wstg 键> --asset=<资产> --today=日期` | K1 基线只读算分（priority=severity_expect×asset_value×exploitability 单行 JSON；Top-K 选择仍归总控） |

@@ -125,3 +125,7 @@
 ## v2 勘误补记（2026-09-24·批次 5 施工期·T5/R6）
 
 - 契约 02a（02a-command-signatures-draft.md）§3 add-intent 一笔：`--cap=N`（1-1000 可选覆盖，evals 可重放）+同端点 cap 拒收条件（计数键=asset+kind 经 dedup_key 前缀比对，在途 status∈{candidate,pending,active} 计数 ≥24=REJECT，消息附计数与 cap 值）——常量 AUTHZ_DIFF_PAIR_CAP=24 转代码常量（cli/ledger/write_cmds，契约 04 constants 已随 T2 回注；differential.md/P3.md 双载降为单源指针）。微版本勘误通道，schema_version 保持 =2 不递增。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T7/G-28 前半）
+
+- 契约 02a（02a-command-signatures-draft.md）§22 converge-check 判据与输出勘误：空格清零条件细化为可达性维度（`#reachable-gaps=N`/`#unreachable-gaps=N` 双计数行随 verdict 行输出，verdict 仍居首；可达性=graph_cmds.reachable_gap_cells 单源；结构性停机=不可达空格经 `unreachable:` 前缀置态后计入清零）——勘误正文已在 02a 文末「T7/G-28 前半」节，本行补索引登记（批次 5 评审 M-5：勘误在档而索引漏行）。微版本勘误通道，schema_version 保持 =2 不递增。

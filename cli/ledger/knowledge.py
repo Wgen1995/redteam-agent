@@ -410,7 +410,12 @@ def lint(kdir, ts, today=None, freshness_days=180):
     --today 显式传入时跑保鲜检查（T13）：last_verified 距 today 超 freshness-days
     （缺省 180）的页输出 stale 清单——exit 0 附告警不判 FAIL（match [stale] 降权
     联动=R11 既有）；--timestamp 缺省由 --today 派生 T00:00:00Z（G-23 禁墙钟——
-    一切时间显式传入）。"""
+    一切时间显式传入）。
+    种子库冻结语义（批次 5 评审 I-1，裁决选 a）：kdir==仓库种子库根时 lint 零写入
+    ——不追加 log.md 审计行、不同步 staging.tsv（校验输出与 PASS n 语义零变）。
+    种子库=冻结资产（R7），运行时审计（R8 追加式 log/staging 状态机）只落运行时
+    库；出口判定命令（lint --knowledge-dir knowledge）由此可就地安全执行。"""
+    frozen = os.path.abspath(kdir) == repo_seed_root()
     if not ts or not TSV_TS.match(ts):
         if today and TSV_TS.match(today + "T00:00:00Z"):
             ts = today + "T00:00:00Z"
@@ -437,8 +442,9 @@ def lint(kdir, ts, today=None, freshness_days=180):
             if not ok:
                 fails += 1
                 print("FAIL %s: %s" % ((fm or {}).get("id", fn), "; ".join(problems)))
-            _append_log(kdir, ts, "lint", str((fm or {}).get("id", fn)),
-                        "pass" if ok else "fail=%d" % len(problems))
+            if not frozen:
+                _append_log(kdir, ts, "lint", str((fm or {}).get("id", fn)),
+                            "pass" if ok else "fail=%d" % len(problems))
             if fm is not None:
                 results.append((rel, path_md, ok, fm))
                 k = dedup_key(str(fm.get("kind", "")), str(fm.get("vuln_class", "")),
@@ -528,7 +534,8 @@ def lint(kdir, ts, today=None, freshness_days=180):
                 print("WARN stale: %s last_verified=%s 距 %s %d 天 > %d"
                       "（保鲜告警不判 FAIL；match [stale] 降权联动 R11）"
                       % (str(fm.get("id", "")) or rel, lv, today, age, fd))
-    _stage_sync(kdir, ts, results, staged_rows)
+    if not frozen:
+        _stage_sync(kdir, ts, results, staged_rows)
     if fails:
         print("FAIL checked=%d failed_groups=%d" % (checked, fails))
         return 1
@@ -801,7 +808,10 @@ def _match_rows(kdir, client, asset, today):
 def match(kdir, client, asset, today):
     """先例三元组匹配：client 全等 ∧ scope_asset 含 asset 指纹（分号多值任一子串）
     ∧ window 覆盖 today（start≤today≤end；过期不命中并标注 [expired]）；
-    [stale]=R11 降权标注。--today 必填（G-34 禁墙钟）。"""
+    [stale]=R11 降权标注。--client/--today 必填（三元组键①/G-34 禁墙钟；
+    缺 --client 改前静默 matched=0——批次 5 评审 M-3 改用法错误 exit 2）。"""
+    if not client:
+        raise KnowledgeError("--client 必填（三元组键①；缺省静默零命中=用法错误）")
     if not today:
         raise KnowledgeError("--today 必填（G-34：窗口判定基准日显式传入）")
     try:
