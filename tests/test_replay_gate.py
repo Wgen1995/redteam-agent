@@ -99,7 +99,7 @@ class TestReplayGate(unittest.TestCase):
         self.assertEqual(v3["verdict"], "env-diff")
         # 三态落账（P4 子代理据此调用；本测试直接执行建议命令）
         for ev, st in ((self.evs[0], "VERIFIED"), (self.evs[1], "REJECTED"), (self.evs[2], "REPAIRED")):
-            r = self.call("set-replay-state", "--id=" + ev, "--state=" + st)
+            r = self.call("set-replay-state", "--id=" + ev, "--state=" + st, "--timestamp=" + TS)
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         r = self.call("ledger-replay-summary")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)

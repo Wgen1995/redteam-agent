@@ -117,3 +117,7 @@
 - 契约①（01-ledger-schema.md）§3.3 intents.tsv **15→17 字段一次重铸**（G-24 priority+G-27 cred 合笔——只付一次夹具/金样重铸成本）：priority=派发优先级分物理列（0-1 可空，公式=§8.7 勘误冻结，tanyin-knowledge score 产出经 add-intent --priority 回填）；cred=凭据绑定物理列（任意 kind 非空即写前引用闭合，authz-diff 必填硬门保留）。批4 T14「物理列随批次 5 落」承诺兑现。
 - 契约 02a（02a-command-signatures-draft.md）§3 add-intent 参数表/拒收条件/输出行同步（--priority 落列+--cred 落列与任意 kind 闭合+回显 17 字段）。
 - 两笔均微版本勘误通道，schema_version 保持 =2 不递增；schemas.json intents.tsv 数组 17 项与契约 01 同步；夹具（G-g1/diff-authz）与金样一次重铸（变更面逐一归因两新列）。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T4/G-23）
+
+- 契约 02a（02a-command-signatures-draft.md）§36 set-replay-state 一笔：`--timestamp`（ISO8601）**必填**（缺/空=用法错误 exit 2）——timeline 重放事件行与 findings 联动行 created 取参数时间戳，命令路径 `_now()` 墙钟两处退役（G-23 转正；6d3a033 直写绕道同步退役，diff-authz 夹具重放事件行改 CLI --timestamp 铸）。微版本勘误通道，schema_version 保持 =2 不递增。

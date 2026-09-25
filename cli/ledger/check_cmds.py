@@ -8,7 +8,7 @@ ledger-terminal-gate，02a 终审补全节【推导转正】）。
 （落账命令归校验组，02 §3 行 6）拒收=stderr 单行 REJECT＋exit 1；
 用法/环境错误 exit 2。参数本批仅 --key=value／旗标。
 """
-import datetime, math, os, re
+import math, os, re   # datetime 退役（G-23 批次5 T4：_now() 墙钟删除，时间戳一律参数）
 
 from . import core
 from . import state_md
@@ -23,10 +23,6 @@ REPLAY_EVENT = re.compile(r"^replay:((?:EV|FD)-[^:\s]+):(VERIFIED|REPAIRED|REJEC
 MAX_RETRY = 2          # §5.2 back_edges max_retry=2
 BATCH_SET_CELLS = 5    # 【推导】批量置态告警阈值：单 intent 置态格数>5 且超其 fact 数
 DEFAULT_SAMPLE = 0.2   # §5.2 常量 p4_sample_ratio=0.2
-
-
-def _now():
-    return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _chain_fail(s):
@@ -187,10 +183,10 @@ _EXPLOIT_MAP = {"VERIFIED": "verified", "REPAIRED": "verified", "REJECTED": "sus
 # 非 ruled_out——ruled_out 配 ➖🛑，见完工报告探知项）
 
 
-def _append_timeline(s, goal_dir, event, actor="CLI", phase="P4", revert="", ts=None):
+def _append_timeline(s, goal_dir, event, ts, actor="CLI", phase="P4", revert=""):
+    # G-23 转正（批次5 T4）：ts 必填位置参数——墙钟缺省通道退役，时间戳一律来自命令参数
     rows = [list(r) for r in s.rows("timeline.tsv")]
     prev = rows[-1][_idx("timeline.tsv", "hash")] if rows else core.GENESIS
-    ts = ts or _now()
     wo = [ts, actor, phase, event, revert, prev, "2"]
     h = core.row_hash(prev, wo)
     rows.append([ts, actor, phase, event, revert, prev, h, "2"])
@@ -202,8 +198,13 @@ def _append_timeline(s, goal_dir, event, actor="CLI", phase="P4", revert="", ts=
 def h_set_replay_state(goal_dir, rest):
     import sys
     args, pos = parse_kv(rest)
-    if pos or set(args) - {"id", "state", "note"} or "id" not in args or "state" not in args:
-        raise UsageError("set-replay-state --id=<EV|FD id> --state=<三态> [--note=<附注>]")
+    if pos or set(args) - {"id", "state", "note", "timestamp"} \
+            or "id" not in args or "state" not in args \
+            or not args.get("timestamp"):
+        # G-23 转正（批次5 T4）：--timestamp 必填（缺/空=用法错误 exit 2），墙钟退役
+        raise UsageError("set-replay-state --id=<EV|FD id> --state=<三态> "
+                         "--timestamp=ISO8601 [--note=<附注>]")
+    ts = args["timestamp"]
     rid, state = args["id"], args["state"]
     s = core.Session(goal_dir)
 
@@ -236,7 +237,7 @@ def h_set_replay_state(goal_dir, rest):
         return reject("REPAIRED 重试计数 %d≥max_retry=%d" % (retries, MAX_RETRY))
 
     ev = "replay:%s:%s" % (rid, state) + ((" note=" + args["note"]) if args.get("note") else "")
-    tl_row = _append_timeline(s, goal_dir, ev)
+    tl_row = _append_timeline(s, goal_dir, ev, ts)
     fd_row = None
     if target_fd:
         rows = [list(r) for r in s.rows("findings.tsv")]
@@ -250,7 +251,7 @@ def h_set_replay_state(goal_dir, rest):
         new[_idx("findings.tsv", "exploitation_status")] = _EXPLOIT_MAP[state]
         if state == "REJECTED" and new[_idx("findings.tsv", "confidence")] in ("C1", "C2"):
             new[_idx("findings.tsv", "confidence")] = "C3"  # REJECTED 降 C3（§4.7）
-        new[_idx("findings.tsv", "created")] = _now()
+        new[_idx("findings.tsv", "created")] = ts   # G-23：联动行 created=参数（墙钟退役）
         rows.append(new)
         core.write_tsv(os.path.join(goal_dir, "findings.tsv"), rows)
         fd_row = new

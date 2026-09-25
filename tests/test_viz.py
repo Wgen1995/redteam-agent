@@ -82,8 +82,12 @@ class TestFindingStream(unittest.TestCase):
         shutil.rmtree(self.tmp)
 
     def test_stream_latest_n_pinned_top(self):
-        # 经 CLI 追加一条 中 severity finding（created=TS 晚于夹具两条 高）→
-        # 置顶段=[FD-diff-authz-0001(10:00), FD-g1-0001(空=最旧)]，非置顶段=[新 中]
+        # 经 CLI 追加一条 中 severity finding（created=TS 晚于夹具三条 高）→
+        # R-T4-2（批次5 T4 夹具重铸）：diff-authz 经 set-replay-state --timestamp 铸
+        # VERIFIED 重放事件行后，findings.tsv 多一条合法追加行（FD-diff-authz-0001
+        # created=10:30，VERIFIED→verified 联动）——流投影按行不按 id 去重，随之 3→4 条。
+        # 置顶段=[FD-diff-authz-0001(10:30), FD-diff-authz-0001(10:00), FD-g1-0001(空=最旧)]，
+        # 非置顶段=[新 中(11:00)]
         r = subprocess.run([sys.executable, LEDGER, "add-finding", "--goal-dir", self.gd,
                             "--intent-id=INT-diff-authz-0001", "--title=流投影低危样例",
                             "--confidence=C3", "--impact=中", "--exploitation-status=suspected",
@@ -96,14 +100,14 @@ class TestFindingStream(unittest.TestCase):
         r = data_only(self.gd)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         fs = json.loads(r.stdout)["findings_stream"]
-        self.assertEqual(len(fs["items"]), 3)
+        self.assertEqual(len(fs["items"]), 4)
         for it in fs["items"]:
             for k in ("time", "asset", "type", "severity", "status", "pinned"):
                 self.assertIn(k, it)
-        self.assertEqual([it["pinned"] for it in fs["items"]], [True, True, False],
+        self.assertEqual([it["pinned"] for it in fs["items"]], [True, True, True, False],
                          "high/critical 置顶段在前、其余在后")
         self.assertEqual(fs["items"][0]["id"], "FD-diff-authz-0001", "置顶段内按新近排序")
-        self.assertEqual(fs["items"][2]["severity"], "中")
+        self.assertEqual(fs["items"][3]["severity"], "中")
         self.assertTrue(fs["pinned_high"] >= 2, "置顶计数")
         # 确定性：双跑 --data-only 字节一致
         r2 = data_only(self.gd)

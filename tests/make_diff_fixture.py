@@ -9,10 +9,9 @@ pair_group 列现序+1 铸（next-id 只扫 id 列，对 PG 前缀恒返 0001 �
 ③对照组 EV 经 --linked-finding 回链 finding（add-finding 先验 EV 存在、add-evidence
 后验 finding 存在——先铸实验组 EV→finding→对照组 EV 回链，scorer 取 evidence_ids∪回链并集）；
 ④creds 用 kind=static-cred（kind=session 须 parent_cred——计划 STEPS 未带，static-cred
-语义等价且 role 覆盖投影不依赖 kind）；⑤P4 完备化（批次 4 评审收尾）：双 EV 补
-VERIFIED 重放事件行——G-23 绕道：set-replay-state 无 --timestamp 通道（_now() 墙钟
-禁入夹具），按 core.row_hash 直写链式事件行（引用闭合由铸造序保证；run_golden
-prep_engine 直写先例）；G-23 清账后回 CLI 通道。"""
+语义等价且 role 覆盖投影不依赖 kind）；⑤P4 完备化（批次 4 评审收尾，批次 5 T4 转正）：
+双 EV 补 VERIFIED 重放事件行——G-23 墙钟绕道（core.row_hash 直写）已退役，改经
+set-replay-state --timestamp CLI 通道铸造（裁决 E：参数通道转正）。"""
 import json, os, re, shutil, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -68,20 +67,13 @@ TS2 = "2026-09-24T10:30:00Z"   # ⑤重放事件行时间戳（确定性，晚�
 
 
 def stamp_replays(ev_ids):
-    """P4 完备化：双 EV 落 replay:<id>:VERIFIED 链式事件行（ledger-replay-summary
-    断言前提——C2 finding 证据并集须含已重放 EV）。G-23 墙钟绕道见模块 docstring⑤。"""
-    sys.path.insert(0, os.path.join(ROOT, "cli"))
-    from ledger import core as ledger_core
-    p = os.path.join(DST, "timeline.tsv")
-    rows = [l.split(chr(9)) for l in open(p, encoding="utf-8").read().splitlines() if l]
-    prev = rows[-1][6]
+    """P4 完备化：双 EV 落 replay:<id>:VERIFIED 重放事件行（ledger-replay-summary
+    断言前提——C2 finding 证据并集须含已重放 EV）。G-23 转正（批次5 T4）：改经 CLI
+    set-replay-state --timestamp 铸造（直写 row_hash 绕道退役）；联动行（linked EV 的
+    findings 追加行 exploitation_status=verified/created=TS2）由命令语义自带。"""
     for ev_id in ev_ids:
-        wo = [TS2, "子代理", "P4", "replay:%s:VERIFIED" % ev_id, "", prev, "2"]
-        h = ledger_core.row_hash(prev, wo)
-        rows.append(wo[:6] + [h] + [wo[6]])
-        prev = h
-    with open(p, "w", encoding="utf-8", newline="\n") as f:
-        f.write(chr(10).join(chr(9).join(r) for r in rows) + chr(10))
+        call("set-replay-state", "--id=" + ev_id, "--state=VERIFIED",
+             "--timestamp=" + TS2)
 
 
 def main():

@@ -415,7 +415,7 @@ class CheckCommands(Base):
         r = self.cli("ledger-replay-summary")
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)  # C1 未重放
         self.assertIn("FD-g1-0001", r.stdout)
-        self.cli("set-replay-state", "--id=FD-g1-0001", "--state=VERIFIED")
+        self.cli("set-replay-state", "--id=FD-g1-0001", "--state=VERIFIED", "--timestamp=2026-09-24T09:15:00Z")
         r = self.cli("ledger-replay-summary")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("verified=1", r.stdout.splitlines()[0])
@@ -443,7 +443,7 @@ class CheckCommands(Base):
 
 class SetReplayState(Base):
     def test_verified_writes_and_chain_alive(self):
-        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=VERIFIED")
+        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=VERIFIED", "--timestamp=2026-09-24T09:15:00Z")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(r.stdout.splitlines()[0], "OK" + chr(9) + "replay:FD-g1-0001:VERIFIED")
         frows = self.rows("findings.tsv")
@@ -461,34 +461,34 @@ class SetReplayState(Base):
         rows = self.rows("findings.tsv")
         rows[0][T["findings.tsv"].index("confidence")] = "C1"
         self.write("findings.tsv", rows)
-        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=REJECTED")
+        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=REJECTED", "--timestamp=2026-09-24T09:15:00Z")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         latest = self.rows("findings.tsv")[-1]
         self.assertEqual(latest[T["findings.tsv"].index("confidence")], "C3")  # 降 C3
         self.assertEqual(latest[T["findings.tsv"].index("exploitation_status")], "suspected")
 
     def test_ev_replay_via_linked_finding(self):
-        r = self.cli("set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED")
+        r = self.cli("set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED", "--timestamp=2026-09-24T09:15:00Z")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(len(self.rows("findings.tsv")), 1)  # 无 linked_finding 不联动
         rows = self.rows("E-index.tsv")
         rows[0][T["E-index.tsv"].index("linked_finding")] = "FD-g1-0001"
         self.write("E-index.tsv", rows)
-        r = self.cli("set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED")
+        r = self.cli("set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED", "--timestamp=2026-09-24T09:15:00Z")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(len(self.rows("findings.tsv")), 2)
 
     def test_rejects(self):
-        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=NOPE")
+        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=NOPE", "--timestamp=2026-09-24T09:15:00Z")
         self.assertEqual(r.returncode, 1)
         self.assertIn("REJECT", r.stderr)
-        r = self.cli("set-replay-state", "--id=FD-g1-9999", "--state=VERIFIED")
+        r = self.cli("set-replay-state", "--id=FD-g1-9999", "--state=VERIFIED", "--timestamp=2026-09-24T09:15:00Z")
         self.assertEqual(r.returncode, 1)
         self.assertIn("REJECT", r.stderr)
         for _ in range(2):
-            r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=REPAIRED")
+            r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=REPAIRED", "--timestamp=2026-09-24T09:15:00Z")
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=REPAIRED")
+        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=REPAIRED", "--timestamp=2026-09-24T09:15:00Z")
         self.assertEqual(r.returncode, 1)  # 重试计数>max_retry=2
         self.assertIn("REJECT", r.stderr)
 

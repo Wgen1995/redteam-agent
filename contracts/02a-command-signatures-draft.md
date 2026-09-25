@@ -592,19 +592,20 @@
 - 依据：定稿 §4.1 journal 职能/§5.2 P0 entry（resume 态判定）/§9.2（kill -9 续跑保真度指标）／契约01 §1。时机：P0 entry（恢复会话）；断电/kill -9 恢复协议。
 
 ### 36. set-replay-state（ledger-set-replay-state）【专用六条之一】〔校验 6/6〕
-- 签名：set-replay-state --id=<E-index.id｜findings.id> --state=<三态> [--note=<附注>]【推导：--id 取重放对象（EV 卡片盲重放→E-index.id；finding 级处置→findings.id）；--state∈{VERIFIED,REPAIRED,REJECTED}；--note 落 timeline.event 附注——三态无 142 字段直接对应列，见文末无法起草项 4】
+- 签名：set-replay-state --id=<E-index.id｜findings.id> --state=<三态> --timestamp=ISO8601 [--note=<附注>]【推导：--id 取重放对象（EV 卡片盲重放→E-index.id；finding 级处置→findings.id）；--state∈{VERIFIED,REPAIRED,REJECTED}；--timestamp 必填随批次 5 T4 勘误增（G-23）；--note 落 timeline.event 附注——三态无 142 字段直接对应列，见文末无法起草项 4】
 - 参数：
 
 |参数|类型|必填|取自表.字段|
 |---|---|---|---|
 |--id|文本(行 id 引用)|是|E-index.id（重放对象 POC）／findings.id（处置对象）【推导】|
 |--state|枚举|是|【推导】（VERIFIED/REPAIRED/REJECTED，定稿载三态；无对应表列）|
+|--timestamp|文本(ISO8601)|是|timeline.timestamp＋findings.created（联动行）——批次 5 T4 勘误增（G-23 墙钟退役）|
 |--note|文本|否|timeline.event 附注【推导】|
 |（联动写）exploitation_status|枚举|命令联动|findings.exploitation_status（VERIFIED→verified 才维持 C1；REJECTED→ruled_out/suspected）【推导：§4.7「由 P4 重放门维护」】|
 |（联动写）confidence|枚举|命令联动|findings.confidence（REJECTED→降 C3 或转 fact）【推导】|
 
 - 输出：`OK<TAB>replay:<id>:<state>`＋timeline 事件回显＋受影响 findings 联动行【推导】。
-- 拒收条件（落账命令，归类校验组但具备写语义）：--id 引用闭合失败=REJECT；state∉三态=REJECT；同一 --id 重放=REPAIRED 的重试计数>max_retry=2=REJECT【推导：§5.2 back_edges max_retry】。
+- 拒收条件（落账命令，归类校验组但具备写语义）：--id 引用闭合失败=REJECT；state∉三态=REJECT；缺/空 --timestamp=用法错误 exit 2【批次 5 T4 勘误（G-23）】；同一 --id 重放=REPAIRED 的重试计数>max_retry=2=REJECT【推导：§5.2 back_edges max_retry】。
 - 依据：定稿 §5.3/§5.2 P4 duty（批次 4 起强制：fresh 隔离子代理只拿 EV 卡片盲重放）+back_edges（REPAIRED=修复 POC 卡片后重放）/§4.7／契约01 §3.9+§3.5+§3.11。时机：P4 重放门。
 
 ## 4 特殊（1 条，§5.3）〔第 37 节〕
@@ -714,3 +715,7 @@
 ## v2 勘误补记（2026-09-24·批次 5 施工期·T3/G-24+G-27 落列）
 
 §3 add-intent 参数表与拒收条件三笔：①增可选 `--priority`（0-1 浮点校验，落 intents.priority 物理列——总控把 tanyin-knowledge score 产出回填落账，算分与落账分离但都可审计）；②`--cred` 值改落 intents.cred 物理列（第 17 列，detail 不再附注），任意 kind 下 cred 非空都走引用闭合校验（不分 kind，写前拒收），kind=authz-diff 必填硬门原样保留；③追加行回显 15→17 字段。微版本勘误通道（intents.tsv 15→17 一次重铸，G-24+G-27 合笔，零存量数据期先例），schema_version 保持 =2 不递增。落地=批次 5 T3；字段语义详见契约 01 §3.3+文末同名勘误补记。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T4/G-23 转正）
+
+§36 set-replay-state 增 `--timestamp`（文本 ISO8601）**必填**（缺/空=用法错误 exit 2）：timeline 重放事件行与 findings 联动行 created 一律取参数时间戳，命令路径 `_now()` 墙钟两处退役（评审收尾 6d3a033「core.row_hash 直写」过渡手法随本勘误转正为参数通道——diff-authz 夹具重放事件行改由 --timestamp 铸；checkpoint --timestamp 批3 G-10 先例同型）。微版本勘误通道，schema_version 保持 =2 不递增。落地=批次 5 T4。
