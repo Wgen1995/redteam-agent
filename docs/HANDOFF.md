@@ -365,3 +365,7 @@
   - R-RC-3（fail-closed 形式统一）：「不过=blocked」契约语义下一切验签前置失败不得裸抛崩溃（exit 1）——sig 非 hex 于 verify_entry 内 fromhex 前判定返回失败对（模块层单源，调用方免 try）；load_lock 解析错保持 ValueError 解析不变式，由 adapter.verify 捕获适配为失败对（库不变式与适配器 blocked 语义分层——两条路都收敛 blocked exit 0）。
   - R-RC-4（金样 recheck 面形态）：diff-hash-recheck 面走 fresh_of 夹具副本+run_engine 命令形（REPLAY_CMDS 先例）而非 READ_CMDS（后者钉 G-g1 夹具）；输出 PASS 行无墙钟免归一；PASS 汇总行独立「recheck 面」分类（计面口径不与读面混淆）。
   - R-RC-5（README 计数同步）：三处 41→44 按契约 44 命令面同源刷新（行 46 run_golden 注明 21+20+3 构成——graph 三面自 T7 前置起在册，41 为批 1 期陈旧值）；金样面 50→51 为本批变更自身引入的同步（评审仅点名三处 41，面数行不同步即成新陈旧计数）。
+
+## 2026-09-24 批次 5 开工（executing via subagent-driven-development）
+- 用户批准计划 docs/superpowers/plans/2026-09-24-b5-knowledge-flywheel.md（19 任务/出口 10 条/六探知项裁决+R7-R14+G-29..G-35）｜commit 904d153
+- 执行结构：按域捆绑派发（T1+T2 契约→账本三小件/图/骨架/反向验证并行组→流水线链→语料入库→eval→T19 收口），每任务 TDD+全量回归，收口后整支评审
