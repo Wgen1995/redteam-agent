@@ -1701,3 +1701,140 @@ class TestWriteAll(unittest.TestCase):
 - [ ] **Step 4: 端到端亲测** —— `py -3 cli/tanyin-report sign --goal-dir tests/fixtures/G-g1 --timestamp <TS>` rc==0；三工件在；双工件 `json.load` 合法。
 - [ ] **Step 5: 全套三连+Commit** —— `git commit -m "批次6 T15：双工件+叙述过滤+合规六要素签发面（契约 13 兑现；R11 过审对象成形）"`
 
+### Task 16: 授权靶场种 20 + 检出率 eval（裁决 I）
+
+**Files:**
+- Create: `tests/range/docker-compose.yml`（靶场拓扑：8 漏洞服务容器+1 攻击侧 noop；仅监听 compose 内网+127.0.0.1 映射）
+- Create: `tests/range/seed/`（种 20 漏洞服务源码——每服务单目录 Python http.server 实现，漏洞响应内嵌唯一 marker 串如 `GTSQLI-01`）
+- Create: `tests/range/ground-truth.json`（20 条 GT：{id,class,endpoint,marker,post_auth,authz_role}；分布=SQLi×2/XSS×2/命令注入×1/SSTI×1/SSRF×2/反序列化×2/CORS×1/开放重定向×1/目录遍历×1/认证后越权 5（IDOR×2+水平越权 API×2+角色混淆×1，authz_role 非空）+弱口令×1+信息泄露×1）
+- Create: `tests/eval_range_recall.py`（scorer；eval_authz_recall 匹配规则泛化复用）
+- Modify: `cli/ledger/evals_metrics.py`（注册 `range-recall` runner=M09）
+- Test: `tests/test_range_recall.py`
+
+**Interfaces:**
+- Consumes: tests/eval_authz_recall.py 匹配规则（EV matcher words 含 marker+资产值==endpoint+负对 authz fact）；`tanyin-ledger` 命令面铸造 range 会话
+- Produces:
+  - `eval_range_recall.score(session_rows, cards, gt: list[dict]) -> tuple[float, list[str]]`——返回 (recall=命中/20, MISSING id 清单)；GT 命中判定=active finding 的 EV 卡 word matcher 含该条 marker 且 affected 资产==endpoint；post_auth 条目另须 finding kind=authz 或 cred 绑定链在
+  - CLI：`python tests/eval_range_recall.py --session <D> --ground-truth tests/range/ground-truth.json [--baseline 0.85]`——exit 0=recall≥baseline；1=低于；2=docker 缺（`shutil.which("docker")` None 且无 --session 现成会话时）
+
+- [ ] **Step 1: 写失败测试（scorer 夹具级先红——不依赖 docker）**
+
+```python
+# tests/test_range_recall.py
+class TestScorer(unittest.TestCase):
+    def test_gt_shape_twenty(self):
+        gt = json.load(open(os.path.join(HERE, "range", "ground-truth.json"), encoding="utf-8"))
+        self.assertEqual(len(gt), 20)
+        post = [g for g in gt if g["post_auth"]]
+        self.assertGreaterEqual(len(post), 5)          # 认证后 ≥5 服务身份矩阵（设计 §9.4）
+        self.assertEqual(len({g["marker"] for g in gt}), 20)   # marker 全局唯一
+    def test_scorer_perfect_fixture(self):
+        # 夹具会话（复用 diff-authz 卡片铸造法）内铸 3 命中+1 未命中 → recall=3/4 且 MISSING 含未命中 id
+    def test_post_auth_requires_authz_chain(self):
+        # 命中 marker 但无 authz 链的 post_auth 条目不计命中（负向断言）
+    def test_cli_exit_codes(self):
+        # --baseline 超过实测→1；docker 缺且无 --session→2
+```
+
+- [ ] **Step 2: 跑红 → Step 3: 实现 scorer+compose+seed** —— compose 语法自检步（`docker compose config`，docker 缺=skip 并记录）；seed 每服务 ~30 行 http.server+漏洞路由+marker 内嵌（全部合成 payload，无真实攻击代码外溢——靶场=本地回环资产）。
+- [ ] **Step 4: 首跑入册（基线 v1，裁决 I）** —— 本地起 compose→按 RUNBOOK（Task 17 交付）跑干→scorer 实测 recall→实测值+日期写入契约 15 §3 M09 基线行（`collect-first`→数值，微版本勘误）——此后回退即 fail。环境不可跑=基线保持 collect-first+台账 G-39 登记（不造数据）。
+- [ ] **Step 5: 全套三连+Commit** —— `git commit -m "批次6 T16：授权靶场种 20+检出率 scorer（基线 v1 入册通道）"`
+
+### Task 17: budget-exhausted 演练（终态 B）+ 全流程 RUNBOOK
+
+**Files:**
+- Create: `tests/range/RUNBOOK.md`（P0→P6 全流程命令序：add-goal 八问→scope→egress compile→canary deploy→P0..P6 门序→engine 提交→replay→sign；每步带判定命令与预期 rc）
+- Modify: `cli/ledger/report_lint.py`（sign_gate 终态 B 分支：`budget_terminal=exhausted` 非 FAIL——但 `limits` 投影必须含未测矩阵格清单+中期披露声明，缺=1）
+- Test: `tests/test_budget_exhausted.py`
+
+**Interfaces:**
+- Consumes: `tanyin-budgetctl enforce`（预算树限额拒绝，批次 2 面）；Task 12 `budget_terminal` 投影；Task 14 sign_gate
+- Produces:
+  - 终态 B 语义（进契约 13 勘误）：budget-exhausted=合法签发终态，报告强制含「中期报告声明+未测范围披露清单」（gaps 逐格列出）——诚实覆盖口径（铁律 3）
+  - RUNBOOK=靶场全流程演练唯一剧本（含 budget-exhausted 演练支线：中期抽干预算→引擎停→中期报告签发 rc==0）
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_budget_exhausted.py
+class TestTerminalB(unittest.TestCase):
+    def test_exhausted_passes_gate_with_disclosure(self):
+        gd = self._copy_g1_with_budget_exhausted()      # CLI 铸造：budgetctl enforce 至耗尽+timeline 事件
+        rc, rep = report_lint.sign_gate(gd, TS)
+        self.assertEqual(rc, 0, rep)                    # 终态 B 可签发
+        md = self._signed_report(gd)
+        self.assertIn("中期报告", md)
+        self.assertIn("未测范围披露", md)
+    def test_exhausted_without_disclosure_fails(self):
+        gd = self._copy_g1_with_budget_exhausted()
+        _strip_limits_projection(gd)                    # 反例：抽掉披露数据
+        self.assertEqual(report_lint.sign_gate(gd, TS)[0], 1)
+    def test_budget_reject_event_in_timeline(self):
+        # 预算超限 REJECT 落账断言（既有 budgetctl 面复核——终态 B 的前置证据链）
+```
+
+- [ ] **Step 2: 跑红 → Step 3: 实现 sign_gate 终态 B 分支+RUNBOOK** —— sign_gate 读 aggregate.budget_terminal；exhausted 分支强制校验 limits.gaps 非空断言+中期声明段；RUNBOOK 十一步命令序全文（含 budget-exhausted 支线四步）。
+- [ ] **Step 4: 演练亲测** —— RUNBOOK 前四步（P0-P2 干跑段）在 G-g1 拷贝上逐条实跑记录 rc；P3-P6 段标注「须 range 活靶+LLM 在环=执行期演练」并按 ENV 披露（docker 缺=演练挂起入台账，不阻塞单测出口）。
+- [ ] **Step 5: 全套三连+Commit** —— `git commit -m "批次6 T17：budget-exhausted 终态 B+全流程 RUNBOOK"`
+
+### Task 18: 真人复核流程文档化 + 台账收口 + 契约勘误 + 交付文档
+
+**Files:**
+- Create: `docs/HUMAN-REVIEW.md`（真人复核流程：范围/判据/记录格式/争议升级）
+- Create: `docs/design/2026-09-24-b6-discovery-notes.md`（批次 6 台账：计划原文誊录+状态归并+新 G 项登记+移交清单四节式——沿 b3/b4/b5 同构）
+- Modify: `docs/HANDOFF.md`（批次 6 前置义务兑现行+R11 法务过审记录行+状态快照）
+- Modify: `contracts/09-cli-surface.md`（勘误：工具面 11→15——+evals/install/selfcheck/report；canary probe `--egress-log` 注记）
+- Modify: `cli/README.md`（批次 6 节：四新工具速查+安装矩阵用法+出口验证记录）
+- Test: `tests/test_human_review_doc.py`（文档契约测试：结构+必填字段在场）
+
+**Interfaces:**
+- Consumes: 全前序任务交付面；批次 5 M-6 前置义务原文（在库 10 页=CP-0001..0008+PR-0001..0002）
+- Produces:
+  - 真人复核记录表（`docs/HUMAN-REVIEW.md` 附录）：每页一行 {page-id, 复核人(真人≠执行者), 结论(approve/reject/revise), 日期, 备注}——10 行全填=批次 6 出口项 #15
+  - 台账新 G 项登记（G-36..G-41，见 Step 4 清单）
+
+- [ ] **Step 1: 写失败测试（文档即契约）**
+
+```python
+# tests/test_human_review_doc.py
+class TestHumanReviewDoc(unittest.TestCase):
+    def test_ten_pages_listed_with_columns(self):
+        txt = open(os.path.join(REPO, "docs", "HUMAN-REVIEW.md"), encoding="utf-8").read()
+        for pg in ("CP-0001", "CP-0008", "PR-0001", "PR-0002"):
+            self.assertIn(pg, txt)
+        for col in ("复核人", "结论", "日期"):
+            self.assertIn(col, txt)
+        self.assertIn("复核人不得为本批次执行者", txt)     # 真人≠执行者纪律成文
+    def test_discovery_notes_structure(self):
+        txt = open(os.path.join(REPO, "docs", "design", "2026-09-24-b6-discovery-notes.md"), encoding="utf-8").read()
+        for sec in ("计划原文誊录", "状态归并台账", "新增探知项", "移交清单"):
+            self.assertIn(sec, txt)
+        for g in ("G-22", "G-25", "G-32", "G-33", "G-5", "G-11", "G-36"):
+            self.assertIn(g, txt)
+```
+
+- [ ] **Step 2: 跑红 → Step 3: 写 HUMAN-REVIEW.md+复核表** —— 流程四节：①范围（在库 10 页+批次 6 新增知识页）②判据（review-checklist 逐项+四门槛③人审门同口径）③记录（附录表+knowledge/log.md 复核行追加纪律）④争议升级（reject→staging 退回重蒸馏→再复核）。
+- [ ] **Step 4: 台账 b6 四节落盘** —— G-22（已收口=流程+脚本交付，仪式留 KEY-MANAGEMENT 执行记录位）/G-25（已收口=裁决 B+T14）/G-32（已收口=T9 双通道）/G-33（已收口=T2 硬门）/G-5（已收口=T7）/G-11（半收口=通道+报告交付，系数回写遗留→G-37）/G-4（遗留→契约 v3 同批）。新增探知项：G-36（HTTP/2 二进制帧与 TLS 直贴渲染——判读说明通道临时态，待真帧样本）、G-37（token 估算系数按校准报告回写契约 v3）、G-38（walcode/CodeBuddy 实测回传后升档）、G-39（靶场检出率基线 v1 冻结与转硬门时点）、G-40（TSecBench 全量对齐=发布前 L3）、G-41（egress 代理并发/性能上限未测——机械执法非性能件披露）。
+- [ ] **Step 5: 契约 09 勘误+cli/README 批次 6 节+HANDOFF 三行**（前置义务兑现/R11 过审记录行——法务人工过审 sign 生成器样张一次并将结论一行入账/状态快照批次 6 行）。
+- [ ] **Step 6: 跑绿+全套三连+Commit** —— `git commit -m "批次6 T18：真人复核流程+台账收口 G-36..G-41+契约 09 勘误+交付文档"`
+
+---
+
+# 批次 6 收尾三件（任务 18 后执行）
+
+## 一、writing-plans 自检对照（spec 覆盖核验——执行完毕后逐条勾）
+- §9.1 L1 金样 CI→既有 ci.yml（T4 保留）；§9.2 L2 全 11 行指标→契约 15 §3 十二指标映射表逐行核对（M01..M12 覆盖 §9.2 全行+G-33 增行）；§9.3 L3→T3 脚手架（不阻塞）；§9.4 靶场+抽查→T16/T17+批次 5 双库抽查既有面
+- §10.1 六步→T5；§10.2 五宿主→T5 模板+T8；§10.3 盲区→T6 guided+T8 标注
+- §11 批次 6 行逐短语→三层 CI（T1-4）/安装矩阵（T5/6/8）/tools.lock 全量（T9）/交战区分离（T5/6）/报告流水线（T12-15）/授权靶场（T16/17）；出口验收三句→出口清单 #7/#13/#14+#17
+- §12 R8（盲区披露）/R9（降档不阻塞安装）/R10（canary 误报校准=T11）/R11（法务过审=T18）各有着落
+- 占位符扫描：全文无 TBD/「后续补充」；代码骨架中 `...` 段为执行期展开点且每处带意图注释——执行工程师按注释即可实现
+- 类型一致性抽查：`run_suite` 返回 (int, dict)（T1 定义=T3/T4 使用）；`sign_gate` 返回 (int, dict)（T14 定义=T17 使用）；`aggregate` 键集（T12 定义=T13/14/15/17 消费）——三处签名逐一比对无漂移
+
+## 二、整批出口验收清单执行记录（对照骨架清单 #1-#18 逐条跑判定命令，结果入 HANDOFF 状态快照行）
+
+## 三、最终账本动作
+```bash
+git add -A && git commit -m "批次6实施计划——evals+安装矩阵+交付：18 任务全量（三层验收 CI 化/tanyin-install 六步+五宿主/tools.lock 全量+G-22 生产钥/交战区分离/报告流水线 FD 九段+Burp lint+双工件/Tier3 代理本体+canary 流量级/靶场种 20+budget-exhausted/真人复核+G 项收口 G-36..G-41 登记；沿 writing-plans 规范：文件结构图/每任务 Files+Interfaces+TDD 红绿步+判定命令/出口验收 18 项附判定命令）"
+git push origin HEAD
+```
+
