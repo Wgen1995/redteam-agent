@@ -129,3 +129,7 @@ front-matter 11 字段（六字段以①–⑥标注，映射见 §6）：
 ## v2 勘误补记（2026-09-24·批次 4 施工期·T4/R1 裁决）
 
 - §4 POC 四要素之 `expected` 子集 v1 冻结（探知项 G-17 清账，R1 裁决原文）：`expected.matchers` 仅 `{type: word, words[], condition: or|and}`（condition 可省，**默认 and**）与 `{type: status, status[]}`；`expected.extractors` 仅 `{type: regex, name, regex[]}`（评估取 regex[0]：有捕获组取组 1，无捕获组取整体匹配）。多 matcher 语义＝**全部命中**（AND）；type 不在子集＝**REJECT**（fail-closed——评估器 raise MatcherError，由调用方转 REJECT）；`expected` 缺失或空＝**manual**（无 matcher 无法机械判定，人工）。评估单一实现＝cli/ledger/matchers.py（T5 重放三态判定消费）；EV 卡片 front-matter 解析＝cli/ledger/cards.py（复用 phases_engine 受限 YAML 子集；§4.11 同值性校验＝cards.check_consistency，执法点=重放前校验——G-16：validate 集成不动）。微版本勘误，不升 schema_version。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T2/G-16 结案）
+
+- G-16 结案——EV 卡片↔E-index 同值性执法**维持 replay 侧单点**（cards.check_consistency，执法点=重放前校验；498d8c2 在册）；validate --with-cards 不增（遍历交战区 card_path 成本>收益，单点已闭环）——上则 R1 注「G-16：validate 集成不动」就此结案。微版本勘误，不升 schema_version，索引见 contracts/README.md。

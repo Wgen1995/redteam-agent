@@ -103,3 +103,11 @@
 
 - 契约清单增补批次间接口⑰=**14-knowledge-schema.md**（知识库 schema：六类页 front-matter 全集/先例三元组/staging 状态机/四门槛/CLIENT-NN/graph.ndjson 行 schema/ID 前缀表/词表版本化/许可纪律）——「冻结范围注记：知识库契约留批次 5 冻结」就位兑现；新建文件，非定稿接口变更。
 - 契约⑨（09-cli-surface.md）工具面 11→**12**：增补第 12 工具 tanyin-knowledge（知识库机械运算 13 子命令；R7 裁决，允许类=「确定性账本运算」同型，G-1 10→11 先例同通道）。微版本勘误通道，不升 schema_version——详见该文件文末勘误补记。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T2/契约 v3 首批集中清账）
+
+- 契约 04（04-phases.md）三笔：constants 表增 `authz_diff_pair_cap: 24`（R6/G-20 文档常量回注；代码常量随批次 5 T5 落）+`restart_rate_minutes: 10`（G-3 回注，批次 3 T6 模块常量）——constants 8→10；门断言事件词汇补注 `gate-fail:<门> assert=<cmd 首词> reason=<一句>`（G-7，PROTOCOL §1.3 已冻结）；门 5 · P4 duty 增攻击链落证步注记（G-28 裁决 D，详文随 T8 落 phases/P4.md）。
+- 契约 06（06-evidence-cards.md）一笔：G-16 结案——EV↔E-index 同值性执法维持 replay 侧单点（cards.check_consistency，498d8c2）；validate --with-cards 不增。
+- 契约 07（07-submission.md）一笔：G-19 结案——submission 顶层 perspective 字段不开（147 字段口径外）；视角承载维持 findings[].network_position=same-host 过渡。
+- 契约 09（09-cli-surface.md）一笔：canary/egress 干跑口径补注（G-8 清账）——egress 只 compile、canary 只 deploy 不 probe（PROTOCOL §3 已冻结）。
+- 六笔全部微版本勘误通道，schema_version 保持 =2 不递增；G-23/G-24/G-26/G-27/G-28 五笔代码侧随 T3/T4/T5/T7 各自落账（契约 v3 待办清单第二批）。

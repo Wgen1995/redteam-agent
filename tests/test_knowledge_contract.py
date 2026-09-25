@@ -59,5 +59,28 @@ class TestToolFace12(unittest.TestCase):
     def test_readme_registers_c14(self):
         self.assertIn("14-knowledge-schema", _read(CREADME))
 
+class TestContractV3Sweep(unittest.TestCase):
+    """批次5 T2：契约 v3 首批集中清账六笔的结构钉子（doc-only）。"""
+
+    def test_c04_constants_gain_two(self):
+        t = _read(os.path.join(ROOT, "contracts", "04-phases.md"))
+        self.assertIn("authz_diff_pair_cap", t)   # R6/G-20
+        self.assertIn("restart_rate_minutes", t)  # G-3（批3 T6 常量回注）
+
+    def test_c04_gate_fail_vocab_note(self):
+        t = _read(os.path.join(ROOT, "contracts", "04-phases.md"))
+        self.assertIn("gate-fail:", t)  # G-7 事件词汇补注
+
+    def test_g16_g19_closed_notes(self):
+        # R-T2-1：计划原断言为裸串「G-16」/「G-19」，但两串已在批次 4 勘误注记中
+        # 在册（06-evidence-cards.md R1 注/G-18 注）——裸串断言先绿、无判别力，
+        # 按 TDD「Test passes? Fix test」强化为结案标记；断言意图（结案注记在场）不变。
+        self.assertIn("G-16 结案", _read(os.path.join(ROOT, "contracts", "06-evidence-cards.md")))
+        self.assertIn("G-19 结案", _read(os.path.join(ROOT, "contracts", "07-submission.md")))
+
+    def test_c09_canary_dryrun_note(self):
+        t = _read(C09)
+        self.assertIn("只 compile", t)  # G-8 干跑口径注记（deploy 不 probe）
+
 if __name__ == "__main__":
     unittest.main()

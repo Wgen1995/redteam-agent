@@ -7,7 +7,7 @@
 | 字段 | 类型 | 枚举/约束 | 说明 |
 |---|---|---|---|
 | format_version | int | 定值 `2` | 定稿值 |
-| constants | map | 8 常量，见 §2 | 全局常量；restart_context_threshold 与 storm_score_threshold 是两个不同参数（§2.5） |
+| constants | map | 10 常量，见 §2（8 定稿+批次 5 增 2） | 全局常量；restart_context_threshold 与 storm_score_threshold 是两个不同参数（§2.5） |
 | states | list | `[P0, P1, P2, P3, P4, P5, P5.5, P6.0, P6]`（9 门） | 阶段序列 |
 | initial | string | `P0` | 初始门 |
 | gates | map | 键∈states；见 §3 逐门 | 门定义（门/标题/duty/断言/出口） |
@@ -21,7 +21,7 @@
 - 跳门可检测：每门出口断言的命令调用必产生 timeline 事件，P4 verify-chain+validate 可发现缺门记录；canary/纪律注入测试验证不可绕。
 - 回边显式化：budget-exhausted→P4 降级流、新资产/新凭据→P3 内事件回边、校验失败→halt（人工处置后重评，不静默跳门）。
 
-## 2 constants（8 项）
+## 2 constants（8 项+批次 5 增 2=10 项）
 
 | 常量 | 类型 | 枚举/约束 | 说明 |
 |---|---|---|---|
@@ -33,6 +33,8 @@
 | p4_sample_ratio | float | `0.2` | 「-」「!」格 P4 抽查比例 |
 | single_active_session | bool | `true` | 单活跃会话约束 |
 | budget_dollars_enabled | bool | `false` | $ 第四维默认关（ADR-P4⑥） |
+| authz_diff_pair_cap | int | `24` | 同端点 authz-diff intents 对数上限（R6/G-20；计数键=asset+kind 二元组，status∈{candidate,pending,active}）；代码常量=cli/ledger/write_cmds.py `AUTHZ_DIFF_PAIR_CAP`，add-intent 写前拒收+`--cap=N` 可选覆盖（批次 5 T5 落地，G-3 --rate-minutes 同型） |
+| restart_rate_minutes | int | `10` | 受管重启速率上限（1 次/N 分钟防递归 spawn，G-3）；代码常量=cli/ledger/phases_engine.py `RESTART_RATE_MINUTES = 10`（批次 3 T6 已落地，本笔回注契约） |
 
 ## 3 九门逐门定义（门/标题/duty/断言/出口）
 
@@ -115,7 +117,7 @@ events（事件回边，不离开 P3）：
 |---|---|---|---|
 | title | string | `汇总` | 门标题 |
 | entry | — | 定稿未设 | |
-| duty | string | — | 四校验命令 → finding 合并（supersede+tombstone）→ 「-」「!」抽查 → POC 独立重放门（批次 4 起强制：fresh 隔离子代理只拿 EV 卡片盲重放，set-replay-state 三态落账）→ 异常检测（批量置态与 fact 密度不符告警） |
+| duty | string | — | 四校验命令 → finding 合并（supersede+tombstone）→ 「-」「!」抽查 → POC 独立重放门（批次 4 起强制：fresh 隔离子代理只拿 EV 卡片盲重放，set-replay-state 三态落账）→ 异常检测（批量置态与 fact 密度不符告警）→ 攻击链落证（G-28：tanyin-ledger graph-paths --from=<入口资产> --to=scope-root 输出存 evidence/attack-paths.txt+add-evidence 落证，repro_command=命令原文；详文随批次 5 T8 落 phases/P4.md） |
 | exit.assert | list | 5 条，见下表 | 出口断言 |
 | on_pass | state | `P5` | |
 | on_fail | state | `halt` | 校验失败阻止报告；修复后重跑本门命令 |
@@ -202,6 +204,7 @@ events（事件回边，不离开 P3）：
 - P0「无授权只许读文档」由 Tier 0 硬门实现（无 goals 行时一切写命令 REJECT）。
 - 受管重启自动档护栏=重启计入预算、重启速率上限（1 次/N 分钟防递归 spawn）、timeline 记 managed-restart 事件、单活跃会话约束。
 - 工件即缓存幂等续跑=intent done 且 `submissions/<intent-id>/submission.json` 存在则重入跳过。
+- 门断言执行事件词汇补注（G-7，批次 5 T2）：任一断言不满足→timeline 事件 `gate-fail:<门> assert=<cmd 首词> reason=<一句>`（引擎退出码 1，语义=halt）——词汇冻结文本=phases/PROTOCOL.md §1.3（批次 3 T3）；gate-fail 非 gate-exit 前缀，跳门检测只认 gate-exit，core.GATE_EXIT_EVENT 不误计。
 
 ## 探知项（待仲裁）
 
@@ -224,3 +227,11 @@ events（事件回边，不离开 P3）：
 ## v2 勘误补记（2026-09-24·批次 4 施工期·T3/P4 重放门转强制）
 
 - 门 5 · P4 exit 断言 5（ledger-replay-summary）expect 文本变更：「无 REJECTED 未处置项（批次 4 前=SKIP，报告中披露）」→「无 REJECTED 未处置项」——P4 重放门断言转强制，SKIP 退役（phases/PROTOCOL.md §1 判定表对应行已加退役注记；phases/phases.yaml 同步；phases/P4.md duty 3 改强制口径=tanyin-replay 驱动三态判定、duty 4 披露义务段改历史注记）。断言数不变，asserts=21 基线不动。微版本勘误通道，零存量数据期不升 schema_version。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T2/契约 v3 首批清账）
+
+- constants 表增两常量（契约 v3 常量回注首批）：`authz_diff_pair_cap: 24`（R6/G-20——双载文档常量（engines differential.md+phases/P3.md）转代码常量，落地=批次 5 T5：模块常量+add-intent 同端点计数写前拒收+--cap 覆盖，G-3 --rate-minutes 落地形态同型）；`restart_rate_minutes: 10`（G-3——批次 3 T6 模块常量 RESTART_RATE_MINUTES=10 回注契约）。constants 8→**10**。
+- 事件词汇补注（G-7）：`gate-fail:<门> assert=<cmd 首词> reason=<一句>` 已由 PROTOCOL §1.3 冻结，本笔=契约侧补注清账；非 gate-exit 前缀，core.GATE_EXIT_EVENT 不误计。
+- 门 5 · P4 duty 增「攻击链落证」步注记（G-28 裁决 D）：graph-paths→attack-paths.txt→add-evidence（EV 卡片零新字段，artifact_path 通道承载）；duty 详文随批次 5 T8 落 phases/P4.md。
+- 勘误通道：微版本勘误（零存量数据期，schema_version 保持 =2 不递增）；本补记日期 2026-09-24。
+- 自验复跑：constants 计数（含两新名）`grep -cE '^\| (restart_context_threshold|restart_every_n_rounds|storm_score_threshold_base|llm_association_quota|reversal_scan_quota|p4_sample_ratio|single_active_session|budget_dollars_enabled|authz_diff_pair_cap|restart_rate_minutes) '` → **10**（§「自验」原有 8 为 2026-09-23 冻结时点基线，保留可追溯）。

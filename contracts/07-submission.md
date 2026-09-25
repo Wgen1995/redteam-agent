@@ -116,3 +116,7 @@
 ## v2 勘误补记（2026-09-24·批次 4 施工期·T14 收口/G-18）
 
 kind→段映射补注：**kind=nday-verify→引擎=nuclei（cli 型，无 web-blackbox 段映射）**——cli 型引擎的方法论入口=engines/nuclei/MANIFEST.md（G-18 裁决原案：段映射表只对 skill 型引擎 web-blackbox 生效；vuln-agent 同理=MANIFEST 归一化表）。视角标注过渡载体=findings[].network_position=same-host（G-19：顶层 perspective 字段留契约 v3 裁决）。微版本勘误（零存量数据期，schema_version 不递增），索引见 contracts/README.md。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T2/G-19 结案）
+
+- G-19 结案——submission 顶层 perspective 字段**不开**（147 字段口径外，契约 v3 首批清账裁决）；视角承载维持 findings[].network_position=same-host 过渡（上则批次 4 T14 收口注记在册）。微版本勘误（零存量数据期，schema_version 不递增），索引见 contracts/README.md。

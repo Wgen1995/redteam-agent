@@ -132,3 +132,8 @@ set-cred-status 终审归写入（写19/查11/校验10=41）——探知项已�
 - 工具箱 11→**12** 工具：增补 #12 **tanyin-knowledge**（知识库机械运算 13 子命令：init/source-register/lint/approve/commit/export/match/neighbors/nday-match/score/promote/demote/client-map；允许类=「确定性账本运算」同型——输入输出可字节级回归，export/match 金样化）。理由：知识库确定性运算需独立载体，并入 tanyin-ledger 面不可行——44 账本命令面冻结（账本命令零新增）。语义蒸馏（提炼什么知识页/正文怎么写）不进 CLI=铁律 7 边界 2（知识提炼 ingest 语义层禁入；四门槛质量判断留人审 checklist）；种子库只读纪律（R7：指向仓库 knowledge/ 时一切写子命令 REJECT）。批次间接口=契约 14（14-knowledge-schema.md）。
 - 勘误通道：微版本勘误（零存量数据期，G-1 10→11 先例同通道：11→12），schema_version 保持 =2 不递增；本补记日期 2026-09-24。
 - 自验复跑：工具表 `grep -cE '^\| [0-9]+ \| tanyin-' contracts/09-cli-surface.md` → **12**（§「自验」原有 10 为 2026-09-23 冻结时点基线，保留可追溯）。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T2/G-8 清账）
+
+- canary/egress 干跑口径契约侧补注（G-8 清账）：干跑（无目标自检）口径=**egress 只 compile（本地产物，无网络）、canary 只 deploy（本地登记）不 probe**——P0-P2 照常经账本命令落账、零对外请求，不调 tanyin-guard exec、不调 tanyin-canary probe（PROTOCOL §3 已冻结，本笔=契约侧补注清账；命令面零变更）。
+- 勘误通道：微版本勘误（零存量数据期，同上则先例），schema_version 保持 =2 不递增；本补记日期 2026-09-24。
