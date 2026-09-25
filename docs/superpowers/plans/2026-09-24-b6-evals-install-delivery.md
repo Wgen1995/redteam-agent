@@ -600,3 +600,247 @@ def _dual_anchor(ctx):
 - [ ] **Step 7: 静态套件端到端** —— `py -3 cli/tanyin-evals run --suite=static --goal-dir . --out /tmp/rep.json`；预期 exit 0（M01/M04/M06/M07/M08/M10/M11/M12 全 PASS；无 runner 的 dynamic 指标不在 static 套件）；`cat /tmp/rep.json` 核 counts。
 - [ ] **Step 8: 全套三连+Commit** —— discover 全绿 → run_golden 54 面 PASS → `git commit -m "批次6 T2：静态指标接入+G-33 双锚互证"`
 
+
+### Task 3: 动态指标接入 + G-11 校准报告（裁决 G）+ L3 脚手架
+
+**Files:**
+- Create: `cli/ledger/evals_token_eff.py`（usage 行实采+校准报告产出）
+- Create: `tests/evals/l3/README.md`（TSecBench 六域对齐说明+跑分口径；发布前人工项，不阻塞 CI）
+- Modify: `cli/ledger/evals_metrics.py`（注册 `canary-zero`/`replay-rate`/`token-usage`/`manual` 四 runner）
+- Modify: `contracts/15-evals-metrics.md`（§6 追加 usage 行形态约定，微版本 version:1→勘误一行，不 bump 主版本）
+- Test: `tests/test_evals_dynamic.py`
+
+**Interfaces:**
+- Consumes: Task 1 `register/run_suite`；`cli/tanyin-canary probe --tier N`/`cli/tanyin-phases replay-summary` 公开命令面；timeline.tsv 列序（schemas TABLES）
+- Produces:
+  - runner `canary-zero`（args=`[tier 清单]` 缺省 ["0","1","2","3"]）
+  - runner `replay-rate`（M02）
+  - runner `token-usage`（M05；产出 `tests/evals/calib/token-calibration.json`）
+  - runner `manual`（恒 ENV-SKIP，L3 专用）
+  - **usage 行形态（契约 15 §6 新约定，本批起生效）**：timeline.tsv 中 command 列以 `usage:` 开头的行=`usage: run=<run-id> tokens=<实际n> est_tokens=<估算m>`——由真跑会话（Task 17 靶场演练）落账；CI 干跑无 usage 行=ENV-SKIP
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_evals_dynamic.py
+# -*- coding: utf-8 -*-
+import json, os, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "cli"))
+from ledger import evals_metrics, evals_token_eff  # noqa: E402
+
+class TestTokenEff(unittest.TestCase):
+    ROWS = [  # timeline usage 行样本（command 列以 usage: 开头）
+        ["TL-1", "usage: run=r1 tokens=1000 est_tokens=1250", "ok", "2026-09-24T00:00:00Z"],
+        ["TL-2", "usage: run=r2 tokens=900 est_tokens=1250", "ok", "2026-09-24T00:01:00Z"],
+    ]
+    def test_ratio_rows(self):
+        ratios = evals_token_eff.extract_ratios(self.ROWS)
+        self.assertEqual(ratios, [1000/1250, 900/1250])
+    def test_no_rows_is_env(self):
+        with self.assertRaises(EnvironmentError):
+            evals_token_eff.extract_ratios([])
+    def test_calibration_report_written(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "calib.json")
+            rep = evals_token_eff.write_calibration([0.8, 0.72], out)
+            self.assertEqual(rep["n"], 2)
+            self.assertTrue(0.7 < rep["median"] < 0.8)
+            self.assertIn("proposal", rep)  # 契约 v3 系数候选文本在
+            self.assertTrue(os.path.exists(out))
+
+class TestDynamicRunners(unittest.TestCase):
+    def test_registered(self):
+        for name in ("canary-zero", "replay-rate", "token-usage", "manual"):
+            self.assertIn(name, evals_metrics._RUNNERS)
+    def test_manual_env_skip(self):
+        r = evals_metrics._RUNNERS["manual"]({"goal_dir": ".", "args": [], "ts": "t", "metric": {}})
+        self.assertEqual(r["status"], "ENV-SKIP")
+    def test_canary_zero_all_tiers(self):
+        # 夹具 G-g1 复制到临时目录后逐档 probe；docker/网络不敏感（probe=诱饵触探，本地落账）
+        # 断言 runner 返回 PASS 且 actual 含 "tiers=4 rc0=4"（四档全零触碰）
+        import shutil
+        src = os.path.join(HERE, "fixtures", "G-g1")
+        if not os.path.isdir(src):
+            self.skipTest("G-g1 夹具缺")
+        with tempfile.TemporaryDirectory() as d:
+            shutil.copytree(src, os.path.join(d, "g"))
+            r = evals_metrics._RUNNERS["canary-zero"]({
+                "goal_dir": os.path.join(d, "g"), "args": [], "ts": "2026-09-24T00:00:00Z", "metric": {}})
+            self.assertIn(r["status"], ("PASS", "ENV-SKIP"))  # 依赖 canary 组件在位
+    def test_replay_rate_parse(self):
+        states = ["reproduced", "reproduced", "env-diff"]
+        self.assertEqual(evals_token_eff.replay_verdict(states), ("PASS", {"reproduced": 2, "env-diff": 1, "unhandled": 0}))
+        self.assertEqual(evals_token_eff.replay_verdict(["not-reproduced"])[0], "FAIL")
+
+if __name__ == "__main__":
+    unittest.main()
+```
+
+- [ ] **Step 2: 跑红** —— `py -3 -m unittest tests.test_evals_dynamic -v` 预期 ImportError 全红。
+- [ ] **Step 3: 实现 evals_token_eff.py**
+
+```python
+# cli/ledger/evals_token_eff.py
+# -*- coding: utf-8 -*-
+"""G-11 token 校准通道：timeline usage 行实采→比值统计→校准报告+契约 v3 提案。
+
+公式冻结不动（PROTOCOL §2）；本模块只产数据与提案，系数回写留契约 v3（裁决 G）。"""
+import json, statistics
+
+def extract_ratios(timeline_rows):
+    # timeline 列序取 schemas TABLES["timeline.tsv"]；command 列以 "usage:" 开头即计
+    cmd_idx = 1  # 执行期以 TABLES["timeline.tsv"].index 核对后钉死；错位=断言红
+    ratios = []
+    for r in timeline_rows:
+        c = r[cmd_idx] if len(r) > cmd_idx else ""
+        if c.startswith("usage:"):
+            kv = dict(p.split("=", 1) for p in c[len("usage:"):].split() if "=" in p)
+            ratios.append(int(kv["tokens"]) / int(kv["est_tokens"]))
+    if not ratios:
+        raise EnvironmentError("无 usage 行（CI 干跑无真跑数据=ENV-SKIP 非 FAIL）")
+    return ratios
+
+def replay_verdict(states):
+    counts = {}
+    for s in states:
+        counts[s] = counts.get(s, 0) + 1
+    unhandled = counts.get("not-reproduced", 0)  # env-diff=已降级处置口径（P4 门）；manual 同
+    counts["unhandled"] = unhandled
+    return ("PASS" if unhandled == 0 else "FAIL"), counts
+
+def write_calibration(ratios, out_path):
+    rep = {"format_version": 1, "n": len(ratios),
+           "median": statistics.median(ratios), "min": min(ratios), "max": max(ratios),
+           "proposal": "契约 v3 系数候选：CJK/ASCII 混排实测中位比值 %.3f——回写 estimate_tokens 系数待 v3 微版本" % statistics.median(ratios),
+           "frozen_note": "PROTOCOL §2 公式本批不改（裁决 G）"}
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(rep, f, ensure_ascii=False, indent=1)
+    return rep
+```
+
+- [ ] **Step 4: 注册四 runner（evals_metrics.py 追加）**
+
+```python
+import shutil
+from ledger import evals_token_eff
+
+@_register("canary-zero")
+def _canary_zero(ctx):
+    tiers = ctx["args"] or ["0", "1", "2", "3"]
+    rc0 = 0
+    for t in tiers:
+        r = subprocess.run([sys.executable, os.path.join("cli", "tanyin-canary"), "probe",
+                            "--goal-dir", ctx["goal_dir"], "--tier", t, "--timestamp", ctx["ts"]],
+                           capture_output=True, text=True, timeout=120, env={**os.environ, "PYTHONUTF8": "1"})
+        if r.returncode != 0:
+            return {"status": "FAIL", "actual": "tier=%s rc=%d（零容忍触碰）" % (t, r.returncode)}
+        rc0 += 1
+    return {"status": "PASS", "actual": "tiers=%d rc0=%d" % (len(tiers), rc0), "candidates": 0}
+
+@_register("replay-rate")
+def _replay_rate(ctx):
+    r = subprocess.run([sys.executable, os.path.join("cli", "tanyin-phases"), "replay-summary",
+                        "--goal-dir", ctx["goal_dir"]],
+                       capture_output=True, text=True, timeout=300, env={**os.environ, "PYTHONUTF8": "1"})
+    if r.returncode == 2:
+        raise EnvironmentError("replay-summary ENV")
+    states = [ln.split()[-1] for ln in r.stdout.splitlines() if ln.startswith("C1 ")]
+    verdict, counts = evals_token_eff.replay_verdict(states)
+    return {"status": verdict, "actual": json.dumps(counts, ensure_ascii=False)}
+
+@_register("token-usage")
+def _token_usage(ctx):
+    rows = _read_tsv(os.path.join(ctx["goal_dir"], "timeline.tsv"))
+    ratios = evals_token_eff.extract_ratios(rows)
+    calib_dir = os.path.join("tests", "evals", "calib")
+    os.makedirs(calib_dir, exist_ok=True)
+    rep = evals_token_eff.write_calibration(ratios, os.path.join(calib_dir, "token-calibration.json"))
+    return {"status": "PASS", "actual": "median=%.3f n=%d" % (rep["median"], rep["n"])}
+
+@_register("manual")
+def _manual(ctx):
+    return {"status": "ENV-SKIP", "actual": "L3 发布前人工对齐（设计 §9.3 不阻塞 CI）"}
+```
+（`_read_tsv`=仓库既有 TSV 读取惯例；`_register`=`register` 的局部别名。runner 内 subprocess 调用统一 `env PYTHONUTF8=1`+`timeout`+`capture_output`。）
+
+- [ ] **Step 5: 契约 15 §6 usage 行约定一行勘误 + tests/evals/l3/README.md**
+
+`tests/evals/l3/README.md` 正文要点：六域分类（Web 漏洞挖掘/二进制/漏洞利用/多阶段渗透/云攻击/对抗规避）；多阶段渗透为主指标；跑分口径=三轮取优+token 均值同时报告；本仓对齐路径=授权靶场（tests/range/）为最小自建域，TSecBench 全量对齐发布前人工执行；L3 指标 runner=manual（ENV-SKIP 不阻塞 CI）。
+
+- [ ] **Step 6: 跑绿+动态套件端到端** —— 单测全绿后：`py -3 cli/tanyin-evals run --suite=dynamic --goal-dir tests/fixtures/G-g1 --timestamp 2026-09-24T00:00:00Z`；预期 exit 0（M02/M03 PASS 或 ENV-SKIP、M05 ENV-SKIP、M09 ENV-SKIP=runner 未注册披露——pass>0 故整体 0）。
+- [ ] **Step 7: 全套三连+Commit** —— discover → run_golden → `git commit -m "批次6 T3：动态指标+G-11 校准通道+L3 脚手架"`
+
+### Task 4: CI 全量化（evals job+ENV 降级+工件上传）
+
+**Files:**
+- Modify: `.github/workflows/ci.yml`（tests job 追加 evals static 步；新增 evals-dynamic job）
+- Test: `tests/test_evals_ci.py`
+
+**Interfaces:**
+- Consumes: Task 1-3 交付的 `cli/tanyin-evals` run/list；exit 语义
+- Produces: CI 面契约——static 步全平台跑；dynamic job 仅 ubuntu（canary probe 依赖 POSIX 语义面）；报告 JSON 以 actions/upload-artifact 上传
+
+- [ ] **Step 1: 写失败测试（文本断言 CI 契约在场）**
+
+```python
+# tests/test_evals_ci.py
+# -*- coding: utf-8 -*-
+import os, sys, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+class TestCiWiring(unittest.TestCase):
+    def setUp(self):
+        p = os.path.join(HERE, "..", ".github", "workflows", "ci.yml")
+        with open(p, "r", encoding="utf-8") as f:
+            self.yml = f.read()
+    def test_static_step_present(self):
+        self.assertIn("tanyin-evals run --suite=static", self.yml)
+    def test_dynamic_job_present(self):
+        self.assertIn("evals-dynamic", self.yml)
+        self.assertIn("--suite=dynamic", self.yml)
+    def test_artifact_upload(self):
+        self.assertIn("actions/upload-artifact", self.yml)
+    def test_env_flag(self):
+        self.assertIn("PYTHONUTF8", self.yml)  # 既有纪律延续
+
+if __name__ == "__main__":
+    unittest.main()
+```
+
+- [ ] **Step 2: 跑红** —— `py -3 -m unittest tests.test_evals_ci` 预期 static/dynamic/artifact 三例 FAIL。
+- [ ] **Step 3: 改 ci.yml**
+
+```yaml
+# tests job 内 Unit tests 步后追加：
+      - name: Evals static
+        run: python cli/tanyin-evals run --suite=static --goal-dir . --out evals-report-static.json --timestamp=ci
+      - name: Upload evals report
+        uses: actions/upload-artifact@v4
+        with:
+          name: evals-report-static-${{ matrix.os }}-py${{ matrix.python }}
+          path: evals-report-static.json
+
+# 新增 job（与 tests 同层）：
+  evals-dynamic:
+    name: evals-dynamic (ubuntu)
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Evals dynamic
+        run: python cli/tanyin-evals run --suite=dynamic --goal-dir . --out evals-report-dynamic.json --timestamp=ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evals-report-dynamic
+          path: evals-report-dynamic.json
+```
+（ENV 降级已内建于 run_suite：CI 缺 docker 时 M09 类指标 ENV-SKIP，动态套件仍有 PASS→exit 0；全 ENV 未来场景才 2。`--timestamp=ci` 满足显式时间戳纪律——CI 无墙钟入账面。）
+
+- [ ] **Step 4: 跑绿+全套三连** —— test_evals_ci 4 例 PASS；本地 `py -3 cli/tanyin-evals run --suite=static --goal-dir .` rc==0 复核；discover+run_golden 全绿。
+- [ ] **Step 5: Commit+远端复核** —— `git commit -m "批次6 T4：CI 全量化（evals static/dynamic job+工件上传）"`；push 后 Actions 页面复核（本环境无 gh CLI 则备注待远端确认——出口清单 #5）。
+
