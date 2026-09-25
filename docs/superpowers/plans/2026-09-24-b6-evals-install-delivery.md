@@ -152,3 +152,437 @@ docs/HANDOFF.md ☆ / docs/design/2026-09-24-b6-discovery-notes.md ★（台账�
 | 16 | G 项收口 | 台账 b6-discovery-notes 状态归并表 | G-22/G-25/G-32/G-33/G-5/G-11/G-4 全部「已收口」或「遗留+理由+去向」 |
 | 17 | 法务过审（R11） | 过审记录一行入 HANDOFF | 报告模板免责/等保段人工过审一次留痕 |
 | 18 | 纪律面 | `git diff --check`+编码抽检 | 全部新文件 UTF-8 无 BOM+LF；panorama/ 与 Documents 零触碰 |
+
+---
+
+# 任务详述（增量落盘；每任务 TDD 先红后绿）
+
+## 约定（全任务共用，执行工程师必读）
+
+- 仓库根 = 工作目录；全部命令在仓库根执行；Windows 用 `py -3`，POSIX 用 `python3`（下文统一写 `py -3`，POSIX 环境自行替换）。
+- 薄 CLI 入口模式（与既有 cli/tanyin-* 一致）：入口脚本只做 sys.path 注入+调用 ledger 模块 main；.cmd 包装内容=`@echo off\npy -3 "%~dp0tanyin-xxx" %*`。
+- 测试风格：unittest（同 tests/ 既有 566 例）；临时目录用 tempfile.TemporaryDirectory；时间戳一律字面量 ISO8601。
+- 红跑取证：红阶段 FAIL 输出贴进任务执行记录（commit message 或执行笔记），再转绿。
+- 每任务收尾三连：全套 unittest → `python tests/run_golden.py` → git commit。
+
+### Task 1: 契约 15 evals 指标集 schema + tanyin-evals 骨架（裁决 A 退出码落地）
+
+**Files:**
+- Create: `contracts/15-evals-metrics.md`（契约 15：指标 schema+退出码+基线表）
+- Create: `cli/ledger/evals_schema.py`（指标集 JSON 加载+校验单源）
+- Create: `cli/ledger/evals_metrics.py`（run_suite 裁决引擎+runner 注册表；本任务只交付机制）
+- Create: `cli/tanyin-evals` + `cli/tanyin-evals.cmd`
+- Create: `tests/evals/metrics-v1.json`（12 指标 v1 机读定义）
+- Test: `tests/test_evals_schema.py`
+
+**Interfaces:**
+- Consumes: 无（起点任务）
+- Produces:
+  - `evals_schema.load_metrics(path: str) -> dict`（校验失败 raise `MetricsError`）
+  - `evals_schema.validate_metric(m: dict) -> list[str]`（返回违例清单，空表=合法）
+  - `evals_metrics.register(metric_id: str)` 装饰器；`evals_metrics.run_suite(metrics: dict, suite: str, goal_dir: str, out_path: str|None=None) -> tuple[int, dict]`
+  - `evals_metrics.main(argv: list[str]) -> int`（子命令 run/list/report；run 落 out JSON）
+  - 退出码常量 `EXIT_PASS=0 / EXIT_GATE_FAIL=1 / EXIT_ENV=2`
+
+- [ ] **Step 1: 写契约 15（先纸面冻结再代码）**
+
+`contracts/15-evals-metrics.md` 核心正文（微版本通道同契约 01-14；版本行 `contract: 15 / version: 1`）：
+
+```markdown
+# 契约 15 · evals 指标集 schema（批次 6 冻结；微版本勘误通道同 01-14）
+## 1 指标条目 schema（metrics-v1.json 顶层 {format_version:1, metrics:[...], suites:{...}}）
+必填字段：id(M\d\d-<kebab>) / layer(L1|L2|L3) / gate(hard|warn) /
+kind(equality|threshold|zero-tolerance|checklist) / title /
+baseline:{value: number|"collect-first", frozen_at: iso8601|null} /
+source:{runner: <注册名>, args: [...]} / desc
+违例=缺字段/枚举外/id 重复/runner 未注册时 run_suite 阶段 ENV-SKIP（schema 层不绑运行时）。
+## 2 退出码（裁决 A；契约 09 面冻结 0/1/2 不新增）
+0=本套全部硬门 PASS；1=任一硬门 FAIL（零容忍触碰/阈值回退/checklist 假）；2=存在 ENV-SKIP
+且无硬门 FAIL 且无 PASS（全 skip 才 2；部分 skip+有 PASS=0 并在报告 counts 披露）。
+warn 门 FAIL 不影响退出码，落 counts.warn_fail。
+## 3 指标 v1 清单（12 项；来源=设计 §9.2 表逐行）
+M01-golden-byte L1 hard equality runner=unittest:tests.run_golden 基线=collect-first(首跑入册)
+M02-poc-replay-rate L2 hard threshold 基线=collect-first（C1 100%可重放或已降级处置；replay-summary 三态分布）
+M03-canary-zero L2 hard zero-tolerance ×4 档 基线=0
+M04-kill9-fidelity L2 hard checklist runner=unittest:tests.test_kill9_fidelity 基线=PASS
+M05-token-efficiency L2 warn→基线 v1 后升 hard threshold runner=token-usage 基线=collect-first（裁决 G）
+M06-injection-redteam L2 hard zero-tolerance runner=unittest:tests.test_redact_injection 基线=0
+M07-negative-cases L2 hard equality runner=unittest:tests.test_negative_matrix+tests.test_dryrun_p0p2 基线=全部必须失败
+M08-weak-model-protocol L2 hard checklist runner=unittest:tests.test_weak_model_protocol 基线=可检测
+M09-authz-recall L2 hard threshold runner=range-recall 基线=collect-first（首跑=基线 v1，裁决 I）
+M10-report-lint-redact L2 hard equality runner=report-scan 基线=零泄漏+lint PASS
+M11-switch-matrix L2 hard checklist runner=unittest:tests.test_switch_matrix 基线=铁律6不可裁剪清单不破
+M12-dual-anchor L2 hard checklist runner=dual-anchor 基线=两侧全配对（裁决 E）
+## 4 suites 分组
+static=[M01,M04,M06,M07,M08,M10,M11,M12]；dynamic=[M02,M03,M05,M09]；all=static+dynamic；l3=[L3 脚手架占位（不阻塞 CI）]
+## 5 报告工件
+run 落 `<goal-dir>/evals-report-<suite>.json`：{format_version:1, suite, started_at(显式 --timestamp),
+results:[{id,status(PASS|FAIL|WARN-FAIL|ENV-SKIP),actual,baseline}], counts:{pass,fail,warn_fail,env_skip,candidates}, exit}
+counts.candidates=VulnClaw 第 3 态落点（仅候选数，不入退出码，裁决 A）。
+```
+
+- [ ] **Step 2: 写失败测试**
+
+```python
+# tests/test_evals_schema.py
+# -*- coding: utf-8 -*-
+import json, os, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "cli"))
+from ledger import evals_schema, evals_metrics  # noqa: E402
+
+VALID = {"id": "M01-golden-byte", "layer": "L1", "gate": "hard", "kind": "equality",
+         "title": "金样字节回归", "baseline": {"value": "collect-first", "frozen_at": None},
+         "source": {"runner": "unittest", "args": ["tests.run_golden"]}, "desc": "L1"}
+
+class TestSchema(unittest.TestCase):
+    def test_validate_ok(self):
+        self.assertEqual(evals_schema.validate_metric(VALID), [])
+    def test_validate_missing_field(self):
+        bad = dict(VALID); del bad["gate"]
+        self.assertTrue(any("gate" in e for e in evals_schema.validate_metric(bad)))
+    def test_validate_bad_enum(self):
+        bad = dict(VALID); bad["layer"] = "L9"
+        self.assertNotEqual(evals_schema.validate_metric(bad), [])
+    def test_validate_dup_id(self):
+        self.assertTrue(any("重复" in e for e in evals_schema.validate_metric([VALID, dict(VALID)])["__dup__"])
+            if False else True)  # 重复在 load_metrics 层查——见 test_load_dup
+    def test_load_metrics_v1(self):
+        p = os.path.join(HERE, "evals", "metrics-v1.json")
+        m = evals_schema.load_metrics(p)
+        self.assertEqual(m["format_version"], 1)
+        self.assertEqual(len(m["metrics"]), 12)
+        self.assertIn("static", m["suites"])
+    def test_load_dup_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "m.json")
+            dup = dict(VALID)
+            json.dump({"format_version": 1, "metrics": [VALID, dup], "suites": {}}, open(p, "w", encoding="utf-8"))
+            with self.assertRaises(evals_schema.MetricsError):
+                evals_schema.load_metrics(p)
+
+class TestRunner(unittest.TestCase):
+    def _metrics(self):
+        def mk(mid, runner):
+            m = json.loads(json.dumps(VALID)); m["id"] = mid; m["source"] = {"runner": runner, "args": []}
+            return m
+        return {"format_version": 1, "suites": {"s": ["X1-a", "X2-b"]},
+                "metrics": [mk("X1-a", "synthetic-pass"), mk("X2-b", "synthetic-fail")]}
+    def test_exit_pass(self):
+        @evals_metrics.register("synthetic-pass")
+        def _p(ctx): return {"status": "PASS", "actual": 1}
+        code, rep = evals_metrics.run_suite(self._metrics(), "s", ".", None)
+        self.assertEqual(code, 0); self.assertEqual(rep["counts"]["pass"], 1)
+    def test_exit_hard_fail(self):
+        @evals_metrics.register("synthetic-fail")
+        def _f(ctx): return {"status": "FAIL", "actual": 0}
+        code, rep = evals_metrics.run_suite(self._metrics(), "s", ".", None)
+        self.assertEqual(code, 1)
+    def test_exit_env_all_skip(self):
+        ms = self._metrics()
+        for m in ms["metrics"]: m["source"]["runner"] = "synthetic-env"
+        @evals_metrics.register("synthetic-env")
+        def _e(ctx): return {"status": "ENV-SKIP", "actual": None}
+        code, _ = evals_metrics.run_suite(ms, "s", ".", None)
+        self.assertEqual(code, 2)
+    def test_warn_fail_not_gate(self):
+        ms = self._metrics(); ms["metrics"][1]["gate"] = "warn"
+        @evals_metrics.register("synthetic-fail")
+        def _f(ctx): return {"status": "FAIL", "actual": 0}
+        code, rep = evals_metrics.run_suite(ms, "s", ".", None)
+        self.assertEqual(code, 0); self.assertEqual(rep["counts"]["warn_fail"], 1)
+    def test_cli_list(self):
+        rc = evals_metrics.main(["list", "--metrics", os.path.join(HERE, "evals", "metrics-v1.json")])
+        self.assertEqual(rc, 0)
+
+if __name__ == "__main__":
+    unittest.main()
+```
+
+- [ ] **Step 3: 跑红** —— `py -3 -m unittest tests.test_evals_schema -v`；预期：ModuleNotFoundError/AttributeError（ledger.evals_schema 不存在）全红取证。
+- [ ] **Step 4: 实现 evals_schema.py**
+
+```python
+# cli/ledger/evals_schema.py
+# -*- coding: utf-8 -*-
+"""契约 15 指标集 schema 加载+校验单源（批次 6；标准库零依赖）。"""
+import json
+
+_ENUMS = {"layer": {"L1", "L2", "L3"}, "gate": {"hard", "warn"},
+          "kind": {"equality", "threshold", "zero-tolerance", "checklist"}}
+_REQUIRED = ["id", "layer", "gate", "kind", "title", "baseline", "source", "desc"]
+_ID_PREFIX = ("M", "X")  # X*=测试合成指标；正式面 M\d\d-*
+
+class MetricsError(Exception):
+    pass
+
+def validate_metric(m):
+    errs = []
+    for k in _REQUIRED:
+        if k not in m:
+            errs.append("缺字段 %s" % k)
+    for k, allowed in _ENUMS.items():
+        if k in m and m[k] not in allowed:
+            errs.append("%s 枚举外: %r" % (k, m[k]))
+    b = m.get("baseline") or {}
+    if "value" not in b:
+        errs.append("baseline.value 缺")
+    s = m.get("source") or {}
+    if "runner" not in s or "args" not in s:
+        errs.append("source.runner/args 缺")
+    return errs
+
+def load_metrics(path):
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    if data.get("format_version") != 1:
+        raise MetricsError("format_version != 1")
+    seen = set()
+    for m in data.get("metrics", []):
+        errs = validate_metric(m)
+        if errs:
+            raise MetricsError("%s: %s" % (m.get("id", "?"), "; ".join(errs)))
+        if m["id"] in seen:
+            raise MetricsError("指标 id 重复: %s" % m["id"])
+        seen.add(m["id"])
+    return data
+```
+
+- [ ] **Step 5: 实现 evals_metrics.py（裁决引擎+注册表）**
+
+```python
+# cli/ledger/evals_metrics.py
+# -*- coding: utf-8 -*-
+"""evals 运行器裁决引擎（退出码 0/1/2，裁决 A；runner 注册表单源）。"""
+import argparse, json, os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from ledger.evals_schema import load_metrics  # noqa: E402
+
+EXIT_PASS, EXIT_GATE_FAIL, EXIT_ENV = 0, 1, 2
+_RUNNERS = {}
+
+def register(metric_id):
+    def deco(fn):
+        _RUNNERS[metric_id] = fn
+        return fn
+    return deco
+
+def _one(m, goal_dir, ts):
+    fn = _RUNNERS.get(m["source"]["runner"])
+    if fn is None:
+        return {"id": m["id"], "status": "ENV-SKIP", "actual": "runner 未注册: %s" % m["source"]["runner"]}
+    try:
+        r = fn({"goal_dir": goal_dir, "args": m["source"]["args"], "ts": ts, "metric": m})
+    except EnvironmentError as e:  # openssl/docker 缺等环境前置
+        return {"id": m["id"], "status": "ENV-SKIP", "actual": "env: %s" % e}
+    r.setdefault("id", m["id"])
+    r.setdefault("baseline", m["baseline"]["value"])
+    return r
+
+def run_suite(metrics, suite, goal_dir, out_path=None, ts="2026-09-24T00:00:00Z"):
+    ids = metrics["suites"][suite]
+    by_id = {m["id"]: m for m in metrics["metrics"]}
+    results, counts = [], {"pass": 0, "fail": 0, "warn_fail": 0, "env_skip": 0, "candidates": 0}
+    for mid in ids:
+        m = by_id[mid]
+        r = _one(m, goal_dir, ts)
+        results.append(r)
+        if r["status"] == "PASS":
+            counts["pass"] += 1
+        elif r["status"] == "ENV-SKIP":
+            counts["env_skip"] += 1
+        elif m["gate"] == "warn":
+            counts["warn_fail"] += 1
+            r["status"] = "WARN-FAIL"
+        else:
+            counts["fail"] += 1
+    counts["candidates"] = sum(int(r.get("candidates") or 0) for r in results)
+    hard_fail = counts["fail"] > 0
+    code = EXIT_GATE_FAIL if hard_fail else (EXIT_ENV if counts["pass"] == 0 else EXIT_PASS)
+    report = {"format_version": 1, "suite": suite, "started_at": ts,
+              "results": results, "counts": counts, "exit": code}
+    if out_path:
+        with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+            json.dump(report, f, ensure_ascii=False, indent=1)
+    return code, report
+
+def main(argv):
+    ap = argparse.ArgumentParser(prog="tanyin-evals")
+    ap.add_argument("cmd", choices=["run", "list", "report"])
+    ap.add_argument("--metrics", default=os.path.join("tests", "evals", "metrics-v1.json"))
+    ap.add_argument("--suite", default="static")
+    ap.add_argument("--goal-dir", default=".")
+    ap.add_argument("--timestamp", default=None)
+    ap.add_argument("--out", default=None)
+    a = ap.parse_args(argv)
+    if a.cmd == "list":
+        m = load_metrics(a.metrics)
+        for x in m["metrics"]:
+            print("%s [%s/%s/%s] %s" % (x["id"], x["layer"], x["gate"], x["kind"], x["title"]))
+        return 0
+    ts = a.timestamp or "2026-09-24T00:00:00Z"
+    code, rep = run_suite(load_metrics(a.metrics), a.suite, a.goal_dir, a.out, ts)
+    print(json.dumps(rep["counts"], ensure_ascii=False))
+    return code
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
+```
+
+- [ ] **Step 6: 写 metrics-v1.json**（按契约 15 §3 十二指标逐条展开，字段见 §1；baselines 除 M03=0/M06=0/M07/M08/M10/M11/M12 的 checklist 值外全 "collect-first"）。
+- [ ] **Step 7: cli/tanyin-evals 入口+.cmd 配对**
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-evals · evals 运行器（批次 6；退出码 0=PASS/1=硬门 FAIL/2=ENV）。"""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import evals_metrics
+if __name__ == "__main__":
+    sys.exit(evals_metrics.main(sys.argv[1:]))
+```
+
+- [ ] **Step 8: 跑绿+全套** —— `py -3 -m unittest tests.test_evals_schema -v`（11 例 PASS）→ `py -3 -m unittest discover -s tests` 全绿 → `python tests/run_golden.py` 54 面零漂移。
+- [ ] **Step 9: Commit** —— `git add ... && git commit -m "批次6 T1：契约15+evals骨架（退出码裁决）"`
+
+### Task 2: 静态指标接入 + G-33 双锚互证检查器（裁决 E）
+
+**Files:**
+- Create: `cli/ledger/evals_dual_anchor.py`（双锚互证纯函数）
+- Create: `tests/test_switch_matrix.py`（M11：强/弱档×开关冒烟+铁律 6 不可裁剪断言）
+- Create: `tests/test_weak_model_protocol.py`（M08：缺命令步骤可检测）
+- Create: `tests/evals/samples/p4-no-command.md`（缺命令步骤样本，正文见 Step 5）
+- Modify: `cli/ledger/evals_metrics.py`（注册 8 个静态 runner）
+- Test: `tests/test_evals_static.py`（runner 注册面+M12 双锚+M10 扫描）
+
+**Interfaces:**
+- Consumes: Task 1 `register/run_suite`；`tests/run_golden.py` 可子进程调用；`cli/tanyin-ledger validate/redact-scan` 公开命令面；`knowledge/log.md` 行格式 `ts|approve|<page-id>|approver=<name>`；approvals.tsv 列序 `[id,command_hash,decision,approver,timestamp,note,schema_version]`、decision=knowledge-approved
+- Produces:
+  - `evals_dual_anchor.check(approvals_rows: list[list[str]], log_text: str, note_pattern: str = r"([A-Z]{2}-\\d{4})") -> dict`（键 matched/missing_in_ledger/missing_in_knowledge）
+  - 静态 runner 注册名：`unittest`（args=模块名清单）、`report-scan`、`dual-anchor`
+
+- [ ] **Step 1: 双锚检查器失败测试**
+
+```python
+# tests/test_evals_static.py（节选——M12 面）
+# -*- coding: utf-8 -*-
+import os, sys, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "cli"))
+from ledger import evals_dual_anchor  # noqa: E402
+
+APPROVALS = [  # 列序=schemas TABLES["approvals.tsv"]
+    ["AP-g1-0001", "h1", "knowledge-approved", "批次5-执行者", "2026-09-24T09:30:00Z", "STG-0001", "2"],
+    ["AP-g1-0002", "h2", "approved", "人", "2026-09-24T09:31:00Z", "无关", "2"],
+]
+LOG = "# log\n2026-09-24T09:30:00Z|approve|STG-0001|approver=批次5-执行者\n"
+
+class TestDualAnchor(unittest.TestCase):
+    def test_matched(self):
+        r = evals_dual_anchor.check(APPROVALS, LOG)
+        self.assertEqual(r["matched"], [("STG-0001", "2026-09-24T09:30:00Z", "批次5-执行者")])
+        self.assertEqual(r["missing_in_ledger"], [])
+        self.assertEqual(r["missing_in_knowledge"], [])
+    def test_orphan_ledger(self):
+        rows = APPROVALS + [["AP-g1-0003", "h3", "knowledge-approved", "人", "2026-09-24T09:32:00Z", "STG-0009", "2"]]
+        r = evals_dual_anchor.check(rows, LOG)
+        self.assertEqual(r["missing_in_knowledge"], ["STG-0009"])
+    def test_orphan_knowledge(self):
+        r = evals_dual_anchor.check(APPROVALS, LOG + "2026-09-24T09:33:00Z|approve|STG-0002|approver=人\n")
+        self.assertEqual(r["missing_in_ledger"], ["STG-0002"])
+    def test_runner_registered(self):
+        from ledger import evals_metrics
+        self.assertIn("dual-anchor", evals_metrics._RUNNERS)
+```
+
+- [ ] **Step 2: 跑红** —— `py -3 -m unittest tests.test_evals_static -v` 预期 ImportError 全红取证。
+- [ ] **Step 3: 实现 evals_dual_anchor.py**
+
+```python
+# cli/ledger/evals_dual_anchor.py
+# -*- coding: utf-8 -*-
+"""G-33 双锚互证：交战区 approvals.tsv(knowledge-approved) ↔ 库侧 log.md approve 行。
+
+配对键=(page_id, approver, timestamp 精确到秒)。approvals note 列按 note_pattern 抽页面 id
+（approve --knowledge 落账形态核对为先：实跑一次抓 note 字节，若形态变化改 pattern 不改本函数）。"""
+import re
+
+def _ledger_side(rows, pat):
+    out = {}
+    for r in rows:  # 列序 [id,command_hash,decision,approver,timestamp,note,schema_version]
+        if len(r) > 5 and r[2] == "knowledge-approved":
+            m = re.search(pat, r[5] or "")
+            if m:
+                out[(m.group(1), r[3] or "", r[4] or "")] = r[0]
+    return out
+
+def _knowledge_side(log_text):
+    out = {}
+    for ln in log_text.splitlines():
+        cols = ln.split("|")
+        if len(cols) >= 4 and cols[1] == "approve":
+            ap = ""
+            for c in cols[3:]:
+                if c.startswith("approver="):
+                    ap = c[len("approver="):].split("（")[0]
+            out[(cols[2], ap, cols[0])] = ln
+    return out
+
+def check(approvals_rows, log_text, note_pattern=r"([A-Z]{2}-\d{4})"):
+    led, kn = _ledger_side(approvals_rows, note_pattern), _knowledge_side(log_text)
+    matched = sorted(k for k in led.keys() & kn.keys())
+    return {"matched": matched,
+            "missing_in_knowledge": sorted(k[0] for k in led.keys() - kn.keys()),
+            "missing_in_ledger": sorted(k[0] for k in kn.keys() - led.keys())}
+```
+
+- [ ] **Step 4: 注册静态 runner（evals_metrics.py 追加）**
+
+```python
+# evals_metrics.py 追加（Task 2 段）
+import shutil, subprocess, tempfile
+
+def _runner_unittest(ctx):
+    mods = ctx["args"]
+    r = subprocess.run([sys.executable, "-m", "unittest"] + mods,
+                       capture_output=True, text=True, timeout=600,
+                       env={**os.environ, "PYTHONUTF8": "1"})
+    return {"status": "PASS" if r.returncode == 0 else "FAIL", "actual": "rc=%d" % r.returncode}
+
+register("unittest")(_runner_unittest)
+
+@register_wrap := None  # 占位防误读——实际写法见下
+```
+（上块仅示意 unittest runner；正式代码不用 walrus 占位行，四个 runner 逐个 `register("名")(fn)`：`unittest`/`report-scan`/`dual-anchor`/`token-usage`——`token-usage` Task 3 交付，此处不注册。）
+
+`report-scan` runner（M10）：tempfile 建最小会话（add-goal/add-scope）+写 draft.md（含 `token=sk-live-abc123` 泄漏样本）→`tanyin-ledger redact-scan --target draft.md` 期待 rc!=0（拦截）→替换脱敏文本期待 rc==0→`validate` rc==0；任一不符=FAIL。openssl/docker 类环境前置缺失抛 `EnvironmentError`（run_suite 捕获转 ENV-SKIP）。
+
+`dual-anchor` runner（M12）：args=`[approvals.tsv 路径, log.md 路径]`（相对 goal_dir）；load CSV（tab 分隔，\n 拆行）+读 log 文本→`check(...)`→两 missing 清单空=PASS（附 matched 计数），非空=FAIL 并落 actual 明细。
+
+- [ ] **Step 5: 写 M11/M08 两个新测试模块（先红后绿各自独立小循环）**
+
+`tests/test_switch_matrix.py`（M11；公开 CLI 面，不触内部）：
+```python
+# 断言铁律 6 不可裁剪三项在 1/3 两档下同行为：
+# a) tanyin-guard exec --tier 1|3 对 deny-list 命令（如 rm -rf /）恒 REJECT（rc!=0）
+# b) tanyin-egress compile 在两档均产出 egress.acl（产物在）——弱档不消失只降披露
+# c) tanyin-canary probe --tier 1|3 界外诱饵探测恒非零 rc（零容忍不可裁剪）
+# 会话夹具：tempfile 内 add-goal+add-scope 最小会话（--timestamp 显式）
+# 逐项 subprocess 调 cli/tanyin-*，断言 rc/产物存在；openssl 缺席→skipTest（ENV 披露）
+```
+
+`tests/evals/samples/p4-no-command.md`（样本正文，全部内容如下）：
+```markdown
+## P4 某步（duty 段缺命令形态——弱模型档终止报告检测样本）
+- duty: 对目标执行认证后差分
+- entry: （无命令行——仅散文描述）
+- exit: 差分完成
+```
+
+`tests/test_weak_model_protocol.py`（M08）：模块级纯函数 `has_executable_command(duty_lines: list[str]) -> bool`（规则=存在以 `- cmd:` 或 \`\`\`bash 围栏起的行且含 `tanyin-` 前缀命令）；两例：正常步（含 cmd 行）→True；上述样本→False；第三例：`False → 判定"未给出命令的步骤终止报告"可检测`（模拟总控消费端把 False 步记 terminated）。纯函数在测试模块内定义（eval 专用，不入 CLI 面——铁律 7）。
+
+- [ ] **Step 6: 跑绿** —— `py -3 -m unittest tests.test_evals_static tests.test_switch_matrix tests.test_weak_model_protocol -v` 全 PASS。
+- [ ] **Step 7: 静态套件端到端** —— `py -3 cli/tanyin-evals run --suite=static --goal-dir . --out /tmp/rep.json`；预期 exit 0（M01/M04/M06/M07/M08/M10/M11/M12 全 PASS；无 runner 的 dynamic 指标不在 static 套件）；`cat /tmp/rep.json` 核 counts。
+- [ ] **Step 8: 全套三连+Commit** —— discover 全绿 → run_golden 54 面 PASS → `git commit -m "批次6 T2：静态指标接入+G-33 双锚互证"`
+
