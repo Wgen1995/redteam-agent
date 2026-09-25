@@ -1363,3 +1363,167 @@ tools.lock 扩键执行步：`sha256sum` 三引擎目录清单文件（`find eng
 - [ ] **Step 4: G-22 upstream_commit 换真（执行期实锚步）** —— `git clone --depth 1 https://github.com/projectdiscovery/nuclei-templates .research/repos/nuclei-templates` → `git -C .research/repos/nuclei-templates rev-parse HEAD` → 换 tools.lock 第 5 列占位 → templates.lock 同步四步流程（engines/nuclei/README.md 原文照走）→ 重签+验证。环境不可联网=如实保留占位+KEY-MANAGEMENT 记待锚行（不造数据纪律）。
 - [ ] **Step 5: 跑绿+全套三连+Commit** —— `git commit -m "批次6 T9：tools.lock 全量 8 键+G-22 钥流程+G-32 refresh-cve"`
 
+### Task 10: Tier3 egress 代理本体（tanyin-egress serve；裁决 H）
+
+**Files:**
+- Create: `cli/ledger/egress_proxy.py`（代理本体：CONNECT/明文转发+DNS pin+OOB 落账+canary 告警）
+- Modify: `cli/tanyin-egress`（+`serve` 子命令：`--acl <path> --port N [--egress-log <path>]`）
+- Modify: `contracts/11-enforcement.md`（勘误一行：serve 判定语义+TLS 不解密披露）
+- Test: `tests/test_egress_proxy.py`
+
+**Interfaces:**
+- Consumes: `tanyin-egress compile` 产物 `egress.acl`（格式锚定步见 Step 1——测试内先 compile 再解析，解析器与真实产物绑定）
+- Produces:
+  - `egress_proxy.EgressProxy(acl: dict, egress_log: str|None)`——`acl`=`parse_acl(text) -> {"allow": {(host, port|int)}, "dns_pin": {host: ip}, "oob": set[host], "canary": set[host]}`
+  - `egress_proxy.parse_acl(text: str) -> dict`（`#` 注释+`allow <host>:<port>`/`allow <host>:*`/`dns-pin <host> <ip>`/`oob <host>`/`canary <host>` 行；compile 产物含未知行=raise ValueError——fail-closed）
+  - 判定单源 `egress_proxy.decide(acl, host, port) -> "allow"|"deny"`（host 精确或 `*` 端口通配；canary/OOB 域按 allow 后走告警通道）
+  - 运行时日志 `egress-log.jsonl` 行：`{"ts":..., "verdict":..., "host":..., "port":..., "kind":"forward|connect|oob|canary", "pin_ok":bool}`——**代理绝不写 13 表**（单写者纪律；运行时工件归运行时）
+  - TLS 限制披露：CONNECT 按 CONNECT 目标主机名判定，**不解析 TLS 内容**（守门声明模板措辞进 install/README）
+
+- [ ] **Step 1: 格式锚定（5 分钟）+写失败测试**
+
+锚定步：`py -3 cli/tanyin-egress compile --goal-dir tests/fixtures/G-g1` → 打开产物 `egress.acl` 逐行核对与 `parse_acl` 行约定差异 → 若 compile 真实行名不同，以实况为准改 `parse_acl` 行约定并回写本任务行约定描述（契约 11 勘误同 commit）。
+
+```python
+# tests/test_egress_proxy.py
+class TestAcl(unittest.TestCase):
+    def test_parse_and_unknown_line_fails_closed(self):
+        acl = egress_proxy.parse_acl("allow api.example.com:443\ndns-pin api.example.com 203.0.113.9\noob oob.example.com\ncanary canary.invalid\n")
+        self.assertEqual(acl["allow"], {("api.example.com", 443)})
+        self.assertEqual(acl["dns_pin"], {"api.example.com": "203.0.113.9"})
+        with self.assertRaises(ValueError):
+            egress_proxy.parse_acl("mystery-line x\n")
+
+class TestProxyEndToEnd(unittest.TestCase):
+    """线程内起 upstream http.server（127.0.0.1 ephemeral）+proxy（ephemeral）；urllib 挂 proxy 发请求。"""
+    def test_allow_forward(self):
+        # acl=allow 127.0.0.1:<up_port> → 经 proxy GET upstream → 200 且 body 一致；egress-log 一行 kind=forward
+    def test_deny_403(self):
+        # acl 只 allow 其他 host → 经 proxy GET → 403；log kind=forward verdict=deny
+    def test_connect_denied_without_acl(self):
+        # 对未 allow host 发 CONNECT → 403（隧道不建立）
+    def test_canary_alert_line(self):
+        # acl=allow+canary canary.invalid（解析到 upstream 本地端口）→ 请求后 log 有 kind=canary 告警行
+    def test_oob_logged(self):
+        # OOB 域命中 → log kind=oob
+```
+（五例 end-to-end 骨架按注释展开：`threading.Thread(target=serve_forever)` 配 `shutdown()` 清理；Windows CI 兼容——只连 127.0.0.1。）
+
+- [ ] **Step 2: 跑红** —— ImportError/AttributeError 全红取证。
+- [ ] **Step 3: 实现 egress_proxy.py**
+
+```python
+# cli/ledger/egress_proxy.py 核心形态（~180 行；http.server+http.client+socket select 中继）
+import json, socket, threading, time
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import http.client
+from urllib.parse import urlsplit
+
+class _Handler(BaseHTTPRequestHandler):
+    protocol_version = "HTTP/1.1"
+    def _log(self, kind, host, port, verdict, pin_ok=None):
+        if self.server.egress_log:
+            with open(self.server.egress_log, "a", encoding="utf-8") as f:
+                f.write(json.dumps({"ts": self.server.now, "verdict": verdict, "host": host,
+                                    "port": port, "kind": kind, "pin_ok": pin_ok}) + "\n")
+    def do_GET(self): self._forward()
+    def do_POST(self): self._forward()
+    def _forward(self):
+        u = urlsplit(self.path)                      # 代理形态绝对 URI
+        host, port = u.hostname, u.port or 80
+        v = decide(self.server.acl, host, port)
+        self._log("forward", host, port, v)
+        if v != "allow":
+            self.send_error(403); return
+        pin = self.server.acl["dns_pin"].get(host)
+        conn = http.client.HTTPConnection(pin or host, port, timeout=10)
+        ...  # 转 headers/body → 上游 → 回写 status/headers/body（hop-by-hop 头剥除）
+    def do_CONNECT(self):
+        host, port = self.path.split(":")[0], int(self.path.split(":")[1] or 443)
+        v = decide(self.server.acl, host, port)
+        self._log("connect", host, port, v)
+        if v != "allow":
+            self.send_error(403); return
+        self.send_response(200); self.end_headers()
+        _tunnel(self.connection, host, port)         # 双向 select 中继；TLS 不解密（披露）
+
+def serve(acl_path, port, egress_log=None, now="2026-09-24T00:00:00Z"):
+    acl = parse_acl(open(acl_path, encoding="utf-8").read())
+    httpd = ThreadingHTTPServer(("127.0.0.1", port), _Handler)
+    httpd.acl, httpd.egress_log, httpd.now = acl, egress_log, now
+    return httpd                                     # 调用方 serve_forever/shutdown
+```
+
+- [ ] **Step 4: tanyin-egress serve 子命令接线** —— argparse 分支：起服打印一行 `egress-proxy listening 127.0.0.1:<port> acl=<path>` 后 `serve_forever()`（前台常驻=无守护进程纪律合规；Ctrl-C 优雅退出）。
+- [ ] **Step 5: 跑绿+全套三连+Commit** —— `git commit -m "批次6 T10：Tier3 代理本体（CONNECT/forward ACL+DNS pin+OOB/canary 告警；TLS 不解密披露）"`
+
+### Task 11: canary 流量级验证（经代理触碰检测链）
+
+**Files:**
+- Modify: `cli/tanyin-canary`+canary 模块（`probe` 增 `--egress-log <path>` 可选入参：读 egress-log.jsonl 中 kind=canary 行并入触碰判定——流量级证据源）
+- Modify: `shared/EVALS.md`（M03 判定链注记：probe=本地态+egress-log 双源；R10 误报校准口径=触碰绑定本交战进程+时间窗）
+- Test: `tests/test_canary_traffic.py`
+
+**Interfaces:**
+- Consumes: Task 10 代理+egress-log 行契约；`tanyin-canary deploy/probe` 既有面（零容忍语义不动）
+- Produces: 流量级验证链——`deploy 诱饵 → 经代理触 canary 域 → egress-log 告警行 → probe --egress-log 判触碰（rc!=0）`；反例=不经代理的同域连接（模拟共享环境他进程）**不**触发（R10 口径机检）
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_canary_traffic.py
+class TestTrafficLevel(unittest.TestCase):
+    def test_touch_via_proxy_detected(self):
+        # G-g1 复制+deploy(seed 确定性) → 起 Task10 代理(acl 含 canary 域) → 线程内经代理请求 canary 域
+        # → probe --egress-log egress-log.jsonl → rc!=0 且输出含 canary 触碰明细
+    def test_non_proxy_connection_not_flagged(self):
+        # 同域仅本地 socket 连接（不经代理、无 log 行）→ probe --egress-log → rc==0（R10：裸连接/旁路不误报）
+    def test_probe_without_log_backcompat(self):
+        # 不给 --egress-log → 行为与现状一致（既有 canary 测试面零漂移）
+```
+
+- [ ] **Step 2: 跑红 → Step 3: 实现**（canary probe 侧 +15 行：可选读 log、kind=canary 行聚合进触碰集；时间窗过滤复用既有窗口参数）。红跑取证→绿。
+- [ ] **Step 4: evals 注记+全套三连+Commit** —— `shared/EVALS.md` M03 行加「流量级双源」注记；discover+run_golden 全绿 → `git commit -m "批次6 T11：canary 流量级验证链（egress-log 双源+R10 反例）"`
+
+### Task 12: tanyin-report 聚合器（13 表→聚合投影）
+
+**Files:**
+- Create: `cli/ledger/report_agg.py`
+- Create: `cli/tanyin-report` + `cli/tanyin-report.cmd`
+- Test: `tests/test_report_agg.py`
+
+**Interfaces:**
+- Consumes: 13 表（schemas TABLES 列序单源）；`tanyin-ledger` 只读
+- Produces:
+  - `report_agg.aggregate(goal_dir: str, ts: str) -> dict`——投影键：`goal`（goals 行）/ `scope_summary`（include/exclude/oob/account-grant 计数+amendment 链头）/ `findings`（[{id,title,tech_sev,biz_impact,replay_state,asset,verified}]/verify 门口径=重放三态映射）/ `matrix`（filled/empty/gaps 列表）/ `coverage`（intents open/closed+phases 九门通过集）/ `budget_terminal`（normal|exhausted——budget.tsv 终态；终态 B 判据字段）/ `tier_disclosure`（timeline `tier=` 事件末值+egress 档位）/ `limits`（覆盖度局限性声明输入：空矩阵格清单+unverified 清单）
+  - CLI：`tanyin-report aggregate --goal-dir D --timestamp T [--out report/draft-data.json]`（缺表=exit 2 ENV；写文件=确定性投影，两跑逐字节一致）
+  - **P5.md ENV-HALT 解除不在本任务**（lint 未落地；Task 14 一并接线）
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_report_agg.py
+class TestAggregate(unittest.TestCase):
+    def test_projection_on_fixture(self):
+        gd = self._copy_g1()                      # G-g1 复制惯例
+        d = report_agg.aggregate(gd, TS)
+        self.assertTrue(set(d) >= {"goal", "scope_summary", "findings", "matrix",
+                                   "coverage", "budget_terminal", "tier_disclosure", "limits"})
+        self.assertEqual(d["budget_terminal"], "normal")
+    def test_deterministic(self):
+        gd = self._copy_g1()
+        self.assertEqual(json.dumps(report_agg.aggregate(gd, TS), sort_keys=True),
+                         json.dumps(report_agg.aggregate(gd, TS), sort_keys=True))
+    def test_missing_table_env(self):
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaises(EnvironmentError):
+                report_agg.aggregate(d, TS)       # 13 表缺=ENV 2 非 FAIL
+    def test_budget_exhausted_flag(self):
+        gd = self._copy_g1()
+        _mark_budget_exhausted(gd)                # budget 表追加耗尽行（CLI 命令铸造，不用手改表）
+        self.assertEqual(report_agg.aggregate(gd, TS)["budget_terminal"], "exhausted")
+```
+
+- [ ] **Step 2: 跑红 → Step 3: 实现 report_agg.py** —— 每投影键一个小函数（`_project_findings`/_project_matrix/_project_coverage/_project_budget/_project_tier/_project_limits），列名一律 `TABLES[t].index(col)` 取（零硬编码列号）；`replay_state` 取 findings 重放列+set-replay-state 面。CLI 入口 + `.cmd` 配对。
+- [ ] **Step 4: 跑绿+全套三连+Commit** —— `git commit -m "批次6 T12：tanyin-report 聚合器（13 表确定性投影+终态 B 判据）"`
+
