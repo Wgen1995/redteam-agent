@@ -380,11 +380,18 @@ def _stage_sync(kdir, ts, results, staged_rows):
     return staged_rows
 
 
-def lint(kdir, ts):
+def lint(kdir, ts, today=None, freshness_days=180):
     """lint 机器检查（契约 14 §4）：遍历 staging/pages+六类正式区；输出 PASS n=M 或
-    FAIL+逐页缺口清单；dedup 查重在汇总层（R10）；staging 过页 staged→lint-passed。"""
+    FAIL+逐页缺口清单；dedup 查重在汇总层（R10）；staging 过页 staged→lint-passed。
+    --today 显式传入时跑保鲜检查（T13）：last_verified 距 today 超 freshness-days
+    （缺省 180）的页输出 stale 清单——exit 0 附告警不判 FAIL（match [stale] 降权
+    联动=R11 既有）；--timestamp 缺省由 --today 派生 T00:00:00Z（G-23 禁墙钟——
+    一切时间显式传入）。"""
     if not ts or not TSV_TS.match(ts):
-        raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
+        if today and TSV_TS.match(today + "T00:00:00Z"):
+            ts = today + "T00:00:00Z"
+        else:
+            raise KnowledgeError("--timestamp 必填（ISO8601；或传 --today 由其派生）")
     vocab, vkeys = vocab_supported(), vocab_keys()
     source_ids = {r[0] for r in _read_tsv(os.path.join(kdir, "sources", "SOURCES.tsv"),
                                           SOURCES_COLS)}
@@ -454,6 +461,28 @@ def lint(kdir, ts):
                 fails += 1
                 print("FAIL K1 基线覆盖缺口: %s 行数=%d（VOCAB 每 wstg-* 键须恰一行）"
                       % (vk, seen.get(vk, 0)))
+    # 保鲜检查（T13）：仅当 --today 显式传入；stale=告警不判 FAIL
+    if today:
+        try:
+            t = datetime.date.fromisoformat(today)
+        except ValueError:
+            raise KnowledgeError("--today 须 ISO 日期: %r" % today)
+        try:
+            fd = int(freshness_days)
+        except (TypeError, ValueError):
+            raise KnowledgeError("--freshness-days 需整数: %r" % (freshness_days,))
+        if fd < 1:
+            raise KnowledgeError("--freshness-days 需正整数: %r" % (freshness_days,))
+        for rel, path_md, _ok, fm in results:
+            lv = str(fm.get("last_verified", ""))
+            try:
+                age = (t - datetime.date.fromisoformat(lv)).days
+            except ValueError:
+                continue
+            if age > fd:
+                print("WARN stale: %s last_verified=%s 距 %s %d 天 > %d"
+                      "（保鲜告警不判 FAIL；match [stale] 降权联动 R11）"
+                      % (str(fm.get("id", "")) or rel, lv, today, age, fd))
     _stage_sync(kdir, ts, results, staged_rows)
     if fails:
         print("FAIL checked=%d failed_groups=%d" % (checked, fails))
@@ -471,7 +500,19 @@ def h_source_register(ctx, rest):
 
 def h_lint(ctx, rest):
     kv, _pos = parse_kv(rest)
-    return lint(ctx, kv.get("timestamp", ""))
+    return lint(ctx, kv.get("timestamp", ""), today=kv.get("today", ""),
+                freshness_days=kv.get("freshness-days", 180))
+
+
+def h_promote(ctx, rest):
+    kv, _pos = parse_kv(rest)
+    return promote(ctx, kv.get("page", ""), kv.get("timestamp", ""))
+
+
+def h_demote(ctx, rest):
+    kv, _pos = parse_kv(rest)
+    return demote(ctx, kv.get("page", ""), kv.get("refuting", ""),
+                  kv.get("note", ""), kv.get("timestamp", ""))
 
 
 # ---------------------------------------------------------------------------
@@ -824,6 +865,142 @@ def score(kdir, goal_dir, vuln_class, asset, today):
             "warnings": warnings,
         },
     }, ensure_ascii=False, sort_keys=True))
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# 批次 5 T13：四门槛晋升 promote + demote + 保鲜 lint（learned→core 飞轮后半）
+# ---------------------------------------------------------------------------
+
+def _log_has(kdir, event, page_id, needle):
+    """log.md 在场检查（四门槛③）：ts|event|id|detail 行 event/id 匹配且 detail 含 needle。"""
+    p = os.path.join(kdir, "log.md")
+    if not os.path.isfile(p):
+        return False
+    with open(p, encoding="utf-8") as f:
+        for ln in f:
+            parts = ln.rstrip("\n").split("|")
+            if len(parts) >= 4 and parts[1] == event and parts[2] == page_id \
+                    and needle in parts[3]:
+                return True
+    return False
+
+
+def _find_page(kdir, page_id, zones):
+    """按目录序定位页文件；返回 (zone, path) 或 (None, None)。"""
+    for z in zones:
+        p = os.path.join(kdir, z, page_id + ".md")
+        if os.path.isfile(p):
+            return z, p
+    return None, None
+
+
+def _fm_transform(text, updates):
+    """front-matter 字段改写（仅替已有键值，其余字节保留——pattern 页 status 必填在场）。"""
+    lines = text.split("\n")
+    out = [lines[0]]
+    i = 1
+    pending = dict(updates)
+    while i < len(lines) and lines[i].strip() != "---":
+        ln = lines[i]
+        m = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)\s*:", ln)
+        if m and m.group(1) in pending:
+            ln = "%s: %s" % (m.group(1), pending.pop(m.group(1)))
+        out.append(ln)
+        i += 1
+    out.extend(lines[i:])
+    return "\n".join(out)
+
+
+def _applied_patterns(pfm):
+    """applied_patterns 归一为 PT-id 列表（行内流列表或分号串双形态）。"""
+    applied = pfm.get("applied_patterns") or []
+    if isinstance(applied, str):
+        return [a.strip() for a in applied.split(";") if a.strip()]
+    return [str(a).strip() for a in applied if str(a).strip()]
+
+
+def promote(kdir, page_id, ts):
+    """四门槛机检（R9/契约 14 §4，learned→core）：
+    ①复现≥2=被 ≥2 先例页 applied_patterns 引用（页 id 计数）；
+    ②跨目标有效=引用先例 client 去重 ≥2；
+    ③人工审批=log.md 存在 approve 且 detail 含 for=promote（在场检查——质量判断
+      留人审 checklist，铁律 7：CLI 不判「值不值得晋升」）；
+    ④无指纹泄漏=该页 redact 哨兵（special 形态+真域名/IP）零命中。
+    全过→patterns/learned/→patterns/core/ 移动+status=core+log 落账；
+    不全过=REJECT 附缺口清单（exit 1）。"""
+    if not ts or not TSV_TS.match(ts):
+        raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
+    zone, src = _find_page(kdir, page_id, ("patterns/learned",))
+    if src is None:
+        raise Reject("promote 须对 patterns/learned 页执行: %s（learned 区无此页）" % page_id)
+    text = read_page(src)
+    fm, fm_raw, body = split_page(text)
+    if not isinstance(fm, dict) or fm.get("kind") != "pattern":
+        raise Reject("promote 目标须 kind=pattern 页: %s" % page_id)
+    refs = []
+    d = os.path.join(kdir, "precedents")
+    for fn in sorted(os.listdir(d) if os.path.isdir(d) else []):
+        if not fn.endswith(".md"):
+            continue
+        pfm, _r, _b = split_page(read_page(os.path.join(d, fn)))
+        if not isinstance(pfm, dict) or pfm.get("kind") != "precedent":
+            continue
+        if page_id in _applied_patterns(pfm):
+            refs.append((str(pfm.get("id", fn[:-3])), str(pfm.get("client", ""))))
+    ref_ids = {r[0] for r in refs}
+    ref_clients = {r[1] for r in refs if r[1]}
+    gates = []
+    if len(ref_ids) < 2:
+        gates.append("①复现≥2 缺：引用先例 %d 个（applied_patterns 页 id 计数）" % len(ref_ids))
+    if len(ref_clients) < 2:
+        gates.append("②跨目标有效 缺：引用先例 client 去重 %d 个" % len(ref_clients))
+    if not _log_has(kdir, "approve", page_id, "for=promote"):
+        gates.append("③人工审批 缺：log.md 无 approve for=promote 行")
+    page_text = fm_raw + "\n" + body
+    leak_n = len(special.scan_text(page_text))
+    leak_n += sum(1 for ln in page_text.splitlines()
+                  if DOMAIN_RE.search(ln) or IP_RE.search(ln))
+    if leak_n:
+        gates.append("④无指纹泄漏 缺：redact 哨兵命中 %d 处" % leak_n)
+    if gates:
+        print("REJECT 四门槛缺口（learned→core）: %s" % page_id)
+        for g in gates:
+            print("  " + g)
+        return 1
+    dst = os.path.join(kdir, "patterns", "core", page_id + ".md")
+    with open(dst, "w", encoding="utf-8", newline="\n") as f:
+        f.write(_fm_transform(text, {"status": "core"}))
+    os.remove(src)
+    _append_log(kdir, ts, "promote", page_id,
+                "learned->core refs=%d clients=%d" % (len(ref_ids), len(ref_clients)))
+    print("promoted: %s（learned→core）" % page_id)
+    return 0
+
+
+def demote(kdir, page_id, refuting, note, ts):
+    """降级（core/learned→demoted）：--refuting 需 ≥2 项独立反证（N≥2）；--note 须含
+    「防护拦截」或「代码修复」分类词（两类降级依据——pair_group 差分语义文字化承载）；
+    移 patterns/demoted/ 区+status=demoted+log 落账。"""
+    if not ts or not TSV_TS.match(ts):
+        raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
+    refs = [x.strip() for x in str(refuting or "").split(";") if x.strip()]
+    if len(refs) < 2:
+        raise Reject("demote 需 ≥2 项独立反证 --refuting=EV-x;EV-y（当前 %d 项）" % len(refs))
+    if not any(w in str(note or "") for w in ("防护拦截", "代码修复")):
+        raise Reject("demote --note 须含降级分类词「防护拦截」或「代码修复」"
+                     "（区分两类降级依据）")
+    zone, src = _find_page(kdir, page_id, ("patterns/learned", "patterns/core"))
+    if src is None:
+        raise Reject("demote 目标不在 patterns/learned|core: %s" % page_id)
+    os.makedirs(os.path.join(kdir, "patterns", "demoted"), exist_ok=True)
+    dst = os.path.join(kdir, "patterns", "demoted", page_id + ".md")
+    with open(dst, "w", encoding="utf-8", newline="\n") as f:
+        f.write(_fm_transform(read_page(src), {"status": "demoted"}))
+    os.remove(src)
+    _append_log(kdir, ts, "demote", page_id,
+                "refuting=%s note=%s" % (";".join(refs), note))
+    print("demoted: %s（%s→demoted）" % (page_id, zone))
     return 0
 
 
