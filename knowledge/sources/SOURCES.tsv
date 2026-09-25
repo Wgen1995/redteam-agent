@@ -1,0 +1,6 @@
+source_id	origin	path	sha256	license	note	registered_at
+KP-0001	cnpen	sources/cnpen/panorama/	-	proprietary	待补：测试全景图（素材库在仓外；就位后 source-register 重登取代本行——降级登记 G-35 同型）	2026-09-24T09:00:00Z
+KP-0002	cnpen	sources/cnpen/retro/	-	proprietary	待补：思路复盘八阶段+7 核心思路（就位后蒸馏 concepts 方法论页）	2026-09-24T09:00:00Z
+KP-0003	cnpen	sources/cnpen/records/	-	proprietary	待补：测试记录 T1-T55（就位后蒸馏 precedents 先例链路页，CLIENT-NN 脱敏）	2026-09-24T09:00:00Z
+KP-0004	cnpen	sources/cnpen/vuln-sheets/	-	proprietary	待补：31 份黑盒漏洞单（就位后蒸馏 patterns ok-sample 样例页）	2026-09-24T09:00:00Z
+KP-0005	cnpen	sources/cnpen/burp-poc/	-	proprietary	待补：BurpPOC 合集（就位后并入 concepts tool_params 节）	2026-09-24T09:00:00Z
