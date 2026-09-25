@@ -512,3 +512,22 @@
 ## 2026-09-24 批次 6 开工（executing via subagent-driven-development）
 - 用户批准计划 docs/superpowers/plans/2026-09-24-b6-evals-install-delivery.md（18 任务/出口 18 条/四关键裁决：退出码 0/1/2 冻结·Burp HTTP/1.x 字节直贴·生产钥离线仪式·靶场种 20 基线 v1）｜commit e14a49d
 - 执行结构：按域捆绑（evals 链→install/宿主→tools.lock/代理→报告流水线→靶场→收口），每任务 TDD+全量回归，收口后整支评审
+
+## 2026-09-24 批次 6 T1+T2 流水+裁决（evals 链头；实现者记）
+
+- **T1（commit 11abe47）**：契约 15 指标集 schema（contract:15/version:1 微版本通道；裁决 A 退出码 0=全硬门 PASS/1=任一硬门 FAIL/2=全 ENV-SKIP 且无 PASS，VulnClaw 第 3 态落 counts.candidates 不入退出码）＋cli/ledger/evals_schema.py 加载校验单源＋evals_metrics.py 裁决引擎（runner 注册表；warn 门 FAIL 落 counts.warn_fail 不动退出码）＋cli/tanyin-evals 薄 CLI（run/list/report；.cmd 配对）＋tests/evals/metrics-v1.json 十二指标机读定义（M03/M06 基线=0、checklist 五项定值、其余 collect-first）。红=ImportError evals_schema（Ran 1 errors=1 rc=1）→绿=11 例 PASS；全套 Ran 577 OK（基线 566+11）；金样 54 面 PASS 零漂移。
+- **T2（commit 2ff49d1）**：cli/ledger/evals_dual_anchor.py 纯函数检查器（裁决 E：交战区 approvals.tsv knowledge-approved 行↔库侧 log.md approve 行按三元组互证，任一侧缺配对=FAIL 硬门，孤儿行列明细）＋evals_metrics.py 注册静态四 runner（unittest 逐模块子进程 PYTHONUTF8=1/golden 实跑/report-scan 泄漏样本拦截→脱敏零泄漏→validate 三步/dual-anchor 双库配对）＋tests/test_switch_matrix.py（M11 铁律 6 不可裁剪三项：deny-list 恒 REJECT、egress.acl 两档产出、canary probe tier1+3 全拦 allowed=0 且界外诱饵触碰恒 REJECT；T1/T3 双档会话夹具）＋tests/test_weak_model_protocol.py（M08 缺命令步骤终止报告可检测；纯函数留测试模块不入 CLI 面，铁律 7）＋tests/evals/samples/p4-no-command.md＋tests/evals/samples/dual/ 双库样本夹具。红=ImportError evals_dual_anchor＋套件接线红（run --suite=static 全 ENV-SKIP exit 2）→绿=15 例 PASS＋静态套件端到端 exit 0 八指标全 PASS（counts pass=8 env_skip=0）；全套 Ran 592 OK（566+11+15）；金样 54 面 PASS 零漂移。
+- **Ruling 清单（T1+T2）**：
+  - R-T1-1（M01 runner 接线）：计划「unittest:tests.run_golden」实况=tests/run_golden.py 为脚本非 unittest 模块，`-m unittest tests.run_golden` 加载 0 例=空绿假 PASS（实测 OK rc=0）——增 golden runner 子进程实跑（timeout 900、cwd=仓库根），rc!=0 即 FAIL，与金样门「缺金样=FAIL 不落盘」同源 fail-closed；契约 15 §3 M01 行就地注记勘误。
+  - R-T1-2（l3 空组占位）：契约 §4「l3=[L3 脚手架占位]」具体化为 l3=[]——v1 十二指标面不引用不存在条目（run_suite 免 KeyError），正式 L3 条目随 T3 manual runner 对齐数据入册，不阻塞 CI。
+  - R-T1-3（.cmd 完整形）：计划示意单行 @echo off+py -3，仓库既有 .cmd 为 rem 注记+setlocal/endlocal+ERRORLEVEL 透传形——「与既有 cli/tanyin-* 一致」约定优先，取仓库形。
+  - R-T1-4（report 子命令骨架期）：与 run 同面（计划代码即规格），人读渲染面归 T12 tanyin-report；契约 §5 注记。
+  - R-T1-5（测试注册表隔离）：计划 test_exit_pass 隐含「unittest 按定义序执行+模块级 _RUNNERS 跨用例泄漏」假设，unittest 实际按字母序（hard_fail 先于 pass 注册 synthetic-fail 致 1!=0）——setUp/tearDown 逐用例快照恢复注册表，各断言零变；顺手收计划原稿 unclosed file ResourceWarning（with-open）。
+  - R-T2-1（canary probe rc 语义修正）：probe 语义=「任一已部署层放行诱饵=FAIL exit 1；全拦=pass exit 0」，计划「界外诱饵探测恒非零 rc」按字面不可满足——「恒非零」落底层触碰面 guard exec 对诱饵恒 REJECT rc!=0，测试两者并取（probe tier1+3 rc=0 且 allowed=0 ＋ guard exec 诱饵 rc!=0），零容忍不可裁剪语义不变。
+  - R-T2-2（档位载体）：guard exec 无 --tier 旗标，档位=goal 的 guard-tier（add-goal --guard-tier T1/T3）——双档=两会话夹具各建各断言。
+  - R-T2-3（M12 e2e 夹具）：裁决 E「tests 夹具双库样本驱动」落地=tests/evals/samples/dual/{approvals.tsv,log.md} 全配对样本；M12 args 相对 goal_dir 解析，文件缺=OSError→ENV-SKIP（fail-closed 不假 PASS）。
+  - R-T2-5（note_pattern 调整）：计划示意 ([A-Z]{2}-\d{4}) 对在库三字母页 id（STG-0001）误抽 TG-0001——按计划自注「实跑抓 note 字节后可改 pattern 不改本函数」通道改 \b([A-Z]{2,3}-\d{4})\b（在库前缀 STG/CP/PR/KP 实测，词界防子串）。
+  - R-T2-6（matched 三元组序）：计划 check() 代码示意键序 (page-id, approver, timestamp) 与自身测试断言/裁决 E 原文 (page-id, timestamp, approver) 冲突——以裁决 E 为准（配对键序不变，仅返回投影换序）。
+  - R-T2-7（契约 §5 落盘通道）：run 工件经 --out 显式落盘（CI 接线归 T4），骨架期缺省仅 stdout counts——计划代码即规格；契约 §5 措辞对齐。
+- **纪律面**：全部新文件 UTF-8 无 BOM+LF；runner 子进程一律 [sys.executable, path]+显式 timeout+PYTHONUTF8=1+cwd=仓库根；时间戳全显式字面量（禁墙钟）；goal 目录先 os.makedirs 再 add-goal（core 不代建纪律）；panorama/ 与 /Users/wgen/Documents 零触碰；金样 54 面零漂移（无新增面——evals-run 等新面随后续任务单独入册）。
+- **R-记账（T1+T2 时点）**：两任务 commit 先行（11abe47/2ff49d1），本流水+裁决节独立 commit（批次 5 既定手法）。
