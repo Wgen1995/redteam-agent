@@ -202,12 +202,15 @@ def budget_exhausted(s):
     return False
 
 
-def converge_state(s):
+def converge_state(s, gap_cells=None):
     """收敛判定（终审补全 1，定稿 §5.4）：空格清零（主+子矩阵）/预算树未穿/
-    无 unconsumed fact/无 blocked intent。预算穿=合法终态 budget-exhausted（P4 降级流）。"""
+    无 unconsumed fact/无 blocked intent。预算穿=合法终态 budget-exhausted（P4 降级流）。
+    批次5 T7：gap_cells 可传 graph_cmds.reachable_gap_cells 的全空格（可达+不可达）——
+    与 matrix_gap_cells 同一空格集的可达性细分，判定等价、计数输出免重算。"""
     if budget_exhausted(s):
         return "budget-exhausted"
-    ok = (not matrix_gap_cells(s) and not unconsumed_facts(s)
+    gaps = matrix_gap_cells(s) if gap_cells is None else gap_cells
+    ok = (not gaps and not unconsumed_facts(s)
           and not blocked_intents(s))
     return "converged" if ok else "running"  # 【推导】中间态输出 running（契约仅载两终态）
 
@@ -326,7 +329,23 @@ def h_converge_check(goal_dir, rest):
     args, pos = parse_kv(rest)
     if pos or args:
         raise UsageError("converge-check 无参数")
-    print(converge_state(core.Session(goal_dir)))
+    s = core.Session(goal_dir)
+    # 批次5 T7（G-28 前半）：空格清零细化为可达性维度——scope-root 可达空格与不可达
+    # 空格分别计数输出；不可达空格经 unreachable: 前缀置态「-」后天然非空格（图依据
+    # 显式置格而非静默豁免，matrix-set 零改动）。单源=graph_cmds.reachable_gap_cells
+    # （horizon 同函数；延迟导入——graph_cmds 顶层反向依赖本模块）。
+    from .graph_cmds import _build, _scope_root_targets, reachable_gap_cells
+    nodes, _adj = _build(s)
+    _reach, reach_gaps, unreach_gaps = reachable_gap_cells(
+        s, _scope_root_targets(s, nodes))
+    verdict = converge_state(s, gap_cells=reach_gaps + unreach_gaps)
+    line = verdict
+    if verdict == "running" and not reach_gaps and unreach_gaps:
+        line += ("（structural: %d 格不可达——unreachable: 通道可清，"
+                 "matrix-set --state=- --reason=unreachable:<AST 依据>）" % len(unreach_gaps))
+    print(line)
+    print("#reachable-gaps=%d" % len(reach_gaps))
+    print("#unreachable-gaps=%d" % len(unreach_gaps))
     return 0
 
 

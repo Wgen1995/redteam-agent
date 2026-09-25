@@ -415,7 +415,7 @@
 |---|---|---|---|
 |（无参数）|—|—|【推导】|
 
-- 输出：单行 `converged` 或 `budget-exhausted`（两者皆合法终态；后者置 degraded=true 走 P4 降级流）。
+- 输出：单行 `converged` 或 `budget-exhausted`（两者皆合法终态；后者置 degraded=true 走 P4 降级流）。批5 T7 勘误：verdict 行仍居首（gate 断言读首行），其后增两行计数 `#reachable-gaps=N`/`#unreachable-gaps=N`；verdict=running 且可达空格=0 而不可达>0 时行尾附 structural 提示——见文末批次 5 T7 勘误补记。
 - 拒收条件：—（只读）。
 - 依据：定稿 §5.2 P3 exit/§3.3/§5.4；**收敛四条件清单定稿未列（02 探知项 6）→判定内容留空，见文末无法起草项 1**。时机：P3 exit 断言（每轮⑥收敛判定）。
 
@@ -724,3 +724,7 @@
 ## v2 勘误补记（2026-09-24·批次 5 施工期·T5/R6 cap 机检硬门）
 
 §3 add-intent 增可选 `--cap=N`（1-1000 整数，缺省=AUTHZ_DIFF_PAIR_CAP）与拒收条件：kind=authz-diff 时同端点（计数键=asset+kind 二元组，经既有 dedup_key 前缀 `(asset or "-")+"+authz-diff+"` 比对）在途 authz-diff intents（status∈{candidate,pending,active}）计数 ≥cap=REJECT（拒收消息附当前计数与 cap 值）。常量 `AUTHZ_DIFF_PAIR_CAP=24` 从双载文档常量（differential.md+P3.md）转**代码常量**（cli/ledger/write_cmds.AUTHZ_DIFF_PAIR_CAP；契约 04 constants 表已随批次 5 T2 回注）——文档双载降为单源指针。`--cap` 覆盖通道=evals 可重放（G-3 --rate-minutes 同型）。落地=批次 5 T5；微版本勘误通道，schema_version 保持 =2 不递增。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T7/G-28 前半·converge 结构性停机）
+
+§22 converge-check 判据与输出勘误：空格清零条件细化为可达性维度——`#reachable-gaps=N`/`#unreachable-gaps=N` 双计数行随 verdict 行输出（verdict 仍居首，gate 断言「stdout 首词∈{converged, budget-exhausted}」与 mode=degraded 判定不受影响）；可达性=graph_cmds.reachable_gap_cells 单源（horizon 同函数，起点集参数化——horizon 传 {--from}、converge 传 scope-root 资产集，horizon 行为零变由金样 graph-graph-horizon.norm 钉死）。结构性停机判据=不可达空格经 `unreachable:` 前缀置态「-」（matrix-set --state=- --reason=unreachable:<AST 依据>）后计入清零——图依据显式置格而非静默豁免，matrix-set 零改动（批4 裁决 A「旧前缀为空→任意前缀放行」已支持首次归类）；verdict=running 且可达空格=0 而不可达>0 时行尾附 structural 提示。金样 read-converge-check 有意刷新（新增两行计数+structural 提示=行为增强非破坏）。落地=批次 5 T7；微版本勘误通道，schema_version 保持 =2 不递增。

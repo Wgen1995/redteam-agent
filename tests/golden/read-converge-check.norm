@@ -1,1 +1,3 @@
-running
+running（structural: 1 格不可达——unreachable: 通道可清，matrix-set --state=- --reason=unreachable:<AST 依据>）
+#reachable-gaps=0
+#unreachable-gaps=1

@@ -128,6 +128,38 @@ def _scope_root_targets(s, nodes):
             if _cell(r, "assets.tsv", "type") == "root-domain" and r[0] in nodes}
 
 
+def reachable_gap_cells(s, starts):
+    """可达集 × 矩阵空格 join（graph-horizon/converge-check 单源，批次5 T7·G-28 前半）。
+
+    starts=起点节点 id 集（converge 传 _scope_root_targets 的 scope-root 资产集；
+    horizon 传 {--from}）。Ruling（R-T7-1）：计划片段签名 reachable_gap_cells(s) 固定
+    起点=scope-root，与「h_graph_horizon 改调它、行为零变」冲突（horizon 起点=--from
+    任意节点）——按行为零变优先将起点集参数化，语义两处共用同一 BFS+空格 join。
+    返回 (reach, reach_gaps, unreach_gaps)：gaps=(attack_surface, vuln_class) 空格对
+    （latest 行 state 空），按行键排序；reach/unreach 以「表面值 ∈ 可达资产值集」二分。
+    """
+    nodes, adj = _build(s)
+    reach = {n for n in starts if n in nodes}
+    frontier = sorted(reach)
+    while frontier:
+        nxt = []
+        for u in frontier:
+            for _label, v in adj[u]:
+                if v not in reach:
+                    reach.add(v)
+                    nxt.append(v)
+        frontier = sorted(nxt)
+    ast_vals = {_cell(r, "assets.tsv", "value") for r in s.rows("assets.tsv")
+                if r[0] in reach}
+    gaps = sorted((_cell(r, "matrix.tsv", "attack_surface"),
+                   _cell(r, "matrix.tsv", "vuln_class"))
+                  for r in latest_matrix(s).values()
+                  if _cell(r, "matrix.tsv", "state").strip() == "")
+    reach_gaps = [g for g in gaps if g[0] in ast_vals]
+    unreach_gaps = [g for g in gaps if g[0] not in ast_vals]
+    return reach, reach_gaps, unreach_gaps
+
+
 def h_graph_paths(goal_dir, rest):
     args, pos = parse_kv(rest)
     if pos or "from" not in args or "to" not in args:
@@ -170,26 +202,12 @@ def h_graph_horizon(goal_dir, rest):
     if pos or "from" not in args:
         raise UsageError("graph-horizon 需 --from=<id>")
     s = core.Session(goal_dir)
-    nodes, adj = _build(s)
+    nodes, _adj = _build(s)
     start = args["from"]
-    reach = {start} if start in nodes else set()
-    frontier = [start] if start in nodes else []
-    while frontier:
-        nxt = []
-        for u in frontier:
-            for _label, v in adj[u]:
-                if v not in reach:
-                    reach.add(v)
-                    nxt.append(v)
-        frontier = sorted(nxt)
+    # 批次5 T7：BFS+空格 join 抽为 reachable_gap_cells 单源（converge-check 同函数）——
+    # 起点={--from}，输出与抽取前逐字节一致（金样 graph-graph-horizon.norm 钉）。
+    reach, gaps, _unreach = reachable_gap_cells(s, {start})
     reach_rows = sorted((n, nodes[n]) for n in reach)
-    ast_vals = {_cell(r, "assets.tsv", "value") for r in s.rows("assets.tsv")
-                if r[0] in reach}
-    gaps = sorted((_cell(r, "matrix.tsv", "attack_surface"),
-                   _cell(r, "matrix.tsv", "vuln_class"))
-                  for r in latest_matrix(s).values()
-                  if _cell(r, "matrix.tsv", "state").strip() == ""
-                  and _cell(r, "matrix.tsv", "attack_surface") in ast_vals)
     print("#reachable=%d" % len(reach_rows))
     for n, ty in reach_rows:
         print(n + TAB + ty)

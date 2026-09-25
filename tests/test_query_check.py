@@ -136,7 +136,8 @@ class QueryCommands(Base):
     def test_converge_check(self):
         r = self.cli("converge-check")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-        self.assertEqual(r.stdout.splitlines()[0], "running")  # 空格未清零+fact 未消费
+        # 批5 T7 契约随行：running 行尾附 structural 提示（可达空格=0 而不可达>0）
+        self.assertTrue(r.stdout.splitlines()[0].startswith("running"))  # 空格未清零+fact 未消费
         # converged：空格清零 + facts 全消费 + 无 blocked + 预算未穿
         self.write("matrix.tsv", self.rows("matrix.tsv") + [
             row("matrix.tsv", attack_surface="web.api", vuln_class="inj.sql", state="x",

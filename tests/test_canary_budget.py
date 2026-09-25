@@ -203,7 +203,8 @@ class BudgetEnforce(Base):
         self.budget_append(["2026-09-23T04:00:00Z", "0", "60000", "0", "0", "goal", "overrun", "2"])
         r = ledger(self.gd, "converge-check")
         self.assertEqual(r.returncode, 0)
-        self.assertEqual(r.stdout.strip(), "budget-exhausted")
+        # 批5 T7 契约随行：verdict 行后增两行可达性计数（#reachable/#unreachable-gaps）
+        self.assertEqual(r.stdout.splitlines()[0], "budget-exhausted")
 
 
 class BudgetRate(Base):
