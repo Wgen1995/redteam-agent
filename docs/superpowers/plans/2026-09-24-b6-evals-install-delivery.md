@@ -552,9 +552,23 @@ def _runner_unittest(ctx):
 
 register("unittest")(_runner_unittest)
 
-@register_wrap := None  # 占位防误读——实际写法见下
+@register("report-scan")
+def _report_scan(ctx):
+    # M10：tempfile 建最小会话（cli/tanyin-ledger add-goal+add-scope，--timestamp 显式）
+    # → 写 draft.md 含泄漏样本 token=sk-live-abc123
+    # → subprocess redact-scan --target draft.md 期待 rc!=0（拦截在位）
+    # → 写脱敏后文本期待 rc==0；tanyin-ledger validate 期待 rc==0
+    # 任一不符={"status":"FAIL","actual":<步骤名>}；openssl 等环境缺=raise EnvironmentError
+    ...
+
+@register("dual-anchor")
+def _dual_anchor(ctx):
+    # M12：args=[approvals.tsv 相对路径, log.md 相对路径]（相对 ctx["goal_dir"]）
+    # → tab 分隔读 approvals 全行+读 log 文本 → evals_dual_anchor.check(...)
+    # 两 missing 清单皆空=PASS（actual 带 matched 计数）；否则 FAIL 落明细
+    ...
 ```
-（上块仅示意 unittest runner；正式代码不用 walrus 占位行，四个 runner 逐个 `register("名")(fn)`：`unittest`/`report-scan`/`dual-anchor`/`token-usage`——`token-usage` Task 3 交付，此处不注册。）
+（`token-usage` runner Task 3 交付，本任务不注册——metrics-v1.json 中其 runner 名照契约 15 §3 预填，run static 套件不触及。）
 
 `report-scan` runner（M10）：tempfile 建最小会话（add-goal/add-scope）+写 draft.md（含 `token=sk-live-abc123` 泄漏样本）→`tanyin-ledger redact-scan --target draft.md` 期待 rc!=0（拦截）→替换脱敏文本期待 rc==0→`validate` rc==0；任一不符=FAIL。openssl/docker 类环境前置缺失抛 `EnvironmentError`（run_suite 捕获转 ENV-SKIP）。
 
