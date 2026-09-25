@@ -229,7 +229,7 @@ def _read_tsv(path, cols):
     with open(path, encoding="utf-8") as f:
         for ln in f:
             ln = ln.rstrip("\n")
-            if not ln or ln == TAB.join(cols):
+            if not ln or ln == TAB.join(cols) or ln.startswith("#"):
                 continue
             rows.append([unesc(c) for c in ln.split(TAB)])
     return rows
@@ -461,6 +461,27 @@ def lint(kdir, ts, today=None, freshness_days=180):
                 fails += 1
                 print("FAIL K1 基线覆盖缺口: %s 行数=%d（VOCAB 每 wstg-* 键须恰一行）"
                       % (vk, seen.get(vk, 0)))
+    # K3 快照格式校验（G-32）：七列/severity 枚举/published 日期；无快照的库跳过
+    snap_path = os.path.join(kdir, "cve", "cve-snapshot.tsv")
+    if os.path.isfile(snap_path):
+        with open(snap_path, encoding="utf-8") as f:
+            for ln_no, ln in enumerate(f, 1):
+                ln = ln.rstrip(chr(10))
+                if not ln.strip() or ln.startswith("#") or ln == TAB.join(CVE_COLS):
+                    continue
+                cells = ln.split(TAB)
+                if len(cells) != len(CVE_COLS):
+                    fails += 1
+                    print("FAIL K3 快照七列格式: 行 %d 列 %d（G-32）" % (ln_no, len(cells)))
+                elif cells[4] not in CVE_SEVERITIES:
+                    fails += 1
+                    print("FAIL K3 快照 severity 枚举越界: 行 %d %r" % (ln_no, cells[4]))
+                elif cells[6] not in CVE_SOURCES:
+                    fails += 1
+                    print("FAIL K3 快照 source 枚举越界: 行 %d %r" % (ln_no, cells[6]))
+                elif not re.match(r"\d{4}-\d{2}-\d{2}$", cells[5]):
+                    fails += 1
+                    print("FAIL K3 快照 published 日期格式: 行 %d %r" % (ln_no, cells[5]))
     # 保鲜检查（T13）：仅当 --today 显式传入；stale=告警不判 FAIL
     if today:
         try:
@@ -1004,6 +1025,66 @@ def demote(kdir, page_id, refuting, note, ts):
     return 0
 
 
+# ---------------------------------------------------------------------------
+# 批次 5 T14：K3 本地 CVE 快照 + nday-match 离线匹配（联网仅核验边界 R11）
+# ---------------------------------------------------------------------------
+
+CVE_COLS = ("cve_id", "cpe_prefix", "version_start", "version_end", "severity",
+            "published", "source")
+CVE_SEVERITIES = ("critical", "high", "medium", "low")
+CVE_SOURCES = ("NVD", "KEV", "PSIRT", "vendor")
+SNAP_DATE_RE = re.compile(r"#\s*snapshot-date:\s*(\S+)")
+
+
+def _vtuple(v):
+    """版本元组（离线比较语义）：段内取前导数字，非数字段按 0——
+    _vtuple("2.14.1")<(2,15) 成立；milestone（10.0.0-M7）折叠为 (10,0,0)。"""
+    parts = []
+    for seg in str(v).split("."):
+        n = ""
+        for ch in seg:
+            if not ch.isdigit():
+                break
+            n += ch
+        parts.append(int(n or 0))
+    return tuple(parts)
+
+
+def snapshot_date(kdir):
+    """快照刷新日期（G-32：首行 `# snapshot-date:` 注记；nday 输出回显供审计）。"""
+    p = os.path.join(kdir, "cve", "cve-snapshot.tsv")
+    if os.path.isfile(p):
+        with open(p, encoding="utf-8") as f:
+            for ln in f:
+                m = SNAP_DATE_RE.match(ln)
+                if m:
+                    return m.group(1)
+    return "unknown"
+
+
+def nday_match(kdir, cpe, version):
+    """K3 快照离线匹配（R11 零联网边界——匹配=纯 CPE 前缀+版本区间比较，本模块零
+    零网络客户端外联；联网核验=P6 技法页纪律走宿主 WebSearch，CLI 零外联）。
+    命中=cpe 前缀前缀匹配 ∧ version∈[version_start, version_end)（_vtuple 元组比较）；
+    输出：#snapshot-date=（G-32）→ #candidates=N → 命中行（cve_id/severity/区间/
+    published 四栏制表符分隔，按 cve_id 排序）。零命中 exit 0（空集是合法结果）。"""
+    cpe = str(cpe or "").strip()
+    version = str(version or "").strip()
+    if not cpe or not version:
+        raise KnowledgeError("--cpe 与 --version 必填"
+                             "（如 --cpe=cpe:apache:log4j --version=2.14.1）")
+    rows = _read_tsv(os.path.join(kdir, "cve", "cve-snapshot.tsv"), CVE_COLS)
+    v = _vtuple(version)
+    hits = [r for r in rows
+            if (cpe.startswith(r[1]) or r[1].startswith(cpe + ":"))
+            and _vtuple(r[2]) <= v < _vtuple(r[3])]
+    print("#snapshot-date=" + snapshot_date(kdir))
+    print("#candidates=%d" % len(hits))
+    for r in sorted(hits, key=lambda x: x[0]):
+        print("%s\t%s\t%s..%s\t%s" % (r[0], r[4], r[2], r[3], r[5]))
+    return 0
+
+
 def neighbors(kdir, entity):
     """graph.ndjson 中 subject/object 含实体名的行清单（A8 外推消费入口）。"""
     p = os.path.join(kdir, "graph.ndjson")
@@ -1044,6 +1125,11 @@ def h_export(ctx, rest):
 def h_match(ctx, rest):
     kv, _pos = parse_kv(rest)
     return match(ctx, kv.get("client", ""), kv.get("asset", ""), kv.get("today", ""))
+
+
+def h_nday_match(ctx, rest):
+    kv, _pos = parse_kv(rest)
+    return nday_match(ctx, kv.get("cpe", ""), kv.get("version", ""))
 
 
 def h_score(ctx, rest):

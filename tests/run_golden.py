@@ -165,15 +165,20 @@ NUCLEI_CMDS = [("engine-nuclei-adopt", [sys.executable, NUCLEI_ADAPTER,
                                         "--jsonl-file", NUCLEI_JSONL])]
 
 
-# 批次 5 T11：tanyin-knowledge 确定性面（kn 面——非 ledger 入口，ADAPTER_CMDS 先例同型）。
-# prep_knowledge=临时目录 init+预置 fixtures/knowledge 合法 formal 页（PR-0001/EN-0001）；
-# 无墙钟入产物（export created 取 last_verified；match --today 显式）→ 双跑字节一致。
+# 批次 5 T11/T14：tanyin-knowledge 确定性面（kn 面——非 ledger 入口，ADAPTER_CMDS
+# 先例同型）。prep_knowledge=临时目录 init+预置 fixtures/knowledge 合法 formal 页
+# （PR-0001/EN-0001）+种子库 CVE 快照拷贝（T14 kn-nday 面）；无墙钟入产物（export
+# created 取 last_verified；match --today 显式；nday 快照日期=G-32 首行注记静态）
+# → 双跑字节一致。
 KN_CLI = os.path.join(HERE, "..", "cli", "tanyin-knowledge")
 KN_FIX = os.path.join(HERE, "fixtures", "knowledge")
+KN_SEED = os.path.join(HERE, "..", "knowledge")
 KN_CMDS = [
     ("kn-export", [sys.executable, KN_CLI, "export", "--knowledge-dir", "<GD>"]),
     ("kn-match", [sys.executable, KN_CLI, "match", "--knowledge-dir", "<GD>",
                   "--client=CLIENT-01", "--asset=shop.example", "--today=2026-09-24"]),
+    ("kn-nday", [sys.executable, KN_CLI, "nday-match", "--knowledge-dir", "<GD>",
+                 "--cpe=cpe:apache:log4j", "--version=2.14.1"]),
 ]
 
 
@@ -181,10 +186,12 @@ def prep_knowledge(gd):
     r = subprocess.run([sys.executable, KN_CLI, "init", "--knowledge-dir", gd],
                        capture_output=True, text=True, encoding="utf-8", errors="replace")
     assert r.returncode == 0, r.stdout + r.stderr
-    for sub in ("precedents", "entities"):
+    for sub in ("precedents", "entities", "cve"):
         os.makedirs(os.path.join(gd, sub), exist_ok=True)
     for rel in ("precedents/PR-0001.md", "entities/EN-0001.md"):
         shutil.copyfile(os.path.join(KN_FIX, rel), os.path.join(gd, rel))
+    shutil.copyfile(os.path.join(KN_SEED, "cve", "cve-snapshot.tsv"),
+                    os.path.join(gd, "cve", "cve-snapshot.tsv"))
 
 
 def norm_kn(stdout, gd):

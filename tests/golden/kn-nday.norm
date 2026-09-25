@@ -1,0 +1,4 @@
+#snapshot-date=2026-09-24
+#candidates=1
+CVE-2021-44228	critical	2.0..2.15	2021-12-10
+--
