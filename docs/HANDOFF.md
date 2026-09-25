@@ -369,3 +369,16 @@
 ## 2026-09-24 批次 5 开工（executing via subagent-driven-development）
 - 用户批准计划 docs/superpowers/plans/2026-09-24-b5-knowledge-flywheel.md（19 任务/出口 10 条/六探知项裁决+R7-R14+G-29..G-35）｜commit 904d153
 - 执行结构：按域捆绑派发（T1+T2 契约→账本三小件/图/骨架/反向验证并行组→流水线链→语料入库→eval→T19 收口），每任务 TDD+全量回归，收口后整支评审
+
+2026-09-24｜子代理 T1｜批次5 T1：契约14 知识库 schema 冻结（六类页 front-matter 全集/先例三元组/staging 状态机+四门槛/CLIENT-NN/graph.ndjson 行 schema/ID 前缀表 KP-STG-CP-PR-EN-TG-PT-RT-BZ/词表版本化 WSTG-v4.2/许可纪律 MIT+format_version=kn-v1）+契约09 工具面 11→12（tanyin-knowledge 第12员工具 13 子命令，G-1 先例同通道，§2 允许类行/§3 标题联动）+README 契约清单增补接口⑰；tests/test_knowledge_contract.py 9 例 TDD 先红后绿（红=3 FAIL+6 ERROR），全套 414→423 绿+金样 51 面 PASS 零漂移｜1e89bb5
+2026-09-24｜子代理 T2｜批次5 T2：契约v3 首批集中清账六笔——04 constants 8→10（authz_diff_pair_cap=24 R6/G-20 回注+restart_rate_minutes=10 G-3 回注 phases_engine 既有常量）+gate-fail 事件词汇补注（G-7，PROTOCOL §1.3 同源）+P4 duty 攻击链落证注记（G-28，详文随 T8）+06 G-16 结案（维持 replay 侧单点 cards.check_consistency）+07 G-19 结案（perspective 不开，same-host 过渡）+09 canary 干跑口径（G-8=egress 只 compile/canary 只 deploy 不 probe）；TestContractV3Sweep 4 例 TDD 先红后绿（红=4 FAIL 全红），全套 423→427 绿+金样 51 面 PASS 零漂移｜baa414e
+
+## 2026-09-24 批次 5 T1+T2 裁决（实现者记）
+- R-T1-1（六类节标题形态）：计划测试断言「技法页（concepts/CP-*.md）」等闭括号节名，而计划契约 14 骨架标题=「技法页（concepts/CP-*.md，K5）」（含类目后缀，断言串不命中）——按测试意图（六节钉子）落「### 技法页（concepts/CP-*.md）——K5」形，K1-K8 类目信息保留（破折号后缀+§1 映射表同源）。
+- R-T1-2（§2 允许类行联动）：计划 T1 Step4 只列工具表加行+勘误补记+自验更新，未列 §2 允许类表——按声明层单源一致纪律（批4 T3 契约11 引用位先例）§2「确定性账本运算」行同步增 tanyin-knowledge（13 子命令枚举），§3 标题「工具箱 11 工具」同步 12；勘误补记载自验复跑 grep=12（原 10 为冻结时点基线保留可追溯，G-1 注先例同型）。
+- R-T1-3（format_version 语义合并）：计划契约 14 骨架 §1 仅「format_version（当前 kn-v1）」，同计划文件结构图载「单行；不匹配拒绝操作并提示迁移」——誊全文时两处合并（骨架行补注记），非新增语义。
+- R-T2-1（G-16/G-19 断言强化）：计划测试断言裸串「G-16」/「G-19」，两串已在批次 4 勘误注记在册（06 R1 注/07 T14 收口注）——裸串先绿违反 TDD 先红后绿，按 TDD 技能「Test passes? Fix test」强化为结案标记「G-16 结案」/「G-19 结案」，断言意图（结案注记在场）不变；实测红=4 FAIL 全红。
+- R-T2-2（same-homemaker 笔误）：计划 G-19 结案文案「network_position=same-homemaker」——契约 07/批次 4 台账在册口径=same-host（R-T14-6 过渡载体原文），按在册口径落 same-host。
+- R-T2-3（T2 Files 清单补 09）：计划 T2 Files 节未列 contracts/09-cli-surface.md，但 Step3 第 6 笔与 git add 清单均含之——按步骤执行（G-8 清账=09 文末勘误补记节，PROTOCOL §3 原文同源核对后落笔）。
+- R-T2-4（constants 计数联动）：§1「8 常量」/§2 标题「8 项」随表增两行同步 10（声明层单源一致）；§自验原 grep（枚举原 8 名）计数仍=8 不破，勘误补记载自验复跑（含两新名）=10；restart_rate_minutes 落笔前实核 cli/ledger/phases_engine.py:747 注记原文引用。
+- R-记账（HANDOFF 时点）：两任务计划 git add 清单均不含 docs/HANDOFF.md，流水行须引用任务 commit hash（自引用环）——先任务 commit 后流水行独立 commit（f2dc8eb/309b889 批次内既定手法）；本裁决节即该 commit。
