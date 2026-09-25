@@ -508,3 +508,7 @@
   - R-RC5-2（M-3 落点=match 入口）：--client 必填执法在查询入口 match()，score 的先例命中因子走 _match_rows(kdir, None, …) 内部通道零受扰（score 语义本就允许无 client 评分）；错误形态=--today 必填（G-34）同款 KnowledgeError→exit 2，stderr 指名缺参。
   - R-RC5-3（M-4 载体选 review-checklist）：占位符形态张力本质=人审/蒸馏期的形态判断（草稿态合法/页态违规两态），checklist=契约 14 §4 人工审执行面即正确载体；契约 14 冻结面本批已落 M-1/M-2 两笔勘误不再加节（防同批膨胀）；节中明示 lint/promote④ 对 vault 残留零容忍=有意设计（知识页=可发行资产，不留运行时密钥库活指针）。
 
+
+## 2026-09-24 批次 6 开工（executing via subagent-driven-development）
+- 用户批准计划 docs/superpowers/plans/2026-09-24-b6-evals-install-delivery.md（18 任务/出口 18 条/四关键裁决：退出码 0/1/2 冻结·Burp HTTP/1.x 字节直贴·生产钥离线仪式·靶场种 20 基线 v1）｜commit e14a49d
+- 执行结构：按域捆绑（evals 链→install/宿主→tools.lock/代理→报告流水线→靶场→收口），每任务 TDD+全量回归，收口后整支评审
