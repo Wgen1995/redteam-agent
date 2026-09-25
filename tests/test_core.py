@@ -16,7 +16,8 @@ class T1Core(unittest.TestCase):
 
     def test_schemas_frozen(self):
         self.assertEqual(len(core.TABLES), 13)
-        self.assertEqual(sum(len(v) for v in core.TABLES.values()), 147)
+        # 批次5 T3：intents 15→17（priority+cred，G-24/G-27 微版本勘误）——总数 147→149
+        self.assertEqual(sum(len(v) for v in core.TABLES.values()), 149)
         self.assertIn("schema_version", core.TABLES["timeline.tsv"])
         self.assertIn("frozen_at", core.TABLES["matrix.tsv"])
         self.assertIn("material", core.TABLES["creds.tsv"])

@@ -344,7 +344,8 @@ def _add_scope(goal_dir, rest):
 
 def _add_intent(goal_dir, rest):
     args = _parse(rest, {"title", "detail", "engine", "kind", "origin", "via", "budget-share",
-                         "activation", "cred", "asset", "actions", "timestamp", "phase"})
+                         "activation", "cred", "asset", "actions", "timestamp", "phase",
+                         "priority"})
     _req(args, ["title", "engine", "kind", "origin", "budget-share", "timestamp"])
     ctx = Ctx(goal_dir)
     ctx.tier0()
@@ -360,6 +361,16 @@ def _add_intent(goal_dir, rest):
     activation = args.get("activation", "")
     if activation and not _activation_ok(activation):
         raise Reject("activation 须 field;op;value 三段: " + activation)
+    priority = args.get("priority", "")   # G-24：K1 算分回填落列（总控 score 结果），0-1 浮点可空
+    if priority:
+        try:
+            if not (0.0 <= float(priority) <= 1.0):
+                raise ValueError
+        except ValueError:
+            raise Reject("priority 须 0-1 浮点: " + priority)
+    if args.get("cred"):   # G-27：任意 kind 下 cred 非空都走引用闭合（不分 kind，写前拒收）
+        if ctx.latest("creds.tsv", args["cred"]) is None:
+            raise Reject("cred 引用闭合失败: " + args["cred"])
     asset = args.get("asset", "")
     if asset:
         arow = ctx.latest("assets.tsv", asset)
@@ -392,6 +403,7 @@ def _add_intent(goal_dir, rest):
                status="pending" if direct else "candidate", engine=args["engine"],
                kind=kind, origin=origin, score="", via=args.get("via", ""), dedup_key=dedup,
                budget_share=args["budget-share"], activation=activation, reason="",
+               priority=priority, cred=args.get("cred", ""),
                created=args["timestamp"])
     ctx.append("intents.tsv", row)
     ctx.event(args["timestamp"], "add-intent " + rid, phase=args.get("phase", ""))

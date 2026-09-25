@@ -106,6 +106,8 @@
 | budget_share | 三/四元组（`;` 分隔） | `token;requests;hours[;dollars]` | 预算树叶节点 |
 | activation | 结构化谓词 | `field;op;value` | deferred 用，命令评估 |
 | reason | 文本 | rejected/blocked/deferred 强制 | 状态变更原因 |
+| priority | 浮点 | 0-1；可空=未算分 | 派发优先级分（G-24 批次 5 落列）：priority = severity_expect × asset_value × exploitability（公式=§8.7 勘误 fb72cd5 冻结；tanyin-knowledge score 产出、总控经 add-intent --priority 回填落账——算分与落账分离但都可审计） |
+| cred | 文本（行 id 引用） | 引用 creds.id；kind=authz-diff 必填（§4.10 硬门）；任意 kind 非空即写前引用闭合校验 | 凭据绑定列（G-27 批次 5 落列）——值从 detail 携带改物理列；trigger-audit 逐对配对消费 |
 | schema_version | 整数 | =2（§4.1） | 定稿值 |
 | created | 时间戳 | — | 创建时间 |
 
@@ -347,3 +349,7 @@ assets.type 枚举九值→**十一值**：新增 `cloud-storage`（A5 存储与
 ## v2 勘误补记（2026-09-24·批次 4 施工期·T14/优先级调度 fb72cd5）
 
 intents.tsv 增 **priority** 字段（派发优先级分，intents.priority）：`priority = severity_expect × asset_value × exploitability`（各因子 0-1——severity_expect=目标漏洞类严重度期望·类型基线表来源=G-24 批次 5 定；asset_value=assets.meta 人标业务价值；exploitability=graph-horizon 可达/凭据在手/先例命中。公式冻结文本=phases/P3.md「派发优先级算分」节；P3 派发=pending 按 priority 降序 Top-K，budget-exhausted 披露同公式）。落地分期（批4 T14 裁决）：本批冻结字段语义与公式；**物理列（intents.tsv 15→16 字段）与写路径/查询排序支撑随批次 5 G-24 基线表定案后落**——基线表无源前落列必造占位语义进写路径，且 16 列在零存量数据期外的重铸=全套夹具/金样大规模刷新（批 4 计划出口=金样零漂移）；过渡期承载=派发时总控按公式现算（读侧三源 assets.meta/graph-horizon/creds 均有只读命令），Top-K 选择=总控决策（契约 09 §4 边界 2：「任何对『是否漏洞/下一步测什么』的判断」禁入 CLI）。勘误通道：微版本勘误（零存量数据期先例），schema_version 保持 =2 不递增；§3.3 十五字段表不动（物理列落地时随批次 5 勘误同步）。索引见 contracts/README.md。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T3/G-24+G-27 落列）
+
+intents.tsv **15→17 字段一次重铸**（G-24 priority 与 G-27 cred 合笔——只付一次夹具/金样重铸成本；插入位=reason 之后、schema_version 之前，尾约定 schema_version/created 不动）：①priority=派发优先级分物理列（§3.3 表新增行；批4 T14 冻结的公式与语义就此落列兑现，0-1 浮点可空=未算分；算分=tanyin-knowledge score 只读产出，落账=总控经 add-intent --priority 回填——Top-K 选择仍=总控决策不破铁律 7 边界 2）；②cred=凭据绑定物理列（§3.3 表新增行；add-intent --cred 值从 detail 携带改落列，任意 kind 非空即写前引用闭合校验，kind=authz-diff 必填硬门原样保留；trigger-audit 逐对配对消费此列——批5 T6）。微版本勘误通道（零存量数据期，G-12 十一值枚举先例同通道），schema_version 保持 =2 不递增。联动：schemas.json intents.tsv 数组 17 项（契约同步手改——本表「机械生成」流程以本文 §3.3 为源）；夹具（G-g1/diff-authz）与金样一次重铸（变更面逐一归因两新列，见 tests/golden 提交注记）；自验行「intents=15/15」为冻结时点基线保留可追溯（R-T1-2 先例），勘误后本文 §3.3=17 字段。索引见 contracts/README.md。

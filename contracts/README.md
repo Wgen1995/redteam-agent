@@ -111,3 +111,9 @@
 - 契约 07（07-submission.md）一笔：G-19 结案——submission 顶层 perspective 字段不开（147 字段口径外）；视角承载维持 findings[].network_position=same-host 过渡。
 - 契约 09（09-cli-surface.md）一笔：canary/egress 干跑口径补注（G-8 清账）——egress 只 compile、canary 只 deploy 不 probe（PROTOCOL §3 已冻结）。
 - 六笔全部微版本勘误通道，schema_version 保持 =2 不递增；G-23/G-24/G-26/G-27/G-28 五笔代码侧随 T3/T4/T5/T7 各自落账（契约 v3 待办清单第二批）。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T3/G-24+G-27）
+
+- 契约①（01-ledger-schema.md）§3.3 intents.tsv **15→17 字段一次重铸**（G-24 priority+G-27 cred 合笔——只付一次夹具/金样重铸成本）：priority=派发优先级分物理列（0-1 可空，公式=§8.7 勘误冻结，tanyin-knowledge score 产出经 add-intent --priority 回填）；cred=凭据绑定物理列（任意 kind 非空即写前引用闭合，authz-diff 必填硬门保留）。批4 T14「物理列随批次 5 落」承诺兑现。
+- 契约 02a（02a-command-signatures-draft.md）§3 add-intent 参数表/拒收条件/输出行同步（--priority 落列+--cred 落列与任意 kind 闭合+回显 17 字段）。
+- 两笔均微版本勘误通道，schema_version 保持 =2 不递增；schemas.json intents.tsv 数组 17 项与契约 01 同步；夹具（G-g1/diff-authz）与金样一次重铸（变更面逐一归因两新列）。

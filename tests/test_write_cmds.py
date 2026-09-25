@@ -926,7 +926,8 @@ class TestErrataV2(unittest.TestCase):
         f = T["findings.tsv"]
         self.assertIn("vuln_ref", f)
         self.assertEqual(f.index("vuln_ref"), f.index("dedup_key") + 1)
-        self.assertEqual(sum(len(v) for v in T.values()), 147)
+        # 批次5 T3：intents 15→17（priority+cred，G-24/G-27 微版本勘误）——总数 147→149
+        self.assertEqual(sum(len(v) for v in T.values()), 149)
         self.assertIn("nday-verify", {"recon", "surface", "matrix-test", "deep-dive",
                                       "authz-diff", "nday-verify"})
 

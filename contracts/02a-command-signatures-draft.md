@@ -64,7 +64,7 @@
 - 依据：定稿 §4.4/§5.2 P0 duty（八问①②③⑧落账）/§5.3／契约01 §3.2 scope.tsv。时机：P0 duty。注：include+exclude+oob 齐备由 P0 exit 断言 ledger-scope-coverage 检查（该断言命令不在 37 面内，见文末范围外备注），非本命令拒收（02 §1 行 2 已载）。
 
 ### 3. add-intent（ledger-add-intent）〔写 3/18〕
-- 签名：add-intent --title=<intents.title> [--detail=<intents.detail>] --engine=<intents.engine> --kind=<intents.kind> --origin=<intents.origin> [--via=<intents.via>] --budget-share=<intents.budget_share> [--activation=<intents.activation>] [--cred=<creds.id>]
+- 签名：add-intent --title=<intents.title> [--detail=<intents.detail>] --engine=<intents.engine> --kind=<intents.kind> --origin=<intents.origin> [--via=<intents.via>] --budget-share=<intents.budget_share> [--activation=<intents.activation>] [--cred=<creds.id>] [--priority=<intents.priority>]【--priority 随批次 5 T3 勘误增（G-24），见文末勘误补记】
 - 参数：
 
 |参数|类型|必填|取自表.字段|
@@ -77,15 +77,16 @@
 |--via|文本|否|intents.via|
 |--budget-share|三/四元组|是|intents.budget_share|
 |--activation|结构化谓词|条件|intents.activation（deferred 语义用）|
-|--cred|文本(行 id 引用)|条件|creds.id（kind=authz-diff 必填）【推导：§4.10 硬门参数化】|
+|--cred|文本(行 id 引用)|条件|creds.id（kind=authz-diff 必填；任意 kind 非空即写前引用闭合校验）——值落 intents.cred 物理列【批次 5 T3 勘误（G-27）】|
+|--priority|浮点|否|intents.priority（0-1；可空=未算分）——总控经 tanyin-knowledge score 回填【批次 5 T3 勘误（G-24）】|
 |（内部）id|文本|命令铸造|intents.id（前缀 INT）|
 |（内部）status|枚举|命令铸造|intents.status（初始 candidate；origin=recon-event 资产事件路径或 kind=authz-diff 直达 pending——R5 勘误，见文末）【推导：§4.5 状态机起点+§5.2 events】|
 |（内部）score|浮点|命令计算|intents.score（§8.7 公式；recon-event 不打分）|
 |（内部）dedup_key|文本|命令计算|intents.dedup_key（资产+技法类，机械计算）|
 |（内部）schema_version / created|整数/时间戳|常量/命令铸造|intents.schema_version=2 / intents.created|
 
-- 输出：`OK<TAB>INT-…<TAB>intents.tsv`＋追加行回显（15 字段）。
-- 拒收条件：kind∉{recon,surface,matrix-test,deep-dive,authz-diff} 或 origin∉{entity,concept,precedent,adjacency,llm,recon-event,mixed}=REJECT；budget_share 非 `token;requests;hours[;dollars]`=REJECT；dedup_key 与既有行重复=REJECT（命令计算后判重，LLM 只提议不判重，§4.5）；界外资产派生 intent=REJECT（§4.4 账本级禁止＋§9.2 负向用例「界外资产喂 add-intent→REJECT」）；kind=authz-diff 须 --cred 引用 CRED 行 status=active 且 permitted_actions 覆盖计划动作，否则=REJECT【推导：§4.10 硬门（总控校验语义落为命令拒收）】；activation 须 `field;op;value` 三段=REJECT 校验【推导】。
+- 输出：`OK<TAB>INT-…<TAB>intents.tsv`＋追加行回显（17 字段——批次 5 T3 勘误 15→17）。
+- 拒收条件：kind∉{recon,surface,matrix-test,deep-dive,authz-diff} 或 origin∉{entity,concept,precedent,adjacency,llm,recon-event,mixed}=REJECT；budget_share 非 `token;requests;hours[;dollars]`=REJECT；dedup_key 与既有行重复=REJECT（命令计算后判重，LLM 只提议不判重，§4.5）；界外资产派生 intent=REJECT（§4.4 账本级禁止＋§9.2 负向用例「界外资产喂 add-intent→REJECT」）；kind=authz-diff 须 --cred 引用 CRED 行 status=active 且 permitted_actions 覆盖计划动作，否则=REJECT【推导：§4.10 硬门（总控校验语义落为命令拒收）】；--cred 任意 kind 非空而 CRED 行不存在=REJECT【批次 5 T3 勘误（G-27 引用闭合前置）】；--priority 非 0-1 浮点=REJECT【批次 5 T3 勘误（G-24）】；activation 须 `field;op;value` 三段=REJECT 校验【推导】。
 - 依据：定稿 §4.5/§5.2 P3 duty②③+events asset-added/§8.7／契约01 §3.3 intents.tsv+§3.13。时机：P3 ②假设风暴→③批量派发；P3 events asset-added（spawn 测绘 intents，origin=recon-event 直接 pending 不打分）。
 
 ### 4. set-intent-status（ledger-set-intent-status）〔写 4/18〕
@@ -709,3 +710,7 @@
 ## v2 勘误补记（2026-09-24·批次 4 施工期·R5 裁决·authz-diff 直达 pending）
 
 §3 add-intent 直达 pending 条件扩为 `origin=recon-event 或 kind=authz-diff`（cred-obtained 事件处理器语义，设计 §6.6 步 1「直接 pending 不打分」——身份矩阵差分候选不参与晋升打分，前置硬门 CRED active+permitted_actions 覆盖已在本命令执法）。微版本勘误通道，零存量数据期，schema_version 保持 =2 不递增。落地=批次 4 T8（差分样例对夹具语义前置：authz-diff intent origin=entity 亦直达 pending）。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T3/G-24+G-27 落列）
+
+§3 add-intent 参数表与拒收条件三笔：①增可选 `--priority`（0-1 浮点校验，落 intents.priority 物理列——总控把 tanyin-knowledge score 产出回填落账，算分与落账分离但都可审计）；②`--cred` 值改落 intents.cred 物理列（第 17 列，detail 不再附注），任意 kind 下 cred 非空都走引用闭合校验（不分 kind，写前拒收），kind=authz-diff 必填硬门原样保留；③追加行回显 15→17 字段。微版本勘误通道（intents.tsv 15→17 一次重铸，G-24+G-27 合笔，零存量数据期先例），schema_version 保持 =2 不递增。落地=批次 5 T3；字段语义详见契约 01 §3.3+文末同名勘误补记。

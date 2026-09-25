@@ -45,6 +45,8 @@
   "budget_share",
   "activation",
   "reason",
+  "priority",
+  "cred",
   "schema_version",
   "created"
  ],

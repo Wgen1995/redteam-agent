@@ -25,8 +25,8 @@ FD-g1-0002	INT-g1-0001	回归意图	C3	中	suspected		AST-g1-0002+回归意图		
 == goals.tsv ==
 G-g1-0001	shop.example	授权渗透：商城内网分区	auth/G-g1-0001.pdf	aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa	client-cso	2026-09-01	2026-09-30	600/10m	09:00-19:00	ops@example.com	2M\;50000\;40	0			high	T3	2	TS
 == intents.tsv ==
-INT-g1-0001	子域枚举	crt.sh+被动	done	web-blackbox		P1-recon	0.8	CNPEN-SD-01	sd-enumer	0.1			2	
-INT-g1-0002	admin 面板未授权访问	authz-diff	pending	web-blackbox		P3-loop		CNPEN-AUTH-02	admin-authz	0.2	cred:CRED-g1-0001		2	
+INT-g1-0001	子域枚举	crt.sh+被动	done	web-blackbox		P1-recon	0.8	CNPEN-SD-01	sd-enumer	0.1					2	
+INT-g1-0002	admin 面板未授权访问	authz-diff	pending	web-blackbox		P3-loop		CNPEN-AUTH-02	admin-authz	0.2	cred:CRED-g1-0001				2	
 == matrix.tsv ==
 web.admin-panel	authn.missing	?		INT-g1-0002	2		
 web.admin-panel	authz.diff	x	FD-g1-0001	INT-g1-0002	2		TS
