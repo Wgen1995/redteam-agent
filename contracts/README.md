@@ -121,3 +121,7 @@
 ## v2 勘误补记（2026-09-24·批次 5 施工期·T4/G-23）
 
 - 契约 02a（02a-command-signatures-draft.md）§36 set-replay-state 一笔：`--timestamp`（ISO8601）**必填**（缺/空=用法错误 exit 2）——timeline 重放事件行与 findings 联动行 created 取参数时间戳，命令路径 `_now()` 墙钟两处退役（G-23 转正；6d3a033 直写绕道同步退役，diff-authz 夹具重放事件行改 CLI --timestamp 铸）。微版本勘误通道，schema_version 保持 =2 不递增。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T5/R6）
+
+- 契约 02a（02a-command-signatures-draft.md）§3 add-intent 一笔：`--cap=N`（1-1000 可选覆盖，evals 可重放）+同端点 cap 拒收条件（计数键=asset+kind 经 dedup_key 前缀比对，在途 status∈{candidate,pending,active} 计数 ≥24=REJECT，消息附计数与 cap 值）——常量 AUTHZ_DIFF_PAIR_CAP=24 转代码常量（cli/ledger/write_cmds，契约 04 constants 已随 T2 回注；differential.md/P3.md 双载降为单源指针）。微版本勘误通道，schema_version 保持 =2 不递增。

@@ -64,7 +64,7 @@
 - 依据：定稿 §4.4/§5.2 P0 duty（八问①②③⑧落账）/§5.3／契约01 §3.2 scope.tsv。时机：P0 duty。注：include+exclude+oob 齐备由 P0 exit 断言 ledger-scope-coverage 检查（该断言命令不在 37 面内，见文末范围外备注），非本命令拒收（02 §1 行 2 已载）。
 
 ### 3. add-intent（ledger-add-intent）〔写 3/18〕
-- 签名：add-intent --title=<intents.title> [--detail=<intents.detail>] --engine=<intents.engine> --kind=<intents.kind> --origin=<intents.origin> [--via=<intents.via>] --budget-share=<intents.budget_share> [--activation=<intents.activation>] [--cred=<creds.id>] [--priority=<intents.priority>]【--priority 随批次 5 T3 勘误增（G-24），见文末勘误补记】
+- 签名：add-intent --title=<intents.title> [--detail=<intents.detail>] --engine=<intents.engine> --kind=<intents.kind> --origin=<intents.origin> [--via=<intents.via>] --budget-share=<intents.budget_share> [--activation=<intents.activation>] [--cred=<creds.id>] [--priority=<intents.priority>] [--cap=<N>]【--priority 随批次 5 T3 勘误增（G-24）；--cap 随批次 5 T5 勘误增（R6），见文末勘误补记】
 - 参数：
 
 |参数|类型|必填|取自表.字段|
@@ -79,6 +79,7 @@
 |--activation|结构化谓词|条件|intents.activation（deferred 语义用）|
 |--cred|文本(行 id 引用)|条件|creds.id（kind=authz-diff 必填；任意 kind 非空即写前引用闭合校验）——值落 intents.cred 物理列【批次 5 T3 勘误（G-27）】|
 |--priority|浮点|否|intents.priority（0-1；可空=未算分）——总控经 tanyin-knowledge score 回填【批次 5 T3 勘误（G-24）】|
+|--cap|整数|否|拒收阈值覆盖（1-1000，缺省=AUTHZ_DIFF_PAIR_CAP=24，kind=authz-diff 专用）——evals 可重放通道【批次 5 T5 勘误（R6）】|
 |（内部）id|文本|命令铸造|intents.id（前缀 INT）|
 |（内部）status|枚举|命令铸造|intents.status（初始 candidate；origin=recon-event 资产事件路径或 kind=authz-diff 直达 pending——R5 勘误，见文末）【推导：§4.5 状态机起点+§5.2 events】|
 |（内部）score|浮点|命令计算|intents.score（§8.7 公式；recon-event 不打分）|
@@ -86,7 +87,7 @@
 |（内部）schema_version / created|整数/时间戳|常量/命令铸造|intents.schema_version=2 / intents.created|
 
 - 输出：`OK<TAB>INT-…<TAB>intents.tsv`＋追加行回显（17 字段——批次 5 T3 勘误 15→17）。
-- 拒收条件：kind∉{recon,surface,matrix-test,deep-dive,authz-diff} 或 origin∉{entity,concept,precedent,adjacency,llm,recon-event,mixed}=REJECT；budget_share 非 `token;requests;hours[;dollars]`=REJECT；dedup_key 与既有行重复=REJECT（命令计算后判重，LLM 只提议不判重，§4.5）；界外资产派生 intent=REJECT（§4.4 账本级禁止＋§9.2 负向用例「界外资产喂 add-intent→REJECT」）；kind=authz-diff 须 --cred 引用 CRED 行 status=active 且 permitted_actions 覆盖计划动作，否则=REJECT【推导：§4.10 硬门（总控校验语义落为命令拒收）】；--cred 任意 kind 非空而 CRED 行不存在=REJECT【批次 5 T3 勘误（G-27 引用闭合前置）】；--priority 非 0-1 浮点=REJECT【批次 5 T3 勘误（G-24）】；activation 须 `field;op;value` 三段=REJECT 校验【推导】。
+- 拒收条件：kind∉{recon,surface,matrix-test,deep-dive,authz-diff} 或 origin∉{entity,concept,precedent,adjacency,llm,recon-event,mixed}=REJECT；budget_share 非 `token;requests;hours[;dollars]`=REJECT；dedup_key 与既有行重复=REJECT（命令计算后判重，LLM 只提议不判重，§4.5）；界外资产派生 intent=REJECT（§4.4 账本级禁止＋§9.2 负向用例「界外资产喂 add-intent→REJECT」）；kind=authz-diff 须 --cred 引用 CRED 行 status=active 且 permitted_actions 覆盖计划动作，否则=REJECT【推导：§4.10 硬门（总控校验语义落为命令拒收）】；--cred 任意 kind 非空而 CRED 行不存在=REJECT【批次 5 T3 勘误（G-27 引用闭合前置）】；--priority 非 0-1 浮点=REJECT【批次 5 T3 勘误（G-24）】；kind=authz-diff 同端点（计数键=asset+kind 二元组，经既有 dedup_key 前缀比对）在途 authz-diff intents（status∈{candidate,pending,active}）计数 ≥AUTHZ_DIFF_PAIR_CAP=24=REJECT（拒收消息附当前计数与 cap 值；`--cap=N` 1-1000 可选覆盖，非整数/越界=REJECT）【批次 5 T5 勘误（R6/G-20 机检硬门；代码常量=cli/ledger/write_cmds.AUTHZ_DIFF_PAIR_CAP）】；activation 须 `field;op;value` 三段=REJECT 校验【推导】。
 - 依据：定稿 §4.5/§5.2 P3 duty②③+events asset-added/§8.7／契约01 §3.3 intents.tsv+§3.13。时机：P3 ②假设风暴→③批量派发；P3 events asset-added（spawn 测绘 intents，origin=recon-event 直接 pending 不打分）。
 
 ### 4. set-intent-status（ledger-set-intent-status）〔写 4/18〕
@@ -719,3 +720,7 @@
 ## v2 勘误补记（2026-09-24·批次 5 施工期·T4/G-23 转正）
 
 §36 set-replay-state 增 `--timestamp`（文本 ISO8601）**必填**（缺/空=用法错误 exit 2）：timeline 重放事件行与 findings 联动行 created 一律取参数时间戳，命令路径 `_now()` 墙钟两处退役（评审收尾 6d3a033「core.row_hash 直写」过渡手法随本勘误转正为参数通道——diff-authz 夹具重放事件行改由 --timestamp 铸；checkpoint --timestamp 批3 G-10 先例同型）。微版本勘误通道，schema_version 保持 =2 不递增。落地=批次 5 T4。
+
+## v2 勘误补记（2026-09-24·批次 5 施工期·T5/R6 cap 机检硬门）
+
+§3 add-intent 增可选 `--cap=N`（1-1000 整数，缺省=AUTHZ_DIFF_PAIR_CAP）与拒收条件：kind=authz-diff 时同端点（计数键=asset+kind 二元组，经既有 dedup_key 前缀 `(asset or "-")+"+authz-diff+"` 比对）在途 authz-diff intents（status∈{candidate,pending,active}）计数 ≥cap=REJECT（拒收消息附当前计数与 cap 值）。常量 `AUTHZ_DIFF_PAIR_CAP=24` 从双载文档常量（differential.md+P3.md）转**代码常量**（cli/ledger/write_cmds.AUTHZ_DIFF_PAIR_CAP；契约 04 constants 表已随批次 5 T2 回注）——文档双载降为单源指针。`--cap` 覆盖通道=evals 可重放（G-3 --rate-minutes 同型）。落地=批次 5 T5；微版本勘误通道，schema_version 保持 =2 不递增。

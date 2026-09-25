@@ -342,10 +342,17 @@ def _add_scope(goal_dir, rest):
 
 # ---------------------------------------------------------------- 3 add-intent
 
+AUTHZ_DIFF_PAIR_CAP = 24   # §6.6 护栏（契约 04 constants authz_diff_pair_cap；R6/G-20 机检
+                           # 硬门——批次5 T5 双载文档转单源代码常量；add-intent 写前拒收，
+                           # --cap 覆盖通道=evals 可重放，G-3 --rate-minutes 同型）
+
+_AUTHZ_DIFF_ACTIVE = {"candidate", "pending", "active"}   # cap 计数口径（§4.5 在途状态）
+
+
 def _add_intent(goal_dir, rest):
     args = _parse(rest, {"title", "detail", "engine", "kind", "origin", "via", "budget-share",
                          "activation", "cred", "asset", "actions", "timestamp", "phase",
-                         "priority"})
+                         "priority", "cap"})
     _req(args, ["title", "engine", "kind", "origin", "budget-share", "timestamp"])
     ctx = Ctx(goal_dir)
     ctx.tier0()
@@ -392,6 +399,24 @@ def _add_intent(goal_dir, rest):
         for act in _mv(args.get("actions", "")):
             if act not in allowed:
                 raise Reject("authz-diff 硬门：permitted_actions 不覆盖计划动作 %s（%s）" % (act, cred))
+        # R6 机检硬门（批次5 T5）：同端点（计数键=asset+kind 二元组，经既有 dedup_key
+        # 前缀 (asset or "-")+"+authz-diff+" 比对）在途 authz-diff intents 计数 ≥cap → 拒收
+        cap = AUTHZ_DIFF_PAIR_CAP
+        if args.get("cap"):
+            try:
+                cap = int(args["cap"])
+            except ValueError:
+                raise Reject("cap 须整数（1-1000，缺省=%d）: %s" % (AUTHZ_DIFF_PAIR_CAP, args["cap"]))
+            if not (1 <= cap <= 1000):
+                raise Reject("cap 须 1-1000（覆盖通道=evals，G-3 同型）: " + args["cap"])
+        prefix = (asset or "-") + "+authz-diff+"
+        same = sum(1 for r in ctx.rows("intents.tsv")
+                   if ctx.val("intents.tsv", r, "kind") == "authz-diff"
+                   and ctx.val("intents.tsv", r, "status") in _AUTHZ_DIFF_ACTIVE
+                   and (ctx.val("intents.tsv", r, "dedup_key") or "").startswith(prefix))
+        if same >= cap:
+            raise Reject("authz-diff 单端点对数超限 AUTHZ_DIFF_PAIR_CAP：count=%d cap=%d"
+                         "（--cap 覆盖通道=evals）" % (same, cap))
     dedup = (asset or "-") + "+" + kind + "+" + args["title"]
     if dedup in {ctx.val("intents.tsv", r, "dedup_key") for r in ctx.rows("intents.tsv")}:
         raise Reject("dedup_key 重复（资产+技法类机械判重）: " + dedup)
