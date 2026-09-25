@@ -1,0 +1,17 @@
+vuln_class	severity_expect	cost_hint	rationale_brief	vocab_version
+wstg-info	0.3	1	信息暴露面：低危高频，侦察即得	WSTG-v4.2
+wstg-conf	0.5	1	配置错误：依赖暴露面清单	WSTG-v4.2
+wstg-idnt	0.5	2	身份标识缺陷：登录/注册逻辑	WSTG-v4.2
+wstg-authn	0.8	2	认证绕过/弱凭据：CNPEN 高产出类	WSTG-v4.2
+wstg-authz	0.9	2	越权（BOLA/垂直）：认证后最高收益类	WSTG-v4.2
+wstg-sess	0.8	2	会话管理：固定/过期/令牌语义	WSTG-v4.2
+wstg-inpv	0.9	3	注入输入验证：SQLi/RCE 级，深挖后定级	WSTG-v4.2
+wstg-errh	0.6	1	错误处理：堆栈/信息泄露	WSTG-v4.2
+wstg-cryp	0.7	2	密码学误用：弱算法/硬编码	WSTG-v4.2
+wstg-busl	0.7	3	业务逻辑：人工为主 biz 标记	WSTG-v4.2
+wstg-clnt	0.6	2	客户端：XSS/DOM 族	WSTG-v4.2
+wstg-apit	0.8	2	API 测试：授权/限流/批量	WSTG-v4.2
+wstg-inpv:inj.sql	0.9	3	SQL 注入细类（夹具既有形态）	WSTG-v4.2
+wstg-authz:authz.diff	0.9	2	身份矩阵差分细类（夹具既有形态）	WSTG-v4.2
+wstg-authn:authn.missing	0.8	2	认证缺失细类（夹具既有形态）	WSTG-v4.2
+wstg-clnt:xss.dom	0.6	2	DOM XSS 细类示范	WSTG-v4.2

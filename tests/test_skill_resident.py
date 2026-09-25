@@ -14,6 +14,7 @@ KNOWN = registry.all_commands() | {
     "tanyin-guard", "tanyin-canary", "tanyin-egress", "tanyin-redact",
     "tanyin-budgetctl", "tanyin-phases", "tanyin-ledger",
     "tanyin-report", "tanyin-viz", "tanyin-replay",
+    "tanyin-knowledge",  # 批次5 T9 第 12 员（T12 P3 算分读侧引用入 known 面）
     "ledger-add-edge", "ledger-matrix-freeze",  # SKILL 速查里可能带前缀引用
 }
 

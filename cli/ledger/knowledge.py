@@ -13,10 +13,12 @@ import json
 import os
 import re
 
+from . import core
 from .core import esc, unesc
 from .phases_engine import parse_yaml
-from .query_cmds import parse_kv
+from .query_cmds import parse_kv, latest_by, _cell
 from . import special
+from .graph_cmds import _build, _scope_root_targets, reachable_gap_cells
 
 FORMAT_VERSION = "kn-v1"
 DIRS = ("concepts", "precedents", "entities", "targets", "patterns/core",
@@ -420,6 +422,38 @@ def lint(kdir, ts):
         if n >= 8:
             print("WARN 人审合并建议: class=%s n=%d（语义近重复合并不实现——R10/G-30 登记）"
                   % (c, n))
+    # K1 基线覆盖率断言（裁决 A：CLI 只校验枚举/格式/覆盖率，评定的语义判断不进 CLI）；
+    # 无基线文件的库跳过（init 运行时库不带基线；种子库/发行库必过此门）
+    brows = baseline_rows(kdir)
+    if brows is not None:
+        seen = {}
+        for r in brows:
+            key = r[0]
+            seen[key] = seen.get(key, 0) + 1
+            if key not in vkeys and ":" not in key:
+                fails += 1
+                print("FAIL K1 基线外行: %s" % key)
+            elif ":" in key and key.split(":", 1)[0] not in vkeys:
+                fails += 1
+                print("FAIL K1 细类行父键越界: %s" % key)
+            try:
+                sev_v = float(r[1])
+                if not 0 < sev_v <= 1:
+                    raise ValueError
+            except ValueError:
+                fails += 1
+                print("FAIL K1 severity_expect 值域: %s=%r" % (key, r[1]))
+            if r[2] not in ("1", "2", "3"):
+                fails += 1
+                print("FAIL K1 cost_hint 枚举越界: %s=%r" % (key, r[2]))
+            if r[4] not in vocab:
+                fails += 1
+                print("FAIL K1 vocab_version 越界: %s=%r" % (key, r[4]))
+        for vk in sorted(vkeys):
+            if seen.get(vk, 0) != 1:
+                fails += 1
+                print("FAIL K1 基线覆盖缺口: %s 行数=%d（VOCAB 每 wstg-* 键须恰一行）"
+                      % (vk, seen.get(vk, 0)))
     _stage_sync(kdir, ts, results, staged_rows)
     if fails:
         print("FAIL checked=%d failed_groups=%d" % (checked, fails))
@@ -647,16 +681,11 @@ def _is_stale(fm, today):
     return False
 
 
-def match(kdir, client, asset, today):
-    """先例三元组匹配：client 全等 ∧ scope_asset 含 asset 指纹（分号多值任一子串）
-    ∧ window 覆盖 today（start≤today≤end；过期不命中并标注 [expired]）；
-    [stale]=R11 降权标注。--today 必填（G-34 禁墙钟）。"""
-    if not today:
-        raise KnowledgeError("--today 必填（G-34：窗口判定基准日显式传入）")
-    try:
-        datetime.date.fromisoformat(today)
-    except ValueError:
-        raise KnowledgeError("--today 须 ISO 日期: %r" % today)
+def _match_rows(kdir, client, asset, today):
+    """先例三元组命中收集（match/score 共用单源；client=None=不限客户——仅 score 读侧
+    因子使用，且只消费命中计数与页 id（CLIENT-NN 脱敏形态由 lint 强制）；
+    match 子命令跨客户隔离语义不变）。返回 (hits, expired_lines)：
+    hits=[(pid, title, outcome, window, stale 后缀), ...]。"""
     d = os.path.join(kdir, "precedents")
     hits, expired = [], []
     for fn in sorted(os.listdir(d) if os.path.isdir(d) else []):
@@ -665,7 +694,7 @@ def match(kdir, client, asset, today):
         fm, _raw, _body = split_page(read_page(os.path.join(d, fn)))
         if not isinstance(fm, dict) or fm.get("kind") != "precedent":
             continue
-        if str(fm.get("client", "")) != client:
+        if client is not None and str(fm.get("client", "")) != client:
             continue
         scope_vals = [v.strip() for v in str(fm.get("scope_asset", "")).split(";") if v.strip()]
         if not any(asset in v for v in scope_vals):
@@ -677,13 +706,124 @@ def match(kdir, client, asset, today):
         stale = " [stale]" if _is_stale(fm, today) else ""
         start, end = win.split("..", 1)
         if start <= today <= end:
-            hits.append("%s\t%s\t%s\twindow=%s%s"
-                        % (pid, title, str(fm.get("outcome", "")), win, stale))
+            hits.append((pid, title, str(fm.get("outcome", "")), win, stale))
         else:
             expired.append("[expired] %s %s window=%s" % (pid, title, win))
-    for ln in hits + expired:
+    return hits, expired
+
+
+def match(kdir, client, asset, today):
+    """先例三元组匹配：client 全等 ∧ scope_asset 含 asset 指纹（分号多值任一子串）
+    ∧ window 覆盖 today（start≤today≤end；过期不命中并标注 [expired]）；
+    [stale]=R11 降权标注。--today 必填（G-34 禁墙钟）。"""
+    if not today:
+        raise KnowledgeError("--today 必填（G-34：窗口判定基准日显式传入）")
+    try:
+        datetime.date.fromisoformat(today)
+    except ValueError:
+        raise KnowledgeError("--today 须 ISO 日期: %r" % today)
+    hits, expired = _match_rows(kdir, client, asset, today)
+    for pid, title, outcome, win, stale in hits:
+        print("%s\t%s\t%s\twindow=%s%s" % (pid, title, outcome, win, stale))
+    for ln in expired:
         print(ln)
     print("matched=%d expired=%d" % (len(hits), len(expired)))
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# 批次 5 T12：K1 严重度期望基线表（G-24 落表）+ score 只读算分
+# ---------------------------------------------------------------------------
+
+BASELINE_COLS = ("vuln_class", "severity_expect", "cost_hint", "rationale_brief",
+                 "vocab_version")
+
+
+def baseline_rows(kdir):
+    """K1 基线表行（库无基线文件返回 None——init 运行时库不带基线，
+    种子库/发行库必带；批次 6 安装器拷贝同律）。"""
+    p = os.path.join(kdir, "methodology", "k1-baseline.tsv")
+    if not os.path.isfile(p):
+        return None
+    return _read_tsv(p, BASELINE_COLS)
+
+
+def baseline_lookup(kdir, vuln_class):
+    """查表次序=细类→wstg 类→缺省 0.5+告警（裁决 A；初值=方法论映射评定人审冻结，
+    语义判断不进 CLI——score 只查表）。返回 (severity_expect, 命中行键, warnings)。"""
+    rows = baseline_rows(kdir) or []
+    by_key = {}
+    for r in rows:
+        by_key.setdefault(r[0], r)
+    vc = str(vuln_class or "").strip()
+    if vc in by_key:
+        return float(by_key[vc][1]), vc, []
+    parent = vc.split(":", 1)[0]
+    if parent in by_key:
+        return float(by_key[parent][1]), parent, []
+    return 0.5, "", ["baseline-miss %s → 缺省 0.5（K1 基线无此行；查表次序细类→类→缺省）"
+                     % vc]
+
+
+def _asset_row_by(s, key):
+    """资产行按 id 或 value 精确匹配（--asset 两形态兼容）。"""
+    for r in s.rows("assets.tsv"):
+        if r[0] == key or _cell(r, "assets.tsv", "value") == key:
+            return r
+    return None
+
+
+def score(kdir, goal_dir, vuln_class, asset, today):
+    """读侧只读算分（契约 01 勘误冻结公式 priority=severity_expect×asset_value×
+    exploitability；Top-K 选择仍=总控决策，契约 09 §4 边界 2 不破——本子命令不改
+    任何状态）。三因子可审计复算：
+    asset_value=assets.meta bv:<0-1>（未标/未命中=0.5 中性，P3「未标=不加分」对齐）；
+    exploitability=0.4×可达（reachable_gap_cells 单源，scope-root 起点集含该资产
+    ——R-T7-1 converge 语义）+0.3×(active creds>0)+0.3×(先例命中>0)。
+    --today 必填（先例窗口判定；G-34 禁墙钟）。stdout 单行 JSON，双跑字节一致。"""
+    if not today:
+        raise KnowledgeError("--today 必填（先例命中因子窗口判定；G-34 禁墙钟）")
+    try:
+        datetime.date.fromisoformat(today)
+    except ValueError:
+        raise KnowledgeError("--today 须 ISO 日期: %r" % today)
+    if not goal_dir or not os.path.isdir(goal_dir):
+        raise KnowledgeError("--goal-dir 交战区目录不存在: " + str(goal_dir))
+    sev, row_key, warnings = baseline_lookup(kdir, vuln_class)
+    s = core.Session(goal_dir)
+    nodes, _adj = _build(s)
+    reach, _rg, _ug = reachable_gap_cells(s, _scope_root_targets(s, nodes))
+    reach_vals = {_cell(r, "assets.tsv", "value") for r in s.rows("assets.tsv")
+                  if r[0] in reach}
+    reachable = bool(asset) and (asset in reach or asset in reach_vals)
+    bv, bv_src = 0.5, "default(未标=0.5 中性)"
+    row = _asset_row_by(s, asset) if asset else None
+    if row is not None:
+        m = re.search(r"\bbv:([01](?:\.\d+)?)", _cell(row, "assets.tsv", "meta"))
+        if m:
+            bv = min(1.0, float(m.group(1)))
+            bv_src = "%s meta bv=%s" % (row[0], m.group(1))
+    active = sum(1 for r in latest_by(s.rows("creds.tsv"), "creds.tsv", ["id"]).values()
+                 if _cell(r, "creds.tsv", "status") == "active")
+    hits, _expired = _match_rows(kdir, None, asset or "", today) if asset else ([], [])
+    exploitability = round(0.4 * (1.0 if reachable else 0.0)
+                           + 0.3 * (1.0 if active > 0 else 0.0)
+                           + 0.3 * (1.0 if hits else 0.0), 4)
+    priority = round(sev * bv * exploitability, 4)
+    print(json.dumps({
+        "severity_expect": sev,
+        "asset_value": bv,
+        "exploitability": exploitability,
+        "priority": priority,
+        "sources": {
+            "severity_row": row_key,
+            "asset_value_source": bv_src,
+            "reach_count": len(reach),
+            "active_creds": active,
+            "match_hits": sorted(h[0] for h in hits),
+            "warnings": warnings,
+        },
+    }, ensure_ascii=False, sort_keys=True))
     return 0
 
 
@@ -727,6 +867,12 @@ def h_export(ctx, rest):
 def h_match(ctx, rest):
     kv, _pos = parse_kv(rest)
     return match(ctx, kv.get("client", ""), kv.get("asset", ""), kv.get("today", ""))
+
+
+def h_score(ctx, rest):
+    kv, _pos = parse_kv(rest)
+    return score(ctx, kv.get("goal-dir", ""), kv.get("vuln-class", ""),
+                 kv.get("asset", ""), kv.get("today", ""))
 
 
 def h_neighbors(ctx, rest):

@@ -1,0 +1,13 @@
+wstg_class	asvs_ref	osstmm_ref
+wstg-info	ASVS V1.1/V1.7（架构与威胁建模）	OSSTMM §C1 通道资产清点（RA）
+wstg-conf	ASVS V14（配置验证）	OSSTMM §C13 安全配置核对（SC）
+wstg-idnt	ASVS V2.1/V2.2（身份供给与校验）	OSSTMM §C9 身份标识核对（IdW）
+wstg-authn	ASVS V2（认证）	OSSTMM §C9 认证强度（AS）
+wstg-authz	ASVS V4（访问控制）	OSSTMM §C9 授权矩阵（Az）
+wstg-sess	ASVS V3（会话管理）	OSSTMM §C9 会话态（Se）
+wstg-inpv	ASVS V5（验证与编码）	OSSTMM §C7 输入操纵（Inp）
+wstg-errh	ASVS V7.4（错误处理）	OSSTMM §C8 错误披露（ErE）
+wstg-cryp	ASVS V6（密码学）	OSSTMM §C10 密码学强度（Cs）
+wstg-busl	ASVS V11（业务逻辑）	OSSTMM §C11 流程逻辑（Pi）
+wstg-clnt	ASVS V5.3/V14.3（客户端侧校验）	OSSTMM §C12 客户端操纵（Cli）
+wstg-apit	ASVS V13（API 与 Web 服务）	OSSTMM §C2 服务接口（Svc）
