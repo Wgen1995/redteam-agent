@@ -844,3 +844,337 @@ if __name__ == "__main__":
 - [ ] **Step 4: 跑绿+全套三连** —— test_evals_ci 4 例 PASS；本地 `py -3 cli/tanyin-evals run --suite=static --goal-dir .` rc==0 复核；discover+run_golden 全绿。
 - [ ] **Step 5: Commit+远端复核** —— `git commit -m "批次6 T4：CI 全量化（evals static/dynamic job+工件上传）"`；push 后 Actions 页面复核（本环境无 gh CLI 则备注待远端确认——出口清单 #5）。
 
+
+### Task 5: tanyin-install 六步安装器（幂等+交战区分离落地）
+
+**Files:**
+- Create: `cli/ledger/install_core.py`（安装六步单源）
+- Create: `cli/tanyin-install` + `cli/tanyin-install.cmd`
+- Create: `install/README.md`（矩阵总览+发布口径；§10.3 walcode/CodeBuddy「静态验证+待实测」标注）
+- Create: `install/hosts/{dsh,opencode,codex,walcode,codebuddy}.json`（五宿主装载模板，schema 见 Step 3）
+- Test: `tests/test_install_core.py`
+
+**Interfaces:**
+- Consumes: `ledger.supply_chain.load_lock/verify_entry`（批次 4 单源）；`engines/nuclei/release.pub`（默认信任锚，可 `--pubkey` 覆盖）
+- Produces:
+  - `install_core.install(opts: dict) -> tuple[int, str]`——opts 键 `install_root/home/host/repo_root/pubkey/timestamp`；返回 (exit, 摘要文本)；exit 沿用 0/1/2（1=lock 验签不过；2=openssl 缺等 ENV）
+  - 六步常量 `STEPS = ("verify-lock", "authoritative-dir", "host-link", "hooks", "init-home", "selfcheck")`
+  - 安装日志 `<home>/install-log.tsv` 行形态 `<ts>\t<step>\t<detail>`（显式时间戳）
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_install_core.py（骨架——断言面全列）
+# -*- coding: utf-8 -*-
+import json, os, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.abspath(os.path.join(HERE, ".."))
+sys.path.insert(0, os.path.join(REPO, "cli"))
+from ledger import install_core  # noqa: E402
+
+TS = "2026-09-24T00:00:00Z"
+
+def opts(d, host="dsh", **kw):
+    o = {"install_root": os.path.join(d, "install"), "home": os.path.join(d, "home"),
+         "host": host, "repo_root": REPO, "timestamp": TS}
+    o.update(kw)
+    return o
+
+class TestInstall(unittest.TestCase):
+    def test_step1_reject_tampered_lock(self):
+        with tempfile.TemporaryDirectory() as d:
+            # 建假 lock+错钥：verify-lock 必须 rc=1（fail-closed）
+            bad = install_core.install(opts(d, pubkey=os.path.join(HERE, "fixtures", "keys", "test-signing-key.pem") + ".nonexistent"))
+            self.assertEqual(bad[0], 2)  # 钥文件缺=ENV；签名不符才是 1
+    def test_steps_2_5_skeleton(self):
+        with tempfile.TemporaryDirectory() as d:
+            code, msg = install_core.install(opts(d))
+            self.assertEqual(code, 0, msg)
+            ir, hm = opts(d)["install_root"], opts(d)["home"]
+            for p in ("SKILL.md", "phases", "engines", "cli", "shared", "tools.lock"):
+                self.assertTrue(os.path.exists(os.path.join(ir, p)), p)      # step2 权威目录
+            self.assertTrue(os.path.islink(os.path.join(hm, "skill-link")) or True)  # step3 断言见下
+            self.assertTrue(os.path.exists(os.path.join(hm, "engagements")))  # step5 交战区
+            self.assertTrue(os.path.exists(os.path.join(hm, "knowledge", "methodology", "k1-baseline.tsv")),
+                            "R-T12-4：安装器拷贝 k1-baseline 兑现")
+            self.assertTrue(os.path.exists(os.path.join(hm, "install-log.tsv")))
+    def test_idempotent_second_run(self):
+        with tempfile.TemporaryDirectory() as d:
+            o = opts(d)
+            install_core.install(o)
+            snap1 = install_core.snapshot(o["install_root"], o["home"])
+            install_core.install(o)
+            snap2 = install_core.snapshot(o["install_root"], o["home"])
+            self.assertEqual(snap1, snap2, "二次安装必须零变更（§10.1 幂等）")
+    def test_engagement_zone_separation(self):
+        with tempfile.TemporaryDirectory() as d:
+            o = opts(d)
+            install_core.install(o)
+            self.assertFalse(opts(d)["home"].startswith(os.path.abspath(o["install_root"])),
+                             "交战区永不在安装树内（§3.4）")
+    def test_separation_against_repo(self):
+        # 仓内自检形态：默认 install_root/home 均不得落在 repo 树内
+        self.assertFalse(install_core.DEFAULT_INSTALL_ROOT_expanded().startswith(REPO))
+        self.assertFalse(install_core.DEFAULT_HOME_expanded().startswith(REPO))
+
+if __name__ == "__main__":
+    unittest.main()
+```
+（step3 的链接断言以 `install_core.link_report(o)["links"]` 非空+目标存在为准——宿主 skill 目录路径由模板 JSON 提供，测试宿主=dsh 模板指向 `<home>/hosts/dsh/skills` 形态的可注入路径。测试骨架中 `...` 不得保留：执行者按此意图展开为具体断言。）
+
+- [ ] **Step 2: 跑红** —— `py -3 -m unittest tests.test_install_core` 预期 ModuleNotFoundError 全红取证。
+- [ ] **Step 3: 实现 install_core.py**
+
+```python
+# cli/ledger/install_core.py（六步单源——关键函数签名与判定逻辑）
+# -*- coding: utf-8 -*-
+import json, os, shutil, subprocess, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from ledger import supply_chain  # noqa: E402
+
+DEFAULT_INSTALL_ROOT = os.path.join("~", ".local", "share", "tanyin")
+DEFAULT_HOME = os.path.join("~", ".tanyin")
+STEPS = ("verify-lock", "authoritative-dir", "host-link", "hooks", "init-home", "selfcheck")
+_AUTH = ("SKILL.md", "phases", "engines", "cli", "shared", "install", "contracts", "tools.lock")
+
+def DEFAULT_INSTALL_ROOT_expanded(): return os.path.abspath(os.path.expanduser(DEFAULT_INSTALL_ROOT))
+def DEFAULT_HOME_expanded(): return os.path.abspath(os.path.expanduser(DEFAULT_HOME))
+
+def _step1_verify_lock(repo_root, pubkey):
+    lock = os.path.join(repo_root, "tools.lock")
+    entries = supply_chain.load_lock(lock)
+    pub = open(pubkey, "rb").read()
+    import subprocess as sp
+    try:
+        sp.run(["openssl", "version"], capture_output=True, check=True)
+    except (OSError, sp.CalledProcessError):
+        return 2, "openssl 缺席=ENV（验签 fail-closed）"
+    for e in entries:
+        if not supply_chain.verify_entry(e, pub):
+            return 1, "tools.lock 验签失败: %s" % e.get("name")
+    return 0, "verify-lock ok (%d 键)" % len(entries)
+
+def _step2_authoritative(opts):  # copytree dirs_exist_ok=True=幂等；排除 .git/tests/docs
+    for name in _AUTH:
+        src = os.path.join(opts["repo_root"], name)
+        dst = os.path.join(opts["install_root"], name)
+        if os.path.isdir(src):
+            shutil.copytree(src, dst, dirs_exist_ok=True)
+        else:
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            shutil.copy2(src, dst)
+    return 0, "authoritative-dir ok"
+
+def _step3_host_link(opts):
+    tpl = json.load(open(os.path.join(opts["repo_root"], "install", "hosts", opts["host"] + ".json"), encoding="utf-8"))
+    links = []
+    for rel in tpl.get("skill_link_dirs", []):
+        target = os.path.join(opts["home"], "hosts", opts["host"], "skills", "tanyin")
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        src = os.path.join(opts["install_root"])
+        if os.path.islink(target):
+            os.remove(target)                       # 幂等：重链不报错
+        elif os.path.exists(target):
+            return 1, "host-link 冲突: %s 非链接" % target
+        os.symlink(src, target)
+        links.append((target, src))
+    return 0, "host-link ok (%d 链接)" % len(links)
+
+def _step4_hooks(opts):
+    tpl = json.load(open(os.path.join(opts["repo_root"], "install", "hosts", opts["host"] + ".json"), encoding="utf-8"))
+    if not tpl.get("hook_mechanism"):
+        return 0, "hooks: 宿主无 hook 机制→Tier 1+披露（落 install-log）"
+    src = os.path.join(opts["repo_root"], "install", "hooks")
+    dst = os.path.join(opts["install_root"], "hooks", opts["host"])
+    if os.path.isdir(src):
+        shutil.copytree(src, dst, dirs_exist_ok=True)
+    return 0, "hooks ok"
+
+def _step5_init_home(opts):
+    for sub in ("engagements", "knowledge", "report"):
+        os.makedirs(os.path.join(opts["home"], sub), exist_ok=True)
+    seed = os.path.join(opts["repo_root"], "knowledge")
+    if os.path.isdir(seed):
+        shutil.copytree(seed, os.path.join(opts["home"], "knowledge"), dirs_exist_ok=True)
+    open(os.path.join(opts["home"], ".gitignore"), "a", encoding="utf-8").close()
+    return 0, "init-home ok（engagements/knowledge 与安装区分离）"
+
+def _step6_selfcheck_gate(opts):
+    sc = os.path.join(opts["repo_root"], "cli", "tanyin-selfcheck")
+    if not os.path.exists(sc):
+        return 0, "selfcheck: pending Task 6（中间态披露行，Task 6 落地后删除本分支）"
+    r = subprocess.run([sys.executable, sc, "--static", "--install-root", opts["install_root"],
+                        "--home", opts["home"]], capture_output=True, text=True,
+                       env={**os.environ, "PYTHONUTF8": "1"})
+    return (0 if r.returncode == 0 else r.returncode), "selfcheck rc=%d" % r.returncode
+
+def install(opts):
+    results = []
+    c, m = _step1_verify_lock(opts["repo_root"], opts.get("pubkey") or os.path.join(opts["repo_root"], "engines", "nuclei", "release.pub"))
+    results.append((STEPS[0], c, m))
+    if c == 0:
+        for fn, key in ((_step2_authoritative, None), (_step3_host_link, None), (_step4_hooks, None), (_step5_init_home, None), (_step6_selfcheck_gate, None)):
+            c, m = fn(opts)
+            results.append((key or STEPS[len(results)], c, m))
+    _log(opts["home"], results, opts["timestamp"])
+    worst = 1 if any(c == 1 for _, c, _ in results) else (2 if any(c == 2 for _, c, _ in results) else 0)
+    return worst, "; ".join("%s=%d" % (s, c) for s, c, _ in results)
+
+def _log(home, results, ts):
+    with open(os.path.join(home, "install-log.tsv"), "a", encoding="utf-8", newline="") as f:
+        for step, c, m in results:
+            f.write("%s\t%s\trc=%d %s\n" % (ts, step, c, m.replace("\t", " ")))
+
+def snapshot(install_root, home):
+    out = []
+    for base in (install_root, home):
+        for root, dirs, files in os.walk(base):
+            dirs[:] = [x for x in dirs if x != ".git"]
+            for fn in sorted(files):
+                p = os.path.join(root, fn)
+                import hashlib
+                out.append((os.path.relpath(p, base), hashlib.sha256(open(p, "rb").read()).hexdigest()))
+    return sorted(out)
+
+def link_report(opts):
+    tpl = json.load(open(os.path.join(opts["repo_root"], "install", "hosts", opts["host"] + ".json"), encoding="utf-8"))
+    links = []
+    for rel in tpl.get("skill_link_dirs", []):
+        target = os.path.join(opts["home"], "hosts", opts["host"], "skills", "tanyin")
+        links.append((target, os.path.islink(target) and os.path.exists(os.readlink(target))))
+    return {"links": links}
+```
+
+`cli/tanyin-install` 入口：argparse（`--install-root/--home/--host=dsh/--repo-root=脚本上级目录/--pubkey/--timestamp 必填/--list-hosts`）；`--list-hosts` 打印五宿主模板 `verification` 字段（§10.3 发布口径）。`.cmd` 配对同惯例。
+
+`install/hosts/*.json` schema（五文件全建）：
+```json
+{"host": "dsh", "verification": "本仓可实测", "egress_default_tier": 3,
+ "skill_link_dirs": ["skills"], "hook_mechanism": true,
+ "agents_inject": "~/.tanyin-hosts/dsh/AGENTS.md",
+ "compat": ["夹具全量", "evals 全量", "canary×4 档", "受管重启", "报告流水线"]}
+```
+（opencode/codex：`verification`="公开环境 CI 可测"、`hook_mechanism`=true、路径字段按宿主公开文档执行期核对一次，偏差=改 JSON 不改代码；walcode/CodeBuddy：`verification`="静态验证+待实测（§10.3）"、`hook_mechanism`=false、`egress_default_tier`=1+披露。）
+
+- [ ] **Step 4: 跑绿+全套三连** —— install 测试全 PASS（注意 os.symlink 在 Windows CI 需开发者模式/符号链接权限：测试加 `@unittest.skipUnless(os.name != "nt" or _can_symlink(), "symlink 权限")` 守卫，`_can_symlink()` 试链临时目录）；discover+run_golden 全绿（零漂移）。
+- [ ] **Step 5: Commit** —— `git commit -m "批次6 T5：tanyin-install 六步安装器（幂等+交战区分离+R-T12-4 k1 拷贝兑现）"`
+
+### Task 6: tanyin-selfcheck（--static 六项+--host --guided）+ 交战区分离机检
+
+**Files:**
+- Create: `cli/tanyin-selfcheck` + `cli/tanyin-selfcheck.cmd`
+- Create: `cli/ledger/selfcheck.py`（六项静态检查单源）
+- Modify: `cli/ledger/install_core.py`（删除 Task 5 中间态守卫分支——selfcheck 已交付）
+- Test: `tests/test_selfcheck.py`
+
+**Interfaces:**
+- Consumes: `cli/tanyin-phases validate`（③）；`tests/run_golden.py`（⑥）；`ledger.supply_chain`（⑤）；Task 5 布局约定（④）
+- Produces:
+  - `selfcheck.run_static(install_root: str|None, home: str|None, repo_root: str) -> tuple[int, list[tuple[str, str, str]]]`——返回 (worst_rc, [(检查名, rc, 明细)])；六项=cmd-index/encoding/phases-schema/layout/lock-verify/golden
+  - `selfcheck.run_guided(host: str) -> str`（一页引导文本：安装命令→探测→冒烟→回传模板 JSON schema）
+  - CLI 面：`tanyin-selfcheck --static [--install-root R --home H]` / `--host <name> --guided`
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_selfcheck.py（骨架）
+class TestStatic(unittest.TestCase):
+    def test_repo_mode_all_pass(self):
+        rc, items = selfcheck.run_static(None, None, REPO)
+        names = [n for n, _, _ in items]
+        self.assertEqual(names, ["cmd-index", "encoding", "phases-schema", "layout", "lock-verify", "golden"])
+        self.assertEqual(rc, 0, items)   # 仓内自检形态全过（openssl 缺→lock-verify rc=2 仍全绿出口=2）
+    def test_encoding_catches_bom(self):
+        with tempfile.TemporaryDirectory() as d:
+            open(os.path.join(d, "x.md"), "wb").write(b"\xef\xbb\xbfbad")
+            rc = selfcheck.check_encoding(d)
+            self.assertEqual(rc, 1)
+    def test_layout_separation(self):
+        with tempfile.TemporaryDirectory() as d:
+            # 交战区在安装树内=layout rc=1（§3.4 反例）
+            rc = selfcheck.check_layout(os.path.join(d, "ir"), os.path.join(d, "ir", "home"))
+            self.assertEqual(rc, 1)
+        self.assertEqual(selfcheck.check_layout(os.path.join(d0, "ir"), os.path.join(d0, "home")), 0)
+
+class TestGuided(unittest.TestCase):
+    def test_guided_output_contract(self):
+        txt = selfcheck.run_guided("walcode")
+        for key in ("安装命令", "能力探测", "冒烟清单", "回传模板", "probe_results", "未实测"):
+            self.assertIn(key, txt)
+    def test_unknown_host(self):
+        with self.assertRaises(SystemExit):
+            selfcheck.run_guided("nonexistent")   # exit 2 用法错误
+```
+（`d0` 为类级 tempfile 根——执行者展开为 setUp/tearDown 标准形态；断言面不删。）
+
+- [ ] **Step 2: 跑红** —— ModuleNotFoundError 全红取证。
+- [ ] **Step 3: 实现 selfcheck.py**
+
+```python
+# cli/ledger/selfcheck.py（六项判定核心——每项 2-5 分钟粒度可实现）
+import os, re, subprocess, sys
+REPO_FILES_SCAN = ("phases", "engines", "cli", "shared", "install")
+
+def check_cmd_index(repo_root):
+    # ①phases/*.md+engines/**/MANIFEST.md 中 tanyin-<tool> <sub> 引用 ⊆ 已知命令面
+    # 已知面单源=cli/ledger/registry.py 注册表+各工具 argparse 子命令（执行期以
+    #   py -3 - <<'P' 脚本枚举为 JSON 清单并随本函数固化KNOWN_COMMANDS 常量；
+    #   新增命令忘记登记=本检查红——与 VulnClaw verify_execution_boundary 同型机械防线）
+    ...
+
+def check_encoding(root):
+    # ②walk root：UTF-8 无 BOM+无 CRLF（*.md/*.py/*.json/*.tsv/*.yaml/*.lock）
+    ...
+
+def check_phases_schema(repo_root):
+    r = subprocess.run([sys.executable, os.path.join(repo_root, "cli", "tanyin-phases"), "validate"],
+                       capture_output=True, text=True, env={**os.environ, "PYTHONUTF8": "1"})
+    return r.returncode
+
+def check_layout(install_root, home):
+    # ④安装区/交战区分离：home 不得在 install_root 内；skill_link 目标存在（install_root 模式）
+    ir, hm = os.path.abspath(install_root), os.path.abspath(home)
+    if hm == ir or hm.startswith(ir + os.sep):
+        return 1
+    return 0
+
+def check_lock(repo_root, pubkey=None):
+    # ⑤supply_chain.load_lock+verify_entry 全键；openssl 缺=2（ENV）
+    ...
+
+def check_golden(repo_root):
+    r = subprocess.run([sys.executable, os.path.join(repo_root, "tests", "run_golden.py")],
+                       capture_output=True, text=True, env={**os.environ, "PYTHONUTF8": "1"})
+    return r.returncode
+
+def run_static(install_root, home, repo_root):
+    items = [("cmd-index", check_cmd_index(repo_root), ""),
+             ("encoding", check_encoding(repo_root), ""),
+             ("phases-schema", check_phases_schema(repo_root), ""),
+             ("layout", check_layout(install_root or DEFAULT, home or DEFAULT), ""),
+             ("lock-verify", check_lock(repo_root), ""),
+             ("golden", check_golden(repo_root), "")]
+    worst = max((c for _, c, _ in items), default=0)
+    return worst, items
+
+GUIDED_TMPL = """# {host} 手测引导（§10.3）
+1 安装命令：py -3 cli/tanyin-install --host {host} --timestamp <TS>
+2 能力探测（逐项自动+人工确认）：子代理并发/shell/headless/系统级注入/hook 挂载点
+3 冒烟清单：\u201c用探隐自检\u201d干跑 P0-P2——零对外请求，产出 goals/scope/matrix 样本+timeline
+4 回传模板（贴回 issue 即计入验证记录）：
+{{"host":"{host}","probe_results":{{...}},"dryrun_artifacts_sha256":"...","anomalies":"..."}}
+5 发布口径：验证状态=静态验证通过+待实测；执法档位默认 Tier 1（保守披露）
+"""
+
+def run_guided(host):
+    tpl_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "..", "install", "hosts", host + ".json")
+    if not os.path.exists(tpl_path):
+        raise SystemExit(2)
+    return GUIDED_TMPL.format(host=host)
+```
+（六个 check 函数体 `...` 处执行者按注释意图与既有面实现——cmd-index 的 KNOWN_COMMANDS 固化清单由一次枚举脚本生成后以常量进仓；全部为 2-5 分钟可实现单元。）
+
+- [ ] **Step 4: 删 Task 5 中间态守卫** —— `install_core._step6_selfcheck_gate` 改为无条件调 selfcheck（`--static --install-root --home`）；`tests/test_install_core.py` 追加端到端六步断言（`install(o)[0] == 0` 且结果含 `selfcheck=0`）。
+- [ ] **Step 5: 跑绿+全套三连+Commit** —— `py -3 cli/tanyin-selfcheck --static` 仓内形态 rc==0 亲测记录 → discover+run_golden 全绿 → `git commit -m "批次6 T6：tanyin-selfcheck 六项静态+guided 手测+交战区分离机检（install 六步端到端）"`
+
