@@ -62,6 +62,30 @@ def guard_writable(kdir, sub, rest):
         raise Reject("种子库只读（仓库 knowledge/ = 发行内容；写操作请在运行时库执行）: " + kdir)
 
 
+def parse_argv(rest):
+    """argv 双形态归一（批次 5 T19 R-T19-2；适配器 parse_argv 先例 R-T9-2 同型）：
+    P6 duty 命令化五步与出口判定命令按计划原文取 --key value 空格形态，入口
+    parse_kdir 已双形态两收，子命令参数解析原仅收 = 形（空格形实况裸崩）——
+    空格形在此合并为 = 形后交 query_cmds.parse_kv 单源处理（账本 44 面 parse_kv
+    零触碰）；= 形 token 原样透传=行为零变；裸旗标（后随另一旗标或收尾）归一
+    =1（approve --reject 布尔消费语义同型）。位置参数（client-map 动词）不吞不并。"""
+    out = []
+    i = 0
+    while i < len(rest):
+        a = rest[i]
+        if a.startswith("--") and "=" not in a:
+            if i + 1 < len(rest) and not rest[i + 1].startswith("--"):
+                out.append(a + "=" + rest[i + 1])
+                i += 2
+            else:
+                out.append(a + "=1")
+                i += 1
+        else:
+            out.append(a)
+            i += 1
+    return parse_kv(out)
+
+
 def init(kdir):
     """骨架初始化（幂等：已初始化=PASS no-op）。"""
     os.makedirs(kdir, exist_ok=True)
@@ -513,25 +537,25 @@ def lint(kdir, ts, today=None, freshness_days=180):
 
 
 def h_source_register(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return source_register(ctx, kv.get("path", ""), kv.get("origin", ""),
                            kv.get("license", ""), kv.get("note", ""),
                            kv.get("timestamp", ""))
 
 
 def h_lint(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return lint(ctx, kv.get("timestamp", ""), today=kv.get("today", ""),
                 freshness_days=kv.get("freshness-days", 180))
 
 
 def h_promote(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return promote(ctx, kv.get("page", ""), kv.get("timestamp", ""))
 
 
 def h_demote(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return demote(ctx, kv.get("page", ""), kv.get("refuting", ""),
                   kv.get("note", ""), kv.get("timestamp", ""))
 
@@ -1107,14 +1131,14 @@ def neighbors(kdir, entity):
 
 
 def h_approve(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return approve(ctx, kv.get("page", ""), kv.get("approver", ""),
                    kv.get("timestamp", ""), reject=bool(kv.get("reject")),
                    reason=kv.get("reason", ""))
 
 
 def h_commit(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return commit(ctx, kv.get("page", ""), kv.get("timestamp", ""))
 
 
@@ -1123,23 +1147,23 @@ def h_export(ctx, rest):
 
 
 def h_match(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return match(ctx, kv.get("client", ""), kv.get("asset", ""), kv.get("today", ""))
 
 
 def h_nday_match(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return nday_match(ctx, kv.get("cpe", ""), kv.get("version", ""))
 
 
 def h_score(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return score(ctx, kv.get("goal-dir", ""), kv.get("vuln-class", ""),
                  kv.get("asset", ""), kv.get("today", ""))
 
 
 def h_neighbors(ctx, rest):
-    kv, _pos = parse_kv(rest)
+    kv, _pos = parse_argv(rest)
     return neighbors(ctx, kv.get("entity", ""))
 
 
@@ -1194,7 +1218,7 @@ def client_map_list(kdir):
 
 
 def h_client_map(ctx, rest):
-    kv, pos = parse_kv(rest)
+    kv, pos = parse_argv(rest)
     if not pos:
         raise KnowledgeError(
             "client-map next|add|list  [add: --client= --real-ref= [--note=] --timestamp=]")
