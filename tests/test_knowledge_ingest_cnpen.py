@@ -9,8 +9,10 @@
 钉子（批次 6+ 素材就位补蒸馏页时仍须过）。
 """
 import os
+import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -84,10 +86,21 @@ class TestCnpenIngest(unittest.TestCase):
                              "页 %s 引用未就位 CNPEN 语源（涉嫌造数据）" % p)
 
     def test_lint_passes_on_seed(self):
-        kn("init", "--knowledge-dir=" + SEED)   # 幂等：补齐空类目目录后 lint 才可跑
-        r = kn("lint", "--knowledge-dir=" + SEED, "--today=2026-09-24")
+        # T18 前置隔离修复（绿）：lint 会向库 log.md 追加审计行（R8 追加式），staging
+        # 同步也会写 staging.tsv——种子库（仓库 knowledge/）对测试必须只读。改在 tmp
+        # 副本上操作（run_golden prep_knowledge 同款隔离），并钉死「种子库零写热」
+        # （跑全套后 git status 必净的库内不变式）。
+        seed_log = os.path.join(SEED, "log.md")
+        before = open(seed_log, "rb").read()
+        with tempfile.TemporaryDirectory() as td:
+            d = os.path.join(td, "knowledge")
+            shutil.copytree(SEED, d)
+            kn("init", "--knowledge-dir=" + d)   # 幂等：补齐空类目目录后 lint 才可跑
+            r = kn("lint", "--knowledge-dir=" + d, "--today=2026-09-24")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("PASS", r.stdout)
+        self.assertEqual(open(seed_log, "rb").read(), before,
+                         "种子库 log.md 被测试写热（测试隔离泄漏）")
 
     def test_vocab_baseline_is_wstg_only(self):
         # 前向钉子：防 CNPEN 过拟合——全部页 vuln_class 均为 wstg-* 键或 wstg-XX:sub 形

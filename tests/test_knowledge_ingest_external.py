@@ -11,8 +11,10 @@ CVE 边界：执行期未联网核验 → 全部页不写 cve_refs 只写方法�
 """
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -121,9 +123,20 @@ class TestExternalIngest(unittest.TestCase):
             self.assertIsNone(m, "%s 残留敏感形态 %r" % (p, m.group(0) if m else ""))
 
     def test_lint_passes_on_seed(self):
-        r = kn("lint", "--knowledge-dir=" + SEED, "--today=2026-09-24")
+        # T18 前置隔离修复（绿）：lint 会向库 log.md 追加审计行（R8 追加式），staging
+        # 同步也会写 staging.tsv——种子库（仓库 knowledge/）对测试必须只读。改在 tmp
+        # 副本上操作（run_golden prep_knowledge 同款隔离），并钉死「种子库零写热」
+        # （跑全套后 git status 必净的库内不变式）。
+        seed_log = os.path.join(SEED, "log.md")
+        before = open(seed_log, "rb").read()
+        with tempfile.TemporaryDirectory() as td:
+            d = os.path.join(td, "knowledge")
+            shutil.copytree(SEED, d)
+            r = kn("lint", "--knowledge-dir=" + d, "--today=2026-09-24")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("PASS", r.stdout)
+        self.assertEqual(open(seed_log, "rb").read(), before,
+                         "种子库 log.md 被测试写热（测试隔离泄漏）")
 
 
 if __name__ == "__main__":
