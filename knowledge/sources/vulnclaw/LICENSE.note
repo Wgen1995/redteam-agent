@@ -1,0 +1,21 @@
+# VulnClaw 语料取材许可注记（批次 5 T17；取材合法性凭证）
+
+- 语源：.research/repos/VulnClaw（本地只读 clone，gitignore 在册；HEAD 3b71e26）
+- 许可：MIT License — Copyright (c) 2026 UncleC（原文见 .research/repos/VulnClaw/LICENSE，
+  sha256 锚=SOURCES.tsv KP-0006 行；本注记引 docs/research/2026-09-24-vulnclaw-analysis.md
+  §6.3 批次 5 取材清单：47 专题 skill+warstory+experience 人审蒸馏）
+- 取材范围（首批 8 detail-pack+2 warstory，余 39 专题批次 6+ 持续飞轮——防单任务过巨，
+  移交登记）：redteam-{sqli,xss,ssrf,ssti,deserialize,cmdi,cors-miscfg,open-redirect}-detail-pack
+  四段结构（Domain/覆盖域表/Boundaries/Pivot Hints/Exit Evidence）映射技法页
+  applicability/vuln_class/正文边界节/failure_modes/judgment；warstories 2 篇元信息表→
+  front-matter、攻击链表→triples（主谓宾 ≥6 行）、flag/域名/IP 全占位符化。
+- 防投毒对称性：外部与自有语料同走一道 staging 审批门（设计 §7.2）——本批 10 页均经
+  lint→approve（review-checklist 逐项自查落 approver）→commit→export 流水。
+
+## CVE 核验标记待核验清单（R11 离线通道）
+
+执行期未联网核验：本批全部页不写 cve_refs 只写方法论内容（R11「离线环境=不写
+cve_refs」）。待核验清单（批次 6+ 首批宿主 WebSearch 对照 NVD/KEV 后补
+cve_refs+cve_verified 双标记）：各 detail-pack 正文提及的公开 CVE 与组件指纹
+（Commons-Collections gadget 族/JNDI 注入族/IMDSv1 元数据族等）——当前仅作边界
+叙述未落 CVE 编号，故 lint 零缺口；补录时须逐个带 {cve, source, verified_at} 行。

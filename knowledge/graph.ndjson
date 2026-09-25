@@ -1,0 +1,14 @@
+{"class":"K2","created":"2026-09-24","id":"PR-0001:t0","object":"组件指纹与静态资源","predicate":"暴露","source":"PR-0001","subject":"首页响应"}
+{"class":"K2","created":"2026-09-24","id":"PR-0001:t1","object":"base64 线索","predicate":"藏有","source":"PR-0001","subject":"静态脚本注释"}
+{"class":"K2","created":"2026-09-24","id":"PR-0001:t2","object":"隐藏入口文件名","predicate":"还原出","source":"PR-0001","subject":"base64 线索"}
+{"class":"K2","created":"2026-09-24","id":"PR-0001:t3","object":"源码与回调路径","predicate":"泄露","source":"PR-0001","subject":"隐藏入口"}
+{"class":"K2","created":"2026-09-24","id":"PR-0001:t4","object":"忽略大小写修饰符","predicate":"缺少","source":"PR-0001","subject":"过滤正则"}
+{"class":"K2","created":"2026-09-24","id":"PR-0001:t5","object":"正则参数类型检查","predicate":"绕过","source":"PR-0001","subject":"数组型参数"}
+{"class":"K2","created":"2026-09-24","id":"PR-0001:t6","object":"旗标读取方法","predicate":"调用","source":"PR-0001","subject":"数组回调语义"}
+{"class":"K2","created":"2026-09-24","id":"PR-0001:t7","object":"业务逻辑漏洞成立","predicate":"确认","source":"PR-0001","subject":"旗标回显"}
+{"class":"K2","created":"2026-09-24","id":"PR-0002:t0","object":"短长度与大数值双检","predicate":"绕过","source":"PR-0002","subject":"科学计数法字符串"}
+{"class":"K2","created":"2026-09-24","id":"PR-0002:t1","object":"替换删除型过滤","predicate":"绕过","source":"PR-0002","subject":"双写关键词"}
+{"class":"K2","created":"2026-09-24","id":"PR-0002:t2","object":"弱比较相等判定","predicate":"触发","source":"PR-0002","subject":"零e纯数字哈希"}
+{"class":"K2","created":"2026-09-24","id":"PR-0002:t3","object":"客户端 cookie 保持","predicate":"依赖","source":"PR-0002","subject":"会话关卡状态"}
+{"class":"K2","created":"2026-09-24","id":"PR-0002:t4","object":"三关卡就位条件","predicate":"满足","source":"PR-0002","subject":"分步请求"}
+{"class":"K2","created":"2026-09-24","id":"PR-0002:t5","object":"全链绕过成立","predicate":"确认","source":"PR-0002","subject":"旗标回显"}

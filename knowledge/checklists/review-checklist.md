@@ -34,3 +34,16 @@
 - 不过：reject 附理由（rejected 终态留档 staging/，不删页——审计可追溯）。
 - 晋升（learned→core）另走四门槛：机检三件（tanyin-knowledge promote）+ 本 checklist
   质量判断在晋升页再过一遍（四门槛只管机械条件，不管页写得好不好）。
+
+## VulnClaw experience 人审门流程注记（批次 5 T17 增补节）
+
+- 语源流程模式（vulnclaw/kb/experience.py 单源）：蒸馏产出的经验教训（Lesson）一律
+  **"Lessons remain pending until a human approves them"**——自动化蒸馏不得把未经人审
+  的战术回流进后续运行。与本库四门槛③（log.md 存在 approve 且 for=promote 才可晋升）
+  同型：机器蒸馏止步于 pending，人工审批是唯一入库闸门。
+- 近重复合并：语源 distiller 以 0.88 嵌入相似度为合并阈值（DEFAULT_MERGE_THRESHOLD=0.88）；
+  本库检索 v1 为词表键+规范哈希精确匹配、无嵌入载体——语义近重复合并不实现（R10/G-30
+  登记），lint 对同 class 页数 ≥8 输出人审合并建议告警替代（T17 首批 K5 恰 8 页即触发，
+  属预期告警非 FAIL）。
+- 外部经验页入库路径：staging 蒸馏页→本 checklist 质量判断四问→approve→commit；
+  晋升 core 另走四门槛机检（tanyin-knowledge promote）。

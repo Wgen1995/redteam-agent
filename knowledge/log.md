@@ -1,3 +1,84 @@
 # log
 
 （init 生成；commit 时重生成 index/overview）
+2026-09-24T09:20:00Z|source-register|KP-0006|origin=vulnclaw sha=798df5f8d0f8
+2026-09-24T00:00:00Z|lint|STG-0001|pass
+2026-09-24T00:00:00Z|lint|STG-0002|pass
+2026-09-24T00:00:00Z|lint|STG-0003|pass
+2026-09-24T00:00:00Z|lint|STG-0004|pass
+2026-09-24T00:00:00Z|lint|STG-0005|pass
+2026-09-24T00:00:00Z|lint|STG-0006|pass
+2026-09-24T00:00:00Z|lint|STG-0007|pass
+2026-09-24T00:00:00Z|lint|STG-0008|pass
+2026-09-24T00:00:00Z|lint|STG-0009|pass
+2026-09-24T00:00:00Z|lint|STG-0010|pass
+2026-09-24T09:30:00Z|approve|STG-0001|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:30:07Z|approve|STG-0002|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:30:14Z|approve|STG-0003|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:30:21Z|approve|STG-0004|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:30:28Z|approve|STG-0005|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:30:35Z|approve|STG-0006|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:30:42Z|approve|STG-0007|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:30:49Z|approve|STG-0008|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:30:56Z|approve|STG-0009|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:30:03Z|approve|STG-0010|approver=批次5-执行者（review-checklist 逐项自查）
+2026-09-24T09:40:00Z|commit|CP-0001|from=STG-0001
+2026-09-24T09:40:07Z|commit|CP-0002|from=STG-0002
+2026-09-24T09:40:14Z|commit|CP-0003|from=STG-0003
+2026-09-24T09:40:21Z|commit|CP-0004|from=STG-0004
+2026-09-24T09:40:28Z|commit|CP-0005|from=STG-0005
+2026-09-24T09:40:35Z|commit|CP-0006|from=STG-0006
+2026-09-24T09:40:42Z|commit|CP-0007|from=STG-0007
+2026-09-24T09:40:49Z|commit|CP-0008|from=STG-0008
+2026-09-24T09:40:56Z|commit|PR-0001|from=STG-0009
+2026-09-24T09:40:03Z|commit|PR-0002|from=STG-0010
+2026-09-24T00:00:00Z|lint|CP-0001|pass
+2026-09-24T00:00:00Z|lint|CP-0002|pass
+2026-09-24T00:00:00Z|lint|CP-0003|pass
+2026-09-24T00:00:00Z|lint|CP-0004|pass
+2026-09-24T00:00:00Z|lint|CP-0005|pass
+2026-09-24T00:00:00Z|lint|CP-0006|pass
+2026-09-24T00:00:00Z|lint|CP-0007|pass
+2026-09-24T00:00:00Z|lint|CP-0008|pass
+2026-09-24T00:00:00Z|lint|PR-0001|pass
+2026-09-24T00:00:00Z|lint|PR-0002|pass
+2026-09-24T00:00:00Z|lint|CP-0001|pass
+2026-09-24T00:00:00Z|lint|CP-0002|pass
+2026-09-24T00:00:00Z|lint|CP-0003|pass
+2026-09-24T00:00:00Z|lint|CP-0004|pass
+2026-09-24T00:00:00Z|lint|CP-0005|pass
+2026-09-24T00:00:00Z|lint|CP-0006|pass
+2026-09-24T00:00:00Z|lint|CP-0007|pass
+2026-09-24T00:00:00Z|lint|CP-0008|pass
+2026-09-24T00:00:00Z|lint|PR-0001|pass
+2026-09-24T00:00:00Z|lint|PR-0002|pass
+2026-09-24T00:00:00Z|lint|CP-0001|pass
+2026-09-24T00:00:00Z|lint|CP-0002|pass
+2026-09-24T00:00:00Z|lint|CP-0003|pass
+2026-09-24T00:00:00Z|lint|CP-0004|pass
+2026-09-24T00:00:00Z|lint|CP-0005|pass
+2026-09-24T00:00:00Z|lint|CP-0006|pass
+2026-09-24T00:00:00Z|lint|CP-0007|pass
+2026-09-24T00:00:00Z|lint|CP-0008|pass
+2026-09-24T00:00:00Z|lint|PR-0001|pass
+2026-09-24T00:00:00Z|lint|PR-0002|pass
+2026-09-24T00:00:00Z|lint|CP-0001|pass
+2026-09-24T00:00:00Z|lint|CP-0002|pass
+2026-09-24T00:00:00Z|lint|CP-0003|pass
+2026-09-24T00:00:00Z|lint|CP-0004|pass
+2026-09-24T00:00:00Z|lint|CP-0005|pass
+2026-09-24T00:00:00Z|lint|CP-0006|pass
+2026-09-24T00:00:00Z|lint|CP-0007|pass
+2026-09-24T00:00:00Z|lint|CP-0008|pass
+2026-09-24T00:00:00Z|lint|PR-0001|pass
+2026-09-24T00:00:00Z|lint|PR-0002|pass
+2026-09-24T00:00:00Z|lint|CP-0001|pass
+2026-09-24T00:00:00Z|lint|CP-0002|pass
+2026-09-24T00:00:00Z|lint|CP-0003|pass
+2026-09-24T00:00:00Z|lint|CP-0004|pass
+2026-09-24T00:00:00Z|lint|CP-0005|pass
+2026-09-24T00:00:00Z|lint|CP-0006|pass
+2026-09-24T00:00:00Z|lint|CP-0007|pass
+2026-09-24T00:00:00Z|lint|CP-0008|pass
+2026-09-24T00:00:00Z|lint|PR-0001|pass
+2026-09-24T00:00:00Z|lint|PR-0002|pass

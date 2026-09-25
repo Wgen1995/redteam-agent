@@ -4,3 +4,7 @@ KP-0002	cnpen	sources/cnpen/retro/	-	proprietary	待补：思路复盘八阶段+
 KP-0003	cnpen	sources/cnpen/records/	-	proprietary	待补：测试记录 T1-T55（就位后蒸馏 precedents 先例链路页，CLIENT-NN 脱敏）	2026-09-24T09:00:00Z
 KP-0004	cnpen	sources/cnpen/vuln-sheets/	-	proprietary	待补：31 份黑盒漏洞单（就位后蒸馏 patterns ok-sample 样例页）	2026-09-24T09:00:00Z
 KP-0005	cnpen	sources/cnpen/burp-poc/	-	proprietary	待补：BurpPOC 合集（就位后并入 concepts tool_params 节）	2026-09-24T09:00:00Z
+KP-0006	vulnclaw	.research/repos/VulnClaw/LICENSE	798df5f8d0f84b2e5805c53b2ecdaa75e182fee606199e996cfb1bd98e75f84b	MIT	VulnClaw HEAD 3b71e26（47 专题 skill 语料仓库级登记；LICENSE 文件锚指纹）	2026-09-24T09:20:00Z
+KP-0007	bughunter	.research/repos/bughunter/	-	MIT 候选（执行期核验）	待补：hunt-* 技法语料缺素材——仓库执行期 clone 后 source-register 重登（G-35 降级登记，不阻塞）	2026-09-24T09:20:00Z
+KP-0008	threatswarm	.research/repos/threatswarm/	-	MIT 候选（执行期核验）	待补：27 agent 语料缺素材——同上降级登记（G-35）	2026-09-24T09:20:00Z
+KP-0009	cep	.research/repos/cep/	-	MIT 候选（执行期核验）	待补：ROE amendments/report-template.html 缺素材——scope 模板 business 页与批次 6 报告底版随之延后（G-35）	2026-09-24T09:20:00Z
