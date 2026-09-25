@@ -1527,3 +1527,177 @@ class TestAggregate(unittest.TestCase):
 - [ ] **Step 2: 跑红 → Step 3: 实现 report_agg.py** —— 每投影键一个小函数（`_project_findings`/_project_matrix/_project_coverage/_project_budget/_project_tier/_project_limits），列名一律 `TABLES[t].index(col)` 取（零硬编码列号）；`replay_state` 取 findings 重放列+set-replay-state 面。CLI 入口 + `.cmd` 配对。
 - [ ] **Step 4: 跑绿+全套三连+Commit** —— `git commit -m "批次6 T12：tanyin-report 聚合器（13 表确定性投影+终态 B 判据）"`
 
+### Task 13: FD 九段渲染器 + 时间链断言（FD 规格 §一/§二 兑现）
+
+**Files:**
+- Create: `cli/ledger/report_render.py`
+- Modify: `cli/tanyin-report`（+`render` 子命令）
+- Test: `tests/test_report_render.py`
+
+**Interfaces:**
+- Consumes: `report_agg.aggregate`（Task 12）；findings-cards/FD-*.md（front-matter+POC 四要素）+EV 卡片（raw_request/raw_response/时间/环境）+E-index 双指纹（哈希复算）；矩阵词表（shared/VOCAB.md）；G-24 基线表（severity_expect）
+- Produces:
+  - `report_render.render_fd(goal_dir: str, fd_id: str) -> tuple[int, str]`——返回 (rc, 九段 markdown)；任一段数据源缺失=rc 1 且缺段清单随报错（渲染不造数据：每段只从账本/卡片投影）
+  - `report_render.check_time_chain(goal_dir: str, issued_at: str|None=None) -> tuple[bool, str]`——断言 evidence.captured_at < finding.added_at（< report.issued_at 可选）；违反=rc 1
+  - CLI：`tanyin-report render --goal-dir D --fd <id> [--all] --out report/draft/<id>.md --timestamp T`
+
+- 九段→数据源映射（渲染器实现表，执行期照此逐段实现）：
+  ①位置=assets/edges 图谱坐标（资产ID+表面+精确位置）②资产与接口=read-ledger 子图投影（禁手写）③描述=类型必须命中矩阵词表（不命中=不进 findings 的回归断言+渲染 FAIL）④等级=tech 严重度×biz 影响（G-24 基线表映射，CVSS 向量可复算字段在卡）⑤原理=evidence 链引用（哪条请求哪个差异）⑥POC/EXP=EV 卡 POC 四要素原文转抄（raw_request/raw_response 字节不变；变体参数单列「判读说明」段）⑦危害=token 化后实际回显引用（禁空话句式 lint 在 Task 14）⑧修复建议=类型映射+K1 挂标+「修复后哪条 POC 应失效」⑨复现状态=重放门三态+最近重放时间（未 verified=强制披露行，禁宣称 verified）
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_report_render.py
+class TestRender(unittest.TestCase):
+    def test_nine_segments_in_order(self):
+        gd = self._copy_g1()                          # 含 FD 卡+EV 卡夹具
+        rc, md = report_render.render_fd(gd, self._any_fd(gd))
+        self.assertEqual(rc, 0)
+        segs = ["位置", "涉及资产与接口", "漏洞描述", "等级", "漏洞原理",
+                "POC/EXP", "危害", "修复建议", "复现与验证状态"]
+        pos = [md.find("## " + s) for s in segs]
+        self.assertTrue(all(p >= 0 for p in pos) and pos == sorted(pos), "九段齐且有序")
+    def test_raw_request_byte_identical(self):
+        gd = self._copy_g1()
+        rc, md = report_render.render_fd(gd, self._any_fd(gd))
+        raw_ev = self._ev_raw_request(gd)             # EV 卡 POC 原文字节
+        self.assertIn(raw_ev, md)                     # 转抄零编辑（改一字即 FAIL 的渲染侧保证）
+    def test_time_chain_violation(self):
+        gd = self._copy_g1()
+        _tamper_captured_at_after_added(gd)           # 夹具篡改：证据时间晚于 finding
+        ok, why = report_render.check_time_chain(gd)
+        self.assertFalse(ok)
+    def test_unverified_disclosed(self):
+        gd = self._copy_g1()
+        _set_replay_state_unverified(gd)              # CLI 命令铸造
+        rc, md = report_render.render_fd(gd, self._any_fd(gd))
+        self.assertIn("未通过独立重放门", md)          # 披露行强制在
+        self.assertNotIn("verified：是", md)
+```
+
+- [ ] **Step 2: 跑红** —— ModuleNotFoundError 全红取证。
+- [ ] **Step 3: 实现 report_render.py** —— 九段函数逐段 ~20 行（段 ⑥ 用 EV 卡 raw 字节直接拼接；段 ⑨ 三态映射 verified/env-diff/unverified→披露措辞）；`check_time_chain` 读 E-index captured_at 与 findings added_at 列比对。CLI `render` 接线（`--all`=遍历 findings.tsv active 行）。
+- [ ] **Step 4: 跑绿+全套三连+Commit** —— `git commit -m "批次6 T13：FD 九段渲染器+时间链断言（b0006f2 落点①）"`
+
+### Task 14: G-25 Burp 直贴 lint + P5 签发门 + P6 清理门接线（裁决 B）
+
+**Files:**
+- Create: `cli/ledger/report_lint.py`
+- Modify: `cli/tanyin-report`（+`lint`/`sign` 子命令）
+- Modify: `phases/P5.md`（:17 ENV-HALT 行解除→`tanyin-report lint` 真门；PROTOCOL §1 判定表不变）
+- Modify: `phases/P6.md`（清理门接线注记：sign 前置含 `cleanup-checklist --verify` rc==0——命令零改动，仅 duty 行注记）
+- Modify: `contracts/06-evidence-cards.md`（G-25 裁决 B 勘误：HTTP/1.x 直贴首发/HTTP2-TLS 判读说明单列/Host-Connection 原文归属）
+- Test: `tests/test_report_lint.py`
+
+**Interfaces:**
+- Consumes: Task 13 渲染产物；`tanyin-ledger redact-scan`/`tanyin-phases cleanup-checklist --verify` 子进程；`report_agg.aggregate`（合规六要素数据源）
+- Produces:
+  - `report_lint.burp_pasteable(raw_request: str) -> tuple[bool, list[str]]`——四规则（裁决 B）：①纯文本可解码无 BOM 无二进制字节 ②请求行形如 METHOD SP PATH SP HTTP/x.x ③含至少一个 Host 头 ④非空 body 有空行分隔；HTTP/2 帧/TLS 指定内容出现于 raw=FAIL（判读说明单列）
+  - `report_lint.nine_segments(md: str) -> list[str]`（缺段清单）
+  - `report_lint.compliance_six(data: dict) -> list[str]`（六要素缺项：授权与范围声明/方法学映射 WSTG/覆盖度与局限性/技术×业务风险分级/整改优先级与复测建议/等保占位段——数据源=aggregate 投影，等保段=占位常量段落）
+  - `report_lint.sign_gate(goal_dir: str, ts: str) -> tuple[int, dict]`——聚合：全部 active FD 渲染 rc==0+九段齐+burp lint PASS+时间链（issued_at=ts）+redact-scan 零泄漏+cleanup-checklist rc==0+tier 披露在；任一不过=1 且 FAIL 明细落报告；全过=0 且落 `report/signed/pass.json`（签发凭证：goal+ts+各门结果）
+  - CLI：`tanyin-report lint --goal-dir D`（exit 同 gate）/ `tanyin-report sign --goal-dir D --timestamp T`（=lint+落凭证+调 Task 15 双工件写盘）
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_report_lint.py
+class TestBurpLint(unittest.TestCase):
+    RAW = "POST /login HTTP/1.1\r\nHost: t.example.com\r\nContent-Type: application/x-www-form-urlencoded\r\n\r\nuser=a&pass=b"
+    def test_happy_path(self):
+        ok, why = report_lint.burp_pasteable(self.RAW)
+        self.assertTrue(ok, why)
+    def test_missing_host(self):
+        bad = self.RAW.replace("Host: t.example.com\r\n", "")
+        self.assertFalse(report_lint.burp_pasteable(bad)[0])
+    def test_bad_request_line(self):
+        self.assertFalse(report_lint.burp_pasteable("POST /login\r\nHost: h\r\n\r\n")[0])
+    def test_binary_bytes_rejected(self):
+        self.assertFalse(report_lint.burp_pasteable("POST / HTTP/1.1\r\nHost: h\r\n\r\n\x00\x02frame")[0])
+    def test_http2_frame_directed_to_note(self):
+        ok, why = report_lint.burp_pasteable("POST / HTTP/1.1\r\nHost: h\r\n\r\n[HTTP/2 binary frame: DATA]\x01\x02")
+        self.assertFalse(ok); self.assertIn("判读说明", " ".join(why))
+
+class TestSignGate(unittest.TestCase):
+    def test_gate_pass_on_fixture(self):
+        gd = self._copy_g1()
+        rc, rep = report_lint.sign_gate(gd, TS)
+        self.assertEqual(rc, 0, rep)
+        self.assertTrue(os.path.exists(os.path.join(gd, "report", "signed", "pass.json")))
+    def test_gate_fail_missing_segment(self):
+        gd = self._copy_g1()
+        _delete_segment_nine(gd)                       # 夹具操作：渲染后删第 9 段再 lint
+        self.assertEqual(report_lint.sign_gate(gd, TS)[0], 1)
+    def test_gate_fail_cleanup_not_verified(self):
+        gd = self._copy_g1()
+        _break_cleanup_checklist(gd)                   # 夹具操作：cleanup 清单置未验项
+        self.assertEqual(report_lint.sign_gate(gd, TS)[0], 1)
+    def test_p5_note_updated(self):
+        txt = open(os.path.join(REPO, "phases", "P5.md"), encoding="utf-8").read()
+        self.assertNotIn("批次 6 交付前该断言=ENV-HALT", txt)   # 解除兑现的文本断言
+        self.assertIn("tanyin-report lint", txt)
+```
+
+- [ ] **Step 2: 跑红 → Step 3: 实现 report_lint.py**（五函数+CLI 接线；`sign`=lint+凭证+Task 15 `write_all`——本任务先落 lint/sign 骨架，`write_all` 调用点 Task 15 接上，中间态=sign 只落凭证不落工件并在输出披露一行）。红跑取证→绿。
+- [ ] **Step 4: P5/P6/契约 06 文本接线** —— P5.md :17 行改写为真门（命令+判定表锚点不变）；P6.md duty 注记一行；契约 06 勘误（裁决 B 三条款）。
+- [ ] **Step 5: 跑绿+全套三连+Commit** —— `git commit -m "批次6 T14：Burp 直贴 lint+P5 签发门解除 ENV-HALT+清理门接线（G-25 收口）"`
+
+### Task 15: 双工件 findings.json+SARIF + LLM 叙述过滤 + 合规六要素签发面（契约 13 兑现）
+
+**Files:**
+- Create: `cli/ledger/report_artifacts.py`
+- Test: `tests/test_report_artifacts.py`
+
+**Interfaces:**
+- Consumes: Task 12 aggregate 投影；Task 14 sign 骨架（`write_all` 接线点）
+- Produces:
+  - `report_artifacts.findings_json(goal_dir: str) -> dict`——**全量+生命周期**：每 finding 含 id/title/severity 双轴/replay_state/lifecycle(active|rejected|repair-candidate)/evidence_ids/asset（VulnClaw findings.json 同型；来源=13 表投影零新事实）
+  - `report_artifacts.findings_sarif(goal_dir: str) -> dict`——**SARIF 2.1.0 仅 verified**：runs[0].results 每条含 ruleId=漏洞类型、level（severity 映射）、message.text、locations[0].physicalLocation.artifactLocation=EV 卡片相对路径（EV↔SARIF 位置映射；unverified 一律不进 SARIF——报告纳入门）
+  - `report_artifacts.narrative_filter(text: str) -> str`——LLM 叙述段机械清洗：剥 TOOL_CALL 标记/Round 数字轮次行/think 标签/调试前缀行（VulnClaw report/filter 同型正则集，清单进函数头注释）
+  - `report_artifacts.write_all(goal_dir: str, ts: str) -> list[str]`——sign 时落 `report/findings.json`+`report/findings.sarif`+`report/signed/report-<ts>.md`（终稿=聚合投影+FD 渲染+合规六要素章节+执行摘要经 narrative_filter）；返回工件路径表
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_report_artifacts.py
+class TestFindingsJson(unittest.TestCase):
+    def test_full_lifecycle(self):
+        gd = self._copy_g1()
+        d = report_artifacts.findings_json(gd)
+        self.assertTrue(len(d["findings"]) >= 1)
+        self.assertIn("replay_state", set(d["findings"][0].keys()))
+class TestSarif(unittest.TestCase):
+    def test_verified_only(self):
+        gd = self._copy_g1()
+        d = report_artifacts.findings_sarif(gd)
+        ids = {r["ruleId"] for r in d["runs"][0]["results"]}
+        unverified = self._unverified_ids(gd)
+        self.assertEqual(ids & unverified, set())          # 报告纳入门：unverified 不进 SARIF
+    def test_sarif_shape(self):
+        d = report_artifacts.findings_sarif(self._copy_g1())
+        self.assertEqual(d["version"], "2.1.0")
+        self.assertTrue(all("artifactLocation" in r["locations"][0]["physicalLocation"]
+                            for r in d["runs"][0]["results"]))
+class TestFilter(unittest.TestCase):
+    def test_strips_markers(self):
+        dirty = "<think>推理</think>TOOL_CALL add-finding\nRound 3\n结论：存在 SQLi。"
+        clean = report_artifacts.narrative_filter(dirty)
+        self.assertNotIn("TOOL_CALL", clean); self.assertNotIn("<think>", clean)
+        self.assertIn("结论：存在 SQLi。", clean)
+class TestWriteAll(unittest.TestCase):
+    def test_three_artifacts(self):
+        gd = self._copy_g1()
+        paths = report_artifacts.write_all(gd, TS)
+        for suffix in ("findings.json", "findings.sarif"):
+            self.assertTrue(any(p.endswith(suffix) for p in paths))
+        # 终稿 md 含合规六要素六标题（等保占位段原文在）
+        md = open([p for p in paths if p.endswith(".md")][0], encoding="utf-8").read()
+        for h in ("授权与范围声明", "方法学映射", "覆盖度与局限性", "技术×业务风险分级",
+                  "整改优先级与复测建议", "等保"):
+            self.assertIn(h, md)
+```
+
+- [ ] **Step 2: 跑红 → Step 3: 实现** —— 三函数+write_all（sign 骨架接线：Task 14 预留调用点激活，删中间态披露行）；合规六章节由 aggregate 投影确定性组装（等保占位段=常量文本段，R11 法务过审对象）。
+- [ ] **Step 4: 端到端亲测** —— `py -3 cli/tanyin-report sign --goal-dir tests/fixtures/G-g1 --timestamp <TS>` rc==0；三工件在；双工件 `json.load` 合法。
+- [ ] **Step 5: 全套三连+Commit** —— `git commit -m "批次6 T15：双工件+叙述过滤+合规六要素签发面（契约 13 兑现；R11 过审对象成形）"`
+
