@@ -183,6 +183,65 @@ class TestBatch4Handoff(unittest.TestCase):
                               "differential.md"), encoding="utf-8").read()
         self.assertIn("pair_group 列现序+1", t)
 
+class TestBatch5Wiring(unittest.TestCase):
+    """批次 5 T19：总控接线收口——SKILL 路由表知识库行+P6 沉淀命令化五步+P3 nday
+    通路+recon A8 邻居查询接点+cli/README 批次5 节+b5 台账 G-29..G-35 落盘+
+    b4 台账五行闭环注记+预算复测+R-T3-4 遗留承载行改写核验。"""
+
+    def test_route_table_lists_knowledge(self):
+        t = open(SKILL, encoding="utf-8").read()
+        self.assertIn("tanyin-knowledge", t)
+        self.assertIn("knowledge/", t)
+
+    def test_p6_duty_commandized(self):
+        t = open(os.path.join(PHASES, "P6.md"), encoding="utf-8").read()
+        for kw in ("client-map", "reverse-verify", "commit", "export"):
+            self.assertIn(kw, t, "P6 duty 缺 " + kw)
+
+    def test_p6_dual_anchor_approval(self):
+        t = open(os.path.join(PHASES, "P6.md"), encoding="utf-8").read()
+        self.assertIn("approve --knowledge", t, "P6 交战区侧审批锚缺位")
+        self.assertIn("tanyin-knowledge approve", t, "P6 库侧审批锚缺位（双锚 G-33）")
+
+    def test_p3_nday_lane_wired(self):
+        t = open(os.path.join(PHASES, "P3.md"), encoding="utf-8").read()
+        self.assertIn("nday-match", t)
+        self.assertIn("nday-verify", t)
+
+    def test_p3_score_row_no_stale_deferred_phrase(self):
+        # R-T3-4 遗留核验：L25 算分承载行缓建表述（物理列随批次 5 落）已由 T12 改写
+        # 为已落时态——钉死防回退。
+        t = open(os.path.join(PHASES, "P3.md"), encoding="utf-8").read()
+        self.assertNotIn("物理列随", t, "R-T3-4：算分承载行陈旧缓建表述应已改写")
+        self.assertIn("物理列批5 T3 已落", t)
+
+    def test_recon_a8_knowledge_neighbors(self):
+        t = open(os.path.join(ROOT, "engines", "web-blackbox", "phases", "recon.md"),
+                 encoding="utf-8").read()
+        self.assertIn("neighbors", t)
+        self.assertIn("cpe:", t, "recon A8 缺 assets.meta CPE 指纹形态注记（nday 通路输入）")
+
+    def test_skill_budget_still_under_2k(self):
+        text = open(SKILL, encoding="utf-8").read()
+        self.assertLess(estimate_tokens(text), 2000)
+
+    def test_b5_ledger_on_disk(self):
+        p = os.path.join(ROOT, "docs", "design", "2026-09-24-b5-discovery-notes.md")
+        self.assertTrue(os.path.isfile(p))
+        t = open(p, encoding="utf-8").read()
+        for g in ("G-29", "G-30", "G-31", "G-32", "G-33", "G-34", "G-35"):
+            self.assertIn(g, t, "b5 台账缺 " + g)
+
+    def test_b4_ledger_annotated_closed(self):
+        t = open(os.path.join(ROOT, "docs", "design", "2026-09-24-b4-discovery-notes.md"),
+                 encoding="utf-8").read()
+        self.assertIn("已闭环·批次 5", t)
+
+    def test_cli_readme_batch5_section(self):
+        t = open(os.path.join(ROOT, "cli", "README.md"), encoding="utf-8").read()
+        self.assertIn("批次 5", t)
+        self.assertIn("tanyin-knowledge", t)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -35,19 +35,19 @@
 | G-20 | **已落地** | R6：AUTHZ_DIFF_PAIR_CAP=24——engines/web-blackbox/phases/differential.md 护栏（T7）+phases/P3.md cred-obtained 回边（T14）双载；契约 v3 增常量待（G-3 同通道） |
 | G-21 | **已闭环·v1 零依赖** | R4 落地 T11（7917fc4）：零依赖 SVG+vanilla JS，两次渲染字节一致，金样面 viz-data；Cytoscape.js vendor 复裁留批次 6 安装矩阵期 |
 | G-22 | **测试链闭环·生产钥=批次 6** | T10（108c5ed）：TEST-ONLY 钥签名三键+templates.lock 钉 commit+逐文件 sha256，快照锚定有效；生产 EC 钥生成/保管/重签+release.pub 替换+upstream_commit 占位换真=批次 6 安装器出口 |
-| G-23 | **开放·契约 v3 前裁决** | 本批零触碰（面变更需版本化）；set-replay-state 增 --timestamp 通道（checkpoint 先例）——批次 3 Minor-5 同族 |
-| G-24 | **开放·批次 5**（语义已冻结） | T14：公式+intents.priority 字段语义冻结（P3.md+契约 01 勘误）；基线表来源+物理列（15→16）+CLI 只读算分=批次 5 与知识飞轮同批 |
+| G-23 | **开放·契约 v3 前裁决** → **已闭环·批次 5**（T19 收口注记：裁决 E 转正——set-replay-state --timestamp 必填+两处 _now() 退役，684c5c9；契约 02a §36 微版本勘误） | 本批零触碰（面变更需版本化）；set-replay-state 增 --timestamp 通道（checkpoint 先例）——批次 3 Minor-5 同族 |
+| G-24 | **开放·批次 5**（语义已冻结）→ **已闭环·批次 5**（T19 收口注记：裁决 A——k1-baseline.tsv 落表人审冻结+intents priority/cred 15→17 物理列+tanyin-knowledge score 只读算分，df51cd1/6a3a5f9） | T14：公式+intents.priority 字段语义冻结（P3.md+契约 01 勘误）；基线表来源+物理列（15→16）+CLI 只读算分=批次 5 与知识飞轮同批 |
 | G-25 | **开放·批次 6** | 本批 HTTP/1.x 文本直发未触边界；渲染器定（FD 卡片规格 §三落点） |
-| G-26 | **开放·批次 5**（v1 映射已冻） | R-G-2 v1 边语义映射冻结（f87ca25）；细分权重/成本=批次 5 知识飞轮 |
+| G-26 | **开放·批次 5**（v1 映射已冻）→ **已闭环·批次 5**（T19 收口注记：裁决 B——v1 映射维持，细分权重/成本走 K1 cost_hint+K2 weight_hint 数据文件，边语义 v2 不开=YAGNI） | R-G-2 v1 边语义映射冻结（f87ca25）；细分权重/成本=批次 5 知识飞轮 |
 
 ## 五、评审收尾增补（G-27/G-28+R6 机检缺口，2026-09-24 评审 C-1 批）
 
 | # | 缺口 | 发现（评审） | 影响 | 本批处置 | 建议裁决 |
 |---|---|---|---|---|---|
-| G-27 | **trigger-audit 逐对配对需 intents cred 绑定列**：②检查 authz-diff 候选现为全局口径（任意 kind=authz-diff intent 即闭），per-cred 精确配对无机械依据——intents 无 cred 物理绑定列（cred 消息现随 detail/派遣上下文携带，R-T13-6 已注记） | cred-obtained 回边的审计粒度停在「有候选」级 | 本批登记（评审 I-1）；per-cred 延后 fact 通道已有（target=authz-diff:<CRED-id>） | 契约 v3 或批次 5：intents 增 cred 绑定列（intents.priority 物理列 R-T14-2 分期同型先例——语义先冻后落列），trigger-audit ②升级逐对配对 |
-| G-28 | **converge 补「无可达未测格」结构性停机+攻击路径进 EV**：converge-check 收敛判定现为矩阵空格/预算口径，无图结构性停机（graph-horizon 可达集×未测格=∅ 应可判 converged）；attack 路径（graph-paths）未作为证据进 EV | 收敛判定缺图结构性依据；图驱动攻击链不成证据链 | 本批登记（评审 I-2，T7 前置「后续咬合」条延伸） | 批次 5：converge-check 增可达未测格结构性停机判据+graph-paths 攻击路径落 EV 卡片/raw_excerpt 通道设计 |
+| G-27 | **trigger-audit 逐对配对需 intents cred 绑定列**：②检查 authz-diff 候选现为全局口径（任意 kind=authz-diff intent 即闭），per-cred 精确配对无机械依据——intents 无 cred 物理绑定列（cred 消息现随 detail/派遣上下文携带，R-T13-6 已注记） | cred-obtained 回边的审计粒度停在「有候选」级 | 本批登记（评审 I-1）；per-cred 延后 fact 通道已有（target=authz-diff:<CRED-id>） | 契约 v3 或批次 5：intents 增 cred 绑定列（intents.priority 物理列 R-T14-2 分期同型先例——语义先冻后落列），trigger-audit ②升级逐对配对 → **已闭环·批次 5**（T19 收口注记：intents 第 17 列 cred 物理落列+任意 kind 引用闭合写前拒收+②逐对配对升级，6a3a5f9/e422c2c） |
+| G-28 | **converge 补「无可达未测格」结构性停机+攻击路径进 EV**：converge-check 收敛判定现为矩阵空格/预算口径，无图结构性停机（graph-horizon 可达集×未测格=∅ 应可判 converged）；attack 路径（graph-paths）未作为证据进 EV | 收敛判定缺图结构性依据；图驱动攻击链不成证据链 | 本批登记（评审 I-2，T7 前置「后续咬合」条延伸） | 批次 5：converge-check 增可达未测格结构性停机判据+graph-paths 攻击路径落 EV 卡片/raw_excerpt 通道设计 → **已闭环·批次 5**（T19 收口注记：#reachable-gaps/#unreachable-gaps 双计数+双清零停机判据 b6dd4ca；攻击链落证=P4 duty 第 5 步 5b4daf0） |
 
-- **R6 cap 机检缺口（挂 G-20）**：AUTHZ_DIFF_PAIR_CAP=24 现为双载文档常量（engines/web-blackbox/phases/differential.md 护栏节+phases/P3.md cred-obtained 回边），零代码常量/零测试锚定（grep 全仓 .py 无引用）——护栏参数漂移无 机检。挂 G-20：契约 v3 增常量时同批落常量机检（代码常量+测试断言锚定，G-3 restart_rate_minutes 落地形态同型）。
+- **R6 cap 机检缺口（挂 G-20）**：AUTHZ_DIFF_PAIR_CAP=24 现为双载文档常量（engines/web-blackbox/phases/differential.md 护栏节+phases/P3.md cred-obtained 回边），零代码常量/零测试锚定（grep 全仓 .py 无引用）——护栏参数漂移无 机检。挂 G-20：契约 v3 增常量时同批落常量机检（代码常量+测试断言锚定，G-3 restart_rate_minutes 落地形态同型）。→ **已闭环·批次 5**（T19 收口注记：裁决 F——代码常量落 cli/ledger/write_cmds.py+add-intent 同端点计数写前拒收+--cap 覆盖通道+测试锚定，d957a39；契约 04 constants 回注 baa414e）。
 
 ## 六、移交清单（后续批次开工前必办）
 

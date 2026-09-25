@@ -125,7 +125,7 @@ python3 cli/tanyin-phases gate --goal-dir <D> --phase P2 --timestamp=T    # matr
 - tools.lock 起步版（openssl/nuclei/nuclei-templates 三键，契约 10 五字段；测试钥 TEST-ONLY，生产钥=批次 6 安装器出口，G-22）
 - 侦察金丝雀：tanyin-canary recon-deploy/recon-recall（界内诱饵登记/召回率）+denominator-ready 第④断言（G-13；canary 家族全子命令零网络）
 - 触发器闭包：tanyin-phases trigger-audit（八子命令面收口；目录=phases/TRIGGERS.md 版本化封闭表 triggers-v2——高危 finding 即时横向，SKILL P0 落 triggers-catalog 事件）
-- 优先级调度（fb72cd5）：P3 派发=pending 按 priority=severity_expect×asset_value×exploitability 降序 Top-K（公式冻结=phases/P3.md；intents.priority 契约 01 勘误登记，物理列随 G-24 批次 5 落）
+- 优先级调度（fb72cd5）：P3 派发=pending 按 priority=severity_expect×asset_value×exploitability 降序 Top-K（公式冻结=phases/P3.md；intents.priority 契约 01 勘误登记，物理列已落批5 T3——15→17 双列 priority/cred）
 
 用法四行：
 
@@ -144,3 +144,39 @@ python3 tests/run_golden.py                 # 51 金样面（含 replay-envdiff/
 ```
 
 批次 4 出口验证：引擎级夹具+差分样例对（tests/fixtures/diff-authz 全经命令铸造、重铸逐字节确定）+重放门 eval（127.0.0.1 mock 三态全链路→set-replay-state→replay-summary→verify-chain）+身份矩阵检出率（tests/eval_authz_recall.py recall=5/5）+G-2/G-12/G-13 裁决落地；探知项台账见 docs/design/2026-09-24-b4-discovery-notes.md（G-16..G-26 终态）。
+
+## 批次 5：知识飞轮+语料入库（tanyin-knowledge 第 12 工具 / staging 流水线 / 四门槛 / 三元组 / graph.ndjson / CVE 快照）
+
+契约 14（contracts/14-knowledge-schema.md）冻结知识库页 schema 与状态机；仓库 knowledge/=种子库（format_version=kn-v1，批次 6 安装器拷贝至 $TANYIN_HOME/knowledge/），**种子库只读纪律（R7）：写子命令（source-register/approve/commit/promote/demote/client-map add）指向仓库 knowledge/ 即 REJECT exit 1**；一切子命令 --knowledge-dir 参数化，测试与金样在临时副本上跑。
+
+### tanyin-knowledge 13 子命令速查
+
+| 子命令 | 形态 | 语义 |
+|---|---|---|
+| init | `init --knowledge-dir D` | 骨架初始化（幂等：已初始化=PASS no-op） |
+| source-register | `source-register --knowledge-dir D --path <原始素材> --origin <六枚举> --license <许可> --note <注> --timestamp=T` | 语源登记（sha256 对原始字节；KP-NNNN 递增扫 SOURCES.tsv 行键） |
+| lint | `lint --knowledge-dir D --timestamp=T \| --today=日期 [--freshness-days=180]` | 机器检查四件（契约 14 schema/脱敏哨兵/dedup 查重 R10/词表版本 R14）+K1 基线覆盖率+K3 快照校验（G-32）+保鲜告警（T13；--timestamp 可由 --today 派生）；staging 过页 staged→lint-passed |
+| approve | `approve --knowledge-dir D --page STG-NNNN --approver <名> --timestamp=T [--reject --reason=…]` | 人审门（lint-passed→approved/rejected；staging.tsv+log.md 双落） |
+| commit | `commit --knowledge-dir D --page STG-NNNN --timestamp=T` | approved→formal（类前缀重号迁目录+dedup 终检 R10+index/overview 重生成） |
+| export | `export --knowledge-dir D` | graph.ndjson 全量重建（created 取 last_verified——双跑字节一致） |
+| match | `match --knowledge-dir D --client=CLIENT-NN --asset=<指纹> --today=日期` | 先例三元组匹配（client 全等∧scope_asset 子串∧window 覆盖；[expired]/[stale] 标注；--today 必填 G-34） |
+| neighbors | `neighbors --knowledge-dir D --entity=<指纹>` | graph.ndjson 实体邻接清单（A8 外推消费入口；缺导出 exit 2） |
+| nday-match | `nday-match --knowledge-dir D --cpe=cpe:<vendor>:<product> --version=<v>` | K3 快照离线 CPE 匹配（零联网 R11；#snapshot-date 审计行 G-32；零命中 exit 0） |
+| score | `score --knowledge-dir D --goal-dir <交战区> --vuln-class=<wstg 键> --asset=<资产> --today=日期` | K1 基线只读算分（priority=severity_expect×asset_value×exploitability 单行 JSON；Top-K 选择仍归总控） |
+| promote | `promote --knowledge-dir D --page PT-NNNN --timestamp=T` | learned→core 四门槛机检（复现≥2/跨目标≥2/审批在场/无指纹泄漏——缺口清单 REJECT） |
+| demote | `demote --knowledge-dir D --page PT-NNNN --refuting=<≥2 项> --note=<防护拦截\|代码修复…> --timestamp=T` | 降级 patterns/demoted（status=demoted 留档） |
+| client-map | `client-map next\|add\|list --knowledge-dir D [--real-ref=<真值> --note=…] --timestamp=T` | CLIENT-NN 运行时映射（真值文件 client-map.tsv 已 gitignore，R12；add 指向种子库=REJECT） |
+
+### 用法四行
+
+```
+python3 cli/tanyin-knowledge lint --knowledge-dir <运行时库> --today 2026-09-24     # 入库前机检（四判据之一）
+python3 cli/tanyin-knowledge match --knowledge-dir knowledge --client=CLIENT-01 --asset=shop.example --today 2026-09-24   # P2 开局先例检索（只读）
+python3 cli/tanyin-knowledge nday-match --knowledge-dir knowledge --cpe=cpe:apache:log4j --version=2.14.1   # P3 asset-added 回边（G-18）
+python3 tests/eval_knowledge_spotcheck.py --knowledge-dir knowledge --origin cnpen --today 2026-09-24       # 双库抽查（§9.4，探针在临时副本跑）
+```
+
+测试与回归：`python3 -m unittest discover -s tests`（全套）+ `python3 tests/run_golden.py`（54 金样面含 kn-export/kn-match/kn-nday 三面）+ `python3 -m unittest tests.test_eval_scripts`（出口 eval 自检）+ `python3 tests/eval_reverse_verify.py --goal-dir tests/fixtures/G-g1`（反向验证双向断言）。
+
+批次 5 出口验证：双知识库抽查 §9.4 四判据 exit 0（cnpen/external 双跑）+反向验证零命中双向断言（脏=detected/净=zero-hits）+种子 lint 全 PASS+export 双跑 sha256 一致（确定性）+tanyin-redact --reverse-verify 进 P6 门断言真跑；探知项台账见 docs/design/2026-09-24-b5-discovery-notes.md（G-29..G-35 终态）。
+

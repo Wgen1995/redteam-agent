@@ -14,12 +14,13 @@
 | A5 存储与云 | 对象桶枚举/数据库暴露探测/云元数据端点/CDN 源站/队列 | add-asset --type=cloud-storage（meta=sub:object-bucket 等）＋add-fact kind=info |
 | A6 代码与物料 | 前端源码挖掘/JS sourcemap/历史泄露快照 | add-asset --type=source-code＋add-fact kind=info |
 | A7 人的因素 | 邮箱规格猜测/账号名枚举/泄露库命中（只查不撞库）/SSO 依赖 | add-asset --type=human-factor（meta=sub:email 等）＋add-fact kind=info |
-| A8 关联外推 | 母公司域关联/同证书 SAN 外推/命名规律外推 | add-asset（meta=extrapolated）＋add-fact kind=vuln-clue |
+| A8 关联外推 | 母公司域关联/同证书 SAN 外推/命名规律外推 | add-asset（meta=extrapolated）＋add-fact kind=vuln-clue；跨 session 关联查询=tanyin-knowledge neighbors --entity=<指纹>（K2 实体页知识图谱，批次 5） |
 
 ## 完备性口径（图谱驱动增补 71d3b7c）
 侦察分母=graph-horizon 可达集（总控跑 tanyin-ledger graph-horizon --from=<立足点>）：
 可达资产上仍有未测空格=侦察未完备，优先补该资产正交通道；外推发现先 scope 复判再入图。
 诱饵（客户配合植入界内）命中只记不炫耀：facts[] kind=info＋note=canary。
+组件指纹落 assets.meta=cpe:<vendor>:<product>;v=<版本>（nday 通路输入——P3 asset-added 回边 tanyin-knowledge nday-match 消费，命中铸 kind=nday-verify intent；G-18 引擎映射=nuclei）。
 
 ## 提交纪律
 发现新资产→assets[]（type/value/meta）；观察→facts[]（kind/target/detail 脱敏/confidence）；

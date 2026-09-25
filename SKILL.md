@@ -18,7 +18,7 @@ P4 汇总（validate/verify-chain/hash-recheck/matrix-audit→supersede-finding�
 P5 报告（聚合器→ledger-terminal-gate→redact-scan）
 P5.5 签发门（人审→approve --verify-signoff）
 P6.0 清理门（cleanup-checklist→逆序 revert_cmd）
-P6 沉淀（脱敏→tanyin-redact --reverse-verify→approve --knowledge）
+P6 沉淀（脱敏→tanyin-redact --reverse-verify→approve --knowledge→knowledge commit+export；反向验证已交付=批5 T15——沉淀五步详令=phases/P6.md）
 每门 duty 详令按需加载 phases/<门>.md；过门唯一方式=tanyin-phases gate --goal-dir <D> --phase <门> --timestamp <T>。
 
 ## P3 演进循环（每轮）
@@ -45,4 +45,4 @@ P6 沉淀（脱敏→tanyin-redact --reverse-verify→approve --knowledge）
 无目标自检：P0-P2 照常落账，零对外请求——不 tanyin-guard exec、不 canary probe；egress 只 compile、canary 只 deploy。判定=timeline 无 request: 与 request-ticket 事件。
 
 ## 路由表（认知按需加载）
-当前门→加载 phases/<门>.md（单门单载，读完即用）；引擎方法论→web-blackbox=engines/web-blackbox/SKILL.md、vuln-agent/nuclei=engines/<引擎>/MANIFEST.md（cli 型方法论入口=G-18），派发前核 MANIFEST 纪律能力；知识检索→knowledge/（批次 5）。其余内容一律不进上下文。
+当前门→加载 phases/<门>.md（单门单载，读完即用）；引擎方法论→web-blackbox=engines/web-blackbox/SKILL.md、vuln-agent/nuclei=engines/<引擎>/MANIFEST.md（cli 型方法论入口=G-18），派发前核 MANIFEST 纪律能力；知识库与摄入→knowledge/（种子库；K1-K8）+cli/tanyin-knowledge（13 子命令：staging 流水线/三元组 match/nday/score；摄入流程=knowledge/checklists/review-checklist.md；P6 沉淀五步见 phases/P6.md）。其余内容一律不进上下文。

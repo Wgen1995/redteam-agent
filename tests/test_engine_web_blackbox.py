@@ -11,7 +11,9 @@ from ledger import registry  # noqa: E402
 KNOWN = registry.all_commands() | {
     "tanyin-guard", "tanyin-canary", "tanyin-egress", "tanyin-redact",
     "tanyin-budgetctl", "tanyin-phases", "tanyin-ledger",
-    "tanyin-report", "tanyin-viz", "tanyin-replay"}
+    "tanyin-report", "tanyin-viz", "tanyin-replay",
+    "tanyin-knowledge",  # 批次5 T9 第 12 员（T19 recon A8 邻居查询接点引用；R-T12-5 同型）
+}
 
 
 def tokens(text):
