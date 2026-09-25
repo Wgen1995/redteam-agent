@@ -14,6 +14,7 @@
 - 批次 4 引擎层：**完成（T1-T14 收口，2026-09-24）**——409 单测全绿（批 3 基线 322+批 4 新增 87）+50 金样面 PASS 零漂移；出口验收 10 条逐条实测过（第⑧条 CI：push 已触发，四格矩阵在册，远端绿需 Actions 页面复核）；契约勘误七笔（01/02a×2/04/06/07/09+PROTOCOL×3——微版本通道 schema_version=2 不递增）；优先级调度 fb72cd5/图查询 71d3b7c/FD 规格 b0006f2 三设计增补全落；探知项台账 G-16..G-26 终态=docs/design/2026-09-24-b4-discovery-notes.md（G-2/G-12/G-13 在 b3 台账就地注记闭环）；Ruling 总索引=文末「批次 4 Ruling 总索引」节
 - 批次 4 评审收尾：✅（2026-09-24）C-1 证据双指纹 norm 轨写/查单源化（cli/ledger/norm.py，严格侧哨兵语义冻结模块 docstring）——diff-authz hash-recheck 与 gate P4 亲跑 PASS（P4 完备化=夹具补确定性重放事件行，G-23 墙钟绕道）；顺手三件（cli/README 计数 41→44×3+面数 50→51/supply_chain fail-closed 形式统一两负例/b4 台账 G-27+G-28+R6 机检缺口挂 G-20）；414 单测全绿（409+5 新增）+51 金样面 PASS（新面 diff-hash-recheck；viz-data 有意刷新=timeline 计数 19→21）；详见文末「批次 4 评审收尾入账」节
 - 批次 5 知识飞轮+语料入库：**完成（T1-T19 收口，2026-09-24）**——564 单测全绿（本段起点基线 545+T18 前置/T18/T19/T19 补新增 19）+54 金样面 PASS 零漂移；出口验收 10 条逐条实测过（①cnpen spotcheck 四判据 exit 0／②external 含 CVE 判据 exit 0／③反向验证脏净双向 dirty=detected+clean=zero-hits exit 0／④微版本六件 unittest 30 例 OK／⑤知识库七件 72 例 OK／⑥全套 564 绿／⑦金样零漂移+git status --short tests/golden 空／⑧CI push 已触发，四格矩阵在册，远端绿需 Actions 页面复核／⑨常驻集 31 例 OK+SKILL 1540<2000 token／⑩b5 台账在盘 G-29..G-35 grep 计 19≥7）；补充判定=种子库 lint PASS n=10 exit 0（R8 审计行取证后复原）+export 双跑 sha256 一致 39545dd6…+T18 前置种子库测试隔离修复（跑全套 git status 必净已钉死）；契约 14 新立+契约 v3 首批六笔勘误（微版本通道 schema_version=2 不递增）；探知项台账 G-29..G-35 终态=docs/design/2026-09-24-b5-discovery-notes.md（b4 台账 G-23/G-24/G-26/G-27/G-28+R6 五行就地闭环注记）；Ruling 总索引=文末「批次 5 Ruling 总索引」节
+- 批次 5 评审收尾：✅（2026-09-24）I-1 lint 种子库零写入（裁决 R-RC5-1 选 a——出口判定命令原文就地亲跑 PASS n=10 exit 0，log.md/staging.tsv sha256 前后一致零写热）+M-1..M-6 顺手六件（契约14 created 勘误指针+vocab_version 两表补齐/checklist 占位符张力节/README 勘误索引补 T7/探知项两笔/match --client 必填 exit 2）；566 单测全绿（564+2 新增）+54 金样面 PASS 零漂移；批次 6 前置义务在册=真人复核在库 10 页；详见文末「批次 5 评审收尾入账」节
 
 ## 交战区指针
 - 设计定稿：docs/design/2026-09-21-tanyin-v2-design.md（§2 铁律/§5 循环/§11 批次表）
@@ -404,6 +405,8 @@
 2026-09-24｜子代理 T18+T19｜批次5 T19：总控接线收口——SKILL 路由知识库行（复测 1540<2000 token）+P6 duty 命令化五步（双锚审批 G-33）+P3 asset-added 回边 nday 通路+recon A8 neighbors 接点+CPE 指纹形态+cli/README 批次5节（13 子命令速查+顺手修 L128 同源陈旧缓建表述）+b5 台账 G-29..G-35 落盘+b4 台账五行就地闭环注记+R-T3-4 核验=L25 已由 T12 改写（补钉子防回退）；引擎 KNOWN 面随行（R-T19-1）；TestBatch5Wiring 10 例红=8 FAIL→绿，560 绿+金样 54 面｜0e43901
 2026-09-24｜子代理 T18+T19｜批次5 T19 补：tanyin-knowledge argv 双形态归一（R-T19-2：出口实测发现计划判定命令与 P6 duty 五步空格形态不可跑——lint 空格形 TypeError 裸崩 rc1；knowledge 侧 parse_argv 归一并 query_cmds.parse_kv 单源，账本 44 面 parse_kv 零触碰；修复后出口补充判定命令按计划原文实跑 PASS n=10 exit 0）；红=3 FAIL→绿=4/4，564 绿+金样 54 面｜4546375
 
+2026-09-24｜子代理（评审收尾）｜批次5 评审收尾：I-1 lint 种子库零写入（裁决 R-RC5-1 选 a——冻结资产运行时审计只落运行库；出口判定命令原文就地亲跑 PASS n=10 exit 0 且 log.md/staging.tsv sha256 前后一致）+M-1..M-6 顺手六件（契约14 created 勘误指针/先例+模式表 vocab_version/checklist 占位符形态张力节/README 勘误索引补 T7 converge/探知项两笔登记/match 缺 --client 改 exit 2——TDD 各先红后绿）；全套 566 绿（基线 564+新增 2）+金样 54 面 PASS 零漂移+git status 必净；详情见文末「批次 5 评审收尾入账」节｜7719c93
+
 ## 2026-09-24 批次 5 T3+T4+T5 裁决（实现者记）
 - R-T3-1（测试 run() 形态）：计划 T3 测试片段 run() 把 --goal-dir 后置（args 尾部追加），与 tanyin-ledger 入口 argv[2]=="--goal-dir" 硬约束相抵（后置形态 7/7 全 rc2=假红根因）——按在册三处先例（run_golden.run_cli/make_diff_fixture.call/tests 既有）改 --goal-dir 紧随命令；测试意图（子进程真跑 CLI）不变。
 - R-T3-2（状态转移用例改 id）：计划 test_status_change_row_carries_columns 用 INT-g1-0001，夹具中该行 status=done 终态（_INTENT_ARROWS["done"]=∅ 不可复活，set-intent-status 必 REJECT）——按用例意图（追加行携带 priority/cred 值）改 INT-g1-0002（pending→active 合法转移）；夹具钉子由 test_fixture_rows_all_17 独立承载。
@@ -492,4 +495,16 @@
 - T18+T19（本节 6）：R-T18-1 探针副本执行/R-T18-2 抽查范围在库页口径/R-T19-1 引擎 KNOWN 面随行/R-T19-2 argv 双形态归一/R-T19-3 R-T3-4 遗留核验已在册闭环/R-记账（占位循环节）——commit c3d8c8b/76bba9b/0e43901/4546375。
 - 台账：本批探知项 G-29..G-35 终态=docs/design/2026-09-24-b5-discovery-notes.md；b4 台账 G-23/G-24/G-26/G-27/G-28+R6 五行就地闭环注记（追加注记不改历史行，G-2 先例）。
 - 出口：批次 5 出口验收 10 条逐条实测记录=状态快照「批次 5 知识飞轮+语料入库」行（2026-09-24）； VulnClaw 批 6 三项移交登记（退出码第 3 态/findings+SARIF 双工件/报告内容过滤器）见 b5 台账移交清单。
+- 评审收尾（本节 3）：R-RC5-1 lint 种子库冻结语义（选 a——种子库=冻结资产，R8 运行时审计只落运行时库；lint 校验语义零变只在写侧分叉，出口判定命令就地可跑）/R-RC5-2 --client 必填落 match 入口（score 内部 _match_rows 通道零受扰）/R-RC5-3 占位符张力载体选 review-checklist（人审执行面；契约 14 冻结面同批只落 M-1/M-2 两笔勘误防膨胀）——commit 7719c93。
+
+## 2026-09-24 批次 5 评审收尾入账（评审 I-1 必修+顺手件 M-1..M-6；子代理（评审收尾）记）
+
+- **I-1（必修）修复**：出口清单/HANDOFF/cli/README 记载的判定命令 `python3 cli/tanyin-knowledge lint --knowledge-dir knowledge --today …` 就地跑写热冻结种子库——lint 对每页无条件 _append_log（原 knowledge.py:440）+收尾 _stage_sync 写 staging.tsv，而 WRITE_SUBS 守卫不含 lint（R7 守卫面=写子命令，lint 名义只读实况带写副作用）。红实况：就地 lint 后 log.md 追加 10 行逐页审计行（8 CP+2 PR）。修复选 a（裁决 R-RC5-1）：kdir==仓库种子库根时 lint 零写入——不追加 log 审计行、不同步 staging.tsv；校验输出与 PASS n 语义零变；运行时库行为零变（临时运行时副本 lint 实测仍逐页落 10 行审计行，60→70）。
+- **红→绿证据（TDD）**：①tests/test_knowledge_ingest_cnpen.py::TestCnpenIngest::test_lint_in_place_on_seed_zero_write——红=就地 lint 后 log.md 字节级断言 FAIL（diff 实况追加 `|lint|CP-0001|pass` 等逐页行），绿=零写入断言过+就地判定命令原文亲跑 PASS n=10 exit 0 且 log.md/staging.tsv sha256（ca06e5f0…/fe0f1ee3…）前后一致；②tests/test_knowledge_export_match.py::TestExportMatch::test_match_client_required（M-3）——红=缺 --client exit 0（静默 matched=0），绿=exit 2+stderr 指名 --client。红跑取证后种子库 git checkout 复原（写热未入 commit）。
+- **顺手件**：M-1 契约14 §3 示例 created 勘误指针（实现=last_verified，R-T11-2 在案——定稿文本「commit 时间戳」与实现并立，契约内补指针）；M-2 契约14 §2 先例页表+模式页字段集补 vocab_version 行（R14 每页必填与 lint 全页无条件校验/R-T17-4 两 PR 页补齐同因对齐）；M-3 match 缺 --client 改 exit 2（--today 同款 KnowledgeError；score 内部 _match_rows(client=None) 不经 match() 零受扰）；M-4 review-checklist 增「占位符形态张力」节（P6 净草稿 {{vault:}} 合法 vs 知识页须抽象占位——lint/promote④ 拒 vault 残留=有意设计）；M-5 contracts/README 勘误索引补 T7 converge 一行（勘误正文原在 02a §22「T7/G-28 前半」节，索引漏行）；M-6 探知项两笔已登记探知项节（批次 6 真人复核在库 10 页——approver=执行者自查披露已在 log.md L15-24；approve 时间戳非单调纯外观注记）。
+- **验收实测**：python3 -m unittest discover -s tests → Ran 566 tests OK（基线 564+新增 2）；python3 tests/run_golden.py → PASS 54 面（21读+20写+2phases+1engine+3graph+2adapter+1viz+1recheck+3kn）零漂移；就地 lint 种子库亲测零写热（如上）；git status 必净；panorama/ 与 /Users/wgen/Documents 零触碰。
+- **Ruling 清单（本节=Ruling 索引「评审收尾」详情）**：
+  - R-RC5-1（lint 种子库冻结语义=裁决选 a）：出口判定命令按计划原文就地指向仓库 knowledge/——方案 b（文档改注「临时副本上跑」）=三处文档改口+操作者纪律负担永久化，方案 a=种子库冻结资产语义一处收敛（R7 只读纪律自然延伸：R8 运行时审计只落运行时库）；lint 校验语义零变只在写侧分叉（frozen 判定=os.path.abspath(kdir)==repo_seed_root()，与 guard_writable 同款比较）；写子命令 REJECT 守卫不变（lint 非写子命令，零写入=行为保证非守卫拒绝——就地 lint 仍 exit 0/PASS n=10 可用作出口判定）。
+  - R-RC5-2（M-3 落点=match 入口）：--client 必填执法在查询入口 match()，score 的先例命中因子走 _match_rows(kdir, None, …) 内部通道零受扰（score 语义本就允许无 client 评分）；错误形态=--today 必填（G-34）同款 KnowledgeError→exit 2，stderr 指名缺参。
+  - R-RC5-3（M-4 载体选 review-checklist）：占位符形态张力本质=人审/蒸馏期的形态判断（草稿态合法/页态违规两态），checklist=契约 14 §4 人工审执行面即正确载体；契约 14 冻结面本批已落 M-1/M-2 两笔勘误不再加节（防同批膨胀）；节中明示 lint/promote④ 对 vault 残留零容忍=有意设计（知识页=可发行资产，不留运行时密钥库活指针）。
 
