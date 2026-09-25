@@ -13,6 +13,7 @@
 - 批次 3 评审收尾：✅（2026-09-24）评审结论=可收，Important×2 已清（契约09 枚举补齐+金样进 CI --bless 门槛）；317→322 单测全绿+42 金样面 PASS（详见文末「批次 3 评审收尾入账」节）
 - 批次 4 引擎层：**完成（T1-T14 收口，2026-09-24）**——409 单测全绿（批 3 基线 322+批 4 新增 87）+50 金样面 PASS 零漂移；出口验收 10 条逐条实测过（第⑧条 CI：push 已触发，四格矩阵在册，远端绿需 Actions 页面复核）；契约勘误七笔（01/02a×2/04/06/07/09+PROTOCOL×3——微版本通道 schema_version=2 不递增）；优先级调度 fb72cd5/图查询 71d3b7c/FD 规格 b0006f2 三设计增补全落；探知项台账 G-16..G-26 终态=docs/design/2026-09-24-b4-discovery-notes.md（G-2/G-12/G-13 在 b3 台账就地注记闭环）；Ruling 总索引=文末「批次 4 Ruling 总索引」节
 - 批次 4 评审收尾：✅（2026-09-24）C-1 证据双指纹 norm 轨写/查单源化（cli/ledger/norm.py，严格侧哨兵语义冻结模块 docstring）——diff-authz hash-recheck 与 gate P4 亲跑 PASS（P4 完备化=夹具补确定性重放事件行，G-23 墙钟绕道）；顺手三件（cli/README 计数 41→44×3+面数 50→51/supply_chain fail-closed 形式统一两负例/b4 台账 G-27+G-28+R6 机检缺口挂 G-20）；414 单测全绿（409+5 新增）+51 金样面 PASS（新面 diff-hash-recheck；viz-data 有意刷新=timeline 计数 19→21）；详见文末「批次 4 评审收尾入账」节
+- 批次 5 知识飞轮+语料入库：**完成（T1-T19 收口，2026-09-24）**——564 单测全绿（本段起点基线 545+T18 前置/T18/T19/T19 补新增 19）+54 金样面 PASS 零漂移；出口验收 10 条逐条实测过（①cnpen spotcheck 四判据 exit 0／②external 含 CVE 判据 exit 0／③反向验证脏净双向 dirty=detected+clean=zero-hits exit 0／④微版本六件 unittest 30 例 OK／⑤知识库七件 72 例 OK／⑥全套 564 绿／⑦金样零漂移+git status --short tests/golden 空／⑧CI push 已触发，四格矩阵在册，远端绿需 Actions 页面复核／⑨常驻集 31 例 OK+SKILL 1540<2000 token／⑩b5 台账在盘 G-29..G-35 grep 计 19≥7）；补充判定=种子库 lint PASS n=10 exit 0（R8 审计行取证后复原）+export 双跑 sha256 一致 39545dd6…+T18 前置种子库测试隔离修复（跑全套 git status 必净已钉死）；契约 14 新立+契约 v3 首批六笔勘误（微版本通道 schema_version=2 不递增）；探知项台账 G-29..G-35 终态=docs/design/2026-09-24-b5-discovery-notes.md（b4 台账 G-23/G-24/G-26/G-27/G-28+R6 五行就地闭环注记）；Ruling 总索引=文末「批次 5 Ruling 总索引」节
 
 ## 交战区指针
 - 设计定稿：docs/design/2026-09-21-tanyin-v2-design.md（§2 铁律/§5 循环/§11 批次表）
@@ -397,6 +398,10 @@
 2026-09-24｜子代理 T15｜批次5 T15：反向验证落地——tanyin-redact --reverse-verify（special.h_reverse_verify 敏感词三源=assets.value 全集/creds.username_ref/PLAIN_PATTERNS 泄漏形态；缺省 target=report/report-draft.md 可 --target 覆盖；占位符属脱敏正当形态不进形态扫描 R-T15-3）+gate P6 断言真跑（EXTRA_TOOLS 拆分：validate known 集不变，执行期 halt 集收窄 GATE_HALT_TOOLS={tanyin-report}，redact 分发 special.REVERSE_VERIFY R-T15-2 不进 HANDLERS 守 44 面基名单源；P6 过门显式落 END 收官行 R-T15-4）+client-map next/add/list（CLIENT-NN 运行时映射四列 R12，--timestamp 显式 G-23，种子库只读守卫复用+client-map.example.tsv 模板进仓）；R-T15-1 approve 裸旗标本地归一（--knowledge/--verify-signoff=1，checkpoint --release 先例——P5.5/P6 yaml 断言从此可跑）；P6 门端到端首通=干跑链路 P0→P6 全通最后一块；test_reverse_verify 14 例 TDD 先红后绿（红=10 FAIL），全套 515→529 绿+金样 54 面 PASS 零漂移｜bb9c5bf
 2026-09-24｜子代理 T16｜批次5 T16：CNPEN 82 五类素材入库降级登记通道（R-T16-1：执行期核验五类素材均不在仓——测试全景图/思路复盘/测试记录 T1-T55/31 份黑盒漏洞单/BurpPOC 合集，素材库在仓外且属禁碰区；按计划「素材不可得=登记 SOURCES 待补行不造数据」）：SOURCES.tsv 五笔 origin=cnpen/proprietary 待补行 KP-0001..0005（sha 占位防伪造）+sources/cnpen/README.md 五类落位/蒸馏去向/就位后 source-register 重登纪律；零蒸馏页产出（不造数据反向断言钉死：无页引用未就位语源）+种子库 init 补齐空类目目录+lint PASS n=0；词表 WSTG 全集与 CLIENT-NN 形态两前向钉（防批次 6+ 补页过拟合）；test_knowledge_ingest_cnpen 7 例 TDD 先红后绿（红=2 FAIL+2 ERROR），全套 529→536 绿+金样 54 面 PASS 零漂移｜e557b1d
 2026-09-24｜子代理 T17｜批次5 T17：外部语料入库——VulnClaw MIT 注记（sources/vulnclaw/LICENSE.note：Copyright (c) 2026 UncleC，HEAD 3b71e26 锚=SOURCES KP-0006 真实 sha256；CVE 待核验清单按 R11 离线通道 R-T17-2 本批全页不写 cve_refs 只写方法论内容）+8 detail-pack 蒸馏技法页 CP-0001..0008（sqli/xss/ssrf/ssti/deserialize/cmdi/cors/open-redirect 四段映射：Domain→applicability/覆盖域表→vuln_class 词表键/Boundaries→正文边界节/Pivot Hints→failure_modes/Exit Evidence→judgment；余 39 专题批次 6+ 飞轮）+2 warstory 先例页 PR-0001..0002（攻击链主谓宾 triples 8+6 行、flag/平台域名/IP 全占位符化零残留 R-T17-3）+checklists experience 人审门增补节（Lessons remain pending until human approves=四门槛③同型；0.88 语义合并无嵌入载体→G-30 登记；K5 恰 8 页触发人审合并建议 WARN 属预期非 FAIL）+BugHunter/Threatswarm/CEP 三源缺素材降级登记 KP-0007..0009（G-35 待补行不阻塞；CEP ROE business 页随素材延后 R-T17-1）；staging→lint→approve→commit→export 真跑流水线（runtime 副本执行后回落种子库，graph.ndjson 14 行）；test_knowledge_ingest_external 9 例 TDD 先红后绿（红=6 FAIL），全套 536→545 绿+金样 54 面 PASS 零漂移｜c4c6728
+2026-09-24｜子代理 T18+T19｜批次5 T18 前置：种子库测试隔离泄漏修复——T16/T17 两处 test_lint_passes_on_seed 就地 lint 仓库种子库（R8 lint 逐页审计行追加+staging 同步写，跑全套即脏已两次复现）：改 tmp 副本 prep_knowledge 同款隔离+「种子库零写热」字节级断言钉死；知识库行为零变；红=2 FAIL 实测复现泄漏→绿=16/16，545 绿+金样 54 面｜c3d8c8b
+2026-09-24｜子代理 T18+T19｜批次5 T18：出口 eval 两件——双知识库抽查 §9.4 四判据（字段完整=lint 全 PASS/指纹自反可检索=先例逐页自反 match+实体 neighbors 非空/无跨客户残留=DOMAIN_RE.IP_RE 同源全页扫描+白名单/CVE 核验标记齐全=--origin external 限定）+反向验证脏净双向断言；探针一律整库临时副本执行（R-T18-1）+抽查范围在库页口径（R-T18-2=G-35）+脏夹具 knowledge-dirty；红=5 FAIL→绿=5/5，550 绿+金样 54 面｜76bba9b
+2026-09-24｜子代理 T18+T19｜批次5 T19：总控接线收口——SKILL 路由知识库行（复测 1540<2000 token）+P6 duty 命令化五步（双锚审批 G-33）+P3 asset-added 回边 nday 通路+recon A8 neighbors 接点+CPE 指纹形态+cli/README 批次5节（13 子命令速查+顺手修 L128 同源陈旧缓建表述）+b5 台账 G-29..G-35 落盘+b4 台账五行就地闭环注记+R-T3-4 核验=L25 已由 T12 改写（补钉子防回退）；引擎 KNOWN 面随行（R-T19-1）；TestBatch5Wiring 10 例红=8 FAIL→绿，560 绿+金样 54 面｜0e43901
+2026-09-24｜子代理 T18+T19｜批次5 T19 补：tanyin-knowledge argv 双形态归一（R-T19-2：出口实测发现计划判定命令与 P6 duty 五步空格形态不可跑——lint 空格形 TypeError 裸崩 rc1；knowledge 侧 parse_argv 归一并 query_cmds.parse_kv 单源，账本 44 面 parse_kv 零触碰；修复后出口补充判定命令按计划原文实跑 PASS n=10 exit 0）；红=3 FAIL→绿=4/4，564 绿+金样 54 面｜4546375
 
 ## 2026-09-24 批次 5 T3+T4+T5 裁决（实现者记）
 - R-T3-1（测试 run() 形态）：计划 T3 测试片段 run() 把 --goal-dir 后置（args 尾部追加），与 tanyin-ledger 入口 argv[2]=="--goal-dir" 硬约束相抵（后置形态 7/7 全 rc2=假红根因）——按在册三处先例（run_golden.run_cli/make_diff_fixture.call/tests 既有）改 --goal-dir 紧随命令；测试意图（子进程真跑 CLI）不变。
@@ -467,3 +472,23 @@
 - R-T17-3（warstory 脱敏覆盖面）：测试断言禁 nssctf 子串（大小写不敏感）——语源原文平台域名/旗标串/双写 payload 字面（NSSNSSCTFCTF 含 NSSCTF 子串）/隐藏文件名（NsScTf.php 小写含 nssctf）全部抽象化或占位符化；方法论语义（正则修饰符分析/数组参数绕过/回调数组语义/零 e 纯数字哈希碰撞）全保留且 triples 主谓宾 8+6 行达 ≥6 要求；域名/IP 形态哨兵（DOMAIN_RE/IP_RE 与 lint 同源）测试级复验零残留。
 - R-T17-4（先例页 vocab_version 补齐）：计划契约 14 §2 先例页必填集未列 vocab_version 而 R14「每页必填」+lint 全页无条件校验——两 PR 页补 vocab_version: WSTG-v4.2（首跑 lint 抓获，fail-closed 生效实证）。
 - R-记账（T15+T16+T17 时点）：同 R-记账先例——三任务 commit 先行（bb9c5bf/e557b1d/c4c6728），本流水+裁决节独立 commit。
+## 2026-09-24 批次 5 T18+T19 裁决（实现者记）
+- R-T18-1（探针副本执行）：计划 eval 骨架对 --knowledge-dir 就地跑 lint/export/match——R8 lint 向 log.md 追加逐页审计行+staging.tsv 同步写，就地直跑=写热仓库种子库（本笔前置隔离修复同因）；探针一律整库临时副本执行（copytree+TemporaryDirectory），判定语义与原库等价，判定命令面与计划逐字一致（R7 种子库只读纪律优先于骨架示意代码）。
+- R-T18-2（抽查范围在库页口径）：素材降级登记（KP-0001..0009 待补行）不产出蒸馏页——§9.4 四判据按 G-35 口径以在库页为准：④CVE 判据只消费在库页自带 cve_refs/cve_verified（当前全空=R-T17-2 离线通道），降级源不阻塞出口①②；②自反命中含 [expired]/[stale] 标注行（「指纹可检索」语义非「窗口内命中」——PR-0001/0002 窗口 2026-04-19 已过仍可检索，与 match 检索语义一致）。
+- R-T19-1（引擎 KNOWN 面随行）：recon.md A8 接点引入 tanyin-knowledge 触发 test_engine_web_blackbox.test_referenced_commands_known（该文件自带 KNOWN 集，与 test_skill_resident 分立）——按 R-T12-5/R-T8-3 先例增第 12 员入已知面（工具=T9 已交付成员，非放水）。
+- R-T19-2（argv 双形态归一）：出口实测发现计划判定命令与 P6 duty 五步按原文取 --key value 空格形态而子命令解析仅收 = 形（lint 空格形 TypeError 裸崩 rc1，出口补充判定不可满足）；按适配器双形态先例（R-T5-2/R-T9-2）在 knowledge 侧增 parse_argv 归一——query_cmds.parse_kv 单源零触碰（账本 44 面冻结），= 形透传行为零变，裸旗标=1 保 approve --reject 布尔语义；修复后出口补充判定命令按计划原文实跑 PASS n=10 exit 0。
+- R-T19-3（R-T3-4 遗留核验=已在册闭环）：R-T3-4 记「P3.md L25 算分承载行缓建表述留 T19 改写」——核验 git 史：T12（df51cd1）改写承载行时已同步落「物理列批5 T3 已落」现时态，遗留项已闭环；T19 补两钉防回退（TestBatch5Wiring 断言 P3.md 无「物理列随」字样+cli/README L128 同源陈旧表述一并修正）。
+- R-记账（T18+T19 时点）：同 R-记账先例——四任务 commit 先行（c3d8c8b/76bba9b/0e43901/4546375），本流水+裁决节独立 commit（流水行引用自身 commit hash 的占位循环节=固有环，先提交后补正=批次内既定手法）。
+
+## 2026-09-24 批次 5 Ruling 总索引（T18+T19 收口编；详情见各任务裁决节）
+
+- 开工：用户批准计划 2026-09-24-b5-knowledge-flywheel.md（前置裁决 A-F+补充裁决 R7-R14 全案）；T1-T14 由各任务子代理按域收口（裁决见「批次 5 T3+T4+T5／T6+T7+T8／T9+T10+T11 裁决」等节与各 commit 消息）。
+- T3+T4+T5：R-T3-1..4（L25 承载行分期等）/R-T4-*（set-replay-state --timestamp 必填）/R-T5-*（AUTHZ cap 参数）——commit 6a3a5f9/684c5c9/d957a39。
+- T6+T7+T8：R-T6-1..4（④基线冲突契约随行/PROTOCOL 节号/TRIGGERS 不 bump/高危回边落点）/R-T7-1..4（reachable_gap_cells 参数化单源/输出行序/金样刷新机制/判据等价注记）/R-T8-1..3（P4 攻击链落证）——commit e422c2c/b6dd4ca/5b4daf0。
+- T9+T10+T11：R-T9-1..3/R-T10-1..4（sha256 强化/哨兵单源边界/--timestamp 必填/状态机唯一载体）/R-T11-*（export 确定性/match --today）——commit 见裁决节。
+- T12/T13/T14：R-T12-1..6（K1 落表+score 只读算分）/R-T13-1..4（四门槛机检口径）/R-T14-1..3（K3 快照+nday 离线匹配）——commit df51cd1/详见裁决节。
+- T15+T16+T17（6）：R-T15-1 approve 裸旗标本地归一/R-T15-2 reverse-verify 不进 HANDLERS/R-T15-3 占位符不进反向验证形态面/R-T15-4 P6 过门 END 行/R-T16-1 五类素材全缺=全量降级登记/R-T17-1..4（CEP 延后/CVE 零引用通道/warstory 脱敏覆盖面/vocab_version 补齐）——commit bb9c5bf/e557b1d/c4c6728。
+- T18+T19（本节 6）：R-T18-1 探针副本执行/R-T18-2 抽查范围在库页口径/R-T19-1 引擎 KNOWN 面随行/R-T19-2 argv 双形态归一/R-T19-3 R-T3-4 遗留核验已在册闭环/R-记账（占位循环节）——commit c3d8c8b/76bba9b/0e43901/4546375。
+- 台账：本批探知项 G-29..G-35 终态=docs/design/2026-09-24-b5-discovery-notes.md；b4 台账 G-23/G-24/G-26/G-27/G-28+R6 五行就地闭环注记（追加注记不改历史行，G-2 先例）。
+- 出口：批次 5 出口验收 10 条逐条实测记录=状态快照「批次 5 知识飞轮+语料入库」行（2026-09-24）； VulnClaw 批 6 三项移交登记（退出码第 3 态/findings+SARIF 双工件/报告内容过滤器）见 b5 台账移交清单。
+
