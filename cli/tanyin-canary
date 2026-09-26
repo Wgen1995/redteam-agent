@@ -34,9 +34,9 @@ EPOCH = "1970-01-01T00:00:00Z"
 EGRESS_CANDIDATES = ("egress.acl", os.path.join("egress", "egress.acl"))  # 探知项：T3 产物路径未定，双候选
 
 
-def usage():
+def usage():  # 批次 6 T11：probe 增 --egress-log=<path>（流量级证据源，可选）
     sys.stderr.write("用法: tanyin-canary deploy --goal-dir D --seed <s> [--timestamp=T]"
-                     " | probe --goal-dir D --tier 0|1|2|3 [--host=dsh] [--phase=P0] [--timestamp=T]"
+                     " | probe --goal-dir D --tier 0|1|2|3 [--host=dsh] [--phase=P0] [--timestamp=T] [--egress-log=<path>]"
                      " | recon-deploy --goal-dir D --value <诱饵资产值> --type <assets.type 十一值>"
                      " [--note=计划编号] [--timestamp=T]"
                      " | recon-recall --goal-dir D" + chr(10))
@@ -180,6 +180,47 @@ def probe_tier(gd, tier, host):
     return None
 
 
+def _iso_ts(s):
+    return isinstance(s, str) and len(s) >= 20 and s.endswith("Z") and "T" in s
+
+
+def _traffic_touches(gd, log_path):
+    """流量级证据源（批次 6 T11）：读 egress-log.jsonl，挑 kind=canary 且 host 命中
+    本交战已部署诱饵的行（R10 绑定①=诱饵表；判定只认 log 行——裸连接/旁路零误报）。
+    R10 绑定②=时间窗：行 ts ≥ 最近 canary-deploy 事件 ts（两侧皆 ISO 形态才比对；
+    不可比=不过滤并如实计数）。文件缺/行坏 JSON=无触碰证据（不判 ENV——probe 保持
+    本地模拟既有语义，log 是可选增强源）。"""
+    if not os.path.exists(log_path):
+        return []
+    targets = load_targets(gd) or []
+    vals = [v for _k, v in targets]
+    deploy_ts = None
+    ev = TABLES["timeline.tsv"].index("event")
+    for row in core.Session(gd).rows("timeline.tsv"):
+        if len(row) > ev and row[ev].startswith("canary-deploy"):
+            deploy_ts = row[0]
+    hits = []
+    with open(log_path, encoding="utf-8") as f:
+        for ln in f:
+            ln = ln.strip()
+            if not ln:
+                continue
+            try:
+                rec = json.loads(ln)
+            except ValueError:
+                continue
+            if rec.get("kind") != "canary":
+                continue
+            host = str(rec.get("host", ""))
+            if not any(host == v or host.endswith("." + v) for v in vals):
+                continue
+            ts = rec.get("ts")
+            if deploy_ts and _iso_ts(ts) and _iso_ts(deploy_ts) and ts < deploy_ts:
+                continue
+            hits.append(rec)
+    return hits
+
+
 def cmd_probe(gd, rest):
     kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
     tier = kv.get("--tier")
@@ -191,6 +232,25 @@ def cmd_probe(gd, rest):
         sys.stderr.write("诱饵未部署：缺 canary/targets.tsv（先 deploy）" + chr(10))
         return 2
     detail = probe_tier(gd, tier, kv.get("--host", "dsh"))
+    # T11 流量级双源：--egress-log 在=读 kind=canary 行并入触碰判定（零容忍：
+    # 流量触碰行在=该诱饵 touched，无视静态面结论；acl 缺（静态 not-deployed）时
+    # 触碰行在同样判 fail——流量证据优先于静态未部署态）
+    log_path = kv.get("--egress-log")
+    touches = _traffic_touches(gd, log_path) if log_path else None
+    if touches is not None:
+        touched_vals = sorted({str(x.get("host", "")) for x in touches})
+        if detail is None:
+            if touches:
+                detail = [{"kind": k, "value": v, "verdict": "allowed",
+                           "traffic": any(v == h or h.endswith("." + v)
+                                          for h in touched_vals)}
+                          for k, v in (load_targets(gd) or [])]
+        else:
+            for d in detail:
+                if any(d["value"] == h or h.endswith("." + d["value"])
+                       for h in touched_vals):
+                    d["verdict"] = "allowed"
+                    d["traffic"] = True
     if detail is None:
         result = {"tool": "tanyin-canary", "tier": int(tier), "status": "not-deployed",
                   "blocked": 0, "total": 0, "allowed": 0, "goal_dir": gd,
@@ -202,6 +262,13 @@ def cmd_probe(gd, rest):
                   "status": "pass" if blocked == len(detail) else "fail",
                   "blocked": blocked, "total": len(detail), "allowed": len(detail) - blocked,
                   "goal_dir": gd, "timestamp": kv.get("--timestamp", EPOCH), "detail": detail}
+    if touches is not None:
+        result["traffic_touches"] = len(touches)
+        result["egress_log"] = log_path
+    js = json.dumps(result, ensure_ascii=False, separators=(",", ":"))
+    print(js)
+    append_tl(gd, kv.get("--timestamp", EPOCH), kv.get("--phase", "P0"), "canary-result " + js)
+    return 0 if result["status"] in ("pass", "not-deployed") else 1
     js = json.dumps(result, ensure_ascii=False, separators=(",", ":"))
     print(js)
     append_tl(gd, kv.get("--timestamp", EPOCH), kv.get("--phase", "P0"), "canary-result " + js)
