@@ -1,0 +1,9 @@
+{
+ "format_version": 1,
+ "n": 76,
+ "median": 1.116400289397527,
+ "min": 0.9414114513981359,
+ "max": 1.343268242548818,
+ "proposal": "契约 v3 系数候选：CJK/ASCII 混排实测中位比值 1.116——回写 estimate_tokens 系数待 v3 微版本",
+ "frozen_note": "PROTOCOL §2 公式本批不改（裁决 G）"
+}

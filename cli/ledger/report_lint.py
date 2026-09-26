@@ -105,6 +105,48 @@ def compliance_six(data):
     return missing
 
 
+def interim_report_b(data):
+    """终态 B 中期报告（批次 6 T17；契约 13 §3 披露四件套，零造数据）。
+
+    数据源=report_agg.aggregate 投影：中期报告声明（budget_terminal=exhausted 单源
+    判定）/未测范围披露（limits.empty_matrix_cells 逐格+coverage.open_ids 未跑
+    intent）/闭合率（matrix filled/(filled+empty) 可复算）/免责注明中期报告——
+    诚实终止不是事故（铁律 3）。禁空话句式自查随 write 侧执行。"""
+    lim = data.get("limits") or {}
+    gaps = lim.get("empty_matrix_cells") or []
+    cov = data.get("coverage") or {}
+    open_ids = cov.get("open_ids") or []
+    matrix = data.get("matrix") or {}
+    filled = len(matrix.get("filled") or [])
+    total = filled + len(matrix.get("empty") or [])
+    rate = ("%.1f%%（%d/%d）" % (100.0 * filled / total, filled, total)) if total else "n/a"
+    lines = [
+        "# 中期报告（budget-exhausted 终态 B）",
+        "",
+        "中期报告声明：本交战预算树已穿（budget_terminal=exhausted，",
+        "query_cmds.budget_exhausted 单源判定），按契约 13 §3 诚实终止口径中期签发——",
+        "诚实终止，不是事故（铁律 3）。本文件为中期报告，非全量终稿；后续复测须补充",
+        "授权与预算后另立会话进行，未测范围以下列披露清单为准。",
+        "",
+        "## 未测范围披露",
+        "",
+        "未闭合格清单（matrix gaps，逐格）：",
+    ]
+    lines += ["- " + g for g in gaps] if gaps else ["-（无——与签发门未测矩阵格清单非空判据矛盾，不应出现）"]
+    lines.append("")
+    lines.append("未跑 intent 清单（coverage intents open）：")
+    lines += ["- " + i for i in open_ids] if open_ids else ["-（无未跑 intent）"]
+    lines += [
+        "",
+        "闭合率：%s" % rate,
+        "",
+        "免责：本中期报告仅覆盖已闭合矩阵格与已纳入发现；未测范围以上列清单为准，",
+        "禁止宣称全量覆盖；等保占位段与合规六要素随终稿同口径生效。",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def _subprocess_gate(name, args, gates):
     """fail-closed 子进程门（tanyin-ledger 面退出码 0=过）；rc=2 视为门 FAIL 明细载。"""
     try:
@@ -185,11 +227,14 @@ def _fd_checks(goal_dir, s, fd_id, fd_row, draft_path, gates):
 
 def sign_gate(goal_dir, ts, write_credential=True):
     """签发门聚合。返回 (rc, report)；全过=0 且（write_credential 时）落
-    report/signed/pass.json；任一门不过=1；缺表等环境问题=2。"""
+    report/signed/pass.json；任一门不过=1；缺表等环境问题=2。
+    终态 B（T17）：budget_terminal=exhausted 非 FAIL——但未测矩阵格清单缺/空=门
+    FAIL；签发随落 report/signed/interim-report.md（契约 13 §3 披露四件套）。"""
     gates = {k: {"status": "PASS", "detail": ""}
              for k in ("render", "nine_segments", "burp_pasteable", "dual_fingerprint",
                        "time_chain", "redact_scan", "cleanup_checklist", "tier_disclosure",
-                       "compliance_six", "empty_rhetoric", "aggregate")}
+                       "compliance_six", "empty_rhetoric", "aggregate",
+                       "terminal_b_disclosure")}
     try:
         data = report_agg.aggregate(goal_dir, ts or "2026-09-24T00:00:00Z")
     except EnvironmentError as e:
@@ -224,6 +269,15 @@ def sign_gate(goal_dir, ts, write_credential=True):
     if miss6:
         gates["compliance_six"].update(status="FAIL", detail="；".join(miss6))
         ok_all = False
+    # 终态 B（批次 6 T17）：budget-exhausted=合法签发终态非 FAIL——但 limits 投影必须含
+    # 未测矩阵格清单（中期披露声明数据源，契约 13 §3），缺/空=门 FAIL（诚实覆盖口径铁律 3）。
+    terminal = data.get("budget_terminal") or "normal"
+    if terminal == "exhausted" and not (data.get("limits") or {}).get("empty_matrix_cells"):
+        gates["terminal_b_disclosure"].update(
+            status="FAIL",
+            detail="budget-exhausted 终态 B：limits 未测矩阵格清单缺/空——中期披露声明无数据"
+                   "（契约 13 §3 未闭合格清单，铁律 3 诚实覆盖口径）")
+        ok_all = False
     # 禁空话句式（已落盘/新渲染的 draft 全查）
     draft_dir = os.path.join(goal_dir, "report", "draft")
     for fn in sorted(os.listdir(draft_dir)):
@@ -249,6 +303,15 @@ def sign_gate(goal_dir, ts, write_credential=True):
         payload = json.dumps(rep, ensure_ascii=False, sort_keys=True, indent=1) + "\n"
         with open(os.path.join(signed, "pass.json"), "w", encoding="utf-8", newline="\n") as f:
             f.write(payload)
+        if terminal == "exhausted":
+            # 终态 B 签发随落中期报告（投影零造数据；签发面专属——lint 只判定不落产物）
+            md = interim_report_b(data)
+            hits = empty_rhetoric(md)
+            if hits:   # 防御性自查：常量文案命中禁空话表=实现缺陷，fail-closed
+                raise AssertionError("interim_report_b 禁空话句式命中: %r" % hits)
+            with open(os.path.join(signed, "interim-report.md"), "w",
+                      encoding="utf-8", newline="\n") as f:
+                f.write(md)
     return 0, rep
 
 
