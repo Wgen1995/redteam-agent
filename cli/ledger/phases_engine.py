@@ -810,7 +810,7 @@ def _last_restart_ts(s):
 
 
 def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost=None):
-    from . import registry, state_md
+    from . import lock_v2, registry, state_md
     if spawn not in ("auto", "manual"):
         sys.stderr.write("用法错误: --spawn 需 auto|manual\n")
         return 2
@@ -867,23 +867,33 @@ def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost
     takeover = ""
     handover = bool(fields) and fields["session_status"] == "active" \
         and fields["session"] != session
+    # G-5 锁探测 v2（批次 6 T7·裁决 F）：v2 锁（有 lock_boot）才探——v1 旧锁/字段缺
+    # =unknown 保守路径（行为与收紧前逐字节一致）。探活是只读 OS 快路，零账本副作用。
+    probe, probe_why = ("unknown", "v1 锁（未探）")
+    if handover and fields.get("lock_boot"):
+        probe, probe_why = lock_v2.probe_stale(fields)
     if handover:
         if spawn == "auto" and fields.get("spawn") != "auto":
             print("REJECT\trestart\t单活跃会话：auto 不得接管 active 锁 session=%s"
                   "（接管走 --spawn manual）" % fields["session"])
             return 1
-        # 先对账再干活：manual 接管凭据（计划明文）；auto 同血统延续同款对账前置
-        buf = io.StringIO()
-        with redirect_stdout(buf):
-            rb = registry.lookup("state-rebuild")(goal_dir, [])
-        if rb != 0:
-            head = buf.getvalue().splitlines()
-            print("REJECT\trestart\t%s state-rebuild 未过（先对账再干活）: %s"
-                  % ("manual 接管前置" if spawn == "manual" else "同血统延续前置",
-                     head[0] if head else "FAIL"))
-            return 1
-        if spawn == "manual":
-            takeover = " takeover-of=" + fields["session"]
+        if spawn == "manual" and probe == "dead":
+            # 探活快路（裁决 F）：OS 级证实锁主已死 → 免 state-rebuild 对账前置；
+            # auto 恒不放行（单活跃会话铁律不变）；其余护栏（速率/预算/锁释放重建）照走。
+            takeover = " takeover-of=%s probe=pid-dead (%s)" % (fields["session"], probe_why)
+        else:
+            # 先对账再干活：manual 接管凭据（计划明文）；auto 同血统延续同款对账前置
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                rb = registry.lookup("state-rebuild")(goal_dir, [])
+            if rb != 0:
+                head = buf.getvalue().splitlines()
+                print("REJECT\trestart\t%s state-rebuild 未过（先对账再干活）: %s"
+                      % ("manual 接管前置" if spawn == "manual" else "同血统延续前置",
+                         head[0] if head else "FAIL"))
+                return 1
+            if spawn == "manual":
+                takeover = " takeover-of=" + fields["session"]
     # ④ 计入预算（既有 budget-log，链一致；restart 只编排既有命令，不自写 TSV）
     b1, b2 = io.StringIO(), io.StringIO()
     with redirect_stdout(b1), redirect_stderr(b2):
@@ -912,7 +922,7 @@ def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost
         rc = registry.lookup("checkpoint")(goal_dir, [
             "--session=" + session, "--spawn=" + spawn,
             "--phase=" + ("" if gate in ("P0", "END") else gate),
-            "--timestamp=" + ts])
+            "--timestamp=" + ts, "--with-lock-v2=1"])
     if rc != 0:
         print("REJECT\trestart\tcheckpoint 失败: " + c2.getvalue())
         return 1

@@ -17,7 +17,7 @@ import re
 import sys
 
 from .core import TABLES, SCHEMA_VERSION, GENESIS, GATE_ORDER, esc, next_id, row_hash, write_tsv
-from . import state_md
+from . import lock_v2, state_md
 from .norm import artifact_hashes  # norm 轨单源（评审 C-1）：add-evidence 落账与 hash-recheck 同款
 
 TAB = chr(9)
@@ -910,7 +910,7 @@ def _checkpoint(goal_dir, rest):
     # --release 为旗标（02a 终审补全 5 授权追加）：本地归一为 --release=1，不动全局 _parse
     rest = [("--release=1" if tok == "--release" else tok) for tok in rest]
     args = _parse(rest, {"phase", "event", "timestamp", "session", "release",
-                         "round", "note", "spawn"})
+                         "round", "note", "spawn", "with-lock-v2"})
     _req(args, ["timestamp", "session"])
     ctx = Ctx(goal_dir)
     ctx.tier0()
@@ -953,6 +953,11 @@ def _checkpoint(goal_dir, rest):
         "resume_kit": "resume-kit.md",
         "snapshot": state_md.snapshot_from_session(ctx.s),
     }
+    if args.get("with-lock-v2") and not release:
+        # G-5 锁字段 v2（批次 6 T7·裁决 F）内部通道：run_restart 专用——会话激活
+        # 附锁四字段（lock_v2 单源 OS 事实）。常规 checkpoint 面=v1 十键零漂移
+        # （金样 write-checkpoint 面/存量测试冻结面不受扰）。
+        new_fields.update(lock_v2.lock_fields(args["timestamp"]))
     state_md.write_state(sp, new_fields, handoff)
     print("OK" + TAB + "revision=%d" % rev)
     return 0

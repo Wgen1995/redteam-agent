@@ -235,3 +235,7 @@ events（事件回边，不离开 P3）：
 - 门 5 · P4 duty 增「攻击链落证」步注记（G-28 裁决 D）：graph-paths→attack-paths.txt→add-evidence（EV 卡片零新字段，artifact_path 通道承载）；duty 详文随批次 5 T8 落 phases/P4.md。
 - 勘误通道：微版本勘误（零存量数据期，schema_version 保持 =2 不递增）；本补记日期 2026-09-24。
 - 自验复跑：constants 计数（含两新名）`grep -cE '^\| (restart_context_threshold|restart_every_n_rounds|storm_score_threshold_base|llm_association_quota|reversal_scan_quota|p4_sample_ratio|single_active_session|budget_dollars_enabled|authz_diff_pair_cap|restart_rate_minutes) '` → **10**（§「自验」原有 8 为 2026-09-23 冻结时点基线，保留可追溯）。
+
+## v2 勘误补记（2026-09-24·批次 6 施工期·T7/G-5 锁字段 v2）
+
+- state.md 固定段增四可选后缀字段：`lock_host/lock_pid/lock_boot/lock_since`（G-5 锁收紧·裁决 F）——会话激活经受管重启落笔（checkpoint 内部通道 `--with-lock-v2`，run_restart 专用；值由 cli/ledger/lock_v2.lock_fields 单源产出：platform.node()/pid/boot_id/激活 ts），常规 checkpoint 面=v1 十键零漂移；v1 旧锁（无四字段）解析容忍照常（兼容升级，残缺四字段=畸形走对账重建保守路径）。探活快路语义：本机同 boot 且 os.kill(pid,0) 探活死 → manual 接管免 state-rebuild 对账前置（timeline 记 `takeover-of=<s> probe=pid-dead`）；跨机/跨 boot/字段缺=unknown 保守（auto 恒 REJECT，manual 维持对账前置+takeover-of 留痕，行为与收紧前逐字节一致）。单活跃会话铁律不变。微版本勘误（零存量数据期，schema_version 保持 =2 不递增）；本补记日期 2026-09-24。
