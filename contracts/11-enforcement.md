@@ -89,6 +89,27 @@ accounts+permitted_actions、oob_endpoints 申报、append-only amendments（§4
 
 egress compile 输出定四成分（ACL+DNS pinning+OOB+基础设施白名单）——探知项已裁决。
 
+## v3 勘误补记（2026-09-26·批次 6 T10·Tier3 代理本体 serve）
+
+- **serve 判定语义**（tanyin-egress serve；裁决 H）：代理=机械执法组件（铁律 7 合规，
+  性能非首批目标）。判定单源 `egress_proxy.decide(acl, host, port)`——显式 deny 优先→
+  allow（host:port 精确/host:* 通配/`*.suf` 严格后缀不含裸域/CIDR）→其余一律 deny
+  （deny-by-default）。HTTP 明文转发按绝对 URI 目标判定；CONNECT 按 CONNECT 目标
+  主机名:端口判定。DNS pin 三态：pin 无 ip=声明态（pin_ok=None）；目标为 IP 字面量
+  ≠pin 期望=拒绝（pin_ok=False）；目标为域名且 pin 带 ip=直连 pin（解析面免疫，
+  pin_ok=None，如实披露不可比对）。
+- **TLS 不解密披露（守门声明）**：代理不做 TLS 中间人、不解析 TLS 内容——CONNECT
+  隧道仅按目标主机名判定后双向字节中继；隧道内行为不可见是架构边界而非能力缺口。
+  措辞模板落 install/README「守门声明」节。
+- **运行时工件边界**：egress-log.jsonl 行={"ts","verdict","host","port","kind","pin_ok"}，
+  kind∈forward|connect|oob|canary——代理绝不写 13 表（单写者纪律）；canary 域触碰=
+  kind=canary 行（T11 流量级零容忍证据源）。
+- **G-41 披露**：egress 代理并发/吞吐/时延上限未测——机械执法非性能件，性能上限
+  披露待实测通道（台账 G-41）。
+- **ACL 行约定**：parse_acl 以 compile 真实产物（egress.acl v2 四段）为锚；计划行约定
+  （allow host:port/dns-pin host ip/oob/canary）并存可解析；未知行=ValueError
+  fail-closed；`[canary]` 段 compile v2 不产出（canary 面随 T11 手工/扩展 ACL）。
+
 ## v2 勘误补记（2026-09-24·批次 4 施工期·T3/P4 重放门转强制）
 
 - §7「P4 出口」行 expect 引用随契约 04 勘误同步：「无 REJECTED 未处置项（批次 4 前=SKIP，报告中披露）」→「无 REJECTED 未处置项」（P4 重放门断言转强制，SKIP 退役）。微版本勘误通道，不升 schema_version。

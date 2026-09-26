@@ -56,3 +56,11 @@ py -3 cli/tanyin-selfcheck --static                       # 六项静态验证�
 ## hooks 模板
 
 AGENTS 系统级注入=五宿主统一常驻通道（批次 6 T8 交付，见上节）；`install/hooks/` 逐宿主 hook 模板目录在实测宿主需求落地前维持 install_core step4 占位披露（不阻塞安装）；无 hook 机制宿主（walcode/CodeBuddy）安装时落 Tier 1+披露行。
+
+## 守门声明（Tier 3 egress 代理；批次 6 T10）
+
+- 起服：`python3 cli/tanyin-egress serve --acl <goal-dir>/egress.acl --port <N> --egress-log <goal-dir>/egress-log.jsonl`（前台常驻，Ctrl-C 优雅退出；无守护进程纪律合规）。
+- **TLS 限制披露（裁决 H）**：代理不做 TLS 中间人、不解析 TLS 内容——CONNECT 隧道按 CONNECT 目标主机名:端口 ACL 判定后双向字节中继；隧道内行为不可见是架构边界而非能力缺口。
+- **DNS pin 三态**：`pin <host>`（无 ip）=声明态；目标 IP 字面量≠`dns-pin` 期望=拒绝（pin_ok=False）；域名+pin 带 ip=直连 pin（解析面免疫，不可比对=pin_ok=None 如实披露）。
+- **运行时工件**：`egress-log.jsonl` 行={"ts","verdict","host","port","kind","pin_ok"}（kind=forward|connect|oob|canary）——代理绝不写 13 表（单写者纪律）；canary 域触碰=kind=canary 行（T11 流量级零容忍证据源）。
+- **G-41 性能披露（如实）**：并发/吞吐/时延上限未测——机械执法组件，性能非首批目标；上限数字待实测通道，不预写指标。

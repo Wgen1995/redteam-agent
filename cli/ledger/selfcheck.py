@@ -52,7 +52,7 @@ KNOWN_COMMANDS = {
     "phases": ["cached", "denominator-ready", "gate", "rebuild-state", "restart",
                "resume-kit", "trigger-audit", "validate"],
     "guard": ["deploy-vault", "exec", "inject"],
-    "egress": ["compile", "dry-run", "verify"],
+    "egress": ["compile", "dry-run", "serve", "verify"],  # serve=批次 6 T10 代理本体
     "canary": ["deploy", "probe", "recon-deploy", "recon-recall"],
     "knowledge": ["approve", "client-map", "commit", "demote", "export", "init",
                   "lint", "match", "neighbors", "nday-match", "promote", "score",
