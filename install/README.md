@@ -24,16 +24,24 @@ py -3 cli/tanyin-selfcheck --static                       # 六项静态验证�
 
 ## 五宿主矩阵（§10.3）
 
-| host | verification | 默认执法档 | hook | compat |
-|---|---|---|---|---|
-| dsh | 本仓可实测 | Tier 3 | 有 | 夹具全量/evals 全量/canary×4 档/受管重启/报告流水线 |
-| opencode | 公开环境 CI 可测 | Tier 3 | 有 | 夹具/evals/canary/headless |
-| codex | 公开环境 CI 可测 | Tier 3 | 有 | 夹具/evals/canary/headless |
-| walcode | 静态验证+待实测（§10.3） | Tier 1 | 无 | 静态验证通过；待实测保守披露 |
-| codebuddy | 静态验证+待实测（§10.3） | Tier 1 | 无 | 静态验证通过；待实测保守披露 |
+| host | verification | 默认执法档 | hook | AGENTS 注入落点 | compat |
+|---|---|---|---|---|---|
+| dsh | 本仓可实测 | Tier 3 | 有 | ~/.tanyin-hosts/dsh/AGENTS.md | 夹具全量/evals 全量/canary×4 档/受管重启/报告流水线 |
+| opencode | 公开环境 CI 可测 | Tier 3 | 有 | ~/.tanyin-hosts/opencode/AGENTS.md | 夹具/evals/canary/headless |
+| codex | 公开环境 CI 可测 | Tier 3 | 有 | ~/.tanyin-hosts/codex/AGENTS.md | 夹具/evals/canary/headless |
+| walcode | 静态验证+待实测（§10.3） | Tier 1 | 无 | ~/.tanyin-hosts/walcode/AGENTS.md | 静态验证通过；待实测保守披露 |
+| codebuddy | 静态验证+待实测（§10.3） | Tier 1 | 无 | ~/.tanyin-hosts/codebuddy/AGENTS.md | 静态验证通过；待实测保守披露 |
 
 - 发布口径：walcode/CodeBuddy 在实测完成前只标注「静态验证+待实测」，执法档位默认 Tier 1（保守披露）；宿主路径字段按各宿主公开文档在 T8 落地时核对一次，偏差=改 JSON 不改代码。
 - 手测引导：`tanyin-selfcheck --host <name> --guided`（T6）。
+- AGENTS 系统级注入（T8）：模板 `install/AGENTS-INJECT.md`（常驻八条，<2K token 量级护栏）＋渲染/幂等注入单源 `cli/ledger/hosts_matrix.py`（`<!--TANYIN:BEGIN/END-->` 标记包裹，二次注入零变更）；块内含本宿主档位披露行（铁律 5——盲区宿主块内直书「待实测保守披露」）。
+
+### 实测路径（宿主验证通道；T8 落地）
+
+- **dsh（本仓可实测）**：本仓全套即实测面——`python3 -m unittest discover -s tests`（635+ 例）+`python3 tests/run_golden.py`（金样 54 面）+`python3 cli/tanyin-evals run --suite=static --goal-dir . --timestamp <TS>`（evals 硬门）+`python3 cli/tanyin-install --home <tmp> --timestamp <TS>` 连跑两次幂等+`python3 cli/tanyin-selfcheck --static`。
+- **opencode / codex（公开环境 CI 可测）**：headless 实测命令行——安装落位后经宿主 headless 入口下发干跑任务（opencode=`opencode run "用探隐自检"`／codex=`codex exec "用探隐自检"`），验收口径=交战区产 goals/scope/matrix 样本+timeline（零对外请求）；回传贴 `tanyin-selfcheck --host <name> --guided` 第 4 步 probe_results 模板。
+- **walcode / codebuddy（静态验证+待实测 §10.3）**：静态验证=`tanyin-selfcheck --static` 全 PASS；手测脚本=`tanyin-selfcheck --host walcode --guided`／`--host codebuddy --guided` 一页引导（安装命令→能力探测→冒烟清单→回传模板）。
+- **G-38 台账（如实登记）**：walcode/CodeBuddy 宿主实测回传后升档——回传形态=guided 第 4 步 probe_results 模板贴回验签入册；未回传前保持「静态验证+待实测」标注与 Tier 1 保守披露，不谎称已实测。
 
 ## 交战区分离（设计 §3.4）
 
@@ -47,4 +55,4 @@ py -3 cli/tanyin-selfcheck --static                       # 六项静态验证�
 
 ## hooks 模板
 
-`install/hooks/` 随批次 6 T8（五宿主矩阵落地）交付；无 hook 机制宿主安装时落 Tier 1+披露行。
+AGENTS 系统级注入=五宿主统一常驻通道（批次 6 T8 交付，见上节）；`install/hooks/` 逐宿主 hook 模板目录在实测宿主需求落地前维持 install_core step4 占位披露（不阻塞安装）；无 hook 机制宿主（walcode/CodeBuddy）安装时落 Tier 1+披露行。
