@@ -15,6 +15,7 @@
 - 批次 4 评审收尾：✅（2026-09-24）C-1 证据双指纹 norm 轨写/查单源化（cli/ledger/norm.py，严格侧哨兵语义冻结模块 docstring）——diff-authz hash-recheck 与 gate P4 亲跑 PASS（P4 完备化=夹具补确定性重放事件行，G-23 墙钟绕道）；顺手三件（cli/README 计数 41→44×3+面数 50→51/supply_chain fail-closed 形式统一两负例/b4 台账 G-27+G-28+R6 机检缺口挂 G-20）；414 单测全绿（409+5 新增）+51 金样面 PASS（新面 diff-hash-recheck；viz-data 有意刷新=timeline 计数 19→21）；详见文末「批次 4 评审收尾入账」节
 - 批次 5 知识飞轮+语料入库：**完成（T1-T19 收口，2026-09-24）**——564 单测全绿（本段起点基线 545+T18 前置/T18/T19/T19 补新增 19）+54 金样面 PASS 零漂移；出口验收 10 条逐条实测过（①cnpen spotcheck 四判据 exit 0／②external 含 CVE 判据 exit 0／③反向验证脏净双向 dirty=detected+clean=zero-hits exit 0／④微版本六件 unittest 30 例 OK／⑤知识库七件 72 例 OK／⑥全套 564 绿／⑦金样零漂移+git status --short tests/golden 空／⑧CI push 已触发，四格矩阵在册，远端绿需 Actions 页面复核／⑨常驻集 31 例 OK+SKILL 1540<2000 token／⑩b5 台账在盘 G-29..G-35 grep 计 19≥7）；补充判定=种子库 lint PASS n=10 exit 0（R8 审计行取证后复原）+export 双跑 sha256 一致 39545dd6…+T18 前置种子库测试隔离修复（跑全套 git status 必净已钉死）；契约 14 新立+契约 v3 首批六笔勘误（微版本通道 schema_version=2 不递增）；探知项台账 G-29..G-35 终态=docs/design/2026-09-24-b5-discovery-notes.md（b4 台账 G-23/G-24/G-26/G-27/G-28+R6 五行就地闭环注记）；Ruling 总索引=文末「批次 5 Ruling 总索引」节
 - 批次 5 评审收尾：✅（2026-09-24）I-1 lint 种子库零写入（裁决 R-RC5-1 选 a——出口判定命令原文就地亲跑 PASS n=10 exit 0，log.md/staging.tsv sha256 前后一致零写热）+M-1..M-6 顺手六件（契约14 created 勘误指针+vocab_version 两表补齐/checklist 占位符张力节/README 勘误索引补 T7/探知项两笔/match --client 必填 exit 2）；566 单测全绿（564+2 新增）+54 金样面 PASS 零漂移；批次 6 前置义务在册=真人复核在库 10 页；详见文末「批次 5 评审收尾入账」节
+- 批次 6 三层验收+安装矩阵+报告管线+授权靶场+交付收口：**完成（T1-T18 收口，2026-09-26）**——737 单测全绿（本段起点基线 724+T17 4+T18 9）+54 金样面 PASS 零漂移 hash=a347edd7；整批出口验收清单 18 条逐条亲跑实测（详见文末「批次 6 整批出口验收清单执行记录」节——#5 远端 Actions 页面复核、#15 真人复核 10 页、#17 R11 人工法务过审三项如实移交真人/远端，载体与流程全在册）；契约勘误 09（工具面 12→14：+#13 tanyin-evals+#14 tanyin-budgetctl 补缺）+契约 13 v2 勘误（终态 B 语义）；探知项台账 G-36..G-41+出口 #16 七项遗留 G 项收口终态=docs/design/2026-09-24-b6-discovery-notes.md；Ruling 总索引=文末「批次 6 T17+T18 流水+裁决」节
 
 ## 交战区指针
 - 设计定稿：docs/design/2026-09-21-tanyin-v2-design.md（§2 铁律/§5 循环/§11 批次表）
@@ -640,3 +641,44 @@
 - **金样变动说明**：两任务均零变动。54 面 PASS（21 读+20 写+2 phases+1 engine+3 graph+2 adapter+1 viz+1 recheck+3 kn）总 hash=a347edd7 与基线逐字节一致；T16 新增靶场面（ground-truth/seed/compose/scorer）不属金样锁域（金样=44 命令面+渲染/图谱等既有面），未新增金样面。
 - **纪律面**：全部新文件 UTF-8 无 BOM+LF；子进程一律 [sys.executable, path]+显式 timeout+PYTHONUTF8=1；时间戳全显式字面量（T16 首跑 mint 链 2026-09-26T10:00:00Z 字面 ts，零墙钟入账）；panorama/ 与 /Users/wgen/Documents 零触碰；共享夹具 G-g1 零触碰（E2E/首跑全在拷贝或仓外）。
 - **R-记账（T15+T16 时点）**：两任务 commit 先行（c96db82/c15fb3b），本流水+裁决节独立 commit（批次内既定手法）。
+
+
+## 2026-09-26 批次 6 T17+T18 流水+裁决（终态 B 演练+RUNBOOK+真人复核+台账收口；终束捆绑实现者记）
+
+- **T17（commit 0328606）**：budget-exhausted 终态 B 演练+RUNBOOK+token 校准首采——tests/test_budget_exhausted.py 4 例（终态 B 过门+interim-report.md 四披露断言/limits 空格清单缺失=FAIL/时间线 REJECT 事件形态/常态终态零 interim 共享夹具零污染）+cli/ledger/report_lint.py gates 增 terminal_b_disclosure+terminal exhausted 且 limits.empty_matrix_cells 缺=FAIL+interim_report_b 确定性 composer+sign 成功路径落 report/signed/interim-report.md（fail-closed 断言）+tests/range/RUNBOOK.md（环境门/S1-S15 全流程序/干跑 D1-D4 实测/活靶段/终态 B 支线 B1-B4 实测 rc/LLM 在环复测通道 R-T16-3/token 校准首采通道七步）+契约 13 v2 勘误补记（终态 B 语义：budget_terminal=exhausted=合法签发终态+中期披露四件套）+tests/evals/calib/token-calibration.json 真跑首采落盘（n=76/median=1.1164/min=0.9414/max=1.3433；宿主真实 metering vs PROTOCOL §2 冻结公式；样本=实现会话 session.jsonl.zstd 解压逐 (turn,step) usage 块）。红=4 FAIL→绿=4 OK；全套 Ran 728 OK（724+4）；金样 54 面 PASS 零漂移 hash=a347edd7。
+- **T18（commit a7c5218）**：真人复核流程+台账收口+契约 09 勘误+交付文档——docs/HUMAN-REVIEW.md 四节流程（范围=在库 10 页 CP-0001..0008+PR-0001..0002〔批次 5 M-6 前置义务载体〕+批次 6 新增页；判据=review-checklist 逐项+四门槛+人审门 tanyin-knowledge approve 同口径；记录=附录 10 行表{page-id/复核人/结论/日期/备注}+log.md 复核行追加纪律；争议升级=reject→staging 退回重蒸馏→再复核→两轮仍 reject 台账登记移交总控；红线成文=复核人不得为本批次执行者+复核列初始态=待真人填写不造数据）+docs/design/2026-09-24-b6-discovery-notes.md 台账四节（计划原文誊录 G-36..G-41/新增探知项登记终态/状态归并台账=出口 #16 七项全「已收口」或「遗留+理由+去向」/移交清单八件）+契约 09 v2 勘误补记（工具面 12→14+#13/#14 补缺+职责刷新五行）+cli/README 批次 6 节（四新工具速查+安装矩阵用法+出口验证指针）+tests/test_knowledge_contract.py 工具表钉 12→14 随勘误同笔更新。红=9 例 FAILED（failures=2 errors=6）→绿=9 OK；全套 Ran 737 OK（728+9）；金样 54 面 PASS 零漂移。
+- **Ruling 清单（T17+T18）**：
+  - R-T17-1（budgetctl enforce 拒绝形态断言键）：计划片段 assertIn("budget-exhausted", tl)——实况该串在 enforce stdout 而 timeline JSON 行载 reason=budget-exhausted+payload 形态键——改断言 enforce 形态键+goal 级执法+budget-log 事件行在档（REJECT 落账语义等价）。
+  - R-T17-2（演练夹具 G-g1 命名与铸造序）：演练体=整目录拷贝命名 G-g1（session.goal_id=目录名去 G- 前缀驱动 new_id，短名致 EV 卡引用错位 REJECT）+EV 卡在 add-evidence 之后覆写富化（add-evidence 骨架覆写会丢富化；test_range_recall Base 同款铸造序）。
+  - R-T17-3（token 校准采样载体与口径）：采样源=实现会话 session.jsonl.zstd（宿主真实 metering，逐 (turn,step) inputTokens+outputTokens；助手消息序列化=reasoning/text+tool 调用名+参数），est=cjk+(other+3)//4 按 PROTOCOL §2 冻结式；ratio n=76 落盘+契约 v3 系数候选 1.116 注记；回写本身遗留→G-37/契约 v3（裁决 G 口径）；采样脚本 /tmp/ 工程临时物不入仓。
+  - R-T18-1（契约 09 勘误口径 12→14 非计划字面 11→15）：计划 T18 字面「工具面 11→15——+evals/install/selfcheck/report」与表实况不符——install/selfcheck/report 三行批次 0 誊录已在表（行 9/10/6），knowledge=#12 批次 5 已增补——按实况为锚 12→14（R-T9-1/R-T10-1 先例同律），职责刷新五行随勘误，明细入补记可追溯。
+  - R-T18-2（tanyin-budgetctl 补缺登记）：budgetctl 批次 2 起在场（KNOWN_COMMANDS 冻结面在册）而契约 09 命令面清单自批次 0 誊录起漏登——探知即补 #14 行，微版本勘误通道。
+  - R-T18-3（工具表钉随勘误解除）：test_knowledge_contract 工具表钉 assertEqual(n,12) 被 T18 勘误正当触发（契约冻结绊线按设计工作）——钉更新 12→14 随勘误同笔（T14「旧例随解除更新」同律），勘误注记入测试。
+  - R-T18-4（真人复核/R11=载体+流程交付）：出口 #15/#17 判定含真人行为（复核结论/法务过审结论）——执行者代理无复核权（真人≠执行者），如实交付=流程四节+10 行表待真人填写+log 行纪律+R11 记录行载体，状态快照如实披露移交态（不造数据；批次 3-5「远端 CI 页面复核」披露同口径）。
+- **批次 6 整批出口验收清单执行记录（2026-09-26 亲跑实测；每条=判定命令要点→输出行）**：
+
+| # | 判定命令（要点） | 实测输出行 | 结果 |
+|---|---|---|---|
+| 1 | python3 -m unittest discover -s tests | Ran 737 tests … OK（基线 724+T17 4+T18 9） | ✅ |
+| 2 | python3 tests/run_golden.py | PASS golden: 21 读+20 写+2 phases+1 engine+3 graph+2 adapter+1 viz+1 recheck+3 kn 全部锁定且确定；hash=a347edd7 零漂移 | ✅ |
+| 3 | python3 cli/tanyin-evals run --suite=all --goal-dir . --out <tmp> --timestamp=2026-09-26T15:45:00Z | {"pass": 9, "fail": 0, "warn_fail": 0, "env_skip": 3}；metrics JSON 落盘（R-EXIT-1：计划字面 tests/fixtures/evals-session 夹具不存在——M12 双锚参数仓根相对路径，沿 T4 R-T4-2 --goal-dir . 亲跑先例；动态 M02/M03/M05/M09 会话缺=ENV-SKIP 如实披露） | ✅ |
+| 4 | FAIL 夹具（unittest runner 换不存在模块）／全 ENV 夹具（--suite=dynamic --goal-dir=<不存在目录>） | rc=1 {"pass": 7, "fail": 1, …}；rc=2 {"pass": 0, …, "env_skip": 4}（裁决 A 双边界；注：空存在目录 M02 replay-summary 容错 PASS→rc=0，全 skip 需目录整体缺——边界如实记录） | ✅ |
+| 5 | grep matrix/evals .github/workflows/ci.yml | os [ubuntu-latest, windows-latest]×python [3.11, 3.12] 四格+evals-static upload-artifact+evals-dynamic job 在册；远端 Actions 页面复核=push 后待办（本环境无 gh CLI，批次 3-5 同口径披露） | ⚠️移交远端 |
+| 6 | python3 cli/tanyin-install --home <tmp> ×2（2026-09-26T15:30/31:00Z） | 两轮 verify-lock=0; authoritative-dir=0; host-link=0; hooks=0; init-home=0; selfcheck=0；install-log.tsv 逐笔 rc=0（幂等断言内建+tests.test_install_core 幂等例同绿） | ✅ |
+| 7 | python3 cli/tanyin-selfcheck --static；--list-hosts | 六项 cmd-index/encoding/phases-schema/layout/lock-verify/golden 全 rc=0 worst=0；五宿主在册（dsh=本仓 737 绿+金样+evals 即实测面；opencode/codex=CI headless 面；walcode/CodeBuddy=G-38 静态+待实测） | ✅ |
+| 8 | selfcheck lock-verify（supply_chain 单源验签既有入口） | lock-verify rc=0（tools.lock 全键验签；TEST-ONLY 夹具钥在位，生产钥=G-22 仪式移交） | ✅ |
+| 9 | selfcheck layout；python3 -m unittest tests.test_install_core | layout rc=0（交战区分离 home ∉ install_root）；Ran 13 tests OK rc=0 | ✅ |
+| 10 | fresh G-g1 拷贝 mint→tanyin-report sign；反例=抽段⑨复现与验证状态→lint | sign rc=0（report/signed/pass.json+终稿 md）；反例 lint rc=1（九段机检缺段命中） | ✅ |
+| 11 | findings.json/findings.sarif 断言（#10 产物） | findings.json total=2 lifecycle 全 active；sarif v2.1.0 results=1 仅 verified、ids⊆verified 面 | ✅ |
+| 12 | egress serve（egress.acl 20 行）+curl 经代理+canary probe --tier=3 --egress-log | in-scope forward 回包 exit12-ok verdict=allow；ACL 外 93.184.216.34→403 verdict=deny（egress-log.jsonl 双行）；probe status=pass blocked=5/5 traffic_touches=0（零容忍） | ✅ |
+| 13 | docker compose up（9 容器 Up）→真实 HTTP 探针→44 命令面铸造→python3 tests/eval_range_recall.py --session <仓外> --ground-truth tests/range/ground-truth.json | 探针 20/20 marker 命中（302 禁跟随取证+post-auth 弱口令登录链 X-Auth-Token）；20 AST/EV/FD 铸造（account-grant 授权行+cred 链）；scorer rc=0 recall=1.00 (20/20)=基线 v1 入册值复现（口径=脚本化探针同 T16 首跑；LLM 在环复测=RUNBOOK §6 通道移交执行期） | ✅ |
+| 14 | terminalb5.sh 新鲜拷贝复跑 B1-B4 | B1 rc=0→B2 REJECT budget-exhausted used=2010000 limit=2000000 rc=1→B3 rc=0→B4 sign rc=0+interim-report.md（中期报告声明/未测范围披露/闭合率/免责）+tests.test_budget_exhausted 4 例绿 | ✅ |
+| 15 | grep 待真人填写 docs/HUMAN-REVIEW.md→10；记录行计数→10 | 10 行表（CP×8+PR×2）复核人/结论/日期全待真人填写——载体+流程交付，复核行为待真人（R-T18-4） | ⚠️移交真人 |
+| 16 | 逐项 grep 归并表行 docs/design/2026-09-24-b6-discovery-notes.md | G-4/G-5/G-11/G-22/G-25/G-32/G-33 各 1 归并行+G-36..G-41 各 2（誊录+终态）——全部「已收口」或「遗留+理由+去向」 | ✅ |
+| 17 | 本节 R11 记录行（载体） | 等保占位段/免责表述=T15 终稿签发面常量（#10/#14 sign 产物在证）；记录行在册如下；人工法务过审结论行待真人回填 | ⚠️移交真人 |
+| 18 | git diff --check；file -I 新文件；命令史核查 | diff --check rc=0；HUMAN-REVIEW/b6 台账/test_human_review_doc 全 UTF-8 无 BOM；panorama/ 与 /Users/wgen/Documents 全程零触碰 | ✅ |
+
+- **R11 法务过审记录行（出口 #17 载体，格式=结论｜过审人｜日期）**：R11 ｜待真人（复核人不得为本批次执行者）｜待回填——样张=T15 终稿签发面等保占位段+免责表述常量（亲测成形）；过审一次后结论行回填本节之下。
+- **金样变动说明**：两任务均零变动。54 面 PASS（21 读+20 写+2 phases+1 engine+3 graph+2 adapter+1 viz+1 recheck+3 kn）总 hash=a347edd7 与基线逐字节一致；interim-report/calibration/RUNBOOK 新面不属金样锁域，未新增金样面。
+- **纪律面**：全部新文件 UTF-8 无 BOM+LF（file -I 实测）；子进程一律 [sys.executable, path]+显式 timeout；时间戳全显式字面量（出口链 2026-09-26T* 字面 ts，零墙钟入账）；panorama/ 与 /Users/wgen/Documents 零触碰（出口 #18 核查）；共享夹具 G-g1 零触碰（演练/E2E 全在拷贝或仓外）；git diff --check 每任务提交前 clean。
+- **R-记账（T17+T18 时点）**：两任务 commit 先行（0328606/a7c5218），本流水+裁决+出口 18 条记录节独立 commit（批次内既定手法）。
