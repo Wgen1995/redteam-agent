@@ -130,7 +130,8 @@ def _step5_init_home(opts):
 def _step6_selfcheck_gate(opts):
     sc = os.path.join(opts["repo_root"], "cli", "tanyin-selfcheck")
     if not os.path.exists(sc):
-        return 0, "selfcheck: pending Task 6（中间态披露行，Task 6 落地后删除本分支）"
+        # 入口缺=安装树不完整（ENV；非 T5 的 pending 中间态——该分支 T6 已删）
+        return 2, "selfcheck 入口缺（ENV/安装树不完整）"
     r = subprocess.run([sys.executable, sc, "--static",
                         "--install-root", opts["install_root"],
                         "--home", opts["home"]],

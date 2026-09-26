@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-selfcheck · 六项静态验证+宿主手测引导（批次 6 T6；退出码 0/1/2）。
+
+用法：tanyin-selfcheck --static [--install-root R --home H]
+      tanyin-selfcheck --host <name> --guided
+判定命令（出口 #6/#7/#9）：py -3 cli/tanyin-selfcheck --static 六项全 PASS。"""
+import argparse
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import selfcheck  # noqa: E402
+
+
+def main(argv):
+    ap = argparse.ArgumentParser(
+        prog="tanyin-selfcheck",
+        description="六项静态验证（cmd-index/encoding/phases-schema/layout/lock-verify/golden）"
+                    "或宿主手测引导")
+    ap.add_argument("--static", action="store_true", help="跑六项静态检查")
+    ap.add_argument("--install-root", default=None, help="安装树（缺省=仓内默认展开）")
+    ap.add_argument("--home", default=None, help="交战区 home（缺省=仓内默认展开）")
+    ap.add_argument("--host", default=None, help="宿主名（--guided 用）")
+    ap.add_argument("--guided", action="store_true", help="输出一页手测引导")
+    ap.add_argument("--repo-root", default=None, help="缺省=脚本上级目录（仓根）")
+    a = ap.parse_args(argv)
+    repo_root = a.repo_root or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if a.static:
+        worst, items = selfcheck.run_static(a.install_root, a.home, repo_root)
+        for name, rc, detail in items:
+            print("%s\trc=%d\t%s" % (name, rc, detail))
+        print("selfcheck worst=%d" % worst)
+        return worst
+    if a.guided and a.host:
+        print(selfcheck.run_guided(a.host))
+        return 0
+    ap.error("用法: tanyin-selfcheck --static [--install-root R --home H] | "
+             "--host <name> --guided")
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

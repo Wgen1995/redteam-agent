@@ -143,6 +143,18 @@ class TestInstall(unittest.TestCase):
         self.assertFalse(install_core.DEFAULT_INSTALL_ROOT_expanded().startswith(REPO))
         self.assertFalse(install_core.DEFAULT_HOME_expanded().startswith(REPO))
 
+    @unittest.skipUnless(HAVE_SYMLINK, "symlink 权限（Windows 无开发者模式）")
+    def test_install_e2e_selfcheck_gate(self):
+        # T6 端到端六步：第六步真跑 selfcheck（红=此时为 pending 中间态披露行）
+        with tempfile.TemporaryDirectory() as d:
+            code, msg = install_core.install(opts(d))
+            self.assertEqual(code, 0, msg)
+            with open(os.path.join(opts(d)["home"], "install-log.tsv"),
+                      encoding="utf-8") as f:
+                log = f.read()
+            self.assertNotIn("pending", log, "T6 后第六步必须真跑 selfcheck")
+            self.assertIn("selfcheck\trc=0 selfcheck rc=0", log)
+
 
 class TestInstallCli(unittest.TestCase):
     def test_list_hosts(self):
