@@ -197,8 +197,13 @@ def main(argv):
     ap.add_argument("--goal-dir", default=".")
     ap.add_argument("--timestamp", default=None)
     ap.add_argument("--out", default=None)
+    ap.add_argument("--fd", default="")
+    ap.add_argument("--all", action="store_true")
     a = ap.parse_args(argv)
-    if a.cmd != "aggregate":   # render/lint/sign 随 T13/T14 交付扩入
+    if a.cmd == "render":   # 批次 6 T13：FD 九段渲染（--fd <id> | --all）
+        from ledger import report_render
+        return report_render.cli_render(a.goal_dir, a.fd, a.all, a.out)
+    if a.cmd != "aggregate":   # lint/sign 随 T14 交付扩入
         sys.stderr.write("未实现/未知子命令: " + a.cmd + chr(10) + USAGE + chr(10))
         return 2
     try:

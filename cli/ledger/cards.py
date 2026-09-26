@@ -10,7 +10,8 @@ class CardError(Exception):
 
 
 def parse_ev_card(path):
-    text = open(path, encoding="utf-8").read()
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
     if not text.startswith("---"):
         raise CardError("卡片缺 front-matter 起始定界: " + path)
     parts = text.split("\n---\n", 1)
