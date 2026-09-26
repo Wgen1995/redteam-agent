@@ -262,7 +262,12 @@ class TestRangeArtifacts(unittest.TestCase):
             text = f.read()
         self.assertEqual(text.count("build: ./seed/"), 8)   # 8 漏洞服务容器
         self.assertIn("attack-noop", text)                   # 攻击侧 noop
-        self.assertIn("127.0.0.1:", text)                    # 仅本机映射
+        # M-3 评审收尾：range 网 internal:true（漏洞服务零出网）；internal 网下
+        # published ports 被 compose 丢弃（实测 config rc=0 而宿主连接拒）——死映射
+        # 不得声明，探针改经 attack-noop 双网跳板（range+egress 出网例外）。
+        self.assertIn("internal: true", text)
+        self.assertNotIn("127.0.0.1:", text)
+        self.assertRegex(text, r"attack-noop:[\s\S]*?egress")
 
 
 if __name__ == "__main__":

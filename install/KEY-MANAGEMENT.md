@@ -58,11 +58,19 @@
 
 ## 4 替换（release.pub 换生产公钥）
 
-- 生产钥就绪后：`engines/nuclei/release.pub` 替换为生产公钥（显式
-  `tanyin-install --release` 通道，交互确认行确认后生效；本批 --release 交互通道
-  待批次 6 出口评审统一接线，当前替换动作=人工换文件+整锁重签+全套验证）。
-- 同步动作：①§3 整锁重签（生产钥）②发布记录追加公钥指纹行 ③旧 TEST 钥保留于
-  `tests/fixtures/keys/`（CI 永用，见 §5）。
+- 生产钥就绪后：`engines/nuclei/release.pub` 替换为生产公钥=显式
+  `tanyin-install --release --pubkey <生产 release.pub 路径> --timestamp <TS>`
+  通道（批次 6 评审收尾 I-2 接线；裁决 C）：
+  ① 前置校验=新钥路径传入 verify 面替换 TEST-ONLY 缺省锚，对 tools.lock 整锁
+    验签——不过=exit 1 fail-closed（§5 原子变更：新钥与整锁重签必须同一次提交
+    落地，旧钥新锁/新钥旧锁中间态一律拒绝）；
+  ② 交互确认=打印旧锚/新钥双 sha256 指纹后输入确认令牌 **REPLACE**——其他输入
+    或流关闭=exit 2 缺确认，锚文件字节零变化（不静默）；
+  ③ 确认后原子替换锚文件（同目录临时文件+os.replace），`release-anchor` 行随
+    退出码落 `install-log.tsv`（时间戳显式传入，禁墙钟）。
+- 同步动作：①§3 整锁重签（生产钥，先于本通道）②发布记录追加公钥指纹行
+  ③旧 TEST 钥保留于 `tests/fixtures/keys/`（CI 永用，见 §5）④换锚后复跑六步
+  安装+selfcheck 复核（verify-lock 即以新锚验签）。
 
 ## 5 CI 关系（信任锚分离，永续纪律）
 

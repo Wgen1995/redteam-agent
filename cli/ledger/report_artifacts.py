@@ -48,9 +48,12 @@ _THINK_PAIRED = re.compile(
 _THINK_OPEN = re.compile(
     r"<(think|thinking|reasoning)\b[^>]*>[\s\S]*\Z", re.IGNORECASE)
 _ROUND_LINE = re.compile(
-    r"^\s*(──\s*)?(Cycle\s*\d+\s*\|\s*)?Round\s+\d+(──)?\s*$", re.IGNORECASE)
+    r"^\s*(──\s*)?(Cycle\s*\d+\s*\|\s*)?Round\s+\d+(\s*──\s*)?$", re.IGNORECASE)
+# 注（M-1 收尾）：_SEP_LINE 收窄为纯标线前，「── Round 7 ──」尾部带空格形原被旧
+# _SEP_LINE 一并吞掉——收窄暴露该缺口，尾部组改 (\s*──\s*)?（既有测试
+# test_multiline_think_and_round 即规约；『──事实──』等内容行不受影响）。
 _ROUND_CN = re.compile(r"^\s*第\s*\d+\s*轮\s*$")
-_SEP_LINE = re.compile(r"^\s*──.*──\s*$")
+_SEP_LINE = re.compile(r"^\s*─+\s*$")  # 纯标线（M-1 收窄：『──事实──』包裹行保留，反例入册）
 _LLM_LINE = re.compile(r"^\s*\[LLM\s+[A-Z_]+\].*$")
 _RESULT_PREFIX = re.compile(r"^\s*\[(结果|输出)\]\s*:?")
 

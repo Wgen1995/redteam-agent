@@ -44,6 +44,9 @@ def main(argv):
     ap.add_argument("--timestamp", default=None, help="显式 ISO8601（禁墙钟进安装日志；安装路径必填）")
     ap.add_argument("--list-hosts", action="store_true",
                     help="打印五宿主模板 verification 字段（§10.3 发布口径）")
+    ap.add_argument("--release", action="store_true",
+                    help="信任锚替换通道（裁决 C；KEY-MANAGEMENT §4）：--pubkey "
+                         "新锚公钥路径传入 verify 面替换 TEST-ONLY 缺省锚，交互确认后生效")
     a = ap.parse_args(argv)
     repo_root = a.repo_root or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     if a.list_hosts:
@@ -63,6 +66,12 @@ def main(argv):
             "home": a.home or install_core.DEFAULT_HOME_expanded(),
             "host": a.host, "repo_root": repo_root,
             "pubkey": a.pubkey, "timestamp": a.timestamp}
+    if a.release:
+        # I-2（裁决 C 接线）：--release 信任锚替换通道（独立于六步安装；换锚后
+        # 复跑六步安装即以新锚验签——KEY-MANAGEMENT §4 同步动作 ①整锁重签 ②指纹行）
+        code, msg = install_core.release_anchor(opts)
+        print(msg)
+        return code
     code, msg = install_core.install(opts)
     print(msg)
     return code

@@ -22,7 +22,7 @@
 |---|---|---|
 | G-36 | **登记·临时态通道** | 判读说明单列披露已机检化（T13 段⑥变体单列+T14 burp_pasteable HTTP/2 帧/TLS fail-closed why 载判读说明，02fbab2/f0927e8）；真帧样本在库前不裁直贴形态（不造数据）；去向=真样本出现时契约 06 再勘误 |
 | G-37 | **遗留→契约 v3** | 首采数据已落盘=tests/evals/calib/token-calibration.json（T17 真跑：n=76/median=1.116/min=0.941/max=1.343，宿主真实 metering vs PROTOCOL §2 冻结公式，0328606）；理由=公式冻结承诺（裁决 G：金样/预算面零扰动），系数回写涉全量估算面；去向=契约 v3 微版本（与 G-4 同批） |
-| G-38 | **遗留·待实测回传** | walcode/CodeBuddy=静态验证+待实测（T5/T8 盲区通道+guided probe_results 回传形态，3c110c9/99d08ad；R-T8-2 现登记于 install/README 宿主矩阵节）；升档条件=实测回传入册；去向=执行期回传后矩阵升档 |
+| G-38 | **遗留·待实测回传** | walcode/CodeBuddy=静态验证+待实测（T5/T8 盲区通道+guided probe_results 回传形态，3c110c9/99d08ad；R-T8-2 现登记于 install/README 宿主矩阵节）；升档条件=实测回传入册；去向=执行期回传后矩阵升档。**hook 模板面注记（评审收尾 I-1，2026-09-26）**：install/hooks/ 三宿主模板（dsh/opencode/codex）落库+安装器 step4 真挂载——实测回传时点=dsh 本仓实测面即验（安装两轮幂等+模板在位机检）；opencode/codex 真宿主 hook 接线=执行期 headless/guided 通道回传（与 G-38 升档同批）；walcode/CodeBuddy 无 hook 机制=Tier 1+披露不变 |
 | G-39 | **登记·基线 v1 已冻结** | 基线 v1=1.00（20/20）frozen_at=2026-09-26T10:00:00Z 入册 metrics-v1.json+契约 15 §3 M09 行（T16 c15fb3b）；回退即 fail 对在环跑同样生效；转全面硬门化时点留批次 7 裁决；LLM 在环复测通道=tests/range/RUNBOOK.md §6（R-T16-3 收口通道） |
 | G-40 | **遗留·发布前 L3** | TSecBench 对齐脚手架已交付不阻塞 CI（T3 04c05c8；设计 §9.3 发布前人工项）；去向=发布前 L3 全量对齐（tests/evals/l3/ 载体在库） |
 | G-41 | **登记·披露三载** | 代理=机械执法组件非性能件；并发/性能上限未测披露三载（T10 serve 启动横幅+契约 11 v3 勘误+install/README 守门声明节，0ff03ae）；去向=性能需求出现时专项实测（先钉预算再测） |
@@ -46,7 +46,7 @@
 - **真人复核 10 页**（出口 #15）：docs/HUMAN-REVIEW.md 附录表待真人填写——复核人不得为本批次执行者；结论齐备后 log.md 复核行核对一致。
 - **R11 法务过审**（出口 #17）：等保占位段/免责表述样张已随 T15 终稿签发面成形；人工法务过审一次并将结论一行入 HANDOFF（本批先行记录行在册）。
 - **G-22 真钥生成仪式**：离线介质机人工执行；执行记录落 KEY-MANAGEMENT §执行记录位；生产 release.pub 替换走显式通道交互确认。
-- **G-38 walcode/CodeBuddy 实测回传**：guided 第 4 步 probe_results 贴回→install/README 矩阵升档。
+- **G-38 walcode/CodeBuddy 实测回传**：guided 第 4 步 probe_results 贴回→install/README 矩阵升档；opencode/codex 真宿主 hook 接线（install/hooks 模板已挂载，I-1）随同批回传时点落地。
 - **G-36 真帧样本**：HTTP/2/TLS 真帧样本在库后重启直贴形态裁决（契约 06 再勘误）。
 - **契约 v3 预定两笔**：G-4 重启成本口径定标；G-37 token 系数按校准报告回写（首采 median=1.116 为候选依据）。
 - **CI 远端复核**（出口 #5）：push 后 GitHub Actions 页面复核四格矩阵+evals job 绿（本环境无 gh CLI，HANDOFF 状态快照行如实注记）。

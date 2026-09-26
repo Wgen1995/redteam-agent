@@ -1,46 +1,44 @@
 # 授权靶场拓扑（批次6 T16；裁决 I）——8 漏洞服务容器+1 攻击侧 noop。
-# 仅监听 compose 内网（range 网络）；宿主侧仅 127.0.0.1 映射（禁 0.0.0.0 暴露）。
+# M-3 评审收尾：range 网 internal:true——漏洞服务零出网、宿主零暴露；internal 网
+# 下 published ports 被 compose 丢弃（实测 config rc=0 而宿主连接拒），故不声明
+# 死映射——探针经 attack-noop 双网跳板（docker compose exec attack-noop …，svc 名
+# :8000 内网 DNS 直连）；attack-noop 出网例外=egress 非 internal 网挂载（compose
+# 语义：服务仅经非 internal 网出网）。
 # 全部合成 payload（seed/*/app.py 响应体内嵌唯一 marker）；靶场=本地回环资产。
 services:
   svc-shop:
     build: ./seed/svc-shop
-    ports: ["127.0.0.1:8001:8000"]
     networks: [range]
   svc-dashboard:
     build: ./seed/svc-dashboard
-    ports: ["127.0.0.1:8002:8000"]
     networks: [range]
   svc-api-gw:
     build: ./seed/svc-api-gw
-    ports: ["127.0.0.1:8003:8000"]
     networks: [range]
   svc-files:
     build: ./seed/svc-files
-    ports: ["127.0.0.1:8004:8000"]
     networks: [range]
   svc-portal:
     build: ./seed/svc-portal
-    ports: ["127.0.0.1:8005:8000"]
     networks: [range]
   svc-admin:
     build: ./seed/svc-admin
-    ports: ["127.0.0.1:8006:8000"]
     networks: [range]
   svc-billing:
     build: ./seed/svc-billing
-    ports: ["127.0.0.1:8007:8000"]
     networks: [range]
   svc-login:
     build: ./seed/svc-login
-    ports: ["127.0.0.1:8008:8000"]
     networks: [range]
   attack-noop:
     image: python:3.12-alpine
     command: ["sleep", "infinity"]        # 攻击侧占位（真实干跑由 RUNBOOK 驱动，T17）
-    networks: [range]
+    networks: [range, egress]             # 出网例外：egress 非 internal 网（M-3）
 
 networks:
   range:
+    internal: true                        # M-3：漏洞服务网出网隔离
     ipam:
       config:
         - subnet: 172.28.0.0/24           # 固定网段（可复铸；避让本机既有网段）
+  egress: {}                              # 缺省桥接（attack-noop 出网例外挂载点）

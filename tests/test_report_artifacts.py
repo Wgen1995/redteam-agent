@@ -206,6 +206,14 @@ class TestFilter(unittest.TestCase):
         self.assertNotIn("Round 7", clean)
         self.assertIn("正文保留段", clean)
 
+    def test_sep_line_narrow_keeps_wrapped_label(self):
+        """M-1 评审收尾：_SEP_LINE 收窄为纯标线——『──事实──』包裹行保留（反例测试）。"""
+        dirty = "──事实──\n正文行保留\n────────────────\n结论行"
+        clean = report_artifacts.narrative_filter(dirty)
+        self.assertIn("──事实──", clean)
+        self.assertIn("正文行保留", clean)
+        self.assertNotIn("────────────────", clean, "纯标线仍剥（收窄不放松）")
+
     def test_debug_prefix_lines(self):
         dirty = "[LLM THINKING] 内部态\n[结果] ok\n结论正文行"
         clean = report_artifacts.narrative_filter(dirty)

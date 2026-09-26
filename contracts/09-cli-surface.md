@@ -30,7 +30,7 @@
 | 6 | tanyin-report | 确定性重建与投影 | 报告流水线：aggregate/render/lint/sign（聚合器+FD 九段渲染+G-25 签发门+findings.json/SARIF 双工件——批次 6 T12-T15） |
 | 7 | tanyin-viz | 确定性重建与投影 | 投影 |
 | 8 | tanyin-replay | 确定性重建与投影 | 重放驱动 |
-| 9 | tanyin-install | 安装与自检 | 六步安装器+refresh-cve CVE 刷新（批次 6 T5/T9） |
+| 9 | tanyin-install | 安装与自检 | 六步安装器+refresh-cve CVE 刷新+--release 信任锚替换通道（批次 6 T5/T9+评审收尾 I-2） |
 | 10 | tanyin-selfcheck | 安装与自检 | --static 六项静态验证 / --host <name> --guided 手测引导（批次 6 T6） |
 | 11 | tanyin-phases | 确定性账本运算 | phases.yaml 确定性状态机运算（validate/gate/restart/resume-kit/cached/rebuild-state/denominator-ready/trigger-audit；批次 3 交付+批4 增补 trigger-audit，断言→命令调用协议见 phases/PROTOCOL.md） |
 | 12 | tanyin-knowledge | 确定性账本运算（同型） | 知识库机械运算：init/source-register/lint/approve/commit/export/match/neighbors/nday-match/score/promote/demote/client-map（13 子命令；语义提炼禁入——铁律 7；批量间接口=契约 14） |
@@ -146,3 +146,8 @@ set-cred-status 终审归写入（写19/查11/校验10=41）——探知项已�
 - 计划 T18 字面「工具面 11→15——+evals/install/selfcheck/report」与表实况不符：install/selfcheck/report 三行批次 0 誊录已在表（行 9/10/6，非批次 6 新增），knowledge=#12 已于批次 5 增补——按实况为锚 12→14（R-T9-1/R-T10-1 先例同律），并列职责刷新五行（report 四子命令/egress serve/install 六步+refresh-cve/selfcheck 六项+guided/canary --egress-log 注记）。
 - 自验复跑：工具表 `grep -cE '^\| [0-9]+ \| tanyin-' contracts/09-cli-surface.md` → **14**（§「自验」原有 10 为 2026-09-23 冻结时点基线，保留可追溯）。
 - 勘误通道：微版本勘误（零存量数据期，G-1 10→11 先例同通道），schema_version 保持 =2 不递增；本补记日期 2026-09-26。
+
+## v2 勘误补记（2026-09-26·批次 6 评审收尾·I-2）
+
+- tanyin-install 职责面补注：**--release 信任锚替换通道**接线（裁决 C 兑现收口）——显式旗标+新锚公钥路径（--pubkey）传入 verify 面替换 TEST-ONLY 缺省锚，整锁须已在新钥下重签（不过=exit 1，KEY-MANAGEMENT §5 原子变更）→交互确认（REPLACE 令牌；缺确认=exit 2）→锚文件原子替换+release-anchor 行落 install-log.tsv。命令面零新增（既有 #9 行职责补注；install-log=交战区审计通道，非账本命令面）。
+- 勘误通道：微版本勘误（零存量数据期，同上则先例），schema_version 保持 =2 不递增；本补记日期 2026-09-26。

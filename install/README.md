@@ -16,7 +16,7 @@ py -3 cli/tanyin-selfcheck --static                       # 六项静态验证�
 | 1 | verify-lock | tools.lock 逐键 ECDSA 验签（批次 4 单源 supply_chain，openssl 子进程 fail-closed） | 签名不过=1；openssl/公钥缺=2 |
 | 2 | authoritative-dir | 白名单拷贝仓内容→install_root（`_AUTH`；.git/tests/docs/panorama 不进安装树） | 权威项缺=1 |
 | 3 | host-link | 按宿主模板 `hosts/<host>.json` 的 skill_link_dirs 建 symlink（重链幂等） | 目标被占=1；symlink 权限=2 |
-| 4 | hooks | hook_mechanism 宿主装 install/hooks 模板（T8 落地）；无机制宿主=Tier 1+披露 | — |
+| 4 | hooks | hook_mechanism 宿主真挂载 `install/hooks/<host>.md`→`<install_root>/hooks/`（幂等覆盖；I-1 交付：生命周期事件→tanyin CLI 调用示例+占位说明）；无机制宿主=Tier 1+披露 | 模板缺=1（fail-closed 拒装） |
 | 5 | init-home | 交战区初始化：engagements/knowledge/report 与安装区分离；knowledge 种树拷入（R-T12-4：k1-baseline.tsv 随装） | — |
 | 6 | selfcheck | 接 `tanyin-selfcheck --static` 门（T6 落地前为中间态披露行） | 门不过=随其退出码 |
 
@@ -51,11 +51,12 @@ py -3 cli/tanyin-selfcheck --static                       # 六项静态验证�
 ## 信任锚
 
 - 缺省 `engines/nuclei/release.pub`（当前=TEST-ONLY 夹具钥，批次 4 原样）；`--pubkey` 覆盖。
+- 生产锚替换=显式 `tanyin-install --release --pubkey <生产 release.pub>` 通道（批次 6 评审收尾 I-2 接线；裁决 C）：新钥路径传入 verify 面替换缺省锚——整锁须已在新钥下重签（不过=exit 1，§5 原子变更）→交互确认（REPLACE 令牌；缺确认=exit 2）→锚文件原子替换，release-anchor 行落 install-log。详见 `KEY-MANAGEMENT.md` §4。
 - 生产钥生成/保管/重签流程=G-22，随批次 6 T9 落 `KEY-MANAGEMENT.md`+`resign-tools-lock.py`（本目录）；CI/测试永用 TEST-ONLY 夹具钥，与生产钥无信任关系。
 
 ## hooks 模板
 
-AGENTS 系统级注入=五宿主统一常驻通道（批次 6 T8 交付，见上节）；`install/hooks/` 逐宿主 hook 模板目录在实测宿主需求落地前维持 install_core step4 占位披露（不阻塞安装）；无 hook 机制宿主（walcode/CodeBuddy）安装时落 Tier 1+披露行。
+AGENTS 系统级注入=五宿主统一常驻通道（批次 6 T8 交付，见上节）；`install/hooks/` 逐宿主 hook 模板（dsh/opencode/codex，批次 6 评审收尾 I-1 落库）：安装器 step4 真挂载——hook_mechanism 宿主将 `install/hooks/<host>.md` 幂等覆盖至 `<install_root>/hooks/<host>.md`（模板缺=fail-closed 拒装，占位披露中间态废除）；模板形态=最小可用（生命周期事件→tanyin CLI 调用示例+占位说明+G-38 实测回传时点注记）；判定语义与 cli/ledger/enforce.py 单源同源，真宿主原生 hook API 接线属实测回传通道。无 hook 机制宿主（walcode/CodeBuddy）安装时落 Tier 1+披露行、零文件落装。
 
 ## 守门声明（Tier 3 egress 代理；批次 6 T10）
 

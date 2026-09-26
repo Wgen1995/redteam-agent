@@ -103,16 +103,21 @@ def _step3_host_link(opts):
 
 
 def _step4_hooks(opts):
+    """I-1（批次 6 评审收尾；T8 计划面）：install/hooks/<host>.md 逐宿主真挂载。
+
+    hook_mechanism 宿主→模板 copy2 幂等覆盖至 <install_root>/hooks/<host>.md；
+    模板缺=rc 1 fail-closed（「占位披露 rc 0」中间态废除——模板已交付，缺=安装树
+    不完整）；无机制宿主=Tier 1+披露零落装（M-5：占位文案随之更新）。"""
     tpl = _host_template(opts["repo_root"], opts["host"])
     if not tpl.get("hook_mechanism"):
         return 0, "hooks: 宿主无 hook 机制→Tier 1+披露（落 install-log）"
-    src = os.path.join(opts["repo_root"], "install", "hooks")
-    if not os.path.isdir(src):
-        # 模板目录批次 6 T8 落地；落盘前占位披露（不阻塞安装）
-        return 0, "hooks: 模板未在库（批次6 T8 落地前占位披露）"
-    dst = os.path.join(opts["install_root"], "hooks", opts["host"])
-    shutil.copytree(src, dst, dirs_exist_ok=True, ignore=_IGNORE)
-    return 0, "hooks ok (%s)" % opts["host"]
+    src = os.path.join(opts["repo_root"], "install", "hooks", opts["host"] + ".md")
+    if not os.path.isfile(src):
+        return 1, "hooks: 宿主模板缺 install/hooks/%s.md——fail-closed 拒装" % opts["host"]
+    dst_dir = os.path.join(opts["install_root"], "hooks")
+    os.makedirs(dst_dir, exist_ok=True)
+    shutil.copy2(src, os.path.join(dst_dir, opts["host"] + ".md"))
+    return 0, "hooks ok (%s 模板挂载→install_root/hooks)" % opts["host"]
 
 
 def _step5_init_home(opts):
@@ -139,6 +144,68 @@ def _step6_selfcheck_gate(opts):
                        errors="replace", timeout=1800,
                        cwd=opts["repo_root"], env={**os.environ, "PYTHONUTF8": "1"})
     return (0 if r.returncode == 0 else r.returncode), "selfcheck rc=%d" % r.returncode
+
+
+CONFIRM_TOKEN = "REPLACE"   # --release 交互确认令牌（缺确认=exit 2，裁决 C）
+
+
+def release_anchor(opts, confirm_stream=None):
+    """I-2（批次 6 评审收尾；裁决 C 接线）：--release 信任锚替换通道。
+
+    新锚公钥路径（--pubkey）传入 verify 面（_step1_verify_lock）替换 TEST-ONLY
+    缺省锚：tools.lock 必须已在新钥下整锁重签（KEY-MANAGEMENT §5 原子变更——
+    新钥与重签锁同提交落地，旧钥新锁/新钥旧锁中间态=rc 1 fail-closed）→交互
+    确认（CONFIRM_TOKEN 之外输入/流关闭=rc 2 缺确认，锚文件字节零变化）→
+    确认后原子替换 engines/nuclei/release.pub（tempfile 同目录+os.replace）。
+    返回 (rc, msg)；release-anchor 行随 rc 落 install-log.tsv（timestamp 显式）。
+    CI 与测试永续 TEST-ONLY 夹具钥（KEY-MANAGEMENT §5），本通道只在生产钥仪式
+    由人工显式触发；测试经临时仓根副本驱动，绝不触真仓锚文件。"""
+    repo_root = opts["repo_root"]
+    pubkey = opts.get("pubkey")
+    if not pubkey or not os.path.isfile(pubkey):
+        rc, msg = 2, "release: 新锚公钥缺（--pubkey 路径必填）"
+        _log(opts["home"], [("release-anchor", rc, msg)], opts["timestamp"])
+        return rc, msg
+    vcode, vmsg = _step1_verify_lock(repo_root, pubkey)
+    if vcode != 0:
+        rc = vcode if vcode == 1 else 2
+        msg = "release: 前置校验不过（%s）——§5 原子变更：新钥与整锁重签须同提交" % vmsg
+        _log(opts["home"], [("release-anchor", rc, msg.replace("\t", " "))], opts["timestamp"])
+        return rc, msg
+    target = os.path.join(repo_root, "engines", "nuclei", "release.pub")
+
+    def _fp(path):
+        with open(path, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()
+
+    old_fp, new_fp = _fp(target), _fp(pubkey)
+    prompt = ("[release] 信任锚替换通道（裁决 C；KEY-MANAGEMENT §4）\n"
+              "[release] 目标: engines/nuclei/release.pub\n"
+              "[release] 旧锚 sha256: %s\n"
+              "[release] 新钥 sha256: %s\n"
+              "[release] 前置校验: tools.lock 整锁新钥验签 PASS\n"
+              "[release] 输入 %s 确认替换（其他输入/EOF=放弃，exit 2）: "
+              % (old_fp, new_fp, CONFIRM_TOKEN))
+    stream = confirm_stream if confirm_stream is not None else sys.stdin
+    sys.stdout.write(prompt)
+    sys.stdout.flush()
+    try:
+        line = stream.readline()
+    except Exception:            # 流故障=缺确认（fail-closed 不静默）
+        line = ""
+    if (line or "").strip() != CONFIRM_TOKEN:
+        rc, msg = 2, "release: 缺确认（输入非 %s 或流关闭）——锚文件零变化" % CONFIRM_TOKEN
+        _log(opts["home"], [("release-anchor", rc, msg)], opts["timestamp"])
+        return rc, msg
+    # 原子替换：同目录临时文件+os.replace（换锚瞬间不留半写中间态）
+    tmp = target + ".release-tmp"
+    with open(pubkey, "rb") as fsrc, open(tmp, "wb") as fdst:
+        fdst.write(fsrc.read())
+    os.replace(tmp, target)
+    rc = 0
+    msg = "release: 锚已替换 old=%s new=%s（CI/测试永续 TEST-ONLY 夹具钥，§5）" % (old_fp, new_fp)
+    _log(opts["home"], [("release-anchor", rc, msg)], opts["timestamp"])
+    return rc, msg
 
 
 def install(opts):

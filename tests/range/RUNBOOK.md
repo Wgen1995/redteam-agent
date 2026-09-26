@@ -56,6 +56,14 @@
 单测出口（计划 T17 Step 4 口径）。已有记录：T16 首跑=脚本化真实 HTTP 探针干跑
 （20/20 marker 命中，基线 v1=1.00 入册，R-T16-3）；LLM 在环复测通道=§6。
 
+> **M-3 评审收尾（internal:true）探针通道变更**：range 网 internal:true 后宿主
+> 端口映射不再发布（compose 语义：published ports discarded）——活靶探针经
+> attack-noop 双网跳板执行，例：
+> `docker compose -f tests/range/docker-compose.yml exec -T attack-noop python -c "...urllib..."
+> （svc-<名>:8000 内网 DNS 直连；post_auth 项带 X-Auth-Token 头；302 项禁跟随，
+> marker 判 Location/响应体——20/20 判据不变）。T16 首跑记录（127.0.0.1 映射形）
+> 为历史口径如实保留，不回改。
+
 ## 5 budget-exhausted 终态 B 支线（四步；2026-09-26 T17 亲测于 G-g1 拷贝）
 
 | # | 动作 | 判定命令 | 预期 | 实测 |
