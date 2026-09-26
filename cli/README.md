@@ -180,3 +180,26 @@ python3 tests/eval_knowledge_spotcheck.py --knowledge-dir knowledge --origin cnp
 
 批次 5 出口验证：双知识库抽查 §9.4 四判据 exit 0（cnpen/external 双跑）+反向验证零命中双向断言（脏=detected/净=zero-hits）+种子 lint 全 PASS+export 双跑 sha256 一致（确定性）+tanyin-redact --reverse-verify 进 P6 门断言真跑；探知项台账见 docs/design/2026-09-24-b5-discovery-notes.md（G-29..G-35 终态）。
 
+
+## 批次 6：三层验收 CI 化+安装矩阵+报告流水线+授权靶场+交付收口（T1-T18）
+
+四新工具速查（薄 CLI 标准库；铁律 7 四类边界全文有效）：
+
+| 工具 | 形态 | 语义 |
+|---|---|---|
+| tanyin-evals | `run --suite=static\\|dynamic\\|all --goal-dir D [--metrics=…] [--out=…] \| list` | evals 运行器：12 指标 M01-M12（契约 15 机读 schema）+退出码裁决 0=全 PASS/1=硬门 FAIL/2=ENV-SKIP（裁决 A）；runner 注册表单源（cli/ledger/evals_metrics.py） |
+| tanyin-install | `--home <dir> [--host=dsh] [--install-root=…] [--repo-root=…] --timestamp=T`（+`refresh-cve --from <url>`） | 六步安装器：lock 验签→权威目录→symlink→hook→HOME 初始化→selfcheck（幂等断言内建）；五宿主矩阵 `--list-hosts` |
+| tanyin-selfcheck | `--static` / `--host <name> --guided` | 六项静态验证（cmd-index/encoding/phases-schema/layout/lock-verify/golden）/宿主手测引导一页 |
+| tanyin-report | `aggregate\\|render\\|lint\\|sign --goal-dir D --timestamp T` | 报告流水线：13 表聚合→FD 九段渲染→G-25 签发门（lint 同判定不落凭证；sign 落凭证+findings.json+SARIF 双工件+budget-exhausted 中期报告 interim-report.md） |
+
+配套增面：`tanyin-egress serve`（Tier3 代理本体：HTTP/CONNECT+DNS pin+OOB/canary 告警——egress-log.jsonl 唯一运行时工件）、`tanyin-canary probe --egress-log=<path>`（流量级证据源）、契约 13 终态 B（budget-exhausted=合法签发终态+中期披露四件套）、锁 v2 探活（G-5）、tools.lock 全量 8 键+KEY-MANAGEMENT 生产钥流程（G-22）、refresh-cve 双通道（G-32）、双锚互证 M12 硬门（G-33）、授权靶场种 20+scorer（tests/range/，基线 v1=1.00）+全流程演练剧本（tests/range/RUNBOOK.md）。
+
+### 安装矩阵用法
+
+```
+python3 cli/tanyin-install --home ~/.tanyin --host=dsh --timestamp=2026-09-26T00:00:00Z   # 六步安装（幂等，连跑两次零变更）
+python3 cli/tanyin-selfcheck --static                                                      # 六项静态（exit 0=全过）
+python3 cli/tanyin-selfcheck --host=dsh --guided                                           # 手测引导（能力探测+冒烟清单+回传模板）
+```
+
+批次 6 出口验证：整批出口验收清单 18 条逐条亲跑实测记录=docs/HANDOFF.md「批次 6 状态快照+出口清单执行记录」节（全套 728+ 绿/金样 54 面 PASS/evals 全量绿/安装六步幂等/交战区分离/签发门正反例/靶场检出率/终态 B 演练/真人复核载体/G 项台账 G-36..G-41 收口）；探知项台账见 docs/design/2026-09-24-b6-discovery-notes.md；真人复核流程=docs/HUMAN-REVIEW.md（复核人不得为本批次执行者）。

@@ -48,9 +48,11 @@ class TestContract14(unittest.TestCase):
         self.assertIn("MIT", t)  # 外部语料许可纪律（VulnClaw/BugHunter/Threatswarm/CEP）
 
 class TestToolFace12(unittest.TestCase):
-    def test_tool_table_counts_12(self):
+    def test_tool_table_counts_14(self):
+        # 批次 6 T18 勘误 12→14（+#13 tanyin-evals、+#14 tanyin-budgetctl 补缺——契约 09
+        # 文末 2026-09-26 补记）；本钉随勘误同笔更新（T14「旧例随解除更新」同律）。
         n = len(re.findall(r"^\| \d+ \| tanyin-", _read(C09), re.M))
-        self.assertEqual(n, 12, "工具表应 12 行（tanyin-knowledge 增补）")
+        self.assertEqual(n, 14, "工具表应 14 行（批次 6 T18 勘误：evals+budgetctl 补缺）")
 
     def test_erratum_note_present(self):
         t = _read(C09)

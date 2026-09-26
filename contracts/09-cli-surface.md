@@ -18,22 +18,24 @@
 | 确定性重建与投影 | 从账本零 LLM 方差生成 | tanyin-report（聚合器）、tanyin-viz、tanyin-replay（重放驱动） |
 | 安装与自检 | 环境探测、验签 | tanyin-install、tanyin-selfcheck |
 
-## 3 命令面清单（工具箱 12 工具；10→11/11→12 见文末 2026-09-24 勘误补记）
+## 3 命令面清单（工具箱 14 工具；10→11/11→12/12→14 见文末勘误补记）
 
 | # | 工具 | 允许类 | 职责（§2.4 口径） |
 |---|---|---|---|
 | 1 | tanyin-ledger | 确定性账本运算 | 37 条账本命令（见 §5） |
 | 2 | tanyin-guard | 机械执法与脱敏 | scope-guard 包装器 |
 | 3 | tanyin-redact | 机械执法与脱敏 | 脱敏 |
-| 4 | tanyin-canary | 机械执法与脱敏 | canary 探测 |
-| 5 | tanyin-egress | 机械执法与脱敏 | egress 代理 |
-| 6 | tanyin-report | 确定性重建与投影 | 聚合器 |
+| 4 | tanyin-canary | 机械执法与脱敏 | canary 探测（deploy/probe/recon 面；probe --egress-log=<path> 流量级证据源可选——批次 6 T11 增注） |
+| 5 | tanyin-egress | 机械执法与脱敏 | egress 代理（compile/verify/dry-run+serve 代理本体——批次 6 T10） |
+| 6 | tanyin-report | 确定性重建与投影 | 报告流水线：aggregate/render/lint/sign（聚合器+FD 九段渲染+G-25 签发门+findings.json/SARIF 双工件——批次 6 T12-T15） |
 | 7 | tanyin-viz | 确定性重建与投影 | 投影 |
 | 8 | tanyin-replay | 确定性重建与投影 | 重放驱动 |
-| 9 | tanyin-install | 安装与自检 | 安装器 |
-| 10 | tanyin-selfcheck | 安装与自检 | 自检 |
+| 9 | tanyin-install | 安装与自检 | 六步安装器+refresh-cve CVE 刷新（批次 6 T5/T9） |
+| 10 | tanyin-selfcheck | 安装与自检 | --static 六项静态验证 / --host <name> --guided 手测引导（批次 6 T6） |
 | 11 | tanyin-phases | 确定性账本运算 | phases.yaml 确定性状态机运算（validate/gate/restart/resume-kit/cached/rebuild-state/denominator-ready/trigger-audit；批次 3 交付+批4 增补 trigger-audit，断言→命令调用协议见 phases/PROTOCOL.md） |
 | 12 | tanyin-knowledge | 确定性账本运算（同型） | 知识库机械运算：init/source-register/lint/approve/commit/export/match/neighbors/nday-match/score/promote/demote/client-map（13 子命令；语义提炼禁入——铁律 7；批量间接口=契约 14） |
+| 13 | tanyin-evals | 确定性账本运算（同型） | evals 运行器：run/list 三子命令（report=run --out 同面）；指标集 JSON schema 机读（契约 15+tests/evals/metrics-v1.json）+退出码裁决 0/1/2（裁决 A；runner 注册表单源）——批次 6 T1 交付 |
+| 14 | tanyin-budgetctl | 机械执法与脱敏 | 预算树余量门（enforce——零余量即拒派 REJECT budget-exhausted 落账）+速率滑窗熔断（rate）；批次 2 起在场而本表漏登记，批次 6 T18 补缺（R-T18-2） |
 
 ## 4 铁律 7 边界
 
@@ -137,3 +139,10 @@ set-cred-status 终审归写入（写19/查11/校验10=41）——探知项已�
 
 - canary/egress 干跑口径契约侧补注（G-8 清账）：干跑（无目标自检）口径=**egress 只 compile（本地产物，无网络）、canary 只 deploy（本地登记）不 probe**——P0-P2 照常经账本命令落账、零对外请求，不调 tanyin-guard exec、不调 tanyin-canary probe（PROTOCOL §3 已冻结，本笔=契约侧补注清账；命令面零变更）。
 - 勘误通道：微版本勘误（零存量数据期，同上则先例），schema_version 保持 =2 不递增；本补记日期 2026-09-24。
+
+## v2 勘误补记（2026-09-26·批次 6 施工期·T18 收口）
+
+- 工具面 12→**14**：增补 **#13 tanyin-evals**（evals 运行器：run/list+指标集 JSON schema 机读〔契约 15〕+退出码裁决 0/1/2〔裁决 A〕；runner 注册表单源；理由=指标集机读与退出码裁决需独立载体，并入 tanyin-ledger 面不可行——44 账本命令面冻结，tanyin-knowledge #12 同型先例）+ **#14 tanyin-budgetctl 补缺**（预算树余量门 enforce+速率熔断 rate——批次 2 起在场、KNOWN_COMMANDS 冻结面在册而本表自批次 0 誊录起漏登，本笔补齐）。
+- 计划 T18 字面「工具面 11→15——+evals/install/selfcheck/report」与表实况不符：install/selfcheck/report 三行批次 0 誊录已在表（行 9/10/6，非批次 6 新增），knowledge=#12 已于批次 5 增补——按实况为锚 12→14（R-T9-1/R-T10-1 先例同律），并列职责刷新五行（report 四子命令/egress serve/install 六步+refresh-cve/selfcheck 六项+guided/canary --egress-log 注记）。
+- 自验复跑：工具表 `grep -cE '^\| [0-9]+ \| tanyin-' contracts/09-cli-surface.md` → **14**（§「自验」原有 10 为 2026-09-23 冻结时点基线，保留可追溯）。
+- 勘误通道：微版本勘误（零存量数据期，G-1 10→11 先例同通道），schema_version 保持 =2 不递增；本补记日期 2026-09-26。
