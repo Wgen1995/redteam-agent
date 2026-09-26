@@ -14,7 +14,7 @@ sign_gate 聚合门（出口清单 #10）：全部 active FD 渲染 rc==0+九段
 +时间链（issued_at=ts）+redact-scan 零泄漏（子进程）+cleanup-checklist rc==0（子进程——
 P6 清理门接线，命令零改动）+tier 披露在+合规六要素齐+禁空话句式；任一不过=rc 1 且 FAIL
 明细落报告；全过=rc 0 且落 report/signed/pass.json（签发凭证：goal+ts+各门结果）。
-lint=同门不落凭证；sign=lint+凭证（+Task 15 write_all 接线点——本批披露行明示未接线）。
+lint=同门不落凭证；sign=lint+凭证+双工件写盘（T15 report_artifacts.write_all 接线）。
 退出码 0/1/2（ENV=缺表等环境问题）。
 """
 import json
@@ -260,7 +260,7 @@ def cmd_lint(goal_dir, ts):
 
 
 def cmd_sign(goal_dir, ts):
-    """tanyin-report sign——lint 同判定+落签发凭证（+T15 write_all 接线点，本批披露未接线）。"""
+    """tanyin-report sign——lint 同判定+落签发凭证+T15 双工件写盘（write_all 接线）。"""
     if not ts:
         sys.stderr.write("用法: sign --goal-dir D --timestamp T（issued_at 显式，禁墙钟）\n")
         return 2
@@ -269,8 +269,9 @@ def cmd_sign(goal_dir, ts):
     if rc == 0:
         print("OK\t签发凭证 report/signed/pass.json（goal=%s ts=%s）"
               % (os.path.basename(os.path.normpath(goal_dir)), ts))
-        print("DISCLOSE\t双工件写盘未接线（批次 6 T15 report_artifacts.write_all）"
-              "——本跑仅落签发凭证")
+        from ledger import report_artifacts
+        for p in report_artifacts.write_all(goal_dir, ts):
+            print("OK\tartifact\t" + p)
     return rc
 
 

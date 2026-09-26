@@ -164,7 +164,10 @@ class TestSignGate(Base):
         r2 = run(REPORT, "sign", "--goal-dir", self.gd, "--timestamp=" + TS)
         self.assertEqual(r2.returncode, 0, r2.stdout + r2.stderr)
         self.assertTrue(os.path.exists(cred))
-        self.assertIn("T15", r2.stdout)                # 双工件未接线的披露行
+        # T15 接线后：双工件落盘+中间态披露行已删（计划 T15 Step 3「删中间态披露行」）
+        self.assertNotIn("未接线", r2.stdout)
+        self.assertTrue(os.path.exists(os.path.join(self.gd, "report", "findings.json")))
+        self.assertTrue(os.path.exists(os.path.join(self.gd, "report", "findings.sarif")))
 
     def test_sign_requires_timestamp(self):
         r = run(REPORT, "sign", "--goal-dir", self.gd)
