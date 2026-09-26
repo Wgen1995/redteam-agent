@@ -546,3 +546,20 @@
 - **纪律面**：全部新文件 UTF-8 无 BOM+LF；runner 子进程一律 [sys.executable, path]+显式 timeout+PYTHONUTF8=1+cwd=仓库根；时间戳全显式（--timestamp=ci 进 CI 面）；panorama/ 与 /Users/wgen/Documents 零触碰；金样 54 面零漂移（T3/T4 无新增金样面——evals-run 新面随出口验收统一入册口径在 T1+T2 节已注记）。
 - **R-记账（T3+T4 时点）**：两任务 commit 先行（04c05c8/b4c294a），本流水+裁决节独立 commit（批次内既定手法）。
 
+
+## 2026-09-24 批次 6 T5+T6 流水+裁决（install 域捆绑；实现者记）
+
+- **T5（commit 3c110c9）**：cli/ledger/install_core.py 六步安装单源（verify-lock→authoritative-dir→host-link→hooks→init-home→selfcheck；退出码 0/1/2——lock 验签不过/链接冲突=1，openssl/公钥缺/symlink 权限=2；_AUTH 白名单拷贝，panorama/tests/docs/git 不进安装树；install-log.tsv 显式时间戳三列审计）＋cli/tanyin-install（+.cmd 配对；--install-root/--home/--host=dsh/--repo-root/--pubkey/--timestamp 安装路径必填/--list-hosts 五宿主 verification 发布口径 §10.3）＋install/README.md（六步表+五宿主矩阵+交战区分离+信任锚 TEST-ONLY 披露）＋install/hosts/{dsh,opencode,codex,walcode,codebuddy}.json 五宿主装载模板（dsh=本仓可实测 tier3 hook 有；opencode/codex=公开环境 CI 可测 tier3 hook 有；walcode/CodeBuddy=静态验证+待实测（§10.3）tier1 hook 无保守披露）＋tests/test_install_core.py 10 例（验签 1/2 分态、权威目录、link_report 非空+目标可达、R-T12-4 k1-baseline 拷贝兑现、幂等 snapshot 零变更、冲突拒装用户文件零触碰、交战区分离双断言、CLI 三面）。红=ImportError install_core（Ran 1 errors=1 rc=1）→绿=10 OK；全套 Ran 614 OK（基线 604+10）；金样 54 面 PASS 零漂移。
+- **T6（commit ab05da1）**：cli/ledger/selfcheck.py 六项静态单源（cmd-index=phases/*.md+engines/**/MANIFEST.md 的 tanyin-<tool> <sub> 引用 ⊆ KNOWN_COMMANDS 冻结面〔ledger=registry 单源 63 名+各工具用法面实测；新增命令忘登记=红，VulnClaw verify_execution_boundary 同型绊线〕/encoding=五安装随行目录 UTF-8 无 BOM+无 CRLF/phases-schema=tanyin-phases validate/layout=交战区分离 §3.4 home∉install_root/lock-verify=supply_chain 验签 ENV 2 分态/golden=run_golden.py 子进程实跑）＋run_guided(host) 一页手测引导（安装命令→能力探测→冒烟清单→回传模板 probe_results→发布口径→未实测披露；未知宿主=SystemExit(2)）＋cli/tanyin-selfcheck（+.cmd 配对）＋install_core._step6 删 T5 pending 中间态守卫→无条件真跑 selfcheck＋test_install_core 追加六步端到端断言＋tests/test_selfcheck.py 12 例。红=ImportError cannot import name 'selfcheck'（errors=1）+e2e 'pending' 意外在场（failures=1）→绿=12 例 PASS+e2e OK（9.0s 真跑门）；python3 cli/tanyin-selfcheck --static 仓内形态 worst=0 rc=0 亲测在册（出口 #6/#9 判定命令形态）；全套 Ran 627 OK（614+12+1）；金样 54 面 PASS 零漂移。
+- **Ruling 清单（T5+T6）**：
+  - R-T5-1（verify_entry 实参形态）：计划草图 pub=open(pubkey,"rb").read() 后把字节作 verify_entry(e, pub) 实参——批次 4 单源形参=公钥路径（透传 openssl -inkey），按字节传参恒验签失败（首绿跑实测 verify-lock=1 复现）——修正为传路径；fail-closed 语义零变（真钥+真 lock=0，篡改=1，公钥缺=2）。
+  - R-T5-2（摘要形态+断言落点）：install() 摘要=分号 join 的 step=rc 纯形态（计划草图原文），不含明细——「验签失败/冲突」等明细落 install-log.tsv 第三列，测试断言随日志（首版断言错放摘要=2 FAIL 实测后按草图归位）。
+  - R-T5-3（snapshot 排除安装日志）：计划 test_idempotent_second_run 断言 snapshot 前后相等，而 install-log.tsv 为追加式审计通道（二次安装必追加「零变更」记录行，日志自变=本职）——snapshot() 排除 install-log.tsv（幂等语义=树内容零变更；审计行恰是变更记录本体，不入投影）。
+  - R-T5-4（skill 链接目标按 rel 展开）：计划草图对 skill_link_dirs 迭代但 target 不含 rel（多 rel 自撞同一目标）——修正=<home>/hosts/<host>/<rel>/tanyin；现五模板全 ["skills"]，行为与草图单 rel 形态逐字节一致。
+  - R-T5-5（拷贝字节级白名单）：copytree ignore=__pycache__/*.pyc/.git（计划注释「排除 .git/tests/docs」的目录级由 _AUTH 白名单承载，字节级垃圾不进安装树同源延伸）。
+  - R-T6-1（step6 守卫保留形态）：计划「无条件调 selfcheck」落地为删 pending 中间态分支+保留「入口缺=ENV 2」fail-closed 守卫（安装树不完整=2 非裸 FileNotFoundError 崩溃——退出码纪律内形态）。
+  - R-T6-2（KNOWN_COMMANDS 冻结口径）：冻结现役实装面（ledger 63 名=registry all_commands()+ledger- 前缀孪生；phases 八子命令/guard 三/egress 三/canary 四/knowledge 十三/redact 空〔无子命令形态〕/replay 二/viz 一/budgetctl 二/evals 三）；不含 forward 面——tanyin-report aggregate/render/sign 与 egress serve 随 T10/T12 交付同任务入表，文档提前出现带子命令引用=红（绊线语义自洽）；配套 test_known_commands_covers_live_ledger_face 钉「registry 现役面 ⊆ 冻结面」防新增命令忘登记。
+  - R-T6-3（encoding 扫描口径）：check_encoding 单目录全走+run_static 对 REPO_FILES_SCAN 五目录（phases/engines/cli/shared/install）聚合取 max——panorama/tests/docs/git 天然不进任何检查命令（与 install _AUTH 白名单同源纪律；计划 REPO_FILES_SCAN 常量原文承载）；全仓五目录实测 0 违例。
+  - R-T6-4（--list-hosts 免 --timestamp）：发布口径查询为只读面，--timestamp 仅安装路径必填（ap.error=argparse 退出码 2 与退出码契约同形）；T5 版 required=True 使 --list-hosts 单用恒 usage 错（实测 rc=2）——本裁决分离两路径。
+- **纪律面**：全部新文件 UTF-8 无 BOM+LF；子进程一律 [sys.executable, path]+显式 timeout+PYTHONUTF8=1+cwd 锚定；时间戳全显式字面量（install-log 无墙钟）；panorama/ 与 /Users/wgen/Documents 零触碰（未进任何命令/扫描）；金样 54 面零漂移（T5/T6 无新增金样面——install-selfcheck 等新命令面随出口验收统一入册）。
+- **R-记账（T5+T6 时点）**：两任务 commit 先行（3c110c9/ab05da1），本流水+裁决节独立 commit（批次内既定手法）。
