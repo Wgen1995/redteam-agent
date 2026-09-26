@@ -198,7 +198,7 @@ FROZEN_CONSTANTS = {
     "single_active_session": "true", "budget_dollars_enabled": "false",
 }
 EXTRA_TOOLS = {"tanyin-report", "tanyin-redact"}   # P5/P6 断言引用的非 ledger 入口
-GATE_HALT_TOOLS = {"tanyin-report"}   # T15（R13）：执行期仍 ENV-HALT（批次 6 交付）
+GATE_HALT_TOOLS = set()   # 批次 6 T14：tanyin-report 交付，ENV-HALT 集撤空（P5 真门）
 
 
 def _known_cmd(head, known):
@@ -377,11 +377,14 @@ def run_gate(goal_dir, phase, ts, phases_path=None):
         if tokens[0].endswith("matrix-freeze") \
                 and not any(t.startswith("--timestamp=") for t in tokens[1:]):
             tokens = tokens + ["--timestamp=" + ts]
-        if tokens[0] in GATE_HALT_TOOLS:
-            # R13 拆分半边：tanyin-report 维持 ENV-HALT（批次 6 交付）
-            print("ENV-HALT gate:%s assert=%s 工具未交付（批次 6）" % (phase, tokens[0]))
-            return 2
-        if tokens[0] == "tanyin-redact":
+        if tokens[0] == "tanyin-report":
+            # 批次 6 T14（P5 解除，裁决 B）：ENV-HALT 通道撤除→lint 真门分发
+            # （tanyin-redact R13 拆分同构；PROTOCOL §1 判定表不变——门级 ts 注入
+            # issued_at 判定，Ruling C matrix-freeze 注入同款）
+            from . import report_lint
+            h = report_lint.GATE_ENTRY
+            argv = ["lint", "--timestamp=" + ts] + tokens[1:]
+        elif tokens[0] == "tanyin-redact":
             # R13 拆分半边：P6 反向验证断言从此真跑——分发 special handler
             # （yaml cmd 首词=工具名，argv 补 --reverse-verify 旗标首再归一）
             from . import special

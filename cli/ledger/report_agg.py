@@ -203,7 +203,13 @@ def main(argv):
     if a.cmd == "render":   # 批次 6 T13：FD 九段渲染（--fd <id> | --all）
         from ledger import report_render
         return report_render.cli_render(a.goal_dir, a.fd, a.all, a.out)
-    if a.cmd != "aggregate":   # lint/sign 随 T14 交付扩入
+    if a.cmd == "lint":   # 批次 6 T14：签发门同判定不落凭证
+        from ledger import report_lint
+        return report_lint.cmd_lint(a.goal_dir, a.timestamp)
+    if a.cmd == "sign":   # 批次 6 T14：lint+签发凭证
+        from ledger import report_lint
+        return report_lint.cmd_sign(a.goal_dir, a.timestamp)
+    if a.cmd != "aggregate":
         sys.stderr.write("未实现/未知子命令: " + a.cmd + chr(10) + USAGE + chr(10))
         return 2
     try:

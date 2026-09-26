@@ -133,3 +133,7 @@ front-matter 11 字段（六字段以①–⑥标注，映射见 §6）：
 ## v2 勘误补记（2026-09-24·批次 5 施工期·T2/G-16 结案）
 
 - G-16 结案——EV 卡片↔E-index 同值性执法**维持 replay 侧单点**（cards.check_consistency，执法点=重放前校验；498d8c2 在册）；validate --with-cards 不增（遍历交战区 card_path 成本>收益，单点已闭环）——上则 R1 注「G-16：validate 集成不动」就此结案。微版本勘误，不升 schema_version，索引见 contracts/README.md。
+
+## v3 勘误补记（2026-09-24·批次 6 施工期·T14/G-25 结案·裁决 B）
+
+- G-25 结案——Burp 直贴边界三条款（裁决 B）：①raw_request=HTTP/1.x 报文文本字节原样首发（header 原文顺序不重排不补不改、body 原文、行尾按原文保留——Burp Repeater 粘贴即发）；「Burp 可贴」机检四规则=tanyin-report lint `burp_pasteable`：纯文本可解码（无二进制字节/BOM）/请求行形如 METHOD SP PATH SP HTTP/x.x/含至少一个 Host 头/非空 body 有空行分隔；②HTTP/2 二进制帧与 TLS 指定不做文本直贴——相关变体参数单列「判读说明」段披露（FD 规格 §一.6 变体单列同款；lint 对 raw 中 HTTP/2/TLS 形态 fail-closed=FAIL）；③Host/Connection 头归属=原文为准，渲染器不重造不增删；渲染只转抄：与 E-index 双指纹不符一字=lint FAIL（复算单源=ledger.norm.artifact_hashes）。微版本勘误，不升 schema_version，索引见 contracts/README.md。

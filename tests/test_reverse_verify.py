@@ -142,9 +142,10 @@ class TestReverseVerify(unittest.TestCase):
         self.assertEqual(r.returncode, 1)
         self.assertIn("FAIL", r.stdout)
 
-    def test_report_still_env_halt(self):
-        # EXTRA_TOOLS 拆分半边：tanyin-report 维持 ENV-HALT（批次 6 交付）——
-        # P5 前两断言链：terminal-gate（先清 web.api/inj.sql 空格）→ tanyin-report HALT
+    def test_report_real_gate_dispatch(self):
+        # 批次 6 T14（P5 解除）：tanyin-report 真门分发（tanyin-redact R13 同构）——
+        # terminal-gate（先清 web.api/inj.sql 空格）→ lint 真跑：本夹具无渲染工件面
+        # 与已核销清理行（revert_cmd=irreversible 未豁免）→ lint FAIL rc 1（非 HALT）
         from ledger import phases_engine as pe
         from ledger import registry
         buf_o, buf_e = io.StringIO(), io.StringIO()
@@ -158,8 +159,8 @@ class TestReverseVerify(unittest.TestCase):
         buf_o, buf_e = io.StringIO(), io.StringIO()
         with redirect_stdout(buf_o), redirect_stderr(buf_e):
             code = pe.run_gate(self.d, "P5", TS, None)
-        self.assertEqual(code, 2)
-        self.assertIn("ENV-HALT", buf_o.getvalue())
+        self.assertEqual(code, 1)
+        self.assertNotIn("ENV-HALT", buf_o.getvalue())
         self.assertIn("tanyin-report", buf_o.getvalue())
 
     # ------------------------------------------------------------- CLIENT-NN 映射
