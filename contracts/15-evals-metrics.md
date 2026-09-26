@@ -52,3 +52,13 @@ results:[{id,status(PASS|FAIL|WARN-FAIL|ENV-SKIP),actual,baseline}], counts:{pas
 counts.candidates=VulnClaw 第 3 态落点（仅候选数，不入退出码，裁决 A）。
 list 子命令=机读指标清单人读投影；report 子命令骨架期与 run 同面（计划代码即规格，
 R-T1-4；人读渲染面归批次 6 Task 12 tanyin-report）。
+
+## 6 usage 行形态（批次 6 T3 勘误；微版本 version:1 内勘误一行，不 bump 主版本）
+
+timeline.tsv event 列以 `usage:` 开头的行=usage 实采行，形态：
+`usage: run=<run-id> tokens=<实际n> est_tokens=<估算m>`——由真跑会话（批次 6 Task 17
+靶场演练）落账；CI 干跑无 usage 行=M05 token-usage ENV-SKIP（非 FAIL）。
+token-usage runner 逐行取 tokens/est_tokens 比值→tests/evals/calib/token-calibration.json
+（n/median/min/max+契约 v3 系数候选提案+公式冻结注记）；PROTOCOL §2 公式本批不改
+（裁决 G 收口形态=数据通道+报告交付，系数回写遗留契约 v3）。列序单源=cli/ledger/
+schemas.py TABLES（event=index 3；R-T3-1 执行期钉死，错位=测试断言红）。

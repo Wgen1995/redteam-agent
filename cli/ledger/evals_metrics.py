@@ -169,5 +169,83 @@ def _dual_anchor(ctx):
     return {"status": "PASS", "actual": "matched=%d" % len(res["matched"])}
 
 
+# ------------------------------------------------- 批次 6 T3：动态 runner 接入
+from ledger import evals_token_eff  # noqa: E402
+
+
+def _read_tsv(path):
+    # 仓库既有 TSV 读取惯例（同 dual-anchor 面）：tab 分隔、剥行尾、跳空行
+    with open(path, encoding="utf-8") as f:
+        return [ln.rstrip("\r\n").split("\t") for ln in f if ln.strip()]
+
+
+@register("canary-zero")
+def _canary_zero(ctx):
+    """M03：逐档 probe（--tier=KV 形态）；rc=1=诱饵放行=零容忍 FAIL。
+
+    rc=2=诱饵未部署（缺 canary/targets.tsv=环境前置缺）→ENV-SKIP（R-T3-3，
+    以计划测试 assertIn(PASS, ENV-SKIP) 为准）；probe 未部署态不落账（零写热）。"""
+    tiers = ctx["args"] or ["0", "1", "2", "3"]
+    rc0 = 0
+    for t in tiers:
+        r = subprocess.run([sys.executable, os.path.join(_REPO, "cli", "tanyin-canary"), "probe",
+                            "--goal-dir", ctx["goal_dir"], "--tier=" + t, "--timestamp=" + ctx["ts"]],
+                           capture_output=True, text=True, encoding="utf-8", errors="replace",
+                           timeout=120, cwd=_REPO, env=_ENV)
+        if r.returncode == 2:
+            return {"status": "ENV-SKIP",
+                    "actual": "tier=%s 诱饵未部署（缺 canary/targets.tsv，先 deploy）" % t}
+        if r.returncode != 0:
+            return {"status": "FAIL", "actual": "tier=%s rc=%d（零容忍触碰）" % (t, r.returncode)}
+        rc0 += 1
+    return {"status": "PASS", "actual": "tiers=%d rc0=%d" % (len(tiers), rc0), "candidates": 0}
+
+
+@register("replay-rate")
+def _replay_rate(ctx):
+    """M02：ledger-replay-summary 单源三态分布→replay_verdict 裁决（R-T3-2 映射）。
+
+    VERIFIED→reproduced／REPAIRED→env-diff（已降级处置）／REJECTED→not-reproduced
+    （未处置）；rc=1=有待重放项→FAIL；rc=2=ENV。"""
+    r = subprocess.run([sys.executable, os.path.join(_REPO, "cli", "tanyin-ledger"),
+                        "ledger-replay-summary", "--goal-dir", ctx["goal_dir"]],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace",
+                       timeout=300, cwd=_REPO, env=_ENV)
+    if r.returncode == 2:
+        raise EnvironmentError("replay-summary ENV")
+    if r.returncode != 0:
+        return {"status": "FAIL",
+                "actual": "ledger-replay-summary rc=%d（有待重放/REJECTED 未处置）" % r.returncode}
+    kv = {}
+    for part in r.stdout.strip().split("\t")[1:]:
+        k, _, v = part.partition("=")
+        kv[k] = int(v) if v.strip().isdigit() else 0
+    states = (["reproduced"] * kv.get("verified", 0)
+              + ["env-diff"] * kv.get("repaired", 0)
+              + ["not-reproduced"] * kv.get("rejected", 0))
+    verdict, counts = evals_token_eff.replay_verdict(states)
+    return {"status": verdict, "actual": json.dumps(counts, ensure_ascii=False, sort_keys=True)}
+
+
+@register("token-usage")
+def _token_usage(ctx):
+    """M05（裁决 G 校准通道）：timeline usage 行实采→比值→校准报告落 tests/evals/calib/。
+
+    timeline.tsv 缺=OSError、无 usage 行=EnvironmentError（CI 干跑）→均 ENV-SKIP；
+    真跑首采归 Task 17 靶场演练。"""
+    rows = _read_tsv(os.path.join(ctx["goal_dir"], "timeline.tsv"))
+    ratios = evals_token_eff.extract_ratios(rows)
+    calib_dir = os.path.join(_REPO, "tests", "evals", "calib")
+    os.makedirs(calib_dir, exist_ok=True)
+    rep = evals_token_eff.write_calibration(ratios, os.path.join(calib_dir, "token-calibration.json"))
+    return {"status": "PASS", "actual": "median=%.3f n=%d" % (rep["median"], rep["n"])}
+
+
+@register("manual")
+def _manual(ctx):
+    """L3 对齐专用：恒 ENV-SKIP（设计 §9.3 发布前人工项不阻塞 CI；契约 15 §4 R-T1-2）。"""
+    return {"status": "ENV-SKIP", "actual": "L3 发布前人工对齐（设计 §9.3 不阻塞 CI）"}
+
+
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))
