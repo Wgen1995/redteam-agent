@@ -33,7 +33,10 @@ VulnClaw 第 3 态「仅候选」不新增退出码，落 metrics JSON counts.ca
 - M06-injection-redteam L2 hard zero-tolerance runner=unittest:tests.test_redact_injection 基线=0
 - M07-negative-cases L2 hard equality runner=unittest:tests.test_negative_matrix+tests.test_dryrun_p0p2 基线=全部必须失败
 - M08-weak-model-protocol L2 hard checklist runner=unittest:tests.test_weak_model_protocol 基线=可检测
-- M09-authz-recall L2 hard threshold runner=range-recall 基线=collect-first（首跑=基线 v1，裁决 I）
+- M09-authz-recall L2 hard threshold runner=range-recall 基线=v1=1.00（20/20；2026-09-26 首跑实测入册，
+  裁决 I：tests/range compose 8 漏洞服务+1 attack-noop 真实 HTTP 探针干跑、44 命令面铸造、
+  tests/eval_range_recall.py 实测 recall=1.00（20/20）exit 0；基线口径=脚本化探针干跑，
+  LLM 在环复测归 T17 RUNBOOK；此后回退即 fail；会话落仓外交战区，evals 无现成会话=ENV-SKIP 降级）
 - M10-report-lint-redact L2 hard equality runner=report-scan 基线=零泄漏+lint PASS
 - M11-switch-matrix L2 hard checklist runner=unittest:tests.test_switch_matrix 基线=铁律6不可裁剪清单不破
 - M12-dual-anchor L2 hard checklist runner=dual-anchor 基线=两侧全配对（裁决 E）

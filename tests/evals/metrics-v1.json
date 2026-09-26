@@ -145,14 +145,14 @@
    "kind": "threshold",
    "title": "认证后越权召回",
    "baseline": {
-    "value": "collect-first",
-    "frozen_at": null
+    "value": 1.0,
+    "frozen_at": "2026-09-26T10:00:00Z"
    },
    "source": {
     "runner": "range-recall",
     "args": []
    },
-   "desc": "靶场种 20 首跑实测=基线 v1（裁决 I；Task 16 注册 runner）"
+   "desc": "靶场种 20 首跑实测=基线 v1（裁决 I；Task 16 注册 runner）——v1=1.00（20/20，2026-09-26 首跑：compose 8 服务+1 noop 真实探针干跑、44 命令面铸造、scorer 实测；脚本化探针口径，LLM 在环复测归 T17 RUNBOOK；回退即 fail）"
   },
   {
    "id": "M10-report-lint-redact",

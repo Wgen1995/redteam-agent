@@ -1,0 +1,46 @@
+# 授权靶场拓扑（批次6 T16；裁决 I）——8 漏洞服务容器+1 攻击侧 noop。
+# 仅监听 compose 内网（range 网络）；宿主侧仅 127.0.0.1 映射（禁 0.0.0.0 暴露）。
+# 全部合成 payload（seed/*/app.py 响应体内嵌唯一 marker）；靶场=本地回环资产。
+services:
+  svc-shop:
+    build: ./seed/svc-shop
+    ports: ["127.0.0.1:8001:8000"]
+    networks: [range]
+  svc-dashboard:
+    build: ./seed/svc-dashboard
+    ports: ["127.0.0.1:8002:8000"]
+    networks: [range]
+  svc-api-gw:
+    build: ./seed/svc-api-gw
+    ports: ["127.0.0.1:8003:8000"]
+    networks: [range]
+  svc-files:
+    build: ./seed/svc-files
+    ports: ["127.0.0.1:8004:8000"]
+    networks: [range]
+  svc-portal:
+    build: ./seed/svc-portal
+    ports: ["127.0.0.1:8005:8000"]
+    networks: [range]
+  svc-admin:
+    build: ./seed/svc-admin
+    ports: ["127.0.0.1:8006:8000"]
+    networks: [range]
+  svc-billing:
+    build: ./seed/svc-billing
+    ports: ["127.0.0.1:8007:8000"]
+    networks: [range]
+  svc-login:
+    build: ./seed/svc-login
+    ports: ["127.0.0.1:8008:8000"]
+    networks: [range]
+  attack-noop:
+    image: python:3.12-alpine
+    command: ["sleep", "infinity"]        # 攻击侧占位（真实干跑由 RUNBOOK 驱动，T17）
+    networks: [range]
+
+networks:
+  range:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/24           # 固定网段（可复铸；避让本机既有网段）

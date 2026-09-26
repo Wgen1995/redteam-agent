@@ -247,5 +247,42 @@ def _manual(ctx):
     return {"status": "ENV-SKIP", "actual": "L3 发布前人工对齐（设计 §9.3 不阻塞 CI）"}
 
 
+# ------------------------------------------------- 批次 6 T16：靶场检出 runner
+sys.path.insert(0, os.path.join(_REPO, "tests"))
+
+
+@register("range-recall")
+def _range_recall(ctx):
+    """M09（裁决 I）：靶场种 20 检出率——scorer=tests/eval_range_recall.py 复用。
+
+    会话发现次序=TANYIN_RANGE_SESSION env→args[0]→tests/range/session（约定点，
+    交战区分离不入仓）；无现成会话=EnvironmentError→ENV-SKIP（CI 无 docker 降级同此
+    门——docker 探测/干跑由 RUNBOOK 驱动，scorer 不代跑代理）。基线 collect-first=
+    实采披露 PASS 不裁决；数值基线 v1 入册后 recall<baseline=FAIL（回退即 fail）。"""
+    import eval_range_recall as _err
+    sess = (os.environ.get("TANYIN_RANGE_SESSION")
+            or (ctx["args"][0] if ctx["args"] else None)
+            or os.path.join(_REPO, "tests", "range", "session"))
+    if not os.path.isabs(sess):
+        sess = os.path.join(_REPO, sess)
+    gt_path = os.path.join(_REPO, "tests", "range", "ground-truth.json")
+    if not os.path.isfile(os.path.join(sess, "findings.tsv")):
+        raise EnvironmentError(
+            "靶场会话缺（%s）——docker 缺/未跑干=ENV-SKIP 降级（裁决 I）" % sess)
+    with open(gt_path, encoding="utf-8") as f:
+        gt = json.load(f).get("planted", [])
+    rows, cards = _err.load_session(sess)
+    recall, missing = _err.score(rows, cards, gt)
+    baseline = (ctx.get("metric") or {}).get("baseline", {}).get("value", "collect-first")
+    actual = "recall=%.2f (%d/%d) missing=%s" % (
+        recall, len(gt) - len(missing), len(gt), ",".join(missing) or "-")
+    if isinstance(baseline, (int, float)):
+        ok = recall >= float(baseline)
+        return {"status": "PASS" if ok else "FAIL",
+                "actual": actual + " baseline=%s" % baseline, "candidates": 0}
+    return {"status": "PASS",
+            "actual": actual + "（collect-first：基线未入册，仅实采披露）", "candidates": 0}
+
+
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

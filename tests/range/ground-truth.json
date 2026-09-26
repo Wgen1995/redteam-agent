@@ -1,0 +1,166 @@
+{
+ "format_version": 1,
+ "note": "授权靶场种 20 ground truth（批次6 T16；裁决 I 固定分布：注入6+SSRF2+反序列化2+CORS/重定向2+遍历1+认证后越权5+弱口令1+信息泄露1）。endpoint=资产值精确匹配键（宿主侧 127.0.0.1 映射 URL）；marker=EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。",
+ "planted": [
+  {
+   "id": "sqli-01",
+   "class": "sqli",
+   "endpoint": "http://127.0.0.1:8001/item?id=1",
+   "marker": "GTSQLI-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "sqli-02",
+   "class": "sqli",
+   "endpoint": "http://127.0.0.1:8001/order?id=1",
+   "marker": "GTSQLI-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "xss-01",
+   "class": "xss",
+   "endpoint": "http://127.0.0.1:8001/search?q=x",
+   "marker": "GTXSS-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "xss-02",
+   "class": "xss",
+   "endpoint": "http://127.0.0.1:8001/comment?text=x",
+   "marker": "GTXSS-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "ssti-01",
+   "class": "ssti",
+   "endpoint": "http://127.0.0.1:8002/report?name=x",
+   "marker": "GTSSTI-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "cmdi-01",
+   "class": "cmdi",
+   "endpoint": "http://127.0.0.1:8002/ping?host=127.0.0.1",
+   "marker": "GTCMDI-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "ssrf-01",
+   "class": "ssrf",
+   "endpoint": "http://127.0.0.1:8003/fetch?url=http://127.0.0.1:8000/",
+   "marker": "GTSSRF-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "ssrf-02",
+   "class": "ssrf",
+   "endpoint": "http://127.0.0.1:8003/preview?url=http://127.0.0.1:8000/",
+   "marker": "GTSSRF-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "cors-01",
+   "class": "cors",
+   "endpoint": "http://127.0.0.1:8003/cors-debug",
+   "marker": "GTCORS-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "deser-01",
+   "class": "deser",
+   "endpoint": "http://127.0.0.1:8004/unserialize?data=x",
+   "marker": "GTDESER-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "deser-02",
+   "class": "deser",
+   "endpoint": "http://127.0.0.1:8004/import?data=x",
+   "marker": "GTDESER-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "traversal-01",
+   "class": "traversal",
+   "endpoint": "http://127.0.0.1:8004/download?path=../../etc/passwd",
+   "marker": "GTTRAVERSAL-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "redir-01",
+   "class": "redir",
+   "endpoint": "http://127.0.0.1:8005/redirect?to=http://evil.example",
+   "marker": "GTREDIR-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "infoleak-01",
+   "class": "infoleak",
+   "endpoint": "http://127.0.0.1:8005/debug/env",
+   "marker": "GTINFOLEAK-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "idor-01",
+   "class": "idor",
+   "endpoint": "http://127.0.0.1:8006/admin/orders?user_id=101",
+   "marker": "GTIDOR-01",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "idor-02",
+   "class": "idor",
+   "endpoint": "http://127.0.0.1:8006/admin/invoices?user_id=202",
+   "marker": "GTIDOR-02",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "role-01",
+   "class": "role",
+   "endpoint": "http://127.0.0.1:8006/admin/api/roles",
+   "marker": "GTROLE-01",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "hauth-01",
+   "class": "hauth",
+   "endpoint": "http://127.0.0.1:8007/api/v1/charges?account=acc-1002",
+   "marker": "GTHAUTH-01",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "hauth-02",
+   "class": "hauth",
+   "endpoint": "http://127.0.0.1:8007/api/v1/statements?account=acc-2003",
+   "marker": "GTHAUTH-02",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "weakpass-01",
+   "class": "weakpass",
+   "endpoint": "http://127.0.0.1:8008/login",
+   "marker": "GTWEAKPASS-01",
+   "post_auth": false,
+   "authz_role": ""
+  }
+ ]
+}
