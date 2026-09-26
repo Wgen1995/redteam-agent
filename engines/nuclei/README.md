@@ -24,10 +24,13 @@
 
 - **测试钥 TEST-ONLY**：当前 `release.pub` 与 `tests/fixtures/keys/test-signing-key.pem`
   为**批次 4 验签测试钥**（私钥进仓仅为测试自证，不构成信任根）——生产签名密钥的
-  生成/保管/重签流程与 release.pub 替换=**批次 6 安装器出口**（G-22 流程缺口，本批
-  仅以测试钥锚定快照结构与验签链路）。
-- **commit 占位**：`upstream_commit` 与 tools.lock `nuclei-templates.commit` 当前为
-  固定样例占位（40×a）——批次 6 换真上游 commit 重签。
+  生成/保管/重签流程与 release.pub 替换流程已批次 6 交付=**install/KEY-MANAGEMENT.md**
+  （G-22：生产钥人工离线介质机仪式，永不进仓；CI 与测试永用 TEST-ONLY 夹具钥，
+  与生产钥无信任关系；替换=公钥+整锁重签原子变更）。
+- **commit 换真（批次 6 T9）**：`upstream_commit` 与 tools.lock `nuclei-templates.commit`
+  已换真锚 `3e0e38f50a4159ada6cf20acf6cccfea03f1bee1`（main tip；获取通道=GitHub REST
+  API 双端点互证，复验纪律=KEY-MANAGEMENT.md §3.5；本次换锚后 templates.lock 模板行
+  哈希未变——三份自写模板内容零改动）。
 - **运行时绝不自动安装**：nuclei 可执行缺失→适配器落 status=blocked 提交（环境受阻
   语义），绝不自动安装（契约 10 §4 铁律）；安装=批次 6 tanyin-install 幂等安装器
   （tools.lock 验签 6 步流程）。

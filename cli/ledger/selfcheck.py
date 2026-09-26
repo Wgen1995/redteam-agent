@@ -62,6 +62,7 @@ KNOWN_COMMANDS = {
     "viz": ["render"],
     "budgetctl": ["enforce", "rate"],
     "evals": ["list", "report", "run"],
+    "install": ["refresh-cve"],  # 批次 6 T9：G-32 显式刷新通道（新面随行入表）
 }
 
 # 引用形态：tanyin-<tool> <sub>（子命令 token 限 ASCII 小写字母/数字/连字符——

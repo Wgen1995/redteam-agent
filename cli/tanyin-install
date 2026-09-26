@@ -13,7 +13,27 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import install_core  # noqa: E402
 
 
+def _refresh_cve_cli(rest):
+    """G-32 refresh-cve 子命令（批次 6 T9；显式人工刷新通道，非定时自动）。"""
+    ap = argparse.ArgumentParser(prog="tanyin-install refresh-cve")
+    ap.add_argument("--from", dest="src", required=True,
+                    help="快照源：URL 或 file:// 本地路径（离线等价通道）")
+    ap.add_argument("--home", default=install_core.DEFAULT_HOME_expanded(),
+                    help="交战区 home（知识库=<home>/knowledge；缺省 ~/.tanyin）")
+    ap.add_argument("--knowledge-dir", default=None,
+                    help="缺省=<home>/knowledge")
+    ap.add_argument("--timestamp", required=True,
+                    help="显式 ISO8601（snapshot-date 注记+审计行；禁墙钟）")
+    a = ap.parse_args(rest)
+    kd = a.knowledge_dir or os.path.join(a.home, "knowledge")
+    code, msg = install_core.refresh_cve(a.src, kd, a.timestamp)
+    print(msg)
+    return code
+
+
 def main(argv):
+    if argv and argv[0] == "refresh-cve":
+        return _refresh_cve_cli(argv[1:])
     ap = argparse.ArgumentParser(prog="tanyin-install")
     ap.add_argument("--install-root", default=None,
                     help="权威安装树（缺省 ~/.local/share/tanyin）")

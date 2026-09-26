@@ -188,5 +188,34 @@ class TestInstallCli(unittest.TestCase):
             self.assertTrue(os.path.exists(os.path.join(d, "hm", "install-log.tsv")))
 
 
+class TestRefreshCveCli(unittest.TestCase):
+    """批次 6 T9 G-32：tanyin-install refresh-cve 子命令（显式命令下载+哈希锚定）。"""
+
+    def test_cli_refresh_file_ok(self):
+        with tempfile.TemporaryDirectory() as d:
+            r = subprocess.run(
+                [sys.executable, INSTALL_CLI, "refresh-cve",
+                 "--from", "file://" + os.path.join(HERE, "fixtures", "cve",
+                                                    "snapshot-good.tsv"),
+                 "--home", d, "--timestamp", TS],
+                capture_output=True, text=True, encoding="utf-8",
+                errors="replace", env=ENV, timeout=300, cwd=REPO)
+            self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+            dst = os.path.join(d, "knowledge", "cve", "cve-snapshot.tsv")
+            self.assertTrue(os.path.exists(dst))
+            with open(dst, encoding="utf-8") as f:
+                self.assertEqual(f.read().splitlines()[0], "# snapshot-date: " + TS)
+
+    def test_cli_refresh_missing_from_exit_2(self):
+        # 无 --from=用法/环境缺项 → exit 2（裁决 D：交互缺失不静默）
+        with tempfile.TemporaryDirectory() as d:
+            r = subprocess.run(
+                [sys.executable, INSTALL_CLI, "refresh-cve",
+                 "--home", d, "--timestamp", TS],
+                capture_output=True, text=True, encoding="utf-8",
+                errors="replace", env=ENV, timeout=120, cwd=REPO)
+            self.assertEqual(r.returncode, 2)
+
+
 if __name__ == "__main__":
     unittest.main()

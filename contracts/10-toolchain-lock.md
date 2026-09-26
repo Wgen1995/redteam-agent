@@ -41,6 +41,18 @@
 | 静态验签项 | 静态验证⑤=tools.lock 验签（§10.3，并入 `tanyin-selfcheck --static`，CI 对五宿主同跑） |
 | 批次落位 | tools.lock 全量=批次 6 出口验收范围（§11 批次 6） |
 
+## 勘误（批次 6 T9；微版本通道）
+
+- **键清单 3→8**：openssl/nuclei/nuclei-templates 基础上增列 `python`(3.11+-system)、
+  `docker`(24+-system)（系统工具键，版本钉死即锚）+ `engines-web-blackbox`/
+  `engines-vuln-agent`/`engines-session-viz`（目录清单键，snapshot-N=目录清单 sha256，
+  复算式见 install/KEY-MANAGEMENT.md §3.4）。
+- **生产钥仪式**：生成/保管/重签/替换流程与 release.pub 替换通道=install/KEY-MANAGEMENT.md
+  （G-22；生产钥人工离线介质机执行、永不进仓；CI 与测试永用 TEST-ONLY 夹具钥，与生产钥
+  无信任关系）。
+- **nuclei-templates 第 5 列换真**：upstream_commit 占位（40×a）已换真锚
+  3e0e38f50a4159ada6cf20acf6cccfea03f1bee1（获取通道与复验纪律=KEY-MANAGEMENT.md §3.5）。
+
 ## 探知项（待仲裁）
 
 无。

@@ -169,6 +169,88 @@ def _log(home, results, ts):
             f.write("%s\t%s\trc=%d %s\n" % (ts, step, c, str(m).replace("\t", " ")))
 
 
+def refresh_cve(src, knowledge_dir, ts):
+    """G-32 CVE 快照显式刷新通道（裁决 D）：src=URL 或 file:// 本地路径（离线等价）。
+
+    流程：取源→sha256 记录→临时文件经 tanyin-knowledge lint 七列校验（单源复用）→
+    原子替换 cve/cve-snapshot.tsv。lint 不过=rc 1 且目标文件字节不变（先临时校验再
+    原子替换）；源不可达/解码失败=rc 2/1；install-log.tsv（knowledge_dir 上级=home，
+    与安装器审计通道同文件）追加 refresh-cve 行（sha256 锚定在册）。
+    退出码 0=刷新成功／1=内容校验门禁失败／2=环境（源不可达）。
+    非定时自动、无常驻进程：本函数只被显式人工命令（tanyin-install refresh-cve）
+    调用；URL 下载=裁决 D 显式例外通道，CLI 其余命令零外联纪律不变。"""
+    cve_dir = os.path.join(knowledge_dir, "cve")
+    os.makedirs(cve_dir, exist_ok=True)
+    target = os.path.join(cve_dir, "cve-snapshot.tsv")
+    tmp = os.path.join(cve_dir, ".refresh-tmp.tsv")
+    # ① 取源（file:// / 裸路径=离线等价；http(s)://=显式命令下载）
+    try:
+        if src.startswith("file://"):
+            src_path = src[len("file://"):]
+            with open(src_path, "rb") as f:
+                raw = f.read()
+        elif src.startswith(("http://", "https://")):
+            import urllib.request  # 显式人工刷新命令专用（裁决 D）；非运行时自动外联
+            with urllib.request.urlopen(src, timeout=60) as resp:
+                raw = resp.read()
+        else:
+            with open(src, "rb") as f:
+                raw = f.read()
+    except OSError as e:
+        _log(os.path.dirname(os.path.abspath(knowledge_dir)),
+             [("refresh-cve", 2, "src 不可达=ENV %s" % src)], ts)
+        return 2, "源不可达=ENV: %s" % e
+    sha = hashlib.sha256(raw).hexdigest()
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        _log(os.path.dirname(os.path.abspath(knowledge_dir)),
+             [("refresh-cve", 1, "非 UTF-8 内容拒绝")], ts)
+        return 1, "快照非 UTF-8（fail-closed）"
+    # ② 组装新文件：首行 snapshot-date=本次刷新 ts（注记纪律不变）；sha256 锚定行；
+    #    源行原样转抄（源的 snapshot-date 注记行剥除—— provenance 由 sha256 行承载）
+    data_lines = [ln for ln in text.splitlines()
+                  if not ln.startswith("# snapshot-date")]
+    nl = chr(10)
+    new_text = nl.join(
+        ["# snapshot-date: " + ts,
+         "# source=%s sha256=%s（G-32 refresh-cve 显式命令；人工重铸等价路径见"
+         " knowledge/cve/README.md）" % (src, sha)]
+        + data_lines) + nl
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+        f.write(new_text)
+    # ③ 七列校验复用单源：tanyin-knowledge lint（临时校验目录，不动目标）
+    kn_cli = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                          os.pardir, "tanyin-knowledge")
+    import tempfile as _tf
+    with _tf.TemporaryDirectory() as vd:
+        os.makedirs(os.path.join(vd, "cve"))
+        os.makedirs(os.path.join(vd, "staging"))  # lint _stage_sync 写载体目录
+        with open(os.path.join(vd, "format_version"), "w", encoding="utf-8",
+                  newline="\n") as f:
+            f.write("kn-v1\n")
+        shutil.copyfile(tmp, os.path.join(vd, "cve", "cve-snapshot.tsv"))
+        r = subprocess.run([sys.executable, kn_cli, "lint",
+                            "--knowledge-dir", vd, "--timestamp", ts],
+                           capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", timeout=300,
+                           env={**os.environ, "PYTHONUTF8": "1"})
+    if r.returncode != 0:
+        os.remove(tmp)
+        detail = (r.stdout + r.stderr).strip().splitlines()
+        msg = "快照校验不过（七列 lint）: %s" % (detail[0] if detail else "rc=%d" % r.returncode)
+        _log(os.path.dirname(os.path.abspath(knowledge_dir)),
+             [("refresh-cve", 1, msg.replace("\t", " "))], ts)
+        return 1, msg
+    # ④ 原子替换+审计行（sha256 锚定在册）
+    os.replace(tmp, target)
+    rows = sum(1 for ln in data_lines if ln and not ln.startswith("#"))
+    msg = "refresh-cve ok sha256=%s rows=%d src=%s" % (sha, rows, src)
+    _log(os.path.dirname(os.path.abspath(knowledge_dir)),
+         [("refresh-cve", 0, msg)], ts)
+    return 0, msg
+
+
 def snapshot(install_root, home):
     """树内容哈希投影（幂等断言面）；install-log.tsv 除外（追加式审计通道）。"""
     out = []
