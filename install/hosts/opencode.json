@@ -1,0 +1,16 @@
+{
+  "host": "opencode",
+  "verification": "公开环境 CI 可测",
+  "egress_default_tier": 3,
+  "skill_link_dirs": [
+    "skills"
+  ],
+  "hook_mechanism": true,
+  "agents_inject": "~/.tanyin-hosts/opencode/AGENTS.md",
+  "compat": [
+    "夹具",
+    "evals",
+    "canary",
+    "headless"
+  ]
+}

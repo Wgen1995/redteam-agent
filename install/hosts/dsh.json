@@ -1,0 +1,17 @@
+{
+  "host": "dsh",
+  "verification": "本仓可实测",
+  "egress_default_tier": 3,
+  "skill_link_dirs": [
+    "skills"
+  ],
+  "hook_mechanism": true,
+  "agents_inject": "~/.tanyin-hosts/dsh/AGENTS.md",
+  "compat": [
+    "夹具全量",
+    "evals 全量",
+    "canary×4 档",
+    "受管重启",
+    "报告流水线"
+  ]
+}

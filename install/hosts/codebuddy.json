@@ -1,0 +1,14 @@
+{
+  "host": "codebuddy",
+  "verification": "静态验证+待实测（§10.3）",
+  "egress_default_tier": 1,
+  "skill_link_dirs": [
+    "skills"
+  ],
+  "hook_mechanism": false,
+  "agents_inject": "~/.tanyin-hosts/codebuddy/AGENTS.md",
+  "compat": [
+    "静态验证通过",
+    "待实测（§10.3）；执法档位默认 Tier 1 保守披露"
+  ]
+}
