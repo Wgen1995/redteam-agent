@@ -2304,7 +2304,243 @@ git commit -m "批次7-T15(High+Medium)：permitted_actions 执法接线——gu
 
 ---
 
-（T16→T17 正文增量补齐中……）
+### Task 16: 战场件三件（scorer URL 归一化+GT 键口径前置显式化+terminal-gate 冻结断言）
+
+**Files:**
+- Modify: `tests/eval_range_recall.py`（`_norm_endpoint`/`_canon_host` 归一化匹配+`host_aliases` 消费）
+- Modify: `tests/range/ground-truth.json`（顶层增 `host_aliases` 声明位；20 项 GT 键不改值——答案键语义不动，只补别名元数据）
+- Modify: `tests/range/RUNBOOK.md`（显著位新节「GT 键口径与资产命名约定」）
+- Modify: `cli/ledger/check_cmds.py:394-398`（terminal-gate 锚点断言改「freeze 时在场行」）
+- Test: `tests/test_scorer_norm_b7.py`（新，含 terminal-gate 回归）
+
+**Interfaces:**
+- Produces: scorer 匹配键=归一化(资产值) vs 归一化(gt.endpoint)，归一=小写 host/剥默认端口/query 参数排序/去尾斜杠 + `host_aliases` 别名双向归一（声明式，禁猜测式映射）；GT json 顶层可选字段 `host_aliases`（canonical 键 → 别名数组）；terminal-gate 锚点断言=**全表任意 frozen_at 非空行**（freeze 时在场行集），不再取 latest 行
+- Consumes: `score(rows, cards, gt)` 既有纯函数形（scorer 单源）；`latest_matrix` 其余调用点零触碰（`grep -n "latest_matrix" cli/ledger/*.py` 确认仅本点位改动）
+
+- [ ] **Step 1: 写失败测试（红=首战键失配归因①+工具缝①）**
+
+```python
+# tests/test_scorer_norm_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T16：战场件三件。红=首战真实检出 8/20 账面 0/20（GT 键=127.0.0.1:800x 形 vs
+在环 svc-* 命名→20 项全失配）+terminal-gate 冻结断言按 latest 行（P3 置格会话 P5 不可达）。"""
+import os, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "cli"))
+sys.path.insert(0, os.path.join(HERE, ".."))
+from eval_range_recall import _norm_endpoint, _canon_host, score   # 骨架名——以实文件为准对齐
+from tests.test_dryrun_p0p2 import fresh_drydir, ledger, phases, TS
+
+class TestNorm(unittest.TestCase):
+    def test_syntax_normalization(self):
+        self.assertEqual(_norm_endpoint("HTTP://In.Example:80/a/?b=2&a=1"),
+                         "in.example/a/?a=1", "小写+默认端口+query 排序+尾斜杠")
+        self.assertEqual(_norm_endpoint("svc-crm/api/x/"), "svc-crm/api/x")
+
+    def test_alias_unification(self):
+        aliases = {"svc-crm": ["127.0.0.1:8003"]}
+        self.assertEqual(_canon_host("127.0.0.1:8003", aliases), "svc-crm")
+        self.assertEqual(_canon_host("svc-crm", aliases), "svc-crm")
+
+    def test_first_battle_mismatch_reproduced_then_fixed(self):
+        """首战反例：GT 键 127.0.0.1:8003 形 × finding 资产 svc 键——别名声明后必须 MATCH。"""
+        gt = {"host_aliases": {"svc-crm": ["127.0.0.1:8003"]},
+              "items": [{"id": "sqli-01", "endpoint": "127.0.0.1:8003/api/x",
+                         "marker": "TANYIN-MARKER-1"}]}
+        rows, cards = <按 score() 入参形造最小 finding+EV 卡夹具（对齐既有 scorer 测试形）>
+        matched = score(rows, cards, gt)
+        self.assertEqual(matched, 1, "红现状：键失配 0 匹配（账面 0/20 根因）")
+
+
+class TestTerminalGateFreezeAnchor(unittest.TestCase):
+    def _init_and_freeze(self, gd):
+        ledger(gd, "matrix-init", ["--timestamp=" + TS])
+        ledger(gd, "matrix-freeze", ["--timestamp=" + TS])   # argv 形对齐契约附录 A
+
+    def test_freeze_then_set_still_passes_terminal_gate(self):
+        """红=工具缝①：freeze 后 matrix-set 追加 frozen_at 空 行→latest 行取锚→P5 不可达。"""
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        gd = fresh_drydir(td.name, "G-tg")
+        self._init_and_freeze(gd)
+        rc, out, err = ledger(gd, "matrix-set", ["--surface=<夹具首面>", "--vclass=<夹具首类>",
+                                "--state=x", "--reason=submatrix:P3 生长",
+                                "--timestamp=" + TS, "--phase=P3"])   # argv 形对齐既有用例
+        self.assertEqual(rc, 0, out + err)
+        # 终态门禁其余条件（空格清零等）按 check_cmds 既有终端门测试夹具对齐补齐
+        rc, out, err = ledger(gd, "terminal-gate", [])
+        self.assertEqual(rc, 0, "红现状：P3 置格后锚点断言 FAIL（P5 不可达）\n" + out)
+
+    def test_never_frozen_still_fails(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        gd = fresh_drydir(td.name, "G-tg2")
+        ledger(gd, "matrix-init", ["--timestamp=" + TS])
+        rc, out, err = ledger(gd, "terminal-gate", [])
+        self.assertEqual(rc, 1, "未冻结仍 FAIL（断言收紧不得放水）")
+        self.assertIn("锚点未冻结", out)
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_scorer_norm_b7 -v`
+Expected: 归一化/别名/首战例 FAIL（函数未定义）；freeze-then-set 例 FAIL（terminal-gate rc=1）；never-frozen 例 PASS（既有正确行为）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# tests/eval_range_recall.py（score 前新增；from urllib.parse import urlsplit, parse_qsl, urlencode）
+def _norm_endpoint(u):
+    """URL 归一（T16 首战键失配①）：小写 host/剥默认端口/query 排序/去尾斜杠。
+    只归语法不归语义——语义别名一律走 GT host_aliases 显式声明（禁猜测式映射）。"""
+    s = urlsplit(u if "://" in u else "//" + u)
+    host = (s.hostname or "").lower()
+    net = host if s.port in (None, 80, 443) else "%s:%d" % (host, s.port)
+    path = s.path or "/"
+    if len(path) > 1 and path.endswith("/"):
+        path = path.rstrip("/")
+    q = urlencode(sorted(parse_qsl(s.query)))
+    return net + path + (("?" + q) if q else "")
+
+def _canon_host(netloc, aliases):
+    for canon, al in (aliases or {}).items():
+        if netloc == canon or netloc in al:
+            return canon
+    return netloc
+```
+（score() 匹配处：gt.endpoint 与资产值两侧先 _norm_endpoint 再 host 段 _canon_host 归一后比对；gt 顶层 host_aliases 读取 None 容错。）
+
+```python
+# cli/ledger/check_cmds.py terminal-gate（:394-398 替换）
+    # 锚点冻结断言=「freeze 时在场行」（批次 7 T16 工具缝①）：freeze 后 matrix-set 追加行
+    # frozen_at 恒空，latest 行取锚使 P3 置格会话 P5 门不可达——改为全表任意 frozen_at 非空行。
+    if s.rows("matrix.tsv") and not any(
+            _cell(r, "matrix.tsv", "frozen_at").strip() for r in s.rows("matrix.tsv")):
+        errs.append("锚点未冻结（matrix 无 frozen_at 非空行）")
+```
+
+RUNBOOK 新节（tests/range/RUNBOOK.md 首屏后第一个节，显著位）：
+
+```markdown
+## GT 键口径与资产命名约定（开打前必读——首战 0/20 键失配教训）
+- ground-truth.json 的 endpoint 键=canonical 资产键形（svc-*/…），历史 127.0.0.1:800x 映射形
+  一律降为 host_aliases 别名声明（顶层可选字段），不得再作主键。
+- 在环资产命名按真实内网 DNS（svc-*）；scorer 只归一语法（大小写/端口/query/尾斜杠），
+  语义等价必须显式进 host_aliases——禁止 scorer 猜映射。
+- 检出判定三要件不变：资产值匹配+EV 卡 word matcher 含 marker（行为差分证据为建议项，
+  见首战技能改进 7）。
+```
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_scorer_norm_b7 tests.test_eval_scripts -v` → 全 OK；全套 discover 全绿；金样 54 面 PASS 零漂移（scorer 出 evals 不入金样面）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add tests/eval_range_recall.py tests/range/RUNBOOK.md tests/range/ground-truth.json cli/ledger/check_cmds.py tests/test_scorer_norm_b7.py
+git commit -m "批次7-T16(战场件)：scorer URL 归一化匹配（host_aliases 声明式别名——首战 0/20 键失配根因修复）+GT 键口径 RUNBOOK 显著位前置+terminal-gate 冻结断言改 freeze 时在场行（P3 置格会话 P5 门恢复可达）"
+```
+
+---
+
+### Task 17: Medium 裁决收口包+b7 台账+契约/README 勘误+HANDOFF 记账+push
+
+**Files:**
+- Modify: tanyin-evals 判定入口（Step 0 定位；vacuous guard）
+- Modify: impact 死分支所在文件（Step 0 定位；清除或双语归一）
+- Create: `docs/design/2026-09-27-b7-discovery-notes.md`（Medium 裁决表 15/15 落盘+本批新探知项 G-42..+遗留登记）
+- Modify: `contracts/`（文末补记节微版本勘误）+ `cli/README.md`（批次 7 节）
+- Modify: `docs/HANDOFF.md`（状态快照批次 7 行+流水+出口 13 条执行记录）
+- Test: `tests/test_b7_medium_closeout.py`（新）
+
+**Interfaces:**
+- Produces: tanyin-evals 零指标文件/空目录 ⇒ FAIL（输出含 vacuous 字样）rc=1；impact 枚举死分支清除（判定=cli/ledger 全目录 grep critical 字样仅剩允许白名单行，白名单冻结进测试）；本节不做代码外新能力
+- Consumes: 本计划骨架「Medium 裁决表」（15/15 权威裁决，逐行誊录进 b7 台账）；批次 6 勘误先例（契约文末补记节+README 索引登记，微版本通道 schema_version=2 不递增）
+
+- [ ] **Step 0: 定位两个收口件**
+
+Run: `grep -rn "pass" cli/tanyin-evals cli/ledger/evals_*.py | head`+`ls tests/evals`（evals 空目录 vacuous pass=8 判定位）；`grep -rn "critical" cli/ledger/*.py`（④死分支位，比对 impact/severity 的 critical 字样行即候选）。
+
+- [ ] **Step 1: 写失败测试**
+
+```python
+# tests/test_b7_medium_closeout.py
+# -*- coding: utf-8 -*-
+"""批次 7 T17：Medium 收口两件（evals vacuous guard+impact 死分支）——裁决表全量落 b7 台账。"""
+import os, subprocess, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.join(HERE, "..")
+
+class TestEvalsVacuousGuard(unittest.TestCase):
+    def test_empty_dir_fails_not_pass(self):
+        """红=专家：evals 空目录 vacuous pass=8。"""
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "cli", "tanyin-evals"),
+                            <既有空态 argv 形——Step 0 对齐>], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 1, "红现状：空目录 rc=0 且 pass=8")
+        self.assertIn("vacuous", r.stdout + r.stderr)
+
+
+class TestImpactDeadBranchGone(unittest.TestCase):
+    ALLOW = ("evals_metrics.py",)   # 白名单=impact 值域容忍面（high/critical 英文入词表属合法）
+
+    def test_no_dead_critical_branch_in_ledger(self):
+        bad = []
+        d = os.path.join(ROOT, "cli", "ledger")
+        for fn in sorted(os.listdir(d)):
+            if not fn.endswith(".py") or fn in self.ALLOW:
+                continue
+            for i, line in enumerate(open(os.path.join(d, fn), encoding="utf-8"), 1):
+                if "critical" in line and ("impact" in line or "severity" in line) \
+                        and "SEV2IMPACT" not in line:
+                    bad.append("%s:%d %s" % (fn, i, line.strip()[:80]))
+        self.assertEqual(bad, [], "impact 枚举 {高,中,低} 下 critical 比较=死分支，必须清除:\n" + "\n".join(bad))
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_b7_medium_closeout -v`
+Expected: vacuous 例 FAIL（rc=0）；死分支例 FAIL（列出现存死分支行）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# evals 判定入口（Step 0 位）：加载指标文件后——
+    if n_metrics == 0:
+        print("FAIL vacuous: 指标文件为 0（空目录不得 vacuous pass，批次 7 T17）")
+        return 1
+# impact 死分支：命中行删除或改双语词表归一（HIGH_SEVERITIES 单源复用，禁第二词表）
+```
+
+- [ ] **Step 4: 台账+勘误+记账（本任务主交付）**
+
+1. `docs/design/2026-09-27-b7-discovery-notes.md`：四节结构（计划原文誊录=本计划「Medium 裁决表」15/15 行+执行期新增探知项 G-42.. 如实登记+状态归并=遗留项去向字段逐行落 v3/生产钥仪式/真人+移交清单）。允许刷新名单（T7 重签 lock/T9 pass.json/T10 金样 deploy 面）单列 delta 声明。
+2. 契约微版本勘误（文末补记节，一笔记全批，逐条列出旗标/必填变化）：add-fact `--no-consume=<理由>`；matrix-set `--batch-file=`；restart `--usage=`/`--round=` 必填（缺省=exit 2）；tanyin-guard exec/inject `--cred=/--action=/--timeout=`；deploy-vault 密值 argv 退役（stdin/env）；egress compile `[oob]/[canary]` 段+serve 墙钟缺省。Run: `ls contracts/` 确认目标契约文件与文末补记节形（批次 6 先例同款）。
+3. `cli/README.md` 批次 7 节：五 Critical 修复速查+新参一览+出口判定指针；SKILL 命令索引零变化（无新命令）——`python3 -m unittest tests.test_knowledge_contract` 绿为证。
+4. `docs/HANDOFF.md`：状态快照「批次 7 整改：完成（T1-T17 收口）」行+开发流水逐任务行+出口验收 13 条逐条亲跑执行记录表（命令+输出摘要+判定）+Ruling 节（执行期计划↔实现偏差逐条记账，先例=批次 3/4 各任务裁决节）。
+
+- [ ] **Step 5: 全批收口判定+push**
+
+```bash
+python3 -m unittest discover -s tests -p "test_*.py" -t .          # 出口①：全绿，计数入 HANDOFF
+python3 tests/run_golden.py                                        # 出口②：54 面 PASS（刷新名单核对）
+git status --short                                                  # 出口⑫：全净
+git add -A && git commit -m "批次7-T17+收口：Medium 裁决表 15/15 落 b7 台账+evals vacuous guard+impact 死分支清除+契约微版本勘误（全批旗标面一笔记）+cli/README 批次7 节+HANDOFF 状态快照/流水/出口 13 条执行记录/Ruling 节——出口验收 13 条逐条亲跑实测"
+git push origin HEAD                                                # 出口⑬
+git log --oneline -20                                               # 本批 commit 链补记入 HANDOFF（占位循环节补正笔先例）
+git push origin HEAD                                                # 补正笔再推
+```
+
+---
+
+## 执行交接（writing-plans 收尾）
+
+计划完成并保存在 `docs/superpowers/plans/2026-09-27-b7-remediation.md`（17 任务/每任务独立 TDD+全套回归+commit；抗断线纪律=骨架先行+每 2-3 任务增量落盘）。两种执行方式：**1. Subagent-Driven（推荐）**——每任务新子代理+两段评审（subagent-driven-development）；**2. Inline 执行**——executing-plans 分批检查点。
+
+**自审记录（writing-plans Self-Review）：**
+- 覆盖核对：C1→T1/T2/T3；C2→T4/T5；C3→T6；C4→T7；C5→T8/T9；High 七项→T10-T15+T3（restart 三段写）；战场件三件→T16；Medium 15 项→裁决表+T17（收口 6：冻结可追加[T16 裁决钉死]/死分支/evals vacuous/guard 超时/egress 时钟轮转/退出码触达面分型——遗留 9 全部带去向：v3/生产钥仪式/真人）。
+- 类型一致：_atomic_write(T1→T3)、goal_lock/WRITE_COMMANDS(T2)、RESERVED_EVENT_PREFIXES(T6)、verify(lock_path, nuclei_path=None)(T7)、_authorization_gate/authorization 门(T8)、draft_byte_equal/artifact_binding(T9)、MAGIC/derive_key/TANYIN_VAULT_KEYFILE(T10)、decide 四态/HANDLER_TIMEOUT_S(T11)、PHASES_DEFAULTS/usage/round(T12)、[no-consume:] 标记/KnowledgeEnvError(T13)、_validate_cell/matrix-set-batch(T14)、permitted_actions_covered(T15)、_norm_endpoint/_canon_host/host_aliases(T16) 跨任务引用一致。
+- 红测口径：17 任务红测全部锚定台账 evidence 原文或首战记录原文，无「泛化失败凑红」；执行期 argv 形对齐点均已给出 grep 定位命令（禁自造参数名纪律逐任务在册）。
+
 
 
 
