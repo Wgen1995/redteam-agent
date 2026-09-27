@@ -672,11 +672,12 @@ def trigger_audit(goal_dir):
         else:
             fails.append("③scope-amended #%d 后无 egress-compile 事件（recompile+复测闭环）" % i)
 
-    # ④ 高危 finding 即时横向（triggers-v2 承诺兑现，批次5 T6）：impact∈{高,high,critical}
+    # ④ 高危 finding 即时横向（triggers-v2 承诺兑现，批次5 T6）：impact 词表 {高,中,低}
+    #    （write_cmds 单源枚举）——高危档单值「高」，英文形不在词表（批次7 T17 死分支清除）；
     #    落账后须存在引用该 FD-id 的横向 intent（kind∈{matrix-test,deep-dive} 且
     #    title/detail 内联 FD-id），或 target=lateral:<FD-id> 披露 fact（facts.target
     #    自由文本新语义值，零 schema 变更）
-    _HAZ = {"高", "high", "critical"}
+    _HAZ = ("高",)
     for r in s.rows("findings.tsv"):
         if _cell("findings.tsv", r, "impact") not in _HAZ:
             continue

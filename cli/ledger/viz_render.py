@@ -3,7 +3,7 @@
 
 只读 13 表+timeline；数据岛全排序确定性；HTML 内联 vanilla JS（过滤/搜索/面板切换/节点详情）。
 追加件（fb72cd5）：findings 实时流投影——最新 N 条（时间/资产/类型/severity/状态），
-high/critical 置顶标记；确定性输出可金样化（--data-only 金样面）。"""
+高危（「高」档）置顶标记；确定性输出可金样化（--data-only 金样面）。"""
 import json
 
 from . import authz_matrix
@@ -15,7 +15,7 @@ NODE_TABLES = (("goals.tsv", "G"), ("intents.tsv", "INT"), ("assets.tsv", "AST")
                ("facts.tsv", "F"), ("findings.tsv", "FD"), ("E-index.tsv", "EV"), ("creds.tsv", "CRED"))
 LAYER = {"G": 0, "INT": 1, "AST": 2, "CRED": 2, "F": 3, "FD": 4, "EV": 5}
 FINDING_STREAM_N = 20                 # 追加件：实时流最新 N 条（作战视图，禁全量回灌同精神）
-HIGH_SEVERITIES = ("高", "high", "critical")   # 置顶标记档（impact 词表 {高,中,低}+英文容错）
+HIGH_SEVERITIES = ("高",)   # 置顶标记档（impact 词表 {高,中,低} 唯一高危档；批次7 T17 死分支清除）
 
 
 def build_island(s):
@@ -74,7 +74,7 @@ def build_island(s):
 
 
 def _finding_stream(s):
-    """追加件（fb72cd5）：最新 N 条 findings，high/critical 稳定置顶（段内按新近降序）。"""
+    """追加件（fb72cd5）：最新 N 条 findings，高危（「高」档）稳定置顶（段内按新近降序）。"""
     tf = TABLES["findings.tsv"]
     ta = TABLES["assets.tsv"]
     ast_value = {r[0]: r[ta.index("value")] for r in s.rows("assets.tsv")}
@@ -147,7 +147,7 @@ TEMPLATE = """<!DOCTYPE html>
 </header>
 <main>
  <div id="left">
-  <section><h2>findings 实时流（最新 N 条 · high/critical 置顶▲）</h2><div id="stream-list"></div></section>
+  <section><h2>findings 实时流（最新 N 条 · 高危置顶▲）</h2><div id="stream-list"></div></section>
   <section><h2>Pipeline 时间轴（gate-exit 序 · 当前=最后一门）</h2><div id="phases"></div></section>
   <section><h2>图谱（分层布局 · attack 金/cross_ref 虚/supersedes 点/candidate 半透明）</h2>
    <div id="controls">

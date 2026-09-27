@@ -203,3 +203,34 @@ python3 cli/tanyin-selfcheck --host=dsh --guided                                
 ```
 
 批次 6 出口验证：整批出口验收清单 18 条逐条亲跑实测记录=docs/HANDOFF.md「批次 6 状态快照+出口清单执行记录」节（全套 728+ 绿/金样 54 面 PASS/evals 全量绿/安装六步幂等/交战区分离/签发门正反例/靶场检出率/终态 B 演练/真人复核载体/G 项台账 G-36..G-41 收口）；探知项台账见 docs/design/2026-09-24-b6-discovery-notes.md；真人复核流程=docs/HUMAN-REVIEW.md（复核人不得为本批次执行者）。
+
+## 批次 7：五 Critical 整改+High 逐项+战场件+Medium 裁决收口（T1-T17）
+
+六专家对抗评审 5 Critical+High 逐项+靶场首战战场件三件，全部以「红测=复现专家反例」TDD 落地；执法面全部在既有 cli/ledger 单源内收紧（零新增命令，工具面仍 14，SKILL 命令索引零变化——tests.test_knowledge_contract 绿为证）。
+
+### 五 Critical 修复速查
+
+| Critical | 修复 | 载体（测试即证据） |
+|---|---|---|
+| C1 账本写路径非原子/并发丢行 | core.write_tsv+Ctx.write_file 全量换 tmp+os.replace 单源（T1）+goal 级跨平台文件锁（T2，fcntl/msvcrt 单源）+真 SIGKILL 200k 行×8 保真+restart 孤儿对账（T3） | test_atomic_write_b7 / test_goal_filelock_b7 / test_kill9_write_fidelity |
+| C2 guard exec 硬化 | argv 归一化双形比对（rm -r -f /→rm -fr /）+十进制/十六进制/八进制 IP 变体解码（T4/T5） | test_guard_argv_norm_b7 |
+| C3 九门伪造快进 | append-timeline 保留事件词拒收（gate-exit:/gate-fail）；门事件 run_gate 单源铸造（T6） | test_gate_authority_b7 |
+| C4 tools.lock 信任链 | 测试钥轮换+信任面隔离断言（测试钥签名×生产锚 verify=False）+nuclei runtime digest 比对（T7） | test_tools_trust_face |
+| C5 报告签发四绕 | 授权完整性门（sha256/窗口/approvals verify-signoff）+draft 字节比对+pass.json 三工件哈希绑定+落盘后复扫（T8/T9） | test_sign_gates_b7 |
+
+### 新参一览（契约微版本勘误已回注，见 contracts/02a 文末批次 7 补记）
+
+- `add-fact --no-consume=<理由>`——触发器显式不消费通道（理由空=exit 2）；K1 缺基线=tanyin-knowledge 消费面 exit 2（T13）
+- `matrix-set --batch-file=`（四列 TSV 全成全败）+ `matrix-init --from-assets`（资产类裁剪，缺省零变更）（T14）
+- `restart --usage=/--round=` 必填（缺省=exit 2；auto 档 0.75/10 轮阈值执法）（T12）
+- `tanyin-guard exec/inject --cred=/--action=/--timeout=`（account-grant 覆盖门+超时 1..600 缺省 60）（T15）
+- `deploy-vault` 密值 argv 退役（env/`--secret-stdin` 通道）；vault v2 nonce+EtM-HMAC+PBKDF2（T10）
+- `tanyin-egress compile` 产 `[oob]/[canary]` 段+serve 真墙钟缺省+5MB×3 轮转+30s socket 超时（T11）
+
+### 战场件（靶场首战三件，T16）
+
+- scorer URL 归一化匹配（只归语法：小写 host/剥默认端口/query 排序/去尾斜杠）+GT 顶层 `host_aliases` 语义别名显式声明（首战 0/20 键失配根因修复）——tests/test_scorer_norm_b7.py
+- GT 键口径 RUNBOOK 显著位新节（tests/range/RUNBOOK.md 首屏后第一节，开打前必读）
+- ledger-terminal-gate 冻结断言改「freeze 时在场行」（freeze 后 matrix-set 追加行不再使 P3 置格会话 P5 门不可达）
+
+出口判定指针：批次 7 整改出口验收 13 条逐条亲跑实测记录=docs/HANDOFF.md「批次 7 整改状态快照+出口清单执行记录」节；Medium 15 项裁决落盘+遗留登记=docs/design/2026-09-27-b7-discovery-notes.md。

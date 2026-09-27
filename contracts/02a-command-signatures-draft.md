@@ -728,3 +728,19 @@
 ## v2 勘误补记（2026-09-24·批次 5 施工期·T7/G-28 前半·converge 结构性停机）
 
 §22 converge-check 判据与输出勘误：空格清零条件细化为可达性维度——`#reachable-gaps=N`/`#unreachable-gaps=N` 双计数行随 verdict 行输出（verdict 仍居首，gate 断言「stdout 首词∈{converged, budget-exhausted}」与 mode=degraded 判定不受影响）；可达性=graph_cmds.reachable_gap_cells 单源（horizon 同函数，起点集参数化——horizon 传 {--from}、converge 传 scope-root 资产集，horizon 行为零变由金样 graph-graph-horizon.norm 钉死）。结构性停机判据=不可达空格经 `unreachable:` 前缀置态「-」（matrix-set --state=- --reason=unreachable:<AST 依据>）后计入清零——图依据显式置格而非静默豁免，matrix-set 零改动（批4 裁决 A「旧前缀为空→任意前缀放行」已支持首次归类）；verdict=running 且可达空格=0 而不可达>0 时行尾附 structural 提示。金样 read-converge-check 有意刷新（新增两行计数+structural 提示=行为增强非破坏）。落地=批次 5 T7；微版本勘误通道，schema_version 保持 =2 不递增。
+
+## v2 勘误补记（2026-09-27·批次 7 施工期·旗标/必填面一笔记·T17 统一回注）
+
+批次 7（T1-T15）触达的命令旗标/必填参数面，按计划「契约面变更一律微版本勘误、T17 统一回注」条款一笔记全批（批 3 G-10/批 5 T3/批 6 T18 先例同通道）：
+
+1. **add-fact `--no-consume=<理由>`**（T13）：触发器显式不消费通道——理由空=usage exit 2；带旗标事实落 facts.detail `[no-consume:<理由>]` 标记（core.NO_CONSUME_MARK 单源常量，落盘前 redact 整体复扫）；unconsumed-facts/trigger-audit 跳过带标记事实且 PASS 行单列 deferred=<n>（n>0 才出列）。
+2. **matrix-set `--batch-file=<路径>`**（T14）：LF TSV 四列 surface/vclass/state/reason（无表头；行自载 state/reason，空单元格回落命令行参）；全成全败=先全校验（_validate_cell 单源，单格/批量共用）后一次写入，任一行违规=REJECT 整批零写入零事件；全过=恰一条 `matrix-set-batch n=<k>` 事件。
+3. **matrix-init `--from-assets`**（T14）：行集裁剪=in_scope 资产类型映射词表类（TYPE_VOCAB_CLASSES 单源，cli/ledger/matrix_init.py；A5 存储与云/A7 人的因素等缺席资产类型独涉类不出行）；缺省不带开关=全量行为零变更（金样保护）。
+4. **restart `--usage=`/`--round=` 必填化**（T12，tanyin-phases；checkpoint --round/--note 增补见 §13 G-10 勘误）：缺参/非法=usage exit 2；auto 档阈值执法（usage≥0.75 或 round 满 10 轮=REJECT restart-threshold rc=1，单源=FROZEN_CONSTANTS 默认键）；manual 档同必填（审计语义）。
+5. **tanyin-guard exec/inject `--cred=<id>`/`--action=<动作>`/`--timeout=<秒>`**（T15）：exec/inject 门链扩展 deny-list→scope→permitted_actions→request-ticket（enforce.permitted_actions_covered/grant_row_exists 单源；多值分隔=分号与 write_cmds._mv 同语义）；inject 带 --cred 须 --action（凭据必有意图动作，usage exit 2）；--timeout=秒 1..600 缺省 60（超时⇒REJECT 输出点名 timeout rc=1，exec/inject 双通道）。
+6. **tanyin-guard deploy-vault 密值 argv 退役**（T10）：`--secret=<值>` 字面 argv 形退役（进程表泄漏面）——env（TANYIN_VAULT_KEYFILE 密钥外移）或 `--secret-stdin`/`--passphrase-stdin` 显式旗标通道（R-T10-2，无人值守不隐式读 stdin）；vault v2 加密面（MAGIC=TV2 nonce 随机化+EtM-HMAC-SHA256+PBKDF2-HMAC-SHA256 200k，双读过渡保金样）详见 HANDOFF 批次 7 T10 行。
+7. **tanyin-egress compile `[oob]/[canary]` 段+serve 墙钟缺省**（T11）：build_acl 产 [oob]/[canary] 段（[canary] 单源=recon-decoys.tsv 值列，R-T11-2）；serve 缺省真墙钟（测试显式注入，禁墙钟进账本纪律不涉运行时日志）+egress-log 5MB×3 轮转+30s socket 超时；decide() 四态 deny→canary→oob→allow→默认拒（显式 deny 优先保留，R-T11-3）。
+8. **签发面扫描位变更登记（R-T9-2/R-T9-3，T8/T9）**：报告 lint/sign 门内 redact_scan 扫描位前移收口——写路径扫描移至凭证落盘后、lint 路径扫描移至 rep 构建后，全门早败路径不再产扫描结果（gates.redact_scan 缺省 PASS 形；rc 判定 fail-closed 不受扰）；sign_gate 复扫面收口载体=pass.json/draft/sign-path 工件（cmd_sign 末端 report_artifacts.write_all 的 findings.json/sarif/report-*.md 落盘仍居复扫之后=门内不可达，登记为已知边界非豁免，批 7 T9 红测载体锚定门内面）。
+
+- 勘误通道：微版本勘误（零存量数据期，G-1/批 5 T3/批 6 T18 先例同通道），schema_version 保持 **=2 不递增**；本补记日期 2026-09-27；13 表列集与 44 账本命令名零变化（工具面仍 14）。
+- 自验复跑：`python3 -m unittest tests.test_knowledge_contract` 绿（工具面 14 不变）；`grep -cE '^\| [0-9]+ \| tanyin-' contracts/09-cli-surface.md` → **14**。
