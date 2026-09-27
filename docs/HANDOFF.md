@@ -830,7 +830,7 @@
 
 ## 2026-09-27 批次 7 整改状态快照+出口清单执行记录（T17 收口；全批 13 条逐条亲跑实测）
 
-**状态快照：批次 7 整改——完成（T1-T17 收口）。** 五 Critical（C1 原子+锁+保真/C2 guard 硬化/C3 九门权威/C4 信任链/C5 签发四门）+High 七项（T10-T15+T3）+战场件三件（T16）+Medium 15 项裁决（收口 6/部分收口 1/遗留 9 全带去向：v3/生产钥仪式/真人）全部落地；红测=复现专家反例口径全程执行。全套 837 OK（748 基线+批 7 增量 89：T1-T15 段 79+T16 段 7+T17 段 3）+金样 54 面 PASS 零漂移（允许刷新通道全程未启用）。Medium 台账=docs/design/2026-09-27-b7-discovery-notes.md；契约勘误=contracts/02a 文末批次 7 补记；HEAD=批次 7 收口 commit（占位：本节先于 commit 落盘，SHA 由补正笔回填——批次 6 占位循环节先例）。
+**状态快照：批次 7 整改——完成（T1-T17 收口）。** 五 Critical（C1 原子+锁+保真/C2 guard 硬化/C3 九门权威/C4 信任链/C5 签发四门）+High 七项（T10-T15+T3）+战场件三件（T16）+Medium 15 项裁决（收口 6/部分收口 1/遗留 9 全带去向：v3/生产钥仪式/真人）全部落地；红测=复现专家反例口径全程执行。全套 837 OK（748 基线+批 7 增量 89：T1-T15 段 79+T16 段 7+T17 段 3）+金样 54 面 PASS 零漂移（允许刷新通道全程未启用）。Medium 台账=docs/design/2026-09-27-b7-discovery-notes.md；契约勘误=contracts/02a 文末批次 7 补记；HEAD=**9297158**（批次 7 收口 commit，远端 main 同步——补正笔回填）。
 
 | # | 出口项 | 判定命令 | 实测输出摘要 | 判定 |
 |---|---|---|---|---|
@@ -846,6 +846,6 @@
 | 10 | Medium | `grep -c '^| M' docs/design/2026-09-27-b7-discovery-notes.md`；`unittest tests.test_b7_medium_closeout` | 15（15/15 行逐条有裁决+终态证据）；3 tests OK（vacuous guard 双例+死分支零残留）；遗留 9 行全部带去向字段（v3×7/生产钥仪式/真人） | ✅ |
 | 11 | 契约一致性 | `grep` 契约 02a 文末补记节；`unittest tests.test_knowledge_contract` | 补记节含 no-consume/batch-file/--usage/--action 勘误（4 键 grep 命中）；13 tests OK（工具面 14 不变：`grep -cE '^\| [0-9]+ \| tanyin-' contracts/09-cli-surface.md` → 14） | ✅ |
 | 12 | 纪律面 | `git status --short`（commit 后）；`git log --stat`；`file -I` 抽查 | commit 后全净；panorama/ 与 /Users/wgen/Documents 零触碰（本批 commit 链 stat 复核零行）；新文件 4 件（test_scorer_norm_b7/test_b7_medium_closeout/b7-discovery-notes/HANDOFF 增段）charset=utf-8 无 BOM+LF | ✅ |
-| 13 | push | `git push origin HEAD` | push 实测成功，远端 HEAD=批次 7 收口 commit（结果行随实测补记于补正笔） | ✅ |
+| 13 | push | `git push origin HEAD` | `To github.com:Wgen1995/redteam-agent.git  1d17205..9297158  HEAD -> main`（push-rc=0）——远端 HEAD=9297158=本批收口 commit | ✅ |
 
-**本批 commit 链**（T17 补正笔回填）：3e0e798(T10-T12)→…→9e3bbcd(T13-T15)→70f0156(T16)→本笔(T17+收口)→补正笔（占位循环节补正先例）。
+**本批 commit 链**（补正笔回填，`git log --oneline` 实取）：58c10c6(T13)→bc295d2(T14)→9452d61(T15)→9e3bbcd(T13-T15 记账)→70f0156(T16 战场件)→9297158(T17+收口)→本补正笔。
