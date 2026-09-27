@@ -720,3 +720,18 @@
 ## 2026-09-27 批次 7 开工（executing via subagent-driven-development）
 - 用户批准整改计划 docs/superpowers/plans/2026-09-27-b7-remediation.md（17 任务/出口 13 条/红测=专家反例复现；输入=六专家评审 5C+High/Medium 台账+靶场首战工具缝）｜commit 96d90e0
 - 执行结构：C1 簇先行→C2-C5→High 七项→战场件→Medium 收口，每任务 TDD+全量回归，收口后整支评审
+
+## 2026-09-27 批次 7 T1+T2+T3 流水+裁决（C1 簇：账本写路径原子化+goal 文件锁+真 SIGKILL 保真；实现者记）
+- **T1（3a842ad）账本写路径原子化**：core._atomic_write 单源（tmp+fsync+os.replace，state_md 同款语义收拢）+write_tsv/Ctx.write_file 接线（全仓调用面零变更）。红=半写中断旧内容零损反例（mock os.replace→现状 open(w) 原地截断先吞旧账本，2 FAIL→3 PASS）。全套 751=748+3 绿+金样 54 面 PASS 零漂移。
+- **T2（4530f7f）goal 级写锁**：filelock.py 跨平台单源（POSIX flock LOCK_EX 阻塞/Windows msvcrt LK_NBLCK 自旋+超时，超时=OSError 归 2）+registry.lookup 分发单点接线（锁包「读表→改内存→commit」全程；写命令处理函数零 lookup 嵌套调用，同进程顺序取放无自锁——grep 复核）。WRITE_COMMANDS 自 writer 模块注册表派生（write_cmds 38 键含双前缀别名+matrix_init），禁手抄。红=16 并发 add-fact 竞速反例（tmp replace ENOENT 竞态 rc=1+行数缺失→绿=16 全 rc=0+facts 2+16 行+新 id 唯一+verify-chain PASS）。全套 753=748+5 绿+金样 54 面 PASS。
+- **T3（4d89884）真 SIGKILL 保真+restart 孤儿对账**：test_kill9_write_fidelity 双组例+phases_engine run_restart 改造（state.md 解析③前移+⓪孤儿对账+⑤事件词带 session=<id>，_last_restart_ts 薄壳保留）。红=双反例复现：①T1 revert 后第 1 杀 200008→4092 行回滚（专家「200008 行→8KB 静默丢史」同型）；②孤儿态再 restart 被 restart-rate-limit 卡 10min（SRE 复现原样）。绿=8 杀后链完整+行数不回滚+收尾写入 tmp 零残留且恰进 1 行；孤儿放行 rc=0+managed-restart-orphan prior-session 留痕+真重启速率窗不豁免（non-orphan 对照例钉死）。受管重启既有 10 例+state_md/lock_v2/kill9_fidelity/resume_kit 同域 55 例零回归。全套 756=748+8 绿+金样 54 面 PASS 零漂移。
+- **Ruling（T1 解释器）**：本机 python3=3.9.6（命名空间包 discover 唯一可用；python3.12 discovery 对无 __init__.py 的 tests/ 直接 ImportError——计划「Python 3.11/3.12」为标准库用法口径，非解释器绑定）；HANDOFF 在册 discover 命令形照用，计划出口#1 的 -p/-t 变体两解释器同败（记录不采纳）。
+- **Ruling（R-T2-1 夹具）**：16 并发反例夹具=tests/fixtures/G-g1 拷贝（test_write_cmds 同款）——计划片段 fresh_drydir 空目无 goals/intents，add-fact 因 Tier0/引用闭合用法性失败=假红；反例需 16 条全合法 add-fact 竞速。断言口径微调：facts 期望 n0+16（夹具底 2 行）+新行 id 唯一性（last-writer-wins 特征断言）。
+- **Ruling（R-T2-2 锁面）**：锁面=write_cmds.HANDLERS 与 matrix_init.HANDLERS 并集（金样写面 20 的全部）；set-replay-state（check_cmds）读写双态同入口，写形锁覆盖留 v3（拆读写形涉契约面）——登记遗留。
+- **Ruling（R-T2-3 .lock 表面）**：run_golden.norm_state 与 test_negative_matrix 目录快照排除 .lock——锁工件非账本面（计划 T2 出口「.lock 不进任何表面」的实现位）；负向矩阵例补钉「REJECT 亦经锁面（.lock 在场非账本变更）」。
+- **Ruling（R-T3-1 断点协议）**：计划 rng.uniform(0.002,0.05)s 断点落子进程 import/读表期（写窗命中率约 0）→红测假绿；改武装哨兵协议（子进程读表毕触发哨兵，父进程等哨兵后 sleep rng 区间再杀）——断点确定落在 200k 行写窗内，反例必现。
+- **Ruling（R-T3-2 tmp 残留）**：kill -9 无法执行 except 清扫，写窗内被杀必留 .tmp——残留非撕裂态 A（账本本体 os.replace 保证要么旧版要么新版），同路径 tmp 下一次写入截断复用（收尾例钉死：终写后零残留+恰进 1 行）；SIGKILL 循环内改断言「可解析+链完整+行数不回滚」，异常路径清扫由 T1 反例承载。
+- **Ruling（R-T3-3 孤儿夹具）**：孤儿例夹具=G-g1 拷贝（test_managed_restart 同款）——fresh_drydir 空目使 _make_orphan 的 budget-log/append-timeline Tier0 REJECT=假红。
+- **Ruling（R-T3-4 对账=重建）**：计划 ⓪片段只豁免速率窗+补记事件，实测无法放行——manual 接管前置 state-rebuild 检查（revision/snapshot 口径）对孤儿态必 FAIL（第二道卡死，SRE 反例的完整形态）。对账补 rebuild_state 对齐（账本为第一事实源，check_cmds 同口径；session=rebuilt/status=released，随事务末尾 checkpoint 重取新锁）+失败 REJECT+重解析 fields。
+- **Ruling（R-T3-5 过滤词）**：_last_restart_event 排除对账事件按事件词前缀 managed-restart-orphan 判定——计划片段子串判定被 session id（r-orphan）误伤（红测自身即绊线），实测改前缀判定。
+- **纪律面**：panorama/ 与 /Users/wgen/Documents 零触碰；新文件 UTF-8 无 BOM+LF；.gitignore 增 __pycache__/（字节码目录不入 status，全净判定可持续）；收尾全套 756 OK+金样 54 面 PASS+git status 净（本节 commit 前亲测）。
