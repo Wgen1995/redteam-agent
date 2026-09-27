@@ -39,6 +39,21 @@ def usage():
     return 2
 
 
+def _recon_decoys(gd):
+    """侦察诱饵值列（批次 7 T11）：canary/recon-decoys.tsv 列[1]——与
+    phases_engine denominator-ready ④同口径（type/value 两列取值列）；文件缺=空集
+    （compile 不因诱饵未部署而失败）。排序去重=compile 确定性纪律。"""
+    p = os.path.join(gd, "canary", "recon-decoys.tsv")
+    vals = []
+    if os.path.isfile(p):
+        for ln in open(p, encoding="utf-8").read().splitlines():
+            if ln.strip():
+                parts = ln.split(chr(9))
+                if len(parts) > 1 and parts[1].strip():
+                    vals.append(parts[1].strip())
+    return sorted(set(vals))
+
+
 def build_acl(gd):
     # 洞 1 修复：scope 解析改调 enforce.load_scope 同一函数——账本=执法策略单一
     # 事实源（amendment 链后行覆盖先行），消除 Tier1/Tier2/Tier3 两层解释矛盾。
@@ -66,6 +81,12 @@ def build_acl(gd):
     L.append("[oob]")
     for m in oob:
         L.append("allow-oob " + m)
+    L.append("")
+    # [canary] 段（批次 7 T11，High：两声明面默认失效收口）=侦察诱饵值列
+    # （scope kind=canary 行在 add-scope 四值枚举冻结下不可达，见台账 R-T11-2）。
+    L.append("[canary]")
+    for m in _recon_decoys(gd):
+        L.append("canary " + m)
     L.append("")
     L.append("[infra]")
     for m in INFRA:
@@ -120,11 +141,12 @@ def cmd_serve(rest):
     ap.add_argument("--egress-log", default=None,
                     help="egress-log.jsonl 路径（唯一运行时工件；代理绝不写 13 表）")
     ap.add_argument("--timestamp", default=None,
-                    help="显式 ISO8601（log 行 ts；缺省 EPOCH 确定性纪律）")
+                    help="显式 ISO8601（log 行 ts；缺省=UTC 真墙钟——批次 7 T11；测试显式注入固定 now=确定性通道）")
     a = ap.parse_args(rest)
     try:
+        # now=None 缺省=UTC 真墙钟（批次 7 T11，Medium 收口：egress now 常量）
         httpd = egress_proxy.serve(a.acl, a.port, egress_log=a.egress_log,
-                                   now=a.timestamp or EPOCH)
+                                   now=a.timestamp)
     except ValueError as e:
         sys.stderr.write("ACL 不合法（fail-closed）: %s\n" % e)
         return 2

@@ -73,11 +73,11 @@ class TestAcl(unittest.TestCase):
         self.assertIn("*.shop.example", acl["dns_pin"])
         self.assertEqual(sorted(acl["oob"]), [])
         # 通配后缀与 CIDR 判定走 decide 单源
-        self.assertEqual(egress_proxy.decide(acl, "a.shop.example", 443), "allow")
-        self.assertEqual(egress_proxy.decide(acl, "10.10.9.9", 80), "allow")
-        self.assertEqual(egress_proxy.decide(acl, "evil.example", 443), "deny")
+        self.assertEqual(egress_proxy.decide(acl, "a.shop.example", 443)[0], "allow")
+        self.assertEqual(egress_proxy.decide(acl, "10.10.9.9", 80)[0], "allow")
+        self.assertEqual(egress_proxy.decide(acl, "evil.example", 443)[0], "deny")
         # 基础设施白名单=allow 面（端口通配）
-        self.assertEqual(egress_proxy.decide(acl, "api.github.com", 443), "allow")
+        self.assertEqual(egress_proxy.decide(acl, "api.github.com", 443)[0], "allow")
 
     def test_parse_plan_forms(self):
         """计划行约定形态（host:port 精确/dns-pin 带 ip/oob/canary）并存可解析。"""
@@ -104,18 +104,18 @@ class TestDecide(unittest.TestCase):
             "allow *.suf.example\nallow 10.10.0.0/16\n")
 
     def test_port_exact_and_wildcard(self):
-        self.assertEqual(egress_proxy.decide(self.acl, "web.example", 8080), "allow")
-        self.assertEqual(egress_proxy.decide(self.acl, "web.example", 81), "deny")
-        self.assertEqual(egress_proxy.decide(self.acl, "any.example", 9999), "allow")
+        self.assertEqual(egress_proxy.decide(self.acl, "web.example", 8080)[0], "allow")
+        self.assertEqual(egress_proxy.decide(self.acl, "web.example", 81)[0], "deny")
+        self.assertEqual(egress_proxy.decide(self.acl, "any.example", 9999)[0], "allow")
 
     def test_wildcard_suffix_strict(self):
-        self.assertEqual(egress_proxy.decide(self.acl, "a.suf.example", 443), "allow")
-        self.assertEqual(egress_proxy.decide(self.acl, "suf.example", 443), "deny",
+        self.assertEqual(egress_proxy.decide(self.acl, "a.suf.example", 443)[0], "allow")
+        self.assertEqual(egress_proxy.decide(self.acl, "suf.example", 443)[0], "deny",
                          "通配 *.suf 不含裸域（apex 由独立 allow 行声明）")
-        self.assertEqual(egress_proxy.decide(self.acl, "a.b.suf.example", 443), "allow")
+        self.assertEqual(egress_proxy.decide(self.acl, "a.b.suf.example", 443)[0], "allow")
 
     def test_default_deny(self):
-        self.assertEqual(egress_proxy.decide(self.acl, "other.example", 80), "deny")
+        self.assertEqual(egress_proxy.decide(self.acl, "other.example", 80)[0], "deny")
 
 
 class TestProxyEndToEnd(unittest.TestCase):

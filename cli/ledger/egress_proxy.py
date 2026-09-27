@@ -16,8 +16,8 @@ ACL 行约定（egress.acl v2 compile 真实产物为锚；计划行约定并存
   pin <host|*.suf>                 DNS pin 声明（无 ip 形态——比对=声明态 pin_ok=None）
   dns-pin <host> <ip>              DNS pin 带期望地址（计划行约定；地址级执法）
   oob <host> / allow-oob <host>    OOB 回连域（allow 后落 kind=oob 行）
-  canary <host>                    canary 域（allow 后落 kind=canary 告警行；compile
-                                   v2 不产出本段——canary 面随 T11 手工/扩展 ACL）
+  canary <host>                    canary 域（allow 后落 kind=canary 告警行；批次 7 T11
+                                   起 compile 产出 [canary] 段=单源接线收口）
   其余任意行=ValueError（fail-closed）
 
 DNS pin 执法语义（三态）：pin 无 ip=声明态（pin_ok=None）；host 为 IP 字面量且≠pin
@@ -31,6 +31,7 @@ import json
 import os
 import select
 import socket
+import time as _time
 import http.client
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
@@ -39,6 +40,16 @@ _SECTIONS = ("[acl]", "[dns-pinning]", "[oob]", "[canary]", "[infra]")
 _HOP = {"connection", "keep-alive", "proxy-authenticate", "proxy-authorization",
         "proxy-connection", "te", "trailer", "transfer-encoding", "upgrade"}
 _DEFAULT_PORT = "*"
+
+# 日志运维常量（批次 7 T11，Medium 收口：egress now 常量/日志无轮转/无超时）：
+MAX_LOG_BYTES = 5 * 1024 * 1024   # 5MB 超限轮转
+LOG_KEEP = 3                      # 保留 3 代（egress.log.1..3）
+HANDLER_TIMEOUT_S = 30            # handler socket 超时 30s
+
+
+def _utc_now_iso():
+    """真墙钟 UTC ISO（批次 7 T11）：now 缺省通道；测试显式注入固定 now=确定性。"""
+    return _time.strftime("%Y-%m-%dT%H:%M:%SZ", _time.gmtime())
 
 
 def parse_acl(text):
@@ -117,15 +128,45 @@ def _match(entry_host, host):
 
 
 def decide(acl, host, port):
-    """判定单源：显式 deny 优先 → allow（精确/通配/CIDR）→ 其余一律 deny
-    （deny-by-default 纪律：default_deny 标志在册即可读，判定结果恒收口 deny）。"""
+    """判定单源（批次 7 T11 升四态，High：OOB/canary 两声明面默认失效收口）：
+    显式 deny 优先（洞 1 纪律不回退）→ canary 命中=告警放行（探测点语义：阻断反
+    掩盖触达事实）→ oob 白名单放行 → allow（精确/通配/CIDR）→ 其余一律 deny。
+    返回 (verdict, reason)，verdict ∈ {"allow","deny","oob","canary"}。"""
     for dh, dp in acl["deny"]:
         if _match(dh, host) and dp in (_DEFAULT_PORT, port):
-            return "deny"
+            return "deny", "显式 deny（exclude 展开，优先级最高）"
+    if _wild_hit(acl["canary"], host):
+        return "canary", "canary 域触碰=实时告警（放行留痕）"
+    if _wild_hit(acl["oob"], host):
+        return "oob", "OOB 回连端点（scope kind=oob 白名单）"
     for ah, ap in acl["allow"]:
         if _match(ah, host) and ap in (_DEFAULT_PORT, port):
-            return "allow"
-    return "deny"
+            return "allow", "scope include 白名单"
+    return "deny", "默认拒（deny-by-default）"
+
+
+def format_log_line(now, kind, host, port, verdict):
+    """日志行整形（批次 7 T11）：now=None 缺省→UTC 真墙钟；测试显式注入固定 now。
+    （Medium 收口：专家台账「now=EPOCH 常量」——运行时日志时间戳不得伪装。）"""
+    ts = now or _utc_now_iso()
+    return "%s %s %s %d %s" % (ts, kind, host, port, verdict)
+
+
+def append_log_line(path, line):
+    """日志追加唯一通道（批次 7 T11）：超限轮转后追加一行（LF 结尾）。"""
+    _rotate_if_needed(path)
+    with open(path, "a", encoding="utf-8", newline="\n") as f:
+        f.write(line + "\n")
+
+
+def _rotate_if_needed(path):
+    """5MB×保留 3 代轮转（egress.log.1..3；批次 7 T11）。"""
+    if os.path.isfile(path) and os.path.getsize(path) > MAX_LOG_BYTES:
+        for i in range(LOG_KEEP - 1, 0, -1):
+            src, dst = "%s.%d" % (path, i), "%s.%d" % (path, i + 1)
+            if os.path.isfile(src):
+                os.replace(src, dst)
+        os.replace(path, path + ".1")
 
 
 def _pin_for(acl, host):
@@ -151,7 +192,9 @@ class EgressProxy(ThreadingHTTPServer):
     daemon_threads = True
     allow_reuse_address = True
 
-    def __init__(self, acl, egress_log=None, port=0, now="2026-09-24T00:00:00Z"):
+    def __init__(self, acl, egress_log=None, port=0, now=None):
+        """now=None 缺省=UTC 真墙钟（批次 7 T11，Medium 收口）；测试显式注入
+        固定 now 保确定性（serve/serve_text 同款缺省）。"""
         ThreadingHTTPServer.__init__(self, ("127.0.0.1", port), _Handler)
         self.acl = acl
         self.egress_log = egress_log
@@ -160,14 +203,14 @@ class EgressProxy(ThreadingHTTPServer):
     def log_line(self, kind, host, port, verdict, pin_ok=None):
         if not self.egress_log:
             return
-        row = {"ts": self.now, "verdict": verdict, "host": host, "port": port,
-               "kind": kind, "pin_ok": pin_ok}
-        with open(self.egress_log, "a", encoding="utf-8", newline="\n") as f:
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        row = {"ts": self.now or _utc_now_iso(), "verdict": verdict, "host": host,
+               "port": port, "kind": kind, "pin_ok": pin_ok}
+        append_log_line(self.egress_log, json.dumps(row, ensure_ascii=False))
 
 
 class _Handler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
+    timeout = HANDLER_TIMEOUT_S   # socket 超时 30s（批次 7 T11，Medium 收口）
 
     def log_message(self, *a):  # 运行时工件=egress-log；stderr 保持安静
         pass
@@ -194,8 +237,8 @@ class _Handler(BaseHTTPRequestHandler):
         u = urlsplit(self.path)
         host, port = u.hostname or "", u.port or 80
         acl = self.server.acl
-        v = decide(acl, host, port)
-        if v != "allow":
+        v, why = decide(acl, host, port)   # 判定单点（批次 7 T11 四态）
+        if v == "deny":
             self.server.log_line("forward", host, port, "deny")
             self.send_error(403)
             return
@@ -232,10 +275,10 @@ class _Handler(BaseHTTPRequestHandler):
         # 落账先于响应写回：客户端收到响应字节时 egress-log 行已全部落盘
         # （触探/告警证据源对消费者无竞态——T11 probe 读 log 判定依赖此序）
         self.server.log_line("forward", host, port, "allow", pin_ok)
-        if _wild_hit(acl["oob"], host):
+        if v == "oob":
             self.server.log_line("oob", host, port, "allow", pin_ok)
-        if _wild_hit(acl["canary"], host):
-            self.server.log_line("canary", host, port, "allow", pin_ok)
+        elif v == "canary":
+            self.server.log_line("canary", host, port, "ALARM", pin_ok)
         self.send_response(r.status, r.reason)
         for k, val in r.getheaders():
             if k.lower() in _HOP or k.lower() == "content-length":
@@ -256,10 +299,10 @@ class _Handler(BaseHTTPRequestHandler):
             self.send_error(400)
             return
         acl = self.server.acl
-        v = decide(acl, host, port)
+        v, why = decide(acl, host, port)   # 判定单点（批次 7 T11 四态）
         pin = _pin_for(acl, host)
         pin_ok = None
-        if v == "allow" and pin is not None:
+        if v != "deny" and pin is not None:
             ip = _ip_literal(host)
             if ip is not None:
                 if str(ip) == pin:
@@ -268,8 +311,12 @@ class _Handler(BaseHTTPRequestHandler):
                     self.server.log_line("connect", host, port, "deny", pin_ok=False)
                     self.send_error(403)
                     return
-        self.server.log_line("connect", host, port, v, pin_ok)
-        if v != "allow":
+        # CONNECT 行 verdict 仍按 allow|deny 收口（运行时工件消费面兼容）；
+        # canary 触碰另落 kind=canary ALARM 行——TLS 隧道触达同样实时告警。
+        self.server.log_line("connect", host, port, "deny" if v == "deny" else "allow", pin_ok)
+        if v == "canary":
+            self.server.log_line("canary", host, port, "ALARM", pin_ok)
+        if v == "deny":
             self.send_error(403)
             return
         target = pin if (pin is not None and _ip_literal(host) is None) else host
@@ -301,12 +348,12 @@ class _Handler(BaseHTTPRequestHandler):
                 other.sendall(data)
 
 
-def serve_text(acl_text, port=0, egress_log=None, now="2026-09-24T00:00:00Z"):
-    """文本入口（测试/程序内）。"""
+def serve_text(acl_text, port=0, egress_log=None, now=None):
+    """文本入口（测试/程序内）；now=None 缺省=UTC 真墙钟（批次 7 T11）。"""
     return EgressProxy(parse_acl(acl_text), egress_log=egress_log, port=port, now=now)
 
 
-def serve(acl_path, port, egress_log=None, now="2026-09-24T00:00:00Z"):
+def serve(acl_path, port, egress_log=None, now=None):
     """文件入口：parse_acl(f.read()) → EgressProxy；调用方 serve_forever/shutdown。"""
     with open(acl_path, encoding="utf-8") as f:
         return serve_text(f.read(), port=port, egress_log=egress_log, now=now)
