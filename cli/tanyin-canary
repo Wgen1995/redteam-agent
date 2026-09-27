@@ -135,9 +135,11 @@ def probe_tier(gd, tier, host):
                 ("bare", [sys.executable, guard, "exec", "--goal-dir", gd, "--"] + NOOP_CMD + [val]),
                 ("flag", [sys.executable, guard, "exec", "--goal-dir", gd, "--"]
                  + NOOP_CMD + ["--target=" + val]),
-                # inject 形态：--cred=0（凭据缺失不影响执法结论——门链先于 vault 取件）
-                ("inject", [sys.executable, guard, "inject", "--goal-dir", gd, "--cred=0", "--"]
-                 + NOOP_CMD + [val]),
+                # inject 形态：--cred=0（凭据缺失不影响执法结论——门链先于 vault 取件）；
+                # 批次 7 T15 契约后果：inject 带 --cred 须 --action=<意图动作>（R-T15-4），
+                # 诱饵由 scope 门先行拦截（permitted_actions 门序在后），探测语义不变。
+                ("inject", [sys.executable, guard, "inject", "--goal-dir", gd, "--cred=0",
+                 "--action=probe", "--"] + NOOP_CMD + [val]),
             )
             for name, argv in probes:
                 r = _run(argv)

@@ -291,3 +291,27 @@ def extract_hosts(args):
                 if h not in hosts:
                     hosts.append(h)
     return hosts
+
+
+def permitted_actions_covered(session, cred, action):
+    """account-grant 覆盖判定（批次 7 T15，High：permitted_actions 零执法→接线；
+    台账证据=guard/replay/enforce 全仓 grep 零引用）。多值分隔与 write_cmds._mv
+    同语义=分号（R-T15：计划片段 split(",") 按计划自身「以 _mv 实现对齐」条款纠正）；
+    covered=该 account 全部 account-grant 行 permitted_actions 并集（write_cmds
+    add-cred 覆盖校验同口径），action 须并集精确命中（防子串假阳性）；
+    无 grant 行=False（无覆盖面）。"""
+    si = TABLES["scope.tsv"].index
+    covered, hit = set(), False
+    for r in session.rows("scope.tsv"):
+        if r[si("kind")] == "account-grant" and r[si("account")] == cred:
+            hit = True
+            covered.update(x for x in (r[si("permitted_actions")] or "").split(";") if x)
+    return hit and action in covered
+
+
+def grant_row_exists(session, cred):
+    """该 account 是否存在 account-grant 行——--cred 在场无覆盖面=REJECT no-grant。"""
+    si = TABLES["scope.tsv"].index
+    return any(r[si("kind")] == "account-grant" and r[si("account")] == cred
+               for r in session.rows("scope.tsv"))
+

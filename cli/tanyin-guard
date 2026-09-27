@@ -5,7 +5,7 @@ import hashlib, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core, vault
-from ledger.enforce import deny_forms, deny_hit, load_scope, out_of_scope_hosts
+from ledger.enforce import deny_forms, deny_hit, grant_row_exists, load_scope, out_of_scope_hosts, permitted_actions_covered
 from ledger.schemas import TABLES
 from ledger.core import ensure_utf8_stdio
 
@@ -114,11 +114,15 @@ def cmd_deploy_vault(gd, rest):
     print("OK vault cred-%s 部署" % n)
     return 0
 
-def gate_chain(gd, cmd, ts):
-    """exec/inject 共用门链（洞 2 修复）：deny-list → scope → request-ticket 取票。
+def gate_chain(gd, cmd, ts, cred="", action=""):
+    """exec/inject 共用门链（洞 2 修复）：deny-list → scope → permitted_actions → request-ticket。
 
     门链先于 vault 取件——越权请求的执法结论不因凭据缺失/存在而改变。
     通过返回 None；拒绝返回 1（REJECT 已打印、timeline 已落账）。
+    批次 7 T15（High：permitted_actions 零执法→接线）：--cred 在场⇒scope.tsv 须有该
+    account 的 account-grant 行（缺=REJECT 无覆盖面）；--action 在场⇒须在该 cred 的
+    permitted_actions 并集（分号 _mv 同语义，enforce 单源）；拒绝事件词
+    guard-reject permitted-actions 落账留痕。
     """
     # deny-list 双形比对（批次 7 T4，C2 反例一）：字面 joined + argv 归一形
     # （拆组合短旗标/长旗标映射/sh -c 内嵌 payload）——「rm -r -f /」类变体
@@ -142,23 +146,77 @@ def gate_chain(gd, cmd, ts):
         ev = "guard-reject out-of-scope host=" + host + ("" if verdict == "out" else " reason=" + verdict)
         append_tl(gd, ts, ev)
         return 1
+    # permitted_actions 覆盖门（批次 7 T15）：先无覆盖面（无 grant 行）后动作并集。
+    if cred and not grant_row_exists(s, cred):
+        print("REJECT" + TAB + "guard" + TAB + "account-grant 行缺（无覆盖面）: " + cred)
+        append_tl(gd, ts, "guard-reject permitted-actions cred=%s no-grant" % cred)
+        return 1
+    if cred and action and not permitted_actions_covered(s, cred, action):
+        print("REJECT" + TAB + "guard" + TAB
+              + "permitted-actions cred=%s action=%s 未被 account-grant 覆盖" % (cred, action))
+        append_tl(gd, ts, "guard-reject permitted-actions cred=%s action=%s" % (cred, action))
+        return 1
     append_tl(gd, ts, "request-ticket cmd=" + cmd[0] + " argc=%d" % len(cmd))
     return None
 
 
+_EPOCH = "1970-01-01T00:00:00Z"
+
+
+def _split_front(rest):
+    """剥取 -- 分隔符前的 --cred/--action/--timeout 前置参（批次 7 T15）。
+    返回 (cred, action, timeout_raw, 余下 argv)；未知旗标不剥（保既有 usage rc=2 形）。"""
+    cred = action = timeout_raw = ""
+    i = 0
+    while i < len(rest) and rest[i].startswith("--") and rest[i] != "--":
+        k, sep, v = rest[i][2:].partition("=")
+        if not sep:
+            break
+        if k == "cred":
+            cred = v
+        elif k == "action":
+            action = v
+        elif k == "timeout":
+            timeout_raw = v
+        else:
+            break
+        i += 1
+    return cred, action, timeout_raw, rest[i:]
+
+
+def _parse_timeout(raw):
+    """--timeout=秒（批次 7 T15，Medium「60s 硬超时」收口）：缺省 60、上限 600、
+    下界 1；非法=None（调用方 usage exit 2）。"""
+    if not raw:
+        return 60
+    try:
+        t = int(raw)
+    except ValueError:
+        return None
+    return t if 1 <= t <= 600 else None
+
+
 def cmd_exec(gd, rest, ts=None):
+    cred, action, timeout_raw, rest = _split_front(rest)
     if not rest or rest[0] != "--":
         sys.stderr.write("exec 需要 -- 分隔命令" + chr(10))
+        return 2
+    t = _parse_timeout(timeout_raw)
+    if t is None:
+        sys.stderr.write("用法错误: --timeout=秒（整数 1..600，缺省 60）" + chr(10))
         return 2
     cmd = rest[1:]
     if not cmd:
         return 2
-    rc = gate_chain(gd, cmd, ts or "1970-01-01T00:00:00Z")
+    rc = gate_chain(gd, cmd, ts or _EPOCH, cred=cred, action=action)
     if rc is not None:
         return rc
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=60,
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=t,
                            encoding="utf-8", errors="replace")
+    except subprocess.TimeoutExpired:
+        print("REJECT" + TAB + "guard" + TAB + "timeout t=%ds（guard --timeout 通道，缺省 60 上限 600）" % t)
+        return 1
     except FileNotFoundError:
         print("REJECT" + TAB + "guard" + TAB + "命令不存在: " + cmd[0])
         return 1
@@ -184,9 +242,19 @@ def main(argv):
         if not kv.get("--cred") or not cmd:
             sys.stderr.write("inject 需要 --cred=N 与 -- 命令" + chr(10))
             return 2
-        # 洞 2 修复：inject 执行前走与 exec 完全相同的门链（deny-list→scope→取票），
-        # 只有凭据注入环节不同；门链先于 vault 取件。
-        rc = gate_chain(gd, cmd, kv.get("--timestamp", "1970-01-01T00:00:00Z"))
+        # 批次 7 T15：凭据必有意图动作——inject 带 --cred 时 --action 必填（usage exit 2）。
+        if not kv.get("--action"):
+            sys.stderr.write("inject 凭据注入须带 --action=<意图动作>（permitted_actions 执法面）"
+                             + chr(10))
+            return 2
+        t = _parse_timeout(kv.get("--timeout", ""))
+        if t is None:
+            sys.stderr.write("用法错误: --timeout=秒（整数 1..600，缺省 60）" + chr(10))
+            return 2
+        # 洞 2 修复：inject 执行前走与 exec 完全相同的门链（deny-list→scope→
+        # permitted_actions→取票），只有凭据注入环节不同；门链先于 vault 取件。
+        rc = gate_chain(gd, cmd, kv.get("--timestamp", _EPOCH),
+                        cred=kv["--cred"], action=kv["--action"])
         if rc is not None:
             return rc
         u, sec = read_cred(gd, kv["--cred"])
@@ -196,10 +264,13 @@ def main(argv):
         env = dict(os.environ)
         env["TY_CRED_USER"] = u or ""
         env["TY_CRED_SECRET"] = sec
-        append_tl(gd, kv.get("--timestamp", "1970-01-01T00:00:00Z"), "vault-inject cred=" + kv["--cred"])
+        append_tl(gd, kv.get("--timestamp", _EPOCH), "vault-inject cred=" + kv["--cred"])
         try:
-            r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=60,
+            r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=t,
                                encoding="utf-8", errors="replace")
+        except subprocess.TimeoutExpired:
+            print("REJECT" + TAB + "guard" + TAB + "timeout t=%ds（guard --timeout 通道，缺省 60 上限 600）" % t)
+            return 1
         except FileNotFoundError:
             print("REJECT" + TAB + "guard" + TAB + "命令不存在: " + cmd[0])
             return 1

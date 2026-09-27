@@ -23,6 +23,16 @@ def ledger(gd, *args):
     return subprocess.run([PY, LEDGER, args[0], "--goal-dir", gd] + list(args[1:]),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
+def add_grant(gd, account, actions):
+    """批次 7 T15 契约后果：permitted_actions 执法门落地——inject 用例须有覆盖行
+    （account=--cred 值逐字对照 scope.account；R-T15 记录）。matcher=语法占位
+    （account-grant 行不参与主机判定），取 grant.example 防撞 load_scope
+    「同 matcher 后行覆盖先行」的修正键（*.shop.example 会覆盖夹具 include 行）。"""
+    r = ledger(gd, "add-scope", "--kind=account-grant", "--matcher=grant.example",
+               "--account=" + account, "--permitted-actions=" + actions,
+               "--timestamp=2026-09-23T09:00:00Z")
+    assert r.returncode == 0, r.stdout + r.stderr
+
 # 跨平台命令载体：py -c pass（/bin/echo、/bin/sh 仅 POSIX，Windows 上 FileNotFoundError）
 NOOP = [PY, "-c", "pass"]
 ECHO_SECRET = [PY, "-c", "import os,sys; sys.stdout.write('s=' + os.environ.get('TY_CRED_SECRET', ''))"]
@@ -98,6 +108,8 @@ class GuardVault(unittest.TestCase):
         os.makedirs(os.path.join(self.gd, "vault"), exist_ok=True)
         with open(os.path.join(self.gd, "vault", ".key"), "w", encoding="utf-8", newline="\n") as f:
             f.write("k1")
+        add_grant(self.gd, "7", "probe")   # T15 覆盖门：vault 号=scope.account 逐字对照
+        add_grant(self.gd, "99", "probe")  # missing-entry 例保 vault 缺失判定（门先行放行）
     def tearDown(self):
         self.td.cleanup()
     def test_deploy_inject_tokenize(self):
@@ -106,12 +118,12 @@ class GuardVault(unittest.TestCase):
         with open(os.path.join(self.gd, "vault", "cred-7.enc"), encoding="utf-8") as f:
             enc = f.read()
         self.assertNotIn("TopSecret", enc)
-        r2 = g(self.gd, "inject", "--cred=7", "--timestamp=2026-09-23T08:00:00Z", "--", *(ECHO_SECRET))
+        r2 = g(self.gd, "inject", "--cred=7", "--action=probe", "--timestamp=2026-09-23T08:00:00Z", "--", *(ECHO_SECRET))
         self.assertEqual(r2.returncode, 0)
         self.assertIn("s={{vault:cred-7}}", r2.stdout)
         self.assertNotIn("TopSecret", r2.stdout)
     def test_missing_entry_rejected(self):
-        r = g(self.gd, "inject", "--cred=99", "--", *(NOOP + ["x"]))
+        r = g(self.gd, "inject", "--cred=99", "--action=probe", "--", *(NOOP + ["x"]))
         self.assertEqual(r.returncode, 1)
 
 class GuardInjectEnforcement(unittest.TestCase):
@@ -128,33 +140,35 @@ class GuardInjectEnforcement(unittest.TestCase):
             f.write("k1")
         r = g_deploy_env(self.gd, "7", "admin", "TopSecret-9")   # T10：env 通道（argv 形=exit 2）
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        add_grant(self.gd, "7", "probe")   # T15 覆盖门
+        add_grant(self.gd, "99", "read")
     def tearDown(self):
         self.td.cleanup()
     def timeline(self):
         return open(os.path.join(self.gd, "timeline.tsv"), encoding="utf-8").read()
     def test_out_of_scope_rejected(self):
-        r = g(self.gd, "inject", "--cred=7", "--", *(NOOP + ["ping", "evil.example"]))
+        r = g(self.gd, "inject", "--cred=7", "--action=probe", "--", *(NOOP + ["ping", "evil.example"]))
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
         self.assertIn("REJECT", r.stdout)
         self.assertIn("界外目标", r.stdout)
     def test_deny_list_rejected(self):
-        r = g(self.gd, "inject", "--cred=7", "--", *(NOOP + ["shutdown"]))
+        r = g(self.gd, "inject", "--cred=7", "--action=probe", "--", *(NOOP + ["shutdown"]))
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
         self.assertIn("deny-list", r.stdout)
     def test_scope_gate_before_vault_lookup(self):
         """门链先于 vault 取件：越权请求不因凭据缺失而改判。"""
-        r = g(self.gd, "inject", "--cred=99", "--", *(NOOP + ["ping", "evil.example"]))
+        r = g(self.gd, "inject", "--cred=99", "--action=read", "--", *(NOOP + ["ping", "evil.example"]))
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
         self.assertIn("界外目标", r.stdout)
     def test_ticket_flow_matches_exec(self):
-        r = g(self.gd, "inject", "--cred=7", "--timestamp=2026-09-23T08:10:00Z", "--", *NOOP)
+        r = g(self.gd, "inject", "--cred=7", "--action=probe", "--timestamp=2026-09-23T08:10:00Z", "--", *NOOP)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         tl = self.timeline()
         self.assertIn("request-ticket", tl)   # 取票与 exec 一致（当前缺失=红）
         self.assertIn("vault-inject", tl)
         self.assertLess(tl.index("request-ticket"), tl.index("vault-inject"))
     def test_in_scope_passes(self):
-        r = g(self.gd, "inject", "--cred=7", "--", *(NOOP + ["ping", "api.shop.example"]))
+        r = g(self.gd, "inject", "--cred=7", "--action=probe", "--", *(NOOP + ["ping", "api.shop.example"]))
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
 
@@ -231,6 +245,7 @@ class GuardStderrTokenize(unittest.TestCase):
             f.write("k1")
         r = g_deploy_env(self.gd, "1", "admin", self.SECRET)   # T10：env 通道（argv 形=exit 2）
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        add_grant(self.gd, "1", "probe")   # T15 覆盖门
     def tearDown(self):
         self.td.cleanup()
     def test_exec_stderr_tokenized(self):
@@ -251,7 +266,7 @@ class GuardStderrTokenize(unittest.TestCase):
     def test_inject_stderr_tokenized(self):
         script = ("import os, sys; s = os.environ.get('TY_CRED_SECRET', ''); "
                   "sys.stdout.write('O[' + s + ']'); sys.stderr.write('E[' + s + ']')")
-        r = g(self.gd, "inject", "--cred=1", "--", PY, "-c", script)
+        r = g(self.gd, "inject", "--cred=1", "--action=probe", "--", PY, "-c", script)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("O[{{vault:cred-1}}]", r.stdout)
         self.assertNotIn(self.SECRET, r.stdout)
