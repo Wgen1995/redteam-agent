@@ -5,7 +5,40 @@ import importlib
 
 _MODULES = ["write_cmds", "query_cmds", "check_cmds", "special", "matrix_init", "graph_cmds"]
 
+# 写命令模块注册表单源（批次 7 T2，C1 并发半边；台账「写命令锁覆盖 18/19 缺失」并入）——
+# WRITE_COMMANDS 自写命令模块的 HANDLERS 键集派生，禁手抄名单：
+#   write_cmds=契约 02 写命令组（19 条+双前缀别名）；matrix_init=matrix-init（写
+#   matrix.tsv+timeline.tsv，金样写面 20 的另一条）。
+# R-T2-2：set-replay-state（check_cmds）读写双态同入口，写形锁覆盖留 v3（拆读写形
+# 涉契约面，b7 台账登记）；builtin 三条与 query/check/special/graph 各命令=只读不锁。
+_WRITER_MODULES = ("write_cmds", "matrix_init")
+
+
+def _write_commands():
+    names = set()
+    for m in _WRITER_MODULES:
+        try:
+            mod = importlib.import_module("ledger." + m)
+        except ImportError:
+            continue
+        names |= set(getattr(mod, "HANDLERS", {}))
+    return frozenset(names)
+
+
+_WRITE_COMMANDS = None
+
+
+def _locked(h):
+    """写命令锁包装（分发单点接线）：goal 级写锁包住「读表→改内存→commit」全程。"""
+    def wrapper(goal_dir, rest):
+        from .filelock import goal_lock
+        with goal_lock(goal_dir):
+            return h(goal_dir, rest)
+    return wrapper
+
+
 def lookup(cmd):
+    global _WRITE_COMMANDS
     from . import core
 
     def _validate(goal_dir, rest):
@@ -22,6 +55,9 @@ def lookup(cmd):
     builtin = {"validate": _validate, "verify-chain": _chain, "next-id": _next_id}
     if cmd in builtin:
         return builtin[cmd]
+    if _WRITE_COMMANDS is None:
+        _WRITE_COMMANDS = _write_commands()
+    locked = cmd in _WRITE_COMMANDS
     for m in _MODULES:
         try:
             mod = importlib.import_module("ledger." + m)
@@ -29,7 +65,7 @@ def lookup(cmd):
             continue
         h = getattr(mod, "HANDLERS", {})
         if cmd in h:
-            return h[cmd]
+            return _locked(h[cmd]) if locked else h[cmd]
     return None
 
 

@@ -17,14 +17,18 @@ class NegativeMatrix(unittest.TestCase):
         for name, args in CASES:
             with tempfile.TemporaryDirectory() as td:
                 gd = shutil.copytree(FIX, os.path.join(td, "G-g1"))
-                snap = {f: open(os.path.join(gd, f), "rb").read() for f in os.listdir(gd)}
+                snap = {f: open(os.path.join(gd, f), "rb").read()
+                        for f in os.listdir(gd) if f != ".lock"}
                 r = subprocess.run([sys.executable, CLI, name, "--goal-dir", gd] + args,
                                    capture_output=True, text=True,
                                    encoding="utf-8", errors="replace")
                 self.assertEqual(r.returncode, 1, name + " 应 exit 1: " + r.stdout)
                 self.assertIn("REJECT", r.stdout + r.stderr, name)
-                after = {f: open(os.path.join(gd, f), "rb").read() for f in os.listdir(gd)}
-                self.assertEqual(snap, after, name + " 拒收后账本必须字节不变")
+                after = {f: open(os.path.join(gd, f), "rb").read()
+                         for f in os.listdir(gd) if f != ".lock"}
+                self.assertEqual(snap, after, name + " 拒收后账本必须字节不变")   # .lock=锁工件（R-T2-3），账本面不含
+                self.assertTrue(os.path.isfile(os.path.join(gd, ".lock")),
+                                "REJECT 亦经锁面（锁工件在场非账本变更）")
 
 if __name__ == "__main__":
     unittest.main()

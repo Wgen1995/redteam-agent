@@ -347,6 +347,8 @@ def norm_state(gd):
     ts = re.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z?")
     parts = []
     for t in sorted(os.listdir(gd)):
+        if t == ".lock":
+            continue   # 批次7 T2（R-T2-3）：goal 级写锁工件非账本面——「.lock 不进任何表面」
         if not os.path.isfile(os.path.join(gd, t)):
             continue
         body = open(os.path.join(gd, t), encoding="utf-8").read()
