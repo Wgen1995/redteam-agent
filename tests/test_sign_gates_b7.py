@@ -11,7 +11,10 @@ goals sha256=deadbeef+窗口过期 verify-chain PASS、sign rc=0；脱敏扫描�
 → sign 既有十一门全绿基线，再逐腿破坏=红反例（FAIL 归因唯一，其余门不背锅）。
 共享夹具本体零触碰：金样 .state 引用夹具伪 sha（aaaa…），动本体=大面积金样漂移。
 """
+import contextlib
 import hashlib
+import io
+import json
 import os
 import shutil
 import subprocess
@@ -177,6 +180,174 @@ class TestAuthorizationGate(unittest.TestCase):
         self.assertEqual(r.returncode, 1,
                          "红现状：lint 零授权校验 rc=0（deadbeef 直通）\n" + r.stdout)
         self.assertIn("authorization", r.stdout, "lint 报告须载 authorization 门")
+
+
+def _fresh_gd(tc):
+    """T8/T9 共用：G-g1 拷贝+授权三件套修补+EV/FD/豁免铸造 → 全绿签发基线。"""
+    td = tempfile.mkdtemp()
+    tc.addCleanup(shutil.rmtree, td, True)
+    gd = shutil.copytree(FIX, os.path.join(td, "G-g1"))
+    mint_full(gd)
+    return gd
+
+
+def _budget_exhaust(gd):
+    """终态 B 载体：budget-log 真命令追加至 token 维穿限（test_budget_exhausted 同款）。"""
+    r = run(LEDGER, "budget-log", "--goal-dir", gd, "--token-delta=1990000",
+            "--requests-delta=0", "--hours-delta=0", "--scope=goal",
+            "--note=T9 终态 B 演练抽干（token 维穿限）",
+            "--timestamp=2026-09-23T05:30:00Z")
+    assert r.returncode == 0, r.stdout + r.stderr
+
+
+class TestDraftByteEqual(unittest.TestCase):
+    """签发四门②：draft 在场必与 render_fd 现算输出字节相等（手改即 FAIL）。"""
+
+    def _ready_signed(self):
+        """全绿基线+先 sign 一次使 report/draft/ 落盘（render 分支产物）。"""
+        gd = _fresh_gd(self)
+        rc, rep = report_lint.sign_gate(gd, TS, write_credential=True)
+        assert rc == 0, rep
+        return gd
+
+    def test_hand_edited_draft_blocked(self):
+        """专家反例②：draft C1→C3 手改后 sign 直通（现只查 raw 子串在不在）。"""
+        gd = self._ready_signed()
+        p = os.path.join(gd, "report", "draft", FD_ID + ".md")
+        with open(p, encoding="utf-8") as f:
+            md = f.read()
+        self.assertIn("C1", md, "反例字面（置信度 C1）必须在稿面在场")
+        with open(p, "w", encoding="utf-8", newline="\n") as f:
+            f.write(md.replace("C1", "C3", 1))
+        rc, rep = report_lint.sign_gate(gd, TS, write_credential=False)
+        self.assertEqual(rc, 1, "红现状：draft C1→C3 手改直通 rc=0（专家反例②）\n%s" % rep)
+        self.assertEqual(rep["gates"]["draft_byte_equal"]["status"], "FAIL")
+        self.assertIn(FD_ID, rep["gates"]["draft_byte_equal"]["detail"])
+
+
+class TestArtifactBinding(unittest.TestCase):
+    """签发四门③：pass.json artifacts 三工件哈希绑定；lint 在场即自动复检。"""
+
+    def test_pass_json_binds_draft_and_evidence_artifact(self):
+        gd = _fresh_gd(self)
+        rc, rep = report_lint.sign_gate(gd, TS, write_credential=True)
+        self.assertEqual(rc, 0, rep)
+        pj = os.path.join(gd, "report", "signed", "pass.json")
+        with open(pj, encoding="utf-8") as f:
+            arts = json.load(f).get("artifacts")
+        self.assertIsNotNone(arts, "红现状：pass.json 无 artifacts 键（零工件绑定）")
+        want = {"report/draft/%s.md" % FD_ID, "evidence/%s.raw" % EV_ID}
+        self.assertEqual(set(arts), want, "draft+E-index 工件两类齐绑: %s" % sorted(arts))
+        for k, h in sorted(arts.items()):
+            with open(os.path.join(gd, k), "rb") as f:
+                got = hashlib.sha256(f.read()).hexdigest()
+            self.assertEqual(got, h, "绑定即真值: " + k)
+
+    def test_exhausted_interim_bound(self):
+        """终态 B：interim-report.md 先落盘后入绑定（同一 dict 引用成文，无第二源）。"""
+        gd = _fresh_gd(self)
+        _budget_exhaust(gd)
+        rc, rep = report_lint.sign_gate(gd, TS, write_credential=True)
+        self.assertEqual(rc, 0, rep)
+        pj = os.path.join(gd, "report", "signed", "pass.json")
+        with open(pj, encoding="utf-8") as f:
+            arts = json.load(f).get("artifacts")
+        self.assertIsNotNone(arts, "红现状：pass.json 无 artifacts 键")
+        key = "report/signed/interim-report.md"
+        self.assertIn(key, arts, "终态 B 中期报告须入绑定: %s" % sorted(arts))
+        with open(os.path.join(gd, key), "rb") as f:
+            self.assertEqual(hashlib.sha256(f.read()).hexdigest(), arts[key],
+                             "绑定即真值: " + key)
+
+    def test_tampered_draft_detected_by_binding(self):
+        """签发后篡改进稿 → lint 在场 pass.json 自动复检即拒（免新旗标）。"""
+        gd = _fresh_gd(self)
+        rc, rep = report_lint.sign_gate(gd, TS, write_credential=True)
+        self.assertEqual(rc == 0, True, rep)   # 先 sign 出 pass.json
+        draft = os.path.join(gd, "report", "draft", FD_ID + ".md")
+        with open(draft, "a", encoding="utf-8") as f:
+            f.write("tampered\n")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = report_lint.cmd_lint(gd, TS)   # lint 入口自动复检
+        self.assertEqual(rc, 1, "红现状：签发后篡改进稿 lint 不可检 rc=0\n" + buf.getvalue())
+
+
+class TestRescanAfterWrite(unittest.TestCase):
+    """签发四门④：脱敏扫描移到凭证落盘后复扫（扫描面=终稿在场的 report/ 全树）；
+    FAIL=删凭证 fail-closed（工具缝③/台账 C5 行「脱敏扫描先于工件落盘」）。"""
+
+    def test_redact_scan_runs_after_credential_written(self):
+        gd = _fresh_gd(self)
+        calls = []
+        real = report_lint._subprocess_gate
+        pj = os.path.join(gd, "report", "signed", "pass.json")
+
+        def spy(name, argv, gates):
+            calls.append((name, os.path.exists(pj)))
+            return real(name, argv, gates)
+
+        report_lint._subprocess_gate = spy
+        try:
+            rc, rep = report_lint.sign_gate(gd, TS, write_credential=True)
+        finally:
+            report_lint._subprocess_gate = real
+        self.assertEqual(rc, 0, rep)
+        scan = [c for c in calls if c[0] == "redact_scan"]
+        self.assertTrue(scan and scan[-1][1] is True,
+                        "红现状：redact_scan 调用时 pass.json 尚未落盘"
+                        "（exists=False，终稿不在扫描面——专家反例④）：%s" % (scan,))
+
+    def test_rescan_order_exhausted_interim_and_pass_json(self):
+        """专家反例④全形：终态 B 双工件（interim+pass.json）落盘均须先于复扫。"""
+        gd = _fresh_gd(self)
+        _budget_exhaust(gd)
+        signed = os.path.join(gd, "report", "signed")
+        calls = []
+        real = report_lint._subprocess_gate
+
+        def spy(name, argv, gates):
+            calls.append((name, os.path.exists(os.path.join(signed, "pass.json")),
+                          os.path.exists(os.path.join(signed, "interim-report.md"))))
+            return real(name, argv, gates)
+
+        report_lint._subprocess_gate = spy
+        try:
+            rc, rep = report_lint.sign_gate(gd, TS, write_credential=True)
+        finally:
+            report_lint._subprocess_gate = real
+        self.assertEqual(rc, 0, rep)
+        scan = [c for c in calls if c[0] == "redact_scan"]
+        self.assertTrue(scan and scan[-1][1] and scan[-1][2],
+                        "红现状：脱敏扫描先于 interim/pass.json 落盘"
+                        "（专家反例④全形——终稿不在扫描面）：%s" % (scan,))
+
+    def test_rescan_fail_deletes_credential(self):
+        """复扫 FAIL=删凭证 fail-closed（不得留半签发态）；红=扫描先于落盘使
+        删证语义无从谈起（红态如实录：扫描时凭证尚不存在）。"""
+        gd = _fresh_gd(self)
+        real = report_lint._subprocess_gate
+        pj = os.path.join(gd, "report", "signed", "pass.json")
+        seen = []
+
+        def fail_redact(name, argv, gates):
+            if name == "redact_scan":
+                seen.append(os.path.exists(pj))
+                gates["redact_scan"]["status"] = "FAIL"
+                return False
+            return real(name, argv, gates)
+
+        report_lint._subprocess_gate = fail_redact
+        try:
+            rc, rep = report_lint.sign_gate(gd, TS, write_credential=True)
+        finally:
+            report_lint._subprocess_gate = real
+        self.assertEqual(rc, 1)
+        self.assertTrue(seen and seen[-1] is True,
+                        "红现状：扫描先于凭证落盘（exists=False）——fail-closed "
+                        "删证语义无从验证（专家反例④）：%s" % (seen,))
+        self.assertFalse(os.path.exists(pj),
+                         "复扫 FAIL=凭证必须删除（fail-closed，不得留半签发态）")
 
 
 if __name__ == "__main__":

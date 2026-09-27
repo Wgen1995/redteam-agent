@@ -164,12 +164,29 @@ def _subprocess_gate(name, args, gates):
     return ok
 
 
+def _redact_scan(goal_dir, gates):
+    """redact-scan 子进程门单源（目标=report/ 全树）；签发落盘后复扫与 lint 路径共用。"""
+    return _subprocess_gate("redact_scan",
+                            ["redact-scan", "--goal-dir", os.path.abspath(goal_dir),
+                             "--target=" + os.path.abspath(os.path.join(goal_dir, "report"))],
+                            gates)
+
+
 def _fd_checks(goal_dir, s, fd_id, fd_row, draft_path, gates):
     """单 FD 渲染/九段/burp/双指纹门；返回全部通过与否。"""
     ok_all = True
     if os.path.isfile(draft_path):
         with open(draft_path, encoding="utf-8") as f:
             md = f.read()
+        # ②draft==render_fd 字节比对（批次 7 T9，C5 反例二：draft C1→C3 手改直通——
+        # 旧实现只查 raw 子串在不在，改置信度即逃逸）；字节不符=gates.draft_byte_equal FAIL
+        rc, fresh = report_render.render_fd(goal_dir, fd_id)
+        if rc != 0 or fresh != md:
+            g = gates.setdefault("draft_byte_equal", {"status": "PASS", "detail": ""})
+            g["status"] = "FAIL"
+            g["detail"] += ("%s: draft 与 render_fd 现算输出字节不符（手改=FAIL）: %s；"
+                            % (fd_id, (fresh or "")[:60]))
+            ok_all = False
         src = "draft"
     else:
         rc, md = report_render.render_fd(goal_dir, fd_id)
@@ -289,8 +306,9 @@ def sign_gate(goal_dir, ts, write_credential=True):
     FAIL；签发随落 report/signed/interim-report.md（契约 13 §3 披露四件套）。"""
     gates = {k: {"status": "PASS", "detail": ""}
              for k in ("render", "nine_segments", "burp_pasteable", "dual_fingerprint",
-                       "time_chain", "authorization", "redact_scan", "cleanup_checklist",
-                       "tier_disclosure", "compliance_six", "empty_rhetoric", "aggregate",
+                       "time_chain", "authorization", "draft_byte_equal", "artifact_binding",
+                       "redact_scan", "cleanup_checklist", "tier_disclosure",
+                       "compliance_six", "empty_rhetoric", "aggregate",
                        "terminal_b_disclosure")}
     try:
         data = report_agg.aggregate(goal_dir, ts or "2026-09-24T00:00:00Z")
@@ -311,11 +329,6 @@ def sign_gate(goal_dir, ts, write_credential=True):
     ok, why = report_render.check_time_chain(goal_dir, issued_at=ts)
     if not ok:
         gates["time_chain"].update(status="FAIL", detail=why)
-        ok_all = False
-    if not _subprocess_gate("redact_scan",
-                            ["redact-scan", "--goal-dir", os.path.abspath(goal_dir),
-                             "--target=" + os.path.abspath(os.path.join(goal_dir, "report"))],
-                            gates):
         ok_all = False
     if not _subprocess_gate("cleanup_checklist",
                             ["cleanup-checklist", "--goal-dir", os.path.abspath(goal_dir),
@@ -356,15 +369,28 @@ def sign_gate(goal_dir, ts, write_credential=True):
                    "gates": gates}
     for g in gates.values():
         g["detail"] = ""
-    rep = {"goal": os.path.basename(os.path.normpath(goal_dir)), "ts": ts, "gates": gates}
+    # ②三工件哈希绑定（批次 7 T9）：draft+E-index active 工件（+终态 B interim）
+    # → pass.json artifacts；相对路径键（/ 分隔，跨平台）+sha256 真值
+    arts = {}
+    for fd_id in fds:
+        dp = os.path.join(goal_dir, "report", "draft", fd_id + ".md")
+        if os.path.isfile(dp):
+            with open(dp, "rb") as f:
+                arts["report/draft/%s.md" % fd_id] = hashlib.sha256(f.read()).hexdigest()
+        for r in report_render._evidence_rows(s, report_render._fd_row(s, fd_id)):
+            art = r[TABLES["E-index.tsv"].index("artifact_path")]
+            ap = os.path.join(goal_dir, art) if art else ""
+            if art and os.path.isfile(ap):
+                with open(ap, "rb") as f:
+                    arts[art.replace(os.sep, "/")] = hashlib.sha256(f.read()).hexdigest()
+    rep = {"goal": os.path.basename(os.path.normpath(goal_dir)), "ts": ts, "gates": gates,
+           "artifacts": arts}
     if write_credential:
         signed = os.path.join(goal_dir, "report", "signed")
         os.makedirs(signed, exist_ok=True)
-        payload = json.dumps(rep, ensure_ascii=False, sort_keys=True, indent=1) + "\n"
-        with open(os.path.join(signed, "pass.json"), "w", encoding="utf-8", newline="\n") as f:
-            f.write(payload)
         if terminal == "exhausted":
-            # 终态 B 签发随落中期报告（投影零造数据；签发面专属——lint 只判定不落产物）
+            # 终态 B 签发随落中期报告（投影零造数据；签发面专属——lint 只判定不落产物）；
+            # 先落盘后入绑定（同一 dict 引用成文，无第二源）
             md = interim_report_b(data)
             hits = empty_rhetoric(md)
             if hits:   # 防御性自查：常量文案命中禁空话表=实现缺陷，fail-closed
@@ -372,6 +398,43 @@ def sign_gate(goal_dir, ts, write_credential=True):
             with open(os.path.join(signed, "interim-report.md"), "w",
                       encoding="utf-8", newline="\n") as f:
                 f.write(md)
+            with open(os.path.join(signed, "interim-report.md"), "rb") as f:
+                arts["report/signed/interim-report.md"] = hashlib.sha256(f.read()).hexdigest()
+            rep["artifacts"] = arts
+        payload = json.dumps(rep, ensure_ascii=False, sort_keys=True, indent=1) + "\n"
+        with open(os.path.join(signed, "pass.json"), "w", encoding="utf-8", newline="\n") as f:
+            f.write(payload)
+        # ④落盘后复扫（批次 7 T9，工具缝③/台账 C5 行「脱敏扫描先于工件落盘」）：
+        # 扫描面=终稿在场的 report/ 全树；FAIL=删凭证 fail-closed，不得留半签发态
+        if not _redact_scan(goal_dir, gates):
+            for fn in ("pass.json", "interim-report.md"):
+                fp = os.path.join(signed, fn)
+                if os.path.exists(fp):
+                    os.unlink(fp)
+            return 1, rep
+    else:
+        # lint 无凭证路径：维持扫描后返回（零产物，顺序语义不受扰）
+        if not _redact_scan(goal_dir, gates):
+            return 1, rep
+    # ③绑定复检（批次 7 T9）：goal 内 pass.json 在场即自动复检（lint 入口免新旗标）
+    pj = os.path.join(goal_dir, "report", "signed", "pass.json")
+    if os.path.isfile(pj):
+        with open(pj, encoding="utf-8") as f:
+            old = json.load(f).get("artifacts") or {}
+        bad = []
+        for k, h in sorted(old.items()):
+            fp = os.path.join(goal_dir, k)
+            if not os.path.isfile(fp):
+                bad.append(k + "（文件缺）")
+                continue
+            with open(fp, "rb") as f:
+                if hashlib.sha256(f.read()).hexdigest() != h:
+                    bad.append(k)
+        if bad:
+            g = gates.setdefault("artifact_binding", {"status": "PASS", "detail": ""})
+            g["status"] = "FAIL"
+            g["detail"] = "绑定失配: " + ", ".join(bad[:5])
+            return 1, rep
     return 0, rep
 
 
