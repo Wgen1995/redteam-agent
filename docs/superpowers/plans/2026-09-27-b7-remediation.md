@@ -1412,7 +1412,468 @@ git commit -m "批次7-T9(C5②③④)：draft==render_fd 字节比对（手改�
 
 ---
 
-（T10→T17 正文增量补齐中……）
+### Task 10: vault 加密升级（nonce+EtM-HMAC+PBKDF2 KDF+密钥外移+--secret 退出 argv）
+
+**Files:**
+- Modify: `cli/ledger/vault.py`（冻结接口 `load_key/secret/secrets/enc_payload/dec_payload` 签名不动，内部升级；`_keystream` 保留为共用原语；新增 `derive_key`）
+- Modify: `cli/tanyin-guard:59-83`（cmd_deploy_vault：--secret/--passphrase 退出 argv；stdin/env 通道）
+- Test: `tests/test_vault_aead_b7.py`（新）
+
+**Interfaces:**
+- Produces: v2 载荷 `b64(MAGIC=b"TV2" + nonce(12B) + ct + tag(HMAC-SHA256 32B))`；子钥派生 `enc_key=sha256(key+":enc")`、`mac_key=sha256(key+":mac")`；keystream 绑定 nonce；`derive_key(passphrase, salt) -> hex`（`hashlib.pbkdf2_hmac` 200k 轮）；`load_key` 优先 `TANYIN_VAULT_KEYFILE` 环境通道（密钥外移），回落 `vault/.key`（兼容）；manifest 算法列 v2=`etm-sha256`
+- **裁决（双读过渡）：** dec_payload 无 MAGIC 前缀=legacy XOR 读（stderr 一次性告警）——存量夹具/金样零破坏；全量 cutover（legacy 读退役）登记 b7 台账随生产钥仪式执行
+
+- [ ] **Step 1: 写失败测试（红=专家 m1^m2=c1^c2 实证）**
+
+```python
+# tests/test_vault_aead_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T10：vault 加密升级（High：XOR 无 nonce+密钥同盘+密码走 argv）。
+红=专家实证：同 key 下 m1^m2==c1^c2（可滚动伪造密文）；篡改无认证；argv 密值。"""
+import base64, os, subprocess, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.join(HERE, "..")
+sys.path.insert(0, os.path.join(ROOT, "cli"))
+from ledger import vault
+
+def b64d(s):
+    return base64.b64decode(s)
+
+
+class TestAead(unittest.TestCase):
+    K = "unit-test-key"
+
+    def test_roundtrip(self):
+        for pt in ("user\nsecret-123", "中文\n值", ""):
+            self.assertEqual(vault.dec_payload(self.K, vault.enc_payload(self.K, pt)), pt)
+
+    def test_xor_malleability_broken(self):
+        """红：专家 c1^c2==m1^c2 关系——v2 每载荷独立 nonce，关系不成立。"""
+        c1 = b64d(vault.enc_payload(self.K, "aaaa"))
+        c2 = b64d(vault.enc_payload(self.K, "bbbb"))
+        x = bytes(a ^ b for a, b in zip(c1[3:], c2[3:]))   # 跳过 MAGIC 后本应=可预言关系
+        m = bytes(a ^ b for a, b in zip(b"aaaa", b"bbbb"))
+        self.assertNotEqual(x[:4], m, "nonce 随机化必须打破 c1^c2=m1^m2（红：相等）")
+
+    def test_same_plaintext_two_ciphertexts(self):
+        c1 = vault.enc_payload(self.K, "same")
+        c2 = vault.enc_payload(self.K, "same")
+        self.assertNotEqual(c1, c2, "nonce 语义：同明文异密文")
+
+    def test_tamper_fail_closed(self):
+        raw = bytearray(b64d(vault.enc_payload(self.K, "secret-123")))
+        raw[-1] ^= 1
+        with self.assertRaises(Exception):
+            vault.dec_payload(self.K, base64.b64encode(bytes(raw)).decode())
+
+    def test_legacy_payload_still_readable(self):
+        """双读过渡裁决：存量 XOR 夹具可读（迁移未完成前不炸）。"""
+        legacy = base64.b64encode(
+            bytes(a ^ b for a, b in zip("old-format".encode(), vault._keystream(self.K, 10)))).decode()
+        self.assertEqual(vault.dec_payload(self.K, legacy), "old-format")
+
+    def test_derive_key_pbkdf2(self):
+        k1 = vault.derive_key("pass-phrase", b"salt-1234")
+        k2 = vault.derive_key("pass-phrase", b"salt-5678")
+        self.assertEqual(len(k1), 64)
+        self.assertNotEqual(k1, k2, "盐异键异")
+
+
+class TestKeyChannel(unittest.TestCase):
+    def test_load_key_prefers_external_keyfile(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        kp = os.path.join(td.name, "external.key")
+        open(kp, "w", encoding="utf-8").write("external-key\n")
+        gd = os.path.join(td.name, "G-v")
+        os.makedirs(os.path.join(gd, "vault"))
+        open(os.path.join(gd, "vault", ".key"), "w", encoding="utf-8").write("onsite-key")
+        old = os.environ.get("TANYIN_VAULT_KEYFILE")
+        os.environ["TANYIN_VAULT_KEYFILE"] = kp
+        try:
+            self.assertEqual(vault.load_key(gd), "external-key", "外移密钥优先（密钥同盘 High）")
+        finally:
+            if old is None:
+                os.environ.pop("TANYIN_VAULT_KEYFILE", None)
+            else:
+                os.environ["TANYIN_VAULT_KEYFILE"] = old
+
+    def test_deploy_vault_rejects_secret_in_argv(self):
+        """红：密码/密值走 argv（进程列表可读）——改 stdin/env 通道后 argv 形=usage exit 2。"""
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        gd = os.path.join(td.name, "G-dv")
+        os.makedirs(gd)
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "cli", "tanyin-guard"),
+                            "deploy-vault", "--goal-dir", gd,
+                            "--cred=1", "--username=u", "--secret=topsecret"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 2, "红现状：--secret argv 被接受")
+        self.assertNotIn("topsecret", r.stdout + r.stderr, "密值不得回显")
+        # env 通道成功部署
+        env = dict(os.environ, TANYIN_VAULT_SECRET="topsecret", TANYIN_VAULT_PASSPHRASE="pp")
+        r2 = subprocess.run([sys.executable, os.path.join(ROOT, "cli", "tanyin-guard"),
+                             "deploy-vault", "--goal-dir", gd, "--cred=1", "--username=u"],
+                            capture_output=True, text=True, env=env)
+        self.assertEqual(r2.returncode, 0, r2.stdout + r2.stderr)
+        mf = open(os.path.join(gd, "vault", "manifest.tsv"), encoding="utf-8").read()
+        self.assertIn("etm-sha256", mf, "v2 算法列")
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_vault_aead_b7 -v`
+Expected: malleability/双密文/篡改例 FAIL（现状 XOR 无认证无 nonce）；argv 例 FAIL（rc=0）；外移例 FAIL（env 未消费）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/vault.py（冻结区之外的实现升级；接口签名不动）
+MAGIC = b"TV2"
+import hmac as _hmac
+
+def _subkeys(key):
+    return (hashlib.sha256((key + ":enc").encode()).digest(),
+            hashlib.sha256((key + ":mac").encode()).digest())
+
+def enc_payload(key, plaintext):
+    """v2（批次 7 T10）：nonce 随机化+EtM(HMAC-SHA256)——m1^m2=c1^c2 关系消除、
+    篡改 fail-closed。签名不变：enc_payload(key, plaintext) -> b64 str。"""
+    data = plaintext.encode("utf-8")
+    enc_key, mac_key = _subkeys(key)
+    nonce = os.urandom(12)
+    ks = _keystream(enc_key.hex() + ":" + nonce.hex(), len(data))
+    ct = bytes(a ^ b for a, b in zip(data, ks))
+    tag = _hmac.new(mac_key, nonce + ct, hashlib.sha256).digest()
+    return base64.b64encode(MAGIC + nonce + ct + tag).decode()
+
+def dec_payload(key, b64):
+    raw = base64.b64decode(b64)
+    if not raw.startswith(MAGIC):
+        sys.stderr.write("vault legacy XOR 载荷（无认证）——请重部署升级 v2\n")   # 双读过渡裁决
+        data = bytes(a ^ b for a, b in zip(raw, _keystream(key, len(raw))))
+        return data.decode("utf-8")
+    enc_key, mac_key = _subkeys(key)
+    nonce, ct, tag = raw[3:15], raw[15:-32], raw[-32:]
+    want = _hmac.new(mac_key, nonce + ct, hashlib.sha256).digest()
+    if not _hmac.compare_digest(tag, want):
+        raise ValueError("vault 载荷认证失败（篡改=拒绝，fail-closed）")
+    ks = _keystream(enc_key.hex() + ":" + nonce.hex(), len(ct))
+    return bytes(a ^ b for a, b in zip(ct, ks)).decode("utf-8")
+
+def derive_key(passphrase, salt):
+    """PBKDF2-HMAC-SHA256（stdlib 单源；200k 轮）——passphrase→主钥，防弱口令直用。"""
+    return hashlib.pbkdf2_hmac("sha256", passphrase.encode("utf-8"), salt, 200_000).hex()
+
+def load_key(gd):
+    # 密钥外移（批次 7 T10）：env 通道优先；回落 vault/.key（存量兼容）
+    p = os.environ.get("TANYIN_VAULT_KEYFILE") or os.path.join(vault_dir(gd), ".key")
+    return open(p, encoding="utf-8").read().strip() if os.path.isfile(p) else None
+```
+（`import sys` 补进 vault.py 头部；deploy-vault 侧： passphrase 经 PBKDF2+`vault/.salt`(16B os.urandom)→主钥写 .key；secret 从 env/stdin 读，--secret= 在 argv 出现即 usage exit 2；manifest 算法列写 etm-sha256。）
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_vault_aead_b7 tests.test_guard -v` → 全 OK；全套 discover 全绿（replay/guard 真值回注面走 vault.secret 单源自动生效）；`python3 tests/run_golden.py` → 54 面 PASS——deploy-vault 输出面（manifest sha 段）若在金样=**有意刷新名单**（nonce 语义必然逐次不同，该面必须改断言形状或移出金样，禁真值入金样）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/vault.py cli/tanyin-guard tests/test_vault_aead_b7.py
+git commit -m "批次7-T10(High)：vault v2——nonce 随机化+EtM-HMAC（m1^m2=c1^c2 关系消除/篡改 fail-closed）+PBKDF2 密钥派生+密钥外移(env TANYIN_VAULT_KEYFILE)+--secret 退出 argv(stdin/env 通道)；双读过渡保金样，legacy 退役登记台账"
+```
+
+---
+
+### Task 11: egress OOB/canary 并入 decide+compile 产 [oob]/[canary] 段+墙钟+轮转+超时
+
+**Files:**
+- Modify: `cli/ledger/egress_proxy.py`（decide:119；build_acl:42-78；serve/serve_text:304-309；log 行；handler timeout）
+- Test: `tests/test_egress_oob_canary_b7.py`（新）
+
+**Interfaces:**
+- Produces: `decide(acl, host, port) -> (verdict, reason)`，verdict ∈ {"allow","deny","oob","canary"}——canary 命中=**告警放行**（探测点语义：阻断反而掩盖触达事实）、oob=白名单放行、allow 集放行、其余默认拒；`build_acl` 产 `[oob]`（scope kind=oob 行）与 `[canary]`（scope kind=canary 行+canary/recon-decoys.tsv 部署诱饵）段；serve 日志行真墙钟（`now=None` 缺省→UTC ISO 墙钟；测试显式注入固定 now）；日志轮转 5MB×保留 3 代（`egress.log.1..3`）；handler socket 超时 30s
+
+- [ ] **Step 0: 读面定位**
+
+Run: `grep -n "def \|log_line\|timeout" cli/ledger/egress_proxy.py`——以实文件函数名为准（骨架中 load_acl/_wild_hit 为示意名，执行时对齐既有名）；既有 test_egress_proxy.py 的 now 注入用法一并对齐（固定 now 通道保留=测试确定性不回退）。
+
+- [ ] **Step 1: 写失败测试（红=专家 OOB/canary 默认失效）**
+
+```python
+# tests/test_egress_oob_canary_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T11：egress OOB/canary 接线（High：decide() 只查 allow 集、compile 不产
+[canary] 段——两声明面默认失效）+墙钟注入+日志轮转+socket 超时。"""
+import os, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "cli"))
+from ledger import egress_proxy as ep
+
+# 名对齐 Step 0：骨架用 ep.load_acl/ep.build_acl/ep.decide，实文件为准
+
+class TestDecide(unittest.TestCase):
+    def _acl(self, text):
+        return ep.load_acl(text)
+
+    def test_oob_classified_allow(self):
+        acl = self._acl("[acl]\nallow in.example\n[oob]\noob.example\n")
+        v, why = ep.decide(acl, "oob.example", 443)
+        self.assertEqual(v, "oob", "红现状：只查 allow 集→oob 落默认拒")
+
+    def test_canary_classified_allow(self):
+        acl = self._acl("[acl]\nallow in.example\n[canary]\ncan.example\n")
+        v, why = ep.decide(acl, "can.example", 80)
+        self.assertEqual(v, "canary", "canary 命中=告警类放行（探测点）")
+
+    def test_default_deny_unchanged(self):
+        acl = self._acl("[acl]\nallow in.example\n")
+        v, why = ep.decide(acl, "evil.example", 443)
+        self.assertEqual(v, "deny")
+
+
+class TestCompile(unittest.TestCase):
+    def test_compile_emits_oob_and_canary_sections(self):
+        import subprocess
+        ROOT = os.path.join(HERE, "..")
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        gd = os.path.join(td.name, "G-eg")
+        os.makedirs(gd)
+        # scope kind=oob 行（argv 以契约附录 A add-scope 为准）
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "cli", "tanyin-ledger"),
+                            "add-scope", "--goal-dir", gd, "--kind=oob",
+                            "--matcher=oob.example", "--timestamp=2026-09-27T00:00:00Z"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        os.makedirs(os.path.join(gd, "canary"))
+        open(os.path.join(gd, "canary", "recon-decoys.tsv"), "w", encoding="utf-8").write(
+            "host\tcan-decoy.example\n")
+        out = os.path.join(td.name, "egress.acl")
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "cli", "tanyin-egress"),
+                            "compile", "--goal-dir", gd, "--out", out],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        acl = open(out, encoding="utf-8").read()
+        self.assertIn("[oob]", acl) and self.assertIn("oob.example", acl)
+        self.assertIn("[canary]", acl, "红现状：compile v2 不产 canary 段（注释自认）")
+        self.assertIn("can-decoy.example", acl)
+
+
+class TestLogOps(unittest.TestCase):
+    def test_wall_clock_default_not_constant(self):
+        import re
+        line = ep.format_log_line(None, "allow", "h.example", 443, "in")   # now=None→真墙钟
+        self.assertTrue(re.match(r"^\d{4}-\d{2}-\d{2}T", line), "缺省=真墙钟（红：EPOCH 常量）")
+        line2 = ep.format_log_line("2026-09-27T00:00:00Z", "allow", "h.example", 443, "in")
+        self.assertTrue(line2.startswith("2026-09-27T00:00:00Z"), "显式注入固定 now=测试确定性")
+
+    def test_log_rotation(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        p = os.path.join(td.name, "egress.log")
+        open(p, "w").write("x" * (ep.MAX_LOG_BYTES + 1))
+        ep.append_log_line(p, "2026-09-27T00:00:00Z allow h 443 in")
+        self.assertTrue(os.path.isfile(p + ".1"), "超限轮转 .1 代")
+        self.assertLess(os.path.getsize(p), ep.MAX_LOG_BYTES)
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_egress_oob_canary_b7 -v`
+Expected: decide 两例 FAIL（deny/非常量）；compile 例 FAIL（无 [canary]）；墙钟例 FAIL（EPOCH 常量）；轮转 FAIL（函数缺位）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/egress_proxy.py
+MAX_LOG_BYTES = 5 * 1024 * 1024
+LOG_KEEP = 3
+HANDLER_TIMEOUT_S = 30
+
+def decide(acl, host, port):
+    """判定（批次 7 T11，High）：canary 命中=告警放行（探测点语义——阻断反掩盖触达）；
+    oob 白名单=放行；allow 集=放行；其余默认拒。返回 (verdict, reason)。"""
+    h = (host or "").lower()
+    if _wild_hit(acl["canary"], h):
+        return "canary", "canary 域触碰=实时告警（放行留痕）"
+    if _wild_hit(acl["oob"], h):
+        return "oob", "OOB 回连端点（scope kind=oob 白名单）"
+    if _wild_hit(acl["allow"], h):
+        return "allow", "scope include 白名单"
+    return "deny", "默认拒（deny-by-default）"
+
+def build_acl(gd):
+    # …既有 allow/deny/dns_pin/infra 段后追加：
+    # [oob] ← scope.tsv kind=oob 生效链（amendment 后行覆盖先行，load_scope 单源复用）
+    # [canary] ← scope kind=canary 行 ∪ canary/recon-decoys.tsv 部署诱饵（goal_dir 相对）
+
+def format_log_line(now, kind, host, port, verdict):
+    import time as _t
+    ts = now or _t.strftime("%Y-%m-%dT%H:%M:%SZ", _t.gmtime())   # None→真墙钟；测试显式注入
+    return "%s %s %s %d %s" % (ts, kind, host, port, verdict)
+
+def append_log_line(path, line):
+    _rotate_if_needed(path)
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(line + "\n")
+
+def _rotate_if_needed(path):
+    if os.path.isfile(path) and os.path.getsize(path) > MAX_LOG_BYTES:
+        for i in range(LOG_KEEP - 1, 0, -1):
+            src, dst = "%s.%d" % (path, i), "%s.%d" % (path, i + 1)
+            if os.path.isfile(src):
+                os.replace(src, dst)
+        os.replace(path, path + ".1")
+```
+接线：serve/serve_text 的 now 参数缺省改 None（既有显式 now 传参调用零扰动）；handler 判定改单点 `verdict, why = decide(acl, host, port)`：canary→log_line("canary", …, "ALARM")+放行；oob→放行；allow→放行；deny→拒；handler 类加 `timeout = HANDLER_TIMEOUT_S`。
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_egress_oob_canary_b7 tests.test_egress_proxy tests.test_canary_traffic tests.test_egress -v` → 全 OK（canary 流量级面判定词更新=行为收紧而非漂移，如实注记）；全套 discover 全绿；金样 54 面 PASS（egress 面若有=有意刷新名单）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/egress_proxy.py tests/test_egress_oob_canary_b7.py
+git commit -m "批次7-T11(High)：egress OOB/canary 接线——decide 四态判定（canary 告警放行/oob 白名单/allow/默认拒）+build_acl 产 [oob]/[canary] 段（scope oob 行∪recon-decoys 诱饵）+真墙钟注入（缺省真钟/测试显式注入）+日志 5MB×3 轮转+socket 30s 超时"
+```
+
+---
+
+### Task 12: restart 阈值消费（--usage/--round 必填+auto 档 0.75/10 轮执法）
+
+**Files:**
+- Modify: `cli/ledger/phases_engine.py:941-965`（cmd_restart 解析必填 --usage/--round）+ `run_restart:815`（签名+阈值执法+事件词带 usage/round）
+- Test: `tests/test_restart_threshold_b7.py`（新）；既有 `tests/test_managed_restart.py`/`tests/test_kill9_write_fidelity.py` restart 调用统一补参
+
+**Interfaces:**
+- Produces: `tanyin-phases restart --spawn=auto|manual --usage=<0..1> --round=<n≥1> --timestamp=…`——缺参/非法值=usage exit 2；spawn=auto 须 `usage ≥ restart_context_threshold(0.75)` 或 `round % restart_every_n_rounds == 0` 否则 REJECT rc=1；manual 不设阈值但必须带参（审计语义）；事件词升级 `managed-restart spawn=<s> session=<id> usage=<u> round=<n>`（T3 孤儿解析按 token 兼容）
+- Consumes: `restart_context_threshold`/`restart_every_n_rounds` 默认键=load_phases 单源（phases_engine.py:195 既有，禁第二常量源）
+
+- [ ] **Step 1: 写失败测试（红=阈值零消费）**
+
+```python
+# tests/test_restart_threshold_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T12：restart 阈值接线（High：≥0.75/≥10 轮全仓零代码消费）。
+红=缺参/低用量照常重启。"""
+import os, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, ".."))
+sys.path.insert(0, os.path.join(HERE, "..", "cli"))
+from tests.test_dryrun_p0p2 import fresh_drydir, ledger, phases, TS
+
+class TestRestartThreshold(unittest.TestCase):
+    def _ready(self, td, name):
+        gd = fresh_drydir(td.name, name)
+        ledger(gd, "checkpoint", ["--session=s0", "--phase=P1", "--note=init",
+                                  "--timestamp=2026-09-27T00:00:00Z"])
+        return gd
+
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory(); self.addCleanup(self.td.cleanup)
+
+    def test_missing_usage_round_exit_2(self):
+        gd = self._ready(self.td, "G-r1")
+        rc, out, err = phases(gd, "restart", ["--spawn=auto", "--timestamp=2026-09-27T01:00:00Z"])
+        self.assertEqual(rc, 2, "红现状：缺 --usage/--round 照常受理")
+
+    def test_auto_below_threshold_rejected(self):
+        gd = self._ready(self.td, "G-r2")
+        rc, out, err = phases(gd, "restart", ["--spawn=auto", "--usage=0.30", "--round=3",
+                                              "--timestamp=2026-09-27T01:00:00Z"])
+        self.assertEqual(rc, 1, "红现状：0.30/3 轮照样重启（阈值零消费）")
+        self.assertIn("restart-threshold", out)
+
+    def test_auto_at_context_threshold_passes(self):
+        gd = self._ready(self.td, "G-r3")
+        rc, out, err = phases(gd, "restart", ["--spawn=auto", "--usage=0.80", "--round=3",
+                                              "--timestamp=2026-09-27T01:00:00Z"])
+        self.assertEqual(rc, 0, out + err)
+
+    def test_auto_every_n_rounds_passes(self):
+        gd = self._ready(self.td, "G-r4")
+        rc, out, err = phases(gd, "restart", ["--spawn=auto", "--usage=0.10", "--round=10",
+                                              "--timestamp=2026-09-27T01:00:00Z"])
+        self.assertEqual(rc, 0, out + err)
+
+    def test_manual_records_without_threshold(self):
+        gd = self._ready(self.td, "G-r5")
+        rc, out, err = phases(gd, "restart", ["--spawn=manual", "--usage=0.10", "--round=3",
+                                              "--timestamp=2026-09-27T01:00:00Z"])
+        self.assertEqual(rc, 0, out + err)
+        tl = open(os.path.join(gd, "timeline.tsv"), encoding="utf-8").read()
+        self.assertIn("usage=0.1", tl.replace("usage=0.10", "usage=0.1"), "事件词带 usage/round 审计")
+
+    def test_invalid_values_exit_2(self):
+        gd = self._ready(self.td, "G-r6")
+        for extra in (["--usage=1.5", "--round=3"], ["--usage=abc", "--round=3"],
+                      ["--usage=0.5", "--round=0"], ["--usage=0.5", "--round=x"]):
+            rc, out, err = phases(gd, "restart",
+                                  ["--spawn=auto", "--timestamp=2026-09-27T01:00:00Z"] + extra)
+            self.assertEqual(rc, 2, "非法值=usage 错: %r" % extra)
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_restart_threshold_b7 -v`
+Expected: 缺参例 FAIL（rc=0/1 非 2）；低用量例 FAIL（rc=0）；其余例视实现时点
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/phases_engine.py cmd_restart（:941-965）：解析两新参+校验
+        usage = rnd = None
+        for tok in rest:
+            if tok.startswith("--usage="):
+                usage = tok.split("=", 1)[1]
+            elif tok.startswith("--round="):
+                rnd = tok.split("=", 1)[1]
+        try:
+            u = float(usage)
+            if not (0.0 <= u <= 1.0):
+                raise ValueError
+        except (TypeError, ValueError):
+            sys.stderr.write("用法错误: --usage 须 0..1\n")
+            return 2
+        try:
+            n = int(rnd)
+            if n < 1:
+                raise ValueError
+        except (TypeError, ValueError):
+            sys.stderr.write("用法错误: --round 须正整数\n")
+            return 2
+        # 透传 run_restart(..., usage=u, round_no=n)
+```
+
+```python
+# run_restart 内（⓪孤儿对账后、③单活跃会话前）：
+    # 阈值执法（批次 7 T12，High：≥0.75/≥10 轮全仓零消费→接线；单源=load_phases 默认键）
+    if spawn == "auto":
+        thr = float(PHASES_DEFAULTS["restart_context_threshold"])
+        every = int(PHASES_DEFAULTS["restart_every_n_rounds"])
+        if not (u >= thr or n % every == 0):
+            print("REJECT\trestart\trestart-threshold usage=%.2f round=%d 未达（≥%.2f 或 每 %d 轮）"
+                  % (u, n, thr, every))
+            return 1
+    # ⑤事件词升级：
+    _append_event(goal_dir, gate, "managed-restart spawn=%s session=%s usage=%g round=%d%s"
+                  % (spawn, session, u, n, takeover), ts)
+```
+（PHASES_DEFAULTS=load_phases 默认键取用位——以 :195 实名对齐；既有 test_managed_restart 10 例与 T3 kill9 孤儿例 restart 调用统一补 `--usage=0.90 --round=1`，属必填参数契约后果非语义变更。）
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_restart_threshold_b7 tests.test_managed_restart tests.test_kill9_write_fidelity -v` → 全 OK；全套 discover 全绿；金样 54 面 PASS 零漂移
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/phases_engine.py tests/test_restart_threshold_b7.py tests/test_managed_restart.py tests/test_kill9_write_fidelity.py
+git commit -m "批次7-T12(High)：restart 阈值消费——--usage/--round 必填（缺参/非法=exit 2）+auto 档 0.75/10 轮阈值执法（单源=phases 默认键）+manual 带参审计；事件词带 usage/round；既有重启面统一补参（必填契约后果）"
+```
+
+---
+
+（T13→T17 正文增量补齐中……）
+
 
 
 
