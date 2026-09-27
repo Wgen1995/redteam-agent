@@ -7,7 +7,7 @@
 import argparse, json, os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from ledger.evals_schema import load_metrics  # noqa: E402
+from ledger.evals_schema import MetricsError, load_metrics  # noqa: E402
 
 EXIT_PASS, EXIT_GATE_FAIL, EXIT_ENV = 0, 1, 2
 _RUNNERS = {}
@@ -70,21 +70,32 @@ def main(argv):
     ap.add_argument("--timestamp", default=None)
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
+    # 批次 7 评审收尾（Minor b）：缺 schema 键的合法 JSON=用法域 rc=2——先于 vacuous
+    # 守卫拦截（仅文件在场才加载校验；缺文件面不前移，维持 T17 vacuous rc=1 口径）。
+    loaded = None
+    if os.path.isfile(a.metrics):
+        try:
+            loaded = load_metrics(a.metrics)
+        except (MetricsError, AttributeError, KeyError, TypeError) as e:
+            sys.stderr.write("用法问题: --metrics 指标集 shape 不合（缺 schema 键/顶层非对象）"
+                             ": %s\n" % e)
+            return EXIT_ENV
     if a.cmd == "list":
-        m = load_metrics(a.metrics)
-        for x in m["metrics"]:
+        if loaded is None:
+            sys.stderr.write("环境问题: 指标文件缺（%s）\n" % a.metrics)
+            return EXIT_ENV
+        for x in loaded["metrics"]:
             print("%s [%s/%s/%s] %s" % (x["id"], x["layer"], x["gate"], x["kind"], x["title"]))
         return 0
     ts = a.timestamp or "2026-09-24T00:00:00Z"
     # vacuous guard（批次 7 T17 Medium）：零指标文件/空目录=FAIL rc=1，不得 vacuous pass/skip
-    if not os.path.isfile(a.metrics):
+    if loaded is None:
         print("FAIL vacuous: 指标文件缺（%s）——空目录不得 vacuous pass，批次 7 T17" % a.metrics)
         return EXIT_GATE_FAIL
-    metrics = load_metrics(a.metrics)
-    if not metrics.get("metrics"):
+    if not loaded.get("metrics"):
         print("FAIL vacuous: 指标文件为 0（空指标集不得 vacuous pass，批次 7 T17）")
         return EXIT_GATE_FAIL
-    code, rep = run_suite(metrics, a.suite, a.goal_dir, a.out, ts)
+    code, rep = run_suite(loaded, a.suite, a.goal_dir, a.out, ts)
     print(json.dumps(rep["counts"], ensure_ascii=False))
     return code
 

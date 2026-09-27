@@ -204,6 +204,16 @@ def h_set_replay_state(goal_dir, rest):
         # G-23 转正（批次5 T4）：--timestamp 必填（缺/空=用法错误 exit 2），墙钟退役
         raise UsageError("set-replay-state --id=<EV|FD id> --state=<三态> "
                          "--timestamp=ISO8601 [--note=<附注>]")
+    # 批次 7 评审收尾 I-3（R-T2-2 遗留收口）：用法校验先行于锁（UsageError 路径
+    # 零持锁）；goal 锁包「读账→timeline 落行→findings 联动写回」全程（filelock
+    # 单源，registry._locked 同形）——读写双态同入口不动契约面，直写面闭死。
+    from .filelock import goal_lock
+    with goal_lock(goal_dir):
+        return _set_replay_state_locked(goal_dir, args)
+
+
+def _set_replay_state_locked(goal_dir, args):
+    import sys
     ts = args["timestamp"]
     rid, state = args["id"], args["state"]
     s = core.Session(goal_dir)

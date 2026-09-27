@@ -78,14 +78,18 @@ def parse_raw_request(text):
 
 
 def append_tl(gd, ts, event):
-    """timeline 追加一行链式事件（actor=replay, phase=P4；与 check_cmds._append_timeline 同构）。"""
-    s = core.Session(gd)
-    rows = s.rows("timeline.tsv")
-    hi = TABLES["timeline.tsv"].index("hash")
-    prev = rows[-1][hi] if rows else core.GENESIS
-    wo = [ts, "replay", "P4", event, "", prev, "2"]
-    rows.append([ts, "replay", "P4", event, "", prev, core.row_hash(prev, wo), "2"])
-    core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+    """timeline 追加一行链式事件（actor=replay, phase=P4；与 check_cmds._append_timeline 同构）。
+    批次 7 评审收尾 I-3：goal 锁包「读表→算链→写回」全程（filelock 单源，
+    复用 registry._locked 锁形）——并发 append 不再 lost-update/撕裂。"""
+    from ledger.filelock import goal_lock
+    with goal_lock(gd):
+        s = core.Session(gd)
+        rows = s.rows("timeline.tsv")
+        hi = TABLES["timeline.tsv"].index("hash")
+        prev = rows[-1][hi] if rows else core.GENESIS
+        wo = [ts, "replay", "P4", event, "", prev, "2"]
+        rows.append([ts, "replay", "P4", event, "", prev, core.row_hash(prev, wo), "2"])
+        core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
 
 
 def host_in_scope(gd, host):

@@ -30,14 +30,19 @@ def tokenize_output(text, secrets):
     return text
 
 def append_tl(gd, ts, event):
-    s = core.Session(gd)
-    rows = s.rows("timeline.tsv")
-    hi = TABLES["timeline.tsv"].index("hash")
-    prev = rows[-1][hi] if rows else core.GENESIS
-    wo = [ts, "guard", "P3", event, "", prev, "2"]
-    h = core.row_hash(prev, wo)
-    rows.append([ts, "guard", "P3", event, "", prev, h, "2"])
-    core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+    # 批次 7 评审收尾 I-3：goal 锁包「读表→算链→写回」全程（filelock 单源，
+    # 复用 registry._locked 锁形）——并发 append 不再 lost-update/撕裂（T2 锁面
+    # 只盖 registry 写命令分发，五工具直写面由本批补齐）。
+    from ledger.filelock import goal_lock
+    with goal_lock(gd):
+        s = core.Session(gd)
+        rows = s.rows("timeline.tsv")
+        hi = TABLES["timeline.tsv"].index("hash")
+        prev = rows[-1][hi] if rows else core.GENESIS
+        wo = [ts, "guard", "P3", event, "", prev, "2"]
+        h = core.row_hash(prev, wo)
+        rows.append([ts, "guard", "P3", event, "", prev, h, "2"])
+        core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
 
 # vault 逻辑单源=ledger/vault.py（批4 T4 抽取，guard/replay 共用，行为零变更）；
 # 此处同名 thin delegate 保既有调用点与命令输出字节不变。

@@ -258,21 +258,31 @@ def _decode_ip_obfuscation(hp):
 
 
 def _hosts_of_token(token):
-    """单 token 的主机候选：整体段 + key=value 值段（flag 内嵌形态）。"""
+    """单 token 的主机候选：整体段 + key=value 值段（flag 内嵌形态）。
+
+    批次 7 评审收尾 I-2（T5 解码候选面回归收口）：变体解码只认主机承载语境——
+    URL（含 ://）/userinfo（@）/host:port（剥端口前含冒号）/含点形态；裸整数
+    argv token（评审七形亲测误拒：sleep 3/chmod 644/head -n 5/sort -k 2/
+    nmap -p 443/curl -m 30/ssh -p 2222）不进候选。IP 混淆反例九形（URL 语境/
+    含点形态）不受扰——反例回归面 tests/test_guard_bare_int_review.py。"""
     out = []
     pieces = [token]
     if "=" in token:
         pieces.append(token.split("=", 1)[1])
     for p in pieces:
         hp = _hostport_of(p)
+        host_ctx = "://" in p or "@" in p or ":" in hp  # URL/userinfo/host:port 语境
         if hp.startswith("[") and "]" in hp:  # [IPv6]:port 括号形态
             hp = hp[1:hp.index("]")]
+            host_ctx = True
         elif not (hp.count(":") >= 2 and _IPV6_RE.match(hp)):
             hp = hp.split(":")[0]  # host:port 剥端口（IPv6 字面量整体保留）
         if _looks_host(hp):
             h = hp.lower()
             if h not in out:
                 out.append(h)
+        if not (host_ctx or "." in hp):  # 语境门外置（I-2）：裸整数不再解码进候选
+            continue
         dec = _decode_ip_obfuscation(hp)  # T5 变体解码候选（十进制/0x/八进制段）
         if dec != hp and _looks_host(dec):
             d = dec.lower()

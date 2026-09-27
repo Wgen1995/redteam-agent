@@ -33,13 +33,17 @@ def usage():
 
 
 def append_tl(gd, ts, event):
-    s = core.Session(gd)
-    rows = s.rows("timeline.tsv")
-    hi = TABLES["timeline.tsv"].index("hash")
-    prev = rows[-1][hi] if rows else core.GENESIS
-    wo = [ts, "budgetctl", "P3", event, "", prev, "2"]
-    rows.append([ts, "budgetctl", "P3", event, "", prev, core.row_hash(prev, wo), "2"])
-    core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+    # 批次 7 评审收尾 I-3：goal 锁包「读表→算链→写回」全程（filelock 单源，
+    # 复用 registry._locked 锁形）——并发 append 不再 lost-update/撕裂。
+    from ledger.filelock import goal_lock
+    with goal_lock(gd):
+        s = core.Session(gd)
+        rows = s.rows("timeline.tsv")
+        hi = TABLES["timeline.tsv"].index("hash")
+        prev = rows[-1][hi] if rows else core.GENESIS
+        wo = [ts, "budgetctl", "P3", event, "", prev, "2"]
+        rows.append([ts, "budgetctl", "P3", event, "", prev, core.row_hash(prev, wo), "2"])
+        core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
 
 
 def parse_ts(tok):

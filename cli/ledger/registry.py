@@ -9,8 +9,10 @@ _MODULES = ["write_cmds", "query_cmds", "check_cmds", "special", "matrix_init", 
 # WRITE_COMMANDS 自写命令模块的 HANDLERS 键集派生，禁手抄名单：
 #   write_cmds=契约 02 写命令组（19 条+双前缀别名）；matrix_init=matrix-init（写
 #   matrix.tsv+timeline.tsv，金样写面 20 的另一条）。
-# R-T2-2：set-replay-state（check_cmds）读写双态同入口，写形锁覆盖留 v3（拆读写形
-# 涉契约面，b7 台账登记）；builtin 三条与 query/check/special/graph 各命令=只读不锁。
+# R-T2-2（批次 7 评审收尾 I-3 收口，原「写形锁覆盖留 v3」注销）：set-replay-state
+# （check_cmds）读写双态同入口，拆读写形涉契约面（registry 层不拆）——写路径锁改落
+# handler 内部（goal_lock 包「读账→落行→联动写回」全程，用法校验先行于锁），锁面全闭
+# 无直写面残留；builtin 三条与 query/check/special/graph 各命令=只读不锁。
 _WRITER_MODULES = ("write_cmds", "matrix_init")
 
 
