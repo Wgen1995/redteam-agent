@@ -625,10 +625,8 @@ class TestGuardReject(unittest.TestCase):
 
     def test_benign_flags_unaffected(self):
         gd = fresh_drydir(self.td.name, "G-norm2")
-        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", gd, "--
-
-
-python", "-c", "print(1)"], capture_output=True, text=True)
+        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", gd, "--",
+                            sys.executable, "-c", "print(1)"], capture_output=True, text=True)
         self.assertNotIn("deny-list", r.stdout, "良性旗标不得误伤")
 ```
 
@@ -759,10 +757,8 @@ class TestHostDeobfuscation(unittest.TestCase):
     def test_guard_version_number_not_flagged(self):
         td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
         gd = fresh_drydir(td.name, "G-ip2")
-        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", gd, "--
-
-
-python", "--version=3.14"], capture_output=True, text=True)
+        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", gd, "--",
+                            sys.executable, "--version=3.14"], capture_output=True, text=True)
         self.assertNotIn("3.14", r.stdout.replace("--version=3.14", ""), "版本号值段不得被当主机拒")
 ```
 
