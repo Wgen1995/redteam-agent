@@ -699,3 +699,5 @@
   - R-M2-1（出口 #3 勘误口径）：勘误仅措辞（动态 ENV-SKIP 清单与 counts 自相矛盾+M12 参数基准词），实测输出行与 ✅ 判定不动——记账完整性优先，历史实测数字不重写。
 - **纪律面**：全部新文件 UTF-8 无 BOM+LF（file -I 实测）；时间戳显式字面量（2026-09-27T02:30:00Z 复测 ts，零墙钟入账）；panorama/ 与 /Users/wgen/Documents 零触碰；真仓锚文件/共享夹具 G-g1 零触碰（I-2 测试全在临时仓根副本）；靶场起落 docker compose 面（down 后零残留容器实测）；git diff --check 提交前 clean。
 - **R-记账（T17+T18 时点）**：两任务 commit 先行（0328606/a7c5218），本流水+裁决+出口 18 条记录节独立 commit（批次内既定手法）。
+## 2026-09-27 六专家对抗评审
+- 全平台六视角评审完成，结论 concerns，5 Critical（写路径非原子/guard 绕过/九门伪造/锁信任根/签发四绕）+High/Medium 台账见 docs/design/2026-09-27-expert-review-consolidated.md｜靶场 LLM 在环实战并行中
