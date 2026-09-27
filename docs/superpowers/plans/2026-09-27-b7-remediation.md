@@ -934,7 +934,486 @@ git commit -m "批次7-T6(C3)：九门权威——RESERVED_EVENT_PREFIXES(gate-e
 
 ---
 
-（T7→T17 正文增量补齐中……）
+### Task 7: tools.lock 信任链（测试钥轮换+信任面隔离断言+runtime nuclei digest 比对）
+
+**Files:**
+- Rotate: `tests/fixtures/keys/test-signing-key.pem`（新测试钥替换旧钥）+ Create: `tests/fixtures/keys/test-release.pub`（新钥公钥）
+- Modify: `engines/nuclei/adapter.py:23-46`（verify() 增 runtime sha256 比对，签名向后兼容）
+- Re-sign: 旧钥签发的全部夹具 lock（Step 0 定位；有意刷新名单）
+- Test: `tests/test_tools_trust_face.py`（新）
+
+**Interfaces:**
+- Produces: `adapter.verify(lock_path, nuclei_path=None) -> (ok, reason)`——第二参缺省 None 时 `shutil.which("nuclei")`；核验顺序=锁验签 → templates.lock → **runtime 二进制 sha256（在场即必比，缺失不比）**；信任面常量：生产锚=`engines/nuclei/release.pub`，测试锚=`tests/fixtures/keys/test-release.pub`
+- Consumes: `ledger.supply_chain`（load_lock/sign_entry/verify_entry 单源不动）
+
+**裁决（信任面隔离）：** 专家实证=仓内测试钥能重签过仓内 release.pub 验签 ⇒ 测试钥与生产锚同信任面。本任务生成**全新**测试钥对（与现 release.pub 密码学无关），仓内测试/夹具全走新钥；release.pub 生产锚旋转属生产钥仪式（KEY-MANAGEMENT 人工离线，b6 裁决 C 通道），残留风险登记 b7 台账。
+
+- [ ] **Step 0: 定位旧钥信任面**
+
+Run: `openssl pkey -in tests/fixtures/keys/test-signing-key.pem -pubout | diff - engines/nuclei/release.pub && echo SAME-TRUST-FACE`；`grep -rln "sig" tests/fixtures engines --include="*.lock" | sort`——列出全部待重签 lock 清单（记入本任务 commit message 与金样刷新名单）。
+
+- [ ] **Step 1: 写失败测试（红=信任面隔离断言+runtime digest 反例）**
+
+```python
+# tests/test_tools_trust_face.py
+# -*- coding: utf-8 -*-
+"""批次 7 T7：tools.lock 信任链（C4）。红=专家实证：仓内测试钥重签篡改行 check_lock=0
+（测试钥=生产锚同信任面）+runtime 不比对 nuclei 二进制 digest。"""
+import hashlib, os, subprocess, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.join(HERE, "..")
+sys.path.insert(0, os.path.join(ROOT, "cli"))
+from ledger import supply_chain
+
+PROD_PUB = os.path.join(ROOT, "engines", "nuclei", "release.pub")
+TEST_KEY = os.path.join(ROOT, "tests", "fixtures", "keys", "test-signing-key.pem")
+TEST_PUB = os.path.join(ROOT, "tests", "fixtures", "keys", "test-release.pub")
+ADAPTER = os.path.join(ROOT, "engines", "nuclei", "adapter.py")
+
+def _entry():
+    return {"key": "nuclei", "version": "t0", "sha256": "ab" * 32, "sig": "", "commit": "c0"}
+
+
+class TestTrustFace(unittest.TestCase):
+    def test_fixture_key_pub_differs_from_prod_anchor(self):
+        a = subprocess.run(["openssl", "pkey", "-in", TEST_KEY, "-pubout"],
+                           capture_output=True).stdout.strip()
+        b = open(PROD_PUB, "rb").read().strip()
+        self.assertNotEqual(a, b, "信任面隔离：仓内测试钥公钥≠生产信任锚（专家红：相等）")
+
+    def test_testkey_sig_rejected_by_prod_anchor(self):
+        e = _entry()
+        supply_chain.sign_entry(e, TEST_KEY)
+        ok, why = supply_chain.verify_entry(e, PROD_PUB)
+        self.assertFalse(ok, "测试钥签名×生产锚必须失败（红现状：重签过验签）: " + why)
+
+    def test_testkey_sig_accepted_by_test_anchor(self):
+        e = _entry()
+        supply_chain.sign_entry(e, TEST_KEY)
+        ok, why = supply_chain.verify_entry(e, TEST_PUB)
+        self.assertTrue(ok, why)
+
+
+class TestRuntimeDigest(unittest.TestCase):
+    def _load_adapter(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("nuc_adapter", ADAPTER)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+
+    def _lock_file(self, td, sha):
+        e = _entry()
+        e["sha256"] = sha
+        supply_chain.sign_entry(e, TEST_KEY)
+        lockp = os.path.join(td.name, "tools.lock")
+        row = "\t".join([e["key"], e["version"], e["sha256"], e["sig"], e["commit"]])
+        open(lockp, "w", encoding="utf-8", newline="\n").write(
+            "key\tversion\tsha256\tsig\tcommit\n" + row + "\n")
+        return lockp
+
+    def test_tampered_binary_blocked(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        binp = os.path.join(td.name, "nuclei")
+        open(binp, "wb").write(b"FAKE-BYTES")   # 在场但不符
+        lockp = self._lock_file(td, hashlib.sha256(b"PRISTINE-BYTES").hexdigest())
+        ok, why = self._load_adapter().verify(lockp, nuclei_path=binp)
+        self.assertFalse(ok, "runtime 二进制 sha256 与 lock 不符必须 blocked（红现状：不比对）")
+        self.assertIn("sha256", why)
+
+    def test_pristine_binary_passes_digest(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        binp = os.path.join(td.name, "nuclei")
+        open(binp, "wb").write(b"PRISTINE-BYTES")
+        lockp = self._lock_file(td, hashlib.sha256(b"PRISTINE-BYTES").hexdigest())
+        ok, why = self._load_adapter().verify(lockp, nuclei_path=binp)
+        self.assertTrue(ok, why)
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_tools_trust_face -v`
+Expected: `test_testkey_sig_rejected_by_prod_anchor` FAIL（红=验证通过）；`test_tampered_binary_blocked` FAIL（红=ok=True 不比对）；其余两例视轮换时点 PASS/FAIL——先跑红如实记录现状
+
+- [ ] **Step 3: 轮换+最小实现**
+
+```bash
+# ① 轮换测试钥（与现 release.pub 无信任关系；测试钥可仓内生成，生产钥旋转=离线人工仪式不属本批）
+openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out tests/fixtures/keys/test-signing-key.pem
+openssl pkey -in tests/fixtures/keys/test-signing-key.pem -pubout -out tests/fixtures/keys/test-release.pub
+```
+
+② 一次性重签片段（stdin 喂给 python3，不落长期脚本；files=Step 0 清单）：
+
+```python
+# 一次性片段（stdin）：逐 lock 以新测试钥重签——签名覆盖=supply_chain.canonical_digest 单源
+import sys; sys.path.insert(0, "cli")
+from ledger import supply_chain
+for path in FILES:   # Step 0 输出的 lock 清单
+    lock = supply_chain.load_lock(path)
+    for e in lock.values():
+        supply_chain.sign_entry(e, "tests/fixtures/keys/test-signing-key.pem")
+    # 按原五字段行格式回写（同 T7 测试 _lock_file 的行格式）
+```
+
+```python
+# engines/nuclei/adapter.py verify()（templates.lock 校验后、return True 前插入）
+    # runtime digest（批次 7 T7，C4）：runtime 工件（nuclei 二进制）在场即必比对 lock.sha256。
+    # 缺失=不比（canned 离线面行为不变）；在场不符=blocked（信任链延伸到运行时工件）。
+    binp = nuclei_path or shutil.which("nuclei")
+    if binp and os.path.isfile(binp):
+        h = hashlib.sha256(open(binp, "rb").read()).hexdigest()
+        if h != lock["nuclei"]["sha256"]:
+            return False, "runtime nuclei sha256 与 tools.lock 不符: " + binp
+```
+（verify 签名改 `def verify(lock_path, nuclei_path=None):`；全部既有调用点零改动兼容。）
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_tools_trust_face tests.test_engine_nuclei tests.test_lock_v2 -v` → 全 OK；全套 discover——受旧钥签名影响的夹具面重签后必须全绿；`python3 tests/run_golden.py` → 54 面 PASS，受影响面若字节变化=**有意刷新名单**（commit message 单列 delta）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add tests/fixtures/keys/ engines/nuclei/adapter.py tests/test_tools_trust_face.py  # 加 Step 0 重签 lock 清单
+git commit -m "批次7-T7(C4)：tools.lock 信任链——测试钥轮换（与生产锚 release.pub 密码学无关）+信任面隔离断言（测试钥签名×生产锚=FAIL）+adapter runtime nuclei sha256 比对（在场即必比，不符=blocked）；夹具 lock 重签名单与金样刷新 delta 见本 message"
+```
+
+---
+
+### Task 8: 签发四门①授权完整性（auth_doc sha256+窗口门+approvals verify-signoff 强校验）
+
+**Files:**
+- Modify: `cli/ledger/report_lint.py:228-315`（sign_gate：gates 增 `authorization` 键；新增 `_authorization_gate`；cmd_lint 同判定路径自动生效）
+- Test: `tests/test_sign_gates_b7.py`（新）
+
+**Interfaces:**
+- Produces: gates 新键 `authorization`（FAIL 明细=中文分号串）；判定=①goals.auth_doc 文件 sha256==auth_sha256 ②issuance ts ∈ [valid_from, valid_until] ③approvals.tsv 存在 decision=approved 行——任一不满足=sign/lint rc=1
+- Consumes: goals 列名 auth_doc/auth_sha256/signer/valid_from/valid_until（`TABLES["goals.tsv"].index` 单源取下标，禁硬编码列号）；时间解析复用仓内既有 ISO 解析单源（`grep -n "fromisoformat\|def _parse" cli/ledger/report_lint.py cli/ledger/check_cmds.py` 取用，无则本任务内聚一个 `_parse_iso`）
+
+- [ ] **Step 0: 夹具对齐**
+
+Run: `ls tests/ | grep -E "report|sign|lint"`；`grep -rn "sign_gate\|redact_scan" tests/*.py | head`——定位既有 sign/lint 测试的夹具助手与「全绿签发夹具」构造形（T9 复用同一助手；本任务先落一个 `_auth_fixture(gd, sha, vf, vu)` 助手给三例共用）。
+
+- [ ] **Step 1: 写失败测试（红=专家反例 deadbeef/过期窗/零 approvals sign rc=0）**
+
+```python
+# tests/test_sign_gates_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T8：签发授权完整性门（C5 反例三）。红=专家实测：goals auth_sha256=deadbeef+
+窗口过期+approvals 零校验 → verify-chain PASS、sign rc=0。"""
+import hashlib, os, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "cli"))
+sys.path.insert(0, os.path.join(HERE, ".."))
+from ledger import core, report_lint
+from tests.test_dryrun_p0p2 import fresh_drydir, ledger, TS
+
+DEAD = "d" * 64
+TS_IN_WINDOW = "2026-01-01T12:00:00Z"
+TS_AFTER = "2026-09-27T00:00:00Z"
+
+def _sha_of(gd):
+    return hashlib.sha256(open(os.path.join(gd, "auth.txt"), "rb").read()).hexdigest()
+
+def _goal_with_auth(gd, sha, vf="2026-01-01T00:00:00Z", vu="2026-01-02T00:00:00Z"):
+    """授权书文件+goals 行；argv 键以契约附录 A add-goal 签名为准（执行时对齐既有用例）。"""
+    open(os.path.join(gd, "auth.txt"), "wb").write(b"AUTH-DOC-BYTES")
+    ledger(gd, "add-goal", [
+        "--target=example.com", "--objective=t", "--auth-doc=auth.txt",
+        "--auth-sha256=" + sha, "--signer=QA", "--valid-from=" + vf, "--valid-until=" + vu,
+        "--rate-limit=10", "--window=1", "--emergency-contact=911", "--budget=1M;10;1",
+        "--language=zh", "--timestamp=2026-09-27T00:00:00Z"])
+
+
+class TestAuthorizationGate(unittest.TestCase):
+    def _fresh(self, name):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        return fresh_drydir(td.name, name)
+
+    def test_deadbeef_sha_blocked(self):
+        gd = self._fresh("G-auth1")
+        _goal_with_auth(gd, sha=DEAD)   # auth.txt 实 sha≠deadbeef
+        rc, rep = report_lint.sign_gate(gd, TS_IN_WINDOW, write_credential=True)
+        self.assertEqual(rc, 1, "红现状：sign rc=0（零授权校验）")
+        self.assertEqual(rep["gates"]["authorization"]["status"], "FAIL")
+        self.assertIn("sha256", rep["gates"]["authorization"]["detail"])
+
+    def test_expired_window_blocked(self):
+        gd = self._fresh("G-auth2")
+        _goal_with_auth(gd, sha=_sha_of(gd))
+        rc, rep = report_lint.sign_gate(gd, TS_AFTER, write_credential=True)   # 窗口外签发
+        self.assertEqual(rc, 1, "红现状：过期窗 sign rc=0")
+        self.assertIn("过期", rep["gates"]["authorization"]["detail"])
+
+    def test_zero_approvals_blocked_and_approved_passes_gate(self):
+        gd = self._fresh("G-auth3")
+        _goal_with_auth(gd, sha=_sha_of(gd))
+        rc, rep = report_lint.sign_gate(gd, TS_IN_WINDOW, write_credential=True)
+        self.assertEqual(rc, 1)
+        self.assertIn("approvals", rep["gates"]["authorization"]["detail"], "零 approved 行=FAIL")
+        # 追加 approved 行后 authorization 门细节消（其余门独立判定不并断言）
+        ledger(gd, "approve", ["--decision=approved", "--approver=人工",
+                               "--timestamp=2026-01-01T06:00:00Z"])
+        rc, rep = report_lint.sign_gate(gd, TS_IN_WINDOW, write_credential=True)
+        self.assertNotIn("approvals", rep["gates"]["authorization"]["detail"])
+
+    def test_lint_shares_gate(self):
+        gd = self._fresh("G-auth4")
+        _goal_with_auth(gd, sha=DEAD)
+        rc, out, err = ledger(gd, "lint", ["--goal-dir", gd])   # 入口名以 cli/README 为准
+        self.assertEqual(rc, 1, "lint 与 sign 同门（不落凭证路径同样拒收）")
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_sign_gates_b7 -v`
+Expected: 授权三例 FAIL（红=rc=0）；lint 例 FAIL；**红态如实录**（若 approve/lint argv 与实面不符，修测试 argv 至真实面再录红——红必须是真反例不是 argv 拼错）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/report_lint.py（sign_gate 前新增）
+def _authorization_gate(goal_dir, s, ts, gates):
+    """签发授权完整性（批次 7 T8，C5 反例三）：①授权书 sha256 ②窗口 ③approvals
+    verify-signoff。任一不过=gates.authorization FAIL（全门联合 rc 判定不变）。"""
+    errs = []
+    gi = TABLES["goals.tsv"].index
+    rows = s.rows("goals.tsv")
+    if not rows:
+        errs.append("无 goals 行（授权完整性）")
+    else:
+        g = rows[0]
+        doc, want = g[gi("auth_doc")], (g[gi("auth_sha256")] or "").lower()
+        if not doc or not want:
+            errs.append("授权书缺：auth_doc/auth_sha256 空（八问表④授权门）")
+        else:
+            p = doc if os.path.isabs(doc) else os.path.join(goal_dir, doc)
+            if not os.path.isfile(p):
+                errs.append("授权书文件缺: " + doc)
+            else:
+                got = hashlib.sha256(open(p, "rb").read()).hexdigest()
+                if got != want:
+                    errs.append("授权书 sha256 不符 want=%s… got=%s…（deadbeef/手改=FAIL）"
+                                % (want[:12], got[:12]))
+        t = _parse_iso(ts)
+        f, u = _parse_iso(g[gi("valid_from")]), _parse_iso(g[gi("valid_until")])
+        if t is not None:
+            if f and t < f: errs.append("授权窗口未开始: valid_from=" + g[gi("valid_from")])
+            if u and t > u: errs.append("授权窗口已过期: valid_until=" + g[gi("valid_until")])
+    ai = TABLES["approvals.tsv"].index
+    if not any(r[ai("decision")] == "approved" for r in s.rows("approvals.tsv")):
+        errs.append("approvals 无 approved 行（verify-signoff：签发须人工批准在案）")
+    if errs:
+        gates["authorization"].update(status="FAIL", detail="；".join(errs))
+    return not errs
+
+def _parse_iso(z):
+    """ISO8601（Z→+00:00）→aware datetime；空/非法=None（窗口判 FAIL 走缺列路径）。"""
+    try:
+        from datetime import datetime
+        return datetime.fromisoformat(z.replace("Z", "+00:00")) if z else None
+    except ValueError:
+        return None
+```
+
+接线：sign_gate gates 字典初值加 `"authorization"`；`ok_all` 判定前调用 `if not _authorization_gate(goal_dir, s, ts, gates): ok_all = False`。确认 cmd_lint 与 sign 共用该聚合（lint 路径同门——Step 1 lint 例验尸）。
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_sign_gates_b7 -v` → OK；既有 report/sign 测试全绿（**合法夹具因新门红=夹具授权三件套不全，补夹具不放水**）；全套 discover 全绿；`python3 tests/run_golden.py` → 54 面 PASS（lint/sign 金样面若字节变化=有意刷新名单单列）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/report_lint.py tests/test_sign_gates_b7.py
+git commit -m "批次7-T8(C5①)：签发授权完整性门——_authorization_gate（auth_doc sha256 比对+窗口门+approvals verify-signoff）入 sign/lint 联合判定；红=deadbeef/过期窗/零 approvals sign rc=0 专家反例全录"
+```
+
+---
+
+### Task 9: 签发四门②③④（draft==render_fd 字节比对+pass.json 三工件哈希绑定+落盘后脱敏复扫）
+
+**Files:**
+- Modify: `cli/ledger/report_lint.py:169-224`（_fd_checks draft 分支改字节比对）
+- Modify: `cli/ledger/report_lint.py:255-315`（sign_gate：gates 增 `draft_byte_equal`/`artifact_binding`；redact_scan 移到凭证落盘后复扫+FAIL 删证）
+- Test: `tests/test_sign_gates_b7.py` 追加三类
+
+**Interfaces:**
+- Produces: ①draft 在场时必与 `report_render.render_fd(goal_dir, fd_id)` 现算输出字节相等（gates.draft_byte_equal）；②pass.json 增 `artifacts: {<相对路径>: sha256}`（draft 文件+E-index active 工件+interim-report 三工件绑定），lint 在场 pass.json 即自动复检绑定（免新旗标，零契约扰动）；③redact-scan 在凭证落盘**之后**对 report/ 全树复扫，FAIL=删凭证+rc=1
+- Consumes: T8 的 `_auth_fixture` 全绿签发夹具助手（三工件齐备的会话）；`report_render.render_fd` 既有单源
+
+- [ ] **Step 1: 写失败测试（红=专家反例 draft 手改直通+扫描先于落盘）**
+
+```python
+# tests/test_sign_gates_b7.py 追加（复用 T8 夹具助手；FD-id/ts 以夹具实值为准替换占位）
+class TestDraftByteEqual(unittest.TestCase):
+    def test_hand_edited_draft_blocked(self):
+        """专家反例：draft C1→C3 手改直通（现只查 raw 子串在不在）。"""
+        gd = <T8 全绿签发夹具助手()>
+        draft = os.path.join(gd, "report", "draft", "<FD-id>.md")
+        md = open(draft, encoding="utf-8").read()
+        open(draft, "w", encoding="utf-8", newline="\n").write(md.replace("C1", "C3", 1))
+        rc, rep = report_lint.sign_gate(gd, "<窗口内 ts>", write_credential=False)
+        self.assertEqual(rc, 1, "红现状：手改 draft 直通 rc=0")
+        self.assertEqual(rep["gates"]["draft_byte_equal"]["status"], "FAIL")
+
+
+class TestArtifactBinding(unittest.TestCase):
+    def test_pass_json_binds_three_artifact_classes(self):
+        import json
+        gd = <T8 全绿签发夹具助手()>
+        rc, rep = report_lint.sign_gate(gd, "<窗口内 ts>", write_credential=True)
+        self.assertEqual(rc, 0)
+        pj = os.path.join(gd, "report", "signed", "pass.json")
+        arts = json.load(open(pj, encoding="utf-8"))["artifacts"]
+        self.assertTrue(any(k.startswith("report/draft/") for k in arts), "draft 绑定")
+        self.assertTrue(any(not k.startswith("report/") for k in arts), "E-index 工件绑定")
+        for k, h in arts.items():
+            got = hashlib.sha256(open(os.path.join(gd, k), "rb").read()).hexdigest()
+            self.assertEqual(got, h, "绑定即真值: " + k)
+
+    def test_tampered_draft_detected_by_binding(self):
+        gd = <T8 全绿签发夹具助手()>   # 先 sign 出 pass.json
+        draft = os.path.join(gd, "report", "draft", "<FD-id>.md")
+        with open(draft, "a", encoding="utf-8") as f:
+            f.write("tampered\n")
+        rc, rep = report_lint.cmd_lint(gd, "<窗口内 ts>")   # lint 在场 pass.json 自动复检
+        self.assertEqual(rc, 1, "红现状：无绑定复检，签发后篡改不可检")
+
+
+class TestRescanAfterWrite(unittest.TestCase):
+    def test_redact_scan_runs_after_credential_written(self):
+        """执法顺序反例（工具缝③）：现扫描先于 pass.json/interim 落盘——终稿不在扫描面。"""
+        gd = <T8 全绿签发夹具助手()>
+        calls = []
+        real = report_lint._subprocess_gate
+        def spy(name, argv, gates):
+            calls.append((name, os.path.exists(os.path.join(gd, "report", "signed", "pass.json"))))
+            return real(name, argv, gates)
+        report_lint._subprocess_gate = spy
+        try:
+            report_lint.sign_gate(gd, "<窗口内 ts>", write_credential=True)
+        finally:
+            report_lint._subprocess_gate = real
+        scan = [c for c in calls if c[0] == "redact_scan"]
+        self.assertTrue(scan and scan[-1][1] is True,
+                        "红现状：redact_scan 调用时 pass.json 尚未落盘（exists=False）")
+
+    def test_rescan_fail_deletes_credential(self):
+        gd = <T8 全绿签发夹具助手()>
+        real = report_lint._subprocess_gate
+        def fail_redact(name, argv, gates):
+            if name == "redact_scan":
+                gates["redact_scan"]["status"] = "FAIL"
+                return False
+            return real(name, argv, gates)
+        report_lint._subprocess_gate = fail_redact
+        try:
+            rc, rep = report_lint.sign_gate(gd, "<窗口内 ts>", write_credential=True)
+        finally:
+            report_lint._subprocess_gate = real
+        self.assertEqual(rc, 1)
+        self.assertFalse(os.path.exists(os.path.join(gd, "report", "signed", "pass.json")),
+                         "复扫 FAIL=凭证必须删除（fail-closed，不得留半签发态）")
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_sign_gates_b7.TestDraftByteEqual tests.test_sign_gates_b7.TestArtifactBinding tests.test_sign_gates_b7.TestRescanAfterWrite -v`
+Expected: 手改例 FAIL（rc=0 直通）；绑定例 FAIL（artifacts 键不存在）；扫描顺序例 FAIL（exists=False）；删证例 FAIL（凭证留存）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/report_lint.py _fd_checks draft 分支（:169-183 替换）
+    if os.path.isfile(draft_path):
+        with open(draft_path, encoding="utf-8") as f:
+            md = f.read()
+        rc, fresh = report_render.render_fd(goal_dir, fd_id)
+        if rc != 0 or fresh != md:
+            g = gates.setdefault("draft_byte_equal", {"status": "PASS", "detail": ""})
+            g["status"] = "FAIL"
+            g["detail"] += ("%s: draft 与 render_fd 字节不符（手改=FAIL，批次7 T9）: %s；"
+                            % (fd_id, (fresh or "")[:60]))
+            ok_all = False
+        src = "draft"
+    else:
+        ...（既有 render 分支原样保留）
+```
+
+sign_gate 改造要点（三处，禁止「写两遍」双源）：
+
+```python
+    # ②三工件哈希绑定（先 interim 后 pass.json 单次成文）
+    arts = {}
+    for fd_id in fds:
+        p = os.path.join(goal_dir, "report", "draft", fd_id + ".md")
+        if os.path.isfile(p):
+            arts["report/draft/%s.md" % fd_id] = hashlib.sha256(open(p, "rb").read()).hexdigest()
+        for r in report_render._evidence_rows(s, report_render._fd_row(s, fd_id)):
+            art = r[TABLES["E-index.tsv"].index("artifact_path")]
+            ap = os.path.join(goal_dir, art) if art else ""
+            if art and os.path.isfile(ap):
+                arts[art.replace(os.sep, "/")] = hashlib.sha256(open(ap, "rb").read()).hexdigest()
+    rep = {"goal": ..., "ts": ts, "gates": gates, "artifacts": arts}
+    if write_credential:
+        signed = os.path.join(goal_dir, "report", "signed")
+        os.makedirs(signed, exist_ok=True)
+        if terminal == "exhausted":
+            ...（interim 先落盘；随后纳入绑定）
+            ip = os.path.join(signed, "interim-report.md")
+            arts["report/signed/interim-report.md"] = hashlib.sha256(open(ip, "rb").read()).hexdigest()
+            rep["artifacts"] = arts   # 同一 dict 引用成文，无第二源
+        payload = json.dumps(rep, ensure_ascii=False, sort_keys=True, indent=1) + "\n"
+        with open(os.path.join(signed, "pass.json"), "w", encoding="utf-8", newline="\n") as f:
+            f.write(payload)
+        # ④落盘后复扫（批次 7 T9：扫描面=终稿在场的 report/ 全树）；FAIL=删证 fail-closed
+        if not _subprocess_gate("redact_scan",
+                                ["redact-scan", "--goal-dir", os.path.abspath(goal_dir),
+                                 "--target=" + os.path.abspath(os.path.join(goal_dir, "report"))],
+                                gates):
+            for fn in ("pass.json", "interim-report.md"):
+                fp = os.path.join(signed, fn)
+                if os.path.exists(fp):
+                    os.unlink(fp)
+            return 1, rep
+    else:
+        # lint 无凭证路径：维持扫描后返回（零产物，顺序语义不受扰）
+        if not _subprocess_gate("redact_scan", ["redact-scan", "--goal-dir", os.path.abspath(goal_dir),
+            "--target=" + os.path.abspath(os.path.join(goal_dir, "report"))], gates):
+            return 1, rep
+    # ③绑定复检：goal 内 pass.json 在场即自动复检（lint 入口免新旗标）
+    pj = os.path.join(goal_dir, "report", "signed", "pass.json")
+    if os.path.isfile(pj):
+        import json
+        old = json.load(open(pj, encoding="utf-8")).get("artifacts") or {}
+        bad = [k for k, h in old.items()
+               if not os.path.isfile(os.path.join(goal_dir, k))
+               or hashlib.sha256(open(os.path.join(goal_dir, k), "rb").read()).hexdigest() != h]
+        if bad:
+            g = gates.setdefault("artifact_binding", {"status": "PASS", "detail": ""})
+            g["status"] = "FAIL"
+            g["detail"] = "绑定失配: " + ", ".join(bad[:5])
+            return 1, rep
+    return 0, rep
+```
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_sign_gates_b7 -v` → 全 OK；既有 report/sign 面全绿；全套 discover 全绿；`python3 tests/run_golden.py` → 54 面 PASS（lint 签发面若含 pass.json 字节=有意刷新名单：artifacts 键新增，单列 delta）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/report_lint.py tests/test_sign_gates_b7.py
+git commit -m "批次7-T9(C5②③④)：draft==render_fd 字节比对（手改即 FAIL）+pass.json 三工件 sha256 绑定（lint 在场自动复检）+redact-scan 移到凭证落盘后复扫（FAIL=删证 fail-closed）；红=专家 draft C1→C3 直通与扫描先于落盘反例"
+```
+
+---
+
+（T10→T17 正文增量补齐中……）
+
 
 
 
