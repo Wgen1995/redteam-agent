@@ -16,7 +16,7 @@ import os
 import re
 import sys
 
-from .core import TABLES, SCHEMA_VERSION, GENESIS, GATE_ORDER, esc, next_id, row_hash, write_tsv
+from .core import TABLES, SCHEMA_VERSION, GENESIS, GATE_ORDER, esc, next_id, row_hash, write_tsv, RESERVED_EVENT_PREFIXES
 from . import lock_v2, state_md
 from .norm import artifact_hashes  # norm 轨单源（评审 C-1）：add-evidence 落账与 hash-recheck 同款
 
@@ -970,6 +970,10 @@ def _append_timeline(goal_dir, rest):
     if args["actor"] not in {"总控", "子代理", "CLI", "人工"}:
         raise Reject("actor 不在 {总控,子代理,CLI,人工}: " + args["actor"])
     ev = args["event"]
+    # 门事件词保留表拒收（批次 7 T6，C3 九门权威）：门事件唯一铸造点=phases_engine
+    # 引擎侧直写；actor 侧 append-timeline 收权——REJECT=零落账（先校验后写入纪律）。
+    if ev.startswith(RESERVED_EVENT_PREFIXES):
+        raise Reject("保留事件词：门事件只能由 tanyin-phases gate 铸造（append-timeline 拒收）: " + ev)
     revert = args.get("revert-cmd", "")
     if ev.startswith("request:") and not revert:
         raise Reject("外部副作用类 event（request:）须 --revert-cmd（分层登记）")

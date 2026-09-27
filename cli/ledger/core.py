@@ -10,9 +10,14 @@ from .schemas import TABLES, SCHEMA_VERSION, GENESIS
 # （write_cmds checkpoint --phase 拒收 ∉九门 复用本清单，禁双份枚举）。
 GATE_ORDER = ("P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6.0", "P6")
 # 门出口断言事件词汇【推导】（02a §32「每门出口断言的命令调用必产生 timeline 事件」
-# 的落账形态；批次 3 phases.yaml 引擎在每门 exit 断言通过后经 append-timeline 记入，
-# 本命令只做存在性/序检测，不代写）。容忍尾部明细（如 asserts=3 result=PASS）。
+# 的落账形态；批次 3 phases.yaml 引擎在每门 exit 断言通过后铸造记入——批次 7 T6 起
+# 引擎侧直写单源，本命令只做存在性/序检测，不代写）。容忍尾部明细（如 asserts=3 result=PASS）。
 GATE_EXIT_EVENT = re.compile(r"^gate-exit:(P(?:\d(?:\.\d)?))(?:\s.*)?$")
+
+# 门事件词保留表（批次 7 T6，C3 九门权威）：gate-exit:*/gate-fail* 只能由
+# phases_engine 引擎侧铸造（单源）；append-timeline 命令面拒收——伪造快进
+# （连发 gate-exit:P0..P6 → gate already-passed exit 0、断言零执行）=专家 C3 反例通道。
+RESERVED_EVENT_PREFIXES = ("gate-exit:", "gate-fail")
 
 BS = chr(92)
 _ESC = {BS: BS + BS, chr(9): BS + "t", chr(13): BS + "r", chr(10): BS + "n", ";": BS + ";"}

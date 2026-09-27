@@ -337,14 +337,21 @@ def _judge(expect, cmdline, code, out, err, s):
 
 
 def _append_event(goal_dir, phase, event, ts):
-    from . import registry
-    h = registry.lookup("append-timeline")
-    buf_o, buf_e = io.StringIO(), io.StringIO()
-    with redirect_stdout(buf_o), redirect_stderr(buf_e):
-        code = h(goal_dir, ["--actor=总控", "--phase=" + phase,
-                            "--event=" + event, "--timestamp=" + ts])
-    if code != 0:
-        raise RuntimeError("append-timeline 失败: " + buf_e.getvalue())
+    """引擎侧门事件铸造直写（批次 7 T6·R-T6-1）：T6 收权后 append-timeline 命令面
+    拒收保留事件词（core.RESERVED_EVENT_PREFIXES）——铸造改 Ctx 直写，goal 锁内
+    tier0+event+commit 与命令面同语义同锁形（锁=filelock.goal_lock 单源，取代原
+    registry._locked 包装）。失败仍 RuntimeError（fail-loud；零半写——commit 走
+    core._atomic_write 原子替换）。"""
+    from . import write_cmds
+    from .filelock import goal_lock
+    ctx = write_cmds.Ctx(goal_dir)
+    try:
+        with goal_lock(goal_dir):
+            ctx.tier0()
+            ctx.event(ts, event, actor="总控", phase=phase, revert="")
+            ctx.commit({"timeline.tsv"})
+    except write_cmds.Reject as e:
+        raise RuntimeError("门事件铸造被拒: %s" % e)
 
 
 def run_gate(goal_dir, phase, ts, phases_path=None):
@@ -947,7 +954,7 @@ def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost
     if rc != 0:
         print("REJECT\trestart\tbudget-log 失败: " + b2.getvalue())
         return 1
-    # ⑤ timeline 事件词（append-timeline 逐字落账，actor=总控）→ 锁交接 → state.md v2。
+    # ⑤ timeline 事件词（引擎侧直写落账，actor=总控；批次 7 T6·R-T6-1）→ 锁交接 → state.md v2。
     # checkpoint 必须是最后写者（revision ≡ 落账后 timeline 行数不变式）。
     gate = _current_gate(core.Session(goal_dir))
     # 事件词 T3 格式（批次 7）：带 session=<id>——孤儿对账判据（⑤已落账而⑥checkpoint
