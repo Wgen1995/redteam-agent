@@ -52,6 +52,10 @@ def main(argv):
         if handler is None:
             raise knowledge.KnowledgeError("子命令 %s 未实现（批次 5 T10-T15 填充）" % sub)
         return handler(ctx, rest)
+    except knowledge.KnowledgeEnvError as e:
+        # 批次 7 T13：缺基线=环境错 exit 2，stderr 点名 K1（消费执法面接线，禁静默降级）。
+        sys.stderr.write("环境问题: " + str(e) + chr(10))
+        return 2
     except knowledge.KnowledgeError as e:
         sys.stderr.write("环境问题: " + str(e) + chr(10))
         return 2

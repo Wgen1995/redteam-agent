@@ -151,6 +151,12 @@ class TestScore(unittest.TestCase):
         lib = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, lib, ignore_errors=True)
         self.assertEqual(kn("init", "--knowledge-dir=" + lib).returncode, 0)
+        # 批次 7 T13 契约后果：缺基线文件=KnowledgeEnvError exit 2（R-T13 两态分流），
+        # 本例被测语义=凭据/先例因子合成——init 运行时库补最小基线种子（wstg-authz 行）。
+        with open(os.path.join(lib, "methodology", "k1-baseline.tsv"), "w",
+                  encoding="utf-8", newline="\n") as f:
+            f.write("vuln_class\tseverity_expect\tcost_hint\trationale_brief\tvocab_version\n"
+                    "wstg-authz\t0.9\t2\t批7T13 种子\tWSTG-v4.2\n")
         page = ("---\n"
                 "id: PR-0001\n"
                 "kind: precedent\n"

@@ -19,6 +19,12 @@ GATE_EXIT_EVENT = re.compile(r"^gate-exit:(P(?:\d(?:\.\d)?))(?:\s.*)?$")
 # （连发 gate-exit:P0..P6 → gate already-passed exit 0、断言零执行）=专家 C3 反例通道。
 RESERVED_EVENT_PREFIXES = ("gate-exit:", "gate-fail")
 
+# 显式不消费标记（批次 7 T13，High：触发器无通道逼假边）——fact 的 detail 单元格
+# 内追加 "[no-consume:<理由>]"（理由非空，add-fact 执法）；消费执法面
+# （unconsumed-facts 计数/trigger-audit deferred 计数）跳过带标记事实并单列 deferred=<n>。
+# 单源常量：query_cmds/phases_engine 同引，禁第二份字面量。
+NO_CONSUME_MARK = "[no-consume:"
+
 BS = chr(92)
 _ESC = {BS: BS + BS, chr(9): BS + "t", chr(13): BS + "r", chr(10): BS + "n", ";": BS + ";"}
 _UN = {BS + "t": chr(9), BS + "r": chr(13), BS + "n": chr(10), BS + ";": ";", BS + BS: BS}

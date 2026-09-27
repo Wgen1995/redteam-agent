@@ -16,7 +16,7 @@ import os
 import re
 import sys
 
-from .core import TABLES, SCHEMA_VERSION, GENESIS, GATE_ORDER, esc, next_id, row_hash, write_tsv, RESERVED_EVENT_PREFIXES
+from .core import TABLES, SCHEMA_VERSION, GENESIS, GATE_ORDER, esc, next_id, row_hash, write_tsv, RESERVED_EVENT_PREFIXES, NO_CONSUME_MARK
 from . import lock_v2, state_md
 from .norm import artifact_hashes  # norm 轨单源（评审 C-1）：add-evidence 落账与 hash-recheck 同款
 
@@ -486,7 +486,8 @@ def _set_intent_status(goal_dir, rest):
 # ---------------------------------------------------------------- 5 add-fact
 
 def _add_fact(goal_dir, rest):
-    args = _parse(rest, {"intent-id", "kind", "target", "detail", "confidence", "timestamp", "phase"})
+    # 显式不消费通道（批次 7 T13）：--no-consume=<理由> 在 argv 键集（理由非空执法见下）
+    args = _parse(rest, {"intent-id", "kind", "target", "detail", "confidence", "timestamp", "phase", "no-consume"})
     _req(args, ["intent-id", "kind", "target", "detail", "confidence", "timestamp"])
     ctx = Ctx(goal_dir)
     ctx.tier0()
@@ -501,6 +502,13 @@ def _add_fact(goal_dir, rest):
     if not (0.0 <= cf <= 1.0):
         raise Reject("confidence 不在 [0,1]: " + args["confidence"])
     detail = _trunc(_clean(args["detail"]), 2000)
+    # 显式不消费标记（批次 7 T13）：理由非空执法+标记追加 detail（R-T13：facts 无 note 列，
+    # 13 表列集冻结→自由文本唯一承载位=detail）；标记后整体过 redact 扫描（理由段同受检）。
+    nc = args.get("no-consume", "")
+    if "no-consume" in args and not nc:
+        raise Usage("--no-consume 须非空理由（显式不消费通道，禁无意识标记）")
+    if nc:
+        detail = detail + " " + NO_CONSUME_MARK + _trunc(_clean(nc), 200) + "]"
     why = _redact_hit(detail)
     if why:
         raise Reject("detail redact 校验检出真值模式（%s）——落盘前掩码 REJECT" % why)

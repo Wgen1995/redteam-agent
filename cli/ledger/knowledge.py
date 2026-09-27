@@ -34,6 +34,12 @@ class KnowledgeError(Exception):
     """exit 2：结构/版本/环境问题。"""
 
 
+class KnowledgeEnvError(EnvironmentError):
+    """批次 7 T13（High：K1 缺基线静默降级 rc=0）——基线文件缺=方法库未安装
+    （环境问题域，消费者映射 exit 2+stderr 点名 K1）；与「基线文件在、缺行=
+    合法缺省 warning+0.5」两态分流（R-T13 两态裁决）。"""
+
+
 class Reject(Exception):
     """exit 1：门禁失败（种子库只读/校验不过/状态机非法迁移）。"""
 
@@ -877,6 +883,12 @@ def score(kdir, goal_dir, vuln_class, asset, today):
     exploitability=0.4×可达（reachable_gap_cells 单源，scope-root 起点集含该资产
     ——R-T7-1 converge 语义）+0.3×(active creds>0)+0.3×(先例命中>0)。
     --today 必填（先例窗口判定；G-34 禁墙钟）。stdout 单行 JSON，双跑字节一致。"""
+    # 批次 7 T13（High：K1 缺基线 severity 0.9→0.5 静默降级 rc=0）——基线文件检查前置
+    # （先于参数校验：环境级失败优先报告；R-T13 记录）。缺行告警+0.5 路径不动（两态分流）。
+    _bl = os.path.join(kdir, "methodology", "k1-baseline.tsv")
+    if not os.path.isfile(_bl):
+        raise KnowledgeEnvError("K1 基线表缺失: " + _bl
+                                + "（方法库未安装——先 tanyin-knowledge init 或安装运行时库）")
     if not today:
         raise KnowledgeError("--today 必填（先例命中因子窗口判定；G-34 禁墙钟）")
     try:

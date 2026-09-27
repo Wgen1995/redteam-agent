@@ -11,6 +11,7 @@ redact-scan 在 special.py（专用六条之一，双入口 cli/tanyin-redact）
 import ipaddress, json, sys
 
 from . import core
+from .core import NO_CONSUME_MARK
 from .schemas import TABLES
 
 TAB = chr(9)
@@ -80,10 +81,19 @@ def derived_from_sources(s):
             if r[_idx("edges.tsv", "kind")] == "derived_from"}
 
 
+def no_consume_marked(s):
+    """带显式不消费标记的 fact 行集（批次 7 T13；标记常量单源=core.NO_CONSUME_MARK）。"""
+    di = _idx("facts.tsv", "detail")
+    return [r for r in s.rows("facts.tsv") if NO_CONSUME_MARK in r[di]]
+
+
 def unconsumed_facts(s):
+    # 批次 7 T13（High：触发器无通道逼假边）：带 [no-consume:<理由>] 标记的 fact
+    # =显式不消费（合法出清通道），退出「未消费」清单；deferred 单列计数见消费方。
     used = derived_from_sources(s)
+    marked = {r[0] for r in no_consume_marked(s)}
     out = [r for r in s.rows("facts.tsv")
-           if r[_idx("facts.tsv", "id")] not in used]
+           if r[_idx("facts.tsv", "id")] not in used and r[0] not in marked]
     out.sort(key=lambda r: r[0])
     return out
 
@@ -288,6 +298,11 @@ def h_unconsumed_facts(goal_dir, rest):
     rows = [[_cell(r, "facts.tsv", f) for f in ("id", "kind", "target", "confidence")]
             for r in unconsumed_facts(s)]
     _stream(len(rows), rows, _top(args))
+    # 批次 7 T13：显式不消费单列计数——仅 n>0 出列（零标记输出字节不变=金样零漂移口径）。
+    deferred = [r for r in no_consume_marked(s)
+                if r[0] not in derived_from_sources(s)]
+    if deferred:
+        print("deferred=%d" % len(deferred))
     return 0
 
 

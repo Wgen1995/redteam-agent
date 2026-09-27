@@ -709,7 +709,11 @@ def trigger_audit(goal_dir):
                 fails.append("目录版本不一致：timeline P0 事件 %s ≠ TRIGGERS.md %s"
                              % (ev_ver, ver))
             break
-    return fails, {"closed": closed, "total": total, "version": ver}
+    # 显式不消费 deferred 计数（批次 7 T13）：带 [no-consume:<理由>] 标记的 fact=合法
+    # 闭合通道（如 ② 的延后 fact），审计跳过其消费义务并单列计数（PASS 行 deferred=<n>）。
+    fdi = core.TABLES["facts.tsv"].index("detail")
+    deferred = sum(1 for r in s.rows("facts.tsv") if core.NO_CONSUME_MARK in r[fdi])
+    return fails, {"closed": closed, "total": total, "version": ver, "deferred": deferred}
 
 
 def cmd_trigger_audit(goal_dir, rest):
@@ -723,8 +727,13 @@ def cmd_trigger_audit(goal_dir, rest):
         for f in fails:
             print("  " + f)
         return 1
-    print("PASS" + chr(9) + "trigger-audit" + chr(9) + "triggers=%d closed=%d/%d catalog=%s"
-          % (st["total"], st["closed"], st["total"], st["version"]))
+    line = ("PASS" + chr(9) + "trigger-audit" + chr(9)
+            + "triggers=%d closed=%d/%d catalog=%s"
+            % (st["total"], st["closed"], st["total"], st["version"]))
+    # 批次 7 T13：显式不消费单列——仅 n>0 追加（零标记输出字节不变=既有断言/金样零漂移）。
+    if st.get("deferred"):
+        line += " deferred=%d" % st["deferred"]
+    print(line)
     return 0
 
 
