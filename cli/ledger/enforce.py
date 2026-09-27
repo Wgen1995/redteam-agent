@@ -224,6 +224,39 @@ def _hostport_of(token):
     return re.split(r"[/?#]", t)[0].rstrip(".")
 
 
+def _decode_ip_obfuscation(hp):
+    """C2 主机变体解码（批次 7 T5）：十进制整数/0x 十六进制/前导 0 八进制段 →
+    规范点分十进制；非变体原样返回。裁决：2-3 段短式不解码（防版本号误判，
+    与 _looks_host「排除纯数字版本号」同一裁量）。"""
+    def _int(tok):
+        try:
+            if tok.lower().startswith("0x"):
+                return int(tok, 16)
+            if len(tok) > 1 and tok.startswith("0") and tok.isdigit():
+                return int(tok, 8)
+            if tok.isdigit():
+                return int(tok)
+        except ValueError:
+            pass
+        return None
+    if not hp or ":" in hp:
+        return hp
+    if "." not in hp:
+        n = _int(hp)
+        if n is not None and 0 <= n <= 0xFFFFFFFF:
+            return "%d.%d.%d.%d" % ((n >> 24) & 255, (n >> 16) & 255, (n >> 8) & 255, n & 255)
+        return hp
+    parts = hp.split(".")
+    if len(parts) == 4:
+        ints = [_int(p) for p in parts]
+        if all(i is not None for i in ints):
+            try:
+                return str(ipaddress.IPv4Address(".".join(str(i) for i in ints)))
+            except (ipaddress.AddressValueError, ValueError):
+                return hp
+    return hp
+
+
 def _hosts_of_token(token):
     """单 token 的主机候选：整体段 + key=value 值段（flag 内嵌形态）。"""
     out = []
@@ -240,6 +273,11 @@ def _hosts_of_token(token):
             h = hp.lower()
             if h not in out:
                 out.append(h)
+        dec = _decode_ip_obfuscation(hp)  # T5 变体解码候选（十进制/0x/八进制段）
+        if dec != hp and _looks_host(dec):
+            d = dec.lower()
+            if d not in out:
+                out.append(d)
     return out
 
 

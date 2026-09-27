@@ -76,3 +76,48 @@ class TestGuardReject(unittest.TestCase):
         r = run_guard(gd, PY, "-c", "print(1)")
         self.assertNotIn("deny-list", r.stdout, "良性旗标不得误伤")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+
+# ---- T5：guard 主机提取硬化（C2 反例二）----
+# 红=专家实测 http://134744072/（十进制 8.8.8.8）rc=0：主机提取不认变体编码，
+# 界外判定被整段绕过；控制组 evil.com 正常 REJECT 不受扰（test_guard 既有面）。
+
+# 专家复现命令全录（台账 C2 反例二 + 工程化变体）
+IP_REPROS = [
+    (["curl", "http://134744072/"],  "8.8.8.8"),    # 专家原例：十进制
+    (["echo", "http://134744072/"],  "8.8.8.8"),    # 专家原例载体：echo（执行面零风险）
+    (["curl", "http://2130706433/"], "127.0.0.1"),  # 十进制环回
+    (["curl", "http://0x7f000001/"], "127.0.0.1"),  # 十六进制
+    (["curl", "http://0177.0.0.1/"], "127.0.0.1"),  # 八进制段
+    (["curl", "http://0x08080808/"], "8.8.8.8"),    # 十六进制整段
+]
+
+class TestHostDeobfuscation(unittest.TestCase):
+    def test_unit_decode(self):
+        from ledger.enforce import _decode_ip_obfuscation
+        self.assertEqual(_decode_ip_obfuscation("134744072"), "8.8.8.8")
+        self.assertEqual(_decode_ip_obfuscation("0x7f000001"), "127.0.0.1")
+        self.assertEqual(_decode_ip_obfuscation("0177.0.0.1"), "127.0.0.1")
+        self.assertEqual(_decode_ip_obfuscation("example.com"), "example.com", "域名原样")
+        self.assertEqual(_decode_ip_obfuscation("3.14"), "3.14", "版本号不解码不误判")
+        self.assertEqual(_decode_ip_obfuscation("1.2.3"), "1.2.3", "三段短式不解码")
+
+    def test_extract_hosts_decodes(self):
+        from ledger.enforce import extract_hosts
+        self.assertEqual(extract_hosts(["curl", "http://134744072/"]), ["8.8.8.8"])
+        self.assertEqual(extract_hosts(["curl", "http://0177.0.0.1/x"]), ["127.0.0.1"])
+
+    def test_guard_rejects_decimal_ip_out_of_scope(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        gd = fresh_drydir(td.name, "G-ip")
+        for cmd, host in IP_REPROS:
+            r = run_guard(gd, *cmd)
+            self.assertEqual(r.returncode, 1, "REJECT: %r\n%s" % (cmd, r.stdout))
+            self.assertIn(host, r.stdout, "拒绝消息必须出示解码后主机: %r" % cmd)
+
+    def test_guard_version_number_not_flagged(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        gd = fresh_drydir(td.name, "G-ip2")
+        r = run_guard(gd, PY, "--version=3.14")
+        self.assertNotIn("REJECT", r.stdout, "版本号值段不得被当主机拒")
+        self.assertNotIn("3.14", r.stdout.replace("--version=3.14", ""), "版本号值段不得被当主机拒")
