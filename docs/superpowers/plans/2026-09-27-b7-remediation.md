@@ -563,6 +563,382 @@ git commit -m "批次7-T3(C1+SRE)：真 SIGKILL 保真 eval（200k 行×8 次随
 
 ---
 
-（T4→T17 正文增量补齐中……）
+### Task 4: guard argv 规范化（deny-list 双形比对：组合短旗标拆并+长旗标映射）
+
+**Files:**
+- Modify: `cli/ledger/enforce.py`（新增 `normalize_cmd`/`deny_forms`，DENY_EMBEDDED 同节）
+- Modify: `cli/tanyin-guard:84-90`（gate_chain deny 段改双形比对）
+- Test: `tests/test_guard_argv_norm_b7.py`（新）
+
+**Interfaces:**
+- Produces: `enforce.normalize_cmd(cmd) -> list[str]`（归一形，只作执法比对形，不改写实际执行 argv）；`enforce.deny_forms(cmd) -> list[str]`（比对形全集：原 joined+归一形+sh/bash -c 内嵌 payload 两形）
+- Consumes: `DENY_LIST`/`deny_hit` 既有单源（enforce.py:73-80）；tests/test_guard.py 既有夹具助手（Step 0 `grep -n "def \|fresh\|fixture" tests/test_guard.py | head` 对齐夹具形）
+
+- [ ] **Step 1: 写失败测试（红=专家反例 rm -r -f / rc=0）**
+
+```python
+# tests/test_guard_argv_norm_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T4：guard exec argv 规范化（C2 反例一）。
+红=专家实测 `rm -r -f /` rc=0：deny-list 子串比对只认字面「rm -rf /」，
+组合短旗标/长旗标/换序/大小写混写/内嵌 payload 全部逃逸。"""
+import os, subprocess, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.join(HERE, "..")
+sys.path.insert(0, os.path.join(ROOT, "cli"))
+from ledger.enforce import normalize_cmd, deny_forms
+from tests.test_dryrun_p0p2 import fresh_drydir
+
+GUARD = os.path.join(ROOT, "cli", "tanyin-guard")
+
+# 专家复现命令全录（台账 C2 反例一+工程化变体）
+REPROS = [
+    ["rm", "-r", "-f", "/"],                 # 专家原例
+    ["rm", "-f", "-r", "/"],                 # 换序
+    ["rm", "--recursive", "--force", "/"],   # 长旗标
+    ["rm", "-rF", "/"],                      # 组合+大小写混写
+    ["rm", "-r", "-f", "./"],                # ./ 变体
+    ["sh", "-c", "rm -r -f /"],              # 内嵌 payload
+]
+
+class TestNormalize(unittest.TestCase):
+    def test_normalize_joins_flags(self):
+        self.assertEqual(normalize_cmd(["rm", "-r", "-f", "/"]), ["rm", "-fr", "/"])
+        self.assertEqual(normalize_cmd(["rm", "--recursive", "--force", "/"]), ["rm", "-fr", "/"])
+        self.assertEqual(normalize_cmd(["curl", "-s", "-L", "http://x/"]), ["curl", "-ls", "http://x/"])
+
+    def test_deny_forms_embeds_payload(self):
+        forms = deny_forms(["sh", "-c", "rm -r -f /"])
+        self.assertTrue(any("rm -fr /" in f for f in forms), "归一形必须覆盖内嵌 payload")
+
+class TestGuardReject(unittest.TestCase):
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory(); self.addCleanup(self.td.cleanup)
+
+    def test_expert_repros_all_rejected(self):
+        gd = fresh_drydir(self.td.name, "G-norm")
+        for cmd in REPROS:
+            r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", gd, "--"] + cmd,
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 1, "REJECT rc=1: %r\n%s%s" % (cmd, r.stdout, r.stderr))
+            self.assertIn("deny-list", r.stdout, "拒绝原因=deny-list 命中: %r" % cmd)
+
+    def test_benign_flags_unaffected(self):
+        gd = fresh_drydir(self.td.name, "G-norm2")
+        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", gd, "--
+
+
+python", "-c", "print(1)"], capture_output=True, text=True)
+        self.assertNotIn("deny-list", r.stdout, "良性旗标不得误伤")
+```
+
+（注：`test_benign_flags_unaffected` 的 argv 以 tanyin-guard 用法 `exec --goal-dir D -- cmd...` 为准；python 可执行名按平台以 `sys.executable` 传入——执行时对齐 test_guard.py 既有调用形。）
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_guard_argv_norm_b7 -v`
+Expected: `test_expert_repros_all_rejected` FAIL（rm -r -f / rc=0 无 deny-list 字样）；normalize/forms 例 FAIL（函数未定义）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/enforce.py（DENY_EMBEDDED 定义后新增）
+_LONG2SHORT = {"--recursive": "r", "--force": "f", "--no-preserve-root": "!"}
+_SHELL_WRAPPERS = ("sh", "bash", "dash", "zsh")
+
+def normalize_cmd(cmd):
+    """argv 归一（批次 7 T4，C2 反例一）：拆组合短旗标→并集重组，供 deny-list 第二形比对。
+    「rm -r -f /」「rm -rf /」「rm --recursive --force /」归一为同形 rm -fr /。
+    归一只用于执法比对，不改写实际执行的 argv（执法读形，执行原形）。"""
+    letters, rest, nopreserve = set(), [], False
+    for tok in cmd[1:]:
+        if tok in _LONG2SHORT:
+            if _LONG2SHORT[tok] == "!":
+                nopreserve = True
+            else:
+                letters.add(_LONG2SHORT[tok])
+        elif tok.startswith("-") and not tok.startswith("--") and len(tok) > 1:
+            letters.update(tok[1:].lower())
+        else:
+            rest.append(tok)
+    flags = "".join(sorted(letters))
+    norm = [cmd[0]] + (["-" + flags] if flags else []) + rest
+    if nopreserve:
+        norm.append("--no-preserve-root")
+    return norm
+
+def deny_forms(cmd):
+    """deny-list 比对形全集：原 joined+argv 归一形；shell 包装（sh/bash -c）时
+    追加内嵌 payload 的原形+归一形（防「sh -c 'rm -r -f /'」逃逸）。"""
+    forms = [" ".join(cmd), " ".join(normalize_cmd(cmd))]
+    if cmd and os.path.basename(cmd[0]) in _SHELL_WRAPPERS and "-c" in cmd[1:]:
+        i = cmd.index("-c")
+        if i + 1 < len(cmd):
+            ptoks = cmd[i + 1].split()
+            forms.append(cmd[i + 1])
+            if ptoks:
+                forms.append(" ".join(normalize_cmd(ptoks)))
+    return forms
+```
+
+```python
+# cli/tanyin-guard gate_chain deny 段（:86-90 整体替换）
+    from ledger.enforce import deny_forms
+    hit = None
+    for form in deny_forms(cmd):
+        d = deny_hit(form)
+        if d:
+            hit = d
+            break
+    if hit:
+        print("REJECT" + TAB + "guard" + TAB + "deny-list 命中: " + hit)
+        return 1
+```
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_guard_argv_norm_b7 tests.test_guard tests.test_enforce_unit -v` → 全 OK（guard 既有面零回归）；全套 discover 全绿；金样 54 面 PASS 零漂移
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/enforce.py cli/tanyin-guard tests/test_guard_argv_norm_b7.py
+git commit -m "批次7-T4(C2)：guard argv 规范化——normalize_cmd 拆并短旗标+长旗标映射+deny_forms 双形（含 sh -c 内嵌 payload）比对；红=专家反例 rm -r -f / rc=0 全录；良性旗标零误伤对照例在册"
+```
+
+---
+
+### Task 5: guard 主机提取硬化（十进制/十六进制/八进制 IPv4 变体解码）
+
+**Files:**
+- Modify: `cli/ledger/enforce.py:185-213`（_hosts_of_token 增解码候选；新增 `_decode_ip_obfuscation`）
+- Modify: `cli/tanyin-guard`（零改动——extract_hosts 单源自动生效）
+- Test: `tests/test_guard_argv_norm_b7.py` 追加类
+
+**Interfaces:**
+- Produces: `enforce._decode_ip_obfuscation(hp) -> str`（十进制整数/0x 十六进制/前导 0 八进制 4 段点分 → 规范点分十进制；其余原样）
+- 裁决（防误伤）：2-3 段短式（127.1/1.2.3/3.14）**不**解码——与既有 `_looks_host`「排除纯数字版本号」注释同一裁量；解码只认 (a) 无点纯整数 ≤10 位 (b) 恰 4 段全数值点分
+
+- [ ] **Step 1: 写失败测试（红=专家反例 http://134744072/ rc=0）**
+
+```python
+# tests/test_guard_argv_norm_b7.py 追加
+from ledger.enforce import extract_hosts, _decode_ip_obfuscation
+
+# 专家复现命令全录（台账 C2 反例二+变体）
+IP_REPROS = [
+    (["curl", "http://134744072/"],  "8.8.8.8"),    # 专家原例：十进制
+    (["curl", "http://2130706433/"], "127.0.0.1"),  # 十进制环回
+    (["curl", "http://0x7f000001/"], "127.0.0.1"),  # 十六进制
+    (["curl", "http://0177.0.0.1/"], "127.0.0.1"),  # 八进制段
+    (["curl", "http://0x08080808/"], "8.8.8.8"),    # 十六进制整段
+]
+
+class TestHostDeobfuscation(unittest.TestCase):
+    def test_unit_decode(self):
+        self.assertEqual(_decode_ip_obfuscation("134744072"), "8.8.8.8")
+        self.assertEqual(_decode_ip_obfuscation("0x7f000001"), "127.0.0.1")
+        self.assertEqual(_decode_ip_obfuscation("0177.0.0.1"), "127.0.0.1")
+        self.assertEqual(_decode_ip_obfuscation("example.com"), "example.com", "域名原样")
+        self.assertEqual(_decode_ip_obfuscation("3.14"), "3.14", "版本号不解码不误判")
+        self.assertEqual(_decode_ip_obfuscation("1.2.3"), "1.2.3", "三段短式不解码")
+
+    def test_extract_hosts_decodes(self):
+        self.assertEqual(extract_hosts(["curl", "http://134744072/"]), ["8.8.8.8"])
+        self.assertEqual(extract_hosts(["curl", "http://0177.0.0.1/x"]), ["127.0.0.1"])
+
+    def test_guard_rejects_decimal_ip_out_of_scope(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        gd = fresh_drydir(td.name, "G-ip")
+        for cmd, host in IP_REPROS:
+            r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", gd, "--"] + cmd,
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 1, "REJECT: %r\n%s" % (cmd, r.stdout))
+            self.assertIn(host, r.stdout, "拒绝消息必须出示解码后主机: %r" % cmd)
+
+    def test_guard_version_number_not_flagged(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        gd = fresh_drydir(td.name, "G-ip2")
+        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", gd, "--
+
+
+python", "--version=3.14"], capture_output=True, text=True)
+        self.assertNotIn("3.14", r.stdout.replace("--version=3.14", ""), "版本号值段不得被当主机拒")
+```
+
+（注：`test_guard_rejects_decimal_ip_out_of_scope` 依赖 fresh_drydir 夹具 scope 不含解码后主机——fresh 夹具 scope=P0 三行界内域，8.8.8.8/127.0.0.1 均界外，判定走 `out` 分支 REJECT。）
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_guard_argv_norm_b7.TestHostDeobfuscation -v`
+Expected: unit/extract 例 FAIL（函数未定义）；guard 例 FAIL（rc=0 直通——专家反例）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/enforce.py（_hosts_of_token 前）
+def _decode_ip_obfuscation(hp):
+    """C2 主机变体解码（批次 7 T5）：十进制整数/0x 十六进制/前导 0 八进制段 →
+    规范点分十进制；非变体原样返回。裁决：2-3 段短式不解码（防版本号误判，
+    与 _looks_host「排除纯数字版本号」同一裁量）。"""
+    def _int(tok):
+        try:
+            if tok.lower().startswith("0x"):
+                return int(tok, 16)
+            if len(tok) > 1 and tok.startswith("0") and tok.isdigit():
+                return int(tok, 8)
+            if tok.isdigit():
+                return int(tok)
+        except ValueError:
+            pass
+        return None
+    if not hp or ":" in hp:
+        return hp
+    if "." not in hp:
+        n = _int(hp)
+        if n is not None and 0 <= n <= 0xFFFFFFFF:
+            return "%d.%d.%d.%d" % ((n >> 24) & 255, (n >> 16) & 255, (n >> 8) & 255, n & 255)
+        return hp
+    parts = hp.split(".")
+    if len(parts) == 4:
+        ints = [_int(p) for p in parts]
+        if all(i is not None for i in ints):
+            try:
+                return str(ipaddress.IPv4Address(".".join(str(i) for i in ints)))
+            except (ipaddress.AddressValueError, ValueError):
+                return hp
+    return hp
+```
+
+```python
+# cli/ledger/enforce.py _hosts_of_token 尾段（:197-200 替换为）
+        if _looks_host(hp):
+            h = hp.lower()
+            if h not in out:
+                out.append(h)
+        dec = _decode_ip_obfuscation(hp)
+        if dec != hp and _looks_host(dec):
+            d = dec.lower()
+            if d not in out:
+                out.append(d)
+```
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_guard_argv_norm_b7 tests.test_guard tests.test_enforce_unit -v` → 全 OK；全套 discover 全绿；金样 54 面 PASS 零漂移
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/enforce.py tests/test_guard_argv_norm_b7.py
+git commit -m "批次7-T5(C2)：guard 主机提取硬化——_decode_ip_obfuscation（十进制/0x 十六进制/八进制段→点分十进制）入 extract_hosts 候选集；红=专家反例 http://134744072/（8.8.8.8）逃逸全录；版本号短式不误伤裁决+对照例在册"
+```
+
+---
+
+### Task 6: 九门权威（append-timeline 保留事件词拒收；门事件 run_gate 单源铸造）
+
+**Files:**
+- Modify: `cli/ledger/core.py:15` 附近（新增 `RESERVED_EVENT_PREFIXES` 常量）
+- Modify: `cli/ledger/write_cmds.py:968-985`（_append_timeline 保留词拒收）
+- Test: `tests/test_gate_authority_b7.py`（新）
+
+**Interfaces:**
+- Produces: `core.RESERVED_EVENT_PREFIXES = ("gate-exit:", "gate-fail")`——门事件唯一铸造路径=`phases_engine.run_gate`（内部 `_append_event` 直写，不经 append-timeline）；T12 的 `managed-restart` 词不进保留表（append-timeline 合法）
+- 权威语义（铁律 1 单写者）：timeline 的门事件词域收归引擎单源；append-timeline 保持 actor 自由但事件词受保留表约束
+
+- [ ] **Step 1: 写失败测试（红=专家伪造快进复现）**
+
+```python
+# tests/test_gate_authority_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T6：九门权威（C3）。红=专家复现：append-timeline 零白名单，
+连发 gate-exit:P0..P6 → gate P6 already-passed exit 0，九门断言零执行即终局。"""
+import os, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "cli"))
+sys.path.insert(0, os.path.join(HERE, ".."))
+from tests.test_dryrun_p0p2 import fresh_drydir, ledger, phases, TS
+
+class TestGateAuthority(unittest.TestCase):
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory(); self.addCleanup(self.td.cleanup)
+
+    def test_append_timeline_rejects_gate_exit(self):
+        gd = fresh_drydir(self.td.name, "G-ga")
+        rc, out, err = ledger(gd, "append-timeline", ["--actor=总控", "--phase=P0",
+                                    "--event=gate-exit:P0", "--timestamp=" + TS])
+        self.assertEqual(rc, 1, "红现状 rc=0（零白名单）： " + out)
+        self.assertIn("REJECT", out)
+        tl = open(os.path.join(gd, "timeline.tsv"), encoding="utf-8").read()
+        self.assertNotIn("gate-exit:", tl, "REJECT=零落账")
+
+    def test_append_timeline_rejects_gate_fail_and_variant(self):
+        gd = fresh_drydir(self.td.name, "G-ga2")
+        for ev in ("gate-fail:P0", "gate-exit:P5.5", "gate-exit:P6 asserts=0 result=PASS"):
+            rc, out, err = ledger(gd, "append-timeline", ["--actor=总控", "--phase=P0",
+                                        "--event=" + ev, "--timestamp=" + TS])
+            self.assertEqual(rc, 1, "保留词拒收: " + ev)
+
+    def test_forged_fast_forward_sequence_broken(self):
+        """专家复现序列：连发 gate-exit:P0..P6——修复后第一步即断。"""
+        gd = fresh_drydir(self.td.name, "G-ga3")
+        for g in ("P0", "P1", "P2", "P3", "P4", "P5", "P6"):
+            rc, out, err = ledger(gd, "append-timeline", ["--actor=总控", "--phase=" + g,
+                                        "--event=gate-exit:" + g, "--timestamp=" + TS])
+            self.assertEqual(rc, 1, "第 %s 门伪造被拒: %s" % (g, out))
+
+    def test_legit_gate_mint_unaffected(self):
+        """合法铸造路径（tanyin-phases gate P0）照常——白名单只堵 append-timeline 注入侧。"""
+        gd = fresh_drydir(self.td.name, "G-ga4")
+        rc, out, err = phases(gd, "gate", ["P0", "--timestamp=" + TS])
+        self.assertEqual(rc, 0, out + err)
+        tl = open(os.path.join(gd, "timeline.tsv"), encoding="utf-8").read()
+        self.assertIn("gate-exit:P0", tl, "引擎铸造的门事件在链上")
+
+    def test_managed_restart_word_still_allowed(self):
+        gd = fresh_drydir(self.td.name, "G-ga5")
+        rc, out, err = ledger(gd, "append-timeline", ["--actor=总控", "--phase=P1",
+                                    "--event=managed-restart spawn=auto", "--timestamp=" + TS])
+        self.assertEqual(rc, 0, "managed-restart 不进保留表（T6 裁决）: " + out)
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_gate_authority_b7 -v`
+Expected: 前四例 FAIL（rc=0 直通——专家反例）；`test_legit_gate_mint_unaffected` PASS（合法路径既有绿）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/core.py（GATE_EXIT_EVENT :15 之后）
+# 门事件词保留表（批次 7 T6，C3 九门权威）：gate-exit:*/gate-fail* 只能由
+# phases_engine.run_gate 铸造（单源）；append-timeline 拒收。伪造快进=专家 C3 反例通道。
+RESERVED_EVENT_PREFIXES = ("gate-exit:", "gate-fail")
+```
+
+```python
+# cli/ledger/write_cmds.py _append_timeline（:973 actor 校验后插入）
+    if ev.startswith(core.RESERVED_EVENT_PREFIXES):
+        raise Reject("保留事件词：门事件只能由 tanyin-phases gate 铸造（append-timeline 拒收）: " + ev)
+```
+
+（import 确认：write_cmds.py 已 `from .core import …`； Reject 在同文件既有异常类。）
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_gate_authority_b7 tests.test_dryrun_p0p2 tests.test_managed_restart -v` → 全 OK（干跑三门 gate-exit 走合法路径不受扰）；全套 discover 全绿；金样 54 面 PASS 零漂移
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/core.py cli/ledger/write_cmds.py tests/test_gate_authority_b7.py
+git commit -m "批次7-T6(C3)：九门权威——RESERVED_EVENT_PREFIXES(gate-exit:/gate-fail)+append-timeline 保留词拒收（REJECT=零落账）；门事件 run_gate 单源铸造不动；红=专家伪造快进序列复现（连发 P0..P6 第一步即断）"
+```
+
+---
+
+（T7→T17 正文增量补齐中……）
+
 
 
