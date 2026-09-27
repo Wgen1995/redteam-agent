@@ -5,7 +5,7 @@ import hashlib, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core, vault
-from ledger.enforce import DENY_LIST, load_scope, out_of_scope_hosts
+from ledger.enforce import deny_forms, deny_hit, load_scope, out_of_scope_hosts
 from ledger.schemas import TABLES
 from ledger.core import ensure_utf8_stdio
 
@@ -87,11 +87,18 @@ def gate_chain(gd, cmd, ts):
     门链先于 vault 取件——越权请求的执法结论不因凭据缺失/存在而改变。
     通过返回 None；拒绝返回 1（REJECT 已打印、timeline 已落账）。
     """
-    joined = " ".join(cmd)
-    for d in DENY_LIST:
-        if d in joined:
-            print("REJECT" + TAB + "guard" + TAB + "deny-list 命中: " + d)
-            return 1
+    # deny-list 双形比对（批次 7 T4，C2 反例一）：字面 joined + argv 归一形
+    # （拆组合短旗标/长旗标映射/sh -c 内嵌 payload）——「rm -r -f /」类变体
+    # 不再因字面形不匹配逃逸；消息仍出示命中的 deny 模式。
+    hit = None
+    for form in deny_forms(cmd):
+        d = deny_hit(form)
+        if d:
+            hit = d
+            break
+    if hit:
+        print("REJECT" + TAB + "guard" + TAB + "deny-list 命中: " + hit)
+        return 1
     s = core.Session(gd)
     # 界外判定只扫参数（cmd[1:]）：argv[0] 是程序路径而非目标主机；Windows 下
     # "C:\Program Files\...\python.exe" 会被空白切分误判为主机名（POSIX 绝对路径则碰巧被跳过）

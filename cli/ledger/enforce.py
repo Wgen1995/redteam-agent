@@ -80,6 +80,48 @@ def deny_hit(joined):
     return None
 
 
+# argv 归一（批次 7 T4，C2 反例一）：长旗标→短旗标字母映射；「--no-preserve-root」
+# 以 "!" 占位单列（它不是短旗标并集体，须原样保留进归一形）。
+_LONG2SHORT = {"--recursive": "r", "--force": "f", "--no-preserve-root": "!"}
+_SHELL_WRAPPERS = ("sh", "bash", "dash", "zsh")
+
+
+def normalize_cmd(cmd):
+    """argv 归一（批次 7 T4，C2 反例一）：拆组合短旗标→并集重组，供 deny-list 第二形比对。
+    「rm -r -f /」「rm -rf /」「rm --recursive --force /」归一为同形 rm -fr /。
+    归一只用于执法比对，不改写实际执行的 argv（执法读形，执行原形）。"""
+    letters, rest, nopreserve = set(), [], False
+    for tok in cmd[1:]:
+        if tok in _LONG2SHORT:
+            if _LONG2SHORT[tok] == "!":
+                nopreserve = True
+            else:
+                letters.add(_LONG2SHORT[tok])
+        elif tok.startswith("-") and not tok.startswith("--") and len(tok) > 1:
+            letters.update(tok[1:].lower())
+        else:
+            rest.append(tok)
+    flags = "".join(sorted(letters))
+    norm = [cmd[0]] + (["-" + flags] if flags else []) + rest
+    if nopreserve:
+        norm.append("--no-preserve-root")
+    return norm
+
+
+def deny_forms(cmd):
+    """deny-list 比对形全集：原 joined+argv 归一形；shell 包装（sh/bash -c）时
+    追加内嵌 payload 的原形+归一形（防「sh -c 'rm -r -f /'」逃逸）。"""
+    forms = [" ".join(cmd), " ".join(normalize_cmd(cmd))]
+    if cmd and os.path.basename(cmd[0]) in _SHELL_WRAPPERS and "-c" in cmd[1:]:
+        i = cmd.index("-c")
+        if i + 1 < len(cmd):
+            ptoks = cmd[i + 1].split()
+            forms.append(cmd[i + 1])
+            if ptoks:
+                forms.append(" ".join(normalize_cmd(ptoks)))
+    return forms
+
+
 def load_scope(session):
     """scope.tsv 生效链解析（执法策略单一事实源，Tier1/Tier2/Tier3 共用）。
 
