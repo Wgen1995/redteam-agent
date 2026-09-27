@@ -1,0 +1,5 @@
+# TEST-ONLY：批次7 T7 轮换验签测试钥——与生产锚 engines/nuclei/release.pub 密码学无关（C4 信任面隔离；生产钥旋转=KEY-MANAGEMENT 离线人工仪式，b7 台账登记）
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEPzEbdl9tgzcIfHUA3CYFDdkUls0H
+C1r+kvmaPcwWne00yjLD9vKmWFd4sL3qcT2ig6FO46miq3h/LVQ3g56ldg==
+-----END PUBLIC KEY-----

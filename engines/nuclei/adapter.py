@@ -20,15 +20,19 @@ USAGE = "用法: adapter.py --intent-id=I --out-dir=D [--lock=L] " \
         " (--jsonl-file=F | --goal-dir=G --target=URL --run)\n"
 
 
-def verify(lock_path):
+def verify(lock_path, nuclei_path=None, pub=None):
     """返回 (ok, reason)；False→适配器落 blocked 提交（环境受阻语义）。
     lock 解析失败（非五字段行等 ValueError）同=失败对非崩溃——「不过=blocked」
-    exit 0 契约语义（批次 4 评审收尾 fail-closed 形式统一）。"""
+    exit 0 契约语义（批次 4 评审收尾 fail-closed 形式统一）。
+    批次 7 T7（C4）：核验序=锁验签 → templates.lock → runtime 二进制 sha256
+    （在场即必比，缺失不比；不符=blocked——信任链延伸到运行时工件）。
+    信任面（R-T7-1）：pub 缺省=生产锚 release.pub（运行时信任根单源）；
+    测试面显式注入测试锚（tests/fixtures/keys/test-release.pub）。"""
     try:
         lock = supply_chain.load_lock(lock_path)
     except ValueError as e:
         return False, "tools.lock 解析失败（fail-closed=blocked）: %s" % e
-    pub = os.path.join(HERE, "release.pub")
+    pub = pub or os.path.join(HERE, "release.pub")
     for k in ("nuclei", "nuclei-templates"):
         if k not in lock:
             return False, "tools.lock 缺键 " + k
@@ -43,6 +47,14 @@ def verify(lock_path):
         fp = os.path.join(HERE, path)
         if not os.path.isfile(fp) or hashlib.sha256(open(fp, "rb").read()).hexdigest() != sha:
             return False, "模板快照 sha256 不符: " + path
+    # runtime digest（批次 7 T7，C4）：runtime 工件（nuclei 二进制）在场即必比对
+    # lock["nuclei"].sha256——专家红=lock 签名有效而二进制被替换仍 ok=True（不比对）。
+    # 缺失=不比（canned 离线面/金样面行为零变更）；在场不符=blocked（fail-closed）。
+    binp = nuclei_path or shutil.which("nuclei")
+    if binp and os.path.isfile(binp):
+        h = hashlib.sha256(open(binp, "rb").read()).hexdigest()
+        if h != lock["nuclei"]["sha256"]:
+            return False, "runtime nuclei sha256 与 tools.lock 不符: " + binp
     return True, commit
 
 

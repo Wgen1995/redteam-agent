@@ -2,9 +2,10 @@
 """批次 6 T9：tools.lock 全量 8 键+G-22 重签通道+G-32 refresh-cve（TDD 红→绿）。
 
 断言面：
-- 重签脚本闭环（roundtrip）：TEST 钥（tests/fixtures/keys/test-signing-key.pem，与
-  engines/nuclei/release.pub 配对）重签临时锁副本 → load_lock 全键 verify_entry PASS
-  ——信任锚=release.pub，私钥只进签名侧；
+- 重签脚本闭环（roundtrip）：TEST 钥（tests/fixtures/keys/test-signing-key.pem，
+  批次 7 T7 已轮换——与生产锚 engines/nuclei/release.pub 密码学无关）重签临时锁副本
+  → load_lock 全键 verify_entry PASS——信任锚=测试锚 test-release.pub（信任面隔离
+  R-T7-2；生产锚只对生产钥签发的 tools.lock 负责），私钥只进签名侧；
 - 信任链未断声明：重签后手改任一键 sha256 → 该键 verify FAIL（fail-closed）；
 - 锁全量化：8 键在册（openssl/nuclei/nuclei-templates + python/docker + 三自写引擎
   目录清单键）；
@@ -27,6 +28,7 @@ TS = "2026-09-24T00:00:00Z"
 LOCK = os.path.join(REPO, "tools.lock")
 PUBKEY = os.path.join(REPO, "engines", "nuclei", "release.pub")
 TESTKEY = os.path.join(HERE, "fixtures", "keys", "test-signing-key.pem")
+TESTPUB = os.path.join(HERE, "fixtures", "keys", "test-release.pub")   # 批次7 T7 测试信任锚
 RESIGN = os.path.join(REPO, "install", "resign-tools-lock.py")
 GOOD_SNAP = os.path.join(HERE, "fixtures", "cve", "snapshot-good.tsv")
 KNOWLEDGE_CLI = os.path.join(REPO, "cli", "tanyin-knowledge")
@@ -51,7 +53,7 @@ class TestResign(unittest.TestCase):
                                errors="replace", env=ENV, timeout=600)
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
             for e in supply_chain.load_lock(tmplock).values():
-                ok, reason = supply_chain.verify_entry(e, PUBKEY)
+                ok, reason = supply_chain.verify_entry(e, TESTPUB)   # R-T7-2 测试锚
                 self.assertTrue(ok, "%s: %s" % (e["key"], reason))
 
     def test_resign_detects_tamper(self):
@@ -75,7 +77,7 @@ class TestResign(unittest.TestCase):
             with open(tmplock, "w", encoding="utf-8", newline="\n") as f:
                 f.write(tampered)
             ok, _why = supply_chain.verify_entry(
-                supply_chain.load_lock(tmplock)["openssl"], PUBKEY)
+                supply_chain.load_lock(tmplock)["openssl"], TESTPUB)   # R-T7-2 测试锚
             self.assertFalse(ok, "被篡改键必须验签失败（fail-closed）")
 
     def test_lock_fullness(self):
