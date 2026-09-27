@@ -17,6 +17,9 @@
   一律降为 host_aliases 别名声明（顶层可选字段），不得再作主键。
 - 在环资产命名按真实内网 DNS（svc-*）；scorer 只归一语法（大小写/端口/query/尾斜杠），
   语义等价必须显式进 host_aliases——禁止 scorer 猜映射。
+- **GT 资产键一律无端口形**（批次 7 评审收尾 Minor-c）：检出资产键取 svc-* 内网名
+  本形（如 svc-crm），端口/协议细节属 host_aliases 别名声明与 EV 卡载体，不入
+  endpoint 主键（首战 127.0.0.1:800x 映射形降级别名同口径）。
 - 检出判定三要件不变：资产值匹配+EV 卡 word matcher 含 marker（行为差分证据为建议项，
   见首战技能改进 7）。
 
