@@ -801,15 +801,29 @@ def _parse_ts(tok):
     return dt.timestamp()
 
 
-def _last_restart_ts(s):
-    """timeline 最近一条 managed-restart 事件的时间戳（护栏②速率基准）。"""
+def _last_restart_event(s):
+    """timeline 最近一条 managed-restart 事件 → (ts, session)；无=None。事件词 T3 格式：
+    managed-restart spawn=<s>[ takeover-of=…][ session=<id>]——session 缺省（旧格式行）
+    返回 ""。对账事件 managed-restart-orphan 不算重启（startswith 同词前缀，显式排除），
+    否则孤儿豁免会自续（每次对账都造出新的"最近重启"）。"""
     ts_i = core.TABLES["timeline.tsv"].index("timestamp")
     ev_i = core.TABLES["timeline.tsv"].index("event")
-    out = None
-    for r in s.rows("timeline.tsv"):
-        if r[ev_i].startswith("managed-restart"):
-            out = r[ts_i]
-    return out
+    for r in reversed(s.rows("timeline.tsv")):
+        # 排除对账事件按**事件词前缀** managed-restart-orphan 判定（禁用 "orphan" 子串：
+        # session id 含 orphan 字样即误伤——本测 r-orphan 即绊线）
+        if r[ev_i].startswith("managed-restart") and not r[ev_i].startswith("managed-restart-orphan"):
+            sess = ""
+            for tok in r[ev_i].split():
+                if tok.startswith("session="):
+                    sess = tok.split("=", 1)[1]
+            return r[ts_i], sess
+    return None, None
+
+
+def _last_restart_ts(s):
+    """护栏②速率基准（薄壳保留既有调用面语义）：最近一次 managed-restart 的 ts。"""
+    ts, _ = _last_restart_event(s)
+    return ts
 
 
 def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost=None):
@@ -845,26 +859,52 @@ def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost
     if not ok:
         print("REJECT\trestart\ttimeline 断链行=%d——人工处置（halt）" % bad)
         return 1
-    # ② 速率上限：距最近一次 managed-restart 不足 rate 分钟 → REJECT（防递归 spawn）
-    last = _last_restart_ts(s)
-    if last:
-        try:
-            delta_min = (now - _parse_ts(last)) / 60.0
-        except ValueError:
-            sys.stderr.write("环境问题: timeline 时间戳非 ISO8601: %r\n" % last)
-            return 2
-        if delta_min < rate:
-            print("REJECT\trestart\trestart-rate-limit last=%s 距今 %.1f 分钟 < %.0f 分钟"
-                  % (last, delta_min, rate))
-            return 1
-    # ③ 单活跃会话：auto 只可延续自身血统（state.spawn=auto）的锁残留——该场景的
-    # 递归防护即护栏②；foreign 血统（fresh/manual）active 锁 auto 一律不得接管。
+    # ③前移（批次 7 T3）：state.md 解析块原在速率检查之后——孤儿判据需要 fields，
+    # 前移到速率检查之前。副作用裁决：state.md 损坏 REJECT 现先于速率 REJECT（原组合
+    # 顺序无在册断言依赖）。
     sp = os.path.join(goal_dir, "state.md")
     fields, _, perrs = state_md.parse_state(sp)
     if perrs or (os.path.isfile(sp) and not fields):
         print("REJECT\trestart\tstate.md 损坏：先 rebuild-state（%s）"
               % (perrs[0] if perrs else "空文件"))
         return 1
+    # ⓪ 孤儿对账（批次 7 T3，SRE High：checkpoint 前注入 kill→孤儿 restart+rate-limit
+    # 卡 10min）：上次 managed-restart 事件带 session=X 而 state.md session≠X = checkpoint
+    # 未落地（⑤事件已落、⑥checkpoint 被截断的三段写孤儿）→ 豁免本次速率窗一次+补记对账
+    # 事件（对账留痕）；真重启（session 一致）与旧格式事件（无 session 词）不受豁免。
+    last_ts, last_session = _last_restart_event(s)
+    if last_session and fields and last_session != fields.get("session"):
+        _append_event(goal_dir, _current_gate(s),
+                      "managed-restart-orphan prior-session=%s" % last_session, ts)
+        last_ts = None   # 豁免本次速率窗（速率基准让位于孤儿对账）
+        # 对账=重建（R-T3-4）：孤儿态=state.md 落后于账本（⑤已落账⑥被截断）——
+        # 只豁免速率窗无法放行：manual 接管前置的 state-rebuild 检查（revision/snapshot
+        # 口径）必 FAIL。账本为第一事实源（check_cmds 同口径）→ rebuild_state 对齐
+        # （session=rebuilt/status=released，随本事务末尾 checkpoint 重取新锁）。
+        rbuf = io.StringIO()
+        with redirect_stdout(rbuf):
+            rrc = rebuild_state(goal_dir, ts,
+                                "orphan reconcile prior-session=" + last_session)
+        if rrc != 0:
+            print("REJECT\trestart\t孤儿对账重建失败: " + rbuf.getvalue())
+            return 1
+        fields, _, perrs = state_md.parse_state(sp)
+        if perrs or not fields:
+            print("REJECT\trestart\t孤儿对账后 state.md 仍异常")
+            return 1
+    # ② 速率上限：距最近一次 managed-restart 不足 rate 分钟 → REJECT（防递归 spawn）
+    if last_ts:
+        try:
+            delta_min = (now - _parse_ts(last_ts)) / 60.0
+        except ValueError:
+            sys.stderr.write("环境问题: timeline 时间戳非 ISO8601: %r\n" % last_ts)
+            return 2
+        if delta_min < rate:
+            print("REJECT\trestart\trestart-rate-limit last=%s 距今 %.1f 分钟 < %.0f 分钟"
+                  % (last_ts, delta_min, rate))
+            return 1
+    # ③ 单活跃会话：auto 只可延续自身血统（state.spawn=auto）的锁残留——该场景的
+    # 递归防护即护栏②；foreign 血统（fresh/manual）active 锁 auto 一律不得接管。
     if not session:
         session = "r-" + core.row_hash(ts, [spawn])[:8]
     takeover = ""
@@ -910,7 +950,11 @@ def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost
     # ⑤ timeline 事件词（append-timeline 逐字落账，actor=总控）→ 锁交接 → state.md v2。
     # checkpoint 必须是最后写者（revision ≡ 落账后 timeline 行数不变式）。
     gate = _current_gate(core.Session(goal_dir))
-    _append_event(goal_dir, gate, "managed-restart spawn=" + spawn + takeover, ts)
+    # 事件词 T3 格式（批次 7）：带 session=<id>——孤儿对账判据（⑤已落账而⑥checkpoint
+    # 被截断时，事件 session≠state.md session=孤儿）。startswith 检测（护栏②、
+    # _last_restart_* 与既有测试）对后缀追加天然兼容。
+    _append_event(goal_dir, gate,
+                  "managed-restart spawn=%s session=%s%s" % (spawn, session, takeover), ts)
     if handover:
         # 重建即锁释放（T5 冻结语义）：stale 锁经理 rebuild-state 释放（session=rebuilt/
         # released），接管者随后经 checkpoint 重取新锁——防双活，无第三写者。
