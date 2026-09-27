@@ -56,18 +56,50 @@ def read_cred(gd, n):
 def vault_secrets(gd):
     return vault.secrets(gd)
 
+def _read_secret_channel(kv, flag, env_name):
+    """密值通道（批次 7 T10）：stdin 旗标显式 opt-in 读一行 > env 环境变量。
+    无人值守上下文里隐式读 stdin=阻塞事故源，故 stdin 必须走旗标。"""
+    if flag in kv:   # 裸旗标形（--secret-stdin 无值）也生效——kv 值为空串
+        return sys.stdin.readline().rstrip()
+    return os.environ.get(env_name)
+
+
 def cmd_deploy_vault(gd, rest):
     kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
-    for need in ("--cred", "--username", "--secret"):
+    # 批次 7 T10（High）：--secret/--passphrase 退出 argv（进程列表可读=密值暴露面）——
+    # argv 出现即 usage exit 2（错误消息零回显）；密值改走 env/stdin 通道。
+    if "--secret" in kv or "--passphrase" in kv:
+        sys.stderr.write("用法错误: 密值不经 argv——用 TANYIN_VAULT_SECRET/"
+                         "TANYIN_VAULT_PASSPHRASE 环境通道或 --secret-stdin/"
+                         "--passphrase-stdin 旗标" + chr(10))
+        return 2
+    for need in ("--cred", "--username"):
         if not kv.get(need):
             sys.stderr.write("deploy-vault 缺 " + need + chr(10))
             return 2
+    secret = _read_secret_channel(kv, "--secret-stdin", "TANYIN_VAULT_SECRET")
+    if not secret:
+        sys.stderr.write("deploy-vault 缺密值（TANYIN_VAULT_SECRET 或 --secret-stdin）" + chr(10))
+        return 2
     key = guard_key(gd)
     if not key:
-        sys.stderr.write("vault 未初始化（vault/.key 缺失）" + chr(10))
-        return 2
+        # 批次 7 T10：vault 未初始化→passphrase 经 PBKDF2+vault/.salt(16B os.urandom)
+        # 派生主钥写 vault/.key（hex 文本，load_key 单源读）；缺 passphrase=usage exit 2。
+        pp = _read_secret_channel(kv, "--passphrase-stdin", "TANYIN_VAULT_PASSPHRASE")
+        if not pp:
+            sys.stderr.write("vault 未初始化：需 TANYIN_VAULT_PASSPHRASE（或 --passphrase-stdin）"
+                             + "派生主钥" + chr(10))
+            return 2
+        vd = vault_dir(gd)
+        os.makedirs(vd, exist_ok=True)
+        salt = os.urandom(16)
+        with open(os.path.join(vd, ".salt"), "wb") as f:
+            f.write(salt)
+        key = vault.derive_key(pp, salt)
+        with open(os.path.join(vd, ".key"), "w", encoding="utf-8", newline="\n") as f:
+            f.write(key + chr(10))
     n = kv["--cred"]
-    payload = enc_payload(key, kv["--username"] + chr(10) + kv["--secret"])
+    payload = enc_payload(key, kv["--username"] + chr(10) + secret)
     os.makedirs(vault_dir(gd), exist_ok=True)
     with open(os.path.join(vault_dir(gd), "cred-%s.enc" % n), "w", encoding="utf-8", newline="\n") as f:
         f.write(payload)
@@ -75,7 +107,8 @@ def cmd_deploy_vault(gd, rest):
     rows = []
     if os.path.exists(mp):
         rows = [l.split(TAB) for l in open(mp, encoding="utf-8").read().splitlines() if l.strip()]
-    rows.append([n, "cred-%s.enc" % n, hashlib.sha256(payload.encode()).hexdigest()[:16], "xor-sha256", "2"])
+    # v2 算法列（批次 7 T10）：payload=TV2 nonce+EtM——legacy 行保留 xor-sha256 原样（双读过渡）
+    rows.append([n, "cred-%s.enc" % n, hashlib.sha256(payload.encode()).hexdigest()[:16], "etm-sha256", "2"])
     with open(mp, "w", encoding="utf-8", newline="\n") as f:  # TSV 落盘一律 LF
         f.write(chr(10).join(TAB.join(r) for r in rows) + chr(10))
     print("OK vault cred-%s 部署" % n)

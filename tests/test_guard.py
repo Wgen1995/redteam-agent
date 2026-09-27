@@ -11,6 +11,14 @@ def g(gd, *args):
     return subprocess.run([PY, GUARD, args[0], "--goal-dir", gd] + list(args[1:]),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
+def g_deploy_env(gd, cred, username, secret):
+    """批次 7 T10：deploy-vault 密值 env 通道调用形（--secret 退出 argv=usage exit 2）。"""
+    env = dict(os.environ, TANYIN_VAULT_SECRET=secret)
+    return subprocess.run([PY, GUARD, "deploy-vault", "--goal-dir", gd,
+                           "--cred=" + cred, "--username=" + username],
+                          capture_output=True, text=True, encoding="utf-8",
+                          errors="replace", env=env)
+
 def ledger(gd, *args):
     return subprocess.run([PY, LEDGER, args[0], "--goal-dir", gd] + list(args[1:]),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -93,7 +101,7 @@ class GuardVault(unittest.TestCase):
     def tearDown(self):
         self.td.cleanup()
     def test_deploy_inject_tokenize(self):
-        r = g(self.gd, "deploy-vault", "--cred=7", "--username=admin", "--secret=TopSecret-9")
+        r = g_deploy_env(self.gd, "7", "admin", "TopSecret-9")   # T10：env 通道（argv 形=exit 2）
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         with open(os.path.join(self.gd, "vault", "cred-7.enc"), encoding="utf-8") as f:
             enc = f.read()
@@ -118,7 +126,7 @@ class GuardInjectEnforcement(unittest.TestCase):
         os.makedirs(os.path.join(self.gd, "vault"), exist_ok=True)
         with open(os.path.join(self.gd, "vault", ".key"), "w", encoding="utf-8", newline="\n") as f:
             f.write("k1")
-        r = g(self.gd, "deploy-vault", "--cred=7", "--username=admin", "--secret=TopSecret-9")
+        r = g_deploy_env(self.gd, "7", "admin", "TopSecret-9")   # T10：env 通道（argv 形=exit 2）
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
     def tearDown(self):
         self.td.cleanup()
@@ -221,7 +229,7 @@ class GuardStderrTokenize(unittest.TestCase):
         os.makedirs(os.path.join(self.gd, "vault"), exist_ok=True)
         with open(os.path.join(self.gd, "vault", ".key"), "w", encoding="utf-8", newline="\n") as f:
             f.write("k1")
-        r = g(self.gd, "deploy-vault", "--cred=1", "--username=admin", "--secret=" + self.SECRET)
+        r = g_deploy_env(self.gd, "1", "admin", self.SECRET)   # T10：env 通道（argv 形=exit 2）
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
     def tearDown(self):
         self.td.cleanup()
