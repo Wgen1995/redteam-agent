@@ -716,3 +716,7 @@
 - **工具缝（探知即报）**：①terminal-gate 锚点断言按 latest_matrix 的 frozen_at，而 freeze 后 matrix-set 追加行 frozen_at 恒空+freeze 禁重复→凡 P3 置格会话 P5 门不可达（freeze 重跑 REJECT 实证；timeline 已记 P5 探知事件）；②add-evidence 模板产 `expected: {}` 空卡，受限 YAML 仅流式 matchers 可解析（块式 words 残余行错）；③lint redact_scan 目标=report/ 渲染件而非工件本体，卡修正后 stale draft 会误报（须重渲染）；④tanyin-report --out 相对 CWD 落盘，易破交战区分离（本次已移回仓外并 git status 复零）。
 - **对总控技能改进建议**：1) GT 键口径与资产命名约定前置显式化（RUNBOOK 显著位），或 scorer 加 URL 归一化匹配（host 别名+query 归一）；2) 端点字典增补二级路径（/debug/env、/cors-debug、/preview、/unserialize、/import、/comment）与两段式路径探测；3) P0 加「认证态获取策略」检查单（弱口令清单/默认凭据/注册面）；4) terminal-gate 冻结断言改为「freeze 时在场行」而非 latest 行，或 matrix-set 继承 frozen_at；5) add-evidence 卡模板内置 flow 式 expected.matchers 骨架；6) lint redact 建议扫全 session（含 replay 运行时产物）+lint 内先重渲染；7) marker 命中之外要求行为差分证据（参数化响应差）防 tag 自证；8) P5.5 真人签发门保持未签发态（不伪造）——本战止于 P4+lint，P5 门如实 FAIL 入档。
 - **纪律面**：仓外交战区（/tmp/tanyin-range-battle/G-r1|G-r2），共享夹具零写热；panorama/ 与 /Users/wgen/Documents 零触碰；compose down 后零残留容器实测；工作树净（git status 0 行实测于本节 commit 前）；ground-truth/seed/ 打开前零读（scorer 后归因性打开 GT 一并披露）。
+
+## 2026-09-27 批次 7 开工（executing via subagent-driven-development）
+- 用户批准整改计划 docs/superpowers/plans/2026-09-27-b7-remediation.md（17 任务/出口 13 条/红测=专家反例复现；输入=六专家评审 5C+High/Medium 台账+靶场首战工具缝）｜commit 96d90e0
+- 执行结构：C1 簇先行→C2-C5→High 七项→战场件→Medium 收口，每任务 TDD+全量回归，收口后整支评审
