@@ -31,6 +31,9 @@ class Base(unittest.TestCase):
         self.gd = shutil.copytree(FIX, os.path.join(self.td.name, "G-g1"))
 
     def restart(self, *args):
+        # 批次 7 T12：--usage/--round 必填契约——既有用例统一补参（单点注入，
+        # usage=0.90≥0.75 阈值之上=各断言原语义零变更）。
+        args = tuple(args) + ("--usage=0.90", "--round=1")
         buf_o, buf_e = io.StringIO(), io.StringIO()
         with redirect_stdout(buf_o), redirect_stderr(buf_e):
             code = pe.dispatch("restart", self.gd, list(args))

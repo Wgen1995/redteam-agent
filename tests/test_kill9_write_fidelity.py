@@ -115,7 +115,7 @@ class TestRestartOrphanReconcile(unittest.TestCase):
                                   "--timestamp=2026-09-27T00:30:00Z"])
         self.assertEqual(rc, 0, out + err + "（夹具 checkpoint 失败=R-T3-3 夹具无效）")
         self._make_orphan(gd)
-        rc, out, err = phases(gd, "restart", ["--spawn=manual",
+        rc, out, err = phases(gd, "restart", ["--spawn=manual", "--usage=0.90", "--round=1",   # T12 必填契约
                                               "--timestamp=2026-09-27T01:05:00Z"])
         self.assertEqual(rc, 0, "孤儿对账后放行（红现状：rate-limit REJECT 卡 10min）: " + out)
         with open(os.path.join(gd, "timeline.tsv"), encoding="utf-8") as f:
@@ -127,10 +127,10 @@ class TestRestartOrphanReconcile(unittest.TestCase):
         rc, out, err = ledger(gd, "checkpoint", ["--session=s-a", "--phase=P1", "--note=a",
                                   "--timestamp=2026-09-27T00:30:00Z"])
         self.assertEqual(rc, 0, out + err)
-        rc, out, err = phases(gd, "restart", ["--spawn=manual",
+        rc, out, err = phases(gd, "restart", ["--spawn=manual", "--usage=0.90", "--round=1",   # T12 必填契约
                                               "--timestamp=2026-09-27T00:40:00Z"])
         self.assertEqual(rc, 0, out + err)
-        rc, out, err = phases(gd, "restart", ["--spawn=manual",
+        rc, out, err = phases(gd, "restart", ["--spawn=manual", "--usage=0.90", "--round=1",   # T12 必填契约
                                               "--timestamp=2026-09-27T00:45:00Z"])
         self.assertEqual(rc, 1, "真重启（checkpoint 已落地）仍受速率窗——孤儿豁免不得扩大化")
         self.assertIn("restart-rate-limit", out)

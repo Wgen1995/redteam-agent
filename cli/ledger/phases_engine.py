@@ -833,7 +833,8 @@ def _last_restart_ts(s):
     return ts
 
 
-def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost=None):
+def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost=None,
+                usage=None, round_no=None):
     from . import lock_v2, registry, state_md
     if spawn not in ("auto", "manual"):
         sys.stderr.write("用法错误: --spawn 需 auto|manual\n")
@@ -910,6 +911,18 @@ def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost
             print("REJECT\trestart\trestart-rate-limit last=%s 距今 %.1f 分钟 < %.0f 分钟"
                   % (last_ts, delta_min, rate))
             return 1
+    # 阈值执法（批次 7 T12，High：restart_context_threshold/restart_every_n_rounds
+    # 全仓零代码消费→接线；单源=FROZEN_CONSTANTS 默认键（模块头，禁第二常量源））：
+    # auto 档须 usage≥0.75 或 round%10==0，否则 REJECT rc=1（位置=速率检查后、预算/事件
+    # 落账前=零副作用 REJECT）；manual 不设阈值（人工处置语义），两参必填在 cmd_restart
+    # 校验（审计语义）。
+    if spawn == "auto":
+        thr = float(FROZEN_CONSTANTS["restart_context_threshold"])
+        every = int(FROZEN_CONSTANTS["restart_every_n_rounds"])
+        if not (usage >= thr or round_no % every == 0):
+            print("REJECT\trestart\trestart-threshold usage=%.2f round=%d 未达"
+                  "（须 usage≥%.2f 或 每 %d 轮）" % (usage, round_no, thr, every))
+            return 1
     # ③ 单活跃会话：auto 只可延续自身血统（state.spawn=auto）的锁残留——该场景的
     # 递归防护即护栏②；foreign 血统（fresh/manual）active 锁 auto 一律不得接管。
     if not session:
@@ -961,7 +974,8 @@ def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost
     # 被截断时，事件 session≠state.md session=孤儿）。startswith 检测（护栏②、
     # _last_restart_* 与既有测试）对后缀追加天然兼容。
     _append_event(goal_dir, gate,
-                  "managed-restart spawn=%s session=%s%s" % (spawn, session, takeover), ts)
+                  "managed-restart spawn=%s session=%s usage=%g round=%d%s"
+                  % (spawn, session, usage, round_no, takeover), ts)
     if handover:
         # 重建即锁释放（T5 冻结语义）：stale 锁经理 rebuild-state 释放（session=rebuilt/
         # released），接管者随后经 checkpoint 重取新锁——防双活，无第三写者。
@@ -991,6 +1005,7 @@ def run_restart(goal_dir, spawn, ts, session=None, rate_minutes=None, token_cost
 
 def cmd_restart(goal_dir, rest):
     spawn = ts = session = rate = cost = None
+    usage = rnd = None
     for tok in rest:
         if tok.startswith("--spawn="):
             spawn = tok.split("=", 1)[1]
@@ -1002,11 +1017,31 @@ def cmd_restart(goal_dir, rest):
             rate = tok.split("=", 1)[1]
         elif tok.startswith("--token-cost="):
             cost = tok.split("=", 1)[1]
+        elif tok.startswith("--usage="):
+            usage = tok.split("=", 1)[1]
+        elif tok.startswith("--round="):
+            rnd = tok.split("=", 1)[1]
         else:
             sys.stderr.write("用法: tanyin-phases restart --goal-dir D --spawn auto|manual "
-                             "--timestamp=T [--session=S] [--rate-minutes=N] "
-                             "[--token-cost=C]\n"); return 2
-    return run_restart(goal_dir, spawn, ts, session, rate, cost)
+                             "--timestamp=T --usage=<0..1> --round=<n≥1> [--session=S] "
+                             "[--rate-minutes=N] [--token-cost=C]\n"); return 2
+    # 批次 7 T12（High）：--usage/--round 必填（缺参/非法=usage exit 2）——阈值执法的
+    # 消费面入口；manual 不设阈值但必须带参（审计语义：重启决策上下文留痕）。
+    try:
+        u = float(usage)
+        if not (0.0 <= u <= 1.0):
+            raise ValueError
+    except (TypeError, ValueError):
+        sys.stderr.write("用法错误: --usage 必填且须 0..1\n")
+        return 2
+    try:
+        n = int(rnd)
+        if n < 1:
+            raise ValueError
+    except (TypeError, ValueError):
+        sys.stderr.write("用法错误: --round 必填且须正整数\n")
+        return 2
+    return run_restart(goal_dir, spawn, ts, session, rate, cost, usage=u, round_no=n)
 
 
 # ------------------------------------------------------- T7：resume-kit 白名单生成器
