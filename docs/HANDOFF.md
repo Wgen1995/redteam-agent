@@ -701,3 +701,18 @@
 - **R-记账（T17+T18 时点）**：两任务 commit 先行（0328606/a7c5218），本流水+裁决+出口 18 条记录节独立 commit（批次内既定手法）。
 ## 2026-09-27 六专家对抗评审
 - 全平台六视角评审完成，结论 concerns，5 Critical（写路径非原子/guard 绕过/九门伪造/锁信任根/签发四绕）+High/Medium 台账见 docs/design/2026-09-27-expert-review-consolidated.md｜靶场 LLM 在环实战并行中
+
+## 2026-09-27 靶场 LLM 在环首战记录（RUNBOOK §6 通道·R-T16-3 复测）
+- **在环执行体**：总控 LLM（glm 宿主会话）以 probe-operator 身份在环临场决策；探针通道=attack-noop 跳板（M-3 双网口径，docker compose exec -T attack-noop python 真实 HTTP）；会话=/tmp/tanyin-range-battle/G-r2（G-r1 废弃见下）；全部时间戳显式字面量；预算计量 budget-log 两笔（token 205k/请求 720/2h，budget-check 实测在途）。
+- **流程事实**：E0/E1 过（selfcheck worst=0+compose config rc=0）；靶起 8 服务+attack-noop（172.28.0.2-9:8000 实扫）；P0-P4 五门全过（P0 asserts=3/P1 asserts=3/P2 asserts=2/P3 asserts=1/P4 asserts=5 逐门亲跑 PASS）；denominator-ready PASS（11 资产 sources_ok=11+四类 N/A 披露+canary:recon planted=0 披露）；矩阵 19 面×12 类=228 格全置态（x9/?11/!5/-203，reason 全带实捕依据）；converge-check=**converged**；findings 9 条（文件读取/内部文档暴露/命令执行回显/SSTI候选/SQL报错×2/XSS候选/开放重定向/登录无锁定，全带 EV 卡四要素+content-hash 双指纹）；trigger-audit PASS 23/23（高危即时横向 4 intent+asset-added 回边 8+子矩阵 mint）；POC 独立重放门：9 卡经跳板容器内 tanyin-replay 真重放 **9/9 reproduced**→set-replay-state VERIFIED×9（重放事件+request: 事件在案）；lint 12 门全 PASS rc=0。
+- **G-r1 废弃**：P1 期间 parent 边按 source=父误接 11 条（树语义=子→父），边不可删→tree-check 永久 FAIL；按诚实纪律废会话重铸 G-r2（全部命令重放、边向纠正），G-r1 留档仓外作教训样本。
+- **scorer 判定（看答案时刻后如实录）**：`python3 tests/eval_range_recall.py --session /tmp/tanyin-range-battle/G-r2 --ground-truth tests/range/ground-truth.json` → rc=1 **recall=0.00 (0/20)**，MISSING 全 20 项。ground-truth.json 仅在 scorer 出分后才打开（归因用途，开打前零阅读——守诚实铁律）。
+- **漏检归因（三层）**：
+  - ①系统性键失配（工具/评估侧+推理侧各半）：GT endpoint=「M-3 前宿主侧 127.0.0.1:8001-8008 映射 URL 形」原串沿用为资产精确匹配键；在环按真实内网 DNS 资产命名（svc-*/svc-*/path）→ 20 项全失配。RUNBOOK T16 行「127.0.0.1 映射 URL 形历史遗留」线索在场但在环推理未深究——**键口径未前置显式化=评估侧缺陷，未深究=推理侧漏**。
+  - ②真实漏检 7 项（工具没测到/矩阵没排上）：xss-02(/comment)、ssrf-02(/preview)、cors-01(/cors-debug)、deser-01(/unserialize)、deser-02(/import)、infoleak-01(/debug/env 二级路径)——路径字典未覆盖（120+词表无这些键）；weakpass-01——弱口令未命中（login 仅回固定 403，无 marker 泄露通道）。
+  - ③真实不可达 5 项（推理没想到→通道缺失）：idor×2/role×1/hauth×2 全 post_auth——token 通道未发现（40 余次喷洒、多 token 头/Cookie 形态、路径混淆、Host 变体、X-Original-URL、SSRF 文档名当 token 全部未过）→ 认证后面不可达，如实漏。
+  - **真实检出 8/20（40%）**：sqli×2/xss-01/ssti-01/cmdi-01/ssrf-01/traversal-01/redir-01——marker 与端点行为均亲测在案（EV 卡可查），账面 0/20 纯系键失配。
+- **在环 vs 脚本干跑差异**：干跑（T16）按预置 URL 键+已知 marker 直写 20/20；在环须自行发现命名键/端点/参数/marker——真实检出率 40%，账面 0%。在环另有 3 项干跑没有的产出：G-r1 废弃样本、228 格逐格 reason、9/9 真重放三态。
+- **工具缝（探知即报）**：①terminal-gate 锚点断言按 latest_matrix 的 frozen_at，而 freeze 后 matrix-set 追加行 frozen_at 恒空+freeze 禁重复→凡 P3 置格会话 P5 门不可达（freeze 重跑 REJECT 实证；timeline 已记 P5 探知事件）；②add-evidence 模板产 `expected: {}` 空卡，受限 YAML 仅流式 matchers 可解析（块式 words 残余行错）；③lint redact_scan 目标=report/ 渲染件而非工件本体，卡修正后 stale draft 会误报（须重渲染）；④tanyin-report --out 相对 CWD 落盘，易破交战区分离（本次已移回仓外并 git status 复零）。
+- **对总控技能改进建议**：1) GT 键口径与资产命名约定前置显式化（RUNBOOK 显著位），或 scorer 加 URL 归一化匹配（host 别名+query 归一）；2) 端点字典增补二级路径（/debug/env、/cors-debug、/preview、/unserialize、/import、/comment）与两段式路径探测；3) P0 加「认证态获取策略」检查单（弱口令清单/默认凭据/注册面）；4) terminal-gate 冻结断言改为「freeze 时在场行」而非 latest 行，或 matrix-set 继承 frozen_at；5) add-evidence 卡模板内置 flow 式 expected.matchers 骨架；6) lint redact 建议扫全 session（含 replay 运行时产物）+lint 内先重渲染；7) marker 命中之外要求行为差分证据（参数化响应差）防 tag 自证；8) P5.5 真人签发门保持未签发态（不伪造）——本战止于 P4+lint，P5 门如实 FAIL 入档。
+- **纪律面**：仓外交战区（/tmp/tanyin-range-battle/G-r1|G-r2），共享夹具零写热；panorama/ 与 /Users/wgen/Documents 零触碰；compose down 后零残留容器实测；工作树净（git status 0 行实测于本节 commit 前）；ground-truth/seed/ 打开前零读（scorer 后归因性打开 GT 一并披露）。
