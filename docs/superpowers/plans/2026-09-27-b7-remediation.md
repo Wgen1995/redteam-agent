@@ -1872,7 +1872,440 @@ git commit -m "批次7-T12(High)：restart 阈值消费——--usage/--round 必
 
 ---
 
-（T13→T17 正文增量补齐中……）
+### Task 13: 触发器 no-consume 通道（add-fact --no-consume）+ K1 缺基线 exit 2
+
+**Files:**
+- Modify: `cli/ledger/write_cmds.py`（_add_fact：新参 `--no-consume=<理由>`，理由非空必填）
+- Modify: `cli/ledger/phases_engine.py:598-708`（trigger_audit 消费检查跳过带标记事实，计 explicitly-deferred）
+- Modify: `cli/ledger/knowledge.py:872-910`（score 缺基线文件→抛环境错；消费者命令映射 exit 2）
+- Test: `tests/test_no_consume_k1_b7.py`（新）
+
+**Interfaces:**
+- Produces: 标记语义=fact 的 note 单元格追加 `[no-consume:<理由>]`（理由非空，缺省=usage exit 2）；消费执法面（trigger-audit 消费检查、unconsumed-facts 计数）跳过带标记事实并单列 `deferred=<n>`；`knowledge.KnowledgeEnvError`（新异常类）=基线文件缺——消费者 stderr 提示+exit 2；**缺键（vuln_class 无行）维持 warning+默认 0.5**（裁决：缺文件=环境未安装方法库，缺行=合法缺省，两态分流）
+- Consumes: `_add_fact` 既有 argv 键集（Step 0 `grep -n "def _add_fact" -A 12 cli/ledger/write_cmds.py`）；trigger-audit 消费判定位（Step 0 `grep -n "unconsumed\|消费" cli/ledger/phases_engine.py cli/ledger/query_cmds.py`）；score 消费者命令（Step 0 `grep -rn "knowledge.score\|\.score(" cli/ engines/ --include="*.py" | grep -v tests` 全列，逐个接线 exit 2）
+
+- [ ] **Step 1: 写失败测试（红=逼假边+静默降级 rc=0）**
+
+```python
+# tests/test_no_consume_k1_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T13：触发器显式不消费通道（High：无通道逼假边）+K1 缺基线 exit 2
+（High：静默降级 rc=0）。"""
+import os, subprocess, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.join(HERE, "..")
+sys.path.insert(0, os.path.join(ROOT, "cli"))
+sys.path.insert(0, ROOT)
+from ledger import knowledge
+from tests.test_dryrun_p0p2 import fresh_drydir, ledger, phases, TS
+
+LEDGER = os.path.join(ROOT, "cli", "tanyin-ledger")
+
+class TestNoConsume(unittest.TestCase):
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory(); self.addCleanup(self.td.cleanup)
+
+    def _add_fact(self, gd, extra):
+        return subprocess.run([sys.executable, LEDGER, "add-fact", "--goal-dir", gd] + extra,
+                              capture_output=True, text=True)
+
+    def test_no_consume_requires_reason(self):
+        gd = fresh_drydir(self.td.name, "G-nc1")
+        r = self._add_fact(gd, ["--no-consume=", "--timestamp=" + TS,  # 其余键对齐既有用例
+                                "--kind=recon", "--target=ast-1", "--detail=d"])
+        self.assertEqual(r.returncode, 2, "理由空=usage 错（防无意识标记）")
+
+    def test_marker_lands_in_note(self):
+        gd = fresh_drydir(self.td.name, "G-nc2")
+        r = self._add_fact(gd, ["--no-consume=界外情报仅记录", "--timestamp=" + TS,
+                                "--kind=recon", "--target=ast-1", "--detail=d"])
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        facts = open(os.path.join(gd, "facts.tsv"), encoding="utf-8").read()
+        self.assertIn("[no-consume:界外情报仅记录]", facts)
+
+    def test_trigger_audit_skips_marked_and_counts_deferred(self):
+        """红=同一「应消费事实」无通道：审计 FAIL 逼假边；绿=标记后过审+deferred 计数。"""
+        # 夹具构造形按既有 trigger-audit 测试对齐（Step 0：grep -rl "trigger-audit" tests/ | head -3）
+        gd = <既有 trigger-audit 夹具助手（含一条待消费事实，无消费边）>()
+        rc, out, err = phases(gd, "trigger-audit", [])
+        self.assertEqual(rc, 1, "红现状：未消费事实审计 FAIL（无显式不消费通道）")
+        r = self._add_fact(gd, ["--no-consume=错误线索不追", "--timestamp=" + TS,
+                                "--kind=recon", "--target=ast-1", "--detail=d"])
+        self.assertEqual(r.returncode, 0)
+        rc, out, err = phases(gd, "trigger-audit", [])
+        self.assertEqual(rc, 0, out)
+        self.assertIn("deferred=", out, "显式不消费单列计数")
+
+
+class TestK1BaselineEnv(unittest.TestCase):
+    def test_score_missing_baseline_raises(self):
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        with self.assertRaises(knowledge.KnowledgeEnvError):
+            knowledge.score(os.path.join(td.name, "kb"),   # 无 methodology/k1-baseline.tsv
+                            os.path.join(td.name, "g"), "wstg-info", "asset", "2026-09-27")
+
+    def test_consumer_exit_2_on_missing_baseline(self):
+        """消费者命令（Step 0 定位，骨架以 <score-consumer> 占位）缺基线=exit 2 非 rc=0。"""
+        td = tempfile.TemporaryDirectory(); self.addCleanup(td.cleanup)
+        r = subprocess.run([sys.executable, <score-consumer 入口路径>,
+                            <消费者 argv 形按 Step 0 定位>],
+                           capture_output=True, text=True, env=dict(
+                           os.environ, TANYIN_KNOWLEDGE_DIR=os.path.join(td.name, "kb")))
+        self.assertEqual(r.returncode, 2, "红现状：缺基线静默降级 rc=0")
+        self.assertIn("K1", r.stderr)
+
+    def test_missing_row_still_warns_default(self):
+        """裁决对照例：基线文件在、缺 vuln_class 键=合法缺省（warning+0.5），不得误杀。"""
+        kdir = <造含 wstg-info 单行基线的库>()   # 形按 tests/test_k1_baseline_score.py _write_baseline
+        sev, key, warns = knowledge.score(kdir, "g", "wstg-other", "asset", "2026-09-27")
+        self.assertEqual(sev, 0.5)
+        self.assertTrue(warns)
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_no_consume_k1_b7 -v`
+Expected: 理由空例 FAIL（现状无该参 rc 非 2 或报错形不符——先跑如实录）；标记例 FAIL（参未定义）；审计例 FAIL；K1 两例 FAIL（Exception 未定义/rc=0）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/write_cmds.py _add_fact：argv 键集加 "no-consume"；落行前：
+    nc = args.get("no-consume", "")
+    if "no-consume" in args and not nc:
+        raise UsageError("--no-consume 须非空理由（显式不消费通道，禁无意识标记）")
+    note = _clean(args.get("note", ""))
+    if nc:
+        note = (note + " " if note else "") + "[no-consume:" + nc + "]"
+```
+
+```python
+# cli/ledger/phases_engine.py trigger_audit 消费判定位（两处同改）
+    def _consumable(r):
+        ni = TABLES["facts.tsv"].index("note")
+        return "[no-consume:" not in r[ni]   # 显式不消费=deferred 通道（批次 7 T13）
+    # 未消费计数/判定只统计 _consumable(r)；deferred=len([r for r in facts if not _consumable(r)])
+    # 输出行：trigger-audit 尾行追加 "deferred=<n>"
+```
+
+```python
+# cli/ledger/knowledge.py
+class KnowledgeEnvError(EnvironmentError):
+    """K1 基线缺=方法库未安装（环境问题域，消费者映射 exit 2）。"""
+
+def score(kdir, goal_dir, vuln_class, asset, today):
+    p = os.path.join(kdir, "methodology", "k1-baseline.tsv")
+    if not os.path.isfile(p):
+        raise KnowledgeEnvError("K1 基线表缺失: " + p + "（先 tanyin-knowledge init/安装方法库）")
+    ...（既有读表/缺键 warning+0.5 路径不动）
+```
+消费者接线（Step 0 全列逐个）：`try: ... knowledge.score(...) except knowledge.KnowledgeEnvError as e: sys.stderr.write("ENV: %s\n" % e); return 2`。
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_no_consume_k1_b7 tests.test_k1_baseline_score -v` → 全 OK；全套 discover 全绿；金样 54 面 PASS 零漂移（add-fact 输出面无 note 变化时零扰）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/write_cmds.py cli/ledger/phases_engine.py cli/ledger/knowledge.py tests/test_no_consume_k1_b7.py
+git commit -m "批次7-T13(High)：触发器显式不消费通道（add-fact --no-consume=<理由>→note 标记→trigger-audit 跳过+deferred 计数，逐假边）+K1 缺基线 KnowledgeEnvError→消费者 exit 2（缺键仍 warning 默认——两态分流裁决）"
+```
+
+---
+
+### Task 14: 矩阵批量置格（matrix-set --batch-file 全成全败）+资产类词表裁剪（--from-assets）
+
+**Files:**
+- Modify: `cli/ledger/write_cmds.py:845`（_matrix_set 增 `--batch-file=<路径>` 分支）
+- Modify: `cli/ledger/matrix_init.py:39`（run_matrix_init 增 `--from-assets` 开关）
+- Test: `tests/test_matrix_batch_b7.py`（新）
+
+**Interfaces:**
+- Produces: `matrix-set --goal-dir D --batch-file=F --state=? --reason=? --intent-id=?`（batch 行自载 state/reason 时逐行取，缺省回落命令行参）；F=LF TSV 四列 `attack_surface<TAB>vuln_class<TAB>state<TAB>reason` 无表头；**全成全败**——任一行不满足 G-2 四条件（submatrix: 前缀/冻结/新表面/VOCAB 命中）或五态枚举外 ⇒ REJECT 整批零写入零事件；全过=单次 commit+恰一条 timeline 事件 `matrix-set-batch n=<k>`；`matrix-init --from-assets`：行集裁剪为在册 in_scope 资产映射的表面/类（A5 存储与云/A7 人的因素等缺席类不出行），缺省不带开关=现行全量行为零变更（金样保护）
+
+- [ ] **Step 0: 对齐单源**
+
+Run: `grep -n "def _matrix_set" -A 40 cli/ledger/write_cmds.py | head -50`（既有单格校验四条件照抄为批校验单源——抽 `_validate_cell(ctx, surface, vclass, state, reason, args)` 共用，禁复制第二份）；`grep -n "surfaces\|rows.append" cli/ledger/matrix_init.py`（现行行集来源——from-assets 裁剪点）。
+
+- [ ] **Step 1: 写失败测试（红=2640 格单格单命令+全类词表爆炸）**
+
+```python
+# tests/test_matrix_batch_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T14：矩阵批量置格（High：220 资产=2640 格单格单命令）+资产类词表裁剪
+（High：A5/A7 等缺席类全量出行=矩阵爆炸）。"""
+import os, subprocess, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.join(HERE, "..")
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "cli"))
+from tests.test_dryrun_p0p2 import fresh_drydir, ledger, phases, TS
+
+LEDGER = os.path.join(ROOT, "cli", "tanyin-ledger")
+
+def _batch(gd, rows):
+    p = os.path.join(gd, "batch.tsv")
+    open(p, "w", encoding="utf-8", newline="\n").write(
+        "".join("\t".join(r) + "\n" for r in rows))
+    return p
+
+class TestBatch(unittest.TestCase):
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory(); self.addCleanup(self.td.cleanup)
+        self.gd = fresh_drydir(self.td.name, "G-mb")
+        # 前置：matrix-init+freeze 形按既有 test_submatrix_mint/test_write_cmds 对齐（Step 0）
+
+    def test_batch_all_valid_single_event(self):
+        rows = [["<surf-1>", "<vc-1>", "x", "submatrix:批量证据-1"],
+                ["<surf-1>", "<vc-2>", "x", "submatrix:批量证据-2"],
+                ["<surf-2>", "<vc-1>", "?", "submatrix:批量证据-3"]]   # 实键对齐夹具词表
+        p = _batch(self.gd, rows)
+        r = subprocess.run([sys.executable, LEDGER, "matrix-set", "--goal-dir", self.gd,
+                            "--batch-file=" + p, "--timestamp=" + TS, "--phase=P3"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        tl = open(os.path.join(self.gd, "timeline.tsv"), encoding="utf-8").read()
+        self.assertEqual(tl.count("matrix-set-batch n=3"), 1, "恰一条批量事件")
+        mx = open(os.path.join(self.gd, "matrix.tsv"), encoding="utf-8").read()
+        for row in rows:
+            self.assertIn(row[0] + "\t" + row[1], mx)
+
+    def test_batch_all_or_nothing(self):
+        rows = [["<surf-1>", "<vc-1>", "x", "submatrix:ok"],
+                ["<surf-1>", "<vc-X>", "x", "submatrix:词表外键"]]   # 第二行非法
+        before = open(os.path.join(self.gd, "matrix.tsv"), encoding="utf-8").read()
+        n0 = open(os.path.join(self.gd, "timeline.tsv"), encoding="utf-8").read().count("\n")
+        p = _batch(self.gd, rows)
+        r = subprocess.run([sys.executable, LEDGER, "matrix-set", "--goal-dir", self.gd,
+                            "--batch-file=" + p, "--timestamp=" + TS, "--phase=P3"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 1, "整批 REJECT")
+        self.assertEqual(open(os.path.join(self.gd, "matrix.tsv"), encoding="utf-8").read(), before,
+                         "零部分写入（fail-closed）")
+        self.assertEqual(open(os.path.join(self.gd, "timeline.tsv"), encoding="utf-8").read().count("\n"), n0,
+                         "零事件落账")
+
+
+class TestFromAssets(unittest.TestCase):
+    def test_absent_classes_pruned_only_with_flag(self):
+        gd = fresh_drydir(tempfile.TemporaryDirectory().name, "G-mf")   # 执行时改回可清理夹具形
+        # 夹具：scope/goals+assets 仅 web 类在册（无 A5 存储与云/A7 人的因素资产）
+        r1 = subprocess.run([sys.executable, LEDGER, "matrix-init", "--goal-dir", gd,
+                             "--timestamp=" + TS], capture_output=True, text=True)
+        self.assertEqual(r1.returncode, 0)
+        full = open(os.path.join(gd, "matrix.tsv"), encoding="utf-8").read()
+        gd2 = fresh_drydir(tempfile.TemporaryDirectory().name, "G-mf2")
+        <同款夹具>
+        r2 = subprocess.run([sys.executable, LEDGER, "matrix-init", "--goal-dir", gd2,
+                             "--from-assets", "--timestamp=" + TS], capture_output=True, text=True)
+        self.assertEqual(r2.returncode, 0)
+        pruned = open(os.path.join(gd2, "matrix.tsv"), encoding="utf-8").read()
+        self.assertLess(len(pruned.splitlines()), len(full.splitlines()), "缺席类裁剪后行数严格更少")
+        self.assertNotIn("A5", pruned) if "A5" in full else None   # 词表键按 shared/VOCAB 实形对齐
+        # 回归保护：不带开关=行为零变更（full 即现行基线，断言其含全部类）
+```
+（执行注：临时目录嵌套 TemporaryDirectory().name 会失清理——骨架在执行时统一改为 setUp 单 td 派生两 gd；词表键/表面键以 shared/VOCAB.md 与夹具实值为准。）
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_matrix_batch_b7 -v`
+Expected: 批量例 FAIL（--batch-file 未知参数 usage rc=2）；from-assets 例 FAIL（旗标未定义）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/write_cmds.py _matrix_set
+def _matrix_set(goal_dir, rest):
+    args = _parse(rest, {...既有键集..., "batch-file"})
+    bf = args.get("batch-file", "")
+    if not bf:
+        ...（既有单格路径原样保留）
+    ctx = Ctx(goal_dir)
+    ctx.tier0()
+    rows = []
+    for ln, line in enumerate(open(bf, encoding="utf-8").read().splitlines(), 1):
+        if not line.strip():
+            continue
+        cells = line.split("\t")
+        if len(cells) != 4:
+            raise Reject("batch 第 %d 行须 4 列 surface/vclass/state/reason: %s" % (ln, line[:40]))
+        rows.append(cells)
+    if not rows:
+        raise Reject("batch 空文件=REJECT")
+    # 全校验后全写入（Step 0 抽出的 _validate_cell 单源逐行跑，任一异常→整批 REJECT 零副作用）
+    for surface, vclass, state, reason in rows:
+        _validate_cell(ctx, surface, vclass, state, reason, args)
+    for surface, vclass, state, reason in rows:
+        ...（既有单格落行逻辑复用）
+    ctx.commit({"matrix.tsv"})
+    ctx.event(args.get("timestamp", ""), "matrix-set-batch n=%d" % len(rows),
+              actor="CLI", phase=args.get("phase", ""))
+    ctx.commit({"timeline.tsv"})
+    print("OK\tmatrix-set-batch\tn=%d" % len(rows))
+    return 0
+```
+
+```python
+# cli/ledger/matrix_init.py run_matrix_init
+    if "--from-assets" in [t for t in rest if t.startswith("--from-assets")] or any(
+            t == "--from-assets" for t in rest):   # 解析形与既有 kv 解析对齐
+        # 裁剪（批次 7 T14）：行集=in_scope 资产映射表面/类；缺席资产类（A5/A7 等）不出行
+        assets = core.Session(goal_dir).rows("assets.tsv")
+        present = {<资产行→类键映射（Step 0 确认 assets.meta/类型单源）>
+                   for a in assets if <in_scope 判定单源>}
+        surfaces = [s for s in surfaces if s in present]   # 或按类列裁剪——以 Step 0 行集形为准
+```
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_matrix_batch_b7 tests.test_submatrix_mint tests.test_matrix_init -v` → 全 OK；全套 discover 全绿；金样 54 面 PASS 零漂移（缺省路径零变更断言=本任务自证）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/ledger/write_cmds.py cli/ledger/matrix_init.py tests/test_matrix_batch_b7.py
+git commit -m "批次7-T14(High)：matrix-set --batch-file 全成全败（_validate_cell 单源抽用+恰一条 matrix-set-batch 事件）+matrix-init --from-assets 缺席资产类裁剪（A5/A7 按需出行，缺省零变更）"
+```
+
+---
+
+### Task 15: permitted_actions 执法接线（guard --cred/--action account-grant 覆盖门）+guard --timeout
+
+**Files:**
+- Modify: `cli/tanyin-guard`（main 参数解析+gate_chain 扩展+exec/inject timeout 通道）
+- Modify: `cli/ledger/enforce.py`（新增 `permitted_actions_covered(session, cred, action)` 纯函数——可单测）
+- Test: `tests/test_guard_perm_actions_b7.py`（新）
+
+**Interfaces:**
+- Produces: `tanyin-guard exec|inject --goal-dir D [--cred=<CRED-id>] [--action=<act>] [--timeout=<秒>] -- cmd...`；--cred 在场⇒scope.tsv 须有该 account 的 account-grant 行（缺=REJECT「无覆盖面」），--action 不在该 cred 的 permitted_actions 并集⇒REJECT+`guard-reject permitted-actions cred=X action=Y` 事件落账；inject 带 --cred 时 --action 必填；--timeout 缺省 60 上限 600，非法=usage exit 2（Medium「60s 硬超时」收口）
+- Consumes: permitted_actions 多值解析=write_cmds._mv 同语义（Step 0 `grep -n "def _mv" cli/ledger/write_cmds.py`；enforce 侧内聚同语义并测试钉死一致，避免循环 import）
+
+- [ ] **Step 1: 写失败测试（红=零执法）**
+
+```python
+# tests/test_guard_perm_actions_b7.py
+# -*- coding: utf-8 -*-
+"""批次 7 T15：permitted_actions 执法接线（High：零执法——凭据越权动作无门）+--timeout。"""
+import os, subprocess, sys, tempfile, unittest
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.join(HERE, "..")
+sys.path.insert(0, os.path.join(ROOT, "cli"))
+from ledger.enforce import permitted_actions_covered
+from tests.test_dryrun_p0p2 import fresh_drydir, ledger, TS
+
+GUARD = os.path.join(ROOT, "cli", "tanyin-guard")
+
+class TestPermActions(unittest.TestCase):
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory(); self.addCleanup(self.td.cleanup)
+        self.gd = fresh_drydir(self.td.name, "G-pa")
+        # 夹具：cred-1 + account-grant(read)（argv 键以 add-cred/add-scope 契约签名为准，
+        # 对齐 test_write_cmds 既有 account-grant 用例——T4-T13 同款纪律）
+        <make_cred_with_grant(self.gd, cred="CRED-<n>", actions="read")>
+
+    def test_unit_covered_semantics(self):
+        s = __import__("ledger.core", fromlist=["Session"]).Session(self.gd)
+        self.assertTrue(permitted_actions_covered(s, <CRED-id>, "read"))
+        self.assertFalse(permitted_actions_covered(s, <CRED-id>, "write"))
+        self.assertFalse(permitted_actions_covered(s, "CRED-404", "read"), "无 grant 行=无覆盖")
+
+    def test_guard_rejects_uncovered_action(self):
+        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", self.gd,
+                            "--cred=<CRED-id>", "--action=write", "--",
+                            sys.executable, "-c", "print(1)"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 1, "红现状：write 对只读 cred 照跑 rc=0（零执法）")
+        self.assertIn("permitted-actions", r.stdout)
+        tl = open(os.path.join(self.gd, "timeline.tsv"), encoding="utf-8").read()
+        self.assertIn("guard-reject permitted-actions", tl, "拒绝必须留痕")
+
+    def test_guard_allows_covered_action(self):
+        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", self.gd,
+                            "--cred=<CRED-id>", "--action=read", "--",
+                            sys.executable, "-c", "print(1)"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+    def test_inject_requires_action_with_cred(self):
+        r = subprocess.run([sys.executable, GUARD, "inject", "--goal-dir", self.gd,
+                            "--cred=<CRED-id>", "--", "echo", "x"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 2, "inject+cred 缺 --action=usage 错（凭据必有意图动作）")
+
+
+class TestTimeout(unittest.TestCase):
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory(); self.addCleanup(self.td.cleanup)
+        self.gd = fresh_drydir(self.td.name, "G-to")
+
+    def test_timeout_channel(self):
+        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", self.gd,
+                            "--timeout=1", "--", sys.executable, "-c", "import time; time.sleep(5)"],
+                           capture_output=True, text=True)
+        self.assertNotEqual(r.returncode, 0, "超时=非零（红现状：硬 60s，1s 不生效）")
+        self.assertIn("timeout", (r.stdout + r.stderr).lower())
+
+    def test_timeout_invalid_exit_2(self):
+        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", self.gd,
+                            "--timeout=abc", "--", "echo", "x"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 2)
+        r = subprocess.run([sys.executable, GUARD, "exec", "--goal-dir", self.gd,
+                            "--timeout=9999", "--", "echo", "x"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 2, "超上限 600=usage 错")
+```
+
+- [ ] **Step 2: 跑红**
+
+Run: `python3 -m unittest tests.test_guard_perm_actions_b7 -v`
+Expected: unit 例 FAIL（函数未定义）；write 拒收例 FAIL（rc=0 直通）；inject 例 FAIL；timeout 例 FAIL（旗标未识别）
+
+- [ ] **Step 3: 最小实现**
+
+```python
+# cli/ledger/enforce.py
+def permitted_actions_covered(session, cred, action):
+    """account-grant 覆盖判定（批次 7 T15，High：零执法→接线）。
+    多值分隔与 write_cmds._mv 同语义（执行时以 _mv 实现对齐并测试钉死）。"""
+    si = TABLES["scope.tsv"].index
+    covered, hit = set(), False
+    for r in session.rows("scope.tsv"):
+        if r[si("kind")] == "account-grant" and r[si("account")] == cred:
+            hit = True
+            covered.update((r[si("permitted_actions")] or "").split(","))
+    return hit and action in covered
+```
+
+```python
+# cli/tanyin-guard gate_chain（scope 判定后追加）
+    if cred and action and not permitted_actions_covered(s, cred, action):
+        print("REJECT" + TAB + "guard" + TAB + "permitted-actions cred=%s action=%s 未被 account-grant 覆盖" % (cred, action))
+        append_tl(gd, ts, "guard-reject permitted-actions cred=%s action=%s" % (cred, action))
+        return 1
+    if cred and not permitted_actions_covered(s, cred, action) and not _grant_row_exists(s, cred):
+        print("REJECT" + TAB + "guard" + TAB + "account-grant 行缺（无覆盖面）: " + cred)
+        append_tl(gd, ts, "guard-reject permitted-actions cred=%s no-grant" % cred)
+        return 1
+```
+（main/exec/inject：`--cred=/--action=/--timeout=` 在 `--` 分隔符前剥出；timeout 校验 1..600 缺省 60 非法 exit 2；exec/inject subprocess.run(timeout=t) 捕 subprocess.TimeoutExpired → REJECT 输出含 timeout；inject+cred 缺 --action=usage 2。门链次序=deny-list → scope → permitted_actions → request-ticket。）
+
+- [ ] **Step 4: 跑绿+全套回归**
+
+Run: `python3 -m unittest tests.test_guard_perm_actions_b7 tests.test_guard tests.test_enforce_unit -v` → 全 OK；全套 discover 全绿；金样 54 面 PASS 零漂移（不带新参调用=行为零变更）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cli/tanyin-guard cli/ledger/enforce.py tests/test_guard_perm_actions_b7.py
+git commit -m "批次7-T15(High+Medium)：permitted_actions 执法接线——guard --cred/--action account-grant 覆盖门（越权 REJECT+guard-reject 留痕；无 grant 行=无覆盖面）+inject 凭据必带 --action+guard --timeout 通道（1..600 缺省 60，Medium 60s 硬超时收口）"
+```
+
+---
+
+（T16→T17 正文增量补齐中……）
+
 
 
 
