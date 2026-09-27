@@ -49,12 +49,31 @@ def read_tsv(path, nfields):
             rows.append(cells)
     return rows
 
+def _atomic_write(path, text):
+    """tmp+fsync+os.replace：kill -9 半写兜底——要么旧版要么新版，无第三态。
+    （批次 7 T1·C1 修复：write_tsv open(w) 原地截断=真实 SIGKILL 静默丢史根因；
+    state_md.write_state 同款语义单源化到此。）"""
+    d = os.path.dirname(path)
+    if d:
+        os.makedirs(d, exist_ok=True)
+    tmp = path + ".tmp"
+    try:
+        # newline="\n": 账本字节纪律——链式哈希/双指纹按 LF 落盘，Windows 文本模式不得翻译为 CRLF
+        with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+
+
 def write_tsv(path, rows):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    # newline="\n": 账本字节纪律——链式哈希/双指纹按 LF 落盘，Windows 文本模式不得翻译为 CRLF
-    with open(path, "w", encoding="utf-8", newline="\n") as f:
-        for r in rows:
-            f.write(chr(9).join(esc(c) for c in r) + chr(10))
+    _atomic_write(path, "".join(chr(9).join(esc(c) for c in r) + chr(10) for r in rows))
 
 
 def ensure_utf8_stdio():

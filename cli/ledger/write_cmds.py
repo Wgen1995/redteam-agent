@@ -243,12 +243,9 @@ class Ctx(object):
             write_tsv(os.path.join(self.s.dir, t), self.rows(t))
 
     def write_file(self, relpath, text):
-        p = os.path.join(self.s.dir, relpath)
-        d = os.path.dirname(p)
-        if d:
-            os.makedirs(d, exist_ok=True)
-        with open(p, "w", encoding="utf-8", newline="\n") as f:  # LF 字节纪律（Windows 不译 CRLF）
-            f.write(text)
+        # 批次 7 T1·C1：写路径原子化单源接线（tmp+fsync+os.replace；LF 字节纪律随单源）
+        from .core import _atomic_write
+        _atomic_write(os.path.join(self.s.dir, relpath), text)
 
 
 def _ok_line(obj, tname, rows):
