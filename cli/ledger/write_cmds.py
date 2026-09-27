@@ -847,60 +847,122 @@ def _matrix_prefix(reason):
     return ""
 
 
-def _matrix_set(goal_dir, rest):
-    args = _parse(rest, {"attack-surface", "vuln-class", "state", "reason", "intent-id", "timestamp", "phase"})
-    _req(args, ["attack-surface", "vuln-class", "state", "timestamp"])
-    ctx = Ctx(goal_dir)
-    ctx.tier0()
-    rows = ctx.rows("matrix.tsv")
-    if not rows:
-        raise Reject("matrix.tsv 未初始化（先 matrix-init）")
-    key_rows = [r for r in rows if r[0] == args["attack-surface"] and r[1] == args["vuln-class"]]
-    state = args["state"]
-    reason = args.get("reason", "")
-    iid = args.get("intent-id", "")
-    # Ruling（T2）：state/reason 校验与 intent 引用闭合前置到铸行分支之前——
-    # 裁决 A「全量校验后一次写入」要求铸造行同经全量校验（计划片段仅前移赋值）。
+def _validate_cell(sim_rows, surface, vclass, state, reason, iid, ctx, ts):
+    """单格校验+行动作单源（批次 7 T14 从 _matrix_set 抽出；单格/批量共用，禁第二份）。
+    sim_rows=当前生效行集（批量路径传模拟行集，使后续 batch 行可见先行行 staged 状态）。
+    返回 (act, rows, meta)：act∈{"set","mint"}；校验失败 raise Reject。
+    Ruling（T2）保留：state/reason 校验与 intent 引用闭合前置到铸行分支之前——
+    裁决 A「全量校验后一次写入」要求铸造行同经全量校验。"""
     if state not in {"x", "?", "-", "!"}:
         raise Reject("state 不在 {x,?,-,!}（空态=未检查由 init 生成）: " + state)
     if state in {"-", "!"} and not reason:
         raise Reject("state=%s 须附 reason" % state)
     if iid and ctx.latest("intents.tsv", iid) is None:
         raise Reject("intent_id 引用闭合失败: " + iid)
+    key_rows = [r for r in sim_rows if r[0] == surface and r[1] == vclass]
     if not key_rows:
         # G-2 裁决（批4）：新键行铸造仅限 submatrix:（四条件，裁决 A）
         if not reason.startswith("submatrix:"):
             raise Reject("行键不存在且 reason 前缀非 submatrix:（不允许置格行外新键）: %s×%s"
-                         % (args["attack-surface"], args["vuln-class"]))
-        if not any(ctx.val("matrix.tsv", r, "frozen_at") for r in rows):
+                         % (surface, vclass))
+        if not any(ctx.val("matrix.tsv", r, "frozen_at") for r in sim_rows):
             raise Reject("子矩阵行铸造须基线已冻结（先 matrix-freeze）")
-        if args["attack-surface"] in {r[0] for r in rows}:
+        if surface in {r[0] for r in sim_rows}:
             raise Reject("表面已存在于既有行键——非新表面，不得 submatrix: 铸造（防主矩阵偷扩张）")
         from .matrix_init import _load_vocab, DEFAULT_VOCAB
         classes, ver, vsha = _load_vocab(DEFAULT_VOCAB)
-        if args["vuln-class"] not in classes:
-            raise Reject("vuln_class 不在 VOCAB（WSTG 版本化全集）: " + args["vuln-class"])
+        if vclass not in classes:
+            raise Reject("vuln_class 不在 VOCAB（WSTG 版本化全集）: " + vclass)
         mint = []
         for vc in classes:
-            tgt = (vc == args["vuln-class"])
+            tgt = (vc == vclass)
             mint.append(_row("matrix.tsv",
-                             attack_surface=args["attack-surface"], vuln_class=vc,
+                             attack_surface=surface, vuln_class=vc,
                              state=(state if tgt else ""), reason=(reason if tgt else "submatrix:"),
-                             intent_id=(iid if tgt else ""), updated=args["timestamp"], frozen_at=""))
-        for row in mint:
-            ctx.append("matrix.tsv", row)
-        ctx.event(args["timestamp"],
-                  "submatrix-mint %s classes=%d vocab=%s@%s" % (args["attack-surface"], len(classes), ver, vsha),
-                  phase=args.get("phase", ""))
-        ctx.commit({"matrix.tsv", "timeline.tsv"})
-        _ok_line("铸行 %s（×%d 词表全集）" % (args["attack-surface"], len(classes)), "matrix.tsv", mint)
-        return 0
+                             intent_id=(iid if tgt else ""), updated=ts, frozen_at=""))
+        return "mint", mint, {"ver": ver, "vsha": vsha}
     prev_prefix = _matrix_prefix(ctx.val("matrix.tsv", key_rows[-1], "reason"))
     new_prefix = _matrix_prefix(reason)
     if prev_prefix and new_prefix != prev_prefix:   # 旧空=首次归类放行（批4修正）；旧非空≠新=REJECT
         raise Reject("reason 前缀与行类别不符（现行类别前缀=%r）: %s" % (prev_prefix, reason))
-    row = _row("matrix.tsv", attack_surface=args["attack-surface"], vuln_class=args["vuln-class"],
-               state=state, reason=reason, intent_id=iid, updated=args["timestamp"], frozen_at="")
+    row = _row("matrix.tsv", attack_surface=surface, vuln_class=vclass,
+               state=state, reason=reason, intent_id=iid, updated=ts, frozen_at="")
+    return "set", [row], {}
+
+
+def _matrix_set_batch(goal_dir, args, bf):
+    """批量置格（批次 7 T14，High：220 资产=2640 格单格单命令）：--batch-file=
+    LF TSV 四列 surface/vclass/state/reason（无表头；行自载 state/reason，空单元格
+    回落命令行参）。全成全败：先全校验（_validate_cell 单源逐行跑在模拟行集上）
+    后一次写入——任一行不满足 G-2 四条件/五态枚举 ⇒ REJECT 整批零写入零事件；
+    全过=单次 commit+恰一条 timeline 事件 matrix-set-batch n=<k>。"""
+    _req(args, ["timestamp"])
+    ctx = Ctx(goal_dir)
+    ctx.tier0()
+    if not ctx.rows("matrix.tsv"):
+        raise Reject("matrix.tsv 未初始化（先 matrix-init）")
+    rows = []
+    with open(bf, encoding="utf-8") as f:
+        for ln, line in enumerate(f.read().splitlines(), 1):
+            if not line.strip():
+                continue
+            cells = line.split(TAB)
+            if len(cells) != 4:
+                raise Reject("batch 第 %d 行须 4 列 surface/vclass/state/reason: %s"
+                             % (ln, _trunc(line, 40)))
+            rows.append(cells)
+    if not rows:
+        raise Reject("batch 空文件=REJECT")
+    iid = args.get("intent-id", "")
+    ts = args["timestamp"]
+    sim = [list(r) for r in ctx.rows("matrix.tsv")]
+    staged = []
+    for ln, (surface, vclass, st, rs) in enumerate(rows, 1):
+        st = st or args.get("state", "")
+        rs = rs or args.get("reason", "")
+        try:
+            act, new_rows, _meta = _validate_cell(sim, surface, vclass, st, rs, iid, ctx, ts)
+        except Reject as e:
+            raise Reject("batch 第 %d 行: %s" % (ln, e))
+        sim.extend(new_rows)
+        staged.extend(new_rows)
+    for row in staged:
+        ctx.append("matrix.tsv", row)
+    ctx.event(ts, "matrix-set-batch n=%d" % len(rows), phase=args.get("phase", ""))
+    ctx.commit({"matrix.tsv", "timeline.tsv"})
+    print("OK" + TAB + "matrix-set-batch" + TAB + "n=%d" % len(rows))
+    return 0
+
+
+def _matrix_set(goal_dir, rest):
+    args = _parse(rest, {"attack-surface", "vuln-class", "state", "reason", "intent-id",
+                         "timestamp", "phase", "batch-file"})
+    bf = args.get("batch-file", "")
+    if bf:
+        return _matrix_set_batch(goal_dir, args, bf)
+    _req(args, ["attack-surface", "vuln-class", "state", "timestamp"])
+    ctx = Ctx(goal_dir)
+    ctx.tier0()
+    rows = ctx.rows("matrix.tsv")
+    if not rows:
+        raise Reject("matrix.tsv 未初始化（先 matrix-init）")
+    state = args["state"]
+    reason = args.get("reason", "")
+    iid = args.get("intent-id", "")
+    act, new_rows, meta = _validate_cell(rows, args["attack-surface"], args["vuln-class"],
+                                         state, reason, iid, ctx, args["timestamp"])
+    if act == "mint":
+        for row in new_rows:
+            ctx.append("matrix.tsv", row)
+        ctx.event(args["timestamp"],
+                  "submatrix-mint %s classes=%d vocab=%s@%s"
+                  % (args["attack-surface"], len(new_rows), meta["ver"], meta["vsha"]),
+                  phase=args.get("phase", ""))
+        ctx.commit({"matrix.tsv", "timeline.tsv"})
+        _ok_line("铸行 %s（×%d 词表全集）" % (args["attack-surface"], len(new_rows)),
+                 "matrix.tsv", new_rows)
+        return 0
+    row = new_rows[0]
     ctx.append("matrix.tsv", row)
     ctx.event(args["timestamp"], "matrix-set %s×%s=%s" % (args["attack-surface"], args["vuln-class"], state),
               phase=args.get("phase", ""))

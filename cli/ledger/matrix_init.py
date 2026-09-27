@@ -36,10 +36,33 @@ def _load_vocab(vocab_arg):
     return classes, ver or "unversioned", sha
 
 
+# 资产类型→词表类映射（批次 7 T14，High：缺席资产类全量出行=矩阵爆炸）。
+# 分层依据=phases_engine.DENOM_CLASS_BY_TYPE 的 A1-A8 资产类分层（A5 存储与云/
+# A7 人的因素=探知项类型，G-12 十一值枚举）；类型→WSTG 类适用性为起草规则
+# （探知注记随报告上报），单源在此禁第二份；缺席类型独涉类不出行。
+TYPE_VOCAB_CLASSES = {
+    "root-domain": ("wstg-info", "wstg-conf", "wstg-idnt"),          # A1 标识层
+    "subdomain": ("wstg-info", "wstg-conf", "wstg-idnt"),            # A1 标识层
+    "ip": ("wstg-info", "wstg-conf"),                                # A2 网络层
+    "service": ("wstg-info", "wstg-conf", "wstg-apit"),              # A3 服务层
+    "app": ("wstg-info", "wstg-conf", "wstg-idnt", "wstg-authn", "wstg-authz",
+            "wstg-sess", "wstg-inpv", "wstg-errh", "wstg-cryp", "wstg-busl",
+            "wstg-clnt", "wstg-apit"),                               # A4 应用层=WSTG 全集
+    "endpoint": ("wstg-info", "wstg-conf", "wstg-idnt", "wstg-authn", "wstg-authz",
+                 "wstg-sess", "wstg-inpv", "wstg-errh", "wstg-cryp", "wstg-busl",
+                 "wstg-clnt", "wstg-apit"),                          # A4 应用层
+    "source-code": ("wstg-inpv", "wstg-errh", "wstg-cryp", "wstg-busl"),   # A6 代码与物料
+    "pivot": ("wstg-authn", "wstg-authz", "wstg-sess"),              # 横移立足
+    "foothold": ("wstg-authn", "wstg-authz", "wstg-sess"),           # 横移立足
+    "cloud-storage": ("wstg-conf", "wstg-authz", "wstg-cryp"),       # A5 存储与云
+    "human-factor": ("wstg-busl",),                                  # A7 人的因素
+}
+
+
 def run_matrix_init(goal_dir, rest):
     kv, flags = parse_kv(rest)
     for k in kv:
-        if k not in ("timestamp", "vocab", "surfaces"):
+        if k not in ("timestamp", "vocab", "surfaces", "from-assets"):
             raise UsageError("matrix-init 未知参数: " + k)
     ts = kv.get("timestamp", "")
     if not ts:
@@ -59,6 +82,19 @@ def run_matrix_init(goal_dir, rest):
         print("REJECT\tmatrix-init\t无 in_scope 攻击面（先 add-asset 或 --surfaces=显式清单）")
         return 1
     classes, ver, sha = _load_vocab(kv.get("vocab", ""))
+    if kv.get("from-assets"):
+        # 裁剪（批次 7 T14）：行集=in_scope 资产类型映射的词表类；缺席资产类型
+        # （A5 存储与云/A7 人的因素等）独涉类不出行。缺省不带开关=全量行为零变更。
+        ti = af.index("type")
+        allowed = set()
+        for r in s.rows("assets.tsv"):
+            if r[in_scope_idx] in ("in_scope", "1"):
+                allowed |= set(TYPE_VOCAB_CLASSES.get(r[ti], ()))
+        classes = [c for c in classes if c in allowed]
+        if not classes:
+            print("REJECT" + chr(9) + "matrix-init" + chr(9)
+                  + "from-assets 映射后词表类为空（在册 in_scope 资产类型无适用类）")
+            return 1
     mf = TABLES["matrix.tsv"]
     mi = {f: i for i, f in enumerate(mf)}
     new_rows = []
