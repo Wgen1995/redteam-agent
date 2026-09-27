@@ -16,7 +16,9 @@ import unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, os.path.join(ROOT, "cli"))
+sys.path.insert(0, ROOT)
 from ledger import report_artifacts  # noqa: E402  T15 红点：模块缺=ImportError 全红
+from tests.test_report_lint import repair_auth  # noqa: E402  批次 7 T8 夹具修补单源
 
 FIX = os.path.join(HERE, "fixtures", "G-g1")
 REPORT = os.path.join(ROOT, "cli", "tanyin-report")
@@ -46,8 +48,10 @@ class Base(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.tmp, True)
 
     def _mint(self):
-        """CLI 铸 verified finding+EV 卡（T14 同款；豁免行=cleanup 核销判定前置）。"""
+        """CLI 铸 verified finding+EV 卡（T14 同款；豁免行=cleanup 核销判定前置）；
+        批次 7 T8 起随铸授权三件套修补（签发授权门接线，补夹具不放水）。"""
         gd = self.gd
+        repair_auth(gd)
         art = os.path.join(gd, "evidence", EV_ID + ".raw")
         os.makedirs(os.path.dirname(art), exist_ok=True)
         with open(art, "w", encoding="utf-8", newline="\n") as f:

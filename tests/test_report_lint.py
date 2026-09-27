@@ -4,6 +4,7 @@
 夹具=G-g1 复制+CLI 铸造（T13 同款 mint；豁免行经 approve --decision=exempted 铸造——
 夹具首行 add-goal revert_cmd=irreversible 需先豁免，签发门 cleanup 核销判定才可能 PASS）；
 时间戳全字面量。P5 解除=phases_engine 分发真门（tanyin-redact R13 拆分同构）。"""
+import hashlib
 import io
 import os
 import shutil
@@ -19,6 +20,7 @@ sys.path.insert(0, os.path.join(ROOT, "cli"))
 from ledger import phases_engine as pe  # noqa: E402
 from ledger import report_agg, report_lint, report_render, selfcheck  # noqa: E402
 from ledger import registry  # noqa: E402
+from ledger.schemas import TABLES  # noqa: E402
 
 FIX = os.path.join(HERE, "fixtures", "G-g1")
 LEDGER = os.path.join(ROOT, "cli", "tanyin-ledger")
@@ -40,6 +42,28 @@ CARD_TEXT = ("---\nid: %s\ntitle: admin 面板匿名可读-实验组\nsource_typ
 def run(*args):
     return subprocess.run([sys.executable] + list(args), capture_output=True,
                           text=True, encoding="utf-8", errors="replace")
+
+
+AUTH_DOC_BYTES = b"AUTH-DOC-BYTES G-g1-0001\n"
+
+
+def repair_auth(gd):
+    """批次 7 T8 签发授权门（C5 反例三）接线后的夹具修补：auth 文件落盘+真
+    sha256 写 goals 拷贝（授权三件套补齐，不放水）。共享夹具本体零触碰——
+    金样 .state 引用夹具伪 sha（aaaa…），动本体=大面积金样漂移。"""
+    authp = os.path.join(gd, "auth", "G-g1-0001.pdf")
+    os.makedirs(os.path.dirname(authp), exist_ok=True)
+    with open(authp, "wb") as f:
+        f.write(AUTH_DOC_BYTES)
+    with open(authp, "rb") as f:
+        real = hashlib.sha256(f.read()).hexdigest()
+    p = os.path.join(gd, "goals.tsv")
+    gi = TABLES["goals.tsv"].index
+    with open(p, encoding="utf-8") as f:
+        rows = [ln.rstrip("\n").split("\t") for ln in f if ln.strip()]
+    rows[0][gi("auth_sha256")] = real
+    with open(p, "w", encoding="utf-8", newline="\n") as f:
+        f.write("".join("\t".join(r) + "\n" for r in rows))
 
 
 class TestBurpLint(unittest.TestCase):
@@ -83,8 +107,10 @@ class Base(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.tmp, True)
 
     def _mint(self):
-        """CLI 铸 EV+FD+豁免行（T13 同款 mint；豁免=cleanup 核销判定前置）。"""
+        """CLI 铸 EV+FD+豁免行（T13 同款 mint；豁免=cleanup 核销判定前置）；
+        批次 7 T8 起随铸授权三件套修补（签发授权门接线，补夹具不放水）。"""
         gd = self.gd
+        repair_auth(gd)
         art = os.path.join(gd, "evidence", EV_ID + ".raw")
         os.makedirs(os.path.dirname(art), exist_ok=True)
         with open(art, "w", encoding="utf-8", newline="\n") as f:

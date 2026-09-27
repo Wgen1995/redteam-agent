@@ -16,8 +16,10 @@ import unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, os.path.join(ROOT, "cli"))
+sys.path.insert(0, ROOT)
 from ledger import report_lint  # noqa: E402
 from ledger.schemas import TABLES  # noqa: E402
+from tests.test_report_lint import repair_auth  # noqa: E402  批次 7 T8 夹具修补单源
 
 FIX = os.path.join(HERE, "fixtures", "G-g1")
 LEDGER = os.path.join(ROOT, "cli", "tanyin-ledger")
@@ -48,8 +50,10 @@ class Base(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.tmp, True)
 
     def _mint(self):
-        """CLI 铸 EV+FD+豁免行（T14 test_report_lint 同款——签发门其余门可过）。"""
+        """CLI 铸 EV+FD+豁免行（T14 test_report_lint 同款——签发门其余门可过）；
+        批次 7 T8 起随铸授权三件套修补（签发授权门接线，补夹具不放水）。"""
         gd = self.gd
+        repair_auth(gd)
         art = os.path.join(gd, "evidence", EV_ID + ".raw")
         os.makedirs(os.path.dirname(art), exist_ok=True)
         with open(art, "w", encoding="utf-8", newline="\n") as f:

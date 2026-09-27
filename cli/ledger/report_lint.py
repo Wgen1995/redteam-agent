@@ -17,6 +17,7 @@ P6 清理门接线，命令零改动）+tier 披露在+合规六要素齐+禁空
 lint=同门不落凭证；sign=lint+凭证+双工件写盘（T15 report_artifacts.write_all 接线）。
 退出码 0/1/2（ENV=缺表等环境问题）。
 """
+import hashlib
 import json
 import os
 import re
@@ -225,6 +226,62 @@ def _fd_checks(goal_dir, s, fd_id, fd_row, draft_path, gates):
     return ok_all
 
 
+def _parse_iso(z):
+    """ISO8601（Z→+00:00）→aware datetime；date-only/naive 视作 UTC（窗口列既有
+    date-only 形态）；空/非法=None（窗口判 FAIL 走缺列路径）。批次 7 T8 内聚单源
+    （仓内无共享 ISO 解析面，phases_engine/report_render 各自裸 fromisoformat）。"""
+    try:
+        from datetime import datetime, timezone
+        if not z:
+            return None
+        dt = datetime.fromisoformat(str(z).replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
+    except ValueError:
+        return None
+
+
+def _authorization_gate(goal_dir, s, ts, gates):
+    """签发授权完整性（批次 7 T8，C5 反例三）：①授权书 sha256 比对（deadbeef/
+    手改=FAIL）②issuance ts ∈ [valid_from, valid_until] 窗口门 ③approvals.tsv
+    存在 decision=approved 行（verify-signoff：签发须人工批准在案）。任一不过=
+    gates.authorization FAIL（并入全门联合 rc 判定，sign/lint 同门）。"""
+    errs = []
+    gi = TABLES["goals.tsv"].index
+    rows = s.rows("goals.tsv")
+    if not rows:
+        errs.append("无 goals 行（授权完整性）")
+    else:
+        g = rows[0]
+        doc, want = g[gi("auth_doc")], (g[gi("auth_sha256")] or "").strip().lower()
+        if not doc or not want:
+            errs.append("授权书缺：auth_doc/auth_sha256 空（八问表④授权门）")
+        else:
+            p = doc if os.path.isabs(doc) else os.path.join(goal_dir, doc)
+            if not os.path.isfile(p):
+                errs.append("授权书文件缺: " + doc)
+            else:
+                with open(p, "rb") as f:
+                    got = hashlib.sha256(f.read()).hexdigest()
+                if got != want:
+                    errs.append("授权书 sha256 不符 want=%s… got=%s…（deadbeef/手改=FAIL）"
+                                % (want[:12], got[:12]))
+        t = _parse_iso(ts)
+        f_dt, u_dt = _parse_iso(g[gi("valid_from")]), _parse_iso(g[gi("valid_until")])
+        if t is not None:
+            if f_dt and t < f_dt:
+                errs.append("授权窗口未开始: valid_from=" + g[gi("valid_from")])
+            if u_dt and t > u_dt:
+                errs.append("授权窗口已过期: valid_until=" + g[gi("valid_until")])
+    ai = TABLES["approvals.tsv"].index
+    if not any(r[ai("decision")] == "approved" for r in s.rows("approvals.tsv")):
+        errs.append("approvals 无 approved 行（verify-signoff：签发须人工批准在案）")
+    if errs:
+        gates["authorization"].update(status="FAIL", detail="；".join(errs))
+    return not errs
+
+
 def sign_gate(goal_dir, ts, write_credential=True):
     """签发门聚合。返回 (rc, report)；全过=0 且（write_credential 时）落
     report/signed/pass.json；任一门不过=1；缺表等环境问题=2。
@@ -232,8 +289,8 @@ def sign_gate(goal_dir, ts, write_credential=True):
     FAIL；签发随落 report/signed/interim-report.md（契约 13 §3 披露四件套）。"""
     gates = {k: {"status": "PASS", "detail": ""}
              for k in ("render", "nine_segments", "burp_pasteable", "dual_fingerprint",
-                       "time_chain", "redact_scan", "cleanup_checklist", "tier_disclosure",
-                       "compliance_six", "empty_rhetoric", "aggregate",
+                       "time_chain", "authorization", "redact_scan", "cleanup_checklist",
+                       "tier_disclosure", "compliance_six", "empty_rhetoric", "aggregate",
                        "terminal_b_disclosure")}
     try:
         data = report_agg.aggregate(goal_dir, ts or "2026-09-24T00:00:00Z")
@@ -242,6 +299,9 @@ def sign_gate(goal_dir, ts, write_credential=True):
     os.makedirs(os.path.join(goal_dir, "report", "draft"), exist_ok=True)
     s = Session(goal_dir)
     ok_all = True
+    # 授权完整性门（批次 7 T8，C5 反例三）：sha256+窗口+approvals verify-signoff
+    if not _authorization_gate(goal_dir, s, ts, gates):
+        ok_all = False
     fds = report_render.active_fd_ids(s)
     for fd_id in fds:
         fd_row = report_render._fd_row(s, fd_id)
