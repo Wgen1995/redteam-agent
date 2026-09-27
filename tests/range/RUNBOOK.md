@@ -11,6 +11,15 @@
 > 入口一律 [sys.executable, path]（POSIX 示例用 python3，Windows 用 py -3）；
 > 退出码契约 0=过/1=门禁/2=环境。
 
+## GT 键口径与资产命名约定（开打前必读——首战 0/20 键失配教训）
+
+- ground-truth.json 的 endpoint 键=canonical 资产键形（svc-*/…），历史 127.0.0.1:800x 映射形
+  一律降为 host_aliases 别名声明（顶层可选字段），不得再作主键。
+- 在环资产命名按真实内网 DNS（svc-*）；scorer 只归一语法（大小写/端口/query/尾斜杠），
+  语义等价必须显式进 host_aliases——禁止 scorer 猜映射。
+- 检出判定三要件不变：资产值匹配+EV 卡 word matcher 含 marker（行为差分证据为建议项，
+  见首战技能改进 7）。
+
 ## 1 前置环境门
 
 | # | 判定命令 | 预期 |

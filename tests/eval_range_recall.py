@@ -23,6 +23,7 @@ import json
 import os
 import shutil
 import sys
+from urllib.parse import parse_qsl, urlencode, urlsplit
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "cli"))
@@ -68,10 +69,48 @@ def _word_markers(cards, ev_ids):
     return out
 
 
-def score(rows, cards, gt):
+def _norm_endpoint(u):
+    """URL 归一（批次 7 T16 首战键失配①）：小写 host/剥默认端口/query 排序/去尾斜杠。
+    只归语法不归语义——语义别名一律走 GT host_aliases 显式声明（禁猜测式映射）。"""
+    s = urlsplit(u if "://" in u else "//" + u)
+    host = (s.hostname or "").lower()
+    net = host if s.port in (None, 80, 443) else "%s:%d" % (host, s.port)
+    path = s.path or "/"
+    if len(path) > 1 and path.endswith("/"):
+        path = path.rstrip("/")
+    q = urlencode(sorted(parse_qsl(s.query)))
+    return net + path + (("?" + q) if q else "")
+
+
+def _canon_host(netloc, aliases):
+    """语义别名统一（批次 7 T16）：netloc 命中 canonical 自身或其 host_aliases 清单⇒归一。
+    未声明的值原样返回——只认显式声明，禁猜测式映射。"""
+    for canon, al in (aliases or {}).items():
+        if netloc == canon or netloc in al:
+            return canon
+    return netloc
+
+
+def _canon_endpoint(u, aliases):
+    """全键归一：先 _norm_endpoint 语法归一，host 段再走 _canon_host 语义统一（T16）。"""
+    k = _norm_endpoint(u)
+    i = k.find("/")
+    host = k if i < 0 else k[:i]
+    return _canon_host(host, aliases) + ("" if i < 0 else k[i:])
+
+
+def score(rows, cards, gt, host_aliases=None):
     """召回裁决。返回 (recall=命中/len(gt), MISSING id 清单)。
 
-    rows/cards 来自 load_session（纯函数面，可对夹具会话回归——不依赖 docker）。"""
+    rows/cards 来自 load_session（纯函数面，可对夹具会话回归——不依赖 docker）。
+    批次 7 T16：gt 兼容条目清单或 GT 文档 dict（顶层 host_aliases 别名声明，None 容错；
+    既有 3 参调用形不变）；endpoint 匹配两侧先 _norm_endpoint 语法归一再 _canon_host
+    语义别名统一——只归语法不归语义，语义等价必须显式进 host_aliases。"""
+    if isinstance(gt, dict):
+        aliases = gt.get("host_aliases") or host_aliases or {}
+        gt = gt.get("planted") or gt.get("entries") or gt.get("items") or []
+    else:
+        aliases = host_aliases or {}
     fi = TABLES["findings.tsv"].index
     latest = {}
     for r in rows["findings.tsv"]:
@@ -95,9 +134,10 @@ def score(rows, cards, gt):
             ok = e.get("endpoint", "") in neg_targets
         else:
             ok = False
+            gt_key = _canon_endpoint(e["endpoint"], aliases) if e.get("endpoint") else ""
             for f in active:
-                if not e.get("endpoint") or ast_value.get(
-                        _cell("findings.tsv", f, "affected_asset_id")) != e["endpoint"]:
+                av = ast_value.get(_cell("findings.tsv", f, "affected_asset_id"))
+                if not gt_key or av is None or _canon_endpoint(av, aliases) != gt_key:
                     continue
                 evs = [x for x in (_cell("findings.tsv", f, "evidence_ids") or "").split(";") if x]
                 evs += [x for x in (_cell("findings.tsv", f, "control_evidence_ids") or "").split(";") if x]
@@ -142,16 +182,16 @@ def main(argv=None):
         sys.stderr.write("会话目录无效（缺 findings.tsv）: %s\n" % session)
         return 2
     with open(a.ground_truth, encoding="utf-8") as f:
-        gt = json.load(f)
-    if isinstance(gt, dict):
-        gt = gt.get("planted") or gt.get("entries") or []
-    if not gt:
+        doc = json.load(f)
+    entries = doc if isinstance(doc, list) else (
+        doc.get("planted") or doc.get("entries") or [])
+    if not entries:
         sys.stderr.write("ground-truth 空\n")
         return 2
     rows, out_cards = load_session(session)
-    recall, missing = score(rows, out_cards, gt)
-    hit = len(gt) - len(missing)
-    print("recall=%.2f (%d/%d)" % (recall, hit, len(gt)))
+    recall, missing = score(rows, out_cards, doc if isinstance(doc, dict) else entries)
+    hit = len(entries) - len(missing)
+    print("recall=%.2f (%d/%d)" % (recall, hit, len(entries)))
     for m in missing:
         print("MISSING\t" + m)
     return 0 if recall >= a.baseline else 1

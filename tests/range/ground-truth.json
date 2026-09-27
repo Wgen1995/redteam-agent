@@ -1,6 +1,9 @@
 {
  "format_version": 1,
- "note": "授权靶场种 20 ground truth（批次6 T16；裁决 I 固定分布：注入6+SSRF2+反序列化2+CORS/重定向2+遍历1+认证后越权5+弱口令1+信息泄露1）。endpoint=资产值精确匹配键（M-3 前为宿主侧 127.0.0.1 映射 URL 形，M-3 internal:true 后同串沿用为命名键——活靶探针经 attack-noop 跳板）；marker=EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。",
+ "note": "授权靶场种 20 ground truth（批次6 T16；裁决 I 固定分布：注入6+SSRF2+反序列化2+CORS/重定向2+遍历1+认证后越权5+弱口令1+信息泄露1）。endpoint=资产值精确匹配键（M-3 前为宿主侧 127.0.0.1 映射 URL 形，M-3 internal:true 后同串沿用为命名键——活靶探针经 attack-noop 跳板）；marker=EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。批次7 T16：scorer 只归语法（大小写/端口/query/尾斜杠），语义等价经顶层 host_aliases 显式声明（svc-crm→127.0.0.1:8003 先例——首战键失配教训），禁猜测式映射。",
+ "host_aliases": {
+  "svc-crm": ["127.0.0.1:8003"]
+ },
  "planted": [
   {
    "id": "sqli-01",

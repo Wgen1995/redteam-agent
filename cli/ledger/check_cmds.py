@@ -391,11 +391,11 @@ def h_terminal_gate(goal_dir, rest):
     for r in gaps:
         errs.append("空格未清零：%s/%s" % (_cell(r, "matrix.tsv", "attack_surface"),
                                           _cell(r, "matrix.tsv", "vuln_class")))
-    # 【推导】锚点冻结断言：存在 frozen_at 非空行（§5.4 锚点冻结，P2 matrix-freeze 产物）
-    if not any(_cell(r, "matrix.tsv", "frozen_at").strip()
-               for r in latest_matrix(s).values()):
-        if s.rows("matrix.tsv"):
-            errs.append("锚点未冻结（matrix 无 frozen_at 非空行）")
+    # 锚点冻结断言=「freeze 时在场行」（批次 7 T16 工具缝①）：freeze 后 matrix-set 追加行
+    # frozen_at 恒空，latest 行取锚使 P3 置格会话 P5 门不可达——改为全表任意 frozen_at 非空行。
+    if s.rows("matrix.tsv") and not any(
+            _cell(r, "matrix.tsv", "frozen_at").strip() for r in s.rows("matrix.tsv")):
+        errs.append("锚点未冻结（matrix 无 frozen_at 非空行）")
     if errs:
         print("FAIL")
         for e in errs[:20]:

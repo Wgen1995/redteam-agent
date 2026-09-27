@@ -76,7 +76,15 @@ def main(argv):
             print("%s [%s/%s/%s] %s" % (x["id"], x["layer"], x["gate"], x["kind"], x["title"]))
         return 0
     ts = a.timestamp or "2026-09-24T00:00:00Z"
-    code, rep = run_suite(load_metrics(a.metrics), a.suite, a.goal_dir, a.out, ts)
+    # vacuous guard（批次 7 T17 Medium）：零指标文件/空目录=FAIL rc=1，不得 vacuous pass/skip
+    if not os.path.isfile(a.metrics):
+        print("FAIL vacuous: 指标文件缺（%s）——空目录不得 vacuous pass，批次 7 T17" % a.metrics)
+        return EXIT_GATE_FAIL
+    metrics = load_metrics(a.metrics)
+    if not metrics.get("metrics"):
+        print("FAIL vacuous: 指标文件为 0（空指标集不得 vacuous pass，批次 7 T17）")
+        return EXIT_GATE_FAIL
+    code, rep = run_suite(metrics, a.suite, a.goal_dir, a.out, ts)
     print(json.dumps(rep["counts"], ensure_ascii=False))
     return code
 
@@ -270,9 +278,11 @@ def _range_recall(ctx):
         raise EnvironmentError(
             "靶场会话缺（%s）——docker 缺/未跑干=ENV-SKIP 降级（裁决 I）" % sess)
     with open(gt_path, encoding="utf-8") as f:
-        gt = json.load(f).get("planted", [])
+        gtdoc = json.load(f)
+    gt = gtdoc.get("planted", [])
     rows, cards = _err.load_session(sess)
-    recall, missing = _err.score(rows, cards, gt)
+    # 批次 7 T16：传 GT 文档形（score 内解 planted/entries）——顶层 host_aliases 别名生效
+    recall, missing = _err.score(rows, cards, gtdoc)
     baseline = (ctx.get("metric") or {}).get("baseline", {}).get("value", "collect-first")
     actual = "recall=%.2f (%d/%d) missing=%s" % (
         recall, len(gt) - len(missing), len(gt), ",".join(missing) or "-")
