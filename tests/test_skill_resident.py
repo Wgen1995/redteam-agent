@@ -131,7 +131,7 @@ class TestBatch4Handoff(unittest.TestCase):
 
     def test_triggers_catalog_v2_highrisk_row(self):
         text = open(os.path.join(PHASES, "TRIGGERS.md"), encoding="utf-8").read()
-        self.assertIn("version: triggers-v2", text)
+        self.assertIn("version: triggers-v3", text)
         self.assertIn("高危", text)
         self.assertIn("即时横向", text)
 

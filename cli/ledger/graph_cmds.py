@@ -12,8 +12,25 @@ from . import core
 from .schemas import TABLES
 from .query_cmds import (UsageError, usage_guard, parse_kv, latest_by, latest_matrix,
                          _cell, _idx)
+import sys as _sys
 
 TAB = chr(9)
+
+
+def dangling_creds(s):
+    """批次 8 T3（M5 读侧）：悬空 cred.scope_asset 清单（写侧已拒收，历史遗留可见化）。"""
+    ast = {r[0] for r in s.rows("assets.tsv")}
+    return [(_cell(r, "creds.tsv", "id"), _cell(r, "creds.tsv", "scope_asset"))
+            for r in latest_by(s.rows("creds.tsv"), "creds.tsv", ["id"]).values()
+            if _cell(r, "creds.tsv", "scope_asset")
+            and _cell(r, "creds.tsv", "scope_asset") not in ast]
+
+
+def _warn_dangling(s):
+    bad = dangling_creds(s)
+    if bad:
+        _sys.stderr.write("WARNING 悬空 cred.scope_asset（cred:unlock 边被静默丢弃）: %s\n"
+                          % ",".join("%s->%s" % b for b in bad))
 DEFAULT_MAX_HOPS = 4
 PATH_CAP = 50  # 防环组合爆炸：路径枚举上限（超出截断，#paths 记实收数）
 
@@ -98,6 +115,7 @@ def h_graph_neighbors(goal_dir, rest):
     depth = _int_arg(args, "depth", 1)
     ecls = _class_arg(args)
     s = core.Session(goal_dir)
+    _warn_dangling(s)
     nodes, adj = _build(s)
     if args["asset"] not in nodes:
         print("#count=0")  # 未知节点口径同 intent-status（§0.3 空集）
@@ -166,6 +184,7 @@ def h_graph_paths(goal_dir, rest):
         raise UsageError("graph-paths 需 --from=<id> --to=<id|scope-root> [--max-hops=N]")
     max_hops = _int_arg(args, "max-hops", DEFAULT_MAX_HOPS)
     s = core.Session(goal_dir)
+    _warn_dangling(s)
     nodes, adj = _build(s)
     start = args["from"]
     if args["to"] == "scope-root":
@@ -202,6 +221,7 @@ def h_graph_horizon(goal_dir, rest):
     if pos or "from" not in args:
         raise UsageError("graph-horizon 需 --from=<id>")
     s = core.Session(goal_dir)
+    _warn_dangling(s)
     nodes, _adj = _build(s)
     start = args["from"]
     # 批次5 T7：BFS+空格 join 抽为 reachable_gap_cells 单源（converge-check 同函数）——

@@ -694,6 +694,36 @@ def trigger_audit(goal_dir):
         else:
             fails.append("④高危 finding %s 无横向 intent/披露 fact（triggers-v2 即时横向）" % fid)
 
+    # ⑤ 端口/服务变更（M6 收口，批次 8 T4/triggers-v3）：事件驱动——add-fact 落账的
+    #    kind∈{port,service} 事实须消费（复扫 diff 指纹重测/CVE 复查）：derived_from 出边/
+    #    no-consume 标记/引用该事实 target 的 intent 任一即闭合；夹具预置（无事件）不入审计
+    #    （与 ① Ruling 同构）。
+    _PORT_KINDS = ("port", "service")
+    fact_by_id = {r[0]: r for r in s.rows("facts.tsv")}
+    consumed_f = set()
+    for r in s.rows("edges.tsv"):
+        if _cell("edges.tsv", r, "kind") == "derived_from":
+            consumed_f.add(_cell("edges.tsv", r, "source_id"))
+    for e in events:
+        m = re.match(r"^add-fact (F-\S+)$", e)
+        if not m:
+            continue
+        f = fact_by_id.get(m.group(1))
+        if f is None or _cell("facts.tsv", f, "kind") not in _PORT_KINDS:
+            continue
+        total += 1
+        fid = m.group(1)
+        tgt = _cell("facts.tsv", f, "target")
+        detail = _cell("facts.tsv", f, "detail")
+        referenced = any(tgt and tgt in (_cell("intents.tsv", it, "title")
+                                        + _cell("intents.tsv", it, "detail"))
+                         for it in s.rows("intents.tsv"))
+        if fid in consumed_f or core.NO_CONSUME_MARK in detail or referenced:
+            closed += 1
+        else:
+            fails.append("⑤端口/服务变更 %s 未消费（复扫 diff 指纹重测/CVE 复查："
+                         "derived_from 出边/no-consume/引用 intent 任一）" % fid)
+
     # 目录版本一致：TRIGGERS.md version: 行在场；timeline triggers-catalog 事件若已记须同版本
     ver = ""
     if os.path.exists(TRIGGERS_MD):

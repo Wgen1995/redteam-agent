@@ -867,3 +867,5 @@
 
 ## 2026-09-27 批次 8 亲自执行开工（子代理通道退化，主代理直做）
 - T1 supersede 命令面（M2 收口）：add-finding --supersede=<FD-id> 一铸到位（同键校验前置+edges kind=supersedes+旧行 superseded+事件）｜T2 deferred 复活臂（M3 收口）：deferred 到 pending 须 reason 强制，activation 保留｜红 4/4 到 绿 4/4，全套绿+金样 54 面零漂移
+
+- T3 scope_asset 悬空（M5 收口）：写侧 add-cred 悬空拒收+图三命令 stderr 告警（dangling_creds 单源）｜T4 触发器第九类（M6 收口）：⑤机检事件驱动 kind port service 事实消费三分支，TRIGGERS v2 升 v3+两版本钉死测试有意升级｜红 4/4 复现悬空与零机检，全套 856 绿+金样零漂移

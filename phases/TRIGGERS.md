@@ -1,5 +1,5 @@
 # 触发器目录（版本化封闭表——trigger-audit 单源）
-version: triggers-v2
+version: triggers-v3
 
 | 事实类 | 触发 | 后续策略（必经评估） | 消费检查（trigger-audit） |
 |---|---|---|---|
@@ -10,7 +10,7 @@ version: triggers-v2
 | fact(unconsumed) | add-fact 落账 | 假设风暴五路（derived_from 强制出边或显式不消费） | converge-check 既有断言（不在本表重复） |
 | finding 证实 | add-finding 落账 | 同型横向排查（同类资产全量补格） | matrix-audit 抽查既有（不在本表重复） |
 | finding 证实（高危：impact∈{高,high,critical}） | add-finding 落账（fb72cd5） | 即时横向：④ 验收落账当刻即提同型横向排查 intent（不等下一轮风暴；正常打分晋升）+同类资产矩阵空格补格评估；session-viz 实时流置顶▲ | 横向 intent 引用来源 FD-id（title/detail 内联）或轮内披露 fact（target=lateral:<FD-id>）——④机检已兑现（trigger-audit，批5 T6） |
-| 端口/服务变更 | 复扫 diff | 指纹重测+关联 CVE 复查 | 复扫 evals（批次 6） |
+| 端口/服务变更 | 复扫 diff | 指纹重测+关联 CVE 复查 | ⑤机检（triggers-v3，批次 8）：add-fact 落账 kind∈{port,service} 须消费——derived_from 出边/no-consume 标记/引用该事实 target 的复测 intent 任一闭合；夹具预置（无事件）不入审计 |
 | 界外资产 | add-asset out_of_scope | 记录不测 | 免检 |
 
 > 审计规则（完备性 §3.1）：本目录覆盖全部事实类型；converge-check 的"未消费事实=0"

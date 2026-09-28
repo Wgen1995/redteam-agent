@@ -1174,9 +1174,12 @@ def _add_cred(goal_dir, rest):
         for a in acts:
             if a not in covered:
                 raise Reject("permitted_actions 未被对应 account-grant 行覆盖: " + a)
+    sa_val = args.get("scope-asset", "")
+    if sa_val and sa_val not in ctx.ids("assets.tsv"):
+        raise Reject("scope-asset 悬空引用（assets 无此行，图将静默丢边）: " + sa_val)
     rid = ctx.new_id("creds.tsv", "CRED")
     row = _row("creds.tsv", id=rid, kind=kind, role=args["role"], username_ref=args["username-ref"],
-               secret_ref=secret, scope_asset=args.get("scope-asset", ""), obtained_via_intent=ovi,
+               secret_ref=secret, scope_asset=sa_val, obtained_via_intent=ovi,
                parent_cred=parent, valid_from=vf, valid_until=vu, status="active",
                permitted_actions=args.get("permitted-actions", ""), note=_clean(args.get("note", "")),
                created=args["timestamp"], material=material)
