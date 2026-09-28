@@ -871,3 +871,5 @@
 - T3 scope_asset 悬空（M5 收口）：写侧 add-cred 悬空拒收+图三命令 stderr 告警（dangling_creds 单源）｜T4 触发器第九类（M6 收口）：⑤机检事件驱动 kind port service 事实消费三分支，TRIGGERS v2 升 v3+两版本钉死测试有意升级｜红 4/4 复现悬空与零机检，全套 856 绿+金样零漂移
 
 - T5 链式多请求重放（M12 收口）：tanyin-replay --chain=EV-a,EV-b 有序序列，逐步复用单报文全套执法（scope/占位符/同值性/matcher），env-diff 或 REJECT 即中止（fail-closed 有序性）+逐步 timeline 标记｜T6 卸载面（M15 收口）：tanyin-install uninstall 子命令——权威树整体移除+home 交战区默认保留（真实数据不随卸载销毁）+--purge-home 显式+幂等+install-log 落 uninstall 行｜红 4/4，全套 860 绿+金样零漂移
+
+- T8 Tier2 接线（G-43 收口）：hooks/simulate.py deny 比对升 enforce.deny_forms 单源（归一形+shell 内嵌 payload 与 Tier1 同执法），rm -r -f / 经 hook BLOCKED｜T9 write_all 门内化（G-44 收口）：cmd_sign 先落盘后签发——findings.json/sarif/report-*.md 全量入 pass.json artifacts 绑定（绑定即真值，篡改 lint 复检拒）+门 FAIL 删工件（门内零幸存）｜红 3/3，全套 864 绿+金样零漂移

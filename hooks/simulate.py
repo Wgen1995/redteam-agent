@@ -32,8 +32,8 @@ def main(argv):
     gd, host, cmd = argv[2], argv[4], argv[6:]
     if host not in ("dsh", "opencode", "codex"):
         return 2
-    joined = " ".join(cmd)
-    d = enforce.deny_hit(joined)
+    # 批次 8 T8（G-43）：deny_forms 单源接线——归一形/shell 内嵌 payload 与 Tier1 同执法
+    d = next((hit for hit in (enforce.deny_hit(f) for f in enforce.deny_forms(cmd)) if hit), None)
     if d:
         hook_block(gd, host, "hook-block cmd=" + cmd[0] + " deny=" + d)
         print("BLOCKED hook(%s) deny: %s" % (host, d))

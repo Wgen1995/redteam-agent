@@ -383,6 +383,17 @@ def sign_gate(goal_dir, ts, write_credential=True):
             if art and os.path.isfile(ap):
                 with open(ap, "rb") as f:
                     arts[art.replace(os.sep, "/")] = hashlib.sha256(f.read()).hexdigest()
+    # ⑤write_all 三工件入绑定（批次 8 T9/G-44）：cmd_sign 先落盘后签发——
+    # findings.json/sarif/report-*.md 与 draft 同门（绑定即真值，篡改 lint 复检拒）
+    _rdir = os.path.join(goal_dir, "report")
+    if os.path.isdir(_rdir):
+        for nm in sorted(os.listdir(_rdir)):
+            rel = "report/" + nm
+            p = os.path.join(_rdir, nm)
+            if nm in ("findings.json", "findings.sarif") or (
+                    nm.startswith("report-") and nm.endswith(".md")):
+                with open(p, "rb") as f:
+                    arts[rel] = hashlib.sha256(f.read()).hexdigest()
     rep = {"goal": os.path.basename(os.path.normpath(goal_dir)), "ts": ts, "gates": gates,
            "artifacts": arts}
     if write_credential:
@@ -450,14 +461,20 @@ def cmd_sign(goal_dir, ts):
     if not ts:
         sys.stderr.write("用法: sign --goal-dir D --timestamp T（issued_at 显式，禁墙钟）\n")
         return 2
+    from ledger import report_artifacts  # 批次 8 T9（G-44）：先落盘后签发——工件入绑定+门内复扫
+    written = list(report_artifacts.write_all(goal_dir, ts))
     rc, rep = sign_gate(goal_dir, ts, write_credential=True)
     print(json.dumps(rep, ensure_ascii=False, sort_keys=True, indent=1))
     if rc == 0:
         print("OK\t签发凭证 report/signed/pass.json（goal=%s ts=%s）"
               % (os.path.basename(os.path.normpath(goal_dir)), ts))
-        from ledger import report_artifacts
-        for p in report_artifacts.write_all(goal_dir, ts):
+        for p in written:
             print("OK\tartifact\t" + p)
+    else:
+        for p in written:
+            if os.path.isfile(p):
+                os.remove(p)
+                sys.stderr.write("WARN\t门 FAIL 已删工件\t%s\n" % p)
     return rc
 
 
