@@ -13,13 +13,13 @@ from ledger.core import ensure_utf8_stdio
 
 ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
-# 13 子命令（契约 09 §3 工具 12 行；init=T9，其余随批次 5 T10-T15 填充）
+# 14 子命令（契约 09 §3 工具 12 行+批次 8 T7 approvers 复核人名录；init=T9）
 SUBCOMMANDS = ("init", "source-register", "lint", "approve", "commit", "export",
                "match", "neighbors", "nday-match", "score", "promote", "demote",
-               "client-map")
+               "client-map", "approvers")
 
 USAGE = ("用法: tanyin-knowledge <子命令> --knowledge-dir <目录> [参数...]\n"
-         "子命令(13): " + " ".join(SUBCOMMANDS))
+         "子命令(14): " + " ".join(SUBCOMMANDS))
 
 
 def parse_kdir(rest):

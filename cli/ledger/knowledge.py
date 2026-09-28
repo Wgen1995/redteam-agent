@@ -26,7 +26,7 @@ DIRS = ("concepts", "precedents", "entities", "targets", "patterns/core",
         "sources", "staging/pages", "checklists")
 FILES = {"format_version": FORMAT_VERSION + "\n"}
 
-# R7 种子库只读纪律：写子命令守卫集（client-map 按 add 动词判——next/list 只读）
+# R7 种子库只读纪律：写子命令守卫集（client-map/approvers 按 add 动词判——next/list 只读）
 WRITE_SUBS = ("source-register", "approve", "commit", "promote", "demote")
 
 
@@ -60,7 +60,8 @@ def load_ctx(kdir):
 
 def guard_writable(kdir, sub, rest):
     """R7：种子库只读——写子命令指向仓库 knowledge/ 时 REJECT（exit 1）。"""
-    guarded = sub in WRITE_SUBS or (sub == "client-map" and "add" in rest)
+    guarded = sub in WRITE_SUBS or (sub == "client-map" and "add" in rest) \
+        or (sub == "approvers" and "add" in rest)
     if not guarded:
         return
     seed = repo_seed_root()
@@ -588,6 +589,10 @@ def approve(kdir, page, approver, ts, reject=False, reason=""):
         raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
     if not reject and not approver:
         raise KnowledgeError("--approver 必填（人工审批载体）")
+    # 批次 8 T7（M10）：身份锚——approver 必须是 approvers.tsv 名录成员
+    # （登记=approvers add 显式留痕；任意非空串放行=零身份锚反例收口）。
+    if not reject and not any(r[0] == approver for r in _approvers_rows(kdir)):
+        raise Reject("approver 不在名录（先 tanyin-knowledge approvers add 登记）: " + approver)
     path = os.path.join(kdir, "staging", "staging.tsv")
     rows = _read_tsv(path, STAGING_COLS)
     row = next((r for r in rows if r[1] == page), None)
@@ -1190,6 +1195,55 @@ def h_neighbors(ctx, rest):
 
 
 # ---------------------------------------------------------------------------
+# 批次 8 T7（M10）：复核身份锚——approvers.tsv 名录（运行时文件，两列；真值
+# 不进仓，模板 approvers.example.tsv）。approve 的 --approver 必须是名录成员
+# （任意非空串放行=零身份锚反例收口）；名录登记=approvers add（显式动作留痕）。
+# 执行者 deny-list 侧：log.md 无执行者身份列（13 表列集冻结同律），复核人≠执行者
+# 纪律维持 HUMAN-REVIEW 人审面（不代做）。
+# ---------------------------------------------------------------------------
+
+APPROVERS_COLS = ("approver", "added_at")
+
+
+def _approvers_rows(kdir):
+    return _read_tsv(os.path.join(kdir, "approvers.tsv"), APPROVERS_COLS)
+
+
+def approvers_add(kdir, approver, ts):
+    if not approver or len(approver) > 32:
+        raise Reject("approver 非空且≤32 字: %r" % (approver,))
+    if not ts or not TSV_TS.match(ts):
+        raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
+    rows = _approvers_rows(kdir)
+    if any(r[0] == approver for r in rows):
+        raise Reject("approver 已登记（一行一名）: " + approver)
+    rows.append([approver, ts])
+    _write_tsv(os.path.join(kdir, "approvers.tsv"), APPROVERS_COLS, rows)
+    _append_log(kdir, ts, "approvers-add", approver, "复核人名录登记（M10 身份锚）")
+    print("OK" + TAB + "approvers" + TAB + approver)
+    return 0
+
+
+def approvers_list(kdir):
+    rows = _approvers_rows(kdir)
+    print("#count=%d" % len(rows))
+    for r in rows:
+        print(TAB.join(str(c) for c in r))
+    return 0
+
+
+def h_approvers(ctx, rest):
+    kv, pos = parse_argv(rest)
+    if not pos:
+        raise KnowledgeError("approvers add|list  [add: --approver= --timestamp=]")
+    verb = pos[0]
+    if verb == "add":
+        return approvers_add(ctx, kv.get("approver", ""), kv.get("timestamp", ""))
+    if verb == "list":
+        return approvers_list(ctx)
+    raise KnowledgeError("approvers 未知动词: " + verb)
+
+
 # 批次 5 T15：CLIENT-NN 映射（R12）——运行时文件 client-map.tsv（四列；真值
 # 永不进仓，.gitignore 在册；仓库种子只带 client-map.example.tsv 模板）。
 # ---------------------------------------------------------------------------

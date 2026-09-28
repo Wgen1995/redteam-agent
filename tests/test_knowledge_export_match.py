@@ -55,8 +55,11 @@ class KnowledgeCase(unittest.TestCase):
         return self.d
 
     def make_clean(self):
-        """commit 流水线用：init+注册语源的干净运行时库。"""
+        """commit 流水线用：init+注册语源+复核人名录（批次 8 T7 身份锚）的干净库。"""
         self.assertEqual(kn("init", "--knowledge-dir=" + self.d).returncode, 0)
+        # 批次 8 T7：approve 须名录成员——预登记本套件使用的复核人
+        self.assertEqual(kn("approvers", "add", "--knowledge-dir=" + self.d,
+                            "--approver=评审人", "--timestamp=" + TS).returncode, 0)
         r = kn("source-register", "--knowledge-dir=" + self.d,
                "--path=" + os.path.join(FIX, "raw-sample.txt"),
                "--origin=internal", "--license=MIT", "--timestamp=" + TS)
@@ -111,10 +114,15 @@ class TestApproveCommit(KnowledgeCase):
         shutil.copyfile(os.path.join(FIX, "pages", "STG-0002.md"),
                         os.path.join(d, "staging", "pages", "STG-0002.md"))
         kn("lint", "--knowledge-dir=" + d, "--timestamp=" + TS)
+        # 批次 8 T7：名录外 approver=x 先被身份锚拒；改用名录内评审人验状态机门
         r = kn("approve", "--knowledge-dir=" + d, "--page=STG-0002",
                "--approver=x", "--timestamp=" + TS2)
         self.assertEqual(r.returncode, 1)
-        self.assertIn("状态机", r.stderr)
+        self.assertIn("名录", r.stderr)
+        r2 = kn("approve", "--knowledge-dir=" + d, "--page=STG-0002",
+                "--approver=评审人", "--timestamp=" + TS2)
+        self.assertEqual(r2.returncode, 1)
+        self.assertIn("状态机", r2.stderr)
 
     def test_commit_requires_approved(self):
         d = self.make_clean()
