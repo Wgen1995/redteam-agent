@@ -864,3 +864,6 @@
 - **Minor 另三笔**：a) HANDOFF:777 `<T12HASH>` 占位回填 **3d21747**（git log 实取=T12 commit，占位循环节补正先例同款）；c) RUNBOOK「GT 键口径」节补**检出资产键一律无端口形**一句（文档句=最小改动；实现剥端口涉 scorer 语法归一对面重写不取）；d) 计数叙述笔误不回改历史流水——快照行（出口表 #1）补注「唯一权威口径=748+89=837（79+7+3），历史流水叙述句保留原文」。
 - **全套**：基线（HEAD=8916800 处）837 OK 复跑实证（grep 摘要行在案）→评审收尾三笔代码后全套 **848=837+11 OK**（suite-exit=0；新增=test_guard_bare_int_review 4+test_goal_lock_append_review 3+test_evals_schema_rc2_review 4）+金样 54 面 PASS（golden-exit=0）零漂移（刷新名单=空，未动用）。
 - **纪律面**：panorama/ 与 /Users/wgen/Documents 零触碰（改动面仅 cli/ledger/{enforce,check_cmds,registry,evals_metrics}.py、cli/tanyin-{guard,canary,egress,replay,budgetctl}、tests/ 新增三测试件、docs/HANDOFF.md、install/KEY-MANAGEMENT.md、tests/range/RUNBOOK.md）；UTF-8 无 BOM+LF；[sys.executable, path] 载体；退出码契约 0/1/2 未动（rc=2 仅覆盖原裸 traceback 面）；13 表列集与 44 命令名零变更。
+
+## 2026-09-27 批次 8 亲自执行开工（子代理通道退化，主代理直做）
+- T1 supersede 命令面（M2 收口）：add-finding --supersede=<FD-id> 一铸到位（同键校验前置+edges kind=supersedes+旧行 superseded+事件）｜T2 deferred 复活臂（M3 收口）：deferred 到 pending 须 reason 强制，activation 保留｜红 4/4 到 绿 4/4，全套绿+金样 54 面零漂移

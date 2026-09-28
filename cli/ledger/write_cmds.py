@@ -443,7 +443,7 @@ _INTENT_ARROWS = {
     "blocked": {"active"},
     "done": set(),
     "rejected": set(),
-    "deferred": set(),
+    "deferred": {"pending"},  # 批次 8 T2：复活臂（M3）——延后不再永久滞留
 }
 
 
@@ -462,7 +462,7 @@ def _set_intent_status(goal_dir, rest):
     if st not in _INTENT_ARROWS.get(cur_st, set()):
         raise Reject("status 转移不沿状态机（%s→%s，§4.5）" % (cur_st, st))
     reason = args.get("reason", "")
-    if st in {"rejected", "blocked", "deferred"} and not reason:
+    if (st in {"rejected", "blocked", "deferred"} or (st == "pending" and cur_st == "deferred")) and not reason:
         raise Reject("status=%s 须附 reason（强制）" % st)
     activation = args.get("activation", "") or ctx.val("intents.tsv", cur, "activation")
     if st == "deferred" and not _activation_ok(activation):
@@ -529,7 +529,7 @@ def _add_finding(goal_dir, rest):
     args = _parse(rest, {"intent-id", "title", "confidence", "impact", "exploitation-status",
                          "auth-context", "scope-check", "description-brief", "reproducible-steps",
                          "affected-asset-id", "evidence-ids", "control-evidence-ids", "vuln-ref",
-                         "timestamp", "phase"})
+                         "supersede", "timestamp", "phase"})
     _req(args, ["intent-id", "title", "confidence", "impact", "exploitation-status", "scope-check",
                 "description-brief", "reproducible-steps", "affected-asset-id", "timestamp"])
     ctx = Ctx(goal_dir)
@@ -573,8 +573,14 @@ def _add_finding(goal_dir, rest):
         frow = ctx.latest("findings.tsv", fid)
         if ctx.val("findings.tsv", frow, "status") in ("", "active"):
             active_keys.add(ctx.val("findings.tsv", frow, "dedup_key"))
-    if dedup in active_keys:
-        raise Reject("dedup_key=%s 与既有 active 行同键——走 supersede-finding 合并" % dedup)
+    sup = args.get("supersede", "")
+    if sup:
+        t_chk = ctx.latest("findings.tsv", sup)
+        if t_chk is None or ctx.val("findings.tsv", t_chk, "status") not in ("", "active") or \
+                ctx.val("findings.tsv", t_chk, "dedup_key") != dedup:
+            raise Reject("supersede 目标须为同 dedup_key 的 active 行: " + sup)
+    if dedup in active_keys and not sup:
+        raise Reject("dedup_key=%s 与既有 active 行同键——--supersede=<FD-id> 铸新行合并，或改 vuln-ref/title" % dedup)
     rid = ctx.new_id("findings.tsv", "FD")
     card = "findings-cards/%s.md" % rid
     row = _row("findings.tsv", id=rid, intent_id=args["intent-id"], title=_clean(args["title"]),
@@ -586,7 +592,16 @@ def _add_finding(goal_dir, rest):
                card_path=card, status="active", created=args["timestamp"])
     ctx.append("findings.tsv", row)
     ctx.event(args["timestamp"], "add-finding " + rid, phase=args.get("phase", ""))
-    ctx.commit({"findings.tsv", "timeline.tsv"})
+    if sup:
+        erow = _row("edges.tsv", id=ctx.new_id("edges.tsv", "E"), kind="supersedes", source_id=sup,
+                    target_id=rid, provenance="supersede-finding", created=args["timestamp"])
+        t_row = list(ctx.latest("findings.tsv", sup))
+        t_row[ctx.idx("findings.tsv", "status")] = "superseded"
+        t_row[ctx.idx("findings.tsv", "created")] = args["timestamp"]
+        ctx.append("edges.tsv", erow)
+        ctx.append("findings.tsv", t_row)
+        ctx.event(args["timestamp"], "supersede-finding %s->%s" % (sup, rid), phase=args.get("phase", ""))
+    ctx.commit({"findings.tsv", "timeline.tsv"} | ({"edges.tsv"} if sup else set()))
     ctx.write_file(card, "---\nid: %s\ndedup_key: %s\nscope_check: %s\nexploitation_status: %s\n"
                          "confidence: %s\nimpact: %s\nauth_context: %s\nevidence_ids: [%s]\n"
                          "control_evidence_ids: [%s]\naffected_asset_id: %s\npair_group: \n---\n"
