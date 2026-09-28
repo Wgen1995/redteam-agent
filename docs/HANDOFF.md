@@ -869,3 +869,5 @@
 - T1 supersede 命令面（M2 收口）：add-finding --supersede=<FD-id> 一铸到位（同键校验前置+edges kind=supersedes+旧行 superseded+事件）｜T2 deferred 复活臂（M3 收口）：deferred 到 pending 须 reason 强制，activation 保留｜红 4/4 到 绿 4/4，全套绿+金样 54 面零漂移
 
 - T3 scope_asset 悬空（M5 收口）：写侧 add-cred 悬空拒收+图三命令 stderr 告警（dangling_creds 单源）｜T4 触发器第九类（M6 收口）：⑤机检事件驱动 kind port service 事实消费三分支，TRIGGERS v2 升 v3+两版本钉死测试有意升级｜红 4/4 复现悬空与零机检，全套 856 绿+金样零漂移
+
+- T5 链式多请求重放（M12 收口）：tanyin-replay --chain=EV-a,EV-b 有序序列，逐步复用单报文全套执法（scope/占位符/同值性/matcher），env-diff 或 REJECT 即中止（fail-closed 有序性）+逐步 timeline 标记｜T6 卸载面（M15 收口）：tanyin-install uninstall 子命令——权威树整体移除+home 交战区默认保留（真实数据不随卸载销毁）+--purge-home 显式+幂等+install-log 落 uninstall 行｜红 4/4，全套 860 绿+金样零漂移

@@ -236,6 +236,29 @@ def _log(home, results, ts):
             f.write("%s\t%s\trc=%d %s\n" % (ts, step, c, str(m).replace("\t", " ")))
 
 
+def uninstall(opts, purge_home=False):
+    """批次 8 T6（M15）：卸载面——只增不删混版收口。
+
+    删权威安装树（hooks/host-link 均在树内，一删全清）；home=交战区（真实数据）
+    默认保留，--purge-home 显式销毁；幂等（树缺=already-clean rc=0）；
+    install-log 落 uninstall 行（home 保留时）。"""
+    if not opts.get("timestamp"):
+        raise ValueError("timestamp 必填（显式 ISO8601；禁墙钟进账纪律）")
+    root, home = opts["install_root"], opts["home"]
+    existed = os.path.isdir(root)
+    if existed:
+        shutil.rmtree(root)
+    if purge_home and os.path.isdir(home):
+        shutil.rmtree(home)
+        return 0, ("uninstall ok（安装树+home 均移除——purge-home 显式）" if existed
+                   else "uninstall already-clean（仅 home 移除——purge-home 显式）")
+    if os.path.isdir(home):
+        _log(home, [("uninstall", 0,
+                     "install_root 移除=%s purge_home=%s" % (existed, purge_home))],
+             opts["timestamp"])
+    return (0, "uninstall ok（安装树移除，home 保留）") if existed else         (0, "uninstall already-clean（安装树不存在）")
+
+
 def refresh_cve(src, knowledge_dir, ts):
     """G-32 CVE 快照显式刷新通道（裁决 D）：src=URL 或 file:// 本地路径（离线等价）。
 

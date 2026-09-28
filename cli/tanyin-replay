@@ -114,6 +114,36 @@ def host_in_scope(gd, host):
 
 def cmd_replay(gd, rest):
     kv = _kv(rest)
+    # 批次 8 T5（M12）：链式多请求——--chain=EV-a,EV-b 有序序列；逐步复用单报文执法
+    # （scope/占位符/同值性/matcher 全套）；env-diff 或 REJECT 即中止（fail-closed 有序性）。
+    chain = kv.get("--chain", "")
+    if chain:
+        ids = [i.strip() for i in chain.split(",") if i.strip()]
+        if not ids or any(not i.startswith("EV-") for i in ids):
+            return usage()
+        results, aborted = [], False
+        for n, cid in enumerate(ids, 1):
+            step_rest = ["--id=" + cid] + [a for a in rest
+                                           if not a.startswith("--id=")
+                                           and not a.startswith("--chain=")]
+            rc = cmd_replay(gd, step_rest)
+            verdict = ""
+            d = os.path.join(gd, "replay", cid)
+            if os.path.isdir(d):
+                js = sorted((f for f in os.listdir(d) if f.endswith(".json")),
+                            key=lambda f: int(f.split(".")[0]))
+                if js:
+                    verdict = json.load(open(os.path.join(d, js[-1]), encoding="utf-8")).get("verdict", "")
+            results.append({"id": cid, "verdict": verdict, "rc": rc})
+            if rc != 0 or verdict == "env-diff":
+                aborted = True
+                append_tl(gd, kv.get("--timestamp", EPOCH),
+                          "replay-chain step=%d/%d id=%s verdict=%s aborted" % (n, len(ids), cid, verdict))
+                break
+            append_tl(gd, kv.get("--timestamp", EPOCH),
+                      "replay-chain step=%d/%d id=%s verdict=%s" % (n, len(ids), cid, verdict))
+        print(json.dumps({"chain": results, "aborted": aborted}, ensure_ascii=False, sort_keys=True))
+        return 1 if aborted else 0
     rid = kv.get("--id", "")
     if not rid or not rid.startswith("EV-"):
         return usage()

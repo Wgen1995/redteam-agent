@@ -34,6 +34,23 @@ def _refresh_cve_cli(rest):
 def main(argv):
     if argv and argv[0] == "refresh-cve":
         return _refresh_cve_cli(argv[1:])
+    if argv and argv[0] == "uninstall":
+        ap = argparse.ArgumentParser(prog="tanyin-install uninstall")
+        ap.add_argument("--install-root", default=None, help="待移除权威安装树")
+        ap.add_argument("--home", default=None, help="交战区 home（默认保留）")
+        ap.add_argument("--purge-home", action="store_true",
+                        help="显式销毁交战区 home（真实数据，慎用）")
+        ap.add_argument("--timestamp", default=None, help="显式 ISO8601（必填）")
+        a = ap.parse_args(argv[1:])
+        if not a.timestamp:
+            ap.error("--timestamp 必填（显式 ISO8601；禁墙钟进安装日志）")
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        o = {"install_root": a.install_root or install_core.DEFAULT_INSTALL_ROOT_expanded(),
+             "home": a.home or install_core.DEFAULT_HOME_expanded(),
+             "repo_root": repo_root, "timestamp": a.timestamp}
+        rc, msg = install_core.uninstall(o, purge_home=a.purge_home)
+        print(msg)
+        return rc
     ap = argparse.ArgumentParser(prog="tanyin-install")
     ap.add_argument("--install-root", default=None,
                     help="权威安装树（缺省 ~/.local/share/tanyin）")
