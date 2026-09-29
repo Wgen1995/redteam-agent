@@ -92,11 +92,20 @@ def _canon_host(netloc, aliases):
 
 
 def _canon_endpoint(u, aliases):
-    """全键归一：先 _norm_endpoint 语法归一，host 段再走 _canon_host 语义统一（T16）。"""
+    """全键归一 v3（批次 9 三轮战 G-r4 归因收口）：host 段走 _canon_host 语义统一；
+    **query 整体剥离**——GT 键的参数名/值/编码是布靶者书写形，诚实黑盒战士的探测
+    参数不可预知且种子按路径前缀匹配行为 ⇒ 检出键=host+path。battle-2 作者读 GT
+    对齐键形掩盖了该缺陷，独立战士（三轮）以 14 枚行为命中被键形误罚暴露之。
+    路径尾段资源 id（/invoice/2 vs /invoice/88）残留同型差异=v4 候选（数字化归一）。
+    query 保留于 GT 文档面（复现提示），不参与匹配。"""
     k = _norm_endpoint(u)
     i = k.find("/")
     host = k if i < 0 else k[:i]
-    return _canon_host(host, aliases) + ("" if i < 0 else k[i:])
+    rest = "" if i < 0 else k[i:]
+    qi = rest.find("?")
+    if qi >= 0:                                   # v3：query 剥离（探测形不入键）
+        rest = rest[:qi]
+    return _canon_host(host, aliases) + rest
 
 
 def score(rows, cards, gt, host_aliases=None):

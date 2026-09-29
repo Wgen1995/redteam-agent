@@ -13,8 +13,11 @@
 
 ## GT 键口径与资产命名约定（开打前必读——首战 0/20 键失配教训）
 
-> **批次 9 扩编（20→50）在案**：八新类（lfi/rfi/jwt/ratelimit/graphql/xxe/csrf/userenum）
-> +存量加密；post_auth=10；GT v2 svc-* 无端口键形+全量 host_aliases（迁移 2026-09-29）。
+> **键形 v3（批次 9 三轮战收口）**：GT 键=host+path（query 整体剥离——参数名/值/编码
+> 是布靶书写形，诚实战士探测参数不可预知且种子按路径前缀匹配；三轮独立战士 14 枚
+> 行为命中被 v2 query 精确匹配误罚，`test_scorer_ignores_query_form` 在案）。GT 条目
+> 的 query 串保留作文档面复现提示，不参与匹配。路径尾段资源 id 同型差异=v4 候选。
+> **批次 9 扩编（20→50）在案**：八新类（lfi/rfi/jwt/ratelimit/graphql/xxe/csrf/userenum）+存量加密；post_auth=10；GT v2 svc-* 无端口键形+全量 host_aliases（迁移 2026-09-29）。
 > **认证态通道修复（dict §二）**：svc-login 弱口令成功响应带 X-Auth-Token 头（行为
 > 差分通道）；svc-admin /login（admin/admin123）与 svc-billing /login（alice/alice123）
 > POST 面直接发 token——post-auth 面 10 枚从「结构性不可达」转为「链路可达」。

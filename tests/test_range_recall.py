@@ -187,6 +187,22 @@ class TestScorer(Base):
         self.assertAlmostEqual(recall, 3 / 4)
         self.assertEqual(missing, ["fx-miss-1"])       # MISSING 含未命中 id
 
+    def test_scorer_ignores_query_form(self):
+        """批次 9 三轮战教训（G-r4 归因 14 枚）：GT 键含 query（参数名/值/编码）而
+        诚实黑盒战士的探测参数不可预知（种子按路径前缀匹配行为）——键形 v3=
+        host+path，query 整体剥离（RUNBOOK v3 口径；battle-2 作者读 GT 对齐掩盖）。
+        路径段中的资源 id（/invoice/2 vs /invoice/88）为同型残留，本测试不覆盖
+        （v4 候选：路径尾段数字化归一）。"""
+        self._mint()
+        rows, cards = self._load()
+        gt_q = [dict(e) for e in GT_FIX]
+        gt_q[0]["endpoint"] = "http://app.intranet:8000/a?page=..%2F..%2Fx"
+        gt_q[1]["endpoint"] = "http://app.intranet:8000/b?tpl=%7B%7B7*7%7D%7D"
+        gt_q[2]["endpoint"] = "http://app.intranet:8000/c?user_id=101"
+        recall, missing = eval_range_recall.score(rows, cards, gt_q)
+        self.assertAlmostEqual(recall, 3 / 4, "query 形差不得惩罚 host+path 命中")
+        self.assertEqual(missing, ["fx-miss-1"])
+
     def test_post_auth_requires_authz_chain(self):
         """命中 marker 但无 authz 链的 post_auth 条目不计命中（负向）。"""
         self._mint(post_auth_chain=False)

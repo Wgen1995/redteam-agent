@@ -914,3 +914,14 @@
 - **promote 四门槛活体实证**：PT-0001 promote=REJECT（②跨目标有效缺：引用先例 client 去重 1 个=两战例同 CLIENT-03；③人工审批缺：无 approve for=promote 行）——learned→core 须跨客户复现+真人签发，本战如实不越；缺口即下轮多客户战例采集动机。
 - **诚实披露**：执行者自批仅 STG→formal 档（批次 5 先例口径+复核人名录在册）；core 晋级=人审面（10 页人审清单的一部分，持续提醒）。
 - **口径**：全套 876 绿+种子库 lint PASS n=14（回迁后仓内只读面复验）；G-50（三轮作者污染标注）在案。
+
+
+## 2026-09-29 批次 9 T3：靶场三轮战记（G-r4·独立子代理在环·基线 v3·键形 v3 收口）
+- **编制**：独立子代理战士（fresh context，G-50 作者污染缓解落地——仅授方法论面：端点字典 v2+两轮战记+RUNBOOK+CLI 坑簿；GT/seed 零读）；主代理持评分器与核验，战斗期仓库冻结。指挥链实录：马拉松侦察回合两轮催战令排队未达→**interrupt 外科中断+记账总攻令重发**→34 枚三连即刻入账（send_message 语义=回合边界投递，长回合须 interrupt 破局——子代理指挥新知 G-51）。
+- **战果（账本全核验）**：P0-P4 五门全 PASS（3/3/2/1/5 asserts）；facts=E-index=findings=**34**；42 资产（根域+8 服务+33 endpoint 键）；75 边（parent 41+消费 34）；矩阵 12 格全 intent 锚；**跳板重放 34/34 reproduced→VERIFIED×34**；P5 lint 13/15（authorization=诚实人门 FAIL；burp_pasteable=新缝⑦：parse_yaml 前滤空行致 POST 体卡 ④ 规则不可达）。仓净 0 行/容器 0 残留实测。
+- **基线 v3（双轨如实）**：**官方 v2 规则=0.40（20/50）**；**键形 v3=0.60（30/50）**；行为真值=34/50=0.68（34 标记全重放验证+host+path 全对齐）。三轮 vs 二轮作者：v3 键形下 0.60 vs 0.28——**独立战士凭方法论面反超作者 2.1 倍=知识飞轮转移性实证**（首战 40%→二轮 70%（20 面）→三轮 68%（50 面），面数翻倍半下保持）。
+- **键形 v3 收口（本轮核心产出）**：逐键归因=34 枚行为命中中 14 枚被 v2 query 精确匹配误罚（参数名 url/u、值 evil.example/evil.example/、路径 id invoice/2/88、参数缺省 cors-debug/origin 等——诚实黑盒探测参数不可预知，种子按路径前缀匹配）；battle-2 作者读 GT 对齐键形掩盖该缺陷，独立战士暴露之。TDD：test_scorer_ignores_query_form 红→绿（12 测全过）；_canon_endpoint query 剥离（GT query 串保留文档面）；RUNBOOK v3 口径回注；路径尾段资源 id 同型差异=v4 候选登记。全套 877 绿（876+1）。
+- **残余缺口归因（20 MISSING）**：①post_auth CRED 链 4 枚（idor-01/02/03/04 行为已检出+token 已获，但战士不知 scorer 须 auth_context→CRED 绑定——**简报缺口非战士漏**，四轮简报补 add-cred/auth_context 教学）；②诚实漏检 16 面（RFI/JWT×2/RATE-02/GRAPHQL-02/XXE/CSRF×2/USERENUM/ROLE×2/HAUTH×3/INFOLEAK-02/CMDI-02——POST 面与连击行为类为主，字典 v3 候选输入）。
+- **飞轮回写**：PR-0005 三轮先例（client=CLIENT-03 同靶场如实，promote 门槛②跨客户缺口维持——多客户战例采集=下轮动机）+PT-0001/PT-0002 二次引用加固（复现计数 3 先例）。
+- **工具缝补录**：⑦burp_pasteable×parse_yaml 空行前滤（POST 体 EV 卡不可达）；G-51 子代理指挥律（长回合 interrupt 破局）；简报缺口=post-auth CRED 绑定教学缺失（battle-4 简报补）。
+- **纪律面**：战士 GT/seed 打前零读+scorer 未跑（留主代理）；主代理评分在战士交付后；仓外交战区 G-r4；时间戳全字面量。
