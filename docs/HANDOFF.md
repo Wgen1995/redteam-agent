@@ -907,3 +907,10 @@
 - **配套勘误**：endpoint-dict-v2 §三键口径勘误（host:port 形→svc-* 无端口 GT v2 形，初版误载）；RUNBOOK 头部扩编注记（通道+限流观测口径）。
 - **口径**：全套 876 绿（869+7）+树净；GT distribution 钉更新=22 类字典（含 upload）；marker 一致性（seed 恰现一次）保持。
 - **下轮衔接（阶段 4 前瞻）**：三轮战=G-r4 对 50 靶点（认证链开面后 post-auth 可达性验证+八新类字典实效）；**G-50 诚实披露**：扩编作者=未来在环战士本人——三轮战绩解读须带「作者污染」标注（方法论面消费 dict 不读 GT 的纪律不变，但种子设计意图在场）；可选缓解=用户另派战士或换模型在环。
+
+
+## 2026-09-29 批次 9 T2：知识飞轮喂养首战/二轮战例（阶段 4 收口）
+- **管道（R7 工作副本真 CLI 亲跑）**：source-register KP-0010（语源锚=docs/HANDOFF.md 战例台账，origin=internal，sha256 在册）→ 4 STG 页（PT-0001 二级路径两段式探测/PT-0002 认证态获取四策——pattern 双页；PR-0003 首战先例/PR-0004 二轮先例——precedent 双页，client=CLIENT-03，applied_patterns 引用闭合）→ lint PASS n=14 → approvers 名录+执行者入册（b8 T7 口径）→ approve ×4 → commit ×4（STG→PT/PR 重号迁移+index/overview 重生成）→ 产物九件回迁种子库（git 面，R7 纪律：CLI 写只在工作副本）。
+- **promote 四门槛活体实证**：PT-0001 promote=REJECT（②跨目标有效缺：引用先例 client 去重 1 个=两战例同 CLIENT-03；③人工审批缺：无 approve for=promote 行）——learned→core 须跨客户复现+真人签发，本战如实不越；缺口即下轮多客户战例采集动机。
+- **诚实披露**：执行者自批仅 STG→formal 档（批次 5 先例口径+复核人名录在册）；core 晋级=人审面（10 页人审清单的一部分，持续提醒）。
+- **口径**：全套 876 绿+种子库 lint PASS n=14（回迁后仓内只读面复验）；G-50（三轮作者污染标注）在案。

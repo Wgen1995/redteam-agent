@@ -8,3 +8,4 @@ KP-0006	vulnclaw	.research/repos/VulnClaw/LICENSE	798df5f8d0f84b2e5805c53b2ecdaa
 KP-0007	bughunter	.research/repos/bughunter/	-	MIT 候选（执行期核验）	待补：hunt-* 技法语料缺素材——仓库执行期 clone 后 source-register 重登（G-35 降级登记，不阻塞）	2026-09-24T09:20:00Z
 KP-0008	threatswarm	.research/repos/threatswarm/	-	MIT 候选（执行期核验）	待补：27 agent 语料缺素材——同上降级登记（G-35）	2026-09-24T09:20:00Z
 KP-0009	cep	.research/repos/cep/	-	MIT 候选（执行期核验）	待补：ROE amendments/report-template.html 缺素材——scope 模板 business 页与批次 6 报告底版随之延后（G-35）	2026-09-24T09:20:00Z
+KP-0010	internal	/Users/wgen/redteam-agent/docs/HANDOFF.md	30f5a53bc1c68cbdd702114594a1c1a37398da42cc84f816abccd30f5a56972d	内部授权（靶场在环战例台账）	靶场首战+二轮战例语源（HANDOFF 705-717/二轮战记节）；衍生 PT-0001/PT-0002+PR-0003/PR-0004	2026-09-29T10:00:00Z
