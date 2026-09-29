@@ -879,3 +879,7 @@
 - T10 init 基线缺省（G-45 收口）：init 幂等拷入 methodology/*.tsv（k1-baseline/k1-wstg-map，不覆盖本地覆写）——K1 缺基线 exit 2 根因面收口｜T10b 退出码分型样例（M1 尾）：tanyin-replay 卡片文件不可读 env 域升 exit 2（文件缺=环境非门禁）｜红 3/3，全套 869 绿+金样零漂移
 
 - T11 契约集中勘误（b8 收口注）：02a 批次 8 勘误块九条（T1-T10 全命令面）+schema_version 维持 2 裁决（零列集变更，升 3 推迟至首个真实变更——微版本纪律）；04=G-4 RESTART 定标回注+triggers-v3；09=14 子命令/uninstall/--chain 面；11=G-43 Tier2 单源闭合+env 分型；13=G-44 write_all 门内化；14=M10 名录+G-45 init 基线；README 索引；PROTOCOL §2 G-37 系数 1.116 回写（估算式冻结不动，余量口径按比值复核）｜全套 869 绿+金样零漂移
+
+## 批次 8 收口快照（T12）
+- 12/12 任务完成：九遗留收口 8（M2/M3/M5/M6/M10/M12/M15/G-43/G-44/G-45）+M1 尾样例+维持 2（M13 钥仪式/M9 真人）；G-4/G-37 定标回写；schema_version 维持 2 裁决（G-48）；新探知 G-47/G-48/G-49 入册 docs/design/2026-09-27-b8-discovery-notes.md
+- 口径：全套 869 绿（848+21）+金样 54 面零漂移+树净；提交链 15529d8→a8f3e3b 七连推送
