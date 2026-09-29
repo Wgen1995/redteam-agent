@@ -335,6 +335,16 @@ def lint_page(kdir, rel, fm, fm_raw, body, vocab, vkeys, source_ids):
     if kind not in PAGE_SCHEMAS:
         return ["kind 不在六类: %r" % (kind,)]
     _dir, required, enums = PAGE_SCHEMAS[kind]
+    # 批次 10 T8（P2#14，RT-0001 writeback②）：飞轮归因抽样核验步——kind=retro 且
+    # missed 非空时，自述归因不得未核即入册（PR-0005 带错喂养教训）：必带
+    # attribution_check ∈ {verified,sampled,pending-human}；pending-human=人工复核项。
+    if kind == "retro" and str(fm.get("missed", "")).strip():
+        ac = str(fm.get("attribution_check", ""))
+        if not ac:
+            problems.append("missed 非空而缺 attribution_check（归因核验步：verified/"
+                            "sampled/pending-human）")
+        elif ac not in ("verified", "sampled", "pending-human"):
+            problems.append("attribution_check 枚举越界: %r（verified/sampled/pending-human）" % ac)
     for f in required:
         if f not in fm or fm[f] in ("", [], None):
             problems.append("缺必填字段 %s" % f)

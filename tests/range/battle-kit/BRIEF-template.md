@@ -46,3 +46,6 @@
 1. 波次：端口指纹→根路径→字典八族全喷（GET+POST）→参数差分→认证四策全量（每服务 /login POST 面独立喷洒！弱口令清单+行为差分）→post-auth 面（token 到手后）→新类专探（JWT none/GraphQL 内省/XXE/CSRF/限流连击）。
 2. 每命中即记账（fact+evidence+finding 三连），别攒批。
 3. 探针脚本编号 /tmp/probe1.py 起，docker cp 后 exec，结果 JSON 落 /tmp/tanyin-range-battle/。
+4. **战报口径律（八专家 P2#15）**：任何对照结论一律同子集口径（如三轮战 17/20=0.85 vs 二轮 14/20=0.70=+21%）——禁分母置换表述（「2.1 倍」类）；跨战比较须声明独立性分层（行为面实测 vs 键形对齐面计分）。
+5. **G-51 时序留存（八专家 P2#16）**：若经总控 send_message/interrupt 协同，落 `attrib/send-message-timeline.md` 摘录（时点+方向+是否打断生效）与读取路径自报清单（读过哪些 GT 面/字典——GT 零读主张的技术凭证）。
+6. **RATE 类重放自包含（八专家 P2#3）**：svc-login 限流已改 per-(route,method)（跨端点串扰已修，活体验证 2026-09-30）；RATE-01/02 的 EV 卡须在 `preconditions` 写明重放前置序列（如「本卡前置：同路由 10 连击」）——重放器不自动补连击，无前置说明=not-reproduced 属预期。

@@ -949,3 +949,16 @@
 - **战果金样收编 CI（automation P2/P3）**：G-r4 完整会话（勘误后快照）入 tests/fixtures/（1.0M）+test_gold_g_r4_b10 双钉（recall=0.56/missing=22/重放验证 32+blocked 含 0020/0029）——scorer 任何回归字节级即红；M09 重定标（title/desc/baseline=0.56，废 1.0 旧门）；ci.yml 增 E0 selfcheck 步；RUNBOOK §6 判定命令显式 --baseline=0.56+S16 teardown 行。
 - **battle-kit 弹药升级（battle-4 预置）**：boot 模板补八服务单标签 include（缝⑩联动）+egress compile 显式 --timestamp；brief 模板三则——工件自动回填（废 touch 指引）/post-auth 三步记账教学（add-cred→auth_context→尾段 id 口径，三轮 4 枚 idor 卡分教训）/Host 用 DNS 名勿硬编码容器 IP（缝⑫）。
 - 验证：**全套 896 测绿**（884+12 新）；compose down 0 残留；金样未受活体验证污染（重放在 /tmp 拷贝会话执行）。
+
+
+## 2026-09-30 批次 10 第二批：P2#9/#10/#13b/#15 清账
+- **P2#9 timeline 铸造单源（arch，TDD 4 测）**：新模块 `ledger/timeline.py` 双入口（`chained_row` 纯链算+`append_tl_locked` 锁包写）；五工具（guard/canary/budgetctl/replay/egress）本地 append_tl 复制退役为 partial/lambda 绑定；**EPOCH/墙钟缺省全数退役**（11 命令面 --timestamp 必填）；canary probe 内部 guard 调用透传时间戳；guard `_split_front` 收编 --timestamp 前置参；测试面三代 codemod+手工归位（argv 列表 ast 定位、-- 分隔前置位、phases 只读面豁免）。
+- **P2#10 契约链悬空收口（arch，TDD 2 测）**：`shared/LEDGER.md` 实体化为指针页（附录 A 底稿=02a 推导稿；机器面单源=registry.py KNOWN_COMMANDS；漂移裁决律 registry→02a→09）——12 处悬空引用全数可解析；**02a 去 -draft 后缀+终审升格=人工项**。
+- **P2#13b dict §四类目口径勘误（doc）**：CORS-01 记配置缺陷非可利用越权；CSRF 两靶重标 broken-access-control（CWE-306；POST+会话形=battle-5）；recall 口径=M09 金样 0.56+双轨化归 battle-5；类目计数改「实存 N 类」动态对账。
+- **P2#15 对照口径律（ai-agent）**：战报一律同子集口径（17/20=0.85 vs 14/20=0.70=+21%，禁分母置换表述），独立性分层声明——HANDOFF 批次 9+dict §四已落，战报模板条款待 battle-4 brief（下批）。
+- 验证：全套 **900 测绿**（896+4 新）；提交 `0e4b568`（T5）。
+
+- **P2#3 靶面写实（渗透，活体验证）**：svc-login 类级全局计数器→per-(route,method) 字典计数——跨端点串扰根除（活体：OTP 10 击后 /login 首击=纯 denied；RATE-01 计数=13 精确对齐本路由击数；--build 重建后验）；源级契约钉 2 测+brief 增「RATE 类重放前置序列」条款（重放器不自动补连击）。
+- **P2#14 飞轮归因核验门（渗透+RT-0001 writeback②，TDD 3 测）**：tanyin-knowledge lint 对 kind=retro 且 missed 非空者强制 attribution_check ∈ {verified,sampled,pending-human}——自述归因未核不得入册（PR-0005 带错喂养通道关闭）；pending-human=人工复核位；RT-0001 自身补 attribution_check: verified（lint n=16 PASS）。
+- **P2#16 G-51 时序留存条款**：brief 模板打法第 5 条（attrib/send-message-timeline.md 摘录+读取路径自报清单=GT 零读技术凭证）。
+- 验证：全套 **907 测绿**（900+7 新：contract-chain 2/rate-isolation 2/retro-attribution 3）；compose down 0 残留。

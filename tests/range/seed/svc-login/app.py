@@ -21,19 +21,26 @@ class H(BaseHTTPRequestHandler):
     def _authed(self):
         return self.headers.get("X-Auth-Token") == TOKEN
 
-    attempts = 0   # 登录尝试计数（限流缺失观测面）
+    # 批次 10（P2#3，渗透专家）：类级全局计数器跨端点串扰（一端连击另一端出 marker，
+    # 且重放非自包含=残留计数器假象）——改 per-(route,method) 计数。
+    _rate = {}   # {("/login","POST"): n, ("/api/otp","GET"): n}
+
+    def _bump(self, route):
+        key = (route, self.command)
+        H._rate[key] = H._rate.get(key, 0) + 1
+        return H._rate[key]
 
     def do_POST(self):
         n = int(self.headers.get("Content-Length") or 0)
         body = self.rfile.read(n).decode("utf-8", "replace")
-        H.attempts += 1
+        attempts = self._bump("/login")
         # 弱口令路由：admin/admin123 合成凭据放行（成功=marker+X-Auth-Token 发放=认证态通道）
         if "user=admin" in body and "pass=admin123" in body:
             self._send(200, "<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>",
                        extra=[("X-Auth-Token", TOKEN)])
-        elif H.attempts > 10:
+        elif attempts > 10:
             # 11 连击仍受理=无限流（行为差分观测面，dict §二）
-            self._send(403, "<html>denied GTRATE-01 synthetic no rate limit after %d attempts</html>" % H.attempts)
+            self._send(403, "<html>denied GTRATE-01 synthetic no rate limit after %d attempts</html>" % attempts)
         else:
             self._send(403, "<html>denied</html>")
 
@@ -45,10 +52,10 @@ class H(BaseHTTPRequestHandler):
             else:
                 self._send(404, "not found")
         elif self.path.startswith("/api/otp"):
-            # OTP 路由（限流缺失通道二：连击观测）
-            H.attempts += 1
-            if H.attempts > 10:
-                self._send(200, "<html>GTRATE-02 synthetic otp no rate limit after %d tries</html>" % H.attempts)
+            # OTP 路由（限流缺失通道二：连击观测；per-route 计数=批次 10 P2#3）
+            tries = self._bump("/api/otp")
+            if tries > 10:
+                self._send(200, "<html>GTRATE-02 synthetic otp no rate limit after %d tries</html>" % tries)
             else:
                 self._send(200, "<html>otp checked</html>")
         else:

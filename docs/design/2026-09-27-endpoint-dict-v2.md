@@ -41,3 +41,4 @@ GT 键=svc-*/path?query 无端口 canonical 形（127.0.0.1:800x 历史映射形
 - 现存 8 服务类保持（xss/ssrf/cors/deser/infoleak/weakpass/sqli/idor 各类加密度）。
 - 新类候选：文件包含（LFI/RFI）、开放重定向、JWT 弱验、速率限制缺失、GraphQL 内省、XXE、CSRF、路径穿越——每类 2-4 端点，二级路径占比≥40%（对齐本字典一节）。
 - 认证态类靶（weakpass 等）必配行为差分通道（非固定回显）。
+- **批次 10 勘误（八专家 P2#2/#13 口径同步）**：①GT 类目口径——CORS-01 组合（ACAO:\*+Allow-Credentials）真实浏览器不可利用（通配源拒收凭据），记类目=「配置缺陷」非可利用越权；两枚 CSRF 靶无会话前提，机制上=CWE-306（缺功能级访问控制），GT 类目重标 broken-access-control（升级为 POST+会话形=battle-5 待办，此前不按 csrf 计）；②recall 口径——GT marker 召回≠利用确认（82% 检出凭静态文案），M09=金样 G-r4 精度门后 0.56（tests/test_gold_g_r4_b10.py 在钉），双轨化（beacon/行为差分）归 battle-5；③类目计数措辞一律「实存 N 类」动态对账（禁写死总数）。
