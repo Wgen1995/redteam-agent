@@ -27,9 +27,14 @@
 3. 会话升级链：匿名可达端点中找 token 泄露（/debug/env 类）→凭据链推导（CRED 行+scope_asset 绑定）。
 4. 每获得凭据=P0 矩阵重映射（触发器 ①/② 联动：资产/凭据落账即子矩阵行）。
 
-## 三、GT 键口径（battle-1 T16 已修，扩编种子必守）
+## 三、GT 键口径（battle-1 T16 教训；GT v2 迁移+批次 9 扩编已落地）
 
-种子端点键=host:port 全量规范形（svc DNS 名+端口），scorer _norm_endpoint 归一（host_aliases 传参）；新种子设计时 GT 键与资产命名同源（add-asset value=svc 名:端口）。
+GT 键=svc-*/path?query 无端口 canonical 形（127.0.0.1:800x 历史映射形一律降级 host_aliases
+显式别名；scorer 只归语法禁猜语义）；在环资产命名与 GT 键同源（endpoint 型资产 value=canonical
+键形，parent 边挂服务资产——二轮 G-r3 实证口径）。
+
+> 勘误（2026-09-29）：本节初版误载「host:port 全量规范形」——以本口径为准（GT v2
+> format_version=2 迁移在案，tests/range/ground-truth.json）。
 
 ## 四、扩编 20→50 面指引
 

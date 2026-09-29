@@ -897,3 +897,13 @@
 - **lint 终态 13/15 PASS**：authorization FAIL=诚实人门（授权书 AUTH-RANGE pdf 人件+窗口自设过短自误+approvals 无 approved 行——三项全如实，P5.5 不伪造）；dual_fingerprint FAIL=**工具缝⑥：合并型 finding（同资产同类多 EV）poc 单录转抄 vs 全 EV raw_request 核验矛盾**（draft_byte_equal 禁手改→死锁；endpoint 级单 EV findings 不受影响）。
 - **工具缝补录（battle-2）**：⑤trigger-audit 子命令不在 tanyin-ledger（phases 面已内嵌则 CLI 面缺文档/入口，TBC 下批核对）；⑥合并 finding 双指纹矛盾（如上）；⑦matrix-set --intent-id 缺省不报错→矩阵锚静默断裂（render 才爆），建议 matrix-set 必填或 warn；⑧add-evidence 工件缺省空哈希与后续 touch 空文件等值（excerpt-only 证据语义在案但未显式披露列）；⑨render --all --out 相对 CWD 落盘（battle-1 缝④复发实例，已清污染 git status 复零）。
 - **纪律面**：GT/seed 打开前零读（scorer 出分后归因性打开并迁移=评估侧修复，迁移脚本 /tmp/tanyin-range-battle/gt-migrate.py 留档）；panorama//Documents 零触碰；真仓 report/ 污染即清（git status 复零实测）；compose down 收尾。
+
+
+## 2026-09-29 批次 9 T1：靶场扩编 20→50（端点字典 v2 消费·阶段 3）
+- **TDD**：红=tests/test_range_expansion_b9.py 七断言（50 条/svc-* v2 键形/id+marker 唯一/八新类+存量类全覆盖/二级路径占比≥40%/post_auth 带 role/别名全服务）2 失败起；绿=扩编落地后 7/7+test_range_recall 更钉（20→50/分布 14→22 类含 upload/9→18 测）全过。
+- **种子面**：8 服务 11 处补丁（svc-* /app.py elif 插枝+login do_POST 重写+dashboard/files 增 do_POST）：新 30 靶点=八新类（lfi×2/rfi×1/jwt×2/ratelimit×2/graphql×2/xxe×1/csrf×2/userenum×1）+存量加密（xss+2/ssrf+1/cors+1/redir+2/deser+1/traversal+1/infoleak+2/sqli 类保持/idor+2/role+1/hauth+1/upload×1）；二级路径占比 56%（28/50）。
+- **认证态通道修复（dict §二 首战 5 不可达根因收口）**：login 成功=X-Auth-Token 头（行为差分）+admin/billing POST /login 发 token——post-auth 10 枚转链路可达；限流类=>10 连击响应体出 marker（行为差分通道）。
+- **活体验证**：compose up --build 后 attack-noop 跳板 34 项抽探全命中（16 GET 新面+JWT none+CORS 反射+admin/billing 认证链 5 面+weakpass token 头+11 连击限流+userenum 差分+XXE/upload POST 面）；billing charges 补丁残留双发 bug 修正后 marker 一致性测试过；compose down 零残留。
+- **配套勘误**：endpoint-dict-v2 §三键口径勘误（host:port 形→svc-* 无端口 GT v2 形，初版误载）；RUNBOOK 头部扩编注记（通道+限流观测口径）。
+- **口径**：全套 876 绿（869+7）+树净；GT distribution 钉更新=22 类字典（含 upload）；marker 一致性（seed 恰现一次）保持。
+- **下轮衔接（阶段 4 前瞻）**：三轮战=G-r4 对 50 靶点（认证链开面后 post-auth 可达性验证+八新类字典实效）；**G-50 诚实披露**：扩编作者=未来在环战士本人——三轮战绩解读须带「作者污染」标注（方法论面消费 dict 不读 GT 的纪律不变，但种子设计意图在场）；可选缓解=用户另派战士或换模型在环。

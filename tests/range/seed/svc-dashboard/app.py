@@ -21,12 +21,26 @@ class H(BaseHTTPRequestHandler):
     def _authed(self):
         return self.headers.get("X-Auth-Token") == TOKEN
 
+    def do_POST(self):
+        n = int(self.headers.get("Content-Length") or 0)
+        body = self.rfile.read(n).decode("utf-8", "replace")
+        if self.path.startswith("/api/xml") and ("<!ENTITY" in body or "SYSTEM" in body):
+            # XML API（外部实体接受·XXE 合成回显）
+            self._send(200, "<html>GTXXE-01 synthetic external entity resolved: file content</html>")
+        else:
+            self._send(400, "bad request")
+
     def do_GET(self):
         if self.path.startswith("/report"):            # 报表路由（模板渲染回显）
             name = self.path.split("name=", 1)[-1].split("&")[0]
             self._send(200, "<html>report GTSSTI-01 synthetic ssti render %s</html>" % name)
         elif self.path.startswith("/ping"):            # 探活路由（命令执行·合成输出）
             self._send(200, "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>")
+        elif self.path.startswith("/render"):            # 渲染路由（二级路径·模板注入）
+            tp = self.path.split("tpl=", 1)[-1].split("&")[0]
+            self._send(200, "<html>render GTSSTI-02 synthetic ssti render %s</html>" % tp)
+        elif self.path.startswith("/diag"):              # 诊断路由（命令执行·合成输出）
+            self._send(200, "<html>diag GTCMDI-02 synthetic cmd output: uptime 3 days</html>")
         else:
             self._send(404, "not found")
 

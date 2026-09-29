@@ -28,6 +28,16 @@ class H(BaseHTTPRequestHandler):
                        extra=[("Location", to)])
         elif self.path.startswith("/debug/env"):       # 调试路由（环境信息泄露·合成脱敏值）
             self._send(200, "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>")
+        elif self.path.startswith("/jwt/verify"):        # JWT 校验路由（过期/none 接受）
+            self._send(200, "<html>GTJWT-02 synthetic expired token accepted</html>")
+        elif self.path.startswith("/page"):              # 页面路由（二级路径·本地包含）
+            self._send(200, "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>")
+        elif self.path.startswith("/widget"):            # 挂件路由（远程包含·RFI 合成回显）
+            self._send(200, "<html>GTRFI-01 synthetic remote include executed</html>")
+        elif self.path.startswith("/api/graphql"):       # GraphQL 内部路由（二级路径·内省开放）
+            self._send(200, "<html>GTGRAPHQL-02 synthetic introspection enabled: __schema</html>")
+        elif self.path.startswith("/account/close"):     # 销户路由（CSRF·无 token 状态变更）
+            self._send(200, "<html>account closed GTCSRF-02 synthetic no csrf token required</html>")
         else:
             self._send(404, "not found")
 

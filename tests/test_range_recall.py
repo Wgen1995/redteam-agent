@@ -36,9 +36,11 @@ GT_FIX = [
     {"id": "fx-miss-1", "class": "ssti", "endpoint": "http://app.intranet:8000/d",
      "marker": "GTFIX-D", "post_auth": False, "authz_role": ""},
 ]
-GT_DISTRIBUTION = {"sqli": 2, "xss": 2, "cmdi": 1, "ssti": 1, "ssrf": 2, "deser": 2,
-                   "cors": 1, "redir": 1, "traversal": 1, "idor": 2, "hauth": 2,
-                   "role": 1, "weakpass": 1, "infoleak": 1}
+GT_DISTRIBUTION = {"sqli": 2, "xss": 4, "cmdi": 2, "ssti": 2, "ssrf": 3, "deser": 3,
+                   "cors": 2, "redir": 3, "traversal": 2, "idor": 4, "hauth": 3,
+                   "role": 2, "weakpass": 1, "infoleak": 3, "lfi": 2, "rfi": 1,
+                   "jwt": 2, "ratelimit": 2, "graphql": 2, "xxe": 1, "csrf": 2,
+                   "userenum": 1, "upload": 1}
 
 
 def run(*args, env=None):
@@ -54,12 +56,12 @@ class TestGroundTruth(unittest.TestCase):
         with open(GT_PATH, encoding="utf-8") as f:
             self.gt = json.load(f)["planted"]      # 机读面={format_version,note,planted}
 
-    def test_gt_shape_twenty(self):
-        self.assertEqual(len(self.gt), 20)
+    def test_gt_shape_fifty(self):
+        self.assertEqual(len(self.gt), 50)
         post = [g for g in self.gt if g["post_auth"]]
-        self.assertGreaterEqual(len(post), 5)          # 认证后 ≥5（设计 §9.4）
-        self.assertEqual(len({g["marker"] for g in self.gt}), 20)   # marker 全局唯一
-        self.assertEqual(len({g["id"] for g in self.gt}), 20)
+        self.assertGreaterEqual(len(post), 5)          # 认证后 ≥5（设计 §9.4；扩编后=10）
+        self.assertEqual(len({g["marker"] for g in self.gt}), 50)   # marker 全局唯一
+        self.assertEqual(len({g["id"] for g in self.gt}), 50)
         for g in self.gt:
             self.assertEqual(set(g.keys()),
                              {"id", "class", "endpoint", "marker", "post_auth", "authz_role"})
@@ -67,12 +69,12 @@ class TestGroundTruth(unittest.TestCase):
                 self.assertTrue(g["authz_role"], "post_auth 条目 authz_role 非空")
 
     def test_gt_distribution_fixed(self):
-        """裁决 I 固定分布：注入 6+SSRF 2+反序列化 2+CORS/重定向 2+遍历 1+越权 5
-        +弱口令 1+信息泄露 1。"""
+        """裁决 I 固定分布（批次 9 扩编 20→50）：八新类（lfi/rfi/jwt/ratelimit/
+        graphql/xxe/csrf/userenum）+存量加密；post_auth=10。"""
         from collections import Counter
         c = Counter(g["class"] for g in self.gt)
         self.assertEqual(dict(c), GT_DISTRIBUTION)
-        self.assertEqual(sum(1 for g in self.gt if g["post_auth"]), 5)
+        self.assertEqual(sum(1 for g in self.gt if g["post_auth"]), 10)
 
 
 class Base(unittest.TestCase):

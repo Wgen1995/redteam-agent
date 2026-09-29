@@ -21,6 +21,15 @@ class H(BaseHTTPRequestHandler):
     def _authed(self):
         return self.headers.get("X-Auth-Token") == TOKEN
 
+    def do_POST(self):
+        n = int(self.headers.get("Content-Length") or 0)
+        body = self.rfile.read(n).decode("utf-8", "replace")
+        if self.path.startswith("/upload") and "filename=" in body:
+            # 上传路由（类型无校验·任意文件接受回显）
+            self._send(200, "<html>GTUPLOAD-01 synthetic file accepted no type check</html>")
+        else:
+            self._send(400, "bad request")
+
     def do_GET(self):
         if self.path.startswith("/unserialize"):       # 反序列化入口 A（合成对象回显）
             self._send(200, "<html>GTDESER-01 synthetic pickle object inflated</html>")
@@ -28,6 +37,12 @@ class H(BaseHTTPRequestHandler):
             self._send(200, "<html>GTDESER-02 synthetic java serialized blob accepted</html>")
         elif self.path.startswith("/download"):        # 下载路由（目录遍历·合成文件回显）
             self._send(200, "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>")
+        elif self.path.startswith("/static"):            # 静态资源路由（二级路径·目录遍历）
+            self._send(200, "<html>GTTRAVERSAL-02 synthetic file: shadow file content</html>")
+        elif self.path.startswith("/decode"):            # 解码路由（二级路径·反序列化）
+            self._send(200, "<html>GTDESER-03 synthetic base64 payload object inflated</html>")
+        elif self.path.startswith("/.env"):              # 环境文件路由（信息泄露）
+            self._send(200, "<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>")
         else:
             self._send(404, "not found")
 

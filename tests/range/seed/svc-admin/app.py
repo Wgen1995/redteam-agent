@@ -36,6 +36,10 @@ class H(BaseHTTPRequestHandler):
             self._send(200, "<html>GTIDOR-01 synthetic orders of user 101 (not caller)</html>")
         elif self.path.startswith("/admin/invoices"):      # 发票路由（对象级越权·他人数据回显）
             self._send(200, "<html>GTIDOR-02 synthetic invoices of user 202 (not caller)</html>")
+        elif self.path.startswith("/admin/users/"):       # 用户详情路由（对象级越权·他人档案）
+            self._send(200, "<html>GTIDOR-03 synthetic profile of user 102 (not caller)</html>")
+        elif self.path.startswith("/admin/api/config"):   # 配置 API（低权会话可达）
+            self._send(200, "<html>GTROLE-02 synthetic config exposed to low-priv session</html>")
         elif self.path.startswith("/admin/api/roles"):     # 角色管理 API（低权会话可达=角色混淆）
             self._send(200, "<html>GTROLE-01 synthetic role list exposed to low-priv session</html>")
         else:

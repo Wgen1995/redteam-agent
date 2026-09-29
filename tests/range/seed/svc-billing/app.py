@@ -32,10 +32,18 @@ class H(BaseHTTPRequestHandler):
     def do_GET(self):
         if not self._authed():
             self._send(401, "auth required")
-        elif self.path.startswith("/api/v1/charges"):       # 计费 API（水平越权·他租户回显）
-            self._send(200, "<html>GTHAUTH-01 synthetic charges of account acc-1002 (other tenant)</html>")
-        elif self.path.startswith("/api/v1/statements"):    # 对账单 API（水平越权·他租户回显）
+        elif self.path.startswith("/api/v1/charges"):
+            acct = self.path.split("account=", 1)[-1].split("&")[0]
+            if acct == "acc-3003":
+                self._send(200, "<html>GTHAUTH-03 synthetic charges of account acc-3003 (other tenant)</html>")
+            else:
+                self._send(200, "<html>GTHAUTH-01 synthetic charges of account acc-1002 (other tenant)</html>")
+        elif self.path.startswith("/api/v1/statements"):
             self._send(200, "<html>GTHAUTH-02 synthetic statements of account acc-2003 (other tenant)</html>")
+        elif self.path.startswith("/invoice/"):          # 发票路由（对象级越权·他人发票）
+            self._send(200, "<html>GTIDOR-04 synthetic invoice 88 of other user</html>")
+        elif self.path.startswith("/api/debug"):         # 计费调试路由（二级路径·信息泄露）
+            self._send(200, "<html>GTINFOLEAK-02 synthetic debug: merchant keys &lt;redacted&gt;</html>")
         else:
             self._send(404, "not found")
 

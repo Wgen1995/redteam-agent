@@ -31,6 +31,20 @@ class H(BaseHTTPRequestHandler):
             self._send(200, "<html>search results %s GTXSS-01 synthetic reflected xss</html>" % q)
         elif self.path.startswith("/comment"):         # 评论路由（存储回显）
             self._send(200, "<html>comment GTXSS-02 synthetic stored xss echo</html>")
+        elif self.path.startswith("/include"):           # 本地包含路由（LFI·合成回显）
+            self._send(200, "<html>include GTLFI-01 synthetic local file: root:x:0:0</html>")
+        elif self.path.startswith("/logout"):            # 登出跳转（开放重定向·参数可控）
+            nxt = self.path.split("next=", 1)[-1].split("&")[0]
+            self._send(302, "<html>GTREDIR-02 synthetic redirect to %s</html>",
+                       extra=[("Location", nxt)])
+        elif self.path.startswith("/account/transfer"):   # 转账路由（CSRF·无 token 的状态变更 GET）
+            self._send(200, "<html>transfer done GTCSRF-01 synthetic no csrf token required</html>")
+        elif self.path.startswith("/reply"):             # 回复路由（二级路径·反射回显）
+            t2 = self.path.split("text=", 1)[-1].split("&")[0]
+            self._send(200, "<html>reply %s GTXSS-03 synthetic reflected xss</html>" % t2)
+        elif self.path.startswith("/feedback"):          # 反馈路由（二级路径·反射回显）
+            m = self.path.split("msg=", 1)[-1].split("&")[0]
+            self._send(200, "<html>feedback %s GTXSS-04 synthetic reflected xss</html>" % m)
         else:
             self._send(404, "not found")
 

@@ -13,6 +13,13 @@
 
 ## GT 键口径与资产命名约定（开打前必读——首战 0/20 键失配教训）
 
+> **批次 9 扩编（20→50）在案**：八新类（lfi/rfi/jwt/ratelimit/graphql/xxe/csrf/userenum）
+> +存量加密；post_auth=10；GT v2 svc-* 无端口键形+全量 host_aliases（迁移 2026-09-29）。
+> **认证态通道修复（dict §二）**：svc-login 弱口令成功响应带 X-Auth-Token 头（行为
+> 差分通道）；svc-admin /login（admin/admin123）与 svc-billing /login（alice/alice123）
+> POST 面直接发 token——post-auth 面 10 枚从「结构性不可达」转为「链路可达」。
+> **限流类观测口径**：GTRATE-01/-02 仅在 >10 次连击后的响应体出现（行为差分证据）。
+
 - ground-truth.json 的 endpoint 键=canonical 资产键形（svc-*/…），历史 127.0.0.1:800x 映射形
   一律降为 host_aliases 别名声明（顶层可选字段），不得再作主键。
 - 在环资产命名按真实内网 DNS（svc-*）；scorer 只归一语法（大小写/端口/query/尾斜杠），

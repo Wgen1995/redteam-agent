@@ -1,6 +1,6 @@
 {
  "format_version": 2,
- "note": "授权靶场种 20 ground truth（批次6 T16 起源；v2=批次8 靶场二轮键形迁移落地：RUNBOOK『GT 资产键一律无端口形』裁决执行——canonical=svc-*/path?query，历史 127.0.0.1:800x 宿主映射形降级 host_aliases 显式别名（语义等价唯一通道，禁猜）。首战 0/20 键失配教训（评估侧）+二轮复验在案。marker/EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。scorer 只归语法（大小写/端口/query 排序/尾斜杠）。",
+ "note": "授权靶场种 20 ground truth（批次6 T16 起源；v2=批次8 靶场二轮键形迁移落地：RUNBOOK『GT 资产键一律无端口形』裁决执行——canonical=svc-*/path?query，历史 127.0.0.1:800x 宿主映射形降级 host_aliases 显式别名（语义等价唯一通道，禁猜）。首战 0/20 键失配教训（评估侧）+二轮复验在案。marker/EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。scorer 只归语法（大小写/端口/query 排序/尾斜杠）。 批次 9 扩编 20→50：八新类（lfi/rfi/jwt/ratelimit/graphql/xxe/csrf/userenum）+存量加密；二级路径占比 56%；认证态通道修复=login 成功发 X-Auth-Token（dict §二行为差分）。",
  "host_aliases": {
   "svc-admin": [
    "127.0.0.1:8006"
@@ -185,6 +185,246 @@
    "class": "weakpass",
    "endpoint": "svc-login/login",
    "marker": "GTWEAKPASS-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "lfi-01",
+   "class": "lfi",
+   "endpoint": "svc-shop/include?page=..%2F..%2Fetc%2Fpasswd",
+   "marker": "GTLFI-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "redir-02",
+   "class": "redir",
+   "endpoint": "svc-shop/logout?next=http://evil.example",
+   "marker": "GTREDIR-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "csrf-01",
+   "class": "csrf",
+   "endpoint": "svc-shop/account/transfer?to=act-9&amount=1",
+   "marker": "GTCSRF-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "xss-03",
+   "class": "xss",
+   "endpoint": "svc-shop/reply?text=x",
+   "marker": "GTXSS-03",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "xss-04",
+   "class": "xss",
+   "endpoint": "svc-shop/feedback?msg=x",
+   "marker": "GTXSS-04",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "jwt-01",
+   "class": "jwt",
+   "endpoint": "svc-api-gw/api/user",
+   "marker": "GTJWT-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "graphql-01",
+   "class": "graphql",
+   "endpoint": "svc-api-gw/graphql?query=x",
+   "marker": "GTGRAPHQL-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "ssrf-03",
+   "class": "ssrf",
+   "endpoint": "svc-api-gw/proxy?dst=http://127.0.0.1:8000/",
+   "marker": "GTSSRF-03",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "cors-02",
+   "class": "cors",
+   "endpoint": "svc-api-gw/origin",
+   "marker": "GTCORS-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "redir-03",
+   "class": "redir",
+   "endpoint": "svc-api-gw/jump?u=http://evil.example",
+   "marker": "GTREDIR-03",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "idor-03",
+   "class": "idor",
+   "endpoint": "svc-admin/admin/users/102",
+   "marker": "GTIDOR-03",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "role-02",
+   "class": "role",
+   "endpoint": "svc-admin/admin/api/config",
+   "marker": "GTROLE-02",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "ratelimit-01",
+   "class": "ratelimit",
+   "endpoint": "svc-login/login",
+   "marker": "GTRATE-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "userenum-01",
+   "class": "userenum",
+   "endpoint": "svc-login/forgot?user=admin",
+   "marker": "GTUSERENUM-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "ratelimit-02",
+   "class": "ratelimit",
+   "endpoint": "svc-login/api/otp?code=000000",
+   "marker": "GTRATE-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "hauth-03",
+   "class": "hauth",
+   "endpoint": "svc-billing/api/v1/charges?account=acc-3003",
+   "marker": "GTHAUTH-03",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "idor-04",
+   "class": "idor",
+   "endpoint": "svc-billing/invoice/88",
+   "marker": "GTIDOR-04",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "infoleak-02",
+   "class": "infoleak",
+   "endpoint": "svc-billing/api/debug",
+   "marker": "GTINFOLEAK-02",
+   "post_auth": true,
+   "authz_role": "user"
+  },
+  {
+   "id": "xxe-01",
+   "class": "xxe",
+   "endpoint": "svc-dashboard/api/xml",
+   "marker": "GTXXE-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "ssti-02",
+   "class": "ssti",
+   "endpoint": "svc-dashboard/render?tpl=x",
+   "marker": "GTSSTI-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "cmdi-02",
+   "class": "cmdi",
+   "endpoint": "svc-dashboard/diag?cmd=uptime",
+   "marker": "GTCMDI-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "jwt-02",
+   "class": "jwt",
+   "endpoint": "svc-portal/jwt/verify?token=x",
+   "marker": "GTJWT-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "lfi-02",
+   "class": "lfi",
+   "endpoint": "svc-portal/page?file=x",
+   "marker": "GTLFI-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "rfi-01",
+   "class": "rfi",
+   "endpoint": "svc-portal/widget?src=http://evil.example/x.js",
+   "marker": "GTRFI-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "graphql-02",
+   "class": "graphql",
+   "endpoint": "svc-portal/api/graphql?query=x",
+   "marker": "GTGRAPHQL-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "csrf-02",
+   "class": "csrf",
+   "endpoint": "svc-portal/account/close",
+   "marker": "GTCSRF-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "traversal-02",
+   "class": "traversal",
+   "endpoint": "svc-files/static?name=x",
+   "marker": "GTTRAVERSAL-02",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "upload-01",
+   "class": "upload",
+   "endpoint": "svc-files/upload",
+   "marker": "GTUPLOAD-01",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "deser-03",
+   "class": "deser",
+   "endpoint": "svc-files/decode?data=x",
+   "marker": "GTDESER-03",
+   "post_auth": false,
+   "authz_role": ""
+  },
+  {
+   "id": "infoleak-03",
+   "class": "infoleak",
+   "endpoint": "svc-files/.env",
+   "marker": "GTINFOLEAK-03",
    "post_auth": false,
    "authz_role": ""
   }
