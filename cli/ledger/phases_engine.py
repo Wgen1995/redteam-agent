@@ -90,11 +90,15 @@ def _parse_flow(tok):
 
 
 def parse_yaml(text):
-    """受限子集：块映射/块列表/行内流映射/行内流列表/引号与裸标量/#注释/>- 与 | 块标量。"""
+    """受限子集：块映射/块列表/行内流映射/行内流列表/引号与裸标量/#注释/>- 与 | 块标量。
+    批次 10 T4（重放 body 保真/缝⑦同根）：块标量内的空行以哨兵 (-1, "") 保留
+    进解析流——POST 报文 header/body 分隔空行被前置滤除会把 body 行吞成 header
+    （G-r4 三枚 POST EV 重放 400/403 实锤）；映射/序列层跳过哨兵不消费。"""
     lines = []
     for raw in text.splitlines():
         s = _strip_comment(raw)
         if not s.strip():
+            lines.append((-1, ""))          # 空行哨兵：仅块标量消费
             continue
         indent = len(s) - len(s.lstrip(" "))
         if "\t" in s[:indent + 1]:
@@ -103,6 +107,8 @@ def parse_yaml(text):
     pos = [0]
 
     def parse_node(indent):
+        while pos[0] < len(lines) and lines[pos[0]] == (-1, ""):
+            pos[0] += 1                                 # 前导空行哨兵跳过（批次 10 T4）
         if pos[0] >= len(lines) or lines[pos[0]][0] < indent:
             return None
         if lines[pos[0]][1] == "-" or lines[pos[0]][1].startswith("- "):
@@ -113,6 +119,9 @@ def parse_yaml(text):
         out = []
         while pos[0] < len(lines):
             ind, con = lines[pos[0]]
+            if ind == -1 and con == "":                 # 空行哨兵跳过（批次 10 T4）
+                pos[0] += 1
+                continue
             if ind != indent or not (con == "-" or con.startswith("- ")):
                 break
             item = con[1:].strip()
@@ -131,6 +140,9 @@ def parse_yaml(text):
         m[_unquote(k)] = _val(indent, v)
         while pos[0] < len(lines):
             ind, con = lines[pos[0]]
+            if ind == -1 and con == "":                 # 空行哨兵跳过（批次 10 T4）
+                pos[0] += 1
+                continue
             if ind != indent or con.startswith("- "):
                 break
             k, _, v = con.partition(":")
@@ -148,6 +160,9 @@ def parse_yaml(text):
         m = {}
         while pos[0] < len(lines):
             ind, con = lines[pos[0]]
+            if ind == -1 and con == "":                 # 空行哨兵跳过（批次 10 T4）
+                pos[0] += 1
+                continue
             if ind != indent or con.startswith("- "):
                 break
             if ":" not in con:
@@ -165,8 +180,14 @@ def parse_yaml(text):
 
     def _fold(indent, style):
         parts, base = [], None
-        while pos[0] < len(lines) and lines[pos[0]][0] > indent:
+        while pos[0] < len(lines):
             ind, con = lines[pos[0]]
+            if ind == -1 and con == "" and parts:       # 块标量内空行=内容（批次 10 T4）
+                parts.append("")
+                pos[0] += 1
+                continue
+            if not (ind > indent):
+                break
             base = ind if base is None else base
             if ind < base:
                 break

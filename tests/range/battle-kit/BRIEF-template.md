@@ -29,7 +29,8 @@
 - service 型资产须 parent 边（source=子 id，target=根域 id）；根域=root-domain 型。
 - matrix-set 必带 `--intent-id=`（否则矩阵锚静默断裂，P5 渲染才爆）；状态枚举 x/?/-/!。
 - add-fact/add-evidence/add-finding 循环里 EV/事实时间戳必须早于 finding 时间戳（先证据后结论链）；同资产同 vuln-ref 会撞 dedup——用不同 vuln-ref 或 `--supersede=<FD-id>`。
-- add-evidence 后须落空工件文件 `evidence/EV-r4-NNNN.raw`（`touch`）+ 卡片补报文（模板见 g-r3 战记；raw_request 用 | 块标量+Host 用容器 IP 如 172.28.0.x:8000——scope CIDR 才认；expected.matchers 用行内流形 `matchers: [{type: word, words: ["..."]}]`）。
+- add-evidence 的 --artifact 指向不存在的 evidence/EV-r4-NNNN.raw 即可——CLI 用 --raw-excerpt 自动回填工件真身并算真哈希（批次 10 缝⑧收口，不要 touch 空文件）+卡片补报文（raw_request 用 | 块标量+Host 用 DNS 名形 svc-xxx:8000（勿硬编码容器 IP——跨 compose 轮漂移，批次 10 实锤）；同会话 scope 须 include 该服务名（boot 模板已含八服务）；expected.matchers 用行内流形 matchers: [{type: word, words: ["..."]}]）。
+- **post-auth 三步记账（battle-4 必学，三轮 4 枚 idor 行为已检出被卡分教训）**：token 到手即 add-cred --kind=static-cred --role=user --username-ref=u1 --secret-ref={{vault:cred-N}} --scope-asset=<AST-id> --permitted-actions=read --timestamp=T → idor/role/hauth 类 finding 落 --auth-context=CRED-xxxx（或挂 kind=authz-diff 的 intent）→ GT 路径尾段资源 id（/admin/users/102、/invoice/88）与实测值差异属 v4 域暂不计分，按 GT 同值探测最稳。
 - 重放（P4）：`docker cp ~/redteam-agent/cli range-attack-noop-1:/tmp/cli` + `docker cp G-r4 容器:/tmp/G-r4` 后容器内跑 `python3 /tmp/cli/tanyin-replay replay --goal-dir /tmp/G-r4 --id=EV-... --timestamp=T`，回传 `docker cp range-attack-noop-1:/tmp/G-r4/. G-r4/`，再 `set-replay-state --state=VERIFIED`。
 - fact 消费：每个 fact 须 derived_from 边（add-edge --kind=derived_from --source-id=F-... --target-id=INT-...）否则 converge=running。
 - P5：`tanyin-report aggregate --out report/draft-data.json`（--out 用绝对路径！）→ `render --all --out <绝对路径>/report/draft` → `lint`。authorization 门=真人签发面，如实 FAIL 不伪造。

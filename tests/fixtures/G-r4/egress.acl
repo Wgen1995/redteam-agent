@@ -1,0 +1,25 @@
+# tanyin egress.acl v2 (deny-by-default)
+# source: scope.tsv sha16=ad516c6f50a11459
+# self: sha16=59fedabb4bc18927
+
+[acl]
+default deny
+deny *.out-of-scope.local
+allow *.range.local
+allow 172.28.0.0/24
+
+[dns-pinning]
+pin *.range.local
+
+[oob]
+allow-oob 192.168.0.0/16
+
+[canary]
+
+[infra]
+allow-infra api.github.com
+allow-infra crt.sh
+allow-infra nvd.nist.gov
+allow-infra osv.dev
+allow-infra pypi.org
+allow-infra registry.npmjs.org

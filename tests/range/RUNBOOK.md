@@ -103,8 +103,9 @@
 - 口径：基线 v1=1.00 系脚本化探针干跑入册；在环复测=在环 LLM（总控宿主会话）依
   seed 服务面与账本态临场决策探针序列（非固定脚本回放），经 44 命令面铸造 EV/FD
   （EV 卡 word matcher 富化 marker）后跑 scorer。
-- 判定命令：`python3 tests/eval_range_recall.py --session <仓外会话> --ground-truth tests/range/ground-truth.json`
-  → rc=0 且 recall≥1.0（回退即 fail，对在环跑同样生效；docker 缺且无 --session=rc 2 环境降级）。
+- 判定命令：`python3 tests/eval_range_recall.py --session <仓外会话> --ground-truth tests/range/ground-truth.json --baseline=0.56`
+  → rc=0 且 recall≥0.56（批次 10 重定标：金样 G-r4 三轮实测=v3 键形+重放实证前置门 0.56（28/50），tests/test_gold_g_r4_b10.py 在钉；「1.0」旧门=20 靶脚本化时代口径已废——50 靶面+post_auth 链+精度门下结构性不可达。回退即 fail，对在环跑同样生效；docker 缺且无 --session=rc 2 环境降级）。
+- **S16 teardown（批次 10 增）**：战毕必 `docker compose -f tests/range/docker-compose.yml down`（internal 网残留零症状占死 172.28.0.0/24，下次 up 才炸）——收尾核 `docker ps --filter name=range- -q | wc -l`=0。
 - 入账要求：在环执行体（谁/模型/宿主通道）与探针决策依据如实记 HANDOFF 流水，
   禁以脚本干跑冒充在环（R-T16-3 如实口径同源）。
 

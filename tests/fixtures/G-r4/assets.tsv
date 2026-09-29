@@ -1,0 +1,42 @@
+AST-r4-0001	root-domain	range.local	靶场授权域	in_scope	2	2026-09-29T12:02:00Z
+AST-r4-0002	service	svc-shop	靶场内网服务	out_of_scope	2	2026-09-29T12:03:00Z
+AST-r4-0003	service	svc-api-gw	靶场内网服务	out_of_scope	2	2026-09-29T12:04:00Z
+AST-r4-0004	service	svc-admin	靶场内网服务	out_of_scope	2	2026-09-29T12:05:00Z
+AST-r4-0005	service	svc-login	靶场内网服务	out_of_scope	2	2026-09-29T12:06:00Z
+AST-r4-0006	service	svc-billing	靶场内网服务	out_of_scope	2	2026-09-29T12:07:00Z
+AST-r4-0007	service	svc-dashboard	靶场内网服务	out_of_scope	2	2026-09-29T12:08:00Z
+AST-r4-0008	service	svc-portal	靶场内网服务	out_of_scope	2	2026-09-29T12:09:00Z
+AST-r4-0009	service	svc-files	靶场内网服务	out_of_scope	2	2026-09-29T12:10:00Z
+AST-r4-0010	endpoint	svc-dashboard/ping?host=127.0.0.1	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0011	endpoint	svc-dashboard/report?name=x	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0012	endpoint	svc-dashboard/render?name=x	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0013	endpoint	svc-api-gw/cors-debug	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0014	endpoint	svc-api-gw/origin?origin=http://evil.example/	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0015	endpoint	svc-api-gw/fetch?url=http://127.0.0.1:8000/	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0016	endpoint	svc-api-gw/preview?url=http://127.0.0.1:8000/	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0017	endpoint	svc-api-gw/proxy?url=http://127.0.0.1:8000/	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0018	endpoint	svc-api-gw/graphql?query={__schema{types{name}}}	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0019	endpoint	svc-api-gw/jump?url=http://evil.example/	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0020	endpoint	svc-portal/debug/env	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0021	endpoint	svc-portal/page?name=../../etc/hostname	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0022	endpoint	svc-portal/redirect?to=http://evil.example	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0023	endpoint	svc-files/.env	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0024	endpoint	svc-files/unserialize?data=x	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0025	endpoint	svc-files/import?data=x	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0026	endpoint	svc-files/decode?data=x	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0027	endpoint	svc-files/download?path=../../etc/passwd	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0028	endpoint	svc-files/static?file=../../etc/shadow	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0029	endpoint	svc-files/upload	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0030	endpoint	svc-shop/search?q=x	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0031	endpoint	svc-shop/comment?text=x	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0032	endpoint	svc-shop/reply?text=x	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0033	endpoint	svc-shop/feedback?text=x	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0034	endpoint	svc-shop/item?id=1	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0035	endpoint	svc-shop/order?id=1	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0036	endpoint	svc-shop/include?file=../../etc/passwd	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0037	endpoint	svc-shop/logout?next=http://evil.example/	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:00Z
+AST-r4-0038	endpoint	svc-login/login	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:40Z
+AST-r4-0039	endpoint	svc-admin/admin/orders	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:10:20Z
+AST-r4-0040	endpoint	svc-admin/admin/invoices	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:11:00Z
+AST-r4-0041	endpoint	svc-admin/admin/users/1	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:11:40Z
+AST-r4-0042	endpoint	svc-billing/invoice/2	canonical GT v2 键形（无端口；RUNBOOK 裁决）	out_of_scope	2	2026-09-29T13:11:20Z

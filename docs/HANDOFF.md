@@ -940,3 +940,12 @@
 - **飞轮卫生（渗透专家 P2）**：三轮 userenum/JWT-01 归因未核即入 PR-0005——RT-0001 勘误页补录（归因抽样核验步=批次 10 #14）。
 - **G-r4-summary 勘误**：honest_misses 15→16 面（CMDI-02 转抄脱落）；detected+misses 闭合自检。
 - 验证：全套测试+新钉全绿（见下提交）；HANDOFF 本节=评审记录+勘误双载体。
+
+
+## 2026-09-30 批次 10：八专家评审 P2 首批清账（缝⑩/⑧/⑦/POST 保真/金样 CI/M09）
+- **缝⑩ scope 执法回灌（arch P1，TDD 5+2 测）**：①add-scope 校验器收单标签服务名形（svc-* compose DNS 本名——旧正则强制点分域名/CIDR 把它拒之门外）；②add-asset 匹配三试形（全值/主机段/去端口主机段，绝对 URL 先剥 scheme）——G-r4 41 资产误判 out_of_scope 的双根因收口；③add-finding 联查断言：受影响资产账面 out_of_scope 而自书 in_scope=REJECT（boundary-verified 人工通道保留）。夹具随动（_mint/viz 补 include；diff-authz 资产注记勘误 in_scope）。
+- **缝⑧ 空工件哈希链收口（渗透/swe P1，TDD 2 测）**：add-evidence 工件缺失/零字节时用 --raw-excerpt 回填真身再算哈希——34/34 空哈希常态终结；既有非空工件不覆写。
+- **POST 重放 body 保真（渗透 P1=战士 lint 缝⑦同根，活体验证全链）**：根因=parse_yaml 前置滤空行吃掉块标量内 header/body 分隔空行→body 行被 parse_raw_request 吞成 header（G-r4 三枚 POST EV 400/403 实锤）。修=空行哨兵 (-1,"") 保留进解析流，仅块标量内消费（映射/序列/节点入口跳过）；phases_yaml 11 测+新空行保留测全绿。**活体链证**：金样拷贝会话+新 compose 起靶，EV-r4-0020（upload POST）重放 400→**200 reproduced/matched=true**——同场活体验证新 scope 语法（svc-files include）在 replay 执法路径生效，并实锤新缝⑫=容器 IP 跨 compose 轮漂移（172.28.0.2→172.28.0.4）→卡片 Host 规则改 DNS 名形（brief 模板同步）。
+- **战果金样收编 CI（automation P2/P3）**：G-r4 完整会话（勘误后快照）入 tests/fixtures/（1.0M）+test_gold_g_r4_b10 双钉（recall=0.56/missing=22/重放验证 32+blocked 含 0020/0029）——scorer 任何回归字节级即红；M09 重定标（title/desc/baseline=0.56，废 1.0 旧门）；ci.yml 增 E0 selfcheck 步；RUNBOOK §6 判定命令显式 --baseline=0.56+S16 teardown 行。
+- **battle-kit 弹药升级（battle-4 预置）**：boot 模板补八服务单标签 include（缝⑩联动）+egress compile 显式 --timestamp；brief 模板三则——工件自动回填（废 touch 指引）/post-auth 三步记账教学（add-cred→auth_context→尾段 id 口径，三轮 4 枚 idor 卡分教训）/Host 用 DNS 名勿硬编码容器 IP（缝⑫）。
+- 验证：**全套 896 测绿**（884+12 新）；compose down 0 残留；金样未受活体验证污染（重放在 /tmp 拷贝会话执行）。

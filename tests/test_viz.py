@@ -88,6 +88,11 @@ class TestFindingStream(unittest.TestCase):
         # created=10:30，VERIFIED→verified 联动）——流投影按行不按 id 去重，随之 3→4 条。
         # 置顶段=[FD-diff-authz-0001(10:30), FD-diff-authz-0001(10:00), FD-g1-0001(空=最旧)]，
         # 非置顶段=[新 中(11:00)]
+        r = subprocess.run([sys.executable, LEDGER, "add-scope", "--goal-dir", self.gd,
+                            "--kind=include", "--matcher=app.intranet",
+                            "--timestamp=" + TS],
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)   # 批次 10 联查断言前置：资产入 include
         r = subprocess.run([sys.executable, LEDGER, "add-finding", "--goal-dir", self.gd,
                             "--intent-id=INT-diff-authz-0001", "--title=流投影低危样例",
                             "--confidence=C3", "--impact=中", "--exploitation-status=suspected",

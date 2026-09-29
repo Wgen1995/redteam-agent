@@ -58,6 +58,21 @@ class TestParse(unittest.TestCase):
         self.assertEqual(d["j"], ["a", "b"])
 
 
+    def test_block_scalar_preserves_blank_lines(self):
+        """批次 10 T4（重放 body 保真/缝⑦同根）：块标量内空行必须保留——
+        POST 报文的 header/body 分隔空行被前置滤空行吃掉后，body 行会被
+        parse_raw_request 吞成 header（G-r4 三枚 POST EV 重放 400/407 实锤）。"""
+        doc = pe.parse_yaml(
+            'raw_request: |\n'
+            '  POST /u HTTP/1.1\n'
+            '  Host: h\n'
+            '\n'
+            '  BODY-LINE\n'
+            'k2: v\n')
+        self.assertIn('\n\nBODY-LINE', doc['raw_request'],
+                      'header/body 分隔空行不得丢')
+        self.assertEqual(doc['k2'], 'v')
+
 class TestValidate(unittest.TestCase):
     def test_all_commands_face_44(self):
         """Interfaces 承诺单源=44 基名（裁决：四个原生带 ledger- 前缀的校验命令计入

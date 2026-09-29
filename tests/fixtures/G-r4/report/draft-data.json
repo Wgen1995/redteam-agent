@@ -1,0 +1,437 @@
+{
+ "budget_terminal": "normal",
+ "coverage": {
+  "closed_ids": [],
+  "gates_passed": [
+   "P0",
+   "P1",
+   "P2",
+   "P3",
+   "P4"
+  ],
+  "intents_closed": 0,
+  "intents_open": 1,
+  "open_ids": [
+   "INT-r4-0001"
+  ]
+ },
+ "findings": [
+  {
+   "asset": "AST-r4-0010",
+   "biz_impact": "高",
+   "id": "FD-r4-0001",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "dashboard ping 命令注入（svc-dashboard/ping?host=127.0.0.1）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0011",
+   "biz_impact": "高",
+   "id": "FD-r4-0002",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "dashboard report SSTI（svc-dashboard/report?name=x）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0012",
+   "biz_impact": "高",
+   "id": "FD-r4-0003",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "dashboard render SSTI（svc-dashboard/render?name=x）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0013",
+   "biz_impact": "中",
+   "id": "FD-r4-0004",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "api-gw CORS 通配放行（svc-api-gw/cors-debug）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0014",
+   "biz_impact": "中",
+   "id": "FD-r4-0005",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "api-gw origin 反射+凭据放行（svc-api-gw/origin?origin=http://evil.example/）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0015",
+   "biz_impact": "高",
+   "id": "FD-r4-0006",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "api-gw fetch SSRF（svc-api-gw/fetch?url=http://127.0.0.1:8000/）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0016",
+   "biz_impact": "高",
+   "id": "FD-r4-0007",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "api-gw preview SSRF(webhook)（svc-api-gw/preview?url=http://127.0.0.1:8000/）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0017",
+   "biz_impact": "高",
+   "id": "FD-r4-0008",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "api-gw proxy SSRF（svc-api-gw/proxy?url=http://127.0.0.1:8000/）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0018",
+   "biz_impact": "中",
+   "id": "FD-r4-0009",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "api-gw GraphQL 内省暴露（svc-api-gw/graphql?query={__schema{types{name}}}）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0019",
+   "biz_impact": "中",
+   "id": "FD-r4-0010",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "api-gw jump 开放重定向（svc-api-gw/jump?url=http://evil.example/）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0020",
+   "biz_impact": "中",
+   "id": "FD-r4-0011",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "portal 调试端点信息暴露（svc-portal/debug/env）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0021",
+   "biz_impact": "高",
+   "id": "FD-r4-0012",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "portal page 本地文件包含（svc-portal/page?name=../../etc/hostname）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0022",
+   "biz_impact": "中",
+   "id": "FD-r4-0013",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "portal redirect 开放重定向（svc-portal/redirect?to=http://evil.example）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0023",
+   "biz_impact": "中",
+   "id": "FD-r4-0014",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "files .env 文件暴露（svc-files/.env）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0024",
+   "biz_impact": "高",
+   "id": "FD-r4-0015",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "files pickle 反序列化（svc-files/unserialize?data=x）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0025",
+   "biz_impact": "高",
+   "id": "FD-r4-0016",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "files java 序列化导入（svc-files/import?data=x）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0026",
+   "biz_impact": "高",
+   "id": "FD-r4-0017",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "files base64 解码反序列化（svc-files/decode?data=x）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0027",
+   "biz_impact": "高",
+   "id": "FD-r4-0018",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "files download 路径穿越（svc-files/download?path=../../etc/passwd）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0028",
+   "biz_impact": "高",
+   "id": "FD-r4-0019",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "files static 路径穿越读 shadow（svc-files/static?file=../../etc/shadow）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0029",
+   "biz_impact": "高",
+   "id": "FD-r4-0020",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "files upload 无类型校验（svc-files/upload）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0030",
+   "biz_impact": "高",
+   "id": "FD-r4-0021",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "shop search 反射型 XSS（svc-shop/search?q=x）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0031",
+   "biz_impact": "高",
+   "id": "FD-r4-0022",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "shop comment 存储型 XSS（svc-shop/comment?text=x）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0032",
+   "biz_impact": "高",
+   "id": "FD-r4-0023",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "shop reply 反射型 XSS（svc-shop/reply?text=x）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0033",
+   "biz_impact": "高",
+   "id": "FD-r4-0024",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "shop feedback 反射型 XSS（svc-shop/feedback?text=x）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0034",
+   "biz_impact": "高",
+   "id": "FD-r4-0025",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "shop item SQL 注入（svc-shop/item?id=1）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0035",
+   "biz_impact": "高",
+   "id": "FD-r4-0026",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "shop order SQL 注入（svc-shop/order?id=1）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0036",
+   "biz_impact": "高",
+   "id": "FD-r4-0027",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "shop include 本地文件包含（svc-shop/include?file=../../etc/passwd）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0037",
+   "biz_impact": "中",
+   "id": "FD-r4-0028",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "shop logout 开放重定向（svc-shop/logout?next=http://evil.example/）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0038",
+   "biz_impact": "高",
+   "id": "FD-r4-0029",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "login 弱口令可登录+token 直发（svc-login/login）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0038",
+   "biz_impact": "中",
+   "id": "FD-r4-0030",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "login 无速率限制（svc-login/login）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0039",
+   "biz_impact": "高",
+   "id": "FD-r4-0031",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "admin orders 越权读他户（svc-admin/admin/orders）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0040",
+   "biz_impact": "高",
+   "id": "FD-r4-0032",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "admin invoices 越权读他户（svc-admin/admin/invoices）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0041",
+   "biz_impact": "高",
+   "id": "FD-r4-0033",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "admin users 越权读他户 profile（svc-admin/admin/users/1）",
+   "verified": true
+  },
+  {
+   "asset": "AST-r4-0042",
+   "biz_impact": "高",
+   "id": "FD-r4-0034",
+   "replay_state": "verified",
+   "tech_sev": "C1",
+   "title": "billing invoice 越权读他户账单（svc-billing/invoice/2）",
+   "verified": true
+  }
+ ],
+ "goal": {
+  "auth_doc": "AUTH-RANGE-2026-09-27.pdf",
+  "auth_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "budget": "2M;50000;40",
+  "business_context": "",
+  "created": "2026-09-29T12:00:00Z",
+  "dollar_budget": "",
+  "emergency_contact": "",
+  "guard_tier": "T3",
+  "id": "G-r4-0001",
+  "language": "",
+  "model_tier": "strong",
+  "objective": "靶场第三轮在环复测（50 靶点面·认证链开面后 post-auth 可达性验证+八新类字典实效）",
+  "rate_limit": "",
+  "schema_version": "2",
+  "signer": "range-operator",
+  "target": "authorized-range.local",
+  "valid_from": "2026-09-29T00:00:00Z",
+  "valid_until": "2026-09-30T00:00:00Z",
+  "window": ""
+ },
+ "limits": {
+  "empty_matrix_cells": [],
+  "unverified": []
+ },
+ "matrix": {
+  "empty": [],
+  "filled": [
+   {
+    "attack_surface": "range.local",
+    "state": "x",
+    "vuln_class": "wstg-apit"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "x",
+    "vuln_class": "wstg-authn"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "x",
+    "vuln_class": "wstg-authz"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "x",
+    "vuln_class": "wstg-busl"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "x",
+    "vuln_class": "wstg-clnt"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "x",
+    "vuln_class": "wstg-conf"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "!",
+    "vuln_class": "wstg-cryp"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "x",
+    "vuln_class": "wstg-errh"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "!",
+    "vuln_class": "wstg-idnt"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "x",
+    "vuln_class": "wstg-info"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "x",
+    "vuln_class": "wstg-inpv"
+   },
+   {
+    "attack_surface": "range.local",
+    "state": "!",
+    "vuln_class": "wstg-sess"
+   }
+  ],
+  "gaps": []
+ },
+ "scope_summary": {
+  "amendment_heads": [
+   "S-r4-0001",
+   "S-r4-0002",
+   "S-r4-0003",
+   "S-r4-0004"
+  ],
+  "counts": {
+   "account-grant": 0,
+   "exclude": 1,
+   "include": 2,
+   "oob": 1
+  }
+ },
+ "tier_disclosure": {
+  "egress_log_lines": 0,
+  "egress_log_present": false,
+  "guard_tier": "T3",
+  "timeline_tier_last": ""
+ }
+}

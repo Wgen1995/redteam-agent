@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r4-0020", "matched": false, "results": [{"detail": ["GTUPLOAD-01"], "ok": false, "type": "word"}], "status": 400, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r4 --id=EV-r4-0020 --state=REJECTED", "verdict": "not-reproduced"}

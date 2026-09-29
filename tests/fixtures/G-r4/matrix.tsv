@@ -1,0 +1,24 @@
+range.local	wstg-info				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-conf				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-idnt				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-authn				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-authz				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-sess				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-inpv				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-errh				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-cryp				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-busl				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-clnt				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-apit				2	2026-09-29T12:13:00Z	2026-09-29T12:14:00Z
+range.local	wstg-info	x	GTINFOLEAK-01/03+GTGRAPHQL-01 内省+GTWEAKPASS-01 检出 EV-r4 在案	INT-r4-0001	2	2026-09-29T14:40:00Z	
+range.local	wstg-conf	x	GTCORS-01/02 cors-debug/origin 检出 EV-r4 在案	INT-r4-0001	2	2026-09-29T14:41:00Z	
+range.local	wstg-idnt	!	admin/billing 401 墙+svc-login 全 200 表单页实测 w1/w21	INT-r4-0001	2	2026-09-29T14:42:00Z	
+range.local	wstg-authn	x	GTWEAKPASS-01 admin/admin123 弱口令检出+GTRATE-01 无限流 EV 在案	INT-r4-0001	2	2026-09-29T14:43:00Z	
+range.local	wstg-authz	x	GTIDOR-01/02/03(/admin/* token)+04(billing invoice) 检出 EV 在案	INT-r4-0001	2	2026-09-29T14:44:00Z	
+range.local	wstg-sess	!	无会话端面：无 Set-Cookie、/logout 仅 302 外域实测	INT-r4-0001	2	2026-09-29T14:45:00Z	
+range.local	wstg-inpv	x	注入面 15 端点（SQLI/XSS/SSTI/CMDI/DESER/LFI/TRAVERSAL/UPLOAD）EV 在案	INT-r4-0001	2	2026-09-29T14:46:00Z	
+range.local	wstg-errh	x	SQL 错误回显=GTSQLI-01/02 检出	INT-r4-0001	2	2026-09-29T14:47:00Z	
+range.local	wstg-cryp	!	无加密端面实测（/jwt 404 全服+jwks 404）	INT-r4-0001	2	2026-09-29T14:48:00Z	
+range.local	wstg-busl	x	order/item/invoice/transfer 业务流注入+越权检出	INT-r4-0001	2	2026-09-29T14:49:00Z	
+range.local	wstg-clnt	x	GTXSS-01/02/03/04 检出 EV 在案	INT-r4-0001	2	2026-09-29T14:50:00Z	
+range.local	wstg-apit	x	api-gw fetch/preview/proxy SSRF+graphql 内省+IDOR API 检出	INT-r4-0001	2	2026-09-29T14:51:00Z	

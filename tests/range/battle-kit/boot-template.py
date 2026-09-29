@@ -28,10 +28,16 @@ def main():
         "--model-tier=strong", "--guard-tier=T3", "--timestamp=" + T(0))
     led("add-scope", "--kind=include", "--matcher=*.range.local", "--timestamp=" + T(1))
     led("add-scope", "--kind=include", "--matcher=172.28.0.0/24", "--timestamp=" + T(1))
+    # 批次 10（缝⑩收口）：八服务名单标签显式 include——scope 执法面与键形 v3 对齐
+    # （否则 svc-* 资产/端点全数误判 out_of_scope，add-finding 联查断言拒收）
+    for svc in ("svc-shop", "svc-api-gw", "svc-admin", "svc-login",
+                "svc-billing", "svc-dashboard", "svc-portal", "svc-files"):
+        led("add-scope", "--kind=include", "--matcher=" + svc, "--timestamp=" + T(1))
     led("add-scope", "--kind=exclude", "--matcher=*.out-of-scope.local", "--timestamp=" + T(1))
     led("add-scope", "--kind=oob", "--matcher=192.168.0.0/16", "--timestamp=" + T(1))
     eg = subprocess.run([sys.executable, os.path.join(REPO, "cli", "tanyin-egress"),
-                         "compile", "--goal-dir", GD], capture_output=True, text=True)
+                         "compile", "--goal-dir", GD, "--timestamp=2026-09-27T08:00:00Z"],
+                        capture_output=True, text=True)
     print("egress rc=%d" % eg.returncode)
     if eg.returncode != 0:
         print(eg.stderr[-300:]); sys.exit(1)

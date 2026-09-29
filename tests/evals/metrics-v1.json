@@ -143,16 +143,16 @@
    "layer": "L2",
    "gate": "hard",
    "kind": "threshold",
-   "title": "认证后越权召回",
+   "title": "靶场检出召回（金样 G-r4）",
    "baseline": {
-    "value": 1.0,
-    "frozen_at": "2026-09-26T10:00:00Z"
+    "value": 0.56,
+    "frozen_at": "2026-09-30T09:30:00Z"
    },
    "source": {
     "runner": "range-recall",
     "args": []
    },
-   "desc": "靶场种 20 首跑实测=基线 v1（裁决 I；Task 16 注册 runner）——v1=1.00（20/20，2026-09-26 首跑：compose 8 服务+1 noop 真实探针干跑、44 命令面铸造、scorer 实测；脚本化探针口径，LLM 在环复测归 T17 RUNBOOK；回退即 fail）"
+   "desc": "批次 10 重定标（八专家 automation P2）：金样会话=tests/fixtures/G-r4（三轮独立战士完整账本+精度门勘误后），scorer v3 键形+重放实证前置门实测=0.56（28/50）；tests/test_gold_g_r4_b10.py 在钉（recall 0.56/missing 22/重放验证 32）。历史 v1=1.00（2026-09-26 脚本化 20 靶首跑）已废——键形 v3+精度门+50 靶面后 1.0 结构性不可达；官方 v2 规则口径0.36 同会话可复算。回退即 fail"
   },
   {
    "id": "M10-report-lint-redact",

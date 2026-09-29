@@ -120,6 +120,8 @@ class Base(unittest.TestCase):
         self._led("add-scope", "--kind=account-grant", "--matcher=app.intranet",
                   "--account=admin", "--permitted-actions=read;probe",
                   "--timestamp=" + TS)
+        self._led("add-scope", "--kind=include", "--matcher=app.intranet",
+                  "--timestamp=" + TS)   # 批次 10 联查断言前置：资产须在 include 面
         ast = {k: self._led("add-asset", "--type=endpoint", "--value=" + v,
                             "--meta=range-fixture", "--timestamp=" + TS)
                for k, v in ep.items()}

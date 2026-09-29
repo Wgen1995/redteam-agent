@@ -20,6 +20,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+      - name: E0 selfcheck static   # 批次 10（八专家 automation P3）：前置门入 CI，不再只活在 RUNBOOK
+        run: python cli/tanyin-selfcheck --static
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Golden regression

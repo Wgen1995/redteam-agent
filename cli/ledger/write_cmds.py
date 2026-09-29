@@ -138,7 +138,10 @@ def _matcher_ok(m):
             return True
         except ValueError:
             return False
-    return bool(re.match(r"^(\*\.)?([a-z0-9](-*[a-z0-9])*\.)+[a-z]{2,}(:\d+)?$", m or "", re.I))
+    # 批次 10 T1（缝⑩）：单标签服务名（svc-shop 形=compose DNS 本名）入语法——
+    # 键形 v3 主键是裸服务名，scope 执法面不得拒之（八专家 arch P1）。
+    return bool(re.match(r"^(\*\.)?([a-z0-9](-*[a-z0-9])*\.)*[a-z0-9](-*[a-z0-9])*(:\d+)?$",
+                         m or "", re.I))
 
 
 def _match_value(value, matcher):
@@ -538,6 +541,14 @@ def _add_finding(goal_dir, rest):
         raise Reject("intent_id 引用闭合失败: " + args["intent-id"])
     if ctx.latest("assets.tsv", args["affected-asset-id"]) is None:
         raise Reject("affected_asset_id 引用闭合失败: " + args["affected-asset-id"])
+    # 批次 10 T1（缝⑩后半）：scope_check↔assets.in_scope 联查——受影响资产账面
+    # out_of_scope 时 finding 不得自书 in_scope（G-r4 34 findings 挤单一无绑定 intent
+    # 的叙事洞，八专家 arch P1）；boundary-verified 仍走人工核验通道放行。
+    _ast = ctx.latest("assets.tsv", args["affected-asset-id"])
+    _ast_scope = ctx.val("assets.tsv", _ast, "in_scope")
+    if _ast_scope == "out_of_scope" and args["scope-check"] == "in_scope":
+        raise Reject("受影响资产账面 out_of_scope 而自书 in_scope（联查断言）："
+                     "先修 scope include（单标签服务名形）或 boundary-verified 人工核验")
     if args["confidence"] not in {"C1", "C2", "C3", "\u2796\U0001f6d1"}:
         raise Reject("confidence 不在 {C1,C2,C3,\u2796\U0001f6d1}: " + args["confidence"])
     if args["impact"] not in {"\u9ad8", "\u4e2d", "\u4f4e"}:
@@ -691,7 +702,17 @@ def _add_asset(goal_dir, rest):
         kind = ctx.val("scope.tsv", r, "kind")
         if kind not in {"include", "exclude"}:
             continue
-        if _match_value(value, ctx.val("scope.tsv", r, "matcher")):
+        m = ctx.val("scope.tsv", r, "matcher")
+        # 批次 10 T1（缝⑩）：endpoint 型值带路径，主机匹配须取主机段多试
+        # （全值 or 主机段 or 去端口主机段；绝对 URL 先剥 scheme）——
+        # G-r4 41 资产误判 out_of_scope 根因②。
+        _v = value.split("://", 1)[1] if "://" in value else value
+        host_part = _v.split("/")[0]
+        host_np = host_part.split(":")[0] if ":" in host_part else None
+        hit_m = (_match_value(value, m)
+                 or (host_part != value and _match_value(host_part, m))
+                 or (host_np and host_np != host_part and _match_value(host_np, m)))
+        if hit_m:
             if kind == "exclude":
                 hit = False
                 break
@@ -786,6 +807,13 @@ def _add_evidence(goal_dir, rest):
     if lf and ctx.latest("findings.tsv", lf) is None:
         raise Reject("linked_finding 引用闭合失败: " + lf)
     excerpt = _trunc(_clean(args.get("raw-excerpt", "")), 200)
+    # 批次 10 T2（缝⑧收口）：工件缺失/零字节时用 raw-excerpt 落真身再算哈希——
+    # 哈希链 attest 内容而非空壳（G-r4 34/34 空哈希教训）；既有非空工件不覆写。
+    _ap = os.path.join(ctx.s.dir, artifact) if artifact else None
+    if _ap and (not os.path.isfile(_ap) or os.path.getsize(_ap) == 0) and excerpt:
+        os.makedirs(os.path.dirname(_ap), exist_ok=True)
+        with open(_ap, "w", encoding="utf-8", newline="\n") as f:
+            f.write(excerpt + "\n")
     raw_h, norm_h = _hashes(ctx, artifact)
     rid = ctx.new_id("E-index.tsv", "EV")
     card = "evidence/%s.md" % rid
