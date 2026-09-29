@@ -39,7 +39,8 @@ GT_FIX = [
 GT_DISTRIBUTION = {"sqli": 2, "xss": 4, "cmdi": 2, "ssti": 2, "ssrf": 3, "deser": 3,
                    "cors": 2, "redir": 3, "traversal": 2, "idor": 4, "hauth": 3,
                    "role": 2, "weakpass": 1, "infoleak": 3, "lfi": 2, "rfi": 1,
-                   "jwt": 2, "ratelimit": 2, "graphql": 2, "xxe": 1, "csrf": 2,
+                   "jwt": 2, "ratelimit": 2, "graphql": 2, "xxe": 1,
+                   "broken-access-control": 2,   # 批次 10 P2#2：csrf→CWE-306 重标
                    "userenum": 1, "upload": 1}
 
 
@@ -65,7 +66,9 @@ class TestGroundTruth(unittest.TestCase):
         self.assertEqual(len({g["id"] for g in self.gt}), 50)
         for g in self.gt:
             self.assertEqual(set(g.keys()),
-                             {"id", "class", "endpoint", "marker", "post_auth", "authz_role"})
+                             {"id", "class", "endpoint", "marker", "post_auth", "authz_role"}
+                             | ({"note"} if "note" in g else set()),   # 批次 10 P2#2：重标注记列可选
+                             g["id"])
             if g["post_auth"]:
                 self.assertTrue(g["authz_role"], "post_auth 条目 authz_role 非空")
 

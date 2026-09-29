@@ -962,3 +962,8 @@
 - **P2#14 飞轮归因核验门（渗透+RT-0001 writeback②，TDD 3 测）**：tanyin-knowledge lint 对 kind=retro 且 missed 非空者强制 attribution_check ∈ {verified,sampled,pending-human}——自述归因未核不得入册（PR-0005 带错喂养通道关闭）；pending-human=人工复核位；RT-0001 自身补 attribution_check: verified（lint n=16 PASS）。
 - **P2#16 G-51 时序留存条款**：brief 模板打法第 5 条（attrib/send-message-timeline.md 摘录+读取路径自报清单=GT 零读技术凭证）。
 - 验证：全套 **907 测绿**（900+7 新：contract-chain 2/rate-isolation 2/retro-attribution 3）；compose down 0 残留。
+
+## 2026-09-30 批次 10 收尾：P2#2 GT 类目重标落地
+- **P2#2（蓝军，GT 面收口）**：ground-truth.json 50 条——csrf×2→broken-access-control（CWE-306 重标，note 列载口径：无会话前提=伪 csrf，POST+会话形归 battle-5）；cors-01 补注记（ACAO:*+credentials=浏览器拒收的配置缺陷非可利用越权）；GT note 列为可选列（形状钉随动）；类目直方图/类集三处钉同步。金样 recall=0.56 不动（类目不参与计分键）。
+- **批次 10 P2 台账终态**：16 项中 14 项闭环（#2/#3/#4/#5/#7/#8/#9/#10/#11/#12/#13/#14/#15/#16）；余 #1（beacon/行为差分双轨）与 #6（v4 键形：同键多 GT 一 finding 至多计一+尾段数字归一）按 dict §四勘误归 battle-5。P3 十项另册择机。
+- 验证：全套 **907 测绿**；提交见 git log（2e8db7f/0e4b568/af556a1+本次）。

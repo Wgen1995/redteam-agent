@@ -9,7 +9,8 @@ import json, os, re, unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 GT_PATH = os.path.join(HERE, "range", "ground-truth.json")
 
-NEW_CLASSES = {"lfi", "rfi", "jwt", "ratelimit", "graphql", "xxe", "csrf"}
+NEW_CLASSES = {"lfi", "rfi", "jwt", "ratelimit", "graphql", "xxe",
+               "broken-access-control"}   # 批次 10 P2#2：csrf→CWE-306 重标（GT note 列载原类目）
 OLD_CLASSES = {"sqli", "xss", "ssti", "cmdi", "ssrf", "cors", "deser",
                "traversal", "redir", "infoleak", "idor", "role", "hauth", "weakpass"}
 

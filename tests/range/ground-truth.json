@@ -1,6 +1,6 @@
 {
  "format_version": 3,
- "note": "授权靶场种 20 ground truth（批次6 T16 起源；v2=批次8 键形迁移：canonical=svc-*/path?query，127.0.0.1:800x 降级 host_aliases；v3=批次9 三轮战收口：scorer 检出键=host+path，query 整体剥离（布靶书写形不入键，诚实黑盒探测参数不可预知；query 保留于本文件作文档面复现提示）——RUNBOOK 键形 v3 节在案。首战 0/20 键失配+三轮 10 枚 query 形罚+4 枚 CRED 链教训（评估侧）。marker/EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。批次 9 评审补：别名含 svc-*:8000 容器形（防 raw_request 形资产键失配）。 批次 9 扩编 20→50：八新类（lfi/rfi/jwt/ratelimit/graphql/xxe/csrf/userenum）+存量加密；二级路径占比 56%；认证态通道修复=login 成功发 X-Auth-Token（dict §二行为差分）。",
+ "note": "授权靶场种 20 ground truth（批次6 T16 起源；v2=批次8 键形迁移：canonical=svc-*/path?query，127.0.0.1:800x 降级 host_aliases；v3=批次9 三轮战收口：scorer 检出键=host+path，query 整体剥离（布靶书写形不入键，诚实黑盒探测参数不可预知；query 保留于本文件作文档面复现提示）——RUNBOOK 键形 v3 节在案。首战 0/20 键失配+三轮 10 枚 query 形罚+4 枚 CRED 链教训（评估侧）。marker/EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。批次 9 评审补：别名含 svc-*:8000 容器形（防 raw_request 形资产键失配）。 批次 9 扩编 20→50：八新类（lfi/rfi/jwt/ratelimit/graphql/xxe/csrf/userenum）+存量加密；二级路径占比 56%；认证态通道修复=login 成功发 X-Auth-Token（dict §二行为差分）。 | 2026-09-30 P2#2 category rectification: csrf->broken-access-control (CWE-306); cors-01 noted as configuration defect.",
  "host_aliases": {
   "svc-admin": [
    "127.0.0.1:8006",
@@ -106,7 +106,8 @@
    "endpoint": "svc-api-gw/cors-debug",
    "marker": "GTCORS-01",
    "post_auth": false,
-   "authz_role": ""
+   "authz_role": "",
+   "note": "P2#2: ACAO:*+credentials rejected by real browsers=configuration defect, not exploitable authorization"
   },
   {
    "id": "deser-01",
@@ -214,11 +215,12 @@
   },
   {
    "id": "csrf-01",
-   "class": "csrf",
+   "class": "broken-access-control",
    "endpoint": "svc-shop/account/transfer?to=act-9&amount=1",
    "marker": "GTCSRF-01",
    "post_auth": false,
-   "authz_role": ""
+   "authz_role": "",
+   "note": "P2#2 relabel: no session precondition=CWE-306 (post+session form belongs to battle-5)"
   },
   {
    "id": "xss-03",
@@ -398,11 +400,12 @@
   },
   {
    "id": "csrf-02",
-   "class": "csrf",
+   "class": "broken-access-control",
    "endpoint": "svc-portal/account/close",
    "marker": "GTCSRF-02",
    "post_auth": false,
-   "authz_role": ""
+   "authz_role": "",
+   "note": "P2#2 relabel: no session precondition=CWE-306 (post+session form belongs to battle-5)"
   },
   {
    "id": "traversal-02",
