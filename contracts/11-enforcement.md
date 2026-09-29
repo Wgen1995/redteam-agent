@@ -113,3 +113,9 @@ egress compile 输出定四成分（ACL+DNS pinning+OOB+基础设施白名单）
 ## v2 勘误补记（2026-09-24·批次 4 施工期·T3/P4 重放门转强制）
 
 - §7「P4 出口」行 expect 引用随契约 04 勘误同步：「无 REJECTED 未处置项（批次 4 前=SKIP，报告中披露）」→「无 REJECTED 未处置项」（P4 重放门断言转强制，SKIP 退役）。微版本勘误通道，不升 schema_version。
+
+
+## 批次 8 勘误（2026-09-27，b8 T11）
+
+- **Tier1/Tier2 同源执法闭合（G-43 收口）**：hooks/simulate.py deny 比对升 enforce.deny_forms 单源（归一形+shell 内嵌 payload）——Tier1 guard 与 Tier2 hook 行为等价，「同源执法」承诺双侧兑现（批次 7 T4 单源落地+本批接线）。
+- **退出码 env 分型**（T10b/M1 尾）：环境域错（文件缺/不可读）exit 2 非 1——tanyin-replay 卡片文件不可读首例收口；全仓逐面枚举随用随升（批次 7 T10/T13 vault/K1 两态先例）。

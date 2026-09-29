@@ -64,3 +64,8 @@
 - budget-exhausted=**合法签发终态（终态 B）**，非门禁失败（§3 预算穿披露条款的签发门机检兑现）：sign_gate 读 aggregate.budget_terminal（query_cmds.budget_exhausted 单源），exhausted 分支不判 FAIL——但 limits 投影未测矩阵格清单缺/空=门 FAIL（terminal_b_disclosure 门，诚实覆盖口径铁律 3）；签发随落 `report/signed/interim-report.md` 中期报告，强制载 §3 披露四件套：中期报告声明（诚实终止不是事故）＋未测范围披露（matrix gaps 逐格＋coverage open_ids 未跑 intent）＋闭合率（filled/(filled+empty) 可复算）＋免责注明中期报告。数据源=aggregate 投影零造数据（lint 判定面同门不落产物）。
 - 演练面：tests/range/RUNBOOK.md §5 支线四步（budget-log 抽干→budgetctl enforce REJECT 引擎停→converge-check 终态判定→report sign 中期签发 rc==0）+tests/test_budget_exhausted.py 单测锁定。
 - 勘误通道：微版本勘误（零存量数据期先例），schema_version 保持 =2 不递增；本补记日期 2026-09-26。
+
+
+## 批次 8 勘误（2026-09-27，b8 T11）
+
+- **write_all 三工件门内化（G-44 收口）**：cmd_sign 先落盘后签发——findings.json/findings.sarif/report-*.md 全量入 pass.json artifacts 绑定（绑定即真值；篡改 lint 在场复检即拒）；门 FAIL=已落工件删除（门内零幸存）。原「落盘居 sign_gate 复扫之后=门内不可达」边界终结。

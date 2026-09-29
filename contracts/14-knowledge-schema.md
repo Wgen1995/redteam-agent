@@ -110,3 +110,9 @@ VulnClaw=Copyright (c) 2026 UncleC，MIT；BugHunter/Threatswarm/CEP 执行期�
 
 KP 语源 / STG 暂存 / CP 技法 / PR 先例 / EN 实体 / TG 目标 / PT 模式 / RT 复盘 / BZ 业务
 ——四位零填充字典序=时间序（账本同精神；不经 ledger-next-id）。
+
+
+## 批次 8 勘误（2026-09-27，b8 T11）
+
+- **复核身份锚（M10 收口）**：approvers.tsv 运行时名录（approver/added_at 两列）+approve 名录校验；登记通道=approvers add（留痕 log.md）；example 模板入仓、真值不进仓（client-map 同律）。
+- **init 方法学基线随装（G-45 收口）**：methodology/*.tsv 幂等拷入（不覆盖本地覆写）——K1 缺基线 exit 2 根因面收口。

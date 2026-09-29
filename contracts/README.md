@@ -133,3 +133,8 @@
 ## v3 勘误（2026-09-24·批次 6 施工期）
 
 - 契约 06（06-evidence-cards.md）G-25 结案（裁决 B）：Burp 直贴边界三条款（HTTP/1.x 文本字节直贴首发+机检四规则/HTTP2-TLS 判读说明单列/Host-Connection 原文归属+双指纹一字不符=lint FAIL）。微版本勘误，不升 schema_version——详见该文件文末 v3 勘误补记（批次 6 T14）。
+
+
+## 批次 8 勘误索引（2026-09-27，b8 T11）
+
+- 02a 批次 8 勘误块（九条命令面扩展+schema_version 维持 2 裁决）；04（G-4 RESTART 定标+triggers-v3）；09（14 子命令/uninstall/--chain 面）；11（G-43 Tier2 单源+env 分型）；13（G-44 write_all 门内化）；14（M10 名录+G-45 init 基线）。

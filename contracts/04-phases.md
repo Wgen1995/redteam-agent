@@ -239,3 +239,9 @@ events（事件回边，不离开 P3）：
 ## v2 勘误补记（2026-09-24·批次 6 施工期·T7/G-5 锁字段 v2）
 
 - state.md 固定段增四可选后缀字段：`lock_host/lock_pid/lock_boot/lock_since`（G-5 锁收紧·裁决 F）——会话激活经受管重启落笔（checkpoint 内部通道 `--with-lock-v2`，run_restart 专用；值由 cli/ledger/lock_v2.lock_fields 单源产出：platform.node()/pid/boot_id/激活 ts），常规 checkpoint 面=v1 十键零漂移；v1 旧锁（无四字段）解析容忍照常（兼容升级，残缺四字段=畸形走对账重建保守路径）。探活快路语义：本机同 boot 且 os.kill(pid,0) 探活死 → manual 接管免 state-rebuild 对账前置（timeline 记 `takeover-of=<s> probe=pid-dead`）；跨机/跨 boot/字段缺=unknown 保守（auto 恒 REJECT，manual 维持对账前置+takeover-of 留痕，行为与收紧前逐字节一致）。单活跃会话铁律不变。微版本勘误（零存量数据期，schema_version 保持 =2 不递增）；本补记日期 2026-09-24。
+
+
+## 批次 8 勘误（2026-09-27，b8 T11）
+
+- **RESTART 常量定标回注（G-4 收口）**：RESTART_RATE_MINUTES=10 / RESTART_TOKEN_COST=2000 为模块常量单源（phases_engine，--rate-minutes/--token-cost 可覆盖供 evals 重放）——批次 6 evals 实测基线支持现值，契约定标=本注记（原「10min/2000 暂代」状态终结）。
+- **触发器目录 v3**（triggers-v3，T4/M6）：端口/服务变更行消费检查=trigger-audit ⑤ 机检（事件驱动+消费三分支，详见 contracts/02a 批次 8 勘误第 4 条）；版本史 v2→v3 在 phases/TRIGGERS.md 文末。

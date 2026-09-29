@@ -151,3 +151,10 @@ set-cred-status 终审归写入（写19/查11/校验10=41）——探知项已�
 
 - tanyin-install 职责面补注：**--release 信任锚替换通道**接线（裁决 C 兑现收口）——显式旗标+新锚公钥路径（--pubkey）传入 verify 面替换 TEST-ONLY 缺省锚，整锁须已在新钥下重签（不过=exit 1，KEY-MANAGEMENT §5 原子变更）→交互确认（REPLACE 令牌；缺确认=exit 2）→锚文件原子替换+release-anchor 行落 install-log.tsv。命令面零新增（既有 #9 行职责补注；install-log=交战区审计通道，非账本命令面）。
 - 勘误通道：微版本勘误（零存量数据期，同上则先例），schema_version 保持 =2 不递增；本补记日期 2026-09-26。
+
+
+## 批次 8 勘误（2026-09-27，b8 T11）
+
+- **tanyin-knowledge 13→14 子命令**（T7/M10）：增 approvers add|list（复核人名录；approve 身份锚，详见 contracts/02a 批次 8 勘误第 7 条）。
+- **tanyin-install 增 uninstall 子命令**（T6/M15）：卸载面（详见 contracts/02a 批次 8 勘误第 6 条）。
+- **tanyin-replay 增 --chain 旗标**（T5/M12）：有序多请求序列重放（详见 contracts/02a 批次 8 勘误第 5 条）。

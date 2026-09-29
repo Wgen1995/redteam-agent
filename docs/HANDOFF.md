@@ -877,3 +877,5 @@
 - T7 复核身份锚（M10 收口）：tanyin-knowledge approvers add/list 名录（运行时 approvers.tsv+example 模板，14 子命令）+approve 校验名录成员（任意非空串放行反例收口）｜执行者 deny-list 侧如实登记：log.md 无执行者身份列（列集冻结），复核人非执行者纪律维持 HUMAN-REVIEW 人审面｜红 2/2+受影响 3 测名录播种升级，全套 866 绿+金样零漂移
 
 - T10 init 基线缺省（G-45 收口）：init 幂等拷入 methodology/*.tsv（k1-baseline/k1-wstg-map，不覆盖本地覆写）——K1 缺基线 exit 2 根因面收口｜T10b 退出码分型样例（M1 尾）：tanyin-replay 卡片文件不可读 env 域升 exit 2（文件缺=环境非门禁）｜红 3/3，全套 869 绿+金样零漂移
+
+- T11 契约集中勘误（b8 收口注）：02a 批次 8 勘误块九条（T1-T10 全命令面）+schema_version 维持 2 裁决（零列集变更，升 3 推迟至首个真实变更——微版本纪律）；04=G-4 RESTART 定标回注+triggers-v3；09=14 子命令/uninstall/--chain 面；11=G-43 Tier2 单源闭合+env 分型；13=G-44 write_all 门内化；14=M10 名录+G-45 init 基线；README 索引；PROTOCOL §2 G-37 系数 1.116 回写（估算式冻结不动，余量口径按比值复核）｜全套 869 绿+金样零漂移

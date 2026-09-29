@@ -744,3 +744,18 @@
 
 - 勘误通道：微版本勘误（零存量数据期，G-1/批 5 T3/批 6 T18 先例同通道），schema_version 保持 **=2 不递增**；本补记日期 2026-09-27；13 表列集与 44 账本命令名零变化（工具面仍 14）。
 - 自验复跑：`python3 -m unittest tests.test_knowledge_contract` 绿（工具面 14 不变）；`grep -cE '^\| [0-9]+ \| tanyin-' contracts/09-cli-surface.md` → **14**。
+
+
+## 批次 8 勘误——命令面扩展一笔记（2026-09-27，b8 T11）
+
+> 裁决（schema_version）：本批零 13 表列集变更（approvers.tsv=知识库运行时文件非账本表；methodology 拷贝=知识库内容非 schema）——schema_version 维持 2，升 3 推迟到首个真实列集变更（微版本勘误纪律，批次 7 先例沿用）。
+
+1. **add-finding --supersede=<FD-id>**（T1/M2）：同 dedup_key 死路收口——目标须同键 active 行（校验前置）；一铸到位=新行 active+旧行 superseded+edges.tsv kind=supersedes 边（provenance=supersede-finding）+timeline 事件 supersede-finding <old>-><new>；跨键目标=REJECT。
+2. **set-intent-status deferred→pending 复活臂**（T2/M3）：_INTENT_ARROWS deferred 出边 {pending}；复活须 --reason 强制；activation 字段保留（触发条件随行）。
+3. **add-cred scope-asset 悬空拒收**（T3/M5 写侧）：--scope-asset 引用 assets 无行=REJECT（图 cred:unlock 静默丢边反例收口）；读侧 graph-neighbors/paths/horizon stderr 悬空告警（graph_cmds.dangling_creds 单源）。
+4. **trigger-audit ⑤ 端口/服务变更机检**（T4/M6，triggers-v3）：事件驱动（add-fact 落账 kind∈{port,service}；夹具预置无事件不入审计——与 ① Ruling 同构）；消费三分支=derived_from 出边/[no-consume: 标记]/引用该事实 target 的复测 intent。
+5. **tanyin-replay --chain=<EV-a,EV-b,...>**（T5/M12）：有序多请求序列——逐步复用单报文全套执法（scope/占位符/同值性/matcher）；env-diff 或 REJECT 即中止（fail-closed 有序性）；逐步 timeline replay-chain step=i/N 标记；链摘要 JSON（chain[]+aborted）。
+6. **tanyin-install uninstall 子命令**（T6/M15）：--install-root/--timestamp 必填；权威树整体移除（hooks/host-link 随树清）；home 交战区默认保留（真实数据不随卸载销毁），--purge-home 显式销毁；幂等 already-clean rc=0；install-log 落 uninstall 行。
+7. **tanyin-knowledge approvers add|list**（T7/M10，14 子命令）：复核人名录=运行时 approvers.tsv（两列 approver/added_at；example 模板在仓，真值不进仓同 client-map 律）；approve --approver 须名录成员（任意非空串放行=零身份锚反例收口）；执行者 deny-list 侧=HUMAN-REVIEW 人审纪律（log.md 无执行者身份列，列集冻结）。
+8. **knowledge init 方法学基线随装**（T10a/G-45）：methodology/*.tsv 幂等拷入运行时库（缺文件补，不覆盖本地覆写）——K1 缺基线 exit 2 根因面收口。
+9. **退出码 env 分型**（T10b/M1 尾）：tanyin-replay 卡片文件缺/不可读=环境域 exit 2（原 rc=1 门禁域误分型）。
