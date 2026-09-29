@@ -1,14 +1,37 @@
 {
- "format_version": 1,
- "note": "授权靶场种 20 ground truth（批次6 T16；裁决 I 固定分布：注入6+SSRF2+反序列化2+CORS/重定向2+遍历1+认证后越权5+弱口令1+信息泄露1）。endpoint=资产值精确匹配键（M-3 前为宿主侧 127.0.0.1 映射 URL 形，M-3 internal:true 后同串沿用为命名键——活靶探针经 attack-noop 跳板）；marker=EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。批次7 T16：scorer 只归语法（大小写/端口/query/尾斜杠），语义等价经顶层 host_aliases 显式声明（svc-crm→127.0.0.1:8003 先例——首战键失配教训），禁猜测式映射。",
+ "format_version": 2,
+ "note": "授权靶场种 20 ground truth（批次6 T16 起源；v2=批次8 靶场二轮键形迁移落地：RUNBOOK『GT 资产键一律无端口形』裁决执行——canonical=svc-*/path?query，历史 127.0.0.1:800x 宿主映射形降级 host_aliases 显式别名（语义等价唯一通道，禁猜）。首战 0/20 键失配教训（评估侧）+二轮复验在案。marker/EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。scorer 只归语法（大小写/端口/query 排序/尾斜杠）。",
  "host_aliases": {
-  "svc-crm": ["127.0.0.1:8003"]
+  "svc-admin": [
+   "127.0.0.1:8006"
+  ],
+  "svc-api-gw": [
+   "127.0.0.1:8003"
+  ],
+  "svc-billing": [
+   "127.0.0.1:8007"
+  ],
+  "svc-dashboard": [
+   "127.0.0.1:8002"
+  ],
+  "svc-files": [
+   "127.0.0.1:8004"
+  ],
+  "svc-login": [
+   "127.0.0.1:8008"
+  ],
+  "svc-portal": [
+   "127.0.0.1:8005"
+  ],
+  "svc-shop": [
+   "127.0.0.1:8001"
+  ]
  },
  "planted": [
   {
    "id": "sqli-01",
    "class": "sqli",
-   "endpoint": "http://127.0.0.1:8001/item?id=1",
+   "endpoint": "svc-shop/item?id=1",
    "marker": "GTSQLI-01",
    "post_auth": false,
    "authz_role": ""
@@ -16,7 +39,7 @@
   {
    "id": "sqli-02",
    "class": "sqli",
-   "endpoint": "http://127.0.0.1:8001/order?id=1",
+   "endpoint": "svc-shop/order?id=1",
    "marker": "GTSQLI-02",
    "post_auth": false,
    "authz_role": ""
@@ -24,7 +47,7 @@
   {
    "id": "xss-01",
    "class": "xss",
-   "endpoint": "http://127.0.0.1:8001/search?q=x",
+   "endpoint": "svc-shop/search?q=x",
    "marker": "GTXSS-01",
    "post_auth": false,
    "authz_role": ""
@@ -32,7 +55,7 @@
   {
    "id": "xss-02",
    "class": "xss",
-   "endpoint": "http://127.0.0.1:8001/comment?text=x",
+   "endpoint": "svc-shop/comment?text=x",
    "marker": "GTXSS-02",
    "post_auth": false,
    "authz_role": ""
@@ -40,7 +63,7 @@
   {
    "id": "ssti-01",
    "class": "ssti",
-   "endpoint": "http://127.0.0.1:8002/report?name=x",
+   "endpoint": "svc-dashboard/report?name=x",
    "marker": "GTSSTI-01",
    "post_auth": false,
    "authz_role": ""
@@ -48,7 +71,7 @@
   {
    "id": "cmdi-01",
    "class": "cmdi",
-   "endpoint": "http://127.0.0.1:8002/ping?host=127.0.0.1",
+   "endpoint": "svc-dashboard/ping?host=127.0.0.1",
    "marker": "GTCMDI-01",
    "post_auth": false,
    "authz_role": ""
@@ -56,7 +79,7 @@
   {
    "id": "ssrf-01",
    "class": "ssrf",
-   "endpoint": "http://127.0.0.1:8003/fetch?url=http://127.0.0.1:8000/",
+   "endpoint": "svc-api-gw/fetch?url=http://127.0.0.1:8000/",
    "marker": "GTSSRF-01",
    "post_auth": false,
    "authz_role": ""
@@ -64,7 +87,7 @@
   {
    "id": "ssrf-02",
    "class": "ssrf",
-   "endpoint": "http://127.0.0.1:8003/preview?url=http://127.0.0.1:8000/",
+   "endpoint": "svc-api-gw/preview?url=http://127.0.0.1:8000/",
    "marker": "GTSSRF-02",
    "post_auth": false,
    "authz_role": ""
@@ -72,7 +95,7 @@
   {
    "id": "cors-01",
    "class": "cors",
-   "endpoint": "http://127.0.0.1:8003/cors-debug",
+   "endpoint": "svc-api-gw/cors-debug",
    "marker": "GTCORS-01",
    "post_auth": false,
    "authz_role": ""
@@ -80,7 +103,7 @@
   {
    "id": "deser-01",
    "class": "deser",
-   "endpoint": "http://127.0.0.1:8004/unserialize?data=x",
+   "endpoint": "svc-files/unserialize?data=x",
    "marker": "GTDESER-01",
    "post_auth": false,
    "authz_role": ""
@@ -88,7 +111,7 @@
   {
    "id": "deser-02",
    "class": "deser",
-   "endpoint": "http://127.0.0.1:8004/import?data=x",
+   "endpoint": "svc-files/import?data=x",
    "marker": "GTDESER-02",
    "post_auth": false,
    "authz_role": ""
@@ -96,7 +119,7 @@
   {
    "id": "traversal-01",
    "class": "traversal",
-   "endpoint": "http://127.0.0.1:8004/download?path=../../etc/passwd",
+   "endpoint": "svc-files/download?path=../../etc/passwd",
    "marker": "GTTRAVERSAL-01",
    "post_auth": false,
    "authz_role": ""
@@ -104,7 +127,7 @@
   {
    "id": "redir-01",
    "class": "redir",
-   "endpoint": "http://127.0.0.1:8005/redirect?to=http://evil.example",
+   "endpoint": "svc-portal/redirect?to=http://evil.example",
    "marker": "GTREDIR-01",
    "post_auth": false,
    "authz_role": ""
@@ -112,7 +135,7 @@
   {
    "id": "infoleak-01",
    "class": "infoleak",
-   "endpoint": "http://127.0.0.1:8005/debug/env",
+   "endpoint": "svc-portal/debug/env",
    "marker": "GTINFOLEAK-01",
    "post_auth": false,
    "authz_role": ""
@@ -120,7 +143,7 @@
   {
    "id": "idor-01",
    "class": "idor",
-   "endpoint": "http://127.0.0.1:8006/admin/orders?user_id=101",
+   "endpoint": "svc-admin/admin/orders?user_id=101",
    "marker": "GTIDOR-01",
    "post_auth": true,
    "authz_role": "user"
@@ -128,7 +151,7 @@
   {
    "id": "idor-02",
    "class": "idor",
-   "endpoint": "http://127.0.0.1:8006/admin/invoices?user_id=202",
+   "endpoint": "svc-admin/admin/invoices?user_id=202",
    "marker": "GTIDOR-02",
    "post_auth": true,
    "authz_role": "user"
@@ -136,7 +159,7 @@
   {
    "id": "role-01",
    "class": "role",
-   "endpoint": "http://127.0.0.1:8006/admin/api/roles",
+   "endpoint": "svc-admin/admin/api/roles",
    "marker": "GTROLE-01",
    "post_auth": true,
    "authz_role": "user"
@@ -144,7 +167,7 @@
   {
    "id": "hauth-01",
    "class": "hauth",
-   "endpoint": "http://127.0.0.1:8007/api/v1/charges?account=acc-1002",
+   "endpoint": "svc-billing/api/v1/charges?account=acc-1002",
    "marker": "GTHAUTH-01",
    "post_auth": true,
    "authz_role": "user"
@@ -152,7 +175,7 @@
   {
    "id": "hauth-02",
    "class": "hauth",
-   "endpoint": "http://127.0.0.1:8007/api/v1/statements?account=acc-2003",
+   "endpoint": "svc-billing/api/v1/statements?account=acc-2003",
    "marker": "GTHAUTH-02",
    "post_auth": true,
    "authz_role": "user"
@@ -160,7 +183,7 @@
   {
    "id": "weakpass-01",
    "class": "weakpass",
-   "endpoint": "http://127.0.0.1:8008/login",
+   "endpoint": "svc-login/login",
    "marker": "GTWEAKPASS-01",
    "post_auth": false,
    "authz_role": ""

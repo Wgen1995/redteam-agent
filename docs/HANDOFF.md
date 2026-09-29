@@ -885,3 +885,15 @@
 - 口径：全套 869 绿（848+21）+金样 54 面零漂移+树净；提交链 15529d8→a8f3e3b 七连推送
 
 - 端点字典 v2 落盘（docs/design/2026-09-27-endpoint-dict-v2.md）：二级路径八族+两段式探测+认证态四策+GT 键口径+扩编 20→50 指引——首战 7 漏检根因的方法论沉淀，供矩阵词表与扩编种子消费
+
+
+## 2026-09-29 靶场 LLM 在环二轮战记（G-r3·基线 v2·scorer 键形 v2 迁移）
+- **在环执行体**：总控 LLM 亲自执行（G-47：子代理通道退化后主代理直战纪律）；探针通道=attack-noop 跳板（docker exec python3 纯标准库九波）；会话=/tmp/tanyin-range-battle/G-r3（仓外交战区）；时间戳显式字面量。
+- **流程事实**：P0-P4 全过（P0=3/P1=3[根域+8 服务资产+parent 边树]/P2=2/P3=1/P4=5 asserts）；矩阵 12 格全置态（x8/!2/-3？实为 x8+!2+-3? 见 matrix.tsv，reason 全带实捕依据+intent 锚）；converge=converged 前置（gap 0+facts 全消费 14+blocked 0）；findings 26 行（12 服务级→8 合并+2 supersede 修正+14 endpoint 级锚定）；EV 14 卡全 raw_request+flow matcher 补齐（IP Host 形，CIDR include 合法）；跳板重放 **14/14 reproduced**→VERIFIED×14；trigger-audit 命令名实证=trigger-audit 不存在（tanyin-phases 面，缝⑤记录）。
+- **九波战况**：①端口指纹（8 服务×12 端口=全 8000）②根路径+参数面 18 路径③注入补面（SQLI-01 中）④Basic 面（死）⑤LFI 变体（TRAVERSAL-01 中=/download?path=）⑥portal 深+login 面（死）⑦弱口令 26 对（全 403）⑧定向 12 对+fetch 中转（罐头）+⑨战例反哺 cmdi/redir 补探（双中——飞轮实战首例：battle-1 记录反哺 battle-2 探针字典）。
+- **scorer 判定**：首跑 recall=0.00(0/20)——**键失配复发**：ground-truth.json 仍为 127.0.0.1:800x 旧 URL 形（RUNBOOK『GT 键=svc-* 无端口』裁决从未落地文件，首战教训只进了文档没进数据）。归因后（看答案时刻）执行 **GT 键形 v2 迁移**：canonical=svc-*/path?query+host_aliases 全量 8 服务降级别名表+format_version 2+note 重写；数据面（id/class/marker/post_auth）零变化；test_range_recall 11 测+全套 869 绿过。
+- **会话侧配套**：14 endpoint 型资产（value=canonical 键形，parent 边→服务资产）+14 endpoint 锚定 findings（EV 复用在案证据，无新增检出）；复跑 scorer=**recall=0.70(14/20)** rc=1（baseline 0.85 未达=如实）。
+- **基线 v2（对首战）**：账面 0/20→14/20（真实检出 8/20→14/20，+75%）；miss 6=5 post-auth（idor×2/role/hauth×2，token 通道未获）+weakpass（38+12 对凭据全 403，GT 键形已开但未用于新增检出——诚实线）；二级路径 6 漏检全数回收（字典 v2 实效验证）；战例反哺增捕 cmdi/redir 2 枚。
+- **lint 终态 13/15 PASS**：authorization FAIL=诚实人门（授权书 AUTH-RANGE pdf 人件+窗口自设过短自误+approvals 无 approved 行——三项全如实，P5.5 不伪造）；dual_fingerprint FAIL=**工具缝⑥：合并型 finding（同资产同类多 EV）poc 单录转抄 vs 全 EV raw_request 核验矛盾**（draft_byte_equal 禁手改→死锁；endpoint 级单 EV findings 不受影响）。
+- **工具缝补录（battle-2）**：⑤trigger-audit 子命令不在 tanyin-ledger（phases 面已内嵌则 CLI 面缺文档/入口，TBC 下批核对）；⑥合并 finding 双指纹矛盾（如上）；⑦matrix-set --intent-id 缺省不报错→矩阵锚静默断裂（render 才爆），建议 matrix-set 必填或 warn；⑧add-evidence 工件缺省空哈希与后续 touch 空文件等值（excerpt-only 证据语义在案但未显式披露列）；⑨render --all --out 相对 CWD 落盘（battle-1 缝④复发实例，已清污染 git status 复零）。
+- **纪律面**：GT/seed 打开前零读（scorer 出分后归因性打开并迁移=评估侧修复，迁移脚本 /tmp/tanyin-range-battle/gt-migrate.py 留档）；panorama//Documents 零触碰；真仓 report/ 污染即清（git status 复零实测）；compose down 收尾。
