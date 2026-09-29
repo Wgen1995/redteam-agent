@@ -26,13 +26,25 @@ class H(BaseHTTPRequestHandler):
             self._send(200, "<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>")
         elif self.path.startswith("/preview"):         # 预览路由（服务端请求伪造·合成元数据）
             self._send(200, "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>")
-        elif self.path.startswith("/cors-debug"):      # CORS 调试路由（宽松策略+调试回显）
+        elif self.path.startswith("/cors-debug"):      # CORS 调试路由（宽松策略；通配源不带凭据头——浏览器拒收组合不冒充可利用）
             self._send(200, "<html>cors debug GTCORS-01 wildcard allow-origin</html>",
-                       extra=[("Access-Control-Allow-Origin", "*"),
-                              ("Access-Control-Allow-Credentials", "true")])
+                       extra=[("Access-Control-Allow-Origin", "*")])
         elif self.path.startswith("/api/user"):          # 用户 API（JWT 弱验·alg=none 接受）
             tok = (self.headers.get("Authorization") or "").replace("Bearer ", "")
+            # 批次 9 评审修复（蓝军专家 P1）：真 alg=none 形=三段 header.payload.（空签名），
+            # 旧判据只收两段退化形致教科书伪造必被拒（诚实探不中）；双收两形。
+            ok_none = False
             if tok.count(".") == 1 and tok.split(".")[1] == "":
+                ok_none = True                     # 退化两段形（历史兼容）
+            elif tok.count(".") == 2 and tok.split(".")[2] == "":
+                import base64, json as _json
+                try:
+                    pad = tok.split(".")[0] + "=" * (-len(tok.split(".")[0]) % 4)
+                    hdr = _json.loads(base64.urlsafe_b64decode(pad))
+                    ok_none = str(hdr.get("alg", "")).lower() == "none"
+                except Exception:
+                    ok_none = False
+            if ok_none:
                 self._send(200, "<html>GTJWT-01 synthetic jwt alg none accepted</html>")
             else:
                 self._send(401, "auth required")

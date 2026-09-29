@@ -54,7 +54,8 @@ def run(*args, env=None):
 class TestGroundTruth(unittest.TestCase):
     def setUp(self):
         with open(GT_PATH, encoding="utf-8") as f:
-            self.gt = json.load(f)["planted"]      # 机读面={format_version,note,planted}
+            self.doc = json.load(f)               # 机读面={format_version,note,planted,host_aliases}
+        self.gt = self.doc["planted"]
 
     def test_gt_shape_fifty(self):
         self.assertEqual(len(self.gt), 50)
@@ -67,6 +68,14 @@ class TestGroundTruth(unittest.TestCase):
                              {"id", "class", "endpoint", "marker", "post_auth", "authz_role"})
             if g["post_auth"]:
                 self.assertTrue(g["authz_role"], "post_auth 条目 authz_role 非空")
+
+    def test_gt_v3_contract_pins(self):
+        """批次 9 评审收口（doc-consistency/automation）：format_version=3（v3=query
+        剥离口径入册）+别名表含 svc-*:8000 容器形（防 raw_request 形资产键失配）。"""
+        self.assertEqual(self.doc["format_version"], 3)
+        for svc, al in self.doc["host_aliases"].items():
+            self.assertIn(svc + ":8000", al,
+                          "别名缺容器形 %s:8000（doc-consistency P2 端口残留陷阱）" % svc)
 
     def test_gt_distribution_fixed(self):
         """裁决 I 固定分布（批次 9 扩编 20→50）：八新类（lfi/rfi/jwt/ratelimit/
@@ -173,7 +182,11 @@ class Base(unittest.TestCase):
         if cred:
             args.insert(1, "--auth-context=" + cred)
         f3 = self._led(*args)
-        return {"assets": ast, "findings": (f1, f2, f3)}
+        for ev in (ev_a, ev_b, ev_c):        # 精度门：夹具铸重放 VERIFIED 在案
+            self._led("append-timeline", "--actor=CLI", "--phase=P4",
+                      "--event=replay:%s:VERIFIED" % ev,
+                      "--revert-cmd=none", "--timestamp=" + TS)
+        return {"assets": ast, "findings": (f1, f2, f3), "evs": (ev_a, ev_b, ev_c)}
 
 
 class TestScorer(Base):
@@ -188,7 +201,7 @@ class TestScorer(Base):
         self.assertEqual(missing, ["fx-miss-1"])       # MISSING 含未命中 id
 
     def test_scorer_ignores_query_form(self):
-        """批次 9 三轮战教训（G-r4 归因 14 枚）：GT 键含 query（参数名/值/编码）而
+        """批次 9 三轮战教训（G-r4 归因：query 形罚 10 枚+CRED 链 4 枚）：GT 键含 query（参数名/值/编码）而
         诚实黑盒战士的探测参数不可预知（种子按路径前缀匹配行为）——键形 v3=
         host+path，query 整体剥离（RUNBOOK v3 口径；battle-2 作者读 GT 对齐掩盖）。
         路径段中的资源 id（/invoice/2 vs /invoice/88）为同型残留，本测试不覆盖
@@ -202,6 +215,42 @@ class TestScorer(Base):
         recall, missing = eval_range_recall.score(rows, cards, gt_q)
         self.assertAlmostEqual(recall, 3 / 4, "query 形差不得惩罚 host+path 命中")
         self.assertEqual(missing, ["fx-miss-1"])
+
+    def test_host_aliases_positive_hit(self):
+        """swe 专家 P1 钉（批次 9 评审）：语义别名正匹配回归——GT 条目端点写别名形
+        （proxy.intranet）而会话资产=canonical 形（app.intranet）时，dict 形 GT 的
+        host_aliases 必须把别名归一到 canonical 使命中成立（首战 0/20 正是该层故障，
+        既往 12 测全 list 形 GT 从不触发该路径——退化也不红）。"""
+        self._mint()
+        rows, cards = self._load()
+        gt_doc = {"host_aliases": {"app.intranet:8000": ["proxy.intranet:8000"]},
+                  "planted": [dict(e) for e in GT_FIX]}
+        gt_doc["planted"][0]["endpoint"] = "http://proxy.intranet:8000/a"
+        recall, missing = eval_range_recall.score(rows, cards, gt_doc)
+        self.assertAlmostEqual(recall, 3 / 4, msg="别名形 GT 条目须命中 canonical 资产")
+        self.assertEqual(missing, ["fx-miss-1"])
+
+    def test_precision_gate_requires_replay_verified(self):
+        """批次 9 三轮战精度门（G-52）：命中前置=证据链有 replay VERIFIED 在案——
+        幻觉/未验面零分；未翻案 not-reproduced 裁决拖累整 finding（CLI 缝⑪的
+        评分侧纵深）。"""
+        m = self._mint()
+        # ① 撤掉 ev_b 的 VERIFIED 行（补 REJECTED 末值）→ b 面不计
+        self._led("append-timeline", "--actor=CLI", "--phase=P4",
+                  "--event=replay:%s:REJECTED" % m["evs"][1],
+                  "--revert-cmd=none", "--timestamp=" + TS)
+        rows, cards = self._load()
+        recall, missing = eval_range_recall.score(rows, cards, GT_FIX)
+        self.assertAlmostEqual(recall, 2 / 4)
+        self.assertIn("fx-pre-2", missing)
+        # ② ev_a 注 not-reproduced 探针裁决（无更晚 reproduced）→ a 面不计
+        self._led("append-timeline", "--actor=子代理", "--phase=P4",
+                  "--event=replay-probe %s verdict=not-reproduced" % m["evs"][0],
+                  "--revert-cmd=none", "--timestamp=" + TS)
+        rows, cards = self._load()
+        recall, missing = eval_range_recall.score(rows, cards, GT_FIX)
+        self.assertAlmostEqual(recall, 1 / 4)
+        self.assertIn("fx-pre-1", missing)
 
     def test_post_auth_requires_authz_chain(self):
         """命中 marker 但无 authz 链的 post_auth 条目不计命中（负向）。"""

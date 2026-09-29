@@ -8,5 +8,5 @@
 - K6 patterns/core: 0 页
 - K6 patterns/learned: 2 页
 - K7 business: 0 页
-- K8 retros: 0 页
+- K8 retros: 1 页
 - K4 指针: shared/DENYLIST.md（库外既有数据文件）

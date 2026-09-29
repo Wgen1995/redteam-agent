@@ -21,6 +21,7 @@ R-T16-3）。
 import argparse
 import json
 import os
+import re
 import shutil
 import sys
 from urllib.parse import parse_qsl, urlencode, urlsplit
@@ -39,10 +40,13 @@ def _cell(t, row, col):
 
 
 def load_session(session_dir):
-    """会话装载：(rows{表: 行集}, cards{EV id: 卡 dict})。坏卡跳过（容错面）。"""
+    """会话装载：(rows{表: 行集}, cards{EV id: 卡 dict})。坏卡跳过（容错面）。
+    批次 9 三轮战精度门：timeline 一并入载——重放三态与 replay-probe 裁决为
+    命中前置（无 VERIFIED 在案的证据不计数=幻觉/未验面零分；最新探针裁决
+    not-reproduced 未翻案的证据同样不计——G-52 越权改判防线在评分侧复设）。"""
     s = core.Session(session_dir)
     tables = ("findings.tsv", "assets.tsv", "creds.tsv", "intents.tsv",
-              "E-index.tsv", "facts.tsv")
+              "E-index.tsv", "facts.tsv", "timeline.tsv")
     rows = {t: s.rows(t) for t in tables}
     out_cards = {}
     ci = TABLES["E-index.tsv"].index("card_path")
@@ -108,6 +112,25 @@ def _canon_endpoint(u, aliases):
     return _canon_host(host, aliases) + rest
 
 
+def _replay_state(rows):
+    """重放三态推导（批次 9 三轮战精度门/G-52）：timeline 事件溯源末值。
+    verified=最新 replay:<id>:<state> 为 VERIFIED/REPAIRED 的 id 集；
+    blocked=最新 replay-probe 裁决 not-reproduced 且无更晚 reproduced 的 id 集
+    （越权 VERIFIED 改判在 CLI 缝⑪已拒，此处评分侧复设防线——纵深）。"""
+    latest_state, probe_last = {}, {}
+    for r in rows.get("timeline.tsv", []):
+        ev = _cell("timeline.tsv", r, "event")
+        m = re.match(r"replay:(\S+?):(VERIFIED|REPAIRED|REJECTED)", ev)
+        if m:
+            latest_state[m.group(1)] = m.group(2)
+        m2 = re.search(r"replay-probe (\S+) verdict=(\S+)", ev)
+        if m2:
+            probe_last[m2.group(1)] = m2.group(2)
+    verified = {i for i, st in latest_state.items() if st in ("VERIFIED", "REPAIRED")}
+    blocked = {i for i, v in probe_last.items() if v == "not-reproduced"}
+    return verified, blocked
+
+
 def score(rows, cards, gt, host_aliases=None):
     """召回裁决。返回 (recall=命中/len(gt), MISSING id 清单)。
 
@@ -135,6 +158,7 @@ def score(rows, cards, gt, host_aliases=None):
         lf = _cell("E-index.tsv", r, "linked_finding")
         if lf:
             linked.setdefault(lf, []).append(r[0])
+    verified_ev, blocked_ev = _replay_state(rows)   # 精度门：重放实证前置
     neg_targets = {_cell("facts.tsv", r, "target") for r in rows["facts.tsv"]
                    if _cell("facts.tsv", r, "kind") == "authz"}
     hits, missing = 0, []
@@ -151,6 +175,10 @@ def score(rows, cards, gt, host_aliases=None):
                 evs = [x for x in (_cell("findings.tsv", f, "evidence_ids") or "").split(";") if x]
                 evs += [x for x in (_cell("findings.tsv", f, "control_evidence_ids") or "").split(";") if x]
                 evs += linked.get(f[fi("id")], [])
+                if not any(e in verified_ev for e in evs):
+                    continue        # 精度门：无重放 VERIFIED 在案的证据不计（幻觉面零分）
+                if any(e in blocked_ev for e in evs):
+                    continue        # 精度门：未翻案 not-reproduced 证据拖累整 finding
                 if e.get("marker", "") not in _word_markers(cards, evs):
                     continue
                 if e.get("post_auth"):

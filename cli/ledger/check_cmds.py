@@ -245,6 +245,20 @@ def _set_replay_state_locked(goal_dir, args):
                   and REPLAY_EVENT.match(r[_idx("timeline.tsv", "event")]).group(2) == "REPAIRED")
     if state == "REPAIRED" and retries >= MAX_RETRY:
         return reject("REPAIRED 重试计数 %d≥max_retry=%d" % (retries, MAX_RETRY))
+    # 缝⑪/G-52（批次 9 三轮战复核）：P4 门拦下 not-reproduced 后，VERIFIED/REPAIRED
+    # 不得越过复放实证改判——该 id 最新 replay-probe 裁决=not-reproduced 且无更晚
+    # reproduced 行 ⇒ 拒。无探针行（批次 5 手工核验通道）不破坏既有语义。
+    if state in ("VERIFIED", "REPAIRED"):
+        import re as _re
+        pat = _re.compile(r"replay-probe (\S+) verdict=(\S+)")
+        last = None
+        for r in s.rows("timeline.tsv"):
+            m = pat.search(r[_idx("timeline.tsv", "event")])
+            if m and m.group(1) == rid:
+                last = m.group(2)
+        if last == "not-reproduced":
+            return reject("最新 replay-probe 裁决=not-reproduced：VERIFIED 须先复放实证"
+                          "（补跑重放出 reproduced 行后再置态）")
 
     ev = "replay:%s:%s" % (rid, state) + ((" note=" + args["note"]) if args.get("note") else "")
     tl_row = _append_timeline(s, goal_dir, ev, ts)

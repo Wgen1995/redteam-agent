@@ -22,7 +22,7 @@ INFRA = ["api.github.com", "crt.sh", "nvd.nist.gov", "osv.dev", "pypi.org", "reg
 EPOCH = "1970-01-01T00:00:00Z"   # compile 事件时间戳（无 --timestamp 参数；canary recon-recall 同款确定性纪律）
 
 
-def append_tl(gd, event):
+def append_tl(gd, event, ts=None):
     """timeline 追加一行链式事件（actor=egress；canary append_tl 同律的本地实现）。
     批4 T13：trigger-audit ③（scope-amended→egress-compile 闭环）的事件载体。
     批次 7 评审收尾 I-3：goal 锁包「读表→算链→写回」全程（filelock 单源，
@@ -33,8 +33,9 @@ def append_tl(gd, event):
         rows = s.rows("timeline.tsv")
         hi = core.TABLES["timeline.tsv"].index("hash")
         prev = rows[-1][hi] if rows else core.GENESIS
-        wo = [EPOCH, "egress", "", event, "", prev, "2"]
-        rows.append([EPOCH, "egress", "", event, "", prev, core.row_hash(prev, wo), "2"])
+        ts = ts or EPOCH     # 批次 9 评审：显式 --timestamp 注入（缺省 EPOCH 兼容 evals 确定性）
+        wo = [ts, "egress", "", event, "", prev, "2"]
+        rows.append([ts, "egress", "", event, "", prev, core.row_hash(prev, wo), "2"])
         core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
 
 
@@ -101,7 +102,7 @@ def build_acl(gd):
     return chr(10).join(L) + chr(10)
 
 
-def cmd_compile(gd, out):
+def cmd_compile(gd, out, ts=None):
     text = build_acl(gd)
     p = out or os.path.join(gd, "egress.acl")
     # newline="\n"：自指纹按 LF 主体计算，Windows 不得译成 CRLF（字节精确红线）
@@ -110,7 +111,9 @@ def cmd_compile(gd, out):
     n = len(text.splitlines())
     print("OK egress compile -> " + p + " (" + str(n) + " lines)")
     # 批4 T13：compile 落账 egress-compile 事件（幂等重编译=事件只记不判重；相对路径防绝对路径漂移）
-    append_tl(gd, "egress-compile acl=%s lines=%d" % (os.path.relpath(p, gd), n))
+    # 批次 9 评审修复（蓝军/ai-agent/doc-consistency P2）：--timestamp 显式注入
+    # （缺省 EPOCH 兼容 evals 确定性通道；战跑一律显式传——RUNBOOK S3/D3 归一形）
+    append_tl(gd, "egress-compile acl=%s lines=%d" % (os.path.relpath(p, gd), n), ts=ts)
     return 0
 
 

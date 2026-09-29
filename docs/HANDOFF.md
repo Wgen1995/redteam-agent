@@ -925,3 +925,18 @@
 - **飞轮回写**：PR-0005 三轮先例（client=CLIENT-03 同靶场如实，promote 门槛②跨客户缺口维持——多客户战例采集=下轮动机）+PT-0001/PT-0002 二次引用加固（复现计数 3 先例）。
 - **工具缝补录**：⑦burp_pasteable×parse_yaml 空行前滤（POST 体 EV 卡不可达）；G-51 子代理指挥律（长回合 interrupt 破局）；简报缺口=post-auth CRED 绑定教学缺失（battle-4 简报补）。
 - **纪律面**：战士 GT/seed 打前零读+scorer 未跑（留主代理）；主代理评分在战士交付后；仓外交战区 G-r4；时间戳全字面量。
+
+
+## 2026-09-29 批次 9 T4：八视角专家评审+完整性与精度收口（战报勘误在案）
+- **编制**：用户指令八专家视角（安全测试/渗透/蓝军/软件工程/架构/文档一致性/自动化/AI-agent）→8 路独立后台子代理只读评审，证据=文件+行级；产出 60+ 发现按 P0-P3 分诊（P2/P3 全量入 `docs/design/2026-09-29-eight-expert-review-b10.md` 批次 10 台账）。
+- **战报勘误（最高利害，ai-agent/渗透/蓝军专家交叉锁定+主代理亲验）**：三轮战记「34/34 重放 reproduced→VERIFIED」不实——EV-r4-0020/0029 重放 verdict=**not-reproduced**（replay JSON matched:false 在案；P4 门 gate-fail 拦截在案）后被越权 set-replay-state VERIFIED 改判过门。处置：①账本勘误=两 EV 回退 REJECTED（工具建议态）+findings 自动降 suspected/C3+timeline erratum 行；②战报改口径 **32/34 重放验证+2 勘误回退**；③G-52 登记（P4 门拦得住、状态回写放行的缝）。
+- **G-52 系统性修复（TDD）**：CLI 缝⑪=set-replay-state VERIFIED/REPAIRED 交叉断言「最新 replay-probe 裁决=not-reproduced 且无更晚 reproduced ⇒ REJECT」（4 新测，兼容批次 5 手工通道）；评分侧纵深=scorer 精度门（命中前置=replay VERIFIED 在案+未翻案 not-reproduced 拖累整 finding；timeline 入载+2 新测）。**精度门后双会话复评：G-r4=0.56（28/50）、G-r3=0.28 不变**（我方二轮重放真实全 reproduced=经得起门）。
+- **基线 v3 终版（四轨如实）**：官方 v2 规则 0.40→精度门后 0.36 等值；键形 v3 0.60→精度门后 **0.56**；行为观测 34/50=0.68；重放验证 32/50=0.64。对照口径勘误（ai-agent 专家）：「独立战士 2.1 倍反超」系分母置换混杂——同子集真对比=战士 17/20(0.85) vs 作者二轮 14/20(0.70)=**+21%**，战记照此改口。
+- **「14 枚 query 误罚」归因勘误（doc-consistency 专家复算）**：query 形罚净差=**10 枚**，另 4 枚=CRED 链（idor-01/02）+路径尾段（idor-03/04 v4 域）——RUNBOOK/测试注释三处同步改口；battle-4 简报 CRED 教学预期回收 2 枚（0.56→0.60），非 4 枚。
+- **靶面保真度修复（蓝军专家 P1，主代理亲验）**：①svc-api-gw JWT-01 判据只收两段退化形致真 alg=none（三段）必拒——改双收+header 解码校验（三轮「诚实漏检 JWT-01」实为种子缺陷误教飞轮）；②svc-portal JWT-02 裸 GET 直发 marker（token 零读）——改须真实呈 token 且 alg=none/exp 过期；③CORS-01 去 Allow-Credentials 伪组合（通配源+凭据=浏览器拒收的经典误报形）。种子 py_compile+范围测全绿。
+- **缝⑧/⑩确认与升级**：⑧空工件哈希链=34/34（touch 空文件 SOP 化放大）；⑩arch 专家定深：scope matcher（后缀/CIDR）不认裸 svc-* 名→G-r4 全部 41 目标资产误判 out_of_scope→34 findings 挤单一无绑定 intent（键形 v3 未回灌执法面=首战键口径事故的执法侧重演）——批次 10 修。
+- **scorer/数据面收口**：GT format_version=3（v3 口径入册+svc-*:8000 容器别名补全——doc-consistency 端口陷阱）；host_aliases 正匹配回归钉（swe 专家 P1：该层既往零正例、退化不红）；query 形差测试注释改口；precision gate 双向测在案。
+- **战具归仓（automation 专家 P1）**：BRIEF/boot/settle 三模板入 `tests/range/battle-kit/`（/tmp 战具灭失风险收口）；tanyin-egress compile 增 --timestamp 注入（1970 纪元行缝；五工具 append_tl 收拢=批次 10）。
+- **飞轮卫生（渗透专家 P2）**：三轮 userenum/JWT-01 归因未核即入 PR-0005——RT-0001 勘误页补录（归因抽样核验步=批次 10 #14）。
+- **G-r4-summary 勘误**：honest_misses 15→16 面（CMDI-02 转抄脱落）；detected+misses 闭合自检。
+- 验证：全套测试+新钉全绿（见下提交）；HANDOFF 本节=评审记录+勘误双载体。

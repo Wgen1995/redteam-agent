@@ -69,6 +69,9 @@ class TestNorm(unittest.TestCase):
             "assets.tsv": [row("assets.tsv", id="AST-1", value="svc-crm/api/x")],
             "creds.tsv": [], "intents.tsv": [], "facts.tsv": [],
             "E-index.tsv": [row("E-index.tsv", id="EV-1")],
+            # 批次 9 精度门：命中前置=重放 VERIFIED 在案（G-52 纵深）
+            "timeline.tsv": [row("timeline.tsv", ts=TS, actor="CLI", phase="P4",
+                                 event="replay:EV-1:VERIFIED")],
         }
         cards = {"EV-1": {"expected": {"matchers": [
             {"type": "word", "words": ["TANYIN-MARKER-1"]}]}}}

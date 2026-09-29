@@ -66,5 +66,55 @@ class TestReplayTimestamp(unittest.TestCase):
         self.assertNotIn("_now()", src[i:j], "set-replay-state 路径残留墙钟")
 
 
+class TestReplayConflictGuard(unittest.TestCase):
+    """批次 9 三轮战复核收口（缝⑪/G-52）：P4 门拦下 not-reproduced 后，
+    set-replay-state --state=VERIFIED 不得越过复放实证改判——最新探针裁决为
+    not-reproduced 且无更晚 reproduced 行 ⇒ REJECT rc=1；无探针行（批次 5
+    手工核验证通道）保持放行不破坏既有语义。"""
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp()
+        for f in os.listdir(FIX):
+            shutil.copy(os.path.join(FIX, f), self.d)
+
+    def tearDown(self):
+        shutil.rmtree(self.d)
+
+    def _inject_probe(self, verdict, ts):
+        r = run(self.d, "append-timeline", "--actor=子代理", "--phase=P4",
+                "--event=replay-probe EV-g1-0001 verdict=%s" % verdict,
+                "--revert-cmd=none", "--timestamp=" + ts)
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_verified_blocked_after_not_reproduced(self):
+        self._inject_probe("not-reproduced", "2026-09-29T16:00:00Z")
+        r = run(self.d, "set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED",
+                "--timestamp=" + TS)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("not-reproduced", r.stderr + r.stdout)
+
+    def test_repaired_blocked_after_not_reproduced(self):
+        self._inject_probe("not-reproduced", "2026-09-29T16:00:00Z")
+        r = run(self.d, "set-replay-state", "--id=EV-g1-0001", "--state=REPAIRED",
+                "--timestamp=" + TS)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+
+    def test_later_reproduced_unblocks(self):
+        self._inject_probe("not-reproduced", "2026-09-29T16:00:00Z")
+        self._inject_probe("reproduced", "2026-09-29T16:30:00Z")
+        r = run(self.d, "set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED",
+                "--timestamp=" + TS)
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_rejected_and_manual_channel_unaffected(self):
+        self._inject_probe("not-reproduced", "2026-09-29T16:00:00Z")
+        r = run(self.d, "set-replay-state", "--id=EV-g1-0001", "--state=REJECTED",
+                "--timestamp=" + TS)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        r2 = run(self.d, "set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED",
+                 "--timestamp=" + TS)   # 无探针行的手工通道（G-g1 原始态语义）
+        self.assertEqual(r2.returncode, 1, r.stdout + r2.stderr)  # 上一行已注 REJECTED 探针仍在
+
+
 if __name__ == "__main__":
     unittest.main()
