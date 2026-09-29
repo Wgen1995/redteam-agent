@@ -31,7 +31,7 @@ NOOP = [PY, "-c", "pass"]
 
 
 def g(gd, sub, *args):
-    return subprocess.run([PY, GUARD, sub, "--goal-dir", gd] + list(args),
+    return subprocess.run([PY, GUARD, sub, "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z'] + list(args),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 

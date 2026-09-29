@@ -19,7 +19,7 @@ class TestReplayChain(unittest.TestCase):
         shutil.copytree(FIX, self.gd)
 
     def _run(self, *args):
-        return subprocess.run([sys.executable, REPLAY, "replay", "--goal-dir", self.gd] + list(args),
+        return subprocess.run([sys.executable, REPLAY, "replay", "--goal-dir", self.gd, '--timestamp=2026-09-30T12:00:00Z'] + list(args),
                               capture_output=True, text=True, encoding="utf-8", errors="replace")
 
     def test_chain_runs_ordered_and_aborts_on_env_diff(self):

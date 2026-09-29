@@ -52,7 +52,7 @@ def phases(gd, sub, args=()):
 
 
 def _egress_compile(gd):
-    r = subprocess.run([sys.executable, EGRESS, "compile", "--goal-dir", gd],
+    r = subprocess.run([sys.executable, EGRESS, "compile", "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z'],
                        capture_output=True, text=True, encoding="utf-8", errors="replace")
     return r.returncode
 

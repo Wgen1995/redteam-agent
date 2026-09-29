@@ -15,12 +15,12 @@ TAB = chr(9)
 
 
 def canary(gd, *args):
-    return subprocess.run([PY, CANARY, args[0], "--goal-dir", gd] + list(args[1:]),
+    return subprocess.run([PY, CANARY, args[0], "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z'] + list(args[1:]),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
 def budgetctl(gd, *args):
-    return subprocess.run([PY, BUDGET, args[0], "--goal-dir", gd] + list(args[1:]),
+    return subprocess.run([PY, BUDGET, args[0], "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z'] + list(args[1:]),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 

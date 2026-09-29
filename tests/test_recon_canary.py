@@ -16,7 +16,12 @@ TS = "2026-09-24T11:00:00Z"
 
 
 def run(cli, gd, sub, *args):
-    return subprocess.run([sys.executable, cli, sub, "--goal-dir", gd] + list(args),
+    a = list(args)
+    # 批次 10 T5：EPOCH 退役——仅五工具（canary/guard/replay/budgetctl/egress）须时间戳；
+    # tanyin-phases 只读面无该参数（注入=usage 2）。
+    if "tanyin-canary" in cli and not any(str(x).startswith("--timestamp") for x in a):
+        a += ["--timestamp=2026-09-30T12:00:00Z"]
+    return subprocess.run([sys.executable, cli, sub, "--goal-dir", gd] + a,
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 

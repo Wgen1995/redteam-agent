@@ -8,14 +8,14 @@ FIX = os.path.join(HERE, "fixtures", "G-g1")
 PY = sys.executable
 
 def g(gd, *args):
-    return subprocess.run([PY, GUARD, args[0], "--goal-dir", gd] + list(args[1:]),
+    return subprocess.run([PY, GUARD, args[0], "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z'] + list(args[1:]),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 def g_deploy_env(gd, cred, username, secret):
     """批次 7 T10：deploy-vault 密值 env 通道调用形（--secret 退出 argv=usage exit 2）。"""
     env = dict(os.environ, TANYIN_VAULT_SECRET=secret)
     return subprocess.run([PY, GUARD, "deploy-vault", "--goal-dir", gd,
-                           "--cred=" + cred, "--username=" + username],
+                           "--cred=" + cred, "--username=" + username, '--timestamp=2026-09-30T12:00:00Z'],
                           capture_output=True, text=True, encoding="utf-8",
                           errors="replace", env=env)
 

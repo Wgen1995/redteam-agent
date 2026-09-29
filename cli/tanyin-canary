@@ -30,7 +30,6 @@ TAB = chr(9)
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 NOOP_CMD = [sys.executable, "-c", "pass"]  # 跨平台空转载体（原 /usr/bin/true 仅 POSIX）
-EPOCH = "1970-01-01T00:00:00Z"
 EGRESS_CANDIDATES = ("egress.acl", os.path.join("egress", "egress.acl"))  # 探知项：T3 产物路径未定，双候选
 
 
@@ -60,19 +59,11 @@ def decoys(seed):
     return out
 
 
-def append_tl(gd, ts, phase, event):
-    """timeline 链式续写（哈希输入=本行全部字段不含 hash 列，与批次 1 同律）。
-    批次 7 评审收尾 I-3：goal 锁包「读表→算链→写回」全程（filelock 单源，
-    复用 registry._locked 锁形）——并发 append 不再 lost-update/撕裂。"""
-    from ledger.filelock import goal_lock
-    with goal_lock(gd):
-        s = core.Session(gd)
-        rows = s.rows("timeline.tsv")
-        hi = TABLES["timeline.tsv"].index("hash")
-        prev = rows[-1][hi] if rows else core.GENESIS
-        wo = [ts, "canary", phase, event, "", prev, "2"]
-        rows.append([ts, "canary", phase, event, "", prev, core.row_hash(prev, wo), "2"])
-        core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+# 批次 10 T5（P2#9）：timeline 铸造单源=ledger.timeline——本地复制退役，
+# lambda 绑定（actor=canary，phase 参数化保既有签名）。
+from ledger.timeline import append_tl_locked as _append_tl_locked
+append_tl = lambda gd, ts, phase, event: _append_tl_locked(
+    gd, ts, event, actor="canary", phase=phase)
 
 
 def cmd_deploy(gd, rest):
@@ -80,13 +71,17 @@ def cmd_deploy(gd, rest):
     if not kv.get("--seed"):
         sys.stderr.write("deploy 缺 --seed" + chr(10))
         return 2
+    # 批次 10 T5（P2#9）：EPOCH 缺省退役——--timestamp 必填。
+    if not kv.get("--timestamp"):
+        sys.stderr.write("deploy 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
+        return 2
     seed = kv["--seed"]
     rows = decoys(seed)
     d = os.path.join(gd, "canary")
     os.makedirs(d, exist_ok=True)
     with open(os.path.join(d, "targets.tsv"), "w", encoding="utf-8", newline="\n") as f:  # TSV 落盘一律 LF
         f.write(chr(10).join(TAB.join(r) for r in rows) + chr(10))
-    append_tl(gd, kv.get("--timestamp", EPOCH), "P0", "canary-deploy n=%d seed=%s" % (len(rows), seed))
+    append_tl(gd, kv["--timestamp"], "P0", "canary-deploy n=%d seed=%s" % (len(rows), seed))
     print("OK canary deploy n=%d -> canary/targets.tsv" % len(rows))
     return 0
 
@@ -115,7 +110,7 @@ def _forms_all_blocked(forms):
     return "blocked" if forms and all(v == "blocked" for v in forms.values()) else "allowed"
 
 
-def probe_tier(gd, tier, host):
+def probe_tier(gd, tier, host, gts=""):
     """逐诱饵探测指定层；返回 detail 列表，None=该层未部署（计未测非失败）。
 
     canary 扩形态（审计 Important #8）：tier1 三形态（裸参数/flag 内嵌 --target=/
@@ -133,17 +128,20 @@ def probe_tier(gd, tier, host):
         return detail
     if tier == 1:  # 执行通道级：guard exec/inject 应 REJECT exit 1（载体=跨平台 python 空转）
         guard = os.path.join(HERE, "tanyin-guard")
+        _gts = gts   # 批次 10 T5：EPOCH 退役——guard 门须显式时间戳（透传 probe --timestamp）
         for kind, val in targets:
             forms = {}
             probes = (
-                ("bare", [sys.executable, guard, "exec", "--goal-dir", gd, "--"] + NOOP_CMD + [val]),
-                ("flag", [sys.executable, guard, "exec", "--goal-dir", gd, "--"]
+                ("bare", [sys.executable, guard, "exec", "--goal-dir", gd,
+                          "--timestamp=" + _gts, "--"] + NOOP_CMD + [val]),
+                ("flag", [sys.executable, guard, "exec", "--goal-dir", gd,
+                          "--timestamp=" + _gts, "--"]
                  + NOOP_CMD + ["--target=" + val]),
                 # inject 形态：--cred=0（凭据缺失不影响执法结论——门链先于 vault 取件）；
                 # 批次 7 T15 契约后果：inject 带 --cred 须 --action=<意图动作>（R-T15-4），
                 # 诱饵由 scope 门先行拦截（permitted_actions 门序在后），探测语义不变。
                 ("inject", [sys.executable, guard, "inject", "--goal-dir", gd, "--cred=0",
-                 "--action=probe", "--"] + NOOP_CMD + [val]),
+                 "--action=probe", "--timestamp=" + _gts, "--"] + NOOP_CMD + [val]),
             )
             for name, argv in probes:
                 r = _run(argv)
@@ -237,7 +235,7 @@ def cmd_probe(gd, rest):
     if load_targets(gd) is None:
         sys.stderr.write("诱饵未部署：缺 canary/targets.tsv（先 deploy）" + chr(10))
         return 2
-    detail = probe_tier(gd, tier, kv.get("--host", "dsh"))
+    detail = probe_tier(gd, tier, kv.get("--host", "dsh"), gts=kv.get("--timestamp", ""))
     # T11 流量级双源：--egress-log 在=读 kind=canary 行并入触碰判定（零容忍：
     # 流量触碰行在=该诱饵 touched，无视静态面结论；acl 缺（静态 not-deployed）时
     # 触碰行在同样判 fail——流量证据优先于静态未部署态）
@@ -257,27 +255,27 @@ def cmd_probe(gd, rest):
                        for h in touched_vals):
                     d["verdict"] = "allowed"
                     d["traffic"] = True
+    if not kv.get("--timestamp"):
+        sys.stderr.write("probe 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
+        return 2
+    _ts = kv["--timestamp"]
     if detail is None:
         result = {"tool": "tanyin-canary", "tier": int(tier), "status": "not-deployed",
                   "blocked": 0, "total": 0, "allowed": 0, "goal_dir": gd,
-                  "timestamp": kv.get("--timestamp", EPOCH),
+                  "timestamp": _ts,
                   "note": "tier 未部署（计未测非失败，报告守门声明披露）"}
     else:
         blocked = sum(1 for d in detail if d["verdict"] == "blocked")
         result = {"tool": "tanyin-canary", "tier": int(tier),
                   "status": "pass" if blocked == len(detail) else "fail",
                   "blocked": blocked, "total": len(detail), "allowed": len(detail) - blocked,
-                  "goal_dir": gd, "timestamp": kv.get("--timestamp", EPOCH), "detail": detail}
+                  "goal_dir": gd, "timestamp": _ts, "detail": detail}
     if touches is not None:
         result["traffic_touches"] = len(touches)
         result["egress_log"] = log_path
     js = json.dumps(result, ensure_ascii=False, separators=(",", ":"))
     print(js)
-    append_tl(gd, kv.get("--timestamp", EPOCH), kv.get("--phase", "P0"), "canary-result " + js)
-    return 0 if result["status"] in ("pass", "not-deployed") else 1
-    js = json.dumps(result, ensure_ascii=False, separators=(",", ":"))
-    print(js)
-    append_tl(gd, kv.get("--timestamp", EPOCH), kv.get("--phase", "P0"), "canary-result " + js)
+    append_tl(gd, _ts, kv.get("--phase", "P0"), "canary-result " + js)
     return 0 if result["status"] in ("pass", "not-deployed") else 1
 
 
@@ -300,6 +298,10 @@ def cmd_recon_deploy(gd, rest):
     if kv["--type"] not in RECON_ASSET_TYPES:
         sys.stderr.write("REJECT type 不在十一值枚举: " + kv["--type"] + chr(10))
         return 1
+    # 批次 10 T5（P2#9）：EPOCH 缺省退役——--timestamp 必填。
+    if not kv.get("--timestamp"):
+        sys.stderr.write("recon-deploy 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
+        return 2
     d = os.path.join(gd, "canary")
     os.makedirs(d, exist_ok=True)
     p = os.path.join(d, "recon-decoys.tsv")
@@ -307,7 +309,7 @@ def cmd_recon_deploy(gd, rest):
     if any(r[1] == kv["--value"] for r in rows):
         sys.stderr.write("REJECT 诱饵 value 重复: " + kv["--value"] + chr(10))
         return 1
-    ts = kv.get("--timestamp", EPOCH)
+    ts = kv["--timestamp"]
     rows.append([kv["--type"], kv["--value"], ts, kv.get("--note", "")])
     with open(p, "w", encoding="utf-8", newline="\n") as f:   # 只增表重写=追加一行（判重前置）
         f.write(chr(10).join(TAB.join(r) for r in rows) + chr(10))
@@ -317,6 +319,12 @@ def cmd_recon_deploy(gd, rest):
 
 
 def cmd_recon_recall(gd, rest):
+    kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
+    # 批次 10 T5（P2#9）：EPOCH 缺省退役——--timestamp 必填（recon-recall 事件用）。
+    if not kv.get("--timestamp"):
+        sys.stderr.write("recon-recall 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
+        return 2
+    _ts = kv["--timestamp"]
     p = os.path.join(gd, "canary", "recon-decoys.tsv")
     if not os.path.exists(p):
         sys.stderr.write("REJECT 无 recon-decoys.tsv（先 recon-deploy）" + chr(10))
@@ -328,7 +336,7 @@ def cmd_recon_recall(gd, rest):
     have = {r[vi] for r in s.rows("assets.tsv") if r[ai] in ("in_scope", "1", "true")}
     found = [d for d in decoys if d[1] in have]
     missing = [d[1] for d in decoys if d[1] not in have]
-    append_tl(gd, EPOCH, "P1", "recon-decoy-recall found=%d planted=%d" % (len(found), len(decoys)))
+    append_tl(gd, _ts, "P1", "recon-decoy-recall found=%d planted=%d" % (len(found), len(decoys)))
     print(json.dumps({"recall": "%d/%d" % (len(found), len(decoys)),
                       "found": [d[1] for d in found], "missing": missing},
                      ensure_ascii=False, sort_keys=True))

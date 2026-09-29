@@ -29,20 +29,11 @@ def tokenize_output(text, secrets):
             text = text.replace(s, "{{vault:cred-%s}}" % n)
     return text
 
-def append_tl(gd, ts, event):
-    # 批次 7 评审收尾 I-3：goal 锁包「读表→算链→写回」全程（filelock 单源，
-    # 复用 registry._locked 锁形）——并发 append 不再 lost-update/撕裂（T2 锁面
-    # 只盖 registry 写命令分发，五工具直写面由本批补齐）。
-    from ledger.filelock import goal_lock
-    with goal_lock(gd):
-        s = core.Session(gd)
-        rows = s.rows("timeline.tsv")
-        hi = TABLES["timeline.tsv"].index("hash")
-        prev = rows[-1][hi] if rows else core.GENESIS
-        wo = [ts, "guard", "P3", event, "", prev, "2"]
-        h = core.row_hash(prev, wo)
-        rows.append([ts, "guard", "P3", event, "", prev, h, "2"])
-        core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+# 批次 10 T5（P2#9）：timeline 铸造单源=ledger.timeline——本地复制退役，
+# partial 绑定保既有调用点签名/行为不变（actor=guard, phase=P3）。
+from functools import partial as _partial
+from ledger.timeline import append_tl_locked as _append_tl_locked
+append_tl = _partial(_append_tl_locked, actor="guard", phase="P3")
 
 # vault 逻辑单源=ledger/vault.py（批4 T4 抽取，guard/replay 共用，行为零变更）；
 # 此处同名 thin delegate 保既有调用点与命令输出字节不变。
@@ -165,13 +156,13 @@ def gate_chain(gd, cmd, ts, cred="", action=""):
     return None
 
 
-_EPOCH = "1970-01-01T00:00:00Z"
 
 
 def _split_front(rest):
-    """剥取 -- 分隔符前的 --cred/--action/--timeout 前置参（批次 7 T15）。
-    返回 (cred, action, timeout_raw, 余下 argv)；未知旗标不剥（保既有 usage rc=2 形）。"""
-    cred = action = timeout_raw = ""
+    """剥取 -- 分隔符前的 --cred/--action/--timeout/--timestamp 前置参（批次 7 T15；
+    批次 10 T5 增 --timestamp）。返回 (cred, action, timeout_raw, ts, 余下 argv)；
+    未知旗标不剥（保既有 usage rc=2 形）。"""
+    cred = action = timeout_raw = ts = ""
     i = 0
     while i < len(rest) and rest[i].startswith("--") and rest[i] != "--":
         k, sep, v = rest[i][2:].partition("=")
@@ -183,10 +174,12 @@ def _split_front(rest):
             action = v
         elif k == "timeout":
             timeout_raw = v
+        elif k == "timestamp":
+            ts = v
         else:
             break
         i += 1
-    return cred, action, timeout_raw, rest[i:]
+    return cred, action, timeout_raw, ts, rest[i:]
 
 
 def _parse_timeout(raw):
@@ -202,7 +195,8 @@ def _parse_timeout(raw):
 
 
 def cmd_exec(gd, rest, ts=None):
-    cred, action, timeout_raw, rest = _split_front(rest)
+    cred, action, timeout_raw, front_ts, rest = _split_front(rest)
+    ts = ts or front_ts   # 前置 --timestamp 形（批次 10 T5）
     if not rest or rest[0] != "--":
         sys.stderr.write("exec 需要 -- 分隔命令" + chr(10))
         return 2
@@ -213,7 +207,11 @@ def cmd_exec(gd, rest, ts=None):
     cmd = rest[1:]
     if not cmd:
         return 2
-    rc = gate_chain(gd, cmd, ts or _EPOCH, cred=cred, action=action)
+    # 批次 10 T5（P2#9）：EPOCH 缺省退役——时间戳一律显式（--timestamp=ISO8601）。
+    if not ts:
+        sys.stderr.write("exec 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
+        return 2
+    rc = gate_chain(gd, cmd, ts, cred=cred, action=action)
     if rc is not None:
         return rc
     try:
@@ -258,7 +256,11 @@ def main(argv):
             return 2
         # 洞 2 修复：inject 执行前走与 exec 完全相同的门链（deny-list→scope→
         # permitted_actions→取票），只有凭据注入环节不同；门链先于 vault 取件。
-        rc = gate_chain(gd, cmd, kv.get("--timestamp", _EPOCH),
+        # 批次 10 T5（P2#9）：EPOCH 缺省退役——--timestamp 必填。
+        if not kv.get("--timestamp"):
+            sys.stderr.write("inject 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
+            return 2
+        rc = gate_chain(gd, cmd, kv["--timestamp"],
                         cred=kv["--cred"], action=kv["--action"])
         if rc is not None:
             return rc
@@ -269,7 +271,7 @@ def main(argv):
         env = dict(os.environ)
         env["TY_CRED_USER"] = u or ""
         env["TY_CRED_SECRET"] = sec
-        append_tl(gd, kv.get("--timestamp", _EPOCH), "vault-inject cred=" + kv["--cred"])
+        append_tl(gd, kv["--timestamp"], "vault-inject cred=" + kv["--cred"])
         try:
             r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=t,
                                encoding="utf-8", errors="replace")

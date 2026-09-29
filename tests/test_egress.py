@@ -10,11 +10,11 @@ FIX = os.path.join(HERE, "fixtures", "G-g1")
 PY = sys.executable
 
 def eg(gd, *a):
-    return subprocess.run([PY, EG, a[0], "--goal-dir", gd] + list(a[1:]),
+    return subprocess.run([PY, EG, a[0], "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z'] + list(a[1:]),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 def guard(gd, *a):
-    return subprocess.run([PY, GUARD, a[0], "--goal-dir", gd] + list(a[1:]),
+    return subprocess.run([PY, GUARD, a[0], "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z'] + list(a[1:]),
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 class Egress(unittest.TestCase):
@@ -49,8 +49,8 @@ class Egress(unittest.TestCase):
         self.assertIn("recompile", v.stdout)
     def test_canary_tier3_real_acl(self):
         eg(self.gd, "compile")
-        subprocess.run([PY, CANARY, "deploy", "--goal-dir", self.gd, "--seed=s1"], capture_output=True)
-        r = subprocess.run([PY, CANARY, "probe", "--goal-dir", self.gd, "--tier=3"],
+        subprocess.run([PY, CANARY, "deploy", "--goal-dir", self.gd, "--seed=s1", '--timestamp=2026-09-30T12:00:00Z'], capture_output=True)
+        r = subprocess.run([PY, CANARY, "probe", "--goal-dir", self.gd, "--tier=3", '--timestamp=2026-09-30T12:00:00Z'],
                            capture_output=True, text=True, encoding="utf-8", errors="replace")
         j = json.loads(r.stdout)
         self.assertEqual((j["status"], j["blocked"], j["total"]), ("pass", 5, 5))
@@ -58,7 +58,7 @@ class Egress(unittest.TestCase):
             decoy = [l.split(chr(9))[1] for l in f][0]
         with open(os.path.join(self.gd, "egress.acl"), "a", encoding="utf-8", newline="") as f:
             f.write("allow " + decoy + chr(10))
-        r2 = subprocess.run([PY, CANARY, "probe", "--goal-dir", self.gd, "--tier=3"],
+        r2 = subprocess.run([PY, CANARY, "probe", "--goal-dir", self.gd, "--tier=3", '--timestamp=2026-09-30T12:00:00Z'],
                             capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r2.returncode, 1)
         self.assertEqual(json.loads(r2.stdout)["status"], "fail")

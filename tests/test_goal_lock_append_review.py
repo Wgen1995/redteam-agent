@@ -35,7 +35,11 @@ NCOL = len(core.TABLES["timeline.tsv"])
 
 
 def run(tool, *args):
-    return subprocess.run([sys.executable, tool] + list(args),
+    a = list(args)
+    if not any(str(x).startswith("--timestamp") for x in a):   # 批次 10 T5：EPOCH 退役
+        ts = "--timestamp=2026-09-30T12:00:00Z"
+        a = (a[:a.index("--")] + [ts] + a[a.index("--"):]) if "--" in a else (a + [ts])
+    return subprocess.run([sys.executable, tool] + a,
                           capture_output=True, text=True, encoding="utf-8",
                           errors="replace", timeout=180)
 

@@ -20,7 +20,11 @@ NOOP = [PY, "-c", "pass"]
 
 
 def _cli(entry, gd, *args):
-    return subprocess.run([PY, entry, args[0], "--goal-dir", gd] + list(args[1:]),
+    a = list(args)
+    if not any(str(x).startswith("--timestamp") for x in a):   # 批次 10 T5：EPOCH 退役
+        ts = "--timestamp=2026-09-30T12:00:00Z"
+        a = ([a[0], ts] + a[1:]) if "--" in a else (a + [ts])   # 前置参位（-- 之前）
+    return subprocess.run([PY, entry, a[0], "--goal-dir", gd] + a[1:],
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
@@ -73,7 +77,7 @@ class SwitchMatrix(unittest.TestCase):
             self.assertEqual(res["allowed"], 0, ptier + ": allowed!=0（零容忍破）")
             decoy = res["detail"][0]["value"]
         # 底层界外触碰恒非零 rc（「恒非零」探测面本体，R-T2-1）
-        r = subprocess.run([PY, GUARD, "exec", "--goal-dir", gd, "--", *(NOOP + [decoy])],
+        r = subprocess.run([PY, GUARD, "exec", "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z', "--", *(NOOP + [decoy])],
                            capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertNotEqual(r.returncode, 0, "界外诱饵触碰未被拒绝")
         self.assertIn("REJECT", r.stdout)

@@ -19,28 +19,18 @@ from ledger.core import ensure_utf8_stdio
 ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
 INFRA = ["api.github.com", "crt.sh", "nvd.nist.gov", "osv.dev", "pypi.org", "registry.npmjs.org"]
-EPOCH = "1970-01-01T00:00:00Z"   # compile 事件时间戳（无 --timestamp 参数；canary recon-recall 同款确定性纪律）
 
 
-def append_tl(gd, event, ts=None):
-    """timeline 追加一行链式事件（actor=egress；canary append_tl 同律的本地实现）。
-    批4 T13：trigger-audit ③（scope-amended→egress-compile 闭环）的事件载体。
-    批次 7 评审收尾 I-3：goal 锁包「读表→算链→写回」全程（filelock 单源，
-    复用 registry._locked 锁形）——并发 append 不再 lost-update/撕裂。"""
-    from ledger.filelock import goal_lock
-    with goal_lock(gd):
-        s = core.Session(gd)
-        rows = s.rows("timeline.tsv")
-        hi = core.TABLES["timeline.tsv"].index("hash")
-        prev = rows[-1][hi] if rows else core.GENESIS
-        ts = ts or EPOCH     # 批次 9 评审：显式 --timestamp 注入（缺省 EPOCH 兼容 evals 确定性）
-        wo = [ts, "egress", "", event, "", prev, "2"]
-        rows.append([ts, "egress", "", event, "", prev, core.row_hash(prev, wo), "2"])
-        core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+# 批次 10 T5（P2#9）：timeline 铸造单源=ledger.timeline——本地复制退役，
+# lambda 绑定（签名 gd,event,ts 保既有调用点；actor=egress，phase 空=既有律）。
+from ledger.timeline import append_tl_locked as _append_tl_locked
+append_tl = lambda gd, event, ts: _append_tl_locked(
+    gd, ts, event, actor="egress", phase="")
 
 
 def usage():
-    sys.stderr.write("用法: tanyin-egress compile|verify|dry-run --goal-dir D [--out P]" + chr(10))
+    sys.stderr.write("用法: tanyin-egress compile|verify|dry-run --goal-dir D [--out P]"
+                     " [--timestamp=ISO8601]（compile 必带）" + chr(10))
     return 2
 
 
@@ -102,7 +92,11 @@ def build_acl(gd):
     return chr(10).join(L) + chr(10)
 
 
-def cmd_compile(gd, out, ts=None):
+def cmd_compile(gd, out, ts):
+    if not ts:
+        sys.stderr.write("compile 须带 --timestamp=ISO8601（EPOCH 缺省已退役，批次 10 T5）"
+                         + chr(10))
+        return 2
     text = build_acl(gd)
     p = out or os.path.join(gd, "egress.acl")
     # newline="\n"：自指纹按 LF 主体计算，Windows 不得译成 CRLF（字节精确红线）
@@ -113,7 +107,7 @@ def cmd_compile(gd, out, ts=None):
     # 批4 T13：compile 落账 egress-compile 事件（幂等重编译=事件只记不判重；相对路径防绝对路径漂移）
     # 批次 9 评审修复（蓝军/ai-agent/doc-consistency P2）：--timestamp 显式注入
     # （缺省 EPOCH 兼容 evals 确定性通道；战跑一律显式传——RUNBOOK S3/D3 归一形）
-    append_tl(gd, "egress-compile acl=%s lines=%d" % (os.path.relpath(p, gd), n), ts=ts)
+    append_tl(gd, "egress-compile acl=%s lines=%d" % (os.path.relpath(p, gd), n), ts)
     return 0
 
 
@@ -184,11 +178,14 @@ def main(argv):
         sys.stderr.write("环境问题: goal 目录不存在" + chr(10))
         return 2
     out = None
+    ts = ""
     for a in argv[4:]:
         if a.startswith("--out="):
             out = a.split("=", 1)[1]
+        if a.startswith("--timestamp="):
+            ts = a.split("=", 1)[1]
     if sub == "compile":
-        return cmd_compile(gd, out)
+        return cmd_compile(gd, out, ts)
     if sub == "verify":
         return cmd_verify(gd)
     if sub == "dry-run":

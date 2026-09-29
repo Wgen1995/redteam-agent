@@ -22,7 +22,10 @@ TS = "2026-09-24T11:30:00Z"
 
 
 def run(cli, gd, sub, *args):
-    return subprocess.run([sys.executable, cli, sub, "--goal-dir", gd] + list(args),
+    a = list(args)
+    if "tanyin-egress" in cli and not any(str(x).startswith("--timestamp") for x in a):
+        a += ["--timestamp=2026-09-30T12:00:00Z"]   # 批次 10 T5：EPOCH 退役
+    return subprocess.run([sys.executable, cli, sub, "--goal-dir", gd] + a,
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 

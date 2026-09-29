@@ -554,7 +554,7 @@ class GuardSkeleton(unittest.TestCase):
     """批次 2 起 guard 为真实现（见 tests/test_guard.py）；此处仅保留入口用法契约。"""
     def test_skeleton(self):
         for args in ([], ["anything"]):
-            r = subprocess.run([sys.executable, GUARD] + args,
+            r = subprocess.run([sys.executable, GUARD, '--timestamp=2026-09-30T12:00:00Z'] + args,
                                capture_output=True, text=True, encoding="utf-8", errors="replace")
             self.assertEqual(r.returncode, 2)
             self.assertIn("用法", r.stderr)

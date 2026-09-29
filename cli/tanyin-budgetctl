@@ -22,7 +22,6 @@ from ledger.core import ensure_utf8_stdio
 ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
 
 TAB = chr(9)
-EPOCH = "1970-01-01T00:00:00Z"
 DIMS = ("token", "requests", "hours", "dollars")
 
 
@@ -32,18 +31,11 @@ def usage():
     return 2
 
 
-def append_tl(gd, ts, event):
-    # 批次 7 评审收尾 I-3：goal 锁包「读表→算链→写回」全程（filelock 单源，
-    # 复用 registry._locked 锁形）——并发 append 不再 lost-update/撕裂。
-    from ledger.filelock import goal_lock
-    with goal_lock(gd):
-        s = core.Session(gd)
-        rows = s.rows("timeline.tsv")
-        hi = TABLES["timeline.tsv"].index("hash")
-        prev = rows[-1][hi] if rows else core.GENESIS
-        wo = [ts, "budgetctl", "P3", event, "", prev, "2"]
-        rows.append([ts, "budgetctl", "P3", event, "", prev, core.row_hash(prev, wo), "2"])
-        core.write_tsv(os.path.join(gd, "timeline.tsv"), rows)
+# 批次 10 T5（P2#9）：timeline 铸造单源=ledger.timeline——本地复制退役，
+# partial 绑定保调用点签名不变（actor=budgetctl, phase=P2）。
+from functools import partial as _partial
+from ledger.timeline import append_tl_locked as _append_tl_locked
+append_tl = _partial(_append_tl_locked, actor="budgetctl", phase="P2")
 
 
 def parse_ts(tok):
@@ -87,7 +79,11 @@ def cmd_enforce(gd, rest):
     if not iid:
         sys.stderr.write("enforce 缺 --intent-id" + chr(10))
         return 2
-    ts = kv.get("--timestamp", EPOCH)
+    # 批次 10 T5（P2#9）：EPOCH 缺省退役——--timestamp 必填。
+    if not kv.get("--timestamp"):
+        sys.stderr.write("enforce 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
+        return 2
+    ts = kv["--timestamp"]
     tree = query_cmds.budget_tree(core.Session(gd))
     if tree["goal"] is None:
         sys.stderr.write("环境问题: goals.tsv 无预算行" + chr(10))
@@ -124,6 +120,10 @@ def cmd_enforce(gd, rest):
 
 def cmd_rate(gd, rest):
     kv = dict(a.partition("=")[::2] for a in rest if a.startswith("--"))
+    # 批次 10 T5（P2#9）：EPOCH 缺省退役——--timestamp 必填（REJECT 事件时间戳用）。
+    if not kv.get("--timestamp"):
+        sys.stderr.write("rate 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
+        return 2
     s = core.Session(gd)
     grows = s.rows("goals.tsv")
     if not grows:
@@ -154,7 +154,7 @@ def cmd_rate(gd, rest):
     used = sum(query_cmds.parse_num(r[ri]) for r, t in zip(brows, stamps)
                if now - wsecs < t <= now)
     if used > limit:
-        return _reject(gd, kv.get("--timestamp", EPOCH),
+        return _reject(gd, kv["--timestamp"],
                        {"mode": "rate", "used": used, "limit": limit, "window": wsecs},
                        "REJECT" + TAB + "rate-limit" + TAB + "used=" + fmt(used) +
                        TAB + "limit=" + fmt(limit) + TAB + "window=" + str(wsecs) + "s")

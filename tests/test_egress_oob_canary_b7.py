@@ -62,7 +62,7 @@ class TestCompile(unittest.TestCase):
             f.write("host\tcan-decoy.example\n")
         out = os.path.join(td.name, "egress.acl")
         r = subprocess.run([sys.executable, os.path.join(ROOT, "cli", "tanyin-egress"),
-                            "compile", "--goal-dir", gd, "--out=" + out],
+                            "compile", "--goal-dir", gd, "--out=" + out, '--timestamp=2026-09-30T12:00:00Z'],
                            capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         with open(out, encoding="utf-8") as f:

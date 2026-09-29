@@ -64,7 +64,7 @@ def _shim_env(names=("sleep", "chmod", "head", "sort", "nmap", "curl", "ssh", "e
 
 
 def run_guard(gd, *cmd):
-    return subprocess.run([PY, GUARD, "exec", "--goal-dir", gd, "--"] + list(cmd),
+    return subprocess.run([PY, GUARD, "exec", "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z', "--"] + list(cmd),
                           capture_output=True, text=True, encoding="utf-8",
                           errors="replace", env=_shim_env())
 

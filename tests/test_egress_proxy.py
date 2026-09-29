@@ -57,7 +57,7 @@ def _compile_real_acl():
         gd = os.path.join(d, "g")
         shutil.copytree(os.path.join(HERE, "fixtures", "G-g1"), gd)
         subprocess.run([sys.executable, os.path.join(REPO, "cli", "tanyin-egress"),
-                        "compile", "--goal-dir", gd],
+                        "compile", "--goal-dir", gd, '--timestamp=2026-09-30T12:00:00Z'],
                        capture_output=True, text=True, timeout=120,
                        env={**os.environ, "PYTHONUTF8": "1"}, check=True)
         with open(os.path.join(gd, "egress.acl"), encoding="utf-8") as f:

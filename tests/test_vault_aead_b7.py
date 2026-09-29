@@ -77,14 +77,14 @@ class TestKeyChannel(unittest.TestCase):
         os.makedirs(gd)
         r = subprocess.run([sys.executable, os.path.join(ROOT, "cli", "tanyin-guard"),
                             "deploy-vault", "--goal-dir", gd,
-                            "--cred=1", "--username=u", "--secret=topsecret"],
+                            "--cred=1", "--username=u", "--secret=topsecret", '--timestamp=2026-09-30T12:00:00Z'],
                            capture_output=True, text=True)
         self.assertEqual(r.returncode, 2, "红现状：--secret argv 被接受")
         self.assertNotIn("topsecret", r.stdout + r.stderr, "密值不得回显")
         # env 通道成功部署
         env = dict(os.environ, TANYIN_VAULT_SECRET="topsecret", TANYIN_VAULT_PASSPHRASE="pp")
         r2 = subprocess.run([sys.executable, os.path.join(ROOT, "cli", "tanyin-guard"),
-                             "deploy-vault", "--goal-dir", gd, "--cred=1", "--username=u"],
+                             "deploy-vault", "--goal-dir", gd, "--cred=1", "--username=u", '--timestamp=2026-09-30T12:00:00Z'],
                             capture_output=True, text=True, env=env)
         self.assertEqual(r2.returncode, 0, r2.stdout + r2.stderr)
         mf = open(os.path.join(gd, "vault", "manifest.tsv"), encoding="utf-8").read()
