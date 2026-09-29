@@ -875,3 +875,5 @@
 - T8 Tier2 接线（G-43 收口）：hooks/simulate.py deny 比对升 enforce.deny_forms 单源（归一形+shell 内嵌 payload 与 Tier1 同执法），rm -r -f / 经 hook BLOCKED｜T9 write_all 门内化（G-44 收口）：cmd_sign 先落盘后签发——findings.json/sarif/report-*.md 全量入 pass.json artifacts 绑定（绑定即真值，篡改 lint 复检拒）+门 FAIL 删工件（门内零幸存）｜红 3/3，全套 864 绿+金样零漂移
 
 - T7 复核身份锚（M10 收口）：tanyin-knowledge approvers add/list 名录（运行时 approvers.tsv+example 模板，14 子命令）+approve 校验名录成员（任意非空串放行反例收口）｜执行者 deny-list 侧如实登记：log.md 无执行者身份列（列集冻结），复核人非执行者纪律维持 HUMAN-REVIEW 人审面｜红 2/2+受影响 3 测名录播种升级，全套 866 绿+金样零漂移
+
+- T10 init 基线缺省（G-45 收口）：init 幂等拷入 methodology/*.tsv（k1-baseline/k1-wstg-map，不覆盖本地覆写）——K1 缺基线 exit 2 根因面收口｜T10b 退出码分型样例（M1 尾）：tanyin-replay 卡片文件不可读 env 域升 exit 2（文件缺=环境非门禁）｜红 3/3，全套 869 绿+金样零漂移

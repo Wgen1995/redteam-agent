@@ -10,6 +10,7 @@ client-map add）REJECT（exit 1，防 CI 误写种子）。退出码对齐 Stri
 import datetime
 import hashlib
 import json
+import shutil
 import os
 import re
 
@@ -108,6 +109,14 @@ def init(kdir):
         if not os.path.isfile(p):
             with open(p, "w", encoding="utf-8", newline="\n") as f:
                 f.write("# %s\n\n（init 生成；commit 时重生成 index/overview）\n" % name[:-3])
+    # 批次 8 T10a（G-45）：方法学基线随 init 入运行时库（缺文件幂等补，不覆盖本地）
+    seed_m = os.path.join(repo_seed_root(), "methodology")
+    if os.path.isdir(seed_m):
+        os.makedirs(os.path.join(kdir, "methodology"), exist_ok=True)
+        for nm in sorted(os.listdir(seed_m)):
+            sp, dp = os.path.join(seed_m, nm), os.path.join(kdir, "methodology", nm)
+            if nm.endswith(".tsv") and os.path.isfile(sp) and not os.path.isfile(dp):
+                shutil.copyfile(sp, dp)
     return 0
 
 

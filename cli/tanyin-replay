@@ -159,8 +159,9 @@ def cmd_replay(gd, rest):
         sys.stderr.write("REJECT\treplay\t卡片不可解析: %s\n" % e)
         return 1
     except OSError as e:
-        sys.stderr.write("REJECT\treplay\t卡片文件不可读: %s\n" % e)
-        return 1
+        # 批次 8 T10b（M1 尾）：文件缺/不可读=环境域 exit 2（非门禁失败）
+        sys.stderr.write("环境问题\treplay\t卡片文件不可读: %s\n" % e)
+        return 2
     errs = cards.check_consistency(card, row)
     if errs:
         sys.stderr.write("REJECT\treplay\t卡片与 E-index 同值性失败（§4.11）: %s\n" % "; ".join(errs))
