@@ -1,0 +1,1 @@
+GET /origin Origin: http://evil.com -> 200 ACAO=http://evil.com ACAC=true body=reflected http://evil.com allow-credentials true

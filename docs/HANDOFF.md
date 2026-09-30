@@ -967,3 +967,14 @@
 - **P2#2（蓝军，GT 面收口）**：ground-truth.json 50 条——csrf×2→broken-access-control（CWE-306 重标，note 列载口径：无会话前提=伪 csrf，POST+会话形归 battle-5）；cors-01 补注记（ACAO:*+credentials=浏览器拒收的配置缺陷非可利用越权）；GT note 列为可选列（形状钉随动）；类目直方图/类集三处钉同步。金样 recall=0.56 不动（类目不参与计分键）。
 - **批次 10 P2 台账终态**：16 项中 14 项闭环（#2/#3/#4/#5/#7/#8/#9/#10/#11/#12/#13/#14/#15/#16）；余 #1（beacon/行为差分双轨）与 #6（v4 键形：同键多 GT 一 finding 至多计一+尾段数字归一）按 dict §四勘误归 battle-5。P3 十项另册择机。
 - 验证：全套 **907 测绿**；提交见 git log（2e8db7f/0e4b568/af556a1+本次）。
+
+
+## 2026-10-01 battle-4（G-r5）收战：独立战士 50 靶面实战
+- **门控召回 0.24（12/50）vs 基线 0.56（G-r4）——真实负结果入账**。行为面 23/50；P4 重放 **30/30 全 VERIFIED 零强改**（历史首轮全绿；G-r4 同期 2 枚强改）；账本 13 表 322 行 validate PASS。
+- **批次 10 修复实战实效**：out_of_scope 资产 41/41→2/27（缝⑩ svc-* include）；空哈希工件 34→0（缝⑧自动回填）；POST/DNS 卡片重放全中。CRED 三步教学首战落地（CRED-r5-0001→weakpass-01 检出，G-r4 同面卡分）。跨服务 token 信任 FD-r5-0028=行为差分先声（P2#1）。
+- **归因核验（种子锚点，RT-0002 attribution_check=verified）**：idor/role/hauth 九靶=admin token 在手未重扫自家 /admin 面（种子核验：带 token 即 marker，与战士「零差分」自报矛盾）；jwt=凭据形态学（须构造 alg=none/exp 形）；rate-02=probe9 已跑未及入账（总控催进截断，G-51 msg-9be18380 在案）；广度类 20 靶=wave1 dedup 陷阱（9 条 finding 挂服务级资产=评分死键）+深挖浅撒。
+- **战创→回归闭环**：缝⑬ ISO8601 范围门 TDD 收口（write_cmds._ts_range_check 单一咽喉点；test_iso_range_gate_b4 3 测；09:155:00Z 伪形不再收账）。
+- **金样收编**：G-r5 会话入 fixtures（608K）负样本锚——钉门控 0.24/missing 38/30 VERIFIED（test_gold_g_r5_b4 2 测）；v4 键形落地时须显式重定标。
+- **飞轮**：RT-0002 运行时库 in-band 全流（approvers 登记→approve→commit）回灌发行库 knowledge/retros/RT-0002.md；审计轨迹 /tmp/tanyin-range-battle/battle-4/krt/log.md。
+- **战书教学缺口三处（battle-5 brief 回灌项）**：①findings 必挂 endpoint 资产（svc/path）+dedup 干跑演练 ②凭据到手后自家面重扫方法论 ③JWT 构造形。另：matrix-init 先于 exploitation（P2 门序）。
+- 验证：全套 **912 测绿**；靶场 compose down 残留 0。

@@ -1,0 +1,1 @@
+GET / 无头 -> 401 auth required；GET / 带 X-Auth-Token {{vault:cred-1}} -> 404 not found；同路径带伪造头值(tok-admin-001/tok-billing-001) -> 401 auth required

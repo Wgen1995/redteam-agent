@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r5-0025", "matched": true, "results": [{"detail": ["GTWEAKPASS-01"], "ok": true, "type": "word"}], "status": 200, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r5 --id=EV-r5-0025 --state=VERIFIED", "verdict": "reproduced"}

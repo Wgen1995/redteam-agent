@@ -1,0 +1,39 @@
+F-r5-0001	INT-r5-0001	http	svc-shop:8000/	root 404 not found\; Server BaseHTTP/0.6 Python/3.12.14\; body='not found'	0.95	2	2026-10-01T09:14:00Z
+F-r5-0002	INT-r5-0001	http	svc-api-gw:8000/	root 404 not found\; Server BaseHTTP/0.6 Python/3.12.14\; body='not found'	0.95	2	2026-10-01T09:15:00Z
+F-r5-0003	INT-r5-0001	http	svc-admin:8000/	root 401 auth required\; Server BaseHTTP/0.6 Python/3.12.14\; anonymous gate on /	0.95	2	2026-10-01T09:16:00Z
+F-r5-0004	INT-r5-0001	http	svc-login:8000/	root 200 body=<html>login form</html>\; Server BaseHTTP/0.6 Python/3.12.14	0.95	2	2026-10-01T09:17:00Z
+F-r5-0005	INT-r5-0001	http	svc-billing:8000/	root 401 auth required\; Server BaseHTTP/0.6 Python/3.12.14\; anonymous gate on /	0.95	2	2026-10-01T09:18:00Z
+F-r5-0006	INT-r5-0001	http	svc-dashboard:8000/	root 404 not found\; Server BaseHTTP/0.6 Python/3.12.14\; body='not found'	0.95	2	2026-10-01T09:19:00Z
+F-r5-0007	INT-r5-0001	http	svc-portal:8000/	root 404 not found\; Server BaseHTTP/0.6 Python/3.12.14\; body='not found'	0.95	2	2026-10-01T09:20:00Z
+F-r5-0008	INT-r5-0001	http	svc-files:8000/	root 404 not found\; Server BaseHTTP/0.6 Python/3.12.14\; body='not found'	0.95	2	2026-10-01T09:21:00Z
+F-r5-0009	INT-r5-0002	vuln-clue	svc-shop:8000/items	GET /items 200 body=product page GTSQLI-01 synthetic SQL error near 1 marker=GTSQLI-01	0.95	2	2026-10-01T09:30:00Z
+F-r5-0010	INT-r5-0002	vuln-clue	svc-shop:8000/order	GET /order 200 body=order page GTSQLI-02 synthetic SQL syntax error marker=GTSQLI-02	0.95	2	2026-10-01T09:36:00Z
+F-r5-0011	INT-r5-0002	vuln-clue	svc-shop:8000/orders	GET /orders 200 body=order page GTSQLI-02 synthetic SQL syntax error marker=GTSQLI-02	0.95	2	2026-10-01T09:41:00Z
+F-r5-0012	INT-r5-0002	vuln-clue	svc-shop:8000/search	GET /search 200 body=search results GTXSS-01 synthetic reflected xss marker=GTXSS-01	0.95	2	2026-10-01T09:46:00Z
+F-r5-0013	INT-r5-0002	vuln-clue	svc-shop:8000/comment	GET /comment 200 body=comment GTXSS-02 synthetic stored xss echo marker=GTXSS-02	0.95	2	2026-10-01T09:52:00Z
+F-r5-0014	INT-r5-0002	vuln-clue	svc-shop:8000/comments	GET /comments 200 body=comment GTXSS-02 synthetic stored xss echo marker=GTXSS-02	0.95	2	2026-10-01T09:57:00Z
+F-r5-0015	INT-r5-0002	vuln-clue	svc-shop:8000/reply	GET /reply 200 body=reply GTXSS-03 synthetic reflected xss marker=GTXSS-03	0.95	2	2026-10-01T09:62:00Z
+F-r5-0016	INT-r5-0002	vuln-clue	svc-shop:8000/feedback	GET /feedback 200 body=feedback GTXSS-04 synthetic reflected xss marker=GTXSS-04	0.95	2	2026-10-01T09:67:00Z
+F-r5-0017	INT-r5-0002	vuln-clue	svc-shop:8000/logout	GET /logout 302 body=GTREDIR-02 synthetic redirect to %s marker=GTREDIR-02	0.95	2	2026-10-01T09:72:00Z
+F-r5-0018	INT-r5-0003	vuln-clue	svc-api-gw:8000/fetch	GET /fetch 200 body=GTSSRF-01 synthetic internal doc: internal-secret-doc marker=GTSSRF-01	0.95	2	2026-10-01T09:78:00Z
+F-r5-0019	INT-r5-0003	vuln-clue	svc-api-gw:8000/preview	GET /preview 200 body=GTSSRF-02 synthetic webhook meta: internal-metadata marker=GTSSRF-02	0.95	2	2026-10-01T09:84:00Z
+F-r5-0020	INT-r5-0003	vuln-clue	svc-api-gw:8000/proxy	GET /proxy 200 body=GTSSRF-03 synthetic internal fetch done marker=GTSSRF-03	0.95	2	2026-10-01T09:89:00Z
+F-r5-0021	INT-r5-0003	vuln-clue	svc-api-gw:8000/cors-debug	GET /cors-debug 200 body=GTCORS-01 wildcard allow-origin marker=GTCORS-01	0.95	2	2026-10-01T09:94:00Z
+F-r5-0022	INT-r5-0003	vuln-clue	svc-api-gw:8000/origin	GET /origin 200 body=GTCORS-02 reflected none allow-credentials true marker=GTCORS-02	0.95	2	2026-10-01T09:100:00Z
+F-r5-0023	INT-r5-0003	vuln-clue	svc-api-gw:8000/graphql	GET /graphql 200 body=GTGRAPHQL-01 synthetic introspection enabled: __schema types marker=GTGRAPHQL-01	0.95	2	2026-10-01T09:105:00Z
+F-r5-0024	INT-r5-0004	vuln-clue	svc-dashboard:8000/report	GET /report 200 body=GTSSTI-01 synthetic ssti render marker=GTSSTI-01	0.95	2	2026-10-01T09:111:00Z
+F-r5-0025	INT-r5-0004	vuln-clue	svc-dashboard:8000/reports	GET /reports 200 body=GTSSTI-01 synthetic ssti render marker=GTSSTI-01	0.95	2	2026-10-01T09:117:00Z
+F-r5-0026	INT-r5-0004	vuln-clue	svc-dashboard:8000/render	GET /render 200 body=GTSSTI-02 synthetic ssti render marker=GTSSTI-02	0.95	2	2026-10-01T09:122:00Z
+F-r5-0027	INT-r5-0005	vuln-clue	svc-portal:8000/debug/env	GET /debug/env 200 body=GTINFOLEAK-01 synthetic env: DB_PASS=masked AWS_KEY=masked marker=GTINFOLEAK-01	0.95	2	2026-10-01T09:127:00Z
+F-r5-0028	INT-r5-0005	vuln-clue	svc-files:8000/.env	GET /.env 200 body=GTINFOLEAK-03 synthetic env file: SECRET_KEY=masked marker=GTINFOLEAK-03	0.95	2	2026-10-01T09:133:00Z
+F-r5-0029	INT-r5-0005	vuln-clue	svc-files:8000/download	GET /download 200 body=GTTRAVERSAL-01 synthetic file: root:x:0:0:root marker=GTTRAVERSAL-01	0.95	2	2026-10-01T09:138:00Z
+F-r5-0030	INT-r5-0005	vuln-clue	svc-files:8000/unserialize	GET /unserialize 200 body=GTDESER-01 synthetic pickle object inflated marker=GTDESER-01	0.95	2	2026-10-01T09:144:00Z
+F-r5-0031	INT-r5-0005	vuln-clue	svc-files:8000/import	GET /import 200 body=GTDESER-02 synthetic java serialized blob accepted marker=GTDESER-02	0.95	2	2026-10-01T09:150:00Z
+F-r5-0032	INT-r5-0005	vuln-clue	svc-files:8000/decode	GET /decode 200 body=GTDESER-03 synthetic base64 payload object inflated marker=GTDESER-03	0.95	2	2026-10-01T09:155:00Z
+F-r5-0033	INT-r5-0006	authz	svc-login:8000/login	POST /login user=admin pass=admin123 -> 200 welcome admin GTWEAKPASS-01 synthetic weak credential accepted	0.95	2	2026-10-01T10:09:00Z
+F-r5-0034	INT-r5-0006	authz	svc-login:8000/login	同路由 /login 连续 14 次 POST 后响应仍为 denied GTRATE-01 synthetic no rate limit after 14 attempts（无 429/封禁）	0.95	2	2026-10-01T10:15:00Z
+F-r5-0035	INT-r5-0006	authz	svc-admin:8000/login	POST /login user=admin pass=admin123 -> 200 body=token tok-usr-001	0.95	2	2026-10-01T10:21:00Z
+F-r5-0036	INT-r5-0006	vuln-clue	svc-api-gw:8000/origin	GET /origin 带 Origin: http://evil.com -> 响应 ACAO 反射 evil.com 且 ACAC true；Origin: null 同样反射	0.97	2	2026-10-01T10:27:00Z
+F-r5-0037	INT-r5-0006	vuln-clue	svc-api-gw:8000/cors-debug	GET /cors-debug 带 Origin: http://evil.com -> 响应 ACAO=*（通配源）	0.97	2	2026-10-01T10:30:00Z
+F-r5-0038	INT-r5-0006	authz	svc-admin:8000/*	持 tok-usr-001 全字典扫描 svc-admin/svc-billing 各 216 路径全部 404（无内容面）；tok-usr-002 伪造全 401 严格拒绝；IDOR 两段式在六服务 TOK/ANO 零差分 [no-consume:控制组观察：无内容面非漏洞，挂起防误报]	0.9	2	2026-10-01T11:08:00Z
+F-r5-0039	INT-r5-0006	authz	svc-billing:8000/	匿名 GET / -> 401 auth required；带请求头 X-Auth-Token {{vault:cred-1}}（svc-admin /login 颁发的用户 token）-> 404 not found：跨服务 token 接受，认证 oracle 由 401/404 分野可见	0.97	2	2026-10-01T11:01:00Z

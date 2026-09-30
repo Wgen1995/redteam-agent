@@ -1,0 +1,6 @@
+INT-r5-0001	八服务全链渗透：指纹-字典-认证-postauth		candidate	llm-agent	recon	entity			AST-r5-0005+recon+八服务全链渗透：指纹-字典-认证-postauth	400k\;10000\;10					2	2026-10-01T09:13:00Z
+INT-r5-0002	svc-shop 注入/XSS/重定向面确认		pending	llm-agent	surface	recon-event			AST-r5-0002+surface+svc-shop 注入/XSS/重定向面确认	200k\;4000\;6					2	2026-10-01T09:26:00Z
+INT-r5-0003	svc-api-gw SSRF/CORS/GraphQL面确认		pending	llm-agent	surface	recon-event			AST-r5-0003+surface+svc-api-gw SSRF/CORS/GraphQL面确认	200k\;4000\;6					2	2026-10-01T09:27:00Z
+INT-r5-0004	svc-dashboard SSTI渲染面确认		pending	llm-agent	surface	recon-event			AST-r5-0007+surface+svc-dashboard SSTI渲染面确认	200k\;4000\;6					2	2026-10-01T09:28:00Z
+INT-r5-0005	svc-portal+svc-files 信息暴露/反序列化/穿越面确认		pending	llm-agent	surface	recon-event			AST-r5-0009+surface+svc-portal+svc-files 信息暴露/反序列化/穿越面确认	200k\;4000\;6					2	2026-10-01T09:29:00Z
+INT-r5-0006	svc-login+svc-admin 认证面：弱口令/限流/token 发行		pending	llm-agent	surface	recon-event			AST-r5-0005+surface+svc-login+svc-admin 认证面：弱口令/限流/token 发行	150k\;3000\;4					2	2026-10-01T10:07:00Z

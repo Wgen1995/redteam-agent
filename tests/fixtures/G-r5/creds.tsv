@@ -1,0 +1,1 @@
+CRED-r5-0001	static-cred	user	u1	{{vault:cred-1}}	AST-r5-0004	INT-r5-0006				active	read	svc-admin /login admin/admin123 -> token tok-usr-001 (body)	2	2026-10-01T10:08:00Z	

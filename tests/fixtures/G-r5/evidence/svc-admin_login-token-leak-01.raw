@@ -1,0 +1,1 @@
+POST /login user=admin&pass=admin123 -> 200 <html>token tok-usr-001</html>

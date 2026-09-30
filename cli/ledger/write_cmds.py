@@ -51,6 +51,28 @@ def _req(args, keys):
     for k in keys:
         if not args.get(k, ""):
             raise Reject("必填参数缺失或为空: --" + k)
+        if k == "timestamp":
+            _ts_range_check(args[k])
+
+
+# battle-4 缝⑬（G-r5 战创）：ISO8601 形状检查不校验范围——09:155:00Z 被收账且字典序破坏时间序。
+# 单一咽喉点（_req 的 timestamp 键）严格校验：形状+datetime 可解析（月/日/时/分/秒范围全验）。
+_TS_SHAPE = re.compile(r"^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:?\d{2})$")
+
+
+def _ts_range_check(v):
+    """ISO8601 形状+范围严格校验（拒绝 09:155:00Z 类伪形；Python3.9 fromisoformat 前先归一）。"""
+    import datetime
+    s = str(v or "")
+    if not _TS_SHAPE.match(s):
+        raise Reject("--timestamp 非法 ISO8601（形如 2026-10-01T09:05:00Z）: " + s)
+    s = s.replace(" ", "T", 1).replace("Z", "+00:00")
+    if s[-6] in "+-" and s[-3] != ":":          # +0800 → +08:00（3.9 挑冒号）
+        s = s[:-2] + ":" + s[-2:]
+    try:
+        datetime.datetime.fromisoformat(s)
+    except ValueError:
+        raise Reject("--timestamp 非法 ISO8601（范围：分/秒 0-59、时 0-23、月 1-12、日 1-31）: " + str(v))
 
 
 def _row(tname, **kw):

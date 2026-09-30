@@ -1,0 +1,85 @@
+E-r5-0001	derived_from	F-r5-0009	INT-r5-0002	probe2 GET wave	2	2026-10-01T09:31:00Z
+E-r5-0002	evidences	FD-r5-0001	EV-r5-0001	EV supports finding	2	2026-10-01T09:35:00Z
+E-r5-0003	derived_from	F-r5-0010	INT-r5-0002	probe2 GET wave	2	2026-10-01T09:37:00Z
+E-r5-0004	derived_from	F-r5-0011	INT-r5-0002	probe2 GET wave	2	2026-10-01T09:42:00Z
+E-r5-0005	derived_from	F-r5-0012	INT-r5-0002	probe2 GET wave	2	2026-10-01T09:47:00Z
+E-r5-0006	evidences	FD-r5-0002	EV-r5-0004	EV supports finding	2	2026-10-01T09:51:00Z
+E-r5-0007	derived_from	F-r5-0013	INT-r5-0002	probe2 GET wave	2	2026-10-01T09:53:00Z
+E-r5-0008	derived_from	F-r5-0014	INT-r5-0002	probe2 GET wave	2	2026-10-01T09:58:00Z
+E-r5-0009	derived_from	F-r5-0015	INT-r5-0002	probe2 GET wave	2	2026-10-01T09:63:00Z
+E-r5-0010	derived_from	F-r5-0016	INT-r5-0002	probe2 GET wave	2	2026-10-01T09:68:00Z
+E-r5-0011	derived_from	F-r5-0017	INT-r5-0002	probe2 GET wave	2	2026-10-01T09:73:00Z
+E-r5-0012	evidences	FD-r5-0003	EV-r5-0009	EV supports finding	2	2026-10-01T09:77:00Z
+E-r5-0013	derived_from	F-r5-0018	INT-r5-0003	probe2 GET wave	2	2026-10-01T09:79:00Z
+E-r5-0014	evidences	FD-r5-0004	EV-r5-0010	EV supports finding	2	2026-10-01T09:83:00Z
+E-r5-0015	derived_from	F-r5-0019	INT-r5-0003	probe2 GET wave	2	2026-10-01T09:85:00Z
+E-r5-0016	derived_from	F-r5-0020	INT-r5-0003	probe2 GET wave	2	2026-10-01T09:90:00Z
+E-r5-0017	derived_from	F-r5-0021	INT-r5-0003	probe2 GET wave	2	2026-10-01T09:95:00Z
+E-r5-0018	evidences	FD-r5-0005	EV-r5-0013	EV supports finding	2	2026-10-01T09:99:00Z
+E-r5-0019	derived_from	F-r5-0022	INT-r5-0003	probe2 GET wave	2	2026-10-01T09:101:00Z
+E-r5-0020	derived_from	F-r5-0023	INT-r5-0003	probe2 GET wave	2	2026-10-01T09:106:00Z
+E-r5-0021	evidences	FD-r5-0006	EV-r5-0015	EV supports finding	2	2026-10-01T09:110:00Z
+E-r5-0022	derived_from	F-r5-0024	INT-r5-0004	probe2 GET wave	2	2026-10-01T09:112:00Z
+E-r5-0023	evidences	FD-r5-0007	EV-r5-0016	EV supports finding	2	2026-10-01T09:116:00Z
+E-r5-0024	derived_from	F-r5-0025	INT-r5-0004	probe2 GET wave	2	2026-10-01T09:118:00Z
+E-r5-0025	derived_from	F-r5-0026	INT-r5-0004	probe2 GET wave	2	2026-10-01T09:123:00Z
+E-r5-0026	derived_from	F-r5-0027	INT-r5-0005	probe2 GET wave	2	2026-10-01T09:128:00Z
+E-r5-0027	evidences	FD-r5-0008	EV-r5-0019	EV supports finding	2	2026-10-01T09:132:00Z
+E-r5-0028	derived_from	F-r5-0028	INT-r5-0005	probe2 GET wave	2	2026-10-01T09:134:00Z
+E-r5-0029	derived_from	F-r5-0029	INT-r5-0005	probe2 GET wave	2	2026-10-01T09:139:00Z
+E-r5-0030	evidences	FD-r5-0009	EV-r5-0021	EV supports finding	2	2026-10-01T09:143:00Z
+E-r5-0031	derived_from	F-r5-0030	INT-r5-0005	probe2 GET wave	2	2026-10-01T09:145:00Z
+E-r5-0032	evidences	FD-r5-0010	EV-r5-0022	EV supports finding	2	2026-10-01T09:149:00Z
+E-r5-0033	derived_from	F-r5-0031	INT-r5-0005	probe2 GET wave	2	2026-10-01T09:151:00Z
+E-r5-0034	derived_from	F-r5-0032	INT-r5-0005	probe2 GET wave	2	2026-10-01T09:156:00Z
+E-r5-0035	parent	AST-r5-0010	AST-r5-0002	endpoint under service	2	2026-10-01T09:62:00Z
+E-r5-0036	parent	AST-r5-0011	AST-r5-0002	endpoint under service	2	2026-10-01T09:65:00Z
+E-r5-0037	parent	AST-r5-0012	AST-r5-0002	endpoint under service	2	2026-10-01T09:68:00Z
+E-r5-0038	parent	AST-r5-0013	AST-r5-0002	endpoint under service	2	2026-10-01T09:71:00Z
+E-r5-0039	parent	AST-r5-0014	AST-r5-0002	endpoint under service	2	2026-10-01T09:74:00Z
+E-r5-0040	parent	AST-r5-0015	AST-r5-0002	endpoint under service	2	2026-10-01T09:77:00Z
+E-r5-0041	parent	AST-r5-0016	AST-r5-0003	endpoint under service	2	2026-10-01T09:80:00Z
+E-r5-0042	parent	AST-r5-0017	AST-r5-0003	endpoint under service	2	2026-10-01T09:83:00Z
+E-r5-0043	parent	AST-r5-0018	AST-r5-0003	endpoint under service	2	2026-10-01T09:86:00Z
+E-r5-0044	parent	AST-r5-0019	AST-r5-0007	endpoint under service	2	2026-10-01T09:89:00Z
+E-r5-0045	parent	AST-r5-0020	AST-r5-0007	endpoint under service	2	2026-10-01T09:92:00Z
+E-r5-0046	parent	AST-r5-0021	AST-r5-0009	endpoint under service	2	2026-10-01T09:95:00Z
+E-r5-0047	parent	AST-r5-0022	AST-r5-0009	endpoint under service	2	2026-10-01T09:98:00Z
+E-r5-0048	parent	AST-r5-0023	AST-r5-0009	endpoint under service	2	2026-10-01T09:101:00Z
+E-r5-0049	evidences	FD-r5-0011	EV-r5-0002	EV supports finding	2	2026-10-01T09:82:00Z
+E-r5-0050	evidences	FD-r5-0012	EV-r5-0003	EV supports finding	2	2026-10-01T09:84:00Z
+E-r5-0051	evidences	FD-r5-0013	EV-r5-0005	EV supports finding	2	2026-10-01T09:86:00Z
+E-r5-0052	evidences	FD-r5-0014	EV-r5-0006	EV supports finding	2	2026-10-01T09:88:00Z
+E-r5-0053	evidences	FD-r5-0015	EV-r5-0007	EV supports finding	2	2026-10-01T09:90:00Z
+E-r5-0054	evidences	FD-r5-0016	EV-r5-0008	EV supports finding	2	2026-10-01T09:92:00Z
+E-r5-0055	evidences	FD-r5-0017	EV-r5-0011	EV supports finding	2	2026-10-01T09:94:00Z
+E-r5-0056	evidences	FD-r5-0018	EV-r5-0012	EV supports finding	2	2026-10-01T09:96:00Z
+E-r5-0057	evidences	FD-r5-0019	EV-r5-0014	EV supports finding	2	2026-10-01T09:98:00Z
+E-r5-0058	evidences	FD-r5-0020	EV-r5-0017	EV supports finding	2	2026-10-01T09:100:00Z
+E-r5-0059	evidences	FD-r5-0021	EV-r5-0018	EV supports finding	2	2026-10-01T09:102:00Z
+E-r5-0060	evidences	FD-r5-0022	EV-r5-0020	EV supports finding	2	2026-10-01T09:104:00Z
+E-r5-0061	evidences	FD-r5-0023	EV-r5-0023	EV supports finding	2	2026-10-01T09:106:00Z
+E-r5-0062	evidences	FD-r5-0024	EV-r5-0024	EV supports finding	2	2026-10-01T09:108:00Z
+E-r5-0063	parent	AST-r5-0017	AST-r5-0005	endpoint under service	2	2026-10-01T10:03:00Z
+E-r5-0064	parent	AST-r5-0024	AST-r5-0005	endpoint under service	2	2026-10-01T10:04:00Z
+E-r5-0065	parent	AST-r5-0025	AST-r5-0004	endpoint under service	2	2026-10-01T10:05:00Z
+E-r5-0066	derived_from	F-r5-0033	INT-r5-0006	probe3 auth wave	2	2026-10-01T10:10:00Z
+E-r5-0067	evidences	FD-r5-0025	EV-r5-0025	EV supports finding	2	2026-10-01T10:14:00Z
+E-r5-0068	derived_from	F-r5-0034	INT-r5-0006	probe3 auth wave	2	2026-10-01T10:16:00Z
+E-r5-0069	evidences	FD-r5-0026	EV-r5-0026	EV supports finding	2	2026-10-01T10:20:00Z
+E-r5-0070	derived_from	F-r5-0035	INT-r5-0006	probe3 auth wave	2	2026-10-01T10:22:00Z
+E-r5-0071	evidences	FD-r5-0027	EV-r5-0027	EV supports finding	2	2026-10-01T10:26:00Z
+E-r5-0072	evidences	FD-r5-0019	EV-r5-0028	header-level reflection EV	2	2026-10-01T10:61:00Z
+E-r5-0073	evidences	FD-r5-0005	EV-r5-0029	header-level wildcard EV	2	2026-10-01T10:62:00Z
+E-r5-0074	parent	AST-r5-0026	AST-r5-0006	endpoint under service	2	2026-10-01T11:02:00Z
+E-r5-0075	derived_from	F-r5-0039	INT-r5-0006	probe6 cross-service	2	2026-10-01T11:02:00Z
+E-r5-0076	evidences	FD-r5-0028	EV-r5-0030	EV supports finding	2	2026-10-01T11:06:00Z
+E-r5-0077	parent	AST-r5-0001	AST-r5-0027	service under range apex	2	2026-10-01T13:02:00Z
+E-r5-0078	parent	AST-r5-0002	AST-r5-0027	service under range apex	2	2026-10-01T13:03:00Z
+E-r5-0079	parent	AST-r5-0003	AST-r5-0027	service under range apex	2	2026-10-01T13:04:00Z
+E-r5-0080	parent	AST-r5-0004	AST-r5-0027	service under range apex	2	2026-10-01T13:05:00Z
+E-r5-0081	parent	AST-r5-0005	AST-r5-0027	service under range apex	2	2026-10-01T13:06:00Z
+E-r5-0082	parent	AST-r5-0006	AST-r5-0027	service under range apex	2	2026-10-01T13:07:00Z
+E-r5-0083	parent	AST-r5-0007	AST-r5-0027	service under range apex	2	2026-10-01T13:08:00Z
+E-r5-0084	parent	AST-r5-0008	AST-r5-0027	service under range apex	2	2026-10-01T13:09:00Z
+E-r5-0085	parent	AST-r5-0009	AST-r5-0027	service under range apex	2	2026-10-01T13:10:00Z

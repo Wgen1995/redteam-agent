@@ -1,0 +1,1 @@
+GET /cors-debug Origin: http://evil.com -> 200 ACAO=* body=wildcard allow-origin

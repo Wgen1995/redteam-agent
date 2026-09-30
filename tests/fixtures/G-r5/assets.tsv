@@ -1,0 +1,27 @@
+AST-r5-0001	service	svc-test-probe		out_of_scope	2	2026-10-01T09:20:00Z
+AST-r5-0002	service	svc-shop	compose service :8000 BaseHTTP/0.6 py3.12\; ip drifts per round	in_scope	2	2026-10-01T09:05:00Z
+AST-r5-0003	service	svc-api-gw	compose service :8000 BaseHTTP/0.6 py3.12\; ip drifts per round	in_scope	2	2026-10-01T09:06:00Z
+AST-r5-0004	service	svc-admin	compose service :8000 BaseHTTP/0.6 py3.12\; ip drifts per round	in_scope	2	2026-10-01T09:07:00Z
+AST-r5-0005	service	svc-login	compose service :8000 BaseHTTP/0.6 py3.12\; ip drifts per round	in_scope	2	2026-10-01T09:08:00Z
+AST-r5-0006	service	svc-billing	compose service :8000 BaseHTTP/0.6 py3.12\; ip drifts per round	in_scope	2	2026-10-01T09:09:00Z
+AST-r5-0007	service	svc-dashboard	compose service :8000 BaseHTTP/0.6 py3.12\; ip drifts per round	in_scope	2	2026-10-01T09:10:00Z
+AST-r5-0008	service	svc-portal	compose service :8000 BaseHTTP/0.6 py3.12\; ip drifts per round	in_scope	2	2026-10-01T09:11:00Z
+AST-r5-0009	service	svc-files	compose service :8000 BaseHTTP/0.6 py3.12\; ip drifts per round	in_scope	2	2026-10-01T09:12:00Z
+AST-r5-0010	endpoint	svc-shop/order	GTSQLI-02 anonymous GET beacon	in_scope	2	2026-10-01T09:61:00Z
+AST-r5-0011	endpoint	svc-shop/orders	GTSQLI-02 anonymous GET beacon	in_scope	2	2026-10-01T09:64:00Z
+AST-r5-0012	endpoint	svc-shop/comment	GTXSS-02 anonymous GET beacon	in_scope	2	2026-10-01T09:67:00Z
+AST-r5-0013	endpoint	svc-shop/comments	GTXSS-02 anonymous GET beacon	in_scope	2	2026-10-01T09:70:00Z
+AST-r5-0014	endpoint	svc-shop/reply	GTXSS-03 anonymous GET beacon	in_scope	2	2026-10-01T09:73:00Z
+AST-r5-0015	endpoint	svc-shop/feedback	GTXSS-04 anonymous GET beacon	in_scope	2	2026-10-01T09:76:00Z
+AST-r5-0016	endpoint	svc-api-gw/preview	GTSSRF-02 anonymous GET beacon	in_scope	2	2026-10-01T09:79:00Z
+AST-r5-0017	endpoint	svc-api-gw/proxy	GTSSRF-03 anonymous GET beacon	in_scope	2	2026-10-01T09:82:00Z
+AST-r5-0018	endpoint	svc-api-gw/origin	GTCORS-02 anonymous GET beacon	in_scope	2	2026-10-01T09:85:00Z
+AST-r5-0019	endpoint	svc-dashboard/reports	GTSSTI-01 anonymous GET beacon	in_scope	2	2026-10-01T09:88:00Z
+AST-r5-0020	endpoint	svc-dashboard/render	GTSSTI-02 anonymous GET beacon	in_scope	2	2026-10-01T09:91:00Z
+AST-r5-0021	endpoint	svc-files/.env	GTINFOLEAK-03 anonymous GET beacon	in_scope	2	2026-10-01T09:94:00Z
+AST-r5-0022	endpoint	svc-files/import	GTDESER-02 anonymous GET beacon	in_scope	2	2026-10-01T09:97:00Z
+AST-r5-0023	endpoint	svc-files/decode	GTDESER-03 anonymous GET beacon	in_scope	2	2026-10-01T09:100:00Z
+AST-r5-0024	endpoint	svc-login/login	login POST surface	in_scope	2	2026-10-01T10:01:00Z
+AST-r5-0025	endpoint	svc-admin/login	login POST surface	in_scope	2	2026-10-01T10:02:00Z
+AST-r5-0026	endpoint	svc-billing/	token-accepted 401->404 oracle on /	in_scope	2	2026-10-01T11:01:00Z
+AST-r5-0027	root-domain	authorized-range.local	range apex per goal target	out_of_scope	2	2026-10-01T13:01:00Z

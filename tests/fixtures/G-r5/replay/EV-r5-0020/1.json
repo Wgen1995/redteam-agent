@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r5-0020", "matched": true, "results": [{"detail": ["GTINFOLEAK-03"], "ok": true, "type": "word"}], "status": 200, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r5 --id=EV-r5-0020 --state=VERIFIED", "verdict": "reproduced"}
