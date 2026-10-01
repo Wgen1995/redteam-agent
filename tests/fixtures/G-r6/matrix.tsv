@@ -1,0 +1,699 @@
+svc-shop	wstg-info				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-conf				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-idnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-authn				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-authz				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-sess				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-inpv				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-errh				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-cryp				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-busl				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-clnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop	wstg-apit				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-info				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-conf				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-idnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-authn				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-authz				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-sess				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-inpv				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-errh				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-cryp				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-busl				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-clnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-api-gw	wstg-apit				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-info				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-conf				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-idnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-authn				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-authz				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-sess				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-inpv				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-errh				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-cryp				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-busl				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-clnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-admin	wstg-apit				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-info				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-conf				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-idnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-authn				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-authz				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-sess				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-inpv				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-errh				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-cryp				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-busl				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-clnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-login	wstg-apit				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-info				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-conf				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-idnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-authn				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-authz				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-sess				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-inpv				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-errh				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-cryp				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-busl				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-clnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-billing	wstg-apit				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-info				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-conf				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-idnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-authn				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-authz				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-sess				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-inpv				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-errh				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-cryp				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-busl				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-clnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-dashboard	wstg-apit				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-info				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-conf				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-idnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-authn				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-authz				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-sess				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-inpv				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-errh				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-cryp				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-busl				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-clnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-portal	wstg-apit				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-info				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-conf				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-idnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-authn				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-authz				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-sess				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-inpv				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-errh				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-cryp				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-busl				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-clnt				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-files	wstg-apit				2	2026-10-02T09:06:00Z	2026-10-02T09:07:00Z
+svc-shop/search	wstg-info		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-conf		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-idnt		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-authn		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-authz		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-sess		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-inpv	?	submatrix:endpoint-added\; beacon GTXSS-01 -> FD-r6-0002（probe 实录）		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-errh		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-cryp		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-busl		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-clnt		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-apit		submatrix:		2	2026-10-02T09:22:51Z	
+svc-shop/search	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/search	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:52Z	
+svc-shop/comment	wstg-info		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-conf		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-idnt		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-authn		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-authz		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-sess		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-inpv	?	submatrix:endpoint-added\; beacon GTXSS-02 -> FD-r6-0003（probe 实录）		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-errh		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-cryp		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-busl		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-clnt		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-apit		submatrix:		2	2026-10-02T09:22:53Z	
+svc-shop/comment	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/comment	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:54Z	
+svc-shop/reply	wstg-info		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-conf		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-idnt		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-authn		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-authz		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-sess		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-inpv	?	submatrix:endpoint-added\; beacon GTXSS-03 -> FD-r6-0004（probe 实录）		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-errh		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-cryp		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-busl		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-clnt		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-apit		submatrix:		2	2026-10-02T09:22:55Z	
+svc-shop/reply	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/reply	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:56Z	
+svc-shop/feedback	wstg-info		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-conf		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-idnt		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-authn		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-authz		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-sess		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-inpv	?	submatrix:endpoint-added\; beacon GTXSS-04 -> FD-r6-0005（probe 实录）		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-errh		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-cryp		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-busl		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-clnt		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-apit		submatrix:		2	2026-10-02T09:22:57Z	
+svc-shop/feedback	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/feedback	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:22:58Z	
+svc-shop/items	wstg-info		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-conf		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-idnt		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-authn		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-authz		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-sess		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-inpv	?	submatrix:endpoint-added\; beacon GTSQLI-01 -> FD-r6-0006（probe 实录）		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-errh		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-cryp		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-busl		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-clnt		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-apit		submatrix:		2	2026-10-02T09:22:59Z	
+svc-shop/items	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/items	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:00Z	
+svc-shop/orders	wstg-info		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-conf		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-idnt		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-authn		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-authz		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-sess		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-inpv	?	submatrix:endpoint-added\; beacon GTSQLI-02 -> FD-r6-0007（probe 实录）		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-errh		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-cryp		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-busl		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-clnt		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-apit		submatrix:		2	2026-10-02T09:23:01Z	
+svc-shop/orders	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/orders	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:02Z	
+svc-shop/logout	wstg-info		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-conf		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-idnt		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-authn		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-authz		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-sess		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-inpv		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-errh		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-cryp		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-busl		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-clnt	?	submatrix:endpoint-added\; beacon GTREDIR-02 -> FD-r6-0008（probe 实录）		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-apit		submatrix:		2	2026-10-02T09:23:03Z	
+svc-shop/logout	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-inpv	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-shop/logout	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:04Z	
+svc-dashboard/render	wstg-info		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-conf		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-idnt		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-authn		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-authz		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-sess		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-inpv	?	submatrix:endpoint-added\; beacon GTSSTI-02 -> FD-r6-0009（probe 实录）		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-errh		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-cryp		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-busl		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-clnt		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-apit		submatrix:		2	2026-10-02T09:23:05Z	
+svc-dashboard/render	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-dashboard/render	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:06Z	
+svc-files/download	wstg-info		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-conf		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-idnt		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-authn		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-authz		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-sess		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-inpv	?	submatrix:endpoint-added\; beacon GTTRAVERSAL-01 -> FD-r6-0010（probe 实录）		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-errh		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-cryp		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-busl		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-clnt		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-apit		submatrix:		2	2026-10-02T09:23:07Z	
+svc-files/download	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/download	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:08Z	
+svc-files/.env	wstg-info	?	submatrix:endpoint-added\; beacon GTINFOLEAK-03 -> FD-r6-0011（probe 实录）		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-conf		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-idnt		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-authn		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-authz		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-sess		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-inpv		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-errh		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-cryp		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-busl		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-clnt		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-apit		submatrix:		2	2026-10-02T09:23:09Z	
+svc-files/.env	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-inpv	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/.env	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:10Z	
+svc-files/unserialize	wstg-info		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-conf		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-idnt		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-authn		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-authz		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-sess		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-inpv	?	submatrix:endpoint-added\; beacon GTDESER-01 -> FD-r6-0012（probe 实录）		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-errh		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-cryp		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-busl		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-clnt		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-apit		submatrix:		2	2026-10-02T09:23:11Z	
+svc-files/unserialize	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/unserialize	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:12Z	
+svc-files/import	wstg-info		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-conf		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-idnt		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-authn		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-authz		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-sess		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-inpv	?	submatrix:endpoint-added\; beacon GTDESER-02 -> FD-r6-0013（probe 实录）		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-errh		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-cryp		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-busl		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-clnt		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-apit		submatrix:		2	2026-10-02T09:23:13Z	
+svc-files/import	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/import	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:14Z	
+svc-files/decode	wstg-info		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-conf		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-idnt		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-authn		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-authz		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-sess		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-inpv	?	submatrix:endpoint-added\; beacon GTDESER-03 -> FD-r6-0014（probe 实录）		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-errh		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-cryp		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-busl		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-clnt		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-apit		submatrix:		2	2026-10-02T09:23:15Z	
+svc-files/decode	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-files/decode	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:16Z	
+svc-portal/debug/env	wstg-info	?	submatrix:endpoint-added\; beacon GTINFOLEAK-01 -> FD-r6-0015（probe 实录）		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-conf		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-idnt		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-authn		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-authz		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-sess		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-inpv		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-errh		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-cryp		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-busl		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-clnt		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-apit		submatrix:		2	2026-10-02T09:23:17Z	
+svc-portal/debug/env	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-inpv	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/debug/env	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:18Z	
+svc-portal/redirect	wstg-info		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-conf		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-idnt		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-authn		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-authz		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-sess		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-inpv		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-errh		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-cryp		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-busl		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-clnt	?	submatrix:endpoint-added\; beacon GTREDIR-01 -> FD-r6-0016（probe 实录）		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-apit		submatrix:		2	2026-10-02T09:23:19Z	
+svc-portal/redirect	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-inpv	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-portal/redirect	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:20Z	
+svc-api-gw/origin	wstg-info		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-conf	?	submatrix:endpoint-added\; beacon GTCORS-02 -> FD-r6-0017（probe 实录）		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-idnt		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-authn		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-authz		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-sess		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-inpv		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-errh		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-cryp		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-busl		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-clnt		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-apit		submatrix:		2	2026-10-02T09:23:21Z	
+svc-api-gw/origin	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-inpv	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/origin	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:22Z	
+svc-api-gw/cors-debug	wstg-info		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-conf	?	submatrix:endpoint-added\; beacon GTCORS-01 -> FD-r6-0018（probe 实录）		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-idnt		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-authn		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-authz		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-sess		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-inpv		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-errh		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-cryp		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-busl		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-clnt		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-apit		submatrix:		2	2026-10-02T09:23:23Z	
+svc-api-gw/cors-debug	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-inpv	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/cors-debug	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:24Z	
+svc-api-gw/graphql	wstg-info	?	submatrix:endpoint-added\; beacon GTGRAPHQL-01 -> FD-r6-0019（probe 实录）		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-conf		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-idnt		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-authn		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-authz		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-sess		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-inpv		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-errh		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-cryp		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-busl		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-clnt		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-apit		submatrix:		2	2026-10-02T09:23:25Z	
+svc-api-gw/graphql	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-inpv	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/graphql	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:26Z	
+svc-api-gw/preview	wstg-info		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-conf		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-idnt		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-authn		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-authz		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-sess		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-inpv	?	submatrix:endpoint-added\; beacon GTSSRF-02 -> FD-r6-0020（probe 实录）		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-errh		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-cryp		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-busl		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-clnt		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-apit		submatrix:		2	2026-10-02T09:23:27Z	
+svc-api-gw/preview	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-api-gw/preview	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:28Z	
+svc-login/login	wstg-info		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-conf		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-idnt		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-authn	?	submatrix:endpoint-added\; beacon GTRATE-01 -> FD-r6-0021（probe 实录）		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-authz		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-sess		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-inpv		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-errh		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-cryp		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-busl		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-clnt		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-apit		submatrix:		2	2026-10-02T09:23:29Z	
+svc-login/login	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-inpv	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-login/login	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:30Z	
+svc-shop/dry-run	wstg-info	?	submatrix:endpoint-added\; DRYRUN 演练 FD-r6-0001（非真实漏洞）		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-conf		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-idnt		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-authn		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-authz		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-sess		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-inpv		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-errh		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-cryp		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-busl		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-clnt		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-apit		submatrix:		2	2026-10-02T09:23:31Z	
+svc-shop/dry-run	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-inpv	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop/dry-run	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:32Z	
+svc-shop	wstg-info	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-conf	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-idnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-authn	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-authz	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-sess	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-inpv	?	beacon GTSQLI-02 -> FD-r6-0007（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-errh	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-cryp	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-busl	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-clnt	?	beacon GTREDIR-02 -> FD-r6-0008（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-shop	wstg-apit	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-info	?	beacon GTGRAPHQL-01 -> FD-r6-0019（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-conf	?	beacon GTCORS-01 -> FD-r6-0018（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-idnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-authn	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-authz	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-sess	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-inpv	?	beacon GTSSRF-02 -> FD-r6-0020（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-errh	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-cryp	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-busl	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-clnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw	wstg-apit	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-info	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-conf	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-idnt	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-authn	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-authz	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-sess	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-inpv	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-errh	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-cryp	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-busl	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-clnt	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-admin	wstg-apit	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-login	wstg-info	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-conf	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-idnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-authn	?	beacon GTRATE-01 -> FD-r6-0021（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-login	wstg-authz	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-sess	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-inpv	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-errh	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-cryp	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-busl	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-clnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-login	wstg-apit	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-info	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-conf	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-idnt	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-authn	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-authz	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-sess	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-inpv	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-errh	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-cryp	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-busl	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-clnt	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-billing	wstg-apit	x	401-auth-wall-unauth-sweep-no-anomaly(post-auth-honest-miss)		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-info	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-conf	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-idnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-authn	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-authz	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-sess	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-inpv	?	beacon GTSSTI-02 -> FD-r6-0009（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-errh	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-cryp	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-busl	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-clnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-dashboard	wstg-apit	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-info	?	beacon GTINFOLEAK-01 -> FD-r6-0015（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-conf	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-idnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-authn	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-authz	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-sess	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-inpv	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-errh	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-cryp	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-busl	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-clnt	?	beacon GTREDIR-01 -> FD-r6-0016（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-portal	wstg-apit	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-info	?	beacon GTINFOLEAK-03 -> FD-r6-0011（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-files	wstg-conf	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-idnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-authn	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-authz	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-sess	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-inpv	?	beacon GTDESER-03 -> FD-r6-0014（probe 实录）		2	2026-10-02T09:23:33Z	
+svc-files	wstg-errh	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-cryp	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-busl	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-clnt	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-files	wstg-apit	x	dict-GET-sweep-96path-no-anomaly		2	2026-10-02T09:23:33Z	
+svc-api-gw/proxy	wstg-info		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-conf		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-idnt		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-authn		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-authz		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-sess		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-inpv	?	submatrix:endpoint-added\; beacon GTSSRF-03 -> FD-r6-0022（probe7 实录）		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-errh		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-cryp		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-busl		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-clnt		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-apit		submatrix:		2	2026-10-02T09:23:43Z	
+svc-api-gw/proxy	wstg-info	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-conf	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-idnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-authn	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-authz	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-sess	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-errh	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-cryp	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-busl	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-clnt	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw/proxy	wstg-apit	x	submatrix:dict-sweep-no-additional-anomaly		2	2026-10-02T09:23:44Z	
+svc-api-gw	wstg-inpv	?	beacon GTSSRF-02 -> FD-r6-0020；GTSSRF-03 -> FD-r6-0022（probe2/7 实录）		2	2026-10-02T09:23:45Z	

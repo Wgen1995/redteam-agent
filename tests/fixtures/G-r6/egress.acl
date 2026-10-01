@@ -1,0 +1,41 @@
+# tanyin egress.acl v2 (deny-by-default)
+# source: scope.tsv sha16=61f0b1f81cd6989c
+# self: sha16=bb8d950e4168742f
+
+[acl]
+default deny
+deny *.out-of-scope.local
+allow *.range.local
+allow 172.28.0.0/24
+allow svc-admin
+allow svc-api-gw
+allow svc-billing
+allow svc-dashboard
+allow svc-files
+allow svc-login
+allow svc-portal
+allow svc-shop
+
+[dns-pinning]
+pin *.range.local
+pin svc-admin
+pin svc-api-gw
+pin svc-billing
+pin svc-dashboard
+pin svc-files
+pin svc-login
+pin svc-portal
+pin svc-shop
+
+[oob]
+allow-oob 192.168.0.0/16
+
+[canary]
+
+[infra]
+allow-infra api.github.com
+allow-infra crt.sh
+allow-infra nvd.nist.gov
+allow-infra osv.dev
+allow-infra pypi.org
+allow-infra registry.npmjs.org

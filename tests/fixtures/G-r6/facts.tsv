@@ -1,0 +1,22 @@
+F-r6-0001	INT-r6-0002	http	svc-shop/dry-run	[DRYRUN] rehearsal fact: GET /dry-run 404	0.9	2	2026-10-02T09:09:00Z
+F-r6-0002	INT-r6-0003	vuln-clue	svc-shop/search	反射XSS(q参数回显)：GTXSS-01 beacon 命中 @svc-shopsearch（探针 probe3-out.json/shop.search.xss）	0.85	2	2026-10-02T09:20:04Z
+F-r6-0003	INT-r6-0004	vuln-clue	svc-shop/comment	存储型XSS回显面：GTXSS-02 beacon 命中 @svc-shopcomment（探针 dict-svc-shop.json//comment）	0.85	2	2026-10-02T09:20:14Z
+F-r6-0004	INT-r6-0005	vuln-clue	svc-shop/reply	反射XSS回显面：GTXSS-03 beacon 命中 @svc-shopreply（探针 dict-svc-shop.json//reply）	0.85	2	2026-10-02T09:20:22Z
+F-r6-0005	INT-r6-0006	vuln-clue	svc-shop/feedback	反射XSS回显面：GTXSS-04 beacon 命中 @svc-shopfeedback（探针 dict-svc-shop.json//feedback）	0.85	2	2026-10-02T09:20:30Z
+F-r6-0006	INT-r6-0007	vuln-clue	svc-shop/items	SQL报错注入面：GTSQLI-01 beacon 命中 @svc-shopitems（探针 dict-svc-shop.json//items）	0.85	2	2026-10-02T09:20:38Z
+F-r6-0007	INT-r6-0008	vuln-clue	svc-shop/orders	SQL语法错误注入面：GTSQLI-02 beacon 命中 @svc-shoporders（探针 dict-svc-shop.json//orders）	0.85	2	2026-10-02T09:20:46Z
+F-r6-0008	INT-r6-0009	vuln-clue	svc-shop/logout	开放重定向(Location回显next)：GTREDIR-02 beacon 命中 @svc-shoplogout（探针 probe3-out.json/shop.logout.redir）	0.85	2	2026-10-02T09:20:54Z
+F-r6-0009	INT-r6-0010	vuln-clue	svc-dashboard/render	SSTI模板注入面(tpl回显)：GTSSTI-02 beacon 命中 @svc-dashboardrender（探针 probe3-out.json/dash.render.ssti）	0.85	2	2026-10-02T09:21:02Z
+F-r6-0010	INT-r6-0011	vuln-clue	svc-files/download	路径穿越读取面：GTTRAVERSAL-01 beacon 命中 @svc-filesdownload（探针 dict-svc-files.json//download）	0.85	2	2026-10-02T09:21:12Z
+F-r6-0011	INT-r6-0012	vuln-clue	svc-files/.env	环境文件泄露：GTINFOLEAK-03 beacon 命中 @svc-files.env（探针 dict-svc-files.json//.env）	0.85	2	2026-10-02T09:21:20Z
+F-r6-0012	INT-r6-0013	vuln-clue	svc-files/unserialize	反序列化接受面：GTDESER-01 beacon 命中 @svc-filesunserialize（探针 dict-svc-files.json//unserialize）	0.85	2	2026-10-02T09:21:28Z
+F-r6-0013	INT-r6-0014	vuln-clue	svc-files/import	Java序列化导入面：GTDESER-02 beacon 命中 @svc-filesimport（探针 dict-svc-files.json//import）	0.85	2	2026-10-02T09:21:36Z
+F-r6-0014	INT-r6-0015	vuln-clue	svc-files/decode	base64解码膨胀面：GTDESER-03 beacon 命中 @svc-filesdecode（探针 dict-svc-files.json//decode）	0.85	2	2026-10-02T09:21:44Z
+F-r6-0015	INT-r6-0016	vuln-clue	svc-portal/debug/env	调试环境变量泄露：GTINFOLEAK-01 beacon 命中 @svc-portaldebug/env（探针 dict-svc-portal.json//debug/env）	0.85	2	2026-10-02T09:21:52Z
+F-r6-0016	INT-r6-0017	vuln-clue	svc-portal/redirect	重定向面(Location路径自反射)：GTREDIR-01 beacon 命中 @svc-portalredirect（探针 probe4a-out.json/portal.redir.evil）	0.85	2	2026-10-02T09:22:00Z
+F-r6-0017	INT-r6-0018	vuln-clue	svc-api-gw/origin	CORS任意Origin反射+凭据：GTCORS-02 beacon 命中 @svc-api-gworigin（探针 probe5-out.json/origin.evil）	0.85	2	2026-10-02T09:22:10Z
+F-r6-0018	INT-r6-0019	vuln-clue	svc-api-gw/cors-debug	CORS通配符配置：GTCORS-01 beacon 命中 @svc-api-gwcors-debug（探针 probe5-out.json/corsdebug.control）	0.85	2	2026-10-02T09:22:20Z
+F-r6-0019	INT-r6-0020	vuln-clue	svc-api-gw/graphql	GraphQL内省开启：GTGRAPHQL-01 beacon 命中 @svc-api-gwgraphql（探针 dict-svc-api-gw.json//graphql）	0.85	2	2026-10-02T09:22:28Z
+F-r6-0020	INT-r6-0021	vuln-clue	svc-api-gw/preview	SSRF webhook预览面：GTSSRF-02 beacon 命中 @svc-api-gwpreview（探针 dict-svc-api-gw.json//preview）	0.85	2	2026-10-02T09:22:36Z
+F-r6-0021	INT-r6-0022	vuln-clue	svc-login/login	登录无速率限制(计数不封禁)：GTRATE-01 beacon 命中 @svc-loginlogin（探针 probe4a-out.json/reg.apiv1）	0.85	2	2026-10-02T09:22:44Z
+F-r6-0022	INT-r6-0023	vuln-clue	svc-api-gw/proxy	GTSSRF-03 beacon @svc-api-gw/proxy（target 参数静态beacon无行为差分）；另：svc-files/import POST multipart 两次400挂起（probe7，边界正确仍拒）	0.85	2	2026-10-02T09:23:38Z

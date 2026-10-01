@@ -978,3 +978,13 @@
 - **飞轮**：RT-0002 运行时库 in-band 全流（approvers 登记→approve→commit）回灌发行库 knowledge/retros/RT-0002.md；审计轨迹 /tmp/tanyin-range-battle/battle-4/krt/log.md。
 - **战书教学缺口三处（battle-5 brief 回灌项）**：①findings 必挂 endpoint 资产（svc/path）+dedup 干跑演练 ②凭据到手后自家面重扫方法论 ③JWT 构造形。另：matrix-init 先于 exploitation（P2 门序）。
 - 验证：全套 **912 测绿**；靶场 compose down 残留 0。
+
+
+## 2026-10-02 battle-5（G-r6）收战：v4 键形+双轨+防御摩擦首战
+- **备战批四提交**（ad06171/e6533b1/c083d95+本笔）：v4 键形（尾段数字归一+同键单计，金样双锚无漂移=纯收紧）；双轨 recall（beacon/差分——control_evidence_ids 控制对或 EV pair_group 无词证可计）；面级限流+诱饵面种子（端口异构/认证加权延 battle-6 GT v4 面改版）；战书五律回灌。
+- **G-r6 门控 0.38（19/50）=beacon 18+diff 1（史上首枚差分轨命中=weakpass-01，FD-r6-0021 控制对 EV-r6-0026）**；P4 27/27 VERIFIED 零强改；九门 P0-P4 全 PASS（矩阵 360 格清零）；三代同面：G-r4 0.56（广撒·历史作者期）/G-r5 0.24（深挖）/G-r6 0.38（新律广度+纪律）。新律实效：out_of_scope 1/31、空哈希 0、端点级资产 22、矩阵先于 exploitation、诱饵免疫（decoy 未记）、退避执行。
+- **v4 单计律首案例（教学金矿）**：weakpass-01 与 ratelimit-01 同键 svc-login/login——FD-r6-0021 单 finding 被先序 GT 耗用，ratelimit-01 落 miss。**同面多洞须分洞分 finding**=battle-6 战书条款。
+- **归因核验（RT-0003 attribution_check=verified）**：认证后九靶=编码族缺口（种子收表单子串 user=admin&pass=admin123，战士 JSON 形全拒——注册/找回/token 面升字典一级家族）；XXE/CSRF=靶面真无会话前提（非过失）；卡片 title 裸 [ 曾全灭 27 卡（parse_yaml 流歧义）——演练须五连。
+- **流程纠偏（灰色披露对账）**：battle 目录内脚手架 patch-template.py 含旧模板类别名行——类别已在允许字典内=零实质泄漏；今后脚手架一律置于战场目录外。
+- **金样收编**：G-r6 入 fixtures（628K）双轨锚（0.38/18+1/27VERIFIED，test_gold_g_r6_b5 2 测）；RT-0003 运行时库 in-band 全流回灌发行库。
+- 验证：全套绿（战毕跑）；靶场 down 残留 0。

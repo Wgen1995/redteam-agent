@@ -1,0 +1,13 @@
+S-r6-0001	include	*.range.local					2	2026-10-02T09:01:00Z
+S-r6-0002	include	172.28.0.0/24					2	2026-10-02T09:01:00Z
+S-r6-0003	include	svc-shop					2	2026-10-02T09:01:00Z
+S-r6-0004	include	svc-api-gw					2	2026-10-02T09:01:00Z
+S-r6-0005	include	svc-admin					2	2026-10-02T09:01:00Z
+S-r6-0006	include	svc-login					2	2026-10-02T09:01:00Z
+S-r6-0007	include	svc-billing					2	2026-10-02T09:01:00Z
+S-r6-0008	include	svc-dashboard					2	2026-10-02T09:01:00Z
+S-r6-0009	include	svc-portal					2	2026-10-02T09:01:00Z
+S-r6-0010	include	svc-files					2	2026-10-02T09:01:00Z
+S-r6-0011	exclude	*.out-of-scope.local					2	2026-10-02T09:01:00Z
+S-r6-0012	oob	192.168.0.0/16					2	2026-10-02T09:01:00Z
+S-r6-0013	include	authorized-range.local			S-r6-0001	glob 单标签语义：*.range.local 不匹配 authorized-range.local，补 include 使根资产 in_scope	2	2026-10-02T09:04:00Z

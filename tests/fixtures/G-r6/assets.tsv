@@ -1,0 +1,31 @@
+AST-r6-0001	root-domain	authorized-range.local	range-root	out_of_scope	2	2026-10-02T09:03:00Z
+AST-r6-0002	service	svc-shop	python-http:8000	in_scope	2	2026-10-02T09:03:00Z
+AST-r6-0003	service	svc-api-gw	python-http:8000	in_scope	2	2026-10-02T09:03:00Z
+AST-r6-0004	service	svc-admin	python-http:8000	in_scope	2	2026-10-02T09:03:00Z
+AST-r6-0005	service	svc-login	python-http:8000	in_scope	2	2026-10-02T09:03:00Z
+AST-r6-0006	service	svc-billing	python-http:8000	in_scope	2	2026-10-02T09:03:00Z
+AST-r6-0007	service	svc-dashboard	python-http:8000	in_scope	2	2026-10-02T09:03:00Z
+AST-r6-0008	service	svc-portal	python-http:8000	in_scope	2	2026-10-02T09:03:00Z
+AST-r6-0009	service	svc-files	python-http:8000	in_scope	2	2026-10-02T09:03:00Z
+AST-r6-0010	endpoint	svc-shop/dry-run	[DRYRUN] rehearsal	in_scope	2	2026-10-02T09:08:00Z
+AST-r6-0011	endpoint	svc-shop/search	beacon-face dict-probe2	in_scope	2	2026-10-02T09:20:01Z
+AST-r6-0012	endpoint	svc-shop/comment	beacon-face dict-probe2	in_scope	2	2026-10-02T09:20:11Z
+AST-r6-0013	endpoint	svc-shop/reply	beacon-face dict-probe2	in_scope	2	2026-10-02T09:20:19Z
+AST-r6-0014	endpoint	svc-shop/feedback	beacon-face dict-probe2	in_scope	2	2026-10-02T09:20:27Z
+AST-r6-0015	endpoint	svc-shop/items	beacon-face dict-probe2	in_scope	2	2026-10-02T09:20:35Z
+AST-r6-0016	endpoint	svc-shop/orders	beacon-face dict-probe2	in_scope	2	2026-10-02T09:20:43Z
+AST-r6-0017	endpoint	svc-shop/logout	beacon-face dict-probe2	in_scope	2	2026-10-02T09:20:51Z
+AST-r6-0018	endpoint	svc-dashboard/render	beacon-face dict-probe2	in_scope	2	2026-10-02T09:20:59Z
+AST-r6-0019	endpoint	svc-files/download	beacon-face dict-probe2	in_scope	2	2026-10-02T09:21:09Z
+AST-r6-0020	endpoint	svc-files/.env	beacon-face dict-probe2	in_scope	2	2026-10-02T09:21:17Z
+AST-r6-0021	endpoint	svc-files/unserialize	beacon-face dict-probe2	in_scope	2	2026-10-02T09:21:25Z
+AST-r6-0022	endpoint	svc-files/import	beacon-face dict-probe2	in_scope	2	2026-10-02T09:21:33Z
+AST-r6-0023	endpoint	svc-files/decode	beacon-face dict-probe2	in_scope	2	2026-10-02T09:21:41Z
+AST-r6-0024	endpoint	svc-portal/debug/env	beacon-face dict-probe2	in_scope	2	2026-10-02T09:21:49Z
+AST-r6-0025	endpoint	svc-portal/redirect	beacon-face dict-probe2	in_scope	2	2026-10-02T09:21:57Z
+AST-r6-0026	endpoint	svc-api-gw/origin	beacon-face dict-probe2	in_scope	2	2026-10-02T09:22:07Z
+AST-r6-0027	endpoint	svc-api-gw/cors-debug	beacon-face dict-probe2	in_scope	2	2026-10-02T09:22:17Z
+AST-r6-0028	endpoint	svc-api-gw/graphql	beacon-face dict-probe2	in_scope	2	2026-10-02T09:22:25Z
+AST-r6-0029	endpoint	svc-api-gw/preview	beacon-face dict-probe2	in_scope	2	2026-10-02T09:22:33Z
+AST-r6-0030	endpoint	svc-login/login	beacon-face dict-probe2	in_scope	2	2026-10-02T09:22:41Z
+AST-r6-0031	endpoint	svc-api-gw/proxy	beacon-face probe7	in_scope	2	2026-10-02T09:23:35Z

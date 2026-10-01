@@ -13,7 +13,7 @@
 
 ## 可读的方法论面（你的弹药）
 - `~/redteam-agent/docs/design/2026-09-27-endpoint-dict-v2.md`——端点字典 v2（二级路径八族+两段式探测+认证态四策+GT 键口径）。**这是你的主战手册**。
-- `~/redteam-agent/docs/HANDOFF.md`——两轮战记（搜「靶场 LLM 在环首战记录」「二轮战记」两节）：首战 8/20 真实检出的类别（sqli×2/xss-01/ssti-01/cmdi-01/ssrf-01/traversal-01/redir-01）+漏检教训；二轮 14/20（上述+二级路径六族+战例反哺 cmdi/redir）。已知靶点类别=14 枚；其余靠字典八族+新类候选（LFI/RFI/JWT/限流/GraphQL/XXE/CSRF/用户枚举等）自行探。
+- **禁读** `docs/HANDOFF.md`（战记含答案面——battle-5 起独立性收紧）。类别广域自行从字典八族+新类候选（LFI/RFI/JWT/限流/GraphQL/XXE/CSRF/用户枚举等）穷举。
 - `~/redteam-agent/tests/range/RUNBOOK.md`——流程剧本（GT 键口径节可读；其余流程命令序照做）。
 
 ## 环境（全部实测在案）
@@ -49,3 +49,12 @@
 4. **战报口径律（八专家 P2#15）**：任何对照结论一律同子集口径（如三轮战 17/20=0.85 vs 二轮 14/20=0.70=+21%）——禁分母置换表述（「2.1 倍」类）；跨战比较须声明独立性分层（行为面实测 vs 键形对齐面计分）。
 5. **G-51 时序留存（八专家 P2#16）**：若经总控 send_message/interrupt 协同，落 `attrib/send-message-timeline.md` 摘录（时点+方向+是否打断生效）与读取路径自报清单（读过哪些 GT 面/字典——GT 零读主张的技术凭证）。
 6. **RATE 类重放自包含（八专家 P2#3）**：svc-login 限流已改 per-(route,method)（跨端点串扰已修，活体验证 2026-09-30）；RATE-01/02 的 EV 卡须在 `preconditions` 写明重放前置序列（如「本卡前置：同路由 10 连击」）——重放器不自动补连击，无前置说明=not-reproduced 属预期。
+
+
+## battle-5 增补（RT-0002 回灌五律——G-r5 战创教训）
+6. **endpoint 资产先铸**：findings 的 affected_asset 必须挂 endpoint 型资产（值=svc-xxx/path 形）。dedup=asset+vuln_ref——服务级资产首战必撞键（14 连 REJECT 实测）。开局先 dry-run 演练一轮 asset+finding 铸造再开火。
+7. **凭据到手后自家面重扫**：每拿一枚凭据/token，立即持 TOK 重访该服务全部字典端点（对照匿名）。G-r5 实测：token 在手未重扫自家 /admin 面=九靶全漏。
+8. **JWT 构造形**：验签面须构造真 JWT 形（base64 三段；alg=none 头或 exp 过期载荷）——静态串凭据全 401 是控制组不是答案。
+9. **九门序**：matrix-init/freeze 先于 exploitation；replay 事件 phase=P4 必须晚于 P0-P3 门事件——否则 verify-chain 跳门死锁不可补铸（账本如实保留 FAIL 也是伤）。
+10. **限流退避律（battle-5 新面）**：svc-api-gw 有面级限流（约 30req/10s→429+Retry-After）——429 即退避（sleep≥3s）或换面；诱饵面（wp-admin/admin.php/.git 形拟真 200）不具验证性，别按 200 即记。
+11. **差分轨记账（T2 新分轨）**：无 marker 词证也可计分——但须 control_evidence_ids 控制对或 EV pair_group（匿名/持证成对实证）。控制组 EV（negative probe）与正 EV 同铸，成对记账。
