@@ -1,0 +1,2 @@
+wu_id	sink_type	sink_ids	sink_locations	sink_count	status	cluster_id	batch_num
+WU-0001	java/a/B.java	s1;s2	java/a/B.java:10;java/a/B.java:20	2	pending	CL-f4a1c2b3	B001

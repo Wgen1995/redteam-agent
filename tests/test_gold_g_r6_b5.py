@@ -23,8 +23,8 @@ class TestGoldGR6(unittest.TestCase):
     def test_dual_track_pinned(self):
         tracks = {}
         rec, missing = score(self.rows, self.cards, self.gt, tracks=tracks)
-        self.assertEqual(rec, 0.38)
-        self.assertEqual(len(missing), 31)
+        self.assertAlmostEqual(rec, 19.0 / 56)   # battle-6 认证加权：19/56
+        self.assertEqual(len(missing), 37)
         self.assertEqual(tracks['beacon'], 18)
         self.assertEqual(tracks['diff'], 1)   # 差分轨首证：weakpass-01（FD-r6-0021 控制对 EV-r6-0026；词证缺席经 control_evidence_ids 命中）
 

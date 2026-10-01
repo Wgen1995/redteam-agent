@@ -1,0 +1,7 @@
+# lang: java
+# role: source（库模式——recon 判 lib 时替代 sources.pattern：入口=公共 API 面/调用方传入点/共享类型）
+#---
+pattern_id	ere	note
+LB-J01	^[[:space:]]*public[[:space:]][^=;]*\(	公共方法签名（调用方传入点）
+LB-J02	^[[:space:]]*public[[:space:]]+(abstract[[:space:]]+)?(final[[:space:]]+)?class[[:space:]]+[A-Za-z0-9_]+	公共类型（共享类型面）
+LB-J03	^[[:space:]]*public[[:space:]]+interface[[:space:]]+[A-Za-z0-9_]+	公共接口契约

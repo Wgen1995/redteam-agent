@@ -1,0 +1,21 @@
+# lang: ts
+# role: source（入口/可控输入点枚举）
+#---
+pattern_id	ere	note
+T-SRC01	@Controller\(	NestJS 控制器（类级入口，方法级 @Get/@Post 同文件）
+T-SRC02	@Get\(
+T-SRC03	@Post\(
+T-SRC04	router\.get\(	Express/Koa 路由
+T-SRC05	router\.post\(
+T-SRC06	router\.put\(
+T-SRC07	router\.delete\(
+T-SRC08	app\.get\(	Express 应用级路由
+T-SRC09	export[[:space:]]+default[[:space:]]+(async[[:space:]]+)?function[[:space:]]+handler	Next.js Pages Router API route
+T-SRC10	export[[:space:]]+(async[[:space:]]+)?function[[:space:]]+GET\(	Next.js App Router route handler
+T-SRC11	export[[:space:]]+(async[[:space:]]+)?function[[:space:]]+POST\(
+T-SRC12	\.on\(	事件入口（message/connection/data 家族，band=weak——含 socket/process/emitter.on）
+T-SRC13	@MessagePattern\(	NestJS 微服务消息入口（external_message，auth=unknown）
+T-SRC14	process\.argv	CLI 入口
+T-SRC15	req\.query	取参共现标记
+T-SRC16	req\.body
+T-SRC17	req\.params

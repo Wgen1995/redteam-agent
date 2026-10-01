@@ -1,0 +1,3 @@
+source_id	file:line	entry_type	symbol	param	sort_order
+r1	java/a/B.java:10	rest	doPost	req	1
+r2	java/c/D.java:30	file	readAll	path	2

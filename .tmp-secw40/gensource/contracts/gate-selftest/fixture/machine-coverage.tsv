@@ -1,0 +1,6 @@
+CVE	target_version	covered_by_range	verdict	evidence_ref
+CVE-2020-9484	9.0.35	yes	hit	C-00001-00001-1d832469
+CVE-2020-11996	9.0.35	yes	fix_present	CP-000010
+CVE-2020-13935	9.0.35	yes	fix_present	CP-000011
+CVE-2020-13943	9.0.35	yes	fix_present	CP-000012
+CVE-2020-1938	9.0.35	no	not_affected_verified	java/org/apache/coyote/ajp/AbstractAjpProtocol.java:183

@@ -23,6 +23,13 @@ class H(BaseHTTPRequestHandler):
         return self.headers.get("X-Auth-Token") == TOKEN
 
     def do_GET(self):
+        # battle-6 认证加权（post_auth 靶）：低权会话可达面——token 门后。
+        if self.path.startswith("/admin/reports"):
+            if not self._authed():
+                self._send(401, "auth required")
+            else:
+                self._send(200, "<html>GTIDOR-06 synthetic idor-06 他人报表</html>")
+            return
         # battle-5 T3a（P3 蓝军）：诱饵面——常见扫描器首发路径的拟真 200 噪声
         # （无 marker、无漏洞行为；惩罚无验证的广撒=信噪摩擦）。正身路由不受影响。
         if self.path.startswith("/wp-admin") or self.path.startswith("/admin.php"):

@@ -31,6 +31,13 @@ class H(BaseHTTPRequestHandler):
             self._send(403, "denied")
 
     def do_GET(self):
+        # battle-6 认证加权（post_auth 靶）：低权会话可达面——token 门后。
+        if self.path.startswith("/api/v1/audit"):
+            if not self._authed():
+                self._send(401, "auth required")
+            else:
+                self._send(200, "<html>GTHAUTH-04 synthetic hauth-04 跨租户审计</html>")
+            return
         if not self._authed():
             self._send(401, "auth required")
         elif self.path.startswith("/api/v1/charges"):

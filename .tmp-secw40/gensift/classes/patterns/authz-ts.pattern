@@ -1,0 +1,16 @@
+# class: authz
+# lang: ts
+# role: sink
+# band: 0
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+A-T01	findById\(	mongoose/typeorm 按 id 直查(本类第一锚)
+A-T02	findOne\(	sequelize/typeorm/prisma 查询族
+A-T03	findByPk\(	sequelize 主键直查
+A-T04	findUnique\(	prisma 唯一键直查
+A-T05	\.get\(.*[Ii]d	Map/缓存按 id 取(内存态次级入口)
+A-T06	deleteById\(	按 id 删除(本类第二锚)
+A-T07	\.remove\(	mongoose/文档删除族
+A-T08	update.*[Ii]d	按 id 定位的更新

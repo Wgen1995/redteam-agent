@@ -1,0 +1,7 @@
+# lang: python
+# role: source（库模式——recon 判 lib 时替代 sources.pattern：入口=公共 API 面/调用方传入点/共享类型）
+#---
+pattern_id	ere	note
+LB-P01	^def[[:space:]]+[A-Za-z0-9_]+\(	模块级函数（调用方传入点；下划线前缀私有约定由判据排除）
+LB-P02	^class[[:space:]]+[A-Za-z0-9_]+	公共类型（共享类型面）
+LB-P03	^[[:space:]]+def[[:space:]]+[A-Za-z0-9_]+\(self	公共方法（弱锚：私有/魔术方法同形，判据排除）

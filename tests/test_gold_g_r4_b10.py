@@ -22,8 +22,8 @@ class TestGoldGR4(unittest.TestCase):
 
     def test_gold_recall_pinned(self):
         recall, missing = E.score(self.rows, self.cards, self.gt)
-        self.assertAlmostEqual(recall, 0.56)
-        self.assertEqual(len(missing), 22)
+        self.assertAlmostEqual(recall, 0.50)   # battle-6 认证加权 50→56 分母扩
+        self.assertEqual(len(missing), 28)   # battle-6：+6 新靶均未检出（分子不变）
 
     def test_gold_replay_verified_count(self):
         verified, blocked = E._replay_state(self.rows)

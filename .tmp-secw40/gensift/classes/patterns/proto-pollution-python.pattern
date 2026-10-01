@@ -1,0 +1,11 @@
+# class: proto-pollution
+# lang: python
+# role: sink
+# band: 1
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+PP-P01	setattr\(	class pollution 入口（键可控时污染类/实例属性，CWE-1321 类似形态）
+PP-P02	__dict__\.update\(	直接改写类/实例字典（Python class pollution）
+PP-P03	deep_merge\(	递归合并工具（键不过滤即写入类属性）

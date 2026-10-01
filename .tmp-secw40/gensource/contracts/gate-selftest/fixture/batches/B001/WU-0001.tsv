@@ -1,0 +1,3 @@
+sink_id	verdict	five_segment_evidence	evidence_refs	reviewed_at
+s1	candidate	source=r2 file|prop=readAll->readObject|sanitizers=none|sink=readObject|disproof_checked	java/c/D.java:30,java/a/B.java:10	2026-08-14T00:01:00Z
+s2	disproved	source=r2 file|prop=readAll->exec|sanitizers=execArgsConst|sink=Runtime.exec|disproof_checked	java/a/B.java:20	2026-08-14T00:02:00Z

@@ -1,0 +1,18 @@
+# class: csrf
+# lang: ts
+# role: sink
+# band: 1
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+CF-T01	res\.cookie\(	express cookie 下发点(选项对象 sameSite/secure 由五步判)
+CF-T02	setCookie\(	cookie 写入 API(fastify reply.setCookie/自定义封装)
+CF-T03	SET_COOKIE	头常量形态(cookies API/headers 对象直写)
+CF-T04	csrfToken	token 读写形态(模板注入/请求头回发)
+CF-T05	csrfSync\(	csrf-csrf 中间件挂载(excludedRoutes 豁免面是 C2 反向证据)
+CF-T06	sameSite	cookie 选项属性(含 sameSite none 宽松值)
+CF-T07	SameSite	常量/头值字符串形态(Set-Cookie 拼装)
+CF-T08	csurf\(	旧 csurf 中间件挂载(修复形态;挂载晚于路由=未覆盖,noise 登记)
+CF-T09	csrfProtection	中间件变量挂载形态(路由级覆盖差分材料)
+CF-T10	XSRF	双提交 cookie 名形态(XSRF-TOKEN 回发链,C-g 材料)

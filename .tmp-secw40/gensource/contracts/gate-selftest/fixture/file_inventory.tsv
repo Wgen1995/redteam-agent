@@ -1,0 +1,4 @@
+path	type	lang	loc	binary_flag	sort_order
+java/a/B.java	source	java	100	text	1
+java/c/D.java	source	java	50	text	2
+docs/README.md	doc	unknown	10	text	3

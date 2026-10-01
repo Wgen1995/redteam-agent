@@ -32,6 +32,13 @@ class H(BaseHTTPRequestHandler):
             self._send(400, "bad request")
 
     def do_GET(self):
+        # battle-6 认证加权（post_auth 靶）：低权会话可达面——token 门后。
+        if self.path.startswith("/admin/config"):
+            if not self._authed():
+                self._send(401, "auth required")
+            else:
+                self._send(200, "<html>GTROLE-03 synthetic role-03 低权可达配置</html>")
+            return
         if self.path.startswith("/report"):            # 报表路由（模板渲染回显）
             name = self.path.split("name=", 1)[-1].split("&")[0]
             self._send(200, "<html>report GTSSTI-01 synthetic ssti render %s</html>" % name)

@@ -1,0 +1,2 @@
+candidate_id	location	sink_type	severity_hypothesis_initial	root_cause_group_id	lifecycle_state	verdict	cluster_ref	verification_record_ref	report_record_ref	created_at	discovery_source	path	start_line	end_line	discovery_reasoning_note
+C-00001-00001-1d832469	java/a/B.java:10	SINK-DESERIALIZE	critical	RCG-DESER-TEST	reported	confirmed	clusters/SINK-DESERIALIZE.md	verification-summary.md#C-00001-00001-1d832469	V01	2026-08-14T00:00:00Z	pattern_driven	java/a/B.java	10	10	从 source r2 追链到 sink readObject，逐跳证据见 flow_edges

@@ -1,0 +1,7 @@
+# lang: java
+# role: known-gadgets
+#---
+dependency	version_range	gadget_family	source
+sa-token	*	鉴权框架族（登录态校验/注解鉴权绕过与逻辑缺陷——具体受影响区间以依赖锁本地核对为准，D-052）	模型记忆
+commons-collections	<=3.2.1;4.0	InvokerTransformer链(CVE-2015-7501族)	模型记忆
+fastjson	<=1.2.24	autoType默认放行(CVE-2017-18349)	模型记忆

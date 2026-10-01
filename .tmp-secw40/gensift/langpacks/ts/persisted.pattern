@@ -1,0 +1,8 @@
+# lang: ts
+# role: persisted-read（DAO/ORM 回读点——入清单 entry_type=persisted_read，不预发 fw 卡；bw 卡 blocked 时按需发追踪卡，origin_ref=该 bw 卡）
+#---
+pattern_id	ere	note
+PR-T01	\.findOne\(	TypeORM/Mongoose 回读
+PR-T02	\.findByPk\(	Sequelize 主键回读
+PR-T03	\.findUnique\(	Prisma 主键回读
+PR-T04	\.query\(	pg/mysql 客户端回读（弱锚：同名方法多语境，判据排除非 DB 语境）

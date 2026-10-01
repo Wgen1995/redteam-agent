@@ -23,7 +23,7 @@ def load():
 class TestRangeExpansion(unittest.TestCase):
     def test_fifty_entries(self):
         gt = load()
-        self.assertEqual(len(gt["planted"]), 50, "扩编目标=50 检出靶点")
+        self.assertEqual(len(gt["planted"]), 56, "battle-6 认证加权扩编=56 检出靶点（+6 post_auth）")
 
     def test_canonical_key_form(self):
         gt = load()

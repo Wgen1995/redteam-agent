@@ -37,10 +37,11 @@ GT_FIX = [
      "marker": "GTFIX-D", "post_auth": False, "authz_role": ""},
 ]
 GT_DISTRIBUTION = {"sqli": 2, "xss": 4, "cmdi": 2, "ssti": 2, "ssrf": 3, "deser": 3,
-                   "cors": 2, "redir": 3, "traversal": 2, "idor": 4, "hauth": 3,
-                   "role": 2, "weakpass": 1, "infoleak": 3, "lfi": 2, "rfi": 1,
+                   "cors": 2, "redir": 3, "traversal": 2, "idor": 6, "hauth": 5,
+                   "role": 4, "weakpass": 1, "infoleak": 3, "lfi": 2, "rfi": 1,
                    "jwt": 2, "ratelimit": 2, "graphql": 2, "xxe": 1,
                    "broken-access-control": 2,   # 批次 10 P2#2：csrf→CWE-306 重标
+                   # battle-6 认证加权：role/hauth 各+2、idor+2（+6 post_auth 靶 50→56）
                    "userenum": 1, "upload": 1}
 
 
@@ -59,11 +60,11 @@ class TestGroundTruth(unittest.TestCase):
         self.gt = self.doc["planted"]
 
     def test_gt_shape_fifty(self):
-        self.assertEqual(len(self.gt), 50)
+        self.assertEqual(len(self.gt), 56)   # battle-6 认证加权 50→56（+6 post_auth）
         post = [g for g in self.gt if g["post_auth"]]
-        self.assertGreaterEqual(len(post), 5)          # 认证后 ≥5（设计 §9.4；扩编后=10）
-        self.assertEqual(len({g["marker"] for g in self.gt}), 50)   # marker 全局唯一
-        self.assertEqual(len({g["id"] for g in self.gt}), 50)
+        self.assertGreaterEqual(len(post), 5)          # 认证后 ≥5（设计 §9.4；battle-6=16）
+        self.assertEqual(len({g["marker"] for g in self.gt}), 56)   # marker 全局唯一
+        self.assertEqual(len({g["id"] for g in self.gt}), 56)
         for g in self.gt:
             self.assertEqual(set(g.keys()),
                              {"id", "class", "endpoint", "marker", "post_auth", "authz_role"}
@@ -86,7 +87,7 @@ class TestGroundTruth(unittest.TestCase):
         from collections import Counter
         c = Counter(g["class"] for g in self.gt)
         self.assertEqual(dict(c), GT_DISTRIBUTION)
-        self.assertEqual(sum(1 for g in self.gt if g["post_auth"]), 10)
+        self.assertEqual(sum(1 for g in self.gt if g["post_auth"]), 16)   # battle-6 auth weighting
 
 
 class Base(unittest.TestCase):

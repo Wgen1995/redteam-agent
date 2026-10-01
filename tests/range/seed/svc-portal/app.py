@@ -23,6 +23,13 @@ class H(BaseHTTPRequestHandler):
         return self.headers.get("X-Auth-Token") == TOKEN
 
     def do_GET(self):
+        # battle-6 认证加权（post_auth 靶）：低权会话可达面——token 门后。
+        if self.path.startswith("/admin/clients"):
+            if not self._authed():
+                self._send(401, "auth required")
+            else:
+                self._send(200, "<html>GTHAUTH-05 synthetic hauth-05 低权客户清单</html>")
+            return
         if self.path.startswith("/redirect"):          # 跳转路由（开放重定向）
             to = self.path.split("to=", 1)[-1].split("&")[0]
             self._send(302, "<html>GTREDIR-01 synthetic redirect to %s</html>",

@@ -1,0 +1,9 @@
+# lang: python
+# role: persisted-read（DAO/ORM 回读点——入清单 entry_type=persisted_read，不预发 fw 卡；bw 卡 blocked 时按需发追踪卡，origin_ref=该 bw 卡）
+#---
+pattern_id	ere	note
+PR-P01	\.objects\.get\(	Django ORM 回读
+PR-P02	\.objects\.filter\(	Django ORM 查询集
+PR-P03	cursor\.fetchone\(	DBAPI 单行回读
+PR-P04	cursor\.fetchall\(	DBAPI 全量回读
+PR-P05	\.query\(	SQLAlchemy 会话查询（弱锚：同名方法多语境，判据排除非 ORM 语境）

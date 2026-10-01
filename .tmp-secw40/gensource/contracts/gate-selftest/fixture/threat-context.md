@@ -1,0 +1,3 @@
+# threat-context（黄金夹具样例）
+
+confirmation_policy=conservative_continue；user_confirmed=conservative_assumption_applied

@@ -23,8 +23,8 @@ class TestGoldGR5(unittest.TestCase):
 
     def test_gated_recall_pinned(self):
         rec, missing = score(self.rows, self.cards, self.gt)
-        self.assertEqual(rec, 0.24)
-        self.assertEqual(len(missing), 38)
+        self.assertAlmostEqual(rec, 12.0 / 56)   # battle-6 认证加权：12/56
+        self.assertEqual(len(missing), 44)
 
     def test_replay_all_verified_no_forcing(self):
         verified, blocked = set(), set()

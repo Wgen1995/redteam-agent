@@ -1,0 +1,14 @@
+# class: second-order
+# lang: ts
+# role: sink
+# band: 0
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+SO-T01	\.findBy[A-Za-z]+\(.*\+	typeorm/sequelize/自定义 repo findByX 回读点后同表达式再拼接（弱锚：形态锚，配对判定走 C1-C6）
+SO-T02	\.findOne\(.*\+	ORM findOne 回读后拼接
+SO-T03	\.getBy[A-Za-z]+\(.*\+	服务层 getByX 回读后拼接
+SO-T04	[Cc]ache\.get\(.*\+	缓存 get 回读后拼接（弱锚：localCache/userCache 等前缀变量一并命中）
+SO-T05	`[^`]*[Cc]ache\.get\(	模板字符串内联回读（次级载体：TS 模板串即拼接）
+SO-T06	redis\.get\(.*\+	redis/ioredis 会话回读后拼接

@@ -1,0 +1,18 @@
+# lang: java ｜ pattern_id→framework 映射（source_inventory.framework 列回填单一事实源；协议零语言假设）
+pattern_id	framework
+J-SRC01	Spring MVC
+J-SRC02	Spring MVC
+J-SRC03	Spring MVC
+J-SRC04	Spring MVC
+J-SRC05	Spring MVC
+J-SRC06	Spring MVC
+J-SRC07	Spring MVC
+J-SRC08	Spring MVC
+J-SRC09	Spring MVC
+J-SRC10	Spring MVC
+J-SRC11	Spring MVC
+J-SRC12	Servlet
+J-SRC13	Spring Kafka
+J-SRC14	STOMP
+J-SRC15	Spring
+J-SRC16	CLI

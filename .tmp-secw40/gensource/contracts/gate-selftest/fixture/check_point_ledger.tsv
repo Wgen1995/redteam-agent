@@ -1,0 +1,9 @@
+basis_id	direction	mechanism	check_point_id	candidate_ids	terminal_state	reason	concluded_at
+s1	backward	pattern_driven	CP-000001	C-00001-00001-1d832469	candidate	cluster_conclusion:clusters/SINK-DESERIALIZE.md	2026-08-14T00:05:00Z
+s2	backward	pattern_driven	CP-000002		disproved	cluster_conclusion:clusters/SINK-CMD-EXEC.md	2026-08-14T00:05:00Z
+s3	backward	pattern_driven	CP-000003		disproved	cluster_conclusion:clusters/SINK-XXE.md	2026-08-14T00:05:00Z
+r1	forward	pattern_driven	CP-000004	C-00001-00001-1d832469	candidate	cluster_conclusion:clusters/SINK-DESERIALIZE.md	2026-08-14T00:05:00Z
+r2	forward	pattern_driven	CP-000005		disproved	cluster_conclusion:clusters/SINK-XXE.md	2026-08-14T00:05:00Z
+java/a/B.java	terminal	deep_scan	CP-000006	C-00001-00001-1d832469	candidate	cluster_conclusion:clusters/SINK-DESERIALIZE.md	2026-08-14T00:05:00Z
+java/c/D.java	terminal	deep_scan	CP-000007		disproved	cluster_conclusion:clusters/SINK-XXE.md	2026-08-14T00:05:00Z
+docs/README.md	terminal	prefilter	CP-000008		not_applicable	prefilter_no_exec:doc:0命中证据	2026-08-14T00:05:00Z

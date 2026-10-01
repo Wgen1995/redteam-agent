@@ -1,0 +1,7 @@
+# lang: ts
+# role: source（库模式——recon 判 lib 时替代 sources.pattern：入口=公共 API 面/调用方传入点/共享类型）
+#---
+pattern_id	ere	note
+LB-T01	^export[[:space:]]+(default[[:space:]]+)?(async[[:space:]]+)?function[[:space:]]+[A-Za-z0-9_$]+	导出函数（调用方传入点）
+LB-T02	^export[[:space:]]+(abstract[[:space:]]+)?(class|interface|type)[[:space:]]+[A-Za-z0-9_$]+	导出类型（共享类型面）
+LB-T03	^export[[:space:]]+(const|let)[[:space:]]+[A-Za-z0-9_$]+[[:space:]]*=[[:space:]]*(async[[:space:]]+)?[A-Za-z0-9_$]*\(	导出绑定（绑定 Map 面）

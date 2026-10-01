@@ -1,0 +1,12 @@
+# class: deser
+# lang: ts
+# role: sink
+# band: 0
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+D-T01	\.unserialize\(	node-serialize 读点（重点）
+D-T02	\.serialize\(	node-serialize 写端家族标记（jQuery form.serialize 为已知噪音）
+D-T03	yaml\.load\(	js-yaml 小写命名空间（safeLoad 不命中）
+D-T04	YAML\.load\(	js-yaml 大写命名空间（safeLoad 不命中）

@@ -1,0 +1,9 @@
+check_point_id	basis_id	direction	result	evidence_type	evidence_ref	reviewed_at
+CP-000001	s1	backward	candidate	direct	java/a/B.java:10	2026-08-14T00:01:00Z
+CP-000002	s2	backward	disproved	direct	java/a/B.java:20	2026-08-14T00:02:00Z
+CP-000003	s3	backward	disproved	direct	java/c/D.java:5	2026-08-14T00:02:00Z
+CP-000004	r1	forward	candidate	direct	java/a/B.java:10	2026-08-14T00:03:00Z
+CP-000005	r2	forward	disproved	direct	java/c/D.java:30	2026-08-14T00:03:00Z
+CP-000006	java/a/B.java	terminal	candidate	direct	java/a/B.java:10	2026-08-14T00:04:00Z
+CP-000007	java/c/D.java	terminal	disproved	direct	java/c/D.java:5	2026-08-14T00:04:00Z
+CP-000008	docs/README.md	terminal	not_applicable	direct	docs/README.md:1	2026-08-14T00:04:00Z

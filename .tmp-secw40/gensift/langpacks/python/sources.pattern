@@ -1,0 +1,21 @@
+# lang: python
+# role: source（入口/可控输入点枚举）
+#---
+pattern_id	ere	note
+P-SRC01	@app\.route\(	Flask 路由
+P-SRC02	@app\.get\(	FastAPI/Flask 2.x 方法路由
+P-SRC03	@app\.post\(
+P-SRC04	def[[:space:]]+get_[a-z_]+\(	DRF ViewSet/list-mixin 方法即入口（弱锚：get_queryset 等非入口方法同形，判据排除）
+P-SRC05	def[[:space:]]+post_[a-z_]+\(
+P-SRC06	def[[:space:]]+put_[a-z_]+\(
+P-SRC07	def[[:space:]]+delete_[a-z_]+\(
+P-SRC08	path\(	Django URL 路由（弱锚：re_path/urlpatterns 家族，_full_path( 等同形误命中由判据排除）
+P-SRC09	re_path\(
+P-SRC10	request\.GET	Django 取参共现标记（os.environ 是配置读取不算入口）
+P-SRC11	request\.POST
+P-SRC12	request\.body
+P-SRC13	request\.data	DRF 取参共现标记
+P-SRC14	@api_view\(	DRF 函数式视图
+P-SRC15	async[[:space:]]+def[[:space:]]+receive\(	Django Channels consumer 消息入口（external_message，auth=unknown）
+P-SRC16	add_route\(	aiohttp 路由注册（入口清单权威行）
+P-SRC17	web\.(get|post|put|delete)\(	aiohttp 单行路由

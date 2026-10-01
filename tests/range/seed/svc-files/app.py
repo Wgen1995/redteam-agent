@@ -32,6 +32,13 @@ class H(BaseHTTPRequestHandler):
             self._send(400, "bad request")
 
     def do_GET(self):
+        # battle-6 认证加权（post_auth 靶）：低权会话可达面——token 门后。
+        if self.path.startswith("/admin/logs"):
+            if not self._authed():
+                self._send(401, "auth required")
+            else:
+                self._send(200, "<html>GTROLE-04 synthetic role-04 低权可达日志</html>")
+            return
         if self.path.startswith("/unserialize"):       # 反序列化入口 A（合成对象回显）
             self._send(200, "<html>GTDESER-01 synthetic pickle object inflated</html>")
         elif self.path.startswith("/import"):          # 反序列化入口 B（合成序列化块接受）

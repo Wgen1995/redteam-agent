@@ -39,6 +39,13 @@ class H(BaseHTTPRequestHandler):
         return self.headers.get("X-Auth-Token") == TOKEN
 
     def do_GET(self):
+        # battle-6 认证加权（post_auth 靶）：低权会话可达面——token 门后。
+        if self.path.startswith("/admin/keys"):
+            if not self._authed():
+                self._send(401, "auth required")
+            else:
+                self._send(200, "<html>GTIDOR-05 synthetic idor-05 低权可见密钥清单</html>")
+            return
         if _gl_throttled(self.client_address[0]):      # battle-5：面级限流门（先于路由）
             self._send(429, "rate limited: back off (Retry-After)",
                        extra=[("Retry-After", "3")])

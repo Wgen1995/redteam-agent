@@ -1,0 +1,3 @@
+operator	criterion	scope	evidence	judged_by	timestamp	a2_verified
+S1	source not controllable: literal constant	SOURCE-rest	java/a/B.java:5	PRUNE-A2	2026-01-01T00:00:00Z	true
+S3	sanitizer blocks SINK-XXE taint	SINK-XXE-via-validate	java/c/D.java:7	PRUNE-A2	2026-01-01T00:00:00Z	true

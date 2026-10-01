@@ -988,3 +988,13 @@
 - **流程纠偏（灰色披露对账）**：battle 目录内脚手架 patch-template.py 含旧模板类别名行——类别已在允许字典内=零实质泄漏；今后脚手架一律置于战场目录外。
 - **金样收编**：G-r6 入 fixtures（628K）双轨锚（0.38/18+1/27VERIFIED，test_gold_g_r6_b5 2 测）；RT-0003 运行时库 in-band 全流回灌发行库。
 - 验证：全套绿（战毕跑）；靶场 down 残留 0。
+
+
+## 2026-10-02 battle-6 备战批：面改版（v4 靶场）
+- **T1 字典 v3**：§1.3 凭据发放面一级家族（register/forgot/token/login/logout 五模式+消费律「发放面是认证后世界的钥匙铺」）——RT-0003 writeback（battle-5 0 凭据教训）。
+- **T2 战书条款 12-14**：同面多洞分洞分 finding（v4 单计律实证）/表单编码族先行（urlencoded 先于 JSON）/演练五连（含卡片重放——27 卡 title 裸 [ 全灭教训）。
+- **T3 端口异构落地**：八种子 PORT env 参数化+全数 main 守卫化（可导入测试）；compose 8001-8008（shop→files 序）；**GT canonical 键保持裸名+host_aliases 显式收 svc-xxx:800N 新形**——三金锚零漂移实证（0.56/0.24/0.38 原值保持）；活体验证 8/8 新端口通+8000 关闭。
+- **T4 认证类加权**：+6 post_auth 靶（role-03/04=hauth 面 svc-dashboard/files，hauth-04/05=billing/portal，idor-05/06=api-gw/shop——六服务 token 门后低权可达面）；GT 50→56；活体验证 6/6（anon=401/tok=200/marker 全在）。
+- **T5 同步重定标**：GT 形状/分布/post_auth 计数钉（56/idor6+role4+hauth5/16）；三金锚分母扩（G-r4 28/56=0.50、G-r5 12/56≈0.21、G-r6 19/56≈0.34——分子不变=+6 新靶皆未检出）；M09 重定标 0.56→0.50；expansion 56 钉。
+- 验证：全套 **927 测绿**；靶场起落两轮残留 0。
+- **battle-6 靶场就绪**：新面=56 靶（post_auth 16/56=29% 加权）+端口异构+摩擦面（限流/诱饵）+战书 14 条款。
