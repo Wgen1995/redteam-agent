@@ -1,0 +1,29 @@
+F-r7-0001	INT-r7-0001	port	svc-shop	tcp 8001 open\; root GET 404 root\; dns svc-shop resolves 172.28.0.0/24	0.95	2	2026-10-03T09:16:00Z
+F-r7-0002	INT-r7-0001	port	svc-api-gw	tcp 8002 open\; root GET 404 root\; face-level rate limit ~30req/10s\; dns svc-api-gw resolves 172.28.0.0/24	0.95	2	2026-10-03T09:20:00Z
+F-r7-0003	INT-r7-0001	port	svc-admin	tcp 8003 open\; root GET 401 root\; dns svc-admin resolves 172.28.0.0/24	0.95	2	2026-10-03T09:24:00Z
+F-r7-0004	INT-r7-0001	port	svc-login	tcp 8004 open\; root GET 200 root\; dns svc-login resolves 172.28.0.0/24	0.95	2	2026-10-03T09:28:00Z
+F-r7-0005	INT-r7-0001	port	svc-billing	tcp 8005 open\; root GET 401 root\; dns svc-billing resolves 172.28.0.0/24	0.95	2	2026-10-03T09:32:00Z
+F-r7-0006	INT-r7-0001	port	svc-dashboard	tcp 8006 open\; root GET 404 root\; dns svc-dashboard resolves 172.28.0.0/24	0.95	2	2026-10-03T09:36:00Z
+F-r7-0007	INT-r7-0001	port	svc-portal	tcp 8007 open\; root GET 404 root\; dns svc-portal resolves 172.28.0.0/24	0.95	2	2026-10-03T09:40:00Z
+F-r7-0008	INT-r7-0001	port	svc-files	tcp 8008 open\; root GET 404 root\; dns svc-files resolves 172.28.0.0/24	0.95	2	2026-10-03T09:44:00Z
+F-r7-0009	INT-r7-0002	vuln-clue	svc-shop/orders	marker GTSQLI-02 at svc-shop/orders status=suspected via probes 2/4/5/7/8	0.9	2	2026-10-03T09:59:00Z
+F-r7-0010	INT-r7-0003	vuln-clue	svc-shop/search	marker GTXSS-01 at svc-shop/search status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T10:14:00Z
+F-r7-0011	INT-r7-0004	vuln-clue	svc-shop/comment	marker GTXSS-02 at svc-shop/comment status=suspected via probes 2/4/5/7/8	0.9	2	2026-10-03T10:27:00Z
+F-r7-0012	INT-r7-0005	vuln-clue	svc-shop/feedback	marker GTXSS-04 at svc-shop/feedback status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T10:40:00Z
+F-r7-0013	INT-r7-0006	vuln-clue	svc-shop/logout	marker GTREDIR-02 at svc-shop/logout status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T10:53:00Z
+F-r7-0014	INT-r7-0007	vuln-clue	svc-api-gw/preview	marker GTSSRF-02 at svc-api-gw/preview status=suspected via probes 2/4/5/7/8	0.9	2	2026-10-03T11:06:00Z
+F-r7-0015	INT-r7-0008	vuln-clue	svc-api-gw/proxy	marker GTSSRF-03 at svc-api-gw/proxy status=suspected via probes 2/4/5/7/8	0.9	2	2026-10-03T11:19:00Z
+F-r7-0016	INT-r7-0009	vuln-clue	svc-api-gw/graphql	marker GTGRAPHQL-01 at svc-api-gw/graphql status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T11:32:00Z
+F-r7-0017	INT-r7-0010	vuln-clue	svc-api-gw/cors-debug	marker GTCORS-01 at svc-api-gw/cors-debug status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T11:45:00Z
+F-r7-0018	INT-r7-0011	vuln-clue	svc-api-gw/origin	marker GTCORS-02 at svc-api-gw/origin status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T11:58:00Z
+F-r7-0019	INT-r7-0012	vuln-clue	svc-dashboard/report	marker GTSSTI-01 at svc-dashboard/report status=suspected via probes 2/4/5/7/8	0.9	2	2026-10-03T12:11:00Z
+F-r7-0020	INT-r7-0013	vuln-clue	svc-dashboard/render	marker GTSSTI-02 at svc-dashboard/render status=suspected via probes 2/4/5/7/8	0.9	2	2026-10-03T12:24:00Z
+F-r7-0021	INT-r7-0014	vuln-clue	svc-portal/debug/env	marker GTINFOLEAK-01 at svc-portal/debug/env status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T12:37:00Z
+F-r7-0022	INT-r7-0015	vuln-clue	svc-files/.env	marker GTINFOLEAK-03 at svc-files/.env status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T12:50:00Z
+F-r7-0023	INT-r7-0016	vuln-clue	svc-files/download	marker GTTRAVERSAL-01 at svc-files/download status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T13:03:00Z
+F-r7-0024	INT-r7-0017	vuln-clue	svc-files/import	marker GTDESER-02 at svc-files/import status=suspected via probes 2/4/5/7/8	0.9	2	2026-10-03T13:16:00Z
+F-r7-0025	INT-r7-0018	vuln-clue	svc-login/login	marker GTRATE-01 at svc-login/login status=verified via probes 2/4/5/7/8	0.9	2	2026-10-03T13:29:00Z
+F-r7-0026	INT-r7-0001	info	svc-shop/.git/config	decoy 200 noise body self-labeled decoy git config\; per decoy discipline not recorded as finding [no-consume:decoy-or-wall-only-observation]	0.85	2	2026-10-03T13:54:00Z
+F-r7-0027	INT-r7-0001	info	svc-login catch-all	all unknown GET paths return identical login form 200\; decoy surface, no distinct faces behind it [no-consume:decoy-or-wall-only-observation]	0.85	2	2026-10-03T13:55:00Z
+F-r7-0028	INT-r7-0001	info	svc-admin-401-wall	uniform 401 auth required across 70 paths and 6 auth header shapes incl. forged JWT alg-none shapes\; no auth oracle [no-consume:decoy-or-wall-only-observation]	0.85	2	2026-10-03T13:56:00Z
+F-r7-0029	INT-r7-0001	info	svc-billing-401-wall	uniform 401 auth required across 70 paths and 6 auth header shapes incl. forged JWT alg-none shapes\; no auth oracle [no-consume:decoy-or-wall-only-observation]	0.85	2	2026-10-03T13:57:00Z

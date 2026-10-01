@@ -1,0 +1,9 @@
+REQUEST
+GET /origin HTTP/1.1
+Host: svc-api-gw:8002
+Origin: http://evil.com
+Connection: close
+
+
+RESPONSE-EXCERPT
+<html>origin GTCORS-02 reflected http://evil.com allow-credentials true</html> ACAO=http://evil.com ACAC=true

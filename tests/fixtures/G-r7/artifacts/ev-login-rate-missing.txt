@@ -1,0 +1,9 @@
+REQUEST
+POST /login HTTP/1.1
+Host: svc-login:8004
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 28
+
+username=admin&password=admin
+RESPONSE-EXCERPT
+403 denied GTRATE-01 synthetic no rate limit after 494 attempts (counter monotonic)

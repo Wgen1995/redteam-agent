@@ -1,0 +1,8 @@
+REQUEST
+GET /render?tpl=%7B%7B7%2A7%7D%7D HTTP/1.1
+Host: svc-dashboard:8006
+Connection: close
+
+
+RESPONSE-EXCERPT
+<html>render GTSSTI-02 synthetic ssti render {{7*7}}</html>

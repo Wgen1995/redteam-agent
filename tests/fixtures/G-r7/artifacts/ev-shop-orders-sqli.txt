@@ -1,0 +1,8 @@
+REQUEST
+GET /orders?id=1%27%20OR%20%271%27%3D%271 HTTP/1.1
+Host: svc-shop:8001
+Connection: close
+
+
+RESPONSE-EXCERPT
+<html>order page GTSQLI-02 synthetic SQL syntax error</html>

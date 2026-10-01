@@ -1,0 +1,8 @@
+REQUEST
+GET /preview?url=http%3A%2F%2F169.254.169.254%2Flatest%2Fmeta-data%2F HTTP/1.1
+Host: svc-api-gw:8002
+Connection: close
+
+
+RESPONSE-EXCERPT
+<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>

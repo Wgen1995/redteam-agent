@@ -1,0 +1,6 @@
+GET /logout?url=http://evil.com HTTP/1.1
+Host: svc-shop:8001
+
+---
+302 Location: /logout?url=http://evil.com
+GTREDIR-02 body present; only next= steers Location

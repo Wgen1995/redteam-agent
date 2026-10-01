@@ -1,0 +1,6 @@
+GET /search HTTP/1.1
+Host: svc-shop:8001
+
+---
+<html>search results /search GTXSS-01 synthetic reflected xss</html>
+baseline: no payload present

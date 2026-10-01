@@ -1,0 +1,8 @@
+REQUEST
+GET /.env HTTP/1.1
+Host: svc-files:8008
+Connection: close
+
+
+RESPONSE-EXCERPT
+<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>

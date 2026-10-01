@@ -1,0 +1,4 @@
+POST /login x40 username/password pairs on svc-admin:8003
+---
+all 40 responses: 403 len=6 'denied' constant
+contrast: svc-login counts attempts in body (GTRATE-01) and never throttles

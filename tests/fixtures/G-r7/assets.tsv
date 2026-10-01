@@ -1,0 +1,26 @@
+AST-r7-0001	ip	172.28.0.0/24	authorized-range battle-6 local segment	in_scope	2	2026-10-03T09:12:00Z
+AST-r7-0002	service	svc-shop	port=8001 dns-direct single-port-in-8000-8010	in_scope	2	2026-10-03T09:14:00Z
+AST-r7-0003	service	svc-api-gw	port=8002 dns-direct single-port-in-8000-8010	in_scope	2	2026-10-03T09:18:00Z
+AST-r7-0004	service	svc-admin	port=8003 dns-direct single-port-in-8000-8010	in_scope	2	2026-10-03T09:22:00Z
+AST-r7-0005	service	svc-login	port=8004 dns-direct single-port-in-8000-8010	in_scope	2	2026-10-03T09:26:00Z
+AST-r7-0006	service	svc-billing	port=8005 dns-direct single-port-in-8000-8010	in_scope	2	2026-10-03T09:30:00Z
+AST-r7-0007	service	svc-dashboard	port=8006 dns-direct single-port-in-8000-8010	in_scope	2	2026-10-03T09:34:00Z
+AST-r7-0008	service	svc-portal	port=8007 dns-direct single-port-in-8000-8010	in_scope	2	2026-10-03T09:38:00Z
+AST-r7-0009	service	svc-files	port=8008 dns-direct single-port-in-8000-8010	in_scope	2	2026-10-03T09:42:00Z
+AST-r7-0010	endpoint	svc-shop/orders	confirmed-face port=8001 class=wstg-inpv marker=GTSQLI-02	in_scope	2	2026-10-03T09:57:00Z
+AST-r7-0011	endpoint	svc-shop/search	confirmed-face port=8001 class=wstg-inpv marker=GTXSS-01	in_scope	2	2026-10-03T10:12:00Z
+AST-r7-0012	endpoint	svc-shop/comment	confirmed-face port=8001 class=wstg-inpv marker=GTXSS-02	in_scope	2	2026-10-03T10:25:00Z
+AST-r7-0013	endpoint	svc-shop/feedback	confirmed-face port=8001 class=wstg-inpv marker=GTXSS-04	in_scope	2	2026-10-03T10:38:00Z
+AST-r7-0014	endpoint	svc-shop/logout	confirmed-face port=8001 class=wstg-clnt marker=GTREDIR-02	in_scope	2	2026-10-03T10:51:00Z
+AST-r7-0015	endpoint	svc-api-gw/preview	confirmed-face port=8002 class=wstg-inpv marker=GTSSRF-02	in_scope	2	2026-10-03T11:04:00Z
+AST-r7-0016	endpoint	svc-api-gw/proxy	confirmed-face port=8002 class=wstg-inpv marker=GTSSRF-03	in_scope	2	2026-10-03T11:17:00Z
+AST-r7-0017	endpoint	svc-api-gw/graphql	confirmed-face port=8002 class=wstg-apit marker=GTGRAPHQL-01	in_scope	2	2026-10-03T11:30:00Z
+AST-r7-0018	endpoint	svc-api-gw/cors-debug	confirmed-face port=8002 class=wstg-conf marker=GTCORS-01	in_scope	2	2026-10-03T11:43:00Z
+AST-r7-0019	endpoint	svc-api-gw/origin	confirmed-face port=8002 class=wstg-conf marker=GTCORS-02	in_scope	2	2026-10-03T11:56:00Z
+AST-r7-0020	endpoint	svc-dashboard/report	confirmed-face port=8006 class=wstg-inpv marker=GTSSTI-01	in_scope	2	2026-10-03T12:09:00Z
+AST-r7-0021	endpoint	svc-dashboard/render	confirmed-face port=8006 class=wstg-inpv marker=GTSSTI-02	in_scope	2	2026-10-03T12:22:00Z
+AST-r7-0022	endpoint	svc-portal/debug/env	confirmed-face port=8007 class=wstg-info marker=GTINFOLEAK-01	in_scope	2	2026-10-03T12:35:00Z
+AST-r7-0023	endpoint	svc-files/.env	confirmed-face port=8008 class=wstg-conf marker=GTINFOLEAK-03	in_scope	2	2026-10-03T12:48:00Z
+AST-r7-0024	endpoint	svc-files/download	confirmed-face port=8008 class=wstg-inpv marker=GTTRAVERSAL-01	in_scope	2	2026-10-03T13:01:00Z
+AST-r7-0025	endpoint	svc-files/import	confirmed-face port=8008 class=wstg-inpv marker=GTDESER-02	in_scope	2	2026-10-03T13:14:00Z
+AST-r7-0026	endpoint	svc-login/login	confirmed-face port=8004 class=wstg-authn marker=GTRATE-01	in_scope	2	2026-10-03T13:27:00Z

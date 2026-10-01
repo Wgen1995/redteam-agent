@@ -1,0 +1,4 @@
+GET /api with Origin http://evil.com on svc-dashboard/portal/files/shop
+---
+404 not found; no Access-Control-Allow-* headers emitted
+only svc-api-gw /cors-debug and /origin emit CORS headers

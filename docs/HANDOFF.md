@@ -998,3 +998,13 @@
 - **T5 同步重定标**：GT 形状/分布/post_auth 计数钉（56/idor6+role4+hauth5/16）；三金锚分母扩（G-r4 28/56=0.50、G-r5 12/56≈0.21、G-r6 19/56≈0.34——分子不变=+6 新靶皆未检出）；M09 重定标 0.56→0.50；expansion 56 钉。
 - 验证：全套 **927 测绿**；靶场起落两轮残留 0。
 - **battle-6 靶场就绪**：新面=56 靶（post_auth 16/56=29% 加权）+端口异构+摩擦面（限流/诱饵）+战书 14 条款。
+
+
+## 2026-10-03 battle-6（G-r7）收战：新面首战 0.29+scorer v4.1 归因归真
+- **战果**：门控 **16/56≈0.2857**（beacon 16/diff 0）；P4 21/21 VERIFIED 零强改；九门全 PASS；矩阵 312 键 converged；端口异构地图 8/8 一次通过（新难度兑现）；诱饵免疫（假弹只记 fact）；out_of_scope 0/空哈希 0。四代同面：G-r4 0.50 / G-r5 0.21 / G-r6 0.34 / G-r7 0.29。
+- **scorer v4.1 两遍法**（TDD，commit 同批）：G-r7 实证一遍法证据强度倒挂——GTWEAKPASS-01 无词证、GTRATE-01 在卡（EV-r7-0021），先序 weakpass 差分借道 login finding→ratelimit 词证落空。两遍法=词证先耗用差分补余，**四代总分不变（28/12/19/16）归因归真**（G-r6/G-r7 login finding 均归 ratelimit-01）。
+- **归因核验（种子锚点，RT-0004 attribution_check=verified）**：凭据 0=**键名族缺口**（种子收 user=admin+pass=admin123 表单子串，战士双编码全发但键名用 username/password 形→634+ 次恒 403 误判——键名族×编码族须全叉乘）；redir-01=字典缺族（/redirect?to= 族不在 dict §1.1）；post_auth 16 靶全 miss=凭据通道问题（三代同因）。
+- **战士流程教训回灌**：演练五连用弃子弹先走全链（首枚 REJECT 补守卫耗 40 分钟）；parse_yaml 稳形只有行内流映射；发放面响应熵基线先行（零熵墙快速转面）。
+- **金样收编**：G-r7 入 fixtures（532K）钉测 2 枚（16/56+missing 40+21 VERIFIED）；G-r6 钉随 v4.1 归因更新（beacon 19/diff 0）。
+- **RT-0004** 运行时库 in-band 全流（STG-0003→approve→commit）回灌发行库；**G-51 零打断零补令**（单轮连续作战）。
+- 验证：全套 **931 绿**；靶场 down 残留 0。仓脏 12=环境删平台文件（git checkout 还原，非战士越界——独立性保住）。

@@ -116,7 +116,7 @@ def _canon_endpoint(u, aliases):
     return _canon_host(host, aliases) + rest
 
 
-KEYING_VERSION = 4   # v4=尾段数字归一+同键多 GT 单计（见 score() consumed 集合）
+KEYING_VERSION = 4   # v4.1 两遍法（词证先耗用差分补余）battle-6   # v4=尾段数字归一+同键多 GT 单计（见 score() consumed 集合）
 
 
 def _replay_state(rows):
@@ -176,50 +176,70 @@ def score(rows, cards, gt, host_aliases=None, tracks=None):
     if tracks is not None:
         tracks.setdefault("beacon", 0)
         tracks.setdefault("diff", 0)
+
+    def _match(e, pass_mode):
+        """单 GT 对 active findings 配型。pass 1（'beacon'）只认词证；pass 2（'diff'）
+        只认差分。v4.1 两遍法：词证永远优先于差分——G-r7 实证一遍法按 GT 序会让
+        先序 GT 的差分耗用后序 GT 的词证 finding（证据强度倒挂）；两遍保总分不变、
+        归因归真（词证侧 GT 先得）。返回 (finding_id, track) 或 (None, None)。"""
+        gt_key = _canon_endpoint(e["endpoint"], aliases) if e.get("endpoint") else ""
+        for f in active:
+            f_id = f[fi("id")]
+            if f_id in consumed:               # v4：已被前序 GT 消费的 finding 不得再计
+                continue
+            av = ast_value.get(_cell("findings.tsv", f, "affected_asset_id"))
+            if not gt_key or av is None or _canon_endpoint(av, aliases) != gt_key:
+                continue
+            evs = [x for x in (_cell("findings.tsv", f, "evidence_ids") or "").split(";") if x]
+            evs += [x for x in (_cell("findings.tsv", f, "control_evidence_ids") or "").split(";") if x]
+            evs += linked.get(f[fi("id")], [])
+            if not any(x in verified_ev for x in evs):
+                continue        # 精度门：无重放 VERIFIED 在案的证据不计（幻觉面零分）
+            if any(x in blocked_ev for x in evs):
+                continue        # 精度门：未翻案 not-reproduced 证据拖累整 finding
+            beacon_hit = e.get("marker", "") in _word_markers(cards, evs)
+            if pass_mode == "beacon":
+                if not beacon_hit:
+                    continue
+            else:                            # T2 差分轨：无词证时按差分源实证
+                if beacon_hit:
+                    continue                 # 词证可计的 finding 留给词证遍
+                diff_hit = bool(_cell("findings.tsv", f, "control_evidence_ids"))
+                if not diff_hit:
+                    ei = TABLES["E-index.tsv"].index("pair_group")
+                    diff_hit = any(len(r) > ei and r[ei]
+                                   for r in rows.get("E-index.tsv", [])[1:]
+                                   if r[0] in evs)
+                if not diff_hit:
+                    continue
+            if e.get("post_auth"):
+                ac = _cell("findings.tsv", f, "auth_context")
+                cred_ok = ac.startswith("CRED-") and cred_role.get(ac) == e.get("authz_role")
+                kind_ok = intent_kind.get(_cell("findings.tsv", f, "intent_id"),
+                                          "").startswith("authz-diff")
+                if not (cred_ok or kind_ok):
+                    continue                    # 认证后条目无 authz 链不计命中
+            return f_id, ("beacon" if beacon_hit else "diff")
+        return None, None
+
+    results = {}   # v4.1：gt-id -> track（先词证遍后差分遍，两遍合一裁决）
+    for pass_mode in ("beacon", "diff"):
+        for e in gt:
+            if e.get("id") in results or e.get("polarity", "pos") == "neg":
+                continue
+            f_id, track = _match(e, pass_mode)
+            if f_id:
+                results[e.get("id")] = track
+                consumed.add(f_id)             # v4：单计登记
     for e in gt:
         if e.get("polarity", "pos") == "neg":           # 负对（eval_authz_recall 兼容）
             ok = e.get("endpoint", "") in neg_targets
+        elif e.get("id") in results:
+            ok = True
+            if tracks is not None:                  # T2 双轨分列（v4.1 词证优先）
+                tracks[results[e.get("id")]] = tracks.get(results[e.get("id")], 0) + 1
         else:
             ok = False
-            gt_key = _canon_endpoint(e["endpoint"], aliases) if e.get("endpoint") else ""
-            for f in active:
-                f_id = f[fi("id")]
-                if f_id in consumed:               # v4：已被前序 GT 消费的 finding 不得再计
-                    continue
-                av = ast_value.get(_cell("findings.tsv", f, "affected_asset_id"))
-                if not gt_key or av is None or _canon_endpoint(av, aliases) != gt_key:
-                    continue
-                evs = [x for x in (_cell("findings.tsv", f, "evidence_ids") or "").split(";") if x]
-                evs += [x for x in (_cell("findings.tsv", f, "control_evidence_ids") or "").split(";") if x]
-                evs += linked.get(f[fi("id")], [])
-                if not any(e in verified_ev for e in evs):
-                    continue        # 精度门：无重放 VERIFIED 在案的证据不计（幻觉面零分）
-                if any(e in blocked_ev for e in evs):
-                    continue        # 精度门：未翻案 not-reproduced 证据拖累整 finding
-                beacon_hit = e.get("marker", "") in _word_markers(cards, evs)
-                diff_hit = False
-                if not beacon_hit:                 # T2 差分轨：无词证时按差分源实证
-                    diff_hit = bool(_cell("findings.tsv", f, "control_evidence_ids"))
-                    if not diff_hit:
-                        ei = TABLES["E-index.tsv"].index("pair_group")
-                        diff_hit = any(len(r) > ei and r[ei]
-                                       for r in rows.get("E-index.tsv", [])[1:]
-                                       if r[0] in evs)
-                    if not diff_hit:
-                        continue
-                if e.get("post_auth"):
-                    ac = _cell("findings.tsv", f, "auth_context")
-                    cred_ok = ac.startswith("CRED-") and cred_role.get(ac) == e.get("authz_role")
-                    kind_ok = intent_kind.get(_cell("findings.tsv", f, "intent_id"),
-                                              "").startswith("authz-diff")
-                    if not (cred_ok or kind_ok):
-                        continue                        # 认证后条目无 authz 链不计命中
-                ok = True
-                if tracks is not None:                  # T2 双轨分列（beacon 优先）
-                    tracks["beacon" if beacon_hit else "diff"] = \
-                        tracks.get("beacon" if beacon_hit else "diff", 0) + 1
-                consumed.add(f_id)                 # v4：单计登记
-                break
         if ok:
             hits += 1
         else:

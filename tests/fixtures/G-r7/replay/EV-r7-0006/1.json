@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r7-0006", "matched": true, "results": [{"detail": ["GTXSS-01"], "ok": true, "type": "word"}], "status": 200, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r7 --id=EV-r7-0006 --state=VERIFIED", "verdict": "reproduced"}

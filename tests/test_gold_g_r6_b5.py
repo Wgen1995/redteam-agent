@@ -25,8 +25,8 @@ class TestGoldGR6(unittest.TestCase):
         rec, missing = score(self.rows, self.cards, self.gt, tracks=tracks)
         self.assertAlmostEqual(rec, 19.0 / 56)   # battle-6 认证加权：19/56
         self.assertEqual(len(missing), 37)
-        self.assertEqual(tracks['beacon'], 18)
-        self.assertEqual(tracks['diff'], 1)   # 差分轨首证：weakpass-01（FD-r6-0021 控制对 EV-r6-0026；词证缺席经 control_evidence_ids 命中）
+        self.assertEqual(tracks['beacon'], 19)   # v4.1 归因归真：ratelimit-01 词证归位
+        self.assertEqual(tracks['diff'], 0)   # v4.1 两遍法：词证先耗用——FD-r6-0021 归 ratelimit-01（GTRATE-01 在卡），weakpass-01 移 miss
 
     def test_replay_all_verified(self):
         n = 0

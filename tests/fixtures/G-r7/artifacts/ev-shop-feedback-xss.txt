@@ -1,0 +1,8 @@
+REQUEST
+GET /feedback?msg=%3Cscript%3Ealert(7)%3C/script%3E HTTP/1.1
+Host: svc-shop:8001
+Connection: close
+
+
+RESPONSE-EXCERPT
+<html>feedback %3Cscript%3Ealert(7)%3C/script%3E GTXSS-04 synthetic reflected xss</html>

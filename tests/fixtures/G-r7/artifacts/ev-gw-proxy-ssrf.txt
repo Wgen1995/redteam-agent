@@ -1,0 +1,8 @@
+REQUEST
+GET /proxy/svc-admin HTTP/1.1
+Host: svc-api-gw:8002
+Connection: close
+
+
+RESPONSE-EXCERPT
+<html>proxy GTSSRF-03 synthetic internal fetch done</html>
