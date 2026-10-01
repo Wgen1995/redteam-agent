@@ -1,0 +1,27 @@
+172.28.0.0	wstg-info	x	指纹与路由测绘完成（probe1/2）
+svc-shop	wstg-info	x	指纹与路由测绘完成（probe1/2）
+svc-api-gw	wstg-info	x	指纹与路由测绘完成（probe1/2）
+svc-admin	wstg-info	x	指纹与路由测绘完成（probe1/2）
+svc-login	wstg-info	x	指纹与路由测绘完成（probe1/2）
+svc-billing	wstg-info	x	指纹与路由测绘完成（probe1/2）
+svc-dashboard	wstg-info	x	指纹与路由测绘完成（probe1/2）
+svc-portal	wstg-info	x	指纹与路由测绘完成（probe1/2）
+svc-files	wstg-info	x	指纹与路由测绘完成（probe1/2）
+172.28.0.0	wstg-conf	-	网络层配置面不适用（合成靶无主机配置）
+svc-shop	wstg-conf	?	未做专配面探测
+svc-api-gw	wstg-conf	x	配置面专探完成（cors/env 类）
+svc-admin	wstg-conf	x	配置面专探完成（cors/env 类）
+svc-login	wstg-conf	x	配置面专探完成（cors/env 类）
+svc-billing	wstg-conf	?	认证墙后未深探（路由发现 0 命中）
+svc-dashboard	wstg-conf	?	未做专配面探测
+svc-portal	wstg-conf	x	配置面专探完成（cors/env 类）
+svc-files	wstg-conf	x	配置面专探完成（cors/env 类）
+172.28.0.0	wstg-apit	-	无 API 面
+svc-shop	wstg-apit	x	API 面行为差分专探完成
+svc-api-gw	wstg-apit	x	API 面行为差分专探完成
+svc-admin	wstg-apit	x	API 面行为差分专探完成
+svc-login	wstg-apit	x	API 面行为差分专探完成
+svc-billing	wstg-apit	?	持 token 认证通过但路由字典 0 命中
+svc-dashboard	wstg-apit	x	API 面行为差分专探完成
+svc-portal	wstg-apit	x	API 面行为差分专探完成
+svc-files	wstg-apit	x	API 面行为差分专探完成

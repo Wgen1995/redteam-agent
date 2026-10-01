@@ -1,0 +1,32 @@
+{
+ "xss /search?q=": {
+  "status": 200,
+  "reflected": true,
+  "body": "<html>search results p8%3Cimg%20src%3Dx%20onerror%3Dalert%281%29%3E GTXSS-01 synthetic reflected xss</html>"
+ },
+ "xss /reply?q=": {
+  "status": 200,
+  "reflected": true,
+  "body": "<html>reply /reply?q=p8%3Cimg%20src%3Dx%20onerror%3Dalert%281%29%3E GTXSS-03 synthetic reflected xss</html>"
+ },
+ "xss /feedback?q=": {
+  "status": 200,
+  "reflected": true,
+  "body": "<html>feedback /feedback?q=p8%3Cimg%20src%3Dx%20onerror%3Dalert%281%29%3E GTXSS-04 synthetic reflected xss</html>"
+ },
+ "xss /comment POST": {
+  "status": 501,
+  "reflected": false,
+  "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n "
+ },
+ "comment_get": {
+  "status": 200,
+  "body": "<html>comment GTXSS-02 synthetic stored xss echo</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:35 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "55"
+  }
+ }
+}

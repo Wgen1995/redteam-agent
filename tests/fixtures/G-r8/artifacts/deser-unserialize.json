@@ -1,0 +1,30 @@
+{
+ "deser/unserialize pickle-b64": {
+  "status": 400,
+  "body": "bad request"
+ },
+ "deser/unserialize opcode": {
+  "status": 400,
+  "body": "bad request"
+ },
+ "deser /unserialize?payload": {
+  "status": 200,
+  "body": "<html>GTDESER-01 synthetic pickle object inflated</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:31 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "56"
+  }
+ },
+ "deser /unserialize form": {
+  "status": 400,
+  "body": "bad request",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:31 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "11"
+  }
+ }
+}

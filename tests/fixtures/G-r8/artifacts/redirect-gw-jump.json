@@ -1,0 +1,56 @@
+{
+ "redir/svc-api-gw/jump?to=": {
+  "status": 302,
+  "loc": "/jump?to=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-03 synthetic redirect to %s</html>"
+ },
+ "redir/svc-api-gw/jump?next=": {
+  "status": 302,
+  "loc": "/jump?next=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-03 synthetic redirect to %s</html>"
+ },
+ "redir/svc-api-gw/jump?url=": {
+  "status": 429,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "rate limited: back off (Retry-After)"
+ },
+ "redir/svc-api-gw/jump?goto=": {
+  "status": 429,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "rate limited: back off (Retry-After)"
+ },
+ "redir/svc-api-gw/jump?redirect=": {
+  "status": 429,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "rate limited: back off (Retry-After)"
+ },
+ "redir/svc-api-gw/jump?continue=": {
+  "status": 429,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "rate limited: back off (Retry-After)"
+ },
+ "redir/svc-api-gw/jump?target=": {
+  "status": 429,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "rate limited: back off (Retry-After)"
+ },
+ "redir/svc-api-gw/jump?dest=": {
+  "status": 429,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "rate limited: back off (Retry-After)"
+ },
+ "redir/svc-api-gw/jump?return=": {
+  "status": 429,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "rate limited: back off (Retry-After)"
+ }
+}

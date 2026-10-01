@@ -1,0 +1,86 @@
+{
+ "ssti/render BASELINE": {
+  "status": 200,
+  "body": "<html>render GTSSTI-02 synthetic ssti render /render</html>"
+ },
+ "ssti/render?template={{7*7}}": {
+  "status": 200,
+  "has49": false,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render /render?template=%7B%7B7%2A7%7D%7D</html>"
+ },
+ "ssti/render?template=49": {
+  "status": 200,
+  "has49": true,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render /render?template=49</html>"
+ },
+ "ssti/render?name={{7*7}}": {
+  "status": 200,
+  "has49": false,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render /render?name=%7B%7B7%2A7%7D%7D</html>"
+ },
+ "ssti/render?name=49": {
+  "status": 200,
+  "has49": true,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render /render?name=49</html>"
+ },
+ "ssti/render?value={{7*7}}": {
+  "status": 200,
+  "has49": false,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render /render?value=%7B%7B7%2A7%7D%7D</html>"
+ },
+ "ssti/render?value=49": {
+  "status": 200,
+  "has49": true,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render /render?value=49</html>"
+ },
+ "ssti/render?q={{7*7}}": {
+  "status": 200,
+  "has49": false,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render /render?q=%7B%7B7%2A7%7D%7D</html>"
+ },
+ "ssti/render?q=49": {
+  "status": 200,
+  "has49": true,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render /render?q=49</html>"
+ },
+ "ssti/render?tpl={{7*7}}": {
+  "status": 200,
+  "has49": false,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render %7B%7B7%2A7%7D%7D</html>"
+ },
+ "ssti/render?tpl=49": {
+  "status": 200,
+  "has49": true,
+  "has14": false,
+  "body": "<html>render GTSSTI-02 synthetic ssti render 49</html>"
+ },
+ "ssti raw tpl={{7*7}}": {
+  "status": 200,
+  "body": "<html>render GTSSTI-02 synthetic ssti render {{7*7}}</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:31 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "59"
+  }
+ },
+ "ssti raw tpl={{7*'7'}}": {
+  "status": 200,
+  "body": "<html>render GTSSTI-02 synthetic ssti render {{7*'7'}}</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:31 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "61"
+  }
+ }
+}

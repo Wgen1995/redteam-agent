@@ -1,0 +1,31 @@
+{
+ "seq5_same_pace_no_throttle": [
+  "<html>denied GTRATE-01 synthetic no rate limit after 119 attempts</html>",
+  "<html>denied GTRATE-01 synthetic no rate limit after 120 attempts</html>",
+  "<html>denied GTRATE-01 synthetic no rate limit after 121 attempts</html>",
+  "<html>denied GTRATE-01 synthetic no rate limit after 122 attempts</html>",
+  "<html>denied GTRATE-01 synthetic no rate limit after 123 attempts</html>"
+ ],
+ "attempts_66_to_123_all_served": {
+  "keys /login email=pass": {
+   "status": 403,
+   "body": "<html>denied GTRATE-01 synthetic no rate limit after 62 attempts</html>",
+   "sc": ""
+  },
+  "keys /login email=password": {
+   "status": 403,
+   "body": "<html>denied GTRATE-01 synthetic no rate limit after 63 attempts</html>",
+   "sc": ""
+  },
+  "keys /login email=pwd": {
+   "status": 403,
+   "body": "<html>denied GTRATE-01 synthetic no rate limit after 64 attempts</html>",
+   "sc": ""
+  },
+  "keys /login email=secret": {
+   "status": 403,
+   "body": "<html>denied GTRATE-01 synthetic no rate limit after 65 attempts</html>",
+   "sc": ""
+  }
+ }
+}

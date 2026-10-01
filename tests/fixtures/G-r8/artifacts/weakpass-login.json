@@ -1,0 +1,49 @@
+{
+ "hits": [
+  {
+   "path": "/login",
+   "keys": "user/pass",
+   "pair": "admin/admin123",
+   "enc": "form",
+   "res": {
+    "status": 200,
+    "body": "<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>",
+    "sc": "",
+    "loc": "",
+    "ms": 2
+   }
+  }
+ ],
+ "controls": {
+  "base /login form": {
+   "status": 403,
+   "body": "<html>denied</html>",
+   "sc": ""
+  },
+  "base /login json": {
+   "status": 403,
+   "body": "<html>denied</html>",
+   "sc": ""
+  },
+  "keys /login user=pass": {
+   "status": 403,
+   "body": "<html>denied GTRATE-01 synthetic no rate limit after 46 attempts</html>",
+   "sc": ""
+  },
+  "keys /login user=password": {
+   "status": 403,
+   "body": "<html>denied GTRATE-01 synthetic no rate limit after 47 attempts</html>",
+   "sc": ""
+  },
+  "keys /login username=pass": {
+   "status": 403,
+   "body": "<html>denied GTRATE-01 synthetic no rate limit after 50 attempts</html>",
+   "sc": ""
+  },
+  "keys /login username=password": {
+   "status": 403,
+   "body": "<html>denied GTRATE-01 synthetic no rate limit after 51 attempts</html>",
+   "sc": ""
+  }
+ }
+}

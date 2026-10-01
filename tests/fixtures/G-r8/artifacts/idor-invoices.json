@@ -1,0 +1,6 @@
+{
+ "admin2 /admin/invoices/1": {
+  "status": 200,
+  "body": "<html>GTIDOR-02 synthetic invoices of user 202 (not caller)</html>"
+ }
+}

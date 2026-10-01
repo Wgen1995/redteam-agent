@@ -1,0 +1,56 @@
+{
+ "redir/svc-portal/redirect?to=": {
+  "status": 404,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "not found"
+ },
+ "redir/svc-portal/redirect?next=": {
+  "status": 302,
+  "loc": "/redirect?next=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+ },
+ "redir/svc-portal/redirect?url=": {
+  "status": 302,
+  "loc": "/redirect?url=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+ },
+ "redir/svc-portal/redirect?goto=": {
+  "status": 404,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "not found"
+ },
+ "redir/svc-portal/redirect?redirect=": {
+  "status": 302,
+  "loc": "/redirect?redirect=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+ },
+ "redir/svc-portal/redirect?continue=": {
+  "status": 302,
+  "loc": "/redirect?continue=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+ },
+ "redir/svc-portal/redirect?target=": {
+  "status": 302,
+  "loc": "/redirect?target=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+ },
+ "redir/svc-portal/redirect?dest=": {
+  "status": 302,
+  "loc": "/redirect?dest=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+ },
+ "redir/svc-portal/redirect?return=": {
+  "status": 302,
+  "loc": "/redirect?return=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+ }
+}

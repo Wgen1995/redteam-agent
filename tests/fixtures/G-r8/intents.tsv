@@ -1,0 +1,17 @@
+INT-r8-0001	dict-wave recon svc-shop		candidate	probe2/1 http dictionary wave	surface	entity			AST-r8-0003+surface+dict-wave recon svc-shop	500\;80\;0.5					2	2026-10-04T09:07:58Z
+INT-r8-0002	dict-wave recon svc-api-gw		candidate	probe2/1 http dictionary wave	surface	entity			AST-r8-0004+surface+dict-wave recon svc-api-gw	500\;80\;0.5					2	2026-10-04T09:08:01Z
+INT-r8-0003	dict-wave recon svc-admin		candidate	probe2/1 http dictionary wave	surface	entity			AST-r8-0005+surface+dict-wave recon svc-admin	500\;80\;0.5					2	2026-10-04T09:08:04Z
+INT-r8-0004	dict-wave recon svc-login		candidate	probe2/1 http dictionary wave	surface	entity			AST-r8-0006+surface+dict-wave recon svc-login	500\;80\;0.5					2	2026-10-04T09:08:07Z
+INT-r8-0005	dict-wave recon svc-billing		candidate	probe2/1 http dictionary wave	surface	entity			AST-r8-0007+surface+dict-wave recon svc-billing	500\;80\;0.5					2	2026-10-04T09:08:10Z
+INT-r8-0006	dict-wave recon svc-dashboard		candidate	probe2/1 http dictionary wave	surface	entity			AST-r8-0008+surface+dict-wave recon svc-dashboard	500\;80\;0.5					2	2026-10-04T09:08:13Z
+INT-r8-0007	dict-wave recon svc-portal		candidate	probe2/1 http dictionary wave	surface	entity			AST-r8-0009+surface+dict-wave recon svc-portal	500\;80\;0.5					2	2026-10-04T09:08:16Z
+INT-r8-0008	dict-wave recon svc-files		candidate	probe2/1 http dictionary wave	surface	entity			AST-r8-0010+surface+dict-wave recon svc-files	500\;80\;0.5					2	2026-10-04T09:08:22Z
+INT-r8-0009	drill finding intent (discarded)		pending	drill	matrix-test	recon-event			AST-r8-0030+matrix-test+drill finding intent (discarded)	10\;2\;0.1					2	2026-10-04T09:10:28Z
+INT-r8-0010	weakpass+ratelimit chain svc-login		pending	probe4/5 login keyname x encoding cross	deep-dive	recon-event			AST-r8-0029+deep-dive+weakpass+ratelimit chain svc-login	400\;120\;0.8					2	2026-10-04T09:10:47Z
+INT-r8-0011	admin token chain + cross-service trust + IDOR		pending	probe9-14 token/idor probes	authz-diff	recon-event			AST-r8-0005+authz-diff+admin token chain + cross-service trust + IDOR	400\;150\;0.8				CRED-r8-0002	2	2026-10-04T09:10:51Z
+INT-r8-0012	open redirect param family portal/gw/shop		pending	probe3 redirect family	deep-dive	recon-event			AST-r8-0023+deep-dive+open redirect param family portal/gw/shop	200\;60\;0.4					2	2026-10-04T09:10:55Z
+INT-r8-0013	cors+ssrf+graphql api-gw deep-dive		pending	probe3/7 gw probes	deep-dive	recon-event			AST-r8-0004+deep-dive+cors+ssrf+graphql api-gw deep-dive	200\;80\;0.5					2	2026-10-04T09:10:59Z
+INT-r8-0014	env infoleak portal+files		pending	probe7 infoleak variants	deep-dive	recon-event			AST-r8-0009+deep-dive+env infoleak portal+files	150\;40\;0.3					2	2026-10-04T09:11:03Z
+INT-r8-0015	traversal+deser files deep-dive		pending	probe3/7 files probes	deep-dive	recon-event			AST-r8-0010+deep-dive+traversal+deser files deep-dive	200\;80\;0.5					2	2026-10-04T09:11:07Z
+INT-r8-0016	xss reflection + sqli behavior shop		pending	probe3 shop xss/sqli	deep-dive	recon-event			AST-r8-0003+deep-dive+xss reflection + sqli behavior shop	200\;60\;0.4					2	2026-10-04T09:11:11Z
+INT-r8-0017	ssti render eval check dashboard		pending	probe3/7 ssti raw eval	deep-dive	recon-event			AST-r8-0008+deep-dive+ssti render eval check dashboard	100\;30\;0.2					2	2026-10-04T09:11:15Z

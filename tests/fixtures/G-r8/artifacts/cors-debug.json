@@ -1,0 +1,20 @@
+{
+ "cors/corsdebug?Origin=http://evil.example": {
+  "status": 200,
+  "acao": "*",
+  "acac": "",
+  "body": "<html>cors debug GTCORS-01 wildcard allow-origin</html>"
+ },
+ "cors/corsdebug?Origin=null": {
+  "status": 200,
+  "acao": "*",
+  "acac": "",
+  "body": "<html>cors debug GTCORS-01 wildcard allow-origin</html>"
+ },
+ "cors/corsdebug?Origin=http://evil.range.local": {
+  "status": 200,
+  "acao": "*",
+  "acac": "",
+  "body": "<html>cors debug GTCORS-01 wildcard allow-origin</html>"
+ }
+}

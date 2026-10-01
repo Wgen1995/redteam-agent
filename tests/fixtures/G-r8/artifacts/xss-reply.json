@@ -1,0 +1,7 @@
+{
+ "xss /reply?q=": {
+  "status": 200,
+  "reflected": true,
+  "body": "<html>reply /reply?q=p8%3Cimg%20src%3Dx%20onerror%3Dalert%281%29%3E GTXSS-03 synthetic reflected xss</html>"
+ }
+}

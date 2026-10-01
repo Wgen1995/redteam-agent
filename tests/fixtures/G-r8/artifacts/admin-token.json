@@ -1,0 +1,84 @@
+{
+ "admin POST login form": {
+  "status": 200,
+  "body": "token tok-usr-001",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:48:26 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "17"
+  }
+ },
+ "controls": {
+  "svc-admin POST /api/login form": {
+   "status": 403,
+   "body": "denied",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Thu, 01 Oct 2026 16:48:26 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "6"
+   }
+  },
+  "svc-admin POST /login json": {
+   "status": 403,
+   "body": "denied",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Thu, 01 Oct 2026 16:48:29 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "6"
+   }
+  },
+  "svc-admin POST /api/login json": {
+   "status": 403,
+   "body": "denied",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Thu, 01 Oct 2026 16:48:29 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "6"
+   }
+  }
+ },
+ "relogin": {
+  "login#1": {
+   "status": 200,
+   "body": "token tok-usr-001",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Thu, 01 Oct 2026 16:50:35 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "17"
+   }
+  },
+  "login#2": {
+   "status": 200,
+   "body": "token tok-usr-001",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Thu, 01 Oct 2026 16:50:36 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "17"
+   }
+  },
+  "login#3": {
+   "status": 200,
+   "body": "token tok-usr-001",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Thu, 01 Oct 2026 16:50:36 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "17"
+   }
+  }
+ },
+ "wrongpw": {
+  "status": 403,
+  "body": "denied"
+ },
+ "usernamekeys": {
+  "status": 403,
+  "body": "denied"
+ }
+}

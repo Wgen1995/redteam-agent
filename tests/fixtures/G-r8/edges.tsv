@@ -1,0 +1,59 @@
+E-r8-0001	parent	AST-r8-0003	AST-r8-0002	portscan+fp probe1	2	2026-10-04T09:06:34Z
+E-r8-0002	parent	AST-r8-0004	AST-r8-0002	portscan+fp probe1	2	2026-10-04T09:06:40Z
+E-r8-0003	parent	AST-r8-0005	AST-r8-0002	portscan+fp probe1	2	2026-10-04T09:06:46Z
+E-r8-0004	parent	AST-r8-0006	AST-r8-0002	portscan+fp probe1	2	2026-10-04T09:06:52Z
+E-r8-0005	parent	AST-r8-0007	AST-r8-0002	portscan+fp probe1	2	2026-10-04T09:06:58Z
+E-r8-0006	parent	AST-r8-0008	AST-r8-0002	portscan+fp probe1	2	2026-10-04T09:07:04Z
+E-r8-0007	parent	AST-r8-0009	AST-r8-0002	portscan+fp probe1	2	2026-10-04T09:07:10Z
+E-r8-0008	parent	AST-r8-0010	AST-r8-0002	portscan+fp probe1	2	2026-10-04T09:07:16Z
+E-r8-0009	parent	AST-r8-0011	AST-r8-0003	probe2	2	2026-10-04T09:09:17Z
+E-r8-0010	parent	AST-r8-0012	AST-r8-0003	probe2	2	2026-10-04T09:09:20Z
+E-r8-0011	parent	AST-r8-0013	AST-r8-0003	probe2	2	2026-10-04T09:09:23Z
+E-r8-0012	parent	AST-r8-0014	AST-r8-0003	probe2	2	2026-10-04T09:09:26Z
+E-r8-0013	parent	AST-r8-0015	AST-r8-0003	probe2	2	2026-10-04T09:09:29Z
+E-r8-0014	parent	AST-r8-0016	AST-r8-0004	probe2	2	2026-10-04T09:09:32Z
+E-r8-0015	parent	AST-r8-0017	AST-r8-0004	probe2	2	2026-10-04T09:09:35Z
+E-r8-0016	parent	AST-r8-0018	AST-r8-0004	probe2	2	2026-10-04T09:09:38Z
+E-r8-0017	parent	AST-r8-0019	AST-r8-0004	probe2	2	2026-10-04T09:09:41Z
+E-r8-0018	parent	AST-r8-0020	AST-r8-0004	probe2	2	2026-10-04T09:09:44Z
+E-r8-0019	parent	AST-r8-0021	AST-r8-0008	probe2	2	2026-10-04T09:09:47Z
+E-r8-0020	parent	AST-r8-0022	AST-r8-0009	probe2	2	2026-10-04T09:09:50Z
+E-r8-0021	parent	AST-r8-0023	AST-r8-0009	probe2	2	2026-10-04T09:09:53Z
+E-r8-0022	parent	AST-r8-0024	AST-r8-0010	probe2	2	2026-10-04T09:09:56Z
+E-r8-0023	parent	AST-r8-0025	AST-r8-0010	probe2	2	2026-10-04T09:09:59Z
+E-r8-0024	parent	AST-r8-0026	AST-r8-0010	probe2	2	2026-10-04T09:10:02Z
+E-r8-0025	parent	AST-r8-0027	AST-r8-0010	probe2	2	2026-10-04T09:10:05Z
+E-r8-0026	parent	AST-r8-0028	AST-r8-0010	probe2	2	2026-10-04T09:10:08Z
+E-r8-0027	parent	AST-r8-0029	AST-r8-0006	probe2	2	2026-10-04T09:10:11Z
+E-r8-0028	parent	AST-r8-0030	AST-r8-0008	law14 drill	2	2026-10-04T09:10:21Z
+E-r8-0029	parent	AST-r8-0031	AST-r8-0003	probe3	2	2026-10-04T09:11:21Z
+E-r8-0030	parent	AST-r8-0032	AST-r8-0005	probe9	2	2026-10-04T09:11:27Z
+E-r8-0031	parent	AST-r8-0033	AST-r8-0005	probe14	2	2026-10-04T09:11:33Z
+E-r8-0032	parent	AST-r8-0034	AST-r8-0005	probe14	2	2026-10-04T09:11:39Z
+E-r8-0033	parent	AST-r8-0035	AST-r8-0005	probe14	2	2026-10-04T09:11:45Z
+E-r8-0034	derived_from	F-r8-0001	INT-r8-0001	recon consumed into surface intent	2	2026-10-04T09:14:28Z
+E-r8-0035	derived_from	F-r8-0002	INT-r8-0001	recon consumed into surface intent	2	2026-10-04T09:14:29Z
+E-r8-0036	derived_from	F-r8-0003	INT-r8-0001	recon consumed into surface intent	2	2026-10-04T09:14:30Z
+E-r8-0037	derived_from	F-r8-0004	INT-r8-0001	recon consumed into surface intent	2	2026-10-04T09:14:31Z
+E-r8-0038	derived_from	F-r8-0005	INT-r8-0001	recon consumed into surface intent	2	2026-10-04T09:14:32Z
+E-r8-0039	derived_from	F-r8-0006	INT-r8-0001	recon consumed into surface intent	2	2026-10-04T09:14:33Z
+E-r8-0040	derived_from	F-r8-0007	INT-r8-0001	recon consumed into surface intent	2	2026-10-04T09:14:34Z
+E-r8-0041	derived_from	F-r8-0008	INT-r8-0001	recon consumed into surface intent	2	2026-10-04T09:14:35Z
+E-r8-0042	derived_from	F-r8-0009	INT-r8-0001	recon consumed into surface intent	2	2026-10-04T09:14:36Z
+E-r8-0043	derived_from	F-r8-0010	INT-r8-0002	recon consumed into surface intent	2	2026-10-04T09:14:37Z
+E-r8-0044	derived_from	F-r8-0011	INT-r8-0002	recon consumed into surface intent	2	2026-10-04T09:14:38Z
+E-r8-0045	derived_from	F-r8-0012	INT-r8-0002	recon consumed into surface intent	2	2026-10-04T09:14:39Z
+E-r8-0046	derived_from	F-r8-0013	INT-r8-0002	recon consumed into surface intent	2	2026-10-04T09:14:40Z
+E-r8-0047	derived_from	F-r8-0014	INT-r8-0002	recon consumed into surface intent	2	2026-10-04T09:14:41Z
+E-r8-0048	derived_from	F-r8-0015	INT-r8-0002	recon consumed into surface intent	2	2026-10-04T09:14:42Z
+E-r8-0049	derived_from	F-r8-0016	INT-r8-0003	recon consumed into surface intent	2	2026-10-04T09:14:43Z
+E-r8-0050	derived_from	F-r8-0017	INT-r8-0004	recon consumed into surface intent	2	2026-10-04T09:14:44Z
+E-r8-0051	derived_from	F-r8-0018	INT-r8-0005	recon consumed into surface intent	2	2026-10-04T09:14:45Z
+E-r8-0052	derived_from	F-r8-0019	INT-r8-0006	recon consumed into surface intent	2	2026-10-04T09:14:46Z
+E-r8-0053	derived_from	F-r8-0020	INT-r8-0007	recon consumed into surface intent	2	2026-10-04T09:14:47Z
+E-r8-0054	derived_from	F-r8-0021	INT-r8-0007	recon consumed into surface intent	2	2026-10-04T09:14:48Z
+E-r8-0055	derived_from	F-r8-0022	INT-r8-0008	recon consumed into surface intent	2	2026-10-04T09:14:49Z
+E-r8-0056	derived_from	F-r8-0023	INT-r8-0008	recon consumed into surface intent	2	2026-10-04T09:14:50Z
+E-r8-0057	derived_from	F-r8-0024	INT-r8-0008	recon consumed into surface intent	2	2026-10-04T09:14:51Z
+E-r8-0058	derived_from	F-r8-0025	INT-r8-0008	recon consumed into surface intent	2	2026-10-04T09:14:52Z
+E-r8-0059	derived_from	F-r8-0026	INT-r8-0008	recon consumed into surface intent	2	2026-10-04T09:14:53Z

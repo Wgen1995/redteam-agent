@@ -1,0 +1,52 @@
+{
+ "files /.env?raw=1": {
+  "status": 200,
+  "body": "<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "74"
+  }
+ },
+ "files /.env/config": {
+  "status": 200,
+  "body": "<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "74"
+  }
+ },
+ "files /config": {
+  "status": 404,
+  "body": "not found",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "9"
+  }
+ },
+ "files /.env.bak": {
+  "status": 200,
+  "body": "<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "74"
+  }
+ },
+ "files /debug/env": {
+  "status": 404,
+  "body": "not found",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "9"
+  }
+ }
+}

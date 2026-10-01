@@ -1,0 +1,42 @@
+{
+ "idor /admin/users/1": {
+  "status": 200,
+  "body": "<html>GTIDOR-03 synthetic profile of user 102 (not caller)</html>"
+ },
+ "idor /admin/users/2": {
+  "status": 200,
+  "body": "<html>GTIDOR-03 synthetic profile of user 102 (not caller)</html>"
+ },
+ "idor /admin/users/3": {
+  "status": 200,
+  "body": "<html>GTIDOR-03 synthetic profile of user 102 (not caller)</html>"
+ },
+ "idor /admin/users/102": {
+  "status": 200,
+  "body": "<html>GTIDOR-03 synthetic profile of user 102 (not caller)</html>"
+ },
+ "idor /admin/users/self": {
+  "status": 200,
+  "body": "<html>GTIDOR-03 synthetic profile of user 102 (not caller)</html>"
+ },
+ "idor /admin/users/0": {
+  "status": 200,
+  "body": "<html>GTIDOR-03 synthetic profile of user 102 (not caller)</html>"
+ },
+ "idor /admin/users/999": {
+  "status": 200,
+  "body": "<html>GTIDOR-03 synthetic profile of user 102 (not caller)</html>"
+ },
+ "idor CONTROL no-token /admin/users/1": {
+  "status": 401,
+  "body": "auth required"
+ },
+ "idor CONTROL bad-token /admin/users/1": {
+  "status": 401,
+  "body": "auth required"
+ },
+ "idor CONTROL bearer /admin/users/1": {
+  "status": 401,
+  "body": "auth required"
+ }
+}

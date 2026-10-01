@@ -1,0 +1,21 @@
+S-r8-0001	include	*.range.local					2	2026-10-04T09:01:00Z
+S-r8-0002	include	172.28.0.0/24					2	2026-10-04T09:01:00Z
+S-r8-0003	include	svc-shop					2	2026-10-04T09:01:00Z
+S-r8-0004	include	svc-api-gw					2	2026-10-04T09:01:00Z
+S-r8-0005	include	svc-admin					2	2026-10-04T09:01:00Z
+S-r8-0006	include	svc-login					2	2026-10-04T09:01:00Z
+S-r8-0007	include	svc-billing					2	2026-10-04T09:01:00Z
+S-r8-0008	include	svc-dashboard					2	2026-10-04T09:01:00Z
+S-r8-0009	include	svc-portal					2	2026-10-04T09:01:00Z
+S-r8-0010	include	svc-files					2	2026-10-04T09:01:00Z
+S-r8-0011	exclude	*.out-of-scope.local					2	2026-10-04T09:01:00Z
+S-r8-0012	oob	192.168.0.0/16					2	2026-10-04T09:01:00Z
+S-r8-0013	include	svc-shop:8001				端口绑定形（replay Host 头含端口匹配用）	2	2026-10-04T09:05:23Z
+S-r8-0014	include	svc-api-gw:8002				端口绑定形（replay Host 头含端口匹配用）	2	2026-10-04T09:05:32Z
+S-r8-0015	include	svc-admin:8003				端口绑定形（replay Host 头含端口匹配用）	2	2026-10-04T09:05:41Z
+S-r8-0016	include	svc-login:8004				端口绑定形（replay Host 头含端口匹配用）	2	2026-10-04T09:05:50Z
+S-r8-0017	include	svc-billing:8005				端口绑定形（replay Host 头含端口匹配用）	2	2026-10-04T09:05:59Z
+S-r8-0018	include	svc-dashboard:8006				端口绑定形（replay Host 头含端口匹配用）	2	2026-10-04T09:06:08Z
+S-r8-0019	include	svc-portal:8007				端口绑定形（replay Host 头含端口匹配用）	2	2026-10-04T09:06:17Z
+S-r8-0020	include	svc-files:8008				端口绑定形（replay Host 头含端口匹配用）	2	2026-10-04T09:06:26Z
+S-r8-0021	account-grant	172.28.0.0/24	battle7-grant	read\;write\;admin		battle-7 weak-cred chain grant (CRED-1/2)	2	2026-10-04T09:10:35Z

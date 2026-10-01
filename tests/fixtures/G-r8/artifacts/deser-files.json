@@ -1,0 +1,87 @@
+{
+ "deser/unserialize pickle-b64": {
+  "status": 400,
+  "body": "bad request"
+ },
+ "deser/unserialize opcode": {
+  "status": 400,
+  "body": "bad request"
+ },
+ "deser/decode cGlja2xlOm9z": {
+  "status": 400,
+  "body": "bad request"
+ },
+ "deser/decode amF2YTpkZXNl": {
+  "status": 400,
+  "body": "bad request"
+ },
+ "deser/decode?param": {
+  "status": 400,
+  "body": "bad request"
+ },
+ "deser/import java-magic": {
+  "status": 400,
+  "body": "bad request"
+ },
+ "deser /unserialize?payload": {
+  "status": 200,
+  "body": "<html>GTDESER-01 synthetic pickle object inflated</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:31 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "56"
+  }
+ },
+ "deser /unserialize form": {
+  "status": 400,
+  "body": "bad request",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:31 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "11"
+  }
+ },
+ "deser /decode form": {
+  "status": 400,
+  "body": "bad request",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:32 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "11"
+  }
+ },
+ "xxe /import xml": {
+  "status": 400,
+  "body": "bad request",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:32 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "11"
+  }
+ },
+ "xxe /upload xml": {
+  "status": 400,
+  "body": "bad request",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:32 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "11"
+  }
+ },
+ "xxe api-gw /import": {
+  "status": 501,
+  "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:32 GMT",
+   "Connection": "close",
+   "Content-Type": "text/html;charset=utf-8",
+   "Content-Length": "357"
+  }
+ }
+}

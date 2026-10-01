@@ -1,0 +1,26 @@
+F-r8-0001	INT-r8-0001	vuln-clue	svc-shop/orders	probe2 GTSQLI-02 marker, 200 order page SQL syntax error echo, id param tbd	0.9	2	2026-10-04T09:08:24Z
+F-r8-0002	INT-r8-0001	vuln-clue	svc-shop/search	probe2 GTXSS-01 reflected xss echo	0.9	2	2026-10-04T09:08:26Z
+F-r8-0003	INT-r8-0001	vuln-clue	svc-shop/comment	probe2 GTXSS-02 stored xss echo	0.9	2	2026-10-04T09:08:28Z
+F-r8-0004	INT-r8-0001	vuln-clue	svc-shop/reply	probe2 GTXSS-03 reflected xss echo	0.9	2	2026-10-04T09:08:30Z
+F-r8-0005	INT-r8-0001	vuln-clue	svc-shop/feedback	probe2 GTXSS-04 reflected xss echo	0.9	2	2026-10-04T09:08:32Z
+F-r8-0006	INT-r8-0001	http	svc-shop/logout	probe2 302 Location self, redirect body template	0.8	2	2026-10-04T09:08:34Z
+F-r8-0007	INT-r8-0001	http	svc-shop/wp-admin	DECOY 200 wp installer noise body self-labeled decoy	0.95	2	2026-10-04T09:08:36Z
+F-r8-0008	INT-r8-0001	http	svc-shop/admin.php	DECOY 200 wp installer noise	0.95	2	2026-10-04T09:08:38Z
+F-r8-0009	INT-r8-0001	http	svc-shop/.git/HEAD	DECOY 200 git config noise self-labeled decoy	0.95	2	2026-10-04T09:08:40Z
+F-r8-0010	INT-r8-0002	vuln-clue	svc-api-gw/cors-debug	probe2 GTCORS-01 wildcard allow-origin	0.9	2	2026-10-04T09:08:42Z
+F-r8-0011	INT-r8-0002	vuln-clue	svc-api-gw/origin	probe2 GTCORS-02 reflected origin none allowed, allow-credentials true	0.9	2	2026-10-04T09:08:44Z
+F-r8-0012	INT-r8-0002	vuln-clue	svc-api-gw/jump	probe2 302 GTREDIR-03 redirect param family tbd	0.9	2	2026-10-04T09:08:46Z
+F-r8-0013	INT-r8-0002	vuln-clue	svc-api-gw/preview	probe2 GTSSRF-02 webhook meta internal-metadata	0.9	2	2026-10-04T09:08:48Z
+F-r8-0014	INT-r8-0002	vuln-clue	svc-api-gw/graphql	probe2 GTGRAPHQL-01 introspection enabled __schema	0.9	2	2026-10-04T09:08:50Z
+F-r8-0015	INT-r8-0002	http	svc-api-gw/admin	401 auth required, token needed	0.9	2	2026-10-04T09:08:52Z
+F-r8-0016	INT-r8-0003	http	svc-admin	catch-all 401 auth required, zero entropy on GET, token needed	0.9	2	2026-10-04T09:08:54Z
+F-r8-0017	INT-r8-0004	http	svc-login	catch-all 200 login form on all GET paths, POST behavior tbd	0.9	2	2026-10-04T09:08:56Z
+F-r8-0018	INT-r8-0005	http	svc-billing	catch-all 401 auth required, token needed	0.9	2	2026-10-04T09:08:58Z
+F-r8-0019	INT-r8-0006	vuln-clue	svc-dashboard/render	probe2 GTSSTI-02 ssti render	0.9	2	2026-10-04T09:09:00Z
+F-r8-0020	INT-r8-0007	vuln-clue	svc-portal/debug-env	probe2 GTINFOLEAK-01 env dump DB_PASS AWS_KEY display	0.9	2	2026-10-04T09:09:02Z
+F-r8-0021	INT-r8-0007	vuln-clue	svc-portal/redirect	probe2 302 GTREDIR-01 redirect param family tbd	0.9	2	2026-10-04T09:09:04Z
+F-r8-0022	INT-r8-0008	vuln-clue	svc-files/.env	probe2 GTINFOLEAK-03 env file SECRET_KEY	0.9	2	2026-10-04T09:09:06Z
+F-r8-0023	INT-r8-0008	vuln-clue	svc-files/import	probe2 GTDESER-02 java serialized blob accepted	0.9	2	2026-10-04T09:09:08Z
+F-r8-0024	INT-r8-0008	vuln-clue	svc-files/unserialize	probe2 GTDESER-01 pickle object inflated	0.9	2	2026-10-04T09:09:10Z
+F-r8-0025	INT-r8-0008	vuln-clue	svc-files/decode	probe2 GTDESER-03 base64 payload inflated	0.9	2	2026-10-04T09:09:12Z
+F-r8-0026	INT-r8-0008	vuln-clue	svc-files/download	probe2 GTTRAVERSAL-01 file content root:x:0:0	0.9	2	2026-10-04T09:09:14Z

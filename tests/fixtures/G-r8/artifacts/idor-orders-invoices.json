@@ -1,0 +1,42 @@
+{
+ "admin2 /admin/orders/1": {
+  "status": 200,
+  "body": "<html>GTIDOR-01 synthetic orders of user 101 (not caller)</html>"
+ },
+ "admin2 /admin/invoices/1": {
+  "status": 200,
+  "body": "<html>GTIDOR-02 synthetic invoices of user 202 (not caller)</html>"
+ },
+ "admin2 /admin/payments/1": {
+  "status": 404,
+  "body": "not found"
+ },
+ "admin2 /admin/accounts/1": {
+  "status": 404,
+  "body": "not found"
+ },
+ "admin2 /admin/tokens/1": {
+  "status": 404,
+  "body": "not found"
+ },
+ "admin2 /admin/logs/1": {
+  "status": 404,
+  "body": "not found"
+ },
+ "admin2 /admin/sessions/1": {
+  "status": 404,
+  "body": "not found"
+ },
+ "admin2 /admin/config/1": {
+  "status": 404,
+  "body": "not found"
+ },
+ "admin2 /admin/api-keys/1": {
+  "status": 404,
+  "body": "not found"
+ },
+ "admin2 /admin/cards/1": {
+  "status": 404,
+  "body": "not found"
+ }
+}

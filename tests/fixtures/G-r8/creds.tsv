@@ -1,0 +1,2 @@
+CRED-r8-0001	static-cred	admin	admin	{{vault:cred-1}}	AST-r8-0029	INT-r8-0004		2026-10-04T09:00:00Z	2026-10-05T00:00:00Z	active	read\;write	svc-login GTWEAKPASS-01 admin pair (form user/pass)	2	2026-10-04T09:10:39Z	
+CRED-r8-0002	session	operator	tok-usr-001	{{vault:cred-2}}	AST-r8-0005	INT-r8-0003	CRED-r8-0001	2026-10-04T09:00:00Z	2026-10-05T00:00:00Z	active	read\;write\;admin	svc-admin login issues tok-usr-001\; X-Auth-Token header form\; cross-service trust on billing	2	2026-10-04T09:10:43Z	

@@ -1,0 +1,56 @@
+{
+ "redir/svc-shop/logout?to=": {
+  "status": 302,
+  "loc": "/logout?to=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+ },
+ "redir/svc-shop/logout?next=": {
+  "status": 404,
+  "loc": "",
+  "evil_in_loc": false,
+  "body": "not found"
+ },
+ "redir/svc-shop/logout?url=": {
+  "status": 302,
+  "loc": "/logout?url=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+ },
+ "redir/svc-shop/logout?goto=": {
+  "status": 302,
+  "loc": "/logout?goto=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+ },
+ "redir/svc-shop/logout?redirect=": {
+  "status": 302,
+  "loc": "/logout?redirect=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+ },
+ "redir/svc-shop/logout?continue=": {
+  "status": 302,
+  "loc": "/logout?continue=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+ },
+ "redir/svc-shop/logout?target=": {
+  "status": 302,
+  "loc": "/logout?target=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+ },
+ "redir/svc-shop/logout?dest=": {
+  "status": 302,
+  "loc": "/logout?dest=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+ },
+ "redir/svc-shop/logout?return=": {
+  "status": 302,
+  "loc": "/logout?return=http%3A%2F%2Fevil.example",
+  "evil_in_loc": true,
+  "body": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+ }
+}

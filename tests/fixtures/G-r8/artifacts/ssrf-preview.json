@@ -1,0 +1,62 @@
+{
+ "ssrf/preview?url=": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf/preview?to=": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf/preview?target=": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf/preview?dest=": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf/preview?webhook=": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf/preview?callback=": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf/preview?u=": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf/preview BASELINE": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf/preview?scheme=http%3A%2F%2F169.254.169": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf/preview?scheme=file%3A%2F%2F%2Fetc%2Fpa": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ },
+ "ssrf beacon /preview?url=oob": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:31 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "72"
+  }
+ },
+ "ssrf beacon /preview?to=oob": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:31 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "72"
+  }
+ }
+}

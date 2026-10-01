@@ -1,0 +1,6 @@
+{
+ "admin2 /admin/orders/1": {
+  "status": 200,
+  "body": "<html>GTIDOR-01 synthetic orders of user 101 (not caller)</html>"
+ }
+}

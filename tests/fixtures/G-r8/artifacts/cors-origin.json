@@ -1,0 +1,20 @@
+{
+ "cors/origin?Origin=http://evil.example": {
+  "status": 200,
+  "acao": "http://evil.example",
+  "acac": "true",
+  "body": "<html>origin GTCORS-02 reflected http://evil.example allow-credentials true</html>"
+ },
+ "cors/origin?Origin=null": {
+  "status": 200,
+  "acao": "null",
+  "acac": "true",
+  "body": "<html>origin GTCORS-02 reflected null allow-credentials true</html>"
+ },
+ "cors/origin?Origin=http://evil.range.local": {
+  "status": 200,
+  "acao": "http://evil.range.local",
+  "acac": "true",
+  "body": "<html>origin GTCORS-02 reflected http://evil.range.local allow-credentials true</html>"
+ }
+}

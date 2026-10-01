@@ -1,0 +1,10 @@
+{
+ "gql/introspect POST": {
+  "status": 501,
+  "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server "
+ },
+ "gql/typename GET": {
+  "status": 200,
+  "body": "<html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>"
+ }
+}

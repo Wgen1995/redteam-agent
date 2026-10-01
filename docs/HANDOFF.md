@@ -1008,3 +1008,13 @@
 - **金样收编**：G-r7 入 fixtures（532K）钉测 2 枚（16/56+missing 40+21 VERIFIED）；G-r6 钉随 v4.1 归因更新（beacon 19/diff 0）。
 - **RT-0004** 运行时库 in-band 全流（STG-0003→approve→commit）回灌发行库；**G-51 零打断零补令**（单轮连续作战）。
 - 验证：全套 **931 绿**；靶场 down 残留 0。仓脏 12=环境删平台文件（git checkout 还原，非战士越界——独立性保住）。
+
+
+## 2026-10-04 battle-7（G-r8）收战：键名族首破凭据墙+post_auth 首命中
+- **战果**：门控 **19/56≈0.3393**（beacon 19，追平 G-r6）；P4 26/26 VERIFIED 零强改；五门全 PASS；矩阵 27 格 x21/?4/-2 如实收敛；**creds 2（G-r5/6/7 三代凭据墙首破：admin/admin123→tok-usr-001 跨服务信任链）**；**idor-03=史上首枚 post_auth GT 命中**（authz-diff intent+CRED 链合规）。五代同面：G-r4 0.50 / G-r5 0.21 / G-r6 0.34 / G-r7 0.29 / G-r8 0.34。
+- **三新律实效验收（battle-6 备战批）**：律 17 键名族叉乘→凭据墙破；律 15 特征串→ratelimit-01 beacon 归位（26/26 卡一次过盲重放）；dict §1.1.1 redirect 族→redir-01/02 双中。教学→字典→战书→实战→战果闭环全通。
+- **归因核验（种子锚点，RT-0005 attribution_check=verified）**：六新 post_auth 靶仍全 miss=/admin/<noun> 两段式族未铺（token 只扫 billing 信任面）；**形孪生键隙（教学金矿）**：idor-01/02 漏洞实已找到（种子双形都收）但记账 path 形 vs GT query 形→键不等——非战士之过，battle-8 议题=GT v5 alt-form 显式声明或战书 18 律双形记账；billing 业务路由 0 发现。
+- **战士流程范本**：律 14 弃弹五连首次完整执行（FD-r8-0001 ruled_out）；幂等守卫逐条存在性检查；运维诚实披露（错误时钟副本即删未合回+嵌套修复复验）。
+- **RT-0005** 运行时库 in-band 全流（STG-0004→approve→commit）回灌发行库；**G-51 零打断零补令**。
+- **金样收编**：G-r8 入 fixtures 钉测 2 枚（19/56+creds 墙破断言+post_auth 首命中断言）。
+- 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0（独立性保住）。

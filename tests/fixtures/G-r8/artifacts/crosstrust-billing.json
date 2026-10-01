@@ -1,0 +1,50 @@
+{
+ "admin_token_on_billing_xauth": {
+  "billing AUTH /": {
+   "status": 404,
+   "body": "not found",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Thu, 01 Oct 2026 16:49:54 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   }
+  },
+  "billing AUTH /invoices/1": {
+   "status": 404,
+   "body": "not found",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Thu, 01 Oct 2026 16:49:54 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   }
+  },
+  "billing AUTH /invoices/102": {
+   "status": 404,
+   "body": "not found",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Thu, 01 Oct 2026 16:49:55 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   }
+  }
+ },
+ "billing_no_token_401_wave": [
+  {
+   "path": "/login",
+   "status": 401,
+   "loc": "",
+   "body": "auth required",
+   "ms": 54
+  },
+  {
+   "path": "/signin",
+   "status": 401,
+   "loc": "",
+   "body": "auth required",
+   "ms": 0
+  }
+ ]
+}

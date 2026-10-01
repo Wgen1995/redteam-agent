@@ -1,0 +1,54 @@
+172.28.0.0	wstg-info				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+172.28.0.0	wstg-conf				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+172.28.0.0	wstg-apit				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-shop	wstg-info				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-shop	wstg-conf				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-shop	wstg-apit				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-api-gw	wstg-info				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-api-gw	wstg-conf				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-api-gw	wstg-apit				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-admin	wstg-info				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-admin	wstg-conf				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-admin	wstg-apit				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-login	wstg-info				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-login	wstg-conf				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-login	wstg-apit				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-billing	wstg-info				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-billing	wstg-conf				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-billing	wstg-apit				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-dashboard	wstg-info				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-dashboard	wstg-conf				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-dashboard	wstg-apit				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-portal	wstg-info				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-portal	wstg-conf				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-portal	wstg-apit				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-files	wstg-info				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-files	wstg-conf				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+svc-files	wstg-apit				2	2026-10-04T09:07:43Z	2026-10-04T09:07:55Z
+172.28.0.0	wstg-info	x	指纹与路由测绘完成（probe1/2）		2	2026-10-04T09:15:05Z	
+svc-shop	wstg-info	x	指纹与路由测绘完成（probe1/2）		2	2026-10-04T09:15:05Z	
+svc-api-gw	wstg-info	x	指纹与路由测绘完成（probe1/2）		2	2026-10-04T09:15:05Z	
+svc-admin	wstg-info	x	指纹与路由测绘完成（probe1/2）		2	2026-10-04T09:15:05Z	
+svc-login	wstg-info	x	指纹与路由测绘完成（probe1/2）		2	2026-10-04T09:15:05Z	
+svc-billing	wstg-info	x	指纹与路由测绘完成（probe1/2）		2	2026-10-04T09:15:05Z	
+svc-dashboard	wstg-info	x	指纹与路由测绘完成（probe1/2）		2	2026-10-04T09:15:05Z	
+svc-portal	wstg-info	x	指纹与路由测绘完成（probe1/2）		2	2026-10-04T09:15:05Z	
+svc-files	wstg-info	x	指纹与路由测绘完成（probe1/2）		2	2026-10-04T09:15:05Z	
+172.28.0.0	wstg-conf	-	网络层配置面不适用（合成靶无主机配置）		2	2026-10-04T09:15:05Z	
+svc-shop	wstg-conf	?	未做专配面探测		2	2026-10-04T09:15:05Z	
+svc-api-gw	wstg-conf	x	配置面专探完成（cors/env 类）		2	2026-10-04T09:15:05Z	
+svc-admin	wstg-conf	x	配置面专探完成（cors/env 类）		2	2026-10-04T09:15:05Z	
+svc-login	wstg-conf	x	配置面专探完成（cors/env 类）		2	2026-10-04T09:15:05Z	
+svc-billing	wstg-conf	?	认证墙后未深探（路由发现 0 命中）		2	2026-10-04T09:15:05Z	
+svc-dashboard	wstg-conf	?	未做专配面探测		2	2026-10-04T09:15:05Z	
+svc-portal	wstg-conf	x	配置面专探完成（cors/env 类）		2	2026-10-04T09:15:05Z	
+svc-files	wstg-conf	x	配置面专探完成（cors/env 类）		2	2026-10-04T09:15:05Z	
+172.28.0.0	wstg-apit	-	无 API 面		2	2026-10-04T09:15:05Z	
+svc-shop	wstg-apit	x	API 面行为差分专探完成		2	2026-10-04T09:15:05Z	
+svc-api-gw	wstg-apit	x	API 面行为差分专探完成		2	2026-10-04T09:15:05Z	
+svc-admin	wstg-apit	x	API 面行为差分专探完成		2	2026-10-04T09:15:05Z	
+svc-login	wstg-apit	x	API 面行为差分专探完成		2	2026-10-04T09:15:05Z	
+svc-billing	wstg-apit	?	持 token 认证通过但路由字典 0 命中		2	2026-10-04T09:15:05Z	
+svc-dashboard	wstg-apit	x	API 面行为差分专探完成		2	2026-10-04T09:15:05Z	
+svc-portal	wstg-apit	x	API 面行为差分专探完成		2	2026-10-04T09:15:05Z	
+svc-files	wstg-apit	x	API 面行为差分专探完成		2	2026-10-04T09:15:05Z	

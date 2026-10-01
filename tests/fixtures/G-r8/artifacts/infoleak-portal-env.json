@@ -1,0 +1,63 @@
+{
+ "portal /debug/env?raw=1": {
+  "status": 200,
+  "body": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "91"
+  }
+ },
+ "portal /debug/env?full=1": {
+  "status": 200,
+  "body": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "91"
+  }
+ },
+ "portal /debug/env/env": {
+  "status": 200,
+  "body": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "91"
+  }
+ },
+ "portal /debug/vars": {
+  "status": 404,
+  "body": "not found",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "9"
+  }
+ },
+ "portal /debug/env/plain": {
+  "status": 200,
+  "body": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "91"
+  }
+ },
+ "portal redir beacon": {
+  "status": 302,
+  "body": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Thu, 01 Oct 2026 16:46:35 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Location": "/redirect?next=http%3A%2F%2F192.168.117.2%3A9308%2Foob-redir-p7",
+   "Content-Length": "48"
+  }
+ }
+}

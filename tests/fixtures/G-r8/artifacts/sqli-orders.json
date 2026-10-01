@@ -1,0 +1,26 @@
+{
+ "sqli /orders?id=1": {
+  "status": 200,
+  "body": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+ },
+ "sqli /orders?id=1'": {
+  "status": 200,
+  "body": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+ },
+ "sqli /orders?id=1 OR 1=1": {
+  "status": 200,
+  "body": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+ },
+ "sqli /orders?id=1' OR '1'='1": {
+  "status": 200,
+  "body": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+ },
+ "sqli /orders?id=1 UNION SELE": {
+  "status": 200,
+  "body": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+ },
+ "sqli /orders/1'": {
+  "status": 200,
+  "body": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+ }
+}
