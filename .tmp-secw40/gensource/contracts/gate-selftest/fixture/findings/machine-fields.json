@@ -1,1 +1,0 @@
-[{"candidate_id":"C-00001-00001-1d832469","location":"java/a/B.java:10","sink_type":"SINK-DESERIALIZE","severity":"critical","root_cause_group_id":"RCG-DESER-TEST","verdict":"confirmed","confidence":0.6,"evidence_grade":"direct","runtime_tier":6}]

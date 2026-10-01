@@ -1,9 +1,0 @@
-# lang: java
-# role: persisted-read（DAO/ORM 回读点——入清单 entry_type=persisted_read，不预发 fw 卡；bw 卡 blocked 时按需发追踪卡，origin_ref=该 bw 卡）
-#---
-pattern_id	ere	note
-PR-J01	\.findById\(	Spring Data 主键回读
-PR-J02	\.selectById\(	MyBatis-Plus 主键回读
-PR-J03	getResultList\(	JPA 查询结果集
-PR-J04	\.queryForList\(	JdbcTemplate 回读
-PR-J05	\.getObject\(	ResultSet 取列

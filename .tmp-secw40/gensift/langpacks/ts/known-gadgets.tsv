@@ -1,5 +1,0 @@
-# lang: ts
-# role: known-gadgets
-#---
-dependency	version_range	gadget_family	source
-lodash	<4.17.12	template原型污染	模型记忆

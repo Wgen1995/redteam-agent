@@ -1,4 +1,0 @@
-sink_id	file:line	sink_type	symbol	sort_order
-s1	java/a/B.java:10	SINK-DESERIALIZE	readObject	1
-s2	java/a/B.java:20	SINK-CMD-EXEC	Runtime.exec	2
-s3	java/c/D.java:5	SINK-XXE	parse	3
