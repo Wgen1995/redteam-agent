@@ -138,13 +138,16 @@ def _replay_state(rows):
     return verified, blocked
 
 
-def score(rows, cards, gt, host_aliases=None):
+def score(rows, cards, gt, host_aliases=None, tracks=None):
     """召回裁决。返回 (recall=命中/len(gt), MISSING id 清单)。
 
     rows/cards 来自 load_session（纯函数面，可对夹具会话回归——不依赖 docker）。
     批次 7 T16：gt 兼容条目清单或 GT 文档 dict（顶层 host_aliases 别名声明，None 容错；
     既有 3 参调用形不变）；endpoint 匹配两侧先 _norm_endpoint 语法归一再 _canon_host
-    语义别名统一——只归语法不归语义，语义等价必须显式进 host_aliases。"""
+    语义别名统一——只归语法不归语义，语义等价必须显式进 host_aliases。
+    battle-5 T2（P2#1）双轨：beacon 轨（marker 词证）+差分轨（authz_diff 非空或
+    EV pair_group 控制对；无 marker 亦可计——检出主通道从「答案回显」转向行为差分）。
+    tracks 字典可选回填 {'beacon': n, 'diff': n}（recall=并集）。"""
     if isinstance(gt, dict):
         aliases = gt.get("host_aliases") or host_aliases or {}
         gt = gt.get("planted") or gt.get("entries") or gt.get("items") or []
@@ -170,6 +173,9 @@ def score(rows, cards, gt, host_aliases=None):
                    if _cell("facts.tsv", r, "kind") == "authz"}
     hits, missing = 0, []
     consumed = set()   # v4 反膨胀律：一枚 finding 至多满足一枚 GT（同键多 GT 须各自实证）
+    if tracks is not None:
+        tracks.setdefault("beacon", 0)
+        tracks.setdefault("diff", 0)
     for e in gt:
         if e.get("polarity", "pos") == "neg":           # 负对（eval_authz_recall 兼容）
             ok = e.get("endpoint", "") in neg_targets
@@ -190,8 +196,17 @@ def score(rows, cards, gt, host_aliases=None):
                     continue        # 精度门：无重放 VERIFIED 在案的证据不计（幻觉面零分）
                 if any(e in blocked_ev for e in evs):
                     continue        # 精度门：未翻案 not-reproduced 证据拖累整 finding
-                if e.get("marker", "") not in _word_markers(cards, evs):
-                    continue
+                beacon_hit = e.get("marker", "") in _word_markers(cards, evs)
+                diff_hit = False
+                if not beacon_hit:                 # T2 差分轨：无词证时按差分源实证
+                    diff_hit = bool(_cell("findings.tsv", f, "control_evidence_ids"))
+                    if not diff_hit:
+                        ei = TABLES["E-index.tsv"].index("pair_group")
+                        diff_hit = any(len(r) > ei and r[ei]
+                                       for r in rows.get("E-index.tsv", [])[1:]
+                                       if r[0] in evs)
+                    if not diff_hit:
+                        continue
                 if e.get("post_auth"):
                     ac = _cell("findings.tsv", f, "auth_context")
                     cred_ok = ac.startswith("CRED-") and cred_role.get(ac) == e.get("authz_role")
@@ -200,6 +215,9 @@ def score(rows, cards, gt, host_aliases=None):
                     if not (cred_ok or kind_ok):
                         continue                        # 认证后条目无 authz 链不计命中
                 ok = True
+                if tracks is not None:                  # T2 双轨分列（beacon 优先）
+                    tracks["beacon" if beacon_hit else "diff"] = \
+                        tracks.get("beacon" if beacon_hit else "diff", 0) + 1
                 consumed.add(f_id)                 # v4：单计登记
                 break
         if ok:
@@ -238,9 +256,13 @@ def main(argv=None):
         sys.stderr.write("ground-truth 空\n")
         return 2
     rows, out_cards = load_session(session)
-    recall, missing = score(rows, out_cards, doc if isinstance(doc, dict) else entries)
+    tracks = {}
+    recall, missing = score(rows, out_cards, doc if isinstance(doc, dict) else entries,
+                            tracks=tracks)
     hit = len(entries) - len(missing)
     print("recall=%.2f (%d/%d)" % (recall, hit, len(entries)))
+    print("track_beacon=%d track_diff=%d (双轨分列：词证/差分实证；keying v%d)"
+          % (tracks.get("beacon", 0), tracks.get("diff", 0), KEYING_VERSION))
     for m in missing:
         print("MISSING\t" + m)
     return 0 if recall >= a.baseline else 1
