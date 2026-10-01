@@ -16,6 +16,10 @@
 | /cors-debug、/cors、/origin | Origin 变体矩阵（evil.com/null/子域） | CORS 配置错误 |
 | /admin、/manage、/console | 直取+默认凭据对 | 越权/默认凭据 |
 | /api/v2/*、/internal/*、/private/* | 版本面/内部面前置词穷举 | 版本暴露旧接口 |
+| /redirect、/redirect?to=、/logout?next=、/goto、/jump、/url= | 参数携带 URL 全家（?to=/?next=/?url=/?goto= 变体）→302 Location 外域实证 | 开放重定向 |
+
+### 1.1.1 redirect 参数族（v3.1·battle-6 RT-0004：redir-01 漏检根因=本族缺席）
+一级 /redirect 命中后参数名变体全试（to/next/url/goto/redirect/continue/target）；外域参数值用 http://evil.example 形——**302 Location 头直取即证**；同服务 /logout?next= 与 /redirect?to= 常并存（同族双面）。
 
 ### 1.2 两段式路径探测（首战建议 2）
 一级命中后强制二段：/api/<资源>/<id>/<动作>、/<资源>/<id>/edit、/debug/<一级命中>/env——词典消费=matrix 行铸造时 surface 列带二级段。
@@ -30,6 +34,8 @@
 | /logout、/session、/me | token 生命周期观测（吊销/过期/跨服务复用） | 会话固定/跨服务信任 |
 
 **消费律**：任一服务命中发放面→该服务+相邻服务全字典面持凭据重扫（对照匿名）——发放面是认证后世界的钥匙铺。
+
+**键名族×编码族叉乘律（v3.1·battle-6 RT-0004：凭据 0 根因=键名用 username/password 而服务收 user/pass 子串）**：发放面 POST 的探测矩阵=键名族（user/username/name/account/email × pass/password/pwd/secret）×编码族（application/x-www-form-urlencoded 先、JSON 次）全叉乘——服务端常按**表单子串**收（body 含 `user=admin` 与 `pass=admin123` 即中），键名错则编码对也永不中。先发单键名探测定形（如 user= 固定看响应分化），再全对角铺。
 
 ## 二、认证态获取策略（P0 检查单·首战 5 不可达根因）
 

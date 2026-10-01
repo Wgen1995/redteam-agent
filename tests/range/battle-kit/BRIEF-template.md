@@ -61,3 +61,6 @@
 12. **同面多洞分洞分 finding（v4 单计律——battle-5 实证）**：同一端点上两类洞（如弱口令+无限流）=两枚 finding 各挂各的 EV（dedup=asset+vuln_ref 不撞）；单 finding 会被先序 GT 耗用，第二洞落 miss。
 13. **表单编码族先行（battle-5 实证）**：/login 类 POST 先发 application/x-www-form-urlencoded（服务端常收表单子串），JSON 形次之——24 组弱口令对×双编码全试。
 14. **演练五连（battle-5 实证：27 卡曾全灭于 title 裸 [）**：开局 dry-run 走 asset→evidence→finding→卡片→容器内重放全链；卡片 front-matter 自由文本（title 尤其）必过 parse_yaml——避开裸 [ 开头/流集合歧义形。
+15. **卡片 matcher 带响应特征串（battle-6 实证）**：行为型 finding 的 EV 卡 expected.matchers.words 必须含响应体的**特征串原文**（如计数器/递增数字/特定词组）——matcher 只写行为描述词=词证面自弃（差分轨也救不回被先序 GT 借道的键）。
+16. **响应熵基线（battle-6 实证：634 次钉死一面）**：发放面/爆破面先发 3-5 次基线探测——响应恒 403 仅计数变化=零熵墙，立即转面转键名族；catch-all 200 同理（诱饵形）。零信息面不投爆破预算。
+17. **键名族×编码族叉乘（battle-6 实证：凭据 0 根因）**：登录/发放面 POST 探测矩阵=键名族（user/username/name/account/email × pass/password/pwd）×编码族（urlencoded 先/JSON 次）全叉乘（字典 §1.3 律）；服务端常收表单子串——键名错则编码对也永不中。
