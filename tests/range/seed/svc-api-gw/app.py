@@ -3,8 +3,24 @@
 # svc-api-gw——授权靶场漏洞服务（批次6 T16 种20；全部合成 payload，仅 compose 内网（M-3 internal:true 宿主零映射——探针经 attack-noop 跳板）。
 # 漏洞 marker 只内嵌于漏洞路由响应体（可观测面），注释不带 marker 字面量。
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import time
 
 TOKEN = "tok-usr-001"   # post-auth 服务会话令牌（合成，登录发放）
+
+# battle-5 T3a（P3 蓝军）：全局速率摩擦——真 IPS 的诚实最小形。跨路由源 IP 计数
+# （per-route 限流之上的面级预算），超阈 429+Retry-After+入窗拒收（退避可解）。
+# 阈值宽松（30req/10s 滚动窗）不影响重放与正常探测节奏，只罚无退避连喷。
+_GL_RATE = {}          # ip -> [timestamps]
+_GL_LIMIT, _GL_WINDOW = 30, 10.0
+
+
+def _gl_throttled(ip):
+    now = time.time()
+    w = [t for t in _GL_RATE.get(ip, []) if now - t < _GL_WINDOW]
+    w.append(now)
+    _GL_RATE[ip] = w
+    return len(w) > _GL_LIMIT
+
 
 
 class H(BaseHTTPRequestHandler):
@@ -22,6 +38,10 @@ class H(BaseHTTPRequestHandler):
         return self.headers.get("X-Auth-Token") == TOKEN
 
     def do_GET(self):
+        if _gl_throttled(self.client_address[0]):      # battle-5：面级限流门（先于路由）
+            self._send(429, "rate limited: back off (Retry-After)",
+                       extra=[("Retry-After", "3")])
+            return
         if self.path.startswith("/fetch"):             # 抓取路由（服务端请求伪造·合成内网文档）
             self._send(200, "<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>")
         elif self.path.startswith("/preview"):         # 预览路由（服务端请求伪造·合成元数据）
@@ -68,4 +88,5 @@ class H(BaseHTTPRequestHandler):
         pass
 
 
-HTTPServer(("0.0.0.0", 8000), H).serve_forever()
+if __name__ == "__main__":
+    HTTPServer(("0.0.0.0", 8000), H).serve_forever()

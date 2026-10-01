@@ -22,6 +22,15 @@ class H(BaseHTTPRequestHandler):
         return self.headers.get("X-Auth-Token") == TOKEN
 
     def do_GET(self):
+        # battle-5 T3a（P3 蓝军）：诱饵面——常见扫描器首发路径的拟真 200 噪声
+        # （无 marker、无漏洞行为；惩罚无验证的广撒=信噪摩擦）。正身路由不受影响。
+        if self.path.startswith("/wp-admin") or self.path.startswith("/admin.php"):
+            self._send(200, "<html><title>WordPress &#8250; Setup Configuration</title>"
+                          "decoy wp installer noise</html>")
+            return
+        if self.path.startswith("/.git"):
+            self._send(200, "[core] decoy git config noise\nrepositoryformatversion = 0")
+            return
         if self.path.startswith("/item"):              # 商品详情路由（注入类·合成回显）
             self._send(200, "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>")
         elif self.path.startswith("/order"):           # 订单路由（注入类·合成回显）
@@ -52,4 +61,5 @@ class H(BaseHTTPRequestHandler):
         pass
 
 
-HTTPServer(("0.0.0.0", 8000), H).serve_forever()
+if __name__ == "__main__":
+    HTTPServer(("0.0.0.0", 8000), H).serve_forever()
