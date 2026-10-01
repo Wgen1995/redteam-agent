@@ -96,11 +96,12 @@ def _canon_host(netloc, aliases):
 
 
 def _canon_endpoint(u, aliases):
-    """全键归一 v3（批次 9 三轮战 G-r4 归因收口）：host 段走 _canon_host 语义统一；
+    """全键归一 v4（battle-5 P2#6，dict §四勘误）：host 段走 _canon_host 语义统一；
     **query 整体剥离**——GT 键的参数名/值/编码是布靶者书写形，诚实黑盒战士的探测
     参数不可预知且种子按路径前缀匹配行为 ⇒ 检出键=host+path。battle-2 作者读 GT
     对齐键形掩盖了该缺陷，独立战士（三轮）以 14 枚行为命中被键形误罚暴露之。
-    路径尾段资源 id（/invoice/2 vs /invoice/88）残留同型差异=v4 候选（数字化归一）。
+    v4 新律（尾段数字归一）：路径尾段纯数字 → {n}——idor 资源 id 同值差
+    （/invoice/2 vs /invoice/88）不再卡分；非数字尾段（.env 等）原样。
     query 保留于 GT 文档面（复现提示），不参与匹配。"""
     k = _norm_endpoint(u)
     i = k.find("/")
@@ -109,7 +110,13 @@ def _canon_endpoint(u, aliases):
     qi = rest.find("?")
     if qi >= 0:                                   # v3：query 剥离（探测形不入键）
         rest = rest[:qi]
+    segs = rest.rsplit("/", 1)                   # v4：尾段纯数字归一 {n}
+    if len(segs) == 2 and segs[1] and segs[1].isdigit():
+        rest = segs[0] + "/{n}"
     return _canon_host(host, aliases) + rest
+
+
+KEYING_VERSION = 4   # v4=尾段数字归一+同键多 GT 单计（见 score() consumed 集合）
 
 
 def _replay_state(rows):
@@ -162,6 +169,7 @@ def score(rows, cards, gt, host_aliases=None):
     neg_targets = {_cell("facts.tsv", r, "target") for r in rows["facts.tsv"]
                    if _cell("facts.tsv", r, "kind") == "authz"}
     hits, missing = 0, []
+    consumed = set()   # v4 反膨胀律：一枚 finding 至多满足一枚 GT（同键多 GT 须各自实证）
     for e in gt:
         if e.get("polarity", "pos") == "neg":           # 负对（eval_authz_recall 兼容）
             ok = e.get("endpoint", "") in neg_targets
@@ -169,6 +177,9 @@ def score(rows, cards, gt, host_aliases=None):
             ok = False
             gt_key = _canon_endpoint(e["endpoint"], aliases) if e.get("endpoint") else ""
             for f in active:
+                f_id = f[fi("id")]
+                if f_id in consumed:               # v4：已被前序 GT 消费的 finding 不得再计
+                    continue
                 av = ast_value.get(_cell("findings.tsv", f, "affected_asset_id"))
                 if not gt_key or av is None or _canon_endpoint(av, aliases) != gt_key:
                     continue
@@ -189,6 +200,7 @@ def score(rows, cards, gt, host_aliases=None):
                     if not (cred_ok or kind_ok):
                         continue                        # 认证后条目无 authz 链不计命中
                 ok = True
+                consumed.add(f_id)                 # v4：单计登记
                 break
         if ok:
             hits += 1
