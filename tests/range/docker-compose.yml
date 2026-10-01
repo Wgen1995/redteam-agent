@@ -9,27 +9,43 @@ services:
   svc-shop:
     build: ./seed/svc-shop
     networks: [range]
+    environment:
+      - PORT=8001   # battle-6 端口异构
   svc-dashboard:
     build: ./seed/svc-dashboard
     networks: [range]
+    environment:
+      - PORT=8006   # battle-6 端口异构
   svc-api-gw:
     build: ./seed/svc-api-gw
     networks: [range]
+    environment:
+      - PORT=8002   # battle-6 端口异构
   svc-files:
     build: ./seed/svc-files
     networks: [range]
+    environment:
+      - PORT=8008   # battle-6 端口异构
   svc-portal:
     build: ./seed/svc-portal
     networks: [range]
+    environment:
+      - PORT=8007   # battle-6 端口异构
   svc-admin:
     build: ./seed/svc-admin
     networks: [range]
+    environment:
+      - PORT=8003   # battle-6 端口异构
   svc-billing:
     build: ./seed/svc-billing
     networks: [range]
+    environment:
+      - PORT=8005   # battle-6 端口异构
   svc-login:
     build: ./seed/svc-login
     networks: [range]
+    environment:
+      - PORT=8004   # battle-6 端口异构
   attack-noop:
     image: python:3.12-alpine
     command: ["sleep", "infinity"]        # 攻击侧占位（真实干跑由 RUNBOOK 驱动，T17）

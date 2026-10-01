@@ -3,6 +3,7 @@
 # svc-admin——授权靶场漏洞服务（批次6 T16 种20；全部合成 payload，仅 compose 内网（M-3 internal:true 宿主零映射——探针经 attack-noop 跳板）。
 # 漏洞 marker 只内嵌于漏洞路由响应体（可观测面），注释不带 marker 字面量。
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import os
 
 TOKEN = "tok-usr-001"   # post-auth 服务会话令牌（合成，登录发放）
 
@@ -49,4 +50,5 @@ class H(BaseHTTPRequestHandler):
         pass
 
 
-HTTPServer(("0.0.0.0", 8000), H).serve_forever()
+if __name__ == "__main__":
+    HTTPServer(("0.0.0.0", int(os.environ.get("PORT", "8000"))), H).serve_forever()   # battle-6 端口异构：PORT env（compose 8001-8008）

@@ -58,3 +58,6 @@
 9. **九门序**：matrix-init/freeze 先于 exploitation；replay 事件 phase=P4 必须晚于 P0-P3 门事件——否则 verify-chain 跳门死锁不可补铸（账本如实保留 FAIL 也是伤）。
 10. **限流退避律（battle-5 新面）**：svc-api-gw 有面级限流（约 30req/10s→429+Retry-After）——429 即退避（sleep≥3s）或换面；诱饵面（wp-admin/admin.php/.git 形拟真 200）不具验证性，别按 200 即记。
 11. **差分轨记账（T2 新分轨）**：无 marker 词证也可计分——但须 control_evidence_ids 控制对或 EV pair_group（匿名/持证成对实证）。控制组 EV（negative probe）与正 EV 同铸，成对记账。
+12. **同面多洞分洞分 finding（v4 单计律——battle-5 实证）**：同一端点上两类洞（如弱口令+无限流）=两枚 finding 各挂各的 EV（dedup=asset+vuln_ref 不撞）；单 finding 会被先序 GT 耗用，第二洞落 miss。
+13. **表单编码族先行（battle-5 实证）**：/login 类 POST 先发 application/x-www-form-urlencoded（服务端常收表单子串），JSON 形次之——24 组弱口令对×双编码全试。
+14. **演练五连（battle-5 实证：27 卡曾全灭于 title 裸 [）**：开局 dry-run 走 asset→evidence→finding→卡片→容器内重放全链；卡片 front-matter 自由文本（title 尤其）必过 parse_yaml——避开裸 [ 开头/流集合歧义形。

@@ -1,38 +1,46 @@
 {
  "format_version": 3,
- "note": "授权靶场种 20 ground truth（批次6 T16 起源；v2=批次8 键形迁移：canonical=svc-*/path?query，127.0.0.1:800x 降级 host_aliases；v3=批次9 三轮战收口：scorer 检出键=host+path，query 整体剥离（布靶书写形不入键，诚实黑盒探测参数不可预知；query 保留于本文件作文档面复现提示）——RUNBOOK 键形 v3 节在案。首战 0/20 键失配+三轮 10 枚 query 形罚+4 枚 CRED 链教训（评估侧）。marker/EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。批次 9 评审补：别名含 svc-*:8000 容器形（防 raw_request 形资产键失配）。 批次 9 扩编 20→50：八新类（lfi/rfi/jwt/ratelimit/graphql/xxe/csrf/userenum）+存量加密；二级路径占比 56%；认证态通道修复=login 成功发 X-Auth-Token（dict §二行为差分）。 | 2026-09-30 P2#2 category rectification: csrf->broken-access-control (CWE-306); cors-01 noted as configuration defect.",
+ "note": "授权靶场种 20 ground truth（批次6 T16 起源；v2=批次8 键形迁移：canonical=svc-*/path?query，127.0.0.1:800x 降级 host_aliases；v3=批次9 三轮战收口：scorer 检出键=host+path，query 整体剥离（布靶书写形不入键，诚实黑盒探测参数不可预知；query 保留于本文件作文档面复现提示）——RUNBOOK 键形 v3 节在案。首战 0/20 键失配+三轮 10 枚 query 形罚+4 枚 CRED 链教训（评估侧）。marker/EV 卡 word matcher 命中串；post_auth=true 条目另须 intent kind=authz-diff 或 auth_context CRED role==authz_role（cred 绑定链）。批次 9 评审补：别名含 svc-*:8000 容器形（防 raw_request 形资产键失配）。 批次 9 扩编 20→50：八新类（lfi/rfi/jwt/ratelimit/graphql/xxe/csrf/userenum）+存量加密；二级路径占比 56%；认证态通道修复=login 成功发 X-Auth-Token（dict §二行为差分）。 | 2026-09-30 P2#2 category rectification: csrf->broken-access-control (CWE-306); cors-01 noted as configuration defect.\nbattle-6 端口异构：八服务 compose PORT=8001-8008（8000 退役）；canonical 键保持裸服务名，host_aliases 显式收 svc-xxx:800N 新形与 svc-xxx:8000 旧形（v3 律：语义等价必须显式声明——端口=基础设施形不是面语义）。",
  "host_aliases": {
   "svc-admin": [
    "127.0.0.1:8006",
-   "svc-admin:8000"
+   "svc-admin:8000",
+   "svc-admin:8003"
   ],
   "svc-api-gw": [
    "127.0.0.1:8003",
-   "svc-api-gw:8000"
+   "svc-api-gw:8000",
+   "svc-api-gw:8002"
   ],
   "svc-billing": [
    "127.0.0.1:8007",
-   "svc-billing:8000"
+   "svc-billing:8000",
+   "svc-billing:8005"
   ],
   "svc-dashboard": [
    "127.0.0.1:8002",
-   "svc-dashboard:8000"
+   "svc-dashboard:8000",
+   "svc-dashboard:8006"
   ],
   "svc-files": [
    "127.0.0.1:8004",
-   "svc-files:8000"
+   "svc-files:8000",
+   "svc-files:8008"
   ],
   "svc-login": [
    "127.0.0.1:8008",
-   "svc-login:8000"
+   "svc-login:8000",
+   "svc-login:8004"
   ],
   "svc-portal": [
    "127.0.0.1:8005",
-   "svc-portal:8000"
+   "svc-portal:8000",
+   "svc-portal:8007"
   ],
   "svc-shop": [
    "127.0.0.1:8001",
-   "svc-shop:8000"
+   "svc-shop:8000",
+   "svc-shop:8001"
   ]
  },
  "planted": [

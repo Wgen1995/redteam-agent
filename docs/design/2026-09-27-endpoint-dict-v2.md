@@ -20,6 +20,17 @@
 ### 1.2 两段式路径探测（首战建议 2）
 一级命中后强制二段：/api/<资源>/<id>/<动作>、/<资源>/<id>/edit、/debug/<一级命中>/env——词典消费=matrix 行铸造时 surface 列带二级段。
 
+### 1.3 凭据发放面一级家族（v3·battle-5 RT-0003 writeback：0 凭据→认证后世界全空转）
+| 路径模式 | 探测手法 | 关联漏洞类 |
+|---|---|---|
+| /register、/signup、/api/register | POST 开户（用户名/口令/邮箱形全试）→ 登录面回验 | 弱口令链/批量注册 |
+| /forgot、/reset、/api/reset、/password-reset | GET/POST 用户名枚举+重置令牌回显 | 用户枚举/重置劫持 |
+| /token、/api/token、/oauth/token、/auth | POST 授予面（client_credentials/password 形） | 令牌滥发/无速率 |
+| /login、/signin、/api/login | **表单编码先行**（application/x-www-form-urlencoded 先于 JSON——服务端常收表单子串）+24 组弱口令对 | 弱口令/无限流 |
+| /logout、/session、/me | token 生命周期观测（吊销/过期/跨服务复用） | 会话固定/跨服务信任 |
+
+**消费律**：任一服务命中发放面→该服务+相邻服务全字典面持凭据重扫（对照匿名）——发放面是认证后世界的钥匙铺。
+
 ## 二、认证态获取策略（P0 检查单·首战 5 不可达根因）
 
 1. 弱口令清单：admin/admin、admin/password、user/123456、test/test、guest/guest（靶场口径高频）——login 面 403 不代表排除（weakpass-01 教训：固定 403 无泄露≠不可爆破，改行为差分：成功/失败响应字节差+时延差）。
