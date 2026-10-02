@@ -69,3 +69,4 @@
 20. **方法族分辨（battle-8 实证：deser 三面恒 400）**：处理器面（unserialize/import/decode/debug/info 族）**先 GET 直取**（任意 GET 常即弹）——GET 不弹再 POST 形态分型；POST 脑补是陷阱（400≠501 只证处理器在不证方法对）。
 21. **矩阵预算警戒**：matrix 全铺×波次预算是三角——超过 30 面的矩阵先铺核心 9 面×12 类，余面按波次预算增量补（battle-8 实证：128 行只 15x 预算穿底 vs 27 格 21x 全收敛）。
 22. **creds role=令牌权限类非账号名**：add-cred 的 role 字段记令牌权限类（低权=user 级/高权=admin 级）——不是登录账号名；token 名形即类（tok-usr-001=user 级）；admin 账号换出的 user 级令牌 role 仍记 user。
+23. **持证重扫清单化（battle-10 实证：六新靰只中三）**：token 到手后逐服务×/admin 子名词全叉乘记账（八服务×config/logs/keys/reports/clients/audit/settings/users），每服务每名词至少一发+记录（命中=finding，401/404=fact）；**禁止抽样跳服务**（battle-10 只重扫三服务→idor-05/06+hauth-04 漏）；清单完成度入 facts。
