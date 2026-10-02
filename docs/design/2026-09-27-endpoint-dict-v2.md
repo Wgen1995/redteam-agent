@@ -11,7 +11,8 @@
 | /comment、/reply、/feedback | POST 参数化注入探针（回显差分） | XSS/注入 |
 | /preview、/render、/template | SSRF 探针（URL 参数→行为差分：响应码/时延/回显） | SSRF/模板注入 |
 | /import、/upload、/export | multipart 边界+类型混淆 | 反序列化/上传绕过 |
-| /unserialize、/deserialize、/decode | 结构化 payload 探针（Java/PHP/Python 形态分型） | 反序列化 |
+| /unserialize、/deserialize、/decode | **GET 直取先行**（battle-8 实证：处理器面常在 GET——POST 形态脑补恒 400）；GET 弹后 POST 形态分型（Java/PHP/Python） | 反序列化 |
+| /item?id=、/order?id=、/product?id=、/detail?id= | 同服务参数面族全枚举（battle-8 实证：order 面中 item 面漏——一服务多资源参数面是常态） | SQLi/注入 |
 | /debug/env、/debug/vars、/actuator/env、/metrics、/.env、/info | GET 直取（信息暴露类高频） | 信息暴露 |
 | /cors-debug、/cors、/origin | Origin 变体矩阵（evil.com/null/子域） | CORS 配置错误 |
 | /admin、/manage、/console | 直取+默认凭据对 | 越权/默认凭据 |
