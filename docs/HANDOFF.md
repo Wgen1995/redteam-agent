@@ -1018,3 +1018,13 @@
 - **RT-0005** 运行时库 in-band 全流（STG-0004→approve→commit）回灌发行库；**G-51 零打断零补令**。
 - **金样收编**：G-r8 入 fixtures 钉测 2 枚（19/56+creds 墙破断言+post_auth 首命中断言）。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0（独立性保住）。
+
+
+## 2026-10-05 battle-8（G-r9）收战：头名族/method 族缺口+vault 链路首通
+- **战果**：门控 **18/56≈0.3214**（beacon 18）；P4 21/21 VERIFIED 零强改（**含 vault 占位符 EV：REJECT vault 未初始化→补 passphrase 派生主钥 reproduced=fail-closed 链路首通**）；五门全 PASS（P3 degraded=budget-exhausted 合法终态）；redirect 参数族三代际最全收割（to/next/u 三名）；SQLi/穿越双形双 EV（律 18 首验）。六代同面：G-r4 0.50 / G-r5 0.21 / G-r6 0.34 / G-r7 0.29 / G-r8 0.38 / G-r9 0.32。
+- **备战批三律验收**：律 18 双形记账首验；GT v5 alt-form（G-r8 0.34→0.38 idor 归位，G-r4..r7 零漂移，六代锚重钉）；dict v3.2 /admin 子名词枚举到位但携带形态错（见归因 1）。
+- **归因核验（种子锚点，RT-0006 attribution_check=verified）**：①**token 携带形态=发放响应头**（svc-login 成功响应带 X-Auth-Token 头——G-r8 采集 G-r9 盲试 40+ 次 5 形全 401；头名族=键名族的响应侧镜像）②**deser 三面=方法族缺口**（种子路由全在 do_GET 任意 GET 直取即弹；战士 8+ 形态全 POST→恒 400）③sqli-01=shop /item 参数面漏（item/order/product 族未列全）。
+- **战士流程教训**：token 到手≠面开（形态熵基线+响应头第一候选）；marker 信标面差分零信息先分型；offline 预检 CRLF 归一陷阱（演练五连须在线等价路径）；matrix 全铺×预算三角（128 行 15x vs G-r8 27 格 21x）。
+- **RT-0006** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**。
+- **金样收编**：G-r9 入 fixtures 钉测 2 枚（18/56+缺口断言 deser/role-03）。
+- 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。

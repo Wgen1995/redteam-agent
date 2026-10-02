@@ -1,0 +1,1 @@
+CRED-r9-0001	static-cred	admin	admin@svc-login	{{vault:cred-1}}	AST-r9-0005	INT-r9-0003				active	http-get\;http-post	svc-login 弱口令链 admin/admin123 占位符 真值在 vault	2	2026-10-05T09:40:00Z	

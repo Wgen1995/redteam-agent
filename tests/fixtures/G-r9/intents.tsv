@@ -1,0 +1,6 @@
+INT-r9-0001	端口扫描与服务指纹测绘	8000-8010 段×8 服务建图+根指纹	candidate	netmap	recon	entity			-+recon+端口扫描与服务指纹测绘	100000\;2000\;2					2	2026-10-05T09:03:00Z
+INT-r9-0002	字典族端点发现全服务	字典v2 §1.1/§1.1.1/§1.3 全族喷洒	candidate	discovery	recon	precedent			-+recon+字典族端点发现全服务	200000\;3000\;3					2	2026-10-05T09:03:10Z
+INT-r9-0003	凭据发放面与弱口令链	律16熵基线+律17键名叉乘+律9双编码	candidate	exploit	surface	precedent			-+surface+凭据发放面与弱口令链	150000\;2000\;2					2	2026-10-05T09:03:20Z
+INT-r9-0004	认证后跨服务重扫与admin子名词族	律2+字典§1.2.1 八子名词全服务枚举	candidate	exploit	deep-dive	adjacency			-+deep-dive+认证后跨服务重扫与admin子名词族	150000\;2000\;2					2	2026-10-05T09:03:30Z
+INT-r9-0005	面乘类矩阵置格与收敛	matrix-init 8面×12类+批量置格	candidate	matrix	matrix-test	mixed			-+matrix-test+面乘类矩阵置格与收敛	100000\;1000\;1					2	2026-10-05T09:03:40Z
+INT-r9-0006	新类专探与资源面双形	JWT构造/GraphQL/XXE/CSRF/限流连击/multipart+律18双形	candidate	exploit	deep-dive	concept			-+deep-dive+新类专探与资源面双形	100000\;1500\;2					2	2026-10-05T09:03:50Z

@@ -1,0 +1,13 @@
+S-r9-0001	include	*.range.local					2	2026-10-05T09:01:00Z
+S-r9-0002	include	172.28.0.0/24					2	2026-10-05T09:01:00Z
+S-r9-0003	include	svc-shop					2	2026-10-05T09:01:00Z
+S-r9-0004	include	svc-api-gw					2	2026-10-05T09:01:00Z
+S-r9-0005	include	svc-admin					2	2026-10-05T09:01:00Z
+S-r9-0006	include	svc-login					2	2026-10-05T09:01:00Z
+S-r9-0007	include	svc-billing					2	2026-10-05T09:01:00Z
+S-r9-0008	include	svc-dashboard					2	2026-10-05T09:01:00Z
+S-r9-0009	include	svc-portal					2	2026-10-05T09:01:00Z
+S-r9-0010	include	svc-files					2	2026-10-05T09:01:00Z
+S-r9-0011	exclude	*.out-of-scope.local					2	2026-10-05T09:01:00Z
+S-r9-0012	oob	192.168.0.0/16					2	2026-10-05T09:01:00Z
+S-r9-0013	account-grant	svc-login	admin@range	http-get\;http-post		发放面/弱口令获凭据的授权动作域	2	2026-10-05T09:02:00Z

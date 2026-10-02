@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK\n\n<html>reply /reply?reply=%3Cb%3Ebold%3C%2Fb%3E GTXSS-03 synthetic reflected xss</html>

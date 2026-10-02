@@ -1,0 +1,128 @@
+svc-shop	wstg-info				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-conf				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-idnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-authn				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-authz				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-sess				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-inpv				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-errh				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-cryp				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-busl				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-clnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-shop	wstg-apit				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-info				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-conf				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-idnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-authn				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-authz				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-sess				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-inpv				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-errh				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-cryp				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-busl				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-clnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-api-gw	wstg-apit				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-info				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-conf				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-idnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-authn				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-authz				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-sess				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-inpv				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-errh				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-cryp				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-busl				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-clnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-admin	wstg-apit				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-info				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-conf				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-idnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-authn				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-authz				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-sess				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-inpv				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-errh				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-cryp				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-busl				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-clnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-login	wstg-apit				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-info				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-conf				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-idnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-authn				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-authz				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-sess				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-inpv				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-errh				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-cryp				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-busl				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-clnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-billing	wstg-apit				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-info				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-conf				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-idnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-authn				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-authz				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-sess				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-inpv				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-errh				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-cryp				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-busl				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-clnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-dashboard	wstg-apit				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-info				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-conf				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-idnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-authn				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-authz				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-sess				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-inpv				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-errh				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-cryp				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-busl				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-clnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-portal	wstg-apit				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-info				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-conf				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-idnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-authn				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-authz				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-sess				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-inpv				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-errh				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-cryp				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-busl				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-clnt				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+svc-files	wstg-apit				2	2026-10-05T09:07:00Z	2026-10-05T09:08:00Z
+range.local	wstg-info	-	submatrix:根域标识层信息面(注册表外新面铸造)	INT-r9-0001	2	2026-10-05T09:09:00Z	
+range.local	wstg-conf		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-idnt		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-authn		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-authz		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-sess		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-inpv		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-errh		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-cryp		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-busl		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-clnt		submatrix:		2	2026-10-05T09:09:00Z	
+range.local	wstg-apit		submatrix:		2	2026-10-05T09:09:00Z	
+svc-login	wstg-info	x		INT-r9-0001	2	2026-10-05T09:52:00Z	
+svc-portal	wstg-clnt	x		INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-portal	wstg-info	x		INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-shop	wstg-clnt	x		INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-shop	wstg-inpv	x		INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-dashboard	wstg-inpv	x		INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-files	wstg-inpv	x		INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-files	wstg-info	x		INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-api-gw	wstg-conf	x		INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-api-gw	wstg-clnt	x		INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-login	wstg-conf	-	not-applicable:纯登录面无配置暴露面(探遍 catch-all 无 config 响应差)	INT-r9-0002	2	2026-10-05T09:52:00Z	
+svc-login	wstg-authn	x		INT-r9-0003	2	2026-10-05T09:52:00Z	
+svc-login	wstg-busl	x		INT-r9-0003	2	2026-10-05T09:52:00Z	
+svc-admin	wstg-authn	x		INT-r9-0003	2	2026-10-05T09:52:00Z	
+svc-billing	wstg-authz	-	unreachable:AST-r9-0032 认证墙未破 token 五形态+JWT+Basic 九对全拒 budget-exhausted 挂起	INT-r9-0004	2	2026-10-05T09:52:00Z	
+svc-billing	wstg-authn	-	unreachable:billing POST /login 无弱口令对 9 对全 403	INT-r9-0004	2	2026-10-05T09:52:00Z	
+svc-admin	wstg-authz	-	unreachable:tok-usr-001 五形态 40+ 试全 401 挂起	INT-r9-0004	2	2026-10-05T09:52:00Z	
+svc-api-gw	wstg-inpv	x		INT-r9-0006	2	2026-10-05T09:52:00Z	
+svc-api-gw	wstg-apit	x		INT-r9-0006	2	2026-10-05T09:52:00Z	
+svc-files	wstg-apit	-	unreachable:deser POST 400 形态未破 8+ 形态挂起	INT-r9-0006	2	2026-10-05T09:52:00Z	

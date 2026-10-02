@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK\n\n<html>GTINFOLEAK-01 synthetic env: DB_PASS=<掩码> AWS_KEY=<掩码></html>

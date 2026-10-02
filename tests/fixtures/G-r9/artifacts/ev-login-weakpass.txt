@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK\n\n<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>

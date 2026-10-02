@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK\n\n<html>search results %3Csvg%20onload%3Dalert%281%29%3E GTXSS-01 synthetic reflected xss</html>

@@ -1,0 +1,1 @@
+HTTP/1.0 302 Found\nLocation: http://evil.example\n\n<html>GTREDIR-02 synthetic redirect to %s</html>

@@ -1,0 +1,32 @@
+AST-r9-0001	root-domain	authorized-range.local	靶场主域,8服务宿	out_of_scope	2	2026-10-05T09:04:00Z
+AST-r9-0002	service	svc-shop	端口8001	in_scope	2	2026-10-05T09:04:10Z
+AST-r9-0003	service	svc-api-gw	端口8002,面级限流30req/10s	in_scope	2	2026-10-05T09:04:15Z
+AST-r9-0004	service	svc-admin	端口8003,全401auth required	in_scope	2	2026-10-05T09:04:20Z
+AST-r9-0005	service	svc-login	端口8004,catch-all 200 login form	in_scope	2	2026-10-05T09:04:25Z
+AST-r9-0006	service	svc-billing	端口8005,全401	in_scope	2	2026-10-05T09:04:30Z
+AST-r9-0007	service	svc-dashboard	端口8006	in_scope	2	2026-10-05T09:04:35Z
+AST-r9-0008	service	svc-portal	端口8007	in_scope	2	2026-10-05T09:04:40Z
+AST-r9-0009	service	svc-files	端口8008	in_scope	2	2026-10-05T09:04:45Z
+AST-r9-0010	root-domain	range.local	靶场规范根域(scope *.range.local 锚)	in_scope	2	2026-10-05T09:05:00Z
+AST-r9-0011	endpoint	svc-login/health	catch-all 200 面,演练弹兼真实指纹观察	in_scope	2	2026-10-05T09:10:00Z
+AST-r9-0012	endpoint	svc-login/login	weakpass+rate faces,POST form	in_scope	2	2026-10-05T09:14:20Z
+AST-r9-0013	endpoint	svc-admin/login	weakpass face POST,发 token tok-usr-001	in_scope	2	2026-10-05T09:14:45Z
+AST-r9-0014	endpoint	svc-portal/redirect	GTREDIR-01,param=to	in_scope	2	2026-10-05T09:15:10Z
+AST-r9-0015	endpoint	svc-shop/logout	GTREDIR-02,param=next	in_scope	2	2026-10-05T09:15:35Z
+AST-r9-0016	endpoint	svc-api-gw/jump	GTREDIR-03,param=u	in_scope	2	2026-10-05T09:16:00Z
+AST-r9-0017	endpoint	svc-shop/search	GTXSS-01 reflected,q 回显	in_scope	2	2026-10-05T09:16:25Z
+AST-r9-0018	endpoint	svc-shop/feedback	GTXSS-04 reflected	in_scope	2	2026-10-05T09:16:50Z
+AST-r9-0019	endpoint	svc-shop/reply	GTXSS-03 reflected	in_scope	2	2026-10-05T09:17:15Z
+AST-r9-0020	endpoint	svc-shop/comment	GTXSS-02 stored xss echo	in_scope	2	2026-10-05T09:17:40Z
+AST-r9-0021	endpoint	svc-shop/orders	GTSQLI-02,资源面双形(query+path)	in_scope	2	2026-10-05T09:18:05Z
+AST-r9-0022	endpoint	svc-dashboard/render	GTSSTI-02,param=tpl	in_scope	2	2026-10-05T09:18:30Z
+AST-r9-0023	endpoint	svc-dashboard/report	GTSSTI-01,reports 同族	in_scope	2	2026-10-05T09:18:55Z
+AST-r9-0024	endpoint	svc-portal/debug/env	GTINFOLEAK-01,DB_PASS/AWS_KEY	in_scope	2	2026-10-05T09:19:20Z
+AST-r9-0025	endpoint	svc-files/.env	GTINFOLEAK-03,SECRET_KEY	in_scope	2	2026-10-05T09:19:45Z
+AST-r9-0026	endpoint	svc-files/download	GTTRAVERSAL-01,双形(query+path)	in_scope	2	2026-10-05T09:20:10Z
+AST-r9-0027	endpoint	svc-api-gw/cors-debug	GTCORS-01,ACAO wildcard	in_scope	2	2026-10-05T09:20:35Z
+AST-r9-0028	endpoint	svc-api-gw/origin	GTCORS-02,反射 Origin+ACAC true	in_scope	2	2026-10-05T09:21:00Z
+AST-r9-0029	endpoint	svc-api-gw/preview	GTSSRF-02,webhook meta	in_scope	2	2026-10-05T09:21:25Z
+AST-r9-0030	endpoint	svc-api-gw/graphql	GTGRAPHQL-01,introspection GET	in_scope	2	2026-10-05T09:21:50Z
+AST-r9-0031	endpoint	svc-files/import	deser 面,POST 400 形态未中(挂起)	in_scope	2	2026-10-05T09:22:15Z
+AST-r9-0032	endpoint	svc-billing/invoices	资源面,认证墙 401(Bearer/Basic/Cookie 均拒)	in_scope	2	2026-10-05T09:22:40Z

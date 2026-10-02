@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK\n\n<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>

@@ -1,0 +1,1 @@
+HTTP/1.0 403 Forbidden\n\n<html>denied GTRATE-01 synthetic no rate limit after 11 attempts</html>

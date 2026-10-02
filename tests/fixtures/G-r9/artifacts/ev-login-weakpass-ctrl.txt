@@ -1,0 +1,1 @@
+HTTP/1.0 403 Forbidden\n\n<html>denied</html>

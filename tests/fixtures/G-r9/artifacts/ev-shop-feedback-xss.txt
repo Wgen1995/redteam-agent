@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK\n\n<html>feedback /feedback?feedback=%3Csvg%2F%3E GTXSS-04 synthetic reflected xss</html>
