@@ -116,7 +116,7 @@ def _canon_endpoint(u, aliases):
     return _canon_host(host, aliases) + rest
 
 
-KEYING_VERSION = 4   # v4.1 两遍法（词证先耗用差分补余）battle-6   # v4=尾段数字归一+同键多 GT 单计（见 score() consumed 集合）
+KEYING_VERSION = 5   # v5 alt-form 孪生键（显式声明）+v4.1 两遍法（词证先耗用差分补余）   # v4=尾段数字归一+同键多 GT 单计（见 score() consumed 集合）
 
 
 def _replay_state(rows):
@@ -182,13 +182,15 @@ def score(rows, cards, gt, host_aliases=None, tracks=None):
         只认差分。v4.1 两遍法：词证永远优先于差分——G-r7 实证一遍法按 GT 序会让
         先序 GT 的差分耗用后序 GT 的词证 finding（证据强度倒挂）；两遍保总分不变、
         归因归真（词证侧 GT 先得）。返回 (finding_id, track) 或 (None, None)。"""
-        gt_key = _canon_endpoint(e["endpoint"], aliases) if e.get("endpoint") else ""
+        gt_keys = {_canon_endpoint(e["endpoint"], aliases)} if e.get("endpoint") else set()
+        for alt in e.get("alt_forms", ()):        # v5 孪生键：语义等价必须显式（GT 条目级声明）
+            gt_keys.add(_canon_endpoint(alt, aliases))
         for f in active:
             f_id = f[fi("id")]
             if f_id in consumed:               # v4：已被前序 GT 消费的 finding 不得再计
                 continue
             av = ast_value.get(_cell("findings.tsv", f, "affected_asset_id"))
-            if not gt_key or av is None or _canon_endpoint(av, aliases) != gt_key:
+            if not gt_keys or av is None or _canon_endpoint(av, aliases) not in gt_keys:
                 continue
             evs = [x for x in (_cell("findings.tsv", f, "evidence_ids") or "").split(";") if x]
             evs += [x for x in (_cell("findings.tsv", f, "control_evidence_ids") or "").split(";") if x]

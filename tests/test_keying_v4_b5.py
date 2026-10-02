@@ -15,7 +15,7 @@ TS = '2026-10-02T00:00:00Z'
 
 class TestCanonV4(unittest.TestCase):
     def test_keying_version_bumped(self):
-        self.assertEqual(KEYING_VERSION, 4)
+        self.assertEqual(KEYING_VERSION, 5)   # battle-8：v4→v4.1→v5（alt-form 孪生键）
 
     def test_digit_tail_normalized(self):
         self.assertEqual(_canon_endpoint('svc-admin/admin/users/102', {}),

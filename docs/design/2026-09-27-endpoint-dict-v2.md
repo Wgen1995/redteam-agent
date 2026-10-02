@@ -21,6 +21,11 @@
 ### 1.1.1 redirect 参数族（v3.1·battle-6 RT-0004：redir-01 漏检根因=本族缺席）
 一级 /redirect 命中后参数名变体全试（to/next/url/goto/redirect/continue/target）；外域参数值用 http://evil.example 形——**302 Location 头直取即证**；同服务 /logout?next= 与 /redirect?to= 常并存（同族双面）。
 
+### 1.2.1 /admin/<noun> 两段式族（v3.2·battle-7 RT-0005：六新 post_auth 靶全 miss 真因）
+持 token 命中任一 /admin 面后，子名词强制枚举：/admin/config、/admin/logs、/admin/keys、
+/admin/reports、/admin/clients、/admin/audit、/admin/settings、/admin/users——
+每个服务都试（跨服务令牌信任是常态面）；401→200 翻转即低权可达面（role/hauth 类）。
+
 ### 1.2 两段式路径探测（首战建议 2）
 一级命中后强制二段：/api/<资源>/<id>/<动作>、/<资源>/<id>/edit、/debug/<一级命中>/env——词典消费=matrix 行铸造时 surface 列带二级段。
 

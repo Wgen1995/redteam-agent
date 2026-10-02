@@ -64,3 +64,4 @@
 15. **卡片 matcher 带响应特征串（battle-6 实证）**：行为型 finding 的 EV 卡 expected.matchers.words 必须含响应体的**特征串原文**（如计数器/递增数字/特定词组）——matcher 只写行为描述词=词证面自弃（差分轨也救不回被先序 GT 借道的键）。
 16. **响应熵基线（battle-6 实证：634 次钉死一面）**：发放面/爆破面先发 3-5 次基线探测——响应恒 403 仅计数变化=零熵墙，立即转面转键名族；catch-all 200 同理（诱饵形）。零信息面不投爆破预算。
 17. **键名族×编码族叉乘（battle-6 实证：凭据 0 根因）**：登录/发放面 POST 探测矩阵=键名族（user/username/name/account/email × pass/password/pwd）×编码族（urlencoded 先/JSON 次）全叉乘（字典 §1.3 律）；服务端常收表单子串——键名错则编码对也永不中。
+18. **同面双形记账（battle-7 实证：idor-01/02 漏洞找到却 miss）**：同一漏洞面 query 形与 path 形都记——/admin/orders?user_id=101 与 /admin/orders/1 各铸一枚 EV 同 finding（双形同证据链）；服务端 startswith 路由两形常同弹，只记一形=丢另一形的键面。资源面（orders/invoices/users）一律双形双 EV。

@@ -68,7 +68,8 @@ class TestGroundTruth(unittest.TestCase):
         for g in self.gt:
             self.assertEqual(set(g.keys()),
                              {"id", "class", "endpoint", "marker", "post_auth", "authz_role"}
-                             | ({"note"} if "note" in g else set()),   # 批次 10 P2#2：重标注记列可选
+                             | ({"note"} if "note" in g else set())   # 批次 10 P2#2：重标注记列可选
+                             | ({"alt_forms"} if "alt_forms" in g else set()),   # battle-8 GT v5 孪生键可选
                              g["id"])
             if g["post_auth"]:
                 self.assertTrue(g["authz_role"], "post_auth 条目 authz_role 非空")
