@@ -1,0 +1,1 @@
+GET /admin/clients with auth header (vault cred-2) -> 200 GTHAUTH-05 low-priv client list

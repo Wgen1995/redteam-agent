@@ -1,0 +1,32 @@
+AST-r11-0001	root-domain	authorized-range.local	range root	in_scope	2	2026-10-07T09:07:00Z
+AST-r11-0002	service	svc-shop	open tcp/8001 (probe1)	in_scope	2	2026-10-07T09:07:11Z
+AST-r11-0003	service	svc-api-gw	open tcp/8002 (probe1)	in_scope	2	2026-10-07T09:07:12Z
+AST-r11-0004	service	svc-admin	open tcp/8003 (probe1)	in_scope	2	2026-10-07T09:07:13Z
+AST-r11-0005	service	svc-login	open tcp/8004 (probe1)	in_scope	2	2026-10-07T09:07:14Z
+AST-r11-0006	service	svc-billing	open tcp/8005 (probe1)	in_scope	2	2026-10-07T09:07:15Z
+AST-r11-0007	service	svc-dashboard	open tcp/8006 (probe1)	in_scope	2	2026-10-07T09:07:16Z
+AST-r11-0008	service	svc-portal	open tcp/8007 (probe1)	in_scope	2	2026-10-07T09:07:17Z
+AST-r11-0009	service	svc-files	open tcp/8008 (probe1)	in_scope	2	2026-10-07T09:07:18Z
+AST-r11-0010	endpoint	svc-login/__rehearsal	rehearsal bullet face (discarded after chain drill)	in_scope	2	2026-10-07T09:15:00Z
+AST-r11-0011	endpoint	svc-portal/redirect	wave-A face marker=GTREDIR-01	in_scope	2	2026-10-07T09:21:00Z
+AST-r11-0012	endpoint	svc-shop/logout	wave-A face marker=GTREDIR-02	in_scope	2	2026-10-07T09:31:00Z
+AST-r11-0013	endpoint	svc-portal/debug/env	wave-A face marker=GTINFOLEAK-01	in_scope	2	2026-10-07T09:41:00Z
+AST-r11-0014	endpoint	svc-files/.env	wave-A face marker=GTINFOLEAK-03	in_scope	2	2026-10-07T09:51:00Z
+AST-r11-0015	endpoint	svc-files/download	wave-A face marker=GTTRAVERSAL-01	in_scope	2	2026-10-07T10:01:00Z
+AST-r11-0016	endpoint	svc-files/unserialize	wave-A face marker=GTDESER-01	in_scope	2	2026-10-07T10:11:00Z
+AST-r11-0017	endpoint	svc-files/import	wave-A face marker=GTDESER-02	in_scope	2	2026-10-07T10:21:00Z
+AST-r11-0018	endpoint	svc-files/decode	wave-A face marker=GTDESER-03	in_scope	2	2026-10-07T10:31:00Z
+AST-r11-0019	endpoint	svc-api-gw/graphql	wave-A face marker=GTGRAPHQL-01	in_scope	2	2026-10-07T10:41:00Z
+AST-r11-0020	endpoint	svc-login/login	probe4-8 face	in_scope	2	2026-10-07T10:01:00Z
+AST-r11-0021	endpoint	svc-shop/feedback	probe4-8 face	in_scope	2	2026-10-07T10:19:00Z
+AST-r11-0022	endpoint	svc-shop/comment	probe4-8 face	in_scope	2	2026-10-07T10:28:00Z
+AST-r11-0023	endpoint	svc-shop/item	probe4-8 face	in_scope	2	2026-10-07T10:37:00Z
+AST-r11-0024	endpoint	svc-shop/orders	probe4-8 face	in_scope	2	2026-10-07T10:46:00Z
+AST-r11-0025	endpoint	svc-api-gw/preview	probe4-8 face	in_scope	2	2026-10-07T10:58:00Z
+AST-r11-0026	endpoint	svc-api-gw/cors-debug	probe4-8 face	in_scope	2	2026-10-07T11:07:00Z
+AST-r11-0027	endpoint	svc-api-gw/origin	probe4-8 face	in_scope	2	2026-10-07T11:16:00Z
+AST-r11-0028	endpoint	svc-dashboard/render	probe4-8 face	in_scope	2	2026-10-07T10:06:00Z
+AST-r11-0029	endpoint	svc-files/admin/logs	probe4-8 face	in_scope	2	2026-10-07T10:15:00Z
+AST-r11-0030	endpoint	svc-dashboard/admin/config	probe4-8 face	in_scope	2	2026-10-07T10:26:00Z
+AST-r11-0031	endpoint	svc-portal/admin/clients	probe4-8 face	in_scope	2	2026-10-07T10:37:00Z
+AST-r11-0032	endpoint	svc-admin/admin	probe4-8 face	in_scope	2	2026-10-07T10:48:00Z

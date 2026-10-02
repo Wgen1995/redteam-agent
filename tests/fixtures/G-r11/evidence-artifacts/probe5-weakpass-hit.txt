@@ -1,0 +1,1 @@
+POST /login user=admin pass=<vault cred-1> -> 200 welcome admin GTWEAKPASS-01 with auth header (truth in vault cred-2)

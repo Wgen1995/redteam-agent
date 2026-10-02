@@ -1,0 +1,1 @@
+GET /admin/clients anonymous -> 401 auth required

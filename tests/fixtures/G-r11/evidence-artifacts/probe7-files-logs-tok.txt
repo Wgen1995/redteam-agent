@@ -1,0 +1,1 @@
+GET /admin/logs with auth header (vault cred-2) -> 200 GTROLE-04 low-priv log face

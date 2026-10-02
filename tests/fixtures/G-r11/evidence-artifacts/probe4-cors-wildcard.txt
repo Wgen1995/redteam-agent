@@ -1,0 +1,1 @@
+GET /cors-debug with Origin evil.example -> ACAO * ; config flaw class

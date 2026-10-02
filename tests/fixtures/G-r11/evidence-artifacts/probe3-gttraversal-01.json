@@ -1,0 +1,1 @@
+GET svc-files:8008/download?file=etc/passwd -> marker GTTRAVERSAL-01 in body

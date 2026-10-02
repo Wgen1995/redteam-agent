@@ -1,0 +1,35 @@
+F-r11-0001	INT-r11-0001	port	svc-shop	tcp/8001 open on svc-shop (probe1 scan 8000-8010, single port each)	0.99	2	2026-10-07T09:10:11Z
+F-r11-0002	INT-r11-0001	port	svc-api-gw	tcp/8002 open on svc-api-gw (probe1 scan 8000-8010, single port each)	0.99	2	2026-10-07T09:10:12Z
+F-r11-0003	INT-r11-0001	port	svc-admin	tcp/8003 open on svc-admin (probe1 scan 8000-8010, single port each)	0.99	2	2026-10-07T09:10:13Z
+F-r11-0004	INT-r11-0001	port	svc-login	tcp/8004 open on svc-login (probe1 scan 8000-8010, single port each)	0.99	2	2026-10-07T09:10:14Z
+F-r11-0005	INT-r11-0001	port	svc-billing	tcp/8005 open on svc-billing (probe1 scan 8000-8010, single port each)	0.99	2	2026-10-07T09:10:15Z
+F-r11-0006	INT-r11-0001	port	svc-dashboard	tcp/8006 open on svc-dashboard (probe1 scan 8000-8010, single port each)	0.99	2	2026-10-07T09:10:16Z
+F-r11-0007	INT-r11-0001	port	svc-portal	tcp/8007 open on svc-portal (probe1 scan 8000-8010, single port each)	0.99	2	2026-10-07T09:10:17Z
+F-r11-0008	INT-r11-0001	port	svc-files	tcp/8008 open on svc-files (probe1 scan 8000-8010, single port each)	0.99	2	2026-10-07T09:10:18Z
+F-r11-0009	INT-r11-0001	http	svc-login	GET / 200 html login form\; svc-admin:8003 and svc-billing:8005 roots 401 auth required\; others 404\; all BaseHTTP Python 3.12	0.95	2	2026-10-07T09:12:00Z
+F-r11-0010	INT-r11-0002	vuln-clue	svc-portal	probe3 svc-portal/redirect?to=http://evil.example -> marker GTREDIR-01 visible anonymously	0.9	2	2026-10-07T09:23:00Z
+F-r11-0011	INT-r11-0002	vuln-clue	svc-shop	probe3 svc-shop/logout?next=http://evil.example -> marker GTREDIR-02 visible anonymously	0.9	2	2026-10-07T09:33:00Z
+F-r11-0012	INT-r11-0002	vuln-clue	svc-portal	probe3 svc-portal/debug/env -> marker GTINFOLEAK-01 visible anonymously	0.9	2	2026-10-07T09:43:00Z
+F-r11-0013	INT-r11-0002	vuln-clue	svc-files	probe3 svc-files/.env -> marker GTINFOLEAK-03 visible anonymously	0.9	2	2026-10-07T09:53:00Z
+F-r11-0014	INT-r11-0002	vuln-clue	svc-files	probe3 svc-files/download?file=etc/passwd -> marker GTTRAVERSAL-01 visible anonymously	0.9	2	2026-10-07T10:03:00Z
+F-r11-0015	INT-r11-0002	vuln-clue	svc-files	probe3 svc-files/unserialize -> marker GTDESER-01 visible anonymously	0.9	2	2026-10-07T10:13:00Z
+F-r11-0016	INT-r11-0002	vuln-clue	svc-files	probe3 svc-files/import -> marker GTDESER-02 visible anonymously	0.9	2	2026-10-07T10:23:00Z
+F-r11-0017	INT-r11-0002	vuln-clue	svc-files	probe3 svc-files/decode -> marker GTDESER-03 visible anonymously	0.9	2	2026-10-07T10:33:00Z
+F-r11-0018	INT-r11-0002	vuln-clue	svc-api-gw	probe3 svc-api-gw/graphql -> marker GTGRAPHQL-01 visible anonymously	0.9	2	2026-10-07T10:43:00Z
+F-r11-0019	INT-r11-0003	vuln-clue	svc-login	POST /login user=admin pass=admin123 urlencoded returns 200 welcome admin marker GTWEAKPASS-01 with response header granting auth token (value held in vault cred-1)\; token name shape is usr-class i.e. user-level despite admin account	0.99	2	2026-10-07T09:50:00Z
+F-r11-0020	INT-r11-0003	info	svc-login	login face returns denied marker GTRATE-01 with per-attempt counter and never blocks\; 95 attempts in one run all processed\; key-name oracle: only the short user/pass key spellings accepted, longer spellings denied	0.95	2	2026-10-07T09:50:40Z
+F-r11-0021	INT-r11-0003	vuln-clue	svc-login	probe5 POST /login with user=admin and the short pass key spelling returns 200 welcome admin marker GTWEAKPASS-01 and an auth header value now stored as vault cred-2	0.9	2	2026-10-07T10:03:00Z
+F-r11-0022	INT-r11-0003	info	svc-login	probe5 95 consecutive login attempts processed\; response counter increments per attempt and never blocks or throttles	0.9	2	2026-10-07T10:12:00Z
+F-r11-0023	INT-r11-0002	vuln-clue	svc-shop	probe5 GET /feedback with url-encoded svg payload echoes payload in response with marker GTXSS-04 (encoded form)	0.9	2	2026-10-07T10:21:00Z
+F-r11-0024	INT-r11-0002	vuln-clue	svc-shop	probe3 GET /comment returns marker GTXSS-02 stored xss echo\; POST handler absent (501) so storage vector unconfirmed	0.9	2	2026-10-07T10:30:00Z
+F-r11-0025	INT-r11-0002	vuln-clue	svc-shop	probe4 /item?id= payloads all return identical GTSQLI-01 SQL error echo\; no payload-dependent differential	0.9	2	2026-10-07T10:39:00Z
+F-r11-0026	INT-r11-0002	vuln-clue	svc-shop	probe3/4 both /orders path form and /order?id=1 query form return identical GTSQLI-02 SQL syntax error marker	0.9	2	2026-10-07T10:48:00Z
+F-r11-0027	INT-r11-0003	vuln-clue	svc-api-gw	probe4 /preview with url param returns webhook meta marker GTSSRF-02 identical across url targets\; outbound fetch not differential-confirmed	0.9	2	2026-10-07T11:00:00Z
+F-r11-0028	INT-r11-0003	vuln-clue	svc-api-gw	probe4 /cors-debug returns wildcard allow-origin header regardless of Origin value\; no allow-credentials header	0.9	2	2026-10-07T11:09:00Z
+F-r11-0029	INT-r11-0003	vuln-clue	svc-api-gw	probe4 /origin reflects arbitrary Origin values in ACAO and sets allow-credentials true\; exploitable cross-origin read config	0.9	2	2026-10-07T11:18:00Z
+F-r11-0030	INT-r11-0003	vuln-clue	svc-api-gw	probe4 GET /graphql with introspection query returns marker GTGRAPHQL-01 introspection enabled\; type name dump not returned	0.9	2	2026-10-07T10:06:00Z
+F-r11-0031	INT-r11-0003	vuln-clue	svc-dashboard	probe4 /render tpl param echoed literally with marker GTSSTI-02\; expression evaluation not observed\; POST handler absent (400)	0.9	2	2026-10-07T10:08:00Z
+F-r11-0032	INT-r11-0005	authz	svc-files	probe6/7 user-level token flips /admin/logs from 401 to 200 with marker GTROLE-04\; forged token shapes rejected 401	0.9	2	2026-10-07T10:17:00Z
+F-r11-0033	INT-r11-0005	authz	svc-dashboard	probe7 user-level token flips /admin/config from 401 to 200 marker GTROLE-03	0.9	2	2026-10-07T10:28:00Z
+F-r11-0034	INT-r11-0005	authz	svc-portal	probe7 user-level token flips /admin/clients from 401 to 200 marker GTHAUTH-05 client list	0.9	2	2026-10-07T10:39:00Z
+F-r11-0035	INT-r11-0005	authz	svc-admin	probe6/8 foreign token from svc-login flips auth gate on svc-admin and svc-billing from 401 to 404 on all probed faces	0.9	2	2026-10-07T10:50:00Z

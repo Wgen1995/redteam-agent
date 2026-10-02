@@ -1,0 +1,1 @@
+GET svc-portal:8007/debug/env -> marker GTINFOLEAK-01 in body

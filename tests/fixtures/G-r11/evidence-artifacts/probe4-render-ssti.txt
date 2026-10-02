@@ -1,0 +1,1 @@
+GET /render?tpl={{7*7}} -> 200 render GTSSTI-02 echo of tpl literal

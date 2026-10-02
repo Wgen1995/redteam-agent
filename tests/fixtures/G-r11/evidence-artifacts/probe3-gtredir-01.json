@@ -1,0 +1,1 @@
+GET svc-portal:8007/redirect?to=http://evil.example -> marker GTREDIR-01 in body

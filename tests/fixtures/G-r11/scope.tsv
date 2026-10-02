@@ -1,0 +1,26 @@
+S-r11-0001	include	*.range.local					2	2026-10-07T09:01:00Z
+S-r11-0002	include	172.28.0.0/24					2	2026-10-07T09:01:00Z
+S-r11-0003	include	svc-shop					2	2026-10-07T09:01:00Z
+S-r11-0004	include	svc-api-gw					2	2026-10-07T09:01:00Z
+S-r11-0005	include	svc-admin					2	2026-10-07T09:01:00Z
+S-r11-0006	include	svc-login					2	2026-10-07T09:01:00Z
+S-r11-0007	include	svc-billing					2	2026-10-07T09:01:00Z
+S-r11-0008	include	svc-dashboard					2	2026-10-07T09:01:00Z
+S-r11-0009	include	svc-portal					2	2026-10-07T09:01:00Z
+S-r11-0010	include	svc-files					2	2026-10-07T09:01:00Z
+S-r11-0011	exclude	*.out-of-scope.local					2	2026-10-07T09:01:00Z
+S-r11-0012	oob	192.168.0.0/16					2	2026-10-07T09:01:00Z
+S-r11-0013	include	172.28.0.0/24				range subnet	2	2026-10-07T08:01:00Z
+S-r11-0014	include	authorized-range.local				range DNS zone	2	2026-10-07T08:01:10Z
+S-r11-0015	include	svc-shop				compose DNS service svc-shop	2	2026-10-07T08:02:00Z
+S-r11-0016	include	svc-api-gw				compose DNS service svc-api-gw	2	2026-10-07T08:02:00Z
+S-r11-0017	include	svc-admin				compose DNS service svc-admin	2	2026-10-07T08:02:00Z
+S-r11-0018	include	svc-login				compose DNS service svc-login	2	2026-10-07T08:02:00Z
+S-r11-0019	include	svc-billing				compose DNS service svc-billing	2	2026-10-07T08:02:00Z
+S-r11-0020	include	svc-dashboard				compose DNS service svc-dashboard	2	2026-10-07T08:02:00Z
+S-r11-0021	include	svc-portal				compose DNS service svc-portal	2	2026-10-07T08:02:00Z
+S-r11-0022	include	svc-files				compose DNS service svc-files	2	2026-10-07T08:02:00Z
+S-r11-0023	exclude	127.0.0.0/8				loopback out of range	2	2026-10-07T08:03:00Z
+S-r11-0024	oob	evil.example				open-redirect and SSRF beacon domain	2	2026-10-07T08:03:10Z
+S-r11-0025	account-grant	authorized-range.local	admin	read\;write\;admin\;list\;upload\;execute		admin-level token class grant	2	2026-10-07T09:05:00Z
+S-r11-0026	account-grant	authorized-range.local	user	read\;list		user-level token class grant	2	2026-10-07T09:05:10Z

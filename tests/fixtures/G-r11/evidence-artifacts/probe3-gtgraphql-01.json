@@ -1,0 +1,1 @@
+GET svc-api-gw:8002/graphql -> marker GTGRAPHQL-01 in body

@@ -1,0 +1,2 @@
+CRED-r11-0001	static-cred	admin	admin	{{vault:cred-1}}		INT-r11-0003		2026-10-07T09:50:00Z	2026-10-07T23:59:00Z	active		weak password of admin account recovered by key-name cross weakpair probe (user= and pass= short spellings, urlencoded)	2	2026-10-07T09:51:20Z	
+CRED-r11-0002	session	user	admin	{{vault:cred-2}}		INT-r11-0003	CRED-r11-0001	2026-10-07T09:50:00Z	2026-10-07T23:59:00Z	active	read\;list	auth token issued in response header by svc-login\; token name shape tok-usr-NNN indicates USER-level class per law 22 although the login account is admin	2	2026-10-07T09:51:40Z	

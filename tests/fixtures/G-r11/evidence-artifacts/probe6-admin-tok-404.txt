@@ -1,0 +1,1 @@
+GET /admin with auth header (vault cred-2) -> 404 not found, auth gate passed

@@ -1,0 +1,767 @@
+svc-shop	wstg-info				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-conf				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-idnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-authn				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-authz				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-sess				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-inpv				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-errh				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-cryp				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-busl				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-clnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-shop	wstg-apit				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-info				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-conf				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-idnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-authn				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-authz				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-sess				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-inpv				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-errh				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-cryp				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-busl				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-clnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-api-gw	wstg-apit				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-info				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-conf				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-idnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-authn				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-authz				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-sess				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-inpv				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-errh				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-cryp				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-busl				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-clnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-admin	wstg-apit				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-info				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-conf				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-idnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-authn				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-authz				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-sess				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-inpv				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-errh				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-cryp				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-busl				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-clnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-login	wstg-apit				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-info				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-conf				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-idnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-authn				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-authz				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-sess				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-inpv				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-errh				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-cryp				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-busl				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-clnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-billing	wstg-apit				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-info				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-conf				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-idnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-authn				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-authz				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-sess				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-inpv				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-errh				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-cryp				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-busl				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-clnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-dashboard	wstg-apit				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-info				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-conf				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-idnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-authn				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-authz				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-sess				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-inpv				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-errh				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-cryp				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-busl				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-clnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-portal	wstg-apit				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-info				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-conf				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-idnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-authn				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-authz				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-sess				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-inpv				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-errh				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-cryp				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-busl				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-clnt				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+svc-files	wstg-apit				2	2026-10-07T09:13:00Z	2026-10-07T09:13:30Z
+authorized-range.local	wstg-info		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-conf		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-idnt	-	submatrix:root zone identity anchor, no independent http face (probe1: all 8 svc faces covered)	INT-r11-0001	2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-authn		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-authz		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-sess		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-inpv		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-errh		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-cryp		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-busl		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-clnt		submatrix:		2	2026-10-07T09:14:10Z	
+authorized-range.local	wstg-apit		submatrix:		2	2026-10-07T09:14:10Z	
+svc-portal/redirect	wstg-info		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-conf		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-idnt		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-authn		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-authz		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-sess		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-inpv		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-errh		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-cryp		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-busl		submatrix:		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-clnt	x	submatrix:GTREDIR-01 confirmed 302 to external		2	2026-10-07T10:21:00Z	
+svc-portal/redirect	wstg-apit		submatrix:		2	2026-10-07T10:21:00Z	
+svc-shop/logout	wstg-info		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-conf		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-idnt		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-authn		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-authz		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-sess		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-inpv		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-errh		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-cryp		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-busl		submatrix:		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-clnt	x	submatrix:GTREDIR-02 confirmed 302 to external		2	2026-10-07T10:22:00Z	
+svc-shop/logout	wstg-apit		submatrix:		2	2026-10-07T10:22:00Z	
+svc-portal/debug/env	wstg-info		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-conf	x	submatrix:GTINFOLEAK-01 confirmed env echo		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-idnt		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-authn		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-authz		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-sess		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-inpv		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-errh		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-cryp		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-busl		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-clnt		submatrix:		2	2026-10-07T10:23:00Z	
+svc-portal/debug/env	wstg-apit		submatrix:		2	2026-10-07T10:23:00Z	
+svc-files/.env	wstg-info		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-conf	x	submatrix:GTINFOLEAK-03 confirmed env file		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-idnt		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-authn		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-authz		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-sess		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-inpv		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-errh		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-cryp		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-busl		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-clnt		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/.env	wstg-apit		submatrix:		2	2026-10-07T10:24:00Z	
+svc-files/download	wstg-info		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-conf		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-idnt		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-authn		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-authz		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-sess		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-inpv	x	submatrix:GTTRAVERSAL-01 confirmed traversal		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-errh		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-cryp		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-busl		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-clnt		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/download	wstg-apit		submatrix:		2	2026-10-07T10:25:00Z	
+svc-files/unserialize	wstg-info		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-conf		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-idnt		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-authn		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-authz		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-sess		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-inpv	x	submatrix:GTDESER-01 GET processor face		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-errh		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-cryp		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-busl		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-clnt		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/unserialize	wstg-apit		submatrix:		2	2026-10-07T10:26:00Z	
+svc-files/import	wstg-info		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-conf		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-idnt		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-authn		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-authz		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-sess		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-inpv	x	submatrix:GTDESER-02 GET processor face		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-errh		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-cryp		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-busl		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-clnt		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/import	wstg-apit		submatrix:		2	2026-10-07T10:27:00Z	
+svc-files/decode	wstg-info		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-conf		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-idnt		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-authn		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-authz		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-sess		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-inpv	x	submatrix:GTDESER-03 GET processor face		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-errh		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-cryp		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-busl		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-clnt		submatrix:		2	2026-10-07T10:28:00Z	
+svc-files/decode	wstg-apit		submatrix:		2	2026-10-07T10:28:00Z	
+svc-api-gw/graphql	wstg-info		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-conf		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-idnt		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-authn		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-authz		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-sess		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-inpv		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-errh		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-cryp		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-busl		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-clnt		submatrix:		2	2026-10-07T10:29:00Z	
+svc-api-gw/graphql	wstg-apit	x	submatrix:GTGRAPHQL-01 introspection face		2	2026-10-07T10:29:00Z	
+svc-login/login	wstg-info		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-conf		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-idnt		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-authn	x	submatrix:GTWEAKPASS-01 and GTRATE-01 confirmed		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-authz		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-sess		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-inpv		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-errh		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-cryp		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-busl		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-clnt		submatrix:		2	2026-10-07T10:30:00Z	
+svc-login/login	wstg-apit		submatrix:		2	2026-10-07T10:30:00Z	
+svc-shop/feedback	wstg-info		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-conf		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-idnt		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-authn		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-authz		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-sess		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-inpv	x	submatrix:GTXSS-04 reflected echo		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-errh		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-cryp		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-busl		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-clnt		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/feedback	wstg-apit		submatrix:		2	2026-10-07T10:31:00Z	
+svc-shop/comment	wstg-info		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-conf		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-idnt		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-authn		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-authz		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-sess		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-inpv	x	submatrix:GTXSS-02 echo face		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-errh		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-cryp		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-busl		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-clnt		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/comment	wstg-apit		submatrix:		2	2026-10-07T10:32:00Z	
+svc-shop/item	wstg-info		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-conf		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-idnt		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-authn		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-authz		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-sess		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-inpv	x	submatrix:GTSQLI-01 error echo		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-errh		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-cryp		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-busl		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-clnt		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/item	wstg-apit		submatrix:		2	2026-10-07T10:33:00Z	
+svc-shop/orders	wstg-info		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-conf		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-idnt		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-authn		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-authz		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-sess		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-inpv	x	submatrix:GTSQLI-02 dual-form error echo		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-errh		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-cryp		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-busl		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-clnt		submatrix:		2	2026-10-07T10:34:00Z	
+svc-shop/orders	wstg-apit		submatrix:		2	2026-10-07T10:34:00Z	
+svc-api-gw/preview	wstg-info		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-conf		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-idnt		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-authn		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-authz		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-sess		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-inpv	x	submatrix:GTSSRF-02 webhook meta face		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-errh		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-cryp		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-busl		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-clnt		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/preview	wstg-apit		submatrix:		2	2026-10-07T10:35:00Z	
+svc-api-gw/cors-debug	wstg-info		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-conf	x	submatrix:GTCORS-01 wildcard config		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-idnt		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-authn		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-authz		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-sess		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-inpv		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-errh		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-cryp		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-busl		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-clnt		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/cors-debug	wstg-apit		submatrix:		2	2026-10-07T10:36:00Z	
+svc-api-gw/origin	wstg-info		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-conf	x	submatrix:GTCORS-02 reflected credentials		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-idnt		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-authn		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-authz		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-sess		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-inpv		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-errh		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-cryp		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-busl		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-clnt		submatrix:		2	2026-10-07T10:37:00Z	
+svc-api-gw/origin	wstg-apit		submatrix:		2	2026-10-07T10:37:00Z	
+svc-dashboard/render	wstg-info		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-conf		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-idnt		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-authn		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-authz		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-sess		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-inpv	x	submatrix:GTSSTI-02 echo face		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-errh		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-cryp		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-busl		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-clnt		submatrix:		2	2026-10-07T10:38:00Z	
+svc-dashboard/render	wstg-apit		submatrix:		2	2026-10-07T10:38:00Z	
+svc-files/admin/logs	wstg-info		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-conf		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-idnt		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-authn		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-authz	x	submatrix:GTROLE-04 user-level token reached		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-sess		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-inpv		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-errh		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-cryp		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-busl		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-clnt		submatrix:		2	2026-10-07T10:39:00Z	
+svc-files/admin/logs	wstg-apit		submatrix:		2	2026-10-07T10:39:00Z	
+svc-dashboard/admin/config	wstg-info		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-conf		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-idnt		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-authn		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-authz	x	submatrix:GTROLE-03 user-level token reached		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-sess		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-inpv		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-errh		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-cryp		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-busl		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-clnt		submatrix:		2	2026-10-07T10:40:00Z	
+svc-dashboard/admin/config	wstg-apit		submatrix:		2	2026-10-07T10:40:00Z	
+svc-portal/admin/clients	wstg-info		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-conf		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-idnt		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-authn		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-authz	x	submatrix:GTHAUTH-05 user-level token reached		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-sess		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-inpv		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-errh		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-cryp		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-busl		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-clnt		submatrix:		2	2026-10-07T10:41:00Z	
+svc-portal/admin/clients	wstg-apit		submatrix:		2	2026-10-07T10:41:00Z	
+svc-admin/admin	wstg-info		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-conf		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-idnt		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-authn	x	submatrix:foreign token accepted at auth layer		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-authz		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-sess		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-inpv		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-errh		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-cryp		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-busl		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-clnt		submatrix:		2	2026-10-07T10:42:00Z	
+svc-admin/admin	wstg-apit		submatrix:		2	2026-10-07T10:42:00Z	
+svc-billing/admin	wstg-info		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-conf		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-idnt		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-authn	x	submatrix:foreign token accepted at auth layer		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-authz		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-sess		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-inpv		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-errh		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-cryp		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-busl		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-clnt		submatrix:		2	2026-10-07T10:43:00Z	
+svc-billing/admin	wstg-apit		submatrix:		2	2026-10-07T10:43:00Z	
+svc-portal/redirect	wstg-clnt	x	submatrix:GTREDIR-01 confirmed 302 to external		2	2026-10-07T10:21:00Z	
+svc-shop/logout	wstg-clnt	x	submatrix:GTREDIR-02 confirmed 302 to external		2	2026-10-07T10:22:00Z	
+svc-portal/debug/env	wstg-conf	x	submatrix:GTINFOLEAK-01 confirmed env echo		2	2026-10-07T10:23:00Z	
+svc-files/.env	wstg-conf	x	submatrix:GTINFOLEAK-03 confirmed env file		2	2026-10-07T10:24:00Z	
+svc-files/download	wstg-inpv	x	submatrix:GTTRAVERSAL-01 confirmed traversal		2	2026-10-07T10:25:00Z	
+svc-files/unserialize	wstg-inpv	x	submatrix:GTDESER-01 GET processor face		2	2026-10-07T10:26:00Z	
+svc-files/import	wstg-inpv	x	submatrix:GTDESER-02 GET processor face		2	2026-10-07T10:27:00Z	
+svc-files/decode	wstg-inpv	x	submatrix:GTDESER-03 GET processor face		2	2026-10-07T10:28:00Z	
+svc-api-gw/graphql	wstg-apit	x	submatrix:GTGRAPHQL-01 introspection face		2	2026-10-07T10:29:00Z	
+svc-login/login	wstg-authn	x	submatrix:GTWEAKPASS-01 and GTRATE-01 confirmed		2	2026-10-07T10:30:00Z	
+svc-shop/feedback	wstg-inpv	x	submatrix:GTXSS-04 reflected echo		2	2026-10-07T10:31:00Z	
+svc-shop/comment	wstg-inpv	x	submatrix:GTXSS-02 echo face		2	2026-10-07T10:32:00Z	
+svc-shop/item	wstg-inpv	x	submatrix:GTSQLI-01 error echo		2	2026-10-07T10:33:00Z	
+svc-shop/orders	wstg-inpv	x	submatrix:GTSQLI-02 dual-form error echo		2	2026-10-07T10:34:00Z	
+svc-api-gw/preview	wstg-inpv	x	submatrix:GTSSRF-02 webhook meta face		2	2026-10-07T10:35:00Z	
+svc-api-gw/cors-debug	wstg-conf	x	submatrix:GTCORS-01 wildcard config		2	2026-10-07T10:36:00Z	
+svc-api-gw/origin	wstg-conf	x	submatrix:GTCORS-02 reflected credentials		2	2026-10-07T10:37:00Z	
+svc-dashboard/render	wstg-inpv	x	submatrix:GTSSTI-02 echo face		2	2026-10-07T10:38:00Z	
+svc-files/admin/logs	wstg-authz	x	submatrix:GTROLE-04 user-level token reached		2	2026-10-07T10:39:00Z	
+svc-dashboard/admin/config	wstg-authz	x	submatrix:GTROLE-03 user-level token reached		2	2026-10-07T10:40:00Z	
+svc-portal/admin/clients	wstg-authz	x	submatrix:GTHAUTH-05 user-level token reached		2	2026-10-07T10:41:00Z	
+svc-admin/admin	wstg-authn	x	submatrix:foreign token accepted at auth layer		2	2026-10-07T10:42:00Z	
+svc-billing/admin	wstg-authn	x	submatrix:foreign token accepted at auth layer		2	2026-10-07T10:43:00Z	
+svc-shop	wstg-info	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-conf	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-idnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-authn	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-authz	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-sess	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-inpv	x	GTSQLI/GTXSS faces on item order comment feedback		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-errh	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-cryp	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-busl	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-clnt	x	GTREDIR-02 on logout next		2	2026-10-07T10:44:00Z	
+svc-shop	wstg-apit	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-info	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-conf	x	GTCORS-01/02 on cors-debug origin		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-idnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-authn	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-authz	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-sess	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-inpv	x	GTSSRF-02 on preview		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-errh	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-cryp	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-busl	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-clnt	-	jump face self-redirect only no external (probe3-8)		2	2026-10-07T10:44:00Z	
+svc-api-gw	wstg-apit	x	GTGRAPHQL-01 on graphql		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-info	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-conf	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-idnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-authn	x	accepts foreign svc-login token 401 to 404		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-authz	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-sess	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-inpv	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-errh	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-cryp	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-busl	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-clnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-admin	wstg-apit	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-info	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-conf	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-idnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-authn	x	GTWEAKPASS-01 plus GTRATE-01 on login face		2	2026-10-07T10:44:00Z	
+svc-login	wstg-authz	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-sess	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-inpv	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-errh	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-cryp	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-busl	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-clnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-login	wstg-apit	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-info	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-conf	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-idnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-authn	x	accepts foreign svc-login token 401 to 404		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-authz	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-sess	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-inpv	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-errh	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-cryp	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-busl	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-clnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-billing	wstg-apit	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-info	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-conf	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-idnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-authn	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-authz	x	GTROLE-03 on admin config		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-sess	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-inpv	x	GTSSTI-02 on render		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-errh	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-cryp	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-busl	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-clnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-dashboard	wstg-apit	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-info	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-conf	x	GTINFOLEAK-01 on debug env		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-idnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-authn	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-authz	x	GTHAUTH-05 on admin clients		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-sess	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-inpv	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-errh	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-cryp	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-busl	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-clnt	x	GTREDIR-01 on redirect to		2	2026-10-07T10:44:00Z	
+svc-portal	wstg-apit	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-files	wstg-info	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-files	wstg-conf	x	GTINFOLEAK-03 on .env		2	2026-10-07T10:44:00Z	
+svc-files	wstg-idnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-files	wstg-authn	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-files	wstg-authz	x	GTROLE-04 on admin logs		2	2026-10-07T10:44:00Z	
+svc-files	wstg-sess	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-files	wstg-inpv	x	GTTRAVERSAL-01 GTDESER-01/02/03		2	2026-10-07T10:44:00Z	
+svc-files	wstg-errh	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-files	wstg-cryp	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-files	wstg-busl	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-files	wstg-clnt	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+svc-files	wstg-apit	-	no dictionary face for this class on this service (probe3-8 coverage)		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+authorized-range.local	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/redirect	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/logout	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/debug/env	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/.env	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/download	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/unserialize	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/import	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/decode	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/graphql	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-login/login	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/feedback	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/comment	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/item	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-shop/orders	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/preview	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/cors-debug	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-api-gw/origin	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/render	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-files/admin/logs	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-dashboard/admin/config	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-authn	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-portal/admin/clients	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-admin/admin	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-info	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-conf	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-idnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-authz	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-sess	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-inpv	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-errh	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-cryp	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-busl	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-clnt	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	
+svc-billing/admin	wstg-apit	-	submatrix:probed face coverage		2	2026-10-07T10:44:00Z	

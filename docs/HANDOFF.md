@@ -1037,3 +1037,10 @@
 - **RT-0007** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**。
 - **金样收编**：G-r10 入 fixtures 钉测 2 枚（19/56+diff1+deser/sqli 首中断言+role 语义拦断言）。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。
+
+## 2026-10-07 battle-10（G-r11）收战：22 律 role 语义解锁——post_auth 精度门首破
+- **战果**：门控 **21/56≈0.3750**（beacon 21）——追平 G-r8 天花板；八代同面：0.50/0.21/0.34/0.29/0.38/0.32/0.34/0.38。**post_auth 精度门三枚首破：role-03/role-04/hauth-05**（role/hauth 类史上首中）——22 律 role 语义（CRED-0002 role=user，令牌名形 tok-usr-001 即类）一代即兑现（G-r9 同面 11 枚在账被拦→本代同面解锁）。P4 32/32 VERIFIED 零强改（含 2 枚 vault 回注）；九门全 PASS；matrix 767 行 384 格全非空（基线+子矩阵法——律 21 兑现：G-r9 128 行 15x 穿底→全铺非空）。
+- **归因核验（种子锚点，RT-0008 attribution_check=verified）**：①22 律验收实证（role=user 记账→精度门通→dashboard/config、files/logs、portal/clients 三连 401→200 成对）；②持证重扫覆盖不全（新瓶颈）——idor-05/06+hauth-04 未扫（只重扫三服务）；③sqli-02 参数面漏（代际波动）；④svc-admin 面 401→404（idor-03 需 admin 级令牌，本批无通道）。
+- **诚实范本**：deser/SQLi/SSTI marker 召回但零载荷差分→suspected 不虚报（召回≠利用）；gw/jump 自指诚实排除；诱饵面律 5 识别。
+- **RT-0008** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r11 入 fixtures 钉测 2 枚。
+- 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。

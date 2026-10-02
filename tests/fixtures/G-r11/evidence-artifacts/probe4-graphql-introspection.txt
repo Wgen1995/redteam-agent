@@ -1,0 +1,1 @@
+GET /graphql?query=__schema types -> 200 GTGRAPHQL-01 introspection enabled
