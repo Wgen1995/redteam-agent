@@ -61,10 +61,11 @@
 12. **同面多洞分洞分 finding（v4 单计律——battle-5 实证）**：同一端点上两类洞（如弱口令+无限流）=两枚 finding 各挂各的 EV（dedup=asset+vuln_ref 不撞）；单 finding 会被先序 GT 耗用，第二洞落 miss。
 13. **表单编码族先行（battle-5 实证）**：/login 类 POST 先发 application/x-www-form-urlencoded（服务端常收表单子串），JSON 形次之——24 组弱口令对×双编码全试。
 14. **演练五连（battle-5 实证：27 卡曾全灭于 title 裸 [）**：开局 dry-run 走 asset→evidence→finding→卡片→容器内重放全链；卡片 front-matter 自由文本（title 尤其）必过 parse_yaml——避开裸 [ 开头/流集合歧义形。
-15. **卡片 matcher 带响应特征串（battle-6 实证）**：行为型 finding 的 EV 卡 expected.matchers.words 必须含响应体的**特征串原文**（如计数器/递增数字/特定词组）——matcher 只写行为描述词=词证面自弃（差分轨也救不回被先序 GT 借道的键）。
+15. **卡片 matcher 带响应特征串（补注：优先 distinctive token）**：行为型 finding 的 EV 卡 expected.matchers.words 必含响应体特征串原文——**优先取 distinctive token （响应体内唯一码形：合成码/标识符连写）**，其次计数器/递增数字；纯行为描述词（welcome/ok 通用词）=词证面自弃（battle-9 实证：welcome admin 无码形词证 0.0）
 16. **响应熵基线（battle-6 实证：634 次钉死一面）**：发放面/爆破面先发 3-5 次基线探测——响应恒 403 仅计数变化=零熵墙，立即转面转键名族；catch-all 200 同理（诱饵形）。零信息面不投爆破预算。
 17. **键名族×编码族叉乘（battle-6 实证：凭据 0 根因）**：登录/发放面 POST 探测矩阵=键名族（user/username/name/account/email × pass/password/pwd）×编码族（urlencoded 先/JSON 次）全叉乘（字典 §1.3 律）；服务端常收表单子串——键名错则编码对也永不中。
 18. **同面双形记账（battle-7 实证：idor-01/02 漏洞找到却 miss）**：同一漏洞面 query 形与 path 形都记——/admin/orders?user_id=101 与 /admin/orders/1 各铸一枚 EV 同 finding（双形同证据链）；服务端 startswith 路由两形常同弹，只记一形=丢另一形的键面。资源面（orders/invoices/users）一律双形双 EV。
 19. **发放响应头采集（battle-8 实证：token 到手面不开）**：凭据发放成功的**响应头**逐头记录——token 类响应头（X-Auth-Token 形）就是携带形态第一候选（头名族=键名族的响应侧镜像）；盲试携带形态前先回看发放响应头。
 20. **方法族分辨（battle-8 实证：deser 三面恒 400）**：处理器面（unserialize/import/decode/debug/info 族）**先 GET 直取**（任意 GET 常即弹）——GET 不弹再 POST 形态分型；POST 脑补是陷阱（400≠501 只证处理器在不证方法对）。
 21. **矩阵预算警戒**：matrix 全铺×波次预算是三角——超过 30 面的矩阵先铺核心 9 面×12 类，余面按波次预算增量补（battle-8 实证：128 行只 15x 预算穿底 vs 27 格 21x 全收敛）。
+22. **creds role=令牌权限类非账号名**：add-cred 的 role 字段记令牌权限类（低权=user 级/高权=admin 级）——不是登录账号名；token 名形即类（tok-usr-001=user 级）；admin 账号换出的 user 级令牌 role 仍记 user。
