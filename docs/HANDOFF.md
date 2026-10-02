@@ -1028,3 +1028,12 @@
 - **RT-0006** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**。
 - **金样收编**：G-r9 入 fixtures 钉测 2 枚（18/56+缺口断言 deser/role-03）。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。
+
+
+## 2026-10-06 battle-9（G-r10）收战：响应头采集兑现+role 语义拦
+- **战果**：门控 **19/56≈0.3393**（beacon 18+**diff 1**——v4.1 后首枚差分轨命中）；P4 42/42 VERIFIED 零强改（含 vault 占位卡 8 枚）；findings 30；creds 2（三代连续）；**deser GET 直取三面首中**（律 20 首验：G-r9 全 miss→三中）；sqli-01 参数面族首中（dict v3.3）。七代同面：0.50/0.21/0.34/0.29/0.38/0.32/0.34。
+- **归因核验（种子锚点，RT-0007 attribution_check=verified）**：①**role 语义拦（教学金矿）**——post_auth 11 枚 finding 在账（六新靶端点+billing 三面精确命中）却被精度门拦：CRED-r10-0002 role 记 "admin"（账号名）≠GT authz_role "user"（令牌权限类——tok-**usr**-001 名形即类）；②weakpass-01 卡词=行为串（welcome admin）无 marker——律 15 取词偏行为面，distinctive token 才是最强特征串（隔离测 0.0 实证）；③门机死锁自致（P1 早于 gate-exit:P0→跳门=1，自弃门机全链补偿——诚实披露）。
+- **战士流程教训**：CLI 语法先单测再量产；时序与幂等是账本一等公民；零熵面是主防御（控制组差分Þypayload 轰炸）。
+- **RT-0007** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**。
+- **金样收编**：G-r10 入 fixtures 钉测 2 枚（19/56+diff1+deser/sqli 首中断言+role 语义拦断言）。
+- 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。

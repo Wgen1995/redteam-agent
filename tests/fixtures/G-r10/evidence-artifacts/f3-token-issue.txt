@@ -1,0 +1,15 @@
+POST /token HTTP/1.1
+Host: svc-login:8004
+Content-Type: application/x-www-form-urlencoded
+
+user=admin&pass=admin123&grant_type=password
+
+--- response ---
+=> 200
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Fri, 02 Oct 2026 11:08:38 GMT
+Content-Type: text/html; charset=utf-8
+X-Auth-Token: tok-usr-001
+Content-Length: 75
+
+<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>

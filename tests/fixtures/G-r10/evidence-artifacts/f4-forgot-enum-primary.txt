@@ -1,0 +1,7 @@
+GET /forgot?user=admin HTTP/1.1
+Host: svc-login:8004
+
+--- response ---
+=> 200
+
+<html>reset sent GTUSERENUM-01 synthetic user exists disclosure</html>

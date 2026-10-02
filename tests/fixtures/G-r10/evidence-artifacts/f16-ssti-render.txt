@@ -1,0 +1,7 @@
+GET /render?template={{7*7}} HTTP/1.1
+Host: svc-dashboard:8006
+
+--- response ---
+=> 200
+
+<html>render GTSSTI-02 synthetic ssti render /render?template={{7*7}}</html>

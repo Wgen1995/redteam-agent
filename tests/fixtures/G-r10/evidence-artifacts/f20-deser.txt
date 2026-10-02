@@ -1,0 +1,7 @@
+GET /import?data=gASV... HTTP/1.1
+Host: svc-files:8008
+
+--- response ---
+=> 200
+
+<html>GTDESER-02 synthetic java serialized blob accepted</html>

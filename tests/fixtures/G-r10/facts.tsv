@@ -1,0 +1,41 @@
+F-r10-0001	INT-r10-0001	port	172.28.0.0/24	8 服务端口异构图（probe1 实测 8000-8010 全段）：svc-shop:8001 svc-api-gw:8002 svc-admin:8003 svc-login:8004 svc-billing:8005 svc-dashboard:8006 svc-portal:8007 svc-files:8008；其余端口全闭	1.0	2	2026-10-06T09:06:00Z
+F-r10-0002	INT-r10-0001	http	svc-login/	根指纹：svc-login:8004 /=200 body=login form；svc-admin:8003 与 svc-billing:8005 /=401 auth required；其余五服务根=404 not found（Server 均 BaseHTTP/0.6 Python/3.12.14）	1.0	2	2026-10-06T09:07:00Z
+F-r10-0003	INT-r10-0001	info	authorized-range.local	时序违规自认：P1 相位事件（assets/facts/edges）先于 gate-exit:P0 落链，verify-chain 跳门机检死锁（gate-exit:P0 铸造以自身存在为前提）——九门门事件链本轮不可达。补救：matrix-init+freeze 已先于一切 exploitation（律 4 前半）；replay 事件仍 P4 相位；后续写入照常记账不再尝试门机	1.0	2	2026-10-06T09:17:00Z
+F-r10-0004	INT-r10-0002	http	svc-portal/	probe2 GET 喷：/redirect=302（loc=/redirect 自指，body 含 synthetic redirect to %s 提示待参数）；/debug/env=200 含 env 键值回显；其余路径 404	1.0	2	2026-10-06T09:21:00Z
+F-r10-0005	INT-r10-0002	http	svc-api-gw/	probe2 GET 喷：/jump=302 自指（提示待参数）；/preview=200 webhook meta 回显；/cors-debug=200 wildcard allow-origin 文案；/origin=200 reflected none+credentials 文案；其余 404（网关限流 429 已退避）	1.0	2	2026-10-06T09:21:00Z
+F-r10-0006	INT-r10-0002	http	svc-shop/	probe2 GET 喷：/logout=302 自指；/comment=200 stored xss 回显面；/reply=200 reflected；/feedback=200 reflected；/item=200 含 SQL error near 提示；/order=200 含 SQL syntax error 提示；其余 404	1.0	2	2026-10-06T09:21:00Z
+F-r10-0007	INT-r10-0002	http	svc-files/	probe2 GET 喷：/unserialize=200 pickle inflated；/import=200 java blob accepted；/decode=200 base64 object inflated；/.env=200 env 文件回显；/download=200 含 root:x:0:0 文件内容；其余 404	1.0	2	2026-10-06T09:21:00Z
+F-r10-0008	INT-r10-0002	http	svc-dashboard/	probe2 GET 喷：仅 /render=200（ssti render 文案）；其余全 404	1.0	2	2026-10-06T09:21:00Z
+F-r10-0009	INT-r10-0002	http	svc-login/	probe2 GET 喷：全字典 54 路径恒 200 login form（catch-all 200 零熵墙，律 16）——GET 面探测失效，转 POST 行为差分	1.0	2	2026-10-06T09:22:00Z
+F-r10-0010	INT-r10-0002	authz	svc-admin/	probe2 GET 喷：svc-admin 与 svc-billing 全路径恒 401 auth required（认证墙，待凭据发放面解锁）	1.0	2	2026-10-06T09:22:00Z
+F-r10-0011	INT-r10-0003	vuln-clue	svc-login/login	probe3 键名叉乘：user=admin&pass=admin123（urlencoded）=200 welcome admin GTWEAKPASS-01，其余 15 组键名组合 403——服务端按表单子串收键（律 17 实证）	0.99	2	2026-10-06T09:40:00Z
+F-r10-0012	INT-r10-0003	vuln-clue	svc-login/login	probe4/5 限流观测：31+ 次错误口令连击恒 403 且计数递增（no rate limit after N attempts），无封禁无退避——GTRATE-01	0.99	2	2026-10-06T09:41:00Z
+F-r10-0013	INT-r10-0003	vuln-clue	svc-login/token	probe4 发放面：POST /token、/api/token、/oauth/token、/auth 四面同形收 user&pass 弱口令，200 直发会话令牌于响应头（X-Auth-* 形，值 tok-usr-001 已入 vault cred-2）	0.99	2	2026-10-06T09:42:00Z
+F-r10-0014	INT-r10-0003	vuln-clue	svc-login/forgot	probe4/5 用户枚举：/forgot?user=admin=200 reset sent user exists；?user=nonexistent-xyz-999=404 not found——行为差分实锤（GTUSERENUM-01）	0.99	2	2026-10-06T09:43:00Z
+F-r10-0015	INT-r10-0002	vuln-clue	svc-shop/logout	probe5 不跟随重定向实锤：/logout?next=http://evil.example=302 且 Location 为外域裸值；?to=/url=/goto= 等参数 302 自指回显（诱饵形）——真参数=next 全 URL 形	0.99	2	2026-10-06T09:44:00Z
+F-r10-0016	INT-r10-0002	vuln-clue	svc-portal/redirect	probe3/5：/redirect?next=http://evil.example=302 但 Location 恒自指回显 query（/redirect?next=...），未获外域 Location——开放重定向嫌疑挂起	0.9	2	2026-10-06T09:45:00Z
+F-r10-0017	INT-r10-0002	vuln-clue	svc-api-gw/jump	probe3/5：/jump?to=http://evil.example=302 但 Location 恒自指回显，未获外域 Location——嫌疑挂起（网关限流退避已守）	0.9	2	2026-10-06T09:45:00Z
+F-r10-0018	INT-r10-0002	vuln-clue	svc-shop/item	probe3/5 SQL 报错回显：/item?id=1 与 path 形 /item/1 均含 synthetic SQL error near ''1''（GTSQLI-01）；注入 payload 无行为差分（合成面）	0.95	2	2026-10-06T09:46:00Z
+F-r10-0019	INT-r10-0002	vuln-clue	svc-shop/order	probe3/5：/order?id=1 与 /order/1 均含 synthetic SQL syntax error（GTSQLI-02）；product/detail 参数面 404 不在（同族枚举负结果）	0.95	2	2026-10-06T09:46:00Z
+F-r10-0020	INT-r10-0002	vuln-clue	svc-shop/comment	probe2/4：GET /comment 恒 200 stored xss echo 文案（GTXSS-02）；POST=501；payload 未解码回显，存储回显未实锤	0.85	2	2026-10-06T09:47:00Z
+F-r10-0021	INT-r10-0002	vuln-clue	svc-shop/reply	probe3/4：GET /reply?msg= 回显原始 query（含编码形态 payload）+GTXSS-03；双重编码测试无一次解码——可执行性未实锤	0.85	2	2026-10-06T09:47:00Z
+F-r10-0022	INT-r10-0002	vuln-clue	svc-shop/feedback	probe2/3：GET /feedback 回显 query+GTXSS-04；POST=501；同 reply 未证可执行	0.85	2	2026-10-06T09:47:00Z
+F-r10-0023	INT-r10-0002	vuln-clue	svc-api-gw/preview	probe3/4 SSRF 面零行为熵：url 参数内网地址/死域/无参恒 200 同文（GTSSRF-02 webhook meta: internal-metadata）——静态拟真面，行为差分不支持实证	0.8	2	2026-10-06T09:48:00Z
+F-r10-0024	INT-r10-0002	vuln-clue	svc-api-gw/cors-debug	probe3 CORS：GET /cors-debug 带 Origin: http://evil.example 回 ACAO:*（无 credentials）——通配配置缺陷（GTCORS-01；依字典勘误①记配置缺陷类）	0.99	2	2026-10-06T09:49:00Z
+F-r10-0025	INT-r10-0002	vuln-clue	svc-api-gw/origin	probe3 CORS：GET /origin 带 Origin: http://evil.example 回 ACAO=http://evil.example + credentials true——反射任意源+凭证许可，可利用配置（GTCORS-02）	0.99	2	2026-10-06T09:49:00Z
+F-r10-0026	INT-r10-0002	vuln-clue	svc-dashboard/render	probe3/4 SSTI 面：/render?template={{7*7}} 等七种定界符全 200 回显编码 payload（GTSSTI-02），无计算结果（无 49/7777777）——模板注入计算未实锤	0.85	2	2026-10-06T09:50:00Z
+F-r10-0027	INT-r10-0002	vuln-clue	svc-portal/debug/env	probe2：GET /debug/env=200 回显 env 键值形态 DB_PASS/AWS_KEY（GTINFOLEAK-01，值域合成占位）	0.99	2	2026-10-06T09:51:00Z
+F-r10-0028	INT-r10-0002	vuln-clue	svc-files/.env	probe2：GET /.env=200 回显 env 文件形态 SECRET_KEY（GTINFOLEAK-03）	0.99	2	2026-10-06T09:51:00Z
+F-r10-0029	INT-r10-0002	vuln-clue	svc-files/unserialize	probe2/3 律 20 实证：GET /unserialize 直取即 200 pickle object inflated（GTDESER-01）；任意参数名同弹；POST=400——处理器面在 GET	0.95	2	2026-10-06T09:52:00Z
+F-r10-0030	INT-r10-0002	vuln-clue	svc-files/import	probe2/3：GET /import 直取 200 java serialized blob accepted（GTDESER-02）；POST=400	0.95	2	2026-10-06T09:52:00Z
+F-r10-0031	INT-r10-0002	vuln-clue	svc-files/decode	probe2/3：GET /decode 直取 200 base64 payload object inflated（GTDESER-03）；POST=400	0.95	2	2026-10-06T09:52:00Z
+F-r10-0032	INT-r10-0002	vuln-clue	svc-files/download	probe2/3/5 路径穿越：/download?file=../../../../etc/passwd 得 200 含 root:x:0:0:root 文件内容（GTTRAVERSAL-01）；path 形 /download/../../.. 同弹；任意参数名同效	0.99	2	2026-10-06T09:53:00Z
+F-r10-0033	INT-r10-0004	vuln-clue	svc-shop/admin/reports	probe5 跨服务令牌信任：svc-login 发放的低权会话令牌使 svc-shop/admin/reports 从 404（匿名）翻转为 200 他人报表（GTIDOR-06）	0.99	2	2026-10-06T09:54:00Z
+F-r10-0034	INT-r10-0004	vuln-clue	svc-api-gw/admin/keys	probe5：同令牌使 svc-api-gw/admin/keys=200 低权可见密钥清单（GTIDOR-05）	0.99	2	2026-10-06T09:54:00Z
+F-r10-0035	INT-r10-0004	vuln-clue	svc-dashboard/admin/config	probe5：同令牌使 svc-dashboard/admin/config=200 低权可达配置（GTROLE-03）	0.99	2	2026-10-06T09:54:00Z
+F-r10-0036	INT-r10-0004	vuln-clue	svc-portal/admin/clients	probe5：同令牌使 svc-portal/admin/clients=200 低权客户清单（GTHAUTH-05）	0.99	2	2026-10-06T09:54:00Z
+F-r10-0037	INT-r10-0004	vuln-clue	svc-files/admin/logs	probe5：同令牌使 svc-files/admin/logs=200 低权可达日志（GTROLE-04）	0.99	2	2026-10-06T09:54:00Z
+F-r10-0038	INT-r10-0004	authz	svc-billing/api/v1	probe7/9：持低权令牌 /api/v1/charges=200 他租户 acc-1002（GTHAUTH-01）、/api/v1/statements=200 acc-2003（GTHAUTH-02）、/api/v1/audit=200 跨租户审计（GTHAUTH-04）；三面匿名 401 对照齐；svc-admin 全字典+二级前缀穷举（10 前缀×16 名词 GET+POST 形）恒 404/403 无面暴露	0.99	2	2026-10-06T10:32:00Z
+F-r10-0039	INT-r10-0002	info	svc-api-gw/	probe8：gw /api/v1/ 全族 429（面级限流守恒），probe9 慢速 1.4s 重试全 404——限流面后无隐藏 api/v1 面；JWT none 构造形在 admin/billing 401 拒（令牌形态仅发放响应头 X-Auth-* 形一种）	0.95	2	2026-10-06T10:33:00Z
+F-r10-0040	INT-r10-0002	info	svc-dashboard/graphql	probe6/8：dashboard 与 files /graphql POST 恒 400（空体/良构 query/坏 JSON/表单形四基线同文，零熵）；GET 与 /graphiql 404——GraphQL 熵基线无分化，按律 16 记 inconclusive 不立 finding	0.9	2	2026-10-06T10:34:00Z
+F-r10-0041	INT-r10-0004	authz	svc-admin/	probe8：svc-admin POST /api/v1/users /internal/users /admin/users /api/v1/config /manage /console 恒 403 denied（GET 同路径 404）——POST 处理器面在且授权拒绝正确（403≠404 分辨），低权令牌不可达，无越权实证	0.95	2	2026-10-06T10:35:00Z

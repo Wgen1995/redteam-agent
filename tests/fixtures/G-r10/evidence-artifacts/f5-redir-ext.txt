@@ -1,0 +1,8 @@
+GET /logout?next=http://evil.example HTTP/1.1
+Host: svc-shop:8001
+
+--- response ---
+=> 302
+Location: http://evil.example
+
+<html>GTREDIR-02 synthetic redirect to %s</html>

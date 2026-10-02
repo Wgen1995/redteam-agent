@@ -1,0 +1,7 @@
+GET /forgot?user=nonexistent-xyz-999 HTTP/1.1
+Host: svc-login:8004
+
+--- response ---
+=> 404
+
+not found

@@ -1,0 +1,8 @@
+GET /api/v1/audit HTTP/1.1
+Host: svc-billing:8005
+
+--- response ---
+=> 200
+X-Auth-Token: (vault cred-2 占位)
+
+<html>GTHAUTH-04 synthetic hauth-04 跨租户审计</html>

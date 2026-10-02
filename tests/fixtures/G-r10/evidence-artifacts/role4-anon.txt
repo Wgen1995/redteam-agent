@@ -1,0 +1,7 @@
+GET /admin/logs HTTP/1.1
+Host: svc-files:8008
+
+--- response ---
+=> 401
+
+auth required

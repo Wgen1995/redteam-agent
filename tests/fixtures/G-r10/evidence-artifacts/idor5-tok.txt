@@ -1,0 +1,8 @@
+GET /admin/keys HTTP/1.1
+Host: svc-api-gw:8002
+
+--- response ---
+=> 200
+X-Auth-Token: (vault cred-2 占位)
+
+<html>GTIDOR-05 synthetic idor-05 低权可见密钥清单</html>

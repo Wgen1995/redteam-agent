@@ -1,0 +1,8 @@
+GET /admin/reports HTTP/1.1
+Host: svc-shop:8001
+
+--- response ---
+=> 200
+X-Auth-Token: (vault cred-2 占位)
+
+<html>GTIDOR-06 synthetic idor-06 他人报表</html>

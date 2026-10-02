@@ -1,0 +1,38 @@
+AST-r10-0001	root-domain	authorized-range.local	battle-9 授权靶场根	out_of_scope	2	2026-10-06T09:05:00Z
+AST-r10-0002	service	svc-shop	port:8001 BaseHTTP Python3.12 root_probe=404	in_scope	2	2026-10-06T09:05:00Z
+AST-r10-0003	service	svc-api-gw	port:8002 BaseHTTP Python3.12 root_probe=404	in_scope	2	2026-10-06T09:05:00Z
+AST-r10-0004	service	svc-admin	port:8003 BaseHTTP Python3.12 root_probe=401	in_scope	2	2026-10-06T09:05:00Z
+AST-r10-0005	service	svc-login	port:8004 BaseHTTP Python3.12 root_probe=200	in_scope	2	2026-10-06T09:05:00Z
+AST-r10-0006	service	svc-billing	port:8005 BaseHTTP Python3.12 root_probe=401	in_scope	2	2026-10-06T09:05:00Z
+AST-r10-0007	service	svc-dashboard	port:8006 BaseHTTP Python3.12 root_probe=404	in_scope	2	2026-10-06T09:05:00Z
+AST-r10-0008	service	svc-portal	port:8007 BaseHTTP Python3.12 root_probe=404	in_scope	2	2026-10-06T09:05:00Z
+AST-r10-0009	service	svc-files	port:8008 BaseHTTP Python3.12 root_probe=404	in_scope	2	2026-10-06T09:05:00Z
+AST-r10-0010	endpoint	svc-portal/redirect	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0011	endpoint	svc-portal/debug/env	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0012	endpoint	svc-dashboard/render	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0013	endpoint	svc-api-gw/jump	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0014	endpoint	svc-api-gw/preview	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0015	endpoint	svc-api-gw/cors-debug	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0016	endpoint	svc-api-gw/origin	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0017	endpoint	svc-shop/logout	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0018	endpoint	svc-shop/comment	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0019	endpoint	svc-shop/reply	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0020	endpoint	svc-shop/feedback	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0021	endpoint	svc-shop/item	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0022	endpoint	svc-shop/order	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0023	endpoint	svc-files/unserialize	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0024	endpoint	svc-files/import	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0025	endpoint	svc-files/decode	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0026	endpoint	svc-files/.env	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0027	endpoint	svc-files/download	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0028	endpoint	svc-login/login	probe2 GET 命中面	in_scope	2	2026-10-06T09:23:00Z
+AST-r10-0029	endpoint	svc-login/token	probe4/5 命中面	in_scope	2	2026-10-06T09:32:00Z
+AST-r10-0030	endpoint	svc-login/forgot	probe4/5 命中面	in_scope	2	2026-10-06T09:32:00Z
+AST-r10-0031	endpoint	svc-shop/admin/reports	probe4/5 命中面	in_scope	2	2026-10-06T09:32:00Z
+AST-r10-0032	endpoint	svc-api-gw/admin/keys	probe4/5 命中面	in_scope	2	2026-10-06T09:32:00Z
+AST-r10-0033	endpoint	svc-dashboard/admin/config	probe4/5 命中面	in_scope	2	2026-10-06T09:32:00Z
+AST-r10-0034	endpoint	svc-portal/admin/clients	probe4/5 命中面	in_scope	2	2026-10-06T09:32:00Z
+AST-r10-0035	endpoint	svc-files/admin/logs	probe4/5 命中面	in_scope	2	2026-10-06T09:32:00Z
+AST-r10-0036	endpoint	svc-billing/api/v1/charges	probe7/9 命中面（跨租户）	in_scope	2	2026-10-06T10:25:00Z
+AST-r10-0037	endpoint	svc-billing/api/v1/statements	probe7/9 命中面（跨租户）	in_scope	2	2026-10-06T10:25:00Z
+AST-r10-0038	endpoint	svc-billing/api/v1/audit	probe7/9 命中面（跨租户）	in_scope	2	2026-10-06T10:25:00Z

@@ -1,0 +1,7 @@
+GET /feedback?feedback=%253Csvg%253E HTTP/1.1
+Host: svc-shop:8001
+
+--- response ---
+=> 200
+
+<html>feedback /feedback?feedback=%253Csvg%253Ehi GTXSS-04 synthetic reflected xss</html>

@@ -1,0 +1,4 @@
+INT-r10-0001	端口扫描与服务测绘		candidate	web-blackbox	recon	entity			-+recon+端口扫描与服务测绘	2000\;300\;1					2	2026-10-06T09:05:30Z
+INT-r10-0002	字典族面全喷与参数差分		candidate	web-blackbox	surface	entity			-+surface+字典族面全喷与参数差分	8000\;1200\;2					2	2026-10-06T09:20:00Z
+INT-r10-0003	凭据发放面与弱口令链		candidate	web-blackbox	matrix-test	precedent			-+matrix-test+凭据发放面与弱口令链	4000\;600\;1					2	2026-10-06T09:30:00Z
+INT-r10-0004	凭据后重扫与跨服务令牌信任面		pending	web-blackbox	matrix-test	recon-event			-+matrix-test+凭据后重扫与跨服务令牌信任面	4000\;600\;1					2	2026-10-06T09:31:00Z

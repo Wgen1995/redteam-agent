@@ -1,0 +1,7 @@
+GET /preview?url=http://svc-files:8008/.env HTTP/1.1
+Host: svc-api-gw:8002
+
+--- response ---
+=> 200
+
+<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>

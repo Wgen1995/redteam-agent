@@ -1,0 +1,9 @@
+GET /origin HTTP/1.1
+Host: svc-api-gw:8002
+
+--- response ---
+=> 200
+Access-Control-Allow-Origin: http://evil.example
+Access-Control-Allow-Credentials: true
+
+<html>origin GTCORS-02 reflected http://evil.example allow-credentials true</html>

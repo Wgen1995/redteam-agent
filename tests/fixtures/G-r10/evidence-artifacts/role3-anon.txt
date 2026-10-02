@@ -1,0 +1,7 @@
+GET /admin/config HTTP/1.1
+Host: svc-dashboard:8006
+
+--- response ---
+=> 401
+
+auth required

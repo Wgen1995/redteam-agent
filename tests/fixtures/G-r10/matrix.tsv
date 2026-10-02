@@ -1,0 +1,548 @@
+svc-shop	wstg-info				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-conf				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-idnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-authn				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-authz				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-sess				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-inpv				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-errh				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-cryp				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-busl				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-clnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-shop	wstg-apit				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-info				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-conf				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-idnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-authn				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-authz				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-sess				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-inpv				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-errh				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-cryp				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-busl				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-clnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-api-gw	wstg-apit				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-info				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-conf				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-idnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-authn				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-authz				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-sess				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-inpv				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-errh				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-cryp				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-busl				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-clnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-admin	wstg-apit				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-info				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-conf				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-idnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-authn				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-authz				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-sess				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-inpv				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-errh				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-cryp				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-busl				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-clnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login	wstg-apit				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-info				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-conf				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-idnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-authn				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-authz				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-sess				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-inpv				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-errh				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-cryp				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-busl				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-clnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-billing	wstg-apit				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-info				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-conf				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-idnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-authn				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-authz				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-sess				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-inpv				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-errh				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-cryp				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-busl				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-clnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-dashboard	wstg-apit				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-info				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-conf				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-idnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-authn				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-authz				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-sess				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-inpv				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-errh				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-cryp				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-busl				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-clnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-portal	wstg-apit				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-info				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-conf				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-idnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-authn				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-authz				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-sess				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-inpv				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-errh				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-cryp				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-busl				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-clnt				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-files	wstg-apit				2	2026-10-06T09:15:00Z	2026-10-06T09:16:00Z
+svc-login/login	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-authn	x	submatrix:探明面铸行	INT-r10-0003	2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/login	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-authn	x	submatrix:探明面铸行	INT-r10-0003	2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/token	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-idnt	x	submatrix:探明面铸行	INT-r10-0003	2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-login/forgot	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-clnt	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-shop/logout	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-clnt	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-portal/redirect	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-clnt	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-api-gw/jump	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/item	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/order	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/comment	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/reply	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/feedback	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/preview	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-conf	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/cors-debug	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-conf	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/origin	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/render	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-info	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/debug/env	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-info	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/.env	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/unserialize	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/import	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/decode	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-authz		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-inpv	x	submatrix:探明面铸行	INT-r10-0002	2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/download	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-authz	x	submatrix:探明面铸行	INT-r10-0004	2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop/admin/reports	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-authz	x	submatrix:探明面铸行	INT-r10-0004	2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-api-gw/admin/keys	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-authz	x	submatrix:探明面铸行	INT-r10-0004	2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-dashboard/admin/config	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-authz	x	submatrix:探明面铸行	INT-r10-0004	2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-portal/admin/clients	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-authz	x	submatrix:探明面铸行	INT-r10-0004	2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-files/admin/logs	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-authz	x	submatrix:探明面铸行	INT-r10-0004	2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/charges	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-authz	x	submatrix:探明面铸行	INT-r10-0004	2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/statements	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-info		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-conf		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-idnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-authn		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-authz	x	submatrix:探明面铸行	INT-r10-0004	2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-sess		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-inpv		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-errh		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-cryp		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-busl		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-clnt		submatrix:		2	2026-10-06T10:40:00Z	
+svc-billing/api/v1/audit	wstg-apit		submatrix:		2	2026-10-06T10:40:00Z	
+svc-shop	wstg-inpv	x	FD/负结果: FD sqli/xss 族	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-clnt	x	FD/负结果: FD 开放重定向	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-authz	x	FD/负结果: FD admin/reports	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-conf	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-info	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-idnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-authn	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-sess	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-errh	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-cryp	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-busl	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-shop	wstg-apit	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-conf	x	FD/负结果: FD cors 两面	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-authz	x	FD/负结果: FD admin/keys	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-clnt	?	FD/负结果: 302 自指未证外域	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-inpv	?	FD/负结果: ssrf 零熵未证	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-info	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-idnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-authn	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-sess	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-errh	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-cryp	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-busl	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-api-gw	wstg-apit	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-authz	-	FD/负结果: 全路径+二级前缀穷举无未授权面，POST 面授权拒绝正确	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-authn	-	FD/负结果: 令牌门工作正常（401/403 分辨）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-info	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-conf	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-idnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-sess	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-inpv	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-errh	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-cryp	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-busl	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-clnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-admin	wstg-apit	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-authn	x	FD/负结果: FD 弱口令+令牌发放	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-busl	x	FD/负结果: FD 无速率限制	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-idnt	x	FD/负结果: FD 用户枚举	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-inpv	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-info	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-conf	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-authz	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-sess	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-errh	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-cryp	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-clnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login	wstg-apit	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-authz	x	FD/负结果: FD api/v1 三面跨租户	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-authn	-	FD/负结果: 令牌门工作正常	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-info	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-conf	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-idnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-sess	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-inpv	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-errh	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-cryp	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-busl	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-clnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-billing	wstg-apit	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-inpv	?	FD/负结果: ssti 反射未证计算	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-authz	x	FD/负结果: FD admin/config	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-info	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-conf	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-idnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-authn	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-sess	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-errh	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-cryp	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-busl	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-clnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-dashboard	wstg-apit	-	FD/负结果: graphql 面 400 零熵 inconclusive	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-info	x	FD/负结果: FD debug/env	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-authz	x	FD/负结果: FD admin/clients	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-clnt	?	FD/负结果: 302 自指未证外域	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-inpv	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-conf	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-idnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-authn	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-sess	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-errh	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-cryp	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-busl	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-portal	wstg-apit	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-inpv	x	FD/负结果: FD deser 三面+穿越	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-info	x	FD/负结果: FD .env	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-authz	x	FD/负结果: FD admin/logs	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-conf	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-idnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-authn	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-sess	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-errh	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-cryp	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-busl	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-clnt	-	FD/负结果: 枚举与差分未现该类实证面（probe2-9 负结果）	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-files	wstg-apit	-	FD/负结果: graphql 面 400 零熵 inconclusive	INT-r10-0002	2	2026-10-06T10:42:00Z	
+svc-login/login	wstg-busl	x	submatrix:FD 无速率限制（31+ 连击计数递增）	INT-r10-0004	2	2026-10-06T10:43:00Z	
+svc-dashboard/render	wstg-inpv	?	submatrix:suspected FD SSTI 反射未证计算	INT-r10-0004	2	2026-10-06T10:43:00Z	
+svc-portal/redirect	wstg-clnt	?	submatrix:suspected FD 302 自指未证外域	INT-r10-0004	2	2026-10-06T10:43:00Z	
+svc-api-gw/jump	wstg-clnt	?	submatrix:suspected FD 302 自指未证外域	INT-r10-0004	2	2026-10-06T10:43:00Z	
+svc-shop/comment	wstg-inpv	?	submatrix:suspected FD 存储执行链未证	INT-r10-0004	2	2026-10-06T10:43:00Z	
+svc-shop/reply	wstg-inpv	?	submatrix:suspected FD 反射编码形未证执行	INT-r10-0004	2	2026-10-06T10:43:00Z	
+svc-shop/feedback	wstg-inpv	?	submatrix:suspected FD 反射可执行性未证	INT-r10-0004	2	2026-10-06T10:43:00Z	
+svc-api-gw/preview	wstg-inpv	?	submatrix:suspected FD SSRF 零熵未证回取	INT-r10-0004	2	2026-10-06T10:43:00Z	

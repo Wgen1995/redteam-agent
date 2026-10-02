@@ -1,0 +1,10 @@
+POST /login HTTP/1.1
+Host: svc-login:8004
+Content-Type: application/x-www-form-urlencoded
+
+user=admin&pass=admin123
+
+--- response ---
+=> 200
+
+<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>

@@ -1,0 +1,8 @@
+GET /api/v1/charges HTTP/1.1
+Host: svc-billing:8005
+
+--- response ---
+=> 200
+X-Auth-Token: (vault cred-2 占位)
+
+<html>GTHAUTH-01 synthetic charges of account acc-1002 (other tenant)</html>

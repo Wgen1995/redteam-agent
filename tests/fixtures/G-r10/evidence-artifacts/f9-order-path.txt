@@ -1,0 +1,7 @@
+GET /order/1 HTTP/1.1
+Host: svc-shop:8001
+
+--- response ---
+=> 200
+
+<html>order page GTSQLI-02 synthetic SQL syntax error</html>

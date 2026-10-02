@@ -1,0 +1,8 @@
+GET /admin/config HTTP/1.1
+Host: svc-dashboard:8006
+
+--- response ---
+=> 200
+X-Auth-Token: (vault cred-2 占位)
+
+<html>GTROLE-03 synthetic role-03 低权可达配置</html>

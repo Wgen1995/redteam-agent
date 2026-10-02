@@ -1,0 +1,7 @@
+GET /api/v1/audit HTTP/1.1
+Host: svc-billing:8005
+
+--- response ---
+=> 401
+
+auth required

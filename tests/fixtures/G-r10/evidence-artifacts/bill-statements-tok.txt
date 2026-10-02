@@ -1,0 +1,8 @@
+GET /api/v1/statements HTTP/1.1
+Host: svc-billing:8005
+
+--- response ---
+=> 200
+X-Auth-Token: (vault cred-2 占位)
+
+<html>GTHAUTH-02 synthetic statements of account acc-2003 (other tenant)</html>

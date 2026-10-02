@@ -1,0 +1,7 @@
+GET /admin/clients HTTP/1.1
+Host: svc-portal:8007
+
+--- response ---
+=> 401
+
+auth required

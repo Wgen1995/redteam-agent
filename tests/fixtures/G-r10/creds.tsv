@@ -1,0 +1,2 @@
+CRED-r10-0001	static-cred	admin	admin@svc-login	{{vault:cred-1}}	AST-r10-0005	INT-r10-0003				active		弱口令 admin/admin123 经 /login 表单子串键名 user&pass 取得	2	2026-10-06T09:33:00Z	
+CRED-r10-0002	session	admin	admin@svc-login	{{vault:cred-2}}	AST-r10-0005	INT-r10-0003	CRED-r10-0001			active		会话令牌经 /token 发放响应头取得（头名形 X-Auth-*，值 vault cred-2）；跨服务可用	2	2026-10-06T09:34:00Z	

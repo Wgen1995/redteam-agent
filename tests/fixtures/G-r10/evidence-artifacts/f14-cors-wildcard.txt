@@ -1,0 +1,8 @@
+GET /cors-debug HTTP/1.1
+Host: svc-api-gw:8002
+
+--- response ---
+=> 200
+Access-Control-Allow-Origin: *
+
+<html>cors debug GTCORS-01 wildcard allow-origin</html>

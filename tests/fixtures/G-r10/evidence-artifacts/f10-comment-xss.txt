@@ -1,0 +1,7 @@
+GET /comment?comment=%3Csvg%3E HTTP/1.1
+Host: svc-shop:8001
+
+--- response ---
+=> 200
+
+<html>comment GTXSS-02 synthetic stored xss echo</html>
