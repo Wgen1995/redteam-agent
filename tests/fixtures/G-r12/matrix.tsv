@@ -1,0 +1,216 @@
+172.28.0.0/24	wstg-info				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-conf				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-idnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-authn				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-authz				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-sess				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-inpv				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-errh				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-cryp				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-busl				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-clnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-apit				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-info				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-conf				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-idnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-authn				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-authz				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-sess				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-inpv				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-errh				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-cryp				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-busl				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-clnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-shop	wstg-apit				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-info				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-conf				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-idnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-authn				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-authz				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-sess				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-inpv				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-errh				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-cryp				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-busl				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-clnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-api-gw	wstg-apit				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-info				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-conf				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-idnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-authn				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-authz				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-sess				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-inpv				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-errh				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-cryp				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-busl				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-clnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-admin	wstg-apit				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-info				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-conf				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-idnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-authn				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-authz				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-sess				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-inpv				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-errh				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-cryp				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-busl				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-clnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-login	wstg-apit				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-info				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-conf				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-idnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-authn				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-authz				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-sess				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-inpv				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-errh				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-cryp				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-busl				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-clnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-billing	wstg-apit				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-info				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-conf				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-idnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-authn				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-authz				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-sess				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-inpv				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-errh				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-cryp				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-busl				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-clnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-dashboard	wstg-apit				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-info				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-conf				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-idnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-authn				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-authz				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-sess				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-inpv				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-errh				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-cryp				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-busl				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-clnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-portal	wstg-apit				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-info				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-conf				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-idnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-authn				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-authz				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-sess				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-inpv				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-errh				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-cryp				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-busl				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-clnt				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+svc-files	wstg-apit				2	2026-10-08T09:19:00Z	2026-10-08T09:20:00Z
+172.28.0.0/24	wstg-apit	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-authn	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-authz	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-busl	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-clnt	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-conf	-	网段层无配置面可测(服务级面已覆盖)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-cryp	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-errh	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-idnt	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-info	x	端口地图8服务实测(probe1)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-inpv	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+172.28.0.0/24	wstg-sess	-	unreachable:AST-r12-0001 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-apit	-	unreachable:AST-r12-0002 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-authn	-	unreachable:AST-r12-0002 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-authz	x	GTIDOR-06低权可读他人报表(差分对)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-busl	-	unreachable:AST-r12-0002 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-clnt	-	unreachable:AST-r12-0002 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-conf	-	wp-admin/admin.php/.git三诱饵面已识别非真面		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-cryp	-	unreachable:AST-r12-0002 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-errh	-	unreachable:AST-r12-0002 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-idnt	-	unreachable:AST-r12-0002 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-info	-	unreachable:AST-r12-0002 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-inpv	x	GTSQLI-01/02+GTXSS-01/03/04		2	2026-10-08T10:35:00Z	
+svc-shop	wstg-sess	-	logout为302重定向面无会话固着		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-apit	-	unreachable:AST-r12-0003 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-authn	-	unreachable:AST-r12-0003 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-authz	x	GTIDOR-05低权可见密钥清单(差分对)		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-busl	-	unreachable:AST-r12-0003 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-clnt	-	jump开放重定向三击不中挂起(7参数x值形变体)		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-conf	x	GTCORS-01通配源+GTCORS-02源反射携凭据		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-cryp	-	unreachable:AST-r12-0003 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-errh	-	unreachable:AST-r12-0003 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-idnt	-	unreachable:AST-r12-0003 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-info	x	GTGRAPHQL-01内省开启		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-inpv	x	GTSSRF-02 URL参数驱动		2	2026-10-08T10:35:00Z	
+svc-api-gw	wstg-sess	-	unreachable:AST-r12-0003 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-apit	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-authn	!	alg=none JWT构造被拒401——验签面在密钥未知		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-authz	!	user级令牌三携带形态全401——缺admin级凭据无法差分		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-busl	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-clnt	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-conf	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-cryp	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-errh	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-idnt	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-info	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-inpv	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-admin	wstg-sess	-	unreachable:AST-r12-0004 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-login	wstg-apit	-	unreachable:AST-r12-0005 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-login	wstg-authn	x	GTWEAKPASS-01弱口令admin/admin123换令牌		2	2026-10-08T10:35:00Z	
+svc-login	wstg-authz	-	unreachable:AST-r12-0005 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-login	wstg-busl	x	GTRATE-01连击无锁定无限流		2	2026-10-08T10:35:00Z	
+svc-login	wstg-clnt	-	unreachable:AST-r12-0005 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-login	wstg-conf	-	无配置面枚举命中		2	2026-10-08T10:35:00Z	
+svc-login	wstg-cryp	-	unreachable:AST-r12-0005 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-login	wstg-errh	-	unreachable:AST-r12-0005 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-login	wstg-idnt	-	unreachable:AST-r12-0005 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-login	wstg-info	-	catch-all 200零熵墙无信息面可分		2	2026-10-08T10:35:00Z	
+svc-login	wstg-inpv	-	unreachable:AST-r12-0005 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-login	wstg-sess	-	unreachable:AST-r12-0005 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-apit	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-authn	!	alg=none JWT构造被拒401		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-authz	!	user级令牌全401——缺admin级凭据		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-busl	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-clnt	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-conf	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-cryp	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-errh	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-idnt	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-info	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-inpv	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-billing	wstg-sess	-	unreachable:AST-r12-0006 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-apit	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-authn	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-authz	x	GTROLE-03低权可达配置面(差分对)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-busl	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-clnt	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-conf	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-cryp	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-errh	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-idnt	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-info	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-inpv	x	GTSSTI-02模板参数直达渲染		2	2026-10-08T10:35:00Z	
+svc-dashboard	wstg-sess	-	unreachable:AST-r12-0007 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-apit	-	unreachable:AST-r12-0008 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-authn	-	unreachable:AST-r12-0008 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-authz	x	GTHAUTH-05低权客户清单(差分对)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-busl	-	unreachable:AST-r12-0008 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-clnt	-	unreachable:AST-r12-0008 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-conf	-	unreachable:AST-r12-0008 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-cryp	-	unreachable:AST-r12-0008 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-errh	-	unreachable:AST-r12-0008 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-idnt	-	unreachable:AST-r12-0008 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-info	x	GTINFOLEAK-01环境变量匿名可达		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-inpv	x	GTREDIR-01开放重定向外域Location		2	2026-10-08T10:35:00Z	
+svc-portal	wstg-sess	-	unreachable:AST-r12-0008 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-apit	-	unreachable:AST-r12-0009 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-authn	-	unreachable:AST-r12-0009 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-authz	x	GTROLE-04低权可达日志面(差分对)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-busl	-	unreachable:AST-r12-0009 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-clnt	-	unreachable:AST-r12-0009 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-conf	-	unreachable:AST-r12-0009 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-cryp	-	unreachable:AST-r12-0009 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-errh	-	unreachable:AST-r12-0009 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-idnt	-	unreachable:AST-r12-0009 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	
+svc-files	wstg-info	x	GTINFOLEAK-03 .env匿名可达		2	2026-10-08T10:35:00Z	
+svc-files	wstg-inpv	x	GTDESER-01/02/03三反序列化处理器GET直取		2	2026-10-08T10:35:00Z	
+svc-files	wstg-sess	-	unreachable:AST-r12-0009 字典波五波枚举无该类面命中且无深探通道(POST面501/400、令牌拒401)		2	2026-10-08T10:35:00Z	

@@ -1,0 +1,34 @@
+F-r12-0001	INT-r12-0001	service	172.28.0.0/24	端口地图:svc-shop:8001,svc-api-gw:8002,svc-admin:8003,svc-login:8004,svc-billing:8005,svc-dashboard:8006,svc-portal:8007,svc-files:8008(probe1,端口异构确认)	1.0	2	2026-10-08T09:15:00Z
+F-r12-0002	INT-r12-0001	http	svc-admin:8003	根401 auth required\;svc-billing:8005根401同形\;svc-login:8004根200 login form\;其余4服务根404	1.0	2	2026-10-08T09:15:30Z
+F-r12-0003	INT-r12-0002	vuln-clue	svc-login:8004	/login POST 表单403恒定但体内计数器GTRATE-01递增无锁定——无限流面(行为差分)\;键名user/username均收\;catch-all GET 200零熵墙已弃	0.95	2	2026-10-08T09:41:00Z
+F-r12-0004	INT-r12-0002	authz	svc-shop:8001	/logout?next=302 Location=http://evil.example 开放重定向实证\;to/url参数=自反射非外域	1.0	2	2026-10-08T09:41:30Z
+F-r12-0005	INT-r12-0002	authz	svc-portal:8007	/redirect?to=与goto= 302 Location=http://evil.example 开放重定向实证	1.0	2	2026-10-08T09:42:00Z
+F-r12-0006	INT-r12-0002	info	svc-api-gw:8002	/jump 7参数x值形变体全302 Location=自路径——三击不中挂起(非外域重定向面)	0.8	2	2026-10-08T09:42:30Z
+F-r12-0007	INT-r12-0003	authz	svc-shop:8001	律23清单:/admin/reports命中GTIDOR-06(x-auth 200/匿名401)\;其余7名词404——服务完成度8/8	1.0	2	2026-10-08T09:51:00Z
+F-r12-0008	INT-r12-0003	authz	svc-api-gw:8002	律23清单:/admin/keys命中GTIDOR-05低权可见密钥清单(x-auth 200/匿名401)\;其余7名词404——完成度8/8	1.0	2	2026-10-08T09:51:30Z
+F-r12-0009	INT-r12-0003	authz	svc-dashboard:8006	律23清单:/admin/config命中GTROLE-03低权可达配置(x-auth 200/匿名401)\;其余7名词404——完成度8/8	1.0	2	2026-10-08T09:52:00Z
+F-r12-0010	INT-r12-0003	authz	svc-portal:8007	律23清单:/admin/clients命中GTHAUTH-05低权客户清单(x-auth 200/匿名401)\;其余7名词404——完成度8/8	1.0	2	2026-10-08T09:52:30Z
+F-r12-0011	INT-r12-0003	authz	svc-files:8008	律23清单:/admin/logs命中GTROLE-04低权可达日志(x-auth 200/匿名401)\;其余7名词404——完成度8/8	1.0	2	2026-10-08T09:53:00Z
+F-r12-0012	INT-r12-0003	authz	svc-admin:8003	律23清单:8子名词全部401(user级tok-usr-001三携带形态均拒)——admin级区域,完成度8/8	1.0	2	2026-10-08T09:53:30Z
+F-r12-0013	INT-r12-0003	authz	svc-billing:8005	律23清单:8子名词全部401(user级tok-usr-001三携带形态均拒)——完成度8/8	1.0	2	2026-10-08T09:54:00Z
+F-r12-0014	INT-r12-0003	authz	svc-login:8004	律23清单:8子名词全部catch-all 200 login form(零熵,无差分可证)——完成度8/8	0.9	2	2026-10-08T09:54:30Z
+F-r12-0015	INT-r12-0003	authz	range	携带形态判定:X-Auth-Token(发放响应头名,律19)为唯一有效携带形态\;Bearer/Cookie全401——头名族=键名族响应侧镜像实锤	1.0	2	2026-10-08T09:55:00Z
+F-r12-0016	INT-r12-0004	vuln-clue	svc-shop:8001	/item?id=1 命中 GTSQLI-01(SQL注入(报错回显))	0.9	2	2026-10-08T10:00:20Z
+F-r12-0017	INT-r12-0004	vuln-clue	svc-shop:8001	/order?id=1 命中 GTSQLI-02(SQL注入(报错回显))	0.9	2	2026-10-08T10:01:20Z
+F-r12-0018	INT-r12-0004	vuln-clue	svc-shop:8001	/search?q= 命中 GTXSS-01(反射型XSS)	0.9	2	2026-10-08T10:02:20Z
+F-r12-0019	INT-r12-0004	vuln-clue	svc-shop:8001	/reply?body= 命中 GTXSS-03(反射型XSS)	0.9	2	2026-10-08T10:03:20Z
+F-r12-0020	INT-r12-0004	vuln-clue	svc-shop:8001	/feedback?msg= 命中 GTXSS-04(反射型XSS)	0.9	2	2026-10-08T10:04:20Z
+F-r12-0021	INT-r12-0004	vuln-clue	svc-api-gw:8002	/preview?url= 命中 GTSSRF-02(SSRF)	0.9	2	2026-10-08T10:05:20Z
+F-r12-0022	INT-r12-0004	vuln-clue	svc-api-gw:8002	/graphql 命中 GTGRAPHQL-01(GraphQL内省暴露)	0.9	2	2026-10-08T10:06:20Z
+F-r12-0023	INT-r12-0004	vuln-clue	svc-api-gw:8002	/cors-debug 命中 GTCORS-01(CORS配置缺陷(通配源))	0.9	2	2026-10-08T10:07:20Z
+F-r12-0024	INT-r12-0004	vuln-clue	svc-api-gw:8002	/origin 命中 GTCORS-02(CORS源反射+凭据)	0.9	2	2026-10-08T10:08:20Z
+F-r12-0025	INT-r12-0004	vuln-clue	svc-dashboard:8006	/render?tpl= 命中 GTSSTI-02(模板注入(SSTI))	0.9	2	2026-10-08T10:09:20Z
+F-r12-0026	INT-r12-0004	vuln-clue	svc-portal:8007	/debug/env 命中 GTINFOLEAK-01(信息暴露(环境变量))	0.9	2	2026-10-08T10:10:20Z
+F-r12-0027	INT-r12-0004	vuln-clue	svc-files:8008	/.env 命中 GTINFOLEAK-03(信息暴露(.env))	0.9	2	2026-10-08T10:11:20Z
+F-r12-0028	INT-r12-0004	vuln-clue	svc-files:8008	/unserialize?data= 命中 GTDESER-01(反序列化(pickle))	0.9	2	2026-10-08T10:12:20Z
+F-r12-0029	INT-r12-0004	vuln-clue	svc-files:8008	/import 命中 GTDESER-02(反序列化(java))	0.9	2	2026-10-08T10:13:20Z
+F-r12-0030	INT-r12-0004	vuln-clue	svc-files:8008	/decode?data= 命中 GTDESER-03(反序列化(base64))	0.9	2	2026-10-08T10:14:20Z
+F-r12-0031	INT-r12-0004	vuln-clue	svc-shop:8001	/logout?next= 命中 GTREDIR-02(开放重定向)	0.9	2	2026-10-08T10:15:20Z
+F-r12-0032	INT-r12-0004	vuln-clue	svc-portal:8007	/redirect?to= 命中 GTREDIR-01(开放重定向)	0.9	2	2026-10-08T10:16:20Z
+F-r12-0033	INT-r12-0002	vuln-clue	svc-login:8004	/login POST 命中 GTWEAKPASS-01(弱口令)	0.9	2	2026-10-08T10:17:20Z
+F-r12-0034	INT-r12-0002	vuln-clue	svc-login:8004	/login POST 连击 命中 GTRATE-01(限流缺失(爆破无锁))	0.9	2	2026-10-08T10:18:20Z

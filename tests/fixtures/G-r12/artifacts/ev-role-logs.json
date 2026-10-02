@@ -1,0 +1,15 @@
+{
+ "svc": "svc-files",
+ "port": 8008,
+ "request": "GET /admin/logs (X-Auth-Token)",
+ "response": {
+  "status": 200,
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 02 Oct 2026 18:27:00 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "59"
+  },
+  "body": "<html>GTROLE-04 synthetic role-04 低权可达日志</html>"
+ }
+}

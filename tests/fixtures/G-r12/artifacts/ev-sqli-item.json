@@ -1,0 +1,12 @@
+{
+ "svc": "svc-shop",
+ "port": 8001,
+ "request": "GET /item?id=1",
+ "response": {
+  "path": "/item?id=1'",
+  "res": {
+   "status": 200,
+   "body": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>"
+  }
+ }
+}

@@ -1,0 +1,32 @@
+AST-r12-0001	ip	172.28.0.0/24	靶场网段	in_scope	2	2026-10-08T09:16:00Z
+AST-r12-0002	service	svc-shop	port=8001\;root= echo 401\;\; svc-login) echo 200\;\; *) echo 404\;\; esac)	in_scope	2	2026-10-08T09:16:30Z
+AST-r12-0003	service	svc-api-gw	port=8002\;root= echo 401\;\; svc-login) echo 200\;\; *) echo 404\;\; esac)	in_scope	2	2026-10-08T09:16:30Z
+AST-r12-0004	service	svc-admin	port=8003\;root= echo 401\;\; svc-login) echo 200\;\; *) echo 404\;\; esac)	in_scope	2	2026-10-08T09:16:30Z
+AST-r12-0005	service	svc-login	port=8004\;root= echo 401\;\; svc-login) echo 200\;\; *) echo 404\;\; esac)	in_scope	2	2026-10-08T09:16:30Z
+AST-r12-0006	service	svc-billing	port=8005\;root= echo 401\;\; svc-login) echo 200\;\; *) echo 404\;\; esac)	in_scope	2	2026-10-08T09:16:30Z
+AST-r12-0007	service	svc-dashboard	port=8006\;root= echo 401\;\; svc-login) echo 200\;\; *) echo 404\;\; esac)	in_scope	2	2026-10-08T09:16:30Z
+AST-r12-0008	service	svc-portal	port=8007\;root= echo 401\;\; svc-login) echo 200\;\; *) echo 404\;\; esac)	in_scope	2	2026-10-08T09:16:30Z
+AST-r12-0009	service	svc-files	port=8008\;root= echo 401\;\; svc-login) echo 200\;\; *) echo 404\;\; esac)	in_scope	2	2026-10-08T09:16:30Z
+AST-r12-0010	endpoint	svc-shop/item	port=8001\;face=GTSQLI-01	in_scope	2	2026-10-08T10:00:00Z
+AST-r12-0011	endpoint	svc-shop/order	port=8001\;face=GTSQLI-02	in_scope	2	2026-10-08T10:01:00Z
+AST-r12-0012	endpoint	svc-shop/search	port=8001\;face=GTXSS-01	in_scope	2	2026-10-08T10:02:00Z
+AST-r12-0013	endpoint	svc-shop/reply	port=8001\;face=GTXSS-03	in_scope	2	2026-10-08T10:03:00Z
+AST-r12-0014	endpoint	svc-shop/feedback	port=8001\;face=GTXSS-04	in_scope	2	2026-10-08T10:04:00Z
+AST-r12-0015	endpoint	svc-api-gw/preview	port=8002\;face=GTSSRF-02	in_scope	2	2026-10-08T10:05:00Z
+AST-r12-0016	endpoint	svc-api-gw/graphql	port=8002\;face=GTGRAPHQL-01	in_scope	2	2026-10-08T10:06:00Z
+AST-r12-0017	endpoint	svc-api-gw/cors-debug	port=8002\;face=GTCORS-01	in_scope	2	2026-10-08T10:07:00Z
+AST-r12-0018	endpoint	svc-api-gw/origin	port=8002\;face=GTCORS-02	in_scope	2	2026-10-08T10:08:00Z
+AST-r12-0019	endpoint	svc-dashboard/render	port=8006\;face=GTSSTI-02	in_scope	2	2026-10-08T10:09:00Z
+AST-r12-0020	endpoint	svc-portal/debug/env	port=8007\;face=GTINFOLEAK-01	in_scope	2	2026-10-08T10:10:00Z
+AST-r12-0021	endpoint	svc-files/.env	port=8008\;face=GTINFOLEAK-03	in_scope	2	2026-10-08T10:11:00Z
+AST-r12-0022	endpoint	svc-files/unserialize	port=8008\;face=GTDESER-01	in_scope	2	2026-10-08T10:12:00Z
+AST-r12-0023	endpoint	svc-files/import	port=8008\;face=GTDESER-02	in_scope	2	2026-10-08T10:13:00Z
+AST-r12-0024	endpoint	svc-files/decode	port=8008\;face=GTDESER-03	in_scope	2	2026-10-08T10:14:00Z
+AST-r12-0025	endpoint	svc-shop/logout	port=8001\;face=GTREDIR-02	in_scope	2	2026-10-08T10:15:00Z
+AST-r12-0026	endpoint	svc-portal/redirect	port=8007\;face=GTREDIR-01	in_scope	2	2026-10-08T10:16:00Z
+AST-r12-0027	endpoint	svc-login/login	port=8004\;face=GTWEAKPASS-01	in_scope	2	2026-10-08T10:17:00Z
+AST-r12-0028	endpoint	svc-shop/admin/reports	port=8001\;face=GTIDOR-06	in_scope	2	2026-10-08T10:20:00Z
+AST-r12-0029	endpoint	svc-api-gw/admin/keys	port=8002\;face=GTIDOR-05	in_scope	2	2026-10-08T10:21:00Z
+AST-r12-0030	endpoint	svc-dashboard/admin/config	port=8006\;face=GTROLE-03	in_scope	2	2026-10-08T10:22:00Z
+AST-r12-0031	endpoint	svc-portal/admin/clients	port=8007\;face=GTHAUTH-05	in_scope	2	2026-10-08T10:23:00Z
+AST-r12-0032	endpoint	svc-files/admin/logs	port=8008\;face=GTROLE-04	in_scope	2	2026-10-08T10:24:00Z

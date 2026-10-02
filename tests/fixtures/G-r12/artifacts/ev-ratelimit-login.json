@@ -1,0 +1,15 @@
+{
+ "svc": "svc-login",
+ "port": 8004,
+ "request": "POST /login",
+ "response": {
+  "status": 403,
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 02 Oct 2026 18:23:18 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "71"
+  },
+  "body": "<html>denied GTRATE-01 synthetic no rate limit after 64 attempts</html>"
+ }
+}

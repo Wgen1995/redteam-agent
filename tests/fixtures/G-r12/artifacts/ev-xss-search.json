@@ -1,0 +1,9 @@
+{
+ "svc": "svc-shop",
+ "port": 8001,
+ "request": "GET /search?q=%3Cscript%3Ealert(1)%3C%2Fscript%3E",
+ "response": {
+  "status": 200,
+  "body": "<html>search results %3Cscript%3Ealert(1)%3C%2Fscript%3E GTXSS-01 synthetic reflected xss</html>"
+ }
+}

@@ -1,0 +1,2 @@
+AST-drill-0001	service	svc-login	port=8004	in_scope	2	2026-10-08T09:07:30Z
+AST-drill-0002	endpoint	svc-login/	root 200 login form	in_scope	2	2026-10-08T09:07:40Z

@@ -1,0 +1,19 @@
+{
+ "svc": "svc-files",
+ "port": 8008,
+ "request": "GET /import",
+ "response": {
+  "status": 200,
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 02 Oct 2026 18:18:38 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "63"
+  },
+  "body": "<html>GTDESER-02 synthetic java serialized blob accepted</html>",
+  "ms": 1,
+  "svc": "svc-files",
+  "port": 8008,
+  "path": "/import"
+ }
+}

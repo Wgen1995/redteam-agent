@@ -1,0 +1,15 @@
+{
+ "svc": "svc-dashboard",
+ "port": 8006,
+ "request": "GET /admin/config (anonymous)",
+ "response": {
+  "status": 401,
+  "headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 02 Oct 2026 18:26:45 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "13"
+  },
+  "body": "auth required"
+ }
+}

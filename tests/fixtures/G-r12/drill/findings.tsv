@@ -1,0 +1,1 @@
+FD-drill-0001	INT-drill-0001	演练弃弹:svc-login根面可达(非战果)	C3	低	ruled_out		AST-drill-0002+演练弃弹:svc-login根面可达(非战果)		in_scope	演练链路验证弃弹：根面200仅证明服务在线，非漏洞。	GET http://svc-login:8004/ -> 200 login form	AST-drill-0002	EV-drill-0001		findings-cards/FD-drill-0001.md	active	2	2026-10-08T09:10:00Z

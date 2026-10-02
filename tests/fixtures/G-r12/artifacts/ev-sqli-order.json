@@ -1,0 +1,12 @@
+{
+ "svc": "svc-shop",
+ "port": 8001,
+ "request": "GET /order?id=1",
+ "response": {
+  "path": "/order?id=1'",
+  "res": {
+   "status": 200,
+   "body": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+  }
+ }
+}

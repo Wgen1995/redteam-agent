@@ -1,0 +1,24 @@
+S-r12-0001	include	*.range.local					2	2026-10-08T09:01:00Z
+S-r12-0002	include	172.28.0.0/24					2	2026-10-08T09:01:00Z
+S-r12-0003	include	svc-shop					2	2026-10-08T09:01:00Z
+S-r12-0004	include	svc-api-gw					2	2026-10-08T09:01:00Z
+S-r12-0005	include	svc-admin					2	2026-10-08T09:01:00Z
+S-r12-0006	include	svc-login					2	2026-10-08T09:01:00Z
+S-r12-0007	include	svc-billing					2	2026-10-08T09:01:00Z
+S-r12-0008	include	svc-dashboard					2	2026-10-08T09:01:00Z
+S-r12-0009	include	svc-portal					2	2026-10-08T09:01:00Z
+S-r12-0010	include	svc-files					2	2026-10-08T09:01:00Z
+S-r12-0011	exclude	*.out-of-scope.local					2	2026-10-08T09:01:00Z
+S-r12-0012	oob	192.168.0.0/16					2	2026-10-08T09:01:00Z
+S-r12-0013	include	172.28.0.0/24				靶场网段	2	2026-10-08T09:02:00Z
+S-r12-0014	include	svc-shop				容器DNS直达	2	2026-10-08T09:02:00Z
+S-r12-0015	include	svc-api-gw				容器DNS直达	2	2026-10-08T09:02:00Z
+S-r12-0016	include	svc-admin				容器DNS直达	2	2026-10-08T09:02:00Z
+S-r12-0017	include	svc-login				容器DNS直达	2	2026-10-08T09:02:00Z
+S-r12-0018	include	svc-billing				容器DNS直达	2	2026-10-08T09:02:00Z
+S-r12-0019	include	svc-dashboard				容器DNS直达	2	2026-10-08T09:02:00Z
+S-r12-0020	include	svc-portal				容器DNS直达	2	2026-10-08T09:02:00Z
+S-r12-0021	include	svc-files				容器DNS直达	2	2026-10-08T09:02:00Z
+S-r12-0022	exclude	evil.example				重定向外域靶标不入侵	2	2026-10-08T09:03:00Z
+S-r12-0023	oob	oob.g-r12.example				OOB 通道占位(本轮未部署回调)	2	2026-10-08T09:03:00Z
+S-r12-0024	account-grant	*	CRED-r12-0001	GET\;POST		user级令牌动作授权(GET/POST重扫面)	2	2026-10-08T09:45:00Z

@@ -1,0 +1,15 @@
+{
+ "svc": "svc-api-gw",
+ "port": 8002,
+ "request": "GET /origin",
+ "response": {
+  "face": "/origin",
+  "origin": "http://evil.example",
+  "status": 200,
+  "acao": {
+   "Access-Control-Allow-Origin": "http://evil.example",
+   "Access-Control-Allow-Credentials": "true"
+  },
+  "body": "<html>origin GTCORS-02 reflected http://evil.example allow-credentials true</html>"
+ }
+}

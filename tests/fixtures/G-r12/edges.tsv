@@ -1,0 +1,42 @@
+E-r12-0001	parent	AST-r12-0002	AST-r12-0001	intent:INT-r12-0001 网段包含服务	2	2026-10-08T09:17:00Z
+E-r12-0002	parent	AST-r12-0003	AST-r12-0001	intent:INT-r12-0001 网段包含服务	2	2026-10-08T09:17:00Z
+E-r12-0003	parent	AST-r12-0004	AST-r12-0001	intent:INT-r12-0001 网段包含服务	2	2026-10-08T09:17:00Z
+E-r12-0004	parent	AST-r12-0005	AST-r12-0001	intent:INT-r12-0001 网段包含服务	2	2026-10-08T09:17:00Z
+E-r12-0005	parent	AST-r12-0006	AST-r12-0001	intent:INT-r12-0001 网段包含服务	2	2026-10-08T09:17:00Z
+E-r12-0006	parent	AST-r12-0007	AST-r12-0001	intent:INT-r12-0001 网段包含服务	2	2026-10-08T09:17:00Z
+E-r12-0007	parent	AST-r12-0008	AST-r12-0001	intent:INT-r12-0001 网段包含服务	2	2026-10-08T09:17:00Z
+E-r12-0008	parent	AST-r12-0009	AST-r12-0001	intent:INT-r12-0001 网段包含服务	2	2026-10-08T09:17:00Z
+E-r12-0009	derived_from	F-r12-0001	INT-r12-0001	消费:端口图驱动测绘intent	2	2026-10-08T10:40:00Z
+E-r12-0010	derived_from	F-r12-0002	INT-r12-0002	消费:凭据波假设来源	2	2026-10-08T10:40:10Z
+E-r12-0011	derived_from	F-r12-0003	INT-r12-0002	消费:凭据波假设来源	2	2026-10-08T10:40:10Z
+E-r12-0012	derived_from	F-r12-0004	INT-r12-0002	消费:凭据波假设来源	2	2026-10-08T10:40:10Z
+E-r12-0013	derived_from	F-r12-0005	INT-r12-0002	消费:凭据波假设来源	2	2026-10-08T10:40:10Z
+E-r12-0014	derived_from	F-r12-0006	INT-r12-0002	消费:凭据波假设来源	2	2026-10-08T10:40:10Z
+E-r12-0015	derived_from	F-r12-0007	INT-r12-0003	消费:律23清单完成度来源	2	2026-10-08T10:40:20Z
+E-r12-0016	derived_from	F-r12-0008	INT-r12-0003	消费:律23清单完成度来源	2	2026-10-08T10:40:20Z
+E-r12-0017	derived_from	F-r12-0009	INT-r12-0003	消费:律23清单完成度来源	2	2026-10-08T10:40:20Z
+E-r12-0018	derived_from	F-r12-0010	INT-r12-0003	消费:律23清单完成度来源	2	2026-10-08T10:40:20Z
+E-r12-0019	derived_from	F-r12-0011	INT-r12-0003	消费:律23清单完成度来源	2	2026-10-08T10:40:20Z
+E-r12-0020	derived_from	F-r12-0012	INT-r12-0003	消费:律23清单完成度来源	2	2026-10-08T10:40:20Z
+E-r12-0021	derived_from	F-r12-0013	INT-r12-0003	消费:律23清单完成度来源	2	2026-10-08T10:40:20Z
+E-r12-0022	derived_from	F-r12-0014	INT-r12-0003	消费:律23清单完成度来源	2	2026-10-08T10:40:20Z
+E-r12-0023	derived_from	F-r12-0015	INT-r12-0003	消费:律23清单完成度来源	2	2026-10-08T10:40:20Z
+E-r12-0024	derived_from	F-r12-0016	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0025	derived_from	F-r12-0017	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0026	derived_from	F-r12-0018	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0027	derived_from	F-r12-0019	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0028	derived_from	F-r12-0020	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0029	derived_from	F-r12-0021	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0030	derived_from	F-r12-0022	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0031	derived_from	F-r12-0023	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0032	derived_from	F-r12-0024	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0033	derived_from	F-r12-0025	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0034	derived_from	F-r12-0026	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0035	derived_from	F-r12-0027	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0036	derived_from	F-r12-0028	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0037	derived_from	F-r12-0029	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0038	derived_from	F-r12-0030	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0039	derived_from	F-r12-0031	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0040	derived_from	F-r12-0032	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0041	derived_from	F-r12-0033	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z
+E-r12-0042	derived_from	F-r12-0034	INT-r12-0004	消费:字典波命中驱动finding	2	2026-10-08T10:42:00Z

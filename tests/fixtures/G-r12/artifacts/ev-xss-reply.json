@@ -1,0 +1,12 @@
+{
+ "svc": "svc-shop",
+ "port": 8001,
+ "request": "GET /reply?body=xsstest777",
+ "response": {
+  "face": "/reply",
+  "p": "body",
+  "status": 200,
+  "reflected": true,
+  "body": "<html>reply /reply?body=xsstest777 GTXSS-03 synthetic reflected xss</html>"
+ }
+}

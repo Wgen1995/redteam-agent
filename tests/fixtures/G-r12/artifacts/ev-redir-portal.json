@@ -1,0 +1,12 @@
+{
+ "svc": "svc-portal",
+ "port": 8007,
+ "request": "GET /redirect?to=http://evil.example",
+ "response": {
+  "svc": "svc-portal",
+  "path": "/redirect?to=",
+  "status": 302,
+  "location": "http://evil.example",
+  "body": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+ }
+}

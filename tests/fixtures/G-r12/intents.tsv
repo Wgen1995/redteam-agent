@@ -1,0 +1,14 @@
+INT-r12-0001	P1测绘:8服务端口建图		pending	G-r12	recon	recon-event			-+recon+P1测绘:8服务端口建图	20000\;2000\;1					2	2026-10-08T09:14:00Z
+INT-r12-0002	凭据发放面:svc-login弱口令+无限流		candidate	G-r12	surface	llm			-+surface+凭据发放面:svc-login弱口令+无限流	5000\;3000\;1					2	2026-10-08T09:40:00Z
+INT-r12-0003	持证重扫清单化(律23):8服务x8子名词全叉乘		pending	G-r12	authz-diff	llm			-+authz-diff+持证重扫清单化(律23):8服务x8子名词全叉乘	8000\;6000\;1				CRED-r12-0002	2	2026-10-08T09:50:00Z
+INT-r12-0004	字典波全喷匿名面(redirect族/参数面/处理器GET直取/信息面/CORS/GraphQL)		candidate	G-r12	surface	llm			-+surface+字典波全喷匿名面(redirect族/参数面/处理器GET直取/信息面/CORS/GraphQL)	10000\;8000\;1					2	2026-10-08T09:20:00Z
+INT-r12-0001	P1测绘:8服务端口建图		active	G-r12	recon	recon-event			-+recon+P1测绘:8服务端口建图	20000\;2000\;1					2	2026-10-08T10:38:20Z
+INT-r12-0001	P1测绘:8服务端口建图		done	G-r12	recon	recon-event			-+recon+P1测绘:8服务端口建图	20000\;2000\;1					2	2026-10-08T10:38:30Z
+INT-r12-0002	凭据发放面:svc-login弱口令+无限流		pending	G-r12	surface	llm			-+surface+凭据发放面:svc-login弱口令+无限流	5000\;3000\;1					2	2026-10-08T10:38:10Z
+INT-r12-0002	凭据发放面:svc-login弱口令+无限流		active	G-r12	surface	llm			-+surface+凭据发放面:svc-login弱口令+无限流	5000\;3000\;1					2	2026-10-08T10:38:20Z
+INT-r12-0002	凭据发放面:svc-login弱口令+无限流		done	G-r12	surface	llm			-+surface+凭据发放面:svc-login弱口令+无限流	5000\;3000\;1					2	2026-10-08T10:38:30Z
+INT-r12-0003	持证重扫清单化(律23):8服务x8子名词全叉乘		active	G-r12	authz-diff	llm			-+authz-diff+持证重扫清单化(律23):8服务x8子名词全叉乘	8000\;6000\;1				CRED-r12-0002	2	2026-10-08T10:38:20Z
+INT-r12-0003	持证重扫清单化(律23):8服务x8子名词全叉乘		done	G-r12	authz-diff	llm			-+authz-diff+持证重扫清单化(律23):8服务x8子名词全叉乘	8000\;6000\;1				CRED-r12-0002	2	2026-10-08T10:38:30Z
+INT-r12-0004	字典波全喷匿名面(redirect族/参数面/处理器GET直取/信息面/CORS/GraphQL)		pending	G-r12	surface	llm			-+surface+字典波全喷匿名面(redirect族/参数面/处理器GET直取/信息面/CORS/GraphQL)	10000\;8000\;1					2	2026-10-08T10:38:10Z
+INT-r12-0004	字典波全喷匿名面(redirect族/参数面/处理器GET直取/信息面/CORS/GraphQL)		active	G-r12	surface	llm			-+surface+字典波全喷匿名面(redirect族/参数面/处理器GET直取/信息面/CORS/GraphQL)	10000\;8000\;1					2	2026-10-08T10:38:20Z
+INT-r12-0004	字典波全喷匿名面(redirect族/参数面/处理器GET直取/信息面/CORS/GraphQL)		done	G-r12	surface	llm			-+surface+字典波全喷匿名面(redirect族/参数面/处理器GET直取/信息面/CORS/GraphQL)	10000\;8000\;1					2	2026-10-08T10:38:30Z

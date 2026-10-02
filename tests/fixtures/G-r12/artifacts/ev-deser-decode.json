@@ -1,0 +1,9 @@
+{
+ "svc": "svc-files",
+ "port": 8008,
+ "request": "GET /decode?data=base64probe",
+ "response": {
+  "status": 200,
+  "body": "<html>GTDESER-03 synthetic base64 payload object inflated</html>"
+ }
+}

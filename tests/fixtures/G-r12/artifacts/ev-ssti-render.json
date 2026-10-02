@@ -1,0 +1,9 @@
+{
+ "svc": "svc-dashboard",
+ "port": 8006,
+ "request": "GET /render?tpl=%7B%7B7*7%7D%7D",
+ "response": {
+  "status": 200,
+  "body": "<html>render GTSSTI-02 synthetic ssti render {{7*7}}</html>"
+ }
+}

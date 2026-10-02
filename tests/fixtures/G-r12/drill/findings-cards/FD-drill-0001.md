@@ -1,0 +1,19 @@
+---
+id: FD-drill-0001
+dedup_key: AST-drill-0002+演练弃弹:svc-login根面可达(非战果)
+scope_check: in_scope
+exploitation_status: ruled_out
+confidence: C3
+impact: 低
+auth_context: 
+evidence_ids: [EV-drill-0001]
+control_evidence_ids: []
+affected_asset_id: AST-drill-0002
+pair_group: 
+---
+## 漏洞叙述
+（待 LLM 撰写，只能引用账本已有数据）
+## 复现步骤
+（引用 EV 卡片 POC 四要素，不复制原文）
+## 修复建议叙述
+（待 LLM 撰写）

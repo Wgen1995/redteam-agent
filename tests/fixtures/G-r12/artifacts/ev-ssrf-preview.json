@@ -1,0 +1,9 @@
+{
+ "svc": "svc-api-gw",
+ "port": 8002,
+ "request": "GET /preview?url=http://127.0.0.1:8003/",
+ "response": {
+  "status": 200,
+  "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>"
+ }
+}

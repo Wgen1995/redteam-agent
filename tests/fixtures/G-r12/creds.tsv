@@ -1,0 +1,2 @@
+CRED-r12-0001	static-cred	低权-user级	admin@svc-login	{{vault:cred-1}}	AST-r12-0005	INT-r12-0002				active		弱口令GTWEAKPASS-01\;真值仅vault	2	2026-10-08T09:44:00Z	
+CRED-r12-0002	session	低权-user级(tok-usr-001名形=用户级,律22)	admin@svc-login	{{vault:cred-2}}	AST-r12-0005	INT-r12-0002	CRED-r12-0001	2026-10-08T09:40:00Z	2026-10-08T23:59:59Z	active	GET\;POST	发放响应头X-Auth-Token采集,律19	2	2026-10-08T09:45:30Z	

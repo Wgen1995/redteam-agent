@@ -1,0 +1,14 @@
+{
+ "svc": "svc-api-gw",
+ "port": 8002,
+ "request": "GET /cors-debug",
+ "response": {
+  "face": "/cors-debug",
+  "origin": "http://evil.example",
+  "status": 200,
+  "acao": {
+   "Access-Control-Allow-Origin": "*"
+  },
+  "body": "<html>cors debug GTCORS-01 wildcard allow-origin</html>"
+ }
+}

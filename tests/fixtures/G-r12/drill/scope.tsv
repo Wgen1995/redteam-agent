@@ -1,0 +1,3 @@
+S-drill-0001	include	svc-login					2	2026-10-08T09:07:00Z
+S-drill-0002	exclude	evil.example					2	2026-10-08T09:07:00Z
+S-drill-0003	oob	oob.drill.example					2	2026-10-08T09:07:00Z

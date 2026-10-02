@@ -1,0 +1,9 @@
+{
+ "svc": "svc-files",
+ "port": 8008,
+ "request": "GET /unserialize?data=pickleprobe",
+ "response": {
+  "status": 200,
+  "body": "<html>GTDESER-01 synthetic pickle object inflated</html>"
+ }
+}
