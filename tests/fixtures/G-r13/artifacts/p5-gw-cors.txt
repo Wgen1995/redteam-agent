@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK | access-control-allow-origin: http://evil.example | access-control-allow-credentials: true | Origin: null 与 子域 形同反射

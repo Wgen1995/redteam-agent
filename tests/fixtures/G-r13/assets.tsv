@@ -1,0 +1,45 @@
+AST-r13-0001	service	svc-shop	port=8001\;probe=probe1\;root=root 404	in_scope	2	2026-10-09T09:06:00Z
+AST-r13-0002	service	svc-api-gw	port=8002\;probe=probe1\;root=root 404	in_scope	2	2026-10-09T09:07:00Z
+AST-r13-0003	service	svc-admin	port=8003\;probe=probe1\;root=root 401 auth-required	in_scope	2	2026-10-09T09:08:00Z
+AST-r13-0004	service	svc-login	port=8004\;probe=probe1\;root=root 200 login form	in_scope	2	2026-10-09T09:09:00Z
+AST-r13-0005	service	svc-billing	port=8005\;probe=probe1\;root=root 401 auth-required	in_scope	2	2026-10-09T09:10:00Z
+AST-r13-0006	service	svc-dashboard	port=8006\;probe=probe1\;root=root 404	in_scope	2	2026-10-09T09:11:00Z
+AST-r13-0007	service	svc-portal	port=8007\;probe=probe1\;root=root 404	in_scope	2	2026-10-09T09:12:00Z
+AST-r13-0008	service	svc-files	port=8008\;probe=probe1\;root=root 404	in_scope	2	2026-10-09T09:13:00Z
+AST-r13-0009	endpoint	svc-login/index	drill=discard-ammo\;port=8004\;probe=probe1根指纹面	in_scope	2	2026-10-09T09:18:00Z
+AST-r13-0010	endpoint	svc-portal/redirect	port=8007\;wave=probe2-4	in_scope	2	2026-10-09T09:25:00Z
+AST-r13-0011	endpoint	svc-shop/logout	port=8001\;wave=probe2-4	in_scope	2	2026-10-09T09:25:00Z
+AST-r13-0012	endpoint	svc-portal/debug/env	port=8007\;wave=probe2-4	in_scope	2	2026-10-09T09:26:00Z
+AST-r13-0013	endpoint	svc-files/.env	port=8008\;wave=probe2-4	in_scope	2	2026-10-09T09:26:00Z
+AST-r13-0014	endpoint	svc-files/unserialize	port=8008\;wave=probe2-4	in_scope	2	2026-10-09T09:26:00Z
+AST-r13-0015	endpoint	svc-files/decode	port=8008\;wave=probe2-4	in_scope	2	2026-10-09T09:27:00Z
+AST-r13-0016	endpoint	svc-files/import	port=8008\;wave=probe2-4	in_scope	2	2026-10-09T09:27:00Z
+AST-r13-0017	endpoint	svc-files/download	port=8008\;wave=probe2-4	in_scope	2	2026-10-09T09:27:00Z
+AST-r13-0018	endpoint	svc-files/static	port=8008\;wave=probe2-4	in_scope	2	2026-10-09T09:28:00Z
+AST-r13-0019	endpoint	svc-shop/item	port=8001\;wave=probe2-4	in_scope	2	2026-10-09T09:28:00Z
+AST-r13-0020	endpoint	svc-shop/order	port=8001\;wave=probe2-4	in_scope	2	2026-10-09T09:28:00Z
+AST-r13-0021	endpoint	svc-shop/search	port=8001\;wave=probe2-4	in_scope	2	2026-10-09T09:29:00Z
+AST-r13-0022	endpoint	svc-shop/comment	port=8001\;wave=probe2-4	in_scope	2	2026-10-09T09:29:00Z
+AST-r13-0023	endpoint	svc-shop/reply	port=8001\;wave=probe2-4	in_scope	2	2026-10-09T09:29:00Z
+AST-r13-0024	endpoint	svc-shop/feedback	port=8001\;wave=probe2-4	in_scope	2	2026-10-09T09:30:00Z
+AST-r13-0025	endpoint	svc-dashboard/report	port=8006\;wave=probe2-4	in_scope	2	2026-10-09T09:30:00Z
+AST-r13-0026	endpoint	svc-dashboard/render	port=8006\;wave=probe2-4	in_scope	2	2026-10-09T09:30:00Z
+AST-r13-0027	endpoint	svc-dashboard/ping	port=8006\;wave=probe2-4	in_scope	2	2026-10-09T09:31:00Z
+AST-r13-0028	endpoint	svc-api-gw/fetch	port=8002\;wave=probe2-4	in_scope	2	2026-10-09T09:31:00Z
+AST-r13-0029	endpoint	svc-api-gw/preview	port=8002\;wave=probe2-4	in_scope	2	2026-10-09T09:31:00Z
+AST-r13-0030	endpoint	svc-api-gw/proxy	port=8002\;wave=probe2-4	in_scope	2	2026-10-09T09:32:00Z
+AST-r13-0031	endpoint	svc-api-gw/graphql	port=8002\;wave=probe2-4	in_scope	2	2026-10-09T09:32:00Z
+AST-r13-0032	endpoint	svc-portal/api/graphql	port=8007\;wave=probe2-4	in_scope	2	2026-10-09T09:32:00Z
+AST-r13-0033	endpoint	svc-api-gw/cors-debug	port=8002\;wave=probe2-4	in_scope	2	2026-10-09T09:33:00Z
+AST-r13-0034	endpoint	svc-api-gw/origin	port=8002\;wave=probe2-4	in_scope	2	2026-10-09T09:33:00Z
+AST-r13-0035	endpoint	svc-login/login	port=8004\;wave=probe2-4	in_scope	2	2026-10-09T09:33:00Z
+AST-r13-0036	endpoint	svc-login/forgot	port=8004\;wave=probe2-4	in_scope	2	2026-10-09T09:34:00Z
+AST-r13-0037	endpoint	svc-login/login-rate	port=8004\;wave=probe2-4	in_scope	2	2026-10-09T09:34:00Z
+AST-r13-0038	endpoint	svc-dashboard/admin/config	port=8006\;wave=probe2-4	in_scope	2	2026-10-09T09:34:00Z
+AST-r13-0039	endpoint	svc-files/admin/logs	port=8008\;wave=probe2-4	in_scope	2	2026-10-09T09:35:00Z
+AST-r13-0040	endpoint	svc-portal/admin/clients	port=8007\;wave=probe2-4	in_scope	2	2026-10-09T09:35:00Z
+AST-r13-0041	endpoint	svc-api-gw/admin/keys	port=8002\;wave=probe2-4	in_scope	2	2026-10-09T09:35:00Z
+AST-r13-0042	endpoint	svc-shop/admin/reports	port=8001\;wave=probe2-4	in_scope	2	2026-10-09T09:36:00Z
+AST-r13-0043	endpoint	svc-api-gw/jump	port=8002\;wave=probe5	in_scope	2	2026-10-09T09:56:00Z
+AST-r13-0044	endpoint	svc-billing/invoice	port=8005\;wave=probe5\;tok=CRED-r13-0002	in_scope	2	2026-10-09T09:56:30Z
+AST-r13-0045	root-domain	authorized-range.local	range-root\;tree-root	in_scope	2	2026-10-09T10:32:30Z

@@ -1,0 +1,7 @@
+INT-r13-0001	INT port-recon	端口扫描 8000-8010×8 服务建服务地图+根指纹	candidate	human+probe-script	recon	entity			-+recon+INT port-recon	20000\;30000\;2					2	2026-10-09T09:05:01Z
+INT-r13-0002	INT dict-wave	字典族全喷：redirect 参数族+参数面族 item/order/product/detail+deser GET 直取+traversal/download 面族+infoleak 面	candidate	human+probe-script	surface	entity			-+surface+INT dict-wave	20000\;30000\;2					2	2026-10-09T09:05:02Z
+INT-r13-0003	INT cred-issuance	凭据发放面：/login//register//token 族 键名×编码叉乘+响应熵基线	candidate	human+probe-script	surface	precedent			-+surface+INT cred-issuance	20000\;30000\;2					2	2026-10-09T09:05:03Z
+INT-r13-0004	INT idor-resource	idor 资源面双形记账（query+path 小序数）	candidate	human+probe-script	deep-dive	precedent			-+deep-dive+INT idor-resource	20000\;30000\;2					2	2026-10-09T09:05:04Z
+INT-r13-0005	INT newclass	新类专探：JWT/GraphQL/XXE/CSRF/限流连击/CORS	candidate	human+probe-script	matrix-test	concept			-+matrix-test+INT newclass	20000\;30000\;2					2	2026-10-09T09:05:05Z
+INT-r13-0006	INT drill-ammo	演练五连弃子弹：全链路验证后弃	candidate	human+probe-script	matrix-test	llm			-+matrix-test+INT drill-ammo	20000\;30000\;2					2	2026-10-09T09:05:06Z
+INT-r13-0007	INT post-auth authz-diff	持 tok-usr-001 八服务×全字典+/admin 八子名词全叉乘重扫（律23 清单化）	pending	human+probe4	authz-diff	recon-event			-+authz-diff+INT post-auth authz-diff	20000\;30000\;2				CRED-r13-0002	2	2026-10-09T09:44:30Z

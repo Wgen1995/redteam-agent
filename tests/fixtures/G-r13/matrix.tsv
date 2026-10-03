@@ -1,0 +1,193 @@
+svc-shop	wstg-info				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-conf				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-idnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-authn				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-authz				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-sess				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-inpv				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-errh				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-cryp				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-busl				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-clnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-shop	wstg-apit				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-info				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-conf				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-idnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-authn				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-authz				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-sess				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-inpv				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-errh				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-cryp				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-busl				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-clnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-api-gw	wstg-apit				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-info				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-conf				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-idnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-authn				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-authz				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-sess				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-inpv				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-errh				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-cryp				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-busl				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-clnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-admin	wstg-apit				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-info				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-conf				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-idnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-authn				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-authz				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-sess				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-inpv				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-errh				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-cryp				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-busl				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-clnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-apit				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-info				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-conf				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-idnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-authn				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-authz				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-sess				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-inpv				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-errh				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-cryp				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-busl				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-clnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-billing	wstg-apit				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-info				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-conf				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-idnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-authn				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-authz				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-sess				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-inpv				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-errh				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-cryp				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-busl				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-clnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-dashboard	wstg-apit				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-info				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-conf				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-idnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-authn				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-authz				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-sess				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-inpv				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-errh				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-cryp				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-busl				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-clnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-portal	wstg-apit				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-info				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-conf				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-idnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-authn				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-authz				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-sess				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-inpv				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-errh				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-cryp				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-busl				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-clnt				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-files	wstg-apit				2	2026-10-09T09:16:00Z	2026-10-09T09:17:00Z
+svc-login	wstg-info	-	drill 弃子弹演练格（真实态由字典波重定）	INT-r13-0006	2	2026-10-09T09:23:30Z	
+svc-shop	wstg-info	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-conf	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-idnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-authn	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-authz	x	GTIDOR-06 持证 (FD-r13-0034)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-sess	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-inpv	x	GTSQLI-01/02+GTXSS-01..04 (FD-r13-0011..0016)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-errh	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-cryp	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-busl	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-clnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-shop	wstg-apit	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-info	x	GTGRAPHQL-01 (FD-r13-0023)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-conf	x	GTCORS-01/02 (FD-r13-0037)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-idnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-authn	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-authz	x	GTIDOR-05 持证 (FD-r13-0033)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-sess	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-inpv	x	GTSSRF-01..03+GTREDIR-03 (FD-r13-0020..0022,0035)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-errh	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-cryp	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-busl	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-clnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-api-gw	wstg-apit	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-info	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-conf	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-idnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-authn	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-authz	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-sess	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-inpv	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-errh	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-cryp	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-busl	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-clnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-admin	wstg-apit	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-info	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-conf	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-idnt	x	GTUSERENUM-01 (FD-r13-0028)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-authn	x	GTWEAKPASS-01+GTRATE-01 (FD-r13-0027,0029)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-authz	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-sess	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-inpv	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-errh	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-cryp	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-busl	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-clnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-login	wstg-apit	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-info	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-conf	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-idnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-authn	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-authz	x	GTIDOR-04 持证 (FD-r13-0036)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-sess	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-inpv	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-errh	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-cryp	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-busl	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-clnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-billing	wstg-apit	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-info	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-conf	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-idnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-authn	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-authz	x	GTROLE-03 持证 (FD-r13-0030)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-sess	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-inpv	x	GTSSTI-01/02+GTCMDI-01 (FD-r13-0017..0019)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-errh	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-cryp	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-busl	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-clnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-dashboard	wstg-apit	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-info	x	GTINFOLEAK-01+GTGRAPHQL-02 (FD-r13-0004,0024)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-conf	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-idnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-authn	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-authz	x	GTHAUTH-05 持证 (FD-r13-0032)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-sess	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-inpv	x	GTREDIR-01 (FD-r13-0002)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-errh	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-cryp	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-busl	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-clnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-portal	wstg-apit	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-info	x	GTINFOLEAK-03 (FD-r13-0005)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-conf	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-idnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-authn	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-authz	x	GTROLE-04 持证 (FD-r13-0031)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-sess	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-inpv	x	GTTRAVERSAL-01/02+GTDESER-01..03 (FD-r13-0006..0010)	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-errh	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-cryp	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-busl	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-clnt	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	
+svc-files	wstg-apit	-	字典波+持证波两态遍历无 hit（probe2/probe4/probe5，plan2-out/probe4_out/probe5 台账）	INT-r13-0005	2	2026-10-09T10:02:00Z	

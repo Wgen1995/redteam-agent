@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK | <html>comment GTXSS-02 synthetic stored xss echo</html>

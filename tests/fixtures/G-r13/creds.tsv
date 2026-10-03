@@ -1,0 +1,2 @@
+CRED-r13-0001	static-cred	user	admin	{{vault:cred-1}}				2026-10-09T09:34:00Z		active		svc-login POST /login user=admin pass=admin123 (GTWEAKPASS-01) 弱口令；表单子串键名律命中	2	2026-10-09T09:42:00Z	
+CRED-r13-0002	session	user	admin	{{vault:cred-2}}			CRED-r13-0001	2026-10-09T09:34:00Z		active		X-Auth-Token (发放响应头=携带形态 律19\; tok-usr 形=user 级 律22)	2	2026-10-09T09:44:00Z	

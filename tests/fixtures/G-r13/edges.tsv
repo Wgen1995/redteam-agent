@@ -1,0 +1,89 @@
+E-r13-0001	supersedes	FD-r13-0026	FD-r13-0037	supersede-finding	2	2026-10-09T10:01:00Z
+E-r13-0002	parent	AST-r13-0045	AST-r13-0001	tree-root->service	2	2026-10-09T10:33:01Z
+E-r13-0003	parent	AST-r13-0045	AST-r13-0002	tree-root->service	2	2026-10-09T10:33:02Z
+E-r13-0004	parent	AST-r13-0045	AST-r13-0003	tree-root->service	2	2026-10-09T10:33:03Z
+E-r13-0005	parent	AST-r13-0045	AST-r13-0004	tree-root->service	2	2026-10-09T10:33:04Z
+E-r13-0006	parent	AST-r13-0045	AST-r13-0005	tree-root->service	2	2026-10-09T10:33:05Z
+E-r13-0007	parent	AST-r13-0045	AST-r13-0006	tree-root->service	2	2026-10-09T10:33:06Z
+E-r13-0008	parent	AST-r13-0045	AST-r13-0007	tree-root->service	2	2026-10-09T10:33:07Z
+E-r13-0009	parent	AST-r13-0045	AST-r13-0008	tree-root->service	2	2026-10-09T10:33:08Z
+E-r13-0010	parent	AST-r13-0004	AST-r13-0009	service->endpoint parent	2	2026-10-09T10:33:09Z
+E-r13-0011	parent	AST-r13-0007	AST-r13-0010	service->endpoint parent	2	2026-10-09T10:33:10Z
+E-r13-0012	parent	AST-r13-0001	AST-r13-0011	service->endpoint parent	2	2026-10-09T10:33:11Z
+E-r13-0013	parent	AST-r13-0007	AST-r13-0012	service->endpoint parent	2	2026-10-09T10:33:12Z
+E-r13-0014	parent	AST-r13-0008	AST-r13-0013	service->endpoint parent	2	2026-10-09T10:33:13Z
+E-r13-0015	parent	AST-r13-0008	AST-r13-0014	service->endpoint parent	2	2026-10-09T10:33:14Z
+E-r13-0016	parent	AST-r13-0008	AST-r13-0015	service->endpoint parent	2	2026-10-09T10:33:15Z
+E-r13-0017	parent	AST-r13-0008	AST-r13-0016	service->endpoint parent	2	2026-10-09T10:33:16Z
+E-r13-0018	parent	AST-r13-0008	AST-r13-0017	service->endpoint parent	2	2026-10-09T10:33:17Z
+E-r13-0019	parent	AST-r13-0008	AST-r13-0018	service->endpoint parent	2	2026-10-09T10:33:18Z
+E-r13-0020	parent	AST-r13-0001	AST-r13-0019	service->endpoint parent	2	2026-10-09T10:33:19Z
+E-r13-0021	parent	AST-r13-0001	AST-r13-0020	service->endpoint parent	2	2026-10-09T10:33:20Z
+E-r13-0022	parent	AST-r13-0001	AST-r13-0021	service->endpoint parent	2	2026-10-09T10:33:21Z
+E-r13-0023	parent	AST-r13-0001	AST-r13-0022	service->endpoint parent	2	2026-10-09T10:33:22Z
+E-r13-0024	parent	AST-r13-0001	AST-r13-0023	service->endpoint parent	2	2026-10-09T10:33:23Z
+E-r13-0025	parent	AST-r13-0001	AST-r13-0024	service->endpoint parent	2	2026-10-09T10:33:24Z
+E-r13-0026	parent	AST-r13-0006	AST-r13-0025	service->endpoint parent	2	2026-10-09T10:33:25Z
+E-r13-0027	parent	AST-r13-0006	AST-r13-0026	service->endpoint parent	2	2026-10-09T10:33:26Z
+E-r13-0028	parent	AST-r13-0006	AST-r13-0027	service->endpoint parent	2	2026-10-09T10:33:27Z
+E-r13-0029	parent	AST-r13-0002	AST-r13-0028	service->endpoint parent	2	2026-10-09T10:33:28Z
+E-r13-0030	parent	AST-r13-0002	AST-r13-0029	service->endpoint parent	2	2026-10-09T10:33:29Z
+E-r13-0031	parent	AST-r13-0002	AST-r13-0030	service->endpoint parent	2	2026-10-09T10:33:30Z
+E-r13-0032	parent	AST-r13-0002	AST-r13-0031	service->endpoint parent	2	2026-10-09T10:33:31Z
+E-r13-0033	parent	AST-r13-0007	AST-r13-0032	service->endpoint parent	2	2026-10-09T10:33:32Z
+E-r13-0034	parent	AST-r13-0002	AST-r13-0033	service->endpoint parent	2	2026-10-09T10:33:33Z
+E-r13-0035	parent	AST-r13-0002	AST-r13-0034	service->endpoint parent	2	2026-10-09T10:33:34Z
+E-r13-0036	parent	AST-r13-0004	AST-r13-0035	service->endpoint parent	2	2026-10-09T10:33:35Z
+E-r13-0037	parent	AST-r13-0004	AST-r13-0036	service->endpoint parent	2	2026-10-09T10:33:36Z
+E-r13-0038	parent	AST-r13-0004	AST-r13-0037	service->endpoint parent	2	2026-10-09T10:33:37Z
+E-r13-0039	parent	AST-r13-0006	AST-r13-0038	service->endpoint parent	2	2026-10-09T10:33:38Z
+E-r13-0040	parent	AST-r13-0008	AST-r13-0039	service->endpoint parent	2	2026-10-09T10:33:39Z
+E-r13-0041	parent	AST-r13-0007	AST-r13-0040	service->endpoint parent	2	2026-10-09T10:33:40Z
+E-r13-0042	parent	AST-r13-0002	AST-r13-0041	service->endpoint parent	2	2026-10-09T10:33:41Z
+E-r13-0043	parent	AST-r13-0001	AST-r13-0042	service->endpoint parent	2	2026-10-09T10:33:42Z
+E-r13-0044	parent	AST-r13-0002	AST-r13-0043	service->endpoint parent	2	2026-10-09T10:33:43Z
+E-r13-0045	parent	AST-r13-0005	AST-r13-0044	service->endpoint parent	2	2026-10-09T10:33:44Z
+E-r13-0046	parent	AST-r13-0001	AST-r13-0045	service child->root parent (correct direction)	2	2026-10-09T10:36:01Z
+E-r13-0047	parent	AST-r13-0002	AST-r13-0045	service child->root parent (correct direction)	2	2026-10-09T10:36:02Z
+E-r13-0048	parent	AST-r13-0003	AST-r13-0045	service child->root parent (correct direction)	2	2026-10-09T10:36:03Z
+E-r13-0049	parent	AST-r13-0004	AST-r13-0045	service child->root parent (correct direction)	2	2026-10-09T10:36:04Z
+E-r13-0050	parent	AST-r13-0005	AST-r13-0045	service child->root parent (correct direction)	2	2026-10-09T10:36:05Z
+E-r13-0051	parent	AST-r13-0006	AST-r13-0045	service child->root parent (correct direction)	2	2026-10-09T10:36:06Z
+E-r13-0052	parent	AST-r13-0007	AST-r13-0045	service child->root parent (correct direction)	2	2026-10-09T10:36:07Z
+E-r13-0053	parent	AST-r13-0008	AST-r13-0045	service child->root parent (correct direction)	2	2026-10-09T10:36:08Z
+E-r13-0054	parent	AST-r13-0009	AST-r13-0004	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:09Z
+E-r13-0055	parent	AST-r13-0010	AST-r13-0007	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:10Z
+E-r13-0056	parent	AST-r13-0011	AST-r13-0001	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:11Z
+E-r13-0057	parent	AST-r13-0012	AST-r13-0007	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:12Z
+E-r13-0058	parent	AST-r13-0013	AST-r13-0008	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:13Z
+E-r13-0059	parent	AST-r13-0014	AST-r13-0008	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:14Z
+E-r13-0060	parent	AST-r13-0015	AST-r13-0008	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:15Z
+E-r13-0061	parent	AST-r13-0016	AST-r13-0008	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:16Z
+E-r13-0062	parent	AST-r13-0017	AST-r13-0008	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:17Z
+E-r13-0063	parent	AST-r13-0018	AST-r13-0008	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:18Z
+E-r13-0064	parent	AST-r13-0019	AST-r13-0001	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:19Z
+E-r13-0065	parent	AST-r13-0020	AST-r13-0001	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:20Z
+E-r13-0066	parent	AST-r13-0021	AST-r13-0001	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:21Z
+E-r13-0067	parent	AST-r13-0022	AST-r13-0001	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:22Z
+E-r13-0068	parent	AST-r13-0023	AST-r13-0001	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:23Z
+E-r13-0069	parent	AST-r13-0024	AST-r13-0001	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:24Z
+E-r13-0070	parent	AST-r13-0025	AST-r13-0006	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:25Z
+E-r13-0071	parent	AST-r13-0026	AST-r13-0006	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:26Z
+E-r13-0072	parent	AST-r13-0027	AST-r13-0006	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:27Z
+E-r13-0073	parent	AST-r13-0028	AST-r13-0002	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:28Z
+E-r13-0074	parent	AST-r13-0029	AST-r13-0002	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:29Z
+E-r13-0075	parent	AST-r13-0030	AST-r13-0002	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:30Z
+E-r13-0076	parent	AST-r13-0031	AST-r13-0002	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:31Z
+E-r13-0077	parent	AST-r13-0032	AST-r13-0007	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:32Z
+E-r13-0078	parent	AST-r13-0033	AST-r13-0002	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:33Z
+E-r13-0079	parent	AST-r13-0034	AST-r13-0002	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:34Z
+E-r13-0080	parent	AST-r13-0035	AST-r13-0004	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:35Z
+E-r13-0081	parent	AST-r13-0036	AST-r13-0004	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:36Z
+E-r13-0082	parent	AST-r13-0037	AST-r13-0004	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:37Z
+E-r13-0083	parent	AST-r13-0038	AST-r13-0006	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:38Z
+E-r13-0084	parent	AST-r13-0039	AST-r13-0008	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:39Z
+E-r13-0085	parent	AST-r13-0040	AST-r13-0007	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:40Z
+E-r13-0086	parent	AST-r13-0041	AST-r13-0002	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:41Z
+E-r13-0087	parent	AST-r13-0042	AST-r13-0001	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:42Z
+E-r13-0088	parent	AST-r13-0043	AST-r13-0002	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:43Z
+E-r13-0089	parent	AST-r13-0044	AST-r13-0005	endpoint child->service parent (correct direction)	2	2026-10-09T10:36:44Z

@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK (resp header X-Auth-Token present, value vaulted as {{vault:cred-2}}) | <html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>

@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r13-0030", "matched": false, "results": [{"detail": ["200"], "ok": false, "type": "status"}, {"detail": ["GTROLE-03"], "ok": false, "type": "word"}], "status": 401, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r13 --id=EV-r13-0030 --state=REJECTED", "verdict": "not-reproduced"}

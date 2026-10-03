@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK | <html>GTIDOR-04 synthetic invoice 88 of other user</html> | 匿名对照=401 auth required；复数形 /invoices/1=404（单数名词形才弹）
