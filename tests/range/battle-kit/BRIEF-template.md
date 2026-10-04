@@ -60,7 +60,7 @@
 11. **差分轨记账（T2 新分轨）**：无 marker 词证也可计分——但须 control_evidence_ids 控制对或 EV pair_group（匿名/持证成对实证）。控制组 EV（negative probe）与正 EV 同铸，成对记账。
 12. **同面多洞分洞分 finding（v4 单计律——battle-5 实证）**：同一端点上两类洞（如弱口令+无限流）=两枚 finding 各挂各的 EV（dedup=asset+vuln_ref 不撞）；单 finding 会被先序 GT 耗用，第二洞落 miss。
 13. **表单编码族先行（battle-5 实证）**：/login 类 POST 先发 application/x-www-form-urlencoded（服务端常收表单子串），JSON 形次之——24 组弱口令对×双编码全试。
-14. **演练五连（battle-5 实证：27 卡曾全灭于 title 裸 [）**：开局 dry-run 走 asset→evidence→finding→卡片→容器内重放全链；卡片 front-matter 自由文本（title 尤其）必过 parse_yaml——避开裸 [ 开头/流集合歧义形。
+14. **演练五连（battle-5 实证：27 卡曾全灭于 title 裸 [）**：开局 dry-run 走 asset→evidence→finding→卡片→容器内重放全链；卡片 front-matter 自由文本（title 尤其）必过 parse_yaml——避开裸 [ 开头/流集合歧义形。（**扩三形态**：无头 GET/带 token GET/带 body POST 各一枚演练再弃）
 15. **卡片 matcher 带响应特征串（补注：优先 distinctive token）**：行为型 finding 的 EV 卡 expected.matchers.words 必含响应体特征串原文——**优先取 distinctive token （响应体内唯一码形：合成码/标识符连写）**，其次计数器/递增数字；纯行为描述词（welcome/ok 通用词）=词证面自弃（battle-9 实证：welcome admin 无码形词证 0.0）
 16. **响应熵基线（battle-6 实证：634 次钉死一面）**：发放面/爆破面先发 3-5 次基线探测——响应恒 403 仅计数变化=零熵墙，立即转面转键名族；catch-all 200 同理（诱饵形）。零信息面不投爆破预算。
 17. **键名族×编码族叉乘（battle-6 实证：凭据 0 根因）**：登录/发放面 POST 探测矩阵=键名族（user/username/name/account/email × pass/password/pwd）×编码族（urlencoded 先/JSON 次）全叉乘（字典 §1.3 律）；服务端常收表单子串——键名错则编码对也永不中。
@@ -71,3 +71,4 @@
 22. **creds role=令牌权限类非账号名**：add-cred 的 role 字段记令牌权限类（低权=user 级/高权=admin 级）——不是登录账号名；token 名形即类（tok-usr-001=user 级）；admin 账号换出的 user 级令牌 role 仍记 user。
 23. **持证重扫清单化（battle-10 实证：六新靰只中三）**：token 到手后逐服务×/admin 子名词全叉乘记账（八服务×config/logs/keys/reports/clients/audit/settings/users），每服务每名词至少一发+记录（命中=finding，401/404=fact）；**禁止抽样跳服务**（battle-10 只重扫三服务→idor-05/06+hauth-04 漏）；清单完成度入 facts。
 24. **零熵墙三击换轨（battle-11 实证：login catch-all 破局）**：同面三击同响应（同状态码+同体）即换轨——方法换（GET↔POST↔头参形）或证据轨换（信标↔行为差分）；撞墙不硬撞（battle-11 范本：catch-all GET 200 同体→POST 计数器分化破弱口令+无限流两洞）。
+25. **资产值=实际探测的规范 URL 路径原形（battle-12 实证：两洞已穿纯记账形丢分）**：①禁自造段后缀（svc-login/login-rate 形——注记归 finding 描述）；②idor/资源面带具体 id 尾段（/invoice/88 形非裸 /invoice）；③信标/差分注记写到 description 不进资产名。遗反=键面漂移评分不认（battle-12 两洞 0 分实证）。
