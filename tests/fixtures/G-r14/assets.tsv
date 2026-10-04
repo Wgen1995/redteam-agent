@@ -1,0 +1,32 @@
+AST-r14-0001	service	svc-shop	compose DNS 本名\;端口待P1扫描确权(8000-8010异构)	in_scope	2	2026-10-10T09:22:00Z
+AST-r14-0002	service	svc-api-gw	compose DNS 本名\;端口待P1扫描确权(8000-8010异构)	in_scope	2	2026-10-10T09:23:00Z
+AST-r14-0003	service	svc-admin	compose DNS 本名\;端口待P1扫描确权(8000-8010异构)	in_scope	2	2026-10-10T09:24:00Z
+AST-r14-0004	service	svc-login	compose DNS 本名\;端口待P1扫描确权(8000-8010异构)	in_scope	2	2026-10-10T09:25:00Z
+AST-r14-0005	service	svc-billing	compose DNS 本名\;端口待P1扫描确权(8000-8010异构)	in_scope	2	2026-10-10T09:26:00Z
+AST-r14-0006	service	svc-dashboard	compose DNS 本名\;端口待P1扫描确权(8000-8010异构)	in_scope	2	2026-10-10T09:27:00Z
+AST-r14-0007	service	svc-portal	compose DNS 本名\;端口待P1扫描确权(8000-8010异构)	in_scope	2	2026-10-10T09:28:00Z
+AST-r14-0008	service	svc-files	compose DNS 本名\;端口待P1扫描确权(8000-8010异构)	in_scope	2	2026-10-10T09:29:00Z
+AST-r14-0009	endpoint	svc-portal/redirect?to=http://evil.example	开放重定向面:302 LOC=外域(GTREDIR-01)	out_of_scope	2	2026-10-10T09:51:00Z
+AST-r14-0010	endpoint	svc-shop/logout?next=http://evil.example	开放重定向面:302 LOC=外域(GTREDIR-02)	out_of_scope	2	2026-10-10T09:51:01Z
+AST-r14-0011	endpoint	svc-portal/debug/env	信息暴露面(GTINFOLEAK-01)	in_scope	2	2026-10-10T09:51:02Z
+AST-r14-0012	endpoint	svc-files/.env	信息暴露面(GTINFOLEAK-03)	in_scope	2	2026-10-10T09:51:03Z
+AST-r14-0013	endpoint	svc-files/download?path=../../etc/passwd	路径穿越面query形(GTTRAVERSAL-01)\;path形/绝对/file://同通	in_scope	2	2026-10-10T09:51:04Z
+AST-r14-0014	endpoint	svc-files/static?name=../../etc/passwd	路径穿越第二面(GTTRAVERSAL-02)	in_scope	2	2026-10-10T09:51:05Z
+AST-r14-0015	endpoint	svc-files/unserialize	反序列化处理器GET直取弹(GTDESER-01)	in_scope	2	2026-10-10T09:51:06Z
+AST-r14-0016	endpoint	svc-files/import	反序列化处理器java blob(GTDESER-02)	in_scope	2	2026-10-10T09:51:07Z
+AST-r14-0017	endpoint	svc-files/decode	反序列化base64载荷(GTDESER-03)	in_scope	2	2026-10-10T09:51:08Z
+AST-r14-0018	endpoint	svc-shop/item?id=1	SQLi参数面(GTSQLI-01)	in_scope	2	2026-10-10T09:51:09Z
+AST-r14-0019	endpoint	svc-shop/order?id=1	SQLi参数面(GTSQLI-02)	in_scope	2	2026-10-10T09:51:10Z
+AST-r14-0020	endpoint	svc-login/login	登录发放面:POST表单user/pass\;成功发X-Auth-Token响应头(律19采集)\;GET面catch-all 200	in_scope	2	2026-10-10T10:06:00Z
+AST-r14-0021	endpoint	svc-api-gw/admin/keys	GTIDOR-05低权可见密钥清单(X-Auth-Token持证200,匿名401)	in_scope	2	2026-10-10T10:20:00Z
+AST-r14-0022	endpoint	svc-dashboard/admin/config	GTROLE-03低权可达配置(持证200,匿名401)	in_scope	2	2026-10-10T10:20:01Z
+AST-r14-0023	endpoint	svc-files/admin/logs	GTROLE-04低权可达日志(持证200,匿名401)	in_scope	2	2026-10-10T10:20:02Z
+AST-r14-0024	endpoint	svc-portal/admin/clients	GTHAUTH-05低权客户清单(持证200,匿名401)	in_scope	2	2026-10-10T10:20:03Z
+AST-r14-0025	endpoint	svc-shop/admin/reports	GTIDOR-06他人报表(持证200,匿名401)	in_scope	2	2026-10-10T10:20:04Z
+AST-r14-0026	endpoint	svc-billing/invoice/88	GTIDOR-04他人发票(路径形id尾段88\;持证200,匿名401\;query形双401=仅路径形是面)	in_scope	2	2026-10-10T10:20:05Z
+AST-r14-0027	endpoint	svc-shop/reply?q=drillxss9131%22%3E%3Csvg%2Fonload%3Dalert(1)%3E	GTXSS-03反射XSS(载荷原样回显HTML)	in_scope	2	2026-10-10T10:20:06Z
+AST-r14-0028	endpoint	svc-shop/feedback?msg=drillxss9131%22%3E%3Csvg%2Fonload%3Dalert(1)%3E	GTXSS-04反射XSS(载荷原样回显HTML)	in_scope	2	2026-10-10T10:20:07Z
+AST-r14-0029	endpoint	svc-dashboard/render?template={{7*7}}	GTSSTI-02模板注入参数面(template参数原样进渲染)	in_scope	2	2026-10-10T10:20:08Z
+AST-r14-0030	endpoint	svc-api-gw/origin	GTCORS-02任意Origin反射+Allow-Credentials:true(evil/null/子域全反射)	in_scope	2	2026-10-10T10:20:09Z
+AST-r14-0031	endpoint	svc-api-gw/cors-debug	GTCORS-01通配ACAO:*(配置缺陷类,批次10勘误口径)	in_scope	2	2026-10-10T10:20:10Z
+AST-r14-0032	endpoint	svc-api-gw/graphql	GTGRAPHQL-01内省开放(GET直取\;POST 501仅GET面)	in_scope	2	2026-10-10T10:33:00Z

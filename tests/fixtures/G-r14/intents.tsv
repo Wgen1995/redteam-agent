@@ -1,0 +1,16 @@
+INT-r14-0001	P1 测绘：八服务端口扫描(8000-8010)+根指纹+服务地图		candidate	script	recon	entity			-+recon+P1 测绘：八服务端口扫描(8000-8010)+根指纹+服务地图	100k\;800\;1					2	2026-10-10T09:18:00Z
+INT-r14-0002	P3 字典波：redirect参数族/参数面族/deser GET直取/traversal每代必扫		candidate	script	surface	precedent			-+surface+P3 字典波：redirect参数族/参数面族/deser GET直取/traversal每代必扫	150k\;2500\;1					2	2026-10-10T09:19:00Z
+INT-r14-0003	P3 矩阵置格执行：核心8面x12类		candidate	script	matrix-test	mixed			-+matrix-test+P3 矩阵置格执行：核心8面x12类	50k\;500\;0.5					2	2026-10-10T09:20:00Z
+INT-r14-0004	P3 深钻：凭据发放面键名叉乘+响应头采集+持证重扫+新类(JWT/XXE/限流/idor)		candidate	script	deep-dive	adjacency			-+deep-dive+P3 深钻：凭据发放面键名叉乘+响应头采集+持证重扫+新类(JWT/XXE/限流/idor)	200k\;3000\;1.5					2	2026-10-10T09:21:00Z
+INT-r14-0001	P1 测绘：八服务端口扫描(8000-8010)+根指纹+服务地图		pending	script	recon	entity			-+recon+P1 测绘：八服务端口扫描(8000-8010)+根指纹+服务地图	100k\;800\;1		波次启动			2	2026-10-10T10:37:40Z
+INT-r14-0001	P1 测绘：八服务端口扫描(8000-8010)+根指纹+服务地图		active	script	recon	entity			-+recon+P1 测绘：八服务端口扫描(8000-8010)+根指纹+服务地图	100k\;800\;1		执行中			2	2026-10-10T10:37:41Z
+INT-r14-0001	P1 测绘：八服务端口扫描(8000-8010)+根指纹+服务地图		done	script	recon	entity			-+recon+P1 测绘：八服务端口扫描(8000-8010)+根指纹+服务地图	100k\;800\;1		波次完成			2	2026-10-10T10:37:42Z
+INT-r14-0002	P3 字典波：redirect参数族/参数面族/deser GET直取/traversal每代必扫		pending	script	surface	precedent			-+surface+P3 字典波：redirect参数族/参数面族/deser GET直取/traversal每代必扫	150k\;2500\;1		波次启动			2	2026-10-10T10:37:43Z
+INT-r14-0002	P3 字典波：redirect参数族/参数面族/deser GET直取/traversal每代必扫		active	script	surface	precedent			-+surface+P3 字典波：redirect参数族/参数面族/deser GET直取/traversal每代必扫	150k\;2500\;1		执行中			2	2026-10-10T10:37:44Z
+INT-r14-0002	P3 字典波：redirect参数族/参数面族/deser GET直取/traversal每代必扫		done	script	surface	precedent			-+surface+P3 字典波：redirect参数族/参数面族/deser GET直取/traversal每代必扫	150k\;2500\;1		波次完成			2	2026-10-10T10:37:45Z
+INT-r14-0003	P3 矩阵置格执行：核心8面x12类		pending	script	matrix-test	mixed			-+matrix-test+P3 矩阵置格执行：核心8面x12类	50k\;500\;0.5		波次启动			2	2026-10-10T10:37:46Z
+INT-r14-0003	P3 矩阵置格执行：核心8面x12类		active	script	matrix-test	mixed			-+matrix-test+P3 矩阵置格执行：核心8面x12类	50k\;500\;0.5		执行中			2	2026-10-10T10:37:47Z
+INT-r14-0003	P3 矩阵置格执行：核心8面x12类		done	script	matrix-test	mixed			-+matrix-test+P3 矩阵置格执行：核心8面x12类	50k\;500\;0.5		波次完成			2	2026-10-10T10:37:48Z
+INT-r14-0004	P3 深钻：凭据发放面键名叉乘+响应头采集+持证重扫+新类(JWT/XXE/限流/idor)		pending	script	deep-dive	adjacency			-+deep-dive+P3 深钻：凭据发放面键名叉乘+响应头采集+持证重扫+新类(JWT/XXE/限流/idor)	200k\;3000\;1.5		波次启动			2	2026-10-10T10:37:49Z
+INT-r14-0004	P3 深钻：凭据发放面键名叉乘+响应头采集+持证重扫+新类(JWT/XXE/限流/idor)		active	script	deep-dive	adjacency			-+deep-dive+P3 深钻：凭据发放面键名叉乘+响应头采集+持证重扫+新类(JWT/XXE/限流/idor)	200k\;3000\;1.5		执行中			2	2026-10-10T10:37:50Z
+INT-r14-0004	P3 深钻：凭据发放面键名叉乘+响应头采集+持证重扫+新类(JWT/XXE/限流/idor)		done	script	deep-dive	adjacency			-+deep-dive+P3 深钻：凭据发放面键名叉乘+响应头采集+持证重扫+新类(JWT/XXE/限流/idor)	200k\;3000\;1.5		波次完成			2	2026-10-10T10:37:51Z

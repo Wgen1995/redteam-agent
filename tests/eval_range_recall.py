@@ -116,7 +116,7 @@ def _canon_endpoint(u, aliases):
     return _canon_host(host, aliases) + rest
 
 
-KEYING_VERSION = 5   # v5 alt-form 孪生键（显式声明）+v4.1 两遍法（词证先耗用差分补余）   # v4=尾段数字归一+同键多 GT 单计（见 score() consumed 集合）
+KEYING_VERSION = 6   # v6 FD 键别名（battle-13：replay 行键 FD 形按 findings 链展开为 EV——语义等价真值归真，前代 EV 键零漂移）+v5 alt-form 孪生键+v4.1 两遍法
 
 
 def _replay_state(rows):
@@ -169,6 +169,18 @@ def score(rows, cards, gt, host_aliases=None, tracks=None):
         if lf:
             linked.setdefault(lf, []).append(r[0])
     verified_ev, blocked_ev = _replay_state(rows)   # 精度门：重放实证前置
+    # v6 FD 键别名（battle-13 G-r14 实证）：timeline 重放行可键 FD（replay:FD-x:VERIFIED）
+    # ——语义等价（该 finding 全部 EV 已重放）；按 findings 证据链展开为 EV 键。
+    # REJECTED 的 FD 同步阻断其全部 EV（诚实降级语义随链传播）。EV 键行不受影响。
+    _fd_evs = {}
+    for r in rows.get("findings.tsv", []):
+        _evs = [x for x in (_cell("findings.tsv", r, "evidence_ids") or "").split(";") if x]
+        _evs += [x for x in (_cell("findings.tsv", r, "control_evidence_ids") or "").split(";") if x]
+        _fd_evs[r[fi("id")]] = _evs
+    for _fd in [i for i in list(verified_ev) if i.startswith("FD-")]:
+        verified_ev |= set(_fd_evs.get(_fd, ()))
+    for _fd in [i for i in list(blocked_ev) if i.startswith("FD-")]:
+        blocked_ev |= set(_fd_evs.get(_fd, ()))
     neg_targets = {_cell("facts.tsv", r, "target") for r in rows["facts.tsv"]
                    if _cell("facts.tsv", r, "kind") == "authz"}
     hits, missing = 0, []

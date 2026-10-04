@@ -1,0 +1,1 @@
+POST /login user=nobody&pass=nothing x3 -> 403 <html>denied</html> (三连同体同响应=零熵墙)

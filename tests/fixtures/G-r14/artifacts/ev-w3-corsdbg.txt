@@ -1,0 +1,1 @@
+GET /cors-debug Origin:http://evil.example -> 200 Access-Control-Allow-Origin: * (GTCORS-01 通配)

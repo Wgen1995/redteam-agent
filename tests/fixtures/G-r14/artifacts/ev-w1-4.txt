@@ -1,0 +1,1 @@
+GET svc-files/.env HTTP/1.1 -> 200 GTINFOLEAK-03 synthetic env file: SECRET_KEY

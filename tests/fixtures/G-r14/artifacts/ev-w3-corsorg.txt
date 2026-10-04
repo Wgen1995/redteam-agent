@@ -1,0 +1,1 @@
+GET /origin Origin:http://evil.example -> 200 ACAO:http://evil.example + ACAC:true;Origin:null -> ACAO:null+ACAC:true;子域同反射(GTCORS-02)

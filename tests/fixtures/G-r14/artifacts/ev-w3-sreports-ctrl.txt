@@ -1,0 +1,1 @@
+GET /admin/reports 匿名 -> 401 auth required

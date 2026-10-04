@@ -1,0 +1,1 @@
+GET /render?template={{7*7}} -> 200 <html>render GTSSTI-02 synthetic ssti render /render?template={{7*7}}}</html>(模板参数原样进渲染)

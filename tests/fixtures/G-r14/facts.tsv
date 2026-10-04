@@ -1,0 +1,142 @@
+F-r14-0001	INT-r14-0001	port	svc-shop	TCP 8001 open (BaseHTTP/0.6 Python/3.12.14)\; GET / -> 404 not found\; 其余 8000-8010 关闭	1.0	2	2026-10-10T09:26:00Z
+F-r14-0002	INT-r14-0001	port	svc-api-gw	TCP 8002 open (BaseHTTP/0.6 Python/3.12.14)\; GET / -> 404 not found\; 其余 8000-8010 关闭	1.0	2	2026-10-10T09:27:00Z
+F-r14-0003	INT-r14-0001	port	svc-admin	TCP 8003 open (BaseHTTP/0.6 Python/3.12.14)\; GET / -> 401 auth required\; 其余 8000-8010 关闭	1.0	2	2026-10-10T09:28:00Z
+F-r14-0004	INT-r14-0001	port	svc-login	TCP 8004 open (BaseHTTP/0.6 Python/3.12.14)\; GET / -> 200 login form\; 其余 8000-8010 关闭	1.0	2	2026-10-10T09:29:00Z
+F-r14-0005	INT-r14-0001	port	svc-billing	TCP 8005 open (BaseHTTP/0.6 Python/3.12.14)\; GET / -> 401 auth required\; 其余 8000-8010 关闭	1.0	2	2026-10-10T09:30:00Z
+F-r14-0006	INT-r14-0001	port	svc-dashboard	TCP 8006 open (BaseHTTP/0.6 Python/3.12.14)\; GET / -> 404 not found\; 其余 8000-8010 关闭	1.0	2	2026-10-10T09:31:00Z
+F-r14-0007	INT-r14-0001	port	svc-portal	TCP 8007 open (BaseHTTP/0.6 Python/3.12.14)\; GET / -> 404 not found\; 其余 8000-8010 关闭	1.0	2	2026-10-10T09:32:00Z
+F-r14-0008	INT-r14-0001	port	svc-files	TCP 8008 open (BaseHTTP/0.6 Python/3.12.14)\; GET / -> 404 not found\; 其余 8000-8010 关闭	1.0	2	2026-10-10T09:33:00Z
+F-r14-0009	INT-r14-0002	vuln-clue	svc-shop/comment	GET 200 信标 GTXSS-02 synthetic stored xss echo(交互面二级路径命中)	0.95	2	2026-10-10T09:50:00Z
+F-r14-0010	INT-r14-0002	vuln-clue	svc-shop/reply	GET 200 信标 GTXSS-03 synthetic reflected xss	0.95	2	2026-10-10T09:50:01Z
+F-r14-0011	INT-r14-0002	vuln-clue	svc-shop/feedback	GET 200 信标 GTXSS-04 synthetic reflected xss	0.95	2	2026-10-10T09:50:02Z
+F-r14-0012	INT-r14-0002	vuln-clue	svc-shop/logout?next=http://evil.example	302 Location=http://evil.example 外域实证=开放重定向(GTREDIR-02)\;裸/logout 302 自引	0.95	2	2026-10-10T09:50:03Z
+F-r14-0013	INT-r14-0002	vuln-clue	svc-shop/item?id=1	GET 200 信标 GTSQLI-01 synthetic SQL error near 1(参数面命中)	0.95	2	2026-10-10T09:50:04Z
+F-r14-0014	INT-r14-0002	vuln-clue	svc-shop/order?id=1	GET 200 信标 GTSQLI-02 synthetic SQL syntax error\;同服务多资源参数面(/orders 同信标)	0.95	2	2026-10-10T09:50:05Z
+F-r14-0015	INT-r14-0002	vuln-clue	svc-api-gw/preview	GET 200 信标 GTSSRF-02 synthetic webhook meta: internal-metadata	0.95	2	2026-10-10T09:50:06Z
+F-r14-0016	INT-r14-0002	vuln-clue	svc-api-gw/cors-debug	GET 200 信标 GTCORS-01 wildcard allow-origin	0.95	2	2026-10-10T09:50:07Z
+F-r14-0017	INT-r14-0002	vuln-clue	svc-api-gw/origin	GET 200 信标 GTCORS-02 reflected none allow-credentials true	0.95	2	2026-10-10T09:50:08Z
+F-r14-0018	INT-r14-0002	http	svc-api-gw/jump?url=http://evil.example	302 但 LOC 自引(/jump?url=...)=url参数未生效\;待变体 to/goto 验证(GTREDIR-03)	0.8	2	2026-10-10T09:50:09Z
+F-r14-0019	INT-r14-0002	vuln-clue	svc-dashboard/render	GET 200 信标 GTSSTI-02 synthetic ssti render(模板注入面)	0.95	2	2026-10-10T09:50:10Z
+F-r14-0020	INT-r14-0002	authz	svc-dashboard/admin/config	401 非默认墙:其余路径 404 而 /admin/config 401=真实存在待持证(律2 子名词族首位)	0.95	2	2026-10-10T09:50:11Z
+F-r14-0021	INT-r14-0002	vuln-clue	svc-portal/debug/env	GET 200 信标 GTINFOLEAK-01 synthetic env: DB_PASS/AWS_KEY(信息暴露)	0.95	2	2026-10-10T09:50:12Z
+F-r14-0022	INT-r14-0002	vuln-clue	svc-portal/redirect?to=http://evil.example	302 Location=http://evil.example 外域实证=开放重定向(GTREDIR-01)\;生效参数=to/goto/redirect/continue,未生效=next/url/target	0.95	2	2026-10-10T09:50:13Z
+F-r14-0023	INT-r14-0002	vuln-clue	svc-files/unserialize	GET 直取即弹 信标 GTDESER-01 synthetic pickle object inflated(律20 GET先行实证)	0.95	2	2026-10-10T09:50:14Z
+F-r14-0024	INT-r14-0002	vuln-clue	svc-files/import	GET 200 信标 GTDESER-02 synthetic java serialized blob accepted	0.95	2	2026-10-10T09:50:15Z
+F-r14-0025	INT-r14-0002	vuln-clue	svc-files/decode	GET 200 信标 GTDESER-03 synthetic base64 payload object inflated	0.95	2	2026-10-10T09:50:16Z
+F-r14-0026	INT-r14-0002	vuln-clue	svc-files/.env	GET 200 信标 GTINFOLEAK-03 synthetic env file: SECRET_KEY	0.95	2	2026-10-10T09:50:17Z
+F-r14-0027	INT-r14-0002	vuln-clue	svc-files/download?path=../../etc/passwd	GET 200 信标 GTTRAVERSAL-01 synthetic file: root:x:0:0:root\;双形:query形(?path/?file)+path形(/download/../../etc/passwd)+绝对路+file:// 全通	0.95	2	2026-10-10T09:50:18Z
+F-r14-0028	INT-r14-0002	vuln-clue	svc-files/static?name=../../etc/passwd	GET 200 信标 GTTRAVERSAL-02 synthetic shadow file content(第二穿越面)	0.95	2	2026-10-10T09:50:19Z
+F-r14-0029	INT-r14-0002	http	svc-admin/*	95 路径全 401 auth required=零熵墙(律16/24):计数无分化,转持证/构造token轨	0.9	2	2026-10-10T09:50:20Z
+F-r14-0030	INT-r14-0002	http	svc-login/*	GET 全路径恒 200 login form=catch-all 熵墙(律24):不硬撞,转 POST 行为差分轨(POST / 已 403 分化)	0.9	2	2026-10-10T09:50:21Z
+F-r14-0031	INT-r14-0002	http	svc-billing/*	95 路径全 401 auth required=零熵墙,转持证轨	0.9	2	2026-10-10T09:50:22Z
+F-r14-0032	INT-r14-0002	http	svc-api-gw/*	限流未触发:0.38s 节律 95 发零 429(待连击测速律5)	0.7	2	2026-10-10T09:50:23Z
+F-r14-0033	INT-r14-0004	authz	律23清单/svc-shop	八子名词全叉乘8/8发:reports=200 GTIDOR-06他人报表(命中FD-r14-0017)\;config/logs/keys/clients/audit/settings/users=401/404 负	0.95	2	2026-10-10T10:31:11Z
+F-r14-0034	INT-r14-0004	authz	律23清单/svc-api-gw	8/8发:keys=200 GTIDOR-05低权密钥清单(FD-r14-0013)\;其余7负(401/404)	0.95	2	2026-10-10T10:31:12Z
+F-r14-0035	INT-r14-0004	authz	律23清单/svc-admin	8/8发:全负(401/404)——user级token(tok-usr-001)对admin服务面不足,提权面未破(honest miss)	0.95	2	2026-10-10T10:31:13Z
+F-r14-0036	INT-r14-0004	authz	律23清单/svc-login	8/8发:全为catch-all login form(GET墙),非真实面\;负	0.95	2	2026-10-10T10:31:14Z
+F-r14-0037	INT-r14-0004	authz	律23清单/svc-billing	8/8发:全负(401/404)\;但/invoice/88路径形持证200 GTIDOR-04(子名词外资源面命中FD-r14-0018)	0.95	2	2026-10-10T10:31:15Z
+F-r14-0038	INT-r14-0004	authz	律23清单/svc-dashboard	8/8发:config=200 GTROLE-03(FD-r14-0014)\;其余7负	0.95	2	2026-10-10T10:31:16Z
+F-r14-0039	INT-r14-0004	authz	律23清单/svc-portal	8/8发:clients=200 GTHAUTH-05(FD-r14-0016)\;其余7负	0.95	2	2026-10-10T10:31:17Z
+F-r14-0040	INT-r14-0004	authz	律23清单/svc-files	8/8发:logs=200 GTROLE-04(FD-r14-0015)\;其余7负	0.95	2	2026-10-10T10:31:18Z
+F-r14-0041	INT-r14-0004	authz	律23完成度	八服务x八子名词=64发全 fired(禁抽样跳服务遵守)\;命中5/负59\;清单完整度=100%	0.95	2	2026-10-10T10:31:19Z
+F-r14-0042	INT-r14-0004	http	svc-api-gw/限流	35连击实测:第14发起429(22x429),Retry-After面级限流实存(律5遵守:0.6s+节律规避)\;限流缺失类不成立	1	2	2026-10-10T10:31:20Z
+F-r14-0043	INT-r14-0004	http	svc-api-gw/jump	开放重定向排除:7参数变体+4协议变体(//,/\\,https:,%2F%2F)全302自引LOC(/jump?*=原样),3击同响应换轨判定(律24)——302回声循环非外域重定向	0.95	2	2026-10-10T10:31:21Z
+F-r14-0044	INT-r14-0004	vuln-clue	svc-shop/comment	GTXSS-02存储XSS面:POST 501(无POST处理器),GET参数写入后回读信标恒定(存储差分不可观测)——维持suspected线索,未verify(归因:合成靶无存储差分通道)	0.6	2	2026-10-10T10:31:22Z
+F-r14-0045	INT-r14-0004	authz	svc-admin+svc-billing提权墙	持user级token全字典重扫(tk_ 183发)仍401——JWT构造(alg:none/过期)+Basic+X-Api-Key全拒(401)\;admin级面未获取(缺admin口令/提权通道,归因待深钻)	0.9	2	2026-10-10T10:31:23Z
+F-r14-0046	INT-r14-0004	authz	svc-billing/invoice/家族	/invoice/1 /invoice/88 /invoice/89 /invoice/88/export 持证全200同标GTIDOR-04(marker按面静态非按id)——面=/invoice/<id>任意值\;资产按律25锚定规范值/88	0.95	2	2026-10-10T10:33:05Z
+F-r14-0047	INT-r14-0003	info	matrix/svc-shop/wstg-info	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:00Z
+F-r14-0048	INT-r14-0003	info	matrix/svc-shop/wstg-conf	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:02Z
+F-r14-0049	INT-r14-0003	info	matrix/svc-shop/wstg-idnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:04Z
+F-r14-0050	INT-r14-0003	info	matrix/svc-shop/wstg-authn	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:06Z
+F-r14-0051	INT-r14-0003	info	matrix/svc-shop/wstg-authz	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:08Z
+F-r14-0052	INT-r14-0003	info	matrix/svc-shop/wstg-sess	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:10Z
+F-r14-0053	INT-r14-0003	info	matrix/svc-shop/wstg-inpv	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:12Z
+F-r14-0054	INT-r14-0003	info	matrix/svc-shop/wstg-errh	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:14Z
+F-r14-0055	INT-r14-0003	info	matrix/svc-shop/wstg-cryp	置格依据 -: -=not-applicable(全波次零crypto特征)	0.9	2	2026-10-10T10:56:16Z
+F-r14-0056	INT-r14-0003	info	matrix/svc-shop/wstg-busl	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:18Z
+F-r14-0057	INT-r14-0003	info	matrix/svc-shop/wstg-clnt	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:20Z
+F-r14-0058	INT-r14-0003	info	matrix/svc-shop/wstg-apit	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:22Z
+F-r14-0059	INT-r14-0003	info	matrix/svc-api-gw/wstg-info	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:24Z
+F-r14-0060	INT-r14-0003	info	matrix/svc-api-gw/wstg-conf	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:26Z
+F-r14-0061	INT-r14-0003	info	matrix/svc-api-gw/wstg-idnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:28Z
+F-r14-0062	INT-r14-0003	info	matrix/svc-api-gw/wstg-authn	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:30Z
+F-r14-0063	INT-r14-0003	info	matrix/svc-api-gw/wstg-authz	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:32Z
+F-r14-0064	INT-r14-0003	info	matrix/svc-api-gw/wstg-sess	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:34Z
+F-r14-0065	INT-r14-0003	info	matrix/svc-api-gw/wstg-inpv	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:36Z
+F-r14-0066	INT-r14-0003	info	matrix/svc-api-gw/wstg-errh	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:38Z
+F-r14-0067	INT-r14-0003	info	matrix/svc-api-gw/wstg-cryp	置格依据 -: -=not-applicable(全波次零crypto特征)	0.9	2	2026-10-10T10:56:40Z
+F-r14-0068	INT-r14-0003	info	matrix/svc-api-gw/wstg-busl	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:42Z
+F-r14-0069	INT-r14-0003	info	matrix/svc-api-gw/wstg-clnt	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:44Z
+F-r14-0070	INT-r14-0003	info	matrix/svc-api-gw/wstg-apit	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:56:46Z
+F-r14-0071	INT-r14-0003	info	matrix/svc-admin/wstg-info	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:48Z
+F-r14-0072	INT-r14-0003	info	matrix/svc-admin/wstg-conf	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:50Z
+F-r14-0073	INT-r14-0003	info	matrix/svc-admin/wstg-idnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:52Z
+F-r14-0074	INT-r14-0003	info	matrix/svc-admin/wstg-authn	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:54Z
+F-r14-0075	INT-r14-0003	info	matrix/svc-admin/wstg-authz	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:56Z
+F-r14-0076	INT-r14-0003	info	matrix/svc-admin/wstg-sess	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:56:58Z
+F-r14-0077	INT-r14-0003	info	matrix/svc-admin/wstg-inpv	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:00Z
+F-r14-0078	INT-r14-0003	info	matrix/svc-admin/wstg-errh	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:02Z
+F-r14-0079	INT-r14-0003	info	matrix/svc-admin/wstg-cryp	置格依据 -: -=not-applicable(全波次零crypto特征)	0.9	2	2026-10-10T10:57:04Z
+F-r14-0080	INT-r14-0003	info	matrix/svc-admin/wstg-busl	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:06Z
+F-r14-0081	INT-r14-0003	info	matrix/svc-admin/wstg-clnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:08Z
+F-r14-0082	INT-r14-0003	info	matrix/svc-admin/wstg-apit	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:10Z
+F-r14-0083	INT-r14-0003	info	matrix/svc-login/wstg-info	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:12Z
+F-r14-0084	INT-r14-0003	info	matrix/svc-login/wstg-conf	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:14Z
+F-r14-0085	INT-r14-0003	info	matrix/svc-login/wstg-idnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:16Z
+F-r14-0086	INT-r14-0003	info	matrix/svc-login/wstg-authn	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:57:18Z
+F-r14-0087	INT-r14-0003	info	matrix/svc-login/wstg-authz	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:20Z
+F-r14-0088	INT-r14-0003	info	matrix/svc-login/wstg-sess	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:22Z
+F-r14-0089	INT-r14-0003	info	matrix/svc-login/wstg-inpv	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:24Z
+F-r14-0090	INT-r14-0003	info	matrix/svc-login/wstg-errh	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:26Z
+F-r14-0091	INT-r14-0003	info	matrix/svc-login/wstg-cryp	置格依据 -: -=not-applicable(全波次零crypto特征)	0.9	2	2026-10-10T10:57:28Z
+F-r14-0092	INT-r14-0003	info	matrix/svc-login/wstg-busl	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:30Z
+F-r14-0093	INT-r14-0003	info	matrix/svc-login/wstg-clnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:32Z
+F-r14-0094	INT-r14-0003	info	matrix/svc-login/wstg-apit	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:34Z
+F-r14-0095	INT-r14-0003	info	matrix/svc-billing/wstg-info	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:36Z
+F-r14-0096	INT-r14-0003	info	matrix/svc-billing/wstg-conf	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:38Z
+F-r14-0097	INT-r14-0003	info	matrix/svc-billing/wstg-idnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:40Z
+F-r14-0098	INT-r14-0003	info	matrix/svc-billing/wstg-authn	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:42Z
+F-r14-0099	INT-r14-0003	info	matrix/svc-billing/wstg-authz	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:57:44Z
+F-r14-0100	INT-r14-0003	info	matrix/svc-billing/wstg-sess	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:46Z
+F-r14-0101	INT-r14-0003	info	matrix/svc-billing/wstg-inpv	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:48Z
+F-r14-0102	INT-r14-0003	info	matrix/svc-billing/wstg-errh	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:50Z
+F-r14-0103	INT-r14-0003	info	matrix/svc-billing/wstg-cryp	置格依据 -: -=not-applicable(全波次零crypto特征)	0.9	2	2026-10-10T10:57:52Z
+F-r14-0104	INT-r14-0003	info	matrix/svc-billing/wstg-busl	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:54Z
+F-r14-0105	INT-r14-0003	info	matrix/svc-billing/wstg-clnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:56Z
+F-r14-0106	INT-r14-0003	info	matrix/svc-billing/wstg-apit	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:57:58Z
+F-r14-0107	INT-r14-0003	info	matrix/svc-dashboard/wstg-info	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:00Z
+F-r14-0108	INT-r14-0003	info	matrix/svc-dashboard/wstg-conf	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:02Z
+F-r14-0109	INT-r14-0003	info	matrix/svc-dashboard/wstg-idnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:04Z
+F-r14-0110	INT-r14-0003	info	matrix/svc-dashboard/wstg-authn	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:06Z
+F-r14-0111	INT-r14-0003	info	matrix/svc-dashboard/wstg-authz	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:58:08Z
+F-r14-0112	INT-r14-0003	info	matrix/svc-dashboard/wstg-sess	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:10Z
+F-r14-0113	INT-r14-0003	info	matrix/svc-dashboard/wstg-inpv	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:58:12Z
+F-r14-0114	INT-r14-0003	info	matrix/svc-dashboard/wstg-errh	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:14Z
+F-r14-0115	INT-r14-0003	info	matrix/svc-dashboard/wstg-cryp	置格依据 -: -=not-applicable(全波次零crypto特征)	0.9	2	2026-10-10T10:58:16Z
+F-r14-0116	INT-r14-0003	info	matrix/svc-dashboard/wstg-busl	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:18Z
+F-r14-0117	INT-r14-0003	info	matrix/svc-dashboard/wstg-clnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:20Z
+F-r14-0118	INT-r14-0003	info	matrix/svc-dashboard/wstg-apit	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:22Z
+F-r14-0119	INT-r14-0003	info	matrix/svc-portal/wstg-info	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:58:24Z
+F-r14-0120	INT-r14-0003	info	matrix/svc-portal/wstg-conf	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:26Z
+F-r14-0121	INT-r14-0003	info	matrix/svc-portal/wstg-idnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:28Z
+F-r14-0122	INT-r14-0003	info	matrix/svc-portal/wstg-authn	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:30Z
+F-r14-0123	INT-r14-0003	info	matrix/svc-portal/wstg-authz	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:58:32Z
+F-r14-0124	INT-r14-0003	info	matrix/svc-portal/wstg-sess	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:34Z
+F-r14-0125	INT-r14-0003	info	matrix/svc-portal/wstg-inpv	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:58:36Z
+F-r14-0126	INT-r14-0003	info	matrix/svc-portal/wstg-errh	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:38Z
+F-r14-0127	INT-r14-0003	info	matrix/svc-portal/wstg-cryp	置格依据 -: -=not-applicable(全波次零crypto特征)	0.9	2	2026-10-10T10:58:40Z
+F-r14-0128	INT-r14-0003	info	matrix/svc-portal/wstg-busl	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:42Z
+F-r14-0129	INT-r14-0003	info	matrix/svc-portal/wstg-clnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:44Z
+F-r14-0130	INT-r14-0003	info	matrix/svc-portal/wstg-apit	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:46Z
+F-r14-0131	INT-r14-0003	info	matrix/svc-files/wstg-info	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:58:48Z
+F-r14-0132	INT-r14-0003	info	matrix/svc-files/wstg-conf	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:50Z
+F-r14-0133	INT-r14-0003	info	matrix/svc-files/wstg-idnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:52Z
+F-r14-0134	INT-r14-0003	info	matrix/svc-files/wstg-authn	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:54Z
+F-r14-0135	INT-r14-0003	info	matrix/svc-files/wstg-authz	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:58:56Z
+F-r14-0136	INT-r14-0003	info	matrix/svc-files/wstg-sess	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:58:58Z
+F-r14-0137	INT-r14-0003	info	matrix/svc-files/wstg-inpv	置格依据 x: x=实证命中(对应FD/EV在账)	0.9	2	2026-10-10T10:59:00Z
+F-r14-0138	INT-r14-0003	info	matrix/svc-files/wstg-errh	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:59:02Z
+F-r14-0139	INT-r14-0003	info	matrix/svc-files/wstg-cryp	置格依据 -: -=not-applicable(全波次零crypto特征)	0.9	2	2026-10-10T10:59:04Z
+F-r14-0140	INT-r14-0003	info	matrix/svc-files/wstg-busl	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:59:06Z
+F-r14-0141	INT-r14-0003	info	matrix/svc-files/wstg-clnt	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:59:08Z
+F-r14-0142	INT-r14-0003	info	matrix/svc-files/wstg-apit	置格依据 ?: ?=已测未中(probe3字典95发/probe5持证重扫覆盖)	0.9	2	2026-10-10T10:59:10Z

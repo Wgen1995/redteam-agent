@@ -1,0 +1,1 @@
+GET svc-portal/debug/env HTTP/1.1 -> 200 GTINFOLEAK-01 synthetic env: DB_PASS/AWS_KEY

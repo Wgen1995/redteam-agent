@@ -1,0 +1,1 @@
+GET /invoice/88 匿名 -> 401; GET /invoice?id=88 持证 -> 401 (query形非面)

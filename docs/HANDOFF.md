@@ -1058,3 +1058,10 @@
 - **工具缺口挂清单**：ledger 边删除/修正通道缺失（44 反向边只能补正残 15 多父——tree-check FAIL 如实留痕）；gate-exit 保留词战前检查位。
 - **RT-0010** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r13 入 fixtures 钉测 2 枚。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。
+
+## 2026-10-10 battle-13（G-r14）收战：律 25 兑现+评分器 v6 FD 键别名（真值归真）
+- **战果**：门控 **24/56≈0.4286**（beacon 24；**修复前 0.00**——重放行键 FD 形致评分门全拦；**评分器 v6**：FD 键行按 findings 证据链展开为 EV 键（REJECTED 同步阻断传播），前代十代零漂移 TDD 钉测）。**律 25 兑现**：idor-04 首中（billing/invoice/88 带 id 尾段——G-r12 裸面 0 分对照）；律 23 五连再现；九门全 PASS；31/32 复现（**诚实 REJECTED 1 枚**：一次性信标不可盲重放→降 suspected 不强 VERIFIED——v6 阻断传播正确拦下）。十一代同面：0.50/0.21/0.34/0.29/0.38/0.32/0.34/0.38/0.43/0.59/0.43。
+- **归因核验（种子锚点，RT-0011 attribution_check=verified）**：①重放行键契约缺口（FD/EV 语义等价但评分器须消费——v6 已解+战书 26 律 EV 键=标准形）；②SSRF 双面零扫（G-r13 三中本代零——代际面波动第二例→dict v3.5 每代必扫）；③工具缺口三枚（replay 入口 ISO 不校验/matrix-init 早铸死锁/deploy-vault stdin 序）。
+- **诚实范本**：ratelimit-01 一次性信标 REPAIRED 重试仍不复现→REJECTED→suspected；自首 1 行灰色文档（contracts/09 CLI 表面）。
+- **RT-0011** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r14 入 fixtures 钉测 2 枚+v6 TDD 3 测。
+- 验证：全套绿（收官跑）；靶场 down 残留 0。

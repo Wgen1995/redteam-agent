@@ -1,0 +1,1 @@
+GET /admin/reports + X-Auth-Token 头 -> 200 <html>GTIDOR-06 synthetic idor-06 他人报表</html>

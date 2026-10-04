@@ -1,0 +1,1 @@
+GET svc-portal/redirect?to=http://evil.example HTTP/1.1 -> 302 Location: http://evil.example (外域)

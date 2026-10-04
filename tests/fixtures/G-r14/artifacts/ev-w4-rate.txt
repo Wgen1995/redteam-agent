@@ -1,0 +1,1 @@
+POST /graphql -> 403 <html>denied GTRATE-01 synthetic no rate limit after 40 attempts</html>;登录面POST累计约40发全处理无429/无退避(对照:api-gw第14发即429)

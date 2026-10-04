@@ -1,0 +1,1 @@
+GET /graphql -> 200 <html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>; POST /graphql(带X-Auth-Token头) -> 501(仅GET面)

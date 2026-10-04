@@ -1,0 +1,2 @@
+CRED-r14-0001	static-cred	admin	admin	{{vault:cred-1}}	AST-r14-0004	INT-r14-0004				active		svc-login POST /login 弱口令 admin/admin123(GTWEAKPASS-01)	2	2026-10-10T10:07:00Z	
+CRED-r14-0002	session	user	admin	{{vault:cred-2}}	AST-r14-0004	INT-r14-0004	CRED-r14-0001			active		发放响应头X-Auth-Token直取(tok-usr-001=usr类=user级,律22)	2	2026-10-10T10:07:30Z	

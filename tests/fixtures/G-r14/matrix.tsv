@@ -1,0 +1,192 @@
+svc-shop	wstg-info				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-conf				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-idnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-authn				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-authz				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-sess				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-inpv				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-errh				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-cryp				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-busl				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-clnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-apit				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-info				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-conf				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-idnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-authn				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-authz				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-sess				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-inpv				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-errh				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-cryp				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-busl				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-clnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-api-gw	wstg-apit				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-info				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-conf				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-idnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-authn				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-authz				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-sess				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-inpv				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-errh				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-cryp				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-busl				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-clnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-admin	wstg-apit				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-info				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-conf				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-idnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-authn				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-authz				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-sess				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-inpv				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-errh				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-cryp				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-busl				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-clnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-login	wstg-apit				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-info				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-conf				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-idnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-authn				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-authz				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-sess				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-inpv				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-errh				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-cryp				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-busl				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-clnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-billing	wstg-apit				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-info				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-conf				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-idnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-authn				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-authz				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-sess				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-inpv				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-errh				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-cryp				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-busl				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-clnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-dashboard	wstg-apit				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-info				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-conf				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-idnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-authn				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-authz				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-sess				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-inpv				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-errh				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-cryp				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-busl				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-clnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-portal	wstg-apit				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-info				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-conf				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-idnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-authn				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-authz				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-sess				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-inpv				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-errh				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-cryp				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-busl				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-clnt				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-files	wstg-apit				2	2026-10-10T09:30:00Z	2026-10-10T09:31:00Z
+svc-shop	wstg-info	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-conf	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-idnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-authn	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-authz	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-sess	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-inpv	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-errh	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-cryp	-	not-applicable:未发现任何密码学面(全字典波零crypto响应特征)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-busl	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-clnt	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-shop	wstg-apit	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-info	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-conf	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-idnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-authn	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-authz	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-sess	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-inpv	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-errh	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-cryp	-	not-applicable:未发现任何密码学面(全字典波零crypto响应特征)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-busl	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-clnt	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-api-gw	wstg-apit	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-info	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-conf	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-idnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-authn	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-authz	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-sess	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-inpv	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-errh	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-cryp	-	not-applicable:未发现任何密码学面(全字典波零crypto响应特征)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-busl	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-clnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-admin	wstg-apit	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-info	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-conf	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-idnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-authn	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-authz	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-sess	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-inpv	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-errh	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-cryp	-	not-applicable:未发现任何密码学面(全字典波零crypto响应特征)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-busl	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-clnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-login	wstg-apit	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-info	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-conf	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-idnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-authn	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-authz	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-sess	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-inpv	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-errh	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-cryp	-	not-applicable:未发现任何密码学面(全字典波零crypto响应特征)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-busl	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-clnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-billing	wstg-apit	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-info	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-conf	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-idnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-authn	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-authz	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-sess	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-inpv	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-errh	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-cryp	-	not-applicable:未发现任何密码学面(全字典波零crypto响应特征)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-busl	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-clnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-dashboard	wstg-apit	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-info	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-conf	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-idnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-authn	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-authz	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-sess	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-inpv	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-errh	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-cryp	-	not-applicable:未发现任何密码学面(全字典波零crypto响应特征)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-busl	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-clnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-portal	wstg-apit	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-info	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-conf	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-idnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-authn	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-authz	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-sess	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-inpv	x	命中:x=有实证finding(见账)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-errh	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-cryp	-	not-applicable:未发现任何密码学面(全字典波零crypto响应特征)	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-busl	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-clnt	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	
+svc-files	wstg-apit	?	已测未中:字典波/持证波覆盖无发现	INT-r14-0003	2	2026-10-10T10:35:00Z	

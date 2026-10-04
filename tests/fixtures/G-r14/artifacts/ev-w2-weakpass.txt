@@ -1,0 +1,1 @@
+POST /login user=admin&pass=admin123 -> 200 <html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html> resp-header: X-Auth-Token: {{vault:cred-2}}
