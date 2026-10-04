@@ -1,0 +1,6 @@
+GET /debug/env HTTP/1.1
+Host: svc-portal:8007
+
+=> status 200
+
+<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>

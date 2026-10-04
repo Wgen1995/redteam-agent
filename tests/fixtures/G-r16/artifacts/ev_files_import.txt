@@ -1,0 +1,6 @@
+GET /import HTTP/1.1
+Host: svc-files:8008
+
+=> status 200
+
+<html>GTDESER-02 synthetic java serialized blob accepted</html>

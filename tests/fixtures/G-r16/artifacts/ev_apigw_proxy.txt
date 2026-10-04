@@ -1,0 +1,6 @@
+GET /proxy?url=http://evil.example/ HTTP/1.1
+Host: svc-api-gw:8002
+
+=> status 200
+
+<html>proxy GTSSRF-03 synthetic internal fetch done</html>

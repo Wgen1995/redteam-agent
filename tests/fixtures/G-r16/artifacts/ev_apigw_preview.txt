@@ -1,0 +1,6 @@
+GET /preview?url=http://evil.example/ HTTP/1.1
+Host: svc-api-gw:8002
+
+=> status 200
+
+<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>

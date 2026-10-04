@@ -1,0 +1,6 @@
+GET /decode HTTP/1.1
+Host: svc-files:8008
+
+=> status 200
+
+<html>GTDESER-03 synthetic base64 payload object inflated</html>

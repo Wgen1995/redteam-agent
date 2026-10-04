@@ -1,0 +1,6 @@
+GET /item?id=1 HTTP/1.1
+Host: svc-shop:8001
+
+=> status 200
+
+<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>

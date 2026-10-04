@@ -1,0 +1,6 @@
+GET /unserialize HTTP/1.1
+Host: svc-files:8008
+
+=> status 200
+
+<html>GTDESER-01 synthetic pickle object inflated</html>

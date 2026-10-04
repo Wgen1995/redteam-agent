@@ -1,0 +1,1 @@
+POST /login HTTP/1.1 Host svc-login:8004 urlencoded user=admin pass=admin123 => 200 welcome admin GTWEAKPASS-01 + 响应头 X-Auth-Token: tok-usr-001（携带形=响应头）

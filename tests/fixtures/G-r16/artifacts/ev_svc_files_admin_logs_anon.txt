@@ -1,0 +1,1 @@
+GET /admin/logs Host svc-files:8008 无 token 匿名 => 401 auth required

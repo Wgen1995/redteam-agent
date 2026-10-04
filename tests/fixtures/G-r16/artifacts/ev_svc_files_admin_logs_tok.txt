@@ -1,0 +1,1 @@
+GET /admin/logs Host svc-files:8008 带 X-Auth-Token {{vault:cred-2}} 头 持证 => 200 <html>GTROLE-04 synthetic role-04 低权可达日志</html>

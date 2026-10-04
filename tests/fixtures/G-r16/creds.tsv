@@ -1,0 +1,3 @@
+CRED-r16-0001	static-cred	admin	admin	{{vault:cred-1}}	AST-r16-0030	INT-r16-0011				active		弱口令对 admin/admin123（svc-admin 与 svc-login 双面生效；默认凭据类）	2	2026-10-12T09:42:03Z	
+CRED-r16-0002	session	user	admin@svc-login	{{vault:cred-2}}	AST-r16-0031	INT-r16-0011	CRED-r16-0001			active		svc-login 弱口令换出 token tok-usr-001；携带形=X-Auth-Token 响应头（律19）	2	2026-10-12T09:42:06Z	
+CRED-r16-0003	session	user	admin@svc-admin	{{vault:cred-3}}	AST-r16-0030	INT-r16-0011	CRED-r16-0001			active		svc-admin 弱口令换出 token tok-usr-001（响应体回显形）	2	2026-10-12T09:42:09Z	

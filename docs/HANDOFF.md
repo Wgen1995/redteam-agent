@@ -1072,3 +1072,10 @@
 - **诚实范本**：SSTI/XXE 不成立不虚报（{{7*7}} 无求值/XML 400 按口径记）；驱动崩溃 18 条 facts 重复 append-only 如实披露。
 - **RT-0012** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r15 入 fixtures 钉测 3 枚。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。
+
+## 2026-10-12 battle-15（G-r16）收战：纪律回收代——22 律修七枚回收+27 律首验 36/36
+- **战果**：门控 **26/56≈0.4643**（beacon 26；**史第二**，G-r13 0.59 纪录在）。**22 律修兑现**：creds role 裸词严格形（admin/user）——上代被拦 6 枚 post_auth 全回收（role-03/04+hauth-05+idor-05/06）；**27 律首验**：弱口令双中即停即铸证（svc-admin 响应体+svc-login X-Auth-Token 响应头双通道同代双中）——**36/36 EV 全 VERIFIED 零 REJECTED**（上代自塌对照闭环）。**dict v3.6 半兑现**：xss-01/02 回收（xss-03/04 仍漏）；SSRF 三连两代连续。十三代同面：0.50/0.21/0.34/0.29/0.38/0.32/0.34/0.38/0.43/0.59/0.43/0.34/0.46。
+- **归因核验（种子锚点，RT-0013 attribution_check=verified）**：①idor-04 本代漏（svc-billing 403 墙——持证重扫未做 invoice 资源面双形→23 律补）；②graphql-01 漏（代际波动第三例→dict v3.7 候选）；③userenum/ratelimit 双枚半覆盖；④流程偏差自首：gate-exit P0/P1 门事件未铸（matrix-init 代位——工具缺口）+runner2 工件误删 runner3 补全。
+- **战士侧暗雷回灌**：EV 卡 Host 带端口（22 张卡一字段全 env-diff——模板系统性污染）；redact 冒号/等号暗礁；docker cp 目录双向坑。
+- **RT-0013** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r16 入 fixtures 钉测 3 枚。
+- 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。

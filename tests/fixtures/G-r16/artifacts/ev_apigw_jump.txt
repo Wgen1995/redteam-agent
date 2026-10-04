@@ -1,0 +1,6 @@
+GET /jump?target=http://evil.example HTTP/1.1
+Host: svc-api-gw:8002
+
+=> status 302
+
+<html>GTREDIR-03 synthetic redirect to %s</html>

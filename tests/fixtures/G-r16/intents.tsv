@@ -1,0 +1,13 @@
+INT-r16-0001	八服务端口测绘与根指纹	8000-8010 段端口扫描x8 服务+根路径指纹，建立服务地图	pending	human	recon	recon-event			-+recon+八服务端口测绘与根指纹	100000\;2000\;2					2	2026-10-12T09:05:00Z
+INT-r16-0002	演练五连弃弹（律14 三形态机械验证）	svc-login 根路径在线等价面：无头GET/带token GET/POST 三形态全链演练，弹头弃置不计分	candidate	human	surface	entity			-+surface+演练五连弃弹（律14 三形态机械验证）	20000\;300\;1					2	2026-10-12T09:10:00Z
+INT-r16-0003	redirect 族全参数变体二段探测	GTREDIR-01/02/03 面发现于 probe2 字典波	pending	human	deep-dive	recon-event			-+deep-dive+redirect 族全参数变体二段探测	50000\;600\;2					2	2026-10-12T09:15:04Z
+INT-r16-0004	参数面族 SQL 注入差分	item/order/product/detail 参数面+资源路径形命中 GTSQLI	pending	human	deep-dive	recon-event			-+deep-dive+参数面族 SQL 注入差分	50000\;600\;2					2	2026-10-12T09:15:08Z
+INT-r16-0005	XSS 反射面族三载荷扫（每代必扫）	search/echo/render/comment?q 反射面命中	pending	human	deep-dive	recon-event			-+deep-dive+XSS 反射面族三载荷扫（每代必扫）	50000\;600\;2					2	2026-10-12T09:15:12Z
+INT-r16-0006	Origin 变体矩阵 CORS 配置探测	cors-debug/origin 面命中	pending	human	deep-dive	recon-event			-+deep-dive+Origin 变体矩阵 CORS 配置探测	50000\;600\;2					2	2026-10-12T09:15:16Z
+INT-r16-0007	SSRF 高频面族 url= 三形态	fetch/preview/proxy 面命中	pending	human	deep-dive	recon-event			-+deep-dive+SSRF 高频面族 url= 三形态	50000\;600\;2					2	2026-10-12T09:15:20Z
+INT-r16-0008	信息暴露 debug/env 族 GET 直取	debug/env 与 .env 命中	pending	human	deep-dive	recon-event			-+deep-dive+信息暴露 debug/env 族 GET 直取	50000\;600\;2					2	2026-10-12T09:15:24Z
+INT-r16-0009	反序列化处理器面 GET 直取先行	unserialize/import/decode 命中	pending	human	deep-dive	recon-event			-+deep-dive+反序列化处理器面 GET 直取先行	50000\;600\;2					2	2026-10-12T09:15:28Z
+INT-r16-0010	路径穿越高频面族双形	download?path= 命中 GTTRAVERSAL	pending	human	deep-dive	recon-event			-+deep-dive+路径穿越高频面族双形	50000\;600\;2					2	2026-10-12T09:15:32Z
+INT-r16-0011	凭据发放面弱口令叉乘（律17）	键名定形后弱口令对喷洒；svc-admin 与 svc-login 双中 admin/admin123 发 token tok-usr-001	pending	human	deep-dive	recon-event			-+deep-dive+凭据发放面弱口令叉乘（律17）	30000\;400\;1					2	2026-10-12T09:37:03Z
+INT-r16-0012	限流缺失专探（GTRATE-01）	svc-login 认证面连发无 429/锁死，计数器随 attempts 递增	pending	human	deep-dive	recon-event			-+deep-dive+限流缺失专探（GTRATE-01）	20000\;200\;1					2	2026-10-12T09:37:06Z
+INT-r16-0013	持证低权 admin 子名词面 authz 差分	user 级 token tok-usr-001 持证重扫（律23 清单 8服务x8子名词）；5 面 401->200 翻转，匿名对照成对	pending	human	authz-diff	recon-event			-+authz-diff+持证低权 admin 子名词面 authz 差分	30000\;400\;1				CRED-r16-0002	2	2026-10-12T09:46:03Z

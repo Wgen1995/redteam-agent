@@ -1,0 +1,1 @@
+GET /admin/reports Host svc-shop:8001 带 X-Auth-Token {{vault:cred-2}} 头 持证 => 200 <html>GTIDOR-06 synthetic idor-06 他人报表</html>

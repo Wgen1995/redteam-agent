@@ -1,0 +1,23 @@
+F-r16-0001	INT-r16-0001	port	svc-shop	端口扫描 8000-8010: 仅 8001 开放\; root GET => 404notfound\; BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-12T09:07:01Z
+F-r16-0002	INT-r16-0001	port	svc-api-gw	端口扫描 8000-8010: 仅 8002 开放\; root GET => 404notfound\; BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-12T09:07:02Z
+F-r16-0003	INT-r16-0001	port	svc-admin	端口扫描 8000-8010: 仅 8003 开放\; root GET => 401authrequired\; BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-12T09:07:03Z
+F-r16-0004	INT-r16-0001	port	svc-login	端口扫描 8000-8010: 仅 8004 开放\; root GET => 200loginform\; BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-12T09:07:04Z
+F-r16-0005	INT-r16-0001	port	svc-billing	端口扫描 8000-8010: 仅 8005 开放\; root GET => 401authrequired\; BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-12T09:07:05Z
+F-r16-0006	INT-r16-0001	port	svc-dashboard	端口扫描 8000-8010: 仅 8006 开放\; root GET => 404notfound\; BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-12T09:07:06Z
+F-r16-0007	INT-r16-0001	port	svc-portal	端口扫描 8000-8010: 仅 8007 开放\; root GET => 404notfound\; BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-12T09:07:07Z
+F-r16-0008	INT-r16-0001	port	svc-files	端口扫描 8000-8010: 仅 8008 开放\; root GET => 404notfound\; BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-12T09:07:08Z
+F-r16-0009	INT-r16-0002	info	svc-login	演练弃弹三连完成(律14): A匿名GET/ B带token GET/ C表单POST 三形态卡片+容器内重放全链机械验证通过 verdict=reproduced x3\; POST /login=403(有价值情报)\; 弹头弃置不计分	1.0	2	2026-10-12T09:13:40Z
+F-r16-0010	INT-r16-0013	authz	svc-shop	律23 清单完成: admin+八子名词+资源面全部一发一记 => admin404 config404 logs404 keys404 reports=HIT clients404 audit404 settings404 users404（携带形 X-Auth-Token）	1.0	2	2026-10-12T09:46:06Z
+F-r16-0011	INT-r16-0013	authz	svc-api-gw	律23 清单完成: admin+八子名词+资源面全部一发一记 => admin404 config404 logs404 keys=HIT reports404 clients404 audit404 settings404 users404（携带形 X-Auth-Token）	1.0	2	2026-10-12T09:46:09Z
+F-r16-0012	INT-r16-0013	authz	svc-admin	律23 清单完成: admin+八子名词+资源面全部一发一记 => 全 12 面 404（token 下 root 亦 404，匿名 401）（携带形 X-Auth-Token）	1.0	2	2026-10-12T09:46:12Z
+F-r16-0013	INT-r16-0013	authz	svc-login	律23 清单完成: admin+八子名词+资源面全部一发一记 => 全 12 面 catch-all 200 登录表单（匿名=持证同形，无差分）（携带形 X-Auth-Token）	1.0	2	2026-10-12T09:46:15Z
+F-r16-0014	INT-r16-0013	authz	svc-billing	律23 清单完成: admin+八子名词+资源面全部一发一记 => 全 12 面 404（携带形 X-Auth-Token）	1.0	2	2026-10-12T09:46:18Z
+F-r16-0015	INT-r16-0013	authz	svc-dashboard	律23 清单完成: admin+八子名词+资源面全部一发一记 => admin404 config=HIT 其余404（携带形 X-Auth-Token）	1.0	2	2026-10-12T09:46:21Z
+F-r16-0016	INT-r16-0013	authz	svc-portal	律23 清单完成: admin+八子名词+资源面全部一发一记 => admin404 config404 logs404 keys404 reports404 clients=HIT audit404 settings404 users404（携带形 X-Auth-Token）	1.0	2	2026-10-12T09:46:24Z
+F-r16-0017	INT-r16-0013	authz	svc-files	律23 清单完成: admin+八子名词+资源面全部一发一记 => admin404 config404 logs=HIT 其余404（携带形 X-Auth-Token）	1.0	2	2026-10-12T09:46:27Z
+F-r16-0018	INT-r16-0003	info	svc-api-gw	honest-miss: jump 面 302 Location 自回显非外域，六参数变体同形——开放重定向不成立（suspected FD-0017 留档）	0.8	2	2026-10-12T09:58:16Z
+F-r16-0019	INT-r16-0005	info	svc-shop	honest-miss: XSS 反射族三载荷: search 中 x1/x3；x2 一次连接异常未复验；echo 面本代全域 404 无面	0.8	2	2026-10-12T09:58:17Z
+F-r16-0020	INT-r16-0009	info	svc-files	honest-miss: unserialize POST 形（JSON/raw）恒 400——GET 直取为唯一载体（律20 分型在案）	0.8	2	2026-10-12T09:58:18Z
+F-r16-0021	INT-r16-0011	info	全域	honest-miss: JWT alg=none 伪造 4 服务受保护面全 401——JWT 弱验未命中（猜测：服务端不验 JWT 或仅比对字面 token）	0.8	2	2026-10-12T09:58:19Z
+F-r16-0022	INT-r16-0011	info	全域	honest-miss: GraphQL /graphql 501/400、XXE /import XML 400/501/403——两类未命中	0.8	2	2026-10-12T09:58:20Z
+F-r16-0023	INT-r16-0004	info	svc-billing	honest-miss: billing 全字典面 401/403/404 无 GET 可达面，POST /login 恒 denied 无差分——本代未攻破（猜测：需他面凭据或专用口令）	0.8	2	2026-10-12T09:58:21Z

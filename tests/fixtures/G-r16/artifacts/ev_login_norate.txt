@@ -1,0 +1,1 @@
+svc-login /login 连发 16 次 403 denied 无 429：GTRATE-01 synthetic no rate limit after 16 attempts（计数器递增）

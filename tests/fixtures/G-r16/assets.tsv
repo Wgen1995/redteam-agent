@@ -1,0 +1,37 @@
+AST-r16-0001	service	svc-shop	172.28.0.x port-range 8000-8010	in_scope	2	2026-10-12T09:06:01Z
+AST-r16-0002	service	svc-api-gw	172.28.0.x port-range 8000-8010	in_scope	2	2026-10-12T09:06:02Z
+AST-r16-0003	service	svc-admin	172.28.0.x port-range 8000-8010	in_scope	2	2026-10-12T09:06:03Z
+AST-r16-0004	service	svc-login	172.28.0.x port-range 8000-8010	in_scope	2	2026-10-12T09:06:04Z
+AST-r16-0005	service	svc-billing	172.28.0.x port-range 8000-8010	in_scope	2	2026-10-12T09:06:05Z
+AST-r16-0006	service	svc-dashboard	172.28.0.x port-range 8000-8010	in_scope	2	2026-10-12T09:06:06Z
+AST-r16-0007	service	svc-portal	172.28.0.x port-range 8000-8010	in_scope	2	2026-10-12T09:06:07Z
+AST-r16-0008	service	svc-files	172.28.0.x port-range 8000-8010	in_scope	2	2026-10-12T09:06:08Z
+AST-r16-0009	endpoint	svc-login/	drill-online-equivalent-path	in_scope	2	2026-10-12T09:10:20Z
+AST-r16-0010	endpoint	svc-portal/redirect?to=http://evil.example	family:redir	out_of_scope	2	2026-10-12T09:15:36Z
+AST-r16-0011	endpoint	svc-shop/logout?next=http://evil.example	family:redir	out_of_scope	2	2026-10-12T09:15:40Z
+AST-r16-0012	endpoint	svc-api-gw/jump?target=http://evil.example	family:redir	out_of_scope	2	2026-10-12T09:15:44Z
+AST-r16-0013	endpoint	svc-shop/item?id=1	family:sqli	in_scope	2	2026-10-12T09:15:48Z
+AST-r16-0014	endpoint	svc-shop/order?id=1	family:sqli	in_scope	2	2026-10-12T09:15:52Z
+AST-r16-0015	endpoint	svc-shop/orders/1	family:sqli	in_scope	2	2026-10-12T09:15:56Z
+AST-r16-0016	endpoint	svc-shop/search?q=<script>alert(1)</script>	family:xss	in_scope	2	2026-10-12T09:16:00Z
+AST-r16-0017	endpoint	svc-shop/comment?body=<script>alert(1)</script>	family:xss	in_scope	2	2026-10-12T09:16:04Z
+AST-r16-0018	endpoint	svc-dashboard/render?q=<script>alert(1)</script>	family:xss	in_scope	2	2026-10-12T09:16:08Z
+AST-r16-0019	endpoint	svc-api-gw/cors-debug	family:cors	in_scope	2	2026-10-12T09:16:12Z
+AST-r16-0020	endpoint	svc-api-gw/origin	family:cors	in_scope	2	2026-10-12T09:16:16Z
+AST-r16-0021	endpoint	svc-api-gw/fetch?url=http://evil.example/	family:ssrf	out_of_scope	2	2026-10-12T09:16:20Z
+AST-r16-0022	endpoint	svc-api-gw/preview?url=http://evil.example/	family:ssrf	out_of_scope	2	2026-10-12T09:16:24Z
+AST-r16-0023	endpoint	svc-api-gw/proxy?url=http://evil.example/	family:ssrf	out_of_scope	2	2026-10-12T09:16:28Z
+AST-r16-0024	endpoint	svc-portal/debug/env	family:info	in_scope	2	2026-10-12T09:16:32Z
+AST-r16-0025	endpoint	svc-files/.env	family:info	in_scope	2	2026-10-12T09:16:36Z
+AST-r16-0026	endpoint	svc-files/unserialize	family:deser	in_scope	2	2026-10-12T09:16:40Z
+AST-r16-0027	endpoint	svc-files/import	family:deser	in_scope	2	2026-10-12T09:16:44Z
+AST-r16-0028	endpoint	svc-files/decode	family:deser	in_scope	2	2026-10-12T09:16:48Z
+AST-r16-0029	endpoint	svc-files/download?path=../../../etc/passwd	family:trav	in_scope	2	2026-10-12T09:16:52Z
+AST-r16-0030	endpoint	svc-admin/login	cred-issuance-or-admin-face	in_scope	2	2026-10-12T09:37:09Z
+AST-r16-0031	endpoint	svc-login/login	cred-issuance-or-admin-face	in_scope	2	2026-10-12T09:37:12Z
+AST-r16-0032	endpoint	svc-api-gw/admin	cred-issuance-or-admin-face	in_scope	2	2026-10-12T09:37:15Z
+AST-r16-0033	endpoint	svc-shop/admin/reports	post-auth-lowpriv-admin-noun	in_scope	2	2026-10-12T09:48:09Z
+AST-r16-0034	endpoint	svc-api-gw/admin/keys	post-auth-lowpriv-admin-noun	in_scope	2	2026-10-12T09:50:18Z
+AST-r16-0035	endpoint	svc-dashboard/admin/config	post-auth-lowpriv-admin-noun	in_scope	2	2026-10-12T09:50:30Z
+AST-r16-0036	endpoint	svc-portal/admin/clients	post-auth-lowpriv-admin-noun	in_scope	2	2026-10-12T09:50:42Z
+AST-r16-0037	endpoint	svc-files/admin/logs	post-auth-lowpriv-admin-noun	in_scope	2	2026-10-12T09:50:54Z

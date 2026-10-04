@@ -1,0 +1,6 @@
+GET /redirect?to=http://evil.example HTTP/1.1
+Host: svc-portal:8007
+
+=> status 302
+
+<html>GTREDIR-01 synthetic redirect to %s</html>
