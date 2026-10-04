@@ -1,0 +1,2 @@
+CRED-r15-0001	static-cred	user 级	admin@svc-login	{{vault:cred-1}}		INT-r15-0003				active		svc-login /login 弱口令固定对（GTWEAKPASS-01）；账号名 admin 但换出令牌为 user 级（律22）	2	2026-10-11T09:53:00Z	
+CRED-r15-0002	session	user 级	admin@svc-login	{{vault:cred-2}}		INT-r15-0003	CRED-r15-0001			active		X-Auth-Token 携带形会话令牌（律19 发放响应头采集）	2	2026-10-11T09:53:30Z	

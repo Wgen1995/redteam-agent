@@ -1,0 +1,15 @@
+INT-r15-0001	端口测绘与根指纹（probe1）	8000-8010 x 8 服务 TCP 扫+根 GET 指纹	pending	manual	recon	recon-event			-+recon+端口测绘与根指纹（probe1）	5000\;1500\;1					2	2026-10-11T09:11:00Z
+INT-r15-0002	字典端点族全喷（redirect/参数/deser/traversal/SSRF/info/CORS）	字典 v2 一级面+redirect 参数族+SSRF 族每代必扫	pending	manual	surface	recon-event			-+surface+字典端点族全喷（redirect/参数/deser/traversal/SSRF/info/CORS）	20000\;8000\;2					2	2026-10-11T09:12:00Z
+INT-r15-0003	凭据发放面键名叉乘（login/register/token 族）	键名族x编码族全叉乘+熵基线+发放响应头采集	pending	manual	surface	recon-event			-+surface+凭据发放面键名叉乘（login/register/token 族）	15000\;6000\;2					2	2026-10-11T09:13:00Z
+INT-r15-0004	持证重扫：八服务 x 字典面 x admin 子名词全叉乘	token 到手后清单化重扫（律23）	pending	manual	matrix-test	recon-event			-+matrix-test+持证重扫：八服务 x 字典面 x admin 子名词全叉乘	20000\;9000\;2					2	2026-10-11T09:14:00Z
+INT-r15-0005	新类专探与资源面双形（JWT/CSRF/限流/idor/穿越）	JWT 构造形+idor 小序数双形+限流连击	pending	manual	deep-dive	recon-event			-+deep-dive+新类专探与资源面双形（JWT/CSRF/限流/idor/穿越）	15000\;6000\;2					2	2026-10-11T09:15:00Z
+INT-r15-0001	端口测绘与根指纹（probe1）	8000-8010 x 8 服务 TCP 扫+根 GET 指纹	active	manual	recon	recon-event			-+recon+端口测绘与根指纹（probe1）	5000\;1500\;1					2	2026-10-11T10:14:00Z
+INT-r15-0001	端口测绘与根指纹（probe1）	8000-8010 x 8 服务 TCP 扫+根 GET 指纹	done	manual	recon	recon-event			-+recon+端口测绘与根指纹（probe1）	5000\;1500\;1					2	2026-10-11T10:24:00Z
+INT-r15-0002	字典端点族全喷（redirect/参数/deser/traversal/SSRF/info/CORS）	字典 v2 一级面+redirect 参数族+SSRF 族每代必扫	active	manual	surface	recon-event			-+surface+字典端点族全喷（redirect/参数/deser/traversal/SSRF/info/CORS）	20000\;8000\;2					2	2026-10-11T10:14:20Z
+INT-r15-0002	字典端点族全喷（redirect/参数/deser/traversal/SSRF/info/CORS）	字典 v2 一级面+redirect 参数族+SSRF 族每代必扫	done	manual	surface	recon-event			-+surface+字典端点族全喷（redirect/参数/deser/traversal/SSRF/info/CORS）	20000\;8000\;2					2	2026-10-11T10:24:20Z
+INT-r15-0003	凭据发放面键名叉乘（login/register/token 族）	键名族x编码族全叉乘+熵基线+发放响应头采集	active	manual	surface	recon-event			-+surface+凭据发放面键名叉乘（login/register/token 族）	15000\;6000\;2					2	2026-10-11T10:14:40Z
+INT-r15-0003	凭据发放面键名叉乘（login/register/token 族）	键名族x编码族全叉乘+熵基线+发放响应头采集	done	manual	surface	recon-event			-+surface+凭据发放面键名叉乘（login/register/token 族）	15000\;6000\;2					2	2026-10-11T10:24:40Z
+INT-r15-0004	持证重扫：八服务 x 字典面 x admin 子名词全叉乘	token 到手后清单化重扫（律23）	active	manual	matrix-test	recon-event			-+matrix-test+持证重扫：八服务 x 字典面 x admin 子名词全叉乘	20000\;9000\;2					2	2026-10-11T10:15:00Z
+INT-r15-0004	持证重扫：八服务 x 字典面 x admin 子名词全叉乘	token 到手后清单化重扫（律23）	done	manual	matrix-test	recon-event			-+matrix-test+持证重扫：八服务 x 字典面 x admin 子名词全叉乘	20000\;9000\;2					2	2026-10-11T10:25:00Z
+INT-r15-0005	新类专探与资源面双形（JWT/CSRF/限流/idor/穿越）	JWT 构造形+idor 小序数双形+限流连击	active	manual	deep-dive	recon-event			-+deep-dive+新类专探与资源面双形（JWT/CSRF/限流/idor/穿越）	15000\;6000\;2					2	2026-10-11T10:15:20Z
+INT-r15-0005	新类专探与资源面双形（JWT/CSRF/限流/idor/穿越）	JWT 构造形+idor 小序数双形+限流连击	done	manual	deep-dive	recon-event			-+deep-dive+新类专探与资源面双形（JWT/CSRF/限流/idor/穿越）	15000\;6000\;2					2	2026-10-11T10:25:20Z

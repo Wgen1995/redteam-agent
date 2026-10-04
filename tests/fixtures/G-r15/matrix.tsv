@@ -1,0 +1,79 @@
+authorized-range.local	wstg-info				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+authorized-range.local	wstg-conf				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+authorized-range.local	wstg-idnt				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+authorized-range.local	wstg-apit				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-shop	wstg-info				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-shop	wstg-conf				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-shop	wstg-idnt				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-shop	wstg-apit				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-api-gw	wstg-info				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-api-gw	wstg-conf				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-api-gw	wstg-idnt				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-api-gw	wstg-apit				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-admin	wstg-info				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-admin	wstg-conf				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-admin	wstg-idnt				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-admin	wstg-apit				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-login	wstg-info				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-login	wstg-conf				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-login	wstg-idnt				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-login	wstg-apit				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-billing	wstg-info				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-billing	wstg-conf				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-billing	wstg-idnt				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-billing	wstg-apit				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-dashboard	wstg-info				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-dashboard	wstg-conf				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-dashboard	wstg-idnt				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-dashboard	wstg-apit				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-portal	wstg-info				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-portal	wstg-conf				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-portal	wstg-idnt				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-portal	wstg-apit				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-files	wstg-info				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-files	wstg-conf				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-files	wstg-idnt				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+svc-files	wstg-apit				2	2026-10-11T09:16:00Z	2026-10-11T09:17:00Z
+authorized-range.local	wstg-info	?	根域聚合面无独立分化	INT-r15-0002	2	2026-10-11T10:12:00Z	
+authorized-range.local	wstg-conf	-	unreachable:根域无独立服务面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+authorized-range.local	wstg-idnt	-	unreachable:无标识面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+authorized-range.local	wstg-apit	-	unreachable:根域无独立服务面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-shop	wstg-info	?	字典面 404 基线+有限分化	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-shop	wstg-conf	-	unreachable:无配置面分化	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-shop	wstg-idnt	-	unreachable:无标识面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-shop	wstg-apit	x	GTSQLI-01/02+GTIDOR-06 实证	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-api-gw	wstg-info	x	GTGRAPHQL-01 内省信息暴露	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-api-gw	wstg-conf	x	GTCORS-01/02 CORS 双面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-api-gw	wstg-idnt	-	unreachable:无标识面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-api-gw	wstg-apit	x	GTSSRF-01/02/03 实证	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-admin	wstg-info	-	unreachable:整服务 401 墙；JWT 构造形与令牌猜测均拒	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-admin	wstg-conf	-	unreachable:同左	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-admin	wstg-idnt	-	unreachable:同左	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-admin	wstg-apit	-	unreachable:同左	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-login	wstg-info	?	catch-all 200 零熵墙（律24 换轨 POST 分化）	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-login	wstg-conf	-	unreachable:无配置面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-login	wstg-idnt	-	unreachable:无标识枚举面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-login	wstg-apit	x	GTWEAKPASS-01+GTRATE-01 实证	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-billing	wstg-info	-	unreachable:401 墙（跨服务令牌仅资源面通）	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-billing	wstg-conf	-	unreachable:同左	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-billing	wstg-idnt	-	unreachable:同左	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-billing	wstg-apit	x	GTIDOR-04 跨服务令牌实证	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-dashboard	wstg-info	-	unreachable:无信息面分化	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-dashboard	wstg-conf	-	unreachable:同左	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-dashboard	wstg-idnt	-	unreachable:同左	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-dashboard	wstg-apit	x	GTSSTI-02 反射+GTROLE-03 实证	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-portal	wstg-info	x	GTINFOLEAK-01 环境暴露	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-portal	wstg-conf	-	unreachable:无配置面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-portal	wstg-idnt	-	unreachable:同左	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-portal	wstg-apit	x	GTREDIR-01+GTHAUTH-05 实证	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-files	wstg-info	x	GTINFOLEAK-03 env 暴露	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-files	wstg-conf	-	unreachable:无配置面	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-files	wstg-idnt	-	unreachable:同左	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-files	wstg-apit	x	GTDESER-01/02/03+GTTRAVERSAL-01/02+GTROLE-04 实证	INT-r15-0002	2	2026-10-11T10:12:00Z	
+svc-shop	wstg-apit	x	P3 实证（intent 归属修正）	INT-r15-0004	2	2026-10-11T11:30:10Z	
+svc-billing	wstg-apit	x	P3 实证（intent 归属修正）	INT-r15-0004	2	2026-10-11T11:30:20Z	
+svc-dashboard	wstg-apit	x	P3 实证（intent 归属修正）	INT-r15-0004	2	2026-10-11T11:30:30Z	
+svc-portal	wstg-apit	x	P3 实证（intent 归属修正）	INT-r15-0004	2	2026-10-11T11:30:40Z	
+svc-files	wstg-apit	x	P3 实证（intent 归属修正）	INT-r15-0004	2	2026-10-11T11:30:50Z	
+svc-login	wstg-apit	x	P3 实证（intent 归属修正）	INT-r15-0003	2	2026-10-11T11:31:00Z	
+svc-api-gw	wstg-info	x	P3 实证（intent 归属修正）	INT-r15-0005	2	2026-10-11T11:31:10Z	

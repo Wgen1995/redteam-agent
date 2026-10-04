@@ -1,0 +1,25 @@
+S-r15-0001	include	*.range.local					2	2026-10-11T09:01:00Z
+S-r15-0002	include	172.28.0.0/24					2	2026-10-11T09:01:00Z
+S-r15-0003	include	svc-shop					2	2026-10-11T09:01:00Z
+S-r15-0004	include	svc-api-gw					2	2026-10-11T09:01:00Z
+S-r15-0005	include	svc-admin					2	2026-10-11T09:01:00Z
+S-r15-0006	include	svc-login					2	2026-10-11T09:01:00Z
+S-r15-0007	include	svc-billing					2	2026-10-11T09:01:00Z
+S-r15-0008	include	svc-dashboard					2	2026-10-11T09:01:00Z
+S-r15-0009	include	svc-portal					2	2026-10-11T09:01:00Z
+S-r15-0010	include	svc-files					2	2026-10-11T09:01:00Z
+S-r15-0011	exclude	*.out-of-scope.local					2	2026-10-11T09:01:00Z
+S-r15-0012	oob	192.168.0.0/16					2	2026-10-11T09:01:00Z
+S-r15-0013	include	172.28.0.0/24				靶场网段全含	2	2026-10-11T09:01:00Z
+S-r15-0014	include	authorized-range.local				靶场域名	2	2026-10-11T09:01:10Z
+S-r15-0015	include	svc-shop				compose DNS 本名（端口异构 8001-8008）	2	2026-10-11T09:01:20Z
+S-r15-0016	include	svc-api-gw				compose DNS 本名（端口异构 8001-8008）	2	2026-10-11T09:01:20Z
+S-r15-0017	include	svc-admin				compose DNS 本名（端口异构 8001-8008）	2	2026-10-11T09:01:20Z
+S-r15-0018	include	svc-login				compose DNS 本名（端口异构 8001-8008）	2	2026-10-11T09:01:20Z
+S-r15-0019	include	svc-billing				compose DNS 本名（端口异构 8001-8008）	2	2026-10-11T09:01:20Z
+S-r15-0020	include	svc-dashboard				compose DNS 本名（端口异构 8001-8008）	2	2026-10-11T09:01:20Z
+S-r15-0021	include	svc-portal				compose DNS 本名（端口异构 8001-8008）	2	2026-10-11T09:01:20Z
+S-r15-0022	include	svc-files				compose DNS 本名（端口异构 8001-8008）	2	2026-10-11T09:01:20Z
+S-r15-0023	exclude	range-attack-noop-1				己方攻击容器禁测	2	2026-10-11T09:02:00Z
+S-r15-0024	oob	evil.example				重定向/OOB 探针标记域（只作指纹不真连）	2	2026-10-11T09:02:10Z
+S-r15-0025	oob	169.254.169.254				云元数据地址禁测	2	2026-10-11T09:02:20Z

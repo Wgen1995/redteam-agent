@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK | <html>render GTSSTI-02 synthetic ssti render <x></html>（<x> 原样进 HTML）

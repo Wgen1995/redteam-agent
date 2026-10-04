@@ -1,0 +1,1 @@
+HTTP/1.0 200 OK | 发放响应头 X-Auth-Token 形（真值 {{vault:cred-2}}）| <html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>

@@ -1,0 +1,1 @@
+{"detail": "TimeoutError: timed out", "extracted": {}, "id": "EV-r15-0028", "matched": null, "results": [], "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r15 --id=EV-r15-0028 --state=REPAIRED --note=环境差异（连接层失败）——修复 EV 卡片 preconditions 网络位置/前置后重放", "verdict": "env-diff"}

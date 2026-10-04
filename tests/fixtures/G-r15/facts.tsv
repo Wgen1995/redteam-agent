@@ -1,0 +1,51 @@
+F-r15-0001	INT-r15-0002	vuln-clue	svc-shop/logout?next=http://evil.example	匿名 302 Location 直落外域 http://evil.example（next 参数）；url/goto/redirect 等其余参数仅回显不跳转；基线=404 not found	0.95	2	2026-10-11T09:40:09Z
+F-r15-0002	INT-r15-0002	vuln-clue	svc-shop/item?id=1	200 回显 GTSQLI-01 synthetic SQL error near 值回显；query 与 path 双形等价；基线=404	0.95	2	2026-10-11T09:40:18Z
+F-r15-0003	INT-r15-0002	vuln-clue	svc-shop/order?id=1	200 回显 GTSQLI-02 synthetic SQL syntax error；order 与 orders 双面同码；基线=404	0.95	2	2026-10-11T09:40:27Z
+F-r15-0004	INT-r15-0002	vuln-clue	svc-api-gw/fetch	GET 直取 200 泄 internal-secret-doc（GTSSRF-01）；url 参数三形（外域/回环/file）响应恒定	0.95	2	2026-10-11T09:40:36Z
+F-r15-0005	INT-r15-0002	vuln-clue	svc-api-gw/preview	GET 直取 200 泄 internal-metadata（GTSSRF-02）；url 三形恒定	0.95	2	2026-10-11T09:40:45Z
+F-r15-0006	INT-r15-0002	vuln-clue	svc-api-gw/proxy	GET 直取 200 synthetic internal fetch done（GTSSRF-03）；url 三形恒定	0.95	2	2026-10-11T09:41:00Z
+F-r15-0007	INT-r15-0002	vuln-clue	svc-api-gw/cors-debug	任意 Origin 下 ACAO:* 恒定（GTCORS-01；组合不可携凭据利用=配置缺陷口径）	0.9	2	2026-10-11T09:41:09Z
+F-r15-0008	INT-r15-0002	vuln-clue	svc-api-gw/origin	Origin 全反射（evil.example/sub/null）+ACAC:true 恒定（GTCORS-02；反射形可利用）	0.95	2	2026-10-11T09:41:18Z
+F-r15-0009	INT-r15-0005	vuln-clue	svc-api-gw/graphql	GET /graphql?query=__schema 内省开启 200（GTGRAPHQL-01）；POST=501 仅 GET 通道	0.95	2	2026-10-11T09:41:27Z
+F-r15-0010	INT-r15-0005	vuln-clue	svc-dashboard/render?tpl=<x>	tpl 值未编码原样回显（<x> 原文在 HTML 内）；{{7*7}} 无求值=SSTI 未证实；script 百分号编码不解码	0.8	2	2026-10-11T09:41:36Z
+F-r15-0011	INT-r15-0002	vuln-clue	svc-portal/debug/env	匿名 200 泄环境形键值（GTINFOLEAK-01，DB_PASS/AWS_KEY 显示为 redacted 字样）	0.95	2	2026-10-11T09:41:45Z
+F-r15-0012	INT-r15-0002	vuln-clue	svc-portal/redirect?to=http://evil.example	302 Location 直落外域；to 与 goto 双参生效；next 不生效仅回显	0.95	2	2026-10-11T09:42:00Z
+F-r15-0013	INT-r15-0002	vuln-clue	svc-files/.env	匿名 200 泄 SECRET_KEY 字样 env 文件（GTINFOLEAK-03）	0.95	2	2026-10-11T09:42:09Z
+F-r15-0014	INT-r15-0002	vuln-clue	svc-files/unserialize	GET 直取即弹 200 pickle object inflated（GTDESER-01）——律20 GET 先行实证	0.95	2	2026-10-11T09:42:18Z
+F-r15-0015	INT-r15-0002	vuln-clue	svc-files/import	GET 直取 200 java serialized blob accepted（GTDESER-02）	0.95	2	2026-10-11T09:42:27Z
+F-r15-0016	INT-r15-0002	vuln-clue	svc-files/decode	GET 直取 200 base64 payload object inflated（GTDESER-03）	0.95	2	2026-10-11T09:42:36Z
+F-r15-0017	INT-r15-0002	vuln-clue	svc-files/download?path=../../../etc/passwd	200 回 passwd 内容形（GTTRAVERSAL-01）；query 与 path 前缀双形等价	0.95	2	2026-10-11T09:42:45Z
+F-r15-0018	INT-r15-0002	vuln-clue	svc-files/static?path=../../../etc/passwd	200 回 shadow 内容形（GTTRAVERSAL-02）	0.95	2	2026-10-11T09:43:00Z
+F-r15-0019	INT-r15-0003	vuln-clue	svc-login/login	表单编码 POST user=admin&pass=admin 命中 200 welcome admin（GTWEAKPASS-01）；响应头 X-Auth-Token 发放令牌（律19）；键名叉乘 15 组仅 user/pass 组分化；基线 403 denied 三发恒定（律16 熵基线）	0.99	2	2026-10-11T09:43:09Z
+F-r15-0020	INT-r15-0003	vuln-clue	svc-login/login	连续 36 次 POST 零 429 零退避，失败响应自带 no rate limit after N 递增计数器（GTRATE-01）=无限流实证	0.99	2	2026-10-11T09:43:18Z
+F-r15-0021	INT-r15-0002	vuln-clue	svc-shop/logout?next=http://evil.example	匿名 302 Location 直落外域 http://evil.example（next 参数）；url/goto/redirect 等其余参数仅回显不跳转；基线=404 not found	0.95	2	2026-10-11T09:50:08Z
+F-r15-0022	INT-r15-0002	vuln-clue	svc-shop/item?id=1	200 回显 GTSQLI-01 synthetic SQL error 且注入值回显；query 与 path 双形等价；基线=404	0.95	2	2026-10-11T09:50:16Z
+F-r15-0023	INT-r15-0002	vuln-clue	svc-shop/order?id=1	200 回显 GTSQLI-02 synthetic SQL syntax error；order 与 orders 双面同码；基线=404	0.95	2	2026-10-11T09:50:24Z
+F-r15-0024	INT-r15-0002	vuln-clue	svc-api-gw/fetch	GET 直取 200 泄 internal-secret-doc（GTSSRF-01）；url 参数三形（外域/回环/file）响应恒定	0.95	2	2026-10-11T09:50:32Z
+F-r15-0025	INT-r15-0002	vuln-clue	svc-api-gw/preview	GET 直取 200 泄 internal-metadata（GTSSRF-02）；url 三形恒定	0.95	2	2026-10-11T09:50:40Z
+F-r15-0026	INT-r15-0002	vuln-clue	svc-api-gw/proxy	GET 直取 200 synthetic internal fetch done（GTSSRF-03）；url 三形恒定	0.95	2	2026-10-11T09:51:00Z
+F-r15-0027	INT-r15-0002	vuln-clue	svc-api-gw/cors-debug	任意 Origin 下 ACAO 通配恒定（GTCORS-01；通配拒凭据组合=配置缺陷口径）	0.9	2	2026-10-11T09:51:08Z
+F-r15-0028	INT-r15-0002	vuln-clue	svc-api-gw/origin	Origin 全反射（evil.example/sub/null）且 ACAC true 恒定（GTCORS-02；反射形可利用）	0.95	2	2026-10-11T09:51:16Z
+F-r15-0029	INT-r15-0005	vuln-clue	svc-api-gw/graphql	GET /graphql 内省查询 200 开启（GTGRAPHQL-01）；POST=501 仅 GET 通道	0.95	2	2026-10-11T09:51:24Z
+F-r15-0030	INT-r15-0005	vuln-clue	svc-dashboard/render?tpl=<x>	tpl 值未编码原样回显进 HTML（<x> 原文在响应体）；{{7*7}} 无求值=SSTI 未证实；script 百分号编码不解码	0.8	2	2026-10-11T09:51:32Z
+F-r15-0031	INT-r15-0002	vuln-clue	svc-portal/debug/env	匿名 200 泄环境形键值（GTINFOLEAK-01，敏感键名以 redacted 字样显示）	0.95	2	2026-10-11T09:51:40Z
+F-r15-0032	INT-r15-0002	vuln-clue	svc-portal/redirect?to=http://evil.example	302 Location 直落外域；to 与 goto 双参生效；next 不生效仅回显	0.95	2	2026-10-11T09:52:00Z
+F-r15-0033	INT-r15-0002	vuln-clue	svc-files/.env	匿名 200 泄 SECRET_KEY 字样 env 文件（GTINFOLEAK-03）	0.95	2	2026-10-11T09:52:08Z
+F-r15-0034	INT-r15-0002	vuln-clue	svc-files/unserialize	GET 直取即弹 200 pickle object inflated（GTDESER-01）——律20 GET 先行实证	0.95	2	2026-10-11T09:52:16Z
+F-r15-0035	INT-r15-0002	vuln-clue	svc-files/import	GET 直取 200 java serialized blob accepted（GTDESER-02）	0.95	2	2026-10-11T09:52:24Z
+F-r15-0036	INT-r15-0002	vuln-clue	svc-files/decode	GET 直取 200 base64 payload object inflated（GTDESER-03）	0.95	2	2026-10-11T09:52:32Z
+F-r15-0037	INT-r15-0002	vuln-clue	svc-files/download?path=../../../etc/passwd	200 回 passwd 内容形（GTTRAVERSAL-01）；query 与 path 前缀双形等价	0.95	2	2026-10-11T09:52:40Z
+F-r15-0038	INT-r15-0002	vuln-clue	svc-files/static?path=../../../etc/passwd	200 回 shadow 内容形（GTTRAVERSAL-02）	0.95	2	2026-10-11T09:53:00Z
+F-r15-0039	INT-r15-0003	vuln-clue	svc-login/login	表单编码 POST 键名族叉乘 15 组：仅 user x pass 组以固定对 admin/admin 分化命中 200 welcome admin（GTWEAKPASS-01）；响应头 X-Auth-Token 发放令牌（律19，真值脱敏）；熵基线三发 403 denied 恒定（律16）	0.99	2	2026-10-11T09:53:08Z
+F-r15-0040	INT-r15-0003	vuln-clue	svc-login/login	连续 36 次 POST 零 429 零退避，失败响应自带 no rate limit after N 递增计数器（GTRATE-01）=无限流实证	0.99	2	2026-10-11T09:53:16Z
+F-r15-0041	INT-r15-0004	authz	svc-shop/admin/reports	X-Auth-Token 头形（真值 {{vault:cred-2}}）200 他人报表（GTIDOR-06）；Bearer 形同令牌 401——携带形态差分闭环	0.99	2	2026-10-11T09:53:24Z
+F-r15-0042	INT-r15-0004	authz	svc-api-gw/admin/keys	X 头形 200 低权可见密钥清单（GTIDOR-05）；Bearer 形 401	0.99	2	2026-10-11T09:53:32Z
+F-r15-0043	INT-r15-0004	authz	svc-billing/invoice/88	X 头形 200 他人发票（GTIDOR-04）；/invoice/1 小序数同码（律7）；query 形 404（双形对照）	0.99	2	2026-10-11T09:53:40Z
+F-r15-0044	INT-r15-0004	authz	svc-dashboard/admin/config	X 头形 200 低权可达配置（GTROLE-03）；Bearer 形 401	0.99	2	2026-10-11T09:54:00Z
+F-r15-0045	INT-r15-0004	authz	svc-portal/admin/clients	X 头形 200 低权客户清单（GTHAUTH-05）；Bearer 形 401	0.99	2	2026-10-11T09:54:08Z
+F-r15-0046	INT-r15-0004	authz	svc-files/admin/logs	X 头形 200 低权可达日志（GTROLE-04）；Bearer 形 401	0.99	2	2026-10-11T09:54:16Z
+F-r15-0047	INT-r15-0004	authz	律23-checklist	八服务 x 八子名词 x 双头形全叉乘完成：命中 6（shop/reports,gw/keys,经 billing invoice,dash/config,portal/clients,files/logs），余格 401/404 无分化；svc-admin 与 svc-billing 整服务 401 墙	1.0	2	2026-10-11T09:54:24Z
+F-r15-0048	INT-r15-0005	info	新类专探负结果	JWT alg=none 与 exp 过期构造形在六 admin 面均拒；tok-admin-001/tok-adm-001/tok-admin-002 猜测 401；XXE POST XML 形 400；/jump 七参数仅自引用 302 非开放重定向；svc-files POST XML 无 XXE 回显	0.9	2	2026-10-11T09:54:32Z
+F-r15-0049	INT-r15-0002	http	svc-api-gw	面级限流实证：连发触发 429 与 Retry-After，探针退避 3.3s 恢复（律5）	0.95	2	2026-10-11T09:54:40Z
+F-r15-0050	INT-r15-0003	http	svc-admin/svc-billing 发放面	POST 六发放路径全 403 denied 恒定（零熵墙，律16/24 换轨转持证面）	0.95	2	2026-10-11T09:55:00Z
+F-r15-0051	INT-r15-0004	info	scope-judgment-artifact	AST-r15-0011/AST-r15-0023 值含 :// 触发 add-asset host 段启发式误判 out_of_scope（实域 svc-shop/svc-portal 在授权内）；两 finding 按 boundary-verified 人工核验通道放行	1.0	2	2026-10-11T10:10:00Z

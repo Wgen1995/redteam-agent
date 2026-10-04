@@ -1,0 +1,85 @@
+E-r15-0001	parent	AST-r15-0002	AST-r15-0001	P1 测绘：compose 服务挂根域	2	2026-10-11T09:07:10Z
+E-r15-0002	parent	AST-r15-0003	AST-r15-0001	P1 测绘：compose 服务挂根域	2	2026-10-11T09:07:20Z
+E-r15-0003	parent	AST-r15-0004	AST-r15-0001	P1 测绘：compose 服务挂根域	2	2026-10-11T09:07:30Z
+E-r15-0004	parent	AST-r15-0005	AST-r15-0001	P1 测绘：compose 服务挂根域	2	2026-10-11T09:07:40Z
+E-r15-0005	parent	AST-r15-0006	AST-r15-0001	P1 测绘：compose 服务挂根域	2	2026-10-11T09:07:50Z
+E-r15-0006	parent	AST-r15-0007	AST-r15-0001	P1 测绘：compose 服务挂根域	2	2026-10-11T09:09:10Z
+E-r15-0007	parent	AST-r15-0008	AST-r15-0001	P1 测绘：compose 服务挂根域	2	2026-10-11T09:09:20Z
+E-r15-0008	parent	AST-r15-0009	AST-r15-0001	P1 测绘：compose 服务挂根域	2	2026-10-11T09:09:30Z
+E-r15-0009	parent	AST-r15-0010	AST-r15-0005	演练：端点挂 svc-login	2	2026-10-11T09:20:10Z
+E-r15-0010	parent	AST-r15-0011	AST-r15-0002	P3 测绘：端点挂服务	2	2026-10-11T09:40:10Z
+E-r15-0011	parent	AST-r15-0012	AST-r15-0002	P3 测绘：端点挂服务	2	2026-10-11T09:40:20Z
+E-r15-0012	parent	AST-r15-0013	AST-r15-0002	P3 测绘：端点挂服务	2	2026-10-11T09:40:30Z
+E-r15-0013	parent	AST-r15-0014	AST-r15-0003	P3 测绘：端点挂服务	2	2026-10-11T09:40:40Z
+E-r15-0014	parent	AST-r15-0015	AST-r15-0003	P3 测绘：端点挂服务	2	2026-10-11T09:40:50Z
+E-r15-0015	parent	AST-r15-0016	AST-r15-0003	P3 测绘：端点挂服务	2	2026-10-11T09:41:00Z
+E-r15-0016	parent	AST-r15-0017	AST-r15-0003	P3 测绘：端点挂服务	2	2026-10-11T09:41:10Z
+E-r15-0017	parent	AST-r15-0018	AST-r15-0003	P3 测绘：端点挂服务	2	2026-10-11T09:41:20Z
+E-r15-0018	parent	AST-r15-0019	AST-r15-0003	P3 测绘：端点挂服务	2	2026-10-11T09:41:30Z
+E-r15-0019	parent	AST-r15-0020	AST-r15-0007	P3 测绘：端点挂服务	2	2026-10-11T09:41:40Z
+E-r15-0020	parent	AST-r15-0021	AST-r15-0007	P3 测绘：端点挂服务	2	2026-10-11T09:41:50Z
+E-r15-0021	parent	AST-r15-0022	AST-r15-0008	P3 测绘：端点挂服务	2	2026-10-11T09:42:00Z
+E-r15-0022	parent	AST-r15-0023	AST-r15-0008	P3 测绘：端点挂服务	2	2026-10-11T09:42:10Z
+E-r15-0023	parent	AST-r15-0024	AST-r15-0008	P3 测绘：端点挂服务	2	2026-10-11T09:42:20Z
+E-r15-0024	parent	AST-r15-0025	AST-r15-0009	P3 测绘：端点挂服务	2	2026-10-11T09:42:30Z
+E-r15-0025	parent	AST-r15-0026	AST-r15-0009	P3 测绘：端点挂服务	2	2026-10-11T09:42:40Z
+E-r15-0026	parent	AST-r15-0027	AST-r15-0009	P3 测绘：端点挂服务	2	2026-10-11T09:42:50Z
+E-r15-0027	parent	AST-r15-0028	AST-r15-0009	P3 测绘：端点挂服务	2	2026-10-11T09:43:00Z
+E-r15-0028	parent	AST-r15-0029	AST-r15-0009	P3 测绘：端点挂服务	2	2026-10-11T09:43:10Z
+E-r15-0029	parent	AST-r15-0030	AST-r15-0009	P3 测绘：端点挂服务	2	2026-10-11T09:43:20Z
+E-r15-0030	parent	AST-r15-0031	AST-r15-0009	P3 测绘：端点挂服务	2	2026-10-11T09:43:30Z
+E-r15-0031	parent	AST-r15-0032	AST-r15-0005	P3 测绘：端点挂服务	2	2026-10-11T09:43:40Z
+E-r15-0032	parent	AST-r15-0033	AST-r15-0006	P3 测绘：端点挂服务	2	2026-10-11T09:43:50Z
+E-r15-0033	parent	AST-r15-0034	AST-r15-0002	P3 测绘：端点挂服务	2	2026-10-11T09:49:00Z
+E-r15-0034	parent	AST-r15-0035	AST-r15-0003	P3 测绘：端点挂服务	2	2026-10-11T09:49:20Z
+E-r15-0035	derived_from	F-r15-0001	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:02Z
+E-r15-0036	derived_from	F-r15-0002	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:04Z
+E-r15-0037	derived_from	F-r15-0003	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:06Z
+E-r15-0038	derived_from	F-r15-0004	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:08Z
+E-r15-0039	derived_from	F-r15-0005	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:10Z
+E-r15-0040	derived_from	F-r15-0006	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:12Z
+E-r15-0041	derived_from	F-r15-0007	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:14Z
+E-r15-0042	derived_from	F-r15-0008	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:16Z
+E-r15-0043	derived_from	F-r15-0009	INT-r15-0005	P3 验收落账：fact 消费	2	2026-10-11T10:26:18Z
+E-r15-0044	derived_from	F-r15-0010	INT-r15-0005	P3 验收落账：fact 消费	2	2026-10-11T10:26:20Z
+E-r15-0045	derived_from	F-r15-0011	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:22Z
+E-r15-0046	derived_from	F-r15-0012	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:24Z
+E-r15-0047	derived_from	F-r15-0013	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:26Z
+E-r15-0048	derived_from	F-r15-0014	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:28Z
+E-r15-0049	derived_from	F-r15-0015	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:30Z
+E-r15-0050	derived_from	F-r15-0016	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:32Z
+E-r15-0051	derived_from	F-r15-0017	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:34Z
+E-r15-0052	derived_from	F-r15-0018	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:36Z
+E-r15-0053	derived_from	F-r15-0019	INT-r15-0003	P3 验收落账：fact 消费	2	2026-10-11T10:26:38Z
+E-r15-0054	derived_from	F-r15-0020	INT-r15-0003	P3 验收落账：fact 消费	2	2026-10-11T10:26:40Z
+E-r15-0055	derived_from	F-r15-0021	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:42Z
+E-r15-0056	derived_from	F-r15-0022	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:44Z
+E-r15-0057	derived_from	F-r15-0023	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:46Z
+E-r15-0058	derived_from	F-r15-0024	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:48Z
+E-r15-0059	derived_from	F-r15-0025	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:50Z
+E-r15-0060	derived_from	F-r15-0026	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:52Z
+E-r15-0061	derived_from	F-r15-0027	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:54Z
+E-r15-0062	derived_from	F-r15-0028	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:26:56Z
+E-r15-0063	derived_from	F-r15-0029	INT-r15-0005	P3 验收落账：fact 消费	2	2026-10-11T10:26:58Z
+E-r15-0064	derived_from	F-r15-0030	INT-r15-0005	P3 验收落账：fact 消费	2	2026-10-11T10:27:00Z
+E-r15-0065	derived_from	F-r15-0031	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:27:02Z
+E-r15-0066	derived_from	F-r15-0032	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:27:04Z
+E-r15-0067	derived_from	F-r15-0033	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:27:06Z
+E-r15-0068	derived_from	F-r15-0034	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:27:08Z
+E-r15-0069	derived_from	F-r15-0035	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:27:10Z
+E-r15-0070	derived_from	F-r15-0036	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:27:12Z
+E-r15-0071	derived_from	F-r15-0037	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:27:14Z
+E-r15-0072	derived_from	F-r15-0038	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:27:16Z
+E-r15-0073	derived_from	F-r15-0039	INT-r15-0003	P3 验收落账：fact 消费	2	2026-10-11T10:27:18Z
+E-r15-0074	derived_from	F-r15-0040	INT-r15-0003	P3 验收落账：fact 消费	2	2026-10-11T10:27:20Z
+E-r15-0075	derived_from	F-r15-0041	INT-r15-0004	P3 验收落账：fact 消费	2	2026-10-11T10:27:22Z
+E-r15-0076	derived_from	F-r15-0042	INT-r15-0004	P3 验收落账：fact 消费	2	2026-10-11T10:27:24Z
+E-r15-0077	derived_from	F-r15-0043	INT-r15-0004	P3 验收落账：fact 消费	2	2026-10-11T10:27:26Z
+E-r15-0078	derived_from	F-r15-0044	INT-r15-0004	P3 验收落账：fact 消费	2	2026-10-11T10:27:28Z
+E-r15-0079	derived_from	F-r15-0045	INT-r15-0004	P3 验收落账：fact 消费	2	2026-10-11T10:27:30Z
+E-r15-0080	derived_from	F-r15-0046	INT-r15-0004	P3 验收落账：fact 消费	2	2026-10-11T10:27:32Z
+E-r15-0081	derived_from	F-r15-0047	INT-r15-0004	P3 验收落账：fact 消费	2	2026-10-11T10:27:34Z
+E-r15-0082	derived_from	F-r15-0048	INT-r15-0005	P3 验收落账：fact 消费	2	2026-10-11T10:27:36Z
+E-r15-0083	derived_from	F-r15-0049	INT-r15-0002	P3 验收落账：fact 消费	2	2026-10-11T10:27:38Z
+E-r15-0084	derived_from	F-r15-0050	INT-r15-0003	P3 验收落账：fact 消费	2	2026-10-11T10:27:40Z
+E-r15-0085	derived_from	F-r15-0051	INT-r15-0004	P3 验收落账：fact 消费	2	2026-10-11T10:27:42Z

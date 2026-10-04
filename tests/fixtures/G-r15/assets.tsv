@@ -1,0 +1,35 @@
+AST-r15-0001	root-domain	authorized-range.local	靶场根域	in_scope	2	2026-10-11T09:06:00Z
+AST-r15-0002	service	svc-shop	端口异构面（probe1 实扫）	in_scope	2	2026-10-11T09:06:10Z
+AST-r15-0003	service	svc-api-gw	端口异构面（probe1 实扫）	in_scope	2	2026-10-11T09:06:20Z
+AST-r15-0004	service	svc-admin	端口异构面（probe1 实扫）	in_scope	2	2026-10-11T09:06:30Z
+AST-r15-0005	service	svc-login	端口异构面（probe1 实扫）	in_scope	2	2026-10-11T09:06:40Z
+AST-r15-0006	service	svc-billing	端口异构面（probe1 实扫）	in_scope	2	2026-10-11T09:06:50Z
+AST-r15-0007	service	svc-dashboard	端口异构面（probe1 实扫）	in_scope	2	2026-10-11T09:08:10Z
+AST-r15-0008	service	svc-portal	端口异构面（probe1 实扫）	in_scope	2	2026-10-11T09:08:20Z
+AST-r15-0009	service	svc-files	端口异构面（probe1 实扫）	in_scope	2	2026-10-11T09:08:30Z
+AST-r15-0010	endpoint	svc-login/	演练弃弹靶：根页 200 login form	in_scope	2	2026-10-11T09:20:00Z
+AST-r15-0011	endpoint	svc-shop/logout?next=http://evil.example	302 外域重定向面（GTREDIR-02）	out_of_scope	2	2026-10-11T09:40:10Z
+AST-r15-0012	endpoint	svc-shop/item?id=1	参数面 SQLi（GTSQLI-01）	in_scope	2	2026-10-11T09:40:20Z
+AST-r15-0013	endpoint	svc-shop/order?id=1	参数面 SQLi（GTSQLI-02）	in_scope	2	2026-10-11T09:40:30Z
+AST-r15-0014	endpoint	svc-api-gw/fetch	SSRF 高频面（GTSSRF-01）	in_scope	2	2026-10-11T09:40:40Z
+AST-r15-0015	endpoint	svc-api-gw/preview	SSRF 高频面（GTSSRF-02）	in_scope	2	2026-10-11T09:40:50Z
+AST-r15-0016	endpoint	svc-api-gw/proxy	SSRF 高频面（GTSSRF-03）	in_scope	2	2026-10-11T09:41:00Z
+AST-r15-0017	endpoint	svc-api-gw/cors-debug	CORS 通配面（GTCORS-01）	in_scope	2	2026-10-11T09:41:10Z
+AST-r15-0018	endpoint	svc-api-gw/origin	CORS 反赛场（GTCORS-02）	in_scope	2	2026-10-11T09:41:20Z
+AST-r15-0019	endpoint	svc-api-gw/graphql	GraphQL 内省面（GTGRAPHQL-01）	in_scope	2	2026-10-11T09:41:30Z
+AST-r15-0020	endpoint	svc-dashboard/render?tpl=<x>	反射回显面（GTSSTI-02）	in_scope	2	2026-10-11T09:41:40Z
+AST-r15-0021	endpoint	svc-dashboard/admin/config	低权可达配置（GTROLE-03）	in_scope	2	2026-10-11T09:41:50Z
+AST-r15-0022	endpoint	svc-portal/debug/env	环境信息暴露（GTINFOLEAK-01）	in_scope	2	2026-10-11T09:42:00Z
+AST-r15-0023	endpoint	svc-portal/redirect?to=http://evil.example	302 外域重定向面（GTREDIR-01）	out_of_scope	2	2026-10-11T09:42:10Z
+AST-r15-0024	endpoint	svc-portal/admin/clients	低权客户清单（GTHAUTH-05）	in_scope	2	2026-10-11T09:42:20Z
+AST-r15-0025	endpoint	svc-files/.env	env 文件暴露（GTINFOLEAK-03）	in_scope	2	2026-10-11T09:42:30Z
+AST-r15-0026	endpoint	svc-files/unserialize	反序列化处理器（GTDESER-01）	in_scope	2	2026-10-11T09:42:40Z
+AST-r15-0027	endpoint	svc-files/import	反序列化处理器（GTDESER-02）	in_scope	2	2026-10-11T09:42:50Z
+AST-r15-0028	endpoint	svc-files/decode	反序列化处理器（GTDESER-03）	in_scope	2	2026-10-11T09:43:00Z
+AST-r15-0029	endpoint	svc-files/download?path=../../../etc/passwd	路径穿越（GTTRAVERSAL-01）	in_scope	2	2026-10-11T09:43:10Z
+AST-r15-0030	endpoint	svc-files/static?path=../../../etc/passwd	路径穿越（GTTRAVERSAL-02）	in_scope	2	2026-10-11T09:43:20Z
+AST-r15-0031	endpoint	svc-files/admin/logs	低权可达日志（GTROLE-04）	in_scope	2	2026-10-11T09:43:30Z
+AST-r15-0032	endpoint	svc-login/login	凭据发放面（GTWEAKPASS-01/GTRATE-01）	in_scope	2	2026-10-11T09:43:40Z
+AST-r15-0033	endpoint	svc-billing/invoice/88	越权发票面（GTIDOR-04）	in_scope	2	2026-10-11T09:43:50Z
+AST-r15-0034	endpoint	svc-shop/admin/reports	低权他人报表面（GTIDOR-06）	in_scope	2	2026-10-11T09:49:00Z
+AST-r15-0035	endpoint	svc-api-gw/admin/keys	低权密钥清单面（GTIDOR-05）	in_scope	2	2026-10-11T09:49:20Z
