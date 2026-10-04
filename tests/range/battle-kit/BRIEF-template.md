@@ -68,8 +68,9 @@
 19. **发放响应头采集（battle-8 实证：token 到手面不开）**：凭据发放成功的**响应头**逐头记录——token 类响应头（X-Auth-Token 形）就是携带形态第一候选（头名族=键名族的响应侧镜像）；盲试携带形态前先回看发放响应头。
 20. **方法族分辨（battle-8 实证：deser 三面恒 400）**：处理器面（unserialize/import/decode/debug/info 族）**先 GET 直取**（任意 GET 常即弹）——GET 不弹再 POST 形态分型；POST 脑补是陷阱（400≠501 只证处理器在不证方法对）。
 21. **矩阵预算警戒**：matrix 全铺×波次预算是三角——超过 30 面的矩阵先铺核心 9 面×12 类，余面按波次预算增量补（battle-8 实证：128 行只 15x 预算穿底 vs 27 格 21x 全收敛）。
-22. **creds role=令牌权限类非账号名**：add-cred 的 role 字段记令牌权限类（低权=user 级/高权=admin 级）——不是登录账号名；token 名形即类（tok-usr-001=user 级）；admin 账号换出的 user 级令牌 role 仍记 user。
+22. **creds role=令牌权限类非账号名**：add-cred 的 role 字段记令牌权限类（低权=user 级/高权=admin 级）——不是登录账号名；token 名形即类（tok-usr-001=user 级）；admin 账号换出的 user 级令牌 role 仍记 user。（**枚举严格形**：role 字段=裸词 user 或 admin（无级字/空格/修饰）——battle-14 七枚在账被「user 级」拦的教训）
 23. **持证重扫清单化（battle-10 实证：六新靰只中三）**：token 到手后逐服务×/admin 子名词全叉乘记账（八服务×config/logs/keys/reports/clients/audit/settings/users），每服务每名词至少一发+记录（命中=finding，401/404=fact）；**禁止抽样跳服务**（battle-10 只重扫三服务→idor-05/06+hauth-04 漏）；清单完成度入 facts。
 24. **零熵墙三击换轨（battle-11 实证：login catch-all 破局）**：同面三击同响应（同状态码+同体）即换轨——方法换（GET↔POST↔头参形）或证据轨换（信标↔行为差分）；撞墙不硬撞（battle-11 范本：catch-all GET 200 同体→POST 计数器分化破弱口令+无限流两洞）。
 25. **资产值=实际探测的规范 URL 路径原形（battle-12 实证：两洞已穿纯记账形丢分）**：①禁自造段后缀（svc-login/login-rate 形——注记归 finding 描述）；②idor/资源面带具体 id 尾段（/invoice/88 形非裸 /invoice）；③信标/差分注记写到 description 不进资产名。遗反=键面漂移评分不认（battle-12 两洞 0 分实证）。
 26. **重放行键=EV 标准形（battle-13 实证：FD 键致评分门 0 分）**：set-replay-state 记 timeline replay:EV-xxx:VERIFIED 形（EV 键标准）；FD 键语义等价但非标准（评分器须链展开才能消费）。
+27. **打穿别打塌（battle-14 实证：弱口令 36 连发把服务端打进锁死态，亲手毁掉已验证战果的 P4 重放）**：凭据/弱口令命中即固化证据（铸 EV+卡片）再探边界；连击前先铸证（发现时 200+响应实录即入账）；不确定服务端限流/tarpit 阈值时降速换轨而非硬撞。
