@@ -9,6 +9,7 @@
 | 路径模式 | 探测手法 | 关联漏洞类 |
 |---|---|---|
 | /comment、/reply、/feedback | POST 参数化注入探针（回显差分） | XSS/注入 |
+| /fetch、/preview、/proxy | SSRF 高频面族（**每代必扫**：battle-13 实证代际漏，G-r13 三中）：url=×外域形+内网形+file:/// 形；响应体回显/内网差异即证 | SSRF |
 | /preview、/render、/template | SSRF 探针（URL 参数→行为差分：响应码/时延/回显） | SSRF/模板注入 |
 | /import、/upload、/export | multipart 边界+类型混淆 | 反序列化/上传绕过 |
 | /unserialize、/deserialize、/decode | **GET 直取先行**（battle-8 实证：处理器面常在 GET——POST 形态脑补恒 400）；GET 弹后 POST 形态分型（Java/PHP/Python） | 反序列化 |

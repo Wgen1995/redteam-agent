@@ -72,3 +72,4 @@
 23. **持证重扫清单化（battle-10 实证：六新靰只中三）**：token 到手后逐服务×/admin 子名词全叉乘记账（八服务×config/logs/keys/reports/clients/audit/settings/users），每服务每名词至少一发+记录（命中=finding，401/404=fact）；**禁止抽样跳服务**（battle-10 只重扫三服务→idor-05/06+hauth-04 漏）；清单完成度入 facts。
 24. **零熵墙三击换轨（battle-11 实证：login catch-all 破局）**：同面三击同响应（同状态码+同体）即换轨——方法换（GET↔POST↔头参形）或证据轨换（信标↔行为差分）；撞墙不硬撞（battle-11 范本：catch-all GET 200 同体→POST 计数器分化破弱口令+无限流两洞）。
 25. **资产值=实际探测的规范 URL 路径原形（battle-12 实证：两洞已穿纯记账形丢分）**：①禁自造段后缀（svc-login/login-rate 形——注记归 finding 描述）；②idor/资源面带具体 id 尾段（/invoice/88 形非裸 /invoice）；③信标/差分注记写到 description 不进资产名。遗反=键面漂移评分不认（battle-12 两洞 0 分实证）。
+26. **重放行键=EV 标准形（battle-13 实证：FD 键致评分门 0 分）**：set-replay-state 记 timeline replay:EV-xxx:VERIFIED 形（EV 键标准）；FD 键语义等价但非标准（评分器须链展开才能消费）。
