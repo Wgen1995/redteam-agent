@@ -68,3 +68,5 @@ GT 键=svc-*/path?query 无端口 canonical 形（127.0.0.1:800x 历史映射形
 - **批次 10 勘误（八专家 P2#2/#13 口径同步）**：①GT 类目口径——CORS-01 组合（ACAO:\*+Allow-Credentials）真实浏览器不可利用（通配源拒收凭据），记类目=「配置缺陷」非可利用越权；两枚 CSRF 靶无会话前提，机制上=CWE-306（缺功能级访问控制），GT 类目重标 broken-access-control（升级为 POST+会话形=battle-5 待办，此前不按 csrf 计）；②recall 口径——GT marker 召回≠利用确认（82% 检出凭静态文案），M09=金样 G-r4 精度门后 0.56（tests/test_gold_g_r4_b10.py 在钉），双轨化（beacon/行为差分）归 battle-5；③类目计数措辞一律「实存 N 类」动态对账（禁写死总数）。
 | /download、/file、/read?path= | 路径穿越高频面族（**每代必扫**：battle-11 实证代际漏）：../..形+绝对路形+file:/// 形，双形记账（律 18） | 路径穿越 |
 | /search、/echo、/render、?q= | XSS 反射面族（**每代必扫**：battle-14 四枚全漏教训）：tag 形+事件形+引号闭合形三载荷；响应体回显即证（未编码回显往 XSS 归，不往 SSTI 虚报） | XSS |
+| /graphql?query= | GraphQL 内省（**每代必扫**：battle-15 漏教训）：__schema、__type 两载荷；响应 schema 字段即证 | Infoleak |
+| /login 登录面族 | 账号枚举+限流双枚（**每代必扫**）：已知账号 vs 随机账号响应差异即证（枚举）；连续 5 发同响应后测降速差异即证（限流）——降速换轨不硬撞 | Auth |
