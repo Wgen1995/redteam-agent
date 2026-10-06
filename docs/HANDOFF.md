@@ -1086,3 +1086,9 @@
 - **战士侧暗雷回灌**：EV 卡 YAML 子集隐形合约（同缩进单键流映射）；记账先查后写幂等（半截账漂移——artifact_path 只增不覆盖 REJECT 兜底）；beacon 原形律。
 - **RT-0014** 运行时库 in-band 全流回灌发行库（lint 真域名形拦截一次——占位改写后过）；**G-51 零打断零补令+自首 1 条灰色**；金样 G-r17 入 fixtures 钉测 3 枚。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。
+
+## 2026-10-14 battle-17（G-r18）收战：第二面律大兑现代——0.55 史二+redir-03 四代连漏首破
+- **战果**：门控 **31/56≈0.5536**（beacon 31；**史第二**，纪录 0.5893 在 G-r13）。**dict v3.8 大兑现**：四族第二面全回收（xss-02/04+cors-02+traversal-02+infoleak-03）；**redir-03 四代连漏首破**（jump?u= 外域完整 URL 形）；userenum-01 回收（forgot?user=）。38 面 41 active；P4 63 EV 全 VERIFIED（律 26 标准形）；vault 占位符双凭据重放实通。十五代同面：0.50/0.21/0.34/0.29/0.38/0.32/0.34/0.38/0.43/0.59/0.43/0.34/0.46/0.45/0.55。
+- **归因核验（种子锚点，RT-0015 attribution_check=verified）**：①ratelimit-01 卡词证缺口（finding 真实+EV 已验——卡 matcher 仅 denied，GT 特异信标串 GTRATE-01 未入卡——**词形变体第四例**→29 律候选：信标串入卡律）；②cmdi 双面+ssti 诚实 suspected（四发差分证伪范本——评分器正确排除）；③xss-03/infoleak-02 三面族漏第三面→dict v3.9 候选；④流程金矿：驱动参数契约先行（35 FD 挂错 EV 三轮修复）+账本转义形联查走 CLI+docker cp 静默回滚源（已恢复复验）。
+- **RT-0015** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r18 入 fixtures 钉测 3 枚。
+- 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。

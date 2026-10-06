@@ -1,0 +1,2 @@
+CRED-r18-0001	static-cred	user	admin	{{vault:cred-1}}	AST-r18-0004	INT-r18-0004				active		weak pair issued user-role bearer via X-Auth-Token response header	2	2026-10-14T10:35:45Z	
+CRED-r18-0002	session	user	admin	{{vault:cred-2}}	AST-r18-0004	INT-r18-0004	CRED-r18-0001			active		session bearer value carried via X-Auth-Token header	2	2026-10-14T10:36:00Z	

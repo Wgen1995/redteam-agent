@@ -1,0 +1,193 @@
+svc-shop	wstg-info				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-conf				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-idnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-authn				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-authz				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-sess				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-inpv				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-errh				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-cryp				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-busl				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-clnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-shop	wstg-apit				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-info				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-conf				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-idnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-authn				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-authz				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-sess				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-inpv				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-errh				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-cryp				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-busl				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-clnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-api-gw	wstg-apit				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-info				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-conf				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-idnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-authn				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-authz				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-sess				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-inpv				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-errh				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-cryp				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-busl				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-clnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-apit				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-info				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-conf				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-idnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-authn				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-authz				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-sess				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-inpv				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-errh				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-cryp				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-busl				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-clnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-login	wstg-apit				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-info				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-conf				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-idnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-authn				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-authz				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-sess				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-inpv				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-errh				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-cryp				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-busl				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-clnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-billing	wstg-apit				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-info				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-conf				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-idnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-authn				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-authz				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-sess				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-inpv				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-errh				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-cryp				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-busl				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-clnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-dashboard	wstg-apit				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-info				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-conf				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-idnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-authn				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-authz				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-sess				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-inpv				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-errh				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-cryp				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-busl				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-clnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-portal	wstg-apit				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-info				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-conf				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-idnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-authn				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-authz				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-sess				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-inpv				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-errh				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-cryp				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-busl				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-clnt				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-files	wstg-apit				2	2026-10-14T09:36:00Z	2026-10-14T09:37:00Z
+svc-admin	wstg-apit	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-authn	x	weak credential POST login issuance face		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-authz	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-busl	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-clnt	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-conf	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-cryp	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-errh	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-idnt	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-info	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-inpv	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-admin	wstg-sess	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-apit	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-authn	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-authz	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-busl	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-clnt	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-conf	x	cors wildcard + origin reflection		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-cryp	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-errh	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-idnt	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-info	x	graphql introspection		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-inpv	x	ssrf fetch/proxy/preview		2	2026-10-14T11:55:00Z	
+svc-api-gw	wstg-sess	x	open redirect jump u (draft class mapping)		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-apit	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-authn	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-authz	x	idor invoice path id post-auth		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-busl	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-clnt	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-conf	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-cryp	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-errh	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-idnt	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-info	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-inpv	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-billing	wstg-sess	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-apit	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-authn	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-authz	x	low-priv admin config post-auth		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-busl	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-clnt	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-conf	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-cryp	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-errh	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-idnt	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-info	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-inpv	x	ssti render + cmdi ping/diag		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-sess	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-files	wstg-apit	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-files	wstg-authn	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-files	wstg-authz	x	low-priv admin logs post-auth		2	2026-10-14T11:55:00Z	
+svc-files	wstg-busl	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-files	wstg-clnt	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-files	wstg-conf	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-files	wstg-cryp	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-files	wstg-errh	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-files	wstg-idnt	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-files	wstg-info	x	env file disclosure		2	2026-10-14T11:55:00Z	
+svc-files	wstg-inpv	x	traversal download/static + deser unserialize/import/decode		2	2026-10-14T11:55:00Z	
+svc-files	wstg-sess	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-login	wstg-apit	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-login	wstg-authn	x	weak credential 6 faces + no rate limit		2	2026-10-14T11:55:00Z	
+svc-login	wstg-authz	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-login	wstg-busl	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-login	wstg-clnt	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-login	wstg-conf	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-login	wstg-cryp	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-login	wstg-errh	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-login	wstg-idnt	x	user enumeration forgot face		2	2026-10-14T11:55:00Z	
+svc-login	wstg-info	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-login	wstg-inpv	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-login	wstg-sess	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-apit	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-authn	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-authz	x	low-priv admin clients post-auth		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-busl	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-clnt	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-conf	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-cryp	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-errh	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-idnt	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-info	x	debug env disclosure		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-inpv	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-portal	wstg-sess	x	open redirect to/goto (draft class mapping)		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-apit	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-authn	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-authz	x	idor admin/reports post-auth		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-busl	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-clnt	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-conf	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-cryp	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-errh	?	not exercised this generation		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-idnt	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-info	-	swept anonymous+authed dictionary no hit		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-inpv	x	sqli item/order faces + reflected xss search/comment/feedback		2	2026-10-14T11:55:00Z	
+svc-shop	wstg-sess	x	open redirect logout next (draft class mapping)		2	2026-10-14T11:55:00Z	
+svc-dashboard	wstg-inpv	x	beacon faces ssti render + cmdi ping/diag: markers real, exploitation suspected not verified (constant synthetic output, no payload-effect differential)		2	2026-10-14T13:31:00Z	

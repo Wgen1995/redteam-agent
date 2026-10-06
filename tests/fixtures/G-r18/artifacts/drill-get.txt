@@ -1,0 +1,1 @@
+GET /login HTTP/1.1 Host: svc-login:8004 => 200 <html>login form</html>

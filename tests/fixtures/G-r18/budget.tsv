@@ -1,0 +1,4 @@
+2026-10-14T10:10:00Z	150000	750	0.5	0	goal	port scan + anonymous dict wave probe1/probe2	2
+2026-10-14T10:40:00Z	20000	70	0.3	0	goal	second-face differential + issuance wave probe3/probe4	2
+2026-10-14T11:10:00Z	120000	592	0.5	0	goal	post-auth rescan sweep probe5	2
+2026-10-14T11:40:00Z	45000	140	0.4	0	goal	newclass hunt probe6/probe7 + drill replays	2

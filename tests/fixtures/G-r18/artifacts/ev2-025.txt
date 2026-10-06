@@ -1,0 +1,1 @@
+403 denied; sequence evidence counters 11..41 attempts no throttle

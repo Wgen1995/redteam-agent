@@ -1,0 +1,1 @@
+200 ping GTCMDI-01 cmd output 64 bytes

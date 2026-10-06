@@ -1,0 +1,1 @@
+200 GTGRAPHQL-01 synthetic introspection enabled __schema types

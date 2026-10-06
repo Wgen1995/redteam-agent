@@ -1,0 +1,698 @@
+{
+"norm": {
+"svc-portal/debug/env/": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>"
+},
+"svc-portal//debug/env": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>"
+},
+"svc-portal/./debug/env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-portal/debug/./env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-portal/debug%2fenv": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-portal/DEBUG/ENV": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-portal/debug/env?": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>"
+},
+"svc-portal/debug/env;x=1": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>"
+},
+"svc-portal/actuator/env/": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-portal/%2e%2e/debug/env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/debug/env/": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files//debug/env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/./debug/env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/debug/./env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/debug%2fenv": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/DEBUG/ENV": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/debug/env?": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/debug/env;x=1": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/actuator/env/": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/%2e%2e/debug/env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw/debug/env/": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw//debug/env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw/./debug/env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw/debug/./env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw/debug%2fenv": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw/DEBUG/ENV": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw/debug/env?": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw/debug/env;x=1": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw/actuator/env/": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-api-gw/%2e%2e/debug/env": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+}
+},
+"weak2": {
+"user/123456": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 33 attempts</html>"
+},
+"user/user123": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 34 attempts</html>"
+},
+"test/test": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 35 attempts</html>"
+},
+"guest/guest": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 36 attempts</html>"
+},
+"admin/password": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 37 attempts</html>"
+},
+"admin/admin": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 38 attempts</html>"
+},
+"root/root": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 39 attempts</html>"
+},
+"admin/P@ssw0rd": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 40 attempts</html>"
+},
+"user/password": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 41 attempts</html>"
+}
+},
+"wall_login": {
+"admin_login_post": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "token tok-usr-001"
+},
+"billing_login_post": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "denied"
+},
+"admin_login_get": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"billing_token_post": {
+"s": 403,
+"loc": "",
+"acao": "",
+"b": "denied"
+}
+},
+"jwt": {
+"admin_root_jwt_none_admin": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"billing_invoice_jwt_none_admin": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"admin_root_jwt_none_user": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"billing_invoice_jwt_none_user": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"admin_root_jwt_expired": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"billing_invoice_jwt_expired": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"admin_root_tok_adm_guess": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"billing_invoice_tok_adm_guess": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+}
+},
+"redir4": {
+"svc-dashboard/goto?to=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-dashboard/redirect?to=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-dashboard/jump?u=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-dashboard/logout?next=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-dashboard/link?u=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-dashboard/out?url=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-dashboard/r?u=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-dashboard/url?q=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/goto?to=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/redirect?to=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/jump?u=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/logout?next=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/link?u=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/out?url=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/r?u=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files/url?q=http://evil.example": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+}
+},
+"xss3": {
+"dash_render_q": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>render GTSSTI-02 synthetic ssti render /render?q=<script>alert(1)</script></html>"
+},
+"dash_render_text": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>render GTSSTI-02 synthetic ssti render /render?text=<script>alert(1)</script></html>"
+},
+"shop_echo_q": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"shop_render_q": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"files_echo_q": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"portal_echo_q": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"portal_search_q": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"files_search_q": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"dash_search_q": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"gw_search_q": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"login_search_q": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>login form</html>"
+}
+},
+"idor": {
+"billing/invoice/0": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>GTIDOR-04 synthetic invoice 88 of other user</html>"
+},
+"billing/invoice/100": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>GTIDOR-04 synthetic invoice 88 of other user</html>"
+},
+"billing/invoice/999999": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>GTIDOR-04 synthetic invoice 88 of other user</html>"
+},
+"billing/invoice?id=88": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"billing/invoice": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"billing/invoices/1": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"billing/invoices?id=1": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"shop/orders/88": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+},
+"shop/items/88": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>"
+},
+"shop/item/88": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>"
+},
+"shop/order/88": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+}
+},
+"tools": {
+"svc-admin/ping?host=127.0.0.1": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-admin/exec?cmd=id": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-admin/cmd?c=id": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-admin/diag?ip=127.0.0.1": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-admin/tool?cmd=id": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-admin/run?cmd=id": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-login/ping?host=127.0.0.1": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>login form</html>"
+},
+"svc-login/exec?cmd=id": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>login form</html>"
+},
+"svc-login/cmd?c=id": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>login form</html>"
+},
+"svc-login/diag?ip=127.0.0.1": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>login form</html>"
+},
+"svc-login/tool?cmd=id": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>login form</html>"
+},
+"svc-login/run?cmd=id": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>login form</html>"
+},
+"svc-billing/ping?host=127.0.0.1": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-billing/exec?cmd=id": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-billing/cmd?c=id": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-billing/diag?ip=127.0.0.1": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-billing/tool?cmd=id": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-billing/run?cmd=id": {
+"s": 401,
+"loc": "",
+"acao": "",
+"b": "auth required"
+},
+"svc-dashboard/ping?host=127.0.0.1": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>"
+},
+"svc-dashboard/diag?ip=127.0.0.1": {
+"s": 200,
+"loc": "",
+"acao": "",
+"b": "<html>diag GTCMDI-02 synthetic cmd output: uptime 3 days</html>"
+}
+},
+"gql2": {
+"svc-dashboard": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-portal": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-shop": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+},
+"svc-files": {
+"s": 404,
+"loc": "",
+"acao": "",
+"b": "not found"
+}
+}
+}

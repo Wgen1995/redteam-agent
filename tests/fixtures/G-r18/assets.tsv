@@ -1,0 +1,48 @@
+AST-r18-0001	service	svc-shop	port:8001\;root:404 not found	in_scope	2	2026-10-14T09:07:00Z
+AST-r18-0002	service	svc-api-gw	port:8002\;root:404 not found	in_scope	2	2026-10-14T09:08:00Z
+AST-r18-0003	service	svc-admin	port:8003\;root:401 auth required	in_scope	2	2026-10-14T09:09:00Z
+AST-r18-0004	service	svc-login	port:8004\;root:200 login form	in_scope	2	2026-10-14T09:10:00Z
+AST-r18-0005	service	svc-billing	port:8005\;root:401 auth required	in_scope	2	2026-10-14T09:11:00Z
+AST-r18-0006	service	svc-dashboard	port:8006\;root:404 not found	in_scope	2	2026-10-14T09:12:00Z
+AST-r18-0007	service	svc-portal	port:8007\;root:404 not found	in_scope	2	2026-10-14T09:13:00Z
+AST-r18-0008	service	svc-files	port:8008\;root:404 not found	in_scope	2	2026-10-14T09:14:00Z
+AST-r18-0009	root-domain	authorized-range.local	range-root	out_of_scope	2	2026-10-14T09:25:00Z
+AST-r18-0010	endpoint	svc-login/login	login-form-200	in_scope	2	2026-10-14T09:41:00Z
+AST-r18-0011	endpoint	svc-shop/logout?next=http://evil.example	harvest	out_of_scope	2	2026-10-14T10:25:15Z
+AST-r18-0012	endpoint	svc-shop/item?id=1	harvest	in_scope	2	2026-10-14T10:25:30Z
+AST-r18-0013	endpoint	svc-shop/item/1	harvest	in_scope	2	2026-10-14T10:25:45Z
+AST-r18-0014	endpoint	svc-shop/order?id=1	harvest	in_scope	2	2026-10-14T10:26:00Z
+AST-r18-0015	endpoint	svc-shop/orders/1	harvest	in_scope	2	2026-10-14T10:26:15Z
+AST-r18-0016	endpoint	svc-shop/search?q=<script>alert(1)</script>	harvest	in_scope	2	2026-10-14T10:26:30Z
+AST-r18-0017	endpoint	svc-shop/comment?text=<script>alert(1)</script>	harvest	in_scope	2	2026-10-14T10:26:45Z
+AST-r18-0018	endpoint	svc-shop/feedback?text=<script>alert(1)</script>	harvest	in_scope	2	2026-10-14T10:27:00Z
+AST-r18-0019	endpoint	svc-shop/admin/reports	harvest	in_scope	2	2026-10-14T10:27:15Z
+AST-r18-0020	endpoint	svc-api-gw/jump?u=http://evil.example	harvest	out_of_scope	2	2026-10-14T10:27:30Z
+AST-r18-0021	endpoint	svc-api-gw/cors-debug	harvest	in_scope	2	2026-10-14T10:27:45Z
+AST-r18-0022	endpoint	svc-api-gw/origin	harvest	in_scope	2	2026-10-14T10:28:00Z
+AST-r18-0023	endpoint	svc-api-gw/graphql?query={__schema{types{name}}}	harvest	in_scope	2	2026-10-14T10:28:15Z
+AST-r18-0024	endpoint	svc-api-gw/fetch?url=http://evil.example	harvest	out_of_scope	2	2026-10-14T10:28:30Z
+AST-r18-0025	endpoint	svc-api-gw/proxy?url=http://evil.example	harvest	out_of_scope	2	2026-10-14T10:28:45Z
+AST-r18-0026	endpoint	svc-api-gw/preview?url=http://evil.example	harvest	out_of_scope	2	2026-10-14T10:29:00Z
+AST-r18-0027	endpoint	svc-api-gw/admin/keys	harvest	in_scope	2	2026-10-14T10:29:15Z
+AST-r18-0028	endpoint	svc-login/forgot?user=admin	harvest	in_scope	2	2026-10-14T10:29:30Z
+AST-r18-0029	endpoint	svc-login/signin	harvest	in_scope	2	2026-10-14T10:29:45Z
+AST-r18-0030	endpoint	svc-login/api/login	harvest	in_scope	2	2026-10-14T10:30:00Z
+AST-r18-0031	endpoint	svc-login/token	harvest	in_scope	2	2026-10-14T10:30:15Z
+AST-r18-0032	endpoint	svc-login/api/token	harvest	in_scope	2	2026-10-14T10:30:30Z
+AST-r18-0033	endpoint	svc-billing/invoice/1	harvest	in_scope	2	2026-10-14T10:30:45Z
+AST-r18-0034	endpoint	svc-dashboard/render?template=${7*7}	harvest	in_scope	2	2026-10-14T10:31:00Z
+AST-r18-0035	endpoint	svc-dashboard/admin/config	harvest	in_scope	2	2026-10-14T10:31:15Z
+AST-r18-0036	endpoint	svc-dashboard/ping?host=127.0.0.1	harvest	in_scope	2	2026-10-14T10:31:30Z
+AST-r18-0037	endpoint	svc-dashboard/diag?ip=127.0.0.1	harvest	in_scope	2	2026-10-14T10:31:45Z
+AST-r18-0038	endpoint	svc-portal/redirect?to=http://evil.example	harvest	out_of_scope	2	2026-10-14T10:32:00Z
+AST-r18-0039	endpoint	svc-portal/debug/env	harvest	in_scope	2	2026-10-14T10:32:15Z
+AST-r18-0040	endpoint	svc-portal/admin/clients	harvest	in_scope	2	2026-10-14T10:32:30Z
+AST-r18-0041	endpoint	svc-files/download?path=../../etc/passwd	harvest	in_scope	2	2026-10-14T10:32:45Z
+AST-r18-0042	endpoint	svc-files/static?path=../../etc/passwd	harvest	in_scope	2	2026-10-14T10:33:00Z
+AST-r18-0043	endpoint	svc-files/unserialize?data=gASVtestpayload	harvest	in_scope	2	2026-10-14T10:33:15Z
+AST-r18-0044	endpoint	svc-files/import?data=aced0005javastream	harvest	in_scope	2	2026-10-14T10:33:30Z
+AST-r18-0045	endpoint	svc-files/decode?data=YTJiM2M0	harvest	in_scope	2	2026-10-14T10:33:45Z
+AST-r18-0046	endpoint	svc-files/.env	harvest	in_scope	2	2026-10-14T10:34:00Z
+AST-r18-0047	endpoint	svc-files/admin/logs	harvest	in_scope	2	2026-10-14T10:34:15Z
+AST-r18-0048	endpoint	svc-admin/login	harvest	in_scope	2	2026-10-14T10:34:30Z

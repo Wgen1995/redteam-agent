@@ -1,0 +1,50 @@
+{
+"ping_plain": {
+"s": 200,
+"b": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>"
+},
+"ping_semi_id": {
+"s": 200,
+"b": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>"
+},
+"ping_backtick": {
+"s": 200,
+"b": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>"
+},
+"ping_dollar": {
+"s": 200,
+"b": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>"
+},
+"ping_pipe": {
+"s": 200,
+"b": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>"
+},
+"ping_and": {
+"s": 200,
+"b": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>"
+},
+"ping_other_ip": {
+"s": 200,
+"b": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>"
+},
+"ping_naked": {
+"s": 200,
+"b": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>"
+},
+"diag_plain": {
+"s": 200,
+"b": "<html>diag GTCMDI-02 synthetic cmd output: uptime 3 days</html>"
+},
+"diag_semi_id": {
+"s": 200,
+"b": "<html>diag GTCMDI-02 synthetic cmd output: uptime 3 days</html>"
+},
+"diag_dollar": {
+"s": 200,
+"b": "<html>diag GTCMDI-02 synthetic cmd output: uptime 3 days</html>"
+},
+"diag_naked": {
+"s": 200,
+"b": "<html>diag GTCMDI-02 synthetic cmd output: uptime 3 days</html>"
+}
+}
