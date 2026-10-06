@@ -74,3 +74,4 @@
 25. **资产值=实际探测的规范 URL 路径原形（battle-12 实证：两洞已穿纯记账形丢分）**：①禁自造段后缀（svc-login/login-rate 形——注记归 finding 描述）；②idor/资源面带具体 id 尾段（/invoice/88 形非裸 /invoice）；③信标/差分注记写到 description 不进资产名。遗反=键面漂移评分不认（battle-12 两洞 0 分实证）。
 26. **重放行键=EV 标准形（battle-13 实证：FD 键致评分门 0 分）**：set-replay-state 记 timeline replay:EV-xxx:VERIFIED 形（EV 键标准）；FD 键语义等价但非标准（评分器须链展开才能消费）。
 27. **打穿别打塌（battle-14 实证：弱口令 36 连发把服务端打进锁死态，亲手毁掉已验证战果的 P4 重放）**：凭据/弱口令命中即固化证据（铸 EV+卡片）再探边界；连击前先铸证（发现时 200+响应实录即入账）；不确定服务端限流/tarpit 阈值时降速换轨而非硬撞。
+28. **beacon 原形律（battle-16 实证：编码形/原形一字之差即 P4 false-negative）**：EV 卡 expected 取与发送载荷**同形态**的响应特征（发送原形则卡记原形 beacon，发送编码形则记编码形）；同链不同服务成功响应体不同（welcome body vs token 回显）——逐服务取形不套模板。
