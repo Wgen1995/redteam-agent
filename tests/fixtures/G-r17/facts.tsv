@@ -1,0 +1,28 @@
+F-r17-0001	INT-r17-0001	port	svc-shop	TCP 8001 open\; GET / => HTTP 404 body='not found'	1.0	2	2026-10-13T09:07:00Z
+F-r17-0002	INT-r17-0001	port	svc-api-gw	TCP 8002 open\; GET / => HTTP 404 body='not found'	1.0	2	2026-10-13T09:08:00Z
+F-r17-0003	INT-r17-0001	port	svc-admin	TCP 8003 open\; GET / => HTTP 401 body='auth required'	1.0	2	2026-10-13T09:09:00Z
+F-r17-0004	INT-r17-0001	port	svc-login	TCP 8004 open\; GET / => HTTP 200 body='login form'	1.0	2	2026-10-13T09:10:00Z
+F-r17-0005	INT-r17-0001	port	svc-billing	TCP 8005 open\; GET / => HTTP 401 body='auth required'	1.0	2	2026-10-13T09:11:00Z
+F-r17-0006	INT-r17-0001	port	svc-dashboard	TCP 8006 open\; GET / => HTTP 404 body='not found'	1.0	2	2026-10-13T09:12:00Z
+F-r17-0007	INT-r17-0001	port	svc-portal	TCP 8007 open\; GET / => HTTP 404 body='not found'	1.0	2	2026-10-13T09:13:00Z
+F-r17-0008	INT-r17-0001	port	svc-files	TCP 8008 open\; GET / => HTTP 404 body='not found'	1.0	2	2026-10-13T09:14:00Z
+F-r17-0009	INT-r17-0002	http	svc-login	catch-all 200: 全部路径同响应 <html>login form</html>（零熵墙，律16/24）——仅 /login 为真实面	0.95	2	2026-10-13T09:34:00Z
+F-r17-0010	INT-r17-0002	http	svc-admin	全路径 401 auth required（匿名墙）——需凭据后重扫	1.0	2	2026-10-13T09:35:00Z
+F-r17-0011	INT-r17-0002	http	svc-billing	全路径 401 auth required（匿名墙）——需凭据后重扫	1.0	2	2026-10-13T09:36:00Z
+F-r17-0012	INT-r17-0002	vuln-clue	svc-shop	/logout?next=http://evil.example 触发服务端外域解析（urllib follow 后 gaierror）——疑开放重定向，待 302 Location 直取	0.8	2	2026-10-13T09:37:00Z
+F-r17-0013	INT-r17-0002	vuln-clue	svc-portal	/redirect?to=http://evil.example 触发服务端外域解析（gaierror）——疑开放重定向，待 302 Location 直取	0.8	2	2026-10-13T09:38:00Z
+F-r17-0014	INT-r17-0002	vuln-clue	svc-shop/logout	302 族实锤：/logout?next= 外域值→Location 外域形（probe4 loc=http%3A//evil.example 编码形；probe3 原形值触发外域 follow gaierror）；to/url/goto/redirect/continue/target=self-loop 形——?next= 为主洞参数	0.9	2	2026-10-13T09:37:00Z
+F-r17-0015	INT-r17-0002	vuln-clue	svc-portal/redirect	302 族实锤：/redirect?to= 与 ?goto= 外域形 Location；next/url/redirect/continue/target=self-loop——?to/?goto= 为外域参数	0.9	2	2026-10-13T09:38:00Z
+F-r17-0016	INT-r17-0002	http	svc-files	deser POST 400 bad request（POST 形不收）——GET 直取为正确形态（律20 实证）；traversal 绝对路径/file:///形同面同响应	1.0	2	2026-10-13T09:39:00Z
+F-r17-0017	INT-r17-0002	http	range	发放面普查：13 发放路径×8 服务 GET 基线——除 svc-login catch-all 200 外全部 404/401，无独立发放面；凭据唯一门=svc-login /login	1.0	2	2026-10-13T09:40:00Z
+F-r17-0018	INT-r17-0003	authz	range	X-Auth-Token 跨服务信任实锤：tok-usr-001 在 admin/billing 墙 401→404 翻转（认证过墙）；Authorization: Bearer 同值 401（携带形=X-Auth-Token 响应头镜像，律19）	1.0	2	2026-10-13T10:38:00Z
+F-r17-0019	INT-r17-0003	http	svc-billing	invoice query 形全 404（?n=/?id=/?invoice_id=），路径形 /invoice/{n} 唯一有效——双形扫描记录（律23）	1.0	2	2026-10-13T10:39:00Z
+F-r17-0020	INT-r17-0003	info	range	JWT 构造形负结果：alg=none 与过期 exp 伪造三段 JWT 经 X-Auth-Token/Authorization 双头打 svc-admin/svc-billing/svc-api-gw 全 401——验签面拒绝伪造（新类 JWT 未出洞，诚实记录）	1.0	2	2026-10-13T10:40:00Z
+F-r17-0021	INT-r17-0003	info	range	svc-admin 面发现：/login POST 为唯一非 404 面；/me /whoami /token /issue /users 等 13 面 404	1.0	2	2026-10-13T10:41:00Z
+F-r17-0022	INT-r17-0002	info	range	匿名波命中普查：svc-shop 参数面注入x2+XSS 反射+logout 重定向；svc-api-gw CORS+SSRFx3+graphql；svc-dashboard SSTI 反射；svc-portal 重定向+env 泄露；svc-files deser x3+env+穿越——10 类 16 面	1.0	2	2026-10-13T10:35:00Z
+F-r17-0023	INT-r17-0002	info	svc-api-gw	SSRF 三面独立：/fetch /preview /proxy 对同参数各具差异化响应体（internal-secret-doc / internal-metadata / fetch done）——分洞分 finding（律8）	1.0	2	2026-10-13T10:36:00Z
+F-r17-0024	INT-r17-0002	info	svc-shop	参数面双形：/item?id= 与 /order?id= 各自独立错误回显；path 形 /item/1 /order/1 同洞（律18 双形 EV 已挂原 finding）	1.0	2	2026-10-13T10:37:00Z
+F-r17-0025	INT-r17-0003	info	range	持证名词叉乘普查：8 服务×9 面（/admin+8 子名词）共 72 发——5 命中（shop/reports gw/keys dash/config portal/clients files/logs），其余 404（svc-admin/billing 过墙后）或 login catch-all	1.0	2	2026-10-13T10:38:00Z
+F-r17-0026	INT-r17-0003	info	svc-billing	invoice 序数 1/2/88 同响应「invoice 88 of other user」——id 形参无归属校验实锤	1.0	2	2026-10-13T10:39:00Z
+F-r17-0027	INT-r17-0003	info	svc-admin	匿名 /login admin/admin123→token tok-usr-001 与 svc-login 发放同值——同凭据同 token 跨服务复用	1.0	2	2026-10-13T10:40:00Z
+F-r17-0028	INT-r17-0003	authz	range	携带形差分：X-Auth-Token 过墙 vs Authorization: Bearer 401——令牌信任绑定自定义头形（响应头携带形镜像，律19）	1.0	2	2026-10-13T10:41:00Z

@@ -1,0 +1,2 @@
+REQUEST GET http://svc-shop:{'svc': 'svc-shop', 'method': 'GET', 'path': '/search?q=%3Csvg%20onload%3Dalert%281%29%3E', 'status': 200, 'loc': '', 'clen': '94', 'body': '<html>search results %3Csvg%20onload%3Dalert%281%29%3E GTXSS-01 synthetic reflected xss</html>'}/search
+RESPONSE: <html>search results %3Csvg%20onload%3Dalert%281%29%3E GTXSS-01 synthetic reflected xss</html>

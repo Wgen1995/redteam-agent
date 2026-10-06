@@ -1,0 +1,3 @@
+CONTROL GET/admin -> 404
+body: not found
+(catch-all not-found baseline, same wave)

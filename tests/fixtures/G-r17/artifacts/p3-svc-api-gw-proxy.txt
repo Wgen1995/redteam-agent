@@ -1,0 +1,2 @@
+REQUEST GET http://svc-api-gw:{'svc': 'svc-api-gw', 'method': 'GET', 'path': '/proxy?url=http://evil.example', 'status': 200, 'loc': '', 'clen': '58', 'body': '<html>proxy GTSSRF-03 synthetic internal fetch done</html>'}/proxy
+RESPONSE: <html>proxy GTSSRF-03 synthetic internal fetch done</html>

@@ -1,0 +1,3 @@
+REQUEST GET svc-shop:8001/order/1 (path form)
+RESPONSE 200
+BODY: GTSQLI-02 marker

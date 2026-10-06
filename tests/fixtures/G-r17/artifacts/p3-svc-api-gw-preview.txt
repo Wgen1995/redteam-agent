@@ -1,0 +1,2 @@
+REQUEST GET http://svc-api-gw:{'svc': 'svc-api-gw', 'method': 'GET', 'path': '/preview?url=http://evil.example', 'status': 200, 'loc': '', 'clen': '72', 'body': '<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>'}/preview
+RESPONSE: <html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>

@@ -1,0 +1,2 @@
+ANONYMOUS CONTROL (no token)
+GET /admin/keys anon -> 401 auth required

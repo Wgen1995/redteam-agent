@@ -1,0 +1,2 @@
+ANONYMOUS CONTROL (no token)
+GET /admin/logs anon -> 401 auth required

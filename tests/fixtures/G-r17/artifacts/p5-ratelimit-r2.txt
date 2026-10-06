@@ -1,0 +1,2 @@
+37 连发 POST /login（3 基线+15 键名叉乘+2 JSON+8 弱口令+2 枚举+GET 形）全部即时响应
+第 11 发起响应体含计数器：denied GTRATE-01 synthetic no rate limit after N attempts（N 递增至 32 无 429/无延时/无封禁）

@@ -1,0 +1,2 @@
+REQUEST GET http://svc-api-gw:{'svc': 'svc-api-gw', 'method': 'GET', 'path': '/fetch?url=file:///etc/passwd', 'status': 200, 'loc': '', 'clen': '72', 'body': '<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>'}/fetch
+RESPONSE: <html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>

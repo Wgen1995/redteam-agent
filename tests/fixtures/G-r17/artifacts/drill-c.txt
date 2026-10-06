@@ -1,0 +1,9 @@
+REQUEST GET http://svc-login:8004/login
+ RESPONSE STATUS: 200
+--- response headers ---
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Tue, 06 Oct 2026 16:36:18 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 23
+--- body ---
+<html>login form</html>

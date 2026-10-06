@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r17-0038", "matched": true, "results": [{"detail": ["GTHAUTH-05"], "ok": true, "type": "word"}], "status": 200, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r17 --id=EV-r17-0038 --state=VERIFIED", "verdict": "reproduced"}

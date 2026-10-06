@@ -1,0 +1,4 @@
+REQUEST GET /redirect?to=http://evil.example
+RESPONSE 302
+Location: http://evil.example
+BODY: <html>GTREDIR-01 synthetic redirect to %s</html>

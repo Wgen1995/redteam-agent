@@ -1,0 +1,2 @@
+REQUEST GET http://svc-files:{'svc': 'svc-files', 'method': 'GET', 'path': '/decode', 'status': 200, 'loc': '', 'clen': '64', 'body': '<html>GTDESER-03 synthetic base64 payload object inflated</html>'}/decode
+RESPONSE: <html>GTDESER-03 synthetic base64 payload object inflated</html>

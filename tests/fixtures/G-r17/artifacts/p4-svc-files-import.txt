@@ -1,0 +1,3 @@
+REQUEST GET http://svc-files:8008/import
+RESPONSE 200
+BODY: <html>GTDESER-02 synthetic java serialized blob accepted</html>

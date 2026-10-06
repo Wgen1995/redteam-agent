@@ -1,0 +1,4 @@
+REQUEST POST /login user=admin&pass=admin123 (form)
+RESPONSE 200
+HEADERS: X-Auth-Token: {{vault:cred-3}} (其余 Server/Date/CT/CL)
+BODY: welcome admin GTWEAKPASS-01 synthetic weak credential accepted

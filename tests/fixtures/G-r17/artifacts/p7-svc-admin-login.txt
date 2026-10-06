@@ -1,0 +1,3 @@
+REQUEST POST svc-admin:8003/login WITH X-Auth-Token tok-usr-001 ({{vault:cred-3}})
+RESPONSE 200
+BODY: GTWEAKPASS-01 marker

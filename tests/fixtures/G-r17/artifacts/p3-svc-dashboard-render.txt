@@ -1,0 +1,2 @@
+REQUEST GET http://svc-dashboard:{'svc': 'svc-dashboard', 'method': 'GET', 'path': '/render?q=%7B%7B7%2A7%7D%7D', 'status': 200, 'loc': '', 'clen': '79', 'body': '<html>render GTSSTI-02 synthetic ssti render /render?q=%7B%7B7%2A7%7D%7D</html>'}/render
+RESPONSE: <html>render GTSSTI-02 synthetic ssti render /render?q=%7B%7B7%2A7%7D%7D</html>

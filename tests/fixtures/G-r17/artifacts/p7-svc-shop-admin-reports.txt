@@ -1,0 +1,3 @@
+REQUEST GET svc-shop:8001/admin/reports WITH X-Auth-Token tok-usr-001 ({{vault:cred-3}})
+RESPONSE 200
+BODY: see excerpt

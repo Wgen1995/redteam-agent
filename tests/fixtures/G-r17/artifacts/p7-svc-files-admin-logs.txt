@@ -1,0 +1,3 @@
+REQUEST GET svc-files:8008/admin/logs WITH X-Auth-Token tok-usr-001 ({{vault:cred-3}})
+RESPONSE 200
+BODY: GTROLE-04 marker

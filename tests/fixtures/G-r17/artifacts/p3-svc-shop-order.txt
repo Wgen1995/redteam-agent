@@ -1,0 +1,2 @@
+REQUEST GET http://svc-shop:{'svc': 'svc-shop', 'method': 'GET', 'path': '/order?id=1', 'status': 200, 'loc': '', 'clen': '60', 'body': '<html>order page GTSQLI-02 synthetic SQL syntax error</html>'}/order?id=1
+RESPONSE: <html>order page GTSQLI-02 synthetic SQL syntax error</html>

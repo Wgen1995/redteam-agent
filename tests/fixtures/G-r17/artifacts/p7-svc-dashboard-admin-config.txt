@@ -1,0 +1,3 @@
+REQUEST GET svc-dashboard:8006/admin/config WITH X-Auth-Token tok-usr-001 ({{vault:cred-3}})
+RESPONSE 200
+BODY: GTROLE-03 marker

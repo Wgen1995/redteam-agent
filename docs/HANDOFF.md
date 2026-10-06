@@ -1079,3 +1079,10 @@
 - **战士侧暗雷回灌**：EV 卡 Host 带端口（22 张卡一字段全 env-diff——模板系统性污染）；redact 冒号/等号暗礁；docker cp 目录双向坑。
 - **RT-0013** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r16 入 fixtures 钉测 3 枚。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。
+
+## 2026-10-13 battle-16（G-r17）收战：面族纪律回收二代——资源面双形+graphql/限流兑现
+- **战果**：门控 **25/56≈0.4464**（beacon 25）。**23 律补兑现**：idor-04 回收（invoice/1 资源面双形——canon 尾段归一即中）；**dict v3.7 兑现**：graphql-01（__schema）+ratelimit-01（计数器自证）双回收。**REPAIRED 轨首用**：2 枚首-replay not-reproduced 修卡重放 reproduced（律15 beacon 形态教训当场闭环）——P4 31/31 零 REJECTED。十四代同面：0.50/0.21/0.34/0.29/0.38/0.32/0.34/0.38/0.43/0.59/0.43/0.34/0.46/0.45。
+- **归因核验（种子锚点，RT-0014 attribution_check=verified）**：①**同族第二面四族皆漏**（xss/cors/traversal/infoleak——字典行未枚举第二面→dict v3.8 候选）；②/jump 四代连续漏（值形漂移——最顽固单点）；③userenum 恒定响应设计性负；④SSTI/XSS 诚实降级不虚报。
+- **战士侧暗雷回灌**：EV 卡 YAML 子集隐形合约（同缩进单键流映射）；记账先查后写幂等（半截账漂移——artifact_path 只增不覆盖 REJECT 兜底）；beacon 原形律。
+- **RT-0014** 运行时库 in-band 全流回灌发行库（lint 真域名形拦截一次——占位改写后过）；**G-51 零打断零补令+自首 1 条灰色**；金样 G-r17 入 fixtures 钉测 3 枚。
+- 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。

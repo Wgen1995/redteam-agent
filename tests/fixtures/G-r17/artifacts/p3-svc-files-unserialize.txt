@@ -1,0 +1,2 @@
+REQUEST GET http://svc-files:{'svc': 'svc-files', 'method': 'GET', 'path': '/unserialize', 'status': 200, 'loc': '', 'clen': '56', 'body': '<html>GTDESER-01 synthetic pickle object inflated</html>'}/unserialize
+RESPONSE: <html>GTDESER-01 synthetic pickle object inflated</html>

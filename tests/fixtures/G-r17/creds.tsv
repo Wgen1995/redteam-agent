@@ -1,0 +1,3 @@
+CRED-r17-0001	static-cred	user	drill	{{vault:cred-1}}	AST-r17-0004					active		演练弃弹-非真实凭据	2	2026-10-13T09:24:00Z	
+CRED-r17-0002	static-cred	admin	admin	{{vault:cred-2}}	AST-r17-0004	INT-r17-0002				active		svc-login /login 弱口令命中（form user/pass 键形）	2	2026-10-13T09:33:00Z	
+CRED-r17-0003	session	user	admin	{{vault:cred-3}}	AST-r17-0004	INT-r17-0002	CRED-r17-0002			active		登录响应头 X-Auth-Token 携带形发放；token 名形 tok-usr-001=user 级（律22）	2	2026-10-13T09:47:00Z	

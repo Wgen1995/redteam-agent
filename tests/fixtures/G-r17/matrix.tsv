@@ -1,0 +1,409 @@
+svc-shop	wstg-info				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-conf				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-idnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-authn				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-authz				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-sess				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-inpv				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-errh				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-cryp				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-busl				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-clnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-shop	wstg-apit				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-info				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-conf				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-idnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-authn				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-authz				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-sess				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-inpv				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-errh				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-cryp				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-busl				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-clnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-api-gw	wstg-apit				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-info				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-conf				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-idnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-authn				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-authz				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-sess				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-inpv				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-errh				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-cryp				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-busl				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-clnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-admin	wstg-apit				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-info				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-conf				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-idnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-authn				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-authz				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-sess				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-inpv				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-errh				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-cryp				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-busl				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-clnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login	wstg-apit				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-info				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-conf				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-idnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-authn				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-authz				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-sess				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-inpv				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-errh				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-cryp				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-busl				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-clnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-billing	wstg-apit				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-info				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-conf				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-idnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-authn				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-authz				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-sess				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-inpv				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-errh				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-cryp				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-busl				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-clnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-dashboard	wstg-apit				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-info				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-conf				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-idnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-authn				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-authz				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-sess				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-inpv				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-errh				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-cryp				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-busl				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-clnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-portal	wstg-apit				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-info				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-conf				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-idnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-authn				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-authz				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-sess				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-inpv				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-errh				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-cryp				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-busl				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-clnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-files	wstg-apit				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-info				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-conf				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-idnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-authn				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-authz				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-sess				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-inpv				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-errh				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-cryp				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-busl				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-clnt				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+svc-login/login	wstg-apit				2	2026-10-13T09:28:00Z	2026-10-13T09:29:00Z
+172.28.0.10	wstg-info		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-conf	-	submatrix:range-root-ip(172.28.0.0/24)-service-layer		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-idnt		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-authn		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-authz		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-sess		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-inpv		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-errh		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-cryp		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-busl		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-clnt		submatrix:		2	2026-10-13T09:31:00Z	
+172.28.0.10	wstg-apit		submatrix:		2	2026-10-13T09:31:00Z	
+svc-shop	wstg-inpv	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-clnt	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-conf	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-clnt	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-apit	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-inpv	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-clnt	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-info	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-inpv	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-info	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-authn	x	hit:INT-r17-0002	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-info	-	probed-clean:catch-all 200 login form（无 info 面）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-conf	-	probed-clean:cors-debug/fetch/preview/proxy 全 404（probe3）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-conf	-	probed-clean:SSRF/CORS 族全 404（probe3）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-conf	-	probed-clean:cors-debug 404；redirect 面已计 clnt	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-conf	-	probed-clean:cors-debug/fetch 族 404（probe3）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-apit	-	probed-clean:graphql 404（probe3）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-apit	-	probed-clean:graphql 404（probe3）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-apit	-	probed-clean:graphql 404（probe3）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-apit	-	probed-clean:graphql 404（probe3）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-apit	-	probed-clean:graphql 404（probe3）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-apit	-	probed-clean:过墙后 graphql 404（probe7）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-apit	-	probed-clean:过墙后 graphql 404（probe7）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-clnt	-	probed-clean:redirect 族 404（probe4）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-clnt	-	probed-clean:redirect 族 404（probe4）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-clnt	-	probed-clean:过墙后 redirect 族 404（probe7）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-clnt	-	probed-clean:过墙后 redirect 族 404（probe7）	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-info	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-idnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-authn	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-authz	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-sess	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-errh	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-cryp	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-busl	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-info	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-idnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-authn	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-authz	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-sess	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-inpv	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-errh	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-cryp	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-api-gw	wstg-busl	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-info	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-conf	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-idnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-authn	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-authz	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-sess	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-inpv	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-errh	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-cryp	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-admin	wstg-busl	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-conf	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-idnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-authz	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-sess	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-inpv	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-errh	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-cryp	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-busl	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login	wstg-clnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-info	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-conf	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-idnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-authn	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-authz	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-sess	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-inpv	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-errh	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-cryp	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-billing	wstg-busl	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-info	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-idnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-authn	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-authz	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-sess	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-errh	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-cryp	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-dashboard	wstg-busl	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-idnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-authn	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-authz	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-sess	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-inpv	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-errh	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-cryp	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-portal	wstg-busl	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-idnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-authn	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-authz	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-sess	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-errh	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-cryp	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-files	wstg-busl	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-info	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-conf	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-idnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-authn	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-authz	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-sess	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-inpv	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-errh	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-cryp	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-busl	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-clnt	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-login/login	wstg-apit	?	untargeted-this-round	INT-r17-0002	2	2026-10-13T10:02:00Z	
+svc-shop	wstg-authz	x	hit:INT-r17-0003	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-api-gw	wstg-authz	x	hit:INT-r17-0003	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-dashboard	wstg-authz	x	hit:INT-r17-0003	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-portal	wstg-authz	x	hit:INT-r17-0003	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-files	wstg-authz	x	hit:INT-r17-0003	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-authz	x	hit:INT-r17-0003	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-authn	x	hit:INT-r17-0003	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login	wstg-sess	x	hit:INT-r17-0003	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-authz	-	probed-clean:过墙后 /admin 全名词 404（probe7）	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-authn	-	probed-clean:无登录面（发放面普查 404；probe4/7）	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-shop	wstg-authn	-	probed-clean:无登录面（发放面普查 404；probe4）	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-api-gw	wstg-authn	-	probed-clean:无登录面（发放面普查 404；probe4）	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-dashboard	wstg-authn	-	probed-clean:无登录面（发放面普查 404；probe4）	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-portal	wstg-authn	-	probed-clean:无登录面（发放面普查 404；probe4）	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-files	wstg-authn	-	probed-clean:无登录面（发放面普查 404；probe4）	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-shop	wstg-info	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-shop	wstg-idnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-shop	wstg-sess	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-shop	wstg-errh	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-shop	wstg-cryp	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-shop	wstg-busl	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-api-gw	wstg-info	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-api-gw	wstg-idnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-api-gw	wstg-sess	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-api-gw	wstg-inpv	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-api-gw	wstg-errh	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-api-gw	wstg-cryp	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-api-gw	wstg-busl	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-info	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-conf	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-idnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-sess	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-inpv	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-errh	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-cryp	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-admin	wstg-busl	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login	wstg-conf	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login	wstg-idnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login	wstg-authz	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login	wstg-inpv	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login	wstg-errh	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login	wstg-cryp	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login	wstg-busl	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login	wstg-clnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-info	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-conf	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-idnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-sess	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-inpv	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-errh	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-cryp	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-billing	wstg-busl	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-dashboard	wstg-info	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-dashboard	wstg-idnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-dashboard	wstg-sess	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-dashboard	wstg-errh	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-dashboard	wstg-cryp	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-dashboard	wstg-busl	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-portal	wstg-idnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-portal	wstg-sess	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-portal	wstg-inpv	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-portal	wstg-errh	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-portal	wstg-cryp	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-portal	wstg-busl	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-files	wstg-idnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-files	wstg-sess	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-files	wstg-errh	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-files	wstg-cryp	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-files	wstg-busl	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-info	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-conf	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-idnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-authn	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-authz	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-sess	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-inpv	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-errh	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-cryp	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-busl	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-clnt	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+svc-login/login	wstg-apit	?	untargeted-this-round	INT-r17-0003	2	2026-10-13T10:03:00Z	
+172.28.0.10	wstg-apit	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-authn	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-authz	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-busl	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-clnt	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-cryp	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-errh	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-idnt	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-info	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-inpv	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+172.28.0.10	wstg-sess	-	submatrix:unreachable:AST-r17-0010-ip-layer-no-direct-http-face		2	2026-10-13T10:33:00Z	
+svc-shop	wstg-info	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-shop	wstg-conf	-	probed-clean:SSRF/CORS 族 404（probe3）		2	2026-10-13T10:20:00Z	
+svc-shop	wstg-idnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-shop	wstg-authn	-	probed-clean:无登录面（发放面普查 404）		2	2026-10-13T10:20:00Z	
+svc-shop	wstg-sess	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-shop	wstg-errh	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-shop	wstg-cryp	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-shop	wstg-busl	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-shop	wstg-apit	-	probed-clean:graphql 404（probe3）		2	2026-10-13T10:20:00Z	
+svc-api-gw	wstg-info	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-api-gw	wstg-idnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-api-gw	wstg-authn	-	probed-clean:无登录面（发放面普查 404）		2	2026-10-13T10:20:00Z	
+svc-api-gw	wstg-sess	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-api-gw	wstg-inpv	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-api-gw	wstg-errh	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-api-gw	wstg-cryp	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-api-gw	wstg-busl	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-info	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-conf	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-idnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-authz	-	probed-clean:过墙后 /admin 名词族 404（probe7）		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-sess	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-inpv	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-errh	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-cryp	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-busl	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-clnt	-	probed-clean:过墙后 redirect 族 404（probe7）		2	2026-10-13T10:20:00Z	
+svc-admin	wstg-apit	-	probed-clean:过墙后 graphql 404（probe7）		2	2026-10-13T10:20:00Z	
+svc-login	wstg-info	-	probed-clean:catch-all 200 login form		2	2026-10-13T10:20:00Z	
+svc-login	wstg-conf	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login	wstg-idnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login	wstg-authz	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login	wstg-inpv	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login	wstg-errh	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login	wstg-cryp	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login	wstg-busl	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login	wstg-clnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login	wstg-apit	-	probed-clean:graphql 404（probe3）		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-info	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-conf	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-idnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-authn	-	probed-clean:无登录面（发放面普查 404）		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-sess	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-inpv	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-errh	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-cryp	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-busl	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-clnt	-	probed-clean:过墙后 redirect 族 404（probe7）		2	2026-10-13T10:20:00Z	
+svc-billing	wstg-apit	-	probed-clean:过墙后 graphql 404（probe7）		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-info	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-conf	-	probed-clean:SSRF/CORS 族 404（probe3）		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-idnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-authn	-	probed-clean:无登录面（发放面普查 404）		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-sess	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-errh	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-cryp	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-busl	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-clnt	-	probed-clean:redirect 族 404（probe4）		2	2026-10-13T10:20:00Z	
+svc-dashboard	wstg-apit	-	probed-clean:graphql 404（probe3）		2	2026-10-13T10:20:00Z	
+svc-portal	wstg-conf	-	probed-clean:cors-debug 404（probe3）		2	2026-10-13T10:20:00Z	
+svc-portal	wstg-idnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-portal	wstg-authn	-	probed-clean:无登录面（发放面普查 404）		2	2026-10-13T10:20:00Z	
+svc-portal	wstg-sess	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-portal	wstg-inpv	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-portal	wstg-errh	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-portal	wstg-cryp	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-portal	wstg-busl	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-portal	wstg-apit	-	probed-clean:graphql 404（probe3）		2	2026-10-13T10:20:00Z	
+svc-files	wstg-conf	-	probed-clean:SSRF/CORS 族 404（probe3）		2	2026-10-13T10:20:00Z	
+svc-files	wstg-idnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-files	wstg-authn	-	probed-clean:无登录面（发放面普查 404）		2	2026-10-13T10:20:00Z	
+svc-files	wstg-sess	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-files	wstg-errh	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-files	wstg-cryp	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-files	wstg-busl	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-files	wstg-clnt	-	probed-clean:redirect 族 404（probe4）		2	2026-10-13T10:20:00Z	
+svc-files	wstg-apit	-	probed-clean:graphql 404（probe3）		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-info	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-conf	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-idnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-authn	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-authz	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-sess	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-inpv	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-errh	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-cryp	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-busl	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-clnt	?	untargeted-this-round		2	2026-10-13T10:20:00Z	
+svc-login/login	wstg-apit	?	untargeted-this-round		2	2026-10-13T10:20:00Z	

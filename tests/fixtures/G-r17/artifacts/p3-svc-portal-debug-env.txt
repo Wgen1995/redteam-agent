@@ -1,0 +1,2 @@
+REQUEST GET http://svc-portal:{'svc': 'svc-portal', 'method': 'GET', 'path': '/debug/env', 'status': 200, 'loc': '', 'clen': '91', 'body': '<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>'}/debug/env
+RESPONSE: <html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>

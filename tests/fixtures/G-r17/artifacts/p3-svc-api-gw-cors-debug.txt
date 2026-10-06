@@ -1,0 +1,2 @@
+REQUEST GET http://svc-api-gw:{'svc': 'svc-api-gw', 'method': 'GET', 'path': '/cors-debug', 'status': 200, 'loc': '', 'clen': '55', 'body': '<html>cors debug GTCORS-01 wildcard allow-origin</html>'}/cors-debug
+RESPONSE: <html>cors debug GTCORS-01 wildcard allow-origin</html>
