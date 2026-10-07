@@ -1,0 +1,761 @@
+svc-shop	wstg-info				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-shop	wstg-conf				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-shop	wstg-apit				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-api-gw	wstg-info				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-api-gw	wstg-conf				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-api-gw	wstg-apit				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-admin	wstg-info				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-admin	wstg-conf				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-admin	wstg-apit				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-login	wstg-info				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-login	wstg-conf				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-login	wstg-apit				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-billing	wstg-info				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-billing	wstg-conf				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-billing	wstg-apit				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-dashboard	wstg-info				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-dashboard	wstg-conf				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-dashboard	wstg-apit				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-portal	wstg-info				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-portal	wstg-conf				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-portal	wstg-apit				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-files	wstg-info				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-files	wstg-conf				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-files	wstg-apit				2	2026-10-15T09:07:24Z	2026-10-15T09:07:25Z
+svc-login/	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-authn	x	submatrix: 信标面实证（GTWEAKPASS-01 弱口令+GTRATE-01 无限流）		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-login/	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-conf	x	submatrix: 信标面实证（GTCORS-01 通配 allow-origin）		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/cors-debug	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-conf	x	submatrix: 信标面实证（GTCORS-02 反射+凭据）		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/origin	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-inpv	x	submatrix: 信标面实证（GTSSRF-01）		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/fetch	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-inpv	x	submatrix: 信标面实证（GTSSRF-02）		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/preview	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-inpv	x	submatrix: 信标面实证（GTSSRF-03）		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/proxy	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-authz	x	submatrix: 信标面实证（GTIDOR-05 低权密钥）		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/admin/keys	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-inpv	x	submatrix: 外域 Location 实证（GTREDIR-03）		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/jump?u=	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-info	x	submatrix: 信标面实证（GTGRAPHQL-01 内省开）		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-api-gw/graphql?query=	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-inpv	x	submatrix: 信标面实证（GTSQLI-01）		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/item	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-inpv	x	submatrix: 信标面实证（GTSQLI-02）		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/order	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-inpv	x	submatrix: 信标面实证（GTSQLI-02 镜像面）		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/orders	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-inpv	x	submatrix: 信标面实证（GTXSS-01 反射）		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/search	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-inpv	x	submatrix: 信标面实证（GTXSS-02 存储回显）		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/comment	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-inpv	x	submatrix: 信标面实证（GTXSS-04 反射）		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/feedback	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-authz	x	submatrix: 信标面实证（GTIDOR-06 低权报表）		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/admin/reports	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-inpv	x	submatrix: 外域 Location 实证（GTREDIR-02）		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-shop/logout?next=	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-authz	x	submatrix: 信标面实证（GTROLE-03 低权配置）		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/admin/config	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-inpv	x	submatrix: 信标面实证（GTSSTI-02 面级）		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-inpv	x	submatrix: 未编码反射实证（XSS 类目修正）		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-dashboard/render?q=	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-authz	x	submatrix: 信标面实证（GTHAUTH-05 低权客户）		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/admin/clients	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-info	x	submatrix: 信标面实证（GTINFOLEAK-01）		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/debug/env	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-inpv	x	submatrix: 外域 Location 实证（GTREDIR-01）		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-portal/redirect?to=	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-authz	x	submatrix: 信标面实证（GTROLE-04 低权日志）		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/admin/logs	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-inpv	x	submatrix: 信标面实证（GTDESER-01）		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/unserialize	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-inpv	x	submatrix: 信标面实证（GTDESER-02）		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/import	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-inpv	x	submatrix: 信标面实证（GTDESER-03）		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/decode	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-inpv	x	submatrix: 信标面实证（GTTRAVERSAL-01）		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/download	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-inpv	x	submatrix: 信标面实证（GTTRAVERSAL-02）		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/static	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-info	x	submatrix: 信标面实证（GTINFOLEAK-03）		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-authz		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-files/.env	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-info		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-conf		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-idnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-authn		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-authz	x	submatrix: 信标面实证（GTIDOR-04 双序数）		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-sess		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-inpv		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-errh		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-cryp		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-busl		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-clnt		submatrix:		2	2026-10-15T09:10:09Z	
+svc-billing/invoice/1	wstg-apit		submatrix:		2	2026-10-15T09:10:09Z	
+svc-admin	wstg-info	-	持证+匿名全 404/401 无面暴露（字典波全喷未穿）	INT-r19-0009	2	2026-10-15T09:10:10Z	
+svc-admin	wstg-conf	-	无配置面响应（字典波未穿）	INT-r19-0009	2	2026-10-15T09:10:11Z	
+svc-billing	wstg-info	-	401 墙下无 info 面；资源面见 svc-billing/invoice/1 子矩阵	INT-r19-0008	2	2026-10-15T09:10:12Z	
+svc-admin	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/admin/keys	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/cors-debug	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/fetch	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/graphql?query=	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/jump?u=	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/origin	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/preview	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-api-gw/proxy	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-billing/invoice/1	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/admin/config	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-dashboard/render?q=	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/.env	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/admin/logs	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/decode	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/download	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/import	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/static	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-files/unserialize	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-login/	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/admin/clients	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/debug/env	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-portal/redirect?to=	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-inpv	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-inpv 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/admin/reports	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/comment	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/feedback	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/item	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/logout?next=	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/order	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/orders	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-apit	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-apit 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-authn	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authn 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-authz	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-authz 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-busl	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-busl 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-clnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-clnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-conf	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-conf 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-cryp	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-cryp 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-errh	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-errh 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-idnt	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-idnt 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-info	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-info 类无回响通道		2	2026-10-15T09:10:28Z	
+svc-shop/search	wstg-sess	-	submatrix: 全字典波（60 词×双态）+参数化波（1804 探针）该面响应恒定或全 404/401，wstg-sess 类无回响通道		2	2026-10-15T09:10:28Z	

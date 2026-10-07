@@ -1,0 +1,10 @@
+{
+ "observed": {
+  "body": "auth required",
+  "clen": "13",
+  "hash": "a414e909c3",
+  "loc": null,
+  "status": 401,
+  "xauth": null
+ }
+}

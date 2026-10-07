@@ -1,0 +1,2 @@
+CRED-r19-0001	static-cred	admin	admin	{{vault:cred-1}}	AST-r19-0004	INT-r19-0002				active		svc-login POST / 弱口令对命中	2	2026-10-15T09:07:29Z	
+CRED-r19-0002	session	user	admin	{{vault:cred-2}}	AST-r19-0004	INT-r19-0002	CRED-r19-0001			active		X-Auth-Token 响应头颁发会话令牌（tok-usr-001 形=user 级）	2	2026-10-15T09:07:30Z	

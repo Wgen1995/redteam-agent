@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-files",
+  "path": "/download",
+  "beacon": "GTTRAVERSAL-01",
+  "state": "anon",
+  "meta": "路径穿越面 download",
+  "ev_title": "files /download 路径穿越读观察（信标 GTTRAVERSAL-01）",
+  "title": "svc-files /download 路径穿越读取（passwd 内容回显）",
+  "impact": "高",
+  "vulnref": "CWE-22",
+  "intent": "INT-r19-0007",
+  "brief": "匿名 GET /download 回显信标 GTTRAVERSAL-01 与 root:x:0:0:root 形文件内容；穿越面",
+  "steps": "匿名 GET svc-files:8008 /download|观察 200 体信标 GTTRAVERSAL-01 与文件内容"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>",
+   "clen": "59",
+   "hash": "f4ec0c1776",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>",
+   "clen": "59",
+   "hash": "f4ec0c1776",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

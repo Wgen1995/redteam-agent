@@ -1,0 +1,53 @@
+E-r19-0001	supersedes	FD-r19-0030	FD-r19-0033	supersede-finding	2	2026-10-15T09:10:08Z
+E-r19-0002	derived_from	F-r19-0001	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:31Z
+E-r19-0003	derived_from	F-r19-0002	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:32Z
+E-r19-0004	derived_from	F-r19-0003	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:33Z
+E-r19-0005	derived_from	F-r19-0004	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:34Z
+E-r19-0006	derived_from	F-r19-0005	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:35Z
+E-r19-0007	derived_from	F-r19-0006	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:36Z
+E-r19-0008	derived_from	F-r19-0007	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:37Z
+E-r19-0009	derived_from	F-r19-0008	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:38Z
+E-r19-0010	derived_from	F-r19-0009	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:39Z
+E-r19-0011	derived_from	F-r19-0013	INT-r19-0002	fact consumed by wave intent	2	2026-10-15T09:10:43Z
+E-r19-0012	derived_from	F-r19-0014	INT-r19-0009	fact consumed by wave intent	2	2026-10-15T09:10:44Z
+E-r19-0013	derived_from	F-r19-0015	INT-r19-0008	fact consumed by wave intent	2	2026-10-15T09:10:45Z
+E-r19-0014	derived_from	F-r19-0016	INT-r19-0004	fact consumed by wave intent	2	2026-10-15T09:10:46Z
+E-r19-0015	derived_from	F-r19-0017	INT-r19-0003	fact consumed by wave intent	2	2026-10-15T09:10:47Z
+E-r19-0016	derived_from	F-r19-0018	INT-r19-0004	fact consumed by wave intent	2	2026-10-15T09:10:48Z
+E-r19-0017	derived_from	F-r19-0019	INT-r19-0003	fact consumed by wave intent	2	2026-10-15T09:10:49Z
+E-r19-0018	derived_from	F-r19-0020	INT-r19-0003	fact consumed by wave intent	2	2026-10-15T09:10:50Z
+E-r19-0019	derived_from	F-r19-0021	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:51Z
+E-r19-0020	derived_from	F-r19-0010	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:54Z
+E-r19-0021	derived_from	F-r19-0011	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:55Z
+E-r19-0022	derived_from	F-r19-0012	INT-r19-0001	fact consumed by wave intent	2	2026-10-15T09:10:56Z
+E-r19-0023	parent	AST-r19-0009	AST-r19-0004	endpoint-of-service	2	2026-10-15T09:13:30Z
+E-r19-0024	parent	AST-r19-0010	AST-r19-0008	endpoint-of-service	2	2026-10-15T09:13:31Z
+E-r19-0025	parent	AST-r19-0011	AST-r19-0002	endpoint-of-service	2	2026-10-15T09:13:32Z
+E-r19-0026	parent	AST-r19-0012	AST-r19-0002	endpoint-of-service	2	2026-10-15T09:13:33Z
+E-r19-0027	parent	AST-r19-0013	AST-r19-0002	endpoint-of-service	2	2026-10-15T09:13:34Z
+E-r19-0028	parent	AST-r19-0014	AST-r19-0002	endpoint-of-service	2	2026-10-15T09:13:35Z
+E-r19-0029	parent	AST-r19-0015	AST-r19-0002	endpoint-of-service	2	2026-10-15T09:13:36Z
+E-r19-0030	parent	AST-r19-0016	AST-r19-0002	endpoint-of-service	2	2026-10-15T09:13:37Z
+E-r19-0031	parent	AST-r19-0017	AST-r19-0001	endpoint-of-service	2	2026-10-15T09:13:38Z
+E-r19-0032	parent	AST-r19-0018	AST-r19-0001	endpoint-of-service	2	2026-10-15T09:13:39Z
+E-r19-0033	parent	AST-r19-0019	AST-r19-0001	endpoint-of-service	2	2026-10-15T09:13:40Z
+E-r19-0034	parent	AST-r19-0020	AST-r19-0001	endpoint-of-service	2	2026-10-15T09:13:41Z
+E-r19-0035	parent	AST-r19-0021	AST-r19-0001	endpoint-of-service	2	2026-10-15T09:13:42Z
+E-r19-0036	parent	AST-r19-0022	AST-r19-0001	endpoint-of-service	2	2026-10-15T09:13:43Z
+E-r19-0037	parent	AST-r19-0023	AST-r19-0001	endpoint-of-service	2	2026-10-15T09:13:44Z
+E-r19-0038	parent	AST-r19-0024	AST-r19-0006	endpoint-of-service	2	2026-10-15T09:13:45Z
+E-r19-0039	parent	AST-r19-0025	AST-r19-0006	endpoint-of-service	2	2026-10-15T09:13:46Z
+E-r19-0040	parent	AST-r19-0026	AST-r19-0007	endpoint-of-service	2	2026-10-15T09:13:47Z
+E-r19-0041	parent	AST-r19-0027	AST-r19-0007	endpoint-of-service	2	2026-10-15T09:13:48Z
+E-r19-0042	parent	AST-r19-0028	AST-r19-0008	endpoint-of-service	2	2026-10-15T09:13:49Z
+E-r19-0043	parent	AST-r19-0029	AST-r19-0008	endpoint-of-service	2	2026-10-15T09:13:50Z
+E-r19-0044	parent	AST-r19-0030	AST-r19-0008	endpoint-of-service	2	2026-10-15T09:13:51Z
+E-r19-0045	parent	AST-r19-0031	AST-r19-0008	endpoint-of-service	2	2026-10-15T09:13:52Z
+E-r19-0046	parent	AST-r19-0032	AST-r19-0008	endpoint-of-service	2	2026-10-15T09:13:53Z
+E-r19-0047	parent	AST-r19-0033	AST-r19-0008	endpoint-of-service	2	2026-10-15T09:13:54Z
+E-r19-0048	parent	AST-r19-0034	AST-r19-0001	endpoint-of-service	2	2026-10-15T09:13:55Z
+E-r19-0049	parent	AST-r19-0035	AST-r19-0007	endpoint-of-service	2	2026-10-15T09:13:56Z
+E-r19-0050	parent	AST-r19-0036	AST-r19-0002	endpoint-of-service	2	2026-10-15T09:13:57Z
+E-r19-0051	parent	AST-r19-0037	AST-r19-0002	endpoint-of-service	2	2026-10-15T09:13:58Z
+E-r19-0052	parent	AST-r19-0038	AST-r19-0005	endpoint-of-service	2	2026-10-15T09:13:59Z
+E-r19-0053	parent	AST-r19-0039	AST-r19-0006	endpoint-of-service	2	2026-10-15T09:14:00Z

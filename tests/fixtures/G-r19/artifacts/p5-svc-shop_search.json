@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-shop",
+  "path": "/search",
+  "beacon": "GTXSS-01",
+  "state": "anon",
+  "meta": "XSS 反射面 search",
+  "ev_title": "shop /search 反射 XSS 观察（信标 GTXSS-01）",
+  "title": "svc-shop /search 反射 XSS",
+  "impact": "中",
+  "vulnref": "CWE-79",
+  "intent": "INT-r19-0003",
+  "brief": "匿名 GET /search 回显信标 GTXSS-01 synthetic reflected xss；反射面未编码",
+  "steps": "匿名 GET svc-shop:8001 /search|观察 200 体信标 GTXSS-01"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>search results /search GTXSS-01 synthetic reflected xss</html>",
+   "clen": "68",
+   "hash": "a41121e3da",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>search results /search GTXSS-01 synthetic reflected xss</html>",
+   "clen": "68",
+   "hash": "a41121e3da",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

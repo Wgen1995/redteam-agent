@@ -1,0 +1,33 @@
+{
+ "get_notok": {
+  "status": 200,
+  "headers": {
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "date": "Wed, 07 Oct 2026 06:05:13 GMT",
+   "content-type": "text/html; charset=utf-8",
+   "content-length": "23"
+  },
+  "body": "<html>login form</html>"
+ },
+ "get_tok": {
+  "status": 200,
+  "headers": {
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "date": "Wed, 07 Oct 2026 06:05:13 GMT",
+   "content-type": "text/html; charset=utf-8",
+   "content-length": "23"
+  },
+  "body": "<html>login form</html>"
+ },
+ "post_body": {
+  "status": 200,
+  "headers": {
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "date": "Wed, 07 Oct 2026 06:05:13 GMT",
+   "content-type": "text/html; charset=utf-8",
+   "x-auth-token": "tok-usr-001",
+   "content-length": "75"
+  },
+  "body": "<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>"
+ }
+}

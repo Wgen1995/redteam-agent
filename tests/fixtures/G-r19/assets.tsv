@@ -1,0 +1,39 @@
+AST-r19-0001	service	svc-shop	port=8001	in_scope	2	2026-10-15T09:07:04Z
+AST-r19-0002	service	svc-api-gw	port=8002	in_scope	2	2026-10-15T09:07:05Z
+AST-r19-0003	service	svc-admin	port=8003	in_scope	2	2026-10-15T09:07:06Z
+AST-r19-0004	service	svc-login	port=8004	in_scope	2	2026-10-15T09:07:07Z
+AST-r19-0005	service	svc-billing	port=8005	in_scope	2	2026-10-15T09:07:08Z
+AST-r19-0006	service	svc-dashboard	port=8006	in_scope	2	2026-10-15T09:07:09Z
+AST-r19-0007	service	svc-portal	port=8007	in_scope	2	2026-10-15T09:07:10Z
+AST-r19-0008	service	svc-files	port=8008	in_scope	2	2026-10-15T09:07:11Z
+AST-r19-0009	endpoint	svc-login/	登录面 POST 表单根	in_scope	2	2026-10-15T09:07:27Z
+AST-r19-0010	endpoint	svc-files/.env	公开环境文件暴露面（匿名 200）	in_scope	2	2026-10-15T09:07:45Z
+AST-r19-0011	endpoint	svc-api-gw/cors-debug	CORS 调试面（通配 allow-origin）	in_scope	2	2026-10-15T09:07:51Z
+AST-r19-0012	endpoint	svc-api-gw/origin	Origin 反射面（allow-credentials true）	in_scope	2	2026-10-15T09:07:55Z
+AST-r19-0013	endpoint	svc-api-gw/fetch	SSRF fetch 面	in_scope	2	2026-10-15T09:07:59Z
+AST-r19-0014	endpoint	svc-api-gw/preview	SSRF preview 面	in_scope	2	2026-10-15T09:08:03Z
+AST-r19-0015	endpoint	svc-api-gw/proxy	SSRF proxy 面	in_scope	2	2026-10-15T09:08:07Z
+AST-r19-0016	endpoint	svc-api-gw/admin/keys	低权可达密钥清单（401→200 翻转）	in_scope	2	2026-10-15T09:08:11Z
+AST-r19-0017	endpoint	svc-shop/item	参数面 item（SQL 错误回显）	in_scope	2	2026-10-15T09:08:17Z
+AST-r19-0018	endpoint	svc-shop/order	参数面 order（SQL 语法错误）	in_scope	2	2026-10-15T09:08:21Z
+AST-r19-0019	endpoint	svc-shop/orders	参数面 orders（order 镜像面）	in_scope	2	2026-10-15T09:08:25Z
+AST-r19-0020	endpoint	svc-shop/search	XSS 反射面 search	in_scope	2	2026-10-15T09:08:29Z
+AST-r19-0021	endpoint	svc-shop/comment	XSS 存储回显面 comment	in_scope	2	2026-10-15T09:08:33Z
+AST-r19-0022	endpoint	svc-shop/feedback	XSS 反射面 feedback	in_scope	2	2026-10-15T09:08:37Z
+AST-r19-0023	endpoint	svc-shop/admin/reports	低权可达他人报表（401→200 翻转）	in_scope	2	2026-10-15T09:08:41Z
+AST-r19-0024	endpoint	svc-dashboard/admin/config	低权可达配置（401→200 翻转）	in_scope	2	2026-10-15T09:08:47Z
+AST-r19-0025	endpoint	svc-dashboard/render	SSTI 渲染面 render	in_scope	2	2026-10-15T09:08:53Z
+AST-r19-0026	endpoint	svc-portal/admin/clients	低权可达客户清单（401→200 翻转）	in_scope	2	2026-10-15T09:08:57Z
+AST-r19-0027	endpoint	svc-portal/debug/env	infoleak debug 面	in_scope	2	2026-10-15T09:09:03Z
+AST-r19-0028	endpoint	svc-files/admin/logs	低权可达日志（401→200 翻转）	in_scope	2	2026-10-15T09:09:07Z
+AST-r19-0029	endpoint	svc-files/unserialize	反序列化处理器面 pickle	in_scope	2	2026-10-15T09:09:13Z
+AST-r19-0030	endpoint	svc-files/import	反序列化处理器面 java	in_scope	2	2026-10-15T09:09:17Z
+AST-r19-0031	endpoint	svc-files/decode	解码处理器面 base64	in_scope	2	2026-10-15T09:09:21Z
+AST-r19-0032	endpoint	svc-files/download	路径穿越面 download	in_scope	2	2026-10-15T09:09:25Z
+AST-r19-0033	endpoint	svc-files/static	路径穿越面 static	in_scope	2	2026-10-15T09:09:29Z
+AST-r19-0034	endpoint	svc-shop/logout?next=	开放重定向面 logout（next 参数外域实证）	in_scope	2	2026-10-15T09:09:33Z
+AST-r19-0035	endpoint	svc-portal/redirect?to=	开放重定向面 redirect（to/goto 参数外域实证）	in_scope	2	2026-10-15T09:09:39Z
+AST-r19-0036	endpoint	svc-api-gw/jump?u=	开放重定向面 jump（u 参数外域实证）	in_scope	2	2026-10-15T09:09:45Z
+AST-r19-0037	endpoint	svc-api-gw/graphql?query=	GraphQL 内省面（__schema 可用）	in_scope	2	2026-10-15T09:09:51Z
+AST-r19-0038	endpoint	svc-billing/invoice/1	资源面 invoice path 形（持证 200）	in_scope	2	2026-10-15T09:09:55Z
+AST-r19-0039	endpoint	svc-dashboard/render?q=	render 反射参数形（XSS 类目修正）	in_scope	2	2026-10-15T09:10:05Z

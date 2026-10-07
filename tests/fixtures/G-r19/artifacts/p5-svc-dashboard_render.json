@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-dashboard",
+  "path": "/render",
+  "beacon": "GTSSTI-02",
+  "state": "anon",
+  "meta": "SSTI 渲染面 render",
+  "ev_title": "dashboard /render 模板渲染面观察（信标 GTSSTI-02）",
+  "title": "svc-dashboard /render 服务端模板注入面",
+  "impact": "高",
+  "vulnref": "CWE-1336",
+  "intent": "INT-r19-0005",
+  "brief": "匿名 GET /render 回显信标 GTSSTI-02 synthetic ssti render；模板渲染面（参数形另探）",
+  "steps": "匿名 GET svc-dashboard:8006 /render|观察 200 体信标 GTSSTI-02"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render</html>",
+   "clen": "59",
+   "hash": "73de34dee8",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render</html>",
+   "clen": "59",
+   "hash": "73de34dee8",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

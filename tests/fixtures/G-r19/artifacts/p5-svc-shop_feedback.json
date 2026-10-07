@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-shop",
+  "path": "/feedback",
+  "beacon": "GTXSS-04",
+  "state": "anon",
+  "meta": "XSS 反射面 feedback",
+  "ev_title": "shop /feedback 反射 XSS 观察（信标 GTXSS-04）",
+  "title": "svc-shop /feedback 反射 XSS",
+  "impact": "中",
+  "vulnref": "CWE-79",
+  "intent": "INT-r19-0003",
+  "brief": "匿名 GET /feedback 回显信标 GTXSS-04 synthetic reflected xss；三面族第三面",
+  "steps": "匿名 GET svc-shop:8001 /feedback|观察 200 体信标 GTXSS-04"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>feedback /feedback GTXSS-04 synthetic reflected xss</html>",
+   "clen": "64",
+   "hash": "e5c6f0ee04",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>feedback /feedback GTXSS-04 synthetic reflected xss</html>",
+   "clen": "64",
+   "hash": "e5c6f0ee04",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

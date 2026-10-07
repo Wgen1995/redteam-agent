@@ -1092,3 +1092,9 @@
 - **归因核验（种子锚点，RT-0015 attribution_check=verified）**：①ratelimit-01 卡词证缺口（finding 真实+EV 已验——卡 matcher 仅 denied，GT 特异信标串 GTRATE-01 未入卡——**词形变体第四例**→29 律候选：信标串入卡律）；②cmdi 双面+ssti 诚实 suspected（四发差分证伪范本——评分器正确排除）；③xss-03/infoleak-02 三面族漏第三面→dict v3.9 候选；④流程金矿：驱动参数契约先行（35 FD 挂错 EV 三轮修复）+账本转义形联查走 CLI+docker cp 静默回滚源（已恢复复验）。
 - **RT-0015** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r18 入 fixtures 钉测 3 枚。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。
+
+## 2026-10-15 battle-18（G-r19）收战：记账形两连失代——auth_context 链断七枚+裸根资产
+- **战果**：门控 **22/56≈0.3929**（beacon 22；**应得≈29**——纯记账形丢分）。**律 29 兑现**：信标串入卡（GTRATE-01 计数器入卡——上代卡词证缺口封口；然卡好资产裸根 svc-login/ 拖沉——同源双失）；42/42 EV 全 VERIFIED（4 张对照卡 REPAIRED 修卡重放——负样本工程实战）。**SSTI→XSS 诚实类目修正范本**（无求值归 XSS 不虚报）。十六代同面：0.50/0.21/0.34/0.29/0.38/0.32/0.34/0.38/0.43/0.59/0.43/0.34/0.46/0.45/0.55/0.39。
+- **归因核验（种子锚点，RT-0016 attribution_check=verified）**：①**auth_context 链断七枚**（post_auth findings 记账漏挂 CRED——G-r11 以来隐含契约失传→22 律再修：持证 findings auth_context=CRED-xxx 必填）；②**裸根资产**（svc-login/ 尾斜杠无面——资产形变体第五例→25 律再修：面必须显形）；③xss-03 两代漏第三面+userenum/ratelimit 代际波动；④装备层 bug 多于探测层（bash3.2 转义三炸全在记账驱动——驱动样例先行扩展到记账侧）；CLI 隐式契约四处（REJECT 回读源码纠正）。
+- **RT-0016** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r19 入 fixtures 钉测 4 枚（含链断+裸根两钉）。
+- 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。

@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-portal",
+  "path": "/debug/env",
+  "beacon": "GTINFOLEAK-01",
+  "state": "anon",
+  "meta": "infoleak debug 面",
+  "ev_title": "portal /debug/env 环境信息暴露观察（信标 GTINFOLEAK-01）",
+  "title": "svc-portal /debug/env 环境变量信息泄露（DB_PASS/AWS_KEY 形键回显）",
+  "impact": "高",
+  "vulnref": "CWE-200",
+  "intent": "INT-r19-0006",
+  "brief": "匿名 GET /debug/env 回显信标 GTINFOLEAK-01 与 DB_PASS/AWS_KEY 形键值（脱敏形回显）；infoleak 三面族第一面",
+  "steps": "匿名 GET svc-portal:8007 /debug/env|观察 200 体信标 GTINFOLEAK-01"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>",
+   "clen": "91",
+   "hash": "4173597edf",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>",
+   "clen": "91",
+   "hash": "4173597edf",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

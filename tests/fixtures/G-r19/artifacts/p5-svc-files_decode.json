@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-files",
+  "path": "/decode",
+  "beacon": "GTDESER-03",
+  "state": "anon",
+  "meta": "解码处理器面 base64",
+  "ev_title": "files /decode base64 载荷膨胀观察（信标 GTDESER-03）",
+  "title": "svc-files /decode base64 载荷对象膨胀",
+  "impact": "高",
+  "vulnref": "CWE-502",
+  "intent": "INT-r19-0007",
+  "brief": "匿名 GET /decode 回显信标 GTDESER-03 base64 payload object inflated；GET 直取即弹",
+  "steps": "匿名 GET svc-files:8008 /decode|观察 200 体信标 GTDESER-03"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>GTDESER-03 synthetic base64 payload object inflated</html>",
+   "clen": "64",
+   "hash": "d77c9c0025",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTDESER-03 synthetic base64 payload object inflated</html>",
+   "clen": "64",
+   "hash": "d77c9c0025",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

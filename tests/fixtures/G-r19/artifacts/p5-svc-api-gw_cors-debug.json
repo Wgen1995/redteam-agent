@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-api-gw",
+  "path": "/cors-debug",
+  "beacon": "GTCORS-01",
+  "state": "anon",
+  "meta": "CORS 调试面（通配 allow-origin）",
+  "ev_title": "gw /cors-debug 通配 allow-origin 观察（信标 GTCORS-01）",
+  "title": "svc-api-gw /cors-debug CORS 通配 allow-origin 配置缺陷",
+  "impact": "中",
+  "vulnref": "CWE-942",
+  "intent": "INT-r19-0004",
+  "brief": "匿名 GET /cors-debug 回显信标 GTCORS-01 与 wildcard allow-origin 配置文案；任意源可读",
+  "steps": "匿名 GET svc-api-gw:8002 /cors-debug|观察 200 体信标 GTCORS-01 wildcard allow-origin"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>cors debug GTCORS-01 wildcard allow-origin</html>",
+   "clen": "55",
+   "hash": "62b9f5f562",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>cors debug GTCORS-01 wildcard allow-origin</html>",
+   "clen": "55",
+   "hash": "62b9f5f562",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

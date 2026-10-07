@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-api-gw",
+  "path": "/fetch",
+  "beacon": "GTSSRF-01",
+  "state": "anon",
+  "meta": "SSRF fetch 面",
+  "ev_title": "gw /fetch 内网取回观察（信标 GTSSRF-01）",
+  "title": "svc-api-gw /fetch SSRF 内网文档取回",
+  "impact": "高",
+  "vulnref": "CWE-918",
+  "intent": "INT-r19-0004",
+  "brief": "匿名 GET /fetch 回显信标 GTSSRF-01 与 internal doc: internal-secret-doc 内容；服务端代取内网资源",
+  "steps": "匿名 GET svc-api-gw:8002 /fetch|观察 200 体信标 GTSSRF-01 与内网文档内容回显"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>",
+   "clen": "72",
+   "hash": "c9cf3bc000",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>",
+   "clen": "72",
+   "hash": "c9cf3bc000",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

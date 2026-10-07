@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-dashboard",
+  "path": "/admin/config",
+  "beacon": "GTROLE-03",
+  "state": "tok",
+  "meta": "低权可达配置（401→200 翻转）",
+  "ev_title": "dashboard /admin/config 低权可达观察（信标 GTROLE-03）",
+  "title": "svc-dashboard /admin/config 低权会话可达配置面",
+  "impact": "高",
+  "vulnref": "CWE-862",
+  "intent": "INT-r19-0005",
+  "brief": "user 级令牌 GET /admin/config 得 200 信标 GTROLE-03 低权可达配置；匿名 401 对照",
+  "steps": "持 user 级令牌 GET svc-dashboard:8006 /admin/config|观察 200 体信标 GTROLE-03|匿名对照 401"
+ },
+ "observed": {
+  "anon": {
+   "body": "auth required",
+   "clen": "13",
+   "hash": "a414e909c3",
+   "loc": null,
+   "status": 401,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTROLE-03 synthetic role-03 低权可达配置</html>",
+   "clen": "59",
+   "hash": "6114e32e92",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "tok"
+}

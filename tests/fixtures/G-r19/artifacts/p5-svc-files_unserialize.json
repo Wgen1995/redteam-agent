@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-files",
+  "path": "/unserialize",
+  "beacon": "GTDESER-01",
+  "state": "anon",
+  "meta": "反序列化处理器面 pickle",
+  "ev_title": "files /unserialize pickle 反序列化观察（信标 GTDESER-01）",
+  "title": "svc-files /unserialize Python pickle 反序列化对象膨胀",
+  "impact": "高",
+  "vulnref": "CWE-502",
+  "intent": "INT-r19-0007",
+  "brief": "匿名 GET /unserialize 回显信标 GTDESER-01 pickle object inflated；GET 直取即弹（律 20）",
+  "steps": "匿名 GET svc-files:8008 /unserialize|观察 200 体信标 GTDESER-01"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>GTDESER-01 synthetic pickle object inflated</html>",
+   "clen": "56",
+   "hash": "72759dd270",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTDESER-01 synthetic pickle object inflated</html>",
+   "clen": "56",
+   "hash": "72759dd270",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

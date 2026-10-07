@@ -1,0 +1,26 @@
+{
+ "svc-admin": [
+  8003
+ ],
+ "svc-api-gw": [
+  8002
+ ],
+ "svc-billing": [
+  8005
+ ],
+ "svc-dashboard": [
+  8006
+ ],
+ "svc-files": [
+  8008
+ ],
+ "svc-login": [
+  8004
+ ],
+ "svc-portal": [
+  8007
+ ],
+ "svc-shop": [
+  8001
+ ]
+}

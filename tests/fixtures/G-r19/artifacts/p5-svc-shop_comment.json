@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-shop",
+  "path": "/comment",
+  "beacon": "GTXSS-02",
+  "state": "anon",
+  "meta": "XSS 存储回显面 comment",
+  "ev_title": "shop /comment 存储型 XSS 回显观察（信标 GTXSS-02）",
+  "title": "svc-shop /comment 存储型 XSS 回显",
+  "impact": "中",
+  "vulnref": "CWE-79",
+  "intent": "INT-r19-0003",
+  "brief": "匿名 GET /comment 回显信标 GTXSS-02 synthetic stored xss echo；存储回显面",
+  "steps": "匿名 GET svc-shop:8001 /comment|观察 200 体信标 GTXSS-02"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>comment GTXSS-02 synthetic stored xss echo</html>",
+   "clen": "55",
+   "hash": "e1bd9838cd",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>comment GTXSS-02 synthetic stored xss echo</html>",
+   "clen": "55",
+   "hash": "e1bd9838cd",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

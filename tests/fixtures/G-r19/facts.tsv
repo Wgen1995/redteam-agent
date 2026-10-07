@@ -1,0 +1,21 @@
+F-r19-0001	INT-r19-0001	port	svc-shop	TCP 8001 开放（8000-8010 段单端口异构）	1.0	2	2026-10-15T09:07:12Z
+F-r19-0002	INT-r19-0001	port	svc-api-gw	TCP 8002 开放（8000-8010 段单端口异构）	1.0	2	2026-10-15T09:07:13Z
+F-r19-0003	INT-r19-0001	port	svc-admin	TCP 8003 开放（8000-8010 段单端口异构）	1.0	2	2026-10-15T09:07:14Z
+F-r19-0004	INT-r19-0001	port	svc-login	TCP 8004 开放（8000-8010 段单端口异构）	1.0	2	2026-10-15T09:07:15Z
+F-r19-0005	INT-r19-0001	port	svc-billing	TCP 8005 开放（8000-8010 段单端口异构）	1.0	2	2026-10-15T09:07:16Z
+F-r19-0006	INT-r19-0001	port	svc-dashboard	TCP 8006 开放（8000-8010 段单端口异构）	1.0	2	2026-10-15T09:07:17Z
+F-r19-0007	INT-r19-0001	port	svc-portal	TCP 8007 开放（8000-8010 段单端口异构）	1.0	2	2026-10-15T09:07:18Z
+F-r19-0008	INT-r19-0001	port	svc-files	TCP 8008 开放（8000-8010 段单端口异构）	1.0	2	2026-10-15T09:07:19Z
+F-r19-0009	INT-r19-0001	service	svc-login:8004	GET / 200 <html>login form</html>（登录面直露）	1.0	2	2026-10-15T09:07:20Z
+F-r19-0010	INT-r19-0001	service	svc-admin:8003	GET / 401 auth required（认证墙）	1.0	2	2026-10-15T09:07:21Z
+F-r19-0011	INT-r19-0001	service	svc-billing:8005	GET / 401 auth required（认证墙）	1.0	2	2026-10-15T09:07:22Z
+F-r19-0012	INT-r19-0001	info	range	八服务全栈 BaseHTTP/0.6 Python/3.12.14；shop/api-gw/dashboard/portal/files 根 404 not found	1.0	2	2026-10-15T09:07:23Z
+F-r19-0013	INT-r19-0002	service	svc-login	POST 全路径 catch-all：/、/auth、/token、/api/token、/oauth/token、/login 皆收 user/pass 键并发放令牌（tok-usr 形=user 级）；仅认 user/pass 键名，name/pwd、username/password、account/pass 全 403	0.9	2	2026-10-15T09:10:13Z
+F-r19-0014	INT-r19-0009	authz	svc-admin	tok-adm-001/tok-admin-001 名形猜测全 401（无管理级令牌可获面）；有效低权令牌→404（资源隐藏形）	0.9	2	2026-10-15T09:10:14Z
+F-r19-0015	INT-r19-0008	authz	svc-billing	有效低权令牌 401→404 翻转；资源面仅 path 形 /invoice/{n} 可达（query 形 /invoice?id=1、/invoices/1、/invoice?n=1 全 404）	0.9	2	2026-10-15T09:10:15Z
+F-r19-0016	INT-r19-0004	http	svc-api-gw	限流墙实证：/cors-debug 连发第 31 发 429+Retry-After:3（~30/10s）；对照 svc-login 零限流	0.9	2	2026-10-15T09:10:16Z
+F-r19-0017	INT-r19-0003	info	range	XSS 族三面全枚举毕：shop /search(GTXSS-01)+/comment(GTXSS-02)+/feedback(GTXSS-04)+dashboard /render 反射；其余服务无 xss 面（echo/自族第二面已扫，404）	0.9	2	2026-10-15T09:10:17Z
+F-r19-0018	INT-r19-0004	info	range	infoleak 族三面全枚举毕：portal /debug/env(GTINFOLEAK-01)+files /.env(GTINFOLEAK-03)+gw /graphql(GTGRAPHQL-01)；debug/vars、actuator/env、metrics、/env、/info 各服务全 404/401	0.9	2	2026-10-15T09:10:18Z
+F-r19-0019	INT-r19-0003	info	range	redirect 族参数名敏感差异：shop /logout 仅 next 外域、portal /redirect 仅 to+goto 外域、gw /jump 仅 u 外域——同族双面逐服务取形不套模板	0.9	2	2026-10-15T09:10:19Z
+F-r19-0020	INT-r19-0003	info	range	新类未发现面：JWT 验签面（Authorization 头全服务被忽略）、CSRF 表单面（无表单端点）、XXE XML 面（upload/import 非_XML 形）——诚实缺口记入 honest_misses	0.9	2	2026-10-15T09:10:20Z
+F-r19-0021	INT-r19-0001	info	range	探测量：probe1/2 端口+指纹约 90 请求；probe5 字典波 960（8 服务×60 词×双态）；probe6 参数化 1804；probe8/9 约 105——合计约 2959 请求；429 仅 gw 爆发波（按律退避）	0.9	2	2026-10-15T09:10:21Z

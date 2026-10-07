@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-api-gw",
+  "path": "/proxy",
+  "beacon": "GTSSRF-03",
+  "state": "anon",
+  "meta": "SSRF proxy 面",
+  "ev_title": "gw /proxy 内网代理取回观察（信标 GTSSRF-03）",
+  "title": "svc-api-gw /proxy SSRF 内网代理执行",
+  "impact": "高",
+  "vulnref": "CWE-918",
+  "intent": "INT-r19-0004",
+  "brief": "匿名 GET /proxy 回显信标 GTSSRF-03 与 synthetic internal fetch done；服务端代理内网请求",
+  "steps": "匿名 GET svc-api-gw:8002 /proxy|观察 200 体信标 GTSSRF-03"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>proxy GTSSRF-03 synthetic internal fetch done</html>",
+   "clen": "58",
+   "hash": "1dbaafe76c",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>proxy GTSSRF-03 synthetic internal fetch done</html>",
+   "clen": "58",
+   "hash": "1dbaafe76c",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

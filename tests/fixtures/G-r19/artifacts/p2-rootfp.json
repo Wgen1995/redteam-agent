@@ -1,0 +1,82 @@
+{
+ "svc-admin:8003": {
+  "body_head": "auth required",
+  "headers": {
+   "content-length": "13",
+   "content-type": "text/html; charset=utf-8",
+   "date": "Wed, 07 Oct 2026 06:00:03 GMT",
+   "server": "BaseHTTP/0.6 Python/3.12.14"
+  },
+  "status": 401
+ },
+ "svc-api-gw:8002": {
+  "body_head": "not found",
+  "headers": {
+   "content-length": "9",
+   "content-type": "text/html; charset=utf-8",
+   "date": "Wed, 07 Oct 2026 06:00:03 GMT",
+   "server": "BaseHTTP/0.6 Python/3.12.14"
+  },
+  "status": 404
+ },
+ "svc-billing:8005": {
+  "body_head": "auth required",
+  "headers": {
+   "content-length": "13",
+   "content-type": "text/html; charset=utf-8",
+   "date": "Wed, 07 Oct 2026 06:00:03 GMT",
+   "server": "BaseHTTP/0.6 Python/3.12.14"
+  },
+  "status": 401
+ },
+ "svc-dashboard:8006": {
+  "body_head": "not found",
+  "headers": {
+   "content-length": "9",
+   "content-type": "text/html; charset=utf-8",
+   "date": "Wed, 07 Oct 2026 06:00:03 GMT",
+   "server": "BaseHTTP/0.6 Python/3.12.14"
+  },
+  "status": 404
+ },
+ "svc-files:8008": {
+  "body_head": "not found",
+  "headers": {
+   "content-length": "9",
+   "content-type": "text/html; charset=utf-8",
+   "date": "Wed, 07 Oct 2026 06:00:03 GMT",
+   "server": "BaseHTTP/0.6 Python/3.12.14"
+  },
+  "status": 404
+ },
+ "svc-login:8004": {
+  "body_head": "<html>login form</html>",
+  "headers": {
+   "content-length": "23",
+   "content-type": "text/html; charset=utf-8",
+   "date": "Wed, 07 Oct 2026 06:00:03 GMT",
+   "server": "BaseHTTP/0.6 Python/3.12.14"
+  },
+  "status": 200
+ },
+ "svc-portal:8007": {
+  "body_head": "not found",
+  "headers": {
+   "content-length": "9",
+   "content-type": "text/html; charset=utf-8",
+   "date": "Wed, 07 Oct 2026 06:00:03 GMT",
+   "server": "BaseHTTP/0.6 Python/3.12.14"
+  },
+  "status": 404
+ },
+ "svc-shop:8001": {
+  "body_head": "not found",
+  "headers": {
+   "content-length": "9",
+   "content-type": "text/html; charset=utf-8",
+   "date": "Wed, 07 Oct 2026 06:00:03 GMT",
+   "server": "BaseHTTP/0.6 Python/3.12.14"
+  },
+  "status": 404
+ }
+}

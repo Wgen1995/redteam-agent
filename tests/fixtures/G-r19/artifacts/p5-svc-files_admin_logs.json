@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-files",
+  "path": "/admin/logs",
+  "beacon": "GTROLE-04",
+  "state": "tok",
+  "meta": "低权可达日志（401→200 翻转）",
+  "ev_title": "files /admin/logs 低权可达观察（信标 GTROLE-04）",
+  "title": "svc-files /admin/logs 低权会话可达日志面",
+  "impact": "高",
+  "vulnref": "CWE-862",
+  "intent": "INT-r19-0007",
+  "brief": "user 级令牌 GET /admin/logs 得 200 信标 GTROLE-04 低权可达日志；匿名 401 对照",
+  "steps": "持 user 级令牌 GET svc-files:8008 /admin/logs|观察 200 体信标 GTROLE-04|匿名对照 401"
+ },
+ "observed": {
+  "anon": {
+   "body": "auth required",
+   "clen": "13",
+   "hash": "a414e909c3",
+   "loc": null,
+   "status": 401,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTROLE-04 synthetic role-04 低权可达日志</html>",
+   "clen": "59",
+   "hash": "5fff81545b",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "tok"
+}

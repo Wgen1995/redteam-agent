@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-files",
+  "path": "/.env",
+  "beacon": "GTINFOLEAK-03",
+  "state": "anon",
+  "meta": "公开环境文件暴露面（匿名 200）",
+  "ev_title": "svc-files /.env 公开环境文件暴露观察（信标 GTINFOLEAK-03）",
+  "title": "svc-files /.env 匿名可达环境文件泄露（SECRET_KEY 形键回显）",
+  "impact": "高",
+  "vulnref": "CWE-200",
+  "intent": "INT-r19-0007",
+  "brief": "匿名 GET /.env 回显环境文件内容（信标 GTINFOLEAK-03，含 SECRET_KEY 形键值形）；公开暴露无认证",
+  "steps": "匿名 GET svc-files:8008 /.env|观察 200 响应体信标 GTINFOLEAK-03 与 env 键值回显"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>",
+   "clen": "74",
+   "hash": "a5a0576d1f",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>",
+   "clen": "74",
+   "hash": "a5a0576d1f",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

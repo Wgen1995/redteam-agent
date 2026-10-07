@@ -1,0 +1,1 @@
+GET /render?q=<script>XSSB18</script> 得 200，体原样回显 <script>XSSB18</script>（未编码）；{{7*7}} 不求值——类目按回显证据归 XSS

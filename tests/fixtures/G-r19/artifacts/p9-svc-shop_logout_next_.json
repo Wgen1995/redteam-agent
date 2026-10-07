@@ -1,0 +1,3 @@
+{
+ "note": "HTTP 302；Location: http://evil.example/RDIRB18（外域直跳）；体含信标 GTREDIR-02"
+}

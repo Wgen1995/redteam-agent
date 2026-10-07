@@ -1,0 +1,36 @@
+{
+ "login_baseline": [
+  {
+   "status": 403,
+   "x-auth-token": null,
+   "body": "<html>denied</html>"
+  },
+  {
+   "status": 403,
+   "x-auth-token": null,
+   "body": "<html>denied</html>"
+  },
+  {
+   "status": 403,
+   "x-auth-token": null,
+   "body": "<html>denied</html>"
+  }
+ ],
+ "carryform": {
+  "x_auth_token": {
+   "status": 404,
+   "x-auth-token": null,
+   "body": "not found"
+  },
+  "bearer": {
+   "status": 401,
+   "x-auth-token": null,
+   "body": "auth required"
+  },
+  "anon": {
+   "status": 401,
+   "x-auth-token": null,
+   "body": "auth required"
+  }
+ }
+}

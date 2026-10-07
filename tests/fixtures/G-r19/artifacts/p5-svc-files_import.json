@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-files",
+  "path": "/import",
+  "beacon": "GTDESER-02",
+  "state": "anon",
+  "meta": "反序列化处理器面 java",
+  "ev_title": "files /import Java 序列化接受观察（信标 GTDESER-02）",
+  "title": "svc-files /import Java 序列化数据接受",
+  "impact": "高",
+  "vulnref": "CWE-502",
+  "intent": "INT-r19-0007",
+  "brief": "匿名 GET /import 回显信标 GTDESER-02 java serialized blob accepted；GET 直取即弹",
+  "steps": "匿名 GET svc-files:8008 /import|观察 200 体信标 GTDESER-02"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>GTDESER-02 synthetic java serialized blob accepted</html>",
+   "clen": "63",
+   "hash": "e9dfd20e68",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTDESER-02 synthetic java serialized blob accepted</html>",
+   "clen": "63",
+   "hash": "e9dfd20e68",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

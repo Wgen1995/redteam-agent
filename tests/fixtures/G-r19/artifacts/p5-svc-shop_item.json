@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-shop",
+  "path": "/item",
+  "beacon": "GTSQLI-01",
+  "state": "anon",
+  "meta": "参数面 item（SQL 错误回显）",
+  "ev_title": "shop /item SQL 注入回显观察（信标 GTSQLI-01）",
+  "title": "svc-shop /item SQL 注入（错误回显）",
+  "impact": "高",
+  "vulnref": "CWE-89",
+  "intent": "INT-r19-0003",
+  "brief": "匿名 GET /item 回显信标 GTSQLI-01 与 SQL error near 1 形错误；参数面注入点",
+  "steps": "匿名 GET svc-shop:8001 /item|观察 200 体信标 GTSQLI-01 与 SQL 错误回显"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>",
+   "clen": "66",
+   "hash": "c94ef5072f",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>",
+   "clen": "66",
+   "hash": "c94ef5072f",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

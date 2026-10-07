@@ -1,0 +1,9 @@
+INT-r19-0001	P1 测绘：八服务端口地图+根指纹		pending	recon	recon	recon-event			-+recon+P1 测绘：八服务端口地图+根指纹	200\;2000\;1					2	2026-10-15T09:07:03Z
+INT-r19-0002	svc-login 弱口令与凭据发放面深探		candidate	explore	surface	adjacency			AST-r19-0004+surface+svc-login 弱口令与凭据发放面深探	300\;3000\;2					2	2026-10-15T09:07:28Z
+INT-r19-0003	svc-shop 公开面族字典喷扫		pending	explore	surface	recon-event			AST-r19-0001+surface+svc-shop 公开面族字典喷扫	300\;3000\;2					2	2026-10-15T09:07:38Z
+INT-r19-0004	svc-api-gw 公开面族字典喷扫		pending	explore	surface	recon-event			AST-r19-0002+surface+svc-api-gw 公开面族字典喷扫	300\;3000\;2					2	2026-10-15T09:07:39Z
+INT-r19-0005	svc-dashboard 公开面族字典喷扫		pending	explore	surface	recon-event			AST-r19-0006+surface+svc-dashboard 公开面族字典喷扫	300\;3000\;2					2	2026-10-15T09:07:40Z
+INT-r19-0006	svc-portal 公开面族字典喷扫		pending	explore	surface	recon-event			AST-r19-0007+surface+svc-portal 公开面族字典喷扫	300\;3000\;2					2	2026-10-15T09:07:41Z
+INT-r19-0007	svc-files 公开面族字典喷扫		pending	explore	surface	recon-event			AST-r19-0008+surface+svc-files 公开面族字典喷扫	300\;3000\;2					2	2026-10-15T09:07:42Z
+INT-r19-0008	svc-billing 401 墙与管理级令牌面探测		candidate	explore	surface	adjacency			AST-r19-0005+surface+svc-billing 401 墙与管理级令牌面探测	200\;1500\;1					2	2026-10-15T09:07:43Z
+INT-r19-0009	svc-admin 401 墙与管理级令牌面探测		candidate	explore	surface	adjacency			AST-r19-0003+surface+svc-admin 401 墙与管理级令牌面探测	200\;1500\;1					2	2026-10-15T09:07:44Z

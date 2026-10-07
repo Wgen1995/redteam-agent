@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-shop",
+  "path": "/admin/reports",
+  "beacon": "GTIDOR-06",
+  "state": "tok",
+  "meta": "低权可达他人报表（401→200 翻转）",
+  "ev_title": "shop /admin/reports 低权越权读观察（信标 GTIDOR-06）",
+  "title": "svc-shop /admin/reports 低权会话越权读他人报表",
+  "impact": "高",
+  "vulnref": "CWE-639",
+  "intent": "INT-r19-0003",
+  "brief": "user 级令牌 GET /admin/reports 得 200 信标 GTIDOR-06 他人报表；匿名 401 对照",
+  "steps": "持 user 级令牌 GET svc-shop:8001 /admin/reports|观察 200 体信标 GTIDOR-06|匿名对照 401"
+ },
+ "observed": {
+  "anon": {
+   "body": "auth required",
+   "clen": "13",
+   "hash": "a414e909c3",
+   "loc": null,
+   "status": 401,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTIDOR-06 synthetic idor-06 他人报表</html>",
+   "clen": "53",
+   "hash": "225426b8d7",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "tok"
+}

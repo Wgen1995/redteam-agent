@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-api-gw",
+  "path": "/origin",
+  "beacon": "GTCORS-02",
+  "state": "anon",
+  "meta": "Origin 反射面（allow-credentials true）",
+  "ev_title": "gw /origin Origin 反射+凭据允许观察（信标 GTCORS-02）",
+  "title": "svc-api-gw /origin Origin 反射且 allow-credentials true 配置缺陷",
+  "impact": "中",
+  "vulnref": "CWE-942",
+  "intent": "INT-r19-0004",
+  "brief": "匿名 GET /origin 回显信标 GTCORS-02：Origin 反射 none 且 allow-credentials true 文案；反射源+凭据组合",
+  "steps": "匿名 GET svc-api-gw:8002 /origin|观察 200 体信标 GTCORS-02 reflected none allow-credentials true"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>origin GTCORS-02 reflected none allow-credentials true</html>",
+   "clen": "67",
+   "hash": "a684a34ba2",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>origin GTCORS-02 reflected none allow-credentials true</html>",
+   "clen": "67",
+   "hash": "a684a34ba2",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

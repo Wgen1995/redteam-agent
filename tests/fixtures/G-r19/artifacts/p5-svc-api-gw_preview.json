@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-api-gw",
+  "path": "/preview",
+  "beacon": "GTSSRF-02",
+  "state": "anon",
+  "meta": "SSRF preview 面",
+  "ev_title": "gw /preview webhook 元数据观察（信标 GTSSRF-02）",
+  "title": "svc-api-gw /preview SSRF webhook 元数据回显",
+  "impact": "高",
+  "vulnref": "CWE-918",
+  "intent": "INT-r19-0004",
+  "brief": "匿名 GET /preview 回显信标 GTSSRF-02 与 webhook meta: internal-metadata；元数据面可代取",
+  "steps": "匿名 GET svc-api-gw:8002 /preview|观察 200 体信标 GTSSRF-02 与 internal-metadata"
+ },
+ "observed": {
+  "anon": {
+   "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>",
+   "clen": "72",
+   "hash": "240935516f",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>",
+   "clen": "72",
+   "hash": "240935516f",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "anon"
+}

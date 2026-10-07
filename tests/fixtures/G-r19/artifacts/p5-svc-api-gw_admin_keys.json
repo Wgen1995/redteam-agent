@@ -1,0 +1,35 @@
+{
+ "hit": {
+  "svc": "svc-api-gw",
+  "path": "/admin/keys",
+  "beacon": "GTIDOR-05",
+  "state": "tok",
+  "meta": "低权可达密钥清单（401→200 翻转）",
+  "ev_title": "gw /admin/keys 低权令牌可读观察（信标 GTIDOR-05）",
+  "title": "svc-api-gw /admin/keys 低权会话越权读取密钥清单",
+  "impact": "高",
+  "vulnref": "CWE-639",
+  "intent": "INT-r19-0004",
+  "brief": "user 级令牌（tok-usr 形）GET /admin/keys 得 200 信标 GTIDOR-05 低权可见密钥清单；匿名 401 对照",
+  "steps": "持 user 级令牌 GET svc-api-gw:8002 /admin/keys|观察 200 体信标 GTIDOR-05|匿名对照 401"
+ },
+ "observed": {
+  "anon": {
+   "body": "auth required",
+   "clen": "13",
+   "hash": "a414e909c3",
+   "loc": null,
+   "status": 401,
+   "xauth": null
+  },
+  "tok": {
+   "body": "<html>GTIDOR-05 synthetic idor-05 低权可见密钥清单</html>",
+   "clen": "65",
+   "hash": "868e94f33d",
+   "loc": null,
+   "status": 200,
+   "xauth": null
+  }
+ },
+ "state": "tok"
+}
