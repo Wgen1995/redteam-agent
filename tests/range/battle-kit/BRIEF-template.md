@@ -77,3 +77,4 @@
 28. **beacon 原形律（battle-16 实证：编码形/原形一字之差即 P4 false-negative）**：EV 卡 expected 取与发送载荷**同形态**的响应特征（发送原形则卡记原形 beacon，发送编码形则记编码形）；同链不同服务成功响应体不同（welcome body vs token 回显）——逐服务取形不套模板。
 29. **信标串入卡律（battle-17 实证：ratelimit 洞真实+EV 已验但卡 matcher 仅记行为词 denied）**：EV 卡 matchers 必含服务端回显的**特异信标串**（计数器/类信标/指纹串——响应体中的唯一性子串），行为描述词（denied/processed 形）不足以撑 beacon 轨。另：**驱动样例先行**（批量记账前 1 枚样例全链打通再放量）。
 30. **门事件随战即时铸（battle-19 实证：P4 抢跑致 verify-chain 死锁且无补票）**：add-goal 后 matrix-init 前先铸 P0 门事件，P1-P4 逐段随战即时铸；任何门标事件抢跑=永久死锁（引擎无补票通道）——拒伪造门事件，如实 FAIL 留痕。
+31. **一洞一行勿并档（battle-20 实证：weakpass 卡词对但并入 deser 行致资产错挂）**：每个漏洞独立一行 finding，资产必须是该洞真实所在面（弱口令=svc-login/login 非 deser 面）；多洞同面可分行，禁止跨面并档。
