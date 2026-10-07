@@ -71,3 +71,4 @@ GT 键=svc-*/path?query 无端口 canonical 形（127.0.0.1:800x 历史映射形
 | /graphql?query= | GraphQL 内省（**每代必扫**：battle-15 漏教训）：__schema、__type 两载荷；响应 schema 字段即证 | Infoleak |
 | /login 登录面族 | 账号枚举+限流双枚（**每代必扫**）：已知账号 vs 随机账号响应差异即证（枚举）；连续 5 发同响应后测降速差异即证（限流）——降速换轨不硬撞 | Auth |
 | 同族第二面提醒列（**每代必扫**：battle-16 四族皆漏教训） | XSS 族：得一面后必扫族内第二面（search/echo/render/q 全枚遍历）；CORS 族：通配面后必扫 origin 反射+ACAC 面；穿越族：download 面后必扫 static 面；infoleak 族：.env/debug 后必扫第三面（graphql/debug 变体） | 多族 |
+| 三面族全枚举（**每代必扫**：battle-17 三面族漏第三面教训） | XSS 族：三面全枚（search/echo/render/q+comment/feedback 变体）；infoleak 族：三面全枚（.env/debug 变体/graphql 内省）；得两面仍扫剩余面 | 多族 |

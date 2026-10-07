@@ -75,3 +75,4 @@
 26. **重放行键=EV 标准形（battle-13 实证：FD 键致评分门 0 分）**：set-replay-state 记 timeline replay:EV-xxx:VERIFIED 形（EV 键标准）；FD 键语义等价但非标准（评分器须链展开才能消费）。
 27. **打穿别打塌（battle-14 实证：弱口令 36 连发把服务端打进锁死态，亲手毁掉已验证战果的 P4 重放）**：凭据/弱口令命中即固化证据（铸 EV+卡片）再探边界；连击前先铸证（发现时 200+响应实录即入账）；不确定服务端限流/tarpit 阈值时降速换轨而非硬撞。
 28. **beacon 原形律（battle-16 实证：编码形/原形一字之差即 P4 false-negative）**：EV 卡 expected 取与发送载荷**同形态**的响应特征（发送原形则卡记原形 beacon，发送编码形则记编码形）；同链不同服务成功响应体不同（welcome body vs token 回显）——逐服务取形不套模板。
+29. **信标串入卡律（battle-17 实证：ratelimit 洞真实+EV 已验但卡 matcher 仅记行为词 denied）**：EV 卡 matchers 必含服务端回显的**特异信标串**（计数器/类信标/指纹串——响应体中的唯一性子串），行为描述词（denied/processed 形）不足以撑 beacon 轨。另：**驱动样例先行**（批量记账前 1 枚样例全链打通再放量）。
