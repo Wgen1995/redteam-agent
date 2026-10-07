@@ -1,0 +1,15 @@
+=== REQUEST ===
+GET /login HTTP/1.1
+Host: svc-login:8004
+User-Agent: tanyin-G-r22/probe
+Connection: close
+
+
+=== RESPONSE ===
+HTTP/1.1 200
+server: BaseHTTP/0.6 Python/3.12.14
+date: Wed, 07 Oct 2026 13:35:45 GMT
+content-type: text/html; charset=utf-8
+content-length: 23
+
+<html>login form</html>

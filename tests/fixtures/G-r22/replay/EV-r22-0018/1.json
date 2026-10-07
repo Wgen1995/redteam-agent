@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r22-0018", "matched": true, "results": [{"detail": ["GTSSRF-01", "internal-secret-doc"], "ok": true, "type": "word"}, {"detail": ["200"], "ok": true, "type": "status"}], "status": 200, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r22 --id=EV-r22-0018 --state=VERIFIED", "verdict": "reproduced"}

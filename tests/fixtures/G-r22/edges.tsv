@@ -1,0 +1,113 @@
+E-r22-0001	parent	AST-r22-0002	AST-r22-0001	segment parent	2	2026-10-18T09:14:00Z
+E-r22-0002	parent	AST-r22-0003	AST-r22-0001	segment parent	2	2026-10-18T09:15:00Z
+E-r22-0003	parent	AST-r22-0004	AST-r22-0001	segment parent	2	2026-10-18T09:16:00Z
+E-r22-0004	parent	AST-r22-0005	AST-r22-0001	segment parent	2	2026-10-18T09:17:00Z
+E-r22-0005	parent	AST-r22-0006	AST-r22-0001	segment parent	2	2026-10-18T09:18:00Z
+E-r22-0006	parent	AST-r22-0007	AST-r22-0001	segment parent	2	2026-10-18T09:19:00Z
+E-r22-0007	parent	AST-r22-0008	AST-r22-0001	segment parent	2	2026-10-18T09:20:00Z
+E-r22-0008	parent	AST-r22-0009	AST-r22-0001	segment parent	2	2026-10-18T09:21:00Z
+E-r22-0009	parent	AST-r22-0010	AST-r22-0005	service parent	2	2026-10-18T09:43:00Z
+E-r22-0010	parent	AST-r22-0011	AST-r22-0004	service parent	2	2026-10-18T09:44:00Z
+E-r22-0011	parent	AST-r22-0012	AST-r22-0008	service parent	2	2026-10-18T10:17:00Z
+E-r22-0012	parent	AST-r22-0013	AST-r22-0002	service parent	2	2026-10-18T10:23:00Z
+E-r22-0013	parent	AST-r22-0014	AST-r22-0003	service parent	2	2026-10-18T10:29:00Z
+E-r22-0014	parent	AST-r22-0015	AST-r22-0002	service parent	2	2026-10-18T10:35:00Z
+E-r22-0015	parent	AST-r22-0016	AST-r22-0002	service parent	2	2026-10-18T10:41:00Z
+E-r22-0016	parent	AST-r22-0017	AST-r22-0002	service parent	2	2026-10-18T10:47:00Z
+E-r22-0017	parent	AST-r22-0018	AST-r22-0002	service parent	2	2026-10-18T10:53:00Z
+E-r22-0018	parent	AST-r22-0019	AST-r22-0002	service parent	2	2026-10-18T10:59:00Z
+E-r22-0019	parent	AST-r22-0020	AST-r22-0002	service parent	2	2026-10-18T11:05:00Z
+E-r22-0020	parent	AST-r22-0021	AST-r22-0002	service parent	2	2026-10-18T11:11:00Z
+E-r22-0021	parent	AST-r22-0022	AST-r22-0003	service parent	2	2026-10-18T11:17:00Z
+E-r22-0022	parent	AST-r22-0023	AST-r22-0003	service parent	2	2026-10-18T11:23:00Z
+E-r22-0023	parent	AST-r22-0024	AST-r22-0003	service parent	2	2026-10-18T11:29:00Z
+E-r22-0024	parent	AST-r22-0025	AST-r22-0003	service parent	2	2026-10-18T11:35:00Z
+E-r22-0025	parent	AST-r22-0026	AST-r22-0003	service parent	2	2026-10-18T11:41:00Z
+E-r22-0026	parent	AST-r22-0027	AST-r22-0003	service parent	2	2026-10-18T11:47:00Z
+E-r22-0027	parent	AST-r22-0028	AST-r22-0007	service parent	2	2026-10-18T11:53:00Z
+E-r22-0028	parent	AST-r22-0029	AST-r22-0007	service parent	2	2026-10-18T11:59:00Z
+E-r22-0029	parent	AST-r22-0030	AST-r22-0008	service parent	2	2026-10-18T12:05:00Z
+E-r22-0030	parent	AST-r22-0031	AST-r22-0009	service parent	2	2026-10-18T12:11:00Z
+E-r22-0031	parent	AST-r22-0032	AST-r22-0009	service parent	2	2026-10-18T12:17:00Z
+E-r22-0032	parent	AST-r22-0033	AST-r22-0009	service parent	2	2026-10-18T12:23:00Z
+E-r22-0033	parent	AST-r22-0034	AST-r22-0009	service parent	2	2026-10-18T12:29:00Z
+E-r22-0034	parent	AST-r22-0035	AST-r22-0009	service parent	2	2026-10-18T12:35:00Z
+E-r22-0035	parent	AST-r22-0036	AST-r22-0009	service parent	2	2026-10-18T12:41:00Z
+E-r22-0036	parent	AST-r22-0037	AST-r22-0006	service parent	2	2026-10-18T13:03:00Z
+E-r22-0037	parent	AST-r22-0038	AST-r22-0003	service parent	2	2026-10-18T13:09:00Z
+E-r22-0038	parent	AST-r22-0039	AST-r22-0002	service parent	2	2026-10-18T13:15:00Z
+E-r22-0039	parent	AST-r22-0040	AST-r22-0004	service parent	2	2026-10-18T13:21:00Z
+E-r22-0040	parent	AST-r22-0041	AST-r22-0007	service parent	2	2026-10-18T13:27:00Z
+E-r22-0041	parent	AST-r22-0042	AST-r22-0009	service parent	2	2026-10-18T13:33:00Z
+E-r22-0042	parent	AST-r22-0043	AST-r22-0008	service parent	2	2026-10-18T13:39:00Z
+E-r22-0043	derived_from	F-r22-0001	INT-r22-0006	fact consumed by exploit intent	2	2026-10-18T14:06:00Z
+E-r22-0044	derived_from	F-r22-0001	INT-r22-0008	fact consumed by exploit intent	2	2026-10-18T14:07:00Z
+E-r22-0045	derived_from	F-r22-0001	INT-r22-0009	fact consumed by exploit intent	2	2026-10-18T14:08:00Z
+E-r22-0046	derived_from	F-r22-0001	INT-r22-0010	fact consumed by exploit intent	2	2026-10-18T14:09:00Z
+E-r22-0047	derived_from	F-r22-0002	INT-r22-0007	fact consumed by exploit intent	2	2026-10-18T14:10:00Z
+E-r22-0048	derived_from	F-r22-0002	INT-r22-0015	fact consumed by exploit intent	2	2026-10-18T14:11:00Z
+E-r22-0049	derived_from	F-r22-0002	INT-r22-0016	fact consumed by exploit intent	2	2026-10-18T14:12:00Z
+E-r22-0050	derived_from	F-r22-0002	INT-r22-0017	fact consumed by exploit intent	2	2026-10-18T14:13:00Z
+E-r22-0051	derived_from	F-r22-0002	INT-r22-0018	fact consumed by exploit intent	2	2026-10-18T14:14:00Z
+E-r22-0052	derived_from	F-r22-0002	INT-r22-0019	fact consumed by exploit intent	2	2026-10-18T14:15:00Z
+E-r22-0053	derived_from	F-r22-0002	INT-r22-0020	fact consumed by exploit intent	2	2026-10-18T14:16:00Z
+E-r22-0054	derived_from	F-r22-0003	INT-r22-0021	fact consumed by exploit intent	2	2026-10-18T14:17:00Z
+E-r22-0055	derived_from	F-r22-0003	INT-r22-0022	fact consumed by exploit intent	2	2026-10-18T14:18:00Z
+E-r22-0056	derived_from	F-r22-0004	INT-r22-0005	fact consumed by exploit intent	2	2026-10-18T14:19:00Z
+E-r22-0057	derived_from	F-r22-0004	INT-r22-0023	fact consumed by exploit intent	2	2026-10-18T14:20:00Z
+E-r22-0058	derived_from	F-r22-0005	INT-r22-0025	fact consumed by exploit intent	2	2026-10-18T14:21:00Z
+E-r22-0059	derived_from	F-r22-0005	INT-r22-0026	fact consumed by exploit intent	2	2026-10-18T14:22:00Z
+E-r22-0060	derived_from	F-r22-0005	INT-r22-0027	fact consumed by exploit intent	2	2026-10-18T14:23:00Z
+E-r22-0061	derived_from	F-r22-0005	INT-r22-0024	fact consumed by exploit intent	2	2026-10-18T14:24:00Z
+E-r22-0062	derived_from	F-r22-0005	INT-r22-0028	fact consumed by exploit intent	2	2026-10-18T14:25:00Z
+E-r22-0063	derived_from	F-r22-0005	INT-r22-0029	fact consumed by exploit intent	2	2026-10-18T14:26:00Z
+E-r22-0064	derived_from	F-r22-0006	INT-r22-0030	fact consumed by exploit intent	2	2026-10-18T14:27:00Z
+E-r22-0065	derived_from	F-r22-0006	INT-r22-0031	fact consumed by exploit intent	2	2026-10-18T14:28:00Z
+E-r22-0066	derived_from	F-r22-0007	INT-r22-0035	fact consumed by exploit intent	2	2026-10-18T14:29:00Z
+E-r22-0067	derived_from	F-r22-0008	INT-r22-0002	fact consumed by exploit intent	2	2026-10-18T14:30:00Z
+E-r22-0068	derived_from	F-r22-0009	INT-r22-0003	fact consumed by exploit intent	2	2026-10-18T14:31:00Z
+E-r22-0069	derived_from	F-r22-0010	INT-r22-0004	fact consumed by exploit intent	2	2026-10-18T14:32:00Z
+E-r22-0070	derived_from	F-r22-0011	INT-r22-0030	fact consumed by exploit intent	2	2026-10-18T14:33:00Z
+E-r22-0071	derived_from	F-r22-0012	INT-r22-0031	fact consumed by exploit intent	2	2026-10-18T14:34:00Z
+E-r22-0072	derived_from	F-r22-0013	INT-r22-0035	fact consumed by exploit intent	2	2026-10-18T14:35:00Z
+E-r22-0073	derived_from	F-r22-0013	INT-r22-0032	fact consumed by exploit intent	2	2026-10-18T14:36:00Z
+E-r22-0074	derived_from	F-r22-0014	INT-r22-0030	fact consumed by exploit intent	2	2026-10-18T14:37:00Z
+E-r22-0075	derived_from	F-r22-0015	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:48:00Z
+E-r22-0076	derived_from	F-r22-0017	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:49:00Z
+E-r22-0077	derived_from	F-r22-0018	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:50:00Z
+E-r22-0078	derived_from	F-r22-0019	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:51:00Z
+E-r22-0079	derived_from	F-r22-0020	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:52:00Z
+E-r22-0080	derived_from	F-r22-0021	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:53:00Z
+E-r22-0081	derived_from	F-r22-0022	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:54:00Z
+E-r22-0082	derived_from	F-r22-0023	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:55:00Z
+E-r22-0083	derived_from	F-r22-0024	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:56:00Z
+E-r22-0084	derived_from	F-r22-0025	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:57:00Z
+E-r22-0085	derived_from	F-r22-0026	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:58:00Z
+E-r22-0086	derived_from	F-r22-0027	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T15:59:00Z
+E-r22-0087	derived_from	F-r22-0028	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:00:00Z
+E-r22-0088	derived_from	F-r22-0029	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:01:00Z
+E-r22-0089	derived_from	F-r22-0030	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:02:00Z
+E-r22-0090	derived_from	F-r22-0031	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:03:00Z
+E-r22-0091	derived_from	F-r22-0032	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:04:00Z
+E-r22-0092	derived_from	F-r22-0033	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:05:00Z
+E-r22-0093	derived_from	F-r22-0042	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:06:00Z
+E-r22-0094	derived_from	F-r22-0043	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:07:00Z
+E-r22-0095	derived_from	F-r22-0044	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:08:00Z
+E-r22-0096	derived_from	F-r22-0045	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:09:00Z
+E-r22-0097	derived_from	F-r22-0046	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:10:00Z
+E-r22-0098	derived_from	F-r22-0047	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:11:00Z
+E-r22-0099	derived_from	F-r22-0048	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:12:00Z
+E-r22-0100	derived_from	F-r22-0049	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:13:00Z
+E-r22-0101	derived_from	F-r22-0050	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:14:00Z
+E-r22-0102	derived_from	F-r22-0051	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:15:00Z
+E-r22-0103	derived_from	F-r22-0052	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:16:00Z
+E-r22-0104	derived_from	F-r22-0053	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:17:00Z
+E-r22-0105	derived_from	F-r22-0054	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:18:00Z
+E-r22-0106	derived_from	F-r22-0055	INT-r22-0001	消费补全: 重复/残留 fact 收敛	2	2026-10-18T16:19:00Z
+E-r22-0107	supersedes	FD-r22-0020	FD-r22-0038	supersede-finding	2	2026-10-18T17:03:00Z
+E-r22-0108	supersedes	FD-r22-0021	FD-r22-0039	supersede-finding	2	2026-10-18T17:05:00Z
+E-r22-0109	supersedes	FD-r22-0029	FD-r22-0040	supersede-finding	2	2026-10-18T18:33:00Z
+E-r22-0110	supersedes	FD-r22-0030	FD-r22-0041	supersede-finding	2	2026-10-18T18:35:00Z
+E-r22-0111	supersedes	FD-r22-0031	FD-r22-0042	supersede-finding	2	2026-10-18T18:37:00Z
+E-r22-0112	supersedes	FD-r22-0032	FD-r22-0043	supersede-finding	2	2026-10-18T18:39:00Z
+E-r22-0113	supersedes	FD-r22-0034	FD-r22-0044	supersede-finding	2	2026-10-18T18:41:00Z

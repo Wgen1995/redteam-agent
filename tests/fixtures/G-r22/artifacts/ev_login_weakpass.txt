@@ -1,0 +1,12 @@
+=== REQUEST ===
+POST /login HTTP/1.1
+Host: svc-login:8004
+Content-Type: application/x-www-form-urlencoded
+X-Auth-Token: {{vault:cred-2}}
+User-Agent: tanyin-G-r22/probe
+Connection: close
+
+user=admin&pass={{vault:cred-3}}
+=== RESPONSE ===
+HTTP/1.1 200
+(beacon 回显见卡摘录; 全量实录 probe JSON 存 probe/ 目录)

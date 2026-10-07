@@ -1,0 +1,38 @@
+INT-r22-0001	recon 端口/指纹/字典面测绘	probe1-3 容器内测绘	candidate	python3-probe	recon	entity			-+recon+recon 端口/指纹/字典面测绘	20000\;20000\;2					2	2026-10-18T09:23:00Z
+INT-r22-0002	drill-A 匿名 GET 全链演练	律14 弃弹: 无头 GET 形	candidate	python3-probe	surface	entity			-+surface+drill-A 匿名 GET 全链演练	500\;500\;0.1					2	2026-10-18T09:45:00Z
+INT-r22-0003	drill-B 持证 GET 全链演练	律14 弃弹: 带 token GET 形+auth_context 挂 CRED 样例	candidate	python3-probe	surface	entity			-+surface+drill-B 持证 GET 全链演练	500\;500\;0.1					2	2026-10-18T09:46:00Z
+INT-r22-0004	drill-C POST body 全链演练	律14 弃弹: 表单 POST 形	candidate	python3-probe	surface	entity			-+surface+drill-C POST body 全链演练	500\;500\;0.1					2	2026-10-18T09:47:00Z
+INT-r22-0005	exploit portal_redirect	GTREDIR-01	candidate	python3-probe	surface	adjacency			-+surface+exploit portal_redirect	1000\;1000\;0.2					2	2026-10-18T10:18:00Z
+INT-r22-0006	exploit shop_logout_redirect	GTREDIR-02	candidate	python3-probe	surface	adjacency			-+surface+exploit shop_logout_redirect	1000\;1000\;0.2					2	2026-10-18T10:24:00Z
+INT-r22-0007	exploit gw_jump	GTREDIR-03	candidate	python3-probe	surface	adjacency			-+surface+exploit gw_jump	1000\;1000\;0.2					2	2026-10-18T10:30:00Z
+INT-r22-0008	exploit shop_item_sqli	GTSQLI-01	candidate	python3-probe	surface	adjacency			-+surface+exploit shop_item_sqli	1000\;1000\;0.2					2	2026-10-18T10:36:00Z
+INT-r22-0009	exploit shop_order_sqli	GTSQLI-02	candidate	python3-probe	surface	adjacency			-+surface+exploit shop_order_sqli	1000\;1000\;0.2					2	2026-10-18T10:42:00Z
+INT-r22-0010	exploit shop_orders_sqli	GTSQLI-02	candidate	python3-probe	surface	adjacency			-+surface+exploit shop_orders_sqli	1000\;1000\;0.2					2	2026-10-18T10:48:00Z
+INT-r22-0011	exploit shop_search_xss	GTXSS-01	candidate	python3-probe	surface	adjacency			-+surface+exploit shop_search_xss	1000\;1000\;0.2					2	2026-10-18T10:54:00Z
+INT-r22-0012	exploit shop_comment_xss	GTXSS-02	candidate	python3-probe	surface	adjacency			-+surface+exploit shop_comment_xss	1000\;1000\;0.2					2	2026-10-18T11:00:00Z
+INT-r22-0013	exploit shop_reply_xss	GTXSS-03	candidate	python3-probe	surface	adjacency			-+surface+exploit shop_reply_xss	1000\;1000\;0.2					2	2026-10-18T11:06:00Z
+INT-r22-0014	exploit shop_feedback_xss	GTXSS-04	candidate	python3-probe	surface	adjacency			-+surface+exploit shop_feedback_xss	1000\;1000\;0.2					2	2026-10-18T11:12:00Z
+INT-r22-0015	exploit gw_fetch_ssrf	GTSSRF-01	candidate	python3-probe	surface	adjacency			-+surface+exploit gw_fetch_ssrf	1000\;1000\;0.2					2	2026-10-18T11:18:00Z
+INT-r22-0016	exploit gw_preview_ssrf	GTSSRF-02	candidate	python3-probe	surface	adjacency			-+surface+exploit gw_preview_ssrf	1000\;1000\;0.2					2	2026-10-18T11:24:00Z
+INT-r22-0017	exploit gw_proxy_ssrf	GTSSRF-03	candidate	python3-probe	surface	adjacency			-+surface+exploit gw_proxy_ssrf	1000\;1000\;0.2					2	2026-10-18T11:30:00Z
+INT-r22-0018	exploit gw_cors_wild	GTCORS-01	candidate	python3-probe	surface	adjacency			-+surface+exploit gw_cors_wild	1000\;1000\;0.2					2	2026-10-18T11:36:00Z
+INT-r22-0019	exploit gw_cors_reflect	GTCORS-02	candidate	python3-probe	surface	adjacency			-+surface+exploit gw_cors_reflect	1000\;1000\;0.2					2	2026-10-18T11:42:00Z
+INT-r22-0020	exploit gw_graphql	GTGRAPHQL-01	candidate	python3-probe	surface	adjacency			-+surface+exploit gw_graphql	1000\;1000\;0.2					2	2026-10-18T11:48:00Z
+INT-r22-0021	exploit dash_report_ssti	GTSSTI-01	candidate	python3-probe	surface	adjacency			-+surface+exploit dash_report_ssti	1000\;1000\;0.2					2	2026-10-18T11:54:00Z
+INT-r22-0022	exploit dash_render_ssti	GTSSTI-02	candidate	python3-probe	surface	adjacency			-+surface+exploit dash_render_ssti	1000\;1000\;0.2					2	2026-10-18T12:00:00Z
+INT-r22-0023	exploit portal_debugenv	GTINFOLEAK-01	candidate	python3-probe	surface	adjacency			-+surface+exploit portal_debugenv	1000\;1000\;0.2					2	2026-10-18T12:06:00Z
+INT-r22-0024	exploit files_env	GTINFOLEAK-03	candidate	python3-probe	surface	adjacency			-+surface+exploit files_env	1000\;1000\;0.2					2	2026-10-18T12:12:00Z
+INT-r22-0025	exploit files_unserialize	GTDESER-01	candidate	python3-probe	surface	adjacency			-+surface+exploit files_unserialize	1000\;1000\;0.2					2	2026-10-18T12:18:00Z
+INT-r22-0026	exploit files_import	GTDESER-02	candidate	python3-probe	surface	adjacency			-+surface+exploit files_import	1000\;1000\;0.2					2	2026-10-18T12:24:00Z
+INT-r22-0027	exploit files_decode	GTDESER-03	candidate	python3-probe	surface	adjacency			-+surface+exploit files_decode	1000\;1000\;0.2					2	2026-10-18T12:30:00Z
+INT-r22-0028	exploit files_download_trav	GTTRAVERSAL-01	candidate	python3-probe	surface	adjacency			-+surface+exploit files_download_trav	1000\;1000\;0.2					2	2026-10-18T12:36:00Z
+INT-r22-0029	exploit files_static_trav	GTTRAVERSAL-02	candidate	python3-probe	surface	adjacency			-+surface+exploit files_static_trav	1000\;1000\;0.2					2	2026-10-18T12:42:00Z
+INT-r22-0030	exploit login_weakpass	GTWEAKPASS-01	candidate	python3-probe	surface	adjacency			-+surface+exploit login_weakpass	1000\;1000\;0.2					2	2026-10-18T12:46:00Z
+INT-r22-0031	exploit login_norate	GTRATE-01	candidate	python3-probe	surface	adjacency			-+surface+exploit login_norate	1000\;1000\;0.2					2	2026-10-18T12:58:00Z
+INT-r22-0032	exploit bill_invoice_idor	GTIDOR-04	candidate	python3-probe	surface	adjacency			-+surface+exploit bill_invoice_idor	1000\;1000\;0.2					2	2026-10-18T13:04:00Z
+INT-r22-0033	exploit gw_keys_idor	GTIDOR-05	candidate	python3-probe	surface	adjacency			-+surface+exploit gw_keys_idor	1000\;1000\;0.2					2	2026-10-18T13:10:00Z
+INT-r22-0034	exploit shop_reports_idor	GTIDOR-06	candidate	python3-probe	surface	adjacency			-+surface+exploit shop_reports_idor	1000\;1000\;0.2					2	2026-10-18T13:16:00Z
+INT-r22-0035	exploit adm_users_idor	GTIDOR-03	candidate	python3-probe	surface	adjacency			-+surface+exploit adm_users_idor	1000\;1000\;0.2					2	2026-10-18T13:22:00Z
+INT-r22-0036	exploit dash_config_role	GTROLE-03	candidate	python3-probe	surface	adjacency			-+surface+exploit dash_config_role	1000\;1000\;0.2					2	2026-10-18T13:28:00Z
+INT-r22-0037	exploit files_logs_role	GTROLE-04	candidate	python3-probe	surface	adjacency			-+surface+exploit files_logs_role	1000\;1000\;0.2					2	2026-10-18T13:34:00Z
+INT-r22-0038	exploit portal_clients_hauth	GTHAUTH-05	candidate	python3-probe	surface	adjacency			-+surface+exploit portal_clients_hauth	1000\;1000\;0.2					2	2026-10-18T13:40:00Z

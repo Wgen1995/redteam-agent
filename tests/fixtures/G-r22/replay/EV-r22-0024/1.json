@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r22-0024", "matched": false, "results": [{"detail": ["GTSSTI-01", "49"], "ok": false, "type": "word"}, {"detail": ["200"], "ok": true, "type": "status"}], "status": 200, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r22 --id=EV-r22-0024 --state=REJECTED", "verdict": "not-reproduced"}

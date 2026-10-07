@@ -1,0 +1,1430 @@
+172.28.0.0/24	wstg-info				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-conf				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-idnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-authn				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-authz				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-sess				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-inpv				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-errh				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-cryp				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-busl				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-clnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+172.28.0.0/24	wstg-apit				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-info				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-conf				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-idnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-authn				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-authz				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-sess				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-inpv				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-errh				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-cryp				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-busl				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-clnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-shop	wstg-apit				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-info				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-conf				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-idnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-authn				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-authz				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-sess				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-inpv				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-errh				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-cryp				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-busl				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-clnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-api-gw	wstg-apit				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-info				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-conf				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-idnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-authn				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-authz				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-sess				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-inpv				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-errh				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-cryp				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-busl				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-clnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-admin	wstg-apit				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-info				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-conf				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-idnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-authn				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-authz				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-sess				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-inpv				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-errh				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-cryp				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-busl				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-clnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login	wstg-apit				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-info				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-conf				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-idnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-authn				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-authz				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-sess				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-inpv				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-errh				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-cryp				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-busl				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-clnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-billing	wstg-apit				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-info				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-conf				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-idnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-authn				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-authz				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-sess				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-inpv				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-errh				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-cryp				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-busl				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-clnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-dashboard	wstg-apit				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-info				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-conf				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-idnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-authn				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-authz				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-sess				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-inpv				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-errh				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-cryp				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-busl				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-clnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-portal	wstg-apit				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-info				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-conf				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-idnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-authn				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-authz				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-sess				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-inpv				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-errh				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-cryp				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-busl				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-clnt				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-files	wstg-apit				2	2026-10-18T10:04:00Z	2026-10-18T10:05:00Z
+svc-login/login	wstg-info		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-conf		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-idnt		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-authn	x	submatrix:drill-face	INT-r22-0002	2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-authz		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-sess		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-inpv		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-errh		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-cryp		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-busl		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-clnt		submatrix:		2	2026-10-18T10:07:00Z	
+svc-login/login	wstg-apit		submatrix:		2	2026-10-18T10:07:00Z	
+svc-admin/admin	wstg-info		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-conf		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-idnt		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-authn		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-authz	?	submatrix:drill-face	INT-r22-0003	2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-sess		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-inpv		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-errh		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-cryp		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-busl		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-clnt		submatrix:		2	2026-10-18T10:08:00Z	
+svc-admin/admin	wstg-apit		submatrix:		2	2026-10-18T10:08:00Z	
+172.28.0.0/24	wstg-info	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-conf	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-idnt	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-authn	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-authz	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-sess	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-inpv	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-errh	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-cryp	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-busl	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-clnt	?	待查基线		2	2026-10-18T10:11:00Z	
+172.28.0.0/24	wstg-apit	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-info	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-conf	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-idnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-authn	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-authz	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-sess	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-inpv	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-errh	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-cryp	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-busl	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-clnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-shop	wstg-apit	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-info	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-conf	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-idnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-authn	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-authz	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-sess	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-inpv	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-errh	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-cryp	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-busl	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-clnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-api-gw	wstg-apit	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-info	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-conf	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-idnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-authn	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-authz	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-sess	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-inpv	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-errh	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-cryp	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-busl	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-clnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-admin	wstg-apit	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-info	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-conf	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-idnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-authn	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-authz	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-sess	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-inpv	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-errh	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-cryp	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-busl	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-clnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login	wstg-apit	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-info	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-conf	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-idnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-authn	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-authz	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-sess	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-inpv	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-errh	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-cryp	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-busl	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-clnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-billing	wstg-apit	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-info	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-conf	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-idnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-authn	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-authz	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-sess	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-inpv	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-errh	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-cryp	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-busl	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-clnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-dashboard	wstg-apit	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-info	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-conf	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-idnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-authn	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-authz	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-sess	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-inpv	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-errh	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-cryp	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-busl	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-clnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-portal	wstg-apit	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-info	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-conf	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-idnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-authn	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-authz	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-sess	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-inpv	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-errh	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-cryp	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-busl	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-clnt	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-files	wstg-apit	?	待查基线		2	2026-10-18T10:11:00Z	
+svc-login/login	wstg-info	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-conf	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-idnt	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-authn	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-authz	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-sess	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-inpv	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-errh	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-cryp	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-busl	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-clnt	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-login/login	wstg-apit	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-info	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-conf	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-idnt	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-authn	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-authz	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-sess	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-inpv	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-errh	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-cryp	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-busl	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-clnt	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-admin/admin	wstg-apit	?	submatrix:待查		2	2026-10-18T10:14:00Z	
+svc-shop	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9)		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:50:00Z	
+svc-shop	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9)		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:50:00Z	
+svc-api-gw	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9)		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:50:00Z	
+svc-admin	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:50:00Z	
+svc-login	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:50:00Z	
+svc-login	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:50:00Z	
+svc-login	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:50:00Z	
+svc-login	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:50:00Z	
+svc-login	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9)		2	2026-10-18T15:50:00Z	
+svc-login	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:50:00Z	
+svc-login	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:50:00Z	
+svc-login	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:50:00Z	
+svc-login	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:50:00Z	
+svc-login	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:50:00Z	
+svc-login	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:50:00Z	
+svc-login	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9)		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:50:00Z	
+svc-billing	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9)		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:50:00Z	
+svc-dashboard	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9)		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:50:00Z	
+svc-portal	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:50:00Z	
+svc-files	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:50:00Z	
+svc-files	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:50:00Z	
+svc-files	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:50:00Z	
+svc-files	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:50:00Z	
+svc-files	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9)		2	2026-10-18T15:50:00Z	
+svc-files	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:50:00Z	
+svc-files	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:50:00Z	
+svc-files	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:50:00Z	
+svc-files	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:50:00Z	
+svc-files	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:50:00Z	
+svc-files	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:50:00Z	
+svc-files	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-info	x	submatrix:tested:fingerprint/env/.env/debug 回显探测 8svc (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-conf	x	submatrix:tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证) (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-idnt	x	submatrix:tested:id 参数枚举 invoice/users (idor id 敏感性) (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-authn	x	submatrix:tested:weakpass/token 换发/跨用户登录探测 (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-authz	x	submatrix:tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9) (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-sess	x	submatrix:tested:token 携带形 (header/body/query) 全 8svc 分型 (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-inpv	x	submatrix:tested:sqli/xss/ssti/traversal/deser 载荷族 (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-errh	x	submatrix:tested:SQL error 回显与 4xx 形分型 (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-cryp	x	submatrix:tested:JWT alg-none/过期伪造 (负结果) (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-busl	x	submatrix:tested:登录连击计数器自证 (GTRATE-01) (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-clnt	x	submatrix:tested:redirect 参数 7 形×3 编码 + Origin 反射 (face)		2	2026-10-18T15:50:00Z	
+svc-login/login	wstg-apit	x	submatrix:tested:graphql introspection + API 版本面 (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-info	x	submatrix:tested:fingerprint/env/.env/debug 回显探测 8svc (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-conf	x	submatrix:tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证) (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-idnt	x	submatrix:tested:id 参数枚举 invoice/users (idor id 敏感性) (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-authn	x	submatrix:tested:weakpass/token 换发/跨用户登录探测 (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-authz	x	submatrix:tested:匿名墙差分+user 级令牌横扫 admin 面 (probe9) (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-sess	x	submatrix:tested:token 携带形 (header/body/query) 全 8svc 分型 (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-inpv	x	submatrix:tested:sqli/xss/ssti/traversal/deser 载荷族 (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-errh	x	submatrix:tested:SQL error 回显与 4xx 形分型 (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-cryp	x	submatrix:tested:JWT alg-none/过期伪造 (负结果) (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-busl	x	submatrix:tested:登录连击计数器自证 (GTRATE-01) (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-clnt	x	submatrix:tested:redirect 参数 7 形×3 编码 + Origin 反射 (face)		2	2026-10-18T15:50:00Z	
+svc-admin/admin	wstg-apit	x	submatrix:tested:graphql introspection + API 版本面 (face)		2	2026-10-18T15:50:00Z	
+172.28.0.0/24	wstg-info	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-conf	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-idnt	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-authn	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-authz	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-sess	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-inpv	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-errh	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-cryp	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-busl	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-clnt	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+172.28.0.0/24	wstg-apit	x	tested:portscan+fingerprint+网段级字典波 (probe1-3)		2	2026-10-18T16:01:00Z	
+svc-login/login	wstg-authn	x	submatrix:drill-face	INT-r22-0002	2	2026-10-18T10:01:00Z	
+svc-admin/admin	wstg-authn	x	submatrix:drill-face	INT-r22-0002	2	2026-10-18T10:02:00Z	
+svc-shop	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T14:38:00Z	
+svc-api-gw	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T14:38:00Z	
+svc-admin	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T14:38:00Z	
+svc-login	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T14:38:00Z	
+svc-login	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T14:38:00Z	
+svc-login	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T14:38:00Z	
+svc-login	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T14:38:00Z	
+svc-login	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T14:38:00Z	
+svc-login	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T14:38:00Z	
+svc-login	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T14:38:00Z	
+svc-login	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T14:38:00Z	
+svc-login	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T14:38:00Z	
+svc-login	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T14:38:00Z	
+svc-login	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T14:38:00Z	
+svc-login	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T14:38:00Z	
+svc-billing	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T14:38:00Z	
+svc-dashboard	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T14:38:00Z	
+svc-portal	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T14:38:00Z	
+svc-files	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T14:38:00Z	
+svc-files	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T14:38:00Z	
+svc-files	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T14:38:00Z	
+svc-files	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T14:38:00Z	
+svc-files	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T14:38:00Z	
+svc-files	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T14:38:00Z	
+svc-files	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T14:38:00Z	
+svc-files	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T14:38:00Z	
+svc-files	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T14:38:00Z	
+svc-files	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T14:38:00Z	
+svc-files	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T14:38:00Z	
+svc-files	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T14:38:00Z	
+172.28.0.0/24	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-info	x	submatrix:tested:fingerprint/env/.env/debug 回显探测 8svc (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-conf	x	submatrix:tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证) (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-idnt	x	submatrix:tested:id 参数枚举 invoice/users (idor id 敏感性) (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-authn	x	submatrix:tested:weakpass/token 换发/跨用户登录探测 (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-authz	x	submatrix:tested:匿名墙差分+user 级令牌横扫 admin 面 (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-sess	x	submatrix:tested:token 携带形 (header/body/query) 全 8svc 分型 (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-inpv	x	submatrix:tested:sqli/xss/ssti/traversal/deser 载荷族 (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-errh	x	submatrix:tested:SQL error 回显与 4xx 形分型 (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-cryp	x	submatrix:tested:JWT alg-none/过期伪造 (负结果) (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-busl	x	submatrix:tested:登录连击计数器自证 (GTRATE-01) (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-clnt	x	submatrix:tested:redirect 参数 7 形×3 编码 + Origin 反射 (face)		2	2026-10-18T14:38:00Z	
+svc-login/login	wstg-apit	x	submatrix:tested:graphql introspection + API 版本面 (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-info	x	submatrix:tested:fingerprint/env/.env/debug 回显探测 8svc (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-conf	x	submatrix:tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证) (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-idnt	x	submatrix:tested:id 参数枚举 invoice/users (idor id 敏感性) (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-authn	x	submatrix:tested:weakpass/token 换发/跨用户登录探测 (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-authz	x	submatrix:tested:匿名墙差分+user 级令牌横扫 admin 面 (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-sess	x	submatrix:tested:token 携带形 (header/body/query) 全 8svc 分型 (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-inpv	x	submatrix:tested:sqli/xss/ssti/traversal/deser 载荷族 (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-errh	x	submatrix:tested:SQL error 回显与 4xx 形分型 (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-cryp	x	submatrix:tested:JWT alg-none/过期伪造 (负结果) (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-busl	x	submatrix:tested:登录连击计数器自证 (GTRATE-01) (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-clnt	x	submatrix:tested:redirect 参数 7 形×3 编码 + Origin 反射 (face)		2	2026-10-18T14:38:00Z	
+svc-admin/admin	wstg-apit	x	submatrix:tested:graphql introspection + API 版本面 (face)		2	2026-10-18T14:38:00Z	
+svc-shop	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:34:00Z	
+svc-shop	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:34:00Z	
+svc-api-gw	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:34:00Z	
+svc-admin	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:34:00Z	
+svc-login	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:34:00Z	
+svc-login	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:34:00Z	
+svc-login	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:34:00Z	
+svc-login	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:34:00Z	
+svc-login	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T15:34:00Z	
+svc-login	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:34:00Z	
+svc-login	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:34:00Z	
+svc-login	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:34:00Z	
+svc-login	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:34:00Z	
+svc-login	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:34:00Z	
+svc-login	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:34:00Z	
+svc-login	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:34:00Z	
+svc-billing	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:34:00Z	
+svc-dashboard	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:34:00Z	
+svc-portal	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:34:00Z	
+svc-files	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:34:00Z	
+svc-files	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:34:00Z	
+svc-files	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:34:00Z	
+svc-files	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:34:00Z	
+svc-files	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T15:34:00Z	
+svc-files	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:34:00Z	
+svc-files	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:34:00Z	
+svc-files	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:34:00Z	
+svc-files	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:34:00Z	
+svc-files	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:34:00Z	
+svc-files	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:34:00Z	
+svc-files	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-info	x	tested:fingerprint/env/.env/debug 回显探测 8svc		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-conf	x	tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证)		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-idnt	x	tested:id 参数枚举 invoice/users (idor id 敏感性)		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-authn	x	tested:weakpass/token 换发/跨用户登录探测		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-authz	x	tested:匿名墙差分+user 级令牌横扫 admin 面		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-sess	x	tested:token 携带形 (header/body/query) 全 8svc 分型		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-inpv	x	tested:sqli/xss/ssti/traversal/deser 载荷族		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-errh	x	tested:SQL error 回显与 4xx 形分型		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-cryp	x	tested:JWT alg-none/过期伪造 (负结果)		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-busl	x	tested:登录连击计数器自证 (GTRATE-01)		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-clnt	x	tested:redirect 参数 7 形×3 编码 + Origin 反射		2	2026-10-18T15:34:00Z	
+172.28.0.0/24	wstg-apit	x	tested:graphql introspection + API 版本面		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-info	x	submatrix:tested:fingerprint/env/.env/debug 回显探测 8svc (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-conf	x	submatrix:tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证) (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-idnt	x	submatrix:tested:id 参数枚举 invoice/users (idor id 敏感性) (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-authn	x	submatrix:tested:weakpass/token 换发/跨用户登录探测 (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-authz	x	submatrix:tested:匿名墙差分+user 级令牌横扫 admin 面 (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-sess	x	submatrix:tested:token 携带形 (header/body/query) 全 8svc 分型 (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-inpv	x	submatrix:tested:sqli/xss/ssti/traversal/deser 载荷族 (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-errh	x	submatrix:tested:SQL error 回显与 4xx 形分型 (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-cryp	x	submatrix:tested:JWT alg-none/过期伪造 (负结果) (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-busl	x	submatrix:tested:登录连击计数器自证 (GTRATE-01) (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-clnt	x	submatrix:tested:redirect 参数 7 形×3 编码 + Origin 反射 (face)		2	2026-10-18T15:34:00Z	
+svc-login/login	wstg-apit	x	submatrix:tested:graphql introspection + API 版本面 (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-info	x	submatrix:tested:fingerprint/env/.env/debug 回显探测 8svc (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-conf	x	submatrix:tested:安全头/CORS 配置探测 (gw cors-debug/origin 实证) (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-idnt	x	submatrix:tested:id 参数枚举 invoice/users (idor id 敏感性) (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-authn	x	submatrix:tested:weakpass/token 换发/跨用户登录探测 (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-authz	x	submatrix:tested:匿名墙差分+user 级令牌横扫 admin 面 (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-sess	x	submatrix:tested:token 携带形 (header/body/query) 全 8svc 分型 (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-inpv	x	submatrix:tested:sqli/xss/ssti/traversal/deser 载荷族 (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-errh	x	submatrix:tested:SQL error 回显与 4xx 形分型 (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-cryp	x	submatrix:tested:JWT alg-none/过期伪造 (负结果) (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-busl	x	submatrix:tested:登录连击计数器自证 (GTRATE-01) (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-clnt	x	submatrix:tested:redirect 参数 7 形×3 编码 + Origin 反射 (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin	wstg-apit	x	submatrix:tested:graphql introspection + API 版本面 (face)		2	2026-10-18T15:34:00Z	
+svc-admin/admin/users/1	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/admin/keys	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/cors-debug	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/fetch	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/graphql	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/jump	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/origin	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/preview	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-api-gw/proxy	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-billing/invoice/1	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/admin/config	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/render	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-dashboard/report	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/.env	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/admin/logs	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/decode	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/download	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/import	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/static	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-files/unserialize	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/admin/clients	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/debug/env	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-portal/redirect	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/admin/reports	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/comment	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/feedback	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/item	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/logout	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/order	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/orders	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/reply	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-info		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-conf		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-idnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-authn		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-authz		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-sess		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-inpv	x	submatrix:tested:face 载荷族		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-errh		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-cryp		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-busl		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-clnt		submatrix:		2	2026-10-18T15:41:00Z	
+svc-shop/search	wstg-apit		submatrix:		2	2026-10-18T15:41:00Z	
+svc-admin/admin/users/1	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-admin/admin/users/1	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/admin/keys	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/cors-debug	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/fetch	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/graphql	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/jump	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/origin	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/preview	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-api-gw/proxy	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-billing/invoice/1	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/admin/config	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/render	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-dashboard/report	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/.env	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/admin/logs	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/decode	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/download	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/import	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/static	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-files/unserialize	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/admin/clients	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/debug/env	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-portal/redirect	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/admin/reports	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/comment	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/feedback	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/item	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/logout	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/order	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/orders	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/reply	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-info	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-conf	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-idnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-authn	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-authz	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-sess	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-inpv	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-errh	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-cryp	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-busl	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-clnt	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	
+svc-shop/search	wstg-apit	x	submatrix:tested:face 全类探测 (face)		2	2026-10-18T15:42:00Z	

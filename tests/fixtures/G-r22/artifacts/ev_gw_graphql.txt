@@ -1,0 +1,8 @@
+=== REQUEST ===
+GET /graphql?query=%7B__schema%7Btypes%7Bname%7D%7D%7D HTTP/1.1
+Host: svc-api-gw:8002
+User-Agent: tanyin-G-r22/probe
+Connection: close
+=== RESPONSE ===
+HTTP/1.1 200
+(beacon 回显见卡摘录; 全量实录 probe JSON 存 probe/ 目录)

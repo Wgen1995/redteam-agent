@@ -1,0 +1,2 @@
+CRED-r22-0001	static-cred	user	drill-user	{{vault:cred-1}}						active		drill 演练令牌（非真实发放）	2	2026-10-18T09:40:00Z	
+CRED-r22-0002	static-cred	user	admin	{{vault:cred-2}}		INT-r22-0030				active		svc-login 弱口令 admin/admin123 命中\; X-Auth-Token 头形发放 tok-usr-001 (律19/22)	2	2026-10-18T12:56:00Z	

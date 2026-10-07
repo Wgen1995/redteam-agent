@@ -1,0 +1,43 @@
+AST-r22-0001	ip	172.28.0.0/24	authorized-range 8svc segment	in_scope	2	2026-10-18T09:05:00Z
+AST-r22-0002	service	svc-shop	BaseHTTP Python3.12 root-face recon	in_scope	2	2026-10-18T09:06:00Z
+AST-r22-0003	service	svc-api-gw	BaseHTTP Python3.12 root-face recon	in_scope	2	2026-10-18T09:07:00Z
+AST-r22-0004	service	svc-admin	BaseHTTP Python3.12 root-face recon	in_scope	2	2026-10-18T09:08:00Z
+AST-r22-0005	service	svc-login	BaseHTTP Python3.12 root-face recon	in_scope	2	2026-10-18T09:09:00Z
+AST-r22-0006	service	svc-billing	BaseHTTP Python3.12 root-face recon	in_scope	2	2026-10-18T09:10:00Z
+AST-r22-0007	service	svc-dashboard	BaseHTTP Python3.12 root-face recon	in_scope	2	2026-10-18T09:11:00Z
+AST-r22-0008	service	svc-portal	BaseHTTP Python3.12 root-face recon	in_scope	2	2026-10-18T09:12:00Z
+AST-r22-0009	service	svc-files	BaseHTTP Python3.12 root-face recon	in_scope	2	2026-10-18T09:13:00Z
+AST-r22-0010	endpoint	svc-login/login	login face 8004	in_scope	2	2026-10-18T09:41:00Z
+AST-r22-0011	endpoint	svc-admin/admin	admin face 8003	in_scope	2	2026-10-18T09:42:00Z
+AST-r22-0012	endpoint	svc-portal/redirect	face port 8007	in_scope	2	2026-10-18T10:16:00Z
+AST-r22-0013	endpoint	svc-shop/logout	face port 8001	in_scope	2	2026-10-18T10:22:00Z
+AST-r22-0014	endpoint	svc-api-gw/jump	face port 8002	in_scope	2	2026-10-18T10:28:00Z
+AST-r22-0015	endpoint	svc-shop/item	face port 8001	in_scope	2	2026-10-18T10:34:00Z
+AST-r22-0016	endpoint	svc-shop/order	face port 8001	in_scope	2	2026-10-18T10:40:00Z
+AST-r22-0017	endpoint	svc-shop/orders	face port 8001	in_scope	2	2026-10-18T10:46:00Z
+AST-r22-0018	endpoint	svc-shop/search	face port 8001	in_scope	2	2026-10-18T10:52:00Z
+AST-r22-0019	endpoint	svc-shop/comment	face port 8001	in_scope	2	2026-10-18T10:58:00Z
+AST-r22-0020	endpoint	svc-shop/reply	face port 8001	in_scope	2	2026-10-18T11:04:00Z
+AST-r22-0021	endpoint	svc-shop/feedback	face port 8001	in_scope	2	2026-10-18T11:10:00Z
+AST-r22-0022	endpoint	svc-api-gw/fetch	face port 8002	in_scope	2	2026-10-18T11:16:00Z
+AST-r22-0023	endpoint	svc-api-gw/preview	face port 8002	in_scope	2	2026-10-18T11:22:00Z
+AST-r22-0024	endpoint	svc-api-gw/proxy	face port 8002	in_scope	2	2026-10-18T11:28:00Z
+AST-r22-0025	endpoint	svc-api-gw/cors-debug	face port 8002	in_scope	2	2026-10-18T11:34:00Z
+AST-r22-0026	endpoint	svc-api-gw/origin	face port 8002	in_scope	2	2026-10-18T11:40:00Z
+AST-r22-0027	endpoint	svc-api-gw/graphql	face port 8002	in_scope	2	2026-10-18T11:46:00Z
+AST-r22-0028	endpoint	svc-dashboard/report	face port 8006	in_scope	2	2026-10-18T11:52:00Z
+AST-r22-0029	endpoint	svc-dashboard/render	face port 8006	in_scope	2	2026-10-18T11:58:00Z
+AST-r22-0030	endpoint	svc-portal/debug/env	face port 8007	in_scope	2	2026-10-18T12:04:00Z
+AST-r22-0031	endpoint	svc-files/.env	face port 8008	in_scope	2	2026-10-18T12:10:00Z
+AST-r22-0032	endpoint	svc-files/unserialize	face port 8008	in_scope	2	2026-10-18T12:16:00Z
+AST-r22-0033	endpoint	svc-files/import	face port 8008	in_scope	2	2026-10-18T12:22:00Z
+AST-r22-0034	endpoint	svc-files/decode	face port 8008	in_scope	2	2026-10-18T12:28:00Z
+AST-r22-0035	endpoint	svc-files/download	face port 8008	in_scope	2	2026-10-18T12:34:00Z
+AST-r22-0036	endpoint	svc-files/static	face port 8008	in_scope	2	2026-10-18T12:40:00Z
+AST-r22-0037	endpoint	svc-billing/invoice/1	face port 8005	in_scope	2	2026-10-18T13:02:00Z
+AST-r22-0038	endpoint	svc-api-gw/admin/keys	face port 8002	in_scope	2	2026-10-18T13:08:00Z
+AST-r22-0039	endpoint	svc-shop/admin/reports	face port 8001	in_scope	2	2026-10-18T13:14:00Z
+AST-r22-0040	endpoint	svc-admin/admin/users/1	face port 8003	in_scope	2	2026-10-18T13:20:00Z
+AST-r22-0041	endpoint	svc-dashboard/admin/config	face port 8006	in_scope	2	2026-10-18T13:26:00Z
+AST-r22-0042	endpoint	svc-files/admin/logs	face port 8008	in_scope	2	2026-10-18T13:32:00Z
+AST-r22-0043	endpoint	svc-portal/admin/clients	face port 8007	in_scope	2	2026-10-18T13:38:00Z

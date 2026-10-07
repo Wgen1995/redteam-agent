@@ -1,0 +1,15 @@
+=== REQUEST ===
+GET /invoice/1 HTTP/1.1
+Host: svc-billing:8005
+User-Agent: tanyin-G-r22/probe
+Connection: close
+
+
+=== RESPONSE ===
+HTTP/1.1 401
+server: BaseHTTP/0.6 Python/3.12.14
+date: Wed, 07 Oct 2026 13:54:17 GMT
+content-type: text/html; charset=utf-8
+content-length: 13
+
+auth required

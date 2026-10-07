@@ -1,0 +1,63 @@
+F-r22-0001	INT-r22-0001	port	svc-shop	port scan: 8001 open (scan 8000-8010) [no-consume:端口基线事实不单独消费]	0.99	2	2026-10-18T09:24:00Z
+F-r22-0002	INT-r22-0001	port	svc-api-gw	port scan: 8002 open (scan 8000-8010) [no-consume:端口基线事实不单独消费]	0.99	2	2026-10-18T09:25:00Z
+F-r22-0003	INT-r22-0001	port	svc-admin	port scan: 8003 open (scan 8000-8010) [no-consume:端口基线事实不单独消费]	0.99	2	2026-10-18T09:26:00Z
+F-r22-0004	INT-r22-0001	port	svc-login	port scan: 8004 open (scan 8000-8010) [no-consume:端口基线事实不单独消费]	0.99	2	2026-10-18T09:27:00Z
+F-r22-0005	INT-r22-0001	port	svc-billing	port scan: 8005 open (scan 8000-8010) [no-consume:端口基线事实不单独消费]	0.99	2	2026-10-18T09:28:00Z
+F-r22-0006	INT-r22-0001	port	svc-dashboard	port scan: 8006 open (scan 8000-8010) [no-consume:端口基线事实不单独消费]	0.99	2	2026-10-18T09:29:00Z
+F-r22-0007	INT-r22-0001	port	svc-portal	port scan: 8007 open (scan 8000-8010) [no-consume:端口基线事实不单独消费]	0.99	2	2026-10-18T09:30:00Z
+F-r22-0008	INT-r22-0001	port	svc-files	port scan: 8008 open (scan 8000-8010) [no-consume:端口基线事实不单独消费]	0.99	2	2026-10-18T09:31:00Z
+F-r22-0009	INT-r22-0001	service	172.28.0.0/24	8 svc BaseHTTP/0.6 Python/3.12.14；根面 login=200 login-form, admin/billing=401 wall, 余 404 [no-consume:指纹基线]	0.99	2	2026-10-18T09:32:00Z
+F-r22-0010	INT-r22-0001	vuln-clue	svc-shop	字典面: /logout 302 GTREDIR-02\; /item GTSQLI-01\; /order /orders GTSQLI-02\; /search GTXSS-01\; /comment GTXSS-02\; /reply GTXSS-03\; /feedback GTXSS-04	0.9	2	2026-10-18T09:33:00Z
+F-r22-0011	INT-r22-0001	vuln-clue	svc-api-gw	字典面: /jump 302 GTREDIR-03\; /fetch GTSSRF-01\; /preview GTSSRF-02\; /proxy GTSSRF-03\; /cors-debug GTCORS-01\; /origin GTCORS-02\; /graphql GTGRAPHQL-01	0.9	2	2026-10-18T09:34:00Z
+F-r22-0012	INT-r22-0001	vuln-clue	svc-dashboard	字典面: /render GTSSTI-02\; /report GTSSTI-01 (双面)	0.9	2	2026-10-18T09:35:00Z
+F-r22-0013	INT-r22-0001	vuln-clue	svc-portal	字典面: /redirect 302 GTREDIR-01\; /debug/env GTINFOLEAK-01 env 回显	0.9	2	2026-10-18T09:36:00Z
+F-r22-0014	INT-r22-0001	vuln-clue	svc-files	字典面: /unserialize GTDESER-01\; /import GTDESER-02\; /decode GTDESER-03\; /.env GTINFOLEAK-03\; /download GTTRAVERSAL-01\; /static GTTRAVERSAL-02	0.9	2	2026-10-18T09:37:00Z
+F-r22-0015	INT-r22-0001	http	svc-login	catch-all: 全路径 GET 200 同体 login form 23B（律 24 零熵墙: 转 POST 分化）	0.95	2	2026-10-18T09:38:00Z
+F-r22-0016	INT-r22-0001	authz	svc-admin	全字典 401 auth required 13B 无分化（svc-billing 同形）——需凭据 [no-consume:认证墙基线]	0.95	2	2026-10-18T09:39:00Z
+F-r22-0017	INT-r22-0002	http	svc-login/login	GET /login 200 login form 23B（演练样例响应）	0.99	2	2026-10-18T09:48:00Z
+F-r22-0018	INT-r22-0003	authz	svc-admin/admin	GET /admin + Bearer drill-token-000 → 401 auth required（认证边界成立, 演练）	0.99	2	2026-10-18T09:49:00Z
+F-r22-0019	INT-r22-0004	http	svc-login/login	POST form user=admin&pass=drillprobe123 → 403 denied 19B（与匿名 GET 200 分化\; 响应分化通道存在）	0.95	2	2026-10-18T09:50:00Z
+F-r22-0020	INT-r22-0001	vuln-clue	svc-shop	字典面: /logout 302 GTREDIR-02\; /item GTSQLI-01\; /order GTSQLI-02\; /orders 同族\; search/comment/reply/feedback GTXSS-01..04 四面	0.8	2	2026-10-18T13:44:00Z
+F-r22-0021	INT-r22-0001	vuln-clue	svc-api-gw	字典面: /jump 302 GTREDIR-03\; /fetch GTSSRF-01\; /preview GTSSRF-02\; /proxy GTSSRF-03\; cors-debug/origin GTCORS-01/02\; graphql GTGRAPHQL-01	0.8	2	2026-10-18T13:45:00Z
+F-r22-0022	INT-r22-0001	vuln-clue	svc-dashboard	字典面: /render GTSSTI-02\; /report GTSSTI-01 (双面)	0.8	2	2026-10-18T13:46:00Z
+F-r22-0023	INT-r22-0001	vuln-clue	svc-portal	字典面: /redirect 302 GTREDIR-01\; /debug/env GTINFOLEAK-01\; /admin/clients hauth	0.8	2	2026-10-18T13:47:00Z
+F-r22-0024	INT-r22-0001	vuln-clue	svc-files	字典面: /unserialize GTDESER-01\; /import GTDESER-02\; /decode GTDESER-03\; download/static GTTRAVERSAL-01/02\; /.env GTINFOLEAK-03	0.8	2	2026-10-18T13:48:00Z
+F-r22-0025	INT-r22-0001	http	svc-login	catch-all: 全路径 GET 200 同体 login form 23B (律24 零熵墙: 转表单编码探)	0.8	2	2026-10-18T13:49:00Z
+F-r22-0026	INT-r22-0001	authz	svc-admin	全字典 401 auth required 13B 无分化 (svc-billing 同形) — 需凭据	0.8	2	2026-10-18T13:50:00Z
+F-r22-0027	INT-r22-0001	http	svc-login/login	GET /login 200 login form 23B (演练样例响应)	0.8	2	2026-10-18T13:51:00Z
+F-r22-0028	INT-r22-0001	authz	svc-admin/admin	GET /admin + Bearer drill-token-000 → 401 auth required (演练样例)	0.8	2	2026-10-18T13:52:00Z
+F-r22-0029	INT-r22-0001	http	svc-login/login	POST form user=admin&pass=drillprobe123 → 403 denied (演练样例)	0.8	2	2026-10-18T13:53:00Z
+F-r22-0030	INT-r22-0001	vuln-clue	svc-login/login	weakpass admin/admin123 → 200 GTWEAKPASS-01 welcome admin + X-Auth-Token 头	0.8	2	2026-10-18T13:54:00Z
+F-r22-0031	INT-r22-0001	vuln-clue	svc-login/login	GTRATE-01 服务端自证计数器 no rate limit after 22 attempts	0.8	2	2026-10-18T13:55:00Z
+F-r22-0032	INT-r22-0001	authz	svc-admin	X-Auth-Token tok-usr-001 过认证: svc-admin/admin 401→200 差分	0.8	2	2026-10-18T13:56:00Z
+F-r22-0033	INT-r22-0001	http	svc-login	token exchange catch-all: /token /api/token /oauth/token 同 handler, 表单编码有效对换发同 token (律24 面级信标)	0.8	2	2026-10-18T13:57:00Z
+F-r22-0034	INT-r22-0001	authz	svc-api-gw	hauth 信任头无面: X-Forwarded-For/Host/X-Original-URL 变换全 404 (负结果) [no-consume:负结果: 8 面全探无信任面]	0.8	2	2026-10-18T13:58:00Z
+F-r22-0035	INT-r22-0001	http	svc-files	XXE 形 400: /import /unserialize application/xml POST 拒 (负结果) [no-consume:负结果: 面非 XML 解析]	0.8	2	2026-10-18T13:59:00Z
+F-r22-0036	INT-r22-0001	http	svc-files	cmdi 零熵墙: exec/run/eval GET 404 + POST 全形 400 (负结果) [no-consume:负结果: 律24 三击后停]	0.8	2	2026-10-18T14:00:00Z
+F-r22-0037	INT-r22-0001	http	svc-login	JWT 伪造 401: alg-none/过期签名全拒 (负结果) [no-consume:负结果: 无 JWT 面]	0.8	2	2026-10-18T14:01:00Z
+F-r22-0038	INT-r22-0001	authz	svc-login	跨用户登录拒: user=102 等全 denied (负结果) [no-consume:负结果: 会话固定面不存在]	0.8	2	2026-10-18T14:02:00Z
+F-r22-0039	INT-r22-0001	http	svc-login	register/forgot/reset POST 403 同墙无计数 (负结果) [no-consume:负结果: 与登录同墙]	0.8	2	2026-10-18T14:03:00Z
+F-r22-0040	INT-r22-0001	authz	svc-api-gw	admin 级令牌不可得: /token 族仅发 user 级 (负结果) [no-consume:负结果: 律22 role 记 user]	0.8	2	2026-10-18T14:04:00Z
+F-r22-0041	INT-r22-0001	info	svc-files	GTINFOLEAK-02 未现: debug/vars actuator /info /status /version /config 全 404/401 (负结果) [no-consume:负结果: honest miss]	0.8	2	2026-10-18T14:05:00Z
+F-r22-0042	INT-r22-0001	vuln-clue	svc-shop	字典面: /logout 302 GTREDIR-02\; /item GTSQLI-01\; /order GTSQLI-02\; /orders 同族\; search/comment/reply/feedback GTXSS-01..04 四面	0.8	2	2026-10-18T14:40:00Z
+F-r22-0043	INT-r22-0001	vuln-clue	svc-api-gw	字典面: /jump 302 GTREDIR-03\; /fetch GTSSRF-01\; /preview GTSSRF-02\; /proxy GTSSRF-03\; cors-debug/origin GTCORS-01/02\; graphql GTGRAPHQL-01	0.8	2	2026-10-18T14:41:00Z
+F-r22-0044	INT-r22-0001	vuln-clue	svc-dashboard	字典面: /render GTSSTI-02\; /report GTSSTI-01 (双面)	0.8	2	2026-10-18T14:42:00Z
+F-r22-0045	INT-r22-0001	vuln-clue	svc-portal	字典面: /redirect 302 GTREDIR-01\; /debug/env GTINFOLEAK-01\; /admin/clients hauth	0.8	2	2026-10-18T14:43:00Z
+F-r22-0046	INT-r22-0001	vuln-clue	svc-files	字典面: /unserialize GTDESER-01\; /import GTDESER-02\; /decode GTDESER-03\; download/static GTTRAVERSAL-01/02\; /.env GTINFOLEAK-03	0.8	2	2026-10-18T14:44:00Z
+F-r22-0047	INT-r22-0001	http	svc-login	catch-all: 全路径 GET 200 同体 login form 23B (律24 零熵墙: 转表单编码探)	0.8	2	2026-10-18T14:45:00Z
+F-r22-0048	INT-r22-0001	authz	svc-admin	全字典 401 auth required 13B 无分化 (svc-billing 同形) — 需凭据	0.8	2	2026-10-18T14:46:00Z
+F-r22-0049	INT-r22-0001	http	svc-login/login	GET /login 200 login form 23B (演练样例响应)	0.8	2	2026-10-18T14:47:00Z
+F-r22-0050	INT-r22-0001	authz	svc-admin/admin	GET /admin + Bearer drill-token-000 → 401 auth required (演练样例)	0.8	2	2026-10-18T14:48:00Z
+F-r22-0051	INT-r22-0001	http	svc-login/login	POST form user=admin&pass=drillprobe123 → 403 denied (演练样例)	0.8	2	2026-10-18T14:49:00Z
+F-r22-0052	INT-r22-0001	vuln-clue	svc-login/login	weakpass admin/admin123 → 200 GTWEAKPASS-01 welcome admin + X-Auth-Token 头	0.8	2	2026-10-18T14:50:00Z
+F-r22-0053	INT-r22-0001	vuln-clue	svc-login/login	GTRATE-01 服务端自证计数器 no rate limit after 22 attempts	0.8	2	2026-10-18T14:51:00Z
+F-r22-0054	INT-r22-0001	authz	svc-admin	X-Auth-Token tok-usr-001 过认证: svc-admin/admin 401→200 差分	0.8	2	2026-10-18T14:52:00Z
+F-r22-0055	INT-r22-0001	http	svc-login	token exchange catch-all: /token /api/token /oauth/token 同 handler, 表单编码有效对换发同 token (律24 面级信标)	0.8	2	2026-10-18T14:53:00Z
+F-r22-0056	INT-r22-0001	authz	svc-api-gw	hauth 信任头无面: X-Forwarded-For/Host/X-Original-URL 变换全 404 (负结果) [no-consume:负结果: 8 面全探无信任面]	0.8	2	2026-10-18T14:54:00Z
+F-r22-0057	INT-r22-0001	http	svc-files	XXE 形 400: /import /unserialize application/xml POST 拒 (负结果) [no-consume:负结果: 面非 XML 解析]	0.8	2	2026-10-18T14:55:00Z
+F-r22-0058	INT-r22-0001	http	svc-files	cmdi 零熵墙: exec/run/eval GET 404 + POST 全形 400 (负结果) [no-consume:负结果: 律24 三击后停]	0.8	2	2026-10-18T14:56:00Z
+F-r22-0059	INT-r22-0001	http	svc-login	JWT 伪造 401: alg-none/过期签名全拒 (负结果) [no-consume:负结果: 无 JWT 面]	0.8	2	2026-10-18T14:57:00Z
+F-r22-0060	INT-r22-0001	authz	svc-login	跨用户登录拒: user=102 等全 denied (负结果) [no-consume:负结果: 会话固定面不存在]	0.8	2	2026-10-18T14:58:00Z
+F-r22-0061	INT-r22-0001	http	svc-login	register/forgot/reset POST 403 同墙无计数 (负结果) [no-consume:负结果: 与登录同墙]	0.8	2	2026-10-18T14:59:00Z
+F-r22-0062	INT-r22-0001	authz	svc-api-gw	admin 级令牌不可得: /token 族仅发 user 级 (负结果) [no-consume:负结果: 律22 role 记 user]	0.8	2	2026-10-18T15:00:00Z
+F-r22-0063	INT-r22-0001	info	svc-files	GTINFOLEAK-02 未现: debug/vars actuator /info /status /version /config 全 404/401 (负结果) [no-consume:负结果: honest miss]	0.8	2	2026-10-18T15:01:00Z

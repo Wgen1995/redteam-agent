@@ -1,0 +1,16 @@
+=== REQUEST ===
+GET /admin HTTP/1.1
+Host: svc-admin:8003
+User-Agent: tanyin-G-r22/probe
+Connection: close
+Authorization: Bearer drill-token-000
+
+
+=== RESPONSE ===
+HTTP/1.1 401
+server: BaseHTTP/0.6 Python/3.12.14
+date: Wed, 07 Oct 2026 13:35:45 GMT
+content-type: text/html; charset=utf-8
+content-length: 13
+
+auth required
