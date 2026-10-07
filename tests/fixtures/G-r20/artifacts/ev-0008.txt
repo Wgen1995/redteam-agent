@@ -1,0 +1,1 @@
+GET /fetch HTTP/1.1 Host svc-api-gw:8002 || resp 200 <html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>

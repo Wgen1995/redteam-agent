@@ -1,0 +1,1 @@
+GET /redirect?to=http://evil.example HTTP/1.1 Host svc-portal:8007 || resp HTTP/1.0 302 Found; Location: http://evil.example; body <html>GTREDIR-01 synthetic redirect</html>

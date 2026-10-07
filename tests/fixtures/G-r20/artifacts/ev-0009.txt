@@ -1,0 +1,1 @@
+GET /preview HTTP/1.1 Host svc-api-gw:8002 || resp 200 <html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>

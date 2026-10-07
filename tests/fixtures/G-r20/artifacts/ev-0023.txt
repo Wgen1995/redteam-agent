@@ -1,0 +1,1 @@
+GET /decode?data=YTJlY3RlZA%3D%3D || resp 200 <html>GTDESER-03 synthetic base64 payload object inflated</html>

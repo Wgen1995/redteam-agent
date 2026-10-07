@@ -1,0 +1,1 @@
+GET /cors-debug HTTP/1.1 Origin http://evil.example || resp ACAO: * body <html>cors debug GTCORS-01 wildcard allow-origin</html>

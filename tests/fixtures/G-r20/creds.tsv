@@ -1,0 +1,2 @@
+CRED-r20-0001	static-cred	user	admin@svc-login	{{vault:cred-1}}	AST-r20-0004	INT-r20-0002				active	get\;post	weak credential admin/admin123 accepted by svc-login/login POST urlencoded\; role=user because issued token tok-usr-001 is user-level despite admin account	2	2026-10-16T09:19:00Z	
+CRED-r20-0002	session	user	admin@svc-login	{{vault:cred-2}}	AST-r20-0004		CRED-r20-0001			active	get\;post	session token from X-Auth-Token response header of successful login\; value tok-usr-001 (user-level)	2	2026-10-16T09:20:00Z	

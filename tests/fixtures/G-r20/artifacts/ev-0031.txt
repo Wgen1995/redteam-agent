@@ -1,0 +1,1 @@
+GET /admin/reports no token || resp 401 auth required

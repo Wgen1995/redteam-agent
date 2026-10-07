@@ -1098,3 +1098,10 @@
 - **归因核验（种子锚点，RT-0016 attribution_check=verified）**：①**auth_context 链断七枚**（post_auth findings 记账漏挂 CRED——G-r11 以来隐含契约失传→22 律再修：持证 findings auth_context=CRED-xxx 必填）；②**裸根资产**（svc-login/ 尾斜杠无面——资产形变体第五例→25 律再修：面必须显形）；③xss-03 两代漏第三面+userenum/ratelimit 代际波动；④装备层 bug 多于探测层（bash3.2 转义三炸全在记账驱动——驱动样例先行扩展到记账侧）；CLI 隐式契约四处（REJECT 回读源码纠正）。
 - **RT-0016** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r19 入 fixtures 钉测 4 枚（含链断+裸根两钉）。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；settle 仓净 0。
+
+## 2026-10-16 battle-19（G-r20）收战：+8 全回收——22/25 律再修双兑现代
+- **战果**：门控 **30/56≈0.5357**（beacon 30；**+8 全回收**——G-r19 应得≈29 预测兑现）。**22 律再修兑现**：六枚持证 findings 全挂 auth_context=CRED（匿名 401 对照+持证 200 信标成对 EV）；**25 律再修兑现**：资产面全显形（svc-login/login 形+billing /invoice/88 id 形）——登录三洞全中（上代裸根双沉本代全回收）。**40/40 EV 全 VERIFIED**；三面族全枚举兑现（XSS 四面/SSRF 三面/deser 三面）。十七代同面：0.50/0.21/0.34/0.29/0.38/0.32/0.34/0.38/0.43/0.59/0.43/0.34/0.46/0.45/0.55/0.39/0.54。
+- **归因核验（种子锚点，RT-0017 attribution_check=verified）**：①**门序契约**（门事件必须随战即时铸——P0 于 matrix-init 前；抢跑=verify-chain 永久死锁无补票。本代如实 FAIL 留痕拒伪造——30 律候选+工具缺口）；②ratelimit-01 卡跨信标错标（题名 GTRATE-01/卡词 GTUSERENUM-01——串错标）；③catch-all 唯 POST 体差分可破（svc-login 54 面 GET 零熵范本）；④持证世界在子名词（六枚全两段式路径）。
+- **工作区异动披露**：收官见 4 条非平台产物（opencode 技能 2 改+AGENTS.md 删+secw41-work/——时间戳 10-07 早于本战 9 天，用户侧 WIP）。总控不碰不并，本战提交精确添加。**人工件+1：请确认该 WIP 归属**。
+- **RT-0017** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r20 入 fixtures 钉测 4 枚。
+- 验证：全套绿（收官跑）；靶场 down 残留 0。

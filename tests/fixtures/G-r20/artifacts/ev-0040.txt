@@ -1,0 +1,1 @@
+GET /admin/clients no token || resp 401 auth required

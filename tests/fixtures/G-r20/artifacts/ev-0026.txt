@@ -1,0 +1,1 @@
+GET /forgot?user=admin || resp 200 <html>reset sent GTUSERENUM-01 synthetic user exists disclosure</html>

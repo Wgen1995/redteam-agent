@@ -1,0 +1,1 @@
+GET /graphql?query=%7B__schema%7Btypes%7Bname%7D%7D || resp 200 <html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>

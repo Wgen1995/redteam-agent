@@ -1,0 +1,1 @@
+GET /search?q=%3Cscript%3E... || resp 200 <html>search results %3Cscript%3Ealert%281%29%3C/script%3E GTXSS-01 synthetic reflected xss</html>

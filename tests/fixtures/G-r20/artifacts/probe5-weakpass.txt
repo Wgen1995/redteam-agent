@@ -1,0 +1,1 @@
+POST /login HTTP/1.1 Host svc-login:8004 body user=admin&pass=admin123 || resp HTTP/1.0 200 OK; X-Auth-Token response header present (vaulted cred-2); body <html>welcome admin GTWEAKPASS-01 synthetic 

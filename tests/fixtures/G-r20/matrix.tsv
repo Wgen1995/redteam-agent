@@ -1,0 +1,204 @@
+svc-shop	wstg-info				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-conf				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-idnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-authn				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-authz				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-sess				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-inpv				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-errh				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-cryp				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-busl				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-clnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-apit				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-info				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-conf				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-idnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-authn				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-authz				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-sess				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-inpv				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-errh				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-cryp				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-busl				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-clnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-api-gw	wstg-apit				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-info				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-conf				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-idnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-authn				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-authz				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-sess				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-inpv				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-errh				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-cryp				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-busl				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-clnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-admin	wstg-apit				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-info				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-conf				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-idnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-authn				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-authz				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-sess				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-inpv				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-errh				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-cryp				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-busl				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-clnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-login	wstg-apit				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-info				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-conf				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-idnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-authn				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-authz				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-sess				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-inpv				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-errh				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-cryp				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-busl				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-clnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-billing	wstg-apit				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-info				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-conf				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-idnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-authn				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-authz				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-sess				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-inpv				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-errh				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-cryp				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-busl				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-clnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-dashboard	wstg-apit				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-info				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-conf				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-idnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-authn				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-authz				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-sess				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-inpv				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-errh				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-cryp				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-busl				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-clnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-portal	wstg-apit				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-info				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-conf				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-idnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-authn				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-authz				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-sess				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-inpv				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-errh				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-cryp				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-busl				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-clnt				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-files	wstg-apit				2	2026-10-16T09:13:00Z	2026-10-16T09:14:00Z
+svc-shop	wstg-info	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-conf	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-idnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-authn	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-authz	x	confirmed GTIDOR-06	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-sess	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-inpv	x	confirmed GTSQLI-01/02 GTXSS-01..04	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-errh	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-cryp	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-busl	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-clnt	x	confirmed GTREDIR-02	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-shop	wstg-apit	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-info	x	confirmed GTGRAPHQL-01	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-conf	x	confirmed GTCORS-01/02	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-idnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-authn	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-authz	x	confirmed GTIDOR-05	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-sess	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-inpv	x	confirmed GTSSRF-01..03	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-errh	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-cryp	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-busl	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-clnt	x	confirmed GTREDIR-03	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-api-gw	wstg-apit	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-info	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-conf	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-idnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-authn	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-authz	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-sess	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-inpv	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-errh	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-cryp	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-busl	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-clnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-admin	wstg-apit	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-info	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-conf	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-idnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-authn	x	confirmed GTWEAKPASS-01 GTRATE-01 GTUSERENUM-01	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-authz	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-sess	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-inpv	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-errh	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-cryp	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-busl	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-clnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-login	wstg-apit	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-info	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-conf	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-idnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-authn	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-authz	x	confirmed GTIDOR-04	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-sess	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-inpv	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-errh	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-cryp	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-busl	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-clnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-billing	wstg-apit	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-info	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-conf	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-idnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-authn	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-authz	x	confirmed GTROLE-03	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-sess	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-inpv	x	confirmed GTSSTI-02	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-errh	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-cryp	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-busl	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-clnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-dashboard	wstg-apit	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-info	x	confirmed GTINFOLEAK-01	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-conf	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-idnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-authn	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-authz	x	confirmed GTHAUTH-05	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-sess	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-inpv	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-errh	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-cryp	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-busl	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-clnt	x	confirmed GTREDIR-01	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-portal	wstg-apit	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-info	x	confirmed GTINFOLEAK-03	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-conf	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-idnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-authn	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-authz	x	confirmed GTROLE-04	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-sess	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-inpv	x	confirmed GTDESER-01..03	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-errh	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-cryp	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-busl	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-clnt	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+svc-files	wstg-apit	-	probed in dictionary wave + post-auth sweep\; no beacon	INT-r20-0002	2	2026-10-16T11:30:00Z	
+authorized-range.local	wstg-info	-	submatrix:tree-root-asset-no-direct-faces	INT-r20-0002	2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-conf		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-idnt		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-authn		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-authz		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-sess		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-inpv		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-errh		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-cryp		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-busl		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-clnt		submatrix:		2	2026-10-16T11:36:00Z	
+authorized-range.local	wstg-apit		submatrix:		2	2026-10-16T11:36:00Z	

@@ -1,0 +1,1 @@
+GET /admin/clients with X-Auth-Token header || resp 200 <html>GTHAUTH-05 synthetic hauth-05 low-priv client list</html>

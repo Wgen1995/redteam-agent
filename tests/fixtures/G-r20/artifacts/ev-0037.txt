@@ -1,0 +1,1 @@
+GET /admin/logs with X-Auth-Token header || resp 200 <html>GTROLE-04 synthetic role-04 low-priv logs reachable</html>

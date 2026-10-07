@@ -1,0 +1,1 @@
+GET /logout?to=http://evil.example HTTP/1.1 || resp beacon GTREDIR-02

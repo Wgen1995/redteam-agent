@@ -1,0 +1,39 @@
+AST-r20-0001	service	svc-shop	port=8001\;root-fingerprint-seen	in_scope	2	2026-10-16T09:08:00Z
+AST-r20-0002	service	svc-api-gw	port=8002\;root-fingerprint-seen	in_scope	2	2026-10-16T09:08:00Z
+AST-r20-0003	service	svc-admin	port=8003\;root-fingerprint-seen	in_scope	2	2026-10-16T09:09:00Z
+AST-r20-0004	service	svc-login	port=8004\;root-fingerprint-seen	in_scope	2	2026-10-16T09:09:00Z
+AST-r20-0005	service	svc-billing	port=8005\;root-fingerprint-seen	in_scope	2	2026-10-16T09:10:00Z
+AST-r20-0006	service	svc-dashboard	port=8006\;root-fingerprint-seen	in_scope	2	2026-10-16T09:10:00Z
+AST-r20-0007	service	svc-portal	port=8007\;root-fingerprint-seen	in_scope	2	2026-10-16T09:11:00Z
+AST-r20-0008	service	svc-files	port=8008\;root-fingerprint-seen	in_scope	2	2026-10-16T09:11:00Z
+AST-r20-0009	endpoint	svc-login/login	port=8004\;login face\;POST urlencoded key user/pass	in_scope	2	2026-10-16T09:22:00Z
+AST-r20-0010	endpoint	svc-portal/redirect	port=8007\;redirect face\;to= param carries external URL into Location	in_scope	2	2026-10-16T09:26:00Z
+AST-r20-0011	endpoint	svc-shop/logout?to=	redirect family face on shop\; to= param 302	in_scope	2	2026-10-16T09:30:00Z
+AST-r20-0012	endpoint	svc-api-gw/jump?to=	redirect family face on api-gw\; to= param 302	in_scope	2	2026-10-16T09:33:00Z
+AST-r20-0013	endpoint	svc-shop/item	param face id=\; sqli error string on quote	in_scope	2	2026-10-16T09:36:00Z
+AST-r20-0014	endpoint	svc-shop/order	param face id= + path form /order/1\; dual form EVs	in_scope	2	2026-10-16T09:39:00Z
+AST-r20-0015	endpoint	svc-api-gw/fetch	SSRF family face on api-gw	in_scope	2	2026-10-16T09:43:00Z
+AST-r20-0016	endpoint	svc-api-gw/preview	SSRF family face on api-gw	in_scope	2	2026-10-16T09:46:00Z
+AST-r20-0017	endpoint	svc-api-gw/proxy	SSRF family face on api-gw	in_scope	2	2026-10-16T09:49:00Z
+AST-r20-0018	endpoint	svc-api-gw/cors-debug	CORS face\; ACAO wildcard	in_scope	2	2026-10-16T09:52:00Z
+AST-r20-0019	endpoint	svc-api-gw/origin	CORS face\; reflected origin + ACAC true	in_scope	2	2026-10-16T09:55:00Z
+AST-r20-0020	endpoint	svc-api-gw/graphql	GraphQL face\; introspection via GET	in_scope	2	2026-10-16T09:58:00Z
+AST-r20-0021	endpoint	svc-dashboard/render	template face\; SSTI marker	in_scope	2	2026-10-16T10:01:00Z
+AST-r20-0022	endpoint	svc-shop/search	XSS family face 1/4 on shop\; q= reflected	in_scope	2	2026-10-16T10:05:00Z
+AST-r20-0023	endpoint	svc-shop/comment	XSS family face 2/4 on shop	in_scope	2	2026-10-16T10:08:00Z
+AST-r20-0024	endpoint	svc-shop/reply	XSS family face 3/4 on shop	in_scope	2	2026-10-16T10:11:00Z
+AST-r20-0025	endpoint	svc-shop/feedback	XSS family face 4/4 on shop	in_scope	2	2026-10-16T10:14:00Z
+AST-r20-0026	endpoint	svc-portal/debug/env	infoleak face\; env dump	in_scope	2	2026-10-16T10:17:00Z
+AST-r20-0027	endpoint	svc-files/.env	infoleak face\; dotfile	in_scope	2	2026-10-16T10:20:00Z
+AST-r20-0028	endpoint	svc-files/unserialize	deser face\; GET-first fired\; POST 400	in_scope	2	2026-10-16T10:23:00Z
+AST-r20-0029	endpoint	svc-files/import	deser face\; java blob accepted	in_scope	2	2026-10-16T10:26:00Z
+AST-r20-0030	endpoint	svc-files/decode	deser face\; base64 payload	in_scope	2	2026-10-16T10:29:00Z
+AST-r20-0031	endpoint	svc-files/download	traversal face\; dual form query+path	in_scope	2	2026-10-16T10:32:00Z
+AST-r20-0032	endpoint	svc-login/forgot	reset face\; user enum differential	in_scope	2	2026-10-16T10:37:00Z
+AST-r20-0033	endpoint	svc-api-gw/admin/keys	admin subnoun keys face\; user token reaches key list	in_scope	2	2026-10-16T10:45:00Z
+AST-r20-0034	endpoint	svc-shop/admin/reports	admin subnoun reports face\; user token reaches other-user reports	in_scope	2	2026-10-16T10:51:00Z
+AST-r20-0035	endpoint	svc-billing/invoice/88	resource face concrete id\; beacon names invoice 88\; dual id EVs	in_scope	2	2026-10-16T10:57:00Z
+AST-r20-0036	endpoint	svc-dashboard/admin/config	admin subnoun config face\; low-priv reachable	in_scope	2	2026-10-16T11:05:00Z
+AST-r20-0037	endpoint	svc-files/admin/logs	admin subnoun logs face\; low-priv reachable	in_scope	2	2026-10-16T11:11:00Z
+AST-r20-0038	endpoint	svc-portal/admin/clients	admin subnoun clients face\; low-priv client list	in_scope	2	2026-10-16T11:17:00Z
+AST-r20-0039	root-domain	authorized-range.local	range root\; parent of all services	out_of_scope	2	2026-10-16T11:35:00Z

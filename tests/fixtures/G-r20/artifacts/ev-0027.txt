@@ -1,0 +1,1 @@
+GET /forgot?user=zznoexist77 || resp 404 not found (no disclosure)
