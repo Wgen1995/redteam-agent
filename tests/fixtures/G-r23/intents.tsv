@@ -1,0 +1,11 @@
+INT-r23-0001	port-map-8svc-8000-8010		candidate	dsh-battle-22	recon	entity			-+recon+port-map-8svc-8000-8010	100000\;20000\;4					2	2026-10-19T09:09:00Z
+INT-r23-0002	dict-wave-confirmation		candidate	dsh-battle-22	surface	adjacency			-+surface+dict-wave-confirmation	200000\;30000\;3					2	2026-10-19T09:50:00Z
+INT-r23-0003	post-auth admin-noun authz-diff sweep		pending	dsh-battle-22	authz-diff	entity			-+authz-diff+post-auth admin-noun authz-diff sweep	150000\;20000\;2				CRED-r23-0002	2	2026-10-19T11:02:00Z
+INT-r23-0001	port-map-8svc-8000-8010		pending	dsh-battle-22	recon	entity			-+recon+port-map-8svc-8000-8010	100000\;20000\;4					2	2026-10-19T11:17:00Z
+INT-r23-0002	dict-wave-confirmation		pending	dsh-battle-22	surface	adjacency			-+surface+dict-wave-confirmation	200000\;30000\;3					2	2026-10-19T11:17:20Z
+INT-r23-0001	port-map-8svc-8000-8010		active	dsh-battle-22	recon	entity			-+recon+port-map-8svc-8000-8010	100000\;20000\;4					2	2026-10-19T11:17:40Z
+INT-r23-0002	dict-wave-confirmation		active	dsh-battle-22	surface	adjacency			-+surface+dict-wave-confirmation	200000\;30000\;3					2	2026-10-19T11:18:00Z
+INT-r23-0003	post-auth admin-noun authz-diff sweep		active	dsh-battle-22	authz-diff	entity			-+authz-diff+post-auth admin-noun authz-diff sweep	150000\;20000\;2				CRED-r23-0002	2	2026-10-19T11:18:20Z
+INT-r23-0001	port-map-8svc-8000-8010		done	dsh-battle-22	recon	entity			-+recon+port-map-8svc-8000-8010	100000\;20000\;4					2	2026-10-19T11:18:40Z
+INT-r23-0002	dict-wave-confirmation		done	dsh-battle-22	surface	adjacency			-+surface+dict-wave-confirmation	200000\;30000\;3					2	2026-10-19T11:19:00Z
+INT-r23-0003	post-auth admin-noun authz-diff sweep		done	dsh-battle-22	authz-diff	entity			-+authz-diff+post-auth admin-noun authz-diff sweep	150000\;20000\;2				CRED-r23-0002	2	2026-10-19T11:19:20Z

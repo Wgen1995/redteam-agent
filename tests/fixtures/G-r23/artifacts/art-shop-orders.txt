@@ -1,0 +1,7 @@
+request:
+GET /orders?id=1
+Host: svc-shop:8001
+User-Agent: tanyin/1
+Connection: close
+
+observed: beacon-confirmed synthetic response

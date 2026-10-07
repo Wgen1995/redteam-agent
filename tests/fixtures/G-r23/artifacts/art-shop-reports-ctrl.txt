@@ -1,0 +1,7 @@
+request:
+GET /admin/reports
+Host: svc-shop:8001
+User-Agent: tanyin/1
+Connection: close
+
+observed: 401 auth required (probe2 baseline)

@@ -1,0 +1,2 @@
+CRED-r23-0001	static-cred	admin	admin	{{vault:cred-1}}	AST-r23-0036	INT-r23-0002		2026-10-19T09:45:00Z		active		weakpass admin pair from GTWEAKPASS-01 hit	2	2026-10-19T11:00:00Z	
+CRED-r23-0002	session	user	admin	{{vault:cred-2}}	AST-r23-0036	INT-r23-0002	CRED-r23-0001	2026-10-19T09:45:00Z		active		session token from X-Auth-Token issuance header (law19 carry form)	2	2026-10-19T11:00:20Z	

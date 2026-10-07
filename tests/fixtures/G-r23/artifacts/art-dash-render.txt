@@ -1,0 +1,7 @@
+request:
+GET /render?tpl={{7*7}}
+Host: svc-dashboard:8006
+User-Agent: tanyin/1
+Connection: close
+
+observed: beacon-confirmed synthetic response

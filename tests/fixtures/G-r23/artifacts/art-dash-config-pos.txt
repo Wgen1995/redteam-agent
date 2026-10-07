@@ -1,0 +1,8 @@
+request (token vaulted):
+GET /admin/config
+Host: svc-dashboard:8006
+X-Auth-Token: <cred-2>
+User-Agent: tanyin/1
+Connection: close
+
+observed: 200 beacon-confirmed

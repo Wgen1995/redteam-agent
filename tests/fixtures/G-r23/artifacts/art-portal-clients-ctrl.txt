@@ -1,0 +1,7 @@
+request:
+GET /admin/clients
+Host: svc-portal:8007
+User-Agent: tanyin/1
+Connection: close
+
+observed: 401 auth required (probe2 baseline)

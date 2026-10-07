@@ -1,0 +1,7 @@
+request:
+GET /ping?host=127.0.0.1
+Host: svc-dashboard:8006
+User-Agent: tanyin/1
+Connection: close
+
+observed: beacon-confirmed synthetic response

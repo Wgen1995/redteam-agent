@@ -1,0 +1,7 @@
+request:
+GET /redirect?to=http://evil.example
+Host: svc-portal:8007
+User-Agent: tanyin/1
+Connection: close
+
+observed: beacon-confirmed synthetic response

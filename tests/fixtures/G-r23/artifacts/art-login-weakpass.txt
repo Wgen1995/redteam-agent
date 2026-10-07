@@ -1,0 +1,7 @@
+request:
+POST /login
+Host: svc-login:8004
+User-Agent: tanyin/1
+Connection: close
+
+observed: beacon-confirmed synthetic response

@@ -1,0 +1,7 @@
+request:
+GET /admin/logs
+Host: svc-files:8008
+User-Agent: tanyin/1
+Connection: close
+
+observed: 401 auth required (probe2 baseline)

@@ -1,0 +1,8 @@
+request (token vaulted):
+GET /admin/clients
+Host: svc-portal:8007
+X-Auth-Token: <cred-2>
+User-Agent: tanyin/1
+Connection: close
+
+observed: 200 beacon-confirmed

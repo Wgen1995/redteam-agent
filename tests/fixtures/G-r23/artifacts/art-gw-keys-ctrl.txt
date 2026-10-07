@@ -1,0 +1,7 @@
+request:
+GET /admin/keys
+Host: svc-api-gw:8002
+User-Agent: tanyin/1
+Connection: close
+
+observed: 401 auth required (probe2 baseline)

@@ -1,0 +1,1 @@
+403 plain denied body 19 bytes without GTRATE counter on early attempts

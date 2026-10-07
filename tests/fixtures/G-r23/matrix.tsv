@@ -1,0 +1,216 @@
+172.28.0.0/24	wstg-info				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-conf				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-idnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-authn				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-authz				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-sess				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-inpv				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-errh				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-cryp				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-busl				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-clnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-apit				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-info				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-conf				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-idnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-authn				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-authz				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-sess				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-inpv				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-errh				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-cryp				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-busl				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-clnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-shop	wstg-apit				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-info				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-conf				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-idnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-authn				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-authz				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-sess				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-inpv				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-errh				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-cryp				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-busl				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-clnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-api-gw	wstg-apit				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-info				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-conf				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-idnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-authn				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-authz				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-sess				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-inpv				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-errh				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-cryp				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-busl				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-clnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-admin	wstg-apit				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-info				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-conf				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-idnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-authn				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-authz				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-sess				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-inpv				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-errh				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-cryp				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-busl				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-clnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-login	wstg-apit				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-info				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-conf				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-idnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-authn				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-authz				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-sess				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-inpv				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-errh				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-cryp				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-busl				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-clnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-billing	wstg-apit				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-info				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-conf				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-idnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-authn				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-authz				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-sess				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-inpv				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-errh				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-cryp				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-busl				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-clnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-dashboard	wstg-apit				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-info				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-conf				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-idnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-authn				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-authz				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-sess				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-inpv				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-errh				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-cryp				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-busl				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-clnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-portal	wstg-apit				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-info				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-conf				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-idnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-authn				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-authz				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-sess				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-inpv				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-errh				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-cryp				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-busl				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-clnt				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+svc-files	wstg-apit				2	2026-10-19T09:10:30Z	2026-10-19T09:11:00Z
+172.28.0.0/24	wstg-info	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-conf	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-idnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-authn	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-authz	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-sess	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-inpv	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-errh	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-cryp	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-busl	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-clnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+172.28.0.0/24	wstg-apit	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-info	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-conf	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-idnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-authn	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-authz	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-sess	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-inpv	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-errh	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-cryp	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-busl	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-clnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-shop	wstg-apit	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-info	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-conf	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-idnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-authn	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-authz	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-sess	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-inpv	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-errh	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-cryp	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-busl	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-clnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-api-gw	wstg-apit	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-info	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-conf	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-idnt	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-authn	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-authz	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-sess	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-inpv	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-errh	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-cryp	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-busl	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-clnt	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-admin	wstg-apit	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-login	wstg-info	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-login	wstg-conf	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-login	wstg-idnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-login	wstg-authn	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-login	wstg-authz	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-login	wstg-sess	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-login	wstg-inpv	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-login	wstg-errh	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-login	wstg-cryp	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-login	wstg-busl	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-login	wstg-clnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-login	wstg-apit	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-info	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-conf	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-idnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-authn	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-authz	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-sess	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-inpv	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-errh	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-cryp	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-busl	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-clnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-billing	wstg-apit	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-info	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-conf	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-idnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-authn	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-authz	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-sess	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-inpv	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-errh	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-cryp	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-busl	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-clnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-dashboard	wstg-apit	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-info	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-conf	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-idnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-authn	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-authz	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-sess	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-inpv	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-errh	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-cryp	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-busl	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-clnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-portal	wstg-apit	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-files	wstg-info	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-files	wstg-conf	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-files	wstg-idnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-files	wstg-authn	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-files	wstg-authz	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-files	wstg-sess	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-files	wstg-inpv	x	beacon-confirmed findings this round		2	2026-10-19T11:15:00Z	
+svc-files	wstg-errh	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-files	wstg-cryp	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-files	wstg-busl	?	not adequately tested this round		2	2026-10-19T11:15:00Z	
+svc-files	wstg-clnt	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	
+svc-files	wstg-apit	-	tested this round, no beacon		2	2026-10-19T11:15:00Z	

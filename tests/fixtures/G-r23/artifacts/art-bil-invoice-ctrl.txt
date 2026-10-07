@@ -1,0 +1,7 @@
+request:
+GET /invoice/1
+Host: svc-billing:8005
+User-Agent: tanyin/1
+Connection: close
+
+observed: 401 auth required (probe2 baseline)

@@ -1,0 +1,45 @@
+F-r23-0001	INT-r23-0001	port	svc-shop	port scan 8000-8010: 8001/tcp open HTTP\; GET / -> 404\; Server: BaseHTTP/0.6 Python/3.12.14\; single-port-per-service heterogeneous layout	1.0	2	2026-10-19T09:09:01Z
+F-r23-0002	INT-r23-0001	port	svc-api-gw	port scan 8000-8010: 8002/tcp open HTTP\; GET / -> 404\; Server: BaseHTTP/0.6 Python/3.12.14\; single-port-per-service heterogeneous layout	1.0	2	2026-10-19T09:09:02Z
+F-r23-0003	INT-r23-0001	port	svc-admin	port scan 8000-8010: 8003/tcp open HTTP\; GET / -> 401\; Server: BaseHTTP/0.6 Python/3.12.14\; single-port-per-service heterogeneous layout	1.0	2	2026-10-19T09:09:03Z
+F-r23-0004	INT-r23-0001	port	svc-login	port scan 8000-8010: 8004/tcp open HTTP\; GET / -> 200\; Server: BaseHTTP/0.6 Python/3.12.14\; single-port-per-service heterogeneous layout	1.0	2	2026-10-19T09:09:04Z
+F-r23-0005	INT-r23-0001	port	svc-billing	port scan 8000-8010: 8005/tcp open HTTP\; GET / -> 401\; Server: BaseHTTP/0.6 Python/3.12.14\; single-port-per-service heterogeneous layout	1.0	2	2026-10-19T09:09:05Z
+F-r23-0006	INT-r23-0001	port	svc-dashboard	port scan 8000-8010: 8006/tcp open HTTP\; GET / -> 404\; Server: BaseHTTP/0.6 Python/3.12.14\; single-port-per-service heterogeneous layout	1.0	2	2026-10-19T09:09:06Z
+F-r23-0007	INT-r23-0001	port	svc-portal	port scan 8000-8010: 8007/tcp open HTTP\; GET / -> 404\; Server: BaseHTTP/0.6 Python/3.12.14\; single-port-per-service heterogeneous layout	1.0	2	2026-10-19T09:09:07Z
+F-r23-0008	INT-r23-0001	port	svc-files	port scan 8000-8010: 8008/tcp open HTTP\; GET / -> 404\; Server: BaseHTTP/0.6 Python/3.12.14\; single-port-per-service heterogeneous layout	1.0	2	2026-10-19T09:09:08Z
+F-r23-0009	INT-r23-0002	vuln-clue	svc-shop/search?q=	beacon GTXSS-01 unescaped reflection of q param (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:10:07Z
+F-r23-0010	INT-r23-0002	vuln-clue	svc-shop/reply?text=	beacon GTXSS-03 raw-form reflection (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:10:27Z
+F-r23-0011	INT-r23-0002	vuln-clue	svc-shop/feedback?msg=	beacon GTXSS-04 raw-form reflection (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:10:47Z
+F-r23-0012	INT-r23-0002	vuln-clue	svc-shop/comment	beacon GTXSS-02 on bare GET\; POST unsupported (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:11:07Z
+F-r23-0013	INT-r23-0002	vuln-clue	svc-shop/item?id=1	beacon GTSQLI-01 across id variants (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:11:27Z
+F-r23-0014	INT-r23-0002	vuln-clue	svc-shop/order?id=1	beacon GTSQLI-02 on id=1 and quote (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:11:47Z
+F-r23-0015	INT-r23-0002	vuln-clue	svc-shop/orders?id=1	beacon GTSQLI-02 on orders alias (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:12:07Z
+F-r23-0016	INT-r23-0002	vuln-clue	svc-shop/logout?next=	302 Location external attacker URL\; beacon GTREDIR-02 (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:12:27Z
+F-r23-0017	INT-r23-0002	vuln-clue	svc-dashboard/render?tpl=	beacon GTSSTI-02\; drift resolved by 3-shot differential (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:12:47Z
+F-r23-0018	INT-r23-0002	vuln-clue	svc-dashboard/report?name=	beacon GTSSTI-01 on report face raw echo (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:13:07Z
+F-r23-0019	INT-r23-0002	vuln-clue	svc-dashboard/ping?host=	beacon GTCMDI-01 with cmd output echo\; host-tool mutation face (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:13:27Z
+F-r23-0020	INT-r23-0002	vuln-clue	svc-dashboard/diag?host=	beacon GTCMDI-02 with diag output echo (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:13:47Z
+F-r23-0021	INT-r23-0002	vuln-clue	svc-portal/redirect?to=	302 Location external\; beacon GTREDIR-01 (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:14:07Z
+F-r23-0022	INT-r23-0002	vuln-clue	svc-portal/debug/env	beacon GTINFOLEAK-01 env listing anonymous-reachable (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:14:27Z
+F-r23-0023	INT-r23-0002	vuln-clue	svc-files/download?path=	beacon GTTRAVERSAL-01 across four request forms (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:14:47Z
+F-r23-0024	INT-r23-0002	vuln-clue	svc-files/static?path=	beacon GTTRAVERSAL-02 query and path-segment forms (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:15:07Z
+F-r23-0025	INT-r23-0002	vuln-clue	svc-files/unserialize	beacon GTDESER-01 bare and query forms\; POST rejected (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:15:27Z
+F-r23-0026	INT-r23-0002	vuln-clue	svc-files/import	beacon GTDESER-02 bare and query forms (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:15:47Z
+F-r23-0027	INT-r23-0002	vuln-clue	svc-files/decode?data=	beacon GTDESER-03 on b64 payload (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:16:07Z
+F-r23-0028	INT-r23-0002	vuln-clue	svc-api-gw/fetch?url=	beacon GTSSRF-01 across target forms (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:16:27Z
+F-r23-0029	INT-r23-0002	vuln-clue	svc-api-gw/preview?url=	beacon GTSSRF-02 webhook meta (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:16:47Z
+F-r23-0030	INT-r23-0002	vuln-clue	svc-api-gw/proxy?url=	beacon GTSSRF-03 internal fetch done (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:17:07Z
+F-r23-0031	INT-r23-0002	vuln-clue	svc-api-gw/graphql?query=	beacon GTGRAPHQL-01 on both payloads (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:17:27Z
+F-r23-0032	INT-r23-0002	vuln-clue	svc-api-gw/cors-debug	beacon GTCORS-01 wildcard allow-origin on Origin send (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:17:47Z
+F-r23-0033	INT-r23-0002	vuln-clue	svc-api-gw/origin	beacon GTCORS-02 reflected origin plus credentials (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:18:07Z
+F-r23-0034	INT-r23-0002	vuln-clue	svc-login/login	beacon GTWEAKPASS-01\; issued session vaulted as cred-2 (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:18:27Z
+F-r23-0035	INT-r23-0002	vuln-clue	svc-login/login	beacon GTRATE-01 counter without blocking\; control plain-denial EV paired (beacon confirmed in probe evidence)	0.95	2	2026-10-19T10:18:47Z
+F-r23-0036	INT-r23-0003	authz	svc-shop/admin/reports	GTIDOR-06 with user-level token vs 401 anonymous control (paired anonymous control)	0.95	2	2026-10-19T11:05:03Z
+F-r23-0037	INT-r23-0003	authz	svc-api-gw/admin/keys	GTIDOR-05 key list with user-level token vs 401 anonymous (paired anonymous control)	0.95	2	2026-10-19T11:05:18Z
+F-r23-0038	INT-r23-0003	authz	svc-dashboard/admin/config	GTROLE-03 low-priv reachable config vs 401 anonymous (paired anonymous control)	0.95	2	2026-10-19T11:05:33Z
+F-r23-0039	INT-r23-0003	authz	svc-portal/admin/clients	GTHAUTH-05 low-priv client list vs 401 anonymous (paired anonymous control)	0.95	2	2026-10-19T11:05:48Z
+F-r23-0040	INT-r23-0003	authz	svc-files/admin/logs	GTROLE-04 low-priv reachable logs vs 401 anonymous (paired anonymous control)	0.95	2	2026-10-19T11:06:03Z
+F-r23-0041	INT-r23-0003	authz	svc-billing/invoice/1	GTIDOR-04 invoice 88 of other user\; ordinal-equivalent faces (paired anonymous control)	0.95	2	2026-10-19T11:06:18Z
+F-r23-0042	INT-r23-0003	authz	svc-billing/invoice/1	GTIDOR-04 invoice 88 of other user\; ordinal-equivalent faces (paired anonymous control)	0.95	2	2026-10-19T11:06:18Z
+F-r23-0043	INT-r23-0003	authz	svc-billing/invoice/1	GTIDOR-04 invoice 88 of other user\; ordinal-equivalent faces (paired anonymous control)	0.95	2	2026-10-19T11:06:18Z
+F-r23-0044	INT-r23-0003	authz	svc-billing/invoice/1	GTIDOR-04 invoice 88 of other user\; ordinal-equivalent faces (paired anonymous control)	0.95	2	2026-10-19T11:06:18Z
+F-r23-0045	INT-r23-0002	vuln-clue	svc-files/.env	beacon GTINFOLEAK-03 env file dump anonymously readable (probe2 wave)	0.95	2	2026-10-19T11:12:10Z

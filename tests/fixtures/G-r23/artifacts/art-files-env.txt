@@ -1,0 +1,7 @@
+request:
+GET /.env HTTP/1.1
+Host: svc-files:8008
+User-Agent: tanyin/1
+Connection: close
+
+observed: 200 GTINFOLEAK-03 synthetic env file SECRET_KEY redacted
