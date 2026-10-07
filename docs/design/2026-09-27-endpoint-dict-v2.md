@@ -74,3 +74,4 @@ GT 键=svc-*/path?query 无端口 canonical 形（127.0.0.1:800x 历史映射形
 | 三面族全枚举（**每代必扫**：battle-17 三面族漏第三面教训） | XSS 族：三面全枚（search/echo/render/q+comment/feedback 变体）；infoleak 族：三面全枚（.env/debug 变体/graphql 内省）；得两面仍扫剩余面 | 多族 |
 | xss 变体面名族+ssti/cmdi 隔代必扫（**每代必扫**：battle-19 类目波动教训） | XSS 变体：q/query/kw/keyword/s 全枚（面名漂移防漏）；ssti/cmdi：隔代未扫即回补（render/exec/run/eval 面族） | 多族 |
 | ssti 族双面+xss 全四面（**每代必扫**：battle-20 同族异面教训） | SSTI：report?name= 与 render?tpl= **双面都扫**（一面得手仍扫余面）；XSS：search/comment/reply?text=/feedback?msg= 四面全枚举 | 多族 |
+| cmdi 参数变形族+ssti 漂移三发差分（**每代必扫**：battle-21 教训） | CMDI：GET 404+POST 400 后形变路径（cmd/exec/run/直接路径段作参数）；SSTI：重放漂移时三发差分定调（编码形/参数位/头部三变量）再定调 | 多族 |
