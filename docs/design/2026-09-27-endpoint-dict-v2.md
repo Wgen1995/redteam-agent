@@ -72,3 +72,4 @@ GT 键=svc-*/path?query 无端口 canonical 形（127.0.0.1:800x 历史映射形
 | /login 登录面族 | 账号枚举+限流双枚（**每代必扫**）：已知账号 vs 随机账号响应差异即证（枚举）；连续 5 发同响应后测降速差异即证（限流）——降速换轨不硬撞 | Auth |
 | 同族第二面提醒列（**每代必扫**：battle-16 四族皆漏教训） | XSS 族：得一面后必扫族内第二面（search/echo/render/q 全枚遍历）；CORS 族：通配面后必扫 origin 反射+ACAC 面；穿越族：download 面后必扫 static 面；infoleak 族：.env/debug 后必扫第三面（graphql/debug 变体） | 多族 |
 | 三面族全枚举（**每代必扫**：battle-17 三面族漏第三面教训） | XSS 族：三面全枚（search/echo/render/q+comment/feedback 变体）；infoleak 族：三面全枚（.env/debug 变体/graphql 内省）；得两面仍扫剩余面 | 多族 |
+| xss 变体面名族+ssti/cmdi 隔代必扫（**每代必扫**：battle-19 类目波动教训） | XSS 变体：q/query/kw/keyword/s 全枚（面名漂移防漏）；ssti/cmdi：隔代未扫即回补（render/exec/run/eval 面族） | 多族 |
