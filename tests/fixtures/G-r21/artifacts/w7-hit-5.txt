@@ -1,0 +1,9 @@
+== REQUEST ==
+GET /admin/logs HTTP/1.1
+Host: svc-files:8008
+User-Agent: tanyin-b20-probe
+X-Auth-Token: {{vault:cred-2}}
+== RESPONSE ==
+status=200
+
+<html>GTROLE-04 synthetic role-04 低权可达日志</html>

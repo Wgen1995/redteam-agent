@@ -1,0 +1,113 @@
+E-r21-0001	parent	AST-r21-0002	AST-r21-0001	compose 服务归属 range 顶层	2	2026-10-17T09:05:00Z
+E-r21-0002	parent	AST-r21-0003	AST-r21-0001	compose 服务归属 range 顶层	2	2026-10-17T09:06:00Z
+E-r21-0003	parent	AST-r21-0004	AST-r21-0001	compose 服务归属 range 顶层	2	2026-10-17T09:07:00Z
+E-r21-0004	parent	AST-r21-0005	AST-r21-0001	compose 服务归属 range 顶层	2	2026-10-17T09:08:00Z
+E-r21-0005	parent	AST-r21-0006	AST-r21-0001	compose 服务归属 range 顶层	2	2026-10-17T09:09:00Z
+E-r21-0006	parent	AST-r21-0007	AST-r21-0001	compose 服务归属 range 顶层	2	2026-10-17T09:10:00Z
+E-r21-0007	parent	AST-r21-0008	AST-r21-0001	compose 服务归属 range 顶层	2	2026-10-17T09:11:00Z
+E-r21-0008	parent	AST-r21-0009	AST-r21-0001	compose 服务归属 range 顶层	2	2026-10-17T09:12:00Z
+E-r21-0009	derived_from	F-r21-0001	INT-r21-0001	recon fact consumed	2	2026-10-17T09:06:00Z
+E-r21-0010	derived_from	F-r21-0002	INT-r21-0001	recon fact consumed	2	2026-10-17T09:07:00Z
+E-r21-0011	derived_from	F-r21-0003	INT-r21-0001	recon fact consumed	2	2026-10-17T09:08:00Z
+E-r21-0012	derived_from	F-r21-0004	INT-r21-0001	recon fact consumed	2	2026-10-17T09:09:00Z
+E-r21-0013	derived_from	F-r21-0005	INT-r21-0001	recon fact consumed	2	2026-10-17T09:10:00Z
+E-r21-0014	derived_from	F-r21-0006	INT-r21-0001	recon fact consumed	2	2026-10-17T09:11:00Z
+E-r21-0015	derived_from	F-r21-0007	INT-r21-0001	recon fact consumed	2	2026-10-17T09:12:00Z
+E-r21-0016	derived_from	F-r21-0008	INT-r21-0001	recon fact consumed	2	2026-10-17T09:13:00Z
+E-r21-0017	parent	AST-r21-0010	AST-r21-0003	endpoint 属服务	2	2026-10-17T09:00:16Z
+E-r21-0018	parent	AST-r21-0011	AST-r21-0003	endpoint 属服务	2	2026-10-17T09:01:20Z
+E-r21-0019	parent	AST-r21-0012	AST-r21-0003	endpoint 属服务	2	2026-10-17T09:02:16Z
+E-r21-0020	derived_from	F-r21-0009	INT-r21-0002	hit fact consumed	2	2026-10-17T09:22:28Z
+E-r21-0021	derived_from	F-r21-0010	INT-r21-0002	hit fact consumed	2	2026-10-17T09:23:03Z
+E-r21-0022	derived_from	F-r21-0011	INT-r21-0002	hit fact consumed	2	2026-10-17T09:23:31Z
+E-r21-0023	parent	AST-r21-0013	AST-r21-0003	endpoint belongs to service	2	2026-10-17T09:23:59Z
+E-r21-0024	derived_from	F-r21-0012	INT-r21-0002	hit fact consumed	2	2026-10-17T09:24:13Z
+E-r21-0025	parent	AST-r21-0014	AST-r21-0003	endpoint belongs to service	2	2026-10-17T09:24:41Z
+E-r21-0026	derived_from	F-r21-0013	INT-r21-0002	hit fact consumed	2	2026-10-17T09:24:55Z
+E-r21-0027	parent	AST-r21-0015	AST-r21-0003	endpoint belongs to service	2	2026-10-17T09:25:23Z
+E-r21-0028	derived_from	F-r21-0014	INT-r21-0002	hit fact consumed	2	2026-10-17T09:25:37Z
+E-r21-0029	parent	AST-r21-0016	AST-r21-0003	endpoint belongs to service	2	2026-10-17T09:26:05Z
+E-r21-0030	derived_from	F-r21-0015	INT-r21-0002	hit fact consumed	2	2026-10-17T09:26:19Z
+E-r21-0031	parent	AST-r21-0017	AST-r21-0008	endpoint belongs to service	2	2026-10-17T09:26:47Z
+E-r21-0032	derived_from	F-r21-0016	INT-r21-0002	hit fact consumed	2	2026-10-17T09:27:01Z
+E-r21-0033	parent	AST-r21-0018	AST-r21-0008	endpoint belongs to service	2	2026-10-17T09:27:29Z
+E-r21-0034	derived_from	F-r21-0017	INT-r21-0002	hit fact consumed	2	2026-10-17T09:27:43Z
+E-r21-0035	parent	AST-r21-0019	AST-r21-0002	endpoint belongs to service	2	2026-10-17T09:28:18Z
+E-r21-0036	derived_from	F-r21-0018	INT-r21-0002	hit fact consumed	2	2026-10-17T09:28:32Z
+E-r21-0037	parent	AST-r21-0020	AST-r21-0002	endpoint belongs to service	2	2026-10-17T09:29:00Z
+E-r21-0038	derived_from	F-r21-0019	INT-r21-0002	hit fact consumed	2	2026-10-17T09:29:14Z
+E-r21-0039	parent	AST-r21-0021	AST-r21-0002	endpoint belongs to service	2	2026-10-17T09:29:42Z
+E-r21-0040	derived_from	F-r21-0020	INT-r21-0002	hit fact consumed	2	2026-10-17T09:29:56Z
+E-r21-0041	parent	AST-r21-0022	AST-r21-0002	endpoint belongs to service	2	2026-10-17T09:30:24Z
+E-r21-0042	derived_from	F-r21-0021	INT-r21-0002	hit fact consumed	2	2026-10-17T09:30:38Z
+E-r21-0043	parent	AST-r21-0023	AST-r21-0002	endpoint belongs to service	2	2026-10-17T09:31:06Z
+E-r21-0044	derived_from	F-r21-0022	INT-r21-0002	hit fact consumed	2	2026-10-17T09:31:20Z
+E-r21-0045	parent	AST-r21-0024	AST-r21-0007	endpoint belongs to service	2	2026-10-17T09:31:55Z
+E-r21-0046	derived_from	F-r21-0023	INT-r21-0003	hit fact consumed	2	2026-10-17T09:32:09Z
+E-r21-0047	parent	AST-r21-0025	AST-r21-0007	endpoint belongs to service	2	2026-10-17T09:32:44Z
+E-r21-0048	derived_from	F-r21-0024	INT-r21-0002	hit fact consumed	2	2026-10-17T09:32:58Z
+E-r21-0049	parent	AST-r21-0026	AST-r21-0009	endpoint belongs to service	2	2026-10-17T09:33:40Z
+E-r21-0050	derived_from	F-r21-0025	INT-r21-0002	hit fact consumed	2	2026-10-17T09:33:54Z
+E-r21-0051	parent	AST-r21-0027	AST-r21-0009	endpoint belongs to service	2	2026-10-17T09:34:22Z
+E-r21-0052	derived_from	F-r21-0026	INT-r21-0002	hit fact consumed	2	2026-10-17T09:34:36Z
+E-r21-0053	parent	AST-r21-0028	AST-r21-0009	endpoint belongs to service	2	2026-10-17T09:35:04Z
+E-r21-0054	derived_from	F-r21-0027	INT-r21-0002	hit fact consumed	2	2026-10-17T09:35:18Z
+E-r21-0055	parent	AST-r21-0029	AST-r21-0009	endpoint belongs to service	2	2026-10-17T09:35:46Z
+E-r21-0056	derived_from	F-r21-0028	INT-r21-0002	hit fact consumed	2	2026-10-17T09:36:00Z
+E-r21-0057	parent	AST-r21-0030	AST-r21-0009	endpoint belongs to service	2	2026-10-17T09:36:49Z
+E-r21-0058	derived_from	F-r21-0029	INT-r21-0002	hit fact consumed	2	2026-10-17T09:37:03Z
+E-r21-0059	parent	AST-r21-0031	AST-r21-0009	endpoint belongs to service	2	2026-10-17T09:37:38Z
+E-r21-0060	derived_from	F-r21-0030	INT-r21-0002	hit fact consumed	2	2026-10-17T09:37:52Z
+E-r21-0061	parent	AST-r21-0032	AST-r21-0005	endpoint belongs to service	2	2026-10-17T09:38:20Z
+E-r21-0062	derived_from	F-r21-0031	INT-r21-0003	hit fact consumed	2	2026-10-17T09:38:34Z
+E-r21-0063	derived_from	F-r21-0032	INT-r21-0002	hit fact consumed	2	2026-10-17T09:22:28Z
+E-r21-0064	derived_from	F-r21-0033	INT-r21-0002	hit fact consumed	2	2026-10-17T09:23:03Z
+E-r21-0065	derived_from	F-r21-0034	INT-r21-0002	hit fact consumed	2	2026-10-17T09:23:31Z
+E-r21-0066	derived_from	F-r21-0035	INT-r21-0002	hit fact consumed	2	2026-10-17T09:23:59Z
+E-r21-0067	derived_from	F-r21-0036	INT-r21-0002	hit fact consumed	2	2026-10-17T09:24:27Z
+E-r21-0068	derived_from	F-r21-0037	INT-r21-0002	hit fact consumed	2	2026-10-17T09:24:55Z
+E-r21-0069	derived_from	F-r21-0038	INT-r21-0002	hit fact consumed	2	2026-10-17T09:25:23Z
+E-r21-0070	derived_from	F-r21-0039	INT-r21-0002	hit fact consumed	2	2026-10-17T09:25:51Z
+E-r21-0071	derived_from	F-r21-0040	INT-r21-0002	hit fact consumed	2	2026-10-17T09:26:19Z
+E-r21-0072	derived_from	F-r21-0041	INT-r21-0002	hit fact consumed	2	2026-10-17T09:26:54Z
+E-r21-0073	derived_from	F-r21-0042	INT-r21-0002	hit fact consumed	2	2026-10-17T09:27:22Z
+E-r21-0074	derived_from	F-r21-0043	INT-r21-0002	hit fact consumed	2	2026-10-17T09:27:50Z
+E-r21-0075	derived_from	F-r21-0044	INT-r21-0002	hit fact consumed	2	2026-10-17T09:28:18Z
+E-r21-0076	derived_from	F-r21-0045	INT-r21-0002	hit fact consumed	2	2026-10-17T09:28:46Z
+E-r21-0077	derived_from	F-r21-0046	INT-r21-0003	hit fact consumed	2	2026-10-17T09:29:21Z
+E-r21-0078	derived_from	F-r21-0047	INT-r21-0002	hit fact consumed	2	2026-10-17T09:30:03Z
+E-r21-0079	derived_from	F-r21-0048	INT-r21-0002	hit fact consumed	2	2026-10-17T09:30:31Z
+E-r21-0080	derived_from	F-r21-0049	INT-r21-0002	hit fact consumed	2	2026-10-17T09:30:59Z
+E-r21-0081	derived_from	F-r21-0050	INT-r21-0002	hit fact consumed	2	2026-10-17T09:31:27Z
+E-r21-0082	derived_from	F-r21-0051	INT-r21-0002	hit fact consumed	2	2026-10-17T09:32:16Z
+E-r21-0083	derived_from	F-r21-0052	INT-r21-0002	hit fact consumed	2	2026-10-17T09:32:51Z
+E-r21-0084	derived_from	F-r21-0053	INT-r21-0003	hit fact consumed	2	2026-10-17T09:33:19Z
+E-r21-0085	derived_from	F-r21-0054	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:05:36Z
+E-r21-0086	derived_from	F-r21-0055	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:05:48Z
+E-r21-0087	derived_from	F-r21-0056	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:06:00Z
+E-r21-0088	derived_from	F-r21-0057	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:06:12Z
+E-r21-0089	derived_from	F-r21-0058	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:06:24Z
+E-r21-0090	derived_from	F-r21-0059	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:06:36Z
+E-r21-0091	derived_from	F-r21-0060	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:06:48Z
+E-r21-0092	derived_from	F-r21-0061	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:07:00Z
+E-r21-0093	derived_from	F-r21-0062	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:07:12Z
+E-r21-0094	derived_from	F-r21-0063	INT-r21-0002	ambient fact consumed	2	2026-10-17T10:07:24Z
+E-r21-0095	derived_from	F-r21-0064	INT-r21-0004	weakpass fact	2	2026-10-17T10:15:42Z
+E-r21-0096	parent	AST-r21-0033	AST-r21-0002	endpoint belongs to service	2	2026-10-17T10:52:12Z
+E-r21-0097	derived_from	F-r21-0065	INT-r21-0004	post-auth fact	2	2026-10-17T10:52:24Z
+E-r21-0098	derived_from	F-r21-0066	INT-r21-0004	post-auth fact	2	2026-10-17T10:52:24Z
+E-r21-0099	parent	AST-r21-0034	AST-r21-0003	endpoint belongs to service	2	2026-10-17T10:52:54Z
+E-r21-0100	derived_from	F-r21-0067	INT-r21-0004	post-auth fact	2	2026-10-17T10:53:06Z
+E-r21-0101	parent	AST-r21-0035	AST-r21-0007	endpoint belongs to service	2	2026-10-17T10:53:36Z
+E-r21-0102	derived_from	F-r21-0068	INT-r21-0004	post-auth fact	2	2026-10-17T10:53:48Z
+E-r21-0103	parent	AST-r21-0036	AST-r21-0008	endpoint belongs to service	2	2026-10-17T10:54:18Z
+E-r21-0104	derived_from	F-r21-0069	INT-r21-0004	post-auth fact	2	2026-10-17T10:54:30Z
+E-r21-0105	parent	AST-r21-0037	AST-r21-0009	endpoint belongs to service	2	2026-10-17T10:55:00Z
+E-r21-0106	derived_from	F-r21-0070	INT-r21-0004	post-auth fact	2	2026-10-17T10:55:12Z
+E-r21-0107	parent	AST-r21-0038	AST-r21-0006	endpoint belongs to service	2	2026-10-17T10:55:42Z
+E-r21-0108	derived_from	F-r21-0071	INT-r21-0004	post-auth fact	2	2026-10-17T10:55:54Z
+E-r21-0109	derived_from	F-r21-0072	INT-r21-0004	closeout fact	2	2026-10-17T11:20:18Z
+E-r21-0110	derived_from	F-r21-0073	INT-r21-0004	closeout fact	2	2026-10-17T11:20:30Z
+E-r21-0111	derived_from	F-r21-0074	INT-r21-0004	closeout fact	2	2026-10-17T11:20:42Z
+E-r21-0112	derived_from	F-r21-0075	INT-r21-0004	closeout fact	2	2026-10-17T11:20:54Z
+E-r21-0113	derived_from	F-r21-0076	INT-r21-0004	closeout fact consumed	2	2026-10-17T11:28:00Z

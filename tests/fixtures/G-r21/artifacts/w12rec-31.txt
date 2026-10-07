@@ -1,0 +1,12 @@
+== REQUEST ==
+GET /static?name=%2Fetc%2Fshadow HTTP/1.1
+Host: svc-files:8008
+User-Agent: tanyin-b20-probe
+== RESPONSE ==
+status=200 latency_ms=3
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:19:18 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 63
+
+<html>GTTRAVERSAL-02 synthetic file: shadow file content</html>

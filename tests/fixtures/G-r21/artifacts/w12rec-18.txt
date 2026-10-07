@@ -1,0 +1,12 @@
+== REQUEST ==
+GET /render?tpl=49 HTTP/1.1
+Host: svc-dashboard:8006
+User-Agent: tanyin-b20-probe
+== RESPONSE ==
+status=200 latency_ms=2
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:19:18 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 54
+
+<html>render GTSSTI-02 synthetic ssti render 49</html>

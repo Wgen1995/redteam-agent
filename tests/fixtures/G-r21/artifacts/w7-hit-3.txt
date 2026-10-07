@@ -1,0 +1,10 @@
+== REQUEST ==
+GET /admin/config HTTP/1.1
+Host: svc-dashboard:8006
+User-Agent: tanyin-b20-probe
+X-Auth-Token: {{vault:cred-2}}
+== RESPONSE ==
+status=200
+Server: BaseHTTP/0.6 Python/3.12.14
+
+<html>GTROLE-03 synthetic role-03 低权可达配置</html>

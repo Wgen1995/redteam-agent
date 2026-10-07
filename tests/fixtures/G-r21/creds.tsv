@@ -1,0 +1,2 @@
+CRED-r21-0001	static-cred	user	user:admin@svc-login	{{vault:cred-1}}	AST-r21-0006					active	read\;write\;enumerate	svc-login /login POST user=admin&pass=admin123 accepted (GTWEAKPASS-01)	2	2026-10-17T10:15:12Z	
+CRED-r21-0002	session	user	token:tok-usr-001@svc-login	{{vault:cred-2}}	AST-r21-0006		CRED-r21-0001			active	read\;write\;enumerate	X-Auth-Token response header on weakpass login (law 19 issuance-header)	2	2026-10-17T10:15:18Z	

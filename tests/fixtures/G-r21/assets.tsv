@@ -1,0 +1,38 @@
+AST-r21-0001	root-domain	authorized-range.local	range 顶层标识（scope *.range.local）	out_of_scope	2	2026-10-17T09:05:10Z
+AST-r21-0002	service	svc-shop	port=8001 BaseHTTP/0.6 Python/3.12.14 compose DNS	in_scope	2	2026-10-17T09:05:00Z
+AST-r21-0003	service	svc-api-gw	port=8002 BaseHTTP/0.6 Python/3.12.14 compose DNS	in_scope	2	2026-10-17T09:06:00Z
+AST-r21-0004	service	svc-admin	port=8003 BaseHTTP/0.6 Python/3.12.14 compose DNS	in_scope	2	2026-10-17T09:07:00Z
+AST-r21-0005	service	svc-login	port=8004 BaseHTTP/0.6 Python/3.12.14 compose DNS	in_scope	2	2026-10-17T09:08:00Z
+AST-r21-0006	service	svc-billing	port=8005 BaseHTTP/0.6 Python/3.12.14 compose DNS	in_scope	2	2026-10-17T09:09:00Z
+AST-r21-0007	service	svc-dashboard	port=8006 BaseHTTP/0.6 Python/3.12.14 compose DNS	in_scope	2	2026-10-17T09:10:00Z
+AST-r21-0008	service	svc-portal	port=8007 BaseHTTP/0.6 Python/3.12.14 compose DNS	in_scope	2	2026-10-17T09:11:00Z
+AST-r21-0009	service	svc-files	port=8008 BaseHTTP/0.6 Python/3.12.14 compose DNS	in_scope	2	2026-10-17T09:12:00Z
+AST-r21-0010	endpoint	svc-api-gw/fetch?url=http://evil.example	svc-api-gw wave-hit CWE-918	out_of_scope	2	2026-10-17T09:00:08Z
+AST-r21-0011	endpoint	svc-api-gw/preview?url=http://127.0.0.1:8004/	svc-api-gw wave-hit CWE-918	out_of_scope	2	2026-10-17T09:01:12Z
+AST-r21-0012	endpoint	svc-api-gw/proxy?url=http://127.0.0.1:8004/	svc-api-gw wave-hit CWE-918	out_of_scope	2	2026-10-17T09:02:08Z
+AST-r21-0013	endpoint	svc-api-gw/cors-debug	svc-api-gw wave-hit CWE-942	in_scope	2	2026-10-17T09:23:52Z
+AST-r21-0014	endpoint	svc-api-gw/origin	svc-api-gw wave-hit CWE-942	in_scope	2	2026-10-17T09:24:34Z
+AST-r21-0015	endpoint	svc-api-gw/graphql?query={__schema{types{name}}}	svc-api-gw wave-hit CWE-200	in_scope	2	2026-10-17T09:25:16Z
+AST-r21-0016	endpoint	svc-api-gw/jump?url=http://evil.example	svc-api-gw wave-hit CWE-601	out_of_scope	2	2026-10-17T09:25:58Z
+AST-r21-0017	endpoint	svc-portal/debug/env	svc-portal wave-hit CWE-200	in_scope	2	2026-10-17T09:26:40Z
+AST-r21-0018	endpoint	svc-portal/redirect?to=http://evil.example	svc-portal wave-hit CWE-601	out_of_scope	2	2026-10-17T09:27:22Z
+AST-r21-0019	endpoint	svc-shop/logout?next=http://evil.example	svc-shop wave-hit CWE-601	out_of_scope	2	2026-10-17T09:28:11Z
+AST-r21-0020	endpoint	svc-shop/search?q=<svg/onload=tanyinB20>	svc-shop wave-hit CWE-79	in_scope	2	2026-10-17T09:28:53Z
+AST-r21-0021	endpoint	svc-shop/comment?text=<svg/onload=tanyinB20>	svc-shop wave-hit CWE-79	in_scope	2	2026-10-17T09:29:35Z
+AST-r21-0022	endpoint	svc-shop/item?id=1	svc-shop wave-hit CWE-89	in_scope	2	2026-10-17T09:30:17Z
+AST-r21-0023	endpoint	svc-shop/order?id=1	svc-shop wave-hit CWE-89	in_scope	2	2026-10-17T09:30:59Z
+AST-r21-0024	endpoint	svc-dashboard/render?tpl=${7*7}	svc-dashboard wave-hit CWE-94	in_scope	2	2026-10-17T09:31:48Z
+AST-r21-0025	endpoint	svc-dashboard/ping?host=127.0.0.1\;id	svc-dashboard wave-hit CWE-78	in_scope	2	2026-10-17T09:32:37Z
+AST-r21-0026	endpoint	svc-files/unserialize	svc-files wave-hit CWE-502	in_scope	2	2026-10-17T09:33:33Z
+AST-r21-0027	endpoint	svc-files/import	svc-files wave-hit CWE-502	in_scope	2	2026-10-17T09:34:15Z
+AST-r21-0028	endpoint	svc-files/decode	svc-files wave-hit CWE-502	in_scope	2	2026-10-17T09:34:57Z
+AST-r21-0029	endpoint	svc-files/download?path=../../../../etc/passwd	svc-files wave-hit CWE-22	in_scope	2	2026-10-17T09:35:39Z
+AST-r21-0030	endpoint	svc-files/static?name=../../../../etc/passwd	svc-files wave-hit CWE-22	in_scope	2	2026-10-17T09:36:42Z
+AST-r21-0031	endpoint	svc-files/.env	svc-files wave-hit CWE-200	in_scope	2	2026-10-17T09:37:31Z
+AST-r21-0032	endpoint	svc-login/login	svc-login wave-hit CWE-307	in_scope	2	2026-10-17T09:38:13Z
+AST-r21-0033	endpoint	svc-shop/admin/reports	svc-shop post-auth hit CWE-639	in_scope	2	2026-10-17T10:52:06Z
+AST-r21-0034	endpoint	svc-api-gw/admin/keys	svc-api-gw post-auth hit CWE-639	in_scope	2	2026-10-17T10:52:48Z
+AST-r21-0035	endpoint	svc-dashboard/admin/config	svc-dashboard post-auth hit CWE-862	in_scope	2	2026-10-17T10:53:30Z
+AST-r21-0036	endpoint	svc-portal/admin/clients	svc-portal post-auth hit CWE-862	in_scope	2	2026-10-17T10:54:12Z
+AST-r21-0037	endpoint	svc-files/admin/logs	svc-files post-auth hit CWE-862	in_scope	2	2026-10-17T10:54:54Z
+AST-r21-0038	endpoint	svc-billing/invoice/88	svc-billing post-auth hit CWE-639	in_scope	2	2026-10-17T10:55:36Z

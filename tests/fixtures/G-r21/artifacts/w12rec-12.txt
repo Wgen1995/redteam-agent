@@ -1,0 +1,14 @@
+== REQUEST ==
+GET /logout?next=http%3A%2F%2Fevil.example HTTP/1.1
+Host: svc-shop:8001
+User-Agent: tanyin-b20-probe
+
+<html>GTREDIR-02 synthetic redirect to %s</html>
+== RESPONSE ==
+status=302 latency_ms=None
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:11:10 GMT
+Content-Type: text/html; charset=utf-8
+Location: http%3A%2F%2Fevil.example
+Content-Length: 48
+

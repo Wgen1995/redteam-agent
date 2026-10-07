@@ -1,0 +1,16 @@
+== REQUEST ==
+POST /login HTTP/1.1
+Host: svc-login:8004
+User-Agent: tanyin-b20-probe
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 25
+
+user=admin&password=admin
+== RESPONSE ==
+status=403 latency_ms=3
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:19:10 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 71
+
+<html>denied GTRATE-01 synthetic no rate limit after 11 attempts</html>

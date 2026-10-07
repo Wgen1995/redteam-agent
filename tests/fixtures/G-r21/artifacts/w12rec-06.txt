@@ -1,0 +1,15 @@
+== REQUEST ==
+GET /origin HTTP/1.1
+Host: svc-api-gw:8002
+User-Agent: tanyin-b20-probe
+
+<html>origin GTCORS-02 reflected http://evil.example allow-credentials true</html>
+== RESPONSE ==
+status=200 latency_ms=None
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:11:53 GMT
+Content-Type: text/html; charset=utf-8
+Access-Control-Allow-Origin: http://evil.example
+Access-Control-Allow-Credentials: true
+Content-Length: 82
+

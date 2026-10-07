@@ -1,0 +1,13 @@
+== REQUEST ==
+GET /preview?url=http%3A%2F%2Fevil.example HTTP/1.1
+Host: svc-api-gw:8002
+User-Agent: tanyin-b20-probe
+
+<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>
+== RESPONSE ==
+status=200 latency_ms=None
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:11:38 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 72
+

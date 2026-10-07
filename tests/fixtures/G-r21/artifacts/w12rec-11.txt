@@ -1,0 +1,14 @@
+== REQUEST ==
+GET /redirect?goto=http%3A%2F%2Fevil.example HTTP/1.1
+Host: svc-portal:8007
+User-Agent: tanyin-b20-probe
+
+<html>GTREDIR-01 synthetic redirect to %s</html>
+== RESPONSE ==
+status=302 latency_ms=None
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:12:42 GMT
+Content-Type: text/html; charset=utf-8
+Location: http%3A%2F%2Fevil.example
+Content-Length: 48
+

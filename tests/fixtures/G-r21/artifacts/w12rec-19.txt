@@ -1,0 +1,13 @@
+== REQUEST ==
+GET /render?tpl=%7B%7B7%2A7%7D%7D HTTP/1.1
+Host: svc-dashboard:8006
+User-Agent: tanyin-b20-probe
+
+<html>render GTSSTI-02 synthetic ssti render %7B%7B7%2A7%7D%7D</html>
+== RESPONSE ==
+status=200 latency_ms=None
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:12:37 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 69
+

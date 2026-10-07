@@ -1,0 +1,11 @@
+== REQUEST ==
+GET /invoice/88 HTTP/1.1
+Host: svc-billing:8005
+User-Agent: tanyin-b20-probe
+== RESPONSE ==
+status=401
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:12:31 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 13
+

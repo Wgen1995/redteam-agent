@@ -1,0 +1,859 @@
+svc-shop	wstg-info				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-conf				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-idnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-authn				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-authz				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-sess				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-inpv				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-errh				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-cryp				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-busl				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-clnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-shop	wstg-apit				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-info				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-conf				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-idnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-authn				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-authz				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-sess				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-inpv				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-errh				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-cryp				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-busl				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-clnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw	wstg-apit				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-info				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-conf				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-idnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-authn				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-authz				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-sess				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-inpv				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-errh				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-cryp				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-busl				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-clnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-admin	wstg-apit				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-info				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-conf				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-idnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-authn				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-authz				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-sess				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-inpv				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-errh				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-cryp				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-busl				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-clnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-login	wstg-apit				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-info				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-conf				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-idnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-authn				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-authz				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-sess				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-inpv				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-errh				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-cryp				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-busl				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-clnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-billing	wstg-apit				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-info				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-conf				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-idnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-authn				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-authz				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-sess				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-inpv				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-errh				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-cryp				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-busl				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-clnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-dashboard	wstg-apit				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-info				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-conf				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-idnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-authn				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-authz				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-sess				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-inpv				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-errh				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-cryp				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-busl				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-clnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-portal	wstg-apit				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-info				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-conf				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-idnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-authn				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-authz				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-sess				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-inpv				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-errh				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-cryp				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-busl				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-clnt				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-files	wstg-apit				2	2026-10-17T09:15:00Z	2026-10-17T09:15:30Z
+svc-api-gw/fetch?url=http://evil.example	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-inpv	x	submatrix:hit GTSSRF-01		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/fetch?url=http://evil.example	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-inpv	x	submatrix:hit GTSSRF-02		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/preview?url=http://127.0.0.1:8004/	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-inpv	x	submatrix:hit GTSSRF-03		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/proxy?url=http://127.0.0.1:8004/	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-conf	x	submatrix:hit GTCORS-01		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/cors-debug	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-conf	x	submatrix:hit GTCORS-02		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/origin	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-info	x	submatrix:hit GTGRAPHQL-01		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-inpv	x	submatrix:hit GTREDIR-03		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-api-gw/jump?url=http://evil.example	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-info	x	submatrix:hit GTINFOLEAK-01		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/debug/env	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-inpv	x	submatrix:hit GTREDIR-01		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-portal/redirect?to=http://evil.example	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-inpv	x	submatrix:hit GTREDIR-02		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/logout?next=http://evil.example	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-inpv	x	submatrix:hit GTXSS-01		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/search?q=<svg/onload=tanyinB20>	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-inpv	x	submatrix:hit GTXSS-02		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/comment?text=<svg/onload=tanyinB20>	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-inpv	x	submatrix:hit GTSQLI-01		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/item?id=1	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-inpv	x	submatrix:hit GTSQLI-02		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop/order?id=1	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-inpv	x	submatrix:hit GTSSTI-02		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/render?tpl=${7*7}	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-inpv	x	submatrix:hit GTCMDI-01		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-dashboard/ping?host=127.0.0.1\;id	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-inpv	x	submatrix:hit GTDESER-01		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/unserialize	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-inpv	x	submatrix:hit GTDESER-02		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/import	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-inpv	x	submatrix:hit GTDESER-03		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/decode	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-inpv	x	submatrix:hit GTTRAVERSAL-01		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-inpv	x	submatrix:hit GTTRAVERSAL-02		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/static?name=../../../../etc/passwd	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-info	x	submatrix:hit GTINFOLEAK-03		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-files/.env	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-conf		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-idnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-authn		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-authz		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-sess		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-inpv		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-errh		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-cryp		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-busl		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-clnt		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-apit		submatrix:		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-authn	x	submatrix:hit GTRATE-01		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-authz	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-login/login	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-info	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-conf	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-idnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-authn	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-authz	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-sess	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-inpv	x	hit GTXSS-01/02 GTSQLI-01/02 GTREDIR-02		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-errh	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-cryp	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-busl	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-clnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop	wstg-apit	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-info	x	hit GTGRAPHQL-01		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-conf	x	hit GTCORS-01/02		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-idnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-authn	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-authz	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-sess	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-inpv	x	hit GTSSRF-01/02/03 GTREDIR-03		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-errh	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-cryp	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-busl	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-clnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-api-gw	wstg-apit	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-info	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-conf	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-idnt	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-authn	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-authz	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-sess	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-inpv	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-errh	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-cryp	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-busl	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-clnt	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-admin	wstg-apit	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-login	wstg-info	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-conf	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-idnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-authn	x	hit GTRATE-01 no-rate-limit counter		2	2026-10-17T10:12:00Z	
+svc-login	wstg-authz	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-sess	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-inpv	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-errh	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-cryp	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-busl	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-clnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-login	wstg-apit	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-info	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-conf	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-idnt	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-authn	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-authz	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-sess	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-inpv	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-errh	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-cryp	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-busl	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-clnt	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-billing	wstg-apit	-	401-wall-anonymous-only-creds-unobtained		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-info	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-conf	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-idnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-authn	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-authz	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-sess	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-inpv	x	hit GTSSTI-02 GTCMDI-01		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-errh	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-cryp	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-busl	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-clnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-dashboard	wstg-apit	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-info	x	hit GTINFOLEAK-01		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-conf	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-idnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-authn	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-authz	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-sess	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-inpv	x	hit GTREDIR-01		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-errh	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-cryp	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-busl	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-clnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-portal	wstg-apit	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-info	x	hit GTINFOLEAK-03		2	2026-10-17T10:12:00Z	
+svc-files	wstg-conf	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-idnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-authn	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-authz	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-sess	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-inpv	x	hit GTDESER-01/02/03 GTTRAVERSAL-01/02		2	2026-10-17T10:12:00Z	
+svc-files	wstg-errh	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-cryp	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-busl	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-clnt	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-files	wstg-apit	-	battle-20-depth-not-reached		2	2026-10-17T10:12:00Z	
+svc-shop/admin/reports	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-conf		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-idnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-authn		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-authz		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-sess		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-inpv		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-errh		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-cryp		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-busl		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-clnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-apit		submatrix:		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-authz	x	submatrix:hit GTIDOR-06		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-shop/admin/reports	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-conf		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-idnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-authn		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-authz		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-sess		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-inpv		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-errh		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-cryp		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-busl		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-clnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-apit		submatrix:		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-authz	x	submatrix:hit GTIDOR-05		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-api-gw/admin/keys	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-conf		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-idnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-authn		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-authz		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-sess		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-inpv		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-errh		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-cryp		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-busl		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-clnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-apit		submatrix:		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-authz	x	submatrix:hit GTROLE-03		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-dashboard/admin/config	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-conf		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-idnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-authn		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-authz		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-sess		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-inpv		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-errh		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-cryp		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-busl		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-clnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-apit		submatrix:		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-authz	x	submatrix:hit GTHAUTH-05		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-portal/admin/clients	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-conf		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-idnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-authn		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-authz		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-sess		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-inpv		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-errh		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-cryp		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-busl		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-clnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-apit		submatrix:		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-authz	x	submatrix:hit GTROLE-04		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-files/admin/logs	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-info	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-conf		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-idnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-authn		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-authz		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-sess		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-inpv		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-errh		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-cryp		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-busl		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-clnt		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-apit		submatrix:		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-conf	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-idnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-authn	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-authz	x	submatrix:hit GTIDOR-04		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-sess	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-inpv	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-errh	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-cryp	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-busl	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-clnt	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	
+svc-billing/invoice/88	wstg-apit	-	submatrix:face-hit-other-class-na		2	2026-10-17T11:16:00Z	

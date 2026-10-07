@@ -1,0 +1,76 @@
+F-r21-0001	INT-r21-0001	service	svc-shop:8001	TCP 8001 open\; BaseHTTP/0.6 Python/3.12.14\; GET / ->404 not found (no root route) (probe1 in-container)	0.95	2	2026-10-17T09:06:00Z
+F-r21-0002	INT-r21-0001	service	svc-api-gw:8002	TCP 8002 open\; BaseHTTP/0.6 Python/3.12.14\; GET / ->404 not found (no root route) (probe1 in-container)	0.95	2	2026-10-17T09:07:00Z
+F-r21-0003	INT-r21-0001	service	svc-admin:8003	TCP 8003 open\; BaseHTTP/0.6 Python/3.12.14\; GET / ->401 auth required (root behind auth wall) (probe1 in-container)	0.95	2	2026-10-17T09:08:00Z
+F-r21-0004	INT-r21-0001	service	svc-login:8004	TCP 8004 open\; BaseHTTP/0.6 Python/3.12.14\; GET / ->200 <html>login form</html> (login page exposed) (probe1 in-container)	0.95	2	2026-10-17T09:09:00Z
+F-r21-0005	INT-r21-0001	service	svc-billing:8005	TCP 8005 open\; BaseHTTP/0.6 Python/3.12.14\; GET / ->401 auth required (root behind auth wall) (probe1 in-container)	0.95	2	2026-10-17T09:10:00Z
+F-r21-0006	INT-r21-0001	service	svc-dashboard:8006	TCP 8006 open\; BaseHTTP/0.6 Python/3.12.14\; GET / ->404 not found (no root route) (probe1 in-container)	0.95	2	2026-10-17T09:11:00Z
+F-r21-0007	INT-r21-0001	service	svc-portal:8007	TCP 8007 open\; BaseHTTP/0.6 Python/3.12.14\; GET / ->404 not found (no root route) (probe1 in-container)	0.95	2	2026-10-17T09:12:00Z
+F-r21-0008	INT-r21-0001	service	svc-files:8008	TCP 8008 open\; BaseHTTP/0.6 Python/3.12.14\; GET / ->404 not found (no root route) (probe1 in-container)	0.95	2	2026-10-17T09:13:00Z
+F-r21-0009	INT-r21-0002	http	svc-api-gw/fetch?url=http://evil.example	hit CWE-918 beacons GTSSRF-01 internal-secret-doc status=200	0.97	2	2026-10-17T09:22:21Z
+F-r21-0010	INT-r21-0002	http	svc-api-gw/preview?url=http://127.0.0.1:8004/	hit CWE-918 beacons GTSSRF-02 internal-metadata status=200	0.97	2	2026-10-17T09:22:56Z
+F-r21-0011	INT-r21-0002	http	svc-api-gw/proxy?url=http://127.0.0.1:8004/	hit CWE-918 beacons GTSSRF-03 status=200	0.97	2	2026-10-17T09:23:24Z
+F-r21-0012	INT-r21-0002	http	svc-api-gw/cors-debug	hit CWE-942 beacons GTCORS-01 wildcard allow-origin status=200	0.97	2	2026-10-17T09:24:06Z
+F-r21-0013	INT-r21-0002	http	svc-api-gw/origin	hit CWE-942 beacons GTCORS-02 allow-credentials true status=200	0.97	2	2026-10-17T09:24:48Z
+F-r21-0014	INT-r21-0002	http	svc-api-gw/graphql?query={__schema{types{name}}}	hit CWE-200 beacons GTGRAPHQL-01 status=200	0.97	2	2026-10-17T09:25:30Z
+F-r21-0015	INT-r21-0002	http	svc-api-gw/jump?url=http://evil.example	hit CWE-601 beacons GTREDIR-03 status=302	0.97	2	2026-10-17T09:26:12Z
+F-r21-0016	INT-r21-0002	http	svc-portal/debug/env	hit CWE-200 beacons GTINFOLEAK-01 status=200	0.97	2	2026-10-17T09:26:54Z
+F-r21-0017	INT-r21-0002	http	svc-portal/redirect?to=http://evil.example	hit CWE-601 beacons GTREDIR-01 status=302	0.97	2	2026-10-17T09:27:36Z
+F-r21-0018	INT-r21-0002	http	svc-shop/logout?next=http://evil.example	hit CWE-601 beacons GTREDIR-02 status=302	0.97	2	2026-10-17T09:28:25Z
+F-r21-0019	INT-r21-0002	http	svc-shop/search?q=<svg/onload=tanyinB20>	hit CWE-79 beacons GTXSS-01 status=200	0.97	2	2026-10-17T09:29:07Z
+F-r21-0020	INT-r21-0002	http	svc-shop/comment?text=<svg/onload=tanyinB20>	hit CWE-79 beacons GTXSS-02 stored xss echo status=200	0.97	2	2026-10-17T09:29:49Z
+F-r21-0021	INT-r21-0002	http	svc-shop/item?id=1	hit CWE-89 beacons GTSQLI-01 status=200	0.97	2	2026-10-17T09:30:31Z
+F-r21-0022	INT-r21-0002	http	svc-shop/order?id=1	hit CWE-89 beacons GTSQLI-02 status=200	0.97	2	2026-10-17T09:31:13Z
+F-r21-0023	INT-r21-0003	http	svc-dashboard/render?tpl=${7*7}	hit CWE-94 beacons GTSSTI-02 ssti render 49 status=200	0.97	2	2026-10-17T09:32:02Z
+F-r21-0024	INT-r21-0002	http	svc-dashboard/ping?host=127.0.0.1\;id	hit CWE-78 beacons GTCMDI-01 synthetic cmd output status=200	0.97	2	2026-10-17T09:32:51Z
+F-r21-0025	INT-r21-0002	http	svc-files/unserialize	hit CWE-502 beacons GTDESER-01 pickle object inflated status=200	0.97	2	2026-10-17T09:33:47Z
+F-r21-0026	INT-r21-0002	http	svc-files/import	hit CWE-502 beacons GTDESER-02 java serialized blob status=200	0.97	2	2026-10-17T09:34:29Z
+F-r21-0027	INT-r21-0002	http	svc-files/decode	hit CWE-502 beacons GTDESER-03 status=200	0.97	2	2026-10-17T09:35:11Z
+F-r21-0028	INT-r21-0002	http	svc-files/download?path=../../../../etc/passwd	hit CWE-22 beacons GTTRAVERSAL-01 root:x:0:0:root status=200	0.97	2	2026-10-17T09:35:53Z
+F-r21-0029	INT-r21-0002	http	svc-files/static?name=../../../../etc/passwd	hit CWE-22 beacons GTTRAVERSAL-02 shadow file content status=200	0.97	2	2026-10-17T09:36:56Z
+F-r21-0030	INT-r21-0002	http	svc-files/.env	hit CWE-200 beacons GTINFOLEAK-03 SECRET_KEY status=200	0.97	2	2026-10-17T09:37:45Z
+F-r21-0031	INT-r21-0003	http	svc-login/login	hit CWE-307 beacons GTRATE-01 status=403	0.97	2	2026-10-17T09:38:27Z
+F-r21-0032	INT-r21-0002	http	svc-api-gw/fetch?url=http://evil.example	hit CWE-918 beacons GTSSRF-01 internal-secret-doc status=200	0.97	2	2026-10-17T09:22:21Z
+F-r21-0033	INT-r21-0002	http	svc-api-gw/preview?url=http://127.0.0.1:8004/	hit CWE-918 beacons GTSSRF-02 internal-metadata status=200	0.97	2	2026-10-17T09:22:56Z
+F-r21-0034	INT-r21-0002	http	svc-api-gw/proxy?url=http://127.0.0.1:8004/	hit CWE-918 beacons GTSSRF-03 status=200	0.97	2	2026-10-17T09:23:24Z
+F-r21-0035	INT-r21-0002	http	svc-api-gw/cors-debug	hit CWE-942 beacons GTCORS-01 wildcard allow-origin status=200	0.97	2	2026-10-17T09:23:52Z
+F-r21-0036	INT-r21-0002	http	svc-api-gw/origin	hit CWE-942 beacons GTCORS-02 allow-credentials true status=200	0.97	2	2026-10-17T09:24:20Z
+F-r21-0037	INT-r21-0002	http	svc-api-gw/graphql?query={__schema{types{name}}}	hit CWE-200 beacons GTGRAPHQL-01 status=200	0.97	2	2026-10-17T09:24:48Z
+F-r21-0038	INT-r21-0002	http	svc-api-gw/jump?url=http://evil.example	hit CWE-601 beacons GTREDIR-03 status=302	0.97	2	2026-10-17T09:25:16Z
+F-r21-0039	INT-r21-0002	http	svc-portal/debug/env	hit CWE-200 beacons GTINFOLEAK-01 status=200	0.97	2	2026-10-17T09:25:44Z
+F-r21-0040	INT-r21-0002	http	svc-portal/redirect?to=http://evil.example	hit CWE-601 beacons GTREDIR-01 status=302	0.97	2	2026-10-17T09:26:12Z
+F-r21-0041	INT-r21-0002	http	svc-shop/logout?next=http://evil.example	hit CWE-601 beacons GTREDIR-02 status=302	0.97	2	2026-10-17T09:26:47Z
+F-r21-0042	INT-r21-0002	http	svc-shop/search?q=<svg/onload=tanyinB20>	hit CWE-79 beacons GTXSS-01 status=200	0.97	2	2026-10-17T09:27:15Z
+F-r21-0043	INT-r21-0002	http	svc-shop/comment?text=<svg/onload=tanyinB20>	hit CWE-79 beacons GTXSS-02 stored xss echo status=200	0.97	2	2026-10-17T09:27:43Z
+F-r21-0044	INT-r21-0002	http	svc-shop/item?id=1	hit CWE-89 beacons GTSQLI-01 status=200	0.97	2	2026-10-17T09:28:11Z
+F-r21-0045	INT-r21-0002	http	svc-shop/order?id=1	hit CWE-89 beacons GTSQLI-02 status=200	0.97	2	2026-10-17T09:28:39Z
+F-r21-0046	INT-r21-0003	http	svc-dashboard/render?tpl=${7*7}	hit CWE-94 beacons GTSSTI-02 ssti render 49 status=200	0.97	2	2026-10-17T09:29:14Z
+F-r21-0047	INT-r21-0002	http	svc-files/unserialize	hit CWE-502 beacons GTDESER-01 pickle object inflated status=200	0.97	2	2026-10-17T09:29:56Z
+F-r21-0048	INT-r21-0002	http	svc-files/import	hit CWE-502 beacons GTDESER-02 java serialized blob status=200	0.97	2	2026-10-17T09:30:24Z
+F-r21-0049	INT-r21-0002	http	svc-files/decode	hit CWE-502 beacons GTDESER-03 status=200	0.97	2	2026-10-17T09:30:52Z
+F-r21-0050	INT-r21-0002	http	svc-files/download?path=../../../../etc/passwd	hit CWE-22 beacons GTTRAVERSAL-01 root:x:0:0:root status=200	0.97	2	2026-10-17T09:31:20Z
+F-r21-0051	INT-r21-0002	http	svc-files/static?name=../../../../etc/passwd	hit CWE-22 beacons GTTRAVERSAL-02 shadow file content status=200	0.97	2	2026-10-17T09:32:09Z
+F-r21-0052	INT-r21-0002	http	svc-files/.env	hit CWE-200 beacons GTINFOLEAK-03 SECRET_KEY status=200	0.97	2	2026-10-17T09:32:44Z
+F-r21-0053	INT-r21-0003	http	svc-login/login	hit CWE-307 beacons GTRATE-01 status=403	0.97	2	2026-10-17T09:33:12Z
+F-r21-0054	INT-r21-0002	info	svc-shop:8001	001 decoy: /.git/HEAD 200 [core] decoy git config noise\; /wp-admin + /admin.php 200 decoy wp installer noise - per law 5 recorded as decoy, no finding (law 5)	0.9	2	2026-10-17T10:05:30Z
+F-r21-0055	INT-r21-0002	http	svc-login:8004	002 GET any path -> 200 <html>login form</html> catch-all same-body (law 16 entropy baseline: GET track zero-entropy\; POST track is the real face)	0.9	2	2026-10-17T10:05:42Z
+F-r21-0056	INT-r21-0002	authz	svc-admin:8003	003 anonymous: every GET 401 auth required, every POST 403 denied - whole-service wall, needs credential	0.9	2	2026-10-17T10:05:54Z
+F-r21-0057	INT-r21-0002	authz	svc-billing:8005	004 anonymous: every GET 401, POST 403 denied - same wall shape as svc-admin	0.9	2	2026-10-17T10:06:06Z
+F-r21-0058	INT-r21-0002	info	range:admin-nouns	005 one live admin noun per service (401 vs catch-404): dashboard=/admin/config files=/admin/logs portal=/admin/clients shop=/admin/reports api-gw=/admin/keys + /api/users - post-auth targets	0.9	2	2026-10-17T10:06:18Z
+F-r21-0059	INT-r21-0002	info	svc-api-gw:8002	006 227 requests over ~2min + 12-fast burst (0.01s) - zero 429\; brief's ~30req/10s limiter not observed on 404-face\; kept backoff discipline anyway	0.9	2	2026-10-17T10:06:30Z
+F-r21-0060	INT-r21-0002	info	svc-files:8008	007 /import /unserialize /decode POST -> 400 bad request\; GET bare -> 200 GTDESER markers (law 20 method split: 400 proves handler, GET proves method)	0.9	2	2026-10-17T10:06:42Z
+F-r21-0061	INT-r21-0002	info	svc-dashboard:8006	008 only /render (ssti) and /ping (cmdi) live\; /exec /run /eval /template -> 404\; ssti {{7*7}} echo-only vs 49 -> 49 computed	0.9	2	2026-10-17T10:06:54Z
+F-r21-0062	INT-r21-0002	info	svc-shop:8001	009 sqli payloads 1' / AND 1=1 / OR 1=1 all same GTSQLI marker (synthetic error constant) - error-disclosure class, no boolean diff	0.9	2	2026-10-17T10:07:06Z
+F-r21-0063	INT-r21-0002	http	svc-portal:8007	010 /redirect 7 params all 302: to=/goto= -> Location=attacker directly\; next/url/redirect/continue/target -> self-echo\; all carry GTREDIR-01	0.9	2	2026-10-17T10:07:18Z
+F-r21-0064	INT-r21-0004	http	svc-login/login	weakpass admin/admin123 accepted\; token tok-usr-001 via X-Auth-Token header	0.99	2	2026-10-17T10:15:36Z
+F-r21-0065	INT-r21-0004	http	svc-shop/admin/reports	post-auth flip: anon 401 -> X-Auth-Token(tok-usr-001, user-grade) 200 beacon GTIDOR-06	0.99	2	2026-10-17T10:52:18Z
+F-r21-0066	INT-r21-0004	http	svc-shop/admin/reports	post-auth flip: anon 401 -> X-Auth-Token(tok-usr-001, user-grade) 200 beacon GTIDOR-06	0.99	2	2026-10-17T10:52:18Z
+F-r21-0067	INT-r21-0004	http	svc-api-gw/admin/keys	post-auth flip: anon 401 -> X-Auth-Token(tok-usr-001, user-grade) 200 beacon GTIDOR-05	0.99	2	2026-10-17T10:53:00Z
+F-r21-0068	INT-r21-0004	http	svc-dashboard/admin/config	post-auth flip: anon 401 -> X-Auth-Token(tok-usr-001, user-grade) 200 beacon GTROLE-03	0.99	2	2026-10-17T10:53:42Z
+F-r21-0069	INT-r21-0004	http	svc-portal/admin/clients	post-auth flip: anon 401 -> X-Auth-Token(tok-usr-001, user-grade) 200 beacon GTHAUTH-05	0.99	2	2026-10-17T10:54:24Z
+F-r21-0070	INT-r21-0004	http	svc-files/admin/logs	post-auth flip: anon 401 -> X-Auth-Token(tok-usr-001, user-grade) 200 beacon GTROLE-04	0.99	2	2026-10-17T10:55:06Z
+F-r21-0071	INT-r21-0004	http	svc-billing/invoice/88	post-auth flip: anon 401 -> X-Auth-Token(tok-usr-001, user-grade) 200 beacon GTIDOR-04	0.99	2	2026-10-17T10:55:48Z
+F-r21-0072	INT-r21-0004	info	range:law23-checklist-completion	012 law-23 checklist: 8 services x 8 admin nouns done on THREE tracks: anonymous (probe2), Bearer tok-usr-001 (probe5), X-Auth-Token tok-usr-001 (probe7)\; resource faces dual-form (invoice/88 path + invoice?id=88 query) swept per service. Checklist complete=192 noun probes + 96 resource probes.	0.92	2	2026-10-17T11:20:12Z
+F-r21-0073	INT-r21-0004	authz	svc-admin:8003	013 svc-admin wall: anonymous 401-everything\; X-Auth-Token tok-usr-001 -> 404 route hiding (wall reads X-Auth-Token header)\; tok-adm-001 guess 401\; no admin-grade token issuance face found (only svc-login /login user-grade) -> svc-admin interior unverified (honest miss, needs admin token source)	0.92	2	2026-10-17T11:20:24Z
+F-r21-0074	INT-r21-0004	http	range:carry-form-differential	014 carry-form differential (law 19 mirror): same token tok-usr-001 via Authorization: Bearer -> 401 on all six faces\; via X-Auth-Token -> 200 GTROLE/GTIDOR/GTHAUTH markers. Bearer-form facts from probe5 recorded as the negative arm.	0.92	2	2026-10-17T11:20:36Z
+F-r21-0075	INT-r21-0004	http	svc-billing/invoice-dual-form	015 billing invoice dual-form diff: path form /invoice/88 with X-Auth-Token -> 200 GTIDOR-04\; query form /invoice?id=88 same token -> 401 (dual-form differential: only path form opens\; law 18 dual-form sweep done)	0.92	2	2026-10-17T11:20:48Z
+F-r21-0076	INT-r21-0004	info	range:jwt-xxe-csrf-applicability	011 JWT/XXE/CSRF class applicability (probe8): no /jwt /jwks /auth/jwt faces (7x 404, svc-login catch-all only)\; token format is opaque tok-usr-001 not JWT\; /import rejects XML body 400 (no XXE sink)\; auth carries via X-Auth-Token header not cookie -> no CSRF precondition. Classes recorded not-applicable with evidence.	0.92	2	2026-10-17T11:26:00Z

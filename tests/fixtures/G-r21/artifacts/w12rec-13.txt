@@ -1,0 +1,13 @@
+== REQUEST ==
+GET /search?q=%3Csvg%2Fonload%3DtanyinB20%3E HTTP/1.1
+Host: svc-shop:8001
+User-Agent: tanyin-b20-probe
+
+<html>search results %3Csvg%2Fonload%3DtanyinB20%3E GTXSS-01 synthetic reflected xss</html>
+== RESPONSE ==
+status=200 latency_ms=None
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:11:11 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 91
+

