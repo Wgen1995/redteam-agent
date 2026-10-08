@@ -26,10 +26,10 @@ ISOLATION_ENV = {
     "OPENCODE_SKIP_SAFE_CHECK": "1",
 }
 
-RESUME_PROMPT = (
-    "继续按 SKILL.md（探隐总控路由器）推进当前渗透任务。"
-    "上一会话中断：先走恢复协议（verify-chain -> state-rebuild -> resume-kit），"
-    "再从中断处继续，勿重复已落账条目。"
+RESUME_PREAMBLE = (
+    "【引擎续跑】上一会话中断。本任务状态全落盘于账本（不依赖会话记忆）："
+    "先走恢复协议（verify-chain -> state-rebuild -> resume-kit），再从中断处继续，勿重复已落账条目。"
+    "以下是本任务的完整任务书，重读并执行：\n\n"
 )
 
 
@@ -145,7 +145,7 @@ def main():
                         log_event(runner_log, "GIVEUP", "restarts=%d incomplete-exit" % restarts)
                     break
                 restarts += 1
-                proc = launch(args.cwd, RESUME_PROMPT, args.log, args.model)
+                proc = launch(args.cwd, resume_prompt, args.log, args.model)
                 last_progress = time.time()
                 log_event(runner_log, "RESTART", "pid=%d n=%d (incomplete-exit resume)" % (proc.pid, restarts))
                 continue
@@ -157,7 +157,7 @@ def main():
                 log_event(runner_log, "GIVEUP", "restarts=%d" % restarts)
                 break
             restarts += 1
-            proc = launch(args.cwd, RESUME_PROMPT, args.log, args.model)
+            proc = launch(args.cwd, resume_prompt, args.log, args.model)
             last_progress = time.time()
             log_event(runner_log, "RESTART", "pid=%d n=%d (resume)" % (proc.pid, restarts))
             continue
@@ -169,7 +169,7 @@ def main():
                 log_event(runner_log, "GIVEUP", "restarts=%d after stall" % restarts)
                 break
             restarts += 1
-            proc = launch(args.cwd, RESUME_PROMPT, args.log, args.model)
+            proc = launch(args.cwd, resume_prompt, args.log, args.model)
             last_progress = time.time()
             last_log_sz = fsize(args.log)
             log_event(runner_log, "RESTART", "pid=%d n=%d (after stall)" % (proc.pid, restarts))
