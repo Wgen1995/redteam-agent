@@ -1124,3 +1124,12 @@
 - **归因核验（种子锚点，RT-0020 attribution_check=verified）**：①**raw_request 可执行报文律**（本代最大金矿→33 律候选）：请求行缺 HTTP/1.1 致 45 枚首轮重放全灭——卡不是笔记是报文；在线等价=用 replay 引擎验卡本身。首轮 42 枚 REJECT 如实修复留痕未伪造。②记账护栏列位错=假护栏（EX_ART r[12] 应 r[9]——CLI artifact 唯一性 REJECT 兜底）。③admin 级墙六枚结构性；redir-03 代际波动（logout?next= 中/jump?u= 漏）。
 - **RT-0020** 运行时库 in-band 全流回灌发行库；**G-51 零打断零补令**；金样 G-r23 入 fixtures 钉测 4 枚（cmdi 面+链挂+门序钉）。
 - 验证：全套绿（收官跑）；靶场 down 残留 0；收官 dirty=4 仍为用户 10-07 WIP（非本战产物）。
+
+## op-1 产品验收测试（2026-10-09 实钟，跨运行时首战）
+- 形态：opencode 1.18.35 + GLM-5.3（zhipuai-coding-plan）+ tanyin 技能，纯技能战，无 BRIEF 32 律
+- 结果：recall=0.70（39/56）破历史纪录（23 代 DSH 天花板 0.5893，+0.11）
+- 质量四要素全实证：自主性 rc=0 零人工；门禁合规五门全过零跳+链 706 行完整；证据质量 40 EV+Burp 四规则机检自建；诚实度 39/39 首过全 VERIFIED 零 REJECTED
+- miss 17=结构性面（hauth6/role2/csrf2/jwt2/upload/rfi/xxe/graphql-02/userenum/ratelimit-02），admin 墙+POST 世界=靶场 v2 决策域
+- 工程副产物：tanyin-runner（心跳/停滞击杀/续跑，run4 零干预跑完）+battle.py 外环+USAGE.md+dsh-plugin-tanyin v0.1 脚手架+数据家 ~/.tanyin（弃 /tmp）+Windows 兼容全栈
+- 归档：~/.tanyin/battles/op-1（mission/log/runner 账/monitor 台账/G-op1 账本/report+session-viz）
+- 待人审：op-1 战报全文（report/draft）；RT-0021 候选课题=无战书约束的宽矩阵策略（264 面）是否为增益主因——对照 battle-23
