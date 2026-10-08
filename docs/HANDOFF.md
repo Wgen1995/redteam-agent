@@ -1142,3 +1142,11 @@
 - 工程副产物：tanyin-runner（心跳/停滞击杀/续跑）+battle.py 外环+USAGE.md+dsh-plugin-tanyin v0.1+数据家 ~/.tanyin+Windows 兼容全栈
 - 归档：~/.tanyin/battles/op-1（mission/log/runner 账/monitor 台账/G-op1 账本/report+session-viz）
 - 待人审：op-1 战报全文；RT-0021 候选课题=无战书宽矩阵策略（264 面）是否增益主因——对照 battle-23
+
+
+## battle-23（G-r24）· 首个全引擎闭环战（2026-10-09 实钟）
+- 形态：battle.py init+launch（数据家 ~/.tanyin/battles/battle-23）+runner 战毕判据（gate-exit:P4）——零人工零重启收官
+- 结果：0.66（37/56）史上第二；41 active+11 superseded；55/55 EV VERIFIED（EV-r24-0035 诚实修复后）；五门零跳；P5 如实 FAIL 于真人签发（预期）
+- 跨运行时 A/B（RT-0021）：op-1 宽矩阵 0.70 vs b23 战书窄矩阵 0.66——律 21 修正案（引擎代配额自适应上限）+dict v3.14 候选（cors 四变体+lfi 双形入必扫）
+- 战士自报缺陷 3 已登记：battle.py sha 虫（已修 e915a5d）/vault-redact 互斥/redact 时序注记
+- 提交：e915a5d（金样 G-r24+四钉测+RT-0021+sha 修）
