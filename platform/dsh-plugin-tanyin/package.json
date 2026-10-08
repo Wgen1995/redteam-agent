@@ -1,0 +1,14 @@
+{
+  "name": "dsh-plugin-tanyin",
+  "description": "TanYin ledger as native DSH tools: typed ledger commands + battle watch",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "lib/index.js",
+  "keywords": ["dsh-plugin", "tanyin", "pentest", "redteam"],
+  "peerDependencies": {
+    "cordis": "^3"
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "*"
+  }
+}
