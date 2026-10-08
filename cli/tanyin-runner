@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-runner · 形态 B 引擎（薄保姆）
+
+采纳 vuln_agent opencode_wrapper 的工程要点（隔离环境变量/进程组击杀/超时管制），
+叠加心跳监控+停滞检测+死亡自动续跑（opencode run -c 续会话）。
+op-1 三连死（权限墙×2+子代理派发后无声死亡）的立项书。
+
+用法:
+  python3 cli/tanyin-runner start --cwd <仓库> --prompt-file <f> \\
+      --log <主日志> --ledger-dir <账本目录> [--max-restarts 5] [--stall-min 8]
+"""
+import argparse
+import datetime
+import os
+import signal
+import subprocess
+import sys
+import time
+
+ISOLATION_ENV = {
+    "OPENCODE_DISABLE_AUTOUPDATE": "true",
+    "OPENCODE_DISABLE_DEFAULT_PLUGINS": "true",
+    "OPENCODE_DISABLE_MODELS_FETCH": "true",
+    "OPENCODE_DISABLE_PRUNE": "true",
+    "OPENCODE_SKIP_SAFE_CHECK": "1",
+}
+
+RESUME_PROMPT = (
+    "继续按 SKILL.md（探隐总控路由器）推进当前渗透任务。"
+    "上一会话中断：先走恢复协议（verify-chain -> state-rebuild -> resume-kit），"
+    "再从中断处继续，勿重复已落账条目。"
+)
+
+
+def now():
+    return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+
+
+def log_event(runner_log, event, detail=""):
+    line = "%s\t%s\t%s" % (now(), event, detail)
+    with open(runner_log, "a", encoding="utf-8") as f:
+        f.write(line + "\n")
+    print("[runner] " + line)
+
+
+def fsize(path):
+    try:
+        return os.path.getsize(path)
+    except OSError:
+        return 0
+
+
+def timeline_rows(ledger_dir):
+    p = os.path.join(ledger_dir, "timeline.tsv")
+    try:
+        with open(p, encoding="utf-8") as f:
+            return sum(1 for _ in f)
+    except OSError:
+        return 0
+
+
+def kill_group(proc):
+    try:
+        os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+    except (ProcessLookupError, PermissionError, OSError):
+        try:
+            proc.kill()
+        except OSError:
+            pass
+
+
+def launch(cwd, prompt, log_path, model=None):
+    cmd = ["opencode", "run"]
+    if model:
+        cmd += ["--model", model]
+    cmd.append(prompt)
+    env = dict(os.environ)
+    env.update(ISOLATION_ENV)
+    logf = open(log_path, "a", encoding="utf-8")
+    proc = subprocess.Popen(
+        cmd, cwd=cwd, stdout=logf, stderr=subprocess.STDOUT,
+        stdin=subprocess.DEVNULL, env=env, start_new_session=True,
+    )
+    return proc
+
+
+def main():
+    ap = argparse.ArgumentParser(prog="tanyin-runner")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    st = sub.add_parser("start")
+    st.add_argument("--cwd", required=True)
+    st.add_argument("--prompt-file", required=True)
+    st.add_argument("--log", required=True)
+    st.add_argument("--ledger-dir", required=True)
+    st.add_argument("--runner-log", default=None)
+    st.add_argument("--max-restarts", type=int, default=5)
+    st.add_argument("--stall-min", type=float, default=8.0)
+    st.add_argument("--tick-sec", type=float, default=30.0)
+    st.add_argument("--model", default=None)
+    args = ap.parse_args()
+
+    runner_log = args.runner_log or (args.log + ".runner.tsv")
+    with open(args.prompt_file, encoding="utf-8") as f:
+        first_prompt = f.read().strip()
+
+    log_event(runner_log, "BOOT",
+              "cwd=%s max_restarts=%d stall=%.1fm" % (args.cwd, args.max_restarts, args.stall_min))
+    proc = launch(args.cwd, first_prompt, args.log, args.model)
+    log_event(runner_log, "LAUNCH", "pid=%d (first prompt)" % proc.pid)
+
+    restarts = 0
+    last_log_sz = fsize(args.log)
+    last_tl = timeline_rows(args.ledger_dir)
+    last_progress = time.time()
+
+    while True:
+        time.sleep(args.tick_sec)
+        rc = proc.poll()
+        sz = fsize(args.log)
+        tl = timeline_rows(args.ledger_dir)
+        if sz != last_log_sz or tl != last_tl:
+            last_log_sz, last_tl = sz, tl
+            last_progress = time.time()
+            log_event(runner_log, "PROGRESS", "log=%dB timeline=%d" % (sz, tl))
+            if rc is not None:
+                log_event(runner_log, "EXIT", "rc=%s after progress" % rc)
+                break
+            continue
+        stall_sec = time.time() - last_progress
+        if rc is not None:
+            log_event(runner_log, "EXIT", "rc=%s (idle)" % rc)
+            if restarts >= args.max_restarts:
+                log_event(runner_log, "GIVEUP", "restarts=%d" % restarts)
+                break
+            restarts += 1
+            proc = launch(args.cwd, RESUME_PROMPT, args.log, args.model)
+            last_progress = time.time()
+            log_event(runner_log, "RESTART", "pid=%d n=%d (resume)" % (proc.pid, restarts))
+            continue
+        if stall_sec > args.stall_min * 60:
+            log_event(runner_log, "STALL", "no progress %.1fm; killing pid=%d" % (stall_sec / 60, proc.pid))
+            kill_group(proc)
+            proc.wait()
+            if restarts >= args.max_restarts:
+                log_event(runner_log, "GIVEUP", "restarts=%d after stall" % restarts)
+                break
+            restarts += 1
+            proc = launch(args.cwd, RESUME_PROMPT, args.log, args.model)
+            last_progress = time.time()
+            last_log_sz = fsize(args.log)
+            log_event(runner_log, "RESTART", "pid=%d n=%d (after stall)" % (proc.pid, restarts))
+
+    rc = proc.poll()
+    log_event(runner_log, "DONE", "final_rc=%s restarts=%d timeline=%d" % (rc, restarts, timeline_rows(args.ledger_dir)))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
