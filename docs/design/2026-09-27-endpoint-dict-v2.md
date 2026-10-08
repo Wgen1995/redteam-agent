@@ -21,6 +21,7 @@
 | /redirect、/redirect?to=、/logout?next=、/goto、/jump、/url= | 参数携带 URL 全家（?to=/?next=/?url=/?goto= 变体）→302 Location 外域实证 | 开放重定向 |
 
 ### 1.1.1 redirect 参数族（v3.1·battle-6 RT-0004：redir-01 漏检根因=本族缺席）
+**v3.13 扩（battle-23 备战）**：参数名**并列全扫**——`jump?u=`、`/logout?next=`、`/redirect?url=`、`/goto?target=` 同代同铺（单参数形漏兄弟面=battle-6 同型复发）；回显即证（30x Location 头含外域载荷串）。**admin 墙注记（v3.13）**：`/admin/<noun>` 两段式族在无 admin 令牌通道的靶场版本里≈8 GT 不可达（结构性天花板，非字典缺陷）——靶场 v2 拍板前本族标记「需 admin 令牌通道」，漏检归因写「结构性不可达」不写「字典未扫」。
 一级 /redirect 命中后参数名变体全试（to/next/url/goto/redirect/continue/target）；外域参数值用 http://evil.example 形——**302 Location 头直取即证**；同服务 /logout?next= 与 /redirect?to= 常并存（同族双面）。
 
 ### 1.2.1 /admin/<noun> 两段式族（v3.2·battle-7 RT-0005：六新 post_auth 靶全 miss 真因）
