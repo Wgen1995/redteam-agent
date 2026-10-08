@@ -78,9 +78,14 @@ def launch(cwd, prompt, log_path, model=None):
     env = dict(os.environ)
     env.update(ISOLATION_ENV)
     logf = open(log_path, "a", encoding="utf-8")
+    kw = dict()
+    if os.name == "nt":
+        kw["creationflags"] = subprocess.CREATE_NO_WINDOW
+    else:
+        kw["start_new_session"] = True
     proc = subprocess.Popen(
         cmd, cwd=cwd, stdout=logf, stderr=subprocess.STDOUT,
-        stdin=subprocess.DEVNULL, env=env, start_new_session=True,
+        stdin=subprocess.DEVNULL, env=env, **kw,
     )
     return proc
 

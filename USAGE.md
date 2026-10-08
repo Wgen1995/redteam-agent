@@ -21,8 +21,10 @@ python3 cli/tanyin-ledger --help    # 出命令列表 = 安装成功
 ```bash
 python3 cli/tanyin-runner start --cwd $(pwd) \
   --prompt-file my-mission.txt \
-  --log run.log --ledger-dir sessions/G-x1
+  --log ~/.tanyin/runs/run1.log --ledger-dir sessions/G-x1
 ```
+
+> 数据持久化：默认家 `~/.tanyin`（`TANYIN_HOME` 可覆盖）——**别放 /tmp，重启即失**。Windows 下全部命令 `py -3` 等价，battle.py/runner 已去 POSIX 依赖。
 
 `my-mission.txt` 写法（P0 授权八问的答案直接给出，避免交互）：
 
