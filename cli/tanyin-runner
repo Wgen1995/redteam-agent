@@ -90,6 +90,16 @@ def launch(cwd, prompt, log_path, model=None):
     return proc
 
 
+def battle_complete(ledger_dir):
+    """战毕判据：P4 门已出（gate-exit:P4）——rc=0 不算完成（battle-23 实证：读文档后假完成）。"""
+    p = os.path.join(ledger_dir, "timeline.tsv")
+    try:
+        with open(p, encoding="utf-8", errors="replace") as f:
+            return "gate-exit:P4" in f.read()
+    except OSError:
+        return False
+
+
 def main():
     ap = argparse.ArgumentParser(prog="tanyin-runner")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -129,8 +139,16 @@ def main():
             last_progress = time.time()
             log_event(runner_log, "PROGRESS", "log=%dB timeline=%d" % (sz, tl))
             if rc is not None:
-                log_event(runner_log, "EXIT", "rc=%s after progress" % rc)
-                break
+                log_event(runner_log, "EXIT", "rc=%s after progress complete=%s" % (rc, battle_complete(args.ledger_dir)))
+                if battle_complete(args.ledger_dir) or restarts >= args.max_restarts:
+                    if not battle_complete(args.ledger_dir):
+                        log_event(runner_log, "GIVEUP", "restarts=%d incomplete-exit" % restarts)
+                    break
+                restarts += 1
+                proc = launch(args.cwd, RESUME_PROMPT, args.log, args.model)
+                last_progress = time.time()
+                log_event(runner_log, "RESTART", "pid=%d n=%d (incomplete-exit resume)" % (proc.pid, restarts))
+                continue
             continue
         stall_sec = time.time() - last_progress
         if rc is not None:
