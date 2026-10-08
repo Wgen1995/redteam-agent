@@ -1,0 +1,1 @@
+svc-admin/login POST form admin/admin123 => 200 body: token tok-usr-001

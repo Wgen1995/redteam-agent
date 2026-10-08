@@ -1,0 +1,57 @@
+AST-r24-0001	root-domain	range.local	bv:0.6 根域锚（authorized-range.local 别名）	in_scope	2	2026-10-20T09:20:00Z
+AST-r24-0002	service	svc-shop bv:0.8 电商业务	 	out_of_scope	2	2026-10-20T09:20:10Z
+AST-r24-0003	service	svc-api-gw bv:0.9 网关枢纽	 	out_of_scope	2	2026-10-20T09:20:10Z
+AST-r24-0004	service	svc-admin bv:1.0 管理面	 	out_of_scope	2	2026-10-20T09:20:10Z
+AST-r24-0005	service	svc-login bv:0.9 认证面	 	out_of_scope	2	2026-10-20T09:20:10Z
+AST-r24-0006	service	svc-billing bv:0.9 计费	 	out_of_scope	2	2026-10-20T09:20:10Z
+AST-r24-0007	service	svc-dashboard bv:0.7 看板	 	out_of_scope	2	2026-10-20T09:20:10Z
+AST-r24-0008	service	svc-portal bv:0.6 门户	 	out_of_scope	2	2026-10-20T09:20:10Z
+AST-r24-0009	service	svc-files bv:0.7 文件服务	 	out_of_scope	2	2026-10-20T09:20:10Z
+AST-r24-0010	service	svc-shop	bv:0.8 电商业务 port:8001	in_scope	2	2026-10-20T09:25:00Z
+AST-r24-0011	service	svc-api-gw	bv:0.9 网关枢纽 port:8002	in_scope	2	2026-10-20T09:25:05Z
+AST-r24-0012	service	svc-admin	bv:1.0 管理面 port:8003	in_scope	2	2026-10-20T09:25:10Z
+AST-r24-0013	service	svc-login	bv:0.9 认证面 port:8004	in_scope	2	2026-10-20T09:25:15Z
+AST-r24-0014	service	svc-billing	bv:0.9 计费 port:8005	in_scope	2	2026-10-20T09:25:20Z
+AST-r24-0015	service	svc-dashboard	bv:0.7 看板 port:8006	in_scope	2	2026-10-20T09:25:25Z
+AST-r24-0016	service	svc-portal	bv:0.6 门户 port:8007	in_scope	2	2026-10-20T09:25:30Z
+AST-r24-0017	service	svc-files	bv:0.7 文件服务 port:8008	in_scope	2	2026-10-20T09:25:35Z
+AST-r24-0018	endpoint	svc-login/login	bv:0.9 认证发放面 GET=200 form	in_scope	2	2026-10-20T09:51:00Z
+AST-r24-0019	endpoint	svc-admin/login	bv:1.0 管理登录面 GET=401	in_scope	2	2026-10-20T09:51:05Z
+AST-r24-0020	endpoint	svc-billing/login	bv:0.9 计费登录面 GET=401	in_scope	2	2026-10-20T09:51:10Z
+AST-r24-0021	endpoint	svc-shop/logout	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:30:00Z
+AST-r24-0022	endpoint	svc-shop/search	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:30:08Z
+AST-r24-0023	endpoint	svc-shop/comment	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:30:16Z
+AST-r24-0024	endpoint	svc-shop/reply	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:30:24Z
+AST-r24-0025	endpoint	svc-shop/feedback	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:30:32Z
+AST-r24-0026	endpoint	svc-shop/item	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:30:40Z
+AST-r24-0027	endpoint	svc-shop/order	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:30:48Z
+AST-r24-0028	endpoint	svc-api-gw/graphql	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:30:56Z
+AST-r24-0029	endpoint	svc-api-gw/fetch	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:31:04Z
+AST-r24-0030	endpoint	svc-api-gw/preview	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:31:12Z
+AST-r24-0031	endpoint	svc-api-gw/proxy	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:31:20Z
+AST-r24-0032	endpoint	svc-api-gw/jump	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:31:28Z
+AST-r24-0033	endpoint	svc-dashboard/report	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:31:36Z
+AST-r24-0034	endpoint	svc-dashboard/render	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:31:44Z
+AST-r24-0035	endpoint	svc-portal/debug/env	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:31:52Z
+AST-r24-0036	endpoint	svc-portal/redirect	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:32:00Z
+AST-r24-0037	endpoint	svc-files/.env	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:32:08Z
+AST-r24-0038	endpoint	svc-files/unserialize	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:32:16Z
+AST-r24-0039	endpoint	svc-files/decode	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:32:24Z
+AST-r24-0040	endpoint	svc-files/download	bv:0.8 波A命中面	in_scope	2	2026-10-20T10:32:32Z
+AST-r24-0041	endpoint	svc-login/api/login	bv:0.9 弱口令第二面	in_scope	2	2026-10-20T11:30:00Z
+AST-r24-0042	endpoint	svc-api-gw/cors-debug	bv:0.8 CORS 调试面	in_scope	2	2026-10-20T11:50:20Z
+AST-r24-0043	endpoint	svc-api-gw/origin	bv:0.8 CORS 反射面	in_scope	2	2026-10-20T11:53:00Z
+AST-r24-0044	endpoint	svc-shop/admin/reports	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:30:00Z
+AST-r24-0045	endpoint	svc-api-gw/admin/keys	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:30:18Z
+AST-r24-0046	endpoint	svc-dashboard/admin/config	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:30:36Z
+AST-r24-0047	endpoint	svc-portal/admin/clients	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:30:54Z
+AST-r24-0048	endpoint	svc-files/admin/logs	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:31:12Z
+AST-r24-0049	endpoint	svc-billing/invoice/88	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:31:30Z
+AST-r24-0050	endpoint	svc-admin/admin/orders	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:31:48Z
+AST-r24-0051	endpoint	svc-admin/admin/users/102	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:32:03Z
+AST-r24-0052	endpoint	svc-admin/admin/invoices/88	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:32:21Z
+AST-r24-0053	endpoint	svc-dashboard/api/xml	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:32:39Z
+AST-r24-0054	endpoint	svc-login/forgot	bv:0.85 波E命中面	in_scope	2	2026-10-20T12:32:54Z
+AST-r24-0055	endpoint	svc-files/static	bv:0.85 穿越第二面	in_scope	2	2026-10-20T13:00:00Z
+AST-r24-0056	endpoint	svc-files/import	bv:0.85 deser 第三面	in_scope	2	2026-10-20T13:00:05Z
+AST-r24-0057	endpoint	svc-dashboard/ping	bv:0.85 cmdi 面	in_scope	2	2026-10-20T13:50:00Z

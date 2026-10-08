@@ -1,0 +1,1 @@
+svc-billing/login POST form alice/alice123 => 200 body: token tok-usr-001（alice/alice1234 亦收——子串语义注记）

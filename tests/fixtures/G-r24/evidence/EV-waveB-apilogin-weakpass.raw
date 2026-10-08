@@ -1,0 +1,1 @@
+svc-login/api/login POST form admin/admin123 => 200 welcome admin GTWEAKPASS-01 + X-Auth-Token: {{vault:cred-1}}

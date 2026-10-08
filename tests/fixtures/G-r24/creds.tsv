@@ -1,0 +1,1 @@
+CRED-r24-0001	static-cred	user	admin	{{vault:cred-1}}	AST-r24-0018	INT-r24-0005		2026-10-20T11:20:30Z	2026-10-21T23:59:59Z	active	read	弱口令发放面自取（八问⑥⑧自取通道）；tok-usr-001 为 user 级令牌名形；跨服务回显同值（跨服务信任待波E 差分）	2	2026-10-20T11:32:10Z	

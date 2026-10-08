@@ -1,0 +1,79 @@
+F-r24-0001	INT-r24-0001	service	svc-shop	DNS=172.28.0.3 port=8001 Server=BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-20T09:27:01Z
+F-r24-0002	INT-r24-0001	service	svc-api-gw	DNS=172.28.0.10 port=8002 Server=BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-20T09:27:02Z
+F-r24-0003	INT-r24-0001	service	svc-admin	DNS=172.28.0.5 port=8003 Server=BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-20T09:27:03Z
+F-r24-0004	INT-r24-0001	service	svc-login	DNS=172.28.0.7 port=8004 Server=BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-20T09:27:04Z
+F-r24-0005	INT-r24-0001	service	svc-billing	DNS=172.28.0.2 port=8005 Server=BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-20T09:27:05Z
+F-r24-0006	INT-r24-0001	service	svc-dashboard	DNS=172.28.0.6 port=8006 Server=BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-20T09:27:06Z
+F-r24-0007	INT-r24-0001	service	svc-portal	DNS=172.28.0.8 port=8007 Server=BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-20T09:27:07Z
+F-r24-0008	INT-r24-0001	service	svc-files	DNS=172.28.0.4 port=8008 Server=BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-20T09:27:08Z
+F-r24-0009	INT-r24-0001	info	range.local	authorized-range.local 训练靶场根域；内网 DNS 直达 8 服务（172.28.0.0/24）	1.0	2	2026-10-20T09:28:20Z
+F-r24-0010	INT-r24-0001	info	range.local	拓扑=compose internal:true 网段 172.28.0.0/24；探测通道唯一=attack-noop 跳板容器	1.0	2	2026-10-20T09:28:25Z
+F-r24-0011	INT-r24-0001	info	canary:recon	未部署侦察诱饵：靶场为固定 8 服务合成面，测绘以 DNS+端口指纹+根行为直接完成，召回率口径不适用（披露）	1.0	2	2026-10-20T09:28:30Z
+F-r24-0012	INT-r24-0001	info	asset-class:A2	不适用理由：网络层以 8 个 service 资产承载（DNS+端口指纹在案），无独立 ip 型攻击面需单列	1.0	2	2026-10-20T09:28:35Z
+F-r24-0013	INT-r24-0001	info	asset-class:A5	不适用理由：靶场无云存储/对象存储面（compose 单网段本地容器）	1.0	2	2026-10-20T09:28:40Z
+F-r24-0014	INT-r24-0001	info	asset-class:A6	不适用理由：无源码包/物料交付面（黑盒 HTTP 探测交战）	1.0	2	2026-10-20T09:28:45Z
+F-r24-0015	INT-r24-0001	info	asset-class:A7	不适用理由：合成靶场无人员因素攻击面	1.0	2	2026-10-20T09:28:50Z
+F-r24-0016	INT-r24-0001	info	asset-class:A8	不适用理由：本轮无外推资产（meta 无 extrapolated 标记）；界外观察未触发	1.0	2	2026-10-20T09:28:55Z
+F-r24-0017	INT-r24-0001	http	svc-shop	根路径行为：GET / =404 not found（302 禁跟随口径）	1.0	2	2026-10-20T09:30:00Z
+F-r24-0018	INT-r24-0001	http	svc-api-gw	根路径行为：GET / =404 not found（302 禁跟随口径）	1.0	2	2026-10-20T09:30:01Z
+F-r24-0019	INT-r24-0001	http	svc-admin	根路径行为：GET / =401 auth required（302 禁跟随口径）	1.0	2	2026-10-20T09:30:02Z
+F-r24-0020	INT-r24-0001	http	svc-login	根路径行为：GET / =200 login form（302 禁跟随口径）	1.0	2	2026-10-20T09:30:03Z
+F-r24-0021	INT-r24-0001	http	svc-billing	根路径行为：GET / =401 auth required（302 禁跟随口径）	1.0	2	2026-10-20T09:30:04Z
+F-r24-0022	INT-r24-0001	http	svc-dashboard	根路径行为：GET / =404 not found（302 禁跟随口径）	1.0	2	2026-10-20T09:30:05Z
+F-r24-0023	INT-r24-0001	http	svc-portal	根路径行为：GET / =404 not found（302 禁跟随口径）	1.0	2	2026-10-20T09:30:06Z
+F-r24-0024	INT-r24-0001	http	svc-files	根路径行为：GET / =404 not found（302 禁跟随口径）	1.0	2	2026-10-20T09:30:07Z
+F-r24-0025	INT-r24-0002	info	range.local	二源复核：六族一级面（login/admin/api/debug/register/token）×8 服务 48 发完成；三服务呈墙形（login=catch-all200、admin/billing=catch-all401）、五服务 404 墙	1.0	2	2026-10-20T09:50:00Z
+F-r24-0026	INT-r24-0002	http	svc-login	六路径全 200 同体 login form——catch-all 形（battle-11 教训：POST 计数器分化才是破口）	1.0	2	2026-10-20T09:50:10Z
+F-r24-0027	INT-r24-0002	http	svc-admin	六路径全 401 auth required——auth 墙（/login POST 面待认证四策）	1.0	2	2026-10-20T09:50:20Z
+F-r24-0028	INT-r24-0002	http	svc-billing	六路径全 401 auth required——auth 墙	1.0	2	2026-10-20T09:50:30Z
+F-r24-0029	INT-r24-0002	http	svc-shop	六族一级面全 404——字典二级路径待 P3 全喷（404≠无洞）	1.0	2	2026-10-20T09:50:42Z
+F-r24-0030	INT-r24-0002	http	svc-api-gw	六族一级面全 404——字典二级路径待 P3 全喷（404≠无洞）	1.0	2	2026-10-20T09:50:40Z
+F-r24-0031	INT-r24-0002	http	svc-dashboard	六族一级面全 404——字典二级路径待 P3 全喷（404≠无洞）	1.0	2	2026-10-20T09:50:42Z
+F-r24-0032	INT-r24-0002	http	svc-portal	六族一级面全 404——字典二级路径待 P3 全喷（404≠无洞）	1.0	2	2026-10-20T09:50:45Z
+F-r24-0033	INT-r24-0002	http	svc-files	六族一级面全 404——字典二级路径待 P3 全喷（404≠无洞）	1.0	2	2026-10-20T09:50:41Z
+F-r24-0034	INT-r24-0002	http	svc-login/login	一级面确认活体（GET 直取在案，p2.out）；POST 差分待 P3	1.0	2	2026-10-20T09:51:33Z
+F-r24-0035	INT-r24-0002	http	svc-admin/login	一级面确认活体（GET 直取在案，p2.out）；POST 差分待 P3	1.0	2	2026-10-20T09:51:38Z
+F-r24-0036	INT-r24-0002	http	svc-billing/login	一级面确认活体（GET 直取在案，p2.out）；POST 差分待 P3	1.0	2	2026-10-20T09:51:37Z
+F-r24-0037	INT-r24-0003	http	svc-login/login	动词差分：HEAD=501；POST 空 JSON=403 denied GTRATE-01 synthetic no rate limit after 73 attempts——限流缺失行为信标已现（计数器形），P3 铸证	1.0	2	2026-10-20T09:56:00Z
+F-r24-0038	INT-r24-0003	http	svc-admin/login	动词差分：HEAD=501；POST 空 JSON=403 denied（无信标）——弱口令矩阵待 P3 键名族×编码族叉乘	1.0	2	2026-10-20T09:56:10Z
+F-r24-0039	INT-r24-0003	http	svc-billing/login	动词差分：HEAD=501；POST 空 JSON=403 denied（无信标）	1.0	2	2026-10-20T09:56:20Z
+F-r24-0040	INT-r24-0004	http	svc-admin	波A 40 面 GET 全喷均 401 auth required——整服务 auth 墙（凭据前置，波E 复扫）	1.0	2	2026-10-20T11:00:50Z
+F-r24-0041	INT-r24-0004	http	svc-billing	波A 40 面 GET 全喷均 401——auth 墙（凭据前置）	1.0	2	2026-10-20T11:00:52Z
+F-r24-0042	INT-r24-0004	http	svc-login	波A 40 面 GET 全喷均 200 login form 同体——catch-all 零熵墙（POST 轨破局，波B）	1.0	2	2026-10-20T11:00:54Z
+F-r24-0043	INT-r24-0004	vuln-clue	svc-api-gw	/origin 返回 GTCORS-02 reflected none allow-credentials true——CORS 面候选（波D Origin 变体矩阵确证）	1.0	2	2026-10-20T11:00:56Z
+F-r24-0044	INT-r24-0004	vuln-clue	svc-api-gw	/feedback?msg= 波A 中弹 429 rate limited Retry-After——api-gw 面级限流在位（30req/10s 形，退避纪律执行）	1.0	2	2026-10-20T11:00:58Z
+F-r24-0045	INT-r24-0006	vuln-clue	svc-login	用户枚举阴性：known(admin) vs random 403 同体（p6.out §2）；JWT 面 4 服务×5 路径未现（svc-login 全 catch-all 200 墙）；XXE/CSRF 候选路径 501/404 形态全录——波E 再扫	1.0	2	2026-10-20T11:51:10Z
+F-r24-0046	INT-r24-0006	http	svc-login/register	12 连击 GTRATE-01 计数器 149→152（与 /login 同信标同服务全局计数）；发放面 register/token 均 403 denied 计数器形	1.0	2	2026-10-20T11:51:40Z
+F-r24-0047	INT-r24-0008	authz	authz-diff:CRED-r24-0001	cred-obtained 回边披露：持证×受保护面差分对已由波E全扫完成（8服务×8 admin子名词+资源双形，匿名/持证成对 EV 在案 9 组）——无遗留待测对，authz-diff intent 不再单铸	1.0	2	2026-10-20T12:40:10Z
+F-r24-0048	INT-r24-0004	vuln-clue	svc-shop/logout	波A 命中面事实：GTREDIR-02 302 外域（p4.out 在案）	1.0	2	2026-10-20T14:35:00Z
+F-r24-0049	INT-r24-0004	vuln-clue	svc-shop/search	波A 命中面事实：GTXSS-01 回显（p4.out 在案）	1.0	2	2026-10-20T14:35:01Z
+F-r24-0050	INT-r24-0004	vuln-clue	svc-shop/comment	波A 命中面事实：GTXSS-02 存储回显（p4.out 在案）	1.0	2	2026-10-20T14:35:02Z
+F-r24-0051	INT-r24-0004	vuln-clue	svc-shop/reply	波A 命中面事实：GTXSS-03 回显（p4.out 在案）	1.0	2	2026-10-20T14:35:03Z
+F-r24-0052	INT-r24-0004	vuln-clue	svc-shop/feedback	波A 命中面事实：GTXSS-04 回显（p4.out 在案）	1.0	2	2026-10-20T14:35:04Z
+F-r24-0053	INT-r24-0004	vuln-clue	svc-shop/item	波A 命中面事实：GTSQLI-01 SQL 错误回显（p4.out 在案）	1.0	2	2026-10-20T14:35:05Z
+F-r24-0054	INT-r24-0004	vuln-clue	svc-shop/order	波A 命中面事实：GTSQLI-02 语法错误（p4.out 在案）	1.0	2	2026-10-20T14:35:06Z
+F-r24-0055	INT-r24-0004	vuln-clue	svc-api-gw/graphql	波A 命中面事实：GTGRAPHQL-01 内省（p4.out 在案）	1.0	2	2026-10-20T14:35:07Z
+F-r24-0056	INT-r24-0004	vuln-clue	svc-api-gw/fetch	波A 命中面事实：GTSSRF-01 内网文档回显（p4.out 在案）	1.0	2	2026-10-20T14:35:08Z
+F-r24-0057	INT-r24-0004	vuln-clue	svc-api-gw/preview	波A 命中面事实：GTSSRF-02 webhook meta（p4.out 在案）	1.0	2	2026-10-20T14:35:09Z
+F-r24-0058	INT-r24-0004	vuln-clue	svc-api-gw/proxy	波A 命中面事实：GTSSRF-03 代理取数（p4.out 在案）	1.0	2	2026-10-20T14:35:10Z
+F-r24-0059	INT-r24-0004	vuln-clue	svc-api-gw/jump	波A 命中面事实：GTREDIR-03 302 外域（p4.out 在案）	1.0	2	2026-10-20T14:35:11Z
+F-r24-0060	INT-r24-0004	vuln-clue	svc-dashboard/report	波A 命中面事实：GTSSTI-01 模板回显（p4.out 在案）	1.0	2	2026-10-20T14:35:12Z
+F-r24-0061	INT-r24-0004	vuln-clue	svc-dashboard/render	波A 命中面事实：GTSSTI-02 双参数模板回显（p4.out 在案）	1.0	2	2026-10-20T14:35:13Z
+F-r24-0062	INT-r24-0004	vuln-clue	svc-portal/debug/env	波A 命中面事实：GTINFOLEAK-01 env 页（p4.out 在案）	1.0	2	2026-10-20T14:35:14Z
+F-r24-0063	INT-r24-0004	vuln-clue	svc-portal/redirect	波A 命中面事实：GTREDIR-01 302 外域（p4.out 在案）	1.0	2	2026-10-20T14:35:15Z
+F-r24-0064	INT-r24-0004	vuln-clue	svc-files/.env	波A 命中面事实：GTINFOLEAK-03 env 文件（p4.out 在案）	1.0	2	2026-10-20T14:35:16Z
+F-r24-0065	INT-r24-0004	vuln-clue	svc-files/unserialize	波A 命中面事实：GTDESER-01 pickle 受理（p4.out 在案）	1.0	2	2026-10-20T14:35:17Z
+F-r24-0066	INT-r24-0004	vuln-clue	svc-files/decode	波A 命中面事实：GTDESER-03 base64 受理（p4.out 在案）	1.0	2	2026-10-20T14:35:18Z
+F-r24-0067	INT-r24-0004	vuln-clue	svc-files/download	波A 命中面事实：GTTRAVERSAL-01 系统文件回显（p4.out 在案）	1.0	2	2026-10-20T14:35:19Z
+F-r24-0068	INT-r24-0008	vuln-clue	svc-shop/admin/reports	波E/F/G 命中面事实：GTIDOR-06（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:20Z
+F-r24-0069	INT-r24-0008	vuln-clue	svc-api-gw/admin/keys	波E/F/G 命中面事实：GTIDOR-05（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:21Z
+F-r24-0070	INT-r24-0008	vuln-clue	svc-dashboard/admin/config	波E/F/G 命中面事实：GTROLE-03（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:22Z
+F-r24-0071	INT-r24-0008	vuln-clue	svc-portal/admin/clients	波E/F/G 命中面事实：GTHAUTH-05（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:23Z
+F-r24-0072	INT-r24-0008	vuln-clue	svc-files/admin/logs	波E/F/G 命中面事实：GTROLE-04（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:24Z
+F-r24-0073	INT-r24-0008	vuln-clue	svc-billing/invoice/88	波E/F/G 命中面事实：GTIDOR-04（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:25Z
+F-r24-0074	INT-r24-0008	vuln-clue	svc-admin/admin/orders	波E/F/G 命中面事实：GTIDOR-01（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:26Z
+F-r24-0075	INT-r24-0008	vuln-clue	svc-admin/admin/users/102	波E/F/G 命中面事实：GTIDOR-03（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:27Z
+F-r24-0076	INT-r24-0008	vuln-clue	svc-admin/admin/invoices/88	波E/F/G 命中面事实：GTIDOR-02（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:28Z
+F-r24-0077	INT-r24-0008	vuln-clue	svc-files/static	波E/F/G 命中面事实：GTTRAVERSAL-02（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:29Z
+F-r24-0078	INT-r24-0008	vuln-clue	svc-files/import	波E/F/G 命中面事实：GTDESER-02（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:30Z
+F-r24-0079	INT-r24-0008	vuln-clue	svc-dashboard/ping	波E/F/G 命中面事实：GTCMDI-01（p7/p8/p11.out 在案）	1.0	2	2026-10-20T14:35:31Z

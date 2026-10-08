@@ -1,0 +1,1 @@
+授权书 AUTH-RANGE-2026-10-20.pdf：目标 172.28.0.0/24+*.range.local；窗口 2026-10-20~2026-10-21；排除 *.out-of-scope.local；sha256 占位形（战书给定值超 64 位 hex，已按 hex64 规范取 17x32 前缀并在 timeline 披露）

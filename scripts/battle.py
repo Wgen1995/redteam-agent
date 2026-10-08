@@ -110,7 +110,7 @@ def cmd_init(a):
     else:
         print("靶场已在运行（%d 容器）" % up)
     if a.boot_mode == "det":
-        auth = ("%x" % a.n) * 64
+        auth = "%064x" % a.n
         until = (datetime.date(2026, 9, 27) + datetime.timedelta(days=a.n + 1)).isoformat() + "T00:00:00Z"
         steps = [
             ("add-goal", ["add-goal", "--goal-dir", p["goal"], "--target=172.28.0.0/24",
@@ -128,7 +128,7 @@ def cmd_init(a):
             else:
                 r2 = ledger(*args2)
             print(("OK  " if r2.returncode == 0 else "FAIL") + name + ("" if r2.returncode == 0 else " :: " + (r2.stderr or "").strip()[:120]))
-    auth = ("%x" % a.n) * 64
+    auth = "%064x" % a.n
     until_day = (datetime.date(2026, 9, 27) + datetime.timedelta(days=a.n + 1)).isoformat()
     mission = "\n".join([
         "使用 tanyin 技能（.opencode/skills/tanyin/SKILL.md 总控路由器），按战书对本授权靶场执行完整渗透。",

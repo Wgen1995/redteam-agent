@@ -1,0 +1,14 @@
+S-r24-0001	include	172.28.0.0/24				战书范围：靶场网段	2	2026-10-20T09:01:00Z
+S-r24-0002	include	*.range.local				战书范围：根域及子域	2	2026-10-20T09:01:10Z
+S-r24-0003	include	svc-shop				compose DNS 本名	2	2026-10-20T09:01:20Z
+S-r24-0004	include	svc-api-gw				compose DNS 本名	2	2026-10-20T09:01:20Z
+S-r24-0005	include	svc-admin				compose DNS 本名	2	2026-10-20T09:01:20Z
+S-r24-0006	include	svc-login				compose DNS 本名	2	2026-10-20T09:01:20Z
+S-r24-0007	include	svc-billing				compose DNS 本名	2	2026-10-20T09:01:20Z
+S-r24-0008	include	svc-dashboard				compose DNS 本名	2	2026-10-20T09:01:20Z
+S-r24-0009	include	svc-portal				compose DNS 本名	2	2026-10-20T09:01:20Z
+S-r24-0010	include	svc-files				compose DNS 本名	2	2026-10-20T09:01:20Z
+S-r24-0011	exclude	*.out-of-scope.local				战书排除	2	2026-10-20T09:01:30Z
+S-r24-0012	oob	192.168.0.0/16				OOB 回连观察白名单（只读观察）	2	2026-10-20T09:01:40Z
+S-r24-0013	account-grant	*.range.local	range-self-issued	read\;write\;probe\;auth		八问⑧：无预发账号；靶场发放面自取凭据（仅限靶场内合成数据）	2	2026-10-20T09:01:50Z
+S-r24-0014	account-grant	*	1	read\;write\;probe\;auth		inject 通道覆盖行：account=vault 槽号（guard --cred 契约形）；对应弱口令自取凭据	2	2026-10-20T12:02:00Z

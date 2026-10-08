@@ -1,0 +1,1415 @@
+range.local	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+range.local	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-api-gw	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-dashboard	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-portal	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-files	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-login/login	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-admin/login	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-info				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-conf				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-idnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-authn				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-authz				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-sess				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-inpv				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-errh				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-cryp				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-busl				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-clnt				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-billing/login	wstg-apit				2	2026-10-20T09:58:00Z	2026-10-20T09:59:00Z
+svc-shop/logout	wstg-info		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-conf		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-idnt		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-authn		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-authz		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-sess		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-inpv	x	submatrix: 波A命中 CWE-601 重定向参数面	INT-r24-0004	2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-errh		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-cryp		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-busl		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-clnt		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/logout	wstg-apit		submatrix:		2	2026-10-20T11:00:00Z	
+svc-shop/search	wstg-info		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-conf		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-idnt		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-authn		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-authz		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-sess		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-inpv	x	submatrix: 波A命中 CWE-79 反射面	INT-r24-0004	2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-errh		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-cryp		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-busl		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-clnt		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/search	wstg-apit		submatrix:		2	2026-10-20T11:00:02Z	
+svc-shop/comment	wstg-info		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-conf		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-idnt		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-authn		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-authz		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-sess		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-inpv	x	submatrix: 波A命中 CWE-79 存储面	INT-r24-0004	2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-errh		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-cryp		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-busl		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-clnt		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/comment	wstg-apit		submatrix:		2	2026-10-20T11:00:04Z	
+svc-shop/reply	wstg-info		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-conf		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-idnt		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-authn		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-authz		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-sess		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-inpv	x	submatrix: 波A命中 CWE-79 反射面	INT-r24-0004	2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-errh		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-cryp		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-busl		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-clnt		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/reply	wstg-apit		submatrix:		2	2026-10-20T11:00:06Z	
+svc-shop/feedback	wstg-info		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-conf		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-idnt		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-authn		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-authz		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-sess		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-inpv	x	submatrix: 波A命中 CWE-79 反射面	INT-r24-0004	2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-errh		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-cryp		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-busl		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-clnt		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/feedback	wstg-apit		submatrix:		2	2026-10-20T11:00:08Z	
+svc-shop/item	wstg-info		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-conf		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-idnt		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-authn		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-authz		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-sess		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-inpv	x	submatrix: 波A命中 CWE-89 资源参数注入面	INT-r24-0004	2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-errh		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-cryp		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-busl		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-clnt		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/item	wstg-apit		submatrix:		2	2026-10-20T11:00:10Z	
+svc-shop/order	wstg-info		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-conf		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-idnt		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-authn		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-authz		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-sess		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-inpv	x	submatrix: 波A命中 CWE-89 资源参数注入面	INT-r24-0004	2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-errh		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-cryp		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-busl		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-clnt		submatrix:		2	2026-10-20T11:00:12Z	
+svc-shop/order	wstg-apit		submatrix:		2	2026-10-20T11:00:12Z	
+svc-api-gw/graphql	wstg-info		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-conf		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-idnt		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-authn		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-authz		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-sess		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-inpv		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-errh		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-cryp		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-busl		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-clnt		submatrix:		2	2026-10-20T11:00:14Z	
+svc-api-gw/graphql	wstg-apit	x	submatrix: 波A命中 CWE-200 内省	INT-r24-0004	2	2026-10-20T11:00:14Z	
+svc-api-gw/fetch	wstg-info		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-conf		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-idnt		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-authn		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-authz		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-sess		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-inpv	x	submatrix: 波A命中 CWE-918 URL 参数面	INT-r24-0004	2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-errh		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-cryp		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-busl		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-clnt		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/fetch	wstg-apit		submatrix:		2	2026-10-20T11:00:16Z	
+svc-api-gw/preview	wstg-info		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-conf		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-idnt		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-authn		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-authz		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-sess		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-inpv	x	submatrix: 波A命中 CWE-918 URL 参数面	INT-r24-0004	2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-errh		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-cryp		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-busl		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-clnt		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/preview	wstg-apit		submatrix:		2	2026-10-20T11:00:18Z	
+svc-api-gw/proxy	wstg-info		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-conf		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-idnt		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-authn		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-authz		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-sess		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-inpv	x	submatrix: 波A命中 CWE-918 URL 参数面	INT-r24-0004	2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-errh		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-cryp		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-busl		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-clnt		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/proxy	wstg-apit		submatrix:		2	2026-10-20T11:00:20Z	
+svc-api-gw/jump	wstg-info		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-conf		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-idnt		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-authn		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-authz		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-sess		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-inpv	x	submatrix: 波A命中 CWE-601 重定向参数面	INT-r24-0004	2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-errh		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-cryp		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-busl		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-clnt		submatrix:		2	2026-10-20T11:00:22Z	
+svc-api-gw/jump	wstg-apit		submatrix:		2	2026-10-20T11:00:22Z	
+svc-dashboard/report	wstg-info		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-conf		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-idnt		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-authn		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-authz		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-sess		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-inpv	x	submatrix: 波A命中 CWE-1336 模板面	INT-r24-0004	2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-errh		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-cryp		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-busl		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-clnt		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/report	wstg-apit		submatrix:		2	2026-10-20T11:00:24Z	
+svc-dashboard/render	wstg-info		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-conf		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-idnt		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-authn		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-authz		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-sess		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-inpv	x	submatrix: 波A命中 CWE-1336 模板面	INT-r24-0004	2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-errh		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-cryp		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-busl		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-clnt		submatrix:		2	2026-10-20T11:00:26Z	
+svc-dashboard/render	wstg-apit		submatrix:		2	2026-10-20T11:00:26Z	
+svc-portal/debug/env	wstg-info		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-conf	x	submatrix: 波A命中 CWE-200 调试页暴露	INT-r24-0004	2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-idnt		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-authn		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-authz		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-sess		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-inpv		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-errh		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-cryp		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-busl		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-clnt		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/debug/env	wstg-apit		submatrix:		2	2026-10-20T11:00:28Z	
+svc-portal/redirect	wstg-info		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-conf		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-idnt		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-authn		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-authz		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-sess		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-inpv	x	submatrix: 波A命中 CWE-601 重定向参数面	INT-r24-0004	2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-errh		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-cryp		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-busl		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-clnt		submatrix:		2	2026-10-20T11:00:30Z	
+svc-portal/redirect	wstg-apit		submatrix:		2	2026-10-20T11:00:30Z	
+svc-files/.env	wstg-info		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-conf	x	submatrix: 波A命中 CWE-200 密钥文件暴露	INT-r24-0004	2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-idnt		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-authn		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-authz		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-sess		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-inpv		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-errh		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-cryp		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-busl		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-clnt		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/.env	wstg-apit		submatrix:		2	2026-10-20T11:00:32Z	
+svc-files/unserialize	wstg-info		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-conf		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-idnt		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-authn		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-authz		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-sess		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-inpv		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-errh	x	submatrix: 波A命中 CWE-502 反序列化处理器	INT-r24-0004	2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-cryp		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-busl		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-clnt		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/unserialize	wstg-apit		submatrix:		2	2026-10-20T11:00:34Z	
+svc-files/decode	wstg-info		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-conf		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-idnt		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-authn		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-authz		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-sess		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-inpv		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-errh	x	submatrix: 波A命中 CWE-502 反序列化处理器	INT-r24-0004	2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-cryp		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-busl		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-clnt		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/decode	wstg-apit		submatrix:		2	2026-10-20T11:00:36Z	
+svc-files/download	wstg-info		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-conf		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-idnt		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-authn		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-authz		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-sess		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-inpv	x	submatrix: 波A命中 CWE-22 路径参数面	INT-r24-0004	2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-errh		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-cryp		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-busl		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-clnt		submatrix:		2	2026-10-20T11:00:38Z	
+svc-files/download	wstg-apit		submatrix:		2	2026-10-20T11:00:38Z	
+svc-shop/logout	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/logout	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/search	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/comment	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/reply	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/feedback	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/item	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-shop/order	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/graphql	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/fetch	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/preview	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/proxy	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-api-gw/jump	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/report	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-dashboard/render	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/debug/env	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-portal/redirect	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/.env	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/unserialize	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/decode	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-files/download	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）	INT-r24-0004	2	2026-10-20T11:10:00Z	
+svc-login/login	wstg-authn	x	submatrix: 波B 弱口令命中	INT-r24-0005	2	2026-10-20T11:35:00Z	
+svc-admin/login	wstg-authn	x	submatrix: 波B 弱口令命中	INT-r24-0005	2	2026-10-20T11:35:00Z	
+svc-billing/login	wstg-authn	x	submatrix: 波B 弱口令命中	INT-r24-0005	2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-info		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-conf		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-idnt		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-authn	x	submatrix: 波B 弱口令命中	INT-r24-0005	2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-authz		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-sess		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-inpv		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-errh		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-cryp		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-busl		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-clnt		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/api/login	wstg-apit		submatrix:		2	2026-10-20T11:35:00Z	
+svc-login/login	wstg-info	x	波A/B 全喷阴性	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-conf	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-idnt	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-authz	?	波E 持证差分待测	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-sess	?	波E 持证差分待测	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-inpv	x	波A/B 全喷阴性	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-errh	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-cryp	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-busl	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-clnt	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/login	wstg-apit	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-info	x	波A/B 全喷阴性	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-conf	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-idnt	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-authz	?	波E 持证差分待测	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-sess	?	波E 持证差分待测	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-inpv	x	波A/B 全喷阴性	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-errh	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-cryp	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-busl	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-clnt	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-admin/login	wstg-apit	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-info	x	波A/B 全喷阴性	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-conf	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-idnt	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-authz	?	波E 持证差分待测	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-sess	?	波E 持证差分待测	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-inpv	x	波A/B 全喷阴性	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-errh	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-cryp	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-busl	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-clnt	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-billing/login	wstg-apit	-	登录发放面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-info	x	submatrix: 波A/B 全喷阴性	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-conf	-	submatrix: 弱口令单面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-idnt	-	submatrix: 弱口令单面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-authz	?	submatrix: 波E 持证差分待测	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-sess	?	submatrix: 波E 持证差分待测	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-inpv	x	submatrix: 波A/B 全喷阴性	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-errh	-	submatrix: 弱口令单面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-cryp	-	submatrix: 弱口令单面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-busl	-	submatrix: 弱口令单面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-clnt	-	submatrix: 弱口令单面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-login/api/login	wstg-apit	-	submatrix: 弱口令单面无该类机制面	INT-r24-0005	2	2026-10-20T11:36:00Z	
+svc-api-gw/cors-debug	wstg-info		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-conf	x	submatrix: 波D CORS 通配确证	INT-r24-0007	2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-idnt		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-authn		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-authz		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-sess		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-inpv		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-errh		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-cryp		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-busl		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-clnt		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/cors-debug	wstg-apit		submatrix:		2	2026-10-20T11:51:30Z	
+svc-api-gw/origin	wstg-info		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-conf	x	submatrix: 波D CORS 反射+ACAC 确证	INT-r24-0007	2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-idnt		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-authn		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-authz		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-sess		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-inpv		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-errh		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-cryp		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-busl		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-clnt		submatrix:		2	2026-10-20T11:53:30Z	
+svc-api-gw/origin	wstg-apit		submatrix:		2	2026-10-20T11:53:30Z	
+svc-shop/admin/reports	wstg-info		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-conf		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-idnt		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-authn		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-authz	x	submatrix: 波E 持证差分命中	INT-r24-0008	2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-sess		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-inpv		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-errh		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-cryp		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-busl		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-clnt		submatrix:		2	2026-10-20T12:30:15Z	
+svc-shop/admin/reports	wstg-apit		submatrix:		2	2026-10-20T12:30:15Z	
+svc-api-gw/admin/keys	wstg-info		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-conf		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-idnt		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-authn		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-authz	x	submatrix: 波E 持证差分命中	INT-r24-0008	2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-sess		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-inpv		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-errh		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-cryp		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-busl		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-clnt		submatrix:		2	2026-10-20T12:30:33Z	
+svc-api-gw/admin/keys	wstg-apit		submatrix:		2	2026-10-20T12:30:33Z	
+svc-dashboard/admin/config	wstg-info		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-conf		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-idnt		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-authn		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-authz	x	submatrix: 波E 持证差分命中	INT-r24-0008	2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-sess		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-inpv		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-errh		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-cryp		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-busl		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-clnt		submatrix:		2	2026-10-20T12:30:51Z	
+svc-dashboard/admin/config	wstg-apit		submatrix:		2	2026-10-20T12:30:51Z	
+svc-portal/admin/clients	wstg-info		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-conf		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-idnt		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-authn		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-authz	x	submatrix: 波E 持证差分命中	INT-r24-0008	2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-sess		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-inpv		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-errh		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-cryp		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-busl		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-clnt		submatrix:		2	2026-10-20T12:31:09Z	
+svc-portal/admin/clients	wstg-apit		submatrix:		2	2026-10-20T12:31:09Z	
+svc-files/admin/logs	wstg-info		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-conf		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-idnt		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-authn		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-authz	x	submatrix: 波E 持证差分命中	INT-r24-0008	2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-sess		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-inpv		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-errh		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-cryp		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-busl		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-clnt		submatrix:		2	2026-10-20T12:31:27Z	
+svc-files/admin/logs	wstg-apit		submatrix:		2	2026-10-20T12:31:27Z	
+svc-billing/invoice/88	wstg-info		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-conf		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-idnt		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-authn		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-authz	x	submatrix: 波E 持证差分命中	INT-r24-0008	2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-sess		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-inpv		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-errh		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-cryp		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-busl		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-clnt		submatrix:		2	2026-10-20T12:31:45Z	
+svc-billing/invoice/88	wstg-apit		submatrix:		2	2026-10-20T12:31:45Z	
+svc-admin/admin/orders	wstg-info		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-conf		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-idnt		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-authn		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-authz	x	submatrix: 波E 持证差分命中	INT-r24-0008	2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-sess		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-inpv		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-errh		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-cryp		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-busl		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-clnt		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/orders	wstg-apit		submatrix:		2	2026-10-20T12:32:00Z	
+svc-admin/admin/users/102	wstg-info		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-conf		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-idnt		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-authn		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-authz	x	submatrix: 波E 持证差分命中	INT-r24-0008	2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-sess		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-inpv		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-errh		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-cryp		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-busl		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-clnt		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/users/102	wstg-apit		submatrix:		2	2026-10-20T12:32:18Z	
+svc-admin/admin/invoices/88	wstg-info		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-conf		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-idnt		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-authn		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-authz	x	submatrix: 波E 持证差分命中	INT-r24-0008	2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-sess		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-inpv		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-errh		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-cryp		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-busl		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-clnt		submatrix:		2	2026-10-20T12:32:36Z	
+svc-admin/admin/invoices/88	wstg-apit		submatrix:		2	2026-10-20T12:32:36Z	
+svc-dashboard/api/xml	wstg-info		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-conf		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-idnt		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-authn		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-authz		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-sess		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-inpv	x	submatrix: 波E XXE 命中	INT-r24-0006	2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-errh		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-cryp		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-busl		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-clnt		submatrix:		2	2026-10-20T12:32:51Z	
+svc-dashboard/api/xml	wstg-apit		submatrix:		2	2026-10-20T12:32:51Z	
+svc-login/forgot	wstg-info		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-conf		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-idnt	x	submatrix: 波E 用户枚举命中	INT-r24-0006	2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-authn		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-authz		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-sess		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-inpv		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-errh		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-cryp		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-busl		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-clnt		submatrix:		2	2026-10-20T12:33:06Z	
+svc-login/forgot	wstg-apit		submatrix:		2	2026-10-20T12:33:06Z	
+svc-files/static	wstg-info		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-conf		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-idnt		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-authn		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-authz		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-sess		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-inpv	x	submatrix: 波F 穿越第二面	INT-r24-0008	2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-errh		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-cryp		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-busl		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-clnt		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/static	wstg-apit		submatrix:		2	2026-10-20T13:01:50Z	
+svc-files/import	wstg-info		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-conf		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-idnt		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-authn		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-authz		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-sess		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-inpv		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-errh	x	submatrix: 波F deser 第三面	INT-r24-0008	2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-cryp		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-busl		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-clnt		submatrix:		2	2026-10-20T13:02:00Z	
+svc-files/import	wstg-apit		submatrix:		2	2026-10-20T13:02:00Z	
+svc-dashboard/ping	wstg-info		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-conf		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-idnt		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-authn		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-authz		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-sess		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-inpv	x	submatrix: 波G cmdi 命中	INT-r24-0008	2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-errh		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-cryp		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-busl		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-clnt		submatrix:		2	2026-10-20T13:50:30Z	
+svc-dashboard/ping	wstg-apit		submatrix:		2	2026-10-20T13:50:30Z	
+range.local	wstg-info	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+range.local	wstg-conf	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+range.local	wstg-idnt	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+range.local	wstg-authn	x	波B 认证矩阵/弱口令战果		2	2026-10-20T14:00:00Z	
+range.local	wstg-authz	x	波E 持证差分（admin 子名词+资源双形）		2	2026-10-20T14:00:00Z	
+range.local	wstg-sess	-	静态令牌无会话流（无 cookie/吊销面）；跨服务复用注记 fact		2	2026-10-20T14:00:00Z	
+range.local	wstg-inpv	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+range.local	wstg-errh	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+range.local	wstg-cryp	-	JWT/加密面未现（jwt3/jwt4 猎捕阴性在案）		2	2026-10-20T14:00:00Z	
+range.local	wstg-busl	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+range.local	wstg-clnt	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+range.local	wstg-apit	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-info	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-conf	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-idnt	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-authn	x	波B 认证矩阵/弱口令战果		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-authz	x	波E 持证差分（admin 子名词+资源双形）		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-sess	-	静态令牌无会话流（无 cookie/吊销面）；跨服务复用注记 fact		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-inpv	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-errh	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-cryp	-	JWT/加密面未现（jwt3/jwt4 猎捕阴性在案）		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-busl	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-clnt	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-shop	wstg-apit	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-info	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-conf	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-idnt	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-authn	x	波B 认证矩阵/弱口令战果		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-authz	x	波E 持证差分（admin 子名词+资源双形）		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-sess	-	静态令牌无会话流（无 cookie/吊销面）；跨服务复用注记 fact		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-inpv	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-errh	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-cryp	-	JWT/加密面未现（jwt3/jwt4 猎捕阴性在案）		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-busl	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-clnt	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-api-gw	wstg-apit	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-info	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-conf	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-idnt	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-authn	x	波B 认证矩阵/弱口令战果		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-authz	x	波E 持证差分（admin 子名词+资源双形）		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-sess	-	静态令牌无会话流（无 cookie/吊销面）；跨服务复用注记 fact		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-inpv	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-errh	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-cryp	-	JWT/加密面未现（jwt3/jwt4 猎捕阴性在案）		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-busl	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-clnt	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-admin	wstg-apit	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-login	wstg-info	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-login	wstg-conf	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-login	wstg-idnt	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-login	wstg-authn	x	波B 认证矩阵/弱口令战果		2	2026-10-20T14:00:00Z	
+svc-login	wstg-authz	x	波E 持证差分（admin 子名词+资源双形）		2	2026-10-20T14:00:00Z	
+svc-login	wstg-sess	-	静态令牌无会话流（无 cookie/吊销面）；跨服务复用注记 fact		2	2026-10-20T14:00:00Z	
+svc-login	wstg-inpv	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-login	wstg-errh	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-login	wstg-cryp	-	JWT/加密面未现（jwt3/jwt4 猎捕阴性在案）		2	2026-10-20T14:00:00Z	
+svc-login	wstg-busl	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-login	wstg-clnt	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-login	wstg-apit	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-info	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-conf	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-idnt	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-authn	x	波B 认证矩阵/弱口令战果		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-authz	x	波E 持证差分（admin 子名词+资源双形）		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-sess	-	静态令牌无会话流（无 cookie/吊销面）；跨服务复用注记 fact		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-inpv	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-errh	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-cryp	-	JWT/加密面未现（jwt3/jwt4 猎捕阴性在案）		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-busl	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-clnt	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-billing	wstg-apit	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-info	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-conf	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-idnt	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-authn	x	波B 认证矩阵/弱口令战果		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-authz	x	波E 持证差分（admin 子名词+资源双形）		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-sess	-	静态令牌无会话流（无 cookie/吊销面）；跨服务复用注记 fact		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-inpv	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-errh	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-cryp	-	JWT/加密面未现（jwt3/jwt4 猎捕阴性在案）		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-busl	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-clnt	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-dashboard	wstg-apit	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-info	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-conf	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-idnt	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-authn	x	波B 认证矩阵/弱口令战果		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-authz	x	波E 持证差分（admin 子名词+资源双形）		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-sess	-	静态令牌无会话流（无 cookie/吊销面）；跨服务复用注记 fact		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-inpv	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-errh	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-cryp	-	JWT/加密面未现（jwt3/jwt4 猎捕阴性在案）		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-busl	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-clnt	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-portal	wstg-apit	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-files	wstg-info	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-files	wstg-conf	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-files	wstg-idnt	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-files	wstg-authn	x	波B 认证矩阵/弱口令战果		2	2026-10-20T14:00:00Z	
+svc-files	wstg-authz	x	波E 持证差分（admin 子名词+资源双形）		2	2026-10-20T14:00:00Z	
+svc-files	wstg-sess	-	静态令牌无会话流（无 cookie/吊销面）；跨服务复用注记 fact		2	2026-10-20T14:00:00Z	
+svc-files	wstg-inpv	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-files	wstg-errh	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-files	wstg-cryp	-	JWT/加密面未现（jwt3/jwt4 猎捕阴性在案）		2	2026-10-20T14:00:00Z	
+svc-files	wstg-busl	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-files	wstg-clnt	-	靶场单面服务无该类机制面（cryp=JWT 未现/busl=无业务流保护面/clnt=纯服务端渲染）		2	2026-10-20T14:00:00Z	
+svc-files	wstg-apit	x	波A-G 全喷/命中在案		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-authz	x	submatrix: 波E 持证差分覆盖		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/cors-debug	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-authz	x	submatrix: 波E 持证差分覆盖		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/origin	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-shop/admin/reports	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-api-gw/admin/keys	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/admin/config	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-portal/admin/clients	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/admin/logs	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-billing/invoice/88	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/orders	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/users/102	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-admin/admin/invoices/88	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-authz	x	submatrix: 波E 持证差分覆盖		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/api/xml	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-authz	x	submatrix: 波E 持证差分覆盖		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-login/forgot	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-authz	x	submatrix: 波E 持证差分覆盖		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/static	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-authz	x	submatrix: 波E 持证差分覆盖		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-inpv	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-files/import	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-info	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-conf	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-idnt	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-authn	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-authz	x	submatrix: 波E 持证差分覆盖		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-sess	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-errh	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-cryp	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-busl	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-clnt	-	submatrix: 单端点面无该类机制		2	2026-10-20T14:00:00Z	
+svc-dashboard/ping	wstg-apit	x	submatrix: 波A-G 全喷阴性/命中		2	2026-10-20T14:00:00Z	
+svc-login/login	wstg-info	x	波A/B 全喷阴性		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-conf	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-idnt	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-authz	?	波E 持证差分待测		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-sess	?	波E 持证差分待测		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-inpv	x	波A/B 全喷阴性		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-errh	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-cryp	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-busl	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-clnt	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-apit	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-info	x	波A/B 全喷阴性		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-conf	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-idnt	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-authz	?	波E 持证差分待测		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-sess	?	波E 持证差分待测		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-inpv	x	波A/B 全喷阴性		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-errh	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-cryp	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-busl	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-clnt	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-admin/login	wstg-apit	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-info	x	波A/B 全喷阴性		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-conf	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-idnt	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-authz	?	波E 持证差分待测		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-sess	?	波E 持证差分待测		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-inpv	x	波A/B 全喷阴性		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-errh	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-cryp	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-busl	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-clnt	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-billing/login	wstg-apit	-	登录发放面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/logout	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/search	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/comment	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/reply	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/feedback	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/item	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-shop/order	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/graphql	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/fetch	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/preview	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/proxy	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-api-gw/jump	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/report	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-dashboard/render	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/debug/env	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-portal/redirect	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/.env	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/unserialize	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-inpv	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/decode	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-info	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-conf	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-idnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-authn	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-authz	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-sess	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-errh	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-cryp	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-busl	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-clnt	-	submatrix: 匿名单面无该类机制面（无认证/会话/业务流通道）		2	2026-10-20T14:30:00Z	
+svc-files/download	wstg-apit	x	submatrix: 波A GET 全喷阴性（40 面模式在案 p4.out）		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-info	x	submatrix: 波A/B 全喷阴性		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-conf	-	submatrix: 弱口令单面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-idnt	-	submatrix: 弱口令单面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-authz	?	submatrix: 波E 持证差分待测		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-sess	?	submatrix: 波E 持证差分待测		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-inpv	x	submatrix: 波A/B 全喷阴性		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-errh	-	submatrix: 弱口令单面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-cryp	-	submatrix: 弱口令单面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-busl	-	submatrix: 弱口令单面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-clnt	-	submatrix: 弱口令单面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-login/api/login	wstg-apit	-	submatrix: 弱口令单面无该类机制面		2	2026-10-20T14:30:00Z	
+svc-api-gw/cors-debug	wstg-conf	x	submatrix: 波D CORS 通配确证		2	2026-10-20T14:30:00Z	
+svc-api-gw/origin	wstg-conf	x	submatrix: 波D CORS 反射+ACAC 确证		2	2026-10-20T14:30:00Z	
+svc-files/static	wstg-inpv	x	submatrix: 波F 穿越第二面		2	2026-10-20T14:30:00Z	
+svc-files/import	wstg-errh	x	submatrix: 波F deser 第三面		2	2026-10-20T14:30:00Z	
+svc-login/login	wstg-authz	x	波E-G 持证/差分复扫覆盖（终态化）		2	2026-10-20T16:50:00Z	
+svc-login/login	wstg-sess	x	波E-G 持证/差分复扫覆盖（终态化）		2	2026-10-20T16:50:00Z	
+svc-admin/login	wstg-authz	-	波E-G 持证/差分复扫覆盖（终态化）		2	2026-10-20T16:50:00Z	
+svc-admin/login	wstg-sess	-	波E-G 持证/差分复扫覆盖（终态化）		2	2026-10-20T16:50:00Z	
+svc-billing/login	wstg-authz	-	波E-G 持证/差分复扫覆盖（终态化）		2	2026-10-20T16:50:00Z	
+svc-billing/login	wstg-sess	-	波E-G 持证/差分复扫覆盖（终态化）		2	2026-10-20T16:50:00Z	
+svc-login/api/login	wstg-authz	x	submatrix: 波E 持证差分待测		2	2026-10-20T16:50:00Z	
+svc-login/api/login	wstg-sess	x	submatrix: 波E 持证差分待测		2	2026-10-20T16:50:00Z	

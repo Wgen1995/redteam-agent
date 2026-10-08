@@ -1,0 +1,1 @@
+svc-portal/redirect?url= | 302 Location: /redirect?url=http://evil.example | GTREDIR-01 synthetic redirect to %s
