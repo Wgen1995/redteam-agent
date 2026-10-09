@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>探隐 TanYin · 系统细图 v3（现状+规划）</title><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;background:#f6f7f9;color:#1e293b;line-height:1.65}.wrap{max-width:1420px;margin:0 auto;padding:26px 20px 80px}h1{font-size:26px;color:#0f172a}h1 small{display:block;font-size:13px;color:#64748b;font-weight:400;margin-top:4px;max-width:980px}h2.sec{font-size:19px;margin:36px 0 6px;color:#0f172a;border-left:5px solid #0d9488;padding-left:10px}p.secsub{font-size:13px;color:#64748b;margin-bottom:14px}
+.legend{display:flex;gap:14px;font-size:13px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 16px;margin:14px 0;flex-wrap:wrap}.legend b{font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px}.card h3{font-size:15.5px;color:#0f172a;margin-bottom:8px}.card h3 .tag{font-size:12px;font-weight:600;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:1px}.t-done{background:#dcfce7;color:#166534}.t-half{background:#fef9c3;color:#854d0e}.t-plan{background:#e0f2fe;color:#075985}
+.card ul{margin:6px 0 0 18px;font-size:13.5px}.card li{margin:4px 0}.card .who{margin-top:10px;font-size:12.5px;color:#64748b;border-top:1px dashed #e2e8f0;padding-top:8px}
+table.dict{width:100%;border-collapse:collapse;margin-top:8px;background:#fff;font-size:13.5px}table.dict th{background:#0f172a;color:#e2e8f0;text-align:left;padding:8px 12px}table.dict td{border-bottom:1px solid #e2e8f0;padding:8px 12px;vertical-align:top}table.dict td:first-child{white-space:nowrap;color:#0f172a;font-weight:600;width:190px}
+.nest{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px}.layer{border-radius:10px;padding:14px 16px;margin:10px 0}.l1{background:#ecfeff;border:1.5px solid #0891b2}.l2{background:#f0fdfa;border:1.5px solid #0d9488}.l3{background:#fefce8;border:1.5px solid #ca8a04}.l4{background:#faf5ff;border:1.5px solid #9333ea}.l5{background:#fff7ed;border:1.5px solid #ea580c}.layer b{font-size:14.5px}.layer span{font-size:13px;color:#475569;display:block;margin-top:4px}
+.flow{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:#0f172a;color:#a5f3fc;border-radius:10px;padding:14px 16px;white-space:pre;overflow-x:auto}
+.note{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin-top:14px;font-size:13px;color:#475569}
+footer{margin-top:26px;font-size:12px;color:#94a3b8;text-align:center}
+</style></head><body><div class="wrap">
+<h1>探隐 TanYin · 系统细图 v3<small>一人红队作战系统全景：两扇门+练兵场 → 看门狗 → 账本判据 → AI 指挥 → 度量飞轮 → 分发与引擎总线。✅ 已实现（三战实证）· 🟡 半成（已装未验）· 🔮 规划（已设计待批）。</small></h1>
+<div class="legend"><b>✅ 已实现</b>（有战例/测试背书）<b>🟡 半成</b>（装好未实战）<b>🔮 规划</b>（设计在册待批）<b>★</b> 人工触点（全场仅 1 处）</div>
+
+<h2 class="sec">一、三个入口：同一个战士，三种监督模式</h2>
+<p class="secsub">门A/门B 打真实目标；门C 只打靶场。门里干活的是同一个 AI 战士+同一套账本纪律，唯一区别是「监督员是谁」。</p>
+<div class="cards">
+<div class="card"><h3>门A · 直接对话 <span class="tag t-done">opencode ✅</span><span class="tag t-plan">Claude Code 🔮</span><span class="tag t-half">codex 🟡</span></h3><ul><li>您在聊天窗口说「用 tanyin 技能，对 X 开战，授权书在 Y」</li><li>AI 反问授权八问 → 您逐条答 → 开打</li><li>战中您可随时插话指挥、看它现场操作</li></ul><div class="who">监督员=您本人：它停了您点「继续」，它问您答</div></div>
+<div class="card"><h3>门B · 引擎托管 <span class="tag t-done">tanyin-runner ✅</span></h3><ul><li>一条命令 → 走人（真实项目/过夜跑推荐）</li><li>runner 替您值班：盯心跳 / 它停了替您点继续 / 断网拉起 / 假完成不认</li><li>战例：b24 断网击杀+三度点火零账损；b25 restarts=0 跑完</li></ul><div class="who">监督员=Python 看门狗（详见第三节）</div></div>
+<div class="card"><h3>门C · 靶场练兵 <span class="tag t-done">battle.py ✅</span></h3><ul><li>init / launch / watch / settle 四条命令开一场训练战</li><li>战毕自动评分（56 分母）+ 金样钉测防退化</li><li>四战成绩：0.70（单样本峰值）/ 0.66（稳定最优）/ 0.62 / 0.57</li></ul><div class="who">监督员=看门狗+评分器（全自动化程度最高）</div></div>
+</div>
+
+<h2 class="sec">二、五层结构总图（从外到内）</h2>
+<p class="secsub">战术归 AI、判据归账本、保活归 Python——三层互不越权；外面再包分发与度量。</p>
+<div class="nest">
+<div class="layer l1"><b>① 看门狗层 · tanyin-runner ✅</b><span>保活 · 判完成 · 救故障——完全不碰战术。心跳 30s ✅ / 停滞击杀 8min ✅ / 断点续跑 ✅ / 完成判据=gate-exit:P4（不认进程退出码）✅ · 🔮分级击杀 · 🔮重启退避 · 🔮战中指令注入 · 🔮事件驱动监听</span></div>
+<div class="layer l2"><b>② 判据层 · 账本法 ✅</b><span>44 条 CLI 命令 · 哈希链防篡改 · 状态在盘（重启不丢）——管「跑得好不好」：真伪、清帐、覆盖、收敛。八表+九门细目见第四节</span></div>
+<div class="layer l3"><b>③ AI 指挥层 · 技能战士 ✅</b><span>管「下一步打什么」，全权。SKILL.md 总控路由器 / phases 各门详令 / dict v3.14 漏洞字典 / BRIEF 30 面战书（0.66 的来源）/ 侦察+重放子代理</span></div>
+<div class="layer l4"><b>④ 度量与飞轮层 ✅</b><span>管「越改越强不退化」。评分器键控 v7 / 金样 G-r4→G-r26 钉测 / 套件 RC=0 / 复盘 RT-0001→0023（两条落律·一条对照实验裁决回滚）</span></div>
+<div class="layer l5"><b>⑤ 分发与引擎总线层（形态组合落地处）</b><span>分发面：opencode ✅ · codex 🟡装好未实战 · Claude Code 🔮 · DSH 插件 v0.2.1 🟡→v0.3 真API 🔮 · 市场 🔮 ／ 引擎总线：web-blackbox（SKILL 型）✅ · vuln-agent 源码审计（CLI 型）🟡在册未接线 · session-viz（projector 型）✅ · 🔮 range v2 靶场升级</span></div>
+</div>
+
+<h2 class="sec">三、门A vs 门B 全流程对照</h2>
+<div class="flow">门A【直接对话】                    门B【引擎托管】
+─────────────────                ─────────────────
+您: 「对X开战,授权书在Y」           $ runner start --prompt-file mission
+  │                                 │
+  ▼                                 ▼
+AI 反问八问 ──> 您逐条答            runner 拉起战士进程
+  │                                 │
+  ▼                               ┌─ 心跳监控(30s) ──────────┐
+AI: P0→P1→P2→P3→P4                │ 停→8min击杀→带账重启      │
+ （您可随时插话指挥）               │ 断网→同上,账本零损失      │
+  │                               │ 假完成→不认P4门→继续催    │
+  ▼                               └──────────┬───────────────┘
+AI 停了/卡住 ★您就是看门狗★                    ▼
+  │→ 您点「继续」/您答它          AI: P0→…→P4（同一个战士）
+  ▼                                 │ 全程无人,断了自愈
+P5 报告 → P5.5 ★您签发★ → P6 沉淀   ▼
+  │                              P5 报告 → P5.5 ★您签发★ → P6 沉淀
+  └──────── 同一份账本 · 同一套九门判据 ────────┘</div>
+
+<h2 class="sec">四、判据层细目：八表 + 证据体系 + 九门</h2>
+<p class="secsub">账本=唯一真源。表分三组按生命周期；证据体系独立成卡；九门是唯一合法流程，过门只能靠 gate 命令（带前置校验，嘴说无效）。</p>
+<table class="dict"><tr><th>分组</th><th>表/机制</th><th>管什么</th><th>状态</th></tr>
+<tr><td rowspan="4">战前四表</td><td>goals.tsv</td><td>目标（一任务一行）</td><td>✅</td></tr>
+<tr><td>scope.tsv</td><td>授权范围（include/exclude/oob）</td><td>✅</td></tr>
+<tr><td>creds.tsv</td><td>凭据（预发账密等）</td><td>✅</td></tr>
+<tr><td>approvals.tsv</td><td>审批记录（P5.5 签发落此）</td><td>✅</td></tr>
+<tr><td rowspan="4">作战四表</td><td>assets.tsv</td><td>资产（服务/端点/IP/域名）</td><td>✅</td></tr>
+<tr><td>facts.tsv</td><td>事实（要么被消费要么显式弃+理由）</td><td>✅</td></tr>
+<tr><td>intents.tsv</td><td>意图（要么验证要么 blocked，不许蒸发）</td><td>✅</td></tr>
+<tr><td>findings.tsv</td><td>发现（一洞一行，可被 supersede）</td><td>✅</td></tr>
+<tr><td rowspan="3">判据三表</td><td>timeline.tsv</td><td>审计链（哈希链防篡改，心跳落此）</td><td>✅</td></tr>
+<tr><td>edges.tsv</td><td>关系边（supersedes/cross_ref 等十种）</td><td>✅</td></tr>
+<tr><td>matrix.tsv</td><td>覆盖矩阵（空格必须消灭或披露）</td><td>✅</td></tr>
+<tr><td>证据体系</td><td>E-index.tsv + evidence/ 卡片</td><td>每个洞的可重放证据卡（原始请求响应+信标词）</td><td>✅</td></tr>
+<tr><td>计分铁律</td><td>精度门</td><td>发现计分四条件：active+端点对+重放已验证+信标在卡——烂帐=0 分（b25 的 54 发现只计 32 即此律）</td><td>✅</td></tr>
+</table>
+<table class="dict"><tr><th>门</th><th>名称</th><th>内容</th><th>状态</th></tr>
+<tr><td>P0</td><td>授权门</td><td>八问→落账→出网编译(tanyin-egress)→金丝雀布防(tanyin-canary)</td><td>✅</td></tr>
+<tr><td>P1</td><td>测绘</td><td>侦察子代理→资产/事实入账→范围检查内联</td><td>✅</td></tr>
+<tr><td>P2</td><td>规划</td><td>matrix-init → matrix-freeze 锚点冻结</td><td>✅</td></tr>
+<tr><td>P3</td><td>演进循环</td><td>打洞主体：探→验→记→矩阵消格（收敛判据可计算）</td><td>✅</td></tr>
+<tr><td>P4</td><td>汇总+重放门</td><td>validate/verify-chain/hash-recheck/matrix-audit→supersede→fresh 子代理重放三态判定</td><td>✅</td></tr>
+<tr><td>P5</td><td>报告</td><td>聚合器→ledger-terminal-gate→redact-scan</td><td>✅</td></tr>
+<tr><td>P5.5</td><td>签发门</td><td>★全场唯一人工触点★ 人审→approve --verify-signoff</td><td>✅</td></tr>
+<tr><td>P6.0</td><td>清理门</td><td>cleanup-checklist → 逆序 revert_cmd</td><td>✅</td></tr>
+<tr><td>P6</td><td>沉淀</td><td>脱敏→反向验证→knowledge commit+export</td><td>✅</td></tr>
+</table>
+
+<h2 class="sec">五、看门狗层细目（现状 vs multica 级升级）</h2>
+<table class="dict"><tr><th>机制</th><th>现状</th><th>规划（multica 调研移植）</th></tr>
+<tr><td>心跳</td><td>✅ 战士 30s 落账，runner 轮询监控</td><td>🔮 事件驱动（tail 监听，秒级响应）</td></tr>
+<tr><td>停滞处理</td><td>✅ 8 分钟无心跳→击杀→带账重启</td><td>🔮 分级击杀：3min 软停滞续命观察 / 8min 硬击杀（防误杀长推理）</td></tr>
+<tr><td>崩溃风暴</td><td>✅ --max-restarts 上限</td><td>🔮 指数退避（30s→2m→8m，防烧 token 空转）</td></tr>
+<tr><td>战中指令</td><td>✅ 改任务书需重启</td><td>🔮 指令注入通道（心跳捎带补令，multica pending 同构）</td></tr>
+<tr><td>完成判定</td><td>✅ 只认 gate-exit:P4 事件，rc=0 不算</td><td>—（已闭环）</td></tr>
+</table>
+
+<h2 class="sec">六、分发面与引擎总线（四形态组合的落地处）</h2>
+<table class="dict"><tr><th>形态</th><th>组件</th><th>角色</th><th>状态</th></tr>
+<tr><td>纯技能（核）</td><td>SKILL.md + phases/ + dict + BRIEF</td><td>方法论本体，全宿主通吃</td><td>✅ opencode 四战实证</td></tr>
+<tr><td>纯技能</td><td>五宿主安装器 install/hosts/*</td><td>codex/walcode/codebuddy/dsh/opencode 模板化接入</td><td>✅ 安装六步 rc=0 ／ 🟡 codex 端到端未实战</td></tr>
+<tr><td>纯技能</td><td>Claude Code 宿主</td><td>第六宿主</td><td>🔮 加 host 模板（半小时量）</td></tr>
+<tr><td>DSH 插件（面）</td><td>dsh-plugin-tanyin v0.2.1</td><td>层已挂+服务面真+单测 4/4；工具面 API 待修（ctx.tools.register）</td><td>🟡 已装本机</td></tr>
+<tr><td>DSH 插件</td><td>v0.3 薄面厚核</td><td>真 defineTool API + 技能 provider（superpowers 模式）+ 前缀 id 防撞</td><td>🔮 设计已呈待批</td></tr>
+<tr><td>DSH 插件</td><td>市场条目</td><td>github: 源安装 → 市场发布</td><td>🔮</td></tr>
+<tr><td>引擎总线（挂件）</td><td>web-blackbox（SKILL 型）</td><td>Web 黑盒主战士</td><td>✅ 0.57–0.70</td></tr>
+<tr><td>引擎总线</td><td>vuln-agent（CLI 型）</td><td>源码审计管线（八段管道），跨引擎知识流动</td><td>🟡 适配器+MANIFEST 在册未接线</td></tr>
+<tr><td>引擎总线</td><td>session-viz（projector 型）</td><td>账本只读可视化</td><td>✅</td></tr>
+<tr><td>训练场</td><td>range v2</td><td>admin 墙+POST 世界（19 枚结构性 miss 主战场）</td><td>🔮</td></tr>
+</table>
+
+<h2 class="sec">七、路线图（一步一个做好）</h2>
+<table class="dict"><tr><th>批次</th><th>内容</th><th>出口判据</th></tr>
+<tr><td>v0.3 插件</td><td>真 API 工具面 + 技能 provider + patch 规整 + headless 可见性验证</td><td>DSH 会话里模型能列出 tanyin 工具与技能</td></tr>
+<tr><td>v0.3.5 看门狗</td><td>分级击杀 / 重启退避 / 指令注入 / 事件监听</td><td>四机制各有单测+一场靶场战实证</td></tr>
+<tr><td>v0.4 对照实验</td><td>门循环 Python 驱动 vs AI 自律（同靶场同战士）</td><td>分数+恢复成本+token 成本三项数据裁决</td></tr>
+<tr><td>v0.5 引擎接线</td><td>vuln-agent 挂入总线 + codex 端到端一战 + Claude 模板</td><td>源码审计真实战果入同一本账</td></tr>
+<tr><td>v0.6 range v2</td><td>admin 墙+POST 世界扩面</td><td>56 分母升级+新金样锁基线</td></tr>
+</table>
+
+<div class="note"><b>一句话总纲</b>：门A/门B 是同一个战士的两种监督模式——判据层保证打得真，看门狗保证跑得完，度量层保证越改越强，分发层+引擎总线决定它能装到哪、能打几类仗。AI 能骗过的只有人，骗不过这三层；而人只出现在 P5.5 签发门。</div>
+<footer>探隐 TanYin · panorama/tanyin-architecture-v3.html · 2026-10-09 · 事实源=仓内实现+三战战报+RT-0021..0023</footer>
+</div></body></html>
