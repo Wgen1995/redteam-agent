@@ -1,0 +1,34 @@
+{
+  "intent_id": "INT-r27-0022",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "http", "target": "svc-portal/redirect", "detail": "重定向矩阵 13 请求。基线：裸 /redirect → 302 Location=/redirect（自指）；to=/goto=（空值）→ 302 Location 为空串；url/next/target/u=（空值）→ 302 Location=/redirect?<param>=（自指回显参数名）", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/redirect", "detail": "命中：GET /redirect?to=http://evil.example → 302 Location 精确等于 'http://evil.example'（外域开放重定向，与空值基线 Location='' 差分明确，参数值驱动）", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/redirect", "detail": "命中（第二有效参数）：GET /redirect?goto=http://evil.example → 302 Location='http://evil.example'（与 to 同根因）", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/redirect", "detail": "参数族分化：url/next/target/u 带外域载荷 → 302 Location='/redirect?<param>=http://evil.example'（仅回显进自指 URL，不产生外域跳转）⇒ 有效参数=to/goto，无效参数=url/next/target/u", "confidence": 1.0},
+    {"kind": "service", "target": "svc-portal:8007", "detail": "Server=BaseHTTP/0.6 Python/3.12.14；302 均无 body 意义内容；未跟随任何重定向（http.client 直捕 Location 头）", "confidence": 0.95}
+  ],
+  "findings": [
+    {"title": "svc-portal /redirect 开放重定向（to/goto 参数 302 外域跳转）", "confidence": "C1", "impact": "中",
+     "exploitation_status": "verified", "auth_context": "anon",
+     "reproducible_steps": [
+       "GET /redirect?to=http://evil.example HTTP/1.1（Host: svc-portal:8007）→ 302 Location: http://evil.example",
+       "GET /redirect?goto=http://evil.example → 302 Location: http://evil.example",
+       "控制对：GET /redirect?to= → 302 Location 为空串（差分证明参数值驱动）"
+     ],
+     "evidence_refs": ["artifacts/evidence.json#wstg-inpv-open-redirect-to", "artifacts/evidence.json#wstg-inpv-open-redirect-goto", "artifacts/evidence.json#negative-control-redirect-to-empty", "artifacts/evidence.json#negative-redirect-url-selfecho"],
+     "location": "svc-portal/redirect",
+     "dedup_key_proposed": "wstg-inpv-open-redirect-svc-portal-redirect",
+     "network_position": "intranet-range",
+     "preconditions": ["网络可达 svc-portal:8007（匿名，无认证）"],
+     "expected_matcher": {"matchers": [{"type": "word", "part": "header", "words": ["Location: http://evil.example"]},
+                                        {"type": "status", "status": [302]}]}}
+  ],
+  "assets": [
+    {"type": "endpoint", "value": "svc-portal:8007/redirect", "meta": "GET 302;open-redirect;effective-params=to,goto;dead-params=url,next,target,u(self-echo only)"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

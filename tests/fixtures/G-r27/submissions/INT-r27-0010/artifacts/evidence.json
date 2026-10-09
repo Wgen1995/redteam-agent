@@ -1,0 +1,55 @@
+[
+  {
+    "finding_key": "svc-login/login#weakpass",
+    "raw_request": "POST /login HTTP/1.1\r\nHost: svc-login:8004\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: 24\r\n\r\nuser=admin&pass=admin123",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:36:40 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "x-auth-token": "{{vault:cred-1}}",
+      "content-length": "75"
+    },
+    "resp_body_excerpt": "<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>",
+    "matcher_words": ["GTWEAKPASS-01", "welcome admin", "X-Auth-Token"]
+  },
+  {
+    "finding_key": "svc-admin/login#weakpass",
+    "raw_request": "POST /login HTTP/1.1\r\nHost: svc-admin:8003\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: 24\r\n\r\nuser=admin&pass=admin123",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:36:47 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "17"
+    },
+    "resp_body_excerpt": "token {{vault:cred-2}}",
+    "matcher_words": ["token {{vault:cred-2}}"]
+  },
+  {
+    "finding_key": "svc-billing/login#weakpass",
+    "raw_request": "POST /login HTTP/1.1\r\nHost: svc-billing:8005\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: 24\r\n\r\nuser=alice&pass=alice123",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:37:16 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "17"
+    },
+    "resp_body_excerpt": "token {{vault:cred-3}}",
+    "matcher_words": ["token {{vault:cred-3}}"]
+  },
+  {
+    "finding_key": "svc-login/login#no-rate-limit",
+    "raw_request": "POST /login HTTP/1.1\r\nHost: svc-login:8004\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: 24\r\n\r\nuser=admin&pass=wrongone",
+    "resp_status": 403,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:37:37 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "72"
+    },
+    "resp_body_excerpt": "<html>denied GTRATE-01 synthetic no rate limit after 305 attempts</html>",
+    "matcher_words": ["GTRATE-01", "no rate limit", "denied"]
+  }
+]

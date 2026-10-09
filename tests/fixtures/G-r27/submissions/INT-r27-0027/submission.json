@@ -1,0 +1,34 @@
+{
+  "intent_id": "INT-r27-0027",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "behavior", "target": "svc-login/login", "detail": "12 发连击序列（POST /login，哑值 user=rateprobe&pass=rateprobe，间隔 0.5s 温和节奏）逐发全 403，响应体均含 'denied GTRATE-01 synthetic no rate limit after NNN attempts'，body 72B，无 429、无 Retry-After、无任何降速/节流信号", "confidence": 1.0},
+    {"kind": "behavior", "target": "svc-login/login", "detail": "计数器逐发单调递增 272→283（每发恰好 +1），行为差分证据=计数器数字序列本身：服务端逐发确认收到并计数，但永不触发限流动作——判据全满足（第 12 发仍 403+语义串在场+递增+无 429）→ 限流缺失 confirmed", "confidence": 1.0},
+    {"kind": "behavior", "target": "svc-login/api/login", "detail": "跨面对照：切路由 /api/login 再 3 发，计数器 284→286 无缝续增（B1=284=A12(283)+1），同为 403 GTRATE-01 墙——计数器跨面共享，限流缺失为全局面级（不限单路由）", "confidence": 0.95},
+    {"kind": "info", "target": "svc-login:8004", "detail": "计数器终值 286（本序列 15 发贡献 272→286；前史 244→271 见 INT-r27-0005）；Content-Length 实测 29 字节（委派单模板 30 系笔误）", "confidence": 1.0}
+  ],
+  "findings": [
+    {
+      "title": "svc-login 登录面限流缺失（暴力破解无节流）",
+      "kind": "rate-limit-missing",
+      "location": "svc-login/login",
+      "impact": "中",
+      "status": "confirmed",
+      "confidence": 0.95,
+      "evidence_mode": "行为差分实证（计数器数字序列）",
+      "evidence": "artifacts/evidence.json + artifacts/sequence.tsv（15 发 (seq,counter,status) 全记录；raw_request 逐字节可发）",
+      "matcher_words": ["GTRATE-01", "no rate limit"],
+      "detail": "同路由 /login 连续 12 发（>10 连击口径满足）后第 12 发仍 403 + 'no rate limit' 语义串在场 + 全局尝试计数器 272→283 逐发递增 + 全序列无 429/Retry-After/降速——限流机制完全缺失；且切 /api/login 计数器续增 284→286 证明为跨路由全局面级缺失（GTRATE-01 墙仅为合成拒绝，非节流）",
+      "preconditions": "EV 重放须先同路由 /login 连续 POST ≥10 发哑值（user=rateprobe&pass=rateprobe，0.5s 间隔温和节奏）建立连击前置——重放器不自动补连击，缺前置则计数器基数与序列不可复现",
+      "counter_terminal_value": 286
+    }
+  ],
+  "assets": [
+    {"type": "endpoint", "value": "svc-login:8004/login", "meta": "http_face;post-credential;rate-limit:missing(GTRATE-01,global-counter-286)"},
+    {"type": "endpoint", "value": "svc-login:8004/api/login", "meta": "http_face;post-credential;shares-global-rate-counter"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

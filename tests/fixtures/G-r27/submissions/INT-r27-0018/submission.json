@@ -1,0 +1,33 @@
+{
+  "intent_id": "INT-r27-0018",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "http", "target": "svc-dashboard/ping", "detail": "/ping 无参基线：200 固定 banner '<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>'（73 字节，BaseHTTP/0.6 Python/3.12.14）——banner 是硬编码 synthetic 自述，无参数参与", "confidence": 1.0},
+    {"kind": "info", "target": "svc-dashboard/ping", "detail": "CMDI 矩阵负结果（判据：响应体 uid= 或命令输出变化）：参数族 host/cmd/ip/target/q × 载荷形 ;id / |id / `id` / $(id) / &&id（URL 编码 25 发）+ 裸发 ;id / |id（10 发）+ 无参/带参基线 6 发，共 41 发全部与基线逐字节一致（73 字节固定 banner），零命中 ⇒ /ping 在授权矩阵内不存在命令注入消费点；侦察期 'synthetic cmd output' 观察确认为静态文本而非命令执行证据", "confidence": 0.9}
+  ],
+  "findings": [
+    {
+      "kind": "vuln",
+      "target": "svc-dashboard/ping",
+      "location": "svc-dashboard/ping",
+      "dedup_key_proposed": "wstg-inpv-cmdi-svc-dashboard-ping",
+      "title": "svc-dashboard /ping 命令注入（WSTG-INPV-12）——验证后排除",
+      "severity": "低",
+      "impact": "低",
+      "confidence": 0.9,
+      "status": "ruled_out",
+      "exploitation_status": "ruled_out",
+      "auth_context": "anon",
+      "detail": "授权矩阵全量探测（5 参数族 × 5 编码载荷形 + 5×2 裸发，共 41 发，间隔≥0.25s）零判据命中；响应恒为 73 字节固定 banner，参数值对响应零影响 ⇒ 该面在测试参数族内无 OS 命令拼接点",
+      "evidence": "artifacts/evidence.json",
+      "repro_command": "docker exec range-attack-noop-1 python3 /tmp/w2_dash_cmdi.py"
+    }
+  ],
+  "assets": [
+    {"type": "endpoint", "value": "svc-dashboard:8006/ping", "meta": "GET 200 fixed-banner;param-blind(cmdi-ruled-out-in-matrix)"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

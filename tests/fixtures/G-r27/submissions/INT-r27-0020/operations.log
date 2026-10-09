@@ -1,0 +1,12 @@
+# INT-r27-0020 operations.log（svc-portal RFI 矩阵验证）
+# 授权：battle-26 授权训练靶场；委派单 INT-r27-0020（kind=matrix-test）；所有探测经 range-attack-noop-1 容器
+# 时间戳字面量：2026-10-23T16:00:00Z；GET-only；间隔≥0.25s；禁跟随重定向；RFI 外联仅界内形（http://svc-login:8004/、file:///etc/hostname）
+
+[2026-10-23T16:00:00Z] ENV-CHECK ls G-r27/submissions + probe/ + docker ps range-attack-noop-1 → 容器在跑；intents.tsv 四行 pending 确认
+[2026-10-23T16:00:00Z] WRITE probe/w2_portal_rfi.py（/widget × {url,uri,src,include,file,page} × {http://svc-login:8004/, file:///etc/hostname} + 裸端点/空参数控制对；http.client 原始请求不跟随重定向）
+[2026-10-23T16:00:00Z] DOCKER-CP w2_portal_rfi.py → range-attack-noop-1:/tmp/（文件投放，不进 guard）
+[2026-10-23T16:00:00Z] GUARD-EXEC cli/tanyin-guard exec --goal-dir G-r27 --timestamp=2026-10-23T16:00:00Z -- docker exec range-attack-noop-1 python3 /tmp/w2_portal_rfi.py → probe/w2_portal_rfi.out
+  结果: 19 请求（1 裸基线 + 6 空参数 + 12 载荷）全部 200、响应体逐字节一致（55B 'GTRFI-01 synthetic remote include executed'）
+[2026-10-23T16:00:00Z] ANALYZE 判据核验：①响应体不含 svc-login 页面内容（'login form' 缺席）②不含 file:// 目标文件内容③'executed' 语义不随参数分化（基线与载荷全同）⇒ 三判据全不满足
+[2026-10-23T16:00:00Z] VERDICT RFI ruled_out：GTRFI-01 为路径级静态合成回显，参数族零驱动；负结果对照 4 条落 artifacts/evidence.json
+[2026-10-23T16:00:00Z] WRITE submission.json（findings=[]，负结果 facts 详记）+ artifacts 归档（脚本+输出+evidence.json）

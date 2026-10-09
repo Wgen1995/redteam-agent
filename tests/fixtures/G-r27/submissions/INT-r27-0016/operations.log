@@ -1,0 +1,12 @@
+# operations.log — INT-r27-0016 (web-blackbox matrix-test open-redirect sub-agent)
+# 时间戳纪律：全部使用字面量，无墙钟。
+
+[2026-10-23T16:00:00Z] env-check: 容器 range-attack-noop-1 Up；cli/tanyin-guard 存在；mkdir submissions/INT-r27-0016/artifacts。=> OK
+[2026-10-23T16:00:00Z] cmd: docker cp probe/w2_gw_jump.py range-attack-noop-1:/tmp/ && cli/tanyin-guard exec --goal-dir G-r27 --timestamp=2026-10-23T16:00:00Z -- docker exec range-attack-noop-1 python3 /tmp/w2_gw_jump.py
+  result: EXIT=0。13 请求（裸 + 6 参数空值 + 6 参数×http://evil.example 全编码），0.26s 间隔，无 429。发现：u 是重定向参数（空 u → Location 空串；u=编码值 → Location 原样回显编码串=未解码）；其余 5 参数 Location 自指+QS 反射；正文恒残留字面 %s。输出存 probe/w2_gw_jump.out。
+[2026-10-23T16:00:00Z] 判据复核：编码形态 Location=http%3A%2F%2Fevil.example 属相对引用（浏览器解析回本源），未达真外跳 → 触发未编码原值补充轮（同值同参数族，界内 evil.example）。
+[2026-10-23T16:00:00Z] cmd: docker cp probe/w2_gw_jump2.py … && cli/tanyin-guard exec … python3 /tmp/w2_gw_jump2.py
+  result: EXIT=0。6 请求（6 参数×未编码 http://evil.example）。HIT：GET /jump?u=http://evil.example → 302 Location: http://evil.example（精确外域绝对跳转）；url/to/next/goto/target 仍自指。输出存 probe/w2_gw_jump2.out。
+[2026-10-23T16:00:00Z] 证据采集：4 条（HIT 主证据 + 裸路径控制 + 同值异参数归因控制 + 编码/空值辅助）落 artifacts/evidence.json，raw_request 逐字节可复现。
+[2026-10-23T16:00:00Z] 落盘前脱敏扫描：grep -riE '(password|secret|token|api[_-]?key|bearer|authorization:)[=:]' w2_gw_jump*.out => CLEAN。
+[2026-10-23T16:00:00Z] artifacts 归档：2 脚本 + 2 输出复制至 submissions/INT-r27-0016/artifacts/；产出 submission.json（2 facts / 1 finding confirmed，dedup_key_proposed=wstg-inpv-open-redirect-svc-api-gw-jump-u）。=> OK

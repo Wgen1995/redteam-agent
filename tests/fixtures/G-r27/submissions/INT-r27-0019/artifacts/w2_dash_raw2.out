@@ -1,0 +1,586 @@
+{
+ "target": "svc-dashboard:8006",
+ "intent": "INT-r27-0018+0019 followup raw",
+ "total_requests": 34,
+ "hits": [],
+ "results": [
+  {
+   "case": "raw:/render:tpl",
+   "payload": "{{7*7}}",
+   "path": "/render?tpl={{7*7}}",
+   "raw_request": "GET /render?tpl={{7*7}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:19 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "59"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render {{7*7}}</html>",
+   "body_len": 59,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:tpl",
+   "payload": "${7*7}",
+   "path": "/render?tpl=${7*7}",
+   "raw_request": "GET /render?tpl=${7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:20 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "58"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render ${7*7}</html>",
+   "body_len": 58,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:tpl",
+   "payload": "#{7*7}",
+   "path": "/render?tpl=#{7*7}",
+   "raw_request": "GET /render?tpl=#{7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:20 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "58"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render #{7*7}</html>",
+   "body_len": 58,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:tpl",
+   "payload": "{{7*'7'}}",
+   "path": "/render?tpl={{7*'7'}}",
+   "raw_request": "GET /render?tpl={{7*'7'}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:20 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "61"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render {{7*'7'}}</html>",
+   "body_len": 61,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:name",
+   "payload": "{{7*7}}",
+   "path": "/render?name={{7*7}}",
+   "raw_request": "GET /render?name={{7*7}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:20 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "72"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render?name={{7*7}}</html>",
+   "body_len": 72,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:name",
+   "payload": "${7*7}",
+   "path": "/render?name=${7*7}",
+   "raw_request": "GET /render?name=${7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:21 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "71"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render?name=${7*7}</html>",
+   "body_len": 71,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:name",
+   "payload": "#{7*7}",
+   "path": "/render?name=#{7*7}",
+   "raw_request": "GET /render?name=#{7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:21 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "71"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render?name=#{7*7}</html>",
+   "body_len": 71,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:name",
+   "payload": "{{7*'7'}}",
+   "path": "/render?name={{7*'7'}}",
+   "raw_request": "GET /render?name={{7*'7'}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:21 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "74"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render?name={{7*'7'}}</html>",
+   "body_len": 74,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:template",
+   "payload": "{{7*7}}",
+   "path": "/render?template={{7*7}}",
+   "raw_request": "GET /render?template={{7*7}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:22 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "76"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render?template={{7*7}}</html>",
+   "body_len": 76,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:template",
+   "payload": "${7*7}",
+   "path": "/render?template=${7*7}",
+   "raw_request": "GET /render?template=${7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:22 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "75"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render?template=${7*7}</html>",
+   "body_len": 75,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:template",
+   "payload": "#{7*7}",
+   "path": "/render?template=#{7*7}",
+   "raw_request": "GET /render?template=#{7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:22 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "75"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render?template=#{7*7}</html>",
+   "body_len": 75,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/render:template",
+   "payload": "{{7*'7'}}",
+   "path": "/render?template={{7*'7'}}",
+   "raw_request": "GET /render?template={{7*'7'}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:23 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "78"
+   },
+   "body": "<html>render GTSSTI-02 synthetic ssti render /render?template={{7*'7'}}</html>",
+   "body_len": 78,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:tpl",
+   "payload": "{{7*7}}",
+   "path": "/report?tpl={{7*7}}",
+   "raw_request": "GET /report?tpl={{7*7}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:23 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "71"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render /report?tpl={{7*7}}</html>",
+   "body_len": 71,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:tpl",
+   "payload": "${7*7}",
+   "path": "/report?tpl=${7*7}",
+   "raw_request": "GET /report?tpl=${7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:23 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "70"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render /report?tpl=${7*7}</html>",
+   "body_len": 70,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:tpl",
+   "payload": "#{7*7}",
+   "path": "/report?tpl=#{7*7}",
+   "raw_request": "GET /report?tpl=#{7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:24 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "70"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render /report?tpl=#{7*7}</html>",
+   "body_len": 70,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:tpl",
+   "payload": "{{7*'7'}}",
+   "path": "/report?tpl={{7*'7'}}",
+   "raw_request": "GET /report?tpl={{7*'7'}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:24 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render /report?tpl={{7*'7'}}</html>",
+   "body_len": 73,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:name",
+   "payload": "{{7*7}}",
+   "path": "/report?name={{7*7}}",
+   "raw_request": "GET /report?name={{7*7}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:24 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "59"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render {{7*7}}</html>",
+   "body_len": 59,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:name",
+   "payload": "${7*7}",
+   "path": "/report?name=${7*7}",
+   "raw_request": "GET /report?name=${7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:24 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "58"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render ${7*7}</html>",
+   "body_len": 58,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:name",
+   "payload": "#{7*7}",
+   "path": "/report?name=#{7*7}",
+   "raw_request": "GET /report?name=#{7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:25 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "58"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render #{7*7}</html>",
+   "body_len": 58,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:name",
+   "payload": "{{7*'7'}}",
+   "path": "/report?name={{7*'7'}}",
+   "raw_request": "GET /report?name={{7*'7'}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:25 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "61"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render {{7*'7'}}</html>",
+   "body_len": 61,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:template",
+   "payload": "{{7*7}}",
+   "path": "/report?template={{7*7}}",
+   "raw_request": "GET /report?template={{7*7}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:25 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "76"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render /report?template={{7*7}}</html>",
+   "body_len": 76,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:template",
+   "payload": "${7*7}",
+   "path": "/report?template=${7*7}",
+   "raw_request": "GET /report?template=${7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:26 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "75"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render /report?template=${7*7}</html>",
+   "body_len": 75,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:template",
+   "payload": "#{7*7}",
+   "path": "/report?template=#{7*7}",
+   "raw_request": "GET /report?template=#{7*7} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:26 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "75"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render /report?template=#{7*7}</html>",
+   "body_len": 75,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:/report:template",
+   "payload": "{{7*'7'}}",
+   "path": "/report?template={{7*'7'}}",
+   "raw_request": "GET /report?template={{7*'7'}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:26 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "78"
+   },
+   "body": "<html>report GTSSTI-01 synthetic ssti render /report?template={{7*'7'}}</html>",
+   "body_len": 78,
+   "eval_49": false,
+   "eval_7777777": false
+  },
+  {
+   "case": "raw:ping:host",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?host=127.0.0.1;id",
+   "raw_request": "GET /ping?host=127.0.0.1;id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:27 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  },
+  {
+   "case": "raw:ping:host",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?host=127.0.0.1|id",
+   "raw_request": "GET /ping?host=127.0.0.1|id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:27 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  },
+  {
+   "case": "raw:ping:cmd",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?cmd=127.0.0.1;id",
+   "raw_request": "GET /ping?cmd=127.0.0.1;id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:27 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  },
+  {
+   "case": "raw:ping:cmd",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?cmd=127.0.0.1|id",
+   "raw_request": "GET /ping?cmd=127.0.0.1|id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:27 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  },
+  {
+   "case": "raw:ping:ip",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?ip=127.0.0.1;id",
+   "raw_request": "GET /ping?ip=127.0.0.1;id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:28 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  },
+  {
+   "case": "raw:ping:ip",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?ip=127.0.0.1|id",
+   "raw_request": "GET /ping?ip=127.0.0.1|id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:28 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  },
+  {
+   "case": "raw:ping:target",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?target=127.0.0.1;id",
+   "raw_request": "GET /ping?target=127.0.0.1;id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:28 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  },
+  {
+   "case": "raw:ping:target",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?target=127.0.0.1|id",
+   "raw_request": "GET /ping?target=127.0.0.1|id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:29 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  },
+  {
+   "case": "raw:ping:q",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?q=127.0.0.1;id",
+   "raw_request": "GET /ping?q=127.0.0.1;id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:29 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  },
+  {
+   "case": "raw:ping:q",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?q=127.0.0.1|id",
+   "raw_request": "GET /ping?q=127.0.0.1|id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:29 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "body_is_baseline": true
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+  "intent_id": "INT-r27-0004",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "info", "target": "dns:svc-admin", "detail": "DNS 解析 svc-admin→172.28.0.3（容器内 socket.getaddrinfo）；端口自发现 8001-8008 逐端口 HTTP GET /（禁重定向，timeout 5s）：仅 8003 存活，8001/8002/8004-8008 全部 connection refused", "confidence": 0.95},
+    {"kind": "http", "target": "svc-admin/", "detail": "唯一活入口 svc-admin:8003 GET / → 401 body='auth required'（CL=13）；Server=BaseHTTP/0.6 Python/3.12.14（Python stdlib http.server 自建服务）；无 WWW-Authenticate（非 HTTP Basic 挑战，推测自定义 header/token 鉴权）；无 Location/Set-Cookie/ACAO/Allow", "confidence": 0.95},
+    {"kind": "http", "target": "svc-admin/<90路径字典>", "detail": "GET 字典喷洒 90 路径×14 族（cred/info/ssrf/processor/resource/xss/file/cors/redirect/admin/cmdi/api/internal，含 GET / 共 91 发）：91/91 全部 401 'auth required' CL=13 同构响应，零路径级差异（无 404/405/302/500，正交不存在路径与已知路径响应一致）→ 鉴权墙先于路由，本轮路径存在性不可确认", "confidence": 0.95},
+    {"kind": "http", "target": "svc-admin/<POST形探测>", "detail": "POST 探测 /login /register /token /upload /import /xml /fetch /search /comment + 不存在对照 /zzz-control-nonexistent，urlencoded t=1 与 JSON {\"t\":1} 各一发共 20 发：20/20 全部 403 'denied'（CL=6），双 Content-Type 零差异，不存在路径同响应 → 墙为方法感知（GET→401 / POST→403）且先于路由与 body 解析", "confidence": 0.95},
+    {"kind": "info", "target": "svc-admin/401-403墙分布", "detail": "墙面分布：GET 任意路径=401（91/91），POST 任意路径/任意Content-Type=403（20/20）；两者 body 均固定短文本、无挑战头、无 cookie 下发；指纹 BaseHTTP/0.6 Python/3.12.14 与靶场其他 svc 一致（见 INT-r27-0001）", "confidence": 0.9},
+    {"kind": "info", "target": "svc-admin/负面结果", "detail": "负面结果（重要）：本轮零凭据、零路径确认、零重定向、零 CORS 头、零 Set-Cookie；90 路径字典（含管理族 /admin /admin/config /admin/keys /admin/logs /admin/audit 等 13 条）全部不可确认存在性；下一步应转向取有效 token（其他 svc 侦察轨道泄露源）或带 Authorization 头复测墙响应差异，而非继续无凭据路径 fuzz", "confidence": 0.9}
+  ],
+  "findings": [],
+  "assets": [
+    {"type": "ip", "value": "172.28.0.3", "meta": "port:8003;svc=svc-admin;唯一活端口"},
+    {"type": "endpoint", "value": "svc-admin:8003/", "meta": "GET→401 'auth required'；Server=BaseHTTP/0.6 Python/3.12.14；无 WWW-Authenticate；无重定向"},
+    {"type": "endpoint", "value": "svc-admin:8003/<any-path>", "meta": "POST→403 'denied'（urlencoded/JSON 无差异，不存在路径同响应）；方法感知鉴权墙，先于路由"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

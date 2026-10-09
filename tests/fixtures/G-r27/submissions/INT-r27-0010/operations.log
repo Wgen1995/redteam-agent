@@ -1,0 +1,14 @@
+2026-10-23T16:00:00Z  INT-r27-0010 web-blackbox 认证获取+账号枚举 开工
+2026-10-23T16:00:00Z  OP00 环境核验：容器 range-attack-noop-1 Up、guard CLI 在位、提交目录建（submissions/INT-r27-0010/artifacts/）；可读手册 §1.3/§二 复读（表单子串定律+行为差分定律）
+2026-10-23T16:00:00Z  OP01 写探测脚本 probe/int0010_probe.py（keyname/weak/enum/token 四相，全程 sleep 0.35s）→ docker cp → 容器内 py_compile OK
+2026-10-23T16:00:00Z  OP02 [guard] keyname svc-login：15 发键名叉乘（user/username/name/account/email × pass/password/pwd，固定 admin/wrongone）→ 全 403 len72 仅全局计数器递增（287→301），无键名分化；按手册定律取规范键 user/pass
+2026-10-23T16:00:00Z  OP03 [guard] weak svc-login（form，9 对预算内）：admin/admin 403、admin/password 403、admin/admin123 → 200 len75 'welcome admin GTWEAKPASS-01 synthetic weak credential accepted' + X-Auth-Token 头（字面入 vault:cred-1）→ 命中即停该面（3 发）
+2026-10-23T16:00:00Z  OP04 [guard] weak svc-admin（admin 族优先）：admin/admin123 首发即中 → 200 len17 body 'token <tok>'（体回显，与 svc-login 令牌同字面，vault:cred-2）→ 停（1 发）
+2026-10-23T16:00:00Z  OP05 [guard] weak svc-billing（alice 族优先）：alice/alice123 首发即中 → 200 len17 body 'token <tok>'（同字面，vault:cred-3）→ 停（1 发）
+2026-10-23T16:00:00Z  OP06 [guard] 容器内落 svc-admin/svc-billing 令牌文件（体回显不自动存，docker exec python 写 /tmp/int0010_tok_*.json）
+2026-10-23T16:00:00Z  OP07 [guard] enum ×3 首跑参数粘连（zsh 不分词）0 发出；显式重跑 6 发：svc-login(admin vs nonexist9x7) 均 403 len72 仅计数器变；svc-admin/svc-billing 均 403 len6 'denied' → 三面枚举阴性（状态/字节长/体内容/时延零差异）
+2026-10-23T16:00:00Z  OP08 [guard] token ×3（X-Auth-Token 形回访）：svc-login GET / 200 login form（catch-all）、POST /me /session /logout 403 denied；svc-admin/svc-billing GET / 404、POST /me /session /logout 403 denied(len6) → 持证与匿名无差异（12 发，记 facts 不铸 finding）
+2026-10-23T16:00:00Z  OP09 [guard] tpres 令牌呈现形态变体（probe/int0010_tpres.py）：Bearer / Cookie(X-Auth-Token=) / Cookie(token=) / X-Auth-Token 四形 POST svc-login /me → 全 403 denied（4 发）→ 呈现形态非激活瓶颈，基线阴性闭环
+2026-10-23T16:00:00Z  OP10 组装提交包：artifacts/vault-note.txt（chmod 600，令牌/口令真值唯一处）、artifacts/evidence.json（4 条，头/体令牌一律 {{vault:cred-N}} 占位）、submission.json（9 字段）
+2026-10-23T16:00:00Z  统计：总请求 42 发（keyname 15 + weak 5 + enum 6 + token 12 + tpres 4）；每面弱口令对 3/1/1（≤24 红线内）；全程序 0.35s 间隔；窗口内共享计数器 287→313 无锁定无降速（26 拒绝+1 成功）——无限流实证
+2026-10-23T16:00:00Z  INT-r27-0010 收口：findings 4（三面弱口令 confirmed C1 + 无限流 confirmed C1）、creds 3、枚举阴性、status=done

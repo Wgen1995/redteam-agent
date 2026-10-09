@@ -1,0 +1,5 @@
+{"probe": "introspect_schema", "status": 200, "body": "<html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>"}
+{"probe": "introspect_type", "status": 200, "body": "<html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>"}
+{"probe": "data_probe_dummy", "status": 200, "body": "<html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>"}
+{"probe": "control_noparam", "status": 200, "body": "<html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>"}
+DONE requests=4

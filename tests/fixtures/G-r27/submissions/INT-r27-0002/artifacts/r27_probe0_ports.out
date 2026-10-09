@@ -1,0 +1,58 @@
+{
+ "host": "svc-shop",
+ "dns": {
+  "addrs": [
+   "172.28.0.9"
+  ]
+ },
+ "ports": [
+  {
+   "port": 8001,
+   "url": "http://svc-shop:8001/",
+   "status": 404,
+   "reason": "Not Found",
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:19:36 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   },
+   "body_head": "not found"
+  },
+  {
+   "port": 8002,
+   "url": "http://svc-shop:8002/",
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+  },
+  {
+   "port": 8003,
+   "url": "http://svc-shop:8003/",
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+  },
+  {
+   "port": 8004,
+   "url": "http://svc-shop:8004/",
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+  },
+  {
+   "port": 8005,
+   "url": "http://svc-shop:8005/",
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+  },
+  {
+   "port": 8006,
+   "url": "http://svc-shop:8006/",
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+  },
+  {
+   "port": 8007,
+   "url": "http://svc-shop:8007/",
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+  },
+  {
+   "port": 8008,
+   "url": "http://svc-shop:8008/",
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+  }
+ ]
+}

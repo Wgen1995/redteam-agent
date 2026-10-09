@@ -1,0 +1,81 @@
+svc	path	anon_status	tok_status(X-Auth-Token)	verdict
+svc-shop	/admin/config	404	404	
+svc-shop	/admin/logs	404	404	
+svc-shop	/admin/keys	404	404	
+svc-shop	/admin/reports	401	200	HIT-FLIP
+svc-shop	/admin/clients	404	404	
+svc-shop	/admin/audit	404	404	
+svc-shop	/admin/settings	404	404	
+svc-shop	/admin/users	404	404	
+svc-shop	/admin/orders	404	404	
+svc-shop	/admin/invoices	404	404	
+svc-api-gw	/admin/config	404	404	
+svc-api-gw	/admin/logs	404	404	
+svc-api-gw	/admin/keys	401	200	HIT-FLIP
+svc-api-gw	/admin/reports	404	404	
+svc-api-gw	/admin/clients	404	404	
+svc-api-gw	/admin/audit	404	404	
+svc-api-gw	/admin/settings	404	404	
+svc-api-gw	/admin/users	404	404	
+svc-api-gw	/admin/orders	404	404	
+svc-api-gw	/admin/invoices	404	404	
+svc-admin	/admin/config	401	404	
+svc-admin	/admin/logs	401	404	
+svc-admin	/admin/keys	401	404	
+svc-admin	/admin/reports	401	404	
+svc-admin	/admin/clients	401	404	
+svc-admin	/admin/audit	401	404	
+svc-admin	/admin/settings	401	404	
+svc-admin	/admin/users	401	404	
+svc-admin	/admin/orders	401	200	HIT-FLIP
+svc-admin	/admin/invoices	401	200	HIT-FLIP
+svc-login	/admin/config	200	200	HIT-NOFLIP
+svc-login	/admin/logs	200	200	HIT-NOFLIP
+svc-login	/admin/keys	200	200	HIT-NOFLIP
+svc-login	/admin/reports	200	200	HIT-NOFLIP
+svc-login	/admin/clients	200	200	HIT-NOFLIP
+svc-login	/admin/audit	200	200	HIT-NOFLIP
+svc-login	/admin/settings	200	200	HIT-NOFLIP
+svc-login	/admin/users	200	200	HIT-NOFLIP
+svc-login	/admin/orders	200	200	HIT-NOFLIP
+svc-login	/admin/invoices	200	200	HIT-NOFLIP
+svc-billing	/admin/config	401	404	
+svc-billing	/admin/logs	401	404	
+svc-billing	/admin/keys	401	404	
+svc-billing	/admin/reports	401	404	
+svc-billing	/admin/clients	401	404	
+svc-billing	/admin/audit	401	404	
+svc-billing	/admin/settings	401	404	
+svc-billing	/admin/users	401	404	
+svc-billing	/admin/orders	401	404	
+svc-billing	/admin/invoices	401	404	
+svc-dashboard	/admin/config	401	200	HIT-FLIP
+svc-dashboard	/admin/logs	404	404	
+svc-dashboard	/admin/keys	404	404	
+svc-dashboard	/admin/reports	404	404	
+svc-dashboard	/admin/clients	404	404	
+svc-dashboard	/admin/audit	404	404	
+svc-dashboard	/admin/settings	404	404	
+svc-dashboard	/admin/users	404	404	
+svc-dashboard	/admin/orders	404	404	
+svc-dashboard	/admin/invoices	404	404	
+svc-portal	/admin/config	404	404	
+svc-portal	/admin/logs	404	404	
+svc-portal	/admin/keys	404	404	
+svc-portal	/admin/reports	404	404	
+svc-portal	/admin/clients	401	200	HIT-FLIP
+svc-portal	/admin/audit	404	404	
+svc-portal	/admin/settings	404	404	
+svc-portal	/admin/users	404	404	
+svc-portal	/admin/orders	404	404	
+svc-portal	/admin/invoices	404	404	
+svc-files	/admin/config	404	404	
+svc-files	/admin/logs	401	200	HIT-FLIP
+svc-files	/admin/keys	404	404	
+svc-files	/admin/reports	404	404	
+svc-files	/admin/clients	404	404	
+svc-files	/admin/audit	404	404	
+svc-files	/admin/settings	404	404	
+svc-files	/admin/users	404	404	
+svc-files	/admin/orders	404	404	
+svc-files	/admin/invoices	404	404	

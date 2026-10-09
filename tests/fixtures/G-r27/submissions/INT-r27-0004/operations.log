@@ -1,0 +1,17 @@
+# INT-r27-0004 operations.log (web-blackbox recon, svc-admin)
+# 授权训练靶场 authorized-range.local，授权窗口内；探测一律经 range-attack-noop-1 容器；guard 时间戳一律字面量 2026-10-23T15:30:00Z
+[2026-10-23T15:30:00Z] env-check: docker ps range-attack-noop-1 Up；cli/tanyin-guard 存在；创建 submissions/INT-r27-0004/{,artifacts}
+[2026-10-23T15:30:00Z] script0: write artifacts/s0_discover.py（DNS resolve svc-admin + 8001-8008 逐端口 HTTP GET /，urllib 禁跟随重定向，timeout 5s，间隔 0.25s，共 8 请求）
+[2026-10-23T15:30:00Z] docker cp artifacts/s0_discover.py range-attack-noop-1:/tmp/s0_discover.py（docker cp 不进 guard）
+[2026-10-23T15:30:00Z] cli/tanyin-guard exec --goal-dir /Users/wgen/.tanyin/battles/battle-26/G-r27 --timestamp=2026-10-23T15:30:00Z -- docker exec range-attack-noop-1 python3 /tmp/s0_discover.py > /Users/wgen/.tanyin/battles/battle-26/probe/s0_discover.out 2>&1
+  → 结果：DNS svc-admin→172.28.0.3；活端口仅 8003（8001/8002/8004-8008 connection refused）；GET / → 401 "auth required"（CL=13，Server=BaseHTTP/0.6 Python/3.12.14，无 WWW-Authenticate/Location/Set-Cookie）
+[2026-10-23T15:30:00Z] script1: write artifacts/s1_getdict.py（GET 字典喷洒 90 路径 ×14 族：cred17/info10/ssrf5/processor8/resource9/xss7/file5/cors3/redirect5/admin13/cmdi4/api3/internal2，间隔 0.25s，共 91 请求含 0 号 GET / 对照）
+[2026-10-23T15:30:00Z] docker cp artifacts/s1_getdict.py range-attack-noop-1:/tmp/s1_getdict.py
+[2026-10-23T15:30:00Z] cli/tanyin-guard exec --goal-dir ... --timestamp=2026-10-23T15:30:00Z -- docker exec range-attack-noop-1 python3 /tmp/s1_getdict.py > /Users/wgen/.tanyin/battles/battle-26/probe/s1_getdict.out 2>&1
+  → 结果：91/91 全部 401 "auth required"（CL=13 同构，无任何路径级差异：无 404/405/302/500 泄露）
+[2026-10-23T15:30:00Z] script2: write artifacts/s2_postprobe.py（POST 形探测：/login /register /token /upload /import /xml /fetch /search /comment + 不存在对照 /zzz-control-nonexistent，urlencoded t=1 与 JSON {"t":1} 各一发，共 20 请求，不带任何凭据）
+[2026-10-23T15:30:00Z] docker cp artifacts/s2_postprobe.py range-attack-noop-1:/tmp/s2_postprobe.py
+[2026-10-23T15:30:00Z] cli/tanyin-guard exec --goal-dir ... --timestamp=2026-10-23T15:30:00Z -- docker exec range-attack-noop-1 python3 /tmp/s2_postprobe.py > /Users/wgen/.tanyin/battles/battle-26/probe/s2_postprobe.out 2>&1
+  → 结果：20/20 全部 403 "denied"（CL=6，urlencoded 与 JSON 零差异，不存在路径同响应）
+[2026-10-23T15:30:00Z] 汇总 submission.json（9 顶层字段）；本轮零凭据获得，creds=[]，不创建 vault-note
+# 预算用量：请求 8+91+20=119/2500；无 DoS（最小间隔 0.25s）；未发攻击载荷、未做弱口令猜测

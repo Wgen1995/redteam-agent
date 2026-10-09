@@ -1,0 +1,66 @@
+[
+ {
+  "finding_key": "negative-control-lfi-bare-endpoint",
+  "raw_request": "GET /page HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:04 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "65"
+  },
+  "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+  "matcher_words": [
+   "GTLFI-02"
+  ],
+  "note": "基线：裸 /page 无参数即回显 GTLFI-02 合成串——回显为路径级静态行为"
+ },
+ {
+  "finding_key": "negative-lfi-passwd-dotdot-shape",
+  "raw_request": "GET /page?path=..%2F..%2F..%2F..%2Fetc%2Fpasswd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:08 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "65"
+  },
+  "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+  "matcher_words": [
+   "root:x:0"
+  ],
+  "note": "../ 穿越编码形 ..%2F..%2F..%2F..%2Fetc%2Fpasswd：响应与基线全同，无 root:x:0 ⇒ ../ 形不中"
+ },
+ {
+  "finding_key": "negative-lfi-passwd-absolute-shape",
+  "raw_request": "GET /page?path=/etc/passwd HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:09 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "65"
+  },
+  "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+  "matcher_words": [
+   "root:x:0"
+  ],
+  "note": "绝对形 /etc/passwd：响应与基线全同 ⇒ 绝对形不中（双形均不中，无双形 EV 记账）"
+ },
+ {
+  "finding_key": "negative-lfi-pages-hostname",
+  "raw_request": "GET /pages?path=../../etc/hostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:21 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "65"
+  },
+  "resp_body_excerpt": "<html>GTLFI-02 synthetic local file: /etc/hostname content</html>",
+  "matcher_words": [
+   "range-attack"
+  ],
+  "note": "/pages?path=../../etc/hostname 原始形：响应与基线全同，无主机名内容 ⇒ /pages 面亦不中"
+ }
+]

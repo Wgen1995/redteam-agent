@@ -1,0 +1,51 @@
+{
+  "intent_id": "INT-r27-0029",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "behavior", "target": "svc-dashboard/render", "detail": "GET /render?tpl=<b>dash8k2</b> 原形直发（不编码）→ 200，body '<html>render GTSSTI-02 synthetic ssti render <b>dash8k2</b></html>'——载荷逐字节未编码回显，标签结构原样落进 text/html 元素上下文=可执行反射", "confidence": 1.0},
+    {"kind": "behavior", "target": "svc-dashboard/report", "detail": "GET /report?name=<b>dash8k2</b> 原形直发 → 200，body '<html>report GTSSTI-01 synthetic ssti render <b>dash8k2</b></html>'——与 /render 同构：未编码回显+标签结构原样=可执行反射", "confidence": 1.0},
+    {"kind": "behavior", "target": "svc-dashboard/render+report", "detail": "事件形 <img/src=x/onerror=dash8k2> 双面均逐字节原样回显（斜杠分隔替代空格，请求行合法直发）——HTML 注入原语成立，onerror 处理器结构完整进入 DOM 流", "confidence": 1.0},
+    {"kind": "behavior", "target": "svc-dashboard/render+report", "detail": "编码态对照负：%3Cb%3Edash8k2%3C%2Fb%3E 与 %22%20onmouseover%3Ddash8k2%20%22 双面均以编码串逐字节原样回显（结构不完整、不可执行）——证实服务端不做 urldecode，编码输入天然不可达 XSS，可执行面=原形直发独占", "confidence": 1.0},
+    {"kind": "info", "target": "svc-dashboard:8006", "detail": "双面响应均为 content-type: text/html; charset=utf-8（BaseHTTP/0.6 Python/3.12.14）；引号闭合形受 HTTP 请求行禁空格限制，原形(含空格)物理不可直发——无空格适配形 \"onmouseover=dash8k2\" 引号逐字节透传，反射点为元素上下文（引号在该上下文惰性，不构成独立利用面）", "confidence": 1.0}
+  ],
+  "findings": [
+    {
+      "title": "svc-dashboard /render?tpl= 反射 XSS（未 urldecode + 未 HTML 转义）",
+      "kind": "reflected-xss",
+      "cwe": "CWE-79",
+      "location": "svc-dashboard/render",
+      "impact": "中",
+      "status": "confirmed",
+      "confidence": 0.95,
+      "evidence_mode": "原形直发逐字节回显（tag/event 两形结构原样落 text/html；编码形对照负）",
+      "evidence": "artifacts/evidence.json[0] + artifacts/w3_dash_xss.out（10 发全记录；raw_request 逐字节可发）",
+      "matcher_words": ["dash8k2", "<b>dash8k2</b>"],
+      "detail": "参数 tpl 值未经 urldecode 与 HTML 转义直接拼接进响应体：tag 形 <b>dash8k2</b> 与事件形 <img/src=x/onerror=dash8k2> 原形直发均逐字节原样回显于 <html>...</html> 元素上下文，浏览器侧即成可执行 DOM；匿名可达，preconditions=[]",
+      "preconditions": [],
+      "notes": "编码形输入因服务端不 urldecode 而天然不可达（对照负已证），利用必须原形直发"
+    },
+    {
+      "title": "svc-dashboard /report?name= 反射 XSS（未 urldecode + 未 HTML 转义）",
+      "kind": "reflected-xss",
+      "cwe": "CWE-79",
+      "location": "svc-dashboard/report",
+      "impact": "中",
+      "status": "confirmed",
+      "confidence": 0.95,
+      "evidence_mode": "原形直发逐字节回显（tag/event 两形结构原样落 text/html；编码形对照负）",
+      "evidence": "artifacts/evidence.json[1] + artifacts/w3_dash_xss.out（10 发全记录；raw_request 逐字节可发）",
+      "matcher_words": ["dash8k2", "<b>dash8k2</b>"],
+      "detail": "参数 name 值与 /render 同机制：原形载荷逐字节回显于元素上下文，tag/event 两形结构完整=可执行反射；匿名可达，preconditions=[]",
+      "preconditions": [],
+      "notes": "与 /render 为同根因双面（不转义拼接），独立验证独立铸 finding"
+    }
+  ],
+  "assets": [
+    {"type": "endpoint", "value": "svc-dashboard:8006/render?tpl=", "meta": "http_face;get;reflected-xss:confirmed(anon,raw-form-only,no-urldecode,no-html-escape)"},
+    {"type": "endpoint", "value": "svc-dashboard:8006/report?name=", "meta": "http_face;get;reflected-xss:confirmed(anon,raw-form-only,no-urldecode,no-html-escape)"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

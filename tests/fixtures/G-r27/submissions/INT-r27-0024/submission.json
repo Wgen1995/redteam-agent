@@ -1,0 +1,161 @@
+{
+ "intent_id": "INT-r27-0024",
+ "engine": "web-blackbox",
+ "status": "done",
+ "facts": [
+  {
+   "kind": "http",
+   "target": "svc-files/unserialize",
+   "detail": "GET 带参形（data/payload/input/obj/blob/serialized/s/p/file/name 十参数族×base64 探针）全 200 无响应分化——handler 参数无关，GET 直取即回显 deser 执行语义串",
+   "confidence": 0.95
+  },
+  {
+   "kind": "http",
+   "target": "svc-files/{unserialize,import,decode}",
+   "detail": "POST 参数形态负结果：urlencoded（data=gASV.. 短 pickle 探针/payload/input/blob=java 魔数头/三参 combo）、JSON（data/payload/input 键）、raw octet-stream（b64 串与 pickle 原始字节）全 400 bad request——400→200 翻转未达成，POST 校验分支有效参数名未发现",
+   "confidence": 0.95
+  },
+  {
+   "kind": "http",
+   "target": "svc-files/{import,xml,decode,unserialize}",
+   "detail": "XXE 负结果：POST application/xml（XXE 探针 file:///etc/hostname 实体+无实体控制组）到四面全 400 bad request 且探针与控制组无分化——XML 请求体未被接收，实体无展开回显",
+   "confidence": 0.95
+  }
+ ],
+ "findings": [
+  {
+   "title": "svc-files /unserialize 反序列化处理器匿名可达：pickle object inflated 执行语义回显（GTDESER-01）",
+   "confidence": "C2",
+   "impact": "高",
+   "exploitation_status": "verified",
+   "auth_context": "anon",
+   "reproducible_steps": [
+    "GET http://svc-files:8008/unserialize?data=R1RERVNFUi1CNjQtUFJPQkU%3D（base64 探针）→ 200",
+    "响应体回显 GTDESER-01 synthetic pickle object inflated（deser 执行语义串，判据命中）"
+   ],
+   "evidence_refs": [
+    "EV-r27-0024-A1",
+    "EV-r27-0024-C1"
+   ],
+   "location": "svc-files/unserialize",
+   "dedup_key_proposed": "AST-r27-0048+wstg-inpv-deser",
+   "network_position": "intranet",
+   "preconditions": [
+    "L1 容器网内可达 svc-files:8008（range-attack-noop-1）"
+   ],
+   "expected_matcher": {
+    "matchers": [
+     {
+      "type": "word",
+      "words": [
+       "GTDESER-01",
+       "object inflated"
+      ]
+     },
+     {
+      "type": "status",
+      "status": [
+       200
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "title": "svc-files /import 反序列化处理器匿名可达：java serialized blob accepted 执行语义回显（GTDESER-02）",
+   "confidence": "C2",
+   "impact": "高",
+   "exploitation_status": "verified",
+   "auth_context": "anon",
+   "reproducible_steps": [
+    "GET http://svc-files:8008/import?data=R1RERVNFUi1CNjQtUFJPQkU%3D → 200",
+    "响应体回显 GTDESER-02 synthetic java serialized blob accepted"
+   ],
+   "evidence_refs": [
+    "EV-r27-0024-A2",
+    "EV-r27-0024-C2"
+   ],
+   "location": "svc-files/import",
+   "dedup_key_proposed": "AST-r27-0049+wstg-inpv-deser",
+   "network_position": "intranet",
+   "preconditions": [
+    "L1 容器网内可达 svc-files:8008"
+   ],
+   "expected_matcher": {
+    "matchers": [
+     {
+      "type": "word",
+      "words": [
+       "GTDESER-02",
+       "java serialized blob accepted"
+      ]
+     },
+     {
+      "type": "status",
+      "status": [
+       200
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "title": "svc-files /decode 反序列化处理器匿名可达：base64 payload object inflated 执行语义回显（GTDESER-03）",
+   "confidence": "C2",
+   "impact": "高",
+   "exploitation_status": "verified",
+   "auth_context": "anon",
+   "reproducible_steps": [
+    "GET http://svc-files:8008/decode?data=R1RERVNFUi1CNjQtUFJPQkU%3D → 200",
+    "响应体回显 GTDESER-03 synthetic base64 payload object inflated"
+   ],
+   "evidence_refs": [
+    "EV-r27-0024-A3",
+    "EV-r27-0024-C3"
+   ],
+   "location": "svc-files/decode",
+   "dedup_key_proposed": "AST-r27-0050+wstg-inpv-deser",
+   "network_position": "intranet",
+   "preconditions": [
+    "L1 容器网内可达 svc-files:8008"
+   ],
+   "expected_matcher": {
+    "matchers": [
+     {
+      "type": "word",
+      "words": [
+       "GTDESER-03",
+       "payload object inflated"
+      ]
+     },
+     {
+      "type": "status",
+      "status": [
+       200
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "assets": [
+  {
+   "type": "endpoint",
+   "value": "svc-files/unserialize",
+   "meta": "AST-r27-0048;GET匿名200;deser处理器语义回显;POST面400校验"
+  },
+  {
+   "type": "endpoint",
+   "value": "svc-files/import",
+   "meta": "AST-r27-0049;GET匿名200;java-deser语义回显;POST面400校验"
+  },
+  {
+   "type": "endpoint",
+   "value": "svc-files/decode",
+   "meta": "AST-r27-0050;GET匿名200;b64-decode语义回显;POST面400校验"
+  }
+ ],
+ "edges": [],
+ "creds": [],
+ "operations_log": "operations.log"
+}

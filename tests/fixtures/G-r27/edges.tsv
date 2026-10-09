@@ -1,0 +1,112 @@
+E-r27-0001	parent	AST-r27-0002	AST-r27-0001	战书服务清单+compose服务拓扑（P2规划期账面parent树；测绘核验待P3）	2	2026-10-23T11:02:05Z
+E-r27-0002	parent	AST-r27-0003	AST-r27-0001	战书服务清单+compose服务拓扑（P2规划期账面parent树；测绘核验待P3）	2	2026-10-23T11:02:10Z
+E-r27-0003	parent	AST-r27-0004	AST-r27-0001	战书服务清单+compose服务拓扑（P2规划期账面parent树；测绘核验待P3）	2	2026-10-23T11:02:15Z
+E-r27-0004	parent	AST-r27-0005	AST-r27-0001	战书服务清单+compose服务拓扑（P2规划期账面parent树；测绘核验待P3）	2	2026-10-23T11:02:20Z
+E-r27-0005	parent	AST-r27-0006	AST-r27-0001	战书服务清单+compose服务拓扑（P2规划期账面parent树；测绘核验待P3）	2	2026-10-23T11:02:25Z
+E-r27-0006	parent	AST-r27-0007	AST-r27-0001	战书服务清单+compose服务拓扑（P2规划期账面parent树；测绘核验待P3）	2	2026-10-23T11:02:30Z
+E-r27-0007	parent	AST-r27-0008	AST-r27-0001	战书服务清单+compose服务拓扑（P2规划期账面parent树；测绘核验待P3）	2	2026-10-23T11:02:35Z
+E-r27-0008	parent	AST-r27-0009	AST-r27-0001	战书服务清单+compose服务拓扑（P2规划期账面parent树；测绘核验待P3）	2	2026-10-23T11:02:40Z
+E-r27-0009	parent	AST-r27-0010	AST-r27-0002	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0010	parent	AST-r27-0019	AST-r27-0002	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0011	parent	AST-r27-0020	AST-r27-0002	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0012	parent	AST-r27-0021	AST-r27-0002	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0013	parent	AST-r27-0022	AST-r27-0002	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0014	parent	AST-r27-0023	AST-r27-0002	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0015	parent	AST-r27-0024	AST-r27-0002	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0016	parent	AST-r27-0025	AST-r27-0002	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0017	parent	AST-r27-0034	AST-r27-0005	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0018	parent	AST-r27-0035	AST-r27-0007	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0019	parent	AST-r27-0036	AST-r27-0007	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0020	parent	AST-r27-0037	AST-r27-0007	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0021	parent	AST-r27-0038	AST-r27-0007	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:41:10Z
+E-r27-0022	parent	AST-r27-0011	AST-r27-0001	INT-r27-0001网段测绘：IP↔根域	2	2026-10-23T15:53:10Z
+E-r27-0023	parent	AST-r27-0012	AST-r27-0001	INT-r27-0001网段测绘：IP↔根域	2	2026-10-23T15:53:10Z
+E-r27-0024	parent	AST-r27-0013	AST-r27-0001	INT-r27-0001网段测绘：IP↔根域	2	2026-10-23T15:53:10Z
+E-r27-0025	parent	AST-r27-0014	AST-r27-0001	INT-r27-0001网段测绘：IP↔根域	2	2026-10-23T15:53:10Z
+E-r27-0026	parent	AST-r27-0015	AST-r27-0001	INT-r27-0001网段测绘：IP↔根域	2	2026-10-23T15:53:10Z
+E-r27-0027	parent	AST-r27-0016	AST-r27-0001	INT-r27-0001网段测绘：IP↔根域	2	2026-10-23T15:53:10Z
+E-r27-0028	parent	AST-r27-0017	AST-r27-0001	INT-r27-0001网段测绘：IP↔根域	2	2026-10-23T15:53:10Z
+E-r27-0029	parent	AST-r27-0018	AST-r27-0001	INT-r27-0001网段测绘：IP↔根域	2	2026-10-23T15:53:10Z
+E-r27-0030	parent	AST-r27-0026	AST-r27-0003	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0031	parent	AST-r27-0027	AST-r27-0003	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0032	parent	AST-r27-0028	AST-r27-0003	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0033	parent	AST-r27-0029	AST-r27-0003	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0034	parent	AST-r27-0030	AST-r27-0003	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0035	parent	AST-r27-0031	AST-r27-0003	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0036	parent	AST-r27-0032	AST-r27-0003	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0037	parent	AST-r27-0033	AST-r27-0003	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0038	parent	AST-r27-0039	AST-r27-0008	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0039	parent	AST-r27-0040	AST-r27-0008	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0040	parent	AST-r27-0041	AST-r27-0008	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0041	parent	AST-r27-0042	AST-r27-0008	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0042	parent	AST-r27-0043	AST-r27-0008	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0043	parent	AST-r27-0044	AST-r27-0008	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0044	parent	AST-r27-0045	AST-r27-0009	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0045	parent	AST-r27-0046	AST-r27-0009	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0046	parent	AST-r27-0047	AST-r27-0009	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0047	parent	AST-r27-0048	AST-r27-0009	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0048	parent	AST-r27-0049	AST-r27-0009	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0049	parent	AST-r27-0050	AST-r27-0009	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0050	parent	AST-r27-0051	AST-r27-0009	INT-r27-0001..0009侦察提交（submissions/INT-r27-*/submission.json）	2	2026-10-23T15:53:10Z
+E-r27-0051	derived_from	F-r27-0008	INT-r27-0010	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0052	derived_from	F-r27-0009	INT-r27-0010	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0053	derived_from	F-r27-0020	INT-r27-0010	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0054	derived_from	F-r27-0021	INT-r27-0010	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0055	derived_from	F-r27-0025	INT-r27-0010	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0056	derived_from	F-r27-0022	INT-r27-0010	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0057	derived_from	F-r27-0023	INT-r27-0010	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0058	derived_from	F-r27-0026	INT-r27-0010	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0059	derived_from	F-r27-0010	INT-r27-0011	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0060	derived_from	F-r27-0011	INT-r27-0012	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0061	derived_from	F-r27-0013	INT-r27-0012	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0062	derived_from	F-r27-0012	INT-r27-0013	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0063	derived_from	F-r27-0015	INT-r27-0014	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0064	derived_from	F-r27-0019	INT-r27-0014	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0065	derived_from	F-r27-0016	INT-r27-0015	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0066	derived_from	F-r27-0018	INT-r27-0016	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0067	derived_from	F-r27-0017	INT-r27-0017	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0068	derived_from	F-r27-0027	INT-r27-0018	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0069	derived_from	F-r27-0029	INT-r27-0018	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0070	derived_from	F-r27-0028	INT-r27-0019	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0071	derived_from	F-r27-0030	INT-r27-0020	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0072	derived_from	F-r27-0034	INT-r27-0020	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0073	derived_from	F-r27-0031	INT-r27-0021	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0074	derived_from	F-r27-0033	INT-r27-0022	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0075	derived_from	F-r27-0032	INT-r27-0023	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0076	derived_from	F-r27-0036	INT-r27-0024	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0077	derived_from	F-r27-0035	INT-r27-0025	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0078	derived_from	F-r27-0037	INT-r27-0026	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0079	derived_from	F-r27-0024	INT-r27-0027	Round2风暴消费（侦察fact→攻击验证intent）	2	2026-10-23T15:54:10Z
+E-r27-0080	parent	AST-r27-0052	AST-r27-0004	INT-r27-0010认证获取波提交	2	2026-10-23T16:08:25Z
+E-r27-0081	parent	AST-r27-0053	AST-r27-0006	INT-r27-0010认证获取波提交	2	2026-10-23T16:08:35Z
+E-r27-0082	derived_from	F-r27-0043	INT-r27-0029	Round3消费：SSTi证伪fact的伴生XSS线索	2	2026-10-23T16:40:20Z
+E-r27-0083	derived_from	F-r27-0047	INT-r27-0028	Round3消费：令牌共享观察fact	2	2026-10-23T16:40:30Z
+E-r27-0084	derived_from	F-r27-0042	INT-r27-0029	Round3消费：dashboard tpl/name 反射线索（正确fact）	2	2026-10-23T16:41:00Z
+E-r27-0085	parent	AST-r27-0054	AST-r27-0004	INT-r27-0028 持证横扫发现	2	2026-10-23T16:55:10Z
+E-r27-0086	parent	AST-r27-0055	AST-r27-0004	INT-r27-0028 持证横扫发现	2	2026-10-23T16:55:20Z
+E-r27-0087	cross_ref	FD-r27-0021	FD-r27-0001	攻击链回指：认证获取（弱口令）→ 持证越权	2	2026-10-23T16:55:45Z
+E-r27-0088	cross_ref	FD-r27-0022	FD-r27-0001	攻击链回指：认证获取（弱口令）→ 持证越权	2	2026-10-23T16:56:10Z
+E-r27-0089	cross_ref	FD-r27-0023	FD-r27-0001	攻击链回指：认证获取（弱口令）→ 持证越权	2	2026-10-23T16:56:35Z
+E-r27-0090	cross_ref	FD-r27-0024	FD-r27-0001	攻击链回指：认证获取（弱口令）→ 持证越权	2	2026-10-23T16:57:00Z
+E-r27-0091	cross_ref	FD-r27-0025	FD-r27-0001	攻击链回指：认证获取（弱口令）→ 持证越权	2	2026-10-23T16:57:20Z
+E-r27-0092	cross_ref	FD-r27-0026	FD-r27-0001	攻击链回指：认证获取（弱口令）→ 持证越权	2	2026-10-23T16:57:40Z
+E-r27-0093	cross_ref	FD-r27-0027	FD-r27-0001	攻击链回指：认证获取（弱口令）→ 持证越权	2	2026-10-23T16:58:00Z
+E-r27-0094	derived_from	F-r27-0048	INT-r27-0030	Round3消费：横扫结论→authz差分举证	2	2026-10-23T16:58:50Z
+E-r27-0095	derived_from	F-r27-0049	INT-r27-0030	Round3消费：横扫结论→authz差分举证	2	2026-10-23T16:58:55Z
+E-r27-0096	derived_from	F-r27-0050	INT-r27-0030	Round3消费：横扫结论→authz差分举证	2	2026-10-23T16:59:00Z
+E-r27-0097	derived_from	F-r27-0051	INT-r27-0030	Round3消费：横扫结论→authz差分举证	2	2026-10-23T16:59:05Z
+E-r27-0098	derived_from	F-r27-0052	INT-r27-0030	Round3消费：横扫结论→authz差分举证	2	2026-10-23T16:59:10Z
+E-r27-0099	derived_from	F-r27-0053	INT-r27-0030	Round3消费：横扫结论→authz差分举证	2	2026-10-23T16:59:15Z
+E-r27-0100	derived_from	F-r27-0054	INT-r27-0030	Round3消费：横扫结论→authz差分举证	2	2026-10-23T16:59:20Z
+E-r27-0101	derived_from	F-r27-0014	INT-r27-0030	Round3消费：shop 401墙fact→持证越权验证	2	2026-10-23T17:05:06Z
+E-r27-0102	derived_from	F-r27-0038	INT-r27-0030	Round3消费：files 401墙fact→持证越权验证	2	2026-10-23T17:05:12Z
+E-r27-0103	derived_from	F-r27-0059	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:03:17Z
+E-r27-0104	derived_from	F-r27-0060	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:03:23Z
+E-r27-0105	derived_from	F-r27-0061	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:03:29Z
+E-r27-0106	derived_from	F-r27-0062	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:03:35Z
+E-r27-0107	derived_from	F-r27-0063	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:03:41Z
+E-r27-0108	derived_from	F-r27-0064	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:03:47Z
+E-r27-0109	derived_from	F-r27-0065	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:03:53Z
+E-r27-0110	derived_from	F-r27-0066	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:03:59Z
+E-r27-0111	derived_from	F-r27-0067	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:04:05Z
+E-r27-0112	derived_from	F-r27-0068	INT-r27-0030	Round3收口消费：矩阵锚定支撑fact→authz终局intent	2	2026-10-23T17:04:11Z

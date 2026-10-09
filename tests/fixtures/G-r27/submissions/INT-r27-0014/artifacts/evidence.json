@@ -1,0 +1,89 @@
+[
+  {
+    "finding_key": "wstg-inpv-ssrf-svc-api-gw-fetch-preview-proxy",
+    "raw_request": "GET /fetch HTTP/1.1\r\nHost: svc-api-gw:8002\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:36:48 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "72"
+    },
+    "resp_body_excerpt": "<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>",
+    "matcher_words": [
+      "internal-secret-doc"
+    ],
+    "note": "CONTROL: bare /fetch -> static synthetic body (72B).",
+    "ts": "2026-10-23T16:00:00Z"
+  },
+  {
+    "finding_key": "wstg-inpv-ssrf-svc-api-gw-fetch-preview-proxy",
+    "raw_request": "GET /fetch?url=http%3A%2F%2Fsvc-login%3A8004%2F HTTP/1.1\r\nHost: svc-api-gw:8002\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:36:49 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "72"
+    },
+    "resp_body_excerpt": "<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>",
+    "matcher_words": [
+      "svc-login",
+      "login form"
+    ],
+    "note": "NEG: /fetch?url=http://svc-login:8004/ (encoded) -> identical static body, NO 'login form' echo, len=72 same as control, elapsed ~2ms (no fetch latency). Matcher words ABSENT in resp_body_excerpt.",
+    "ts": "2026-10-23T16:00:00Z"
+  },
+  {
+    "finding_key": "wstg-inpv-ssrf-svc-api-gw-fetch-preview-proxy",
+    "raw_request": "GET /fetch?url=http://svc-login:8004/ HTTP/1.1\r\nHost: svc-api-gw:8002\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:38:33 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "72"
+    },
+    "resp_body_excerpt": "<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>",
+    "matcher_words": [
+      "svc-login",
+      "login form"
+    ],
+    "note": "NEG (raw round): /fetch?url=http://svc-login:8004/ unencoded -> identical static body, no echo.",
+    "ts": "2026-10-23T16:00:00Z"
+  },
+  {
+    "finding_key": "wstg-inpv-ssrf-svc-api-gw-fetch-preview-proxy",
+    "raw_request": "GET /proxy?u=file:///etc/hostname HTTP/1.1\r\nHost: svc-api-gw:8002\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:39:02 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "58"
+    },
+    "resp_body_excerpt": "<html>proxy GTSSRF-03 synthetic internal fetch done</html>",
+    "matcher_words": [
+      "/etc/hostname"
+    ],
+    "note": "NEG (u-family + file form): /proxy?u=file:///etc/hostname raw -> static 58B body, no hostname content echo.",
+    "ts": "2026-10-23T16:00:00Z"
+  },
+  {
+    "finding_key": "wstg-inpv-ssrf-svc-api-gw-fetch-preview-proxy",
+    "raw_request": "GET /preview?target=http%3A%2F%2Fexample.com HTTP/1.1\r\nHost: svc-api-gw:8002\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:37:01 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "72"
+    },
+    "resp_body_excerpt": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>",
+    "matcher_words": [
+      "Example Domain"
+    ],
+    "note": "NEG (ext form): /preview?target=http://example.com -> static body, no Example-Domain echo, no error/status differential.",
+    "ts": "2026-10-23T16:00:00Z"
+  }
+]

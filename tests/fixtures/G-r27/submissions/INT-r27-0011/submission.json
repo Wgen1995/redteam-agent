@@ -1,0 +1,41 @@
+{
+  "intent_id": "INT-r27-0011",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "http",
+      "target": "svc-shop/item",
+      "detail": "SQLi 枚举穷尽：参数名族 25 个（id/q/key/name/item_id/order_id + product_id/prod_id/sku/orderNo/order_no/no/num/page/cat/category/kw/v/w/term/search/type/ref/code/sn）× 载荷阶梯 9 形（1、1'、1' AND '1'='1、1' AND '1'='2、1 UNION SELECT 1--、1'AND'1'='1、1'AND'1'='2、1'/**/UNION/**/SELECT/**/1--）× 编码/原形双态 + 路径形 /item/1 /item/1' + 裸基线，共 96 发全部 200 且 body 与裸面逐字节一致（固定文案 <html>product page GTSQLI-01 synthetic SQL error near ''1''</html>）。GTSQLI-01 文案为页面固有静态串，非注入触发；布尔对（AND '1'='1 vs '1'='2）零分化、UNION 零回显、错误文本零变化 ⇒ GET query 面错误回显 SQLi 不可证实",
+      "confidence": 0.95
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/order",
+      "detail": "SQLi 枚举穷尽同 /item（同 25 参数族×9 载荷双态+路径形）：全部 200 固定文案 <html>order page GTSQLI-02 synthetic SQL syntax error</html>，与裸面逐字节一致 ⇒ GTSQLI-02 为固有文案，GET query 面 SQLi 不可证实",
+      "confidence": 0.95
+    },
+    {
+      "kind": "info",
+      "target": "svc-shop/item|/order",
+      "detail": "POST 全 501（战书 GET-only 约束）⇒ 盲注/时间盲/存储型通道在方法面不可达；GET-only 下 SQLi 判据（错误文本变化/布尔分化/UNION 回显）三项全负，F-r27-0010 的 suspected 建议按实测降级为不可利用（GET 面）",
+      "confidence": 0.9
+    }
+  ],
+  "findings": [],
+  "assets": [
+    {
+      "type": "endpoint",
+      "value": "svc-shop/item",
+      "meta": "GET-200;param-insensitive;sqli-neg"
+    },
+    {
+      "type": "endpoint",
+      "value": "svc-shop/order",
+      "meta": "GET-200;param-insensitive;sqli-neg"
+    }
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

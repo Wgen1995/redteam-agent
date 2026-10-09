@@ -1,0 +1,28 @@
+# INT-r27-0011 operations.log — svc-shop SQLi 错误回显验证（/item /order）
+# 引擎=web-blackbox 子代理；探测经 range-attack-noop-1 容器；间隔≥0.25s；GET-only（POST 全 501）
+
+[2026-10-23T16:00:00Z] guard exec: docker exec range-attack-noop-1 python3 /tmp/w2_shop_sqli.py
+  脚本 host 落 /Users/wgen/.tanyin/battles/battle-26/probe/w2_shop_sqli.py → docker cp range-attack-noop-1:/tmp/
+  输出 /Users/wgen/.tanyin/battles/battle-26/probe/w2_shop_sqli.out
+  面=/item /order × 参数族 6（id,q,key,name,item_id,order_id）× 载荷阶梯 5（1 → 1' → 1' AND '1'='1 → 1' AND '1'='2 → 1 UNION SELECT 1--）+ 裸基线 2 + 路径形 4 = 66 发（66×200，0 错误）
+  结果：全部 body 与裸面逐字节一致（/item=GTSQLI-01 固定文案 66 发；/order=GTSQLI-02 固定文案）；布尔对零分化、UNION 零回显、错误文本零变化
+
+[2026-10-23T16:03:00Z] guard exec: docker exec range-attack-noop-1 python3 /tmp/w2_shop_sqli2.py
+  脚本 host 落 probe/w2_shop_sqli2.py → docker cp
+  输出 probe/w2_shop_sqli2.out
+  面=/item /order × 扩展参数族 19（product_id,prod_id,sku,orderNo,order_no,no,num,page,cat,category,kw,v,w,term/search,type,ref,code,sn）× 载荷 2（1'、1 UNION SELECT 1--）= 76 发（76×200，0 错误）
+  结果：仍全部固定文案，零响应差异
+
+[2026-10-23T16:05:00Z] guard exec: docker exec range-attack-noop-1 python3 /tmp/w2_shop_round3.py（SQLi track）
+  面=/item /order × 参数 3（id,q,item_id）× 无空格原形载荷 4（1'、1'AND'1'='1、1'AND'1'='2、1'/**/UNION/**/SELECT/**/1--）= 24 发（200，0 错误）
+  结果：固定文案不变（原形态亦零差异）
+
+# 判定
+参数名族全试（25 族+专属+路径形）、载荷阶梯全试（9 形）、编码/原形双态全试 ⇒ GET query 面枚举穷尽
+GTSQLI-01/02 为页面固有静态文案（裸面即存在），非注入触发
+判据三项（错误文本变化/布尔分化/UNION 回显）全负 ⇒ 错误回显 SQLi 不可证实（GET 面）
+F-r27-0010 suspected 按实测降级为 fact（不可利用，GET-only 约束下盲注通道亦不可达）
+findings=0；控制对照布尔对 EV 成对在案（artifacts/evidence.json FK-r27-0011-item-boolpair-true/false 及 order 对、raw 对）
+
+# 请求与预算
+合计 166 发（66+76+24）；token 用量约 45k/80k

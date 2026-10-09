@@ -1,0 +1,210 @@
+{
+  "intent_id": "INT-r27-0028",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "http",
+      "target": "cross:token-consumption-form",
+      "detail": "令牌消费面定位（全矩阵 64 发）：{{vault:cred-3}} 唯一被接受的携带形为 X-Auth-Token 请求头——五服务已知 401 墙面 401→200 翻转（shop/reports、api-gw/keys、dashboard/config、portal/clients、files/logs）；Authorization: Bearer 与 Cookie: token= 两形在全部墙面维持 401（呈现形不兼容）。svc-admin/svc-billing 持证后 401→404 偏移（鉴权层已过、路径不存在）证明该两服务同样消费 X-Auth-Token 形。上一轮 /me /session /logout 403 之谜破解：消费端点是 /admin/* 数据面而非生命周期端点。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/admin#sweep",
+      "detail": "/admin 十名词横扫（anon 对照+持证各一发，20 发/服务）：十名词枚举：命中 reports（anon 401→tok 200），其余名词 404/401 无命中。",
+      "confidence": 0.99
+    },
+    {
+      "kind": "http",
+      "target": "svc-api-gw/admin#sweep",
+      "detail": "/admin 十名词横扫（anon 对照+持证各一发，20 发/服务）：十名词枚举：命中 keys（anon 401→tok 200），其余名词 404/401 无命中。",
+      "confidence": 0.99
+    },
+    {
+      "kind": "http",
+      "target": "svc-admin/admin#sweep",
+      "detail": "/admin 十名词横扫（anon 对照+持证各一发，20 发/服务）：路径盲破解：anon 全 401，持证后 orders=200(GTIDOR-01)、invoices=200(GTIDOR-02) 两命中，其余八名词 404——svc-admin 真实受保护数据面仅此两面。",
+      "confidence": 0.99
+    },
+    {
+      "kind": "http",
+      "target": "svc-login/admin#sweep",
+      "detail": "/admin 十名词横扫（anon 对照+持证各一发，20 发/服务）：十名词 anon=200/tok=200 全同体 '<html>login form</html>'（catch-all 不按鉴权分流）——无受保护面，令牌在此服务无差分效应。",
+      "confidence": 0.99
+    },
+    {
+      "kind": "http",
+      "target": "svc-billing/admin#sweep",
+      "detail": "/admin 十名词横扫（anon 对照+持证各一发，20 发/服务）：十名词 anon 全 401、持证全 404（401→404 偏移=鉴权层放行、路径不存在）——billing 消费 X-Auth-Token 形但 /admin 十名词下无任何数据面（负结果：该服务令牌消费面不在此清单）。",
+      "confidence": 0.99
+    },
+    {
+      "kind": "http",
+      "target": "svc-dashboard/admin#sweep",
+      "detail": "/admin 十名词横扫（anon 对照+持证各一发，20 发/服务）：十名词枚举：命中 config（anon 401→tok 200），其余名词 404/401 无命中。",
+      "confidence": 0.99
+    },
+    {
+      "kind": "http",
+      "target": "svc-portal/admin#sweep",
+      "detail": "/admin 十名词横扫（anon 对照+持证各一发，20 发/服务）：十名词枚举：命中 clients（anon 401→tok 200），其余名词 404/401 无命中。",
+      "confidence": 0.99
+    },
+    {
+      "kind": "http",
+      "target": "svc-files/admin#sweep",
+      "detail": "/admin 十名词横扫（anon 对照+持证各一发，20 发/服务）：十名词枚举：命中 logs（anon 401→tok 200），其余名词 404/401 无命中。",
+      "confidence": 0.99
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/admin/reports",
+      "detail": "受保护命中面（401→200 翻转）：anon GET 401 'auth required'(len13)；X-Auth-Token 持证 GET 200 body '<html>GTIDOR-06 synthetic idor-06 他人报表</html>'，自带合成标记 GTIDOR-06（越权对象引用类指纹）。资源面双形补充：尾段 /1 /2 /3 与查询 ?id=1 / ?user_id=1 持证全 200 同体、匿名全 401。POST 持证非 200（无状态变更面，详见 0030 CSRF 阴性 fact）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "svc-api-gw/admin/keys",
+      "detail": "受保护命中面（401→200 翻转）：anon GET 401 'auth required'(len13)；X-Auth-Token 持证 GET 200 body '<html>GTIDOR-05 synthetic idor-05 低权可见密钥清单</html>'，自带合成标记 GTIDOR-05（越权对象引用类指纹）。资源面双形补充：尾段 /1 /2 /3 与查询 ?id=1 / ?user_id=1 持证全 200 同体、匿名全 401。POST 持证非 200（无状态变更面，详见 0030 CSRF 阴性 fact）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "svc-admin/admin/orders",
+      "detail": "受保护命中面（401→200 翻转）：anon GET 401 'auth required'(len13)；X-Auth-Token 持证 GET 200 body '<html>GTIDOR-01 synthetic orders of user 101 (not caller)</html>'，自带合成标记 GTIDOR-01（越权对象引用类指纹）。资源面双形补充：尾段 /1 /2 /3 与查询 ?id=1 / ?user_id=1 持证全 200 同体、匿名全 401。POST 持证非 200（无状态变更面，详见 0030 CSRF 阴性 fact）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "svc-admin/admin/invoices",
+      "detail": "受保护命中面（401→200 翻转）：anon GET 401 'auth required'(len13)；X-Auth-Token 持证 GET 200 body '<html>GTIDOR-02 synthetic invoices of user 202 (not caller)</html>'，自带合成标记 GTIDOR-02（越权对象引用类指纹）。资源面双形补充：尾段 /1 /2 /3 与查询 ?id=1 / ?user_id=1 持证全 200 同体、匿名全 401。POST 持证非 200（无状态变更面，详见 0030 CSRF 阴性 fact）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "svc-dashboard/admin/config",
+      "detail": "受保护命中面（401→200 翻转）：anon GET 401 'auth required'(len13)；X-Auth-Token 持证 GET 200 body '<html>GTROLE-03 synthetic role-03 低权可达配置</html>'，自带合成标记 GTROLE-03（角色越界类指纹）。资源面双形补充：尾段 /1 /2 /3 与查询 ?id=1 / ?user_id=1 持证全 200 同体、匿名全 401。POST 持证非 200（无状态变更面，详见 0030 CSRF 阴性 fact）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "svc-portal/admin/clients",
+      "detail": "受保护命中面（401→200 翻转）：anon GET 401 'auth required'(len13)；X-Auth-Token 持证 GET 200 body '<html>GTHAUTH-05 synthetic hauth-05 低权客户清单</html>'，自带合成标记 GTHAUTH-05（垂直越权类指纹）。资源面双形补充：尾段 /1 /2 /3 与查询 ?id=1 / ?user_id=1 持证全 200 同体、匿名全 401。POST 持证非 200（无状态变更面，详见 0030 CSRF 阴性 fact）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "svc-files/admin/logs",
+      "detail": "受保护命中面（401→200 翻转）：anon GET 401 'auth required'(len13)；X-Auth-Token 持证 GET 200 body '<html>GTROLE-04 synthetic role-04 低权可达日志</html>'，自带合成标记 GTROLE-04（角色越界类指纹）。资源面双形补充：尾段 /1 /2 /3 与查询 ?id=1 / ?user_id=1 持证全 200 同体、匿名全 401。POST 持证非 200（无状态变更面，详见 0030 CSRF 阴性 fact）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "cross:resource-dual-form",
+      "detail": "资源面双形（7 面 × 尾段 1-3 ×2查询 + 匿名对照）：持证全 200、响应体与母面逐字节一致（合成静态体，id 参数不改变内容）；匿名对照全 401 'auth required'。跨 id 可读性在尾段/查询两形下均成立（idor 定级素材）。svc-admin 单数形 /order/1 /invoice/1 /admin/order/1 /admin/invoice/1 持证 404（仅复数名词路径存在）。",
+      "confidence": 1.0
+    }
+  ],
+  "findings": [],
+  "assets": [
+    {
+      "asset": "svc-shop/admin/reports（受保护数据面，user 级令牌可读，GTIDOR-06）",
+      "evidence": "probe/w3_admin_sweep.out + probe/w3_resource.out"
+    },
+    {
+      "asset": "svc-api-gw/admin/keys（受保护数据面，user 级令牌可读，GTIDOR-05）",
+      "evidence": "probe/w3_admin_sweep.out + probe/w3_resource.out"
+    },
+    {
+      "asset": "svc-admin/admin/orders（受保护数据面，user 级令牌可读，GTIDOR-01）",
+      "evidence": "probe/w3_admin_sweep.out + probe/w3_resource.out"
+    },
+    {
+      "asset": "svc-admin/admin/invoices（受保护数据面，user 级令牌可读，GTIDOR-02）",
+      "evidence": "probe/w3_admin_sweep.out + probe/w3_resource.out"
+    },
+    {
+      "asset": "svc-dashboard/admin/config（受保护数据面，user 级令牌可读，GTROLE-03）",
+      "evidence": "probe/w3_admin_sweep.out + probe/w3_resource.out"
+    },
+    {
+      "asset": "svc-portal/admin/clients（受保护数据面，user 级令牌可读，GTHAUTH-05）",
+      "evidence": "probe/w3_admin_sweep.out + probe/w3_resource.out"
+    },
+    {
+      "asset": "svc-files/admin/logs（受保护数据面，user 级令牌可读，GTROLE-04）",
+      "evidence": "probe/w3_admin_sweep.out + probe/w3_resource.out"
+    },
+    {
+      "asset": "令牌消费形 X-Auth-Token 头 @全 8 服务（唯一接受形；Bearer/Cookie 两形全墙 401）",
+      "evidence": "probe/w3_forms.out + artifacts/carry_form_matrix.tsv"
+    },
+    {
+      "asset": "/admin 十名词 ×8 服务全清单矩阵（80 格 anon/tok 双列）",
+      "evidence": "artifacts/admin_sweep_matrix.tsv"
+    }
+  ],
+  "edges": [
+    {
+      "from": "cross:shared-auth-token",
+      "to": "svc-shop/admin/reports",
+      "kind": "accepted-by",
+      "meta": "user 级令牌 X-Auth-Token 头形被接受：401→200 翻转，GTIDOR-06",
+      "src_fact": "F1"
+    },
+    {
+      "from": "cross:shared-auth-token",
+      "to": "svc-api-gw/admin/keys",
+      "kind": "accepted-by",
+      "meta": "user 级令牌 X-Auth-Token 头形被接受：401→200 翻转，GTIDOR-05",
+      "src_fact": "F1"
+    },
+    {
+      "from": "cross:shared-auth-token",
+      "to": "svc-admin/admin/orders",
+      "kind": "accepted-by",
+      "meta": "user 级令牌 X-Auth-Token 头形被接受：401→200 翻转，GTIDOR-01",
+      "src_fact": "F1"
+    },
+    {
+      "from": "cross:shared-auth-token",
+      "to": "svc-admin/admin/invoices",
+      "kind": "accepted-by",
+      "meta": "user 级令牌 X-Auth-Token 头形被接受：401→200 翻转，GTIDOR-02",
+      "src_fact": "F1"
+    },
+    {
+      "from": "cross:shared-auth-token",
+      "to": "svc-dashboard/admin/config",
+      "kind": "accepted-by",
+      "meta": "user 级令牌 X-Auth-Token 头形被接受：401→200 翻转，GTROLE-03",
+      "src_fact": "F1"
+    },
+    {
+      "from": "cross:shared-auth-token",
+      "to": "svc-portal/admin/clients",
+      "kind": "accepted-by",
+      "meta": "user 级令牌 X-Auth-Token 头形被接受：401→200 翻转，GTHAUTH-05",
+      "src_fact": "F1"
+    },
+    {
+      "from": "cross:shared-auth-token",
+      "to": "svc-files/admin/logs",
+      "kind": "accepted-by",
+      "meta": "user 级令牌 X-Auth-Token 头形被接受：401→200 翻转，GTROLE-04",
+      "src_fact": "F1"
+    }
+  ],
+  "creds": [
+    {
+      "kind": "session",
+      "role": "user",
+      "username_ref": "alice",
+      "secret_ref": "{{vault:cred-3}}",
+      "scope_asset": "cross:shared-auth-token",
+      "permitted_actions": "read(8 服务 /admin 面)"
+    }
+  ],
+  "operations_log": "operations.log"
+}

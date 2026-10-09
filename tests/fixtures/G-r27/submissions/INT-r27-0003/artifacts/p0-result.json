@@ -1,0 +1,65 @@
+{
+ "dns": "172.28.0.5",
+ "ports": [
+  {
+   "port": 8001,
+   "status": null,
+   "reason": "URLError:<urlopen error [Errno 111] Connection refused>",
+   "headers": {},
+   "body_head": ""
+  },
+  {
+   "port": 8002,
+   "status": 404,
+   "reason": null,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "9"
+   },
+   "body_head": "not found"
+  },
+  {
+   "port": 8003,
+   "status": null,
+   "reason": "URLError:<urlopen error [Errno 111] Connection refused>",
+   "headers": {},
+   "body_head": ""
+  },
+  {
+   "port": 8004,
+   "status": null,
+   "reason": "URLError:<urlopen error [Errno 111] Connection refused>",
+   "headers": {},
+   "body_head": ""
+  },
+  {
+   "port": 8005,
+   "status": null,
+   "reason": "URLError:<urlopen error [Errno 111] Connection refused>",
+   "headers": {},
+   "body_head": ""
+  },
+  {
+   "port": 8006,
+   "status": null,
+   "reason": "URLError:<urlopen error [Errno 111] Connection refused>",
+   "headers": {},
+   "body_head": ""
+  },
+  {
+   "port": 8007,
+   "status": null,
+   "reason": "URLError:<urlopen error [Errno 111] Connection refused>",
+   "headers": {},
+   "body_head": ""
+  },
+  {
+   "port": 8008,
+   "status": null,
+   "reason": "URLError:<urlopen error [Errno 111] Connection refused>",
+   "headers": {},
+   "body_head": ""
+  }
+ ]
+}

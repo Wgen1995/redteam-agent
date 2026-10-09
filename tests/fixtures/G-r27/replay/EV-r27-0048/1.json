@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r27-0048", "matched": true, "results": [{"detail": ["GTROLE-03", "role-03 低权可达配置"], "ok": true, "type": "word"}, {"detail": ["200"], "ok": true, "type": "status"}], "status": 200, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r27 --id=EV-r27-0048 --state=VERIFIED", "verdict": "reproduced"}

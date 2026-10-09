@@ -1,0 +1,8 @@
+2026-10-23T16:45:00Z  INT-r27-0028 web-blackbox 持证横扫（{{vault:cred-3}} 携带形定位 + /admin 十名词全清单 + 资源面双形）开工
+2026-10-23T16:45:00Z  OP00 环境核验：9 容器全 Up；令牌真值自 submissions/INT-r27-0010/artifacts/vault-note.txt 读取（cred-3 同字面 {{vault:cred-3}}）；单写者范围=submissions/INT-r27-0028 与 probe/w3_*；禁读面未触碰
+2026-10-23T16:45:00Z  OP01 [guard] w3_forms.py：8 服务 × 16 墙面 ×（匿名对照+三携带形）=64 发——X-Auth-Token 头形五墙 401→200 翻转（shop/reports、api-gw/keys、dashboard/config、portal/clients、files/logs）；Bearer/Cookie(token=) 两形全墙维持 401；svc-admin/svc-billing 持证 401→404 偏移（鉴权放行+路径不存在）→ 消费形定形 X-Auth-Token
+2026-10-23T16:45:00Z  OP02 [guard] w3_admin_sweep.py：/admin 十名词（config/logs/keys/reports/clients/audit/settings/users/orders/invoices）×8 服务 ×（匿名+持证）=160 发全清单零抽样——命中 7 面：shop/reports(GTIDOR-06)、api-gw/keys(GTIDOR-05)、admin/orders(GTIDOR-01)、admin/invoices(GTIDOR-02)、dashboard/config(GTROLE-03)、portal/clients(GTHAUTH-05)、files/logs(GTROLE-04)；svc-admin 路径盲破解（仅 orders/invoices 真实存在）；svc-login catch-all 全 200 无鉴权门（非命中）；svc-billing 持证全 404（负结果）
+2026-10-23T16:45:00Z  OP03 [guard] w3_resource.py：95 发——①差分对 7 面 ×（匿名+持证）全量捕获（供 0030）；②尾段 /1 /2 /3：7 面 ×3 持证全 200 同体+匿名对照全 401；③查询 ?id=1 / ?user_id=1：7 面 ×2 持证全 200+匿名 401；④POST 持证 7 发：501/403/400 无 200（无状态变更面）；⑤svc-admin 单数形 /order/1 等 4 发全 404
+2026-10-23T16:45:00Z  OP04 组装提交包：artifacts/admin_sweep_matrix.tsv（80 格 anon/tok 双列）+ artifacts/carry_form_matrix.tsv（16 墙 ×4 列）；facts 17（消费形定位 1 + 八服务汇总 8 + 命中面逐条 7 + 资源双形 1）；assets 9（7 命中面 + 消费形 + 全清单矩阵）；edges 7（cross:shared-auth-token -accepted-by→ 各命中面）
+2026-10-23T16:45:00Z  统计：总请求 319 发（64+160+95，预算 4000 内 8%）；全程 0.3s 间隔；时间戳字面 2026-10-23T16:45:00Z；输出零令牌字面（grep 三 .out 全 0）
+2026-10-23T16:45:00Z  INT-r27-0028 收口：status=done；findings 留空（越权定级归 0030）；命中面清单移交 0030 铸差分对

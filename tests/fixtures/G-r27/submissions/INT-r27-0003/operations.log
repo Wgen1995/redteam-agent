@@ -1,0 +1,39 @@
+# INT-r27-0003 operations.log — svc-api-gw 存活+HTTP指纹+路径发现
+# 铁律遵守：未写任何账本；未打开 ground-truth.json / tests/range/seed/ / docs/HANDOFF.md；探测全部经 range-attack-noop-1 容器 + tanyin-guard；时间戳字面量 2026-10-23T15:30:00Z
+
+[2026-10-23T15:30:00Z] CMD0 guard-exec: docker exec range-attack-noop-1 python3 -c "import socket; print(socket.gethostbyname('svc-api-gw'))"
+  => 172.28.0.5（DNS 解析成功）
+
+[2026-10-23T15:30:00Z] CMD1 docker cp artifacts/p0-scan.py range-attack-noop-1:/tmp/p0-scan.py（cp 不进 guard，按委派单）
+[2026-10-23T15:30:00Z] CMD2 guard-exec: docker exec range-attack-noop-1 python3 /tmp/p0-scan.py > probe/p0-scan.out
+  脚本0：DNS + 8001-8008 逐端口 HTTP GET /（urllib 不跟随重定向，timeout 5s，间隔 0.25s，共 8 请求）
+  => 仅 8002 ALIVE：404 "not found"，Server: BaseHTTP/0.6 Python/3.12.14；8001/8003-8008 connection refused
+  => 结果固化 artifacts/p0-result.json
+
+[2026-10-23T15:30:00Z] CMD3 docker cp artifacts/p1-dict.py range-attack-noop-1:/tmp/p1-dict.py
+[2026-10-23T15:30:00Z] CMD4 guard-exec: docker exec range-attack-noop-1 python3 /tmp/p1-dict.py > probe/p1-dict.out
+  脚本1：GET 字典喷洒 87 路径×12 族（凭据17/信息10/SSRF5/处理器8/资源6/XSS7/文件5/CORS3/重定向5/管理11/SSTI-CMDI4/内部5），基线间隔 0.4s（≈25req/10s<30 限流阈值），429 退避 sleep 3.5s（未触发）
+  => 8 个非404 命中：
+     200 /graphql     "GTGRAPHQL-01 synthetic introspection enabled: __schema types"
+     200 /fetch       "fetch GTSSRF-01 synthetic internal doc: internal-secret-doc"
+     200 /preview     "preview GTSSRF-02 synthetic webhook meta: internal-metadata"
+     200 /proxy       "proxy GTSSRF-03 synthetic internal fetch done"
+     200 /cors-debug  ACAO:*  "cors debug GTCORS-01 wildcard allow-origin"
+     200 /origin      ACAO:none "origin GTCORS-02 reflected none allow-credentials true"
+     302 /jump        Location: /jump "GTREDIR-03 synthetic redirect to %s"
+     401 /admin/keys  "auth required"
+  => saw_429=False；结果固化 artifacts/p1-result.json
+
+[2026-10-23T15:30:00Z] CMD5 docker cp artifacts/p2-post.py range-attack-noop-1:/tmp/p2-post.py
+[2026-10-23T15:30:00Z] CMD6 guard-exec: docker exec range-attack-noop-1 python3 /tmp/p2-post.py > probe/p2-post.out
+  脚本2：POST 形探测 9 路径（/login /register /token /upload /import /xml /fetch /search /comment）× 双形（urlencoded t=1 与 JSON {"t":1}），共 18 请求，间隔 0.4s，不带凭据
+  => 全部 501 "Unsupported method"（BaseHTTP 默认错误页）：服务仅实现 do_GET，POST 面不存在
+  => form_vs_json_diff=[]（两形响应零差异）；saw_429=False；结果固化 artifacts/p2-result.json
+
+[2026-10-23T15:30:00Z] CMD7 docker cp range-attack-noop-1:/tmp/p{0,1,2}-result.json -> artifacts/（结果回传，非探测）
+[2026-10-23T15:30:00Z] CMD8 cp probe/p{0,1,2}*.out -> artifacts/（输出快照固化）
+
+# 汇总
+# 总请求数：8(CMD0-2 端口) + 87(字典) + 18(POST) = 113 + 1(DNS, 非HTTP) —— 远低于 2500 请求预算
+# 无凭据 encountered：creds=[]，无需 vault-note
+# 侦察不铸 finding：findings=[]

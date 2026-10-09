@@ -1,0 +1,11 @@
+w2-probe INT-r27-0015/0017 operations log (engine=web-blackbox, target svc-api-gw:8002, GET-only)
+1. 预检：probe/ 目录已有 w2 前缀惯例；参考 INT-r27-0001-1.py 确认容器内主机名直连可用
+2. 写 probe/w2_gwc_cors.py：2 端点(/cors-debug,/origin) x 4 Origin 变体(evil/null/subdomain/无Origin对照)=8 请求；间隔 0.3s；429 退避 3s；http.client 零重定向跟随
+3. 写 probe/w2_gwc_graphql.py：4 请求(__schema{types{name}} / __type(name:"Query"){fields{name}} / {dummy} / 无参对照)；query 全 URL 编码
+4. docker cp 两脚本至 range-attack-noop-1:/tmp/（docker cp 不进 guard）
+5. guard exec cors 矩阵 --timestamp=2026-10-23T16:00:00Z -> probe/w2_gwc_cors.out（exit=0，8/8 请求，零 429 零重定向）
+6. guard exec graphql 探测 --timestamp=2026-10-23T16:00:00Z -> probe/w2_gwc_graphql.out（exit=0，4/4 请求，零 429 零重定向）
+7. docker cp 回 /tmp/w2_gwc_cors.json、/tmp/w2_gwc_graphql.json 至 probe/（完整 raw_request+headers+body）
+8. 固化 submissions/INT-r27-001{5,7}/artifacts/evidence.json（逐字节可发 raw_request；matcher=CORS=反射 Origin 值/*/GraphQL=结构标志）
+9. 汇总两份 submission.json（9 字段：intent_id/engine/status/facts/findings/assets/edges/creds/operations_log）
+10. 合计主动请求 12（8+4），预算消耗远低于 1600 请求/100k token 上限

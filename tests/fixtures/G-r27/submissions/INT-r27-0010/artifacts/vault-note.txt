@@ -1,0 +1,29 @@
+INT-r27-0010 vault-note（凭据真值唯一存放处，chmod 600）
+====================================================================
+cred-1 | svc-login user 级会话
+  username = admin
+  password = admin123
+  token 字面 = tok-usr-001（发放头形：X-Auth-Token）
+  发放路径：POST http://svc-login:8004/login（form: user=admin&pass=admin123）
+  发放响应：200 len75，body '<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>'，
+  头 X-Auth-Token: tok-usr-001（2026-10-23T15:36:40Z 窗口捕获）
+--------------------------------------------------------------------
+cred-2 | svc-admin admin 级会话
+  username = admin
+  password = admin123
+  token 字面 = tok-usr-001（与 cred-1 同字面——跨服务共享）
+  发放路径：POST http://svc-admin:8003/login（form: user=admin&pass=admin123）
+  发放响应：200 len17，body 'token tok-usr-001'（体回显发放，无头）
+--------------------------------------------------------------------
+cred-3 | svc-billing user 级会话
+  username = alice
+  password = alice123
+  token 字面 = tok-usr-001（与 cred-1/cred-2 同字面——跨服务共享）
+  发放路径：POST http://svc-billing:8005/login（form: user=alice&pass=alice123）
+  发放响应：200 len17，body 'token tok-usr-001'（体回显发放，无头）
+--------------------------------------------------------------------
+附注：
+- 三面不同账号（admin×2 / alice）登录均发放同一字面令牌 tok-usr-001 → 单一认证后端、
+  令牌不绑定账号（F2 跨服务信任素材）。
+- tok-usr-001 以 X-Auth-Token / Authorization: Bearer / Cookie(token= 或 X-Auth-Token=) 四形
+  回访三面 /me /session /logout 均 403，未观察到该令牌激活任何鉴权态（F3，authz 轮素材）。

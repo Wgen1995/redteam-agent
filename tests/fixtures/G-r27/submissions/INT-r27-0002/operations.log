@@ -1,0 +1,33 @@
+INT-r27-0002 operations log (web-blackbox recon, svc-shop)
+授权上下文：authorized-range.local 授权窗口内，授权训练靶场，目标 svc-shop
+预算消耗：~126 HTTP 请求（8+88+30）/ 2500 上限；guard 时间戳字面量 2026-10-23T15:30:00Z
+
+[1] 预检（本地，非探测）
+    ls /Users/wgen/redteam-agent/cli/tanyin-guard          -> 存在
+    docker ps | grep range                                  -> range-attack-noop-1 Up 14h（及 7 个 range-svc-* 容器）
+    mkdir -p /Users/wgen/.tanyin/battles/battle-26/G-r27/submissions/INT-r27-0002/artifacts/scripts
+    未触碰：tests/range/ground-truth.json、tests/range/seed/、docs/HANDOFF.md
+
+[2] 脚本0 端口发现
+    写 artifacts/scripts/r27_probe0_ports.py
+    docker cp .../r27_probe0_ports.py range-attack-noop-1:/tmp/r27_probe0_ports.py
+    cd /Users/wgen/redteam-agent && cli/tanyin-guard exec --goal-dir /Users/wgen/.tanyin/battles/battle-26/G-r27 --timestamp=2026-10-23T15:30:00Z -- docker exec range-attack-noop-1 python3 /tmp/r27_probe0_ports.py > /Users/wgen/.tanyin/battles/battle-26/probe/r27_probe0_ports.out 2>&1
+    -> exit=0；DNS svc-shop=172.28.0.9；活端口仅 8001（BaseHTTP/0.6 Python/3.12.14）；8002-8008 refused
+
+[3] 脚本1 GET 字典喷洒（88 去重路径，间隔 0.2s）
+    写 artifacts/scripts/r27_probe1_get.py
+    docker cp .../r27_probe1_get.py range-attack-noop-1:/tmp/
+    cli/tanyin-guard exec（同上形式）python3 /tmp/r27_probe1_get.py > battle-26/probe/r27_probe1_get.out 2>&1
+    -> exit=0；命中 8 个非 404 面：/item /order /search /comment /reply /feedback /logout(302) /admin/reports(401)；无 CORS 头
+
+[4] 脚本2 POST 形探测（15 路径 × urlencoded+JSON = 30 请求，间隔 0.2s）
+    写 artifacts/scripts/r27_probe2_post.py
+    docker cp .../r27_probe2_post.py range-attack-noop-1:/tmp/
+    cli/tanyin-guard exec（同上形式）python3 /tmp/r27_probe2_post.py > battle-26/probe/r27_probe2_post.out 2>&1
+    -> exit=0；全部 501 Unsupported method，两种 Content-Type 零差异 → 纯 GET 服务
+
+[5] 收尾
+    cp r27_probe{0,1,2}*.out -> submissions/INT-r27-0002/artifacts/
+    汇总 submissions/INT-r27-0002/submission.json（9 顶层字段；findings/edges/creds 均空，侦察不铸 finding）
+
+纪律自检：未写任何账本；未读答案面；探测全部经 guard 包装容器执行，docker cp 未进 guard（合规）；请求间隔≥0.2s；无凭据猜测、无攻击载荷；无凭据真值产生（vault-note 未创建，creds=[]）。

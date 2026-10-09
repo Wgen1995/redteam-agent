@@ -1,0 +1,315 @@
+[
+  {
+    "finding_key": "svc-shop/admin/reports#authz-diff",
+    "pair_group": "PG1",
+    "pair_role": "control",
+    "raw_request": "GET /admin/reports HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 401,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:35 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "13"
+    },
+    "resp_body_excerpt": "auth required",
+    "matcher_words": [
+      "auth required"
+    ]
+  },
+  {
+    "finding_key": "svc-shop/admin/reports#authz-diff",
+    "pair_group": "PG1",
+    "pair_role": "experiment",
+    "raw_request": "GET /admin/reports HTTP/1.1\r\nHost: svc-shop:8001\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:35 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "53"
+    },
+    "resp_body_excerpt": "<html>GTIDOR-06 synthetic idor-06 他人报表</html>",
+    "matcher_words": [
+      "GTIDOR-06",
+      "idor-06 他人报表"
+    ]
+  },
+  {
+    "finding_key": "svc-shop/admin/reports#idor-tail",
+    "pair_group": "PG1",
+    "pair_role": "supplement-cross-id",
+    "raw_request": "GET /admin/reports/1 HTTP/1.1\r\nHost: svc-shop:8001\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:39 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "53"
+    },
+    "resp_body_excerpt": "<html>GTIDOR-06 synthetic idor-06 他人报表</html>",
+    "matcher_words": [
+      "GTIDOR-06"
+    ]
+  },
+  {
+    "finding_key": "svc-api-gw/admin/keys#authz-diff",
+    "pair_group": "PG2",
+    "pair_role": "control",
+    "raw_request": "GET /admin/keys HTTP/1.1\r\nHost: svc-api-gw:8002\r\n\r\n",
+    "resp_status": 401,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:36 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "13"
+    },
+    "resp_body_excerpt": "auth required",
+    "matcher_words": [
+      "auth required"
+    ]
+  },
+  {
+    "finding_key": "svc-api-gw/admin/keys#authz-diff",
+    "pair_group": "PG2",
+    "pair_role": "experiment",
+    "raw_request": "GET /admin/keys HTTP/1.1\r\nHost: svc-api-gw:8002\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:36 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "65"
+    },
+    "resp_body_excerpt": "<html>GTIDOR-05 synthetic idor-05 低权可见密钥清单</html>",
+    "matcher_words": [
+      "GTIDOR-05",
+      "idor-05 低权可见密钥"
+    ]
+  },
+  {
+    "finding_key": "svc-api-gw/admin/keys#idor-tail",
+    "pair_group": "PG2",
+    "pair_role": "supplement-cross-id",
+    "raw_request": "GET /admin/keys/1 HTTP/1.1\r\nHost: svc-api-gw:8002\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:41 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "65"
+    },
+    "resp_body_excerpt": "<html>GTIDOR-05 synthetic idor-05 低权可见密钥清单</html>",
+    "matcher_words": [
+      "GTIDOR-05"
+    ]
+  },
+  {
+    "finding_key": "svc-admin/admin/orders#authz-diff",
+    "pair_group": "PG3",
+    "pair_role": "control",
+    "raw_request": "GET /admin/orders HTTP/1.1\r\nHost: svc-admin:8003\r\n\r\n",
+    "resp_status": 401,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:36 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "13"
+    },
+    "resp_body_excerpt": "auth required",
+    "matcher_words": [
+      "auth required"
+    ]
+  },
+  {
+    "finding_key": "svc-admin/admin/orders#authz-diff",
+    "pair_group": "PG3",
+    "pair_role": "experiment",
+    "raw_request": "GET /admin/orders HTTP/1.1\r\nHost: svc-admin:8003\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:37 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "64"
+    },
+    "resp_body_excerpt": "<html>GTIDOR-01 synthetic orders of user 101 (not caller)</html>",
+    "matcher_words": [
+      "GTIDOR-01",
+      "orders of user"
+    ]
+  },
+  {
+    "finding_key": "svc-admin/admin/orders#idor-tail",
+    "pair_group": "PG3",
+    "pair_role": "supplement-cross-id",
+    "raw_request": "GET /admin/orders/1 HTTP/1.1\r\nHost: svc-admin:8003\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:43 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "64"
+    },
+    "resp_body_excerpt": "<html>GTIDOR-01 synthetic orders of user 101 (not caller)</html>",
+    "matcher_words": [
+      "GTIDOR-01"
+    ]
+  },
+  {
+    "finding_key": "svc-admin/admin/invoices#authz-diff",
+    "pair_group": "PG4",
+    "pair_role": "control",
+    "raw_request": "GET /admin/invoices HTTP/1.1\r\nHost: svc-admin:8003\r\n\r\n",
+    "resp_status": 401,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:37 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "13"
+    },
+    "resp_body_excerpt": "auth required",
+    "matcher_words": [
+      "auth required"
+    ]
+  },
+  {
+    "finding_key": "svc-admin/admin/invoices#authz-diff",
+    "pair_group": "PG4",
+    "pair_role": "experiment",
+    "raw_request": "GET /admin/invoices HTTP/1.1\r\nHost: svc-admin:8003\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:37 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "66"
+    },
+    "resp_body_excerpt": "<html>GTIDOR-02 synthetic invoices of user 202 (not caller)</html>",
+    "matcher_words": [
+      "GTIDOR-02",
+      "invoices of us"
+    ]
+  },
+  {
+    "finding_key": "svc-admin/admin/invoices#idor-tail",
+    "pair_group": "PG4",
+    "pair_role": "supplement-cross-id",
+    "raw_request": "GET /admin/invoices/1 HTTP/1.1\r\nHost: svc-admin:8003\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:45 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "66"
+    },
+    "resp_body_excerpt": "<html>GTIDOR-02 synthetic invoices of user 202 (not caller)</html>",
+    "matcher_words": [
+      "GTIDOR-02"
+    ]
+  },
+  {
+    "finding_key": "svc-dashboard/admin/config#authz-diff",
+    "pair_group": "PG5",
+    "pair_role": "control",
+    "raw_request": "GET /admin/config HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+    "resp_status": 401,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:38 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "13"
+    },
+    "resp_body_excerpt": "auth required",
+    "matcher_words": [
+      "auth required"
+    ]
+  },
+  {
+    "finding_key": "svc-dashboard/admin/config#authz-diff",
+    "pair_group": "PG5",
+    "pair_role": "experiment",
+    "raw_request": "GET /admin/config HTTP/1.1\r\nHost: svc-dashboard:8006\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:38 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "59"
+    },
+    "resp_body_excerpt": "<html>GTROLE-03 synthetic role-03 低权可达配置</html>",
+    "matcher_words": [
+      "GTROLE-03",
+      "role-03 低权可达配置"
+    ]
+  },
+  {
+    "finding_key": "svc-portal/admin/clients#authz-diff",
+    "pair_group": "PG6",
+    "pair_role": "control",
+    "raw_request": "GET /admin/clients HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+    "resp_status": 401,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:38 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "13"
+    },
+    "resp_body_excerpt": "auth required",
+    "matcher_words": [
+      "auth required"
+    ]
+  },
+  {
+    "finding_key": "svc-portal/admin/clients#authz-diff",
+    "pair_group": "PG6",
+    "pair_role": "experiment",
+    "raw_request": "GET /admin/clients HTTP/1.1\r\nHost: svc-portal:8007\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:38 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "61"
+    },
+    "resp_body_excerpt": "<html>GTHAUTH-05 synthetic hauth-05 低权客户清单</html>",
+    "matcher_words": [
+      "GTHAUTH-05",
+      "hauth-05 低权客户清"
+    ]
+  },
+  {
+    "finding_key": "svc-files/admin/logs#authz-diff",
+    "pair_group": "PG7",
+    "pair_role": "control",
+    "raw_request": "GET /admin/logs HTTP/1.1\r\nHost: svc-files:8008\r\n\r\n",
+    "resp_status": 401,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:39 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "13"
+    },
+    "resp_body_excerpt": "auth required",
+    "matcher_words": [
+      "auth required"
+    ]
+  },
+  {
+    "finding_key": "svc-files/admin/logs#authz-diff",
+    "pair_group": "PG7",
+    "pair_role": "experiment",
+    "raw_request": "GET /admin/logs HTTP/1.1\r\nHost: svc-files:8008\r\nX-Auth-Token: {{vault:cred-3}}\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "server": "BaseHTTP/0.6 Python/3.12.14",
+      "date": "Fri, 09 Oct 2026 15:58:39 GMT",
+      "content-type": "text/html; charset=utf-8",
+      "content-length": "59"
+    },
+    "resp_body_excerpt": "<html>GTROLE-04 synthetic role-04 低权可达日志</html>",
+    "matcher_words": [
+      "GTROLE-04",
+      "role-04 低权可达日志"
+    ]
+  }
+]

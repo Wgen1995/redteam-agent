@@ -1,0 +1,68 @@
+F-r27-0001	INT-r27-0001	info	asset-class:A2	不适用（P2规划期）：网段IP成员未测绘入基线分母（本会话P1零侦察落账在案）；黑盒通道经svc服务名，IP面发现走P3 asset-added子矩阵补全 [no-consume:P2分母披露fact（非侦察产物，无消费面）]	1.0	2	2026-10-23T11:02:50Z
+F-r27-0002	INT-r27-0001	info	asset-class:A4	不适用（P2规划期）：endpoint级资产待测绘发现后经asset-added子矩阵入题（基线分母=根域+八服务共9面） [no-consume:P2分母披露fact（非侦察产物，无消费面）]	1.0	2	2026-10-23T11:02:55Z
+F-r27-0003	INT-r27-0001	info	asset-class:A5	不适用：内网容器靶场无对象桶/数据库暴露/云元数据/CDN等存储云资产面 [no-consume:P2分母披露fact（非侦察产物，无消费面）]	1.0	2	2026-10-23T11:03:00Z
+F-r27-0004	INT-r27-0001	info	asset-class:A6	不适用：黑盒交战，授权范围未含源码/物料资产 [no-consume:P2分母披露fact（非侦察产物，无消费面）]	1.0	2	2026-10-23T11:03:02Z
+F-r27-0005	INT-r27-0001	info	asset-class:A7	不适用：授权未含社工/钓鱼等人因测试；靶场无邮箱/SSO/供应商面 [no-consume:P2分母披露fact（非侦察产物，无消费面）]	1.0	2	2026-10-23T11:03:04Z
+F-r27-0006	INT-r27-0001	info	asset-class:A8	不适用：P2规划期无知识库外推/相邻资产发现，未产生外推资产 [no-consume:P2分母披露fact（非侦察产物，无消费面）]	1.0	2	2026-10-23T11:03:06Z
+F-r27-0007	INT-r27-0001	info	canary:recon	披露：训练靶场无客户配合植入通道，未部署界内侦察诱饵（planted=0）；界外egress诱饵canary五枚已部署且tier0/tier3复测5/5 pass（timeline 2026-10-23T09:36Z） [no-consume:P2分母披露fact（非侦察产物，无消费面）]	1.0	2	2026-10-23T11:03:08Z
+F-r27-0008	INT-r27-0001	info	dns:svc-mapping	8服务名→IP→端口映射（DNS+TCP核验）：svc-shop→172.28.0.9:8001\;svc-api-gw→172.28.0.5:8002\;svc-admin→172.28.0.3:8003\;svc-login→172.28.0.7:8004\;svc-billing→172.28.0.4:8005\;svc-dashboard→172.28.0.6:8006\;svc-portal→172.28.0.8:8007\;svc-files→172.28.0.2:8008——战书序推断解除unverified	0.95	2	2026-10-23T15:25:00Z
+F-r27-0009	INT-r27-0001	port	172.28.0.0/24	全网段2112次连接扫8001-8008+8000/8009：无第9个存活(ip,port)，仅8服务各一活口；指纹同构BaseHTTP/0.6 Python/3.12.14	0.95	2	2026-10-23T15:25:00Z
+F-r27-0010	INT-r27-0002	http	svc-shop/item	GET裸面200：product page GTSQLI-01 synthetic SQL error near ''1''——错误回显型SQLi直接验证入口；/order同型(GTSQLI-02)	0.9	2	2026-10-23T15:25:00Z
+F-r27-0011	INT-r27-0002	http	svc-shop/search	XSS四面上线：/search /comment /reply /feedback全200待反射验证（tag形+事件形+引号闭合形三载荷）；comment存GTXSS-02信号	0.8	2	2026-10-23T15:25:00Z
+F-r27-0012	INT-r27-0002	http	svc-shop/logout	302自指重定向且body残留未替换%s——开放重定向/格式串缺陷候选（参数位待定位）	0.7	2	2026-10-23T15:25:00Z
+F-r27-0013	INT-r27-0002	info	svc-shop/method-surface	POST全路径501（纯GET服务，两种Content-Type零差异）；全站无CORS响应头	0.9	2	2026-10-23T15:25:00Z
+F-r27-0014	INT-r27-0002	http	svc-shop/admin/reports	401 auth required无WWW-Authenticate——凭据轨道横向目标	0.9	2	2026-10-23T15:25:00Z
+F-r27-0015	INT-r27-0003	http	svc-api-gw/fetch	200响应正文明文引用internal-secret-doc（SSRF端点群/fetch+preview+proxy构成）；GTSSRF-01信号	0.85	2	2026-10-23T15:25:00Z
+F-r27-0016	INT-r27-0003	http	svc-api-gw/graphql	GET 200——GraphQL内省候选（__schema/__type载荷待验证）	0.7	2	2026-10-23T15:25:00Z
+F-r27-0017	INT-r27-0003	http	svc-api-gw/jump	302 Location自指+正文残留%s——未净化重定向强信号	0.8	2	2026-10-23T15:25:00Z
+F-r27-0018	INT-r27-0003	info	svc-api-gw/method-surface	POST全量501（GET-only）；凭据族17路径全404；0.4s间隔113发零429（面级限流未触发，高强度探测保留退避预案）	0.9	2	2026-10-23T15:25:00Z
+F-r27-0019	INT-r27-0004	info	svc-admin/auth-scheme	无WWW-Authenticate无Set-Cookie→自定义token/header鉴权推测；指纹BaseHTTP/0.6 Python/3.12.14；管理族13路径不可确认存在性（路径盲）	0.85	2	2026-10-23T15:25:00Z
+F-r27-0020	INT-r27-0005	http	svc-login/	GET全路径catch-all 200 login form（83路径×11族字典零分化，23B）——路径级发现在此服务无效，POST面为真实功能面	0.95	2	2026-10-23T15:25:00Z
+F-r27-0021	INT-r27-0006	info	svc-billing/method-diff	GET=401/POST=403方法级差分稳定但同方法内零区分；stdlib自建（OPTIONS/HEAD一律501 stock页）	0.9	2	2026-10-23T15:25:00Z
+F-r27-0022	INT-r27-0007	http	svc-dashboard/ping	GET未认证200：synthetic cmd output: 64 bytes from 127.0.0.1——服务端已执行命令并回显，命令执行面现成可用	0.9	2	2026-10-23T15:25:00Z
+F-r27-0023	INT-r27-0007	http	svc-dashboard/render	GET未认证200自述synthetic ssti render面（/render+/report双面）——模板渲染入口	0.85	2	2026-10-23T15:25:00Z
+F-r27-0024	INT-r27-0007	info	svc-dashboard/method-surface	/admin/config全站唯一鉴权门401（其余/admin/*全404）；POST任意路径400 bad request（独立body schema校验层，未猜schema）	0.9	2	2026-10-23T15:25:00Z
+F-r27-0025	INT-r27-0008	http	svc-portal/widget	GET 200明示GTRFI-01 remote include executed——RFI首要深挖目标	0.85	2	2026-10-23T15:25:00Z
+F-r27-0026	INT-r27-0008	http	svc-portal/page	GET 200 GTLFI-02 local file /etc/hostname——LFI参数化验证目标（/page+/pages双面）	0.85	2	2026-10-23T15:25:00Z
+F-r27-0027	INT-r27-0008	http	svc-portal/debug/env	GET 200 GTINFOLEAK-01 env（DB_PASS/AWS_KEY键名可见值已脱敏）——信息暴露面	0.85	2	2026-10-23T15:25:00Z
+F-r27-0028	INT-r27-0008	http	svc-portal/redirect	302 GTREDIR-01 Location自指——参数化开放重定向验证目标（?to=/?url=变体族）	0.8	2	2026-10-23T15:25:00Z
+F-r27-0029	INT-r27-0008	info	svc-portal/method-surface	GET-only（POST全量501）；/admin/clients 401	0.9	2	2026-10-23T15:25:00Z
+F-r27-0030	INT-r27-0009	http	svc-files/download	GET正文直接含passwd/shadow风格内容（GTTRAVERSAL-01/02）——路径穿越/任意文件读向量（/download+/static双面）	0.85	2	2026-10-23T15:25:00Z
+F-r27-0031	INT-r27-0009	http	svc-files/unserialize	反序列化处理器族GET即弹：/unserialize=pickle object inflated\;/import=java serialized blob accepted\;/decode=base64 payload inflated——载荷投递第一候选（POST存在400校验分支）	0.85	2	2026-10-23T15:25:00Z
+F-r27-0032	INT-r27-0003	http	svc-api-gw/cors-debug	/cors-debug=ACAO:*；/origin=ACAO:none+allow-credentials提示——CORS配置缺陷双面候选（origin变体矩阵待验证）	0.8	2	2026-10-23T15:41:10Z
+F-r27-0033	INT-r27-0005	info	svc-login/login	POST哑值（7凭据面×4形28发）全403 denied GTRATE-01 synthetic no rate limit after NNN attempts——全局尝试计数器跨面共享单调递增（244→271）；无Set-Cookie/X-Auth-Token签发头（哑值态）	0.95	2	2026-10-23T15:41:10Z
+F-r27-0034	INT-r27-0005	info	svc-login/rate-signal	限流缺失强信号：响应体自带no rate limit合成计数器（GTRATE-01）——连击后行为差分证据候选（>10次连击后观测口径）	0.8	2	2026-10-23T15:41:10Z
+F-r27-0035	INT-r27-0004	info	svc-admin/auth-wall	方法感知统一墙：GET任意路径401 auth required（91/91,CL=13）路径存在性零泄露；POST任意403 denied（20/20含不存在路径）——墙先于路由	0.95	2	2026-10-23T15:41:10Z
+F-r27-0036	INT-r27-0006	info	svc-billing/auth-wall	GET 401路径盲（88字典路径与随机路径逐字节一致）；POST 403路径盲——路径发现必须post-auth重做	0.95	2	2026-10-23T15:41:10Z
+F-r27-0037	INT-r27-0009	http	svc-files/.env	GET 200 .env配置泄露面	0.85	2	2026-10-23T15:41:10Z
+F-r27-0038	INT-r27-0009	info	svc-files/admin/logs	/admin/logs GET 401；POST返回400——方法间行为差异提示POST处理路径可能绕过401检查	0.7	2	2026-10-23T15:41:10Z
+F-r27-0039	INT-r27-0011	http	svc-shop/item	SQLi 证伪：25 参数名族×9 载荷×编码双态+路径形全零分化——GTSQLI-01/02 为页面静态横幅 [no-consume:证伪披露（矩阵x格承载）]	0.95	2	2026-10-23T16:16:40Z
+F-r27-0040	INT-r27-0014	http	svc-api-gw/fetch	SSRF 证伪：3 面×参数族×4 载荷双轮与控制对逐字节零差分——GTSSRF-01 为静态标签 [no-consume:证伪披露（矩阵x格承载）]	0.95	2	2026-10-23T16:16:45Z
+F-r27-0041	INT-r27-0018	http	svc-dashboard/ping	CMDi 证伪：5 参数族×5 载荷形 41 发与基线逐字节一致——/ping 不消费测试参数族 [no-consume:证伪披露（矩阵x格承载）]	0.95	2	2026-10-23T16:16:50Z
+F-r27-0042	INT-r27-0019	http	svc-dashboard/render	SSTi 证伪：双面×参数族×载荷形 68 发零求值（无模板引擎）；伴生线索：tpl/name 参数 raw 未转义反射——反射 XSS 候选面（Round3 消费）	0.95	2	2026-10-23T16:16:55Z
+F-r27-0043	INT-r27-0020	http	svc-portal/widget	RFI 证伪：12 载荷响应与基线逐字节全同——GTRFI-01 为静态回显 [no-consume:证伪披露（矩阵x格承载）]	0.95	2	2026-10-23T16:17:00Z
+F-r27-0044	INT-r27-0021	http	svc-portal/page	LFI 证伪：双面×4 参数×8 载荷形 64 发全同基线——GTLFI-02 为静态横幅 [no-consume:证伪披露（矩阵x格承载）]	0.95	2	2026-10-23T16:17:05Z
+F-r27-0045	INT-r27-0024	http	svc-files/import	XXE 证伪+POST 面：XML 探针四面全 400 无分化；deser POST 参数名未破解 [no-consume:证伪披露]	0.95	2	2026-10-23T16:17:10Z
+F-r27-0046	INT-r27-0010	info	svc-login/userenum	账号枚举三面阴性：existing vs random 状态码/字节长/体内容零差异 [no-consume:证伪披露（矩阵x格承载）]	0.95	2	2026-10-23T16:17:15Z
+F-r27-0047	INT-r27-0010	authz	cred:tok-usr-001	令牌共享观察：三面不同账号发放同一字面令牌 tok-usr-001（单一认证后端不绑账号）；四形携带回访三服务 /me /session /logout 全 403——令牌消费面待 Round3 定位	0.95	2	2026-10-23T16:17:20Z
+F-r27-0048	INT-r27-0028	http	cross:token-consumption-form	令牌消费面定位：{{vault:cred-3}} 唯一被接受携带形=X-Auth-Token 请求头（Bearer/Cookie 全 401）；消费面=6 服务 /admin 数据面；svc-billing 接受令牌但十名词全 404（无数据面）；svc-login catch-all 无鉴权门	0.95	2	2026-10-23T16:58:15Z
+F-r27-0049	INT-r27-0028	http	svc-admin/admin#sweep	路径盲破解：anon 全 401 持证后 orders/invoices 呈现（仅此二面存在）；其余十名词 404	0.95	2	2026-10-23T16:58:20Z
+F-r27-0050	INT-r27-0028	http	svc-login/admin#sweep	/admin 十名词 anon=200/tok=200 全同体（catch-all 无鉴权语义）	0.95	2	2026-10-23T16:58:25Z
+F-r27-0051	INT-r27-0028	http	svc-billing/admin#sweep	持证全 404——令牌被接受但无管理数据面（负结果在案）	0.95	2	2026-10-23T16:58:30Z
+F-r27-0052	INT-r27-0028	http	svc-shop/admin#sweep	命中 reports：anon 401→tok 200（GTIDOR-06 面）；其余九名词阴性	0.95	2	2026-10-23T16:58:35Z
+F-r27-0053	INT-r27-0028	http	svc-dashboard/admin#sweep	命中 config：anon 401→tok 200（GTROLE-03 面）	0.95	2	2026-10-23T16:58:40Z
+F-r27-0054	INT-r27-0028	http	cross:csrf-negative	CSRF 阴性：持证 POST 面全非 200，无状态变更面 [no-consume:证伪披露（矩阵x格承载）]	0.95	2	2026-10-23T16:58:45Z
+F-r27-0055	INT-r27-0030	authz	lateral:FD-r27-0022	横向披露（trigger-audit④）：svc-api-gw/admin/keys 同型横向已尽——8 服务×10 admin 名词全枚举（INT-0028 80 格在案）+跨 id 尾段 1-3 已试 [no-consume:横向披露（机检面）]	0.95	2	2026-10-23T16:59:25Z
+F-r27-0056	INT-r27-0030	authz	lateral:FD-r27-0023	横向披露（trigger-audit④）：svc-admin/admin/orders 同型横向已尽——8 服务×10 admin 名词全枚举（INT-0028 80 格在案）+跨 id 尾段 1-3 已试 [no-consume:横向披露（机检面）]	0.95	2	2026-10-23T16:59:30Z
+F-r27-0057	INT-r27-0030	authz	lateral:FD-r27-0024	横向披露（trigger-audit④）：svc-admin/admin/invoices 同型横向已尽——8 服务×10 admin 名词全枚举（INT-0028 80 格在案）+跨 id 尾段 1-3 已试 [no-consume:横向披露（机检面）]	0.95	2	2026-10-23T16:59:35Z
+F-r27-0058	INT-r27-0030	authz	lateral:FD-r27-0026	横向披露（trigger-audit④）：svc-portal/admin/clients 同型横向已尽——8 服务×10 admin 名词全枚举（INT-0028 80 格在案）+跨 id 尾段 1-3 已试 [no-consume:横向披露（机检面）]	0.95	2	2026-10-23T16:59:40Z
+F-r27-0059	INT-r27-0010	info	svc-login/userenum-negative	账号枚举阴性（svc-login）：existing vs random 响应零差异	0.95	2	2026-10-23T17:05:18Z
+F-r27-0060	INT-r27-0010	info	svc-admin/userenum-negative	账号枚举阴性（svc-admin）：existing vs random 响应零差异	0.95	2	2026-10-23T17:05:24Z
+F-r27-0061	INT-r27-0010	info	svc-billing/userenum-negative	账号枚举阴性（svc-billing）：existing vs random 响应零差异	0.95	2	2026-10-23T17:05:30Z
+F-r27-0062	INT-r27-0010	info	cred:carry-forms	令牌四形携带测试：X-Auth-Token/Bearer/Cookie×2 于三服务 /me /session /logout 全 403（哑面）	0.95	2	2026-10-23T17:05:36Z
+F-r27-0063	INT-r27-0028	http	sess:shop-api-gw	令牌消费观测：shop/admin/reports 与 api-gw/admin/keys 持证 401→200（会话在该二服务被消费）	0.95	2	2026-10-23T17:05:48Z
+F-r27-0064	INT-r27-0028	http	sess:dashboard-portal-files	令牌消费观测：dashboard/admin/config、portal/admin/clients、files/admin/logs 持证 401→200	0.95	2	2026-10-23T17:05:54Z
+F-r27-0065	INT-r27-0030	authz	svc-admin/double-idor	svc-admin 双资源 idor 面（orders/invoices）——他人 user 101/202 数据可读	0.95	2	2026-10-23T17:06:00Z
+F-r27-0066	INT-r27-0030	authz	cross:authz-coverage	authz 覆盖汇总：8 服务×10 admin 名词全枚举，7 面翻转全举证（idor4/role2/hauth1）	0.95	2	2026-10-23T17:06:06Z
+F-r27-0067	INT-r27-0010	info	svc-login/weakpass-diff	弱口令命中行为差分：200+welcome/头发放 vs 403 denied（计数器）——成功面可区分	0.95	2	2026-10-23T17:03:05Z
+F-r27-0068	INT-r27-0028	http	sess:billing	令牌消费观测：billing 接受令牌（401→404）——会话被验证但无数据面	0.9	2	2026-10-23T17:03:11Z

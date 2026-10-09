@@ -1,0 +1,16 @@
+seq	route	status	counter	retry_after	body
+A1	/login	403	272	None	<html>denied GTRATE-01 synthetic no rate limit after 272 attempts</html>
+A2	/login	403	273	None	<html>denied GTRATE-01 synthetic no rate limit after 273 attempts</html>
+A3	/login	403	274	None	<html>denied GTRATE-01 synthetic no rate limit after 274 attempts</html>
+A4	/login	403	275	None	<html>denied GTRATE-01 synthetic no rate limit after 275 attempts</html>
+A5	/login	403	276	None	<html>denied GTRATE-01 synthetic no rate limit after 276 attempts</html>
+A6	/login	403	277	None	<html>denied GTRATE-01 synthetic no rate limit after 277 attempts</html>
+A7	/login	403	278	None	<html>denied GTRATE-01 synthetic no rate limit after 278 attempts</html>
+A8	/login	403	279	None	<html>denied GTRATE-01 synthetic no rate limit after 279 attempts</html>
+A9	/login	403	280	None	<html>denied GTRATE-01 synthetic no rate limit after 280 attempts</html>
+A10	/login	403	281	None	<html>denied GTRATE-01 synthetic no rate limit after 281 attempts</html>
+A11	/login	403	282	None	<html>denied GTRATE-01 synthetic no rate limit after 282 attempts</html>
+A12	/login	403	283	None	<html>denied GTRATE-01 synthetic no rate limit after 283 attempts</html>
+B1	/api/login	403	284	None	<html>denied GTRATE-01 synthetic no rate limit after 284 attempts</html>
+B2	/api/login	403	285	None	<html>denied GTRATE-01 synthetic no rate limit after 285 attempts</html>
+B3	/api/login	403	286	None	<html>denied GTRATE-01 synthetic no rate limit after 286 attempts</html>

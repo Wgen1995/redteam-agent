@@ -1,0 +1,104 @@
+[
+  {
+    "finding_key": "FK-r27-0013-logout-open-redirect",
+    "raw_request": "GET /logout?next=http://evil.example HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 302,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:40:00 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Location": "http://evil.example",
+      "Content-Length": "48"
+    },
+    "resp_body_excerpt": "<html>GTREDIR-02 synthetic redirect to %s</html>",
+    "matcher_words": [
+      "evil.example"
+    ],
+    "note": "distinctive markers present: "
+  },
+  {
+    "finding_key": "FK-r27-0013-logout-open-redirect-protorel",
+    "raw_request": "GET /logout?next=//evil.example HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 302,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:40:01 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Location": "//evil.example",
+      "Content-Length": "48"
+    },
+    "resp_body_excerpt": "<html>GTREDIR-02 synthetic redirect to %s</html>",
+    "matcher_words": [
+      "//evil.example"
+    ],
+    "note": "distinctive markers present: "
+  },
+  {
+    "finding_key": "FK-r27-0013-logout-open-redirect-https",
+    "raw_request": "GET /logout?next=https://evil.example/r?x=1 HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 302,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:40:01 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Location": "https://evil.example/r?x=1",
+      "Content-Length": "48"
+    },
+    "resp_body_excerpt": "<html>GTREDIR-02 synthetic redirect to %s</html>",
+    "matcher_words": [
+      "evil.example"
+    ],
+    "note": "distinctive markers present: "
+  },
+  {
+    "finding_key": "FK-r27-0013-logout-to-selfref-control",
+    "raw_request": "GET /logout?to=http://evil.example HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 302,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:40:01 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Location": "/logout?to=http://evil.example",
+      "Content-Length": "48"
+    },
+    "resp_body_excerpt": "<html>GTREDIR-02 synthetic redirect to %s</html>",
+    "matcher_words": [
+      "evil.example"
+    ],
+    "note": "distinctive markers present: "
+  },
+  {
+    "finding_key": "FK-r27-0013-logout-bare-baseline",
+    "raw_request": "GET /logout HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 302,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:36:42 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Location": "/logout",
+      "Content-Length": "48"
+    },
+    "resp_body_excerpt": "<html>GTREDIR-02 synthetic redirect to %s</html>",
+    "matcher_words": [
+      "GTREDIR-02"
+    ],
+    "note": "distinctive markers present: GTREDIR-02"
+  },
+  {
+    "finding_key": "FK-r27-0013-logout-next-encoded-control",
+    "raw_request": "GET /logout?next=http%3A%2F%2Fevil.example HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 302,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:36:43 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Location": "http%3A%2F%2Fevil.example",
+      "Content-Length": "48"
+    },
+    "resp_body_excerpt": "<html>GTREDIR-02 synthetic redirect to %s</html>",
+    "matcher_words": [
+      "evil.example"
+    ],
+    "note": "distinctive markers present: "
+  }
+]

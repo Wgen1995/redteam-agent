@@ -1,0 +1,15 @@
+# INT-r27-0022 operations.log（svc-portal 开放重定向矩阵验证）
+# 授权：battle-26 授权训练靶场；委派单 INT-r27-0022（kind=matrix-test）；所有探测经 range-attack-noop-1 容器
+# 时间戳字面量：2026-10-23T16:00:00Z；GET-only；间隔≥0.25s；禁跟随重定向（http.client 直捕 302 Location）
+
+[2026-10-23T16:00:00Z] WRITE probe/w2_portal_redir.py（/redirect × {to,url,next,goto,target,u} × http://evil.example + 裸端点/空参数控制对；捕获 Location 头不跟随）
+[2026-10-23T16:00:00Z] DOCKER-CP w2_portal_redir.py → range-attack-noop-1:/tmp/
+[2026-10-23T16:00:00Z] GUARD-EXEC cli/tanyin-guard exec --goal-dir G-r27 --timestamp=2026-10-23T16:00:00Z -- docker exec range-attack-noop-1 python3 /tmp/w2_portal_redir.py → probe/w2_portal_redir.out
+  结果: 13 请求。基线裸端点 302 Location=/redirect（自指）。载荷态参数分化：
+    to=http://evil.example   → 302 Location='http://evil.example'（外域，HIT）
+    goto=http://evil.example → 302 Location='http://evil.example'（外域，HIT）
+    url/next/target/u=载荷   → 302 Location='/redirect?<param>=http://evil.example'（自指回显，不外跳）
+    控制对：to=（空值）→ Location=''（空串）⇒ 外域 Location 由参数值驱动，差分明确
+[2026-10-23T16:00:00Z] ANALYZE 判据核验：302 Location 含外域串 evil.example 在 to/goto 两参数成立 ⇒ 判据满足
+[2026-10-23T16:00:00Z] VERDICT 开放重定向 verified（C1）：单端点双有效参数（to/goto），同一根因；EV 4 条（2 命中 + 2 对照）落 artifacts/evidence.json
+[2026-10-23T16:00:00Z] WRITE submission.json（findings=1）+ artifacts 归档

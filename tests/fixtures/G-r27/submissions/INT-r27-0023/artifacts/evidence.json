@@ -1,0 +1,36 @@
+[
+ {
+  "finding_key": "wstg-info-env-debug-env",
+  "raw_request": "GET /debug/env HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:33 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "91"
+  },
+  "resp_body_excerpt": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>",
+  "matcher_words": [
+   "GTINFOLEAK-01",
+   "DB_PASS",
+   "AWS_KEY"
+  ],
+  "note": "HIT：GET /debug/env → 200，环境键名清单回显 DB_PASS / AWS_KEY（值 <redacted> 脱敏）；键结构暴露=信息泄露面"
+ },
+ {
+  "finding_key": "negative-info-env-second-face",
+  "raw_request": "GET /graphql HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 404,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:34 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "9"
+  },
+  "resp_body_excerpt": "not found",
+  "matcher_words": [
+   "not found"
+  ],
+  "note": "二次面：/graphql 404（/debug /metrics /actuator/env 同 404 'not found'）⇒ 同族第三面不存在"
+ }
+]

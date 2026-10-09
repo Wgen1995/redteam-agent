@@ -1,0 +1,68 @@
+{
+  "intent_id": "INT-r27-0015",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "http",
+      "target": "svc-api-gw/cors-debug",
+      "detail": "Origin 变体矩阵（evil/null/sub.example.com/无Origin对照 ×4）：全部 200 且 ACAO 恒为 *（对照亦然=静态通配头），无 ACAC、无 Vary: Origin；body 'cors debug GTCORS-01 wildcard allow-origin'——通配放开面，无凭据授权",
+      "confidence": 0.95
+    },
+    {
+      "kind": "http",
+      "target": "svc-api-gw/origin",
+      "detail": "Origin 变体矩阵（同上 ×4）：ACAO 逐字反射任意 Origin——https://evil.example→回显原值、null→回显 null、https://sub.example.com→回显原值，且恒配 ACAC:true；无 Origin 对照→ACAO:none+ACAC:true；无 Vary: Origin；body 'origin GTCORS-02 reflected <值> allow-credentials true'",
+      "confidence": 0.95
+    },
+    {
+      "kind": "info",
+      "target": "svc-api-gw/cors-matrix",
+      "detail": "8 请求（2 端点×4 变体）全部 200，无 429/无重定向（禁跟随策略下零 3xx）；两面均 text/html；间隔 0.3s 合规",
+      "confidence": 0.9
+    }
+  ],
+  "findings": [
+    {
+      "finding_key": "FD-r27-0015-cors-origin-reflect-acac-true",
+      "title": "CORS 配置缺陷：/origin 反射任意 Origin 且 Allow-Credentials:true（含 null Origin）",
+      "location": "svc-api-gw/origin",
+      "kind": "config-flaw",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "verified",
+      "auth_context": "anon",
+      "evidence": "artifacts/evidence.json#FD-r27-0015-cors-origin-reflect-acac-true",
+      "dedup_key_proposed": "wstg-conf-cors+svc-api-gw+/origin+acao-reflect-any+acac-true",
+      "detail": "GET /origin 对任意 Origin 值逐字回显进 Access-Control-Allow-Origin 并叠加 Access-Control-Allow-Credentials:true——判据命中（ACAO 反射 evil 值 + ACAC:true）= 可利用配置缺陷：任意源页面可携凭据跨域读取该端点响应（真实浏览器接受具名反射源+凭据组合）。null Origin 亦被反射（沙箱 iframe/data: URL 可构造），攻击面进一步放大。次要信号：响应无 Vary: Origin，存在缓存层混淆风险（未深入）。附带双生面 /cors-debug 恒 ACAO:*（无 ACAC）——按配置缺陷记录不虚报：真实浏览器对通配源拒收凭据，该面仅构成无凭据跨域读取（低）。",
+      "matrix_note": "WSTG-CLNT-07/CORS checklist：origin reflection + null origin + wildcard 三变体矩阵已覆盖，控制对照（无 Origin）已执行"
+    },
+    {
+      "finding_key": "FD-r27-0015-cors-debug-wildcard",
+      "title": "CORS 配置缺陷：/cors-debug 通配 ACAO:* 放开（无凭据面，低危）",
+      "location": "svc-api-gw/cors-debug",
+      "kind": "config-flaw",
+      "confidence": "C1",
+      "impact": "低",
+      "exploitation_status": "verified",
+      "auth_context": "anon",
+      "evidence": "artifacts/evidence.json#FD-r27-0015-cors-debug-wildcard",
+      "dedup_key_proposed": "wstg-conf-cors+svc-api-gw+/cors-debug+acao-wildcard-no-acac",
+      "detail": "GET /cors-debug 对全部 Origin 变体（含无 Origin 对照）恒返回 ACAO:*，无 ACAC——通配放开使任意源可无凭据跨域读取响应内容；因无 ACAC 且真实浏览器对通配源拒收凭据，不构成越权读取，按配置缺陷低危记录（禁虚报为可利用越权）。"
+    }
+  ],
+  "assets": [
+    { "type": "endpoint", "value": "svc-api-gw/origin", "meta": "200|GET-only|acao-reflect-any+acac-true|GTCORS-02|no-vary-origin" },
+    { "type": "endpoint", "value": "svc-api-gw/cors-debug", "meta": "200|GET-only|acao-wildcard-static|GTCORS-01|no-acac" }
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": [
+    "写 probe/w2_gwc_cors.py（2 端点 × 4 Origin 变体矩阵=8 请求：evil/null/subdomain/无Origin对照；http.client 禁跟随重定向；间隔 0.3s；429 退避 3s 重试；逐请求记录 raw_request 逐字节重建+ACAO/ACAC/ACAH/ACAM/Vary+body 前 400B）",
+    "docker cp w2_gwc_cors.py range-attack-noop-1:/tmp/（docker cp 不进 guard）",
+    "cli/tanyin-guard exec --goal-dir .../G-r27 --timestamp=2026-10-23T16:00:00Z -- docker exec range-attack-noop-1 python3 /tmp/w2_gwc_cors.py > probe/w2_gwc_cors.out（exit=0，8 请求，零 429 零重定向）",
+    "docker cp 容器 /tmp/w2_gwc_cors.json 回 probe/（完整含 raw_request/headers/body）",
+    "证据固化 artifacts/evidence.json（主=FD-r27-0015-cors-origin-reflect-acac-true 逐字节可发；副=wildcard 面）；控制对=无 Origin 头请求已入矩阵",
+    "脚本/out/json 副本存档 artifacts/；submission.json 9 字段汇总"
+  ]
+}

@@ -1,0 +1,10 @@
+2026-10-23T16:00:00Z  probe script written    probe/w2_dash_ssti.py (INT-r27-0019 SSTI matrix: /render+/report x {tpl,template,name} x {plain,{{7*7}},${7*7},#{7*7},<%= 7*7 %>,{7*7},{{7*'7'}}} encoded; interval 0.3s)
+2026-10-23T16:00:00Z  probe script written    probe/w2_dash_cmdi.py (INT-r27-0018 CMDI matrix, shared battle: /ping x 5 params x 5 payload shapes encoded)
+2026-10-23T16:00:00Z  docker cp               w2_dash_cmdi.py + w2_dash_ssti.py -> range-attack-noop-1:/tmp/
+2026-10-23T16:00:00Z  guard exec (allowed)    docker exec range-attack-noop-1 python3 /tmp/w2_dash_ssti.py -> probe/w2_dash_ssti.out ; 44 requests ; hits=0 ; encoded payloads echoed as raw encoded strings (server never urldecodes query values)
+2026-10-23T16:00:00Z  guard exec (allowed)    docker exec range-attack-noop-1 python3 /tmp/w2_dash_cmdi.py -> probe/w2_dash_cmdi.out ; 31 requests ; hits=0 (INT-r27-0018, logged here for battle continuity)
+2026-10-23T16:00:00Z  followup script written probe/w2_dash_raw2.py (raw unencoded SSTI payloads to close no-decode false-negative window; also raw CMDI shapes)
+2026-10-23T16:00:00Z  guard exec (allowed)    docker exec range-attack-noop-1 python3 /tmp/w2_dash_raw2.py -> probe/w2_dash_raw2.out ; 34 requests ; hits=0 ; raw {{7*7}} and {{7*'7'}} reflected verbatim into HTML - no 49, no 7777777 => no template evaluation
+2026-10-23T16:00:00Z  verdict                 INT-r27-0019 SSTI ruled_out (68 req total: 42 encoded + 24 raw + 2 baselines) ; param consumption map: /render consumes tpl only, /report consumes name only, others echo full raw path
+2026-10-23T16:00:00Z  incidental observation  tpl/name values reflected into HTML without HTML encoding (plain hello-r27 and raw {{7*7}} both echoed verbatim) => reflected-XSS candidate surface; XSS tag payloads outside authorized payload shapes for this intent, NOT tested - flagged for orchestrator dispatch
+2026-10-23T16:00:00Z  artifacts               evidence.json + submission.json + probe outputs archived under submissions/INT-r27-001{8,9}/

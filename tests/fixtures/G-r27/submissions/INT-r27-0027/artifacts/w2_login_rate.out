@@ -1,0 +1,19 @@
+=== SEQ A: POST /login x12 (interval 0.5s) ===
+seq=A1	route=/login	status=403	counter=272	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 272 attempts</html>
+seq=A2	route=/login	status=403	counter=273	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 273 attempts</html>
+seq=A3	route=/login	status=403	counter=274	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 274 attempts</html>
+seq=A4	route=/login	status=403	counter=275	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 275 attempts</html>
+seq=A5	route=/login	status=403	counter=276	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 276 attempts</html>
+seq=A6	route=/login	status=403	counter=277	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 277 attempts</html>
+seq=A7	route=/login	status=403	counter=278	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 278 attempts</html>
+seq=A8	route=/login	status=403	counter=279	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 279 attempts</html>
+seq=A9	route=/login	status=403	counter=280	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 280 attempts</html>
+seq=A10	route=/login	status=403	counter=281	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 281 attempts</html>
+seq=A11	route=/login	status=403	counter=282	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 282 attempts</html>
+seq=A12	route=/login	status=403	counter=283	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 283 attempts</html>
+=== SEQ B: POST /api/login x3 (cross-face control, interval 0.5s) ===
+seq=B1	route=/api/login	status=403	counter=284	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 284 attempts</html>
+seq=B2	route=/api/login	status=403	counter=285	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 285 attempts</html>
+seq=B3	route=/api/login	status=403	counter=286	retry_after=None	body=<html>denied GTRATE-01 synthetic no rate limit after 286 attempts</html>
+=== VERDICT INPUTS (json) ===
+{"seq_a_status_set": [403], "seq_b_status_set": [403], "seq_a_counters": [272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283], "seq_b_counters": [284, 285, 286], "monotonic_a": true, "monotonic_b": true, "cross_face_continuation": true, "any_429": false, "any_retry_after": false, "all_gtrate01": true, "all_no_rate_limit_phrase": true, "body_len_bytes": 72, "last_a_headers": {"server": "BaseHTTP/0.6 Python/3.12.14", "date": "Fri, 09 Oct 2026 15:36:14 GMT", "content-type": "text/html; charset=utf-8", "content-length": "72"}, "last_a_body": "<html>denied GTRATE-01 synthetic no rate limit after 283 attempts</html>", "content_length_sent": 29}

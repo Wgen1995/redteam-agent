@@ -1,0 +1,97 @@
+{
+  "submission_id": "SUB-INT-r27-0005",
+  "intent_id": "INT-r27-0005",
+  "goal_id": "G-r27-0001",
+  "agent": "web-blackbox:recon",
+  "created_at": "2026-10-23T15:30:00Z",
+  "target": "svc-login",
+  "facts": [
+    {
+      "fact_id": "F-r27l5-01",
+      "kind": "probe",
+      "key": "svc-login.alive",
+      "value": "DNS svc-login -> 172.28.0.7 (授权网段 172.28.0.0/24 内)；8001-8008 逐端口 GET /，唯一活端口 8004（HTTP 200），其余 7 端口 Connection refused",
+      "evidence": "probe/r27l0_ports.out"
+    },
+    {
+      "fact_id": "F-r27l5-02",
+      "kind": "fingerprint",
+      "key": "svc-login:8004.http_fingerprint",
+      "value": "Server: BaseHTTP/0.6 Python/3.12.14; Content-Type: text/html; charset=utf-8; GET / -> 200 body 23B '<html>login form</html>'",
+      "evidence": "probe/r27l0_ports.out"
+    },
+    {
+      "fact_id": "F-r27l5-03",
+      "kind": "surface",
+      "key": "svc-login:8004.get_catchall_zero_entropy",
+      "value": "GET 字典 83 路径×11 族（凭据/信息/SSRF/处理器/资源/XSS/文件/CORS/重定向/管理/内部）全部返回相同 200 + 23B '<html>login form</html>'，无 404/无重定向/无路径级分化——catch-all 处理器，GET 面零信息量（零熵墙）",
+      "evidence": "probe/r27l1_getdict.out"
+    },
+    {
+      "fact_id": "F-r27l5-04",
+      "kind": "authn",
+      "key": "svc-login:8004.post_global_rate_wall",
+      "value": "POST 形探测（哑值 probe，每面每形一发，共 28 发）全部 403 + '<html>denied GTRATE-01 synthetic no rate limit after NNN attempts</html>'；计数器全局单调递增 244→271（跨面共享，本 round 前已累计约 243 次尝试）；响应无 Set-Cookie/X-Auth-Token/WWW-Authenticate 签发头；body 哈希差异仅为计数器数字，非真实形态分化。凭据面 POST 当前状态=GTRATE-01 403 拒绝墙",
+      "evidence": "probe/r27l2_postshape.out"
+    },
+    {
+      "fact_id": "F-r27l5-05",
+      "kind": "authn",
+      "key": "svc-login:8004./login.shape_baseline",
+      "value": "键名×编码形基线：form:user-pass=403/h=f26881cec5c4f50d/72B；form:username-password=403/h=cd90be92c270c404/72B；form:email=403/h=efbe7efd90987fa5/72B；json:user-pass=403/h=533ab37c72305ea4/72B——四形同构（均为 GTRATE-01 墙，计数器 244-247），无分化",
+      "evidence": "probe/r27l2_postshape.out"
+    },
+    {
+      "fact_id": "F-r27l5-06",
+      "kind": "authn",
+      "key": "svc-login:8004./api/login.shape_baseline",
+      "value": "四形均 403/72B GTRATE-01 墙（h=50f32cd5/49bfd66d/74afda54/92af802f，计数器 248-251），无分化",
+      "evidence": "probe/r27l2_postshape.out"
+    },
+    {
+      "fact_id": "F-r27l5-07",
+      "kind": "authn",
+      "key": "svc-login:8004./token.shape_baseline",
+      "value": "四形均 403/72B GTRATE-01 墙（h=cac540e8/6a8d4aba/642f824b/160ea02b，计数器 252-255），无分化",
+      "evidence": "probe/r27l2_postshape.out"
+    },
+    {
+      "fact_id": "F-r27l5-08",
+      "kind": "authn",
+      "key": "svc-login:8004./api/token.shape_baseline",
+      "value": "四形均 403/72B GTRATE-01 墙（h=87f00544/b0b6c9a1/974e8901/3e929ed5，计数器 256-259），无分化",
+      "evidence": "probe/r27l2_postshape.out"
+    },
+    {
+      "fact_id": "F-r27l5-09",
+      "kind": "authn",
+      "key": "svc-login:8004./register.shape_baseline",
+      "value": "四形均 403/72B GTRATE-01 墙（h=295d8b1b/93ee8786/17d1d852/cad9aa95，计数器 260-263），无分化",
+      "evidence": "probe/r27l2_postshape.out"
+    },
+    {
+      "fact_id": "F-r27l5-10",
+      "kind": "authn",
+      "key": "svc-login:8004./forgot.shape_baseline",
+      "value": "四形均 403/72B GTRATE-01 墙（h=81bb924d/a657add8/5807302f/8e75630a，计数器 264-267），无分化",
+      "evidence": "probe/r27l2_postshape.out"
+    },
+    {
+      "fact_id": "F-r27l5-11",
+      "kind": "authn",
+      "key": "svc-login:8004./reset.shape_baseline",
+      "value": "四形均 403/72B GTRATE-01 墙（h=c9d7f009/a2b9101a/05ea00b0/bb4b492b，计数器 268-271），无分化",
+      "evidence": "probe/r27l2_postshape.out"
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "A-r27l5-01",
+      "kind": "http_face",
+      "locator": "http://svc-login:8004/",
+      "detail": "172.28.0.7:8004 活 HTTP 面（BaseHTTP/Python 3.12）；GET catch-all 200 login form；POST 凭据族 403 GTRATE-01 墙",
+      "status": "confirmed"
+    }
+  ],
+  "findings": []
+}

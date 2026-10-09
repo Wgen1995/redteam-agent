@@ -1,0 +1,47 @@
+{
+  "intent_id": "INT-r27-0018",
+  "verdict": "ruled_out",
+  "evidence_items": [
+    {
+      "finding_key": "cmdi-ping-baseline-no-param",
+      "kind": "baseline_ev",
+      "raw_request": "GET /ping HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+      "resp_status": 200,
+      "resp_headers": {"Server": "BaseHTTP/0.6 Python/3.12.14", "Content-Type": "text/html; charset=utf-8", "Content-Length": "73"},
+      "resp_body_excerpt": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+      "matcher_words": [],
+      "note": "无参基线 EV：/ping 不带任何参数即返回固定 synthetic banner（73 字节）——侦察期观察到的 'synthetic cmd output' 是硬编码自述文本，非本次注入产生的命令回显"
+    },
+    {
+      "finding_key": "cmdi-ping-baseline-param-host",
+      "kind": "baseline_ev",
+      "raw_request": "GET /ping?host=127.0.0.1 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+      "resp_status": 200,
+      "resp_headers": {"Server": "BaseHTTP/0.6 Python/3.12.14", "Content-Type": "text/html; charset=utf-8", "Content-Length": "73"},
+      "resp_body_excerpt": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+      "matcher_words": [],
+      "note": "带参基线 EV：?host=127.0.0.1（其余 cmd/ip/target/q 同形）响应与无参基线逐字节一致 ⇒ banner 与参数值无关"
+    },
+    {
+      "finding_key": "cmdi-ping-matrix-no-hit",
+      "kind": "matrix_ev",
+      "raw_request": "GET /ping?host=127.0.0.1%3Bid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+      "resp_status": 200,
+      "resp_headers": {"Server": "BaseHTTP/0.6 Python/3.12.14", "Content-Type": "text/html; charset=utf-8", "Content-Length": "73"},
+      "resp_body_excerpt": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+      "matcher_words": ["uid="],
+      "note": "代表性矩阵探测 EV（编码形）：参数族 host/cmd/ip/target/q × 载荷形 ;id / |id / `id` / $(id) / &&id（URL 编码，共 25 发）全部返回与基线逐字节一致的 73 字节固定 banner——无 uid=，无输出变化；raw 输出见 artifacts/w2_dash_cmdi.out"
+    },
+    {
+      "finding_key": "cmdi-ping-raw-no-hit",
+      "kind": "matrix_ev",
+      "raw_request": "GET /ping?host=127.0.0.1;id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+      "resp_status": 200,
+      "resp_headers": {"Server": "BaseHTTP/0.6 Python/3.12.14", "Content-Type": "text/html; charset=utf-8", "Content-Length": "73"},
+      "resp_body_excerpt": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+      "matcher_words": ["uid="],
+      "note": "裸发（不 URL 编码）补测 EV：5 参数 × ;id / |id（共 10 发）全部与基线逐字节一致，关闭 '编码导致注入跳过' 假阴性窗口；raw 输出见 artifacts/w2_dash_raw2.out（INT-r27-0019 目录共享）"
+    }
+  ],
+  "coverage": {"param_families": 5, "payload_shapes_encoded": 5, "payload_shapes_raw": 2, "total_requests": 41, "hits": 0}
+}

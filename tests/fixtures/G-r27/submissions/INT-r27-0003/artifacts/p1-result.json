@@ -1,0 +1,965 @@
+{
+ "results": [
+  {
+   "family": "cred",
+   "path": "/login",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/signin",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/api/login",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/register",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/signup",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/api/register",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/forgot",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/reset",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/api/reset",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/password-reset",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/token",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/api/token",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/oauth/token",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/auth",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/logout",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/session",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cred",
+   "path": "/me",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/debug/env",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/debug/vars",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/actuator/env",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/metrics",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/.env",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/info",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/graphql",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "<html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/health",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/status",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "info",
+   "path": "/version",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "ssrf",
+   "path": "/fetch",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>",
+   "notes": []
+  },
+  {
+   "family": "ssrf",
+   "path": "/preview",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>",
+   "notes": []
+  },
+  {
+   "family": "ssrf",
+   "path": "/proxy",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "<html>proxy GTSSRF-03 synthetic internal fetch done</html>",
+   "notes": []
+  },
+  {
+   "family": "ssrf",
+   "path": "/render",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "ssrf",
+   "path": "/template",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "handler",
+   "path": "/unserialize",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "handler",
+   "path": "/deserialize",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "handler",
+   "path": "/decode",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "handler",
+   "path": "/import",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "handler",
+   "path": "/upload",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "handler",
+   "path": "/export",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "handler",
+   "path": "/xml",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "handler",
+   "path": "/api/xml",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "resource",
+   "path": "/item",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "resource",
+   "path": "/order",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "resource",
+   "path": "/product",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "resource",
+   "path": "/detail",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "resource",
+   "path": "/invoice",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "resource",
+   "path": "/user",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "resource",
+   "path": "/account",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "xss",
+   "path": "/search",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "xss",
+   "path": "/echo",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "xss",
+   "path": "/comment",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "xss",
+   "path": "/reply",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "xss",
+   "path": "/feedback",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "xss",
+   "path": "/q",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "xss",
+   "path": "/report",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "file",
+   "path": "/download",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "file",
+   "path": "/file",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "file",
+   "path": "/read",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "file",
+   "path": "/static",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "file",
+   "path": "/files",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cors",
+   "path": "/cors",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "cors",
+   "path": "/cors-debug",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8",
+    "access-control-allow-origin": "*"
+   },
+   "body": "<html>cors debug GTCORS-01 wildcard allow-origin</html>",
+   "notes": []
+  },
+  {
+   "family": "cors",
+   "path": "/origin",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8",
+    "access-control-allow-origin": "none"
+   },
+   "body": "<html>origin GTCORS-02 reflected none allow-credentials true</html>",
+   "notes": []
+  },
+  {
+   "family": "redirect",
+   "path": "/redirect",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "redirect",
+   "path": "/goto",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "redirect",
+   "path": "/jump",
+   "status": 302,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8",
+    "location": "/jump"
+   },
+   "body": "<html>GTREDIR-03 synthetic redirect to %s</html>",
+   "notes": []
+  },
+  {
+   "family": "redirect",
+   "path": "/out",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "redirect",
+   "path": "/link",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/admin",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/manage",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/console",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/admin/config",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/admin/logs",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/admin/keys",
+   "status": 401,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "auth required",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/admin/reports",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/admin/clients",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/admin/audit",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/admin/settings",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "admin",
+   "path": "/admin/users",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "ssti_cmdi",
+   "path": "/exec",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "ssti_cmdi",
+   "path": "/run",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "ssti_cmdi",
+   "path": "/eval",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "ssti_cmdi",
+   "path": "/ping",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "internal",
+   "path": "/api",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "internal",
+   "path": "/api/v1",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "internal",
+   "path": "/api/v2",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "internal",
+   "path": "/internal",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  },
+  {
+   "family": "internal",
+   "path": "/private",
+   "status": 404,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html; charset=utf-8"
+   },
+   "body": "not found",
+   "notes": []
+  }
+ ],
+ "saw_429": false
+}

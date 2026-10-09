@@ -1,0 +1,7 @@
+[2026-10-23T16:00:00Z] cmd: docker cp /Users/wgen/.tanyin/battles/battle-26/probe/w2_login_rate.py range-attack-noop-1:/tmp/w2_login_rate.py (cp 不进 guard, exit=0)
+[2026-10-23T16:00:00Z] cmd: cli/tanyin-guard exec --goal-dir /Users/wgen/.tanyin/battles/battle-26/G-r27 --timestamp=2026-10-23T16:00:00Z -- docker exec range-attack-noop-1 python3 /tmp/w2_login_rate.py -> probe/w2_login_rate.out (exit=0)
+[2026-10-23T16:00:00Z] ops: mkdir -p submissions/INT-r27-0027/artifacts；w2_login_rate.{py,out} 副本入 artifacts
+[2026-10-23T16:00:00Z] ops: artifacts/evidence.json 落盘（finding_key=rate-limit-missing；raw_request 逐字节；Content-Length 实测 29，委派单 30 系笔误已注记）
+[2026-10-23T16:00:00Z] ops: artifacts/sequence.tsv 落盘（A1-A12 /login + B1-B3 /api/login，15 行 (seq,route,status,counter,retry_after,body)）
+[2026-10-23T16:00:00Z] ops: submission.json 落盘（9 顶层字段：intent_id/engine/status/facts[4]/findings[1]/assets[2]/edges[0]/creds[0]/operations_log）
+[2026-10-23T16:00:00Z] summary: 12 发 /login 全 403，计数器 272→283 逐发 +1，无 429/Retry-After/降速，第 12 发 'no rate limit' 串在场 → 限流缺失 confirmed（行为差分=计数器序列）；跨面 /api/login 3 发 284→286 续增 → 全局面级共享；计数器终值 286；EV 重放前置（同路由 10+ 连击）已写入 preconditions

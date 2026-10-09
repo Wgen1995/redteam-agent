@@ -1,0 +1,318 @@
+{
+ "ts": "2026-10-23T15:30:00Z",
+ "base": "http://svc-dashboard:8006",
+ "results": [
+  {
+   "path": "/login",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/login",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/register",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/register",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/token",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/token",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/upload",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/upload",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/import",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/import",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/xml",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/xml",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/fetch",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/fetch",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/search",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/search",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/comment",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/comment",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/render",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/render",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/report",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/report",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/ping",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/ping",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/admin/config",
+   "mode": "form",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/admin/config",
+   "mode": "json",
+   "status": 400,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  }
+ ]
+}

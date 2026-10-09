@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r27-0054", "matched": true, "results": [{"detail": ["dash8k2", "<b>dash8k2</b>"], "ok": true, "type": "word"}, {"detail": ["200"], "ok": true, "type": "status"}], "status": 200, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r27 --id=EV-r27-0054 --state=VERIFIED", "verdict": "reproduced"}

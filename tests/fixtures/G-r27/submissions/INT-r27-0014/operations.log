@@ -1,0 +1,12 @@
+# operations.log — INT-r27-0014 (web-blackbox matrix-test SSRF sub-agent)
+# 时间戳纪律：全部使用字面量，无墙钟。
+
+[2026-10-23T16:00:00Z] env-check: 复用 probe/ 目录；容器 range-attack-noop-1 Up；cli/tanyin-guard 存在；mkdir submissions/INT-r27-0014/artifacts。=> OK
+[2026-10-23T16:00:00Z] cmd: docker cp probe/w2_gw_ssrf.py range-attack-noop-1:/tmp/ && cli/tanyin-guard exec --goal-dir G-r27 --timestamp=2026-10-23T16:00:00Z -- docker exec range-attack-noop-1 python3 /tmp/w2_gw_ssrf.py
+  result: EXIT=0。78 请求（3 面×6 参数族×4 载荷全编码 + 6 控制对：裸/空?url=），0.26s 间隔，无 429。全组合与控制逐字节零差分（/fetch /preview 72B、/proxy 58B 静态正文）。输出存 probe/w2_gw_ssrf.out。
+[2026-10-23T16:00:00Z] 交叉习得：/jump 轮证实服务器读原始 QS 不解码（Location 回显编码串）→ 编码载荷可能掩盖取回行为，触发补充未编码原值轮（界内同目标）。
+[2026-10-23T16:00:00Z] cmd: docker cp probe/w2_gw_ssrf2.py … && cli/tanyin-guard exec … python3 /tmp/w2_gw_ssrf2.py
+  result: EXIT=0。84 请求（3 面×7 参数族[含跨面习得 u]×4 载荷未编码原值）。同样零差分、零回显（无 login form/hostname/Example Domain）、时延 1-4ms 无外联特征。输出存 probe/w2_gw_ssrf2.out。
+[2026-10-23T16:00:00Z] 判定：SSRF 判据（内容回显=confirmed / 强行为差分=suspected）完全未触发 → findings=[]（阴性结论入 facts）。代表性控制对/阴性对 5 条落 artifacts/evidence.json。
+[2026-10-23T16:00:00Z] 落盘前脱敏扫描：grep -riE '(password|secret|token|api[_-]?key|bearer|authorization:)[=:]' w2_gw_ssrf*.out => CLEAN（internal-secret-doc 为文档名字符串，非凭据真值）。
+[2026-10-23T16:00:00Z] artifacts 归档：2 脚本 + 2 输出复制至 submissions/INT-r27-0014/artifacts/；产出 submission.json（4 facts / findings=assets=edges=creds=[]）。=> OK

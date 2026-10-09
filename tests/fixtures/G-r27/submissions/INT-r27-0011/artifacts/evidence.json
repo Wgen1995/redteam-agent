@@ -1,0 +1,134 @@
+[
+  {
+    "finding_key": "FK-r27-0011-item-boolpair-true",
+    "raw_request": "GET /item?id=1%27%20AND%20%271%27%3D%271 HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:35:48 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "66"
+    },
+    "resp_body_excerpt": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>",
+    "matcher_words": [
+      "GTSQLI-01",
+      "product page"
+    ],
+    "note": "distinctive markers present: GTSQLI-01"
+  },
+  {
+    "finding_key": "FK-r27-0011-item-boolpair-false",
+    "raw_request": "GET /item?id=1%27%20AND%20%271%27%3D%272 HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:35:48 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "66"
+    },
+    "resp_body_excerpt": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>",
+    "matcher_words": [
+      "GTSQLI-01",
+      "product page"
+    ],
+    "note": "distinctive markers present: GTSQLI-01"
+  },
+  {
+    "finding_key": "FK-r27-0011-item-union",
+    "raw_request": "GET /item?id=1%20UNION%20SELECT%201-- HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:35:49 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "66"
+    },
+    "resp_body_excerpt": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>",
+    "matcher_words": [
+      "GTSQLI-01"
+    ],
+    "note": "distinctive markers present: GTSQLI-01"
+  },
+  {
+    "finding_key": "FK-r27-0011-order-boolpair-true",
+    "raw_request": "GET /order?id=1%27%20AND%20%271%27%3D%271 HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:35:56 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "60"
+    },
+    "resp_body_excerpt": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>",
+    "matcher_words": [
+      "GTSQLI-02",
+      "order page"
+    ],
+    "note": "distinctive markers present: GTSQLI-02"
+  },
+  {
+    "finding_key": "FK-r27-0011-order-boolpair-false",
+    "raw_request": "GET /order?id=1%27%20AND%20%271%27%3D%272 HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:35:56 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "60"
+    },
+    "resp_body_excerpt": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>",
+    "matcher_words": [
+      "GTSQLI-02",
+      "order page"
+    ],
+    "note": "distinctive markers present: GTSQLI-02"
+  },
+  {
+    "finding_key": "FK-r27-0011-item-bare-baseline",
+    "raw_request": "GET /item HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:35:47 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "66"
+    },
+    "resp_body_excerpt": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>",
+    "matcher_words": [
+      "GTSQLI-01"
+    ],
+    "note": "distinctive markers present: GTSQLI-01"
+  },
+  {
+    "finding_key": "FK-r27-0011-item-boolpair-true-raw",
+    "raw_request": "GET /item?id=1'AND'1'='1 HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:40:05 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "66"
+    },
+    "resp_body_excerpt": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>",
+    "matcher_words": [
+      "GTSQLI-01"
+    ],
+    "note": "distinctive markers present: GTSQLI-01"
+  },
+  {
+    "finding_key": "FK-r27-0011-item-boolpair-false-raw",
+    "raw_request": "GET /item?id=1'AND'1'='2 HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:40:06 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "66"
+    },
+    "resp_body_excerpt": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>",
+    "matcher_words": [
+      "GTSQLI-01"
+    ],
+    "note": "distinctive markers present: GTSQLI-01"
+  }
+]

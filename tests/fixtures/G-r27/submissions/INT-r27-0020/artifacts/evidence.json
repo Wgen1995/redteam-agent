@@ -1,0 +1,66 @@
+[
+ {
+  "finding_key": "negative-control-rfi-bare-endpoint",
+  "raw_request": "GET /widget HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:35:54 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "55"
+  },
+  "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+  "matcher_words": [
+   "GTRFI-01"
+  ],
+  "note": "基线：裸 /widget 无参数即回显 GTRFI-01 合成串（55B）——回显为路径级静态行为，非参数驱动"
+ },
+ {
+  "finding_key": "negative-control-rfi-empty-param",
+  "raw_request": "GET /widget?url= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:35:54 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "55"
+  },
+  "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+  "matcher_words": [
+   "GTRFI-01"
+  ],
+  "note": "控制对：参数空值与裸端点逐字节一致"
+ },
+ {
+  "finding_key": "negative-rfi-http-svc-login",
+  "raw_request": "GET /widget?url=http%3A%2F%2Fsvc-login%3A8004%2F HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:35:56 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "55"
+  },
+  "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+  "matcher_words": [
+   "login form"
+  ],
+  "note": "载荷 http://svc-login:8004/ 注入后响应与基线全同，不含 svc-login 页面内容 ⇒ 远程包含未发生（matcher 预期目标内容，未命中）"
+ },
+ {
+  "finding_key": "negative-rfi-file-scheme",
+  "raw_request": "GET /widget?url=file%3A%2F%2F%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:35:58 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "55"
+  },
+  "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+  "matcher_words": [
+   "root:x:0"
+  ],
+  "note": "载荷 file:///etc/hostname 响应与基线全同，不含文件内容 ⇒ file:// 包含未发生"
+ }
+]

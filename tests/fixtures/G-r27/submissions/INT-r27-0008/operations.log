@@ -1,0 +1,19 @@
+[2026-10-23T15:30:00Z] cmd#1 docker cp r8_s0.py -> range-attack-noop-1:/tmp/ (cp 不进 guard)
+[2026-10-23T15:30:00Z] cmd#2 guard exec python3 /tmp/r8_s0.py -> probe/r8_s0.out
+  结果: DNS svc-portal=172.28.0.8; 活端口 8007 (Server: BaseHTTP/0.6 Python/3.12.14, GET / => 404 'not found'); 其余 8001-8006/8008 refused。请求 8 发。
+[2026-10-23T15:30:00Z] cmd#3 docker cp r8_s1.py -> range-attack-noop-1:/tmp/ (cp 不进 guard)
+[2026-10-23T15:30:00Z] cmd#4 guard exec python3 /tmp/r8_s1.py -> probe/r8_s1.out
+  结果: GET 字典 100 路径（凭据/信息/SSRF/处理器/资源/XSS/文件/CORS/重定向/管理/SSTI-CMDI/内部 12 族）。非 404 共 6:
+    200 /debug/env  GTINFOLEAK-01 synthetic env (DB_PASS/AWS_KEY 已脱敏)
+    200 /widget     GTRFI-01 synthetic remote include executed
+    200 /page       GTLFI-02 synthetic local file /etc/hostname
+    200 /pages      同 /page（别名）
+    302 /redirect   Location=/redirect, GTREDIR-01
+    401 /admin/clients 'auth required'（无 WWW-Authenticate）
+  其余 94 路径 404。请求 100 发，间隔 0.2s。
+[2026-10-23T15:30:00Z] cmd#5 docker cp r8_s2.py -> range-attack-noop-1:/tmp/ (cp 不进 guard)
+[2026-10-23T15:30:00Z] cmd#6 guard exec python3 /tmp/r8_s2.py -> probe/r8_s2.out
+  结果: POST 形探测 /login /register /token /upload /import /xml /fetch /search /comment /contact × (urlencoded t=1 + JSON {"t":1}) = 20 发，全部 501 Unsupported method（BaseHTTP 未实现 do_POST，GET-only）；urlencoded 与 JSON 响应零差异（同为 357B 错误页）。不带凭据猜测，未发攻击载荷。
+[2026-10-23T15:30:00Z] cmd#7 cp probe/r8_s{0,1,2}.out -> submissions/INT-r27-0008/artifacts/
+[2026-10-23T15:30:00Z] cmd#8 写 submissions/INT-r27-0008/submission.json（9 字段：intent_id/engine/status/facts/findings/assets/edges/creds/operations_log）
+  汇总: 请求合计 128 发（预算 2500）；无凭据获取（creds=[]，无需 vault-note）；findings=[]（本 intent 只做发现）。

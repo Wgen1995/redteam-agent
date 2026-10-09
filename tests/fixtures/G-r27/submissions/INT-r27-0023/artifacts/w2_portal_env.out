@@ -1,0 +1,79 @@
+{
+ "meta": {
+  "intent": "INT-r27-0023",
+  "kind": "info-exposure-env",
+  "ts_literal": "2026-10-23T16:00:00Z"
+ },
+ "cases": [
+  {
+   "path": "/debug/env",
+   "raw_request": "GET /debug/env HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:33 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "91"
+   },
+   "resp_body_excerpt": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>",
+   "body_full": "<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "path": "/debug",
+   "raw_request": "GET /debug HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 404,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:34 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   },
+   "resp_body_excerpt": "not found",
+   "body_full": "not found",
+   "elapsed_ms": 0
+  },
+  {
+   "path": "/graphql",
+   "raw_request": "GET /graphql HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 404,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:34 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   },
+   "resp_body_excerpt": "not found",
+   "body_full": "not found",
+   "elapsed_ms": 1
+  },
+  {
+   "path": "/metrics",
+   "raw_request": "GET /metrics HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 404,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:34 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   },
+   "resp_body_excerpt": "not found",
+   "body_full": "not found",
+   "elapsed_ms": 3
+  },
+  {
+   "path": "/actuator/env",
+   "raw_request": "GET /actuator/env HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 404,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:34 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   },
+   "resp_body_excerpt": "not found",
+   "body_full": "not found",
+   "elapsed_ms": 0
+  }
+ ]
+}

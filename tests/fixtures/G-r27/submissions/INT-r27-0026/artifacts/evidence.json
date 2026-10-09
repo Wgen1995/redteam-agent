@@ -1,0 +1,36 @@
+[
+ {
+  "ev_id": "EV-r27-0026-A1",
+  "finding_key": "svc-files/.env+wstg-info-env",
+  "raw_request": "GET /.env HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:07 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "74"
+  },
+  "resp_body_excerpt": "<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>",
+  "matcher_words": [
+   "GTINFOLEAK-03",
+   "SECRET_KEY"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0026-A2",
+  "finding_key": "svc-files/.env+wstg-info-env",
+  "raw_request": "GET /.env.bak HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:07 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "74"
+  },
+  "resp_body_excerpt": "<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>",
+  "matcher_words": [
+   "GTINFOLEAK-03",
+   "SECRET_KEY"
+  ]
+ }
+]

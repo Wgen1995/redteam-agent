@@ -1,0 +1,27 @@
+{
+  "intent_id": "INT-r27-0008",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "info", "target": "svc-portal", "detail": "DNS=172.28.0.8；8001-8008 中仅 8007 存活，其余 connection refused；指纹 Server=BaseHTTP/0.6 Python/3.12.14；GET / => 404 body='not found'（基线）", "confidence": 0.95},
+    {"kind": "http", "target": "svc-portal/debug/env", "detail": "GET 200，body='<html>GTINFOLEAK-01 synthetic env: DB_PASS=<redacted> AWS_KEY=<redacted></html>'（信息泄露面，值已脱敏）", "confidence": 0.9},
+    {"kind": "http", "target": "svc-portal/widget", "detail": "GET 200，body='<html>GTRFI-01 synthetic remote include executed</html>'（远程包含面）", "confidence": 0.9},
+    {"kind": "http", "target": "svc-portal/page", "detail": "GET 200，body='<html>GTLFI-02 synthetic local file: /etc/hostname content</html>'（本地文件读取面）；/pages 同响应，别名路径", "confidence": 0.9},
+    {"kind": "http", "target": "svc-portal/redirect", "detail": "GET 302，Location=/redirect（自指回环），body 含 'GTREDIR-01 synthetic redirect to %s'（重定向面，目标参数化待后续验证）", "confidence": 0.9},
+    {"kind": "http", "target": "svc-portal/admin/clients", "detail": "GET 401 body='auth required'，无 WWW-Authenticate 头（受保护管理面，需凭据，本 intent 不做猜测）", "confidence": 0.9},
+    {"kind": "http", "target": "svc-portal/*", "detail": "POST 形探测 10 路径 × urlencoded/JSON 双模式共 20 发，全部 501 Unsupported method（GET-only 服务器），两模式响应零差异；/login /register /token /upload /import /xml /fetch /search /comment /contact 均无 POST 面", "confidence": 0.95},
+    {"kind": "info", "target": "svc-portal/*", "detail": "GET 字典 100 路径中 94 个 404；除上述 6 面外凭据族/SSRF 族(除 widget)/处理器族/XSS 族/CORS 族/SSTI-CMDI 族/api 族均无存活路径", "confidence": 0.9}
+  ],
+  "findings": [],
+  "assets": [
+    {"type": "endpoint", "value": "svc-portal:8007/debug/env", "meta": "info-leak, GET 200"},
+    {"type": "endpoint", "value": "svc-portal:8007/widget", "meta": "rfi-surface, GET 200"},
+    {"type": "endpoint", "value": "svc-portal:8007/page", "meta": "lfi-surface, GET 200"},
+    {"type": "endpoint", "value": "svc-portal:8007/pages", "meta": "lfi-surface alias, GET 200"},
+    {"type": "endpoint", "value": "svc-portal:8007/redirect", "meta": "redirect-surface, GET 302"},
+    {"type": "endpoint", "value": "svc-portal:8007/admin/clients", "meta": "protected, GET 401"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

@@ -1,0 +1,1 @@
+{"extracted": {}, "id": "EV-r27-0044", "matched": true, "results": [{"detail": ["auth required"], "ok": true, "type": "word"}, {"detail": ["401"], "ok": true, "type": "status"}], "status": 401, "suggest": "tanyin-ledger set-replay-state --goal-dir /tmp/G-r27 --id=EV-r27-0044 --state=VERIFIED", "verdict": "reproduced"}

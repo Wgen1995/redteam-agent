@@ -1,0 +1,101 @@
+[
+ {
+  "ev_id": "EV-r27-0024-A1",
+  "finding_key": "svc-files/unserialize+wstg-inpv-deser",
+  "raw_request": "GET /unserialize?data=R1RERVNFUi1CNjQtUFJPQkU%3D HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:39 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "56"
+  },
+  "resp_body_excerpt": "<html>GTDESER-01 synthetic pickle object inflated</html>",
+  "matcher_words": [
+   "GTDESER-01",
+   "object inflated"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0024-C1",
+  "finding_key": "svc-files/unserialize+wstg-inpv-deser:control",
+  "raw_request": "GET /unserialize HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:38 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "56"
+  },
+  "resp_body_excerpt": "<html>GTDESER-01 synthetic pickle object inflated</html>",
+  "matcher_words": [
+   "GTDESER-01"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0024-A2",
+  "finding_key": "svc-files/import+wstg-inpv-deser",
+  "raw_request": "GET /import?data=R1RERVNFUi1CNjQtUFJPQkU%3D HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:41 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "63"
+  },
+  "resp_body_excerpt": "<html>GTDESER-02 synthetic java serialized blob accepted</html>",
+  "matcher_words": [
+   "GTDESER-02",
+   "java serialized blob accepted"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0024-C2",
+  "finding_key": "svc-files/import+wstg-inpv-deser:control",
+  "raw_request": "GET /import HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:38 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "63"
+  },
+  "resp_body_excerpt": "<html>GTDESER-02 synthetic java serialized blob accepted</html>",
+  "matcher_words": [
+   "GTDESER-02"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0024-A3",
+  "finding_key": "svc-files/decode+wstg-inpv-deser",
+  "raw_request": "GET /decode?data=R1RERVNFUi1CNjQtUFJPQkU%3D HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:44 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "64"
+  },
+  "resp_body_excerpt": "<html>GTDESER-03 synthetic base64 payload object inflated</html>",
+  "matcher_words": [
+   "GTDESER-03",
+   "payload object inflated"
+  ]
+ },
+ {
+  "ev_id": "EV-r27-0024-C3",
+  "finding_key": "svc-files/decode+wstg-inpv-deser:control",
+  "raw_request": "GET /decode HTTP/1.1\r\nHost: svc-files:8008\r\nConnection: close\r\n\r\n",
+  "resp_status": 200,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:38 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Content-Length": "64"
+  },
+  "resp_body_excerpt": "<html>GTDESER-03 synthetic base64 payload object inflated</html>",
+  "matcher_words": [
+   "GTDESER-03"
+  ]
+ }
+]

@@ -1,0 +1,36 @@
+{
+  "intent_id": "INT-r27-0014",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "http",
+      "target": "svc-api-gw/fetch",
+      "detail": "SSRF 矩阵阴性（GET）：编码轮 face=/fetch × 6 参数族（url/target/uri/dest/host/path）× 4 载荷形（http://svc-login:8004/、http://127.0.0.1:8002/、file:///etc/hostname、http://example.com）全 24 组合 200/72B，与无参数及空参数控制对逐字节相同（正文恒为 '<html>fetch GTSSRF-01 synthetic internal doc: internal-secret-doc</html>'）；未编码原值轮（含补测 u 参数族，另 28 组合）同样零差分。无 svc-login 正文回显、无 hostname 回显、无 Example-Domain 回显、无状态/长度/时延分化（elapsed 1-4ms，无外联取回时延）。",
+      "confidence": 0.9
+    },
+    {
+      "kind": "http",
+      "target": "svc-api-gw/preview",
+      "detail": "SSRF 矩阵阴性（GET）：同上矩阵全组合 200/72B 恒为 '<html>preview GTSSRF-02 synthetic webhook meta: internal-metadata</html>'，编码+未编码两轮均与控制零差分，参数被完全忽略。",
+      "confidence": 0.9
+    },
+    {
+      "kind": "http",
+      "target": "svc-api-gw/proxy",
+      "detail": "SSRF 矩阵阴性（GET）：同上矩阵全组合 200/58B 恒为 '<html>proxy GTSSRF-03 synthetic internal fetch done</html>'，编码+未编码两轮均与控制零差分。",
+      "confidence": 0.9
+    },
+    {
+      "kind": "info",
+      "target": "svc-api-gw/fetch+preview+proxy",
+      "detail": "机理判断：三端点对任意查询参数无任何行为响应（body/headers/状态/时延全不变），且 /jump 证实服务器读取原始 QS 不做百分号解码——已排除『编码形态掩盖取回行为』的假阴性来源（两轮均已测）。F-r27-0015 的 GTSSRF-01 信号仅为正文中的静态合成标签字符串，不代表参数驱动的服务端取回能力。GET 通道上 SSRF 判据（内容回显或强行为差分）完全未触发：0 confirmed、0 suspected。",
+      "confidence": 0.85
+    }
+  ],
+  "findings": [],
+  "assets": [],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

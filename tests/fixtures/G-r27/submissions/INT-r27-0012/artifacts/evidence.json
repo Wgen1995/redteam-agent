@@ -1,0 +1,174 @@
+[
+  {
+    "finding_key": "FK-r27-0012-search-xss",
+    "raw_request": "GET /search?q=<img/src=x/onerror=probe7x9> HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:39:54 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "89"
+    },
+    "resp_body_excerpt": "<html>search results <img/src=x/onerror=probe7x9> GTXSS-01 synthetic reflected xss</html>",
+    "matcher_words": [
+      "onerror=probe7x9",
+      "<img",
+      "GTXSS-01"
+    ],
+    "note": "distinctive markers present: onerror=probe7x9;<img;GTXSS-01"
+  },
+  {
+    "finding_key": "FK-r27-0012-search-xss-tag",
+    "raw_request": "GET /search?q=<b>bold7x9</b> HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:38:22 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "75"
+    },
+    "resp_body_excerpt": "<html>search results <b>bold7x9</b> GTXSS-01 synthetic reflected xss</html>",
+    "matcher_words": [
+      "bold7x9",
+      "<b>",
+      "GTXSS-01"
+    ],
+    "note": "distinctive markers present: bold7x9;<b>;GTXSS-01"
+  },
+  {
+    "finding_key": "FK-r27-0012-search-xss-control-encoded",
+    "raw_request": "GET /search?q=%3Cimg%20src%3Dx%20onerror%3Dprobe7x9%3E HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:36:09 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "101"
+    },
+    "resp_body_excerpt": "<html>search results %3Cimg%20src%3Dx%20onerror%3Dprobe7x9%3E GTXSS-01 synthetic reflected xss</html>",
+    "matcher_words": [
+      "GTXSS-01"
+    ],
+    "note": "distinctive markers present: "
+  },
+  {
+    "finding_key": "FK-r27-0012-reply-xss",
+    "raw_request": "GET /reply?text=<img/src=x/onerror=probe7x9> HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:39:57 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "80"
+    },
+    "resp_body_excerpt": "<html>reply <img/src=x/onerror=probe7x9> GTXSS-03 synthetic reflected xss</html>",
+    "matcher_words": [
+      "onerror=probe7x9",
+      "<img",
+      "GTXSS-03"
+    ],
+    "note": "distinctive markers present: onerror=probe7x9;<img;GTXSS-03"
+  },
+  {
+    "finding_key": "FK-r27-0012-reply-xss-tag",
+    "raw_request": "GET /reply?text=<b>bold7x9</b> HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:38:27 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "66"
+    },
+    "resp_body_excerpt": "<html>reply <b>bold7x9</b> GTXSS-03 synthetic reflected xss</html>",
+    "matcher_words": [
+      "bold7x9",
+      "<b>",
+      "GTXSS-03"
+    ],
+    "note": "distinctive markers present: bold7x9;<b>;GTXSS-03"
+  },
+  {
+    "finding_key": "FK-r27-0012-reply-xss-control-encoded",
+    "raw_request": "GET /reply?text=%3Cimg%20src%3Dx%20onerror%3Dprobe7x9%3E HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:36:28 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "92"
+    },
+    "resp_body_excerpt": "<html>reply %3Cimg%20src%3Dx%20onerror%3Dprobe7x9%3E GTXSS-03 synthetic reflected xss</html>",
+    "matcher_words": [
+      "GTXSS-03"
+    ],
+    "note": "distinctive markers present: "
+  },
+  {
+    "finding_key": "FK-r27-0012-feedback-xss",
+    "raw_request": "GET /feedback?msg=<img/src=x/onerror=probe7x9> HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:39:59 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "83"
+    },
+    "resp_body_excerpt": "<html>feedback <img/src=x/onerror=probe7x9> GTXSS-04 synthetic reflected xss</html>",
+    "matcher_words": [
+      "onerror=probe7x9",
+      "<img",
+      "GTXSS-04"
+    ],
+    "note": "distinctive markers present: onerror=probe7x9;<img;GTXSS-04"
+  },
+  {
+    "finding_key": "FK-r27-0012-feedback-xss-tag",
+    "raw_request": "GET /feedback?msg=<b>bold7x9</b> HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:38:30 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "69"
+    },
+    "resp_body_excerpt": "<html>feedback <b>bold7x9</b> GTXSS-04 synthetic reflected xss</html>",
+    "matcher_words": [
+      "bold7x9",
+      "<b>",
+      "GTXSS-04"
+    ],
+    "note": "distinctive markers present: bold7x9;<b>;GTXSS-04"
+  },
+  {
+    "finding_key": "FK-r27-0012-feedback-xss-control-encoded",
+    "raw_request": "GET /feedback?msg=%3Cimg%20src%3Dx%20onerror%3Dprobe7x9%3E HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:36:36 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "95"
+    },
+    "resp_body_excerpt": "<html>feedback %3Cimg%20src%3Dx%20onerror%3Dprobe7x9%3E GTXSS-04 synthetic reflected xss</html>",
+    "matcher_words": [
+      "GTXSS-04"
+    ],
+    "note": "distinctive markers present: "
+  },
+  {
+    "finding_key": "FK-r27-0012-comment-neg",
+    "raw_request": "GET /comment?q=<img/src=x/onerror=probe7x9> HTTP/1.1\r\nHost: svc-shop:8001\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Server": "BaseHTTP/0.6 Python/3.12.14",
+      "Date": "Fri, 09 Oct 2026 15:39:56 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "55"
+    },
+    "resp_body_excerpt": "<html>comment GTXSS-02 synthetic stored xss echo</html>",
+    "matcher_words": [
+      "GTXSS-02"
+    ],
+    "note": "distinctive markers present: "
+  }
+]

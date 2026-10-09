@@ -1,0 +1,191 @@
+{
+  "intent_id": "INT-r27-0010",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "info",
+      "target": "svc-login/login#keyname",
+      "detail": "键名族 15 组叉乘定形探针（user/username/name/account/email × pass/password/pwd，固定 admin/wrongone，urlencoded）全部 403 len72 无分化（仅全局计数器递增）；按手册表单子串定律取规范键 user/pass 即命中——battle-6 RT-0004 教训在本靶场复现（键名规范形 user=/pass= 即收）。",
+      "confidence": 0.99
+    },
+    {
+      "kind": "http",
+      "target": "cross:shared-auth-token",
+      "detail": "跨服务共享令牌：svc-login(admin/admin123，X-Auth-Token 头发放)、svc-admin(admin/admin123，体回显 'token <tok>')、svc-billing(alice/alice123，体回显) 三面不同账号登录均发放同一字面令牌（真值见 vault:cred-1..3，三者同字面）→ 单一认证后端、令牌不绑定账号/角色——跨服务信任/会话固定强素材（authz 轮消费）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "cross:auth-baseline",
+      "detail": "持证差分基线（阴性）：tok（X-Auth-Token 头形）回访三面——svc-login GET / 200 '<html>login form</html>'（catch-all 不按鉴权分流）、POST /me /session /logout 全 403 denied(len72 GTRATE-01 计数体)；svc-admin/svc-billing GET / 404 'not found'、POST /me /session /logout 全 403 'denied'(len6)。另测 Authorization: Bearer / Cookie(token=) / Cookie(X-Auth-Token=) 三种呈现变体 POST svc-login /me 亦全 403。持证与匿名响应零差异——该令牌字面在四形呈现下均未激活任何鉴权态；authz 轮需另寻令牌消费面（特定端点/头名/或需 admin 级令牌字面）。",
+      "confidence": 0.98
+    },
+    {
+      "kind": "http",
+      "target": "cross:userenum",
+      "detail": "账号枚举验证（阴性）：三面各测 existing(svc-login=admin / svc-admin=admin / svc-billing=alice) vs nonexist9x7、同错口令 wrongone——状态码、字节长、体内容零差异（svc-login 两探均 403 len72，体仅全局计数器数字变；svc-admin/svc-billing 两探均 403 len6 'denied'），时延差 0-3ms 噪声级。本手法下三面均无用户枚举面。",
+      "confidence": 0.95
+    },
+    {
+      "kind": "http",
+      "target": "cross:rate-counter",
+      "detail": "登录尝试全局计数器跨面共享且连号：本委派窗口 svc-login 拒绝体计数 287→313（26 拒绝+1 成功），含 svc-admin/svc-billing 尝试窗口内交错仍连号无重置；全程 0-3ms 无降速、无锁定、无封禁——与拒绝体自证标记 'GTRATE-01 synthetic no rate limit' 互证，无限流设计实锤（弱口令连击可行性根基）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "info",
+      "target": "cross:issuance-shape",
+      "detail": "令牌发放形态差异：svc-login 命中=200 len75 '<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>' + X-Auth-Token 响应头（头形发放）；svc-admin/svc-billing 命中=200 len17 纯文本 'token <tok>'（体回显发放，无头无标记）。三面 Server 指纹同为 BaseHTTP/0.6 Python/3.12.14。",
+      "confidence": 1.0
+    }
+  ],
+  "findings": [
+    {
+      "title": "svc-login 登录面弱口令：admin/admin123 命中并经 X-Auth-Token 发放会话令牌（GTWEAKPASS-01）",
+      "confidence": "C1",
+      "impact": "高",
+      "exploitation_status": "confirmed",
+      "location": "svc-login/login",
+      "reproducible_steps": [
+        "自攻击容器发原始请求（逐字节见 artifacts/evidence.json 条目 svc-login/login#weakpass）：POST /login HTTP/1.1，Host: svc-login:8004，Content-Type: application/x-www-form-urlencoded，body 'user=admin&pass=admin123'（规范键 user/pass，15 组键名叉乘探针证实失败响应无键名分化）",
+        "前 2 对 admin/admin、admin/password 均 403 denied（len72），第 3 对即中：200 len75 body 含 'GTWEAKPASS-01 synthetic weak credential accepted'，响应头 X-Auth-Token 发放令牌（真值 vault:cred-1）",
+        "面无限流（同窗 26 连拒无锁定），爆破可行性实证"
+      ],
+      "preconditions": [
+        "容器网内可达 svc-login:8004（攻击容器 range-attack-noop-1 直连）",
+        "无认证前提（匿名可达登录面）",
+        "无速率限制（已实证 300+ 累计尝试无锁定/降速）"
+      ]
+    },
+    {
+      "title": "svc-admin 登录面弱口令：admin/admin123 命中，体回显会话令牌（与 svc-login 令牌同字面，跨服务共享）",
+      "confidence": "C1",
+      "impact": "高",
+      "exploitation_status": "confirmed",
+      "location": "svc-admin/login",
+      "reproducible_steps": [
+        "POST /login HTTP/1.1，Host: svc-admin:8003，Content-Type: application/x-www-form-urlencoded，body 'user=admin&pass=admin123'（admin 族首对即中，逐字节见 evidence.json 条目 svc-admin/login#weakpass）",
+        "哑值基线 403 'denied'(len6)；命中 200 len17 纯文本 body 'token <令牌真值 vault:cred-2>'（体回显发放）",
+        "令牌字面与 svc-login 发放一致（vault:cred-2 同 cred-1 字面）——admin 级面凭据与用户面共享会话素材"
+      ],
+      "preconditions": [
+        "容器网内可达 svc-admin:8003",
+        "无认证前提（登录面匿名可达；GET 面路径盲 401 不影响 POST 登录）",
+        "无速率限制"
+      ]
+    },
+    {
+      "title": "svc-billing 登录面弱口令：alice/alice123 命中，体回显会话令牌（同字面跨服务共享）",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "confirmed",
+      "location": "svc-billing/login",
+      "reproducible_steps": [
+        "POST /login HTTP/1.1，Host: svc-billing:8005，Content-Type: application/x-www-form-urlencoded，body 'user=alice&pass=alice123'（手册在案对，首对即中，逐字节见 evidence.json 条目 svc-billing/login#weakpass）",
+        "哑值基线 403 'denied'(len6)；命中 200 len17 body 'token <令牌真值 vault:cred-3>'（体回显发放）",
+        "与 admin 账号亦同令牌字面——令牌不绑定账号实证"
+      ],
+      "preconditions": [
+        "容器网内可达 svc-billing:8005",
+        "无认证前提",
+        "无速率限制"
+      ]
+    },
+    {
+      "title": "登录面无速率限制（GTRATE-01）：全局计数器跨面共享、累计 313+ 尝试无锁定无降速",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "confirmed",
+      "location": "svc-login/login",
+      "reproducible_steps": [
+        "对 svc-login:8004 POST /login 持续发错误凭据（如 body 'user=admin&pass=wrongone'，逐字节见 evidence.json 条目 svc-login/login#no-rate-limit）",
+        "每拒绝响应体自带计数器与自证标记：'<html>denied GTRATE-01 synthetic no rate limit after NNN attempts</html>'（本窗口实测 N=287→313 连号）",
+        "全窗 26 连拒 + 前序回合累计 287 次，响应时延恒 0-3ms、状态恒 403、无锁定/降速/封禁——暴力枚举无限流约束（本次三面弱口令 5 发内全中为其直接后果）"
+      ],
+      "preconditions": [
+        "容器网内可达 svc-login:8004（计数器行为跨三登录面共享观测）",
+        "无认证前提"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "asset": "svc-login:8004 /login 登录发放面（弱口令命中 admin/admin123，X-Auth-Token 头形发放，GTWEAKPASS-01）",
+      "evidence": "probe/int0010_weak_login.out"
+    },
+    {
+      "asset": "svc-admin:8003 /login 登录发放面（弱口令命中 admin/admin123，体回显发放）",
+      "evidence": "probe/int0010_weak_admin.out"
+    },
+    {
+      "asset": "svc-billing:8005 /login 登录发放面（弱口令命中 alice/alice123，体回显发放）",
+      "evidence": "probe/int0010_weak_billing.out"
+    },
+    {
+      "asset": "共享会话令牌（三面/两账号同字面，真值在 artifacts/vault-note.txt，占位 {{vault:cred-1..3}}）",
+      "evidence": "artifacts/vault-note.txt"
+    },
+    {
+      "asset": "键名定形+枚举差分+持证基线原始观测（15 键名叉乘/6 枚举对照/16 持证回访含 4 呈现变体）",
+      "evidence": "probe/int0010_keyname.out + probe/int0010_enum.out + probe/int0010_token.out + probe/int0010_tpres.out"
+    }
+  ],
+  "edges": [
+    {
+      "from": "svc-login/login",
+      "to": "cross:shared-auth-token",
+      "kind": "issues",
+      "meta": "X-Auth-Token 头形发放令牌，字面与 svc-admin/svc-billing 体回显一致（单一认证后端假设）",
+      "src_fact": "F2"
+    },
+    {
+      "from": "svc-admin/login",
+      "to": "cross:shared-auth-token",
+      "kind": "issues",
+      "meta": "admin/admin123 体回显同字面令牌（admin 级面）",
+      "src_fact": "F2"
+    },
+    {
+      "from": "svc-billing/login",
+      "to": "cross:shared-auth-token",
+      "kind": "issues",
+      "meta": "alice/alice123 体回显同字面令牌（与 admin 账号同令牌——令牌不绑定账号）",
+      "src_fact": "F2"
+    },
+    {
+      "from": "cross:shared-auth-token",
+      "to": "svc-login/me",
+      "kind": "rejected-by",
+      "meta": "四形呈现（X-Auth-Token/Bearer/Cookie×2）回访 /me /session /logout 全 403——令牌消费面未在此三服务生命周期端点（authz 轮线索：另寻消费端点或 admin 级字面）",
+      "src_fact": "F3"
+    }
+  ],
+  "creds": [
+    {
+      "kind": "session",
+      "role": "user",
+      "username_ref": "admin",
+      "secret_ref": "{{vault:cred-1}}",
+      "scope_asset": "svc-login",
+      "permitted_actions": "read"
+    },
+    {
+      "kind": "session",
+      "role": "admin",
+      "username_ref": "admin",
+      "secret_ref": "{{vault:cred-2}}",
+      "scope_asset": "svc-admin",
+      "permitted_actions": "read"
+    },
+    {
+      "kind": "session",
+      "role": "user",
+      "username_ref": "alice",
+      "secret_ref": "{{vault:cred-3}}",
+      "scope_asset": "svc-billing",
+      "permitted_actions": "read"
+    }
+  ],
+  "operations_log": "operations.log"
+}

@@ -1,0 +1,5 @@
+CRED-r27-0001	static-cred	user	admin	{{vault:cred-1}}		INT-r27-0010				active		弱口令对 admin/admin123	2	2026-10-23T16:36:00Z	
+CRED-r27-0002	static-cred	user	alice	{{vault:cred-2}}		INT-r27-0010				active		弱口令对 alice/alice123	2	2026-10-23T16:36:10Z	
+CRED-r27-0003	session	user	admin	{{vault:cred-3}}	AST-r27-0005	INT-r27-0010	CRED-r27-0001			active		svc-login 发放（X-Auth-Token 头形）；权限面待authz差分	2	2026-10-23T16:36:20Z	
+CRED-r27-0004	session	user	admin	{{vault:cred-4}}	AST-r27-0004	INT-r27-0010	CRED-r27-0001			active		svc-admin 发放（体回显；token 跨服务同字面）	2	2026-10-23T16:36:30Z	
+CRED-r27-0005	session	user	alice	{{vault:cred-5}}	AST-r27-0006	INT-r27-0010	CRED-r27-0002			active		svc-billing 发放（体回显；token 跨服务同字面）	2	2026-10-23T16:36:40Z	

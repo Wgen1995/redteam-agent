@@ -1,0 +1,28 @@
+{
+  "delegation_id": "INT-r27-0007",
+  "engine": "web-blackbox/recon",
+  "target": "svc-dashboard",
+  "timestamp": "2026-10-23T15:30:00Z",
+  "status": "completed",
+  "facts": [
+    {"kind": "info", "target": "svc-dashboard/dns", "evidence": "getaddrinfo => 172.28.0.6 (gethostbyname_ex: svc-dashboard -> [172.28.0.6])", "source": "recon0_ports.out"},
+    {"kind": "info", "target": "svc-dashboard/port-sweep", "evidence": "8001-8005/8007/8008 connection refused; 8006 唯一活端口; Server: BaseHTTP/0.6 Python/3.12.14 (自写 Python http.server 系)", "source": "recon0_ports.out"},
+    {"kind": "http", "target": "svc-dashboard/", "evidence": "GET / => 404, body 'not found' (9B), 无 Set-Cookie/CORS/WWW-Authenticate —— 全站基线", "source": "recon0_ports.out"},
+    {"kind": "info", "target": "svc-dashboard/dict-spray", "evidence": "94 路径 GET 字典喷洒（12 族）: 90 路径与基线完全同质(404/9B/'not found')；响应头全程无 Set-Cookie / Access-Control-Allow-Origin / WWW-Authenticate / X-Powered-By", "source": "recon1_paths.out"},
+    {"kind": "http", "target": "svc-dashboard/render", "evidence": "GET /render => 200 (59B) '<html>render GTSSTI-02 synthetic ssti render /render</html>' —— 未认证可达，自述为 ssti render 端点", "source": "recon1_paths.out"},
+    {"kind": "http", "target": "svc-dashboard/report", "evidence": "GET /report => 200 (59B) '<html>report GTSSTI-01 synthetic ssti render /report</html>' —— 未认证可达，同为 ssti render 面", "source": "recon1_paths.out"},
+    {"kind": "http", "target": "svc-dashboard/ping", "evidence": "GET /ping => 200 (73B) 'ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1' —— 服务端执行并回显输出，未认证", "source": "recon1_paths.out"},
+    {"kind": "http", "target": "svc-dashboard/admin/config", "evidence": "GET /admin/config => 401 'auth required' (13B) —— 唯一鉴权门面；其余 /admin/* 均 404", "source": "recon1_paths.out"},
+    {"kind": "http", "target": "svc-dashboard/post-layer", "evidence": "POST 探测 13 路径 × {urlencoded t=1, JSON {\"t\":1}, 空 body} 全部 => 400 'bad request' (11B)，与路径是否存在无关（GET 404 的 /login 与 GET 200 的 /render 同样 400）—— 存在独立 POST 处理层，body schema 不匹配即 400，未猜 schema", "source": "recon2_post.out + recon2b_methods.out"},
+    {"kind": "http", "target": "svc-dashboard/method-surface", "evidence": "OPTIONS 任意路径 => 501 BaseHTTPRequestHandler 默认错误页(360B) 无 Allow 头 —— 未实现 do_OPTIONS，非标准框架", "source": "recon2b_methods.out"}
+  ],
+  "assets": [
+    {"id": "A1", "surface": "http://svc-dashboard:8006/render", "type": "ssti-render", "auth": "none", "confidence": "confirmed-200", "note": "GET 未认证 200，自述 synthetic ssti render"},
+    {"id": "A2", "surface": "http://svc-dashboard:8006/report", "type": "ssti-render", "auth": "none", "confidence": "confirmed-200", "note": "GET 未认证 200，与 /render 同族"},
+    {"id": "A3", "surface": "http://svc-dashboard:8006/ping", "type": "cmd-exec-echo", "auth": "none", "confidence": "confirmed-200", "note": "服务端已执行命令并回显输出（64 bytes from 127.0.0.1）"},
+    {"id": "A4", "surface": "http://svc-dashboard:8006/admin/config", "type": "admin-auth-gated", "auth": "401-gate", "confidence": "confirmed-401", "note": "唯一鉴权面；凭据未知，未做猜测（铁律）"},
+    {"id": "A5", "surface": "svc-dashboard:8006 POST 处理层", "type": "post-schema-gate", "auth": "unknown", "confidence": "behavioral", "note": "任意路径 POST 均被 schema 校验挡 400；POST 路由集与所需字段未探明（超出纯发现边界）"}
+  ],
+  "findings": [],
+  "budget_used": {"requests": 141, "budget_requests": 2500, "wall_clock": "well-within 1h", "note": "请求全部经 range-attack-noop-1 容器 + tanyin-guard exec，间隔>=0.22s，无凭据猜测无攻击载荷；未发现任何凭据，vault-note 无条目"}
+}

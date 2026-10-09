@@ -1,0 +1,2 @@
+2026-10-23T16:00:00Z 执行链：1) 写 w2_files_trav.py（双面基线+七参数族×四载荷形+POST form+变体，76请求，间隔0.25s）2) docker cp → /tmp/ 3) tanyin-guard exec → probe/w2_files_trav.out 4) /download root:x:0 双形命中；/static shadow 双形命中；POST 全 400。
+probe/w2_files_{deser,trav,env}.{py,out}（host 侧 /Users/wgen/.tanyin/battles/battle-26/probe/，经 docker cp → range-attack-noop-1:/tmp/ → tanyin-guard exec docker exec 执行，timestamp=2026-10-23T16:00:00Z，请求间隔>=0.25s）

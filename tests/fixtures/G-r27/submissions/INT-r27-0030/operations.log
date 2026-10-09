@@ -1,0 +1,10 @@
+2026-10-23T16:45:00Z  INT-r27-0030 web-blackbox 身份矩阵差分（受保护面 × {{vault:cred-3}} authz-diff 举证）开工
+2026-10-23T16:45:00Z  OP00 输入：消费 0028 持证横扫实测数据（7 受保护 200 面：shop/reports、api-gw/keys、admin/orders、admin/invoices、dashboard/config、portal/clients、files/logs）——差分对证据直接取自 probe/w3_resource.out 全量捕获，无补发需求
+2026-10-23T16:45:00Z  OP01 差分对铸形：7 面 ×（匿名对照+持证实验）=14 发，pair_group PG1..PG7（同面两条共用组）；全部 401 'auth required'(len13) vs 200 含 distinctive 串（GTIDOR-06/05/01/02、GTROLE-03/04、GTHAUTH-05）——401→200 翻转 7/7 成立
+2026-10-23T16:45:00Z  OP02 判定：user 级令牌可读管理面 → 越权 7 枚全 confirmed C1——idor 4 枚（GTIDOR-01 admin/orders 'user 101 (not caller)'、GTIDOR-02 admin/invoices 'user 202 (not caller)'、GTIDOR-05 api-gw/keys 低权可见密钥清单、GTIDOR-06 shop/reports 他人报表）、role 2 枚（GTROLE-03 dashboard/config、GTROLE-04 files/logs）、hauth 1 枚（GTHAUTH-05 portal/clients 客户清单）；impact 高 4 / 中 3
+2026-10-23T16:45:00Z  OP03 idor 跨 id 验证：4 idor 面尾段 /1 /2 /3 与查询 ?id=1 /?user_id=1 持证全 200（体与母面一致，合成静态体）、匿名全 401——跨 id 可读成立；每 idor 面补 tail 证据条（evidence.json #idor-tail）
+2026-10-23T16:45:00Z  OP04 CSRF 面探测（阴性）：7 面持证 POST 不带 Origin/Referer——shop/api-gw/portal 501 Unsupported method、admin 403 denied、dashboard/files 400；无 POST 200 面即无状态变更面 → CSRF 候选为零（记 fact）
+2026-10-23T16:45:00Z  OP05 负结果如实记录：svc-billing 持证十名词全 404（令牌被接受但无数据面）；svc-login catch-all 无鉴权门；svc-admin 其余八名词 404；Bearer/Cookie 形全 401——令牌消费面=六服务 /admin 数据面
+2026-10-23T16:45:00Z  OP06 组装提交包：artifacts/evidence.json 18 条（14 差分对 + 4 idor 尾段补充，raw_request 逐字节可重放、令牌一律 {{vault:cred-3}} 占位）；findings 7（title 含面+角色、auth_context={{vault:cred-3}}、preconditions 持有效会话）；facts 4；edges 7
+2026-10-23T16:45:00Z  统计：0030 零新增请求（全消费 0028 实测 319 发窗口内证据）；差分对 14（含对照）+尾段/查询佐证 70 发在案；输出零令牌字面
+2026-10-23T16:45:00Z  INT-r27-0030 收口：status=done；findings 7（idor 4 / role 2 / hauth 1，全 confirmed C1）；CSRF 阴性闭环

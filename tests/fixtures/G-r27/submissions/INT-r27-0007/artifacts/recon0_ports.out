@@ -1,0 +1,74 @@
+{
+ "ts": "2026-10-23T15:30:00Z",
+ "host": "svc-dashboard",
+ "dns": {
+  "gethostbyname_ex": [
+   "svc-dashboard",
+   [
+    "svc-dashboard"
+   ],
+   [
+    "172.28.0.6"
+   ]
+  ],
+  "getaddrinfo": [
+   "172.28.0.6"
+  ]
+ },
+ "ports": [
+  {
+   "url": "http://svc-dashboard:8001/",
+   "status": null,
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>",
+   "port": 8001
+  },
+  {
+   "url": "http://svc-dashboard:8002/",
+   "status": null,
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>",
+   "port": 8002
+  },
+  {
+   "url": "http://svc-dashboard:8003/",
+   "status": null,
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>",
+   "port": 8003
+  },
+  {
+   "url": "http://svc-dashboard:8004/",
+   "status": null,
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>",
+   "port": 8004
+  },
+  {
+   "url": "http://svc-dashboard:8005/",
+   "status": null,
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>",
+   "port": 8005
+  },
+  {
+   "url": "http://svc-dashboard:8006/",
+   "status": 404,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   },
+   "body_head": "not found",
+   "body_len": 9,
+   "port": 8006
+  },
+  {
+   "url": "http://svc-dashboard:8007/",
+   "status": null,
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>",
+   "port": 8007
+  },
+  {
+   "url": "http://svc-dashboard:8008/",
+   "status": null,
+   "error": "URLError: <urlopen error [Errno 111] Connection refused>",
+   "port": 8008
+  }
+ ]
+}

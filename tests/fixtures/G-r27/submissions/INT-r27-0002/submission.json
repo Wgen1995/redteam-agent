@@ -1,0 +1,111 @@
+{
+  "intent_id": "INT-r27-0002",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "info",
+      "target": "svc-shop/dns",
+      "detail": "DNS 解析成功：svc-shop -> 172.28.0.9（容器内解析，单一 A 记录）",
+      "confidence": 0.9
+    },
+    {
+      "kind": "info",
+      "target": "svc-shop/ports",
+      "detail": "端口扫描 8001-8008：仅 8001 存活（HTTP 响应）；8002-8008 全部 Connection refused",
+      "confidence": 0.9
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/",
+      "detail": "GET / -> 404 'not found' (9B)；Server: BaseHTTP/0.6 Python/3.12.14；指纹=Python http.server 系单进程服务",
+      "confidence": 0.9
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/item",
+      "detail": "GET -> 200 text/html 66B：'product page GTSQLI-01 synthetic SQL error near ''1'''——错误型 SQLi 信号，裸面即回 SQL 错误",
+      "confidence": 0.9
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/order",
+      "detail": "GET -> 200 text/html 60B：'order page GTSQLI-02 synthetic SQL syntax error'——第二处 SQL 错误回显面",
+      "confidence": 0.9
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/search",
+      "detail": "GET -> 200 text/html 68B：'search results /search GTXSS-01 synthetic reflected xss'——反射 XSS 面，路径自回显",
+      "confidence": 0.85
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/comment",
+      "detail": "GET -> 200 text/html 55B：'comment GTXSS-02 synthetic stored xss echo'——存储型 XSS 面",
+      "confidence": 0.85
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/reply",
+      "detail": "GET -> 200 text/html 58B：'reply /reply GTXSS-03 synthetic reflected xss'——反射 XSS 面",
+      "confidence": 0.85
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/feedback",
+      "detail": "GET -> 200 text/html 64B：'feedback /feedback GTXSS-04 synthetic reflected xss'——反射 XSS 面",
+      "confidence": 0.85
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/logout",
+      "detail": "GET -> 302 Location=/logout（自指重定向）；body 'GTREDIR-02 synthetic redirect to %s'——%s 未替换即回显，重定向处理/格式串缺陷信号，body 提示重定向目标可注入",
+      "confidence": 0.8
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/admin/reports",
+      "detail": "GET -> 401 'auth required' (13B)——唯一管理面，鉴权保护，无 WWW-Authenticate 头",
+      "confidence": 0.9
+    },
+    {
+      "kind": "info",
+      "target": "svc-shop/method-matrix",
+      "detail": "POST 形探测（urlencoded t=1 与 JSON {\"t\":1} 各一发，15 路径×2=30 请求）：全部 501 Unsupported method（BaseHTTP 默认错误页 357B），两种 Content-Type 零差异——服务仅实现 do_GET，为纯 GET 服务",
+      "confidence": 0.9
+    },
+    {
+      "kind": "info",
+      "target": "svc-shop/cors",
+      "detail": "全路径族未观察到任何 Access-Control-Allow-Origin / ACAH / ACAC 响应头；/cors /cors-debug /origin 均 404——CORS 面在本服务不存在",
+      "confidence": 0.8
+    }
+  ],
+  "findings": [],
+  "assets": [
+    { "type": "endpoint", "value": "svc-shop/item", "meta": "200|GET-only|sql-error-echo|GTSQLI-01" },
+    { "type": "endpoint", "value": "svc-shop/order", "meta": "200|GET-only|sql-error-echo|GTSQLI-02" },
+    { "type": "endpoint", "value": "svc-shop/search", "meta": "200|GET-only|reflected-xss-signal|GTXSS-01" },
+    { "type": "endpoint", "value": "svc-shop/comment", "meta": "200|GET-only|stored-xss-signal|GTXSS-02" },
+    { "type": "endpoint", "value": "svc-shop/reply", "meta": "200|GET-only|reflected-xss-signal|GTXSS-03" },
+    { "type": "endpoint", "value": "svc-shop/feedback", "meta": "200|GET-only|reflected-xss-signal|GTXSS-04" },
+    { "type": "endpoint", "value": "svc-shop/logout", "meta": "302|self-redirect|redirect-signal|GTREDIR-02" },
+    { "type": "endpoint", "value": "svc-shop/admin/reports", "meta": "401|auth-required|admin-surface" }
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": [
+    "预检：ls cli/tanyin-guard（存在）；docker ps 确认 range-attack-noop-1 Up；mkdir -p submissions/INT-r27-0002/artifacts/scripts",
+    "写 artifacts/scripts/r27_probe0_ports.py（DNS+8001-8008 端口发现，禁跟随重定向，timeout 5s，间隔 0.2s）",
+    "docker cp r27_probe0_ports.py range-attack-noop-1:/tmp/（docker cp 不进 guard）",
+    "cli/tanyin-guard exec --goal-dir /Users/wgen/.tanyin/battles/battle-26/G-r27 --timestamp=2026-10-23T15:30:00Z -- docker exec range-attack-noop-1 python3 /tmp/r27_probe0_ports.py > battle-26/probe/r27_probe0_ports.out（exit=0，8 请求）",
+    "写 artifacts/scripts/r27_probe1_get.py（GET 字典喷洒：11 路径族 88 去重路径，记录状态/CT/Location/ACAO/正文前 400 字符，间隔 0.2s）",
+    "docker cp r27_probe1_get.py range-attack-noop-1:/tmp/",
+    "cli/tanyin-guard exec ... python3 /tmp/r27_probe1_get.py > battle-26/probe/r27_probe1_get.out（exit=0，88 请求）",
+    "写 artifacts/scripts/r27_probe2_post.py（POST 形探测：9 指定路径+6 发现面，urlencoded t=1 与 JSON {\"t\":1} 各一发，间隔 0.2s）",
+    "docker cp r27_probe2_post.py range-attack-noop-1:/tmp/",
+    "cli/tanyin-guard exec ... python3 /tmp/r27_probe2_post.py > battle-26/probe/r27_probe2_post.out（exit=0，30 请求）",
+    "cp 三个 probe .out 副本至 submissions/INT-r27-0002/artifacts/ 存档；汇总 submission.json"
+  ]
+}

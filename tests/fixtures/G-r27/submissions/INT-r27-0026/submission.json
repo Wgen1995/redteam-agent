@@ -1,0 +1,74 @@
+{
+ "intent_id": "INT-r27-0026",
+ "engine": "web-blackbox",
+ "status": "done",
+ "facts": [
+  {
+   "kind": "http",
+   "target": "svc-files/.env",
+   "detail": "GET /.env 200 完整体：<html>GTINFOLEAK-03 synthetic env file: SECRET_KEY=&lt;redacted&gt;</html>——键名 SECRET_KEY 泄露，值呈脱敏态（合成靶 redacted）",
+   "confidence": 0.95
+  },
+  {
+   "kind": "http",
+   "target": "svc-files/.env.bak|.env.example|.env.local",
+   "detail": "族面补探：/.env.bak /.env.example /.env.local 三面 200 同体回显（泄露面泛化到备份/示例/local 变体）；/config /config.json /config.py /application.properties /app.env /env /settings.py 全 404",
+   "confidence": 0.95
+  }
+ ],
+ "findings": [
+  {
+   "title": "svc-files /.env 环境配置文件匿名可读：SECRET_KEY 键名泄露（GTINFOLEAK-03）",
+   "confidence": "C2",
+   "impact": "中",
+   "exploitation_status": "verified",
+   "auth_context": "anon",
+   "reproducible_steps": [
+    "GET http://svc-files:8008/.env → 200 响应体回显 GTINFOLEAK-03 synthetic env file: SECRET_KEY=<redacted>",
+    "GET http://svc-files:8008/.env.bak → 200 同体（族面泛化）"
+   ],
+   "evidence_refs": [
+    "EV-r27-0026-A1",
+    "EV-r27-0026-A2"
+   ],
+   "location": "svc-files/.env",
+   "dedup_key_proposed": "AST-r27-0047+wstg-info-env",
+   "network_position": "intranet",
+   "preconditions": [
+    "L1 容器网内可达 svc-files:8008"
+   ],
+   "expected_matcher": {
+    "matchers": [
+     {
+      "type": "word",
+      "words": [
+       "GTINFOLEAK-03",
+       "SECRET_KEY"
+      ]
+     },
+     {
+      "type": "status",
+      "status": [
+       200
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "assets": [
+  {
+   "type": "endpoint",
+   "value": "svc-files/.env",
+   "meta": "AST-r27-0047;GET匿名200;SECRET_KEY键名泄露"
+  },
+  {
+   "type": "endpoint",
+   "value": "svc-files/.env.bak",
+   "meta": "族面;GET匿名200同体;.env.example/.env.local同"
+  }
+ ],
+ "edges": [],
+ "creds": [],
+ "operations_log": "operations.log"
+}

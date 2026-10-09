@@ -1,0 +1,182 @@
+{
+ "script": "INT-r27-0001-3",
+ "ts": "2026-10-23T15:32:00Z",
+ "http": [
+  {
+   "ip": "172.28.0.2",
+   "port": 8008,
+   "url": "http://172.28.0.2:8008/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.2",
+   "port": 8008,
+   "url": "http://172.28.0.2:8008/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.3",
+   "port": 8003,
+   "url": "http://172.28.0.3:8003/",
+   "status": 401,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "auth required",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.3",
+   "port": 8003,
+   "url": "http://172.28.0.3:8003/",
+   "status": 401,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "auth required",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.4",
+   "port": 8005,
+   "url": "http://172.28.0.4:8005/",
+   "status": 401,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "auth required",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.4",
+   "port": 8005,
+   "url": "http://172.28.0.4:8005/",
+   "status": 401,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "auth required",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.5",
+   "port": 8002,
+   "url": "http://172.28.0.5:8002/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.5",
+   "port": 8002,
+   "url": "http://172.28.0.5:8002/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.6",
+   "port": 8006,
+   "url": "http://172.28.0.6:8006/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.6",
+   "port": 8006,
+   "url": "http://172.28.0.6:8006/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.7",
+   "port": 8004,
+   "url": "http://172.28.0.7:8004/",
+   "status": 200,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "<html>login form</html>",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.7",
+   "port": 8004,
+   "url": "http://172.28.0.7:8004/",
+   "status": 200,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "<html>login form</html>",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.8",
+   "port": 8007,
+   "url": "http://172.28.0.8:8007/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.8",
+   "port": 8007,
+   "url": "http://172.28.0.8:8007/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.9",
+   "port": 8001,
+   "url": "http://172.28.0.9:8001/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  },
+  {
+   "ip": "172.28.0.9",
+   "port": 8001,
+   "url": "http://172.28.0.9:8001/",
+   "status": 404,
+   "server": "BaseHTTP/0.6 Python/3.12.14",
+   "location": null,
+   "content_type": "text/html; charset=utf-8",
+   "body_head": "not found",
+   "error": null
+  }
+ ]
+}

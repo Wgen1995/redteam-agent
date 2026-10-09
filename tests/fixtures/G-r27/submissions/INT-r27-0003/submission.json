@@ -1,0 +1,41 @@
+{
+  "intent_id": "INT-r27-0003",
+  "engine": "web-blackbox:recon",
+  "status": "done",
+  "facts": [
+    {"id": "F1", "kind": "info", "target": "svc-api-gw", "detail": "DNS 解析 svc-api-gw -> 172.28.0.5（经 range-attack-noop-1 容器实测）", "confidence": 1.0, "source": "CMD0 guard-exec socket.gethostbyname"},
+    {"id": "F2", "kind": "info", "target": "svc-api-gw", "detail": "端口面：8001-8008 仅 8002 存活（HTTP）；其余 7 端口 connection refused。账面端口推断 port=8002 核验为真", "confidence": 1.0, "source": "artifacts/p0-result.json"},
+    {"id": "F3", "kind": "info", "target": "svc-api-gw", "detail": "HTTP 指纹：Server: BaseHTTP/0.6 Python/3.12.14，Content-Type: text/html; charset=utf-8，根路径 / 返回 404 body='not found'（9 字节），自定义路由处理器", "confidence": 1.0, "source": "artifacts/p0-scan.out"},
+    {"id": "F4", "kind": "info", "target": "svc-api-gw", "detail": "服务仅实现 GET：9 路径×双形（urlencoded/JSON）共 18 次 POST 全部 501 'Unsupported method'（BaseHTTP 默认错误页），form vs json 零差异；POST 攻击面不存在", "confidence": 1.0, "source": "artifacts/p2-result.json"},
+    {"id": "F5", "kind": "info", "target": "svc-api-gw", "detail": "限流观测：全程 0.4s 间隔（约25req/10s）共 113 次 HTTP 请求，未观测到 429/Retry-After；面级限流（约30req/10s）未被触发，后续高强度探测仍需退避预案", "confidence": 0.9, "source": "artifacts/p1-result.json saw_429=false + p2-result.json saw_429=false"},
+    {"id": "F6", "kind": "http", "target": "svc-api-gw/", "detail": "GET / -> 404 'not found'（默认落点）", "confidence": 1.0, "source": "artifacts/p0-result.json"},
+    {"id": "F7", "kind": "http", "target": "svc-api-gw/graphql", "detail": "GET 200，body 含 'GTGRAPHQL-01 synthetic introspection enabled: __schema types' —— GraphQL 内省面", "confidence": 1.0, "source": "artifacts/p1-result.json"},
+    {"id": "F8", "kind": "http", "target": "svc-api-gw/fetch", "detail": "GET 200，body 含 'fetch GTSSRF-01 synthetic internal doc: internal-secret-doc' —— SSRF 族端点，引用内部文档 internal-secret-doc", "confidence": 1.0, "source": "artifacts/p1-result.json"},
+    {"id": "F9", "kind": "http", "target": "svc-api-gw/preview", "detail": "GET 200，body 含 'preview GTSSRF-02 synthetic webhook meta: internal-metadata' —— SSRF 族端点，引用内部元数据 internal-metadata", "confidence": 1.0, "source": "artifacts/p1-result.json"},
+    {"id": "F10", "kind": "http", "target": "svc-api-gw/proxy", "detail": "GET 200，body 含 'proxy GTSSRF-03 synthetic internal fetch done' —— SSRF 族端点（代理转发语义）", "confidence": 1.0, "source": "artifacts/p1-result.json"},
+    {"id": "F11", "kind": "http", "target": "svc-api-gw/cors-debug", "detail": "GET 200，ACAO: * 通配，body 'cors debug GTCORS-01 wildcard allow-origin' —— CORS 反射面", "confidence": 1.0, "source": "artifacts/p1-result.json"},
+    {"id": "F12", "kind": "http", "target": "svc-api-gw/origin", "detail": "GET 200，ACAO: none，body 'origin GTCORS-02 reflected none allow-credentials true' —— Origin 反射端点且提示 allow-credentials", "confidence": 1.0, "source": "artifacts/p1-result.json"},
+    {"id": "F13", "kind": "http", "target": "svc-api-gw/jump", "detail": "GET 302，Location: /jump（自指重定向），body 'GTREDIR-03 synthetic redirect to %s' —— 未净化重定向面（%s 格式串痕迹）", "confidence": 1.0, "source": "artifacts/p1-result.json"},
+    {"id": "F14", "kind": "http", "target": "svc-api-gw/admin/keys", "detail": "GET 401，body 'auth required'，无 WWW-Authenticate 头 —— 管理面存在密钥端点，鉴权门拦截", "confidence": 1.0, "source": "artifacts/p1-result.json"},
+    {"id": "F15", "kind": "info", "target": "svc-api-gw", "detail": "字典负空间：87 路径中 79 个 404；凭据族（/login /token /register 等 17 路径）全 404——本服务不承载认证功能面，认证推测在其它服务（如 svc-login）", "confidence": 0.9, "source": "artifacts/p1-dict.out"}
+  ],
+  "findings": [],
+  "assets": [
+    {"type": "endpoint", "value": "svc-api-gw/graphql", "meta": "GET 200; graphql introspection (__schema); GTGRAPHQL-01", "src_fact": "F7"},
+    {"type": "endpoint", "value": "svc-api-gw/fetch", "meta": "GET 200; SSRF-family; references internal doc internal-secret-doc; GTSSRF-01", "src_fact": "F8"},
+    {"type": "endpoint", "value": "svc-api-gw/preview", "meta": "GET 200; SSRF-family; references internal-metadata (webhook meta); GTSSRF-02", "src_fact": "F9"},
+    {"type": "endpoint", "value": "svc-api-gw/proxy", "meta": "GET 200; SSRF-family; proxy/forward semantics; GTSSRF-03", "src_fact": "F10"},
+    {"type": "endpoint", "value": "svc-api-gw/cors-debug", "meta": "GET 200; ACAO:* wildcard; GTCORS-01", "src_fact": "F11"},
+    {"type": "endpoint", "value": "svc-api-gw/origin", "meta": "GET 200; ACAO:none + allow-credentials:true hint; GTCORS-02", "src_fact": "F12"},
+    {"type": "endpoint", "value": "svc-api-gw/jump", "meta": "GET 302 -> Location:/jump self-redirect; open-redirect candidate; GTREDIR-03", "src_fact": "F13"},
+    {"type": "endpoint", "value": "svc-api-gw/admin/keys", "meta": "GET 401 'auth required'; admin key surface behind auth gate", "src_fact": "F14"}
+  ],
+  "edges": [
+    {"from": "svc-api-gw/fetch", "to": "internal:internal-secret-doc", "kind": "references", "meta": "响应正文明文引用内部文档名 internal-secret-doc（SSRF 线索，未发载荷验证）", "src_fact": "F8"},
+    {"from": "svc-api-gw/preview", "to": "internal:internal-metadata", "kind": "references", "meta": "响应正文明文引用内部元数据 internal-metadata（webhook meta 线索）", "src_fact": "F9"},
+    {"from": "svc-api-gw/jump", "to": "svc-api-gw/jump", "kind": "redirects-to", "meta": "302 Location 自指；响应含格式串 %s，疑似重定向目标未净化", "src_fact": "F13"},
+    {"from": "svc-api-gw/admin/keys", "to": "auth-gate", "kind": "requires-auth", "meta": "401 auth required，管理密钥面在鉴权门后", "src_fact": "F14"}
+  ],
+  "creds": [],
+  "operations_log": "operations.log"
+}

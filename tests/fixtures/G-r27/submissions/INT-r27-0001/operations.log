@@ -1,0 +1,14 @@
+# operations.log — INT-r27-0001 (web-blackbox recon sub-agent)
+# 时间戳纪律：全部使用字面量，无墙钟。
+
+[2026-10-23T15:29:00Z] env-check: ls battle-26 目录、G-r27 账本（只读 assets.tsv/facts.tsv 判定新资产口径）、cli/tanyin-guard 存在、容器 range-attack-noop-1 Up。=> OK
+[2026-10-23T15:29:30Z] mkdir submissions/INT-r27-0001/artifacts 与 probe/。=> OK
+[2026-10-23T15:30:00Z] cmd: docker cp probe/INT-r27-0001-1.py range-attack-noop-1:/tmp/ && cli/tanyin-guard exec --goal-dir G-r27 --timestamp=2026-10-23T15:30:00Z -- docker exec range-attack-noop-1 python3 /tmp/INT-r27-0001-1.py
+  result: EXIT=0。8 个 svc 名全部 getaddrinfo 成功：svc-files→172.28.0.2, svc-admin→172.28.0.3, svc-billing→172.28.0.4, svc-api-gw→172.28.0.5, svc-dashboard→172.28.0.6, svc-login→172.28.0.7, svc-portal→172.28.0.8, svc-shop→172.28.0.9。输出存 probe/INT-r27-0001-1.out。
+[2026-10-23T15:31:00Z] cmd: docker cp probe/INT-r27-0001-2.py … && cli/tanyin-guard exec … python3 /tmp/INT-r27-0001-2.py
+  result: EXIT=0。2112 次 TCP connect（聚焦 8IP×8000-8009 + 172.28.0.0/24×8001-8008，timeout 0.3s，并发16）。存活对（去重 8 对）：172.28.0.2:8008, 172.28.0.3:8003, 172.28.0.4:8005, 172.28.0.5:8002, 172.28.0.6:8006, 172.28.0.7:8004, 172.28.0.8:8007, 172.28.0.9:8001。边界口 8000/8009 全闭；网段无第 9 个存活面。输出存 probe/INT-r27-0001-2.out。
+[2026-10-23T15:32:00Z] cmd: docker cp probe/INT-r27-0001-3.py … && cli/tanyin-guard exec … python3 /tmp/INT-r27-0001-3.py
+  result: EXIT=0。8 对 HTTP GET /（urllib 禁重定向，timeout 5s）全部响应：统一 Server=BaseHTTP/0.6 Python/3.12.14，无 Location。172.28.0.7:8004→200 "login form"；172.28.0.3:8003 与 172.28.0.4:8005→401 "auth required"；其余（.2:8008/.5:8002/.6:8006/.8:8007/.9:8001）→404 "not found"。输出存 probe/INT-r27-0001-3.out。
+[2026-10-23T15:33:00Z] 落盘前脱敏扫描：grep -riE '(password|secret|token|api[_-]?key|bearer|authorization:)[=:]' 三个 .out => CLEAN（零命中，无凭据真值，无需 vault-note）。
+[2026-10-23T15:33:30Z] artifacts 归档：3 脚本 + 3 输出复制至 submissions/INT-r27-0001/artifacts/。=> OK
+[2026-10-23T15:34:00Z] 产出 submission.json（10 facts / 8 新 IP 资产 / findings=edges=creds=[]）。=> OK

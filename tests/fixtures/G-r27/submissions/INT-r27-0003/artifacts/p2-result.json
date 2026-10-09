@@ -1,0 +1,204 @@
+{
+ "results": [
+  {
+   "path": "/login",
+   "mode": "form",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/login",
+   "mode": "json",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/register",
+   "mode": "form",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/register",
+   "mode": "json",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/token",
+   "mode": "form",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/token",
+   "mode": "json",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/upload",
+   "mode": "form",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/upload",
+   "mode": "json",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/import",
+   "mode": "form",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/import",
+   "mode": "json",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/xml",
+   "mode": "form",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/xml",
+   "mode": "json",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/fetch",
+   "mode": "form",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/fetch",
+   "mode": "json",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/search",
+   "mode": "form",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/search",
+   "mode": "json",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/comment",
+   "mode": "form",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  },
+  {
+   "path": "/comment",
+   "mode": "json",
+   "status": 501,
+   "headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "content-type": "text/html;charset=utf-8"
+   },
+   "body": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "notes": []
+  }
+ ],
+ "diff": [],
+ "saw_429": false
+}

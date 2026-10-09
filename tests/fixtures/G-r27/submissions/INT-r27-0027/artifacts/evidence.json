@@ -1,0 +1,36 @@
+{
+  "finding_key": "rate-limit-missing",
+  "intent_id": "INT-r27-0027",
+  "probe": "artifacts/w2_login_rate.py",
+  "probe_output": "artifacts/w2_login_rate.out",
+  "guard_timestamp": "2026-10-23T16:00:00Z",
+  "raw_request": "POST /login HTTP/1.1\r\nHost: svc-login:8004\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: 29\r\n\r\nuser=rateprobe&pass=rateprobe",
+  "note_content_length": "body 'user=rateprobe&pass=rateprobe' = 29 字节（逐字节实测 len()=29；委派单模板写 30 系笔误，以实测为准）",
+  "resp_status": 403,
+  "resp_headers": {
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "date": "Fri, 09 Oct 2026 15:36:14 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "72"
+  },
+  "resp_body_excerpt": "<html>denied GTRATE-01 synthetic no rate limit after 283 attempts</html>",
+  "matcher_words": ["GTRATE-01", "no rate limit"],
+  "sequence_evidence": "artifacts/sequence.tsv",
+  "sequence_proof": {
+    "seq_a_route": "/login",
+    "seq_a_hits": 12,
+    "seq_a_interval_s": 0.5,
+    "seq_a_counters": [272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283],
+    "seq_b_route": "/api/login",
+    "seq_b_hits": 3,
+    "seq_b_counters": [284, 285, 286],
+    "monotonic_incr_per_hit": true,
+    "cross_face_shared_counter": true,
+    "any_429": false,
+    "any_retry_after": false,
+    "any_throttle_signal": false,
+    "counter_terminal_value": 286
+  },
+  "preconditions": "EV 重放前置：须先对同一路由 /login 连续 POST ≥10 发（哑值 user=rateprobe&pass=rateprobe，间隔 0.5s 温和节奏）——重放器不自动补连击，缺前置则计数器基数与 12 发序列不可复现",
+  "verdict": "confirmed"
+}

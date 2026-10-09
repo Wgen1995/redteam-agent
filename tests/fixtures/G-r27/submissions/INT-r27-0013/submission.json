@@ -1,0 +1,77 @@
+{
+  "intent_id": "INT-r27-0013",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "http",
+      "target": "svc-shop/logout",
+      "detail": "重定向机制：/logout 恒 302；专属参数 next 的 raw 值直接作为 Location（未净化白名单校验）；其余参数（to/url/goto/redirect/continue）走自指拼接 Location=/logout?<param>=<值>（非开放重定向）；body 恒 <html>GTREDIR-02 synthetic redirect to %s</html>（%s 模板占位符未实例化）",
+      "confidence": 0.95
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/logout",
+      "detail": "编码态对照：?next=http%3A%2F%2Fevil.example → Location: http%3A%2F%2Fevil.example（编码态非合法绝对 URL，浏览器按相对路径处理不跳外域）；原形态 ?next=http://evil.example → Location: http://evil.example（合法外域绝对 URL，浏览器直跳）⇒ 可利用条件与 XSS 同型：载荷需以未编码形态进入 query",
+      "confidence": 0.9
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/logout",
+      "detail": "五参数自指证据：to/url/goto/redirect/continue ×（http://、//、https://…/r?x=1）18 发 Location 全部 /logout?… 自指形 ⇒ 判据（Location 含外域载荷串）仅 next 参数满足",
+      "confidence": 0.95
+    }
+  ],
+  "findings": [
+    {
+      "title": "svc-shop /logout?next= 开放重定向（Location 未净化直取参数值，外域绝对 URL 原形直跳）",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "confirmed",
+      "auth_context": "",
+      "reproducible_steps": [
+        "GET /logout?next=http://evil.example（禁跟随）→ 302 Location: http://evil.example（外域原形）；//evil.example 协议相对与 https://evil.example/r?x=1 带路径查询变体同样原形直跳；对照 ?to=（及 url/goto/redirect/continue）Location 自指 /logout?to=… 不跳外域"
+      ],
+      "evidence_refs": [
+        "FK-r27-0013-logout-open-redirect",
+        "FK-r27-0013-logout-open-redirect-protorel",
+        "FK-r27-0013-logout-open-redirect-https",
+        "FK-r27-0013-logout-to-selfref-control",
+        "FK-r27-0013-logout-next-encoded-control",
+        "FK-r27-0013-logout-bare-baseline"
+      ],
+      "location": "svc-shop/logout",
+      "dedup_key_proposed": "AST-r27-shop+wstg-inpv-open-redirect",
+      "network_position": "same-subnet",
+      "preconditions": [
+        "载荷以未编码形态进入 query（http:// 与 // 在 query 值中为合法字符）"
+      ],
+      "expected_matcher": {
+        "matchers": [
+          {
+            "type": "word",
+            "words": [
+              "evil.example"
+            ]
+          },
+          {
+            "type": "status",
+            "status": [
+              302
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "assets": [
+    {
+      "type": "endpoint",
+      "value": "svc-shop/logout",
+      "meta": "302;open-redirect-via-next-param-raw"
+    }
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

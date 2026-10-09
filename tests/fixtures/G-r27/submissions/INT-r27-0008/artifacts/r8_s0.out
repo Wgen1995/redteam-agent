@@ -1,0 +1,39 @@
+{
+ "dns": {
+  "ips": [
+   "172.28.0.8"
+  ]
+ },
+ "ports": {
+  "8001": {
+   "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+  },
+  "8002": {
+   "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+  },
+  "8003": {
+   "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+  },
+  "8004": {
+   "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+  },
+  "8005": {
+   "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+  },
+  "8006": {
+   "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+  },
+  "8007": {
+   "status": 404,
+   "headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "9"
+   },
+   "body_head": "not found"
+  },
+  "8008": {
+   "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+  }
+ }
+}

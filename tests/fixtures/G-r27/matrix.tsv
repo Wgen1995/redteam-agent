@@ -1,0 +1,223 @@
+172.28.0.0/24	wstg-info				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-conf				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-idnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-authn				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-authz				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-sess				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-inpv				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-errh				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-cryp				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-busl				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-clnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+172.28.0.0/24	wstg-apit				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-info				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-conf				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-idnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-authn				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-authz				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-sess				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-inpv				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-errh				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-cryp				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-busl				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-clnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-shop	wstg-apit				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-info				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-conf				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-idnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-authn				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-authz				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-sess				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-inpv				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-errh				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-cryp				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-busl				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-clnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-api-gw	wstg-apit				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-info				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-conf				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-idnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-authn				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-authz				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-sess				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-inpv				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-errh				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-cryp				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-busl				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-clnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-admin	wstg-apit				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-info				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-conf				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-idnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-authn				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-authz				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-sess				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-inpv				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-errh				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-cryp				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-busl				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-clnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-apit				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-info				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-conf				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-idnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-authn				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-authz				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-sess				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-inpv				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-errh				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-cryp				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-busl				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-clnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-billing	wstg-apit				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-info				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-conf				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-idnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-authn				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-authz				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-sess				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-inpv				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-errh				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-cryp				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-busl				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-clnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-dashboard	wstg-apit				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-info				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-conf				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-idnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-authn				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-authz				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-sess				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-inpv				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-errh				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-cryp				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-busl				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-clnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-portal	wstg-apit				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-info				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-conf				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-idnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-authn				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-authz				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-sess				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-inpv				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-errh				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-cryp				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-busl				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-clnt				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-files	wstg-apit				2	2026-10-23T11:03:20Z	2026-10-23T11:03:30Z
+svc-login	wstg-authn	x	弱口令命中（GTWEAKPASS-01）+枚举阴性	INT-r27-0010	2	2026-10-23T16:17:25Z	
+svc-login	wstg-busl	x	限流缺失序列实证（GTRATE-01 跨路由）	INT-r27-0027	2	2026-10-23T16:17:30Z	
+svc-shop	wstg-inpv	x	反射 XSS 三面+开放重定向（SQLi 证伪同行）	INT-r27-0012	2	2026-10-23T16:17:35Z	
+svc-shop	wstg-errh	x	SQL 错误回显证伪（静态横幅，参数零驱动）	INT-r27-0011	2	2026-10-23T16:17:40Z	
+svc-shop	wstg-conf	x	全站无 CORS 头+POST 全 501（侦察断言）	INT-r27-0002	2	2026-10-23T16:17:45Z	
+svc-api-gw	wstg-conf	x	CORS 双面：反射+ACAC（可利用）与通配（配置缺陷）	INT-r27-0015	2	2026-10-23T16:17:50Z	
+svc-api-gw	wstg-inpv	x	开放重定向 /jump?u=（SSRF 证伪同行）	INT-r27-0016	2	2026-10-23T16:17:55Z	
+svc-api-gw	wstg-apit	x	GraphQL 内省暴露	INT-r27-0017	2	2026-10-23T16:18:00Z	
+svc-api-gw	wstg-info	x	字典喷洒无信息暴露面命中（侦察断言）	INT-r27-0003	2	2026-10-23T16:18:05Z	
+svc-portal	wstg-inpv	x	开放重定向双参数（RFI/LFI 证伪同行）	INT-r27-0022	2	2026-10-23T16:18:10Z	
+svc-portal	wstg-info	x	/debug/env 键名暴露（GTINFOLEAK-01）	INT-r27-0023	2	2026-10-23T16:18:15Z	
+svc-files	wstg-inpv	x	反序列化三面+路径穿越双面（XXE 证伪同行）	INT-r27-0024	2	2026-10-23T16:18:20Z	
+svc-files	wstg-info	x	/.env 泄露（GTINFOLEAK-03）	INT-r27-0026	2	2026-10-23T16:18:25Z	
+svc-admin	wstg-authn	x	弱口令命中（admin/admin123 体回显令牌）	INT-r27-0010	2	2026-10-23T16:18:30Z	
+svc-billing	wstg-authn	x	弱口令命中（alice/alice123 体回显令牌）	INT-r27-0010	2	2026-10-23T16:18:35Z	
+172.28.0.0/24	wstg-info	x	网段测绘：2112 连接扫描+端口面+DNS 映射	INT-r27-0001	2	2026-10-23T16:18:40Z	
+172.28.0.0/24	wstg-apit	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:18:45Z	
+172.28.0.0/24	wstg-authn	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:18:50Z	
+172.28.0.0/24	wstg-authz	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:18:55Z	
+172.28.0.0/24	wstg-busl	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:19:00Z	
+172.28.0.0/24	wstg-clnt	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:19:05Z	
+172.28.0.0/24	wstg-conf	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:19:10Z	
+172.28.0.0/24	wstg-cryp	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:19:15Z	
+172.28.0.0/24	wstg-errh	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:19:20Z	
+172.28.0.0/24	wstg-idnt	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:19:25Z	
+172.28.0.0/24	wstg-inpv	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:19:30Z	
+172.28.0.0/24	wstg-sess	-	n/a:网段层无应用面——该类测试挂八服务面执行（资产宇宙=A2 层完成）		2	2026-10-23T16:19:35Z	
+svc-shop	wstg-authz	x	user 级令牌读管理报表面（GTIDOR-06 差分对）	INT-r27-0030	2	2026-10-23T16:59:45Z	
+svc-shop	wstg-sess	x	令牌消费面观测（admin/reports 持证 200）	INT-r27-0030	2	2026-10-23T16:59:50Z	
+svc-api-gw	wstg-authz	x	user 级令牌读密钥面（GTIDOR-05）	INT-r27-0030	2	2026-10-23T16:59:55Z	
+svc-api-gw	wstg-sess	x	令牌消费面观测（admin/keys 持证 200）	INT-r27-0030	2	2026-10-23T17:00:00Z	
+svc-admin	wstg-authz	x	双 idor 面（GTIDOR-01/02 他人订单/发票）	INT-r27-0030	2	2026-10-23T17:00:05Z	
+svc-admin	wstg-sess	x	会话发放/共享/消费行为全观测	INT-r27-0010	2	2026-10-23T17:00:10Z	
+svc-admin	wstg-idnt	x	账号枚举阴性（existing vs random 零差异）	INT-r27-0010	2	2026-10-23T17:00:15Z	
+svc-login	wstg-authz	x	持证 /me /session 全 403+消费面定位（数据面非生命周期面）	INT-r27-0028	2	2026-10-23T17:00:20Z	
+svc-login	wstg-inpv	x	POST 输入面行为差分（键名×编码×弱口令全谱）	INT-r27-0010	2	2026-10-23T17:00:25Z	
+svc-login	wstg-sess	x	令牌消费+生命周期观测（唯一接受形定位）	INT-r27-0028	2	2026-10-23T17:00:30Z	
+svc-login	wstg-idnt	x	账号枚举阴性	INT-r27-0010	2	2026-10-23T17:00:35Z	
+svc-billing	wstg-authz	x	持证接受但无管理数据面（401→404 全枚举）	INT-r27-0028	2	2026-10-23T17:00:40Z	
+svc-billing	wstg-sess	x	会话发放（体回显）+消费观测	INT-r27-0010	2	2026-10-23T17:00:45Z	
+svc-billing	wstg-idnt	x	账号枚举阴性	INT-r27-0010	2	2026-10-23T17:00:50Z	
+svc-dashboard	wstg-inpv	x	反射 XSS 双面 verified（CMDi/SSTi 证伪同行）	INT-r27-0029	2	2026-10-23T17:00:55Z	
+svc-dashboard	wstg-authz	x	user 级令牌越界读配置（GTROLE-03）	INT-r27-0030	2	2026-10-23T17:01:00Z	
+svc-dashboard	wstg-sess	x	令牌消费面观测（admin/config 持证 200）	INT-r27-0030	2	2026-10-23T17:01:05Z	
+svc-portal	wstg-authz	x	垂直越权（GTHAUTH-05 客户面）	INT-r27-0030	2	2026-10-23T17:01:10Z	
+svc-portal	wstg-sess	x	令牌消费面观测（admin/clients 持证 200）	INT-r27-0030	2	2026-10-23T17:01:15Z	
+svc-files	wstg-authz	x	角色越界（GTROLE-04 日志面）	INT-r27-0030	2	2026-10-23T17:01:20Z	
+svc-files	wstg-sess	x	令牌消费面观测（admin/logs 持证 200）	INT-r27-0030	2	2026-10-23T17:01:25Z	
+svc-shop	wstg-apit	-	n/a:无该类面——凭据族/API 族/限流面全 404，POST 全 501 无状态面（侦察+攻击波在案）		2	2026-10-23T17:01:30Z	
+svc-shop	wstg-authn	-	n/a:无该类面——凭据族/API 族/限流面全 404，POST 全 501 无状态面（侦察+攻击波在案）		2	2026-10-23T17:01:35Z	
+svc-shop	wstg-busl	-	n/a:无该类面——凭据族/API 族/限流面全 404，POST 全 501 无状态面（侦察+攻击波在案）		2	2026-10-23T17:01:40Z	
+svc-shop	wstg-clnt	-	n/a:无该类面——凭据族/API 族/限流面全 404，POST 全 501 无状态面（侦察+攻击波在案）		2	2026-10-23T17:01:45Z	
+svc-shop	wstg-cryp	-	n/a:无该类面——凭据族/API 族/限流面全 404，POST 全 501 无状态面（侦察+攻击波在案）		2	2026-10-23T17:01:50Z	
+svc-shop	wstg-idnt	-	n/a:无该类面——凭据族/API 族/限流面全 404，POST 全 501 无状态面（侦察+攻击波在案）		2	2026-10-23T17:01:55Z	
+svc-shop	wstg-info	-	n/a:无该类面——凭据族/API 族/限流面全 404，POST 全 501 无状态面（侦察+攻击波在案）		2	2026-10-23T17:02:00Z	
+svc-api-gw	wstg-authn	-	n/a:无认证/客户端/加密面——GET-only 无会话签发（持证消费已由 authz 格承载）		2	2026-10-23T17:02:05Z	
+svc-api-gw	wstg-busl	-	n/a:无认证/客户端/加密面——GET-only 无会话签发（持证消费已由 authz 格承载）		2	2026-10-23T17:02:10Z	
+svc-api-gw	wstg-clnt	-	n/a:无认证/客户端/加密面——GET-only 无会话签发（持证消费已由 authz 格承载）		2	2026-10-23T17:02:15Z	
+svc-api-gw	wstg-cryp	-	n/a:无认证/客户端/加密面——GET-only 无会话签发（持证消费已由 authz 格承载）		2	2026-10-23T17:02:20Z	
+svc-api-gw	wstg-errh	-	n/a:无认证/客户端/加密面——GET-only 无会话签发（持证消费已由 authz 格承载）		2	2026-10-23T17:02:25Z	
+svc-api-gw	wstg-idnt	-	n/a:无认证/客户端/加密面——GET-only 无会话签发（持证消费已由 authz 格承载）		2	2026-10-23T17:02:30Z	
+svc-admin	wstg-apit	-	n/a:无该类面——post-auth 十名词枚举仅 orders/invoices；POST 403 无输入/状态面		2	2026-10-23T17:02:35Z	
+svc-admin	wstg-busl	-	n/a:无该类面——post-auth 十名词枚举仅 orders/invoices；POST 403 无输入/状态面		2	2026-10-23T17:02:40Z	
+svc-admin	wstg-clnt	-	n/a:无该类面——post-auth 十名词枚举仅 orders/invoices；POST 403 无输入/状态面		2	2026-10-23T17:02:45Z	
+svc-admin	wstg-conf	-	n/a:无该类面——post-auth 十名词枚举仅 orders/invoices；POST 403 无输入/状态面		2	2026-10-23T17:02:50Z	
+svc-admin	wstg-cryp	-	n/a:无该类面——post-auth 十名词枚举仅 orders/invoices；POST 403 无输入/状态面		2	2026-10-23T17:02:55Z	
+svc-admin	wstg-errh	-	n/a:无该类面——post-auth 十名词枚举仅 orders/invoices；POST 403 无输入/状态面		2	2026-10-23T17:03:00Z	
+svc-admin	wstg-info	-	n/a:无该类面——post-auth 十名词枚举仅 orders/invoices；POST 403 无输入/状态面		2	2026-10-23T17:03:05Z	
+svc-admin	wstg-inpv	-	n/a:无该类面——post-auth 十名词枚举仅 orders/invoices；POST 403 无输入/状态面		2	2026-10-23T17:03:10Z	
+svc-login	wstg-apit	-	n/a:无该类面——catch-all GET 表单/403 恒定无细节/API 族 404		2	2026-10-23T17:03:15Z	
+svc-login	wstg-clnt	-	n/a:无该类面——catch-all GET 表单/403 恒定无细节/API 族 404		2	2026-10-23T17:03:20Z	
+svc-login	wstg-conf	-	n/a:无该类面——catch-all GET 表单/403 恒定无细节/API 族 404		2	2026-10-23T17:03:25Z	
+svc-login	wstg-cryp	-	n/a:无该类面——catch-all GET 表单/403 恒定无细节/API 族 404		2	2026-10-23T17:03:30Z	
+svc-login	wstg-errh	-	n/a:无该类面——catch-all GET 表单/403 恒定无细节/API 族 404		2	2026-10-23T17:03:35Z	
+svc-login	wstg-info	-	n/a:无该类面——catch-all GET 表单/403 恒定无细节/API 族 404		2	2026-10-23T17:03:40Z	
+svc-billing	wstg-apit	-	n/a:无该类面——持证后无数据面；POST 403 路径盲；无客户端/加密面		2	2026-10-23T17:03:45Z	
+svc-billing	wstg-busl	-	n/a:无该类面——持证后无数据面；POST 403 路径盲；无客户端/加密面		2	2026-10-23T17:03:50Z	
+svc-billing	wstg-clnt	-	n/a:无该类面——持证后无数据面；POST 403 路径盲；无客户端/加密面		2	2026-10-23T17:03:55Z	
+svc-billing	wstg-conf	-	n/a:无该类面——持证后无数据面；POST 403 路径盲；无客户端/加密面		2	2026-10-23T17:04:00Z	
+svc-billing	wstg-cryp	-	n/a:无该类面——持证后无数据面；POST 403 路径盲；无客户端/加密面		2	2026-10-23T17:04:05Z	
+svc-billing	wstg-errh	-	n/a:无该类面——持证后无数据面；POST 403 路径盲；无客户端/加密面		2	2026-10-23T17:04:10Z	
+svc-billing	wstg-info	-	n/a:无该类面——持证后无数据面；POST 403 路径盲；无客户端/加密面		2	2026-10-23T17:04:15Z	
+svc-billing	wstg-inpv	-	n/a:无该类面——持证后无数据面；POST 403 路径盲；无客户端/加密面		2	2026-10-23T17:04:20Z	
+svc-dashboard	wstg-apit	-	n/a:无该类面——POST 400 schema 恒定；API/debug 族 404；无认证面		2	2026-10-23T17:04:25Z	
+svc-dashboard	wstg-authn	-	n/a:无该类面——POST 400 schema 恒定；API/debug 族 404；无认证面		2	2026-10-23T17:04:30Z	
+svc-dashboard	wstg-busl	-	n/a:无该类面——POST 400 schema 恒定；API/debug 族 404；无认证面		2	2026-10-23T17:04:35Z	
+svc-dashboard	wstg-clnt	-	n/a:无该类面——POST 400 schema 恒定；API/debug 族 404；无认证面		2	2026-10-23T17:04:40Z	
+svc-dashboard	wstg-conf	-	n/a:无该类面——POST 400 schema 恒定；API/debug 族 404；无认证面		2	2026-10-23T17:04:45Z	
+svc-dashboard	wstg-cryp	-	n/a:无该类面——POST 400 schema 恒定；API/debug 族 404；无认证面		2	2026-10-23T17:04:50Z	
+svc-dashboard	wstg-errh	-	n/a:无该类面——POST 400 schema 恒定；API/debug 族 404；无认证面		2	2026-10-23T17:04:55Z	
+svc-dashboard	wstg-idnt	-	n/a:无该类面——POST 400 schema 恒定；API/debug 族 404；无认证面		2	2026-10-23T17:05:00Z	
+svc-dashboard	wstg-info	-	n/a:无该类面——POST 400 schema 恒定；API/debug 族 404；无认证面		2	2026-10-23T17:05:05Z	
+svc-portal	wstg-apit	-	n/a:无该类面——GET-only 无认证/客户端/加密面		2	2026-10-23T17:05:10Z	
+svc-portal	wstg-authn	-	n/a:无该类面——GET-only 无认证/客户端/加密面		2	2026-10-23T17:05:15Z	
+svc-portal	wstg-busl	-	n/a:无该类面——GET-only 无认证/客户端/加密面		2	2026-10-23T17:05:20Z	
+svc-portal	wstg-clnt	-	n/a:无该类面——GET-only 无认证/客户端/加密面		2	2026-10-23T17:05:25Z	
+svc-portal	wstg-conf	-	n/a:无该类面——GET-only 无认证/客户端/加密面		2	2026-10-23T17:05:30Z	
+svc-portal	wstg-cryp	-	n/a:无该类面——GET-only 无认证/客户端/加密面		2	2026-10-23T17:05:35Z	
+svc-portal	wstg-errh	-	n/a:无该类面——GET-only 无认证/客户端/加密面		2	2026-10-23T17:05:40Z	
+svc-portal	wstg-idnt	-	n/a:无该类面——GET-only 无认证/客户端/加密面		2	2026-10-23T17:05:45Z	
+svc-files	wstg-apit	-	n/a:无该类面——无认证/客户端/加密面；POST 400 无状态变更		2	2026-10-23T17:05:50Z	
+svc-files	wstg-authn	-	n/a:无该类面——无认证/客户端/加密面；POST 400 无状态变更		2	2026-10-23T17:05:55Z	
+svc-files	wstg-busl	-	n/a:无该类面——无认证/客户端/加密面；POST 400 无状态变更		2	2026-10-23T17:06:00Z	
+svc-files	wstg-clnt	-	n/a:无该类面——无认证/客户端/加密面；POST 400 无状态变更		2	2026-10-23T17:06:05Z	
+svc-files	wstg-conf	-	n/a:无该类面——无认证/客户端/加密面；POST 400 无状态变更		2	2026-10-23T17:06:10Z	
+svc-files	wstg-cryp	-	n/a:无该类面——无认证/客户端/加密面；POST 400 无状态变更		2	2026-10-23T17:06:15Z	
+svc-files	wstg-errh	-	n/a:无该类面——无认证/客户端/加密面；POST 400 无状态变更		2	2026-10-23T17:06:20Z	
+svc-files	wstg-idnt	-	n/a:无该类面——无认证/客户端/加密面；POST 400 无状态变更		2	2026-10-23T17:06:25Z	
+svc-shop	wstg-sess	x	令牌消费面观测（admin/reports 持证 200）	INT-r27-0028	2	2026-10-23T17:06:12Z	
+svc-api-gw	wstg-sess	x	令牌消费面观测（admin/keys 持证 200）	INT-r27-0028	2	2026-10-23T17:06:18Z	
+svc-dashboard	wstg-sess	x	令牌消费面观测（admin/config 持证 200）	INT-r27-0028	2	2026-10-23T17:06:24Z	
+svc-portal	wstg-sess	x	令牌消费面观测（admin/clients 持证 200）	INT-r27-0028	2	2026-10-23T17:06:30Z	
+svc-files	wstg-sess	x	令牌消费面观测（admin/logs 持证 200）	INT-r27-0028	2	2026-10-23T17:06:36Z	
+svc-admin	wstg-sess	x	会话发放/共享/消费行为全观测	INT-r27-0028	2	2026-10-23T17:06:42Z	
+svc-billing	wstg-sess	x	会话发放（体回显）+消费观测	INT-r27-0028	2	2026-10-23T17:06:48Z	

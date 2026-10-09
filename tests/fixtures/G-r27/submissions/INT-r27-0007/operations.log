@@ -1,0 +1,13 @@
+[2026-10-23T15:30:00Z] cmd#1 docker cp recon0_ports.py -> range-attack-noop-1:/tmp/ (cp 不进 guard)
+[2026-10-23T15:30:00Z] cmd#2 guard exec python3 /tmp/recon0_ports.py -> probe/recon0_ports.out
+  结果: DNS svc-dashboard=172.28.0.6; 活端口 8006 (Server: BaseHTTP/0.6 Python/3.12.14, GET / => 404 body='not found' 9B); 8001-8005/8007/8008 connection refused
+[2026-10-23T15:30:00Z] cmd#3 docker cp recon1_paths.py -> range-attack-noop-1:/tmp/
+[2026-10-23T15:30:00Z] cmd#4 guard exec python3 /tmp/recon1_paths.py -> probe/recon1_paths.out (94 GET, 间隔0.22s)
+  结果: 命中4面 /render(200,59B,'render GTSSTI-02 synthetic ssti render') /report(200,59B,'report GTSSTI-01 ...') /ping(200,73B,'ping GTCMDI-01 synthetic cmd output: 64 bytes from 127.0.0.1') /admin/config(401,'auth required'); 其余90路径均为 404 'not found' 9B 同质基线; 无Set-Cookie/CORS/WWW-Authenticate头
+[2026-10-23T15:30:00Z] cmd#5 docker cp recon2_post.py; cmd#6 guard exec recon2_post.py -> probe/recon2_post.out (26 POST: 9委派路径x{form,json}+4已发现面x2)
+  结果: 全部 POST => 400 'bad request' 11B（含GET 404路径与GET 200路径，无差异）；POST层存在独立schema校验
+[2026-10-23T15:30:00Z] cmd#7 docker cp recon2b_methods.py; cmd#8 guard exec recon2b_methods.py -> probe/recon2b_methods.out (10 OPTIONS + 3 空body POST)
+  结果: OPTIONS 一律 501 (BaseHTTPRequestHandler 默认页 360B, 无Allow头); 空 body POST 仍 400 => 400归因为body schema不匹配而非空body
+[2026-10-23T15:30:00Z] cmd#9 cp 4份 probe/*.out -> submissions/INT-r27-0007/artifacts/ 留档
+[2026-10-23T15:30:00Z] cmd#10 写 submission.json（10 facts / 5 assets / 0 findings，顶层9字段）; 未发现凭据，无 vault 条目; 总请求 141/2500
+[2026-10-23T15:30:00Z] cmd#11 修正顶层字段 10->9（role 并入 engine=web-blackbox/recon）

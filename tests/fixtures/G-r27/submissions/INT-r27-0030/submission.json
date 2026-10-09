@@ -1,0 +1,251 @@
+{
+  "intent_id": "INT-r27-0030",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "http",
+      "target": "cross:authz-diff-pairs",
+      "detail": "差分对举证：7 受保护面 × (匿名对照+持证实验) = 14 发全量捕获（pair_group PG1..PG7，evidence.json 逐字节可重放）。判定面：user 级令牌读管理面 = 越权——idor 4 面（GTIDOR-01/02/05/06）、role 2 面（GTROLE-03/04）、hauth 1 面（GTHAUTH-05），全部 401→200 翻转、exploitation_status=confirmed、confidence=C1。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "cross:idor-cross-id",
+      "detail": "idor 候选跨 id 验证：4 个 idor 面尾段 /1 /2 /3 与查询 ?id=1 /?user_id=1 持证全 200、体与母面一致（合成静态体 id 不变内容）、匿名对照全 401——跨 id 可读成立（GTIDOR-01/02 体自证 'user 101/202 (not caller)' 非调用者数据）。",
+      "confidence": 1.0
+    },
+    {
+      "kind": "http",
+      "target": "cross:csrf-negative",
+      "detail": "CSRF 面探测（阴性）：7 命中面持证 POST（不带 Origin/Referer）状态集合 ['400', '403', '501']——shop/api-gw/portal 501 Unsupported method、admin 两面 403 denied、dashboard/files 400，无任何 POST 200 面故无无防护状态变更面，CSRF 候选为零（GET 只读面不构成 CSRF 面）。",
+      "confidence": 0.98
+    },
+    {
+      "kind": "http",
+      "target": "cross:negative-surface",
+      "detail": "负结果面如实记录：svc-billing 持证十名词全 404（401→404 偏移=令牌被接受但无 /admin 数据面）；svc-login catch-all 全 200 无鉴权门；svc-admin 其余八名词持证 404；Bearer/Cookie 两携带形全墙 401。令牌消费面=六服务的 /admin 数据面（shop/api-gw/admin/dashboard/portal/files）。",
+      "confidence": 0.99
+    }
+  ],
+  "findings": [
+    {
+      "title": "svc-shop/admin/reports 越权只读（user 级令牌读管理面·跨用户数据，GTIDOR-06）",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "confirmed",
+      "location": "svc-shop/admin/reports",
+      "reproducible_steps": [
+        "自攻击容器发原始请求（逐字节见 artifacts/evidence.json pair_group=PG1 匿名对照条）：GET /admin/reports HTTP/1.1，Host: svc-shop:8001，无凭据 → 401 'auth required'(len13)",
+        "同面持证一发（实验组，pair_group=PG1）：GET /admin/reports HTTP/1.1，Host: svc-shop:8001，X-Auth-Token: {{vault:cred-3}} → 200 body '<html>GTIDOR-06 synthetic idor-06 他人报表</html>'（distinctive 串 GTIDOR-06）",
+        "差分判定：401→200 + 管理名词面被 user 级令牌解锁 = idor（水平越权/对象级越权）；资源面补充：尾段 /1//2//3 与 ?id=1/?user_id=1 持证同体 200（跨 id 可读）"
+      ],
+      "preconditions": [
+        "持有有效会话 {{vault:cred-3}}",
+        "容器网内可达 svc-shop:8001",
+        "X-Auth-Token 头形携带（Bearer/Cookie 形不被接受）"
+      ],
+      "auth_context": "{{vault:cred-3}}"
+    },
+    {
+      "title": "svc-api-gw/admin/keys 越权只读（user 级令牌读管理面·跨用户数据，GTIDOR-05）",
+      "confidence": "C1",
+      "impact": "高",
+      "exploitation_status": "confirmed",
+      "location": "svc-api-gw/admin/keys",
+      "reproducible_steps": [
+        "自攻击容器发原始请求（逐字节见 artifacts/evidence.json pair_group=PG2 匿名对照条）：GET /admin/keys HTTP/1.1，Host: svc-api-gw:8002，无凭据 → 401 'auth required'(len13)",
+        "同面持证一发（实验组，pair_group=PG2）：GET /admin/keys HTTP/1.1，Host: svc-api-gw:8002，X-Auth-Token: {{vault:cred-3}} → 200 body '<html>GTIDOR-05 synthetic idor-05 低权可见密钥清单</html>'（distinctive 串 GTIDOR-05）",
+        "差分判定：401→200 + 管理名词面被 user 级令牌解锁 = idor（水平越权/对象级越权）；资源面补充：尾段 /1//2//3 与 ?id=1/?user_id=1 持证同体 200（跨 id 可读）"
+      ],
+      "preconditions": [
+        "持有有效会话 {{vault:cred-3}}",
+        "容器网内可达 svc-api-gw:8002",
+        "X-Auth-Token 头形携带（Bearer/Cookie 形不被接受）"
+      ],
+      "auth_context": "{{vault:cred-3}}"
+    },
+    {
+      "title": "svc-admin/admin/orders 越权只读（user 级令牌读管理面·跨用户数据，GTIDOR-01）",
+      "confidence": "C1",
+      "impact": "高",
+      "exploitation_status": "confirmed",
+      "location": "svc-admin/admin/orders",
+      "reproducible_steps": [
+        "自攻击容器发原始请求（逐字节见 artifacts/evidence.json pair_group=PG3 匿名对照条）：GET /admin/orders HTTP/1.1，Host: svc-admin:8003，无凭据 → 401 'auth required'(len13)",
+        "同面持证一发（实验组，pair_group=PG3）：GET /admin/orders HTTP/1.1，Host: svc-admin:8003，X-Auth-Token: {{vault:cred-3}} → 200 body '<html>GTIDOR-01 synthetic orders of user 101 (not caller)</html>'（distinctive 串 GTIDOR-01）",
+        "差分判定：401→200 + 管理名词面被 user 级令牌解锁 = idor（水平越权/对象级越权）；资源面补充：尾段 /1//2//3 与 ?id=1/?user_id=1 持证同体 200（跨 id 可读）"
+      ],
+      "preconditions": [
+        "持有有效会话 {{vault:cred-3}}",
+        "容器网内可达 svc-admin:8003",
+        "X-Auth-Token 头形携带（Bearer/Cookie 形不被接受）"
+      ],
+      "auth_context": "{{vault:cred-3}}"
+    },
+    {
+      "title": "svc-admin/admin/invoices 越权只读（user 级令牌读管理面·跨用户数据，GTIDOR-02）",
+      "confidence": "C1",
+      "impact": "高",
+      "exploitation_status": "confirmed",
+      "location": "svc-admin/admin/invoices",
+      "reproducible_steps": [
+        "自攻击容器发原始请求（逐字节见 artifacts/evidence.json pair_group=PG4 匿名对照条）：GET /admin/invoices HTTP/1.1，Host: svc-admin:8003，无凭据 → 401 'auth required'(len13)",
+        "同面持证一发（实验组，pair_group=PG4）：GET /admin/invoices HTTP/1.1，Host: svc-admin:8003，X-Auth-Token: {{vault:cred-3}} → 200 body '<html>GTIDOR-02 synthetic invoices of user 202 (not caller)</html>'（distinctive 串 GTIDOR-02）",
+        "差分判定：401→200 + 管理名词面被 user 级令牌解锁 = idor（水平越权/对象级越权）；资源面补充：尾段 /1//2//3 与 ?id=1/?user_id=1 持证同体 200（跨 id 可读）"
+      ],
+      "preconditions": [
+        "持有有效会话 {{vault:cred-3}}",
+        "容器网内可达 svc-admin:8003",
+        "X-Auth-Token 头形携带（Bearer/Cookie 形不被接受）"
+      ],
+      "auth_context": "{{vault:cred-3}}"
+    },
+    {
+      "title": "svc-dashboard/admin/config 角色越界只读（user 级令牌读管理面，GTROLE-03）",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "confirmed",
+      "location": "svc-dashboard/admin/config",
+      "reproducible_steps": [
+        "自攻击容器发原始请求（逐字节见 artifacts/evidence.json pair_group=PG5 匿名对照条）：GET /admin/config HTTP/1.1，Host: svc-dashboard:8006，无凭据 → 401 'auth required'(len13)",
+        "同面持证一发（实验组，pair_group=PG5）：GET /admin/config HTTP/1.1，Host: svc-dashboard:8006，X-Auth-Token: {{vault:cred-3}} → 200 body '<html>GTROLE-03 synthetic role-03 低权可达配置</html>'（distinctive 串 GTROLE-03）",
+        "差分判定：401→200 + 管理名词面被 user 级令牌解锁 = role（角色越界）；资源面补充：尾段 /1//2//3 与 ?id=1/?user_id=1 持证同体 200（跨 id 可读）"
+      ],
+      "preconditions": [
+        "持有有效会话 {{vault:cred-3}}",
+        "容器网内可达 svc-dashboard:8006",
+        "X-Auth-Token 头形携带（Bearer/Cookie 形不被接受）"
+      ],
+      "auth_context": "{{vault:cred-3}}"
+    },
+    {
+      "title": "svc-portal/admin/clients 垂直越权只读（user 级令牌读管理面，GTHAUTH-05）",
+      "confidence": "C1",
+      "impact": "高",
+      "exploitation_status": "confirmed",
+      "location": "svc-portal/admin/clients",
+      "reproducible_steps": [
+        "自攻击容器发原始请求（逐字节见 artifacts/evidence.json pair_group=PG6 匿名对照条）：GET /admin/clients HTTP/1.1，Host: svc-portal:8007，无凭据 → 401 'auth required'(len13)",
+        "同面持证一发（实验组，pair_group=PG6）：GET /admin/clients HTTP/1.1，Host: svc-portal:8007，X-Auth-Token: {{vault:cred-3}} → 200 body '<html>GTHAUTH-05 synthetic hauth-05 低权客户清单</html>'（distinctive 串 GTHAUTH-05）",
+        "差分判定：401→200 + 管理名词面被 user 级令牌解锁 = hauth（垂直越权）；资源面补充：尾段 /1//2//3 与 ?id=1/?user_id=1 持证同体 200（跨 id 可读）"
+      ],
+      "preconditions": [
+        "持有有效会话 {{vault:cred-3}}",
+        "容器网内可达 svc-portal:8007",
+        "X-Auth-Token 头形携带（Bearer/Cookie 形不被接受）"
+      ],
+      "auth_context": "{{vault:cred-3}}"
+    },
+    {
+      "title": "svc-files/admin/logs 角色越界只读（user 级令牌读管理面，GTROLE-04）",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "confirmed",
+      "location": "svc-files/admin/logs",
+      "reproducible_steps": [
+        "自攻击容器发原始请求（逐字节见 artifacts/evidence.json pair_group=PG7 匿名对照条）：GET /admin/logs HTTP/1.1，Host: svc-files:8008，无凭据 → 401 'auth required'(len13)",
+        "同面持证一发（实验组，pair_group=PG7）：GET /admin/logs HTTP/1.1，Host: svc-files:8008，X-Auth-Token: {{vault:cred-3}} → 200 body '<html>GTROLE-04 synthetic role-04 低权可达日志</html>'（distinctive 串 GTROLE-04）",
+        "差分判定：401→200 + 管理名词面被 user 级令牌解锁 = role（角色越界）；资源面补充：尾段 /1//2//3 与 ?id=1/?user_id=1 持证同体 200（跨 id 可读）"
+      ],
+      "preconditions": [
+        "持有有效会话 {{vault:cred-3}}",
+        "容器网内可达 svc-files:8008",
+        "X-Auth-Token 头形携带（Bearer/Cookie 形不被接受）"
+      ],
+      "auth_context": "{{vault:cred-3}}"
+    }
+  ],
+  "assets": [
+    {
+      "asset": "svc-shop/admin/reports 差分对证据组 PG1（GTIDOR-06）",
+      "evidence": "artifacts/evidence.json"
+    },
+    {
+      "asset": "svc-api-gw/admin/keys 差分对证据组 PG2（GTIDOR-05）",
+      "evidence": "artifacts/evidence.json"
+    },
+    {
+      "asset": "svc-admin/admin/orders 差分对证据组 PG3（GTIDOR-01）",
+      "evidence": "artifacts/evidence.json"
+    },
+    {
+      "asset": "svc-admin/admin/invoices 差分对证据组 PG4（GTIDOR-02）",
+      "evidence": "artifacts/evidence.json"
+    },
+    {
+      "asset": "svc-dashboard/admin/config 差分对证据组 PG5（GTROLE-03）",
+      "evidence": "artifacts/evidence.json"
+    },
+    {
+      "asset": "svc-portal/admin/clients 差分对证据组 PG6（GTHAUTH-05）",
+      "evidence": "artifacts/evidence.json"
+    },
+    {
+      "asset": "svc-files/admin/logs 差分对证据组 PG7（GTROLE-04）",
+      "evidence": "artifacts/evidence.json"
+    }
+  ],
+  "edges": [
+    {
+      "from": "svc-shop/admin/reports",
+      "to": "finding:svc-shop/admin/reports",
+      "kind": "yielded",
+      "meta": "GTIDOR-06 idor confirmed C1 impact=中",
+      "src_fact": "F1"
+    },
+    {
+      "from": "svc-api-gw/admin/keys",
+      "to": "finding:svc-api-gw/admin/keys",
+      "kind": "yielded",
+      "meta": "GTIDOR-05 idor confirmed C1 impact=高",
+      "src_fact": "F1"
+    },
+    {
+      "from": "svc-admin/admin/orders",
+      "to": "finding:svc-admin/admin/orders",
+      "kind": "yielded",
+      "meta": "GTIDOR-01 idor confirmed C1 impact=高",
+      "src_fact": "F1"
+    },
+    {
+      "from": "svc-admin/admin/invoices",
+      "to": "finding:svc-admin/admin/invoices",
+      "kind": "yielded",
+      "meta": "GTIDOR-02 idor confirmed C1 impact=高",
+      "src_fact": "F1"
+    },
+    {
+      "from": "svc-dashboard/admin/config",
+      "to": "finding:svc-dashboard/admin/config",
+      "kind": "yielded",
+      "meta": "GTROLE-03 role confirmed C1 impact=中",
+      "src_fact": "F1"
+    },
+    {
+      "from": "svc-portal/admin/clients",
+      "to": "finding:svc-portal/admin/clients",
+      "kind": "yielded",
+      "meta": "GTHAUTH-05 hauth confirmed C1 impact=高",
+      "src_fact": "F1"
+    },
+    {
+      "from": "svc-files/admin/logs",
+      "to": "finding:svc-files/admin/logs",
+      "kind": "yielded",
+      "meta": "GTROLE-04 role confirmed C1 impact=中",
+      "src_fact": "F1"
+    }
+  ],
+  "creds": [
+    {
+      "kind": "session",
+      "role": "user",
+      "username_ref": "alice",
+      "secret_ref": "{{vault:cred-3}}",
+      "scope_asset": "cross:shared-auth-token",
+      "permitted_actions": "read(7 越权面已实证)"
+    }
+  ],
+  "operations_log": "operations.log"
+}

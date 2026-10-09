@@ -1,0 +1,12 @@
+[DNS] svc-api-gw -> 172.28.0.5
+[PORT] 8001 -> dead status=None reason=URLError:<urlopen error [Errno 111] Connection refused>
+[PORT] 8002 -> ALIVE status=404 reason=None
+       headers={'server': 'BaseHTTP/0.6 Python/3.12.14', 'content-type': 'text/html; charset=utf-8', 'content-length': '9'}
+       body[:200]='not found'
+[PORT] 8003 -> dead status=None reason=URLError:<urlopen error [Errno 111] Connection refused>
+[PORT] 8004 -> dead status=None reason=URLError:<urlopen error [Errno 111] Connection refused>
+[PORT] 8005 -> dead status=None reason=URLError:<urlopen error [Errno 111] Connection refused>
+[PORT] 8006 -> dead status=None reason=URLError:<urlopen error [Errno 111] Connection refused>
+[PORT] 8007 -> dead status=None reason=URLError:<urlopen error [Errno 111] Connection refused>
+[PORT] 8008 -> dead status=None reason=URLError:<urlopen error [Errno 111] Connection refused>
+[SUMMARY] alive_ports=[8002]

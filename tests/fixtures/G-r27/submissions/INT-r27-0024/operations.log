@@ -1,0 +1,2 @@
+2026-10-23T16:00:00Z 执行链：1) 写 w2_files_deser.py（GET基线+GET十参数族+POST form/json/raw+XXE探针/控制组，71请求，间隔0.25s）2) docker cp → range-attack-noop-1:/tmp/ 3) tanyin-guard exec docker exec python3 /tmp/w2_files_deser.py → probe/w2_files_deser.out 4) 分析：GET三面语义串命中×3；POST/XXE全400负结果。载荷温和性：仅字符串/字典回显类探针，无反弹壳无破坏载荷。
+probe/w2_files_{deser,trav,env}.{py,out}（host 侧 /Users/wgen/.tanyin/battles/battle-26/probe/，经 docker cp → range-attack-noop-1:/tmp/ → tanyin-guard exec docker exec 执行，timestamp=2026-10-23T16:00:00Z，请求间隔>=0.25s）

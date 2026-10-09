@@ -1,0 +1,12 @@
+# INT-r27-0023 operations.log（svc-portal /debug/env 信息暴露验证）
+# 授权：battle-26 授权训练靶场；委派单 INT-r27-0023（kind=matrix-test）；所有探测经 range-attack-noop-1 容器
+# 时间戳字面量：2026-10-23T16:00:00Z；GET-only；间隔≥0.3s；禁跟随重定向
+
+[2026-10-23T16:00:00Z] WRITE probe/w2_portal_env.py（/debug/env 直取全记录 + 二次面 /debug /graphql /metrics /actuator/env，同族第三面律）
+[2026-10-23T16:00:00Z] DOCKER-CP w2_portal_env.py → range-attack-noop-1:/tmp/
+[2026-10-23T16:00:00Z] GUARD-EXEC cli/tanyin-guard exec --goal-dir G-r27 --timestamp=2026-10-23T16:00:00Z -- docker exec range-attack-noop-1 python3 /tmp/w2_portal_env.py → probe/w2_portal_env.out
+  结果: 5 请求。GET /debug/env → 200 '<html>GTINFOLEAK-01 synthetic env: DB_PASS=<redacted> AWS_KEY=<redacted></html>'
+    键名清单 = [DB_PASS, AWS_KEY]（值脱敏态 <redacted>）；/debug /graphql /metrics /actuator/env → 404 'not found'（二次面不存在）
+[2026-10-23T16:00:00Z] ANALYZE 判据核验：200 且环境键名清单回显 ⇒ 判据满足（键结构暴露=infoleak 面：确认后端存在 DB 凭据与 AWS 密钥两个敏感配置项）
+[2026-10-23T16:00:00Z] VERDICT infoleak verified（C1/低：值已脱敏，仅键结构暴露）；EV 2 条落 artifacts/evidence.json
+[2026-10-23T16:00:00Z] WRITE submission.json（findings=1）+ artifacts 归档

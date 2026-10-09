@@ -1,0 +1,30 @@
+{
+  "intent_id": "INT-r27-0023",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "http", "target": "svc-portal/debug/env", "detail": "GET /debug/env → 200 '<html>GTINFOLEAK-01 synthetic env: DB_PASS=&lt;redacted&gt; AWS_KEY=&lt;redacted&gt;</html>'（Content-Type text/html；匿名可达，无认证门）", "confidence": 1.0},
+    {"kind": "info", "target": "svc-portal/debug/env", "detail": "环境键名清单 = [DB_PASS, AWS_KEY]，值呈 <redacted> 脱敏态 ⇒ 键结构暴露（确认后端存在数据库凭据与 AWS 密钥两个敏感配置项），判据满足：200 + 键名清单回显 = infoleak 面", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/*", "detail": "二次面（同族第三面律）：/debug → 404；/graphql → 404；/metrics → 404；/actuator/env → 404（均 'not found'）⇒ debug 族仅 /debug/env 单点存在，无 graphql/metrics/actuator 泄露面", "confidence": 1.0}
+  ],
+  "findings": [
+    {"title": "svc-portal /debug/env 匿名环境键名清单暴露（DB_PASS/AWS_KEY，值脱敏）", "confidence": "C1", "impact": "低",
+     "exploitation_status": "verified", "auth_context": "anon",
+     "reproducible_steps": [
+       "GET /debug/env HTTP/1.1（Host: svc-portal:8007，无凭据）→ 200，体含 'GTINFOLEAK-01 synthetic env: DB_PASS=<redacted> AWS_KEY=<redacted>'"
+     ],
+     "evidence_refs": ["artifacts/evidence.json#wstg-info-env-debug-env", "artifacts/evidence.json#negative-info-env-second-face"],
+     "location": "svc-portal/debug/env",
+     "dedup_key_proposed": "wstg-info-env-svc-portal-debug-env",
+     "network_position": "intranet-range",
+     "preconditions": ["网络可达 svc-portal:8007（匿名，无认证）"],
+     "expected_matcher": {"matchers": [{"type": "word", "words": ["GTINFOLEAK-01", "DB_PASS", "AWS_KEY"]},
+                                        {"type": "status", "status": [200]}]}}
+  ],
+  "assets": [
+    {"type": "endpoint", "value": "svc-portal:8007/debug/env", "meta": "GET 200;anon;env-key-names-exposed=DB_PASS,AWS_KEY;values-redacted;debug-family-sole-endpoint(/debug,/graphql,/metrics,/actuator/env=404)"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

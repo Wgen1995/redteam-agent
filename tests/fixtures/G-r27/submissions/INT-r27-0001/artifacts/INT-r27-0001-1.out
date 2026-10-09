@@ -1,0 +1,54 @@
+{
+ "script": "INT-r27-0001-1",
+ "ts": "2026-10-23T15:30:00Z",
+ "dns": {
+  "svc-shop": {
+   "ips": [
+    "172.28.0.9"
+   ],
+   "error": null
+  },
+  "svc-api-gw": {
+   "ips": [
+    "172.28.0.5"
+   ],
+   "error": null
+  },
+  "svc-admin": {
+   "ips": [
+    "172.28.0.3"
+   ],
+   "error": null
+  },
+  "svc-login": {
+   "ips": [
+    "172.28.0.7"
+   ],
+   "error": null
+  },
+  "svc-billing": {
+   "ips": [
+    "172.28.0.4"
+   ],
+   "error": null
+  },
+  "svc-dashboard": {
+   "ips": [
+    "172.28.0.6"
+   ],
+   "error": null
+  },
+  "svc-portal": {
+   "ips": [
+    "172.28.0.8"
+   ],
+   "error": null
+  },
+  "svc-files": {
+   "ips": [
+    "172.28.0.2"
+   ],
+   "error": null
+  }
+ }
+}

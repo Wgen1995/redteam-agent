@@ -1,0 +1,12 @@
+S-r27-0001	include	172.28.0.0/24		recon\;exploit\;verify		八问①②：靶场网段，授权攻击类型=侦察/利用/验证（禁 DoS）	2	2026-10-23T09:01:00Z
+S-r27-0002	include	*.range.local		recon\;exploit\;verify		八问①②：靶场域名族	2	2026-10-23T09:01:30Z
+S-r27-0003	exclude	*.out-of-scope.local				八问③：界外排除域	2	2026-10-23T09:02:00Z
+S-r27-0004	oob	192.168.0.0/16				八问③：界外观察白名单（只读观察放行）	2	2026-10-23T09:02:30Z
+S-r27-0005	include	svc-shop		recon\;exploit\;verify		P0落账补全（批次10缝⑩）：compose 服务本名入 include，scope 执法面与资产键形对齐；同授权内形态对齐，非授权修订	2	2026-10-23T09:31:00Z
+S-r27-0006	include	svc-api-gw		recon\;exploit\;verify		P0落账补全（批次10缝⑩）：compose 服务本名入 include；同授权内形态对齐，非授权修订	2	2026-10-23T09:31:30Z
+S-r27-0007	include	svc-admin		recon\;exploit\;verify		P0落账补全（批次10缝⑩）：compose 服务本名入 include；同授权内形态对齐，非授权修订	2	2026-10-23T09:32:00Z
+S-r27-0008	include	svc-login		recon\;exploit\;verify		P0落账补全（批次10缝⑩）：compose 服务本名入 include；同授权内形态对齐，非授权修订	2	2026-10-23T09:32:30Z
+S-r27-0009	include	svc-billing		recon\;exploit\;verify		P0落账补全（批次10缝⑩）：compose 服务本名入 include；同授权内形态对齐，非授权修订	2	2026-10-23T09:33:00Z
+S-r27-0010	include	svc-dashboard		recon\;exploit\;verify		P0落账补全（批次10缝⑩）：compose 服务本名入 include；同授权内形态对齐，非授权修订	2	2026-10-23T09:33:30Z
+S-r27-0011	include	svc-portal		recon\;exploit\;verify		P0落账补全（批次10缝⑩）：compose 服务本名入 include；同授权内形态对齐，非授权修订	2	2026-10-23T09:34:00Z
+S-r27-0012	include	svc-files		recon\;exploit\;verify		P0落账补全（批次10缝⑩）：compose 服务本名入 include；同授权内形态对齐，非授权修订	2	2026-10-23T09:34:30Z

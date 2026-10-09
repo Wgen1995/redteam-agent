@@ -1,0 +1,7 @@
+[2026-10-23T16:45:00Z] ops: 铸探针 probe/w3_dash_xss.py（双面 /render?tpl= × /report?name=，各 5 发：tag-raw/event-raw/quote-raw-ns 原形直发 + tag-enc-ctl/quote-enc-ctl 编码对照，间隔 0.5s，共 10 发）
+[2026-10-23T16:45:00Z] cmd: docker cp /Users/wgen/.tanyin/battles/battle-26/probe/w3_dash_xss.py range-attack-noop-1:/tmp/w3_dash_xss.py (cp 不进 guard, exit=0)
+[2026-10-23T16:45:00Z] cmd: cli/tanyin-guard exec --goal-dir /Users/wgen/.tanyin/battles/battle-26/G-r27 --timestamp=2026-10-23T16:45:00Z -- docker exec range-attack-noop-1 python3 /tmp/w3_dash_xss.py -> probe/w3_dash_xss.out (exit=0)
+[2026-10-23T16:45:00Z] ops: mkdir -p submissions/INT-r27-0029/artifacts；w3_dash_xss.{py,out} 副本入 artifacts
+[2026-10-23T16:45:00Z] ops: artifacts/evidence.json 落盘（2 条，finding_key=svc-dashboard/{render,report}-reflected-xss；raw_request 逐字节可发；含编码对照负全记录）
+[2026-10-23T16:45:00Z] ops: submission.json 落盘（9 顶层字段：intent_id/engine/status/facts[5]/findings[2]/assets[2]/edges[0]/creds[0]/operations_log）
+[2026-10-23T16:45:00Z] summary: 双面 confirmed——/render?tpl= 与 /report?name= 各 10 发中 3 发原形直发（tag/event/quote-ns）全部逐字节原样回显进 text/html 元素上下文（可执行反射），2 发编码对照均原样回显编码串（结构不完整不可执行）→ 不 urldecode+不转义双缺失，CWE-79 反射 XSS 双 finding；匿名面 preconditions=[]；预算消耗 10/1000 请求

@@ -1,0 +1,25 @@
+[
+  {
+    "finding_key": "FD-r27-0015-cors-origin-reflect-acac-true",
+    "raw_request": "GET /origin HTTP/1.1\r\nHost: svc-api-gw:8002\r\nOrigin: https://evil.example\r\nUser-Agent: w2-probe/1.0\r\nAccept: */*\r\nConnection: close\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Access-Control-Allow-Origin": "https://evil.example",
+      "Access-Control-Allow-Credentials": "true",
+      "Content-Type": "text/html; charset=utf-8"
+    },
+    "resp_body_excerpt": "<html>origin GTCORS-02 reflected https://evil.example allow-credentials true</html>",
+    "matcher_words": ["https://evil.example", "true"]
+  },
+  {
+    "finding_key": "FD-r27-0015-cors-debug-wildcard",
+    "raw_request": "GET /cors-debug HTTP/1.1\r\nHost: svc-api-gw:8002\r\nOrigin: https://evil.example\r\nUser-Agent: w2-probe/1.0\r\nAccept: */*\r\nConnection: close\r\n\r\n",
+    "resp_status": 200,
+    "resp_headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "text/html; charset=utf-8"
+    },
+    "resp_body_excerpt": "<html>cors debug GTCORS-01 wildcard allow-origin</html>",
+    "matcher_words": ["*"]
+  }
+]

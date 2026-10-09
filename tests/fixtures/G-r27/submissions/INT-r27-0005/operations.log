@@ -1,0 +1,10 @@
+[2026-10-23T15:30:00Z] cmd: docker cp .../INT-r27-0005/artifacts/r27l0_ports.py range-attack-noop-1:/tmp/r27l0_ports.py (cp 不进 guard)
+[2026-10-23T15:30:00Z] cmd: cli/tanyin-guard exec --goal-dir .../G-r27 --timestamp=2026-10-23T15:30:00Z -- docker exec range-attack-noop-1 python3 /tmp/r27l0_ports.py -> probe/r27l0_ports.out (exit=0)
+[2026-10-23T15:30:00Z] cmd: docker cp .../INT-r27-0005/artifacts/r27l1_getdict.py range-attack-noop-1:/tmp/r27l1_getdict.py (cp 不进 guard)
+[2026-10-23T15:30:00Z] cmd: cli/tanyin-guard exec ... -- docker exec range-attack-noop-1 python3 /tmp/r27l1_getdict.py -> probe/r27l1_getdict.out (exit=0)
+[2026-10-23T15:30:00Z] cmd: docker cp .../INT-r27-0005/artifacts/r27l2_postshape.py range-attack-noop-1:/tmp/r27l2_postshape.py (cp 不进 guard)
+[2026-10-23T15:30:00Z] cmd: cli/tanyin-guard exec ... -- docker exec range-attack-noop-1 python3 /tmp/r27l2_postshape.py -> probe/r27l2_postshape.out (exit=0)
+[2026-10-23T15:30:00Z] ops: mkdir -p submissions/INT-r27-0005/artifacts
+[2026-10-23T15:30:00Z] ops: vault-note.txt 创建（chmod 600，内容=本轮零凭据真值声明）
+[2026-10-23T15:30:00Z] ops: submission.json 落盘（9 顶层字段：submission_id/intent_id/goal_id/agent/created_at/target/facts[11]/assets[1]/findings[0]）
+[2026-10-23T15:30:00Z] summary: svc-login=172.28.0.7 唯一活端口 8004；GET 83 路径零熵墙（catch-all 200）；POST 7 面×4 形 28 发全 403 GTRATE-01 全局计数墙（244→271），无签发头，无真实形态分化；三击换轨律生效停止敲击；findings=[]（按委派单）

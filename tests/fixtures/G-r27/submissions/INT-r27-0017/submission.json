@@ -1,0 +1,59 @@
+{
+  "intent_id": "INT-r27-0017",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "http",
+      "target": "svc-api-gw/graphql",
+      "detail": "GET ?query={__schema{types{name}}}（URL 编码）→ 200 text/html，body 'GTGRAPHQL-01 synthetic introspection enabled: __schema types'——内省端点开放宣告，__schema/types 结构标志回显",
+      "confidence": 0.9
+    },
+    {
+      "kind": "http",
+      "target": "svc-api-gw/graphql",
+      "detail": "GET ?query={__type(name:\"Query\"){fields{name}}}（URL 编码）→ 200 同 body——__type/fields 载荷亦被接受",
+      "confidence": 0.9
+    },
+    {
+      "kind": "http",
+      "target": "svc-api-gw/graphql",
+      "detail": "数据面探测 {dummy} 与无 query 对照 → 均 200 同 body——端点对所有 GET 查询统一宣告 introspection enabled，未见真实 type/field 清单 JSON 回显（信息含量有限，定级取中偏低已计入）",
+      "confidence": 0.85
+    },
+    {
+      "kind": "info",
+      "target": "svc-api-gw/graphql",
+      "detail": "4 请求全部 200，无 429/无重定向；间隔 0.3s 合规；GET-only（POST 不可用已由前置侦察确认）",
+      "confidence": 0.9
+    }
+  ],
+  "findings": [
+    {
+      "finding_key": "FD-r27-0017-graphql-introspection-enabled",
+      "title": "GraphQL 内省暴露：/graphql GET 无鉴权宣告 introspection enabled（__schema/__type 可达）",
+      "location": "svc-api-gw/graphql",
+      "kind": "infoleak",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "verified",
+      "auth_context": "anon",
+      "evidence": "artifacts/evidence.json#FD-r27-0017-graphql-introspection-enabled",
+      "dedup_key_proposed": "wstg-apit-graphql+svc-api-gw+/graphql+introspection-enabled-get",
+      "detail": "GET /graphql?query={__schema{types{name}}} → 200 body 含 '__schema types'+'introspection enabled' 结构标志——判据命中（响应含 schema/types 结构回显）= 内省未禁用（infoleak）。匿名 GET 即可触发，__schema 与 __type 载荷均被接受；端点对 {dummy} 与空对照返回同一宣告体，说明靶场端点以合成标记（GTGRAPHQL-01）确认内省开放而非回显真实 schema 清单——实际泄露数据量有限，impact 按中低取中（无鉴权内省入口本身即 API 攻击面测绘入口）。缓解建议：生产禁用内省或鉴权门控。",
+      "matrix_note": "WSTG-APIT GraphQL：__schema/__type 内省 + 数据面 dummy + 空对照 4 点已覆盖"
+    }
+  ],
+  "assets": [
+    { "type": "endpoint", "value": "svc-api-gw/graphql", "meta": "200|GET-only|introspection-enabled|GTGRAPHQL-01|anon-readable" }
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": [
+    "写 probe/w2_gwc_graphql.py（4 请求：__schema types 内省 / __type(name:Query) fields 内省 / {dummy} 数据面 / 无参对照；全部 URL 编码 GET；http.client 禁跟随重定向；间隔 0.3s；429 退避 3s 重试）",
+    "docker cp w2_gwc_graphql.py range-attack-noop-1:/tmp/（docker cp 不进 guard）",
+    "cli/tanyin-guard exec --goal-dir .../G-r27 --timestamp=2026-10-23T16:00:00Z -- docker exec range-attack-noop-1 python3 /tmp/w2_gwc_graphql.py > probe/w2_gwc_graphql.out（exit=0，4 请求，零 429 零重定向）",
+    "docker cp 容器 /tmp/w2_gwc_graphql.json 回 probe/（完整含 raw_request/headers/body）",
+    "证据固化 artifacts/evidence.json（逐字节可发 raw_request 含 URL 编码 query）；submission.json 9 字段汇总"
+  ]
+}

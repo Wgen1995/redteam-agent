@@ -1,0 +1,10 @@
+2026-10-23T16:00:00Z  probe script written    probe/w2_dash_cmdi.py (INT-r27-0018 CMDI matrix: /ping x {host,cmd,ip,target,q} x {base,;id,|id,`id`,$(id),&&id} encoded; interval 0.3s)
+2026-10-23T16:00:00Z  probe script written    probe/w2_dash_ssti.py (INT-r27-0019 SSTI matrix: /render+/report x {tpl,template,name} x {plain,{{7*7}},${7*7},#{7*7},<%= 7*7 %>,{7*7},{{7*'7'}}} encoded; interval 0.3s)
+2026-10-23T16:00:00Z  docker cp               w2_dash_cmdi.py + w2_dash_ssti.py -> range-attack-noop-1:/tmp/
+2026-10-23T16:00:00Z  guard exec (allowed)    docker exec range-attack-noop-1 python3 /tmp/w2_dash_cmdi.py -> probe/w2_dash_cmdi.out ; 31 requests ; hits=0 ; all responses byte-identical to no-param baseline (73B fixed banner)
+2026-10-23T16:00:00Z  guard exec (allowed)    docker exec range-attack-noop-1 python3 /tmp/w2_dash_ssti.py -> probe/w2_dash_ssti.out ; 44 requests ; hits=0 ; server echoes RAW encoded query string into HTML (no urldecode, no eval)
+2026-10-23T16:00:00Z  followup script written probe/w2_dash_raw2.py (raw unencoded payloads to close false-negative window: SSTI {{7*7}}/${7*7}/#{7*7}/{{7*'7'}} raw x {tpl,name,template} x {/render,/report}; CMDI ;id/|id raw x 5 params)
+2026-10-23T16:00:00Z  docker cp               w2_dash_raw2.py -> range-attack-noop-1:/tmp/
+2026-10-23T16:00:00Z  guard exec (allowed)    docker exec range-attack-noop-1 python3 /tmp/w2_dash_raw2.py -> probe/w2_dash_raw2.out ; 34 requests ; hits=0 ; raw {{7*7}} reflected verbatim (no 49/7777777) ; raw ;id/|id baseline-identical
+2026-10-23T16:00:00Z  verdict                 INT-r27-0018 CMDI ruled_out (41 req, zero uid=/output-change) ; INT-r27-0019 SSTI ruled_out (68 req, zero eval) ; incidental: unencoded reflection of tpl/name params = reflected-XSS candidate surface (info fact, not tested - out of authorized payload shapes)
+2026-10-23T16:00:00Z  artifacts               evidence.json + submission.json + probe outputs archived under submissions/INT-r27-001{8,9}/

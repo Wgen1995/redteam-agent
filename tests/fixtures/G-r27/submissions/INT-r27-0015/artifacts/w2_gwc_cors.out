@@ -1,0 +1,9 @@
+{"path": "/cors-debug", "variant": "evil", "status": 200, "cors": {"access-control-allow-origin": "*"}}
+{"path": "/cors-debug", "variant": "null", "status": 200, "cors": {"access-control-allow-origin": "*"}}
+{"path": "/cors-debug", "variant": "subdomain", "status": 200, "cors": {"access-control-allow-origin": "*"}}
+{"path": "/cors-debug", "variant": "control", "status": 200, "cors": {"access-control-allow-origin": "*"}}
+{"path": "/origin", "variant": "evil", "status": 200, "cors": {"access-control-allow-origin": "https://evil.example", "access-control-allow-credentials": "true"}}
+{"path": "/origin", "variant": "null", "status": 200, "cors": {"access-control-allow-origin": "null", "access-control-allow-credentials": "true"}}
+{"path": "/origin", "variant": "subdomain", "status": 200, "cors": {"access-control-allow-origin": "https://sub.example.com", "access-control-allow-credentials": "true"}}
+{"path": "/origin", "variant": "control", "status": 200, "cors": {"access-control-allow-origin": "none", "access-control-allow-credentials": "true"}}
+DONE requests=8

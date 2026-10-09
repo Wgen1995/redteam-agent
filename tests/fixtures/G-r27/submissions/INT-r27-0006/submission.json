@@ -1,0 +1,23 @@
+{
+  "intent_id": "INT-r27-0006",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "info", "target": "svc-billing/dns", "detail": "svc-billing 解析单 A 记录 172.28.0.4（内网 172.28.0.0/24）", "confidence": 1.0},
+    {"kind": "port", "target": "svc-billing:8001-8008", "detail": "仅 8005/TCP open（BaseHTTP 应答）；8001-8004/8006-8008 连接拒绝", "confidence": 1.0},
+    {"kind": "service", "target": "svc-billing:8005", "detail": "指纹：Server=BaseHTTP/0.6 Python/3.12.14；全部响应 Content-Type=text/html; charset=utf-8；无 CORS 头、无重定向行为", "confidence": 0.95},
+    {"kind": "http", "target": "svc-billing/", "detail": "GET / → 401 'auth required'，且 401 无 WWW-Authenticate 头 ⇒ 非标准 HTTP 认证，疑应用层自定义门禁（自定义 header/cookie/token），待后续阶段验证", "confidence": 0.9},
+    {"kind": "http", "target": "svc-billing/*", "detail": "路径盲基线：88 条字典路径（凭据/信息/SSRF/处理器/资源/XSS/文件/CORS/重定向/管理/内部 11 族）与随机不存在路径 /zzz-r27-nx-baseline 的 GET 响应逐字节一致（401+'auth required'+同头集合）⇒ pre-auth 阶段 GET 零路径区分度，无一字典路径可确认存在", "confidence": 1.0},
+    {"kind": "http", "target": "svc-billing/*", "detail": "POST 方法门：9 条路径（/login /register /token /upload /import /xml /fetch /search /comment）× urlencoded t=1 与 JSON {\"t\":1} 共 18 发全部 403 'denied'，与不存在路径 POST 全同 ⇒ POST 403 对路径与请求体形状均不敏感（方法级统一门禁）", "confidence": 1.0},
+    {"kind": "http", "target": "svc-billing/*", "detail": "GET=401 与 POST=403 的方法级差分稳定存在（同一路径两方法不同状态码/正文），但同方法内无任何路径/形状差分", "confidence": 1.0},
+    {"kind": "http", "target": "svc-billing/*", "detail": "OPTIONS 与 HEAD（/、/login、/admin、不存在路径）一律 501 + Python http.server stock 错误页（无 Allow 头）⇒ handler 仅实现 GET/POST，BaseHTTPRequestHandler 默认 501 兜底，符合 stdlib 自建服务特征", "confidence": 0.95}
+  ],
+  "findings": [],
+  "assets": [
+    {"type": "service", "value": "svc-billing:8005", "meta": "ip=172.28.0.4;banner=BaseHTTP/0.6 Python/3.12.14;proto=http;admin-gated"},
+    {"type": "endpoint", "value": "svc-billing:8005/", "meta": "auth-gate:GET→401 auth required(no WWW-Authenticate)/POST→403 denied;path-blind-pre-auth"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

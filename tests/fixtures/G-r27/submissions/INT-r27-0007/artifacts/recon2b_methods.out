@@ -1,0 +1,162 @@
+{
+ "ts": "2026-10-23T15:30:00Z",
+ "base": "http://svc-dashboard:8006",
+ "results": [
+  {
+   "path": "/login",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/register",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/token",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/upload",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/fetch",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/search",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/render",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/report",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/ping",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/admin/config",
+   "method": "OPTIONS",
+   "data": null,
+   "status": 501,
+   "headers": {
+    "Content-Type": "text/html;charset=utf-8",
+    "Content-Length": "360"
+   },
+   "body_head": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('OPTIONS').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n",
+   "body_len": 360
+  },
+  {
+   "path": "/login",
+   "method": "POST",
+   "data": "empty",
+   "status": 400,
+   "headers": {
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/render",
+   "method": "POST",
+   "data": "empty",
+   "status": 400,
+   "headers": {
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  },
+  {
+   "path": "/ping",
+   "method": "POST",
+   "data": "empty",
+   "status": 400,
+   "headers": {
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "11"
+   },
+   "body_head": "bad request",
+   "body_len": 11
+  }
+ ]
+}

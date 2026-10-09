@@ -1,0 +1,160 @@
+{
+  "intent_id": "INT-r27-0012",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "http",
+      "target": "svc-shop/comment",
+      "detail": "GTXSS-02 stored 型信号：GET 面（10 参数族×tag/event/quote 三载荷×编码/原形双态=66 发）全部返回固定 body <html>comment GTXSS-02 synthetic stored xss echo</html>，零参数回显、零 query 回显 ⇒ GET 反射不成立；存储型需 POST 而 POST 全 501 不可达 ⇒ GET-only 下不可利用（suspected 降级）",
+      "confidence": 0.95
+    },
+    {
+      "kind": "http",
+      "target": "svc-shop/search|/reply|/feedback",
+      "detail": "回显机制：服务器原样回显 raw query 值（URL 解码不做）。专属参数直接回显值（/search?q= → body 'search results <值>'；/reply?text= → 'reply <值>'；/feedback?msg= → 'feedback <值>'），其余任意参数回显完整 query 串（'/reply?q=<值>' 形）。编码发送→编码态回显（不可执行）；原形发送→标签原形回显（可执行）⇒ 漏洞成立条件=攻击者可原形注入（绕过浏览器自动编码的链路/非浏览器客户端）",
+      "confidence": 0.9
+    }
+  ],
+  "findings": [
+    {
+      "title": "svc-shop /search 反射 XSS（未编码原样回显，事件处理器注入原语成立）",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "confirmed",
+      "auth_context": "",
+      "reproducible_steps": [
+        "GET /search?q=<img/src=x/onerror=probe7x9> → 200 body 含 <img/src=x/onerror=probe7x9> 未编码原形（HTML 可执行上下文）；对照 GET /search?q=%3Cimg%20src%3Dx%20onerror%3Dprobe7x9%3E → body 仅编码态回显%3C…%3E（不可执行，浏览器不解码渲染）"
+      ],
+      "evidence_refs": [
+        "FK-r27-0012-search-xss",
+        "FK-r27-0012-search-xss-tag",
+        "FK-r27-0012-search-xss-control-encoded"
+      ],
+      "location": "svc-shop/search",
+      "dedup_key_proposed": "AST-r27-shop+wstg-inpv-xss",
+      "network_position": "same-subnet",
+      "preconditions": [
+        "攻击载荷以未编码形态进入 query（原始 HTTP 客户端/二次解码链）"
+      ],
+      "expected_matcher": {
+        "matchers": [
+          {
+            "type": "word",
+            "words": [
+              "onerror=probe7x9",
+              "GTXSS-01"
+            ]
+          },
+          {
+            "type": "status",
+            "status": [
+              200
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "svc-shop /reply 反射 XSS（未编码原样回显，事件处理器注入原语成立）",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "confirmed",
+      "auth_context": "",
+      "reproducible_steps": [
+        "GET /reply?text=<img/src=x/onerror=probe7x9> → 200 body 含未编码原形 'reply <img/src=x/onerror=probe7x9>'；q 参数走完整 query 回显形 /reply?q=<img/src=x/onerror=probe7x9> 同样原形；对照编码态仅 %3C 回显不可执行"
+      ],
+      "evidence_refs": [
+        "FK-r27-0012-reply-xss",
+        "FK-r27-0012-reply-xss-tag",
+        "FK-r27-0012-reply-xss-control-encoded"
+      ],
+      "location": "svc-shop/reply",
+      "dedup_key_proposed": "AST-r27-shop+wstg-inpv-xss",
+      "network_position": "same-subnet",
+      "preconditions": [
+        "攻击载荷以未编码形态进入 query"
+      ],
+      "expected_matcher": {
+        "matchers": [
+          {
+            "type": "word",
+            "words": [
+              "onerror=probe7x9",
+              "GTXSS-03"
+            ]
+          },
+          {
+            "type": "status",
+            "status": [
+              200
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "svc-shop /feedback 反射 XSS（未编码原样回显，事件处理器注入原语成立）",
+      "confidence": "C1",
+      "impact": "中",
+      "exploitation_status": "confirmed",
+      "auth_context": "",
+      "reproducible_steps": [
+        "GET /feedback?msg=<img/src=x/onerror=probe7x9> → 200 body 含未编码原形 'feedback <img/src=x/onerror=probe7x9>'；q 参数完整 query 回显形同样原形；对照编码态仅 %3C 回显不可执行"
+      ],
+      "evidence_refs": [
+        "FK-r27-0012-feedback-xss",
+        "FK-r27-0012-feedback-xss-tag",
+        "FK-r27-0012-feedback-xss-control-encoded"
+      ],
+      "location": "svc-shop/feedback",
+      "dedup_key_proposed": "AST-r27-shop+wstg-inpv-xss",
+      "network_position": "same-subnet",
+      "preconditions": [
+        "攻击载荷以未编码形态进入 query"
+      ],
+      "expected_matcher": {
+        "matchers": [
+          {
+            "type": "word",
+            "words": [
+              "onerror=probe7x9",
+              "GTXSS-04"
+            ]
+          },
+          {
+            "type": "status",
+            "status": [
+              200
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "assets": [
+    {
+      "type": "endpoint",
+      "value": "svc-shop/search",
+      "meta": "reflected-xss;params=q(direct),any(query-echo)"
+    },
+    {
+      "type": "endpoint",
+      "value": "svc-shop/reply",
+      "meta": "reflected-xss;params=text(direct),any(query-echo)"
+    },
+    {
+      "type": "endpoint",
+      "value": "svc-shop/feedback",
+      "meta": "reflected-xss;params=msg(direct),any(query-echo)"
+    },
+    {
+      "type": "endpoint",
+      "value": "svc-shop/comment",
+      "meta": "xss-neg-on-get;stored-unreachable-post-501"
+    }
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

@@ -1,0 +1,243 @@
+{
+ "meta": {
+  "intent": "INT-r27-0022",
+  "kind": "open-redirect-matrix",
+  "ts_literal": "2026-10-23T16:00:00Z"
+ },
+ "cases": [
+  {
+   "case": "baseline",
+   "param": null,
+   "payload": null,
+   "path": "/redirect",
+   "raw_request": "GET /redirect HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:29 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "/redirect",
+    "Content-Length": "48"
+   },
+   "location": "/redirect",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "to",
+   "payload": null,
+   "path": "/redirect?to=",
+   "raw_request": "GET /redirect?to= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:29 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "",
+    "Content-Length": "48"
+   },
+   "location": "",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "url",
+   "payload": null,
+   "path": "/redirect?url=",
+   "raw_request": "GET /redirect?url= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:30 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "/redirect?url=",
+    "Content-Length": "48"
+   },
+   "location": "/redirect?url=",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "next",
+   "payload": null,
+   "path": "/redirect?next=",
+   "raw_request": "GET /redirect?next= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:30 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "/redirect?next=",
+    "Content-Length": "48"
+   },
+   "location": "/redirect?next=",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "goto",
+   "payload": null,
+   "path": "/redirect?goto=",
+   "raw_request": "GET /redirect?goto= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:30 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "",
+    "Content-Length": "48"
+   },
+   "location": "",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "target",
+   "payload": null,
+   "path": "/redirect?target=",
+   "raw_request": "GET /redirect?target= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:31 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "/redirect?target=",
+    "Content-Length": "48"
+   },
+   "location": "/redirect?target=",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "u",
+   "payload": null,
+   "path": "/redirect?u=",
+   "raw_request": "GET /redirect?u= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:31 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "/redirect?u=",
+    "Content-Length": "48"
+   },
+   "location": "/redirect?u=",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "to",
+   "payload": "http://evil.example",
+   "path": "/redirect?to=http://evil.example",
+   "raw_request": "GET /redirect?to=http://evil.example HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:31 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "http://evil.example",
+    "Content-Length": "48"
+   },
+   "location": "http://evil.example",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "param": "url",
+   "payload": "http://evil.example",
+   "path": "/redirect?url=http://evil.example",
+   "raw_request": "GET /redirect?url=http://evil.example HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:32 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "/redirect?url=http://evil.example",
+    "Content-Length": "48"
+   },
+   "location": "/redirect?url=http://evil.example",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "next",
+   "payload": "http://evil.example",
+   "path": "/redirect?next=http://evil.example",
+   "raw_request": "GET /redirect?next=http://evil.example HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:32 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "/redirect?next=http://evil.example",
+    "Content-Length": "48"
+   },
+   "location": "/redirect?next=http://evil.example",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "goto",
+   "payload": "http://evil.example",
+   "path": "/redirect?goto=http://evil.example",
+   "raw_request": "GET /redirect?goto=http://evil.example HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:32 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "http://evil.example",
+    "Content-Length": "48"
+   },
+   "location": "http://evil.example",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "param": "target",
+   "payload": "http://evil.example",
+   "path": "/redirect?target=http://evil.example",
+   "raw_request": "GET /redirect?target=http://evil.example HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:32 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "/redirect?target=http://evil.example",
+    "Content-Length": "48"
+   },
+   "location": "/redirect?target=http://evil.example",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "u",
+   "payload": "http://evil.example",
+   "path": "/redirect?u=http://evil.example",
+   "raw_request": "GET /redirect?u=http://evil.example HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 302,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:36:33 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Location": "/redirect?u=http://evil.example",
+    "Content-Length": "48"
+   },
+   "location": "/redirect?u=http://evil.example",
+   "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+   "elapsed_ms": 2
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+# INT-r27-0021 operations.log（svc-portal LFI 矩阵验证·双面双形）
+# 授权：battle-26 授权训练靶场；委派单 INT-r27-0021（kind=matrix-test）；所有探测经 range-attack-noop-1 容器
+# 时间戳字面量：2026-10-23T16:00:00Z；GET-only；间隔≥0.25s；禁跟随重定向
+
+[2026-10-23T16:00:00Z] WRITE probe/w2_portal_lfi.py（{/page,/pages} × {path,file,page,doc} × 8 载荷形：passwd/hostname 各 {../原始,../编码,绝对,file://} + 裸端点/空参数控制对）
+[2026-10-23T16:00:00Z] DOCKER-CP w2_portal_lfi.py → range-attack-noop-1:/tmp/
+[2026-10-23T16:00Z] GUARD-EXEC cli/tanyin-guard exec --goal-dir G-r27 --timestamp=2026-10-23T16:00:00Z -- docker exec range-attack-noop-1 python3 /tmp/w2_portal_lfi.py → probe/w2_portal_lfi.out
+  结果: 74 请求（2 裸基线 + 8 空参数 + 64 载荷）全部 200、响应体逐字节一致（'GTLFI-02 synthetic local file: /etc/hostname content'）
+[2026-10-23T16:00:00Z] ANALYZE 判据核验：响应体无 'root:x:0'、无真实主机名内容 ⇒ 判据不满足；../ 形与绝对形均不中 ⇒ 双形 EV 无命中记账（按判据「若都中」条件不成立）
+[2026-10-23T16:00:00Z] VERDICT LFI ruled_out：GTLFI-02 为路径级静态合成回显；/page 与 /pages 双面参数族零驱动；负结果对照 4 条落 artifacts/evidence.json
+[2026-10-23T16:00:00Z] WRITE submission.json（findings=[]）+ artifacts 归档

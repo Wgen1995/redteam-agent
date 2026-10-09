@@ -1,0 +1,20 @@
+{
+  "intent_id": "INT-r27-0021",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "http", "target": "svc-portal/page", "detail": "LFI 矩阵双面 74 请求（/page 与 /pages 各：1 裸基线 + 4 空参数控制对 + 4 参数×8 载荷）全部 200，响应体逐字节一致（'<html>GTLFI-02 synthetic local file: /etc/hostname content</html>'）", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/page", "detail": "控制对结论：裸 /page、裸 /pages 与全部空参数（path/file/page/doc）即回显 GTLFI-02 合成串 ⇒ 回显为路径级静态行为，非参数驱动", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/page", "detail": "passwd 载荷四形（../../../../etc/passwd 原始形、..%2F..%2F 编码形、/etc/passwd 绝对形、file:///etc/passwd）× 4 参数 × 2 端点：响应全同基线，无 'root:x:0' ⇒ 判据不满足，../ 形与绝对形均不中，双形 EV 无命中记账（按判据「若都中」条件不成立）", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/pages", "detail": "hostname 载荷四形（../../etc/hostname 原始形/编码形、/etc/hostname 绝对形、file:///etc/hostname）× 4 参数 × 2 端点：响应全同基线，无真实主机名内容 ⇒ /pages 面亦不中", "confidence": 1.0},
+    {"kind": "info", "target": "svc-portal/page", "detail": "GTLFI-02 为靶场路径级合成标志（回显串内含 '/etc/hostname' 字样但为静态文本，非文件读取结果），非可利用 LFI", "confidence": 0.95}
+  ],
+  "findings": [],
+  "assets": [
+    {"type": "endpoint", "value": "svc-portal:8007/page", "meta": "GET 200;path-level-static-echo(GTLFI-02);param-dead:dual-face-dual-shape-zero-differential"},
+    {"type": "endpoint", "value": "svc-portal:8007/pages", "meta": "GET 200;path-level-static-echo(GTLFI-02);param-dead:dual-face-dual-shape-zero-differential"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

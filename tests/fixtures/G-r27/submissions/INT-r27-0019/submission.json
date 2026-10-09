@@ -1,0 +1,37 @@
+{
+  "intent_id": "INT-r27-0019",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "http", "target": "svc-dashboard/render", "detail": "/render 无参基线：200 固定 banner '<html>render GTSSTI-02 synthetic ssti render /render</html>'（59 字节）——'synthetic ssti render' 为静态自述文本", "confidence": 1.0},
+    {"kind": "http", "target": "svc-dashboard/report", "detail": "/report 无参基线：200 固定 banner '<html>report GTSSTI-01 synthetic ssti render /report</html>'（59 字节）", "confidence": 1.0},
+    {"kind": "info", "target": "svc-dashboard/render+report", "detail": "SSTI 矩阵负结果（判据：响应体回显 49 或 7777777）：/render+/report × 参数族 tpl/template/name × 载荷形 {{7*7}}/${7*7}/#{7*7}/<%= 7*7 %>/{7*7}/{{7*'7'}}（URL 编码 42 发含 plain 对照）+ 裸发 24 发，共 68 发零求值命中 ⇒ 无模板引擎求值，SSTI 排除", "confidence": 0.9},
+    {"kind": "info", "target": "svc-dashboard/render+report", "detail": "参数消费行为精确刻画：/render 仅消费 tpl（值回显）、/report 仅消费 name（值回显）；两面的其余参数（template 等）触发整个 raw path 回显。回显均为 raw query 原样拼接（编码形回显编码串、裸发形回显原字符），既不 urldecode 也不 HTML 转义、不模板求值——BaseHTTP 自建 handler 字符串拼接特征", "confidence": 0.95},
+    {"kind": "info", "target": "svc-dashboard/render?tpl=+/report?name=", "detail": "伴生观察（超出本 intent 载荷形，未实测 XSS 载荷）：tpl/name 参数值未经 HTML 转义原样反射进响应 HTML（plain 值 hello-r27 与裸发 {{7*7}} 均原样回显实证）⇒ 反射 XSS 候选面，建议总控分派 wstg-inpv-xss 定向 intent 核验", "confidence": 0.85}
+  ],
+  "findings": [
+    {
+      "kind": "vuln",
+      "target": "svc-dashboard/render",
+      "location": "svc-dashboard/render",
+      "dedup_key_proposed": "wstg-inpv-ssti-svc-dashboard-render-report",
+      "title": "svc-dashboard /render /report SSTI（WSTG-INPV-13/SSTI）——验证后排除",
+      "severity": "低",
+      "impact": "低",
+      "confidence": 0.9,
+      "status": "ruled_out",
+      "exploitation_status": "ruled_out",
+      "auth_context": "anon",
+      "detail": "双面（/render /report）×3 参数族 ×6 编码载荷 + 4 裸发载荷共 68 发，零 49/7777777 求值实证；参数仅触发未转义字符串回显，无模板求值引擎参与。'synthetic ssti render' 自述为静态 banner",
+      "evidence": "artifacts/evidence.json",
+      "repro_command": "docker exec range-attack-noop-1 python3 /tmp/w2_dash_ssti.py && docker exec range-attack-noop-1 python3 /tmp/w2_dash_raw2.py"
+    }
+  ],
+  "assets": [
+    {"type": "endpoint", "value": "svc-dashboard:8006/render", "meta": "GET 200;consumes=tpl(raw-reflect,no-html-encode,no-eval)"},
+    {"type": "endpoint", "value": "svc-dashboard:8006/report", "meta": "GET 200;consumes=name(raw-reflect,no-html-encode,no-eval)"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

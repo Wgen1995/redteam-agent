@@ -1188,3 +1188,15 @@
 - **版式**：runner 新增 --soft-stall-min/--backoff-base/--directive-file 三参，旧参数默认值全兼容（零迁移）
 - 提交：db0b6da（含 b10 计划）；上游 4653ee4 为 b9 落帐
 - 待办：v0.4 门循环对照实验（Python 驱动 vs AI 自律，数据裁决）；v0.5 vuln-agent 接线+codex 端到端；v0.6 range v2
+
+---
+
+## 2026-10-10 b11 门循环对照实验 + 九维专家会诊（v0.4 定谳）
+
+- **b26（臂B gateloop）战毕**：DONE 86.3m（明驱期 P2 9.0/P3 57.7/P4 19.5，零重启）；评分 0.41（23/56，全 beacon 轨）
+- **RT-0024 三项裁决**：臂A（b23 0.66）三项全胜（score 0.66 vs 0.41；token 380KB vs 561KB；会话 1 vs ≥4）——混杂已记（任务书漂移两条+盲跑期干扰+单样本）
+- **定谳**：逐门会话重置疑似主要失分机制（resume-kit 保状态不保直觉，0.41 低于裸模式 0.57）；gateloop 真实价值=可观测性（每门 SLI）非得分——推进策略建模为可插拔（ai-self 默认 | python-gate-loop 运维/实验台），架构细图层③双形态同改
+- **金样**：tests/test_gold_g_r27_b26.py 2 测绿（0.41+gate-fail 596/1422=42% 噪声钉测）；夹具 tests/fixtures/G-r27
+- **实锤发现**：gate-fail 写放大（终局 42% 噪声）；timeline 反常漂移（行增噪声减 623 到 596，append-only 预期被打破，P0 待查）；battle.py launch 未透传 b10 参数（b26 才首验）
+- **九维专家会诊**（docs/reviews/2026-10-10-nine-expert-review/ 00-09 十卷）：五汇聚点（诚实性缺口 5/9、执法纸面 3/9、度量 n=1 3/9、写放大 3/9、方法论广度）；P0 加固批 9 项全 S 工作量已列
+- **待办**：v0.4.x P0 诚实性加固批（9 项）→ v0.5 vuln-agent 接线+codex E2E+干净重跑协议 → v0.6 range v2（业务逻辑链靶 GT v8+held-out）

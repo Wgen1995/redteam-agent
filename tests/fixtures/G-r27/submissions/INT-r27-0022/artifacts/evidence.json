@@ -1,0 +1,70 @@
+[
+ {
+  "finding_key": "wstg-inpv-open-redirect-to",
+  "raw_request": "GET /redirect?to=http://evil.example HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 302,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:31 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Location": "http://evil.example",
+   "Content-Length": "48"
+  },
+  "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+  "matcher_words": [
+   "evil.example"
+  ],
+  "note": "HIT：GET /redirect?to=http://evil.example → 302 Location 精确等于 http://evil.example（外域）"
+ },
+ {
+  "finding_key": "wstg-inpv-open-redirect-goto",
+  "raw_request": "GET /redirect?goto=http://evil.example HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 302,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:32 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Location": "http://evil.example",
+   "Content-Length": "48"
+  },
+  "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+  "matcher_words": [
+   "evil.example"
+  ],
+  "note": "HIT：GET /redirect?goto=http://evil.example → 302 Location=http://evil.example（第二有效参数）"
+ },
+ {
+  "finding_key": "negative-control-redirect-to-empty",
+  "raw_request": "GET /redirect?to= HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 302,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:29 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Location": "",
+   "Content-Length": "48"
+  },
+  "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+  "matcher_words": [
+   ""
+  ],
+  "note": "控制对：to= 空值 → 302 Location 为空串；载荷态 Location=外域 ⇒ 差分由参数值驱动"
+ },
+ {
+  "finding_key": "negative-redirect-url-selfecho",
+  "raw_request": "GET /redirect?url=http://evil.example HTTP/1.1\r\nHost: svc-portal:8007\r\n\r\n",
+  "resp_status": 302,
+  "resp_headers": {
+   "Server": "BaseHTTP/0.6 Python/3.12.14",
+   "Date": "Fri, 09 Oct 2026 15:36:32 GMT",
+   "Content-Type": "text/html; charset=utf-8",
+   "Location": "/redirect?url=http://evil.example",
+   "Content-Length": "48"
+  },
+  "resp_body_excerpt": "<html>GTREDIR-01 synthetic redirect to %s</html>",
+  "matcher_words": [
+   "redirect?url="
+  ],
+  "note": "对照：url= 参数载荷仅回显进自指 Location=/redirect?url=http://evil.example，不产生外域跳转 ⇒ 参数族分化（to/goto 有效，url/next/target/u 无效）"
+ }
+]

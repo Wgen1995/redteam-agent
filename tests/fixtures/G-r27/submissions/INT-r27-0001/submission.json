@@ -1,0 +1,81 @@
+{
+  "intent_id": "INT-r27-0001",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "info",
+      "target": "dns:svc-mapping",
+      "detail": "8 服务名→IP→端口完整映射表（DNS socket.getaddrinfo + TCP 存活核验）：svc-shop→172.28.0.9:8001；svc-api-gw→172.28.0.5:8002；svc-admin→172.28.0.3:8003；svc-login→172.28.0.7:8004；svc-billing→172.28.0.4:8005；svc-dashboard→172.28.0.6:8006；svc-portal→172.28.0.8:8007；svc-files→172.28.0.2:8008。与账面战书序推断（AST-r27-0002..0009）逐一吻合，unverified 待核标记可解除。",
+      "confidence": 0.95
+    },
+    {
+      "kind": "port",
+      "target": "172.28.0.9:8001",
+      "detail": "svc-shop；HTTP GET / → 404 \"not found\"；Server=BaseHTTP/0.6 Python/3.12.14；无 Location（无重定向）；content-type text/html",
+      "confidence": 0.9
+    },
+    {
+      "kind": "port",
+      "target": "172.28.0.5:8002",
+      "detail": "svc-api-gw；HTTP GET / → 404 \"not found\"；Server=BaseHTTP/0.6 Python/3.12.14；无 Location；content-type text/html",
+      "confidence": 0.9
+    },
+    {
+      "kind": "port",
+      "target": "172.28.0.3:8003",
+      "detail": "svc-admin；HTTP GET / → 401 \"auth required\"（认证面）；Server=BaseHTTP/0.6 Python/3.12.14；无 Location",
+      "confidence": 0.9
+    },
+    {
+      "kind": "port",
+      "target": "172.28.0.7:8004",
+      "detail": "svc-login；HTTP GET / → 200 \"<html>login form</html>\"（唯一 200 开放面，登录表单入口）；Server=BaseHTTP/0.6 Python/3.12.14；无 Location",
+      "confidence": 0.9
+    },
+    {
+      "kind": "port",
+      "target": "172.28.0.4:8005",
+      "detail": "svc-billing；HTTP GET / → 401 \"auth required\"（认证面）；Server=BaseHTTP/0.6 Python/3.12.14；无 Location",
+      "confidence": 0.9
+    },
+    {
+      "kind": "port",
+      "target": "172.28.0.6:8006",
+      "detail": "svc-dashboard；HTTP GET / → 404 \"not found\"；Server=BaseHTTP/0.6 Python/3.12.14；无 Location",
+      "confidence": 0.9
+    },
+    {
+      "kind": "port",
+      "target": "172.28.0.8:8007",
+      "detail": "svc-portal；HTTP GET / → 404 \"not found\"；Server=BaseHTTP/0.6 Python/3.12.14；无 Location",
+      "confidence": 0.9
+    },
+    {
+      "kind": "port",
+      "target": "172.28.0.2:8008",
+      "detail": "svc-files；HTTP GET / → 404 \"not found\"；Server=BaseHTTP/0.6 Python/3.12.14；无 Location",
+      "confidence": 0.9
+    },
+    {
+      "kind": "info",
+      "target": "subnet:172.28.0.0/24",
+      "detail": "网段存活清单：2112 次 TCP connect（8 解析 IP×8000-8009 聚焦 + 全网段 172.28.0.1-254×8001-8008，timeout 0.3s 并发≤16），存活仅 8 对（上述 8 服务，无第 9 个存活面）；边界口 8000/8009 在全部解析 IP 上关闭；网段其余 IP 无 8001-8008 监听。指纹同构：全部 BaseHTTP/0.6 Python/3.12.14。",
+      "confidence": 0.9
+    }
+  ],
+  "findings": [],
+  "assets": [
+    {"type": "ip", "value": "172.28.0.9", "meta": "port:8001;svc=svc-shop"},
+    {"type": "ip", "value": "172.28.0.5", "meta": "port:8002;svc=svc-api-gw"},
+    {"type": "ip", "value": "172.28.0.3", "meta": "port:8003;svc=svc-admin"},
+    {"type": "ip", "value": "172.28.0.7", "meta": "port:8004;svc=svc-login"},
+    {"type": "ip", "value": "172.28.0.4", "meta": "port:8005;svc=svc-billing"},
+    {"type": "ip", "value": "172.28.0.6", "meta": "port:8006;svc=svc-dashboard"},
+    {"type": "ip", "value": "172.28.0.8", "meta": "port:8007;svc=svc-portal"},
+    {"type": "ip", "value": "172.28.0.2", "meta": "port:8008;svc=svc-files"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

@@ -1,0 +1,19 @@
+{
+  "intent_id": "INT-r27-0020",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {"kind": "http", "target": "svc-portal/widget", "detail": "RFI 矩阵 19 请求（1 裸基线 + 6 空参数控制对 + 6 参数×2 载荷）全部 200，响应体逐字节一致（55B '<html>GTRFI-01 synthetic remote include executed</html>'）", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/widget", "detail": "控制对结论：裸 /widget 与全部空参数（url/uri/src/include/file/page）即回显 GTRFI-01 合成串 ⇒ 回显为路径级静态行为，非参数驱动", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/widget", "detail": "载荷 http://svc-login:8004/（界内形）经 6 参数注入后响应与基线全同，svc-login 页面内容（'login form'）未出现在响应 ⇒ 远程内容包含未发生", "confidence": 1.0},
+    {"kind": "http", "target": "svc-portal/widget", "detail": "载荷 file:///etc/hostname 经 6 参数注入后响应与基线全同，文件内容未回显 ⇒ file:// scheme 包含未发生", "confidence": 1.0},
+    {"kind": "info", "target": "svc-portal/widget", "detail": "判据核验（三判据全不满足）：①目标内容缺席 ②'executed' 语义不随参数分化 ③无差分。GTRFI-01 为靶场路径级合成标志，非可利用 RFI", "confidence": 0.95}
+  ],
+  "findings": [],
+  "assets": [
+    {"type": "endpoint", "value": "svc-portal:8007/widget", "meta": "GET 200;path-level-static-echo(GTRFI-01);param-dead:6params×2payloads-zero-differential"}
+  ],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}

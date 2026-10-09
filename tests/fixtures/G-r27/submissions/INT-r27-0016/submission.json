@@ -1,0 +1,34 @@
+{
+  "intent_id": "INT-r27-0016",
+  "engine": "web-blackbox",
+  "status": "done",
+  "facts": [
+    {
+      "kind": "http",
+      "target": "svc-api-gw/jump",
+      "detail": "开放重定向参数归因（同面参数并列全扫律）：6 参数族（url/to/next/goto/target/u）× http://evil.example 未编码原值。唯一命中 u：GET /jump?u=http://evil.example → 302 Location: http://evil.example（精确等于外域值，绝对跳转）；其余 5 参数 Location 均为自指+QS 反射（/jump?url=http://evil.example 等，仍在本源）。控制对：裸 /jump → 302 Location: /jump；?u=（空）→ Location 为空串。",
+      "confidence": 0.95
+    },
+    {
+      "kind": "info",
+      "target": "svc-api-gw/jump",
+      "detail": "实现缺陷指纹：服务器读取原始查询串不做百分号解码（?u=http%3A%2F%2Fevil.example → Location 原样回显编码串，为相对引用，浏览器解析回本源——故未编码原值才是可利用形态）；响应正文恒含字面 %s（格式化串残留，GTREDIR-03）；Location 由参数直接拼接，无白名单/同源校验。",
+      "confidence": 0.9
+    }
+  ],
+  "findings": [
+    {
+      "kind": "vuln",
+      "target": "svc-api-gw:8002",
+      "location": "svc-api-gw/jump",
+      "detail": "未验证开放重定向（CWE-601）：GET /jump?u=http://evil.example → 302 Location: http://evil.example。参数 u 的值未做任何同源/白名单校验直接写入 Location，可被钓鱼/OAuth 回调劫持利用。证据链：外域 Location 实证 + 裸路径自指控制对 + 同值异参数（url）自指控制对（归因 u 唯一）+ 空值空 Location + 编码值原样回显（无解码）。raw_request 逐字节可复现（见 artifacts/evidence.json 条目 1）。",
+      "confidence": 0.95,
+      "dedup_key_proposed": "wstg-inpv-open-redirect-svc-api-gw-jump-u",
+      "evidence": "artifacts/evidence.json"
+    }
+  ],
+  "assets": [],
+  "edges": [],
+  "creds": [],
+  "operations_log": "operations.log"
+}
