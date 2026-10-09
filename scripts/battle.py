@@ -141,7 +141,7 @@ def cmd_init(a):
         "4) 范围：include=172.28.0.0/24 与 *.range.local；exclude=*.out-of-scope.local；oob=192.168.0.0/16",
         "5) 预算：2M;50000;40",
         "6) 凭据：无预发——靶场 svc-login 有发放面，自行获取",
-        "7) 强度：打穿别打塌——禁 DoS；探测一律经容器 range-attack-noop-1（docker exec range-attack-noop-1 ...），宿主不得直连 172.28.0.x",
+        "7) 强度：打穿别打塌——禁 DoS；探测一律经容器 range-attack-noop-1（docker exec range-attack-noop-1 ...），中间产物（surfaces/faces 清单等）一律落 probe 目录，禁用裸 /tmp 路径（权限墙杀会话）",
         "8) 会话目录：%s（账本+报告落这里；探针产物落 %s）" % (p["goal"], p["probe"]),
         "",
         "【收尾要求】打完出中文战报：findings 统计、replay 汇总、honest_misses（归因）、读取路径自报、三条教训。诚实优先：不确信记 suspected 并注明，禁止伪造。",
