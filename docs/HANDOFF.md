@@ -1200,3 +1200,24 @@
 - **实锤发现**：gate-fail 写放大（终局 42% 噪声）；timeline 反常漂移（行增噪声减 623 到 596，append-only 预期被打破，P0 待查）；battle.py launch 未透传 b10 参数（b26 才首验）
 - **九维专家会诊**（docs/reviews/2026-10-10-nine-expert-review/ 00-09 十卷）：五汇聚点（诚实性缺口 5/9、执法纸面 3/9、度量 n=1 3/9、写放大 3/9、方法论广度）；P0 加固批 9 项全 S 工作量已列
 - **待办**：v0.4.x P0 诚实性加固批（9 项）→ v0.5 vuln-agent 接线+codex E2E+干净重跑协议 → v0.6 range v2（业务逻辑链靶 GT v8+held-out）
+
+---
+
+## 2026-10-10 P0 诚实性加固批（v0.4.x，九项全落地）
+
+**目标**：九维会诊第一汇聚点「诚实性缺口」+执法纸面+写放大——账本从「防意外」升到「防故意」。
+
+- **A1 探针前置**：set-replay-state 对 VERIFIED/REPAIRED 硬查 timeline `replay-probe <id> verdict=` 实证（FD 按挂接 EV 取键）；最新裁决=not-reproduced 则 --manual 也翻不动（事实矛盾不可人工覆写）；--manual=1 显式人工通道（事件带 note=manual 不掩痕）。REPAIRED 额外认 env-diff 探针（环境差异非失败）。旧直签通道闭。
+- **A4 replay-summary 收紧**：C1/C2 findings 须 evs∪linked 全终态才 PASS（「EV未终态：<ids>」披露）；PASS 行增 `c12_findings=N`＋`ev_coverage=P%` 披露面。
+- **B2 approve 持钥 HMAC**：TANYIN_APPROVAL_KEY 在场 ⇒ approve 须 `--sig=HMAC-SHA256(sha256(key), command_hash)`（缺/错=rc=1）；sig 落 note 段 `sig=<hex>`；verify-signoff/--knowledge 持钥验行内 sig。键缺席=legacy（靶场/CI/金样零破坏）——AI 写者再不能自铸 approvals 行冒充客户。
+- **B5 add-goal 授权前移**：授权书可达 ⇒ 实测 sha256 必须一致（b25 halt 侥幸依赖根除）；不可达 ⇒ REJECT，唯场景靶场显式 `--allow-missing-auth=1` 豁免。
+- **C6 settle 链断言**：battle.py settle 先跑 verify-chain——FAIL 则报告标注+rc=2 拒结算（b25 型尾部三门手工旁路从此结算期即死，不再靠事后 lint）。
+- **C8 launch 全参透传**：battle.py launch 补 --soft-stall-min/--backoff-base/--directive-file 三参（b10 四件套上真实战场；directive.txt 空基线战中可注入）+TANYIN_ANCHOR_AUTO=1。
+- **D7 插件依赖归位**：@deepseek-ai/dsh-tools 移 dependencies 并钉 0.0.1-rc.1（无 ^）；schemastery 未用删；npm pack→干净目录 install→lib/tools.js import 实证 OK（发布即崩洞闭）。
+- **E9a gate-fail 去重**：同 phase+assert+reason 的失败已是最新 gate 事件 ⇒ 不复铸（FAIL rc 语义不变）；reason 变化或隔 gate-exit ⇒ 照铸。G-g1 P5 三连同因失败 3 行→1 行（b26 型 42% 轮询噪声的引擎侧治理）。
+- **E9b 异常裁决**：b26 终局 verify-chain PASS（1422 行完整、零 supersede/rebuild 事件、无删行代码径）⇒ 账本完整性成立；中途 623 单点计数无链头快照=事后不可仲裁——已入 RT-0024 §五（教训：观测断言必须随附链头快照，正是 E3 动机）。
+- **E3 链头锚定**：新命令 `anchor`（git init+commit *.tsv，消息带行数+链头；--remote/TANYIN_ANCHOR_REMOTE 可选 push）；TANYIN_ANCHOR_AUTO=1 时每 gate-exit 自动锚（尽力而为失败不阻门）；battle launch 默认开。无声改账从此须重写已推送 git 历史。
+- **顺手修复**：write_cmds verify-signoff/knowledge 两处 print 三元优先级真虫（无键时输出空串非 FAIL 行）；RT-0024 补全 front-matter（b11 落帐时无头文件，lint 红潜伏被本批全套件揪出）；selfcheck KNOWN_COMMANDS 登记 anchor；金样 read-ledger-replay-summary.norm 随披露面更新+add-goal 豁免旗标。
+- **测试**：新增 6 文件 24 测（probe_required 7/replay_summary 3/approval_hmac 5/addgoal_auth 4/gatefail_throttle 2/anchor 3）+7 处旧测适配（语义收紧的预期破坏：直签/假 sha/无豁免路径）；全套件见提交时点运行记录。
+- **命令面**：ledger 44 命令（+anchor）；approve 增 --sig；add-goal 增 --allow-missing-auth；set-replay-state 增 --manual。
+- **待办**：v0.5 vuln-agent 接线+codex E2E+干净重跑协议（P1 清单在会诊综述）→ v0.6 range v2

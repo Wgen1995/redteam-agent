@@ -33,7 +33,7 @@ _TEXT_EXTS = {".md", ".py", ".json", ".tsv", ".yaml", ".lock"}
 KNOWN_COMMANDS = {
     "ledger": ["add-asset", "add-cred", "add-edge", "add-evidence", "add-fact",
                "add-finding", "add-goal", "add-intent", "add-scope", "amend-scope",
-               "append-timeline", "approve", "budget-check", "budget-log", "checkpoint",
+               "anchor", "append-timeline", "approve", "budget-check", "budget-log", "checkpoint",
                "cleanup-checklist", "converge-check", "graph-horizon", "graph-neighbors",
                "graph-paths", "hash-recheck", "intent-status", "ledger-add-asset",
                "ledger-add-cred", "ledger-add-edge", "ledger-add-evidence",

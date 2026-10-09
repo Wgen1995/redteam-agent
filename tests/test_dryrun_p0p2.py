@@ -12,7 +12,7 @@ from ledger import core
 LEDGER = os.path.join(ROOT, "cli", "tanyin-ledger")
 PHASES_CLI = os.path.join(ROOT, "cli", "tanyin-phases")
 EGRESS = os.path.join(ROOT, "cli", "tanyin-egress")
-A64 = "a" * 64
+A64 = __import__("hashlib").sha256(b"dry").hexdigest()  # P0 加固：声明须与 auth/dry.pdf 实测一致
 TS = "2026-09-24T12:00:00Z"
 
 # --- 追加件（完备性设计 2bd6052 已批衍生）：总控行为纪律检查的测试侧仪表 ---

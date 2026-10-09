@@ -304,7 +304,7 @@ def _add_goal(goal_dir, rest):
     args = _parse(rest, {"target", "objective", "auth-doc", "auth-sha256", "signer", "valid-from",
                          "valid-until", "rate-limit", "window", "emergency-contact", "budget",
                          "dollar-budget", "language", "business-context", "model-tier", "guard-tier",
-                         "timestamp", "phase"})
+                         "timestamp", "phase", "allow-missing-auth"})
     _req(args, ["target", "objective", "auth-doc", "auth-sha256", "signer", "valid-from",
                 "valid-until", "budget", "model-tier", "guard-tier", "timestamp"])
     ctx = Ctx(goal_dir)
@@ -315,6 +315,25 @@ def _add_goal(goal_dir, rest):
             raise Reject("授权结构化字段空=REJECT（不存在「先记上再补」）: --" + f)
     if not _hex64(args["auth-sha256"]):
         raise Reject("auth_sha256 非 sha256 hex")
+    # P0 加固（2026-10-10 会诊⑤·b25 halt 侥幸依赖）：授权书在位且实测 sha256
+    # 一致才收行——不再把比对推迟到 P5 lint（b25 靠 LLM 诚实纪律 halt 属侥幸）。
+    # 场景靶场（虚拟授权书）显式 --allow-missing-auth=1 豁免，真实交付不得豁免。
+    _auth_path = next((c for c in (args["auth-doc"], os.path.join(goal_dir, args["auth-doc"]))
+                       if os.path.isfile(c)), None)
+    if _auth_path is None:
+        if args.get("allow-missing-auth") != "1":
+            raise Reject("授权书不在位（--auth-doc=%s 不可达且不在 goal 目录）："
+                         "真实交付须文件在位且 sha256 一致；场景靶场显式 --allow-missing-auth=1"
+                         % args["auth-doc"])
+    else:
+        import hashlib as _hl
+        _h = _hl.sha256()
+        with open(_auth_path, "rb") as _f:
+            for _chunk in iter(lambda: _f.read(65536), b""):
+                _h.update(_chunk)
+        if _h.hexdigest() != args["auth-sha256"]:
+            raise Reject("授权书实测 sha256=%s… 与声明不符（禁先记后补）"
+                         % _h.hexdigest()[:16])
     seg = args["budget"].split(";")
     if len(seg) != 3 or not all(_seg_int(x) for x in seg):
         raise Reject("budget 非 token;requests;hours 三段整数: " + args["budget"])
@@ -860,6 +879,33 @@ def _add_evidence(goal_dir, rest):
 
 # ---------------------------------------------------------------- 11 approve
 
+def _approval_key():
+    # P0 加固（2026-10-10 会诊②·审计缺口③）：approve 持钥通道。
+    # TANYIN_APPROVAL_KEY 在场 ⇒ approve 须 --sig=HMAC-SHA256(key, command_hash)，
+    # verify-signoff/knowledge 验行内 sig——AI 写者无钥造不出合法签发。
+    # 键缺席（默认，靶场/CI）= legacy 行为不破坏金样。sig 走 note 字段
+    # `sig=<hex>` 前缀段（零 schema 迁移）。
+    import os
+    k = os.environ.get("TANYIN_APPROVAL_KEY", "")
+    return k.encode("utf-8") if k else None
+
+
+def _approval_sig(command_hash, key_bytes):
+    import hashlib, hmac
+    return hmac.new(hashlib.sha256(key_bytes).digest(),
+                    command_hash.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def _row_sig_ok(ctx, row, key_bytes):
+    import hmac as _hmac
+    note = ctx.val("approvals.tsv", row, "note") or ""
+    chash = ctx.val("approvals.tsv", row, "command_hash") or ""
+    for part in note.split(";"):
+        if part.startswith("sig="):
+            return _hmac.compare_digest(part[4:], _approval_sig(chash, key_bytes))
+    return False
+
+
 def _approve(goal_dir, rest):
     # 批次 5 T15（R-T15-1）：yaml 断言裸旗标本地归一（--release 先例，不动全局
     # _parse）——P5.5 `--verify-signoff` 与 P6 `--knowledge` 两断言从此真跑。
@@ -867,25 +913,31 @@ def _approve(goal_dir, rest):
              else "--verify-signoff=1" if tok == "--verify-signoff" else tok)
             for tok in rest]
     args = _parse(rest, {"command-hash", "decision", "approver", "note", "verify-signoff",
-                         "knowledge", "timestamp", "phase"})
+                         "knowledge", "timestamp", "phase", "sig"})
     ctx = Ctx(goal_dir)
+    akey = _approval_key()
     if "verify-signoff" in args:
         rows = [r for r in ctx.rows("approvals.tsv")
                 if ctx.val("approvals.tsv", r, "decision") == "approved"]
         if args.get("command-hash"):
             rows = [r for r in rows if ctx.val("approvals.tsv", r, "command_hash") == args["command-hash"]]
+        if akey:
+            rows = [r for r in rows if _row_sig_ok(ctx, r, akey)]
         if rows:
-            print("PASS 签发 approved 行存在（%d 行）" % len(rows))
+            print("PASS 签发 approved 行存在（%d 行%s）"
+                  % (len(rows), "，持钥验签通过" if akey else ""))
             return 0
-        print("FAIL 无签发行")
+        print("FAIL 无签发行%s" % ("（或 sig 验签失败）" if akey else ""))
         return 1
     if "knowledge" in args:
         rows = [r for r in ctx.rows("approvals.tsv")
                 if ctx.val("approvals.tsv", r, "decision") == "knowledge-approved"]
+        if akey:
+            rows = [r for r in rows if _row_sig_ok(ctx, r, akey)]
         if rows:
-            print("PASS 知识审批行存在（%d 行）" % len(rows))
+            print("PASS 知识审批行存在（%d 行%s）" % (len(rows), "，持钥验签通过" if akey else ""))
             return 0
-        print("FAIL 知识审批 approved 行缺失")
+        print("FAIL 知识审批 approved 行缺失%s" % ("（或 sig 验签失败）" if akey else ""))
         return 1
     _req(args, ["command-hash", "decision", "approver", "timestamp"])
     ctx.tier0()
@@ -893,9 +945,19 @@ def _approve(goal_dir, rest):
         raise Reject("command_hash 非 hex")
     if args["decision"] not in _APPROVE_DECISIONS:
         raise Reject("decision 不在建议值域 {approved,rejected,exempted,knowledge-approved}: " + args["decision"])
+    sig_seg = ""
+    if akey:
+        import hmac as _hmac
+        got = args.get("sig", "")
+        if not got:
+            raise Reject("TANYIN_APPROVAL_KEY 在场：approve 须 --sig=<HMAC-SHA256(key, command_hash)>（持钥人工通道）")
+        if not _hmac.compare_digest(got, _approval_sig(args["command-hash"], akey)):
+            raise Reject("--sig 验签失败（HMAC 与 command_hash 不匹配）")
+        sig_seg = "sig=" + got
+    note_parts = [p for p in (sig_seg, _clean(args.get("note", ""))) if p]
     rid = ctx.new_id("approvals.tsv", "AP")
     row = _row("approvals.tsv", id=rid, command_hash=args["command-hash"], decision=args["decision"],
-               approver=args["approver"], timestamp=args["timestamp"], note=_clean(args.get("note", "")))
+               approver=args["approver"], timestamp=args["timestamp"], note=";".join(note_parts))
     ctx.append("approvals.tsv", row)
     ctx.event(args["timestamp"], "approve %s(%s)" % (rid, args["decision"]), phase=args.get("phase", ""))
     ctx.commit({"approvals.tsv", "timeline.tsv"})

@@ -416,10 +416,23 @@ class CheckCommands(Base):
         r = self.cli("ledger-replay-summary")
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)  # C1 未重放
         self.assertIn("FD-g1-0001", r.stdout)
+        # P0 加固适配：签 VERIFIED 须先有 reproduced 探针（旧直签通道闭）。
+        # FD 的实证键=其挂接 EV：先挂接、再落 EV 探针、后签 FD。
+        erows = self.rows("E-index.tsv")
+        erows[0][T["E-index.tsv"].index("linked_finding")] = "FD-g1-0001"
+        self.write("E-index.tsv", erows)
+        self.cli("append-timeline", "--actor=子代理", "--phase=P4",
+                 "--event=replay-probe EV-g1-0001 verdict=reproduced",
+                 "--revert-cmd=none", "--timestamp=2026-09-24T09:14:00Z")
         self.cli("set-replay-state", "--id=FD-g1-0001", "--state=VERIFIED", "--timestamp=2026-09-24T09:15:00Z")
+        # A4 收口第二层：挂接 EV 亦须终态（探针已在场，直接补签）
+        self.cli("set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED", "--timestamp=2026-09-24T09:16:00Z")
         r = self.cli("ledger-replay-summary")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-        self.assertIn("verified=1", r.stdout.splitlines()[0])
+        head = r.stdout.splitlines()[0]
+        self.assertIn("verified=2", head)  # FD 签记+EV 联动行（A4 披露面：c12 与覆盖）
+        self.assertIn("c12_findings=1", head)
+        self.assertIn("ev_coverage=100%", head)
 
     def test_terminal_gate(self):
         r = self.cli("ledger-terminal-gate")
@@ -444,7 +457,8 @@ class CheckCommands(Base):
 
 class SetReplayState(Base):
     def test_verified_writes_and_chain_alive(self):
-        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=VERIFIED", "--timestamp=2026-09-24T09:15:00Z")
+        # P0 加固：直签通道闭——本用例钉写入/联动/链语义，走显式人工通道
+        r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=VERIFIED", "--timestamp=2026-09-24T09:15:00Z", "--manual=1")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(r.stdout.splitlines()[0], "OK" + chr(9) + "replay:FD-g1-0001:VERIFIED")
         frows = self.rows("findings.tsv")
@@ -453,8 +467,9 @@ class SetReplayState(Base):
         self.assertEqual(latest[T["findings.tsv"].index("exploitation_status")], "verified")
         self.assertEqual(latest[T["findings.tsv"].index("confidence")], "C3")  # 维持不降
         trows = self.rows("timeline.tsv")
-        self.assertEqual(trows[-1][T["timeline.tsv"].index("event")],
-                         "replay:FD-g1-0001:VERIFIED")
+        ev_now = trows[-1][T["timeline.tsv"].index("event")]
+        self.assertTrue(ev_now.startswith("replay:FD-g1-0001:VERIFIED"), ev_now)
+        self.assertIn("note=manual", ev_now)  # P0：人工通道显式落标（不掩痕）
         r = self.cli("verify-chain")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)  # 链延续有效
 
@@ -469,6 +484,10 @@ class SetReplayState(Base):
         self.assertEqual(latest[T["findings.tsv"].index("exploitation_status")], "suspected")
 
     def test_ev_replay_via_linked_finding(self):
+        # P0 加固：EV 直签须先有自身 reproduced 探针（旧直签通道闭）
+        self.cli("append-timeline", "--actor=子代理", "--phase=P4",
+                 "--event=replay-probe EV-g1-0001 verdict=reproduced",
+                 "--revert-cmd=none", "--timestamp=2026-09-24T09:14:00Z")
         r = self.cli("set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED", "--timestamp=2026-09-24T09:15:00Z")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(len(self.rows("findings.tsv")), 1)  # 无 linked_finding 不联动
@@ -487,7 +506,8 @@ class SetReplayState(Base):
         self.assertEqual(r.returncode, 1)
         self.assertIn("REJECT", r.stderr)
         for _ in range(2):
-            r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=REPAIRED", "--timestamp=2026-09-24T09:15:00Z")
+            # P0 加固：重试计数用例走显式人工通道（钉锁/计数语义非实证语义）
+            r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=REPAIRED", "--timestamp=2026-09-24T09:15:00Z", "--manual=1")
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         r = self.cli("set-replay-state", "--id=FD-g1-0001", "--state=REPAIRED", "--timestamp=2026-09-24T09:15:00Z")
         self.assertEqual(r.returncode, 1)  # 重试计数>max_retry=2

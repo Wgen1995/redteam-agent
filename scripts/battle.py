@@ -88,6 +88,7 @@ def paths(n, gen):
         "mission": os.path.join(home, "mission.txt"),
         "log": os.path.join(home, "opencode-run.log"),
         "runner": os.path.join(home, "opencode-run.log.runner.tsv"),
+        "directive": os.path.join(home, "directive.txt"),
         "runner_out": os.path.join(home, "runner.out"),
     }
 
@@ -158,11 +159,21 @@ def cmd_launch(a):
     argv = [sys.executable, RUNNER, "start", "--cwd", ROOT,
             "--prompt-file", p["mission"], "--log", p["log"],
             "--ledger-dir", p["goal"], "--max-restarts", str(a.max_restarts),
-            "--stall-min", str(a.stall_min)]
+            "--stall-min", str(a.stall_min),
+            # P0 加固（会诊⑧/SRE⑥）：b10 四件套上真实战场——launch 全参透传
+            "--soft-stall-min", str(a.soft_stall_min),
+            "--backoff-base", str(a.backoff_base),
+            "--directive-file", p["directive"]]
+    os.makedirs(os.path.dirname(p["directive"]), exist_ok=True)
+    if not os.path.exists(p["directive"]):
+        with open(p["directive"], "w", encoding="utf-8") as f:
+            f.write("")  # 空指令文件：digest 基线，战中可注入补令
     out = open(p["runner_out"], "a", encoding="utf-8")
     proc = subprocess.Popen(argv, stdout=out, stderr=subprocess.STDOUT,
-                            stdin=subprocess.DEVNULL, cwd=ROOT, **popen_kwargs())
-    print("引擎已点火 runner-pid=%d" % proc.pid)
+                            stdin=subprocess.DEVNULL, cwd=ROOT, env=dict(os.environ, TANYIN_ANCHOR_AUTO="1"),
+                            **popen_kwargs())
+    print("引擎已点火 runner-pid=%d（soft-stall=%smin backoff=%ss directive=%s）"
+          % (proc.pid, a.soft_stall_min, a.backoff_base, p["directive"]))
     print("watch：%s" % p["runner"])
 
 
@@ -181,12 +192,22 @@ def cmd_settle(a):
     p = paths(a.n, a.gen)
     if not os.path.exists(os.path.join(p["goal"], "findings.tsv")):
         sys.exit("findings.tsv 不存在——战未毕或未开铸")
+    # P0 加固（会诊⑥/架构缺口②·b25 verify-chain FAIL 实锤）：settle 先过硬
+    # 链断言——收官账本 verify-chain 必须 PASS，否则拒绝结算并指向修复路径
+    # （b25 即死于此：尾部三门手工旁路缺 gate-exit:P5/P5.5）。
+    vr = ledger("verify-chain", "--goal-dir", p["goal"])
+    chain_ok = vr.returncode == 0
     out = os.path.join(p["home"], "settle-report.txt")
     r = run([sys.executable, EVAL, "--session", p["goal"], "--ground-truth", GT])
     with open(out, "w", encoding="utf-8") as f:
+        f.write("verify-chain: %s\n%s\n%s\n" % ("PASS" if chain_ok else "FAIL",
+                                                  vr.stdout or "", vr.stderr or ""))
         f.write((r.stdout or "") + "\n" + (r.stderr or ""))
+    print("verify-chain：%s" % ("PASS" if chain_ok else "FAIL（见 settle-report；b25 型尾部三门缺门事件——修复后重结算）"))
     print((r.stdout or r.stderr)[-1500:])
     print("报告：%s" % out)
+    if not chain_ok:
+        sys.exit(2)
 
 
 def main():
@@ -203,6 +224,8 @@ def main():
         if name == "launch":
             s.add_argument("--max-restarts", type=int, default=5)
             s.add_argument("--stall-min", default="8")
+            s.add_argument("--soft-stall-min", default="3")
+            s.add_argument("--backoff-base", default="30")
         s.set_defaults(func=fn)
     a = ap.parse_args()
     a.func(a)

@@ -25,10 +25,10 @@ P6 沉淀（脱敏→tanyin-redact --reverse-verify→approve --knowledge→know
 ⓪ checkpoint+budget-check → ① 扫描（unconsumed-facts/pending-intents/matrix-gaps）→ ② 假设风暴（五路 origin：entity/concept/precedent/adjacency/llm；你只提议，add-intent 算 dedup_key/score；晋升阈值=0.5+0.05*(round-1) 随轮递增；llm 路 quota=5/轮）→ ③ 并行派发（pending 按 priority=severity_expect×asset_value×exploitability 降序 Top-K，公式见 P3.md；六要素+预算份额；tanyin-budgetctl enforce 前置；tanyin-phases cached 查 SKIP；引擎 intent 按 MANIFEST 纪律能力路由，超 max_op_level/视角上限拒派）→ ④ 验收落账（单写者，写前拒收）→ ⑤ 链构建（add-edge attack/cross_ref）→ ⑥ 收敛判定（converge-check：converged|budget-exhausted 皆合法终态）。
 事件回边（不离开 P3）：asset-added→add-intent origin=recon-event（直达 pending）+子矩阵行；cred-obtained→add-cred kind=session→authz-diff 候选；scope-amended→amend-scope（须 approvals）→tanyin-egress compile→界外资产复判→canary 复测。
 
-## 命令索引（44 条；签名详见 cli/README.md）
+## 命令索引（45 条；签名详见 cli/README.md）
 写 19：add-goal add-scope add-intent set-intent-status add-fact add-finding supersede-finding add-asset add-edge add-evidence add-cred set-cred-status amend-scope approve matrix-set matrix-freeze append-timeline budget-log checkpoint
 查 14：unconsumed-facts pending-intents matrix-gaps converge-check next-id intent-status matrix-get scope-check budget-check cleanup-checklist redact-scan graph-neighbors graph-paths graph-horizon
-校验 10：validate verify-chain hash-recheck matrix-audit state-rebuild set-replay-state ledger-scope-coverage ledger-tree-check ledger-replay-summary ledger-terminal-gate
+校验 11：validate verify-chain hash-recheck matrix-audit state-rebuild set-replay-state ledger-scope-coverage ledger-tree-check ledger-replay-summary ledger-terminal-gate anchor（链头锚定——P0 加固 E3）
 特殊 1：matrix-init
 执行通道：宿主 shell 直通 cli/tanyin-ledger <命令> --goal-dir <D>；配套：tanyin-guard（一切对外命令）、tanyin-budgetctl、tanyin-canary、tanyin-egress、tanyin-phases、tanyin-replay（重放门驱动）、tanyin-viz（只读投影）。
 

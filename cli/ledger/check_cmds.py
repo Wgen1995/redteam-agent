@@ -198,12 +198,14 @@ def _append_timeline(s, goal_dir, event, ts, actor="CLI", phase="P4", revert="")
 def h_set_replay_state(goal_dir, rest):
     import sys
     args, pos = parse_kv(rest)
-    if pos or set(args) - {"id", "state", "note", "timestamp"} \
+    if pos or set(args) - {"id", "state", "note", "timestamp", "manual"} \
             or "id" not in args or "state" not in args \
             or not args.get("timestamp"):
         # G-23 转正（批次5 T4）：--timestamp 必填（缺/空=用法错误 exit 2），墙钟退役
+        # P0 加固（2026-10-10 会诊①）：--manual=1 显式人工通道（无探针实证时的
+        # 唯一放行路，事件带 note=manual 标记供 settle/报告披露）
         raise UsageError("set-replay-state --id=<EV|FD id> --state=<三态> "
-                         "--timestamp=ISO8601 [--note=<附注>]")
+                         "--timestamp=ISO8601 [--note=<附注>] [--manual=1]")
     # 批次 7 评审收尾 I-3（R-T2-2 遗留收口）：用法校验先行于锁（UsageError 路径
     # 零持锁）；goal 锁包「读账→timeline 落行→findings 联动写回」全程（filelock
     # 单源，registry._locked 同形）——读写双态同入口不动契约面，直写面闭死。
@@ -247,20 +249,45 @@ def _set_replay_state_locked(goal_dir, args):
         return reject("REPAIRED 重试计数 %d≥max_retry=%d" % (retries, MAX_RETRY))
     # 缝⑪/G-52（批次 9 三轮战复核）：P4 门拦下 not-reproduced 后，VERIFIED/REPAIRED
     # 不得越过复放实证改判——该 id 最新 replay-probe 裁决=not-reproduced 且无更晚
-    # reproduced 行 ⇒ 拒。无探针行（批次 5 手工核验通道）不破坏既有语义。
+    # reproduced 行 ⇒ 拒（--manual 也不能翻案：事实矛盾须补 reproduced 探针）。
+    # P0 加固（2026-10-10 九维专家会诊·诚实性缺口①）：无探针行不再静默放行——
+    # VERIFIED/REPAIRED 须同 id（FD 则其挂接 EV 任一）存在 replay-probe
+    # reproduced 实证；无实证仅 --manual=1 显式人工通道可过，事件带 manual 标记。
+    manual = args.get("manual") == "1"
     if state in ("VERIFIED", "REPAIRED"):
         import re as _re
         pat = _re.compile(r"replay-probe (\S+) verdict=(\S+)")
-        last = None
+        if rid.startswith("EV-"):
+            probe_ids = {rid}
+        else:
+            probe_ids = {r[0] for r in s.rows("E-index.tsv")
+                         if (_cell(r, "E-index.tsv", "linked_finding") or "") == rid}
+        last_by_id = {}
         for r in s.rows("timeline.tsv"):
             m = pat.search(r[_idx("timeline.tsv", "event")])
-            if m and m.group(1) == rid:
-                last = m.group(2)
-        if last == "not-reproduced":
-            return reject("最新 replay-probe 裁决=not-reproduced：VERIFIED 须先复放实证"
-                          "（补跑重放出 reproduced 行后再置态）")
+            if m and m.group(1) in probe_ids:
+                last_by_id[m.group(1)] = m.group(2)
+        reproduced = [i for i, v in last_by_id.items() if v == "reproduced"]
+        # REPAIRED 语义=修复后重放——env-diff 探针（环境差异非失败）亦算实证
+        acceptable = ([i for i, v in last_by_id.items()
+                       if v in ("reproduced", "env-diff")]
+                      if state == "REPAIRED" else reproduced)
+        blocked = [i for i, v in last_by_id.items() if v == "not-reproduced"]
+        if blocked:
+            return reject("最新 replay-probe 裁决=not-reproduced（%s）：VERIFIED/REPAIRED "
+                          "须先补 reproduced 探针——--manual 不能翻事实矛盾"
+                          % ",".join(sorted(blocked)))
+        if not acceptable and not manual:
+            return reject("无 replay-probe reproduced 实证：VERIFIED/REPAIRED 须先实放"
+                          "（或 --manual=1 显式人工通道，事件将带 manual 标记）")
 
-    ev = "replay:%s:%s" % (rid, state) + ((" note=" + args["note"]) if args.get("note") else "")
+    note_parts = []
+    if manual:
+        note_parts.append("manual")
+    if args.get("note"):
+        note_parts.append(args["note"])
+    ev = "replay:%s:%s" % (rid, state) + \
+        ((" note=" + ";".join(note_parts)) if note_parts else "")
     tl_row = _append_timeline(s, goal_dir, ev, ts)
     fd_row = None
     if target_fd:
@@ -365,6 +392,50 @@ def h_tree_check(goal_dir, rest):
     return 0
 
 
+def h_anchor(goal_dir, rest):
+    """P0 加固（2026-10-10 会诊③·审计缺口①）：链头外部锚定。
+
+    把 goal 目录账本面（*.tsv）git commit（无仓库则 init），消息携带行数+链头；
+    --remote/TANYIN_ANCHOR_REMOTE 在场则 push（尽力而为）。无声改账从此须
+    重写已推送 git 历史。门过自动锚=TANYIN_ANCHOR_AUTO=1（engine 侧钩子）。"""
+    import subprocess as _sp
+    args, pos = parse_kv(rest)
+    if pos or set(args) - {"timestamp", "remote", "note"}:
+        raise UsageError("anchor [--timestamp=ISO8601] [--remote=URL] [--note=<附注>]")
+    from .filelock import goal_lock
+    with goal_lock(goal_dir):
+        s = core.Session(goal_dir)
+        rows = s.rows("timeline.tsv")
+        head = rows[-1][_idx("timeline.tsv", "hash")] if rows else core.GENESIS
+        msg = "anchor rows=%d head=%s%s%s" % (
+            len(rows), head[:16],
+            (" ts=" + args["timestamp"]) if args.get("timestamp") else "",
+            (" note=" + args["note"]) if args.get("note") else "")
+
+        def git(*a):
+            return _sp.run(["git"] + list(a), cwd=goal_dir,
+                           capture_output=True, text=True)
+
+        if not os.path.isdir(os.path.join(goal_dir, ".git")):
+            r = git("init", "-q")
+            if r.returncode != 0:
+                print("FAIL git init: " + (r.stderr or "").strip()[:120])
+                return 1
+        git("add", "*.tsv")
+        ok = git("commit", "-q", "-m", msg, "--allow-empty").returncode == 0
+        remote = args.get("remote") or os.environ.get("TANYIN_ANCHOR_REMOTE", "")
+        pushed = False
+        if remote:
+            git("remote", "remove", "anchor")
+            git("remote", "add", "anchor", remote)
+            pushed = git("push", "-q", "anchor", "HEAD").returncode == 0
+        sha = git("rev-parse", "--short", "HEAD").stdout.strip()
+        print("PASS\tanchor commit=%s rows=%d head=%s%s"
+              % (sha, len(rows), head[:16],
+                 "\tpush=" + ("ok" if pushed else "FAIL") if remote else ""))
+        return 0 if ok else 1
+
+
 def h_replay_summary(goal_dir, rest):
     args, pos = parse_kv(rest)
     if pos or args:
@@ -378,6 +449,9 @@ def h_replay_summary(goal_dir, rest):
             counts[m.group(2)] += 1
             replayed.add(m.group(1))
     pending = []
+    total_c12 = 0
+    covered_evs = 0
+    total_evs = 0
     for key, r in sorted(latest_by(s.rows("findings.tsv"), "findings.tsv",
                                    ["id"]).items()):
         fid = key[0]  # latest_by 键为元组
@@ -388,15 +462,31 @@ def h_replay_summary(goal_dir, rest):
         evs = {x for x in _cell(r, "findings.tsv", "evidence_ids").split(";") if x}
         linked = {e[0] for e in s.rows("E-index.tsv")
                   if _cell(e, "E-index.tsv", "linked_finding") == fid}
+        all_evs = evs | linked
+        total_c12 += 1
+        total_evs += len(all_evs)
+        covered_evs += len(all_evs & replayed)
         if fid not in replayed and not (evs & replayed) and not (linked & replayed):
             pending.append([fid, _cell(r, "findings.tsv", "title")])
+        else:
+            # P0 加固（2026-10-10 会诊④/RT-0023 32/54 洞）：C1/C2 的全部证据
+            # 须终态（VERIFIED/REPAIRED/REJECTED 任一在案）——"任一已重放"
+            # 不再放行出 P4。
+            uncovered = sorted(all_evs - replayed)
+            if uncovered:
+                pending.append([fid, "%s｜EV未终态:%s"
+                                % (_cell(r, "findings.tsv", "title"),
+                                   ",".join(uncovered[:5]))])
     if pending:
         print("FAIL")
         for p in pending[:20]:
             print(TAB.join(p) + TAB + "待重放")
         return 1
+    cov = ("%.0f%%" % (100.0 * covered_evs / total_evs)) if total_evs else "n/a"
     print("PASS\tverified=%d\trepaired=%d\trejected=%d\tpending=0"
-          % (counts["VERIFIED"], counts["REPAIRED"], counts["REJECTED"]))
+          "\tc12_findings=%d\tev_coverage=%s"
+          % (counts["VERIFIED"], counts["REPAIRED"], counts["REJECTED"],
+             total_c12, cov))
     return 0
 
 
@@ -434,6 +524,7 @@ HANDLERS = {name: usage_guard(fn) for name, fn in {
     "matrix-audit": h_matrix_audit,
     "state-rebuild": h_state_rebuild,
     "set-replay-state": h_set_replay_state,
+    "anchor": h_anchor,
     "ledger-scope-coverage": h_scope_coverage,
     "ledger-tree-check": h_tree_check,
     "ledger-replay-summary": h_replay_summary,

@@ -88,10 +88,11 @@ class Base(unittest.TestCase):
 
 
 class TestAddGoal(Base):
+    # P0 加固适配：授权书虚拟（场景虚构）走显式 --allow-missing-auth=1
     ARGS = ["--target=shop2.example", "--objective=授权测试", "--auth-doc=auth/a.pdf",
             "--auth-sha256=" + "a" * 64, "--signer=client-cso", "--valid-from=2026-09-01",
             "--valid-until=2026-09-30", "--budget=2M;50000;40", "--model-tier=strong",
-            "--guard-tier=T3", "--timestamp=" + TS]
+            "--guard-tier=T3", "--allow-missing-auth=1", "--timestamp=" + TS]
 
     def test_positive_fresh_dir(self):
         gd = self.fresh_dir()

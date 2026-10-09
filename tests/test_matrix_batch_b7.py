@@ -22,7 +22,7 @@ from tests.test_dryrun_p0p2 import fresh_drydir, ledger, phases, TS
 
 LEDGER = os.path.join(ROOT, "cli", "tanyin-ledger")
 FIX = os.path.join(HERE, "fixtures", "G-g1")
-A64 = "a" * 64
+A64 = __import__("hashlib").sha256(b"dry").hexdigest()  # P0 加固：与 auth/dry.pdf 实测一致（随 test_dryrun 同源修复）
 TAB = chr(9)
 
 

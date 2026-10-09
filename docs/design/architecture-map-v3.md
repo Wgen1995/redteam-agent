@@ -140,6 +140,7 @@ P5 报告 → P5.5 ★您签发★ → P6 沉淀    ▼
 | v0.3 插件 ✅ | 真 API 工具面 + 技能 provider + patch 规整 + headless 可见性验证 | 三面挂载实证（b9 落帐）；in-LLM 终验=用户一条 headless 命令 |
 | v0.3.5 看门狗 ✅ | 分级击杀 / 重启退避 / 指令注入 / 事件监听 | 四机制各有单测+仿真双场景 SIM_PASS（b10 落帐）；战场实证待下场真战 |
 | v0.4 对照实验 ✅定谳 | 门循环 Python 驱动 vs AI 自律（RT-0024） | 臂A 三项全胜（0.66 vs 0.41/token 1.47×/会话 1 vs ≥4，混杂已记）；定谳=推进策略可插拔（ai-self 默认｜python-gate-loop 运维/实验台）；gate-fail 写放大实锤 42% 噪声→P0 节流 |
+| v0.4.x 诚实性加固 ✅ | 探针前置/重放全终态/approve HMAC/授权前移/settle 链断言/launch 透传/gate-fail 去重/链头锚定 anchor | 九维会诊 P0 批九项全落地（24 新测）；账本从防意外升级防故意：VERIFIED 非自证可落、审批持钥验签、无声改账须重写已推 git 史 |
 | v0.5 引擎接线 | vuln-agent 挂入总线 + codex 端到端一战 + Claude 模板 | 源码审计真实战果入同一本账 |
 | v0.6 range v2 | admin 墙+POST 世界扩面 | 56 分母升级+新金样锁基线 |
 

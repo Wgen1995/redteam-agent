@@ -249,6 +249,7 @@ def fresh_of(tmp, src, name):
 
 
 OVERRIDE = {
+    "add-goal": {"--allow-missing-auth": "1"},  # P0 加固：金样夹具虚拟授权书走显式豁免
     "add-intent": {"--origin": "entity", "--budget-share": "100;10;1"},
     "add-fact": {"--confidence": "0.9"},
     "add-finding": {"--exploitation-status": "suspected", "--scope-check": "in_scope",

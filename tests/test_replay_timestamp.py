@@ -41,8 +41,9 @@ class TestReplayTimestamp(unittest.TestCase):
 
     def test_rows_carry_given_timestamp(self):
         # FD 直指：timeline 重放事件行 + findings 联动行 created 均取参数（不再墙钟）
+        # P0 加固适配：无探针实证须走 --manual=1（本用例钉 ts 语义非守卫语义）
         r = run(self.d, "set-replay-state", "--id=FD-g1-0001", "--state=VERIFIED",
-                "--timestamp=" + TS)
+                "--timestamp=" + TS, "--manual=1")
         self.assertEqual(r.returncode, 0, r.stderr)
         tl = open(os.path.join(self.d, "timeline.tsv"), encoding="utf-8").read()
         self.assertIn("replay:FD-g1-0001:VERIFIED", tl)
@@ -52,8 +53,9 @@ class TestReplayTimestamp(unittest.TestCase):
 
     def test_ev_path_timeline_carries_timestamp(self):
         # EV 通道（linked_finding 空，不触 findings）：重放事件行仍取参数时间戳
+        # P0 加固适配：--manual=1（ts 语义用例）
         r = run(self.d, "set-replay-state", "--id=EV-g1-0001", "--state=VERIFIED",
-                "--timestamp=" + TS)
+                "--timestamp=" + TS, "--manual=1")
         self.assertEqual(r.returncode, 0, r.stderr)
         tl = open(os.path.join(self.d, "timeline.tsv"), encoding="utf-8").read()
         self.assertIn(TS, tl)

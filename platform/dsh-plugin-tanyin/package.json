@@ -35,9 +35,6 @@
     "cordis": "^3"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "*"
-  },
-  "devDependencies": {
-    "@deepseek-ai/dsh-tools": "^0.0.1-rc.1"
+    "@deepseek-ai/dsh-tools": "0.0.1-rc.1"
   }
 }

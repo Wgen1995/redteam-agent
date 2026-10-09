@@ -40,6 +40,7 @@ class SwitchMatrix(unittest.TestCase):
             os.makedirs(gd)  # goal 目录须先在（core 纪律：不代建）
             r = _cli(LEDGER, gd, "add-goal", "--target=shop.example", "--objective=开关矩阵",
                      "--auth-doc=auth/m11.md", "--auth-sha256=" + "a" * 64, "--signer=evals",
+                     "--allow-missing-auth=1",  # P0 加固：虚拟授权书走显式豁免
                      "--valid-from=2026-09-01", "--valid-until=2026-09-30",
                      "--budget=1M;1000;10", "--model-tier=strong", "--guard-tier=" + tier,
                      "--timestamp=" + TS)

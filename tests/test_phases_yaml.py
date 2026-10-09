@@ -75,11 +75,13 @@ class TestParse(unittest.TestCase):
 
 class TestValidate(unittest.TestCase):
     def test_all_commands_face_44(self):
-        """Interfaces 承诺单源=44 基名（裁决：四个原生带 ledger- 前缀的校验命令计入
+        """Interfaces 承诺单源=45 基名（裁决：四个原生带 ledger- 前缀的校验命令计入
         基名——无无前缀孪生；双前缀别名不进基名集；41→44=批次 4 图谱驱动增补
-        71d3b7c：graph-neighbors/graph-paths/graph-horizon 三只读图查询，微版本勘误）。"""
+        71d3b7c：graph-neighbors/graph-paths/graph-horizon 三只读图查询，微版本勘误；
+        44→45=2026-10-10 P0 加固批 E3：anchor 链头锚定）。"""
         face = registry.all_commands()
-        self.assertEqual(len(face), 44)
+        self.assertEqual(len(face), 45)
+        self.assertIn("anchor", face)
         for g in ("graph-neighbors", "graph-paths", "graph-horizon"):
             self.assertIn(g, face)
         for native in ("ledger-scope-coverage", "ledger-tree-check",

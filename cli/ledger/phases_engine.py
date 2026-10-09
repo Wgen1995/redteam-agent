@@ -435,20 +435,50 @@ def run_gate(goal_dir, phase, ts, phases_path=None):
         if "mode=degraded" in detail:
             degraded = True
         if st == "fail":
-            _append_event(goal_dir, phase,
-                          "gate-fail:%s assert=%s reason=%s" % (phase, tokens[0], detail or "exit!=0"), ts)
-            print("FAIL gate:%s assert=%s %s" % (phase, tokens[0], detail)); return 1
+            _reason = detail or "exit!=0"
+            if not _dup_gatefail(s, phase, tokens[0], _reason):
+                _append_event(goal_dir, phase,
+                              "gate-fail:%s assert=%s reason=%s" % (phase, tokens[0], _reason), ts)
+            print("FAIL gate:%s assert=%s %s" % (phase, tokens[0], _reason)); return 1
     ev = "gate-exit:%s asserts=%d result=PASS" % (phase, len(asserts))
     if skipped:
         ev += " skip=%d" % skipped
     if degraded:
         ev += " mode=degraded"
     _append_event(goal_dir, phase, ev, ts)
+    if os.environ.get("TANYIN_ANCHOR_AUTO") == "1":
+        # P0 加固（会诊③）：门过自动链头锚定（尽力而为，失败不阻塞门——
+        # 锚定缺失只降级可仲裁性，不阻断战斗）
+        try:
+            import subprocess as _sp
+            _sp.run([sys.executable,
+                     os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                  "tanyin-ledger"),
+                     "anchor", "--goal-dir", goal_dir, "--timestamp=" + ts],
+                    capture_output=True, text=True, timeout=60)
+        except Exception:
+            pass
     print("OK" + chr(9) + "gate:%s %s" % (phase, ev))
     if phase == "P6":
         # T15：P6 on_pass=END（phases.yaml）——收官态显式落 stdout（_current_gate 归 END）
         print("END" + chr(9) + "九门收官（P6 沉淀完成，knowledge 写入放行）")
     return 0
+
+
+def _dup_gatefail(s, phase, assert_name, reason):
+    """P0 节流（2026-10-10 会诊/RT-0024：b26 终局 596/1422=42% 机械噪声）。
+
+    轮询驱动每秒打门时同因失败收敛为首落一条：从 timeline 尾扫首条
+    gate-* 事件——同 phase+assert+reason 的 gate-fail 已是最新 ⇒ 复铸免；
+    reason 变化（新失败形态）或中间隔了 gate-exit（新失败轮次）⇒ 照铸。"""
+    want = "gate-fail:%s assert=%s reason=%s" % (phase, assert_name, reason)
+    for r in reversed(s.rows("timeline.tsv")):
+        ev = r[3] if len(r) > 3 else ""
+        if ev.startswith("gate-fail:"):
+            return ev == want
+        if ev.startswith("gate-exit:"):
+            return False
+    return False
 
 
 def cmd_gate(goal_dir, rest):

@@ -126,7 +126,7 @@ class TestSetReplayStateLocked(unittest.TestCase):
         gd = shutil.copytree(FIX, os.path.join(tmp.name, "G-g1"))
         r = run(os.path.join(CLI, "tanyin-ledger"), "set-replay-state",
                 "--goal-dir", gd, "--id=EV-g1-0001", "--state=VERIFIED",
-                "--timestamp=" + TS)
+                "--timestamp=" + TS, "--manual=1")  # P0 加固：锁语义用例走显式人工通道
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertEqual(len(_events(gd, "replay:EV-g1-0001:VERIFIED")), 1)
         r = run(os.path.join(CLI, "tanyin-ledger"), "verify-chain", "--goal-dir", gd)
