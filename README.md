@@ -73,7 +73,7 @@ AI 反问八问 → 全自动 P0→P4 → P5 签发门停下等人审。
 
 ## 四、DSH 插件（可选——账本当原生工具）
 
-把 13 个高频账本命令铸成 3 个带类型的安全工具（`tanyin_book` 写令 7 / `tanyin_gate` 门令 3 / `tanyin_query` 查令 3），schema 描述即作战纪律（scope 联查/一洞一行写进工具说明，模型调用前就见到法）：
+把 13 个高频账本命令铸成 3 个带类型的安全工具（`tanyin_book` 写令 7 / `tanyin_gate` 门令 3 / `tanyin_query` 查令 3），schema 描述即作战纪律（scope 联查/一洞一行写进工具说明，模型调用前就见到法）；**v0.3 起附带 tanyin 技能 provider**——装插件即得探隐方法论（SKILL+九门详令随包分发）：
 
 ```bash
 # 安装进 dsh 的 default profile（本地路径直装，未发 npm）
@@ -82,8 +82,8 @@ dsh plugin --profile default add file:$(pwd)/platform/dsh-plugin-tanyin
 # 验证层已挂（应见 '# == dsh-plugin-tanyin' 条目）
 dsh --profile default --dump-config | grep -A2 tanyin
 
-# 单测（4 件：注册/白名单拒越界/输出信封/无幻影命令）
-cd platform/dsh-plugin-tanyin && npm install && npm test
+# 单测（6 件：注册/白名单拒越界/信封/技能发现/真cordis加载）
+cd platform/dsh-plugin-tanyin && npm install && npm test && node --test test/integration.test.mjs
 ```
 
 之后任何 `dsh` 会话（default profile 启动）模型即可直接调三工具操账本。**注意**：首次真用需要 DSH 账户有余额（余额不足时 headless 冒烟会报 `QUOTA: Insufficient Balance`）。

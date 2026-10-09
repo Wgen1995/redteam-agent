@@ -125,7 +125,7 @@ P5 报告 → P5.5 ★您签发★ → P6 沉淀    ▼
 | 纯技能（核） | SKILL.md + phases/ + dict + BRIEF | 方法论本体，全宿主通吃 | ✅ opencode 四战实证 |
 | 纯技能 | 五宿主安装器 install/hosts/* | codex/walcode/codebuddy/dsh/opencode 模板化接入 | ✅ 安装六步 rc=0 ／ 🟡 codex 端到端未实战 |
 | 纯技能 | Claude Code 宿主 | 第六宿主 | 🔮 加 host 模板（半小时量） |
-| DSH 插件（面） | dsh-plugin-tanyin v0.2.1 | 层已挂+服务面真+单测 4/4；工具面 API 待修（ctx.tools.register） | 🟡 已装本机 |
+| DSH 插件（面） | dsh-plugin-tanyin v0.3.0 | 真 defineTool API 三工具 + 技能 provider + service 面；单测 5/集成 1 绿；default profile 三行挂载 | ✅ 已装本机（in-LLM 可见性待您一条命令终验） |
 | DSH 插件 | v0.3 薄面厚核 | 真 defineTool API + 技能 provider（superpowers 模式）+ 前缀 id 防撞 | 🔮 设计已呈待批 |
 | DSH 插件 | 市场条目 | github: 源安装 → 市场发布 | 🔮 |
 | 引擎总线（挂件） | web-blackbox（SKILL 型） | Web 黑盒主战士 | ✅ 0.57–0.70 |
