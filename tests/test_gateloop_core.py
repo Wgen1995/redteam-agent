@@ -30,12 +30,15 @@ class TestBuildGatePrompt(unittest.TestCase):
 
 class TestGateArgv(unittest.TestCase):
     def test_form_is_phase_flag(self):
-        self.assertEqual(gc.gate_argv("/tmp/g", "P2"),
-                         ["gate", "--goal-dir", "/tmp/g", "--phase", "P2"])
+        # 契约实证（phases_engine.cmd_gate）：--goal-dir 空格形（main() 逐字检查），
+        # --phase 必须等号形（cmd_gate 只认 --phase= 前缀）——b26 五度失明的教训
+        self.assertEqual(gc.gate_argv("/tmp/g", "P2", "2026-10-23T09:00:00Z"),
+                         ["gate", "--goal-dir", "/tmp/g", "--phase=P2",
+                          "--timestamp=2026-10-23T09:00:00Z"])
 
     def test_bad_phase_raises(self):
         with self.assertRaises(ValueError):
-            gc.gate_argv("/tmp/g", "P9")
+            gc.gate_argv("/tmp/g", "P9", "2026-10-23T09:00:00Z")
 
 
 class TestNextPhase(unittest.TestCase):

@@ -36,9 +36,9 @@ fsize = _runner.fsize
 PHASES_BIN = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tanyin-phases")
 
 
-def gate_pass(goal_dir, phase):
-    """跑门禁断言：rc==0=过。"""
-    argv = [sys.executable, PHASES_BIN] + gc.gate_argv(goal_dir, phase)
+def gate_pass(goal_dir, phase, ts):
+    """跑门禁断言：rc==0=过（ts=场景钟，由 --gate-ts 注入）。"""
+    argv = [sys.executable, PHASES_BIN] + gc.gate_argv(goal_dir, phase, ts)
     try:
         r = subprocess.run(argv, capture_output=True, text=True, timeout=120)
         return r.returncode == 0
@@ -61,6 +61,8 @@ def main():
     st.add_argument("--backoff-base", type=float, default=30.0)
     st.add_argument("--tick-sec", type=float, default=10.0)
     st.add_argument("--model", default=None)
+    st.add_argument("--gate-ts", required=True,
+                    help="场景钟 ISO8601（门禁 --timestamp 必填；用任务书当日，如 2026-10-23T09:00:00Z）")
     args = ap.parse_args()
 
     runner_log = args.runner_log or (args.log + ".gateloop.tsv")
@@ -74,7 +76,7 @@ def main():
     per_gate = {}
     for phase in gc.PHASE_SEQ:
         g0 = time.time()
-        if gate_pass(args.ledger_dir, phase):
+        if gate_pass(args.ledger_dir, phase, args.gate_ts):
             log_event(runner_log, "SKIP", "%s already passed" % phase)
             per_gate[phase] = {"restarts": 0, "skipped": True}
             continue
@@ -93,7 +95,7 @@ def main():
             if active:
                 last_sz, last_progress = sz, time.time()
                 soft_announced = False
-            if gate_pass(args.ledger_dir, phase):
+            if gate_pass(args.ledger_dir, phase, args.gate_ts):
                 passed = True
                 break
             stall = time.time() - last_progress

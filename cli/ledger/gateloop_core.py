@@ -31,11 +31,12 @@ def build_gate_prompt(mission_text, phase):
     return mission_text.rstrip() + "\n\n" + resume + law
 
 
-def gate_argv(goal_dir, phase):
-    """tanyin-phases gate 调用参数（--phase 契约，返回 argv 列表）。"""
+def gate_argv(goal_dir, phase, ts):
+    """tanyin-phases gate 参数形（契约实证：--goal-dir 空格形+--phase 等号形+
+    --timestamp 等号形必填——b26 两度失明的教训）。"""
     if phase not in PHASE_SEQ:
         raise ValueError("phase not in driven seq: %r" % phase)
-    return ["gate", "--goal-dir", goal_dir, "--phase", phase]
+    return ["gate", "--goal-dir", goal_dir, "--phase=" + phase, "--timestamp=" + ts]
 
 
 def next_phase(done_list):
