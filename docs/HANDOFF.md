@@ -1150,3 +1150,12 @@
 - 跨运行时 A/B（RT-0021）：op-1 宽矩阵 0.70 vs b23 战书窄矩阵 0.66——律 21 修正案（引擎代配额自适应上限）+dict v3.14 候选（cors 四变体+lfi 双形入必扫）
 - 战士自报缺陷 3 已登记：battle.py sha 虫（已修 e915a5d）/vault-redact 互斥/redact 时序注记
 - 提交：e915a5d（金样 G-r24+四钉测+RT-0021+sha 修）
+
+
+## battle-24（G-r25）· 修正案 A 裁决战（2026-10-09 实钟）
+- 结果：0.62（35/56）；47 行 findings；46/46 EV VERIFIED；五门零跳；三中断引擎存活（续跑 NameError 修复/网络断流 STALL 击杀/三度点火账本续用 285→495 零账损）
+- **裁决：律 21 修正案 A 回滚**（60 面宽铺 0.62 vs 30 面 0.66 净 -2——userenum/xxe/traversal 三枚 v3.13 字典族战果被稀释）；cors-01 翻红=v3.14 origin 四变体字典功劳（保留）；lfi 双形未兑现注记待 range-v2
+- 三战对照系定谳：op-1 裸技能 264 面 0.70 / b23 战书 30 面 0.66 / b24 战书 60 面 0.62——纪律与广度非同轴，宽铺档两头落空（RT-0022）
+- 同窗交付：dsh-plugin-tanyin **v0.2 工具面上线**（64ddd5d）——三 typed tool（book 7 写令/gate 3 门令含 tanyin-phases 桥/query 3 查令），schemastery schema=律的化身，TDD 4 测全绿（注册/白名单拒越界/canonical 信封+exec.signal/无幻影命令）
+- 引擎修虫：runner resume_prompt NameError（定义行随早前程序体解析失败蒸发——AST 名核验补齐）；任务书禁裸 /tmp 条款（权限墙第三形态实证）
+- 提交：64ddd5d（v0.2）→ f73cdca（battle-24 收官）
