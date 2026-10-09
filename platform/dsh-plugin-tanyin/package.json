@@ -6,6 +6,7 @@
   "main": "lib/index.js",
   "scripts": { "test": "node test/tools.test.mjs" },
   "keywords": ["dsh-plugin", "tanyin", "pentest", "redteam"],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
   "peerDependencies": {
     "cordis": "^3"
   },
