@@ -1166,3 +1166,15 @@
 - **裁决：0.70 未复现**——四格矩阵收官：op-1 裸+手动 0.70（单样本离群）/ b25 裸+引擎 0.57 / b23 战书 30 面+引擎 0.66 / b24 战书 60 面+引擎 0.62；**战书 30 面=稳定最优配置**
 - **键控 v7 诞生**：裸战士 docker IP 服务级资产记账→GT 别名表补 docker 网映射（活容器实证）+评分器服务级资产回退（EV 报文/描述 URL 取端点键）——伪零 0.00 修正真值 0.57；b23/b24 评分零回归
 - 金样 G-r26+四钉测（含 v7 键控回归面）；RT-0023 入册
+
+
+## b9 · dsh-plugin-tanyin v0.3.0 真 API 三面（2026-10-09 实钟）
+- **决策 1 修正案在册**：核心保持纯 SKILL 全宿主通吃；DSH 插件=薄面厚核（技能 provider+工具桥，不复制状态）——四形态分析定谳（核/骨/面/挂件）
+- **工具面真 API**：defineTool（@deepseek-ai/dsh-tools 官方工厂）+ctx.tools.register×3（对照真样本 redteam-bundle 接线逐字核验）；**顺手揪出 v0.2 死码**：execute 调用不存在的 run()——工具面从未真正可执行（教训：防御式挂载点+从未端到端真跑=假完成，与我们律战士的精度门同理）
+- **技能面**：superpowers 模式 provider（ctx.skills.registerProvider）；技能镜像同步脚本（SKILL+九门详令 12 文件+phases.yaml 随包）——单一真源在 .opencode，插件只做镜像
+- **接线**：patch 三行前缀防撞（tanyin-service/tools/skills）+迁移条款自动关 v0.2 旧行（redteam-mode 撞车教训吸收）
+- **验证**：单测 5+集成 1 全绿（真 cordis Context）；default profile 重装（remove+add 防陈缓存）dump-config 三行挂载实证；in-LLM 终验一条命令留给用户环境（工具 shell 无 GLM key）
+- **多形态调研同期落册**：PentestGPT 现行版源码精读（Supervisor/Executor+claude-agent-sdk/codex 后端+SQLite trace——业界从形态 4 迁形态 2，与探隐"AI 编排战术+Python 掌生命周期"殊途同归）；multica 看门狗四升级立项 v0.3.5
+- 产物：docs/superpowers/plans/2026-10-09-b9-dsh-plugin-v0.3.md；docs/design/architecture-map-v3.md（md+html 双形态系统细图）；panorama/tanyin-architecture-v3.html；README 重写为入门门面
+- 提交：39fb4e0（细图）→879501c（v0.3.0 本体）→4b20a6d（文档翻状态）
+- 待办：用户跑 headless 一条终验；v0.3.5 看门狗四件套；v0.4 门循环对照实验；v0.5 vuln-agent 接线+codex 端到端；v0.6 range v2
