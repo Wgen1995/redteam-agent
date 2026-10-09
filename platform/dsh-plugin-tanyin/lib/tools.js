@@ -1,10 +1,14 @@
-// dsh-plugin-tanyin · v0.2 工具面（agent typed-tool face）
-// ToolDefinition 契约遵循 dsh-tools（schema+output+execute(args,exec)→canonical JSON，尊重 exec.signal）。
+// dsh-plugin-tanyin · v0.3 工具面（真 API：defineTool + ctx.tools.register）
+// 接线对照真样本 redteam-bundle/lib/tools.js（import dsh-tools/inject ['tools']/register）。
 // 命令映射全部经实探核实（rows/show/replay 已证不存在——幻影命令零容忍）。
+// 修复：v0.2 的 execute 调用了不存在的 run()（从未真正可执行）。
 import { spawn } from 'node:child_process';
 import path from 'node:path';
 import os from 'node:os';
-import Schema from '@deepseek-ai/schemastery';
+import { defineTool } from '@deepseek-ai/dsh-tools';
+
+export const name = 'tanyin-tools';
+export const inject = ['tools'];
 
 // 命令→执行器映射：ledger = cli/tanyin-ledger；phases = cli/tanyin-phases
 export const TOOL_MAPS = {
@@ -46,48 +50,48 @@ const LAWS = {
   query: '查律：只读三面——verify-chain（链完整）/validate（表形状）/unconsumed-facts（未消费事实防漏）；查不改账。',
 };
 
-function inputSchema(kind, cmds) {
-  return Schema.object({
-    goalDir: Schema.string().required().description('账本 goal 目录（如 ~/.tanyin/battles/battle-24/G-r25）——写操作强制锚定'),
-    command: Schema.string().required().description(`命令（${kind} 面：${cmds.join(' / ')}）`),
-    args: Schema.array(String).default([]).description('命令其余参数原样透传（如 --label svc-x）'),
+function spec(kind) {
+  const map = TOOL_MAPS[kind];
+  const cmds = Object.keys(map);
+  return { map, cmds };
+}
+
+function makeTool(toolName, kind) {
+  const { map, cmds } = spec(kind);
+  return defineTool({
+    name: toolName,
+    description: `探隐账本 ${kind} 面（${cmds.length} 命令）。${LAWS[kind]}`,
+    parameters: {
+      goalDir: { type: 'string', required: true, description: '账本 goal 目录（如 ~/.tanyin/battles/battle-26/G-r27）——写操作强制锚定' },
+      command: { type: 'string', required: true, description: `命令（${kind} 面：${cmds.join(' / ')}）` },
+      args: { type: 'array', items: { type: 'string' }, description: '命令其余参数原样透传（值含空格请自行加引号由 CLI 解析）' },
+    },
+    output: {
+      schema: { type: 'string' },
+      render: (_args, value) => String(value),
+    },
+    async execute(args, exec) {
+      if (exec?.signal?.aborted) throw new Error('aborted before dispatch');
+      const { goalDir, command } = args;
+      const argv = Array.isArray(args.args) ? args.args : [];
+      if (!goalDir) throw new Error('tanyin: goalDir 必填（写操作锚定账本根）');
+      if (!Object.prototype.hasOwnProperty.call(map, command)) {
+        throw new Error(`tanyin: command not in ${toolName} allowlist: ${command}（本面仅 ${cmds.join(' ')}）`);
+      }
+      const r = await runProc(defaultRepo(), map[command], goalDir, command, argv);
+      return JSON.stringify({
+        ok: r.rc === 0, command, goalDir, rc: r.rc,
+        stdout: r.out, stderr: r.err,
+      }, null, 2);
+    },
   });
 }
 
-export function defineTools(config = {}) {
-  const run = config._runLedger || ((bin, goalDir, command, args) =>
-    runProc(config.repo || defaultRepo(), bin, goalDir, command, args, config.timeoutMs));
-
-  const make = (name, kind) => {
-    const map = TOOL_MAPS[kind];
-    const cmds = Object.keys(map);
-    const tool = {
-      name,
-      description: `探隐账本 ${kind} 面（${cmds.length} 命令）。${LAWS[kind]}`,
-      input: inputSchema(kind, cmds),
-      output: Schema.object({
-        ok: Schema.boolean().description('rc==0'),
-        command: Schema.string(),
-        rc: Schema.number(),
-        stdout: Schema.string(),
-        stderr: Schema.string(),
-      }).description('canonical 信封：账本输出原样+执行面'),
-      async execute(args, exec) {
-        if (exec?.signal?.aborted) throw new Error('aborted before dispatch');
-        const { goalDir, command, argv } = { argv: [], ...args };
-        if (!goalDir) throw new Error('tanyin: goalDir 必填（写操作锚定账本根）');
-        if (!Object.prototype.hasOwnProperty.call(map, command)) {
-          throw new Error(`tanyin: command not in ${name} allowlist: ${command}（本面仅 ${cmds.join(' ')}）`);
-        }
-        const r = await run(map[command], goalDir, command, argv);
-        return {
-          ok: r.rc === 0, command, goalDir, rc: r.rc,
-          stdout: r.out, stderr: r.err,
-        };
-      },
-    };
-    return tool;
-  };
-
-  return [make('tanyin_book', 'book'), make('tanyin_gate', 'gate'), make('tanyin_query', 'query')];
+/** 注册三工具进 ctx.tools（真 API）。 */
+export function apply(ctx) {
+  ctx.tools.register(makeTool('tanyin_book', 'book'));
+  ctx.tools.register(makeTool('tanyin_gate', 'gate'));
+  ctx.tools.register(makeTool('tanyin_query', 'query'));
 }
+
+export default { apply, name, inject };

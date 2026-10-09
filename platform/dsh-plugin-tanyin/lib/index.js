@@ -1,13 +1,10 @@
-// dsh-plugin-tanyin · MVP 脚手架（v0.1.0）
-// 形态 C 插件层：账本 10 核命令原生化（typed tool）+战况读取。
-// 约定遵循已核实范本（dsh-bash-local）：ESM + cordis Context + static inject + schemastery。
-// ⚠️ 接线面待办：工具面注册 API（dsh-agent-tool-* 的 ToolDefinition 挂载点）在 0.2 接——
-//    当前提供 service 面（ctx.tanyin），供后续 tool/web 面复用。
+// dsh-plugin-tanyin · v0.3 主入口（service 面）
+// 工具面/技能面已拆分至 ./tools.js 与 ./skills.js（各自 cordis 行独立挂载，真 API）。
+// 本文件只保留 ctx.tanyin 服务面（战况读取/核心命令桥）。
 import { Context } from "cordis";
 import { spawn } from "node:child_process";
 import path from "node:path";
 import os from "node:os";
-import { defineTools } from "./tools.js";
 
 const CORE_COMMANDS = new Set([
   "add-goal", "add-scope", "add-cred", "add-asset", "add-evidence",
@@ -49,16 +46,10 @@ export class TanyinService {
 export const inject = { TanyinService: (ctx, config) => new TanyinService(ctx, config) };
 
 export function apply(ctx, config) {
-  // service 面挂载（0.1）：ctx.tanyin.ledger(goalDir, command, args)
+  // service 面挂载：ctx.tanyin.ledger(goalDir, command, args)（v0.1 起稳定）
   ctx.tanyin = new TanyinService(ctx, config);
-  // 工具面挂载（0.2）：三 typed tool（book/gate/query）——ToolDefinition 契约（dsh-tools）
-  ctx.tanyin.tools = defineTools(config);
-  // 宿主如提供工具注册点则直接挂（dsh-agent-tool-* 桥接）
-  if (typeof ctx.tool === "function") {
-    for (const t of ctx.tanyin.tools) ctx.tool(t);
-  }
-  // 0.3 待办：client-ui 战况面板（读 ~/.tanyin/battles/*/runner.tsv）
-  ctx.logger.info("tanyin plugin loaded (service+tool face, %d core + %d tools)", CORE_COMMANDS.size, ctx.tanyin.tools.length);
+  // 工具面（tanyin-tools 行）与技能面（tanyin-skills 行）见各自模块——真 API 独立挂载
+  ctx.logger.info("tanyin plugin loaded (service face, %d core commands)", CORE_COMMANDS.size);
 }
 
 export { Context };

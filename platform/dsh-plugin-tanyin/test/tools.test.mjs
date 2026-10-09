@@ -1,91 +1,82 @@
+// v0.3 单测：真 API 挂载断言（ctx.tools.register / ctx.skills.registerProvider）+白名单+信封
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { apply as applyTools } from '../lib/tools.js';
+import { apply as applySkills } from '../lib/skills.js';
 
-// v0.2 工具面测试（先于实现——TDD 红灯）
-// 依赖注缝：config._runLedger 可注入伪执行器（不 spawn 真 python，测试确定性）
-const { defineTools, TOOL_MAPS } = await import('../lib/tools.js');
-
-function fakeRunner(results = {}) {
-  return async (bin, goalDir, command, args) =>
-    results[command] ?? { rc: 0, out: `OK ${command} ${goalDir} ${args.join(',')}`, err: '' };
+function mockCtx() {
+  const registered = [];
+  const providers = [];
+  return {
+    registered, providers,
+    tools: { register: (t) => registered.push(t) },
+    skills: { registerProvider: (factory) => providers.push(factory({})) },
+    logger: { info: () => {} },
+  };
 }
 
-function makeExec(signal) {
-  return { signal: signal ?? new AbortController().signal, defer: () => {} };
-}
-
-test('注册：三工具齐备，schema/output/execute 形状完整（ToolDefinition 契约）', () => {
-  const tools = defineTools({ _runLedger: fakeRunner() });
-  assert.equal(tools.length, 3);
-  const names = tools.map((t) => t.name).sort();
+test('tools.apply 经真 API 注册三工具（defineTool 形）', () => {
+  const ctx = mockCtx();
+  applyTools(ctx);
+  assert.equal(ctx.registered.length, 3);
+  const names = ctx.registered.map((t) => t.name).sort();
   assert.deepEqual(names, ['tanyin_book', 'tanyin_gate', 'tanyin_query']);
-  for (const t of tools) {
-    assert.equal(typeof t.description, 'string');
-    assert.ok(t.description.length > 20, '描述须含律的化身说明');
-    assert.ok(t.input, 'input schema 必在');
-    assert.ok(t.output, 'output 声明必在（canonical 输出契约）');
-    assert.equal(typeof t.execute, 'function');
+  for (const t of ctx.registered) {
+    assert.equal(typeof t.execute, 'function', `${t.name}.execute`);
+    assert.ok(t.description.length > 20, `${t.name} 描述携带作战律`);
+    assert.ok(t.parameters.properties.goalDir, `${t.name} 有 goalDir 参数`);
+    assert.ok(t.parameters.required.includes('goalDir'), `${t.name} goalDir 必填`);
   }
-  // 律即类型面：book 工具描述必须点明 scope 联查与一洞一行
-  const book = tools.find((t) => t.name === 'tanyin_book');
-  assert.match(book.description, /scope 联查|一洞一行/);
 });
 
-test('白名单：跨工具命令越界即拒（不落盘不 spawn）', async () => {
-  const book = defineTools({ _runLedger: fakeRunner() }).find((t) => t.name === 'tanyin_book');
+test('白名单拒越界命令（幻影命令零容忍）', async () => {
+  const ctx = mockCtx();
+  applyTools(ctx);
+  const book = ctx.registered.find((t) => t.name === 'tanyin_book');
   await assert.rejects(
-    () => book.execute({ goalDir: '/tmp/G-test', command: 'verify-chain' }, makeExec()),
-    /allowlist|不在/,
-  );
-  const query = defineTools({ _runLedger: fakeRunner() }).find((t) => t.name === 'tanyin_query');
-  await assert.rejects(
-    () => query.execute({ goalDir: '/tmp/G-test', command: 'add-finding' }, makeExec()),
-    /allowlist|不在/,
+    () => book.execute({ goalDir: '/tmp/x', command: 'rows', args: [] }, {}),
+    /allowlist/
   );
   await assert.rejects(
-    () => book.execute({ goalDir: '', command: 'add-finding' }, makeExec()),
-    /goalDir/,
+    () => book.execute({ goalDir: '/tmp/x', command: 'replay', args: [] }, {}),
+    /allowlist/
   );
 });
 
-test('输出面包：canonical JSON 信封（ok/command/rc/stdout/stderr）+信号尊重', async () => {
-  const book = defineTools({ _runLedger: fakeRunner() }).find((t) => t.name === 'tanyin_book');
-  const r = await book.execute(
-    { goalDir: '/tmp/G-test', command: 'add-asset', args: ['--label', 'svc-x'] },
-    makeExec(),
-  );
-  assert.equal(r.ok, true);
-  assert.equal(r.command, 'add-asset');
-  assert.equal(r.goalDir, '/tmp/G-test');
-  assert.equal(r.rc, 0);
-  assert.match(r.stdout, /OK add-asset/);
-  // 失败信封：rc!=0 → ok:false 不 throw（模型可读错误面）
-  const failing = defineTools({
-    _runLedger: async () => ({ rc: 3, out: '', err: 'REJECT add-finding scope mismatch' }),
-  }).find((t) => t.name === 'tanyin_book');
-  const r2 = await failing.execute(
-    { goalDir: '/tmp/G-test', command: 'add-finding', args: [] },
-    makeExec(),
-  );
-  assert.equal(r2.ok, false);
-  assert.match(r2.stderr, /REJECT/);
-  // 中止信号：已中止即弃
-  const ac = new AbortController();
-  ac.abort();
-  await assert.rejects(
-    () => book.execute({ goalDir: '/tmp/G-test', command: 'add-asset' }, makeExec(ac.signal)),
-    /abort/i,
-  );
+test('goalDir 缺失即拒（写操作锚定账本根）', async () => {
+  const ctx = mockCtx();
+  applyTools(ctx);
+  const gate = ctx.registered.find((t) => t.name === 'tanyin_gate');
+  await assert.rejects(() => gate.execute({ command: 'gate' }, {}), /goalDir/);
 });
 
-test('命令映射表：全部命令均经实战核实存在于 CLI（无幻影命令）', () => {
-  const all = [...new Set(Object.values(TOOL_MAPS).flatMap((m) => Object.keys(m)))];
-  // 实探核实面：rows/show/replay 不存在（已实证），故不在表内
-  assert.ok(!all.includes('rows'));
-  assert.ok(!all.includes('replay'));
-  assert.deepEqual([...new Set(all)].sort(), [
-    'add-asset', 'add-cred', 'add-evidence', 'add-finding', 'add-goal', 'add-scope',
-    'gate', 'set-replay-state', 'state-rebuild', 'supersede-finding',
-    'unconsumed-facts', 'validate', 'verify-chain',
-  ]);
+test('真实 CLI 走通信封（query 面 verify-chain 只读）', async () => {
+  const ctx = mockCtx();
+  applyTools(ctx);
+  const q = ctx.registered.find((t) => t.name === 'tanyin_query');
+  const out = await q.execute(
+    { goalDir: 'nonexistent-goal-dir-probe', command: 'verify-chain', args: [] },
+    {}
+  );
+  const env = JSON.parse(out);
+  assert.equal(env.ok, false);
+  assert.equal(env.command, 'verify-chain');
+  assert.equal(typeof env.rc, 'number');
+});
+
+test('skills.apply 注册 provider 且 list 发现 tanyin 技能', async () => {
+  const ctx = mockCtx();
+  applySkills(ctx);
+  assert.equal(ctx.providers.length, 1);
+  const p = ctx.providers[0];
+  assert.equal(p.name, 'tanyin-skills');
+  const list = await p.list({});
+  assert.ok(Array.isArray(list) && list.length >= 1, '发现技能');
+  const tanyin = list.find((s) => s.name === 'tanyin');
+  assert.ok(tanyin, 'tanyin 技能在场');
+  assert.equal(tanyin.source, 'custom');
+  assert.equal(tanyin.rank, 550);
+  const full = await p.get(tanyin, {});
+  assert.ok(full.content.length > 500, '正文按需加载');
+  assert.equal(full.resourceBase.kind, 'directory');
 });

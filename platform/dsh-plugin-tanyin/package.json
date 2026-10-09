@@ -1,16 +1,43 @@
 {
   "name": "dsh-plugin-tanyin",
-  "description": "TanYin ledger as native DSH tools: typed ledger commands + battle watch",
-  "version": "0.2.0",
+  "description": "TanYin ledger as native DSH tools: typed ledger tools + tanyin skill provider",
+  "version": "0.3.0",
   "type": "module",
   "main": "lib/index.js",
-  "scripts": { "test": "node test/tools.test.mjs" },
-  "keywords": ["dsh-plugin", "tanyin", "pentest", "redteam"],
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
+  "exports": {
+    ".": "./lib/index.js",
+    "./tools": "./lib/tools.js",
+    "./skills": "./lib/skills.js"
+  },
+  "files": [
+    "lib",
+    "skills",
+    "scripts",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node test/tools.test.mjs"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "tanyin",
+    "pentest",
+    "redteam",
+    "security"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
   "peerDependencies": {
     "cordis": "^3"
   },
   "dependencies": {
     "@deepseek-ai/schemastery": "*"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-tools": "^0.0.1-rc.1"
   }
 }

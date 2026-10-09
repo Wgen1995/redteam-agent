@@ -1,3 +1,23 @@
+# dsh-plugin-tanyin bundle patch v0.3
+# 行 id 一律带前缀（redteam-mode 教训：- insert 是追加语义，撞 id=boot 失败）。
+# 补丁层顺序：bundle 层 → 用户 profile cordis.patch.yml → --patch；用户可覆盖任何一行。
+
+# 0) 迁移：关掉 v0.2 时代的单行旧挂载（若存在）
+- id: tanyin
+  name: 'dsh-plugin-tanyin'
+  disabled: true
+
+# 1) 服务面：ctx.tanyin（战况读取/核心命令桥）
 - insert:
-    - id: tanyin
+    - id: tanyin-service
       name: 'dsh-plugin-tanyin'
+
+# 2) 工具面：三 typed tool（tanyin_book/gate/query）经 ctx.tools.register（真 API）
+- insert:
+    - id: tanyin-tools
+      name: 'dsh-plugin-tanyin/tools'
+
+# 3) 技能面：tanyin 技能 provider（superpowers 模式，ctx.skills.registerProvider）
+- insert:
+    - id: tanyin-skills
+      name: 'dsh-plugin-tanyin/skills'
