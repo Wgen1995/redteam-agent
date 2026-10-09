@@ -1,0 +1,152 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-gateloop · v0.4 臂B 驱动（b11）——python 门循环实验。
+
+与 tanyin-runner（臂A AI 自律）对照：python 掌推进节奏，战士每门一回合。
+复用 runner 的 launch/kill_group/log_event（importlib 单一真源）+b10 watchdog 计算核。
+
+用法:
+  python3 cli/tanyin-gateloop start --cwd <仓库> --prompt-file <任务书f> \\
+      --log <主日志> --ledger-dir <账本目录> [--runner-log f] [--soft-stall-min 3]
+      [--stall-min 8] [--backoff-base 30] [--tick-sec 10] [--model m] [--max-restarts 5]
+完成判据：P4 门禁 rc==0（=runner battle_complete 同口径）。
+"""
+import argparse
+import importlib.machinery
+import importlib.util
+import os
+import subprocess
+import sys
+import time
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import watchdog as wd          # noqa: E402  b10 计算核
+from ledger import gateloop_core as gc      # noqa: E402  b11 纯函数核
+
+# 复用 runner 基建（文件名带连字符不可常规 import）
+_RUNNER_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tanyin-runner")
+_loader = importlib.machinery.SourceFileLoader("tanyin_runner_lib", _RUNNER_PATH)
+_spec = importlib.util.spec_from_loader("tanyin_runner_lib", _loader)
+_runner = importlib.util.module_from_spec(_spec)
+_loader.exec_module(_runner)
+launch = _runner.launch
+kill_group = _runner.kill_group
+log_event = _runner.log_event
+fsize = _runner.fsize
+PHASES_BIN = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tanyin-phases")
+
+
+def gate_pass(goal_dir, phase):
+    """跑门禁断言：rc==0=过。"""
+    argv = [sys.executable, PHASES_BIN] + gc.gate_argv(goal_dir, phase)
+    try:
+        r = subprocess.run(argv, capture_output=True, text=True, timeout=120)
+        return r.returncode == 0
+    except subprocess.TimeoutExpired:
+        return False
+
+
+def main():
+    ap = argparse.ArgumentParser(prog="tanyin-gateloop")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    st = sub.add_parser("start")
+    st.add_argument("--cwd", required=True)
+    st.add_argument("--prompt-file", required=True)
+    st.add_argument("--log", required=True)
+    st.add_argument("--ledger-dir", required=True)
+    st.add_argument("--runner-log", default=None)
+    st.add_argument("--max-restarts", type=int, default=5)     # 每门上限
+    st.add_argument("--soft-stall-min", type=float, default=3.0)
+    st.add_argument("--stall-min", type=float, default=8.0)
+    st.add_argument("--backoff-base", type=float, default=30.0)
+    st.add_argument("--tick-sec", type=float, default=10.0)
+    st.add_argument("--model", default=None)
+    args = ap.parse_args()
+
+    runner_log = args.runner_log or (args.log + ".gateloop.tsv")
+    with open(args.prompt_file, encoding="utf-8") as f:
+        mission = f.read()
+
+    log_event(runner_log, "BOOT", "gateloop cwd=%s soft=%.1fm hard=%.1fm backoff=%.0fs seq=%s" % (
+        args.cwd, args.soft_stall_min, args.stall_min, args.backoff_base, "/".join(gc.PHASE_SEQ)))
+
+    t0 = time.time()
+    per_gate = {}
+    for phase in gc.PHASE_SEQ:
+        g0 = time.time()
+        if gate_pass(args.ledger_dir, phase):
+            log_event(runner_log, "SKIP", "%s already passed" % phase)
+            per_gate[phase] = {"restarts": 0, "skipped": True}
+            continue
+        restarts = 0
+        last_sz, last_progress = fsize(args.log), time.time()
+        soft_announced, tick = False, 1.0
+        prompt = gc.build_gate_prompt(mission, phase)
+        proc = launch(args.cwd, prompt, args.log, args.model)
+        log_event(runner_log, "GATE-BEGIN", "%s pid=%d" % (phase, proc.pid))
+        passed = False
+        while not passed:
+            time.sleep(tick)
+            sz = fsize(args.log)
+            active = sz != last_sz
+            tick = wd.next_tick(active, tick=args.tick_sec)
+            if active:
+                last_sz, last_progress = sz, time.time()
+                soft_announced = False
+            if gate_pass(args.ledger_dir, phase):
+                passed = True
+                break
+            stall = time.time() - last_progress
+            grade = wd.stall_grade(stall, soft=args.soft_stall_min * 60, hard=args.stall_min * 60)
+            if grade == "soft" and not soft_announced:
+                soft_announced = True
+                log_event(runner_log, "SOFTSTALL", "%s no progress %.1fm" % (phase, stall / 60))
+            if proc.poll() is not None:
+                if restarts >= args.max_restarts:
+                    log_event(runner_log, "GIVEUP", "%s restarts=%d proc-exit" % (phase, restarts))
+                    log_event(runner_log, "DONE", "failed_at=%s restarts=%d" % (phase, restarts))
+                    return 1
+                delay = wd.backoff_delay(restarts, base=args.backoff_base)
+                if delay:
+                    log_event(runner_log, "BACKOFF", "%s %.0fs" % (phase, delay))
+                    time.sleep(delay)
+                restarts += 1
+                proc = launch(args.cwd, prompt, args.log, args.model)
+                last_sz, last_progress = fsize(args.log), time.time()
+                soft_announced = False
+                log_event(runner_log, "RESTART", "%s pid=%d n=%d (proc-exit)" % (phase, proc.pid, restarts))
+                continue
+            if grade == "hard":
+                log_event(runner_log, "STALL", "%s no progress %.1fm killing pid=%d" % (phase, stall / 60, proc.pid))
+                kill_group(proc)
+                proc.wait()
+                if restarts >= args.max_restarts:
+                    log_event(runner_log, "GIVEUP", "%s restarts=%d after stall" % (phase, restarts))
+                    log_event(runner_log, "DONE", "failed_at=%s restarts=%d" % (phase, restarts))
+                    return 1
+                delay = wd.backoff_delay(restarts, base=args.backoff_base)
+                if delay:
+                    log_event(runner_log, "BACKOFF", "%s %.0fs" % (phase, delay))
+                    time.sleep(delay)
+                restarts += 1
+                proc = launch(args.cwd, prompt, args.log, args.model)
+                last_sz, last_progress = fsize(args.log), time.time()
+                soft_announced = False
+                log_event(runner_log, "RESTART", "%s pid=%d n=%d (after stall)" % (phase, proc.pid, restarts))
+        kill_group(proc)
+        try:
+            proc.wait(timeout=5)
+        except Exception:
+            pass
+        dur = (time.time() - g0) / 60
+        per_gate[phase] = {"restarts": restarts, "min": round(dur, 1)}
+        log_event(runner_log, "GATE-PASS", "%s %.1fm restarts=%d" % (phase, dur, restarts))
+
+    total = (time.time() - t0) / 60
+    log_event(runner_log, "DONE", "all gates passed total=%.1fm per_gate=%s" % (
+        total, ";".join("%s:%s" % (k, v.get("min", "skip")) for k, v in per_gate.items())))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
