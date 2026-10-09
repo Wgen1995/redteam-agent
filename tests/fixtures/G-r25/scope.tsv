@@ -1,0 +1,13 @@
+S-r25-0001	include	172.28.0.0/24		recon\;vuln-test\;exploit-verify		八问①②④：授权网段；探测经 range-attack-noop-1 跳板	2	2026-10-21T09:01:00Z
+S-r25-0002	include	*.range.local		recon\;vuln-test\;exploit-verify		八问①：授权域名后缀	2	2026-10-21T09:01:01Z
+S-r25-0003	exclude	*.out-of-scope.local				八问④：界外排除	2	2026-10-21T09:01:02Z
+S-r25-0004	oob	192.168.0.0/16				八问④：界外观察白名单（只读观察放行）	2	2026-10-21T09:01:03Z
+S-r25-0005	include	svc-shop		recon\;vuln-test\;exploit-verify		八问①同源补全：单标签服务名形（*.range.local 不匹配裸名——同名同主机网段资产的开局补全，非扩授权）	2	2026-10-21T09:01:04Z
+S-r25-0006	include	svc-api-gw		recon\;vuln-test\;exploit-verify		八问①同源补全：单标签服务名形（*.range.local 不匹配裸名——同名同主机网段资产的开局补全，非扩授权）	2	2026-10-21T09:01:05Z
+S-r25-0007	include	svc-admin		recon\;vuln-test\;exploit-verify		八问①同源补全：单标签服务名形（*.range.local 不匹配裸名——同名同主机网段资产的开局补全，非扩授权）	2	2026-10-21T09:01:06Z
+S-r25-0008	include	svc-login		recon\;vuln-test\;exploit-verify		八问①同源补全：单标签服务名形（*.range.local 不匹配裸名——同名同主机网段资产的开局补全，非扩授权）	2	2026-10-21T09:01:07Z
+S-r25-0009	include	svc-billing		recon\;vuln-test\;exploit-verify		八问①同源补全：单标签服务名形（*.range.local 不匹配裸名——同名同主机网段资产的开局补全，非扩授权）	2	2026-10-21T09:01:08Z
+S-r25-0010	include	svc-dashboard		recon\;vuln-test\;exploit-verify		八问①同源补全：单标签服务名形（*.range.local 不匹配裸名——同名同主机网段资产的开局补全，非扩授权）	2	2026-10-21T09:01:09Z
+S-r25-0011	include	svc-portal		recon\;vuln-test\;exploit-verify		八问①同源补全：单标签服务名形（*.range.local 不匹配裸名——同名同主机网段资产的开局补全，非扩授权）	2	2026-10-21T09:01:10Z
+S-r25-0012	include	svc-files		recon\;vuln-test\;exploit-verify		八问①同源补全：单标签服务名形（*.range.local 不匹配裸名——同名同主机网段资产的开局补全，非扩授权）	2	2026-10-21T09:01:11Z
+S-r25-0013	account-grant	*.range.local	CRED-r25-0002	authz-diff\;probe\;read		CRED-r25-0002（tok-usr-001 用户级令牌）使用授权面：限横向差分与只读探测（禁写禁删）	2	2026-10-21T11:03:40Z

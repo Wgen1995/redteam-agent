@@ -1,0 +1,52 @@
+AST-r25-0001	root-domain	range.local	ns:svc-* 内网DNS\\\;net:172.28.0.0/24\\\;来源:r1-recon 侦察	in_scope	2	2026-10-21T09:14:00Z
+AST-r25-0002	service	svc-shop	ip:172.28.0.9\\\;port:8001\\\;指纹:404（BaseHTTP/0.6 Python/3.12）\\\;来源:r1-recon	in_scope	2	2026-10-21T09:15:00Z
+AST-r25-0003	service	svc-api-gw	ip:172.28.0.5\\\;port:8002\\\;指纹:404（BaseHTTP/0.6）\\\;来源:r1-recon	in_scope	2	2026-10-21T09:15:40Z
+AST-r25-0004	service	svc-admin	ip:172.28.0.3\\\;port:8003\\\;指纹:401 未授权（根路径即要求认证）\\\;来源:r1-recon	in_scope	2	2026-10-21T09:16:20Z
+AST-r25-0005	service	svc-login	ip:172.28.0.7\\\;port:8004\\\;指纹:200 登录面 len23\\\;来源:r1-recon	in_scope	2	2026-10-21T09:17:00Z
+AST-r25-0006	service	svc-billing	ip:172.28.0.4\\\;port:8005\\\;指纹:401 未授权\\\;来源:r1-recon	in_scope	2	2026-10-21T09:17:40Z
+AST-r25-0007	service	svc-dashboard	ip:172.28.0.6\\\;port:8006\\\;指纹:404\\\;来源:r1-recon	in_scope	2	2026-10-21T09:18:20Z
+AST-r25-0008	service	svc-portal	ip:172.28.0.8\\\;port:8007\\\;指纹:404\\\;来源:r1-recon	in_scope	2	2026-10-21T09:19:00Z
+AST-r25-0009	service	svc-files	ip:172.28.0.2\\\;port:8008\\\;指纹:404\\\;来源:r1-recon	in_scope	2	2026-10-21T09:19:40Z
+AST-r25-0010	endpoint	svc-files/.env	来源:r2-spray GET 200；服务:svc-files:8008	in_scope	2	2026-10-21T10:01:00Z
+AST-r25-0011	endpoint	svc-shop/search?q=TZP9X7	来源:r2-spray GET 命中；服务:svc-shop:8001	in_scope	2	2026-10-21T10:10:00Z
+AST-r25-0012	endpoint	svc-shop/comment?text=TZP9X7	来源:r2-spray GET 命中；服务:svc-shop:8001	in_scope	2	2026-10-21T10:11:00Z
+AST-r25-0013	endpoint	svc-shop/reply?text=TZP9X7	来源:r2-spray GET 命中；服务:svc-shop:8001	in_scope	2	2026-10-21T10:12:00Z
+AST-r25-0014	endpoint	svc-shop/feedback?msg=TZP9X7	来源:r2-spray GET 命中；服务:svc-shop:8001	in_scope	2	2026-10-21T10:13:00Z
+AST-r25-0015	endpoint	svc-shop/item?id=1	来源:r2-spray GET 命中；服务:svc-shop:8001	in_scope	2	2026-10-21T10:14:00Z
+AST-r25-0016	endpoint	svc-shop/order?id=1	来源:r2-spray GET 命中；服务:svc-shop:8001	in_scope	2	2026-10-21T10:15:00Z
+AST-r25-0017	endpoint	svc-shop/logout?next=http://evil.example	来源:r2-spray GET 命中；服务:svc-shop:8001	out_of_scope	2	2026-10-21T10:16:00Z
+AST-r25-0018	endpoint	svc-shop/logout?next=	来源:r2-spray GET 命中；服务:svc-shop:8001	in_scope	2	2026-10-21T10:10:00Z
+AST-r25-0019	endpoint	svc-api-gw/cors-debug	来源:r2-spray GET 命中；服务:svc-api-gw:8002	in_scope	2	2026-10-21T10:10:00Z
+AST-r25-0020	endpoint	svc-api-gw/origin	来源:r2-spray GET 命中；服务:svc-api-gw:8002	in_scope	2	2026-10-21T10:11:00Z
+AST-r25-0021	endpoint	svc-api-gw/graphql?query={__schema{types{name}}}	来源:r2-spray GET 命中；服务:svc-api-gw:8002	in_scope	2	2026-10-21T10:12:00Z
+AST-r25-0022	endpoint	svc-api-gw/jump?u=	来源:r2-spray GET 命中；服务:svc-api-gw:8002	in_scope	2	2026-10-21T10:13:00Z
+AST-r25-0023	endpoint	svc-api-gw/preview?url=	来源:r2-spray GET 命中；服务:svc-api-gw:8002	in_scope	2	2026-10-21T10:14:00Z
+AST-r25-0024	endpoint	svc-dashboard/ping?host=127.0.0.1	来源:r2-spray GET 命中；服务:svc-dashboard:8006	in_scope	2	2026-10-21T10:15:00Z
+AST-r25-0025	endpoint	svc-dashboard/report?name={{7*7}}	来源:r2-spray GET 命中；服务:svc-dashboard:8006	in_scope	2	2026-10-21T10:16:00Z
+AST-r25-0026	endpoint	svc-dashboard/render?tpl={{7*7}}	来源:r2-spray GET 命中；服务:svc-dashboard:8006	in_scope	2	2026-10-21T10:17:00Z
+AST-r25-0027	endpoint	svc-portal/debug/env	来源:r2-spray GET 命中；服务:svc-portal:8007	in_scope	2	2026-10-21T10:18:00Z
+AST-r25-0028	endpoint	svc-portal/redirect?to=	来源:r2-spray GET 命中；服务:svc-portal:8007	in_scope	2	2026-10-21T10:19:00Z
+AST-r25-0029	endpoint	svc-files/unserialize	来源:r2-spray GET 命中；服务:svc-files:8008	in_scope	2	2026-10-21T10:20:00Z
+AST-r25-0030	endpoint	svc-files/import	来源:r2-spray GET 命中；服务:svc-files:8008	in_scope	2	2026-10-21T10:21:00Z
+AST-r25-0031	endpoint	svc-files/decode	来源:r2-spray GET 命中；服务:svc-files:8008	in_scope	2	2026-10-21T10:22:00Z
+AST-r25-0032	endpoint	svc-files/download?path=../../../../etc/passwd	来源:r2-spray GET 命中；服务:svc-files:8008	in_scope	2	2026-10-21T10:23:00Z
+AST-r25-0033	endpoint	svc-files/static/../../../../etc/passwd	来源:r2-spray GET 命中；服务:svc-files:8008	in_scope	2	2026-10-21T10:24:00Z
+AST-r25-0034	endpoint	svc-api-gw/fetch?url=	来源:r3a 退避复扫；服务:svc-api-gw:8002	in_scope	2	2026-10-21T10:40:00Z
+AST-r25-0035	endpoint	svc-api-gw/proxy?url=	来源:r3a 退避复扫；服务:svc-api-gw:8002	in_scope	2	2026-10-21T10:40:00Z
+AST-r25-0036	endpoint	svc-login/login	来源:r3b POST 认证矩阵；服务:svc-login:8004；发放响应头 X-Auth-Token 形（律19 采集）	in_scope	2	2026-10-21T11:00:00Z
+AST-r25-0037	endpoint	svc-admin/admin/orders?user_id=101	来源:r4 持证重扫（X-Auth-Token 形）；服务:svc-admin:8003；匿名=401/404 对照在案	in_scope	2	2026-10-21T11:20:00Z
+AST-r25-0038	endpoint	svc-admin/admin/invoices	来源:r4 持证重扫（X-Auth-Token 形）；服务:svc-admin:8003；匿名=401/404 对照在案	in_scope	2	2026-10-21T11:20:00Z
+AST-r25-0039	endpoint	svc-admin/admin/users/102	来源:r4 持证重扫（X-Auth-Token 形）；服务:svc-admin:8003；匿名=401/404 对照在案	in_scope	2	2026-10-21T11:21:00Z
+AST-r25-0040	endpoint	svc-billing/invoice/88	来源:r4 持证重扫（X-Auth-Token 形）；服务:svc-billing:8005；匿名=401/404 对照在案	in_scope	2	2026-10-21T11:22:00Z
+AST-r25-0041	endpoint	svc-api-gw/admin/keys	来源:r4 持证重扫（X-Auth-Token 形）；服务:svc-api-gw:8002；匿名=401/404 对照在案	in_scope	2	2026-10-21T11:24:00Z
+AST-r25-0042	endpoint	svc-shop/admin/reports	来源:r4 持证重扫（X-Auth-Token 形）；服务:svc-shop:8001；匿名=401/404 对照在案	in_scope	2	2026-10-21T11:25:00Z
+AST-r25-0043	endpoint	svc-dashboard/admin/config	来源:r4 持证重扫（X-Auth-Token 形）；服务:svc-dashboard:8006；匿名=401/404 对照在案	in_scope	2	2026-10-21T11:26:00Z
+AST-r25-0044	endpoint	svc-files/admin/logs	来源:r4 持证重扫（X-Auth-Token 形）；服务:svc-files:8008；匿名=401/404 对照在案	in_scope	2	2026-10-21T11:27:00Z
+AST-r25-0045	endpoint	svc-portal/admin/clients	来源:r4 持证重扫（X-Auth-Token 形）；服务:svc-portal:8007；匿名=401/404 对照在案	in_scope	2	2026-10-21T11:28:00Z
+AST-r25-0046	endpoint	svc-login/oauth/token	来源:r5 发放副面探测；服务:svc-login:8004；弱口令对同 /login 主面	in_scope	2	2026-10-21T12:05:00Z
+AST-r25-0047	endpoint	svc-login/api/token	来源:r5 发放副面探测；服务:svc-login:8004；弱口令对同 /login 主面	in_scope	2	2026-10-21T12:06:00Z
+AST-r25-0048	endpoint	svc-login/auth	来源:r5 发放副面探测；服务:svc-login:8004；弱口令对同 /login 主面	in_scope	2	2026-10-21T12:07:00Z
+AST-r25-0049	endpoint	svc-login/forgot	来源:r5 限流副面探测；服务:svc-login:8004；403+GTRATE-01 计数器在体	in_scope	2	2026-10-21T12:08:00Z
+AST-r25-0050	endpoint	svc-login/password-reset	来源:r5 限流副面探测；服务:svc-login:8004；403+GTRATE-01 计数器在体	in_scope	2	2026-10-21T12:09:00Z
+AST-r25-0051	endpoint	svc-admin/admin/orders/1	来源:r4 持证重扫 path 形；服务:svc-admin:8003；匿名 401/404 对照在案	in_scope	2	2026-10-21T15:01:00Z
+AST-r25-0052	endpoint	svc-billing/invoice/1	来源:r4 持证重扫序数族；服务:svc-billing:8005；匿名 401/404 对照在案	in_scope	2	2026-10-21T15:03:00Z

@@ -1,0 +1,5 @@
+INT-r25-0001	G-r25 测绘主意图（r1 侦察波：DNS/端口/指纹）	8 服务 DNS 解析+8001-8008 端口扫描+根路径指纹，探针 r1-recon.py 经 range-attack-noop-1	candidate	web-blackbox	recon	entity			-+recon+G-r25 测绘主意图（r1 侦察波：DNS/端口/指纹）	20000\;800\;4					2	2026-10-21T09:12:00Z
+INT-r25-0002	测绘补充来源B（服务面根路径行为记录）	r1 侦察事件回边：服务根路径行为差分记录（第二独立来源）	pending	web-blackbox	recon	recon-event			-+recon+测绘补充来源B（服务面根路径行为记录）	5000\;200\;1					2	2026-10-21T09:34:00Z
+INT-r25-0003	P3 漏洞验证主意图（r2 字典喷洒波）	8 服务 GET 字典喷洒命中面逐枚验证记账（r2-spray.py，信标 TZP9X7）	candidate	web-blackbox	deep-dive	entity			-+deep-dive+P3 漏洞验证主意图（r2 字典喷洒波）	100000\;5000\;8					2	2026-10-21T10:00:00Z
+INT-r25-0002	测绘补充来源B（服务面根路径行为记录）	r1 侦察事件回边：服务根路径行为差分记录（第二独立来源）	active	web-blackbox	recon	recon-event			-+recon+测绘补充来源B（服务面根路径行为记录）	5000\;200\;1					2	2026-10-21T12:12:00Z
+INT-r25-0002	测绘补充来源B（服务面根路径行为记录）	r1 侦察事件回边：服务根路径行为差分记录（第二独立来源）	done	web-blackbox	recon	recon-event			-+recon+测绘补充来源B（服务面根路径行为记录）	5000\;200\;1		工作产品=根路径行为facts已产出并全部消费			2	2026-10-21T12:12:20Z

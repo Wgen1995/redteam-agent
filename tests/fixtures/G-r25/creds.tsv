@@ -1,0 +1,2 @@
+CRED-r25-0001	static-cred	user	admin	{{vault:cred-1}}						active		GTWEAKPASS-01 弱口令对（admin 账号弱口令；role=user 按令牌权限类记，律22）	2	2026-10-21T11:03:00Z	
+CRED-r25-0002	session	user	tok-usr-001	{{vault:cred-2}}		INT-r25-0003	CRED-r25-0001			active		X-Auth-Token: tok-usr-001（用户级令牌——发放响应头采集，律19）；携带形态头名族候选 X-Auth-Token/Authorization Bearer	2	2026-10-21T11:03:30Z	

@@ -1,0 +1,1718 @@
+range.local	wstg-info				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-conf				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-idnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-authn				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-authz				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-sess				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-inpv				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-errh				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-cryp				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-busl				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-clnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+range.local	wstg-apit				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-info				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-conf				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-idnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-authn				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-authz				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-sess				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-inpv				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-errh				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-cryp				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-busl				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-clnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-shop	wstg-apit				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-info				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-conf				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-idnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-authn				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-authz				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-sess				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-inpv				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-errh				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-cryp				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-busl				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-clnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-api-gw	wstg-apit				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-info				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-conf				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-idnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-authn				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-authz				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-sess				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-inpv				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-errh				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-cryp				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-busl				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-clnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-admin	wstg-apit				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-info				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-conf				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-idnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-authn				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-authz				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-sess				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-inpv				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-errh				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-cryp				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-busl				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-clnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-login	wstg-apit				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-info				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-conf				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-idnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-authn				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-authz				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-sess				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-inpv				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-errh				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-cryp				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-busl				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-clnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-billing	wstg-apit				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-info				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-conf				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-idnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-authn				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-authz				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-sess				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-inpv				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-errh				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-cryp				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-busl				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-clnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-dashboard	wstg-apit				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-info				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-conf				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-idnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-authn				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-authz				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-sess				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-inpv				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-errh				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-cryp				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-busl				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-clnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-portal	wstg-apit				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-info				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-conf				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-idnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-authn				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-authz				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-sess				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-inpv				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-errh				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-cryp				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-busl				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-clnt				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files	wstg-apit				2	2026-10-21T09:41:00Z	2026-10-21T09:45:00Z
+svc-files/.env	wstg-info		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-conf	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GET /.env 200 回显 SECRET_KEY（GTINFOLEAK-03 信标在体）	INT-r25-0003	2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-idnt		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-authn		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-authz		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-sess		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-inpv		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-errh		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-cryp		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-busl		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-clnt		submatrix:		2	2026-10-21T10:03:00Z	
+svc-files/.env	wstg-apit		submatrix:		2	2026-10-21T10:03:00Z	
+svc-shop/search?q=TZP9X7	wstg-info		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-conf		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-idnt		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-authn		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-authz		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-sess		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTXSS-01 信标在体	INT-r25-0003	2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-errh		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-cryp		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-busl		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-clnt		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/search?q=TZP9X7	wstg-apit		submatrix:		2	2026-10-21T10:10:40Z	
+svc-shop/comment?text=TZP9X7	wstg-info		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-conf		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-idnt		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-authn		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-authz		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-sess		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTXSS-02 信标在体	INT-r25-0003	2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-errh		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-cryp		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-busl		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-clnt		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/comment?text=TZP9X7	wstg-apit		submatrix:		2	2026-10-21T10:11:40Z	
+svc-shop/reply?text=TZP9X7	wstg-info		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-conf		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-idnt		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-authn		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-authz		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-sess		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTXSS-03 信标在体	INT-r25-0003	2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-errh		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-cryp		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-busl		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-clnt		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/reply?text=TZP9X7	wstg-apit		submatrix:		2	2026-10-21T10:12:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-info		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-conf		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-idnt		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-authn		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-authz		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-sess		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTXSS-04 信标在体	INT-r25-0003	2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-errh		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-cryp		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-busl		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-clnt		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/feedback?msg=TZP9X7	wstg-apit		submatrix:		2	2026-10-21T10:13:40Z	
+svc-shop/item?id=1	wstg-info		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-conf		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-idnt		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-authn		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-authz		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-sess		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTSQLI-01 信标在体	INT-r25-0003	2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-errh		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-cryp		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-busl		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-clnt		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/item?id=1	wstg-apit		submatrix:		2	2026-10-21T10:14:40Z	
+svc-shop/order?id=1	wstg-info		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-conf		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-idnt		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-authn		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-authz		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-sess		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTSQLI-02 信标在体	INT-r25-0003	2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-errh		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-cryp		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-busl		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-clnt		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/order?id=1	wstg-apit		submatrix:		2	2026-10-21T10:15:40Z	
+svc-shop/logout?next=	wstg-info		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-conf		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-idnt		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-authn		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-authz		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-sess		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-inpv		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-errh		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-cryp		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-busl		submatrix:		2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-clnt	x	submatrix: r2-spray endpoint 面发现——GTREDIR-02 信标在体（302 外域 Location）	INT-r25-0003	2	2026-10-21T10:17:55Z	
+svc-shop/logout?next=	wstg-apit		submatrix:		2	2026-10-21T10:17:55Z	
+svc-api-gw/cors-debug	wstg-info		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-conf	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTCORS-01 信标在体	INT-r25-0003	2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-idnt		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-authn		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-authz		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-sess		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-inpv		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-errh		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-cryp		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-busl		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-clnt		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/cors-debug	wstg-apit		submatrix:		2	2026-10-21T10:10:40Z	
+svc-api-gw/origin	wstg-info		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-conf	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTCORS-02 信标在体	INT-r25-0003	2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-idnt		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-authn		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-authz		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-sess		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-inpv		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-errh		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-cryp		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-busl		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-clnt		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/origin	wstg-apit		submatrix:		2	2026-10-21T10:11:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-info		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-conf		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-idnt		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authn		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authz		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-sess		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-inpv		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-errh		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-cryp		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-busl		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-clnt		submatrix:		2	2026-10-21T10:12:40Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-apit	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTGRAPHQL-01 信标在体	INT-r25-0003	2	2026-10-21T10:12:40Z	
+svc-api-gw/jump?u=	wstg-info		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-conf		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-idnt		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-authn		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-authz		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-sess		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-inpv		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-errh		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-cryp		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-busl		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-clnt	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTREDIR-03 信标在体	INT-r25-0003	2	2026-10-21T10:13:40Z	
+svc-api-gw/jump?u=	wstg-apit		submatrix:		2	2026-10-21T10:13:40Z	
+svc-api-gw/preview?url=	wstg-info		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-conf		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-idnt		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-authn		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-authz		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-sess		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTSSRF-02 信标在体	INT-r25-0003	2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-errh		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-cryp		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-busl		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-clnt		submatrix:		2	2026-10-21T10:14:40Z	
+svc-api-gw/preview?url=	wstg-apit		submatrix:		2	2026-10-21T10:14:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-info		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-conf		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-idnt		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-authn		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-authz		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-sess		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTCMDI-01 信标在体	INT-r25-0003	2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-errh		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-cryp		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-busl		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-clnt		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-apit		submatrix:		2	2026-10-21T10:15:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-info		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-conf		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-idnt		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-authn		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-authz		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-sess		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTSSTI-01 信标在体	INT-r25-0003	2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-errh		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-cryp		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-busl		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-clnt		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/report?name={{7*7}}	wstg-apit		submatrix:		2	2026-10-21T10:16:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-info		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-conf		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-idnt		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-authn		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-authz		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-sess		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTSSTI-02 信标在体	INT-r25-0003	2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-errh		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-cryp		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-busl		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-clnt		submatrix:		2	2026-10-21T10:17:40Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-apit		submatrix:		2	2026-10-21T10:17:40Z	
+svc-portal/debug/env	wstg-info		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-conf	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTINFOLEAK-01 信标在体	INT-r25-0003	2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-idnt		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-authn		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-authz		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-sess		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-inpv		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-errh		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-cryp		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-busl		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-clnt		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/debug/env	wstg-apit		submatrix:		2	2026-10-21T10:18:40Z	
+svc-portal/redirect?to=	wstg-info		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-conf		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-idnt		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-authn		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-authz		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-sess		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-inpv		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-errh		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-cryp		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-busl		submatrix:		2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-clnt	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTREDIR-01 信标在体	INT-r25-0003	2	2026-10-21T10:19:40Z	
+svc-portal/redirect?to=	wstg-apit		submatrix:		2	2026-10-21T10:19:40Z	
+svc-files/unserialize	wstg-info		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-conf		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-idnt		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-authn		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-authz		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-sess		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTDESER-01 信标在体	INT-r25-0003	2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-errh		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-cryp		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-busl		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-clnt		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/unserialize	wstg-apit		submatrix:		2	2026-10-21T10:20:40Z	
+svc-files/import	wstg-info		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-conf		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-idnt		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-authn		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-authz		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-sess		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTDESER-02 信标在体	INT-r25-0003	2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-errh		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-cryp		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-busl		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-clnt		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/import	wstg-apit		submatrix:		2	2026-10-21T10:21:40Z	
+svc-files/decode	wstg-info		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-conf		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-idnt		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-authn		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-authz		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-sess		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTDESER-03 信标在体	INT-r25-0003	2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-errh		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-cryp		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-busl		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-clnt		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/decode	wstg-apit		submatrix:		2	2026-10-21T10:22:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-info		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-conf		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-idnt		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authn		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authz		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-sess		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTTRAVERSAL-01 信标在体	INT-r25-0003	2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-errh		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-cryp		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-busl		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-clnt		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/download?path=../../../../etc/passwd	wstg-apit		submatrix:		2	2026-10-21T10:23:40Z	
+svc-files/static/../../../../etc/passwd	wstg-info		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-conf		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-idnt		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-authn		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-authz		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-sess		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-inpv	x	submatrix: r2-spray endpoint 面发现（asset-added 回边）——GTTRAVERSAL-02 信标在体	INT-r25-0003	2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-errh		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-cryp		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-busl		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-clnt		submatrix:		2	2026-10-21T10:24:40Z	
+svc-files/static/../../../../etc/passwd	wstg-apit		submatrix:		2	2026-10-21T10:24:40Z	
+svc-api-gw/fetch?url=	wstg-info		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-conf		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-idnt		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-authn		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-authz		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-sess		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-inpv	x	submatrix: r3a 退避复扫发现——GTSSRF-01 信标在体	INT-r25-0003	2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-errh		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-cryp		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-busl		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-clnt		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/fetch?url=	wstg-apit		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-info		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-conf		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-idnt		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-authn		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-authz		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-sess		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-inpv	x	submatrix: r3a 退避复扫发现——GTSSRF-03 信标在体	INT-r25-0003	2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-errh		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-cryp		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-busl		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-clnt		submatrix:		2	2026-10-21T10:41:40Z	
+svc-api-gw/proxy?url=	wstg-apit		submatrix:		2	2026-10-21T10:41:40Z	
+svc-login/login	wstg-info		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-conf		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-idnt		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-authn	x	submatrix: r3b POST 认证矩阵——弱口令+无限流双洞（GTWEAKPASS-01/GTRATE-01 信标在体）	INT-r25-0003	2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-authz		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-sess		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-inpv		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-errh		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-cryp		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-busl		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-clnt		submatrix:		2	2026-10-21T11:02:50Z	
+svc-login/login	wstg-apit		submatrix:		2	2026-10-21T11:02:50Z	
+svc-admin/admin/invoices	wstg-info		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-conf		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-idnt		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-authn		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-authz	x	submatrix: r4 持证重扫发现——GTIDOR-02 信标（401→200 翻转）	INT-r25-0003	2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-sess		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-inpv		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-errh		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-cryp		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-busl		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-clnt		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/invoices	wstg-apit		submatrix:		2	2026-10-21T11:20:40Z	
+svc-admin/admin/users/102	wstg-info		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-conf		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-idnt		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-authn		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-authz	x	submatrix: r4 持证重扫发现——GTIDOR-03 信标（401→200 翻转）	INT-r25-0003	2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-sess		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-inpv		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-errh		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-cryp		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-busl		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-clnt		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/users/102	wstg-apit		submatrix:		2	2026-10-21T11:21:40Z	
+svc-admin/admin/orders?user_id=101	wstg-info		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-conf		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-idnt		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-authn		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-authz	x	submatrix: r4 持证重扫发现——GTIDOR-01 信标（401→200 翻转）	INT-r25-0003	2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-sess		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-inpv		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-errh		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-cryp		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-busl		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-clnt		submatrix:		2	2026-10-21T11:20:55Z	
+svc-admin/admin/orders?user_id=101	wstg-apit		submatrix:		2	2026-10-21T11:20:55Z	
+svc-billing/invoice/88	wstg-info		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-conf		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-idnt		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-authn		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-authz	x	submatrix: r4 持证重扫发现——GTIDOR-04 信标（401→200 翻转）	INT-r25-0003	2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-sess		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-inpv		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-errh		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-cryp		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-busl		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-clnt		submatrix:		2	2026-10-21T11:23:55Z	
+svc-billing/invoice/88	wstg-apit		submatrix:		2	2026-10-21T11:23:55Z	
+svc-api-gw/admin/keys	wstg-info		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-conf		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-idnt		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-authn		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-authz	x	submatrix: r4 持证重扫发现——GTIDOR-05 信标（401→200 翻转）	INT-r25-0003	2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-sess		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-inpv		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-errh		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-cryp		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-busl		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-clnt		submatrix:		2	2026-10-21T11:24:40Z	
+svc-api-gw/admin/keys	wstg-apit		submatrix:		2	2026-10-21T11:24:40Z	
+svc-shop/admin/reports	wstg-info		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-conf		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-idnt		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-authn		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-authz	x	submatrix: r4 持证重扫发现——GTIDOR-06 信标（401→200 翻转）	INT-r25-0003	2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-sess		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-inpv		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-errh		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-cryp		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-busl		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-clnt		submatrix:		2	2026-10-21T11:25:40Z	
+svc-shop/admin/reports	wstg-apit		submatrix:		2	2026-10-21T11:25:40Z	
+svc-dashboard/admin/config	wstg-info		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-conf		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-idnt		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-authn		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-authz	x	submatrix: r4 持证重扫发现——GTROLE-03 信标（401→200 翻转）	INT-r25-0003	2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-sess		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-inpv		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-errh		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-cryp		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-busl		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-clnt		submatrix:		2	2026-10-21T11:26:40Z	
+svc-dashboard/admin/config	wstg-apit		submatrix:		2	2026-10-21T11:26:40Z	
+svc-files/admin/logs	wstg-info		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-conf		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-idnt		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-authn		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-authz	x	submatrix: r4 持证重扫发现——GTROLE-04 信标（401→200 翻转）	INT-r25-0003	2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-sess		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-inpv		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-errh		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-cryp		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-busl		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-clnt		submatrix:		2	2026-10-21T11:27:40Z	
+svc-files/admin/logs	wstg-apit		submatrix:		2	2026-10-21T11:27:40Z	
+svc-portal/admin/clients	wstg-info		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-conf		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-idnt		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-authn		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-authz	x	submatrix: r4 持证重扫发现——GTHAUTH-05 信标（401→200 翻转）	INT-r25-0003	2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-sess		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-inpv		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-errh		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-cryp		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-busl		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-clnt		submatrix:		2	2026-10-21T11:28:40Z	
+svc-portal/admin/clients	wstg-apit		submatrix:		2	2026-10-21T11:28:40Z	
+svc-login/oauth/token	wstg-info		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-conf		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-idnt		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-authn	x	submatrix: r5 发放副面弱口令 200 信标	INT-r25-0003	2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-authz		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-sess		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-inpv		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-errh		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-cryp		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-busl		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-clnt		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/oauth/token	wstg-apit		submatrix:		2	2026-10-21T12:05:40Z	
+svc-login/api/token	wstg-info		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-conf		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-idnt		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-authn	x	submatrix: r5 发放副面弱口令 200 信标	INT-r25-0003	2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-authz		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-sess		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-inpv		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-errh		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-cryp		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-busl		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-clnt		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/api/token	wstg-apit		submatrix:		2	2026-10-21T12:06:40Z	
+svc-login/auth	wstg-info		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-conf		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-idnt		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-authn	x	submatrix: r5 发放副面弱口令 200 信标	INT-r25-0003	2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-authz		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-sess		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-inpv		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-errh		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-cryp		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-busl		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-clnt		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/auth	wstg-apit		submatrix:		2	2026-10-21T12:07:40Z	
+svc-login/forgot	wstg-info		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-conf		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-idnt		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-authn	x	submatrix: r5 限流副面计数器实证	INT-r25-0003	2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-authz		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-sess		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-inpv		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-errh		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-cryp		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-busl		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-clnt		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/forgot	wstg-apit		submatrix:		2	2026-10-21T12:08:40Z	
+svc-login/password-reset	wstg-info		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-conf		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-idnt		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-authn	x	submatrix: r5 限流副面计数器实证	INT-r25-0003	2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-authz		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-sess		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-inpv		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-errh		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-cryp		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-busl		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-clnt		submatrix:		2	2026-10-21T12:09:40Z	
+svc-login/password-reset	wstg-apit		submatrix:		2	2026-10-21T12:09:40Z	
+range.local	wstg-info	x	服务级实证投影：.env/debug/env 泄露（FD-0001/0017）	INT-r25-0001	2	2026-10-21T12:14:00Z	
+range.local	wstg-conf	x	CORS 通配/反射+凭据允许（FD-0009/0010）	INT-r25-0001	2	2026-10-21T12:15:00Z	
+range.local	wstg-inpv	x	XSS/SQLi/CMDi/SSTI/反序列化/穿越全族（FD-0002..0023）	INT-r25-0001	2	2026-10-21T12:16:00Z	
+range.local	wstg-authn	x	弱口令+限流缺失（FD-0026/0027+r6 副面×5）	INT-r25-0001	2	2026-10-21T12:17:00Z	
+range.local	wstg-authz	x	IDOR/role/hauth 持证翻越（FD-0028..0036）	INT-r25-0001	2	2026-10-21T12:18:00Z	
+range.local	wstg-apit	x	GraphQL GET 内省开启（FD-0011）；POST 501 阴性在案	INT-r25-0001	2	2026-10-21T12:19:00Z	
+range.local	wstg-busl	x	开放重定向×3（FD-0008/0012/0018）+发票/订单资源逻辑	INT-r25-0001	2	2026-10-21T12:20:00Z	
+range.local	wstg-cryp	x	阴性收口：JWT 构造形验签拒绝（F-0027/0028）；未见可利用加密缺陷	INT-r25-0001	2	2026-10-21T12:21:00Z	
+range.local	wstg-sess	x	携带形态分辨（F-0029，唯一 X-Auth-Token 头）+限流族在 authn 收口	INT-r25-0001	2	2026-10-21T12:22:00Z	
+range.local	wstg-clnt	x	客户端注入面经 XSS 族覆盖（反射/存储，FD-0002..0005）	INT-r25-0001	2	2026-10-21T12:23:00Z	
+range.local	wstg-errh	x	阴性收口：501/400 通用错误页无堆栈泄露（r5 XXE 探测面）	INT-r25-0001	2	2026-10-21T12:24:00Z	
+range.local	wstg-idnt	x	阴性收口：/forgot admin vs 随机无差异（r5 枚举阴性 fact）	INT-r25-0001	2	2026-10-21T12:25:00Z	
+svc-admin	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/invoices	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/orders?user_id=101	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin/admin/users/102	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/admin/keys	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/cors-debug	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/fetch?url=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/jump?u=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/origin	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/preview?url=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-api-gw/proxy?url=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-billing/invoice/88	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/admin/config	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/.env	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/admin/logs	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/decode	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/import	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/static/../../../../etc/passwd	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-files/unserialize	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/api/token	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/auth	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/forgot	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/login	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/oauth/token	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-login/password-reset	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/admin/clients	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/debug/env	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-portal/redirect?to=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/admin/reports	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/comment?text=TZP9X7	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/item?id=1	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/logout?next=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/order?id=1	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/reply?text=TZP9X7	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-shop/search?q=TZP9X7	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）	INT-r25-0001	2	2026-10-21T12:27:00Z	
+svc-admin	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/invoices	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders?user_id=101	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/users/102	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/admin/keys	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/cors-debug	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/fetch?url=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/graphql?query={__schema{types{name}}}	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/jump?u=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/origin	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/preview?url=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-api-gw/proxy?url=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-billing/invoice/88	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/admin/config	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/ping?host=127.0.0.1	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/render?tpl={{7*7}}	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-dashboard/report?name={{7*7}}	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/.env	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/admin/logs	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/decode	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/download?path=../../../../etc/passwd	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/import	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/static/../../../../etc/passwd	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-files/unserialize	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/api/token	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/auth	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/forgot	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/login	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/oauth/token	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-login/password-reset	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/admin/clients	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/debug/env	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-portal/redirect?to=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-apit	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-authn	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-authz	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-busl	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-clnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-conf	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-cryp	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-errh	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-idnt	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-info	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-inpv	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop	wstg-sess	-	unreachable:scope-root BFS 无边路径——服务级结构格（已证格经 FD attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/admin/reports	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/comment?text=TZP9X7	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/feedback?msg=TZP9X7	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/item?id=1	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-inpv	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/logout?next=	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/order?id=1	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/reply?text=TZP9X7	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-apit	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-authn	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-authz	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-busl	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-clnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-conf	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-cryp	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-errh	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-idnt	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-info	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-shop/search?q=TZP9X7	wstg-sess	-	submatrix: unreachable 结构收口（scope-root BFS 无边路径；已证格经 attack 边单记）		2	2026-10-21T12:33:00Z	
+svc-admin/admin/orders/1	wstg-info		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-conf		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-idnt		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-authn		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-authz	x	submatrix: r4 path 形持证 200 信标（律18 双形拆行）	INT-r25-0003	2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-sess		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-inpv		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-errh		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-cryp		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-busl		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-clnt		submatrix:		2	2026-10-21T15:01:55Z	
+svc-admin/admin/orders/1	wstg-apit		submatrix:		2	2026-10-21T15:01:55Z	
+svc-billing/invoice/1	wstg-info		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-conf		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-idnt		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-authn		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-authz	x	submatrix: r4 小序数 path 形持证 200 同信标	INT-r25-0003	2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-sess		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-inpv		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-errh		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-cryp		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-busl		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-clnt		submatrix:		2	2026-10-21T15:03:55Z	
+svc-billing/invoice/1	wstg-apit		submatrix:		2	2026-10-21T15:03:55Z	
+svc-admin/admin/orders/1	wstg-apit	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-authn	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-busl	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-clnt	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-conf	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-cryp	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-errh	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-idnt	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-info	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-inpv	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-admin/admin/orders/1	wstg-sess	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-apit	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-authn	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-busl	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-clnt	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-conf	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-cryp	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-errh	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-idnt	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-info	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-inpv	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
+svc-billing/invoice/1	wstg-sess	-	submatrix: 同面他类结构格（authz 已证 x，余类不铺）		2	2026-10-21T15:12:00Z	
