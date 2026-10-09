@@ -1,0 +1,12 @@
+172.28.0.3:8003	wstg-info	x	全路径401行为完成
+172.28.0.3:8003	wstg-conf	-	无该类表面/无该类行为观测（token后仅/admin路由族）
+172.28.0.3:8003	wstg-idnt	-	无该类表面/无该类行为观测（token后仅/admin路由族）
+172.28.0.3:8003	wstg-authn	x	POST /login弱口令发放token（admin/admin123）
+172.28.0.3:8003	wstg-authz	x	GTIDOR-01..03+GTROLE-01/02低权越权族（FD-0033/FD-0005/FD-0007）
+172.28.0.3:8003	wstg-sess	x	X-Auth-Token会话门401/200差分
+172.28.0.3:8003	wstg-inpv	-	无该类表面/无该类行为观测（token后仅/admin路由族）
+172.28.0.3:8003	wstg-errh	x	403/401差分行为实测
+172.28.0.3:8003	wstg-cryp	-	无该类表面/无该类行为观测（token后仅/admin路由族）
+172.28.0.3:8003	wstg-busl	-	无该类表面/无该类行为观测（token后仅/admin路由族）
+172.28.0.3:8003	wstg-clnt	-	无该类表面/无该类行为观测（token后仅/admin路由族）
+172.28.0.3:8003	wstg-apit	-	无该类表面/无该类行为观测（token后仅/admin路由族）

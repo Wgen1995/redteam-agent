@@ -1,0 +1,12 @@
+172.28.0.8:8007	wstg-info	x	路径发现完成
+172.28.0.8:8007	wstg-conf	-	无该类表面/无该类行为观测
+172.28.0.8:8007	wstg-idnt	-	无该类表面/无该类行为观测
+172.28.0.8:8007	wstg-authn	x	GTJWT-02过期/none令牌接受（FD-0029）
+172.28.0.8:8007	wstg-authz	x	GTHAUTH-05低权客户清单（FD-0032）
+172.28.0.8:8007	wstg-sess	x	JWT校验语义实测
+172.28.0.8:8007	wstg-inpv	x	GTLFI-02本地包含+GTRFI-01远程包含（FD-0042）
+172.28.0.8:8007	wstg-errh	x	GTINFOLEAK-01调试泄露（FD-0043）
+172.28.0.8:8007	wstg-cryp	x	JWT exp/alg弱验
+172.28.0.8:8007	wstg-busl	x	GTCSRF-02销户GET无token（FD-0031）
+172.28.0.8:8007	wstg-clnt	-	无该类表面/无该类行为观测
+172.28.0.8:8007	wstg-apit	x	GTGRAPHQL-02内省开放（FD-0043）

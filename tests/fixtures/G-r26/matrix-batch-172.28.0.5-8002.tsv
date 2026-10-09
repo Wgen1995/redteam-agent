@@ -1,0 +1,12 @@
+172.28.0.5:8002	wstg-info	x	路径发现+限流行为完成
+172.28.0.5:8002	wstg-conf	x	GTCORS-01通配ACAO（FD-0019）
+172.28.0.5:8002	wstg-idnt	-	无该类表面/无该类行为观测
+172.28.0.5:8002	wstg-authn	x	token门行为+JWT伪造接受
+172.28.0.5:8002	wstg-authz	x	GTIDOR-05低权可见密钥清单（FD-0021）
+172.28.0.5:8002	wstg-sess	x	token门401/200差分实测
+172.28.0.5:8002	wstg-inpv	-	无输入回显面观测（fetch/preview为SSRF面非注入）
+172.28.0.5:8002	wstg-errh	x	429限流响应语义实测
+172.28.0.5:8002	wstg-cryp	x	JWT弱验（alg=none空签名两形均收）
+172.28.0.5:8002	wstg-busl	-	无该类表面/无该类行为观测
+172.28.0.5:8002	wstg-clnt	-	无该类表面/无该类行为观测
+172.28.0.5:8002	wstg-apit	x	GTJWT-01 alg=none接受+面级429限流观测（FD-0020）

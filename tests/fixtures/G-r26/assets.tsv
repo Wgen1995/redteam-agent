@@ -1,0 +1,30 @@
+AST-r26-0001	root-domain	172.28.0.0/24	authorized-range.local\;docker网range_range\;8服务端口8001-8008异构	in_scope	2	2026-10-22T09:17:00Z
+AST-r26-0002	service	172.28.0.9:8001	container=range-svc-shop-1\;name=shop\;BaseHTTP-Python3.12\;/order GTSQLI-02\;/search GTXSS-01	in_scope	2	2026-10-22T09:18:00Z
+AST-r26-0003	service	172.28.0.5:8002	container=range-svc-api-gw-1\;name=api-gw\;/api/user 401\;激进限流429+Retry-After	in_scope	2	2026-10-22T09:18:00Z
+AST-r26-0004	service	172.28.0.3:8003	container=range-svc-admin-1\;name=admin\;全路径401 auth required	in_scope	2	2026-10-22T09:18:00Z
+AST-r26-0005	service	172.28.0.4:8005	container=range-svc-billing-1\;name=billing\;全路径401 auth required	in_scope	2	2026-10-22T09:18:00Z
+AST-r26-0006	service	172.28.0.7:8004	container=range-svc-login-1\;name=login\;GET全路径200 login form（授权发放面）	in_scope	2	2026-10-22T09:18:00Z
+AST-r26-0007	service	172.28.0.6:8006	container=range-svc-dashboard-1\;name=dashboard\;/report /reports 200 GTSSTI-01 ssti render	in_scope	2	2026-10-22T09:18:00Z
+AST-r26-0008	service	172.28.0.2:8008	container=range-svc-files-1\;name=files\;全路径404（未发现入口）	in_scope	2	2026-10-22T09:18:00Z
+AST-r26-0009	service	172.28.0.8:8007	container=range-svc-portal-1\;name=portal\;全路径404（未发现入口）	in_scope	2	2026-10-22T09:18:00Z
+AST-r26-0010	ip	172.28.0.2	range_range网段成员	in_scope	2	2026-10-22T09:29:00Z
+AST-r26-0011	ip	172.28.0.3	range_range网段成员	in_scope	2	2026-10-22T09:29:00Z
+AST-r26-0012	ip	172.28.0.4	range_range网段成员	in_scope	2	2026-10-22T09:29:00Z
+AST-r26-0013	ip	172.28.0.5	range_range网段成员	in_scope	2	2026-10-22T09:29:00Z
+AST-r26-0014	ip	172.28.0.6	range_range网段成员	in_scope	2	2026-10-22T09:29:00Z
+AST-r26-0015	ip	172.28.0.7	range_range网段成员	in_scope	2	2026-10-22T09:29:00Z
+AST-r26-0016	ip	172.28.0.8	range_range网段成员	in_scope	2	2026-10-22T09:29:00Z
+AST-r26-0017	ip	172.28.0.9	range_range网段成员	in_scope	2	2026-10-22T09:29:00Z
+AST-r26-0018	endpoint	172.28.0.9:8001/order	GTSQLI-02 SQL syntax error页	in_scope	2	2026-10-22T09:30:00Z
+AST-r26-0019	endpoint	172.28.0.9:8001/search	GTXSS-01 reflected xss页	in_scope	2	2026-10-22T09:30:00Z
+AST-r26-0020	endpoint	172.28.0.6:8006/report	GTSSTI-01 ssti render页	in_scope	2	2026-10-22T09:30:00Z
+AST-r26-0021	endpoint	172.28.0.5:8002/api/user	401 auth required	in_scope	2	2026-10-22T09:30:00Z
+AST-r26-0022	endpoint	172.28.0.7:8004/login	login form catch-all	in_scope	2	2026-10-22T09:30:00Z
+AST-r26-0023	service	svc-login	alias-name=login\;port=8004\;bv:0.7\;GT键口径端口不入键	out_of_scope	2	2026-10-22T10:05:00Z
+AST-r26-0024	service	svc-admin	alias-name=admin\;port=8003\;bv:0.7\;GT键口径端口不入键	out_of_scope	2	2026-10-22T10:05:00Z
+AST-r26-0025	service	svc-billing	alias-name=billing\;port=8005\;bv:0.7\;GT键口径端口不入键	out_of_scope	2	2026-10-22T10:05:00Z
+AST-r26-0026	service	svc-shop	alias-name=shop\;port=8001\;bv:0.7\;GT键口径端口不入键	out_of_scope	2	2026-10-22T10:05:00Z
+AST-r26-0027	service	svc-dashboard	alias-name=dashboard\;port=8006\;bv:0.7\;GT键口径端口不入键	out_of_scope	2	2026-10-22T10:05:00Z
+AST-r26-0028	service	svc-api-gw	alias-name=api-gw\;port=8002\;bv:0.7\;GT键口径端口不入键	out_of_scope	2	2026-10-22T10:05:00Z
+AST-r26-0029	service	svc-files	alias-name=files\;port=8008\;bv:0.7\;GT键口径端口不入键	out_of_scope	2	2026-10-22T10:05:00Z
+AST-r26-0030	service	svc-portal	alias-name=portal\;port=8007\;bv:0.7\;GT键口径端口不入键	out_of_scope	2	2026-10-22T10:05:00Z

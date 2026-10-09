@@ -1,0 +1,13 @@
+S-r26-0001	include	172.28.0.0/24		recon,web,authz,bizlogic,cred-self-issue		授权网段；探测经range-attack-noop-1	2	2026-10-22T09:01:00Z
+S-r26-0002	include	*.range.local		recon,web,authz,bizlogic		授权域名空间	2	2026-10-22T09:02:00Z
+S-r26-0003	exclude	*.out-of-scope.local				明示排除	2	2026-10-22T09:03:00Z
+S-r26-0004	oob	192.168.0.0/16				界外观察白名单（只读观察放行）	2	2026-10-22T09:04:00Z
+S-r26-0005	account-grant	*.range.local	self-registered-via-svc-login	register,login,use-within-range		八问⑥：无预发凭据；svc-login有自助发放面，凭据获取走此授权面	2	2026-10-22T09:05:00Z
+S-r26-0006	include	svc-login		recon,web,authz,bizlogic	S-r26-0002	内网DNS别名澄清：svc-login=已授权网段内资产本名（批10缝⑩单标签语法）	2	2026-10-22T10:06:00Z
+S-r26-0007	include	svc-admin		recon,web,authz,bizlogic	S-r26-0002	内网DNS别名澄清：svc-admin=已授权网段内资产本名（批10缝⑩单标签语法）	2	2026-10-22T10:06:00Z
+S-r26-0008	include	svc-billing		recon,web,authz,bizlogic	S-r26-0002	内网DNS别名澄清：svc-billing=已授权网段内资产本名（批10缝⑩单标签语法）	2	2026-10-22T10:06:00Z
+S-r26-0009	include	svc-shop		recon,web,authz,bizlogic	S-r26-0002	内网DNS别名澄清：svc-shop=已授权网段内资产本名（批10缝⑩单标签语法）	2	2026-10-22T10:06:00Z
+S-r26-0010	include	svc-dashboard		recon,web,authz,bizlogic	S-r26-0002	内网DNS别名澄清：svc-dashboard=已授权网段内资产本名（批10缝⑩单标签语法）	2	2026-10-22T10:06:00Z
+S-r26-0011	include	svc-api-gw		recon,web,authz,bizlogic	S-r26-0002	内网DNS别名澄清：svc-api-gw=已授权网段内资产本名（批10缝⑩单标签语法）	2	2026-10-22T10:06:00Z
+S-r26-0012	include	svc-files		recon,web,authz,bizlogic	S-r26-0002	内网DNS别名澄清：svc-files=已授权网段内资产本名（批10缝⑩单标签语法）	2	2026-10-22T10:06:00Z
+S-r26-0013	include	svc-portal		recon,web,authz,bizlogic	S-r26-0002	内网DNS别名澄清：svc-portal=已授权网段内资产本名（批10缝⑩单标签语法）	2	2026-10-22T10:06:00Z

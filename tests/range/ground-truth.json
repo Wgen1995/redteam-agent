@@ -5,42 +5,50 @@
   "svc-admin": [
    "127.0.0.1:8006",
    "svc-admin:8000",
-   "svc-admin:8003"
+   "svc-admin:8003",
+   "172.28.0.3:8003"
   ],
   "svc-api-gw": [
    "127.0.0.1:8003",
    "svc-api-gw:8000",
-   "svc-api-gw:8002"
+   "svc-api-gw:8002",
+   "172.28.0.5:8002"
   ],
   "svc-billing": [
    "127.0.0.1:8007",
    "svc-billing:8000",
-   "svc-billing:8005"
+   "svc-billing:8005",
+   "172.28.0.4:8005"
   ],
   "svc-dashboard": [
    "127.0.0.1:8002",
    "svc-dashboard:8000",
-   "svc-dashboard:8006"
+   "svc-dashboard:8006",
+   "172.28.0.6:8006"
   ],
   "svc-files": [
    "127.0.0.1:8004",
    "svc-files:8000",
-   "svc-files:8008"
+   "svc-files:8008",
+   "172.28.0.2:8008"
   ],
   "svc-login": [
    "127.0.0.1:8008",
    "svc-login:8000",
-   "svc-login:8004"
+   "svc-login:8004",
+   "172.28.0.7:8004"
   ],
   "svc-portal": [
    "127.0.0.1:8005",
    "svc-portal:8000",
-   "svc-portal:8007"
+   "svc-portal:8007",
+   "172.28.0.8:8007"
   ],
   "svc-shop": [
    "127.0.0.1:8001",
    "svc-shop:8000",
-   "svc-shop:8001"
+   "svc-shop:8001",
+   "172.28.0.9:8001"
   ]
  },
  "planted": [

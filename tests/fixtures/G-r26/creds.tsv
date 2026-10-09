@@ -1,0 +1,2 @@
+CRED-r26-0001	static-cred	user	admin@svc-login	{{vault:cred-1}}	AST-r26-0023	INT-r26-0005				active	register,login,use-within-range	GTWEAKPASS-01 弱口令（字段名user/pass修正后命中；svc-login=172.28.0.7 别名）	2	2026-10-22T10:08:00Z	
+CRED-r26-0002	session	user	admin@svc-login	{{vault:cred-2}}	AST-r26-0023	INT-r26-0005	CRED-r26-0001	2026-10-22T09:57:00Z		active	register,login,use-within-range	POST /login → 200 X-Auth-Token（低权会话，通用于8服务的token门）	2	2026-10-22T10:08:00Z	

@@ -20,6 +20,7 @@ R-T16-3）。
 """
 import argparse
 import json
+import re
 import os
 import re
 import shutil
@@ -73,6 +74,44 @@ def _word_markers(cards, ev_ids):
     return out
 
 
+_URL_RE = re.compile(r"https?://[0-9A-Za-z_.:\-]+(?:/[0-9A-Za-z_./%\-\{\}?=&]*)?")
+
+
+def _ev_endpoint_keys(evs, cards, eindex_rows, aliases):
+    """v7 键控（battle-25 裸战士实证）：EV 报文首行+Host 头、E-index 描述 URL——
+    端点键提取面。服务级资产记账的 findings 由本面补路径（行为在案即入键）。"""
+    out = set()
+    desc = {r[0]: (r[5] if len(r) > 5 else "") for r in eindex_rows}
+
+    def _safe_canon(u):
+        try:
+            return _canon_endpoint(u, aliases)
+        except ValueError:
+            return None          # 畸形 URL 文本不入键（描述自由文本容错）
+
+    for ev in evs:
+        rr = str((cards.get(ev) or {}).get("raw_request") or "")
+        lines = rr.splitlines()
+        if lines and " HTTP/" in lines[0]:
+            parts = lines[0].split()
+            if len(parts) >= 2 and parts[1].startswith("/"):
+                host = ""
+                for ln in lines[1:]:
+                    if ln.lower().startswith("host:"):
+                        host = ln.split(":", 1)[1].strip()
+                        break
+                if host:
+                    k = _safe_canon(host + parts[1])
+                    if k:
+                        out.add(k)
+        for m in _URL_RE.finditer(str(desc.get(ev, ""))):
+            k = _safe_canon(m.group(0))
+            if k:
+                out.add(k)
+    return out
+    return out
+
+
 def _norm_endpoint(u):
     """URL 归一（批次 7 T16 首战键失配①）：小写 host/剥默认端口/query 排序/去尾斜杠。
     只归语法不归语义——语义别名一律走 GT host_aliases 显式声明（禁猜测式映射）。"""
@@ -116,7 +155,7 @@ def _canon_endpoint(u, aliases):
     return _canon_host(host, aliases) + rest
 
 
-KEYING_VERSION = 6   # v6 FD 键别名（battle-13：replay 行键 FD 形按 findings 链展开为 EV——语义等价真值归真，前代 EV 键零漂移）+v5 alt-form 孪生键+v4.1 两遍法
+KEYING_VERSION = 7   # v7 服务级资产回退（battle-25 裸战士：findings 挂服务级资产时端点键取 EV 报文/描述 URL——docker 网 IP 别名显式入 GT host_aliases）+v6 FD 键别名 +v5 alt-form 孪生键+v4.1 两遍法
 
 
 def _replay_state(rows):
@@ -202,16 +241,20 @@ def score(rows, cards, gt, host_aliases=None, tracks=None):
             if f_id in consumed:               # v4：已被前序 GT 消费的 finding 不得再计
                 continue
             av = ast_value.get(_cell("findings.tsv", f, "affected_asset_id"))
-            if not gt_keys or av is None or _canon_endpoint(av, aliases) not in gt_keys:
-                continue
             evs = [x for x in (_cell("findings.tsv", f, "evidence_ids") or "").split(";") if x]
             evs += [x for x in (_cell("findings.tsv", f, "control_evidence_ids") or "").split(";") if x]
             evs += linked.get(f[fi("id")], [])
+            if not gt_keys or av is None:
+                continue
+            if _canon_endpoint(av, aliases) not in gt_keys:
+                # v7 服务级资产回退：路径取自 EV 报文/描述（端点级资产直配优先不变）
+                if not _ev_endpoint_keys(evs, cards, rows.get("E-index.tsv", []), aliases) & gt_keys:
+                    continue
             if not any(x in verified_ev for x in evs):
                 continue        # 精度门：无重放 VERIFIED 在案的证据不计（幻觉面零分）
             if any(x in blocked_ev for x in evs):
                 continue        # 精度门：未翻案 not-reproduced 证据拖累整 finding
-            beacon_hit = e.get("marker", "") in _word_markers(cards, evs)
+            beacon_hit = (e.get('marker') or '') in _word_markers(cards, evs)
             if pass_mode == "beacon":
                 if not beacon_hit:
                     continue

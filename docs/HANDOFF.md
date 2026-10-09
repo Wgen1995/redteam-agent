@@ -1159,3 +1159,10 @@
 - 同窗交付：dsh-plugin-tanyin **v0.2 工具面上线**（64ddd5d）——三 typed tool（book 7 写令/gate 3 门令含 tanyin-phases 桥/query 3 查令），schemastery schema=律的化身，TDD 4 测全绿（注册/白名单拒越界/canonical 信封+exec.signal/无幻影命令）
 - 引擎修虫：runner resume_prompt NameError（定义行随早前程序体解析失败蒸发——AST 名核验补齐）；任务书禁裸 /tmp 条款（权限墙第三形态实证）
 - 提交：64ddd5d（v0.2）→ f73cdca（battle-24 收官）
+
+
+## battle-25（G-r26）· op-1 复现战收官（2026-10-09 实钟）
+- 结果：0.57（32/56）；54 findings（三战最高）但 32/54 EV 重放验证（裸模式精度地板）；五门零跳；restarts=0；timeline=930
+- **裁决：0.70 未复现**——四格矩阵收官：op-1 裸+手动 0.70（单样本离群）/ b25 裸+引擎 0.57 / b23 战书 30 面+引擎 0.66 / b24 战书 60 面+引擎 0.62；**战书 30 面=稳定最优配置**
+- **键控 v7 诞生**：裸战士 docker IP 服务级资产记账→GT 别名表补 docker 网映射（活容器实证）+评分器服务级资产回退（EV 报文/描述 URL 取端点键）——伪零 0.00 修正真值 0.57；b23/b24 评分零回归
+- 金样 G-r26+四钉测（含 v7 键控回归面）；RT-0023 入册

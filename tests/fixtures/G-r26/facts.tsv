@@ -1,0 +1,141 @@
+F-r26-0001	INT-r26-0001	port	172.28.0.0/24	8端口在线映射：172.28.0.9:8001 172.28.0.5:8002 172.28.0.3:8003 172.28.0.7:8004 172.28.0.4:8005 172.28.0.6:8006 172.28.0.8:8007 172.28.0.2:8008；Server头全为BaseHTTP/0.6 Python/3.12.14	1.0	2	2026-10-22T09:21:00Z
+F-r26-0002	INT-r26-0001	service	172.28.0.5:8002	api-gw：GET /api/user 401 auth required；并发扫描触发 429 rate limited back off (Retry-After)——限流敏感，后续需低速率	1.0	2	2026-10-22T09:21:00Z
+F-r26-0003	INT-r26-0001	http	172.28.0.9:8001	shop：GET /order 200 body=order page GTSQLI-02 synthetic SQL syntax error；GET /search 200 body=search results GTXSS-01 synthetic reflected xss——页面自曝GT标记（SQLi/XSS测试面）	1.0	2	2026-10-22T09:21:00Z
+F-r26-0004	INT-r26-0001	http	172.28.0.6:8006	dashboard：GET /report 与 /reports 均 200 body=report GTSSTI-01 synthetic ssti render——SSTI渲染面	1.0	2	2026-10-22T09:21:00Z
+F-r26-0005	INT-r26-0001	service	172.28.0.3:8003	admin：47路径全401 auth required（凭据前置）	1.0	2	2026-10-22T09:21:00Z
+F-r26-0006	INT-r26-0001	service	172.28.0.4:8005	billing：47路径全401 auth required（凭据前置）	1.0	2	2026-10-22T09:21:00Z
+F-r26-0007	INT-r26-0001	service	172.28.0.7:8004	login：GET 任意路径均200 login form（catch-all）；发放面交互方式未知——POST/参数/头待测	1.0	2	2026-10-22T09:21:00Z
+F-r26-0008	INT-r26-0001	info	172.28.0.2:8008	files：47路径全404——真实入口未发现，疑参数化路由，待深挖	1.0	2	2026-10-22T09:21:00Z
+F-r26-0009	INT-r26-0001	info	172.28.0.8:8007	portal：47路径全404——真实入口未发现，待深挖	1.0	2	2026-10-22T09:21:00Z
+F-r26-0010	INT-r26-0002	service	172.28.0.9:8001 404(/)GTSQLI-02页在/order	二源复核（raw-socket HTTP/1.0）：alive，状态行= 与INT-0001一致	1.0	2	2026-10-22T09:28:00Z
+F-r26-0011	INT-r26-0002	service	172.28.0.5:8002 404(/)	二源复核（raw-socket HTTP/1.0）：alive，状态行= 与INT-0001一致	1.0	2	2026-10-22T09:28:00Z
+F-r26-0012	INT-r26-0002	service	172.28.0.3:8003 401	二源复核（raw-socket HTTP/1.0）：alive，状态行= 与INT-0001一致	1.0	2	2026-10-22T09:28:00Z
+F-r26-0013	INT-r26-0002	service	172.28.0.4:8005 401	二源复核（raw-socket HTTP/1.0）：alive，状态行= 与INT-0001一致	1.0	2	2026-10-22T09:28:00Z
+F-r26-0014	INT-r26-0002	service	172.28.0.7:8004 200	二源复核（raw-socket HTTP/1.0）：alive，状态行= 与INT-0001一致	1.0	2	2026-10-22T09:28:00Z
+F-r26-0015	INT-r26-0002	service	172.28.0.6:8006 404(/)	二源复核（raw-socket HTTP/1.0）：alive，状态行= 与INT-0001一致	1.0	2	2026-10-22T09:28:00Z
+F-r26-0016	INT-r26-0002	service	172.28.0.2:8008 404	二源复核（raw-socket HTTP/1.0）：alive，状态行= 与INT-0001一致	1.0	2	2026-10-22T09:28:00Z
+F-r26-0017	INT-r26-0002	service	172.28.0.8:8007 404	二源复核（raw-socket HTTP/1.0）：alive，状态行= 与INT-0001一致	1.0	2	2026-10-22T09:28:00Z
+F-r26-0018	INT-r26-0002	port	172.28.0.0/24	二源复核：/24上仅8001-8008共8端口TCP可达（与INT-0001扫描一致），无其他存活端口漂移	1.0	2	2026-10-22T09:28:00Z
+F-r26-0019	INT-r26-0002	info	asset-class:A5	不适用：内网容器靶场无对象桶/数据库暴露/云元数据/CDN等存储云资产面	1.0	2	2026-10-22T09:28:00Z
+F-r26-0020	INT-r26-0002	info	asset-class:A6	不适用：本次为黑盒交战，无源码/物料资产（授权范围未含源码包）	1.0	2	2026-10-22T09:28:00Z
+F-r26-0021	INT-r26-0002	info	asset-class:A7	不适用：授权未含社工/钓鱼等人因测试；靶场无邮箱/SSO/供应商面	1.0	2	2026-10-22T09:28:00Z
+F-r26-0022	INT-r26-0002	info	asset-class:A8	不适用：本次交战无知识库外推/相邻资产发现，未产生外推资产	1.0	2	2026-10-22T09:28:00Z
+F-r26-0023	INT-r26-0002	info	canary:recon	披露：训练靶场无客户配合植入通道，未部署界内侦察诱饵（planted=0）	1.0	2	2026-10-22T09:28:00Z
+F-r26-0024	INT-r26-0003	service	172.28.0.2	IP复核：TCP 8008 可达（服务端口在线）	1.0	2	2026-10-22T09:33:00Z
+F-r26-0025	INT-r26-0003	service	172.28.0.3	IP复核：TCP 8003 可达（服务端口在线）	1.0	2	2026-10-22T09:33:00Z
+F-r26-0026	INT-r26-0003	service	172.28.0.4	IP复核：TCP 8005 可达（服务端口在线）	1.0	2	2026-10-22T09:33:00Z
+F-r26-0027	INT-r26-0003	service	172.28.0.5	IP复核：TCP 8002 可达（服务端口在线）	1.0	2	2026-10-22T09:33:00Z
+F-r26-0028	INT-r26-0003	service	172.28.0.6	IP复核：TCP 8006 可达（服务端口在线）	1.0	2	2026-10-22T09:33:00Z
+F-r26-0029	INT-r26-0003	service	172.28.0.7	IP复核：TCP 8004 可达（服务端口在线）	1.0	2	2026-10-22T09:33:00Z
+F-r26-0030	INT-r26-0003	service	172.28.0.8	IP复核：TCP 8007 可达（服务端口在线）	1.0	2	2026-10-22T09:33:00Z
+F-r26-0031	INT-r26-0003	service	172.28.0.9	IP复核：TCP 8001 可达（服务端口在线）	1.0	2	2026-10-22T09:33:00Z
+F-r26-0032	INT-r26-0003	http	172.28.0.9:8001/order	端点复核：GET 200 body=order page GTSQLI-02 synthetic SQL syntax error	1.0	2	2026-10-22T09:33:00Z
+F-r26-0033	INT-r26-0003	http	172.28.0.9:8001/search	端点复核：GET 200 body=search results GTXSS-01 synthetic reflected xss	1.0	2	2026-10-22T09:33:00Z
+F-r26-0034	INT-r26-0003	http	172.28.0.6:8006/report	端点复核：GET 200 body=report GTSSTI-01 synthetic ssti render	1.0	2	2026-10-22T09:33:00Z
+F-r26-0035	INT-r26-0003	http	172.28.0.5:8002/api/user	端点复核：GET 401 auth required	1.0	2	2026-10-22T09:33:00Z
+F-r26-0036	INT-r26-0003	http	172.28.0.7:8004/login	端点复核：GET 200 login form	1.0	2	2026-10-22T09:33:00Z
+F-r26-0037	INT-r26-0004	info	172.28.0.2	docker网range_range成员：range-svc-files-1=172.28.0.2/24	1.0	2	2026-10-22T09:34:00Z
+F-r26-0038	INT-r26-0004	info	172.28.0.3	docker网range_range成员：range-svc-admin-1=172.28.0.3/24	1.0	2	2026-10-22T09:34:00Z
+F-r26-0039	INT-r26-0004	info	172.28.0.4	docker网range_range成员：range-svc-billing-1=172.28.0.4/24	1.0	2	2026-10-22T09:34:00Z
+F-r26-0040	INT-r26-0004	info	172.28.0.5	docker网range_range成员：range-svc-api-gw-1=172.28.0.5/24	1.0	2	2026-10-22T09:34:00Z
+F-r26-0041	INT-r26-0004	info	172.28.0.6	docker网range_range成员：range-svc-dashboard-1=172.28.0.6/24	1.0	2	2026-10-22T09:34:00Z
+F-r26-0042	INT-r26-0004	info	172.28.0.7	docker网range_range成员：range-svc-login-1=172.28.0.7/24	1.0	2	2026-10-22T09:34:00Z
+F-r26-0043	INT-r26-0004	info	172.28.0.8	docker网range_range成员：range-svc-portal-1=172.28.0.8/24	1.0	2	2026-10-22T09:34:00Z
+F-r26-0044	INT-r26-0004	info	172.28.0.9	docker网range_range成员：range-svc-shop-1=172.28.0.9/24	1.0	2	2026-10-22T09:34:00Z
+F-r26-0045	INT-r26-0002	service	172.28.0.9:8001	二源复核：raw-socket GET / 状态行=404 Not Found，与INT-0001一致	1.0	2	2026-10-22T09:35:00Z
+F-r26-0046	INT-r26-0002	service	172.28.0.5:8002	二源复核：raw-socket GET / 状态行=404 Not Found	1.0	2	2026-10-22T09:35:00Z
+F-r26-0047	INT-r26-0002	service	172.28.0.3:8003	二源复核：raw-socket GET / 状态行=401 Unauthorized	1.0	2	2026-10-22T09:35:00Z
+F-r26-0048	INT-r26-0002	service	172.28.0.4:8005	二源复核：raw-socket GET / 状态行=401 Unauthorized	1.0	2	2026-10-22T09:35:00Z
+F-r26-0049	INT-r26-0002	service	172.28.0.7:8004	二源复核：raw-socket GET / 状态行=200 OK login form	1.0	2	2026-10-22T09:35:00Z
+F-r26-0050	INT-r26-0002	service	172.28.0.6:8006	二源复核：raw-socket GET / 状态行=404 Not Found	1.0	2	2026-10-22T09:35:00Z
+F-r26-0051	INT-r26-0002	service	172.28.0.2:8008	二源复核：raw-socket GET / 状态行=404 Not Found	1.0	2	2026-10-22T09:35:00Z
+F-r26-0052	INT-r26-0002	service	172.28.0.8:8007	二源复核：raw-socket GET / 状态行=404 Not Found	1.0	2	2026-10-22T09:35:00Z
+F-r26-0053	INT-r26-0001	http	172.28.0.9:8001/order	路径扫描命中：GET /order 200 GTSQLI-02	1.0	2	2026-10-22T09:35:00Z
+F-r26-0054	INT-r26-0001	http	172.28.0.9:8001/search	路径扫描命中：GET /search 200 GTXSS-01	1.0	2	2026-10-22T09:35:00Z
+F-r26-0055	INT-r26-0001	http	172.28.0.6:8006/report	路径扫描命中：GET /report 200 GTSSTI-01	1.0	2	2026-10-22T09:35:00Z
+F-r26-0056	INT-r26-0001	http	172.28.0.5:8002/api/user	路径扫描命中：GET /api/user 401	1.0	2	2026-10-22T09:35:00Z
+F-r26-0057	INT-r26-0001	http	172.28.0.7:8004/login	路径扫描命中：GET /login 200 login form	1.0	2	2026-10-22T09:35:00Z
+F-r26-0058	INT-r26-0012	service	svc-login	getent hosts svc-login = 172.28.0.7（range_range 内网DNS行为验证）	1.0	2	2026-10-22T10:04:00Z
+F-r26-0059	INT-r26-0012	service	svc-admin	getent hosts svc-admin = 172.28.0.3（range_range 内网DNS行为验证）	1.0	2	2026-10-22T10:04:00Z
+F-r26-0060	INT-r26-0012	service	svc-billing	getent hosts svc-billing = 172.28.0.4（range_range 内网DNS行为验证）	1.0	2	2026-10-22T10:04:00Z
+F-r26-0061	INT-r26-0012	service	svc-shop	getent hosts svc-shop = 172.28.0.9（range_range 内网DNS行为验证）	1.0	2	2026-10-22T10:04:00Z
+F-r26-0062	INT-r26-0012	service	svc-dashboard	getent hosts svc-dashboard = 172.28.0.6（range_range 内网DNS行为验证）	1.0	2	2026-10-22T10:04:00Z
+F-r26-0063	INT-r26-0012	service	svc-api-gw	getent hosts svc-api-gw = 172.28.0.5（range_range 内网DNS行为验证）	1.0	2	2026-10-22T10:04:00Z
+F-r26-0064	INT-r26-0012	service	svc-files	getent hosts svc-files = 172.28.0.2（range_range 内网DNS行为验证）	1.0	2	2026-10-22T10:04:00Z
+F-r26-0065	INT-r26-0012	service	svc-portal	getent hosts svc-portal = 172.28.0.8（range_range 内网DNS行为验证）	1.0	2	2026-10-22T10:04:00Z
+F-r26-0066	INT-r26-0005	info	lateral:FD-r26-0001	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T10:51:00Z
+F-r26-0067	INT-r26-0005	info	lateral:FD-r26-0004	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T10:52:00Z
+F-r26-0068	INT-r26-0005	info	lateral:FD-r26-0005	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T10:53:00Z
+F-r26-0069	INT-r26-0005	info	lateral:FD-r26-0006	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T10:54:00Z
+F-r26-0070	INT-r26-0005	info	lateral:FD-r26-0008	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T10:55:00Z
+F-r26-0071	INT-r26-0005	info	lateral:FD-r26-0010	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T10:56:00Z
+F-r26-0072	INT-r26-0005	info	lateral:FD-r26-0013	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T10:57:00Z
+F-r26-0073	INT-r26-0005	info	lateral:FD-r26-0014	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T10:58:00Z
+F-r26-0074	INT-r26-0005	info	lateral:FD-r26-0015	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T10:59:00Z
+F-r26-0075	INT-r26-0005	info	lateral:FD-r26-0016	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:01:00Z
+F-r26-0076	INT-r26-0005	info	lateral:FD-r26-0018	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:02:00Z
+F-r26-0077	INT-r26-0005	info	lateral:FD-r26-0020	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:03:00Z
+F-r26-0078	INT-r26-0005	info	lateral:FD-r26-0021	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:04:00Z
+F-r26-0079	INT-r26-0005	info	lateral:FD-r26-0022	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:05:00Z
+F-r26-0080	INT-r26-0005	info	lateral:FD-r26-0023	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:06:00Z
+F-r26-0081	INT-r26-0005	info	lateral:FD-r26-0025	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:07:00Z
+F-r26-0082	INT-r26-0005	info	lateral:FD-r26-0029	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:08:00Z
+F-r26-0083	INT-r26-0005	info	lateral:FD-r26-0030	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:09:00Z
+F-r26-0084	INT-r26-0005	info	lateral:FD-r26-0032	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:10:00Z
+F-r26-0085	INT-r26-0005	info	lateral:FD-r26-0033	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:11:00Z
+F-r26-0086	INT-r26-0005	info	lateral:FD-r26-0034	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:12:00Z
+F-r26-0087	INT-r26-0005	info	lateral:FD-r26-0035	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:13:00Z
+F-r26-0088	INT-r26-0005	info	lateral:FD-r26-0037	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:14:00Z
+F-r26-0089	INT-r26-0005	info	lateral:FD-r26-0038	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:15:00Z
+F-r26-0090	INT-r26-0005	info	lateral:FD-r26-0039	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:16:00Z
+F-r26-0091	INT-r26-0005	info	lateral:FD-r26-0040	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:17:00Z
+F-r26-0092	INT-r26-0005	info	lateral:FD-r26-0041	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:18:00Z
+F-r26-0093	INT-r26-0005	info	lateral:FD-r26-0042	高危横向披露：同型面已在当轮全服务sweep横向覆盖（8服务×同类GT标记全验证），不另设横向intent [no-consume:横向披露fact按trigger-audit④口径即闭合，无需再消费]	1.0	2	2026-10-22T11:19:00Z
+F-r26-0094	INT-r26-0015	info	172.28.0.9:8001	矩阵置格观测依据：172.28.0.9:8001 wstg-info=x（路径发现+指纹完成）	1.0	2	2026-10-22T15:17:00Z
+F-r26-0095	INT-r26-0015	info	172.28.0.9:8001	矩阵置格观测依据：172.28.0.9:8001 wstg-authz=x（GTIDOR-06低权读他人报表（FD-0013））	1.0	2	2026-10-22T15:18:00Z
+F-r26-0096	INT-r26-0015	info	172.28.0.9:8001	矩阵置格观测依据：172.28.0.9:8001 wstg-inpv=x（GTSQLI-01/02注入回显+GTLFI-01文件包含（FD-0035/FD-0010））	1.0	2	2026-10-22T15:19:00Z
+F-r26-0097	INT-r26-0015	info	172.28.0.9:8001	矩阵置格观测依据：172.28.0.9:8001 wstg-errh=x（SQL错误回显入页面（GTSQLI标记族））	1.0	2	2026-10-22T15:20:00Z
+F-r26-0098	INT-r26-0015	info	172.28.0.9:8001	矩阵置格观测依据：172.28.0.9:8001 wstg-busl=x（GTCSRF-01转账GET无token（FD-0012））	1.0	2	2026-10-22T15:21:00Z
+F-r26-0099	INT-r26-0015	info	172.28.0.9:8001	矩阵置格观测依据：172.28.0.9:8001 wstg-clnt=x（GTXSS-01..04反射/存储XSS（FD-0036））	1.0	2	2026-10-22T15:22:00Z
+F-r26-0100	INT-r26-0017	info	172.28.0.5:8002	矩阵置格观测依据：172.28.0.5:8002 wstg-info=x（路径发现+限流行为完成）	1.0	2	2026-10-22T15:23:00Z
+F-r26-0101	INT-r26-0017	info	172.28.0.5:8002	矩阵置格观测依据：172.28.0.5:8002 wstg-conf=x（GTCORS-01通配ACAO（FD-0019））	1.0	2	2026-10-22T15:24:00Z
+F-r26-0102	INT-r26-0017	info	172.28.0.5:8002	矩阵置格观测依据：172.28.0.5:8002 wstg-authn=x（token门行为+JWT伪造接受）	1.0	2	2026-10-22T15:25:00Z
+F-r26-0103	INT-r26-0017	info	172.28.0.5:8002	矩阵置格观测依据：172.28.0.5:8002 wstg-authz=x（GTIDOR-05低权可见密钥清单（FD-0021））	1.0	2	2026-10-22T15:26:00Z
+F-r26-0104	INT-r26-0017	info	172.28.0.5:8002	矩阵置格观测依据：172.28.0.5:8002 wstg-sess=x（token门401/200差分实测）	1.0	2	2026-10-22T15:27:00Z
+F-r26-0105	INT-r26-0017	info	172.28.0.5:8002	矩阵置格观测依据：172.28.0.5:8002 wstg-errh=x（429限流响应语义实测）	1.0	2	2026-10-22T15:28:00Z
+F-r26-0106	INT-r26-0017	info	172.28.0.5:8002	矩阵置格观测依据：172.28.0.5:8002 wstg-cryp=x（JWT弱验（alg=none空签名两形均收））	1.0	2	2026-10-22T15:29:00Z
+F-r26-0107	INT-r26-0017	info	172.28.0.5:8002	矩阵置格观测依据：172.28.0.5:8002 wstg-apit=x（GTJWT-01 alg=none接受+面级429限流观测（FD-0020））	1.0	2	2026-10-22T15:30:00Z
+F-r26-0108	INT-r26-0017	info	172.28.0.5:8002/api/user	矩阵置格观测依据：172.28.0.5:8002/api/user wstg-cryp=x（submatrix:alg=none弱验）	1.0	2	2026-10-22T15:31:00Z
+F-r26-0109	INT-r26-0017	info	172.28.0.5:8002/api/user	矩阵置格观测依据：172.28.0.5:8002/api/user wstg-apit=x（submatrix:GTJWT-01实测）	1.0	2	2026-10-22T15:32:00Z
+F-r26-0110	INT-r26-0013	info	172.28.0.3:8003	矩阵置格观测依据：172.28.0.3:8003 wstg-info=x（全路径401行为完成）	1.0	2	2026-10-22T15:33:00Z
+F-r26-0111	INT-r26-0013	info	172.28.0.3:8003	矩阵置格观测依据：172.28.0.3:8003 wstg-authn=x（POST /login弱口令发放token（admin/admin123））	1.0	2	2026-10-22T15:34:00Z
+F-r26-0112	INT-r26-0013	info	172.28.0.3:8003	矩阵置格观测依据：172.28.0.3:8003 wstg-authz=x（GTIDOR-01..03+GTROLE-01/02低权越权族（FD-0033/FD-0005/FD-0007））	1.0	2	2026-10-22T15:35:00Z
+F-r26-0113	INT-r26-0013	info	172.28.0.3:8003	矩阵置格观测依据：172.28.0.3:8003 wstg-sess=x（X-Auth-Token会话门401/200差分）	1.0	2	2026-10-22T15:36:00Z
+F-r26-0114	INT-r26-0013	info	172.28.0.3:8003	矩阵置格观测依据：172.28.0.3:8003 wstg-errh=x（403/401差分行为实测）	1.0	2	2026-10-22T15:37:00Z
+F-r26-0115	INT-r26-0014	info	172.28.0.4:8005	矩阵置格观测依据：172.28.0.4:8005 wstg-info=x（路径发现完成）	1.0	2	2026-10-22T15:38:00Z
+F-r26-0116	INT-r26-0014	info	172.28.0.4:8005	矩阵置格观测依据：172.28.0.4:8005 wstg-authn=x（POST /login alice/alice123弱口令发放）	1.0	2	2026-10-22T15:39:00Z
+F-r26-0117	INT-r26-0014	info	172.28.0.4:8005	矩阵置格观测依据：172.28.0.4:8005 wstg-authz=x（GTHAUTH-01..04跨租户+GTIDOR-04（FD-0034））	1.0	2	2026-10-22T15:40:00Z
+F-r26-0118	INT-r26-0014	info	172.28.0.4:8005	矩阵置格观测依据：172.28.0.4:8005 wstg-sess=x（token门差分实测）	1.0	2	2026-10-22T15:41:00Z
+F-r26-0119	INT-r26-0014	info	172.28.0.4:8005	矩阵置格观测依据：172.28.0.4:8005 wstg-errh=x（GTINFOLEAK-02调试信息泄露（FD-0016））	1.0	2	2026-10-22T15:42:00Z
+F-r26-0120	INT-r26-0016	info	172.28.0.6:8006	矩阵置格观测依据：172.28.0.6:8006 wstg-info=x（路径发现完成）	1.0	2	2026-10-22T15:43:00Z
+F-r26-0121	INT-r26-0016	info	172.28.0.6:8006	矩阵置格观测依据：172.28.0.6:8006 wstg-authz=x（GTROLE-03低权可达配置（FD-0017））	1.0	2	2026-10-22T15:44:00Z
+F-r26-0122	INT-r26-0016	info	172.28.0.6:8006	矩阵置格观测依据：172.28.0.6:8006 wstg-sess=x（token门差分实测）	1.0	2	2026-10-22T15:45:00Z
+F-r26-0123	INT-r26-0016	info	172.28.0.6:8006	矩阵置格观测依据：172.28.0.6:8006 wstg-inpv=x（GTSSTI-01/02模板注入面+GTXXE-01外部实体（FD-0037/FD-0016））	1.0	2	2026-10-22T15:46:00Z
+F-r26-0124	INT-r26-0016	info	172.28.0.6:8006	矩阵置格观测依据：172.28.0.6:8006 wstg-errh=x（GTCMDI-01/02命令输出回显（FD-0038））	1.0	2	2026-10-22T15:47:00Z
+F-r26-0125	INT-r26-0018	info	172.28.0.2:8008	矩阵置格观测依据：172.28.0.2:8008 wstg-info=x（路径发现完成（静态404→参数化路由发现））	1.0	2	2026-10-22T15:48:00Z
+F-r26-0126	INT-r26-0018	info	172.28.0.2:8008	矩阵置格观测依据：172.28.0.2:8008 wstg-conf=x（GTINFOLEAK-03 /.env暴露（FD-0026）+GTUPLOAD-01无类型校验（FD-0025））	1.0	2	2026-10-22T15:49:00Z
+F-r26-0127	INT-r26-0018	info	172.28.0.2:8008	矩阵置格观测依据：172.28.0.2:8008 wstg-authz=x（GTROLE-04低权可达日志（FD-0027））	1.0	2	2026-10-22T15:50:00Z
+F-r26-0128	INT-r26-0018	info	172.28.0.2:8008	矩阵置格观测依据：172.28.0.2:8008 wstg-sess=x（token门差分实测）	1.0	2	2026-10-22T15:51:00Z
+F-r26-0129	INT-r26-0018	info	172.28.0.2:8008	矩阵置格观测依据：172.28.0.2:8008 wstg-inpv=x（GTDESER-01..03反序列化+GTTRAVERSAL-01/02遍历（FD-0040/FD-0041））	1.0	2	2026-10-22T15:52:00Z
+F-r26-0130	INT-r26-0019	info	172.28.0.8:8007	矩阵置格观测依据：172.28.0.8:8007 wstg-info=x（路径发现完成）	1.0	2	2026-10-22T15:53:00Z
+F-r26-0131	INT-r26-0019	info	172.28.0.8:8007	矩阵置格观测依据：172.28.0.8:8007 wstg-authn=x（GTJWT-02过期/none令牌接受（FD-0029））	1.0	2	2026-10-22T15:54:00Z
+F-r26-0132	INT-r26-0019	info	172.28.0.8:8007	矩阵置格观测依据：172.28.0.8:8007 wstg-authz=x（GTHAUTH-05低权客户清单（FD-0032））	1.0	2	2026-10-22T15:55:00Z
+F-r26-0133	INT-r26-0019	info	172.28.0.8:8007	矩阵置格观测依据：172.28.0.8:8007 wstg-sess=x（JWT校验语义实测）	1.0	2	2026-10-22T15:56:00Z
+F-r26-0134	INT-r26-0019	info	172.28.0.8:8007	矩阵置格观测依据：172.28.0.8:8007 wstg-inpv=x（GTLFI-02本地包含+GTRFI-01远程包含（FD-0042））	1.0	2	2026-10-22T15:57:00Z
+F-r26-0135	INT-r26-0019	info	172.28.0.8:8007	矩阵置格观测依据：172.28.0.8:8007 wstg-errh=x（GTINFOLEAK-01调试泄露（FD-0043））	1.0	2	2026-10-22T15:58:00Z
+F-r26-0136	INT-r26-0019	info	172.28.0.8:8007	矩阵置格观测依据：172.28.0.8:8007 wstg-cryp=x（JWT exp/alg弱验）	1.0	2	2026-10-22T15:59:00Z
+F-r26-0137	INT-r26-0019	info	172.28.0.8:8007	矩阵置格观测依据：172.28.0.8:8007 wstg-busl=x（GTCSRF-02销户GET无token（FD-0031））	1.0	2	2026-10-22T16:00:00Z
+F-r26-0138	INT-r26-0019	info	172.28.0.8:8007	矩阵置格观测依据：172.28.0.8:8007 wstg-apit=x（GTGRAPHQL-02内省开放（FD-0043））	1.0	2	2026-10-22T16:01:00Z
+F-r26-0139	INT-r26-0006	info	172.28.0.9:8001/order	矩阵置格观测依据：172.28.0.9:8001/order wstg-inpv=x（submatrix:GTSQLI-02注入回显实测）	1.0	2	2026-10-22T16:02:00Z
+F-r26-0140	INT-r26-0007	info	172.28.0.9:8001/search	矩阵置格观测依据：172.28.0.9:8001/search wstg-clnt=x（submatrix:GTXSS-01反射回显实测）	1.0	2	2026-10-22T16:03:00Z
+F-r26-0141	INT-r26-0008	info	172.28.0.6:8006/report	矩阵置格观测依据：172.28.0.6:8006/report wstg-inpv=x（submatrix:GTSSTI-01渲染回显实测）	1.0	2	2026-10-22T16:04:00Z
