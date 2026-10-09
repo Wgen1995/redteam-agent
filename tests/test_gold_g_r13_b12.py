@@ -24,15 +24,15 @@ class TestGoldGR13(unittest.TestCase):
     def test_recall_pinned(self):
         tracks = {}
         rec, missing = score(self.rows, self.cards, self.gt, tracks=tracks)
-        self.assertAlmostEqual(rec, 33.0 / 56)
-        self.assertEqual(len(missing), 23)
-        self.assertEqual(tracks['beacon'], 33)
+        self.assertAlmostEqual(rec, 35.0 / 56)  # v7 键控上修（IP 形资产键找回）
+        self.assertEqual(len(missing), 21)
+        self.assertEqual(tracks['beacon'], 35)
         self.assertEqual(tracks['diff'], 0)
         self.assertNotIn('traversal-01', missing)   # dict v3.4 every-gen rule
         self.assertNotIn('idor-05', missing)        # post_auth five-peat
         self.assertNotIn('idor-06', missing)
-        self.assertIn('ratelimit-01', missing)      # asset-key drift: login-rate suffix
-        self.assertIn('idor-04', missing)           # bare-face vs /invoice/{n} canon
+        self.assertNotIn('ratelimit-01', missing)  # v7 键控上修：IP 形资产键找回（原 asset-key drift 面修复）
+        self.assertNotIn('idor-04', missing)      # v7 键控上修：{n} 尾段归一面找回
 
     def test_replay_all_verified(self):
         tl = self.rows['timeline.tsv'][1:]

@@ -25,9 +25,9 @@ class TestGoldGR8(unittest.TestCase):
     def test_recall_pinned(self):
         tracks = {}
         rec, missing = score(self.rows, self.cards, self.gt, tracks=tracks)
-        self.assertAlmostEqual(rec, 21.0 / 56)   # GT v5 重算：idor-01/02 alt-form 归位（实已找到）
-        self.assertEqual(len(missing), 35)
-        self.assertEqual(tracks['beacon'], 21)
+        self.assertAlmostEqual(rec, 22.0 / 56)  # v7 键控上修（IP 形资产键找回）
+        self.assertEqual(len(missing), 34)
+        self.assertEqual(tracks['beacon'], 22)
         self.assertEqual(tracks['diff'], 0)
         self.assertNotIn('weakpass-01', missing)   # 凭据墙破（键名族叉乘律）
         self.assertNotIn('redir-01', missing)      # redirect 族字典兑现

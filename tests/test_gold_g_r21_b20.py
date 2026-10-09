@@ -29,15 +29,15 @@ class TestGoldGR21(unittest.TestCase):
     def test_recall_pinned(self):
         tracks = {}
         rec, missing = score(self.rows, self.cards, self.gt, tracks=tracks)
-        self.assertAlmostEqual(rec, 29.0 / 56)
-        self.assertEqual(len(missing), 27)
-        self.assertEqual(tracks['beacon'], 29)
+        self.assertAlmostEqual(rec, 30.0 / 56)  # v7 键控上修（IP 形资产键找回）
+        self.assertEqual(len(missing), 26)
+        self.assertEqual(tracks['beacon'], 30)
         self.assertNotIn('cmdi-01', missing)      # cmdi landed this gen
         self.assertNotIn('ratelimit-01', missing)
         self.assertNotIn('role-03', missing)      # chain explicit held
         self.assertNotIn('idor-04', missing)
         self.assertIn('ssti-01', missing)         # family face-drift (render vs report)
-        self.assertIn('weakpass-01', missing)     # asset mis-attach (deser row)
+        self.assertNotIn('weakpass-01', missing)  # v7 键控上修：原 asset mis-attach 面修复
         self.assertIn('xss-03', missing)          # family under-enumeration
         self.assertIn('xss-04', missing)
         self.assertIn('userenum-01', missing)     # gen-variance face

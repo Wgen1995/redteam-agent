@@ -24,9 +24,9 @@ class TestGoldGR11(unittest.TestCase):
     def test_recall_pinned(self):
         tracks = {}
         rec, missing = score(self.rows, self.cards, self.gt, tracks=tracks)
-        self.assertAlmostEqual(rec, 21.0 / 56)
-        self.assertEqual(len(missing), 35)
-        self.assertEqual(tracks['beacon'], 21)
+        self.assertAlmostEqual(rec, 22.0 / 56)  # v7 键控上修（IP 形资产键找回）
+        self.assertEqual(len(missing), 34)
+        self.assertEqual(tracks['beacon'], 22)
         self.assertEqual(tracks['diff'], 0)
         self.assertNotIn('role-03', missing)   # law-22 unlock: first role-class hit
         self.assertNotIn('role-04', missing)   # law-22 unlock

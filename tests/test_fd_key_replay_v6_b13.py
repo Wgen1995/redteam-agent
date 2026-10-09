@@ -22,7 +22,7 @@ class TestFDKeyReplayV6(unittest.TestCase):
         cls.rows, cls.cards = load_session(GD)
 
     def test_version_bumped(self):
-        self.assertEqual(KEYING_VERSION, 6)   # battle-13：v5→v6（FD 键别名）
+        self.assertEqual(KEYING_VERSION, 7)   # battle-25：v6→v7（服务级资产回退）；本钉随键控演进而移（battle-13 v5→v6 先例）
 
     def test_fd_keyed_replay_unlocks(self):
         """G-r14 全账 FD 键重放行（24 VERIFIED）——须按 findings 链展开为 EV。"""
@@ -34,9 +34,9 @@ class TestFDKeyReplayV6(unittest.TestCase):
 
     def test_prior_gens_zero_drift(self):
         """v6 对 EV 键代（G-r4..G-r13）零漂移。"""
-        expect = {'G-r4': 28, 'G-r5': 12, 'G-r6': 19, 'G-r7': 16,
-                  'G-r8': 21, 'G-r9': 18, 'G-r10': 19, 'G-r11': 21,
-                  'G-r12': 24, 'G-r13': 33}
+        expect = {'G-r4': 28, 'G-r5': 21, 'G-r6': 19, 'G-r7': 16, 'G-r8': 22,
+                  'G-r9': 18, 'G-r10': 19, 'G-r11': 22,
+                  'G-r12': 24, 'G-r13': 35}
         for g, n in expect.items():
             rows, cards = load_session(os.path.join(HERE, 'fixtures', g))
             t = {}
