@@ -1178,3 +1178,13 @@
 - 产物：docs/superpowers/plans/2026-10-09-b9-dsh-plugin-v0.3.md；docs/design/architecture-map-v3.md（md+html 双形态系统细图）；panorama/tanyin-architecture-v3.html；README 重写为入门门面
 - 提交：39fb4e0（细图）→879501c（v0.3.0 本体）→4b20a6d（文档翻状态）
 - 待办：用户跑 headless 一条终验；v0.3.5 看门狗四件套；v0.4 门循环对照实验；v0.5 vuln-agent 接线+codex 端到端；v0.6 range v2
+
+
+## b10 · runner 看门狗四件套 v0.3.5（2026-10-09 实钟）
+- **四机制全上线**（纯函数核 cli/ledger/watchdog.py+runner 编排层）：①分级击杀——soft 3m 记 SOFTSTALL 观察事件（带 log尺寸/timeline行数诊断面，防误杀长推理的证据），hard 8m 击杀照旧；②重启指数退避——30s×4^(n-1) 封顶 480s，BACKOFF 事件入 runner.tsv，首次重启不受罚；③战中指令注入——--directive-file 控制文件 digest 变化才触发，kill+带令续跑（账本在盘=multica pending 捎带的效果语义）；④自适应监听——活跃期 tick 压 1s 静默回 30s（macOS 无零依赖 FSEvents，诚实命名不用"事件驱动"）
+- **顺手修复 HEAD 潜伏 NameError**：resume_prompt 从未定义（RESUME_PREAMBLE 常量躺着没人接）——任何重启路径都会当场崩掉 runner 自身；旧实战没触发纯因 b25 restarts=0。仿真三连重启无一崩=修复实证
+- **验证**：单测 12/12（先红后绿）；仿真双场景 SIM_PASS（场景A 硬击杀链 SOFTSTALL→STALL→BACKOFF→GIVEUP；场景B 指令注入链 SOFTSTALL→DIRECTIVE→带令RESTART）；全套件 RC=0；--help 冒烟
+- **可复跑资产**：tests/sim_watchdog.sh（约 30s 无 LLM 依赖，假战士注入 PATH）——看门狗回归从此不靠真战
+- **版式**：runner 新增 --soft-stall-min/--backoff-base/--directive-file 三参，旧参数默认值全兼容（零迁移）
+- 提交：db0b6da（含 b10 计划）；上游 4653ee4 为 b9 落帐
+- 待办：v0.4 门循环对照实验（Python 驱动 vs AI 自律，数据裁决）；v0.5 vuln-agent 接线+codex 端到端；v0.6 range v2
