@@ -7,6 +7,7 @@ import { Context } from "cordis";
 import { spawn } from "node:child_process";
 import path from "node:path";
 import os from "node:os";
+import { defineTools } from "./tools.js";
 
 const CORE_COMMANDS = new Set([
   "add-goal", "add-scope", "add-cred", "add-asset", "add-evidence",
@@ -50,9 +51,14 @@ export const inject = { TanyinService: (ctx, config) => new TanyinService(ctx, c
 export function apply(ctx, config) {
   // service 面挂载（0.1）：ctx.tanyin.ledger(goalDir, command, args)
   ctx.tanyin = new TanyinService(ctx, config);
-  // 0.2 待办：ctx.tools 注册 typed tool（schema=schemastery object：command select 核心集/goalDir string/args array）
+  // 工具面挂载（0.2）：三 typed tool（book/gate/query）——ToolDefinition 契约（dsh-tools）
+  ctx.tanyin.tools = defineTools(config);
+  // 宿主如提供工具注册点则直接挂（dsh-agent-tool-* 桥接）
+  if (typeof ctx.tool === "function") {
+    for (const t of ctx.tanyin.tools) ctx.tool(t);
+  }
   // 0.3 待办：client-ui 战况面板（读 ~/.tanyin/battles/*/runner.tsv）
-  ctx.logger.info("tanyin plugin loaded (service face, %d core commands)", CORE_COMMANDS.size);
+  ctx.logger.info("tanyin plugin loaded (service+tool face, %d core + %d tools)", CORE_COMMANDS.size, ctx.tanyin.tools.length);
 }
 
 export { Context };
