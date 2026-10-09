@@ -18,6 +18,9 @@ import subprocess
 import sys
 import time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger import watchdog as wd  # noqa: E402  b10 看门狗计算核（零依赖）
+
 ISOLATION_ENV = {
     "OPENCODE_DISABLE_AUTOUPDATE": "true",
     "OPENCODE_DISABLE_DEFAULT_PLUGINS": "true",
@@ -110,7 +113,10 @@ def main():
     st.add_argument("--ledger-dir", required=True)
     st.add_argument("--runner-log", default=None)
     st.add_argument("--max-restarts", type=int, default=5)
-    st.add_argument("--stall-min", type=float, default=8.0)
+    st.add_argument("--stall-min", type=float, default=8.0)      # hard：击杀阈值（分钟）
+    st.add_argument("--soft-stall-min", type=float, default=3.0)  # soft：观察阈值（分钟，b10）
+    st.add_argument("--backoff-base", type=float, default=30.0)   # 重启退避基秒（b10：base*4^(n-1) 封顶480）
+    st.add_argument("--directive-file", default=None)             # 战中指令控制文件（b10：digest 变化触发带令续跑）
     st.add_argument("--tick-sec", type=float, default=30.0)
     st.add_argument("--model", default=None)
     args = ap.parse_args()
@@ -118,9 +124,14 @@ def main():
     runner_log = args.runner_log or (args.log + ".runner.tsv")
     with open(args.prompt_file, encoding="utf-8") as f:
         first_prompt = f.read().strip()
+    # b10 修复：HEAD 版 resume_prompt 从未定义（重启路径 NameError 潜伏）——
+    # 续跑提示=恢复协议导语+完整任务书重读
+    resume_prompt = RESUME_PREAMBLE + first_prompt
 
     log_event(runner_log, "BOOT",
-              "cwd=%s max_restarts=%d stall=%.1fm" % (args.cwd, args.max_restarts, args.stall_min))
+              "cwd=%s max_restarts=%d stall=%.1fm soft=%.1fm backoff=%.0fs directive=%s" % (
+                  args.cwd, args.max_restarts, args.stall_min, args.soft_stall_min,
+                  args.backoff_base, args.directive_file or "off"))
     proc = launch(args.cwd, first_prompt, args.log, args.model)
     log_event(runner_log, "LAUNCH", "pid=%d (first prompt)" % proc.pid)
 
@@ -128,15 +139,48 @@ def main():
     last_log_sz = fsize(args.log)
     last_tl = timeline_rows(args.ledger_dir)
     last_progress = time.time()
+    directive_seen = None          # b10：指令注入通道 digest
+    soft_announced = False         # b10：每个停滞回合只记一次 SOFTSTALL
+    tick = args.tick_sec
+
+    def relaunch(extra="", why=""):
+        """b10 统一重启口：退避→LAUNCH（可带战中指令）。"""
+        nonlocal restarts, last_progress, last_log_sz, directive_seen, soft_announced, tick
+        delay = wd.backoff_delay(restarts, base=args.backoff_base)
+        if delay > 0:
+            log_event(runner_log, "BACKOFF", "%.0fs before restart n=%d" % (delay, restarts + 1))
+            time.sleep(delay)
+        prompt = (resume_prompt + "\n\n" + extra.strip()) if extra.strip() else resume_prompt
+        proc = launch(args.cwd, prompt, args.log, args.model)
+        restarts += 1
+        last_progress = time.time()
+        last_log_sz = fsize(args.log)
+        soft_announced = False
+        tick = 1.0
+        log_event(runner_log, "RESTART", "pid=%d n=%d%s" % (proc.pid, restarts, (" (" + why + ")") if why else ""))
+        return proc
 
     while True:
-        time.sleep(args.tick_sec)
+        time.sleep(tick)
         rc = proc.poll()
         sz = fsize(args.log)
         tl = timeline_rows(args.ledger_dir)
-        if sz != last_log_sz or tl != last_tl:
+        active = sz != last_log_sz or tl != last_tl
+        tick = wd.next_tick(active, tick=args.tick_sec)   # b10：自适应监听
+        # b10：战中指令通道——digest 变化才触发（kill+带令续跑=multica pending 语义）
+        if args.directive_file:
+            dtext, dnew = wd.read_directive(args.directive_file, directive_seen)
+            if dtext is not None:
+                directive_seen = dnew
+                log_event(runner_log, "DIRECTIVE", "digest=%.12s len=%d" % (dnew, len(dtext)))
+                kill_group(proc)
+                proc.wait()
+                proc = relaunch(extra=dtext, why="directive")
+                continue
+        if active:
             last_log_sz, last_tl = sz, tl
             last_progress = time.time()
+            soft_announced = False
             log_event(runner_log, "PROGRESS", "log=%dB timeline=%d" % (sz, tl))
             if rc is not None:
                 log_event(runner_log, "EXIT", "rc=%s after progress complete=%s" % (rc, battle_complete(args.ledger_dir)))
@@ -144,35 +188,29 @@ def main():
                     if not battle_complete(args.ledger_dir):
                         log_event(runner_log, "GIVEUP", "restarts=%d incomplete-exit" % restarts)
                     break
-                restarts += 1
-                proc = launch(args.cwd, resume_prompt, args.log, args.model)
-                last_progress = time.time()
-                log_event(runner_log, "RESTART", "pid=%d n=%d (incomplete-exit resume)" % (proc.pid, restarts))
+                proc = relaunch(why="incomplete-exit resume")
                 continue
             continue
         stall_sec = time.time() - last_progress
+        grade = wd.stall_grade(stall_sec, soft=args.soft_stall_min * 60, hard=args.stall_min * 60)
+        if grade == "soft" and not soft_announced:
+            soft_announced = True
+            log_event(runner_log, "SOFTSTALL", "no progress %.1fm (observe; log=%dB timeline=%d)" % (stall_sec / 60, sz, tl))
         if rc is not None:
             log_event(runner_log, "EXIT", "rc=%s (idle)" % rc)
             if restarts >= args.max_restarts:
                 log_event(runner_log, "GIVEUP", "restarts=%d" % restarts)
                 break
-            restarts += 1
-            proc = launch(args.cwd, resume_prompt, args.log, args.model)
-            last_progress = time.time()
-            log_event(runner_log, "RESTART", "pid=%d n=%d (resume)" % (proc.pid, restarts))
+            proc = relaunch(why="resume")
             continue
-        if stall_sec > args.stall_min * 60:
+        if grade == "hard":
             log_event(runner_log, "STALL", "no progress %.1fm; killing pid=%d" % (stall_sec / 60, proc.pid))
             kill_group(proc)
             proc.wait()
             if restarts >= args.max_restarts:
                 log_event(runner_log, "GIVEUP", "restarts=%d after stall" % restarts)
                 break
-            restarts += 1
-            proc = launch(args.cwd, resume_prompt, args.log, args.model)
-            last_progress = time.time()
-            last_log_sz = fsize(args.log)
-            log_event(runner_log, "RESTART", "pid=%d n=%d (after stall)" % (proc.pid, restarts))
+            proc = relaunch(why="after stall")
 
     rc = proc.poll()
     log_event(runner_log, "DONE", "final_rc=%s restarts=%d timeline=%d" % (rc, restarts, timeline_rows(args.ledger_dir)))
