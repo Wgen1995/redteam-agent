@@ -67,7 +67,7 @@
 18. **同面双形记账（battle-7 实证：idor-01/02 漏洞找到却 miss）**：同一漏洞面 query 形与 path 形都记——/admin/orders?user_id=101 与 /admin/orders/1 各铸一枚 EV 同 finding（双形同证据链）；服务端 startswith 路由两形常同弹，只记一形=丢另一形的键面。资源面（orders/invoices/users）一律双形双 EV。
 19. **发放响应头采集（battle-8 实证：token 到手面不开）**：凭据发放成功的**响应头**逐头记录——token 类响应头（X-Auth-Token 形）就是携带形态第一候选（头名族=键名族的响应侧镜像）；盲试携带形态前先回看发放响应头。
 20. **方法族分辨（battle-8 实证：deser 三面恒 400）**：处理器面（unserialize/import/decode/debug/info 族）**先 GET 直取**（任意 GET 常即弹）——GET 不弹再 POST 形态分型；POST 脑补是陷阱（400≠501 只证处理器在不证方法对）。
-21. **矩阵预算警戒**：matrix 全铺×波次预算是三角——超过 30 面的矩阵先铺核心 9 面×12 类，余面按波次预算增量补（battle-8 实证：128 行只 15x 预算穿底 vs 27 格 21x 全收敛）。
+21. **矩阵预算警戒**：matrix 全铺×波次预算是三角——超过 30 面的矩阵先铺核心 9 面×12 类，余面按波次预算增量补（battle-8 实证：128 行只 15x 预算穿底 vs 27 格 21x 全收敛）。（**修正案 A·battle-24 实验（RT-0021 立项）**：引擎代配额自适应——预算余量 >50% 时矩阵上限放宽至 60 面（宽喷洒族 cors origin 变体/lfi 双形入铺）；余量 <20% 回落核心 9 面；两档间维持 30 面。裁决判据=battle-24 对 battle-23 的 GT 差分（cors-01/lfi-01/lfi-02/cmdi-02 四枚宽喷洒族是否翻红）。
 22. **creds role=令牌权限类非账号名**：add-cred 的 role 字段记令牌权限类（低权=user 级/高权=admin 级）——不是登录账号名；token 名形即类（tok-usr-001=user 级）；admin 账号换出的 user 级令牌 role 仍记 user。（**枚举严格形**：role 字段=裸词 user 或 admin（无级字/空格/修饰）——battle-14 七枚在账被「user 级」拦的教训）（**再修（battle-18 七枚链断）**：持证 findings 的 auth_context=“CRED-xxx” **必填**（越权证明链显式化））
 23. **持证重扫清单化（battle-10 实证：六新靰只中三）**：token 到手后逐服务×/admin 子名词全叉乘记账（八服务×config/logs/keys/reports/clients/audit/settings/users），每服务每名词至少一发+记录（命中=finding，401/404=fact）；**禁止抽样跳服务**（battle-10 只重扫三服务→idor-05/06+hauth-04 漏）；清单完成度入 facts。（**资源面双形入清单**：invoice/{n} 小序数尾段+query 形两枚同扫——battle-15 实证 svc-billing 403 墙下仅子名词族不够）
 24. **零熵墙三击换轨（battle-11 实证：login catch-all 破局）**：同面三击同响应（同状态码+同体）即换轨——方法换（GET↔POST↔头参形）或证据轨换（信标↔行为差分）；撞墙不硬撞（battle-11 范本：catch-all GET 200 同体→POST 计数器分化破弱口令+无限流两洞）。

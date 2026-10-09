@@ -21,6 +21,7 @@
 | /redirect、/redirect?to=、/logout?next=、/goto、/jump、/url= | 参数携带 URL 全家（?to=/?next=/?url=/?goto= 变体）→302 Location 外域实证 | 开放重定向 |
 
 ### 1.1.1 redirect 参数族（v3.1·battle-6 RT-0004：redir-01 漏检根因=本族缺席）
+**v3.14 扩（battle-24 实验·RT-0021）**：①**cors origin 四变体入每代必扫**——`Origin:` 头四形（evil 域/空/大小写变体/null）×（预检 OPTIONS+直发 GET）双法，ACAO 通配或反射即证（battle-23 独有 miss=cors-01 的窄矩阵代价）；②**lfi 双形入每代必扫**——相对形 `../`连缀+绝对路形 `/etc/passwd` 直取，与路径穿越族面分记（battle-23 独有 miss=lfi-01/02）。两族与律 21 修正案 A 的 60 面宽铺档绑定。
 **v3.13 扩（battle-23 备战）**：参数名**并列全扫**——`jump?u=`、`/logout?next=`、`/redirect?url=`、`/goto?target=` 同代同铺（单参数形漏兄弟面=battle-6 同型复发）；回显即证（30x Location 头含外域载荷串）。**admin 墙注记（v3.13）**：`/admin/<noun>` 两段式族在无 admin 令牌通道的靶场版本里≈8 GT 不可达（结构性天花板，非字典缺陷）——靶场 v2 拍板前本族标记「需 admin 令牌通道」，漏检归因写「结构性不可达」不写「字典未扫」。
 一级 /redirect 命中后参数名变体全试（to/next/url/goto/redirect/continue/target）；外域参数值用 http://evil.example 形——**302 Location 头直取即证**；同服务 /logout?next= 与 /redirect?to= 常并存（同族双面）。
 
