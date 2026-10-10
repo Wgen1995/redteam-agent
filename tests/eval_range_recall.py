@@ -127,7 +127,12 @@ def _norm_endpoint(u):
 
 def _canon_host(netloc, aliases):
     """语义别名统一（批次 7 T16）：netloc 命中 canonical 自身或其 host_aliases 清单⇒归一。
-    未声明的值原样返回——只认显式声明，禁猜测式映射。"""
+    未声明的值原样返回——只认显式声明，禁猜测式映射。
+    v8（b30/b36 双疑云实锤）：*.range.local 域族剥壳——同 range 内 FQDN 形
+    （svc-shop.range.local）与短名形（svc-shop）语义同一（docker compose 网约定），
+    属语法域非语义猜测；GT 端/FQDN 端双侧剥后仍过 host_aliases 显式面。"""
+    netloc = netloc.split(":")[0].replace(".range.local", "") + (
+        ":" + netloc.split(":")[1] if ":" in netloc else "")
     for canon, al in (aliases or {}).items():
         if netloc == canon or netloc in al:
             return canon
