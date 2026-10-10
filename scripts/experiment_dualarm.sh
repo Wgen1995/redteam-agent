@@ -42,13 +42,10 @@ run_battle() {  # $1=n $2=gen $3=arm
     echo "b$n SUSPECT_ZERO（链过但全缺——非真零分嫌疑，人工复核）"
   fi
 }
-run_battle 35 G-r36 control
-run_battle 36 G-r37 control
-run_battle 37 G-r38 control
 run_battle 38 G-r39 treatment
 run_battle 39 G-r40 treatment
 run_battle 40 G-r41 treatment
 echo "== [$(date '+%H:%M')] ALL_ARMS_DONE =="
-for n in 35 36 37 38 39 40; do
+for n in 38 39 40; do
   grep -m1 recall= "$HOME/.tanyin/battles/battle-$n/settle-report.txt" 2>/dev/null | sed "s/^/b$n /"
 done
