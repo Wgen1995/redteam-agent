@@ -1276,3 +1276,15 @@ auth 家族 10 项（hauth×4/jwt×2/role×2/csrf×2）——战士撞 api-gw �
 卡片 YAML 缩进纪律（首铸 50 卡全灭）/EV-FD 同秒铸造=时间链违规（41 枚 supersede 重铸）/渲染器只转抄首 EV vs lint 查全 EV 的结构性冲突（工具面待修）。
 
 - **待办**： v0.6：预算强制铸造→gate-exit 位、多 EV 渲染器修复、wall_clock 双轨、DENYLIST v2、McNemar（b27 vs b26 已可双样本）、auth 家族攻略（凭据链+限流退避）。
+
+
+---
+
+## 2026-10-11 v0.6a 执法盲区批（H1-H3，b27 战后痛序）
+
+- **H1 预算门禁红线**： cmd_gate 铸 gate-exit 前断言 budget.tsv 使用行>=1——b27 实锤「全程不铸预算=执法快照读空」的机械根治；空账过门=gate-fail assert=budget reason=budget-not-minted。
+- **H2 多 EV 危害行**： _harm_lines 纯函数——报告⑦危害段从「只转抄首 EV」改逐 EV 全量回显（b27 战士自报教训③落地：渲染器 vs lint 结构冲突）。
+- **H3 精确 McNemar**： rerun.mcnemar_exact(b,c) 双尾二项——n=1 叙事→配对显著性工具就位。
+- **验证**： 新增 7 测全绿。夹具坑实录：G-g1 已焙进 P0-P3 门事件且**不可剥**（剥=哈希链断）——改用未过门 P4 真跑断言链。
+- **诚实披露**： 活体 McNemar 未跑——现档仅 b27 有 GT-id 配对 settle 报告（b26 实验战未 settle、b24 格式无配对）；b28 出第二样本即用。
+- **待办**： v0.6 余项：wall_clock 双轨、DENYLIST v2+rate+UA、runtime.py 抽取、auth 家族攻略（凭据链+限流退避）、b28 战+McNemar 活体。

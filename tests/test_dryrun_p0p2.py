@@ -105,6 +105,9 @@ def fresh_drydir(td, name="G-dryrun"):
     os.makedirs(os.path.join(gd, "auth"), exist_ok=True)
     with open(os.path.join(gd, "auth", "dry.pdf"), "w", encoding="utf-8") as f:
         f.write("dry")
+    # v0.6 H1：过门须有预算使用行（门禁红线）——工厂代战士铸一行
+    with open(os.path.join(gd, "budget.tsv"), "w", encoding="utf-8") as f:
+        f.write("2026-10-24T09:05:00Z\t12000\t40\t0.2\t0\tgoal\tP0 dry\t2\n")
     return gd
 
 

@@ -45,6 +45,17 @@ def verdict(n):
     return "n=%d 统计面：见 mean/std（>=3 方可谈稳定性；显著性另需 McNemar，v0.6）" % n
 
 
+def mcnemar_exact(b, c):
+    """v0.6 H3：精确 McNemar（双尾二项）——b=仅新战命中，c=仅旧战命中。"""
+    n = b + c
+    if n == 0:
+        return 1.0
+    from math import comb
+    k = min(b, c)
+    p_one = sum(comb(n, i) for i in range(k + 1)) * (0.5 ** n)
+    return min(1.0, round(2 * p_one, 6))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="rerun.py")
     ap.add_argument("--reports", nargs="*", default=[], help="settle-report.txt 路径列表")

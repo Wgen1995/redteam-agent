@@ -170,6 +170,12 @@ def _load_card(goal_dir, eindex_row):
         return None
 
 
+def _harm_lines(ev_pairs):
+    """v0.6 H2：逐 EV 危害行——每张有回显的 EV 各占一行（修「只转抄首 EV」结构冲突）。"""
+    return ["- %s: %s" % (eid, ex.strip())
+            for eid, ex in ev_pairs if ex and ex.strip()]
+
+
 def _replay_line(s, fd_id, ev_ids):
     """三态+最近重放时刻（timeline 重放事件末值，事件溯源序）。"""
     ev_i = _idx("timeline.tsv", "event")
@@ -290,14 +296,17 @@ def _segment_text(goal_dir, s, fd_row):
                 "- HTTP/2 帧/TLS 指定类变体不入文本直贴——单列本「判读说明」段披露（裁决 B）"]
         lines += ["### 判读说明（变体参数单列，不改原始证据）", ""] + note + [""]
         sections["POC/EXP"] = "\n".join(lines)
-    # ⑦危害（token 化后实际回显引用）
-    if not excerpt.strip():
+    # ⑦危害（v0.6 H2：逐 EV 全量回显——修「只转抄首 EV vs lint 查全 EV」结构冲突）
+    _hl = _harm_lines([(_cell("E-index.tsv", r, "id"),
+                        _cell("E-index.tsv", r, "raw_excerpt"))
+                       for r, _c in ev_cards])
+    if not _hl:
         missing.append("⑦危害（无 raw_excerpt 回显引用）")
     else:
-        sections["危害"] = "\n".join([
-            "- 实际回显（EV 卡 raw_excerpt，脱敏 token 化后原文）: %s" % excerpt,
-            "- 此环境影响: %s（资产=%s）" % (_cell("findings.tsv", fd_row, "impact"), aid),
-        ])
+        sections["危害"] = "\n".join(
+            ["- 实际回显（EV 卡 raw_excerpt，脱敏 token 化后原文，逐 EV 全量）:"] + _hl
+            + ["- 此环境影响: %s（资产=%s）" % (
+                _cell("findings.tsv", fd_row, "impact"), aid)])
     # ⑧修复建议（类型映射+K1 挂标+POC 应失效标注）
     if anchor is None:
         missing.append("⑧修复建议（矩阵锚缺失）")

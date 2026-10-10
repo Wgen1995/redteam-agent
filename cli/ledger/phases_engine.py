@@ -440,6 +440,23 @@ def run_gate(goal_dir, phase, ts, phases_path=None):
                 _append_event(goal_dir, phase,
                               "gate-fail:%s assert=%s reason=%s" % (phase, tokens[0], _reason), ts)
             print("FAIL gate:%s assert=%s %s" % (phase, tokens[0], _reason)); return 1
+    # v0.6 H1（b27 实锤）：预算红线——过门前账本必须已有使用行（>=1）。
+    # b27 全程不铸 budget=执法快照读空（F3 瞎）；本断言把「自觉申报」变「门禁强制」。
+    _brows = 0
+    _bp = os.path.join(goal_dir, "budget.tsv")
+    if os.path.exists(_bp):
+        try:
+            with open(_bp, encoding="utf-8") as _bf:
+                _brows = sum(1 for _ln in _bf
+                             if _ln.strip() and not _ln.startswith("#"))
+        except OSError:
+            _brows = 0
+    if _brows < 1:
+        _append_event(goal_dir, phase,
+                      "gate-fail:%s assert=budget reason=budget-not-minted" % phase, ts)
+        print("FAIL gate:%s assert=budget budget-not-minted"
+              "（v0.6 H1 红线：先铸 budget.tsv 使用行再过门）" % phase)
+        return 1
     ev = "gate-exit:%s asserts=%d result=PASS" % (phase, len(asserts))
     if skipped:
         ev += " skip=%d" % skipped
