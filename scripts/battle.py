@@ -112,6 +112,7 @@ def paths(n, gen):
         "log": os.path.join(home, "opencode-run.log"),
         "runner": os.path.join(home, "opencode-run.log.runner.tsv"),
         "directive": os.path.join(home, "directive.txt"),
+        "ask": os.path.join(home, "ask.md"),
         "runner_out": os.path.join(home, "runner.out"),
     }
 
@@ -192,7 +193,10 @@ def cmd_launch(a):
             # P0 加固（会诊⑧/SRE⑥）：b10 四件套上真实战场——launch 全参透传
             "--soft-stall-min", str(a.soft_stall_min),
             "--backoff-base", str(a.backoff_base),
-            "--directive-file", p["directive"]]
+            "--directive-file", p["directive"],
+            "--ask-file", p["ask"]]
+    if a.caffeinate:
+        argv.append("--caffeinate")
     os.makedirs(os.path.dirname(p["directive"]), exist_ok=True)
     if not os.path.exists(p["directive"]):
         with open(p["directive"], "w", encoding="utf-8") as f:
@@ -258,6 +262,7 @@ def main():
             s.add_argument("--stall-min", default="8")
             s.add_argument("--soft-stall-min", default="3")
             s.add_argument("--backoff-base", default="30")
+            s.add_argument("--caffeinate", action="store_true")
         s.set_defaults(func=fn)
     a = ap.parse_args()
     a.func(a)
