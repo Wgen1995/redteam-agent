@@ -38,9 +38,38 @@ for i in $(seq 1 30); do grep -q DIRECTIVE "$ROOT/main.log.runner.tsv" 2>/dev/nu
 kill $RUNNER_PID 2>/dev/null || true; sleep 1
 B_DIR=$(grep -c DIRECTIVE "$ROOT/main.log.runner.tsv")
 echo "场景B 指令注入链: DIRECTIVE=$B_DIR"
+# 场景C（v0.5b G1）：预算执法全链——超限→BUDGET-ENFORCE+收尾令重启
+rm -f "$ROOT/main.log.runner.tsv"; : > "$ROOT/main.log"
+mkdir -p "$ROOT/bgoal"
+cp tests/fixtures/G-g1/goals.tsv "$ROOT/bgoal/"
+printf '2026-09-23T01:00:00Z\t3000000\t40\t0.2\t0\tgoal\tP1 recon\t2\n' > "$ROOT/bgoal/budget.tsv"
+python3 cli/tanyin-runner start --cwd "$ROOT" --prompt-file "$ROOT/mission.txt" \
+  --log "$ROOT/main.log" --ledger-dir "$ROOT/bgoal" \
+  --max-restarts 6 --soft-stall-min 0.05 --stall-min 5 \
+  --backoff-base 1 --tick-sec 1 &
+RUNNER_PID=$!
+for i in $(seq 1 45); do grep -q BUDGET-ENFORCE "$ROOT/main.log.runner.tsv" 2>/dev/null && break; sleep 1; done
+kill $RUNNER_PID 2>/dev/null || true; sleep 1
+C_ENF=$(grep -c BUDGET-ENFORCE "$ROOT/main.log.runner.tsv" 2>/dev/null || true)
+echo "场景C 预算执法链: BUDGET-ENFORCE=$C_ENF"
+# 场景D（v0.5b G1）：ask:human 往返——ask.md→ASK/WAIT→answer→ASK-ANSWERED
+rm -f "$ROOT/main.log.runner.tsv" "$ROOT/ask.md" "$ROOT/ask.md.answer.md"; : > "$ROOT/main.log"
+python3 cli/tanyin-runner start --cwd "$ROOT" --prompt-file "$ROOT/mission.txt" \
+  --log "$ROOT/main.log" --ledger-dir "$ROOT/bgoal" \
+  --max-restarts 6 --soft-stall-min 0.05 --stall-min 0.3 \
+  --backoff-base 1 --tick-sec 1 --ask-file "$ROOT/ask.md" &
+RUNNER_PID=$!
+sleep 2; echo "凭据发放面在哪个服务？" > "$ROOT/ask.md"
+for i in $(seq 1 20); do grep -q ASK\\t "$ROOT/main.log.runner.tsv" 2>/dev/null && break; sleep 1; done
+D_ASK=$(grep -c ASK\\t "$ROOT/main.log.runner.tsv" 2>/dev/null || true)
+echo "答案：svc-login，走发放面" > "$ROOT/ask.md.answer.md"
+for i in $(seq 1 20); do grep -q ASK-ANSWERED "$ROOT/main.log.runner.tsv" 2>/dev/null && break; sleep 1; done
+kill $RUNNER_PID 2>/dev/null || true; sleep 1
+D_ANS=$(grep -c ASK-ANSWERED "$ROOT/main.log.runner.tsv" 2>/dev/null || true)
+echo "场景D ask:human 往返: ASK=$D_ASK ANSWERED=$D_ANS"
 # 判定
 FAIL=0
-[ "$A_SOFT" -ge 1 ] && [ "$A_STALL" -ge 1 ] && [ "$A_BACK" -ge 1 ] && [ "$B_DIR" -ge 1 ] || FAIL=1
-grep -E 'SOFTSTALL|STALL|BACKOFF|DIRECTIVE' "$ROOT/main.log.runner.tsv" | head -8
+[ "$A_SOFT" -ge 1 ] && [ "$A_STALL" -ge 1 ] && [ "$A_BACK" -ge 1 ] && [ "$B_DIR" -ge 1 ] && [ "$C_ENF" -ge 1 ] && [ "$D_ASK" -ge 1 ] && [ "$D_ANS" -ge 1 ] || FAIL=1
+grep -E 'SOFTSTALL|STALL|BACKOFF|DIRECTIVE|BUDGET-ENFORCE|ASK' "$ROOT/main.log.runner.tsv" | head -10
 rm -rf "$ROOT"
 [ $FAIL -eq 0 ] && echo "SIM_PASS" || { echo "SIM_FAIL"; exit 1; }

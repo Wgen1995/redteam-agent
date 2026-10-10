@@ -55,7 +55,8 @@ class TestImpactDeadBranchGone(unittest.TestCase):
     SEV2IMPACT 单源符号 ⇒ 死分支残留。ALLOW 白名单（计划：evals_metrics.py=
     impact 值域容忍面）——实勘该文件零命中行，白名单机制保留照计划原样。"""
 
-    ALLOW = ("evals_metrics.py",)
+    # v0.5b：cvss.py=CVSS v3.1 标准分档（critical 9.0+），非 impact 枚举比较——白名单
+    ALLOW = ("evals_metrics.py", "cvss.py")
 
     def test_no_dead_critical_branch_in_ledger(self):
         bad = []

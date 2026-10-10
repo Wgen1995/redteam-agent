@@ -1241,3 +1241,15 @@
 - **诚实披露**：F3/F5 的 runner 全链仅纯函数单测+语法/逻辑复核——仿真场景（需伪造超限 budget.tsv/ask 往返）与真战首验留 v0.5b 首项。
 - **顺手修**：runner ASK 行模板字面量换行真虫（仿真一跑即揪——可复跑资产的又一胜利）。
 - **待办**：v0.5b：budget/ask 仿真+真战首验、wall_clock 双轨、runtime.py 抽取、CVSS+FIX_MAP、DENYLIST v2+rate+UA、clean rerun N≥3、vuln-agent 接线、codex E2E。
+
+
+---
+
+## 2026-10-11 v0.5b 仿真补债+报告最后一公里批（G1-G3）
+
+- **G1 仿真场景 C/D 上线**：sim_watchdog.sh 扩四场景——C 预算执法全链（伪造 3M/2M 超限 budget.tsv→BUDGET-ENFORCE+收尾令重启实测）；D ask:human 往返（ask.md→ASK+WAIT→answer→ASK-ANSWERED 注入）。**v0.5a F3/F5 全链验证债清**（四链 SIM_PASS）。
+- **G2 CVSS v3.1 base 计算器**：cli/ledger/cvss.py 纯函数（Roundup 规范、canonical 9.8/8.8 钉测、severity 分档）；_FIX_MAP 3→10 锚（补 xss/ssrf/deser/rce/idor/lfi/open-redirect，根治+临时缓解双层）。
+- **G3 干净重跑协议**：scripts/rerun.py——settle 报告 recall 聚合（n/mean/std/min/max；n=1 显式「无统计效力」措辞）；--dry 全链自检；边界律：只聚合不代跑（RUNBOOK 驱动 N 战）。
+- **验证**：新增 2 文件 9 测全绿；sim 四场景 SIM_PASS；全套件见提交时点。
+- **改期 v0.6（诚实重排非缩水）**：wall_clock 双轨（schema 大迁移单批）、DENYLIST v2+rate+UA（安全批）、runtime.py 抽取（工程批）、vuln-agent/codex E2E（外部环境/用户侧）。
+- **待办**：下场真战首验 v0.5a/b 全部新机制；v0.6 三批如上。
