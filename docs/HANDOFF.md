@@ -1253,3 +1253,26 @@
 - **验证**：新增 2 文件 9 测全绿；sim 四场景 SIM_PASS；全套件见提交时点。
 - **改期 v0.6（诚实重排非缩水）**：wall_clock 双轨（schema 大迁移单批）、DENYLIST v2+rate+UA（安全批）、runtime.py 抽取（工程批）、vuln-agent/codex E2E（外部环境/用户侧）。
 - **待办**：下场真战首验 v0.5a/b 全部新机制；v0.6 三批如上。
+
+
+---
+
+## 2026-10-11 b27 真战收官 · v0.5 全机制靶场首验
+
+**战果**： recall=0.70 (39/56)——b26 0.39 → b27 0.70（+0.31）；verify-chain PASS；P0-P4 五门全 PASS；timeline 696 行；findings 123 铸（含 supersede 自纠 41）；restarts=1；战时约 82 分钟（无人看护模式全程）。
+
+### v0.5 机制首验清单（实锤）
+- **E3 anchor 自动锚**： goal dir 内 5 笔 git 锚（rows=37→67→449→613 随链头推进）——TANYIN_ANCHOR_AUTO 全程生效 ✅
+- **F4 LOGONLY-ALIVE**： 8 次照亮（写探针→跑批量→回账的正常呼吸；单次 3-3.6 分钟）✅
+- **F1/F6 看护**： DONE 事件+caffeinate 全程防睡+osascript 战毕通知 ✅；三层哨兵（战毕/异常/巡逻）自动闭环
+- **F8 GT 出仓**： settle 用 ~/.tanyin/gt/G-r28.json ✅；战士自报「GT 零读」（读取路径自报纪律在）
+- **F5 ask 通道**： 未触发（战士无疑问——通道静默待命，机制经仿真验证）
+- **F3 预算执法**： **未验证且暴露真问题**——战士全程未铸 budget.tsv 使用行 → 执法快照读空（BUDGET 事件 0）→ 执法靠自觉申报的老病真战场现形。**v0.6 首项：预算铸造挂 gate-exit 强制位**
+
+### MISSING 17 项归因（诚实）
+auth 家族 10 项（hauth×4/jwt×2/role×2/csrf×2）——战士撞 api-gw 真限流墙（429 Retry-After），auth 重面未破；余 7 项=xxe-01 变体全拒/cmdi-02/graphql-02/lfi-01/userenum-01/ratelimit-02/infoleak-02。方向：凭据获取链+限流退避策略（会话池/慢速分布）。
+
+### 战士三教训（自报，账本可查）
+卡片 YAML 缩进纪律（首铸 50 卡全灭）/EV-FD 同秒铸造=时间链违规（41 枚 supersede 重铸）/渲染器只转抄首 EV vs lint 查全 EV 的结构性冲突（工具面待修）。
+
+- **待办**： v0.6：预算强制铸造→gate-exit 位、多 EV 渲染器修复、wall_clock 双轨、DENYLIST v2、McNemar（b27 vs b26 已可双样本）、auth 家族攻略（凭据链+限流退避）。
