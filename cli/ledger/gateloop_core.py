@@ -44,3 +44,14 @@ def next_phase(done_list):
     done = [p for p in done_list if p in PHASE_SEQ]
     nxt = PHASE_SEQ[len(done):len(done) + 1]
     return nxt[0] if nxt else None
+
+
+def should_full_gate(first, proc_exited, soft_stalled, status_pass):
+    """v0.5a F2（架构/工程项）：全量门只在该跑的时机跑。
+
+    轮询（每 tick）一律走只读 status；全量 gate（有副作用：断言+可能铸事件）
+    仅限：首次进入该门 / 战士进程已退出 / soft-stall（战士疑似本回合干完）。
+    status 已 PASS 直接短路（连全量也不必跑——账本已载过门事实）。"""
+    if status_pass:
+        return False
+    return first or proc_exited or soft_stalled

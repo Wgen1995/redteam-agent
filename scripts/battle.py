@@ -26,6 +26,29 @@ TANYIN_HOME = os.environ.get("TANYIN_HOME") or os.path.join(os.path.expanduser("
 BASE = os.path.join(TANYIN_HOME, "battles")
 
 
+def gt_out_path(gen):
+    """v0.5a F8：GT 出仓——评测真相存 ~/.tanyin/gt/<gen>.json（仓外，战士须主动越界才见）。"""
+    return os.path.join(TANYIN_HOME, "gt", gen + ".json")
+
+
+def ensure_gt(gen, src=GT):
+    """init 时把仓内 GT 拷到仓外 gt 位（settle 只读仓外；拷贝失败回落仓内+WARN）。"""
+    dst = gt_out_path(gen)
+    try:
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        import shutil
+        shutil.copyfile(src, dst)
+        return dst
+    except OSError:
+        return src
+
+
+def settle_gt(gen):
+    """settle 用 GT：优先仓外 gt 位；缺失回落仓内（旧战兼容）。"""
+    dst = gt_out_path(gen)
+    return dst if os.path.isfile(dst) else GT
+
+
 def popen_kwargs():
     if IS_WIN:
         return {"creationflags": subprocess.CREATE_NO_WINDOW}
@@ -149,6 +172,12 @@ def cmd_init(a):
     ])
     with open(p["mission"], "w", encoding="utf-8") as f:
         f.write(mission + "\n")
+    # v0.5a F8：任务书不得携带 GT 痕迹（机械红线，防未来模板手滑）
+    sys.path.insert(0, os.path.join(ROOT, "cli"))
+    from ledger import selfcheck as _sc
+    if not _sc.mission_clean(mission):
+        sys.exit("任务书泄漏 ground-truth 字样——eval integrity 红线，init 终止")
+    ensure_gt(a.gen)   # GT 出仓：评测真相拷 ~/.tanyin/gt/<gen>.json
     print("任务书：%s（boot=%s，场景钟=%s）" % (p["mission"], a.boot_mode, ts))
 
 
@@ -197,8 +226,11 @@ def cmd_settle(a):
     # （b25 即死于此：尾部三门手工旁路缺 gate-exit:P5/P5.5）。
     vr = ledger("verify-chain", "--goal-dir", p["goal"])
     chain_ok = vr.returncode == 0
+    gt_used = settle_gt(a.gen)   # v0.5a F8：仓外 gt 优先（eval integrity）
+    if gt_used == GT:
+        print("WARN GT 用仓内路径（旧战或 ensure_gt 失败）——新战 init 已出仓")
     out = os.path.join(p["home"], "settle-report.txt")
-    r = run([sys.executable, EVAL, "--session", p["goal"], "--ground-truth", GT])
+    r = run([sys.executable, EVAL, "--session", p["goal"], "--ground-truth", gt_used])
     with open(out, "w", encoding="utf-8") as f:
         f.write("verify-chain: %s\n%s\n%s\n" % ("PASS" if chain_ok else "FAIL",
                                                   vr.stdout or "", vr.stderr or ""))

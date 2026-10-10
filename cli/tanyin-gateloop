@@ -46,6 +46,17 @@ def gate_pass(goal_dir, phase, ts):
         return False
 
 
+def status_pass(goal_dir, phase):
+    """v0.5a F2：只读门态轮询（零副作用）——b26 型 42% 轮询噪声的驱动侧根治。"""
+    argv = [sys.executable, PHASES_BIN, "status", "--goal-dir", goal_dir,
+            "--phase=" + phase]
+    try:
+        r = subprocess.run(argv, capture_output=True, text=True, timeout=30)
+        return r.returncode == 0 and "result=PASS" in r.stdout
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+
+
 def main():
     ap = argparse.ArgumentParser(prog="tanyin-gateloop")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -87,6 +98,7 @@ def main():
         proc = launch(args.cwd, prompt, args.log, args.model)
         log_event(runner_log, "GATE-BEGIN", "%s pid=%d" % (phase, proc.pid))
         passed = False
+        first_check = True   # v0.5a F2：全量门只在 begin/proc-exit/soft-stall
         while not passed:
             time.sleep(tick)
             sz = fsize(args.log)
@@ -95,11 +107,20 @@ def main():
             if active:
                 last_sz, last_progress = sz, time.time()
                 soft_announced = False
-            if gate_pass(args.ledger_dir, phase, args.gate_ts):
+            # v0.5a F2：轮询=只读 status；全量门（有副作用）仅三时机
+            if status_pass(args.ledger_dir, phase):
                 passed = True
                 break
             stall = time.time() - last_progress
             grade = wd.stall_grade(stall, soft=args.soft_stall_min * 60, hard=args.stall_min * 60)
+            if gc.should_full_gate(first=first_check,
+                                   proc_exited=proc.poll() is not None,
+                                   soft_stalled=grade in ("soft", "hard"),
+                                   status_pass=False):
+                first_check = False
+                if gate_pass(args.ledger_dir, phase, args.gate_ts):
+                    passed = True
+                    break
             if grade == "soft" and not soft_announced:
                 soft_announced = True
                 log_event(runner_log, "SOFTSTALL", "%s no progress %.1fm" % (phase, stall / 60))

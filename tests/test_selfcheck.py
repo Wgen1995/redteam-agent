@@ -13,7 +13,8 @@ REPO = os.path.abspath(os.path.join(HERE, ".."))
 sys.path.insert(0, os.path.join(REPO, "cli"))
 from ledger import selfcheck  # noqa: E402
 
-SIX = ["cmd-index", "encoding", "phases-schema", "layout", "lock-verify", "golden"]
+SIX = ["cmd-index", "encoding", "phases-schema", "layout", "lock-verify", "golden",
+       "skill-index-sync"]  # v0.5a F7：第七检查（根/.opencode SKILL 索引同集）
 
 
 class TestStatic(unittest.TestCase):

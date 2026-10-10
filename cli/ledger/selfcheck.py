@@ -31,6 +31,7 @@ _TEXT_EXTS = {".md", ".py", ".json", ".tsv", ".yaml", ".lock"}
 # 交付新命令/新工具的任务须随行更新本表（forward 面——如 tanyin-report/egress serve——
 # 随其交付任务入表，此前文档若出现带子命令的引用即红=有意绊线）。
 KNOWN_COMMANDS = {
+    # （v0.5a F7：SKILL 索引同步检查见 skill_index_commands/mission_clean）
     "ledger": ["add-asset", "add-cred", "add-edge", "add-evidence", "add-fact",
                "add-finding", "add-goal", "add-intent", "add-scope", "amend-scope",
                "anchor", "append-timeline", "approve", "budget-check", "budget-log", "checkpoint",
@@ -71,6 +72,39 @@ KNOWN_COMMANDS = {
 # 引用形态：tanyin-<tool> <sub>（子命令 token 限 ASCII 小写字母/数字/连字符——
 # 中英文混排散文「tanyin-ledger 的 add-goal」自然不组成配对）
 _REF = re.compile(r"tanyin-([a-z][a-z0-9-]*)[ \t]+([a-z][a-z0-9-]*)")
+
+
+
+
+# ------------------------------------------------ v0.5a（兼容+SRE 会诊项）
+
+def skill_index_commands(text):
+    """F7 命令面单源：从 SKILL.md 文本抽「命令索引」段词集。
+
+    索引段=「## 命令索引」标题后到下一「## 」前的 写/查/校验/特殊 行；
+    词元按空白切、去「（…」尾注（如 anchor（链头锚定）→anchor）。
+    根 SKILL 与 .opencode SKILL 的集合必须相等——双胞胎漂移红线。"""
+    cmds, in_sec = set(), False
+    for ln in text.splitlines():
+        if ln.startswith("## "):
+            in_sec = "命令索引" in ln
+            continue
+        if not in_sec:
+            continue
+        for head in ("写", "查", "校验", "特殊"):
+            if ln.startswith(head) and "：" in ln:
+                body = re.sub("（[^）]*）", "", ln.split("：", 1)[1])
+                for tok in body.split():
+                    tok = tok.split("（", 1)[0].strip()
+                    if tok:
+                        cmds.add(tok)
+                break
+    return cmds
+
+
+def mission_clean(text):
+    """F8 GT 出仓：任务书不得携带 ground-truth 字样（eval integrity 机械红线）。"""
+    return "ground-truth" not in text.lower()
 
 
 def check_cmd_index(repo_root):
@@ -160,6 +194,18 @@ def check_golden(repo_root):
     return r.returncode
 
 
+def check_skill_index_sync(repo_root):
+    """v0.5a F7：根 SKILL 与 .opencode SKILL 命令索引集合必须相等（单源红线）。"""
+    a = os.path.join(repo_root, "SKILL.md")
+    b = os.path.join(repo_root, ".opencode", "skills", "tanyin", "SKILL.md")
+    try:
+        sa = skill_index_commands(open(a, encoding="utf-8").read())
+        sb = skill_index_commands(open(b, encoding="utf-8").read())
+    except OSError:
+        return 1
+    return 0 if sa == sb else 1
+
+
 def run_static(install_root, home, repo_root):
     """六项静态检查；返回 (worst_rc, [(检查名, rc, 明细)])。"""
     ir = install_root or DEFAULT_INSTALL_ROOT_expanded()
@@ -175,6 +221,8 @@ def run_static(install_root, home, repo_root):
         ("layout", check_layout(ir, hm), "交战区分离 §3.4（home ∉ install_root）"),
         ("lock-verify", check_lock(repo_root), "tools.lock 验签（supply_chain 单源）"),
         ("golden", check_golden(repo_root), "tests/run_golden.py"),
+        ("skill-index-sync", check_skill_index_sync(repo_root),
+         "根 SKILL 与 .opencode SKILL 命令索引同集（v0.5a F7 单源红线）"),
     ]
     worst = max((c for _, c, _ in items), default=0)
     return worst, items

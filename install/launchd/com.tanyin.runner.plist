@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.tanyin.runner</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>__REPO__/cli/tanyin-runner</string>
+        <string>start</string>
+        <string>--cwd</string>
+        <string>__REPO__</string>
+        <string>--prompt-file</string>
+        <string>__HOME__/mission.txt</string>
+        <string>--log</string>
+        <string>__HOME__/opencode-run.log</string>
+        <string>--ledger-dir</string>
+        <string>__HOME__/G-r1</string>
+        <string>--directive-file</string>
+        <string>__HOME__/directive.txt</string>
+        <string>--caffeinate</string>
+    </array>
+    <key>KeepAlive</key>
+    <true/>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>__HOME__/launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__HOME__/launchd.err.log</string>
+</dict>
+</plist>

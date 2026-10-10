@@ -1221,3 +1221,23 @@
 - **测试**：新增 6 文件 24 测（probe_required 7/replay_summary 3/approval_hmac 5/addgoal_auth 4/gatefail_throttle 2/anchor 3）+7 处旧测适配（语义收紧的预期破坏：直签/假 sha/无豁免路径）；全套件见提交时点运行记录。
 - **命令面**：ledger 44 命令（+anchor）；approve 增 --sig；add-goal 增 --allow-missing-auth；set-replay-state 增 --manual。
 - **待办**：v0.5 vuln-agent 接线+codex E2E+干净重跑协议（P1 清单在会诊综述）→ v0.6 range v2
+
+
+---
+
+## 2026-10-11 v0.5a 执法与看护批（P1 前半，8 项）
+
+**目标**：九维会诊「执法纸面化+SRE 看护」簇——预算从申报制升执法制、看门狗自身有人看、轮询噪声驱动侧根治。
+
+- **F1 gate-status 只读 API**：tanyin-phases status（读 timeline 推各门 PASS/FAIL/PENDING，零断言零铸事件，事件带后缀 startswith 匹配）；runner battle_complete 弃裸 grep 改调 API（失败回落 grep+WARN 一次）。
+- **F2 gateloop 预检去副作用**：轮询每 tick 只读 status；全量门（有副作用）只在 begin/proc-exit/soft-stall 三时机（gc.should_full_gate 纯函数）——b26 型 42% 轮询噪声的驱动侧根治（与 P0-E9a 引擎侧去重双保险）。
+- **F3 budget 执法化**：runner 每 30s 快照 budget-check JSON（watchdog.budget_usage/budget_state：任一维超限=over，>80%=warn）；over→BUDGET-ENFORCE+带收尾令重启（停新探测、supersede、走 P4/P5 门）；warn→BUDGET-WARN 一次。
+- **F4 LOGONLY-ALIVE**：log 长而 timeline 不动持续超 soft 阈值→LOGONLY-ALIVE 事件（每回合一次；照亮不击杀——账本外干活的气味面）。
+- **F5 ask:human 双向通道**：--ask-file；战士写 ask.md→ASK 事件+macOS 通知+WAIT（停滞计时停走）；人工写 ask.md.answer.md→注入「人工答复合位」续跑+清问题。
+- **F6 无人兜底**：--caffeinate（caffeinate -dims，战毕 terminate）；GIVEUP/DONE/ASK/预算超限四类 osascript 通知（尽力而为）；install/launchd/com.tanyin.runner.plist 模板（KeepAlive+RunAtLoad）。
+- **F7 命令面单源**：selfcheck.skill_index_commands+skill-index-sync 静态检查（根 SKILL 与 .opencode SKILL 索引同集红线——P0 批四处登记税的机械根治）。
+- **F8 GT 出仓**：init 拷 GT 到 ~/.tanyin/gt/<gen>.json，settle 优先仓外（旧战回落+WARN）；mission_clean 红线（任务书含 ground-truth 字样 init 即止）。诚实边界：战士有仓访问权仍可主动翻 ~/.tanyin——抬门槛+照亮越界，非沙箱。
+- **验证**：新增 3 文件 19 测全绿；sim_watchdog 双场景 SIM_PASS；selfcheck --static skill-index-sync rc=0；全套件见提交时点。
+- **诚实披露**：F3/F5 的 runner 全链仅纯函数单测+语法/逻辑复核——仿真场景（需伪造超限 budget.tsv/ask 往返）与真战首验留 v0.5b 首项。
+- **顺手修**：runner ASK 行模板字面量换行真虫（仿真一跑即揪——可复跑资产的又一胜利）。
+- **待办**：v0.5b：budget/ask 仿真+真战首验、wall_clock 双轨、runtime.py 抽取、CVSS+FIX_MAP、DENYLIST v2+rate+UA、clean rerun N≥3、vuln-agent 接线、codex E2E。

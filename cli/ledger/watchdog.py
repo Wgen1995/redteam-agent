@@ -47,3 +47,55 @@ def read_directive(path, seen_digest):
 def next_tick(active, tick=10.0, floor=1.0):
     """自适应监听间隔：活跃 → floor（秒级响应）；静默 → tick（省 CPU）。"""
     return floor if active else tick
+
+
+# ------------------------------------------------ v0.5a（SRE/AI agent 会诊项）
+
+def budget_usage(json_line):
+    """budget-check 首行 JSON → (used, limit) dict；坏输入 → None。"""
+    import json
+    try:
+        d = json.loads(json_line)
+        goal = d["goal"]
+        return dict(goal["used"]), dict(goal["limit"])
+    except (ValueError, KeyError, TypeError):
+        return None
+
+
+def budget_state(used, limit, warn=0.8):
+    """预算执法分级：任一维超限='over'；任一维>warn 比例='warn'；否则 'ok'。"""
+    state = "ok"
+    for k, cap in limit.items():
+        u = used.get(k, 0.0)
+        if not cap or cap <= 0:
+            continue
+        if u > cap:
+            return "over"
+        if u > cap * warn and state == "ok":
+            state = "warn"
+    return state
+
+
+def is_logonly(log_grew, tl_grew):
+    """LOGONLY-ALIVE 判定：log 在长而 timeline 不动=战士在账本外干活（照亮不击杀）。"""
+    return log_grew and not tl_grew
+
+
+def logonly_should_emit(already, logonly_sec, soft):
+    """LOGONLY 事件每停滞回合只记一次，且持续 soft 阈值后才记。"""
+    return (not already) and logonly_sec >= soft
+
+
+def ask_question(path):
+    """ask:human 通道：ask.md 在场且非空 → 问题文本；否则 None。"""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            t = f.read().strip()
+    except OSError:
+        return None
+    return t or None
+
+
+def wait_state(ask_pending, answered):
+    """WAIT 态机：有问题未答='WAIT'（停表不停命）——其余='RUN'。"""
+    return "WAIT" if (ask_pending and not answered) else "RUN"

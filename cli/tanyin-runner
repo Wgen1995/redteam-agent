@@ -93,14 +93,47 @@ def launch(cwd, prompt, log_path, model=None):
     return proc
 
 
-def battle_complete(ledger_dir):
-    """战毕判据：P4 门已出（gate-exit:P4）——rc=0 不算完成（battle-23 实证：读文档后假完成）。"""
+def battle_complete(ledger_dir, runner_log=None):
+    """战毕判据（v0.5a F1：弃裸 grep 改判据层只读 API）：P4 门 PASS。
+
+    tanyin-phases status=单源状态机读口；API 不可用回落旧 grep 并 WARN 一次
+    （rc=0 不算完成——battle-23 实证：读文档后假完成）。"""
+    argv = [sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                         "tanyin-phases"),
+            "status", "--goal-dir", ledger_dir, "--phase=P4"]
+    try:
+        r = subprocess.run(argv, capture_output=True, text=True, timeout=30)
+        if r.returncode == 0 and "result=PASS" in r.stdout:
+            return True
+        if r.returncode == 0:
+            return False
+    except (OSError, subprocess.TimeoutExpired):
+        pass
+    if runner_log:
+        log_event(runner_log, "WARN", "status API 不可用，回落 grep 判据")
     p = os.path.join(ledger_dir, "timeline.tsv")
     try:
         with open(p, encoding="utf-8", errors="replace") as f:
             return "gate-exit:P4" in f.read()
     except OSError:
         return False
+
+
+def notify_user(title, message):
+    """v0.5a F6：macOS 通知（尽力而为——osascript 缺失/失败不阻流程）。"""
+    try:
+        subprocess.run(["osascript", "-e",
+                        'display notification "%s" with title "%s"' % (message, title)],
+                       capture_output=True, timeout=10)
+    except (OSError, subprocess.TimeoutExpired):
+        pass
+
+
+BUDGET_WRAPUP = (
+    "【预算执法】预算已超限：立即停止一切新探测/新意图。收尾序列："
+    "supersede-finding 去重 → findings/E-index 补全 → 走 P4/P5 重放与终态门。"
+    "禁止再产生新 request。"
+)
 
 
 def main():
@@ -119,6 +152,10 @@ def main():
     st.add_argument("--directive-file", default=None)             # 战中指令控制文件（b10：digest 变化触发带令续跑）
     st.add_argument("--tick-sec", type=float, default=30.0)
     st.add_argument("--model", default=None)
+    st.add_argument("--caffeinate", action="store_true",
+                    help="v0.5a F6：spawn caffeinate -dims 防系统睡眠（无人值守战）")
+    st.add_argument("--ask-file", default=None,
+                    help="v0.5a F5：ask:human 通道文件（战士写问题，人工写 <f>.answer.md）")
     args = ap.parse_args()
 
     runner_log = args.runner_log or (args.log + ".runner.tsv")
@@ -142,6 +179,18 @@ def main():
     directive_seen = None          # b10：指令注入通道 digest
     soft_announced = False         # b10：每个停滞回合只记一次 SOFTSTALL
     tick = args.tick_sec
+    # v0.5a 状态：预算执法/LOGONLY/ask-WAIT/caffeinate
+    last_budget_at, budget_warned, budget_enforced = 0.0, False, False
+    logonly_since, logonly_emitted = None, False
+    wait_announced = False
+    caffeinate_proc = None
+    if args.caffeinate:
+        try:
+            caffeinate_proc = subprocess.Popen(["caffeinate", "-dims"],
+                                               stdout=subprocess.DEVNULL,
+                                               stderr=subprocess.DEVNULL)
+        except OSError:
+            log_event(runner_log, "WARN", "caffeinate 不可用（非 macOS？）防睡降级关闭")
 
     def relaunch(extra="", why=""):
         """b10 统一重启口：退避→LAUNCH（可带战中指令）。"""
@@ -177,16 +226,82 @@ def main():
                 proc.wait()
                 proc = relaunch(extra=dtext, why="directive")
                 continue
+        # v0.5a F5：ask:human 双向通道——问题在场=WAIT（停表不停命），答案落盘=注入续跑
+        if args.ask_file:
+            q = wd.ask_question(args.ask_file)
+            if q:
+                ans_path = args.ask_file + ".answer.md"
+                a = wd.ask_question(ans_path)
+                if wd.wait_state(ask_pending=True, answered=bool(a)) == "WAIT":
+                    if not wait_announced:
+                        wait_announced = True
+                        log_event(runner_log, "ASK", "pending: %s" % q[:120].replace(chr(10), " "))
+                        notify_user("探隐 ask:human", "战士提问，等待人工作答")
+                    last_progress = time.time()   # WAIT：停滞计时停走
+                    continue
+                log_event(runner_log, "ASK-ANSWERED", "len=%d injecting" % len(a))
+                notify_user("探隐 ask:human", "答案已注入，续跑")
+                try:
+                    os.replace(ans_path, ans_path + ".consumed")
+                    with open(args.ask_file, "w", encoding="utf-8") as f:
+                        f.write("")   # 清问题（已答）
+                except OSError:
+                    pass
+                wait_announced = False
+                kill_group(proc)
+                proc.wait()
+                proc = relaunch(extra="【人工答复合位】" + a, why="ask-answered")
+                continue
+        # v0.5a F3：预算执法——战中快照超限即带收尾令重启（申报制→执法制）
+        if time.time() - last_budget_at > 30 and not budget_enforced:
+            last_budget_at = time.time()
+            br = subprocess.run([sys.executable, os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "tanyin-ledger"),
+                "budget-check", "--goal-dir", args.ledger_dir],
+                capture_output=True, text=True, timeout=30)
+            parsed = wd.budget_usage(br.stdout.splitlines()[0]) if br.stdout.strip() else None
+            if parsed:
+                used, limit = parsed
+                bstate = wd.budget_state(used, limit)
+                if bstate == "warn" and not budget_warned:
+                    budget_warned = True
+                    log_event(runner_log, "BUDGET-WARN",
+                              "token=%s/%s" % (used.get("token"), limit.get("token")))
+                if bstate == "over":
+                    budget_enforced = True
+                    log_event(runner_log, "BUDGET-ENFORCE",
+                              "over limit token=%s/%s hours=%s/%s -> wrap-up directive"
+                              % (used.get("token"), limit.get("token"),
+                                 used.get("hours"), limit.get("hours")))
+                    notify_user("探隐 runner", "预算超限，已注入收尾令")
+                    kill_group(proc)
+                    proc.wait()
+                    proc = relaunch(extra=BUDGET_WRAPUP, why="budget-enforce")
+                    continue
         if active:
+            # v0.5a F4：LOGONLY-ALIVE——log 长而 timeline 不动=账本外干活的气味（照亮不击杀）
+            if wd.is_logonly(sz != last_log_sz, tl != last_tl):
+                if logonly_since is None:
+                    logonly_since = time.time()
+                elif wd.logonly_should_emit(logonly_emitted,
+                                            time.time() - logonly_since,
+                                            args.soft_stall_min * 60):
+                    logonly_emitted = True
+                    log_event(runner_log, "LOGONLY-ALIVE",
+                              "log growing %.1fm without timeline rows (observe)"
+                              % ((time.time() - logonly_since) / 60))
+            else:
+                logonly_since, logonly_emitted = None, False
             last_log_sz, last_tl = sz, tl
             last_progress = time.time()
             soft_announced = False
             log_event(runner_log, "PROGRESS", "log=%dB timeline=%d" % (sz, tl))
             if rc is not None:
-                log_event(runner_log, "EXIT", "rc=%s after progress complete=%s" % (rc, battle_complete(args.ledger_dir)))
-                if battle_complete(args.ledger_dir) or restarts >= args.max_restarts:
-                    if not battle_complete(args.ledger_dir):
+                log_event(runner_log, "EXIT", "rc=%s after progress complete=%s" % (rc, battle_complete(args.ledger_dir, runner_log)))
+                if battle_complete(args.ledger_dir, runner_log) or restarts >= args.max_restarts:
+                    if not battle_complete(args.ledger_dir, runner_log):
                         log_event(runner_log, "GIVEUP", "restarts=%d incomplete-exit" % restarts)
+                        notify_user("探隐 runner", "GIVEUP：战未毕且重启耗尽")
                     break
                 proc = relaunch(why="incomplete-exit resume")
                 continue
@@ -200,6 +315,7 @@ def main():
             log_event(runner_log, "EXIT", "rc=%s (idle)" % rc)
             if restarts >= args.max_restarts:
                 log_event(runner_log, "GIVEUP", "restarts=%d" % restarts)
+                notify_user("探隐 runner", "GIVEUP：战未毕且重启耗尽")
                 break
             proc = relaunch(why="resume")
             continue
@@ -209,11 +325,18 @@ def main():
             proc.wait()
             if restarts >= args.max_restarts:
                 log_event(runner_log, "GIVEUP", "restarts=%d after stall" % restarts)
+                notify_user("探隐 runner", "GIVEUP：stall 击杀后重启耗尽")
                 break
             proc = relaunch(why="after stall")
 
     rc = proc.poll()
     log_event(runner_log, "DONE", "final_rc=%s restarts=%d timeline=%d" % (rc, restarts, timeline_rows(args.ledger_dir)))
+    notify_user("探隐 runner", "战毕 DONE restarts=%d" % restarts)
+    if caffeinate_proc:
+        try:
+            caffeinate_proc.terminate()
+        except OSError:
+            pass
     return 0
 
 

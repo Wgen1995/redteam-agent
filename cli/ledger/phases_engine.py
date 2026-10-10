@@ -481,6 +481,50 @@ def _dup_gatefail(s, phase, assert_name, reason):
     return False
 
 
+def cmd_status(goal_dir, rest):
+    """v0.5a F1（架构专家项）：只读门态 API——读 timeline 推各门 PASS/FAIL/PENDING。
+
+    零断言零铸事件（b26 型轮询副作用的读侧根治）：每门取该门最后一个
+    gate-exit/gate-fail 事件定态；无事件=PENDING。--phase P 只出单门行。
+    rc=0 恒（可读即成功）；未知门=rc=2。"""
+    phase = None
+    for tok in rest:
+        if tok.startswith("--phase="):
+            phase = tok.split("=", 1)[1]
+        else:
+            sys.stderr.write("用法: tanyin-phases status --goal-dir D [--phase=P]\n")
+            return 2
+    seq = ["P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6"]
+    if phase is not None and phase not in seq:
+        sys.stderr.write("未知门: %s（九门=%s）\n" % (phase, "/".join(seq)))
+        return 2
+    last = {}
+    try:
+        with open(os.path.join(goal_dir, "timeline.tsv"), encoding="utf-8",
+                  errors="replace") as f:
+            for ln in f:
+                cols = ln.split("\t")
+                ev = cols[3] if len(cols) > 3 else ""
+                for p in seq:
+                    if ev.startswith("gate-exit:" + p + " ") or ev == "gate-exit:" + p:
+                        last[p] = "PASS"
+                    elif ev.startswith("gate-fail:" + p + " ") or ev == "gate-fail:" + p:
+                        last[p] = "FAIL"
+    except OSError:
+        pass
+    rows = 0
+    try:
+        with open(os.path.join(goal_dir, "timeline.tsv"), encoding="utf-8",
+                  errors="replace") as f:
+            rows = sum(1 for _ in f)
+    except OSError:
+        pass
+    targets = [phase] if phase else seq
+    for p in targets:
+        print("STATUS\tphase=%s\tresult=%s\ttl_rows=%d" % (p, last.get(p, "PENDING"), rows))
+    return 0
+
+
 def cmd_gate(goal_dir, rest):
     phase = ts = None
     for tok in rest:
@@ -1251,6 +1295,8 @@ def dispatch(sub, goal_dir, rest):
         return cmd_validate(rest)
     if sub == "gate":
         return cmd_gate(goal_dir, rest)
+    if sub == "status":
+        return cmd_status(goal_dir, rest)
     if sub == "denominator-ready":
         return cmd_denominator_ready(goal_dir, rest)
     if sub == "rebuild-state":
