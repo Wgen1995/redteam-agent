@@ -1361,3 +1361,23 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - 教训：keying 升级后应全量重结算存量战报再入统计（b30 两次载旧口径）。
 
 - **待办**： v0.7 余项——wall_clock 双轨、DENYLIST v2、runtime 全量迁移（战后）、vuln-agent 接线。
+
+
+---
+
+## 2026-10-11 v0.7b wall_clock 双轨（轻量事件轨）✓
+
+- `cli/ledger/wallclock.py`：`event_text/mint_wall_sync`（`clock-sync wall=<ISO> phase=<p> note=<n>` 走 phases_engine._append_event 同一门入哈希链）+`detect_gaps(rows, min_sec)` 纯函数（断连窗口机检——b31-34 型 2h 断连、b30 型 7h 冻结以后可机器报出）。6 测绿；旧账本零影响（无轨=空）。plan: plans/2026-10-11-v07b-wallclock.md
+- **接线待办**： battle.py init/launch/settle 铸点（本批未接——edit/write 工具面今日三度静默失灵拖时；下批战斗前接上，3 行）。
+
+## 用户设计输入 · vuln-agent 长任务不阻塞（v0.5 引擎接线关键约束，先入账）
+
+**问题**： 源码审计类引擎任务可能小时级——若 warrior 同步等待，渗透主流程停摆（用户 2026-10-11 提出）。
+
+**设计原则（异步总线，两段式）**：
+1. **提交即返回**： warrior 发 `engine-submit kind=vuln-audit target=<repo>` → 领任务号，立即继续渗透；引擎进程独立跑（自己的预算/timeline/wall 窗）。
+2. **领取不等待**： 后续回合 `engine-collect <id>` → ready 则入账（findings/intents），未 ready 返回进度而不阻塞。
+3. **超时显式化**： 任务带 wall 预算（借 v0.7b clock-sync 轨量真实墙钟），超时=显式 GIVEUP 事件，不悬挂。
+4. **账本两相性**： 提交=intent(kind=engine-task)入账；领取=事实/发现入账——链上永远看不出「卡等」。
+
+- **待办**： v0.7 余项（wall_clock 接线三行/DENYLIST v2/runtime 全量迁移）+引擎总线按上述四原则设计细化。
