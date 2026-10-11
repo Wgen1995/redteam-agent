@@ -9,24 +9,24 @@ table.dict{width:100%;border-collapse:collapse;margin-top:8px;background:#fff;fo
 .note{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin-top:14px;font-size:13px;color:#475569}
 footer{margin-top:26px;font-size:12px;color:#94a3b8;text-align:center}
 </style></head><body><div class="wrap">
-<h1>探隐 TanYin · 系统细图 v3<small>一人红队作战系统全景：两扇门+练兵场 → 看门狗 → 账本判据 → AI 指挥 → 度量飞轮 → 分发与引擎总线。✅ 已实现（三战实证）· 🟡 半成（已装未验）· 🔮 规划（已设计待批）。</small></h1>
+<h1>探隐 TanYin · 系统细图 v3<small>一人红队作战系统全景：两扇门+练兵场 → 看门狗 → 账本判据 → AI 指挥 → 度量飞轮 → 分发与引擎总线。✅ 已实现（多战实证）· 🟡 半成（已装未验）· 🔮 规划（已设计待批）。</small></h1>
 <div class="legend"><b>✅ 已实现</b>（有战例/测试背书）<b>🟡 半成</b>（装好未实战）<b>🔮 规划</b>（设计在册待批）<b>★</b> 人工触点（全场仅 1 处）</div>
 
 <h2 class="sec">一、三个入口：同一个战士，三种监督模式</h2>
 <p class="secsub">门A/门B 打真实目标；门C 只打靶场。门里干活的是同一个 AI 战士+同一套账本纪律，唯一区别是「监督员是谁」。</p>
 <div class="cards">
 <div class="card"><h3>门A · 直接对话 <span class="tag t-done">opencode ✅</span><span class="tag t-plan">Claude Code 🔮</span><span class="tag t-half">codex 🟡</span></h3><ul><li>您在聊天窗口说「用 tanyin 技能，对 X 开战，授权书在 Y」</li><li>AI 反问授权八问 → 您逐条答 → 开打</li><li>战中您可随时插话指挥、看它现场操作</li></ul><div class="who">监督员=您本人：它停了您点「继续」，它问您答</div></div>
-<div class="card"><h3>门B · 引擎托管 <span class="tag t-done">tanyin-runner ✅</span></h3><ul><li>一条命令 → 走人（真实项目/过夜跑推荐）</li><li>runner 替您值班：盯心跳 / 它停了替您点继续 / 断网拉起 / 假完成不认</li><li>战例：b24 断网击杀+三度点火零账损；b25 restarts=0 跑完</li></ul><div class="who">监督员=Python 看门狗（详见第三节）</div></div>
+<div class="card"><h3>门B · 引擎托管 <span class="tag t-done">tanyin-runner ✅</span></h3><ul><li>一条命令 → 走人（真实项目/过夜跑推荐）</li><li>runner 替您值班：盯心跳 / 它停了替您点继续 / 断网拉起 / 假完成不认</li><li>战例：b24 断网击杀零账损；b27 82 分钟全程无人看护 0.70</li></ul><div class="who">监督员=Python 看门狗（详见第三节）</div></div>
 <div class="card"><h3>门C · 靶场练兵 <span class="tag t-done">battle.py ✅</span></h3><ul><li>init / launch / watch / settle 四条命令开一场训练战</li><li>战毕自动评分（56 分母）+ 金样钉测防退化</li><li>四战成绩：0.70（单样本峰值）/ 0.66（稳定最优）/ 0.62 / 0.57</li></ul><div class="who">监督员=看门狗+评分器（全自动化程度最高）</div></div>
 </div>
 
 <h2 class="sec">二、五层结构总图（从外到内）</h2>
 <p class="secsub">战术归 AI、判据归账本、保活归 Python——三层互不越权；外面再包分发与度量。</p>
 <div class="nest">
-<div class="layer l1"><b>① 看门狗层 · tanyin-runner ✅（b10 四件套已上）</b><span>保活 · 判完成 · 救故障——完全不碰战术。心跳 30s ✅ / 停滞击杀 8min ✅ / 断点续跑 ✅ / 完成判据=gate-exit:P4（不认进程退出码）✅ / 分级击杀（SOFTSTALL 观察）✅b10 / 重启指数退避 ✅b10 / 战中指令注入 ✅b10 / 自适应监听 ✅b10</span></div>
-<div class="layer l2"><b>② 判据层 · 账本法 ✅</b><span>44 条 CLI 命令 · 哈希链防篡改 · 状态在盘（重启不丢）——管「跑得好不好」：真伪、清帐、覆盖、收敛。八表+九门细目见第四节</span></div>
+<div class="layer l1"><b>① 看门狗层 · tanyin-runner ✅（b10 四件套已上）</b><span>保活 · 判完成 · 救故障——完全不碰战术。心跳 30s ✅ / 停滞击杀 8min ✅ / 断点续跑 ✅ / 完成判据=gate-status 只读 API（v0.5a F1，不认进程退出码）✅ / 分级击杀 ✅b10 / 重启退避 ✅b10 / 战中指令注入 ✅b10 / 预算执法（超限收尾令+空账过门 gate-fail）✅v0.5a+v0.6a / LOGONLY-ALIVE 照亮 ✅ / ask:human WAIT 通道 ✅ / caffeinate+原生通知 ✅</span></div>
+<div class="layer l2"><b>② 判据层 · 账本法 ✅</b><span>45 条 CLI 命令 · 哈希链防篡改 · 状态在盘（重启不丢）——管「跑得好不好」：真伪、清帐、覆盖、收敛。八表+九门细目见第四节</span></div>
 <div class="layer l3"><b>③ AI 指挥层 · 技能战士 ✅</b><span>管「下一步打什么」，全权。SKILL.md 总控路由器 / phases 各门详令 / dict v3.14 漏洞字典 / BRIEF 30 面战书（0.66 的来源）/ 侦察+重放子代理</span></div>
-<div class="layer l4"><b>④ 度量与飞轮层 ✅</b><span>管「越改越强不退化」。评分器键控 v7 / 金样 G-r4→G-r26 钉测 / 套件 RC=0 / 复盘 RT-0001→0023（两条落律·一条对照实验裁决回滚）</span></div>
+<div class="layer l4"><b>④ 度量与飞轮层 ✅</b><span>管「越改越强不退化」。评分器键控 v8（*.range.local 域族剥壳） / 金样 G-r4→G-r26 钉测 / 套件 RC=0 / 复盘 RT-0001→0024（两条落律·一条对照实验裁决回滚）</span></div>
 <div class="layer l5"><b>⑤ 分发与引擎总线层（形态组合落地处）</b><span>分发面：opencode ✅ · codex 🟡装好未实战 · Claude Code 🔮 · DSH 插件 v0.3.0 ✅真API三面（单测6绿+profile三行挂载，headless 终验待跑）· 市场 🔮 ／ 引擎总线：web-blackbox（SKILL 型）✅ · vuln-agent 源码审计（CLI 型）🟡在册未接线 · session-viz（projector 型）✅ · 🔮 range v2 靶场升级</span></div>
 </div>
 
