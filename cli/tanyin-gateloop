@@ -20,6 +20,9 @@ import sys
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger.runtime import bootstrap  # v0.7：脚手架单源（试点）
+
+bootstrap(__file__)
 from ledger import watchdog as wd          # noqa: E402  b10 计算核
 from ledger import gateloop_core as gc      # noqa: E402  b11 纯函数核
 

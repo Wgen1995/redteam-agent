@@ -6,10 +6,10 @@
 import os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ledger.special import HANDLERS, REVERSE_VERIFY
-from ledger.core import ensure_utf8_stdio
+from ledger.runtime import bootstrap  # v0.7：脚手架单源（试点）
 
-ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
+bootstrap(__file__)
+from ledger.special import HANDLERS, REVERSE_VERIFY
 
 USAGE = "用法: tanyin-redact --goal-dir <dir> [--reverse-verify] [--target=<路径>]"
 
