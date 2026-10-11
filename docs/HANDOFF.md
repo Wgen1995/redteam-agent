@@ -1308,3 +1308,21 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 资产值内嵌 http:// 被 scope 剥壳误判（URL 参数编码形入账）/记账脚本须幂等（重跑=facts 三重写）/零熵墙三击换轨应更早 structural 披露。
 
 - **待办**： v0.6 余项不变+新增：无指令对照臂 N≥3（rerun 协议首跑）、指令双刃剑归因（慢速 vs 广度的预算分配实验）。
+
+
+---
+
+## ⏳ 进行中（跨会话状态——任何会话读到此处即接手）
+
+**双臂重跑实验·处置臂在跑**（2026-10-11 08:08 时点写入）：
+
+- **链**： `bash scripts/experiment_dualarm.sh > /tmp/dualarm3.log`（b38→b40 处置臂三战，每战 init/launch(caffeinate)/看护/settle；链日志在 /tmp **易失**——重启即没，但每战 settle-report 落 `~/.tanyin/battles/battle-N/` 持久）
+- **对照臂已齐（n=4）**： b29 0.64 / b30 0.66（keying v8 复算）/ b35 0.70 / b37 0.70——中位 0.68；b36 0.41（真低分非 keying）
+- **处置臂**： b28 0.46 已有；b38 跑步中（08:08 timeline=114），b39/b40 排队；预计 ~11:00 全毕
+- **收官四件事（链毕自动做；若 session 断了，读到这的你就做）**：
+  1. 双臂终局判决书： 池化 McNemar（rerun.mcnemar_exact）+mean±std（rerun.aggregate），对照组 `python3 scripts/rerun.py --reports ~/.tanyin/battles/battle-{38,39,40}/settle-report.txt`
+  2. HANDOFF 落帐+蓝图双胎（architecture-map-v3.md+tanyin-architecture-v3.html）补终局行
+  3. roadmap.html/techstack.html 加「探隐平台=自建自动化武器」一节（带真判决数字写）
+  4. commit+push
+- **注意**： 电脑重启=烧掉在打的战（已发生过一次，00:24 链死因）；处置臂指令模板=`battles/battle-28/directive.txt`
+- **新记账律（本条由来）**： 对话内承诺=账外承诺=违规——凡「待做/在跑/等结果」即刻镜像进本节，做完划走。
