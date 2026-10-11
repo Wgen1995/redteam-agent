@@ -1343,3 +1343,21 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 
 - **✅ 进行中节四件事全部完成划走**（判决书/落帐/roadmap 打通/push）。
 - **待办**： v0.7 候选——方差压缩器假设正式检验（每臂 N=5）、wall_clock 双轨、DENYLIST v2、runtime.py 抽取、vuln-agent 接线。
+
+
+---
+
+## 2026-10-11 v0.7a 双线批 · runtime 抽取试点 + N=5 补样（落账补写：本节原于 ef973c7 提交时被 edit 静默吞，现补）
+
+- 新 `cli/ledger/runtime.py`：bootstrap 单源脚手架（path 幂等+UTF-8 stdio）；试点迁移冷路径 tanyin-gateloop/tanyin-redact；3 测绿+冒烟 OK。
+- 坑记：assertIn 跨行连文陷阱；tools.write /tmp 第 3 次静默失灵（落盘必 grep 验）；**edit 亦静默失灵（本节）——批次收尾 grep 验证不可省**。
+- A 线 N=5 链：b41 对照 0.62（restarts=2）/ b42 处置 0.70（restarts=2，timeline=436）均 DONE。
+
+## 2026-10-11 v0.7a·N=5 终局判决（方差压缩器假设的死刑）
+
+- 对照 n=5=[0.41,0.64,0.66,0.70,0.70] mean 0.622 std 0.121；处置 n=5=[0.46,0.57,0.59,0.62,0.70] mean 0.588 std 0.087；b30 旧 settle 重绘算 0.66 修正口径。
+- Brown-Forsythe **F=0.052**（方差齐性成立，压缩器不复制）；池化 McNemar b=8 c=17 **p=0.108**（均值无差）。
+- 三层纠错链：单对 p=0.001=战间方差 → 3v3 压缩器幻觉（对照带宽系 b36 单点撑）→ n=5 定谔：**指令策略检出力内=彻底无效果**（不伤/不稳/不提分）。决策：默认无指令跑，指令仅按内容价值用。
+- 教训：keying 升级后应全量重结算存量战报再入统计（b30 两次载旧口径）。
+
+- **待办**： v0.7 余项——wall_clock 双轨、DENYLIST v2、runtime 全量迁移（战后）、vuln-agent 接线。
