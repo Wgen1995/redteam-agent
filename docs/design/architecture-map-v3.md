@@ -143,6 +143,8 @@ P5 报告 → P5.5 ★您签发★ → P6 沉淀    ▼
 | v0.4.x 诚实性加固 ✅ | 探针前置/重放全终态/approve HMAC/授权前移/settle 链断言/launch 透传/gate-fail 去重/链头锚定 anchor | 九维会诊 P0 批九项全落地（24 新测）；账本从防意外升级防故意：VERIFIED 非自证可落、审批持钥验签、无声改账须重写已推 git 史 |
 | v0.5a 执法与看护 ✅ | gate-status 只读 API/gateloop 预检三时机/budget 执法化（超限收尾令）/LOGONLY-ALIVE/ask:human WAIT 通道/caffeinate+通知+launchd/命令面单源红线/GT 出仓 | P1 前半 8 项（19 新测+SIM_PASS）；预算申报制→执法制、看门狗自身有看护、轮询噪声驱动侧根治 |
 | v0.5b 仿真补债+报告末程 ✅ | sim 四场景（+预算执法/ask 往返全链）/CVSS v3.1 计算器+FIX_MAP 10 锚/rerun N≥3 聚合协议 | 9 新测+四链 SIM_PASS；F3/F5 全链债清、修复建议最后一公里、n=1 叙事→统计面第一步 |
+| v0.6a 执法盲区+判决 ✅ | H1 预算门禁红线（空账过门=gate-fail assert=budget）/H2 多 EV 危害逐卡全量回显/H3 精确 McNemar 双尾 | b27 实锤「全程不铸预算=执法瞎」的机械根治（b28 即铸 7 行）；b27 0.70 vs b28 0.46 → p=0.000977 史上首份配对显著性判决——指令双刃剑战训（auth 聚焦赔广度 14:1） |
+| v0.6.1/.2 实验基建+keying v8 ✅ | 实验链（API 起飞前检查+零分疑云哨 SUSPECT_ZERO）/scorer *.range.local 域族剥壳 | 外部基建断连自动让路不烧战（b31-34 全灭教训）；b30/b36 双疑云零分破案复活（0.66/0.41）——战士记 FQDN vs GT 短名域形错位；双臂重跑实验对照臂 n=4 中位 0.68 |
 | v0.5 引擎接线 | vuln-agent 挂入总线 + codex 端到端一战 + Claude 模板 | 源码审计真实战果入同一本账 |
 | v0.6 range v2 | admin 墙+POST 世界扩面 | 56 分母升级+新金样锁基线 |
 
