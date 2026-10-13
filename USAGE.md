@@ -2,6 +2,27 @@
 
 > 一人红队 AI 自动化渗透平台。运行时无关（DSH / opencode / codex），账本为法，技能为术，引擎为骨。
 
+## 零、opencode 模型配置（异地跑战士前置，2026-10-11 补）
+
+**项目配置随仓走**（权限面）；**模型/供应商在全局配置**（不在仓内，含 key 不入库）：
+
+`~/.config/opencode/opencode.json` 最小可用块：
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "zhipuai-coding-plan": { "options": { "apiKey": "<您的 bigmodel key>" } }
+  },
+  "model": "zhipuai-coding-plan/glm-5.3",
+  "small_model": "zhipuai-coding-plan/glm-5-turbo"
+}
+```
+
+- **指定模型两法**：① 配置文件 `model` 字段设默认（battle.py 走这个）；② 手动跑时显式指定：`python3 cli/tanyin-runner start ... --model zhipuai-coding-plan/glm-5.3`（runner 转发 `opencode run --model`）。
+- **thinking 参数**：本平台未单独调 —— glm-5.3 经 coding-plan 端点推理默认开；若供应商列出思考变体名（如 `.../glm-5.3-thinking`），`opencode models` 可查全部可选名，按名指定即可。
+- 验证：`opencode run -m zhipuai-coding-plan/glm-5.3 "回一个 OK"` 出字=链路通。
+
 ## 一、新电脑安装（一次性，约 2 分钟）
 
 ```bash
