@@ -35,6 +35,40 @@ python3 cli/tanyin-ledger --help    # 出命令列表 = 安装成功
 - 打真实目标：**不需要 Docker**（出网管控=纯 Python 的 tanyin-egress/tanyin-guard）
 - 跑训练靶场/复现战报：需要 Docker
 
+## 一·五、参数速查表（2026-10-11 补）
+
+### tanyin-runner start —— 引擎托管（14 参数）
+
+| 参数 | 必填 | 默认 | 作用 |
+|---|---|---|---|
+| --cwd | ✓ | — | 作战目录 |
+| --prompt-file | ✓ | — | 任务书（八问答案形） |
+| --log | ✓ | — | 战士主日志 |
+| --ledger-dir | ✓ | — | 账本目录 |
+| --model | | None=opencode 默认 | 指定模型（供应商/型号） |
+| --max-restarts | | 5 | 死亡续跑上限 |
+| --stall-min | | 8.0 | 硬击杀阈值（分钟） |
+| --soft-stall-min | | 3.0 | 软停滞观察阈值（分钟） |
+| --backoff-base | | 30 | 重启退避基秒（×4ⁿ 封顶 480） |
+| --directive-file | | None | 战中指令控制文件（digest 变→带令续跑） |
+| --ask-file | | None | ask:human 问答通道文件 |
+| --tick-sec | | 30 | 心跳轮询周期（秒） |
+| --runner-log | | None | 看门狗自身日志 |
+| --caffeinate | | off | 防系统休眠 |
+
+### battle.py —— 靶场连战（4 子命令）
+
+```bash
+init    --n 26 --gen G-r27 [--brief 战书模板] [--boot-mode agent|det] [--dry-run]
+launch  --n 26 --gen G-r27 [--max-restarts 5] [--stall-min 8] [--soft-stall-min 3]
+                       [--backoff-base 30] [--caffeinate]   # runner 参数透传同上表
+watch   --n 26 --gen G-r27    # 实时进度，Ctrl-C 不影响战局
+settle  --n 26 --gen G-r27    # 战毕评分（56 分母召回+链验证）
+```
+
+--n=战号  --gen=世代号；首跑只碰 init/launch/settle 三个，其余全默认即战级配置。
+
+
 ## 二、开战（每次）
 
 ### 方式 1 · 引擎托管（推荐——无人值守）
