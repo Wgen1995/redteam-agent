@@ -73,8 +73,10 @@ class TestSupplyChain(unittest.TestCase):
                 {"key": "x", "version": "1", "sha256": "0" * 64, "sig": "00", "commit": ""}, PUB)
         finally:
             supply_chain.which = orig
+        # v0.7c 契约变更：openssl 缺席不再是 ENV 失败，而是纯库回落验签；
+        # 假签名（非真 DER）须 fail-closed 为 False 且理由落 pure- 面（非崩溃）。
         self.assertFalse(ok)
-        self.assertIn("openssl-missing", reason)
+        self.assertTrue(reason.startswith("pure-"), reason)
 
 
 if __name__ == "__main__":

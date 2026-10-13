@@ -30,12 +30,19 @@ def canonical_digest(entry):
 def verify_entry(entry, pubkey_pem):
     """返回 (ok, reason)；一切「不过」形态（含签名非 hex）=失败对非 raise——
     「不过=blocked」契约语义（批次 4 评审收尾 fail-closed 形式统一）。"""
-    if which("openssl") is None:
-        return False, "openssl-missing（ENV：安装 openssl 后复跑）"
     try:
         sig = bytes.fromhex(entry["sig"])
     except (ValueError, TypeError):
         return False, "sig 非 hex（fail-closed=blocked）: %r" % entry.get("sig", "")[:16]
+    if which("openssl") is None:
+        # v0.7c 零依赖回落：纯库 ECDSA 验签（与 openssl 交叉验证钉）；任何异常=fail-closed
+        try:
+            from . import ecdsa_verify
+            pub = open(pubkey_pem, encoding="utf-8").read()
+            ok = ecdsa_verify.verify_der_digest(pub, sig, canonical_digest(entry))
+            return ok, "pure-python-verify（openssl 缺席回落 v0.7c）"
+        except Exception as ex:  # noqa: BLE001
+            return False, "pure-verify-fail: %s" % ex
     with tempfile.TemporaryDirectory() as td:
         dg, sg = os.path.join(td, "d"), os.path.join(td, "s")
         open(dg, "wb").write(canonical_digest(entry))

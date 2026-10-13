@@ -95,7 +95,24 @@ def load_pub_pem(pem):
     return int.from_bytes(raw[1:33], "big"), int.from_bytes(raw[33:65], "big")
 
 
+def verify_der_digest(pub_pem, sig_der, digest):
+    """摘要直验（digest 已是 32B sha256——supply_chain canonical_digest 形）。"""
+    x, y = load_pub_pem(pub_pem)
+    r, s = _der_ints(sig_der)
+    if not (1 <= r < N and 1 <= s < N):
+        return False
+    z = int.from_bytes(digest, "big")
+    w = _inv(s, N)
+    u1 = z * w % N
+    u2 = r * w % N
+    pt = _padd(_pmul(u1, (GX, GY)), _pmul(u2, (x, y)))
+    if pt is None:
+        return False
+    return pt[0] % N == r
+
+
 def verify_der_sig(pub_pem, sig_der, message):
+    return verify_der_digest(pub_pem, sig_der, hashlib.sha256(message).digest())
     """ECDSA-P256 验签（msg 先 sha256）。True/False；格式坏=断言错（fail-loud）。"""
     x, y = load_pub_pem(pub_pem)
     r, s = _der_ints(sig_der)
