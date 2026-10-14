@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>探隐 vs ARTEX · 对比件</title><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;background:#f6f7f9;color:#1e293b;line-height:1.7}.wrap{max-width:1420px;margin:0 auto;padding:26px 20px 80px}h1{font-size:25px;color:#0f172a}h1 small{display:block;font-size:13px;color:#64748b;font-weight:400;margin-top:4px}h2.sec{font-size:19px;margin:34px 0 6px;color:#0f172a;border-left:5px solid #0d9488;padding-left:10px}p.secsub{font-size:13px;color:#64748b;margin-bottom:10px}.svgwrap{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px;overflow-x:auto;margin-bottom:8px}svg{min-width:900px;width:100%;height:auto;display:block}.prose{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px 22px;font-size:14px}.prose p{margin:10px 0}footer{margin-top:26px;font-size:12px;color:#94a3b8;text-align:center}</style></head><body><div class="wrap">
+<h1>探隐 vs ARTEX · 对比件（独立文件，探隐图集不含对比）<small>四图+逐条论证：同构对照 / 图法对比 / 三条后果链 / 决策树与终局——授权前提已确认，全部论据为技术事实</small></h1>
+<h2 class="sec">图A · 同构对照（同一条流水线，工位对工位）</h2><div class="svgwrap"><svg viewBox="0 0 1400 780" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="va" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker><marker id="vt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker></defs>
+<text x="30" y="30" font-size="15.5" font-weight="800" fill="#0f172a">图A · 同构对照：同一条作战流水线，两家在每个工位上的做法</text>
+<!-- ARTEX row -->
+<rect x="30" y="52" width="1340" height="300" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/>
+<text x="50" y="80" font-size="14" font-weight="800" fill="#1d4ed8">ARTEX（竞赛冠军 · 广度优化）</text>
+
+<rect x="50" y="96" width="242" height="118" rx="10" fill="#fff" stroke="#93c5fd" stroke-width="1.4"/>
+<text x="171" y="122" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">规划</text>
+<text x="171" y="150" text-anchor="middle" font-size="11" fill="#475569">planner 拆链</text>
+<text x="171" y="168" text-anchor="middle" font-size="11" fill="#475569">共享 todolist 分轮派</text>
+<text x="171" y="196" text-anchor="middle" font-size="12.5" font-weight="800" fill="#2563eb">✅ 强</text>
+<rect x="312" y="96" width="242" height="118" rx="10" fill="#fff" stroke="#93c5fd" stroke-width="1.4"/>
+<text x="433" y="122" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">执行</text>
+<text x="433" y="150" text-anchor="middle" font-size="11" fill="#475569">worker×N 并发</text>
+<text x="433" y="168" text-anchor="middle" font-size="11" fill="#475569">真工具+MITM 录流量</text>
+<text x="433" y="196" text-anchor="middle" font-size="12.5" font-weight="800" fill="#2563eb">✅ 强</text>
+<rect x="574" y="96" width="242" height="118" rx="10" fill="#fff" stroke="#93c5fd" stroke-width="1.4"/>
+<text x="695" y="122" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">记录</text>
+<text x="695" y="150" text-anchor="middle" font-size="11" fill="#475569">2 逻辑图落 1 个</text>
+<text x="695" y="168" text-anchor="middle" font-size="11" fill="#475569">可变 Postgres</text>
+<text x="695" y="196" text-anchor="middle" font-size="12.5" font-weight="800" fill="#b45309">⚠️ 给 LLM 看</text>
+<rect x="836" y="96" width="242" height="118" rx="10" fill="#fff" stroke="#93c5fd" stroke-width="1.4"/>
+<text x="957" y="122" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">验证</text>
+<text x="957" y="150" text-anchor="middle" font-size="11" fill="#475569">无独立重放</text>
+<text x="957" y="168" text-anchor="middle" font-size="11" fill="#475569">agent 自己写发现</text>
+<text x="957" y="196" text-anchor="middle" font-size="12.5" font-weight="800" fill="#dc2626">❌ 幻觉可进图</text>
+<rect x="1098" y="96" width="242" height="118" rx="10" fill="#fff" stroke="#93c5fd" stroke-width="1.4"/>
+<text x="1219" y="122" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">交付</text>
+<text x="1219" y="150" text-anchor="middle" font-size="11" fill="#475569">UI 报告+覆盖图</text>
+<text x="1219" y="168" text-anchor="middle" font-size="11" fill="#475569">无 GT 无统计</text>
+<text x="1219" y="196" text-anchor="middle" font-size="12.5" font-weight="800" fill="#dc2626">❌ 无测量</text>
+<line x1="292" y1="155" x2="308" y2="155" stroke="#2563eb" stroke-width="2.5" marker-end="url(#va)"/><line x1="554" y1="155" x2="570" y2="155" stroke="#2563eb" stroke-width="2.5" marker-end="url(#va)"/><line x1="816" y1="155" x2="832" y2="155" stroke="#2563eb" stroke-width="2.5" marker-end="url(#va)"/><line x1="1078" y1="155" x2="1094" y2="155" stroke="#2563eb" stroke-width="2.5" marker-end="url(#va)"/>
+<text x="50" y="250" font-size="12" fill="#334155">它的账是给 agent 用的工作记忆：合并成图方便 LLM 读态势——竞赛里这是对的（快抢分）</text>
+<text x="50" y="274" font-size="12" fill="#334155">风险链：发现由 agent 写图 → 无第二方复验 → 幻觉发现与真发现同形 → 直接进报告</text>
+<text x="50" y="298" font-size="12" fill="#334155">改库=改历史：Postgres 单点可变，无链无门，审计只能选择相信</text>
+<!-- 探隐 row -->
+<rect x="30" y="388" width="1340" height="300" rx="14" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.6"/>
+<text x="50" y="416" font-size="14" font-weight="800" fill="#0f766e">探隐（交付工程 · 签名优化）</text>
+
+<rect x="50" y="432" width="242" height="118" rx="10" fill="#fff" stroke="#5eead4" stroke-width="1.4"/>
+<text x="171" y="458" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">规划</text>
+<text x="171" y="486" text-anchor="middle" font-size="11" fill="#475569">AI 战士自主</text>
+<text x="171" y="504" text-anchor="middle" font-size="11" fill="#475569">+b10 指令可中途改向</text>
+<text x="171" y="532" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0d9488">✅ 实证 12 战</text>
+<rect x="312" y="432" width="242" height="118" rx="10" fill="#fff" stroke="#5eead4" stroke-width="1.4"/>
+<text x="433" y="458" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">执行</text>
+<text x="433" y="486" text-anchor="middle" font-size="11" fill="#475569">单战士+侦察/重放</text>
+<text x="433" y="504" text-anchor="middle" font-size="11" fill="#475569">子代理</text>
+<text x="433" y="532" text-anchor="middle" font-size="12.5" font-weight="800" fill="#b45309">⚠️ 并发弱</text>
+<rect x="574" y="432" width="242" height="118" rx="10" fill="#fff" stroke="#5eead4" stroke-width="1.4"/>
+<text x="695" y="458" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">记录</text>
+<text x="695" y="486" text-anchor="middle" font-size="11" fill="#475569">13 本 TSV+哈希链</text>
+<text x="695" y="504" text-anchor="middle" font-size="11" fill="#475569">十种边图法</text>
+<text x="695" y="532" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0d9488">✅ 给门看</text>
+<rect x="836" y="432" width="242" height="118" rx="10" fill="#fff" stroke="#5eead4" stroke-width="1.4"/>
+<text x="957" y="458" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">验证</text>
+<text x="957" y="486" text-anchor="middle" font-size="11" fill="#475569">P4 机械重放三态</text>
+<text x="957" y="504" text-anchor="middle" font-size="11" fill="#475569">无 VERIFIED=0 分</text>
+<text x="957" y="532" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0d9488">✅ 精度门</text>
+<rect x="1098" y="432" width="242" height="118" rx="10" fill="#fff" stroke="#5eead4" stroke-width="1.4"/>
+<text x="1219" y="458" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f172a">交付</text>
+<text x="1219" y="486" text-anchor="middle" font-size="11" fill="#475569">settle×56-GT</text>
+<text x="1219" y="504" text-anchor="middle" font-size="11" fill="#475569">McNemar 双臂</text>
+<text x="1219" y="532" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0d9488">✅ 可测量</text>
+<line x1="292" y1="491" x2="308" y2="491" stroke="#0d9488" stroke-width="2.5" marker-end="url(#vt)"/><line x1="554" y1="491" x2="570" y2="491" stroke="#0d9488" stroke-width="2.5" marker-end="url(#vt)"/><line x1="816" y1="491" x2="832" y2="491" stroke="#0d9488" stroke-width="2.5" marker-end="url(#vt)"/><line x1="1078" y1="491" x2="1094" y2="491" stroke="#0d9488" stroke-width="2.5" marker-end="url(#vt)"/>
+<text x="50" y="586" font-size="12" fill="#334155">我们的账是给门和评分器用的执法依据：拆成多本因为每本一条纪律（intents 不蒸发/supersedes 幂等/空账过门=gate-fail）</text>
+<text x="50" y="610" font-size="12" fill="#334155">保障链：发现→evidences 边→E-index 证据卡（原始请求响应+信标词）→P4 机械重放→无 VERIFIED 不计分→烂帐 0 分连坐</text>
+<text x="50" y="634" font-size="12" fill="#334155">审计链：timeline 哈希链改一行=断链可检；45 条 CLI 带前置校验，嘴说无效</text>
+<!-- 映射注 -->
+<text x="700" y="726" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">工位映射：planner≈AI战士 · worker×N↔单战士（它强） · 双图↔13账十边（我们细） · MITM↔E-index（我们可重放） · 无门↔九门 · 无测量↔battle</text>
+<text x="700" y="750" text-anchor="middle" font-size="12" fill="#94a3b8">它强在工位①②，我们强在工位③④⑤——交付的信誉恰好压在后三个工位上</text>
+</svg></div>
+<h2 class="sec">图B · 图法对比（边的词汇表）</h2><div class="svgwrap"><svg viewBox="0 0 1300 560" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif">
+<text x="30" y="30" font-size="15.5" font-weight="800" fill="#0f172a">图B · 图法对比：边的词汇表（左 ARTEX · 右 探隐）</text>
+<rect x="30" y="56" width="580" height="440" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+<text x="50" y="86" font-size="13.5" font-weight="800" fill="#1d4ed8">ARTEX：4 种边 + anchor（落可变 Postgres）</text>
+<text x="50" y="120" font-size="12.5" fill="#334155">spawns / yields / derived_from / proves（血缘四件套）</text>
+<text x="50" y="146" font-size="12.5" fill="#334155">anchors 桥表（意图/发现 ↔ 资产，仅展示覆盖度）</text>
+<text x="50" y="188" font-size="12" fill="#dc2626" font-weight="700">没有的语义：</text>
+<text x="50" y="212" font-size="12" fill="#64748b">✕ evidences——发现没有「出生证明」边（证据纪律无从谈起）</text>
+<text x="50" y="236" font-size="12" fill="#64748b">✕ supersedes——判决没有修正链（错了只能改库）</text>
+<text x="50" y="260" font-size="12" fill="#64748b">✕ scope-rel——资产不锚授权圈（范围执法不进图）</text>
+<text x="50" y="284" font-size="12" fill="#64748b">✕ attack / cross_ref</text>
+<text x="50" y="324" font-size="12" fill="#475569">边只是记录：写进库就完事，无幂等律、无蒸发律、无链</text>
+<text x="50" y="364" font-size="12.5" fill="#1d4ed8" font-weight="700">评价：血缘词汇正确（与我们不谋而合），但只是「记了」</text>
+<rect x="660" y="56" width="610" height="440" rx="14" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/>
+<text x="680" y="86" font-size="13.5" font-weight="800" fill="#0f766e">探隐：10 种边（方向由 _EDGE_DIR 强制，错向=Reject）</text>
+<text x="680" y="120" font-size="12.5" fill="#334155">血缘四件套（同名同语义）+ parent（资产树）+ attack（发现⇄资产）</text>
+<text x="680" y="144" font-size="12.5" fill="#334155">+ scope-rel（资产锚授权圈，圈外拒收=anchor 的执法版）+ cross_ref</text>
+<text x="680" y="186" font-size="12" fill="#0f766e" font-weight="700">多出的执法语义：</text>
+<text x="680" y="210" font-size="12" fill="#334155">✓ evidences：发现→E-index 证据卡（无 VERIFIED=不计分）</text>
+<text x="680" y="234" font-size="12" fill="#334155">✓ supersedes：发现→发现修正链（重复边幂等拒收）</text>
+<text x="680" y="258" font-size="12" fill="#334155">✓ intents 不蒸发律 → 图上无悬空意图</text>
+<text x="680" y="298" font-size="12" fill="#475569">每条边写入即进 timeline 哈希链；边被 viz_render 着色渲染</text>
+<text x="680" y="338" font-size="12.5" fill="#0f766e" font-weight="700">评价：同一套词汇，但每条边是法律不是便签</text>
+<rect x="330" y="520" width="640" height="34" rx="10" fill="#fffbeb" stroke="#b45309"/>
+<text x="650" y="542" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">结论：图的表达力我们是超集——它画得出关系，我们画得出责任</text>
+</svg></div>
+<h2 class="sec">图C · 三条后果链（幻觉/篡改/测量）</h2><div class="svgwrap"><svg viewBox="0 0 1300 500" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif">
+<text x="30" y="30" font-size="15.5" font-weight="800" fill="#0f172a">图C · 「直接用」的三条后果链——每条都是机制推演，不是观点</text>
+
+<rect x="30" y="60" width="400" height="380" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/>
+<text x="230" y="92" text-anchor="middle" font-size="14.5" font-weight="800" fill="#0f172a">① 幻觉链</text>
+<text x="230" y="124" text-anchor="middle" font-size="11.5" fill="#334155">agent 写发现</text><text x="230" y="142" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="230" y="158" text-anchor="middle" font-size="11.5" fill="#334155">无第二方复验</text><text x="230" y="176" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="230" y="192" text-anchor="middle" font-size="11.5" fill="#334155">幻觉与真发现同形</text><text x="230" y="210" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="230" y="226" text-anchor="middle" font-size="11.5" fill="#334155">假发现进客户报告</text><text x="230" y="244" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="230" y="260" text-anchor="middle" font-size="11.5" fill="#334155">信誉一次性破产</text>
+<text x="230" y="324" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">探隐断点：evidences 边+P4 机械重放+无 VERIFIED=0 分（烂帐连坐逼战士自纠）</text>
+<rect x="450" y="60" width="400" height="380" rx="14" fill="#fffbeb" stroke="#b45309" stroke-width="1.6"/>
+<text x="650" y="92" text-anchor="middle" font-size="14.5" font-weight="800" fill="#0f172a">② 篡改链</text>
+<text x="650" y="124" text-anchor="middle" font-size="11.5" fill="#334155">单点可变 Postgres</text><text x="650" y="142" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="650" y="158" text-anchor="middle" font-size="11.5" fill="#334155">有库权限即可改史</text><text x="650" y="176" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="650" y="192" text-anchor="middle" font-size="11.5" fill="#334155">审计只能选择相信</text><text x="650" y="210" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="650" y="226" text-anchor="middle" font-size="11.5" fill="#334155">交付不可辩护</text>
+<text x="650" y="290" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">探隐断点：timeline 哈希链（改一行断链可检）+45 条 CLI 前置校验（嘴说无效）</text>
+<rect x="870" y="60" width="400" height="380" rx="14" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.6"/>
+<text x="1070" y="92" text-anchor="middle" font-size="14.5" font-weight="800" fill="#0f172a">③ 测量链</text>
+<text x="1070" y="124" text-anchor="middle" font-size="11.5" fill="#334155">从未测过召回/精度</text><text x="1070" y="142" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="1070" y="158" text-anchor="middle" font-size="11.5" fill="#334155">换工具=盲换</text><text x="1070" y="176" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="1070" y="192" text-anchor="middle" font-size="11.5" fill="#334155">无法给承诺</text><text x="1070" y="210" text-anchor="middle" font-size="10" fill="#94a3b8">▼</text><text x="1070" y="226" text-anchor="middle" font-size="11.5" fill="#334155">出问题无法归因</text>
+<text x="1070" y="290" text-anchor="middle" font-size="11" font-weight="700" fill="#0f766e">探隐断点：56-GT 分母召回×12 战+McNemar+双臂——每次改动都有判决</text>
+<text x="650" y="480" text-anchor="middle" font-size="12" fill="#64748b">三条链的共同点：竞赛场景都不罚（快抢分就赢），交付场景都致命——这就是目标函数差异</text>
+</svg></div>
+<h2 class="sec">图D · 决策树与终局合体</h2><div class="svgwrap"><svg viewBox="0 0 1300 560" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="da" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+<text x="30" y="30" font-size="15.5" font-weight="800" fill="#0f172a">图D · 决策树：什么时候直接用，什么时候必须自己建，终局怎么合</text>
+<rect x="490" y="56" width="320" height="56" rx="12" fill="#f8fafc" stroke="#64748b" stroke-width="1.8"/>
+<text x="650" y="80" text-anchor="middle" font-size="13" font-weight="800" fill="#0f172a">这活儿的产出要「签名」吗？</text>
+<text x="650" y="100" text-anchor="middle" font-size="11" fill="#64748b">（进客户报告 / 过审计 / 定 SLA）</text>
+<line x1="560" y1="112" x2="330" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#da)"/><text x="380" y="130" font-size="11.5" font-weight="700" fill="#2563eb">否——演示/靶场/资产广扫</text>
+<line x1="740" y1="112" x2="970" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#da)"/><text x="890" y="130" font-size="11.5" font-weight="700" fill="#dc2626">是——授权交付</text>
+<rect x="130" y="164" width="400" height="110" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/>
+<text x="330" y="192" text-anchor="middle" font-size="13" font-weight="800" fill="#1d4ed8">→ 直接用 ARTEX 合理 ✅</text>
+<text x="330" y="218" text-anchor="middle" font-size="11.5" fill="#475569">内部靶场演练（作者允许的隔离环境）</text>
+<text x="330" y="240" text-anchor="middle" font-size="11.5" fill="#475569">大面资产 recon · UI 演示 · 并发广扫</text>
+<text x="330" y="262" text-anchor="middle" font-size="11.5" fill="#475569">用它的产出前，过我方 E-index 重放验证</text>
+<rect x="770" y="164" width="400" height="110" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/>
+<text x="970" y="192" text-anchor="middle" font-size="13" font-weight="800" fill="#b91c1c">→ 必须自己建 ❌换不得</text>
+<text x="970" y="218" text-anchor="middle" font-size="11.5" fill="#475569">精度门/哈希链/九门/测量层=签名能力本体</text>
+<text x="970" y="240" text-anchor="middle" font-size="11.5" fill="#475569">深度改造它=AGPL 传染（改码提供服务须开源）</text>
+<text x="970" y="262" text-anchor="middle" font-size="11.5" fill="#475569">12 战数据/技能/图法沉淀在自己的飞轮里</text>
+<line x1="330" y1="274" x2="560" y2="330" stroke="#475569" stroke-width="2" marker-end="url(#da)"/>
+<line x1="970" y1="274" x2="740" y2="330" stroke="#475569" stroke-width="2" marker-end="url(#da)"/>
+<rect x="330" y="334" width="640" height="120" rx="12" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
+<text x="650" y="364" text-anchor="middle" font-size="14" font-weight="800" fill="#0f766e">终局：合体（广度归它 · 签名归我）</text>
+<text x="650" y="392" text-anchor="middle" font-size="12" fill="#334155">ARTEX 当广度引擎（外挂进程，只读边界）→ 产假设不产发现</text>
+<text x="650" y="414" text-anchor="middle" font-size="12" fill="#334155">→ 探隐 intents 层裁决 → evidences/P4 重放 → 哈希链落账 → settle 计分</text>
+<text x="650" y="442" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">前置关卡：靶场同题对打 n=3（56-GT 同 scorer）——用数据定挂不挂它的引擎层</text>
+<text x="650" y="500" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">一句话：直接用=拿它的强度换走你的信誉；自己建+借脑=强度可借，信誉不押</text>
+<text x="650" y="528" text-anchor="middle" font-size="11.5" fill="#94a3b8">授权前提已确认（用户澄清）——本决策纯技术依据，与目标授权无关</text>
+</svg></div>
+
+<h2 class="sec">为什么不直接用 · 逐条展开（机制级）</h2>
+<div class="prose">
+<p><b>1. 精度门：它的发现没有「出生证明」。</b>ARTEX 的 finding 由 agent 直接写进图，流量录制是被动留痕——录了不等于验了。同一个图里，幻觉发现和真发现在数据形状上完全一致，没有任何机器闸门能区分。探隐里这条边叫 evidences（发现→E-index 证据卡），证据卡带原始请求响应+信标词，P4 阶段机械重放出 VERIFIED/FAILED/ERROR 三态，settle 评分器只认 VERIFIED——且烂帐 0 分连坐，逼战士自纠。直接换用=把这个闸门整个拆掉，客户报告里的每一条都退回「你信不信 AI」。</p>
+<p><b>2. 审计性：它的历史是可改的。</b>单点 Postgres，有库权限的人一句话改史，无链无门无痕迹。渗透交付恰恰是要对账的场景——客户问「这个发现什么时候、凭什么、谁批的」，探隐的回答是哈希链（改一行断链可检）+45 条带前置校验的 CLI（嘴说无效）+approvals 签发表。这不是 paranoid，是职业报告的辩护状。</p>
+<p><b>3. 测量：它不知道自己多少分。</b>ARTEX 从未对自己的召回/精度做过 GT 测量——竞赛名次分母未知。探隐 56-GT 分母召回 ×12 战、McNemar 显著性、双臂协议、N=5 判决链。换工具=从「知道自己 0.59-0.70」退到「不知道自己是多少」。更关键的是：没有测量就没有归因——它哪天表现差了，你说不清是模型、是策略还是目标变了。</p>
+<p><b>4. AGPL 在「深度定制」处收紧。</b>不改直接用没事；但把它接进你的流程、改它的 planner/报告/集成（必然发生），修改版经网络提供服务就须对用户开源整个修改版。对公司红队，等于武器库永远不能私有进化。借思想零风险，借代码交出主权。</p>
+<p><b>5. 沉淀的方向。</b>我们的每一场改进（keying v8、b10 指令、图法、战报）都复利进自己的资产；在它上面改进=给别人的路线图打工。12 战实验方法论本身就是探隐独有的、ARTEX 完全没有的能力。</p>
+<p><b>6. 诚实的反面：它有三处确实比我们强，且值得直接用。</b>worker×N 并发广度、资产图+覆盖度的成熟度、产品工程（自更新/通知/LLM 池）。所以终局不是替换是合体：它当广度引擎（外挂只读），产假设进我们的 intents 层裁决落账——强度可借，签名不押。合体前先打靶场对标（n=3 同 scorer），让数据说话。</p>
+</div>
+<footer>对比件 · 2026-10-11 · 与探隐图集（tanyin-atlas.html）/ ARTEX 图集（artex-analysis.html）分离存放 · 决策文字版 docs/research/2026-10-11-artex-vs-tanyin.md</footer>
+</div></body></html>
