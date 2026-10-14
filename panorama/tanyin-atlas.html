@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>探隐 TanYin · 架构图集 × 定位体检</title><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;background:#f6f7f9;color:#1e293b;line-height:1.65}.wrap{max-width:1420px;margin:0 auto;padding:26px 20px 80px}h1{font-size:25px;color:#0f172a}h1 small{display:block;font-size:13px;color:#64748b;font-weight:400;margin-top:4px}h2.sec{font-size:19px;margin:34px 0 6px;color:#0f172a;border-left:5px solid #0d9488;padding-left:10px}p.secsub{font-size:13px;color:#64748b;margin-bottom:10px}.svgwrap{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px;overflow-x:auto;margin-bottom:8px}svg{min-width:900px;width:100%;height:auto;display:block}.note{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin-top:14px;font-size:13px;color:#475569}footer{margin-top:26px;font-size:12px;color:#94a3b8;text-align:center}</style></head><body><div class="wrap">
-<h1>探隐 TanYin · 架构图集 × 定位体检<small>同款于 panorama/artex-analysis.html（ARTEX 图集）——四张矢量图回答：我们是不是四不像 · 作战心脏长什么样 · 13 本账为什么拆 · 终局怎么和 ARTEX 合体</small></h1>
+<h1>探隐 TanYin · 架构图集 × 定位体检<small>四张矢量图自述：分层体检（是不是四不像）· 九门心脏 · 13 本账为什么拆 · 十种边的知识图谱</small></h1>
 <h2 class="sec">图 1 · 分层架构 +「四不像」体检</h2><p class="secsub">三层互不越权 + 分发圈 + 度量圈；四个名字（opencode/python/claude-code/DSH）各是各的层</p><div class="svgwrap"><svg viewBox="0 0 1200 620" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker></defs>
 <text x="30" y="28" font-size="15" font-weight="700" fill="#0f172a">图1 · 探隐分层架构：三层互不越权 + 外面两圈（分发·度量）——每个部件一句话说得清</text>
 <rect x="30" y="46" width="830" height="86" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.6"/><text x="445" y="94" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">① AI 战士层（拳头 · 可换）,opencode 跑 glm-5.3（12 战实证宿主）· 技能跨宿主（codex 已配/claude 待需）· 战术归 AI</text>
@@ -69,23 +69,10 @@ N=5 判决链（×12 战实绩）</text>
 <rect x="30" y="290" width="1140" height="80" rx="12" fill="#f8fafc" stroke="#64748b" stroke-width="1.4"/>
 <text x="600" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">仓外战场（~/.tanyin）：battles 战报 · settle 报告 · GT 真值(56 分母) —— 与仓库分离，防评测数据污染代码库</text>
 <text x="600" y="346" text-anchor="middle" font-size="11.5" fill="#64748b">统计链：单对 p=0.001 → 3v3 方差压缩 → N=5 终审（教训：b30/b36 换 keying 必须全量重结算再进统计）</text>
-<text x="30" y="410" font-size="12.5" font-weight="700" fill="#0f766e">对照 ARTEX：它 2 个逻辑图落 1 个可变 Postgres（给 agent 用的工作记忆）；我们 13 本账+链（给门/评分器/审计用的执法依据）——运行态它合并得对，审计态我们拆得对。</text>
+<text x="30" y="410" font-size="12.5" font-weight="700" fill="#0f766e"></text>
 <text x="30" y="440" font-size="11.5" fill="#64748b">TSV 而非 DB：零依赖部署律 + git 可 diff 账本 + 哈希链不需要数据库——这是刻意选型，不是落后。</text>
 </svg></div>
-<h2 class="sec">图 4 · 终局合体（与 ARTEX 图集呼应）</h2><p class="secsub">运行态合并、审计态分离；v0.8 行动清单待开</p><div class="svgwrap"><svg viewBox="0 0 1200 540" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="c1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker><marker id="c2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
-<text x="30" y="28" font-size="15" font-weight="700" fill="#0f172a">图4 · 终局合体：ARTEX 当广度引擎，探隐当裁判——运行态合并，审计态分离</text>
-<rect x="30" y="50" width="1140" height="92" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/><text x="600" y="101" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">ARTEX 引擎层（广度 · 运行态）,planner+worker×N 并发 · 资产图 · 过程级互查 · llmpool failover——它自己的 Postgres 当工作记忆，随便它合并</text>
-<line x1="600" y1="142" x2="600" y2="170" stroke="#dc2626" stroke-width="1.8"  marker-end="url(#c1)"/>
-<text x="790" y="162" font-size="11.5" fill="#b91c1c" font-weight="700">引擎产假设不产发现（fusion 既定律）</text>
-<rect x="30" y="172" width="1140" height="84" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/><text x="600" y="219" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">探隐 intents 层（裁判 · 审计态）,意图池统一排序 · engine-hyp 配额≤40% 保自主广度 · prereq 门控（v0.8b todolist 稳定器落此）</text>
-<line x1="600" y1="256" x2="600" y2="284" stroke="#475569" stroke-width="1.8"  marker-end="url(#c2)"/>
-<rect x="30" y="286" width="1140" height="92" rx="10" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.6"/><text x="600" y="337" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">探隐 13 账+九门（签名 · 审计态）,重放三态+精度门 · timeline 哈希链 · budget 执法 · battle 度量——每个产出落账，签得了名</text>
-<rect x="30" y="410" width="1140" height="60" rx="10" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
-<text x="600" y="436" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b45309">前置关卡：靶场对标 n=3（同 56-GT 同 scorer）——数据定「挂它的引擎层」还是「只借机制（v0.8a/b/c）」</text>
-<text x="600" y="458" text-anchor="middle" font-size="11.5" fill="#78350f">AGPL：借思想不借代码——学机制零风险，抄代码=我们整体开源</text>
-<text x="30" y="510" font-size="11.5" fill="#64748b">v0.8 行动清单（已呈批待「开」）：a=llmpool failover · b=chain todolist 稳定器 · c=trace-search · d-f=中期（MITM/retester/锚点）</text>
-</svg></div>
-<h2 class="sec">图 5 · 知识图谱深图（十种边实律）</h2><p class="secsub">节点=九表行 · 边方向代码强制 · 每条边被门执法——ARTEX 图词汇的真超集</p><div class="svgwrap"><svg viewBox="0 0 1280 880" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif">
+<h2 class="sec">图 4 · 知识图谱深图（十种边实律）</h2><p class="secsub">节点=九表行 · 边方向代码强制 · 每条边被门执法——探隐自己的图法</p><div class="svgwrap"><svg viewBox="0 0 1280 880" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif">
 <defs>
 <marker id="e-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker>
 <marker id="e-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
@@ -93,12 +80,12 @@ N=5 判决链（×12 战实绩）</text>
 <marker id="e-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
 <marker id="e-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
 </defs>
-<text x="30" y="30" font-size="15.5" font-weight="800" fill="#0f172a">探隐知识图谱 · 十种边（write_cmds.py:106 实律）——ARTEX 双图的超集，每条边都被门执法</text>
-<text x="30" y="52" font-size="11.5" fill="#64748b">节点=九表的行；边方向由代码强制（错向=Reject）；颜色：青=探索血缘(ARTEX 同名 4 种) · 红=证据/判决 · 琥珀=资产 · 蓝=授权 · 灰虚=仓外度量</text>
+<text x="30" y="30" font-size="15.5" font-weight="800" fill="#0f172a">探隐知识图谱 · 十种边（write_cmds.py:106 实律）——每条边都被门执法</text>
+<text x="30" y="52" font-size="11.5" fill="#64748b">节点=九表的行；边方向由代码强制（错向=Reject）；颜色：青=探索血缘 · 红=证据/判决 · 琥珀=资产 · 蓝=授权 · 灰虚=仓外度量</text>
 
 <!-- 探索血缘链 -->
 <rect x="30" y="70" width="700" height="330" rx="14" fill="#f0fdfa" stroke="#0d9488" stroke-dasharray="6,4" stroke-width="1.2"/>
-<text x="50" y="96" font-size="13" font-weight="800" fill="#0f766e">探索图（≈ARTEX 探索图 · 4 种边同名同语义）</text>
+<text x="50" y="96" font-size="13" font-weight="800" fill="#0f766e">探索图（血缘链：目标→意图→事实→发现）</text>
 <rect x="60" y="130" width="130" height="52" rx="9" fill="#fff" stroke="#0d9488" stroke-width="1.6"/><text x="125" y="152" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f172a">goals</text><text x="125" y="169" text-anchor="middle" font-size="10" fill="#64748b">目标</text>
 <rect x="260" y="130" width="130" height="52" rx="9" fill="#fff" stroke="#0d9488" stroke-width="1.6"/><text x="325" y="152" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f172a">intents</text><text x="325" y="169" text-anchor="middle" font-size="10" fill="#64748b">意图·不许蒸发</text>
 <rect x="470" y="130" width="130" height="52" rx="9" fill="#fff" stroke="#0d9488" stroke-width="1.6"/><text x="535" y="152" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f172a">facts</text><text x="535" y="169" text-anchor="middle" font-size="10" fill="#64748b">事实·要么消费要么弃</text>
@@ -114,7 +101,7 @@ N=5 判决链（×12 战实绩）</text>
 
 <!-- 证据层 -->
 <rect x="30" y="420" width="700" height="120" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-dasharray="6,4" stroke-width="1.2"/>
-<text x="50" y="446" font-size="13" font-weight="800" fill="#b91c1c">证据层（ARTEX 没有的边①）</text>
+<text x="50" y="446" font-size="13" font-weight="800" fill="#b91c1c">证据层（证据出生证明）</text>
 <rect x="60" y="462" width="190" height="56" rx="9" fill="#fff" stroke="#dc2626" stroke-width="1.6"/><text x="155" y="484" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f172a">E-index 证据卡</text><text x="155" y="501" text-anchor="middle" font-size="10" fill="#64748b">原始请求响应+信标词·可重放</text>
 <line x1="325" y1="352" x2="230" y2="462" stroke="#dc2626" stroke-width="2" marker-end="url(#e-red)"/>
 <text x="240" y="415" font-size="10.5" font-weight="700" fill="#b91c1c">evidences（无 VERIFIED 不计分 ← 精度门在此）</text>
@@ -124,7 +111,7 @@ N=5 判决链（×12 战实绩）</text>
 
 <!-- 资产图 -->
 <rect x="760" y="70" width="490" height="330" rx="14" fill="#fffbeb" stroke="#b45309" stroke-dasharray="6,4" stroke-width="1.2"/>
-<text x="780" y="96" font-size="13" font-weight="800" fill="#b45309">资产图（≈ARTEX 资产图 · parent 建树）</text>
+<text x="780" y="96" font-size="13" font-weight="800" fill="#b45309">资产图（parent 建树）</text>
 <rect x="790" y="120" width="150" height="46" rx="9" fill="#fff" stroke="#b45309" stroke-width="1.6"/><text x="865" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">assets</text><text x="865" y="156" text-anchor="middle" font-size="10" fill="#64748b">域名/服务/端点/IP</text>
 <rect x="1000" y="200" width="150" height="46" rx="9" fill="#fff" stroke="#b45309" stroke-width="1.6"/><text x="1075" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">assets 子层</text><text x="1075" y="236" text-anchor="middle" font-size="10" fill="#64748b">子域→服务→端点</text>
 <line x1="905" y1="166" x2="1055" y2="198" stroke="#b45309" stroke-width="2" marker-end="url(#e-amber)"/><text x="955" y="180" font-size="10.5" font-weight="700" fill="#b45309">parent</text>
@@ -134,13 +121,13 @@ N=5 判决链（×12 战实绩）</text>
 <!-- scope-rel -->
 <rect x="790" y="280" width="180" height="52" rx="9" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/><text x="880" y="302" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f172a">scope</text><text x="880" y="319" text-anchor="middle" font-size="10" fill="#64748b">include/exclude/oob</text>
 <line x1="880" y1="166" x2="880" y2="278" stroke="#2563eb" stroke-width="2" marker-end="url(#e-blue)"/>
-<text x="890" y="230" font-size="10.5" font-weight="700" fill="#1d4ed8">scope-rel（ARTEX 没有②：</text>
-<text x="890" y="245" font-size="10.5" font-weight="700" fill="#1d4ed8">每资产锚定授权圈=anchor 的执法版）</text>
+<text x="890" y="230" font-size="10.5" font-weight="700" fill="#1d4ed8">scope-rel：</text>
+<text x="890" y="245" font-size="10.5" font-weight="700" fill="#1d4ed8">每资产锚定授权圈（圈外=拒）</text>
 <text x="780" y="375" font-size="11" fill="#78350f">cross_ref（第 10 种边）：任意表间自由互引——侦察线索 ↔ 知识库先例 ↔ 战例</text>
 
 <!-- 度量层 -->
 <rect x="760" y="420" width="490" height="120" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="6,4" stroke-width="1.2"/>
-<text x="780" y="446" font-size="13" font-weight="800" fill="#475569">仓外度量层（ARTEX 整层没有）</text>
+<text x="780" y="446" font-size="13" font-weight="800" fill="#475569">仓外度量层（settle × GT × 统计）</text>
 <rect x="790" y="462" width="200" height="56" rx="9" fill="#fff" stroke="#94a3b8" stroke-width="1.6"/><text x="890" y="484" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f172a">battle settle</text><text x="890" y="501" text-anchor="middle" font-size="10" fill="#64748b">56-GT 召回 ×12 战</text>
 <rect x="1020" y="462" width="200" height="56" rx="9" fill="#fff" stroke="#94a3b8" stroke-width="1.6"/><text x="1120" y="484" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f172a">GT 真值+统计</text><text x="1120" y="501" text-anchor="middle" font-size="10" fill="#64748b">McNemar/Levene/N=5</text>
 <line x1="990" y1="490" x2="1016" y2="490" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#e-gray)"/>
@@ -149,16 +136,16 @@ N=5 判决链（×12 战实绩）</text>
 
 <!-- 对照结论 -->
 <rect x="30" y="570" width="1220" height="150" rx="12" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.6"/>
-<text x="50" y="600" font-size="13.5" font-weight="800" fill="#0f172a">图法对照结论：ARTEX 的图词汇我们是真超集</text>
-<text x="50" y="628" font-size="12" fill="#334155">· <tspan font-weight="700" fill="#0f766e">同名同语义 4 种</tspan>：spawns / yields / derived_from / proves —— 血缘 vocabulary 完全一致（不谋而合，两边的领域正确性互证）</text>
-<text x="50" y="652" font-size="12" fill="#334155">· <tspan font-weight="700" fill="#b45309">等价升级 2 种</tspan>：parent ≈ 它的资产树；scope-rel ≈ 它的 anchors——但我们的锚的是授权圈且被门执法（圈外=拒），它锚的是覆盖度（仅展示）</text>
-<text x="50" y="676" font-size="12" fill="#334155">· <tspan font-weight="700" fill="#b91c1c">它没有的 4 种</tspan>：evidences（证据出生证明）/ supersedes（判决修正链·幂等）/ attack（打点关系）/ cross_ref（自由互引）</text>
-<text x="50" y="700" font-size="12" fill="#334155">· <tspan font-weight="700" fill="#475569">整层差距</tspan>：仓外度量层（settle×GT×统计）——图不止画出来，还要被评分器回放计分，这是「签名能力」的图论根基</text>
+<text x="50" y="600" font-size="13.5" font-weight="800" fill="#0f172a">图法要点：十种边一张图</text>
+<text x="50" y="628" font-size="12" fill="#334155">· <tspan font-weight="700" fill="#0f766e">探索血缘 4 种</tspan>：spawns / yields / derived_from / proves —— 目标派生意图、意图产事实、事实反哺新意图、意图证明发现</text>
+<text x="50" y="652" font-size="12" fill="#334155">· <tspan font-weight="700" fill="#b45309">资产与授权 3 种</tspan>：parent（资产树）· attack（发现⇄资产打点）· scope-rel（资产锚授权圈，圈外拒收）</text>
+<text x="50" y="676" font-size="12" fill="#334155">· <tspan font-weight="700" fill="#b91c1c">证据与判决 2 种</tspan>：evidences（发现→证据卡，无 VERIFIED 不计分）/ supersedes（发现→发现修正链，幂等拒收）</text>
+<text x="50" y="700" font-size="12" fill="#334155">· <tspan font-weight="700" fill="#475569">第 10 种 + 度量层</tspan>：cross_ref 任意表自由互引；仓外 settle×GT×统计对图回放计分——图不止被画，还被评分器复算</text>
 
 <text x="30" y="760" font-size="11.5" fill="#64748b">执法注记：十种边的方向由 _EDGE_DIR 强制（错向 Reject）· supersedes 重复边幂等拒收 · intents 不蒸发律使图无悬空意图 · 每条边写入即入 timeline 哈希链</text>
 <text x="30" y="782" font-size="11.5" fill="#94a3b8">已渲染入口：session-viz（账本只读可视化 · viz_render.py 同十种边着色：attack 金/cross_ref 虚/supersedes 点/candidate 半透明）</text>
 </svg></div>
 
 <div class="note"><b>体检结论</b>：①opencode（躯壳，12 战实证）②python（脊柱+保姆，零依赖律）③账本（灵魂）——三层契约清晰不杂；claude-code 是唯一虚位（建议砍到有真需求再立）；DSH 是驾驶舱不是产品。「四不像」的观感来自四个名字都在对话里出现，但产品里只有 1+2+3。</div>
-<footer>探隐架构图集 · 2026-10-11 · 事实源 docs/design/architecture-map-v3.md + 本会话实勘 · 姊妹篇 panorama/artex-analysis.html</footer>
+<footer>探隐架构图集 · 2026-10-11 · 事实源 docs/design/architecture-map-v3.md + write_cmds.py 实勘 · 对比研究另见 docs/research/</footer>
 </div></body></html>
