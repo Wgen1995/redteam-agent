@@ -1381,3 +1381,10 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 4. **账本两相性**： 提交=intent(kind=engine-task)入账；领取=事实/发现入账——链上永远看不出「卡等」。
 
 - **待办**： v0.7 余项（wall_clock 接线三行/DENYLIST v2/runtime 全量迁移）+引擎总线按上述四原则设计细化。
+
+
+## 2026-10-11 · 目标形态+语言律批准（决策日）
+- 用户批准四面一体形态（观察/武器/控制/引擎+可选 DSH 薄桥）与「Python stdlib+Web 原生」语言律 → docs/design/tanyin-target-form.md（含排除项与可证伪触发器）。
+- 首份实施计划： docs/superpowers/plans/2026-10-11-tanyin-web-skeleton.md（v0.9a 六任务 TDD）。
+- 决策链存档： DSH=遥控器非底盘；API 直连=窄调用做/全自持挂三触发器；ARTEX 借脑映射在 artex-deep-dive/0-index.md。
+- 待开： v0.8 借脑三件套（呈批中）与 v0.9a（计划已就绪）——两者独立可并行。
