@@ -491,11 +491,49 @@ _INTENT_ARROWS = {
 }
 
 
-def _set_intent_status(goal_dir, rest):
-    args = _parse(rest, {"id", "status", "reason", "activation", "approval", "timestamp", "phase"})
-    _req(args, ["id", "status", "timestamp"])
-    ctx = Ctx(goal_dir)
-    ctx.tier0()
+# v0.8 Task B·前置链基础件 ------------------------------------------------
+# prereq 虚拟列（探知注记 13）：13 表列集冻结（schemas.json 机械生成禁手改+28 夹具
+# 17 列）→ prereq 以 detail 单元格内 [prereq:INT-…] 标记承载，先例=批次 7 T13
+# facts [no-consume:] 标记（列集冻结→自由文本唯一承载位）。默认无标记=无前置；
+# set-intent-status 整行复制天然携带；链状态读 TSV 即态（不蒸发律）。
+_PREREQ_RE = re.compile(r"\[prereq:([^\[\]\s]+)\]")   # id 含任意路径安全字符（含 '_'）
+
+
+def _prereq_of(detail):
+    m = _PREREQ_RE.search(detail or "")
+    return m.group(1) if m else ""
+
+
+# 终态单源：状态机无出边的状态集合（done/rejected；deferred/blocked 有复活臂非终态）
+_INTENT_TERMINAL = {st for st, nxt in _INTENT_ARROWS.items() if not nxt}
+
+
+def _latest_intent_map(ctx):
+    """intents 事件溯源最新行映射（id→行，文件序后者覆盖前者）。"""
+    out = {}
+    for r in ctx.rows("intents.tsv"):
+        out[r[0]] = r
+    return out
+
+
+def _prereq_gate(ctx, cur, st):
+    """不蒸发律写入侧执法（双保险之写入半边；查询半边=chain-ls frontier 过滤）：
+    带 [prereq:] 标记的 intent 在前置未终态时不得进入 frontier（pending/active）。"""
+    pr = _prereq_of(ctx.val("intents.tsv", cur, "detail"))
+    if not pr or st not in ("pending", "active"):
+        return
+    prow = ctx.latest("intents.tsv", pr)
+    if prow is None:
+        raise Reject("链 prereq 引用闭合失败: " + pr)
+    pst = ctx.val("intents.tsv", prow, "status")
+    if pst not in _INTENT_TERMINAL:
+        raise Reject("链前置未终态（prereq=%s status=%s）——不到 {done,rejected} "
+                     "不得进入 frontier（链不蒸发律）" % (pr, pst))
+
+
+def _intent_status_body(ctx, args, evname):
+    """set-intent-status/chain-advance 共享迁移体（v0.8 Task B 抽出，行为等价；
+    evname=timeline 事件前缀）。返回追加行。"""
     cur = ctx.latest("intents.tsv", args["id"])
     if cur is None:
         raise Reject("id 引用闭合失败: " + args["id"])
@@ -505,6 +543,7 @@ def _set_intent_status(goal_dir, rest):
     cur_st = ctx.val("intents.tsv", cur, "status")
     if st not in _INTENT_ARROWS.get(cur_st, set()):
         raise Reject("status 转移不沿状态机（%s→%s，§4.5）" % (cur_st, st))
+    _prereq_gate(ctx, cur, st)
     reason = args.get("reason", "")
     if (st in {"rejected", "blocked", "deferred"} or (st == "pending" and cur_st == "deferred")) and not reason:
         raise Reject("status=%s 须附 reason（强制）" % st)
@@ -521,8 +560,17 @@ def _set_intent_status(goal_dir, rest):
     row[ctx.idx("intents.tsv", "activation")] = activation
     row[ctx.idx("intents.tsv", "created")] = args["timestamp"]
     ctx.append("intents.tsv", row)
-    ctx.event(args["timestamp"], "set-intent-status %s:%s" % (args["id"], st), phase=args.get("phase", ""))
+    ctx.event(args["timestamp"], "%s %s:%s" % (evname, args["id"], st), phase=args.get("phase", ""))
     ctx.commit({"intents.tsv", "timeline.tsv"})
+    return row
+
+
+def _set_intent_status(goal_dir, rest):
+    args = _parse(rest, {"id", "status", "reason", "activation", "approval", "timestamp", "phase"})
+    _req(args, ["id", "status", "timestamp"])
+    ctx = Ctx(goal_dir)
+    ctx.tier0()
+    row = _intent_status_body(ctx, args, "set-intent-status")
     _ok_line(args["id"] + "(追加新行)", "intents.tsv", [row])
     return 0
 
@@ -1374,6 +1422,159 @@ def _set_cred_status(goal_dir, rest):
     return 0
 
 
+# ------------------------------------------- 20-22 链式 todolist 稳定器（v0.8 Task B）
+
+def _chain_edge(ctx, kind, src, dst, ts):
+    """链内铸边——复用 add-edge 的枚举/方向/判重校验与铸行路径（同一写边 API
+    语义；差别仅=并入 chain-create 的单次 commit，探知注记 15）。"""
+    if kind not in EDGE_KINDS:
+        raise Reject("kind 不在 10 边枚举（新增边类型须 bump schema_version）: " + kind)
+    if kind == "cross_ref":
+        allids = ctx.all_ids()
+        if src not in allids:
+            raise Reject("source_id 引用闭合失败: " + src)
+        if dst not in allids:
+            raise Reject("target_id 引用闭合失败: " + dst)
+    else:
+        stabs, ttabs = _EDGE_DIR[kind]
+        if not [t for t in stabs if src in ctx.ids(t)]:
+            raise Reject("source_id 引用闭合失败或方向不符（%s 方向）: %s" % (kind, src))
+        if not [t for t in ttabs if dst in ctx.ids(t)]:
+            raise Reject("target_id 引用闭合失败或方向不符（%s 方向）: %s" % (kind, dst))
+    for r in ctx.rows("edges.tsv"):
+        if (ctx.val("edges.tsv", r, "kind"), ctx.val("edges.tsv", r, "source_id"),
+                ctx.val("edges.tsv", r, "target_id")) == (kind, src, dst):
+            raise Reject("同 kind+source+target 边重复（幂等判重）")
+    row = _row("edges.tsv", id=ctx.new_id("edges.tsv", "E"), kind=kind, source_id=src,
+               target_id=dst, provenance="chain-create", created=ts)
+    ctx.append("edges.tsv", row)
+    return row
+
+
+def _chain_create(goal_dir, rest):
+    """chain-create：--steps=标题1|标题2|…（≥2 步）按序铸 candidate intents，
+    步 i>0 的 detail 落 [prereq:前一步] 标记（虚拟列）；补 goal→每步 spawns 边 +
+    相邻步 cross_ref 边（_EDGE_DIR 方向执法下 INT→INT 的唯一合法既有边型）；
+    先全量校验（枚举/预算段/dedup 含链内）后单次 commit+单事件。"""
+    args = _parse(rest, {"engine", "kind", "origin", "budget-share", "steps",
+                         "timestamp", "phase"})
+    _req(args, ["engine", "kind", "origin", "budget-share", "steps", "timestamp"])
+    ctx = Ctx(goal_dir)
+    ctx.tier0()
+    kind, origin = args["kind"], args["origin"]
+    if kind not in _INTENT_KINDS:
+        raise Reject("kind 不在枚举 {recon,surface,matrix-test,deep-dive,authz-diff,nday-verify}: " + kind)
+    if origin not in INTENT_ORIGINS:
+        raise Reject("origin 不在枚举 {entity,concept,precedent,adjacency,llm,recon-event,mixed}: " + origin)
+    seg = args["budget-share"].split(";")
+    if len(seg) not in (3, 4) or not all(_seg_num(x) for x in seg):
+        raise Reject("budget_share 非 token;requests;hours[;dollars] 三/四段数值: " + args["budget-share"])
+    titles = [_clean(t.strip()) for t in args["steps"].split("|")]
+    if len(titles) < 2 or not all(titles):
+        raise Reject("steps 须 ≥2 个非空标题（'|' 分隔同链步骤）: " + args["steps"])
+    seen = {ctx.val("intents.tsv", r, "dedup_key") for r in ctx.rows("intents.tsv")}
+    chain_dedups = []
+    for t in titles:
+        dedup = "-" + "+" + kind + "+" + t
+        if dedup in seen or dedup in chain_dedups:
+            raise Reject("dedup_key 重复（资产+技法类机械判重）: " + dedup)
+        chain_dedups.append(dedup)
+    goal_id = ctx.rows("goals.tsv")[0][0]
+    rows, prev = [], ""
+    for t, dedup in zip(titles, chain_dedups):
+        rid = ctx.new_id("intents.tsv", "INT")
+        row = _row("intents.tsv", id=rid, title=t,
+                   detail=("[prereq:" + prev + "]" if prev else ""),
+                   status="candidate", engine=args["engine"], kind=kind, origin=origin,
+                   score="", via="", dedup_key=dedup, budget_share=args["budget-share"],
+                   activation="", reason="", priority="", cred="",
+                   created=args["timestamp"])
+        ctx.append("intents.tsv", row)
+        rows.append(row)
+        prev = rid
+    n_edges = 0
+    for row in rows:
+        _chain_edge(ctx, "spawns", goal_id, row[0], args["timestamp"])
+        n_edges += 1
+    for a, b in zip(rows, rows[1:]):
+        _chain_edge(ctx, "cross_ref", a[0], b[0], args["timestamp"])
+        n_edges += 1
+    ctx.event(args["timestamp"],
+              "chain-create head=%s steps=%d edges=%d" % (rows[0][0], len(rows), n_edges),
+              phase=args.get("phase", ""))
+    ctx.commit({"intents.tsv", "edges.tsv", "timeline.tsv"})
+    _ok_line(rows[0][0], "intents.tsv", rows)
+    return 0
+
+
+def _chain_advance(goal_dir, rest):
+    """chain-advance：链上步骤的状态迁移面——与 set-intent-status 同一状态机体
+    （_intent_status_body，前置终态门在内=写入侧双保险），仅限链上步骤（带
+    [prereq:] 标记或被链引用=链头）。"""
+    args = _parse(rest, {"id", "status", "reason", "activation", "approval", "timestamp", "phase"})
+    _req(args, ["id", "status", "timestamp"])
+    ctx = Ctx(goal_dir)
+    ctx.tier0()
+    latest = _latest_intent_map(ctx)
+    if args["id"] not in latest:
+        raise Reject("id 引用闭合失败: " + args["id"])
+    referenced = {_prereq_of(ctx.val("intents.tsv", r, "detail")) for r in latest.values()}
+    if not _prereq_of(ctx.val("intents.tsv", latest[args["id"]], "detail")) \
+            and args["id"] not in referenced:
+        raise Reject("非链上步骤（无 [prereq:] 标记且未被链引用）——普通 intent 走 set-intent-status")
+    row = _intent_status_body(ctx, args, "chain-advance")
+    _ok_line(args["id"] + "(链推进)", "intents.tsv", [row])
+    return 0
+
+
+def _chain_ls(goal_dir, rest):
+    """chain-ls：列链与各步状态（查询侧 frontier 过滤）。链=[prereq:] 标记链接的
+    极大链，链头=被引用且自身无标记的 intent；frontier=yes ⇔ 自身未终态且（无
+    前置或前置终态）——prereq 未终态的步骤不得进入 frontier。读 TSV 即态，只读。"""
+    args = _parse(rest, {"chain"})
+    ctx = Ctx(goal_dir)
+    latest = _latest_intent_map(ctx)
+    prereq = {iid: _prereq_of(ctx.val("intents.tsv", r, "detail"))
+              for iid, r in latest.items()}
+    succ = {}
+    for iid, p in prereq.items():
+        if p:
+            succ.setdefault(p, []).append(iid)
+    for v in succ.values():
+        v.sort()
+    referenced = {p for p in prereq.values() if p}
+    heads = sorted(h for h in referenced if not prereq.get(h))
+    want = args.get("chain", "")
+    if want:
+        heads = [h for h in heads if h == want]
+    step_rows, n_frontier = [], 0
+    for h in heads:
+        order, queue, seen = [], [h], set()
+        while queue:                       # 线性链=链序；seen 防手工环
+            n = queue.pop(0)
+            if n in seen or n not in latest:
+                continue
+            seen.add(n)
+            order.append(n)
+            queue = succ.get(n, []) + queue
+        for i, iid in enumerate(order, 1):
+            row = latest[iid]
+            st = ctx.val("intents.tsv", row, "status")
+            p = prereq[iid]
+            pst = ctx.val("intents.tsv", latest[p], "status") if p and p in latest else ""
+            p_ok = (not p) or (p in latest and pst in _INTENT_TERMINAL)
+            front = "yes" if (st not in _INTENT_TERMINAL and p_ok) else "no"
+            if front == "yes":
+                n_frontier += 1
+            step_rows.append(TAB.join([h, str(i), iid,
+                                       ctx.val("intents.tsv", row, "title"), st,
+                                       p or "-", (pst if p else "-"), front]))
+    print("#chains=%d%s#frontier=%d" % (len(heads), TAB, n_frontier))
+    for ln in step_rows:
+        print(ln)
+    return 0
+
+
 # ---------------------------------------------------------------- 注册
 
 _IMPL = {
@@ -1396,6 +1597,9 @@ _IMPL = {
     "add-cred": _add_cred,
     "amend-scope": _amend_scope,
     "set-cred-status": _set_cred_status,
+    "chain-create": _chain_create,
+    "chain-advance": _chain_advance,
+    "chain-ls": _chain_ls,
 }
 
 
@@ -1415,6 +1619,12 @@ def _wrap(name, fn):
 HANDLERS = {n: _wrap(n, f) for n, f in _IMPL.items()}
 for _n, _f in _IMPL.items():
     HANDLERS["ledger-" + _n] = _wrap("ledger-" + _n, _f)
+
+# v0.8 Task B 集成完成（2026-10-14）：chain-create/advance/ls 已并入 _IMPL（获双前缀
+# 别名+goal 写锁），三处绊线同步 45→48（test_phases_yaml 命令面计数/
+# selfcheck.KNOWN_COMMANDS/SKILL.md 双胎命令索引）。CHAIN_HANDLERS 保留为
+# HANDLERS 子视图（test_v08b_chain 直接引用，签名同构 (goal_dir, rest)->exit_code）。
+CHAIN_HANDLERS = {n: HANDLERS[n] for n in ("chain-create", "chain-advance", "chain-ls")}
 
 
 # ---------------------------------------------------------------- 探知注记（实现侧起草点，随报告上报）
@@ -1438,4 +1648,18 @@ for _n, _f in _IMPL.items():
 #     permitted_actions 覆盖=对照全部生效 account-grant 行并集。
 # 11. add-finding C2 条件可达性证据=以 evidence_ids 非空近似（证据行无条件性标记列）。
 # 12. set-intent-status 状态机仅允许 02a 载明箭头+blocked 复活；deferred 复活转移未载→不允许。
+# 13. v0.8 Task B「intents.tsv 加 prereq 列」→ detail 内 [prereq:INT-…] 标记承载（虚拟列）：
+#     13 表列集冻结（schemas.json 由 contracts/01 机械生成禁手改；tests/fixtures 下 28 个
+#     intents.tsv 全 17 列，物理加列=read_tsv 列数校验全炸）。先例=批次 7 T13 facts
+#     [no-consume:] 标记（列集冻结→自由文本唯一承载位）。默认无标记=无前置；
+#     set-intent-status/chain-advance 整行复制天然携带标记；链状态读 TSV 即态（不蒸发律）。
+# 14. chain-create/chain-advance/chain-ls 暂以 CHAIN_HANDLERS 导出、不并入 _IMPL/HANDLERS：
+#     45 基名命令面冻结（test_phases_yaml test_all_commands_face_44 断言、
+#     selfcheck.KNOWN_COMMANDS、SKILL.md 命令索引三处绊线）。集成期并入 _IMPL 并同步
+#     三处绊线清单（45→48）。
+# 15. 链步骤间边与 _EDGE_DIR 方向执法共存：spawns 方向=goals→intents（INT→INT 非法），
+#     故 chain-create 补 goal→每步 spawns 边 + 相邻步 cross_ref 边（唯一允许任意向的既有
+#     边类型）；derived_from=facts→intents 与链步骤间链接无关不涉及。铸边全程复用
+#     add-edge 的枚举/方向/判重校验与铸行路径（_chain_edge），无新边类型=不 bump
+#     schema_version。终态口径={done,rejected}（_INTENT_ARROWS 无出边单源推导）。
 # 13. EV/FD 卡片为骨架生成（front-matter 同值标量+契约正文段标题）；嵌套段留 LLM/引擎填充。
