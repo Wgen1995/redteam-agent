@@ -165,3 +165,8 @@ P5 报告 → P5.5 ★您签发★ → P6 沉淀    ▼
 - **命令面 45→48**： chain 三键入 _IMPL（双前缀别名+goal 写锁），四处绊线同步（test_phases_yaml face 48/test_write_cmds HANDLERS 22/selfcheck.KNOWN_COMMANDS +6 词条/SKILL 双胎索引 48 条）——第四处绊线为全量回归抓出后补同步（绊线本职）。
 - **全量 1210/1210 OK**（主会话亲跑两轮：首轮抓出 1 失绊线，修后全绿）。
 - 形态法在案： docs/design/tanyin-target-form.md（四面一体+Python stdlib/Web 原生语言律）。
+
+## 接线批+v0.9b 终局行（2026-10-14 第二程）
+- llmpool_wire： 池事件上哈希链（单源写方+源码钉），v0.8a 闭环。
+- 观察面 0.9b： 热图/十边图/证据卡三页（25 测，10 kind 着色两两互异钉死），首页导航齐。IA 五页就位，差 v0.9c 度量页。
+- 全量 1241/1241 OK。

@@ -1401,3 +1401,9 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - **SSE 稳定性实测**: 5 并发×20.3s，5/5 收齐 23 帧无缺失无重复，RSS 增长 320-464KB——spec 风险①本档位关闭。
 - 集成清偿： B 债（chain 入册+绊线 45→48）由主会话完成，含第四处绊线（test_write_cmds HANDLERS 精确集合）全量回归抓出后同步。
 - 全量 1210/1210 OK（主会话亲跑）。SSE 入口: python3 -m cli.webui.server --ledger-dir <goal目录>。
+
+## 2026-10-14 · 接线批+v0.9b 三页批（「开」批第二程）
+- **llmpool_wire.py（6 测）**: attach(goal_dir)→state 落账本旁+trip/recover 事件经 append_tl_locked 入哈希链（verify_chain 过）；emit 失败=账本字节零改动（fail-open 不污染账）；**源码钉**：禁本地铸链行（单源写方测试执法）。v0.8a 全链闭环——模型池事件上链，ARTEX（可变 PG）无此能力。
+- **观察面三页（25 测）**: /coverage 矩阵热图（事件溯源取最新格，frozen/cold/empty 欠账红标）+/graph 十边图（NODE_TABLES/LAYER 同源分层 SVG，10 kind 边两两互异着色钉死，attack 金/cross_ref 虚/supersedes 点）+/evidence 证据卡（vuln_ref 经 linked_finding 联查，verdict=timeline 最新 replay-probe 三态+env-diff+未重放分桶）。投影律：三视图+三 API 字节不变测试钉死。
+- **集成（主会话）**: index.html 补导航三链+版本 0.9b；projections.py 新模块承接三视图（snapshot.py 保持 v0.9a 原样）。
+- 全量 1241/1241 OK（主会话亲跑）。观察面 IA 现存 5 页：仪表盘/活动流/热图/十边图/证据卡——**只差度量页（v0.9c）**。
