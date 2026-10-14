@@ -975,12 +975,13 @@ class TestTier0AndWiring(unittest.TestCase):
                               "--timestamp=" + TS)
         self.assertEqual(code, 1)
 
-    def test_handlers_cover_19_commands_with_aliases(self):
+    def test_handlers_cover_22_commands_with_aliases(self):
         names = {n for n in write_cmds.HANDLERS if not n.startswith("ledger-")}
         expected = {"add-goal", "add-scope", "add-intent", "set-intent-status", "add-fact",
                     "add-finding", "supersede-finding", "add-asset", "add-edge", "add-evidence",
                     "approve", "matrix-set", "checkpoint", "append-timeline", "matrix-freeze",
-                    "budget-log", "add-cred", "amend-scope", "set-cred-status"}
+                    "budget-log", "add-cred", "amend-scope", "set-cred-status",
+                    "chain-create", "chain-advance", "chain-ls"}
         self.assertEqual(names, expected)
         for n in expected:
             self.assertIn("ledger-" + n, write_cmds.HANDLERS)
