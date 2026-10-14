@@ -1388,3 +1388,16 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - 首份实施计划： docs/superpowers/plans/2026-10-11-tanyin-web-skeleton.md（v0.9a 六任务 TDD）。
 - 决策链存档： DSH=遥控器非底盘；API 直连=窄调用做/全自持挂三触发器；ARTEX 借脑映射在 artex-deep-dive/0-index.md。
 - 待开： v0.8 借脑三件套（呈批中）与 v0.9a（计划已就绪）——两者独立可并行。
+
+## 2026-10-14 · v0.8 借脑三件套+judge 落地（五路并行批之一）
+- llmpool.py（50 测）: classify(400/ctx取消不转移,401/402/403/404 硬熔 1 次,408/网络/5xx server 道软 3 次,429 rate 道固定 60s)/阶梯 60/300/1800s/±20% 抖动(注入 rng)/原子落盘重启恢复/emit 回调发 kind=llm_failover 事件。集成待办（下一批）: state_path 指到 ledger 旁+emit 接 timeline.append_tl_locked。
+- write_cmds chain 三命令（13 测）: prereq=[INT-…] 虚拟列（schemas 冻结，先例批次7）+双保险 gate+goal→步 spawns/相邻 cross_ref 边（_EDGE_DIR 合规）。
+- trace_search.py（13 测）: literal-only 零 re/流式 deque 上下文/整树 sha256 只读证明。
+- judge_client.py（23 测）: stdlib 直连/TANYIN_JUDGE_* env/12 reason 码 fail-closed/本地 stub 三态测试。
+- 偏差裁定： A 三元组 classify=接受；B 虚拟列=接受（律没破）；A 表外 4xx 归 no_failover=保守正确。
+
+## 2026-10-14 · v0.9a 观察面骨架落地（五路并行批之二）
+- cli/webui 四件+静态首页（20 测）: /api/state.json（phases 灯+budget）/api/stream（SSE 追尾 1s 轮询+keepalive+行号游标）/九门灯仪表盘（JS 66 行≪2000 律）。
+- **SSE 稳定性实测**: 5 并发×20.3s，5/5 收齐 23 帧无缺失无重复，RSS 增长 320-464KB——spec 风险①本档位关闭。
+- 集成清偿： B 债（chain 入册+绊线 45→48）由主会话完成，含第四处绊线（test_write_cmds HANDLERS 精确集合）全量回归抓出后同步。
+- 全量 1210/1210 OK（主会话亲跑）。SSE 入口: python3 -m cli.webui.server --ledger-dir <goal目录>。

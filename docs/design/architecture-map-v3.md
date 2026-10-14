@@ -158,3 +158,10 @@ P5 报告 → P5.5 ★您签发★ → P6 沉淀    ▼
 ---
 
 **一句话总纲**：门A/门B 是同一个战士的两种监督模式——判据层保证打得真，看门狗保证跑得完，度量层保证越改越强，分发层+引擎总线决定它能装到哪、能打几类仗。**AI 能骗过的只有人，骗不过这三层；而人只出现在 P5.5 签发门。**
+
+## v0.8+v0.9a 批次终局行（2026-10-14，五路子代理并行+主会话集成）
+- **v0.8 借脑三件套+judge 全落**： llmpool（错误分类/硬1软3熔断/60-300-1800 阶梯/429 独立 rate 道固定 60s/±20% 抖动/状态原子落盘重启恢复/事件回调入 timeline，50 测）；chain 稳定器（chain-create/advance/ls 三命令入册，prereq=[INT-…] 虚拟列仿批次7 先例，双保险=查询过滤+写入 Reject，13 测）；trace-search（literal-only 零 import re，流式扫描，sha256 只读证明，13 测）；judge_client（stdlib 直连 openai 兼容端点，温度0/512 上限，token 级严格解析 12 reason 码 fail-closed，23 测）。
+- **v0.9a 观察面骨架落**： cli/webui/{snapshot,sse,server}+static 首页（ThreadingHTTPServer 三路由，九门灯+budget 条+EventSource 活动流；python -m webui.server，默认 127.0.0.1:8900，20 测）；投影律测试钉死（目录字节不变）。**SSE 实测（spec 风险①关闭）**：5 并发×20.3s 零断流零缺帧，RSS 增长 0.3-0.5MB，未触发 asyncio 触发器。
+- **命令面 45→48**： chain 三键入 _IMPL（双前缀别名+goal 写锁），四处绊线同步（test_phases_yaml face 48/test_write_cmds HANDLERS 22/selfcheck.KNOWN_COMMANDS +6 词条/SKILL 双胎索引 48 条）——第四处绊线为全量回归抓出后补同步（绊线本职）。
+- **全量 1210/1210 OK**（主会话亲跑两轮：首轮抓出 1 失绊线，修后全绿）。
+- 形态法在案： docs/design/tanyin-target-form.md（四面一体+Python stdlib/Web 原生语言律）。

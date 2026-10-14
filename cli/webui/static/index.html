@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>探隐观察面 tanyin-web v0.9a</title>
+<style>
+  :root { --bg:#0f1216; --card:#171c23; --ink:#e8edf2; --dim:#8b98a5;
+          --ok:#3fbf6f; --bad:#e05252; --idle:#4a545e; --accent:#4fa3d1; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:14px/1.5 "PingFang SC","Hiragino Sans GB",Microsoft YaHei,sans-serif; }
+  header { display:flex; align-items:baseline; gap:16px; padding:14px 22px;
+           border-bottom:1px solid #232a33; }
+  header h1 { font-size:18px; margin:0; letter-spacing:1px; }
+  #goal-meta { color:var(--dim); font-size:12px; }
+  #sse-state { margin-left:auto; font-size:12px; color:var(--dim); }
+  #sse-state.open { color:var(--ok); }
+  main { display:grid; gap:16px; padding:18px 22px;
+         grid-template-columns:2fr 1fr; max-width:1200px; }
+  section { background:var(--card); border:1px solid #232a33; border-radius:8px;
+            padding:14px 16px; }
+  section h2 { font-size:13px; margin:0 0 10px; color:var(--dim);
+               font-weight:600; letter-spacing:2px; }
+  #phases-card { grid-column:1 / -1; }
+  #phases { display:flex; flex-wrap:wrap; gap:10px; list-style:none;
+            margin:0; padding:0; }
+  #phases li { display:flex; flex-direction:column; align-items:center;
+               min-width:74px; padding:8px 10px; border-radius:6px;
+               background:#10151b; border:1px solid #232a33; }
+  #phases .lamp { width:12px; height:12px; border-radius:50%;
+                  background:var(--idle); margin-bottom:6px; }
+  #phases li.pass .lamp { background:var(--ok); box-shadow:0 0 6px var(--ok); }
+  #phases li.fail .lamp { background:var(--bad); box-shadow:0 0 6px var(--bad); }
+  #phases .pname { font-size:13px; font-weight:600; }
+  #phases .pstate { font-size:11px; color:var(--dim); }
+  .bar-row { margin-bottom:10px; }
+  .bar-row .bar-top { display:flex; justify-content:space-between;
+                      font-size:12px; margin-bottom:4px; }
+  .bar-row .bar-top .left-val { color:var(--accent); }
+  .bar-track { height:8px; border-radius:4px; background:#10151b;
+               border:1px solid #232a33; overflow:hidden; }
+  .bar-fill { height:100%; width:0; background:var(--accent);
+              transition:width .4s; }
+  .bar-fill.hot { background:var(--bad); }   /* 用量超 80% 变红 */
+  #feed-card { grid-column:1 / -1; }
+  #feed { list-style:none; margin:0; padding:0; max-height:420px;
+          overflow-y:auto; font:12px/1.7 ui-monospace,Menlo,Consolas,monospace; }
+  #feed li { padding:3px 8px; border-bottom:1px dashed #20262e;
+             white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #feed .ts { color:var(--dim); }
+  #feed .actor { color:var(--accent); }
+  #feed .sha8 { color:var(--dim); }
+  footer { color:var(--dim); font-size:11px; padding:8px 22px 18px; }
+</style>
+</head>
+<body id="dashboard">
+<header>
+  <h1>探隐观察面</h1>
+  <span id="goal-meta">载入中…</span>
+  <span id="sse-state">SSE 连接中</span>
+</header>
+<main>
+  <section id="phases-card">
+    <h2>战局 · 九门</h2>
+    <ol id="phases"></ol>
+  </section>
+  <section id="budget-card">
+    <h2>预算余量</h2>
+    <div id="budget"></div>
+  </section>
+  <section id="feed-card">
+    <h2>活动流 · timeline 追尾</h2>
+    <ul id="feed"></ul>
+  </section>
+</main>
+<footer>tanyin-web v0.9a · 只读投影（零写入账本） · 纯 stdlib 服务 + 手写前端</footer>
+<script>
+"use strict";
+var PHASES = ["P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6"];
+var FEED_CAP = 200;
+
+function el(tag, cls) {
+  var n = document.createElement(tag);
+  if (cls) { n.className = cls; }
+  return n;
+}
+/* 文本一律 textContent 落节点——账本文本不当 HTML 解析（防注入） */
+
+function renderGoal(goal, rows) {
+  var meta = document.getElementById("goal-meta");
+  meta.textContent = "";
+  if (!goal) {
+    meta.textContent = "账本空（无 goal 行） · timeline " + rows + " 行";
+    return;
+  }
+  meta.textContent = goal.id + " · " + goal.target + " · " + goal.objective +
+                     " · timeline " + rows + " 行";
+}
+
+function renderPhases(states) {
+  var ol = document.getElementById("phases");
+  ol.textContent = "";
+  PHASES.forEach(function (p) {
+    var st = states[p] || "PENDING";
+    var li = el("li", st === "PASS" ? "pass" : st === "FAIL" ? "fail" : "");
+    var lamp = el("span", "lamp");
+    var name = el("span", "pname"); name.textContent = p;
+    var state = el("span", "pstate"); state.textContent = st;
+    li.appendChild(lamp); li.appendChild(name); li.appendChild(state);
+    ol.appendChild(li);
+  });
+}
+
+function renderBudget(budget) {
+  var box = document.getElementById("budget");
+  box.textContent = "";
+  var keys = Object.keys(budget);
+  if (!keys.length) {
+    var empty = el("div", "bar-top");
+    empty.textContent = "无预算数据（goals.tsv 缺预算三元组）";
+    box.appendChild(empty);
+    return;
+  }
+  keys.forEach(function (k) {
+    var d = budget[k];
+    var row = el("div", "bar-row");
+    var top = el("div", "bar-top");
+    var label = el("span"); label.textContent = k;
+    var val = el("span", "left-val");
+    val.textContent = "余 " + Math.round(d.left * 100) / 100 +
+                      " / " + Math.round(d.limit * 100) / 100;
+    top.appendChild(label); top.appendChild(val);
+    var track = el("div", "bar-track");
+    var fill = el("div", "bar-fill");
+    var pct = d.limit > 0 ? Math.min(100, d.used / d.limit * 100) : 0;
+    fill.style.width = pct.toFixed(1) + "%";
+    if (pct > 80) { fill.className = "bar-fill hot"; }
+    track.appendChild(fill);
+    row.appendChild(top); row.appendChild(track);
+    box.appendChild(row);
+  });
+}
+
+function refreshState() {
+  fetch("/api/state.json").then(function (r) { return r.json(); })
+    .then(function (s) {
+      renderGoal(s.goal, s.timeline_rows);
+      renderPhases(s.phases || {});
+      renderBudget(s.budget || {});
+    })
+    .catch(function () { /* 快照失败保原画面，下轮再试 */ });
+}
+
+function feedRow(ev) {
+  var li = el("li");
+  var ts = el("span", "ts"); ts.textContent = ev.ts + " ";
+  var actor = el("span", "actor"); actor.textContent = ev.actor + " ";
+  var body = el("span");
+  body.textContent = "[" + (ev.phase || "-") + "] " + ev.event + " ";
+  var sha = el("span", "sha8"); sha.textContent = ev.sha8 ? "#" + ev.sha8 : "";
+  li.appendChild(ts); li.appendChild(actor);
+  li.appendChild(body); li.appendChild(sha);
+  return li;
+}
+
+var feed = document.getElementById("feed");
+var es = new EventSource('/api/stream');
+var badge = document.getElementById("sse-state");
+es.onopen = function () { badge.textContent = "SSE 已连接"; badge.className = "open"; };
+es.onerror = function () { badge.textContent = "SSE 重连中"; badge.className = ""; };
+es.onmessage = function (e) {
+  var ev;
+  try { ev = JSON.parse(e.data); } catch (err) { return; }
+  feed.insertBefore(feedRow(ev), feed.firstChild);
+  while (feed.children.length > FEED_CAP) { feed.removeChild(feed.lastChild); }
+};
+
+refreshState();
+setInterval(refreshState, 5000);
+</script>
+</body>
+</html>
