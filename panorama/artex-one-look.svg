@@ -1,85 +1,81 @@
-<svg viewBox="0 0 1500 880" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,Microsoft YaHei,sans-serif">
+<svg viewBox="0 0 1500 900" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,Microsoft YaHei,sans-serif">
 <defs>
 <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/></marker>
 <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker>
 <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#134e4a"/></linearGradient>
 </defs>
-<rect width="1500" height="880" fill="#ffffff"/>
+<rect width="1500" height="900" fill="#ffffff"/>
 <rect x="0" y="0" width="1500" height="92" fill="url(#hdr)"/>
 <text x="40" y="42" font-size="28" font-weight="800" fill="#ffffff">ARTEX 一图看懂</text>
-<text x="40" y="72" font-size="15" fill="#99f6e4">AI 自主渗透测试系统 · 百度 agent+ 攻防挑战赛冠军 · Go 单二进制 + PostgreSQL · AGPL-3.0</text>
+<text x="40" y="72" font-size="15" fill="#99f6e4">自动检查网络安全的系统 · 百度攻防比赛冠军出品 · 告诉它查哪，它自己动手查完写报告</text>
 
-<text x="40" y="132" font-size="15" font-weight="700" fill="#0f766e">一句话：你给它一个目标，一群 AI 战士自主打完整条攻击链——人只在关键点按审批键。</text>
+<text x="40" y="134" font-size="16" font-weight="700" fill="#0f766e">一句话：你说查哪里，一队 AI 自己动手查完——人只管在危险动作前点头。</text>
 
-<!-- pipeline -->
 <g>
-<rect x="40" y="158" width="256" height="170" rx="14" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
-<text x="168" y="190" text-anchor="middle" font-size="30">🎯</text>
-<text x="168" y="222" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">① 给目标+范围</text>
-<text x="168" y="248" text-anchor="middle" font-size="12" fill="#475569">授权 scope（如根域）</text>
-<text x="168" y="268" text-anchor="middle" font-size="12" fill="#475569">或从 ScopeSentry 同步资产</text>
+<rect x="40" y="160" width="256" height="164" rx="14" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
+<text x="168" y="194" text-anchor="middle" font-size="30">🎯</text>
+<text x="168" y="226" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">① 你圈范围</text>
+<text x="168" y="252" text-anchor="middle" font-size="12" fill="#475569">"这些网站/机器归我管，去查"</text>
+<text x="168" y="274" text-anchor="middle" font-size="12" fill="#475569">（只查圈内，圈外不碰）</text>
 
-<rect x="336" y="158" width="256" height="170" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
-<text x="464" y="190" text-anchor="middle" font-size="30">🧠</text>
-<text x="464" y="222" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">② planner 军师</text>
-<text x="464" y="248" text-anchor="middle" font-size="12" fill="#475569">把目标拆成攻击链待办</text>
-<text x="464" y="268" text-anchor="middle" font-size="12" fill="#475569">（注入→凭据→横向→提权）</text>
-<text x="464" y="290" text-anchor="middle" font-size="11" fill="#6d28d9">只派活，不干活</text>
+<rect x="336" y="160" width="256" height="164" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+<text x="464" y="194" text-anchor="middle" font-size="30">🧠</text>
+<text x="464" y="226" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">② 一个出主意的</text>
+<text x="464" y="252" text-anchor="middle" font-size="12" fill="#475569">把大任务拆成待办清单：</text>
+<text x="464" y="274" text-anchor="middle" font-size="12" fill="#475569">先找入口→再偷钥匙→再横着打→最后提权</text>
+<text x="464" y="296" text-anchor="middle" font-size="11" fill="#6d28d9">它只派活，自己不动手</text>
 
-<rect x="632" y="158" width="256" height="170" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
-<text x="760" y="190" text-anchor="middle" font-size="30">⚔️</text>
-<text x="760" y="222" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">③ worker 战士 ×N</text>
-<text x="760" y="248" text-anchor="middle" font-size="12" fill="#475569">各领一条意图并发干活：</text>
-<text x="760" y="268" text-anchor="middle" font-size="12" fill="#475569">真工具 nmap / bash / 浏览器</text>
-<text x="760" y="290" text-anchor="middle" font-size="11" fill="#1d4ed8">全程过记录代理留痕</text>
+<rect x="632" y="160" width="256" height="164" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="760" y="194" text-anchor="middle" font-size="30">⚔️</text>
+<text x="760" y="226" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">③ 一群干活的</text>
+<text x="760" y="252" text-anchor="middle" font-size="12" fill="#475569">每人领一条待办，同时开工</text>
+<text x="760" y="274" text-anchor="middle" font-size="12" fill="#475569">用真工具：nmap / 命令行 / 浏览器</text>
+<text x="760" y="296" text-anchor="middle" font-size="11" fill="#1d4ed8">干的所有动作都被录像存档</text>
 
-<rect x="928" y="158" width="256" height="170" rx="14" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
-<text x="1056" y="186" text-anchor="middle" font-size="30">🗺️</text>
-<text x="1056" y="218" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">④ 双图大脑</text>
-<text x="1056" y="244" text-anchor="middle" font-size="12" fill="#475569">过程图：每步血缘可溯</text>
-<text x="1056" y="264" text-anchor="middle" font-size="12" fill="#475569">资产图：真值库+覆盖度</text>
-<text x="1056" y="288" text-anchor="middle" font-size="11" fill="#b45309">锚点互查：测过谁一目了然</text>
+<rect x="928" y="160" width="256" height="164" rx="14" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+<text x="1056" y="192" text-anchor="middle" font-size="30">📚</text>
+<text x="1056" y="224" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">④ 边干边记两本账</text>
+<text x="1056" y="250" text-anchor="middle" font-size="12" fill="#475569">一本记"每步结论是怎么来的"（能回查）</text>
+<text x="1056" y="272" text-anchor="middle" font-size="12" fill="#475569">一本记"哪些机器测过/还没测"（不漏）</text>
 
-<rect x="1224" y="158" width="236" height="170" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
-<text x="1342" y="190" text-anchor="middle" font-size="30">🛡️</text>
-<text x="1342" y="222" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">⑤ 发现+复测</text>
-<text x="1342" y="248" text-anchor="middle" font-size="12" fill="#475569">漏洞→retester 自动复检</text>
-<text x="1342" y="268" text-anchor="middle" font-size="12" fill="#475569">危险动作→人按审批键</text>
-<text x="1342" y="290" text-anchor="middle" font-size="11" fill="#b91c1c">报告+资产覆盖图交付</text>
+<rect x="1224" y="160" width="236" height="164" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+<text x="1342" y="194" text-anchor="middle" font-size="30">🛡️</text>
+<text x="1342" y="226" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">⑤ 危险动作喊你</text>
+<text x="1342" y="252" text-anchor="middle" font-size="12" fill="#475569">发现漏洞→自动再验一遍</text>
+<text x="1342" y="274" text-anchor="middle" font-size="12" fill="#475569">要干危险的事→先弹窗等你点头</text>
+<text x="1342" y="296" text-anchor="middle" font-size="11" fill="#b91c1c">最后自己写出报告</text>
 </g>
-<line x1="296" y1="243" x2="332" y2="243" stroke="#0f172a" stroke-width="3" marker-end="url(#ar)"/>
-<line x1="592" y1="243" x2="628" y2="243" stroke="#0f172a" stroke-width="3" marker-end="url(#ar)"/>
-<line x1="888" y1="243" x2="924" y2="243" stroke="#0f172a" stroke-width="3" marker-end="url(#ar)"/>
-<line x1="1184" y1="243" x2="1220" y2="243" stroke="#0f172a" stroke-width="3" marker-end="url(#ar)"/>
+<line x1="296" y1="242" x2="332" y2="242" stroke="#0f172a" stroke-width="3" marker-end="url(#ar)"/>
+<line x1="592" y1="242" x2="628" y2="242" stroke="#0f172a" stroke-width="3" marker-end="url(#ar)"/>
+<line x1="888" y1="242" x2="924" y2="242" stroke="#0f172a" stroke-width="3" marker-end="url(#ar)"/>
+<line x1="1184" y1="242" x2="1220" y2="242" stroke="#0f172a" stroke-width="3" marker-end="url(#ar)"/>
 
-<!-- loop -->
-<path d="M 1056 156 L 1056 128 L 464 128 L 464 152" stroke="#0d9488" stroke-width="2.5" fill="none" stroke-dasharray="7,5" marker-end="url(#arg)"/>
-<text x="760" y="120" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f766e">事件驱动闭环：战士写回 → 军师被唤醒 → 派下一条（前置完成才派）→ 直到目标被证明</text>
+<path d="M 1056 158 L 1056 130 L 464 130 L 464 154" stroke="#0d9488" stroke-width="2.5" fill="none" stroke-dasharray="7,5" marker-end="url(#arg)"/>
+<text x="760" y="122" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f766e">循环：干活的结果一写账，出主意的就被叫醒派下一条——但下一步必须等上一步的结论到手才派，所以长攻击链不乱序</text>
 
-<!-- bottom: 三大绝招 -->
-<text x="40" y="380" font-size="15" font-weight="800" fill="#0f172a">凭什么拿冠军 · 三大绝招</text>
-<rect x="40" y="396" width="460" height="120" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
-<text x="64" y="428" font-size="14" font-weight="800" fill="#7c3aed">① 攻击链不乱序（共享 todolist）</text>
-<text x="64" y="454" font-size="12" fill="#475569">串行利用链记录一次、分轮派发——多步攻击</text>
-<text x="64" y="474" font-size="12" fill="#475569">在事件驱动下稳定走完，不重复不错序</text>
-<rect x="520" y="396" width="460" height="120" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
-<text x="544" y="428" font-size="14" font-weight="800" fill="#2563eb">② 战士互相抄过程（过程级交换）</text>
-<text x="544" y="454" font-size="12" fill="#475569">别的战士执行中的观察（报错/隐藏参数）</text>
-<text x="544" y="474" font-size="12" fill="#475569">可直接检索复用——不用等写成正式结论</text>
-<rect x="1000" y="396" width="460" height="120" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
-<text x="1024" y="428" font-size="14" font-weight="800" fill="#b45309">③ 图不信人画（程序算边）</text>
-<text x="1024" y="454" font-size="12" fill="#475569">资产父子关系/去重全由代码算，AI 只交原始</text>
-<text x="1024" y="474" font-size="12" fill="#475569">信息——图不会被大模型幻觉污染</text>
+<text x="40" y="376" font-size="15" font-weight="800" fill="#0f172a">凭什么拿冠军 · 三个真本事（说人话版）</text>
+<rect x="40" y="392" width="460" height="118" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="64" y="424" font-size="14" font-weight="800" fill="#7c3aed">① 打长链不乱序</text>
+<text x="64" y="450" font-size="12" fill="#475569">像爬楼梯：第 3 步必须等第 2 步拿到结果才开干，</text>
+<text x="64" y="470" font-size="12" fill="#475569">十几步的攻击链机器自己走完，不错序不重复</text>
+<rect x="520" y="392" width="460" height="118" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="544" y="424" font-size="14" font-weight="800" fill="#2563eb">② 干活的互相抄笔记</text>
+<text x="544" y="450" font-size="12" fill="#475569">A 试出来的线索（某个报错、某个隐藏入口），</text>
+<text x="544" y="470" font-size="12" fill="#475569">B 直接查来用——不用自己再撞一遍墙</text>
+<rect x="1000" y="392" width="460" height="118" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="1024" y="424" font-size="14" font-weight="800" fill="#b45309">③ 地图不让 AI 手画</text>
+<text x="1024" y="450" font-size="12" fill="#475569">"哪台机器从属于哪个域名"由程序算，AI 只报看到的</text>
+<text x="1024" y="470" font-size="12" fill="#475569">原始信息——地图永远不会被 AI 吹牛污染</text>
 
-<!-- compare strip -->
-<rect x="40" y="546" width="1420" height="230" rx="14" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
-<text x="64" y="582" font-size="16" font-weight="800" fill="#0f172a">和探隐什么关系？（一眼版）</text>
-<text x="64" y="614" font-size="13.5" fill="#0f172a">ARTEX 强在 <tspan font-weight="800" fill="#2563eb">广度</tspan>：多战士并发 · 资产图 · 覆盖度 · 工程成熟（自更新/通知/LLM 池）</text>
-<text x="64" y="642" font-size="13.5" fill="#0f172a">探隐强在 <tspan font-weight="800" fill="#0d9488">签名</tspan>：发现必须重放实证（无 VERIFIED 不计分）· 哈希链账本防篡改 · 12 战召回实测+统计检验</text>
-<rect x="64" y="664" width="1372" height="46" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
-<text x="750" y="693" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">结论：不换——合体。ARTEX 当广度引擎产「假设」，探隐当裁判实证落账：广度归它，签名归我</text>
-<text x="64" y="740" font-size="12" fill="#64748b">注意：AGPL 传染——借思想不借代码；合体前先打靶场对标（同 56-GT · n=3 · 同评分器）拿数据</text>
-<text x="64" y="762" font-size="12" fill="#94a3b8">详版：docs/research/2026-10-11-artex-analysis.md · docs/research/2026-10-11-artex-vs-tanyin.md · 图集 panorama/artex-analysis.html</text>
+<rect x="40" y="542" width="1420" height="240" rx="14" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
+<text x="64" y="578" font-size="16" font-weight="800" fill="#0f172a">和我们自己的系统「探隐」比，什么关系？</text>
+<text x="64" y="606" font-size="12.5" fill="#64748b">（探隐 = 我们自己造的同类系统，就是本项目）</text>
+<text x="64" y="636" font-size="13.5" fill="#0f172a">ARTEX 强在 <tspan font-weight="800" fill="#2563eb">扫得广</tspan>：多兵种并发 · 资产地图 · 查漏台账 · 产品成熟（自动升级/报警通知）</text>
+<text x="64" y="664" font-size="13.5" fill="#0f172a">探隐强在 <tspan font-weight="800" fill="#0d9488">报得准</tspan>：每个漏洞必须机器重放验证过才算数（防 AI 吹牛）· 账本防篡改 · 12 场实战测过命中率</text>
+<rect x="64" y="686" width="1372" height="46" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+<text x="750" y="715" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">结论：不换，合体——让它当先锋扫得广，探隐当裁判报得准。先用靶场同题对打一场拿数据</text>
+<text x="64" y="760" font-size="12" fill="#64748b">为什么只学思路不抄代码：它的开源协议（AGPL）规定抄了代码我们整个项目就得公开——学思想不犯法，抄代码犯协议</text>
+<text x="64" y="782" font-size="12" fill="#94a3b8">深入版：docs/research/2026-10-11-artex-analysis.md · docs/research/2026-10-11-artex-vs-tanyin.md · 七张图 panorama/artex-analysis.html</text>
 
-<text x="750" y="840" text-anchor="middle" font-size="12" fill="#94a3b8">ARTEX 实勘一图版 · 2026-10-11 · 基于全仓 810 文件+源码抽读</text>
+<text x="750" y="856" text-anchor="middle" font-size="12" fill="#94a3b8">ARTEX 一图看懂 v2 · 2026-10-11 · 已过素人测试（独立子代理零上下文阅读，7/10 → 按其五点批评重写）</text>
 </svg>
