@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>探隐观察面 · 资产覆盖热图</title>
+<style>
+  :root { --bg:#0f1216; --card:#171c23; --ink:#e8edf2; --dim:#8b98a5;
+          --ok:#3fbf6f; --bad:#e05252; --idle:#4a545e; --accent:#4fa3d1; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:14px/1.5 "PingFang SC","Hiragino Sans GB",Microsoft YaHei,sans-serif; }
+  header { display:flex; align-items:baseline; gap:16px; padding:14px 22px;
+           border-bottom:1px solid #232a33; }
+  header h1 { font-size:18px; margin:0; letter-spacing:1px; }
+  nav { display:flex; gap:14px; font-size:12px; }
+  nav a { color:var(--accent); text-decoration:none; }
+  nav a.here { color:var(--ink); border-bottom:1px solid var(--accent); }
+  main { padding:18px 22px; max-width:1200px; }
+  section { background:var(--card); border:1px solid #232a33; border-radius:8px;
+            padding:14px 16px; margin-bottom:16px; }
+  section h2 { font-size:13px; margin:0 0 10px; color:var(--dim);
+               font-weight:600; letter-spacing:2px; }
+  #stats { display:flex; flex-wrap:wrap; gap:8px 22px; font-size:13px; }
+  #stats .num { color:var(--accent); font-weight:600; }
+  #stats .num.bad { color:var(--bad); }
+  #legend { font-size:12px; color:var(--dim); display:flex; flex-wrap:wrap;
+            gap:6px 16px; }
+  #legend .sw { display:inline-block; width:14px; height:14px;
+                border-radius:3px; margin-right:4px; vertical-align:-2px; }
+  .sw-cold { background:#24425c; border:1px solid #3c6d94; }
+  .sw-frozen { background:#1d3a52; border:1px solid #63b0d8; }
+  .sw-empty { background:#5a1c1c; border:1px solid #e05252; }
+  #heatmap-wrap { overflow-x:auto; }
+  table#heatmap { border-collapse:collapse; font-size:12px; }
+  #heatmap th, #heatmap td { border:1px solid #232a33; padding:4px 8px; }
+  #heatmap thead th { color:var(--dim); font-weight:600; white-space:nowrap; }
+  #heatmap tbody th { text-align:left; white-space:nowrap; color:var(--ink); }
+  /* 格三态：冷格=已置格 / 冻结格=锚点冻结 / 空格=欠账红标 */
+  #heatmap td { text-align:center; min-width:52px; cursor:default;
+                font-family:ui-monospace,Menlo,Consolas,monospace; }
+  td.c-cold { background:#24425c; }
+  td.c-frozen { background:#1d3a52; box-shadow:inset 0 0 0 2px #63b0d8; }
+  td.c-empty { background:#5a1c1c; color:#ff9d9d; }
+  td.c-empty:after { content:"欠"; font-size:10px; margin-left:3px; }
+  td.c-frozen:after { content:"◆"; color:#63b0d8; font-size:10px; margin-left:3px; }
+  footer { color:var(--dim); font-size:11px; padding:8px 22px 18px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>资产覆盖热图</h1>
+  <nav>
+    <a href="/">总览</a><a class="here" href="/coverage">覆盖热图</a>
+    <a href="/graph">十边图</a><a href="/evidence">证据卡</a>
+  </nav>
+</header>
+<main>
+  <section>
+    <h2>消格统计 · matrix 终态门禁分母</h2>
+    <div id="stats">载入中…</div>
+  </section>
+  <section>
+    <h2>图例</h2>
+    <div id="legend">
+      <span><i class="sw sw-cold"></i>冷格（state 已置：x 证实 / ? 存疑 / - 不适用 / ! 阻断）</span>
+      <span><i class="sw sw-frozen"></i>冻结格（锚点冻结 ◆）</span>
+      <span><i class="sw sw-empty"></i>空格 = 欠账（红标，须消灭）</span>
+    </div>
+  </section>
+  <section>
+    <h2>攻击面 × 漏洞类（悬停看 reason / intent / updated）</h2>
+    <div id="heatmap-wrap"><table id="heatmap"></table></div>
+  </section>
+</main>
+<footer>tanyin-web v0.9b · 覆盖热图只读投影（matrix.tsv · 零写入账本）</footer>
+<script>
+"use strict";
+/* 数据面：/api/matrix.json（surfaces × vuln_classes 长表投影）；
+   渲染面：纯 table+CSS 类（冷格/冻结格/空格欠账红标），零框架零 CDN。 */
+
+function el(tag, cls) {
+  var n = document.createElement(tag);
+  if (cls) { n.className = cls; }
+  return n;
+}
+/* 文本一律 textContent 落节点——账本文本不当 HTML 解析（防注入） */
+
+function renderStats(st) {
+  var box = document.getElementById("stats");
+  box.textContent = "";
+  if (!st || !st.cells) {
+    box.textContent = "matrix 未初始化（先 matrix-init 才有分母）";
+    return;
+  }
+  var pct = Math.round(st.set / st.cells * 1000) / 10;
+  [["格总数", st.cells, ""], ["已置格", st.set, ""],
+   ["欠账空格", st.empty, "bad"], ["冻结格", st.frozen, ""]]
+    .forEach(function (it) {
+      var span = el("span");
+      var num = el("span", "num" + (it[2] ? " " + it[2] : ""));
+      num.textContent = it[1];
+      span.appendChild(document.createTextNode(it[0] + " "));
+      span.appendChild(num);
+      box.appendChild(span);
+    });
+  var cov = el("span");
+  cov.textContent = "消格率 " + pct + "%";
+  box.appendChild(cov);
+}
+
+function cellTitle(r) {
+  var parts = [r.attack_surface + " × " + r.vuln_class,
+               "state=" + (r.state || "（空·欠账）")];
+  if (r.reason) { parts.push("reason=" + r.reason); }
+  if (r.intent_id) { parts.push("intent=" + r.intent_id); }
+  if (r.updated) { parts.push("updated=" + r.updated); }
+  if (r.frozen_at) { parts.push("frozen_at=" + r.frozen_at); }
+  return parts.join("  ·  ");
+}
+
+function renderHeatmap(d) {
+  var tb = document.getElementById("heatmap");
+  tb.textContent = "";
+  if (!d.rows.length) {
+    var cap = el("caption");
+    cap.textContent = "（matrix.tsv 空）";
+    tb.appendChild(cap);
+    return;
+  }
+  var head = el("thead"), hr = el("tr");
+  var corner = el("th");
+  corner.textContent = "surface ＼ vuln_class";
+  hr.appendChild(corner);
+  d.vuln_classes.forEach(function (vc) {
+    var th = el("th");
+    th.textContent = vc;
+    hr.appendChild(th);
+  });
+  head.appendChild(hr);
+  tb.appendChild(head);
+  var body = el("tbody");
+  d.surfaces.forEach(function (surf) {
+    var tr = el("tr");
+    var th = el("th");
+    th.textContent = surf;
+    tr.appendChild(th);
+    d.vuln_classes.forEach(function (vc) {
+      var td = el("td");
+      var hit = null;
+      d.rows.forEach(function (r) {
+        if (r.attack_surface === surf && r.vuln_class === vc) { hit = r; }
+      });
+      if (!hit) {
+        td.textContent = "—";
+        td.title = "无行（键缺席）";
+        return tr.appendChild(td);
+      }
+      /* 空格（欠账）优先定底色；冻结叠加冰框；已置=冷格 */
+      td.className = hit.state ? "c-cold" : "c-empty";
+      if (hit.frozen) { td.className += " c-frozen"; }
+      td.textContent = hit.state || "·";
+      td.title = cellTitle(hit);
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+  tb.appendChild(body);
+}
+
+function refresh() {
+  fetch("/api/matrix.json").then(function (r) { return r.json(); })
+    .then(function (d) { renderStats(d.stats); renderHeatmap(d); })
+    .catch(function () { /* 拉取失败保原画面 */ });
+}
+
+refresh();
+setInterval(refresh, 10000);
+</script>
+</body>
+</html>

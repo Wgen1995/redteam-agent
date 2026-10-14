@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>探隐观察面 tanyin-web v0.9a</title>
+<title>探隐观察面 tanyin-web v0.9b</title>
 <style>
   :root { --bg:#0f1216; --card:#171c23; --ink:#e8edf2; --dim:#8b98a5;
           --ok:#3fbf6f; --bad:#e05252; --idle:#4a545e; --accent:#4fa3d1; }
@@ -15,6 +15,9 @@
   header h1 { font-size:18px; margin:0; letter-spacing:1px; }
   #goal-meta { color:var(--dim); font-size:12px; }
   #sse-state { margin-left:auto; font-size:12px; color:var(--dim); }
+  header nav { display:flex; gap:12px; }
+  header nav a { color:var(--dim); text-decoration:none; font-size:12px; }
+  header nav a:hover { color:var(--accent); }
   #sse-state.open { color:var(--ok); }
   main { display:grid; gap:16px; padding:18px 22px;
          grid-template-columns:2fr 1fr; max-width:1200px; }
@@ -59,6 +62,7 @@
   <h1>探隐观察面</h1>
   <span id="goal-meta">载入中…</span>
   <span id="sse-state">SSE 连接中</span>
+  <nav><a href="/coverage">覆盖热图</a><a href="/graph">十边图</a><a href="/evidence">证据卡</a></nav>
 </header>
 <main>
   <section id="phases-card">

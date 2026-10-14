@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>探隐观察面 · 证据卡</title>
+<style>
+  :root { --bg:#0f1216; --card:#171c23; --ink:#e8edf2; --dim:#8b98a5;
+          --ok:#3fbf6f; --bad:#e05252; --idle:#4a545e; --accent:#4fa3d1; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:14px/1.5 "PingFang SC","Hiragino Sans GB",Microsoft YaHei,sans-serif; }
+  header { display:flex; align-items:baseline; gap:16px; padding:14px 22px;
+           border-bottom:1px solid #232a33; }
+  header h1 { font-size:18px; margin:0; letter-spacing:1px; }
+  nav { display:flex; gap:14px; font-size:12px; }
+  nav a { color:var(--accent); text-decoration:none; }
+  nav a.here { color:var(--ink); border-bottom:1px solid var(--accent); }
+  main { padding:18px 22px; max-width:1200px; }
+  section { background:var(--card); border:1px solid #232a33; border-radius:8px;
+            padding:14px 16px; margin-bottom:16px; }
+  section h2 { font-size:13px; margin:0 0 10px; color:var(--dim);
+               font-weight:600; letter-spacing:2px; }
+  #stats { display:flex; flex-wrap:wrap; gap:8px 20px; font-size:13px; }
+  #stats .num { font-weight:600; }
+  .v-reproduced { color:var(--ok); }
+  .v-not-reproduced { color:var(--bad); }
+  .v-manual { color:#d9a62e; }
+  .v-env-diff { color:#e07b39; }
+  .v-unprobed { color:var(--dim); }
+  #cards { display:grid; gap:10px; }
+  .card { border:1px solid #232a33; border-radius:6px; background:#10151b;
+          padding:10px 12px; }
+  .card .summary { display:flex; flex-wrap:wrap; gap:6px 14px; align-items:baseline;
+                   cursor:pointer; }
+  .card .id { font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--accent); }
+  .card .title { font-weight:600; }
+  .card .hash { color:var(--dim); font-size:12px;
+                font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .badge { font-size:11px; padding:1px 8px; border-radius:9px;
+           border:1px solid currentColor; white-space:nowrap; }
+  .card .detail { display:none; margin-top:10px; padding-top:10px;
+                  border-top:1px dashed #232a33; font-size:12px; color:var(--dim); }
+  .card.open .detail { display:block; }   /* 纯 DOM 点击展开 */
+  .detail dl { display:grid; grid-template-columns:130px 1fr; gap:4px 10px;
+               margin:0; }
+  .detail dt { color:#6f7d8a; }
+  .detail dd { margin:0; word-break:break-all;
+               font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .detail .hint { color:#6f7d8a; font-size:11px; margin-top:8px; }
+  footer { color:var(--dim); font-size:11px; padding:8px 22px 18px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>证据卡</h1>
+  <nav>
+    <a href="/">总览</a><a href="/coverage">覆盖热图</a>
+    <a href="/graph">十边图</a><a class="here" href="/evidence">证据卡</a>
+  </nav>
+</header>
+<main>
+  <section>
+    <h2>重放三态 · E-index 汇总</h2>
+    <div id="stats">载入中…</div>
+  </section>
+  <section>
+    <h2>证据卡列表（点击卡片展开明细）</h2>
+    <div id="cards"></div>
+  </section>
+</main>
+<footer>tanyin-web v0.9b · 证据卡只读投影（E-index.tsv + timeline replay-probe · 零写入账本）</footer>
+<script>
+"use strict";
+/* 数据面：/api/evidence.json（E-index 行 + linked_finding→vuln_ref + 重放三态 verdict）；
+   渲染面：纯 DOM 卡片，点击 classList 切 open 展开明细，零框架零 CDN。 */
+
+function el(tag, cls) {
+  var n = document.createElement(tag);
+  if (cls) { n.className = cls; }
+  return n;
+}
+/* 文本一律 textContent 落节点——账本文本不当 HTML 解析（防注入） */
+
+var VERDICT_LABEL = { "reproduced": "已复现", "not-reproduced": "未复现",
+                      "manual": "人工", "env-diff": "环境差异" };
+
+function verdictBadge(v) {
+  var b = el("span", "badge " + (v ? "v-" + v : "v-unprobed"));
+  b.textContent = VERDICT_LABEL[v] || "未重放";
+  return b;
+}
+
+function renderStats(st) {
+  var box = document.getElementById("stats");
+  box.textContent = "";
+  if (!st.cards) {
+    box.textContent = "（E-index.tsv 空）";
+    return;
+  }
+  [["卡总数", st.cards, ""], ["已复现", st.reproduced, "v-reproduced"],
+   ["未复现", st.not_reproduced, "v-not-reproduced"],
+   ["人工", st.manual, "v-manual"],
+   ["环境差异", st.env_diff, "v-env-diff"],
+   ["未重放", st.unprobed, "v-unprobed"]]
+    .forEach(function (it) {
+      var span = el("span");
+      var num = el("span", "num " + it[2]);
+      num.textContent = it[1];
+      span.appendChild(document.createTextNode(it[0] + " "));
+      span.appendChild(num);
+      box.appendChild(span);
+    });
+}
+
+function kv(dl, key, val) {
+  if (!val) { return; }                    /* 空字段不占行 */
+  var dt = el("dt"), dd = el("dd");
+  dt.textContent = key;
+  dd.textContent = val;
+  dd.title = val;
+  dl.appendChild(dt); dl.appendChild(dd);
+}
+
+function renderCard(c) {
+  var card = el("div", "card");
+  var sum = el("div", "summary");
+  sum.appendChild(verdictBadge(c.verdict));
+  var id = el("span", "id");
+  id.textContent = c.id;
+  sum.appendChild(id);
+  var title = el("span", "title");
+  title.textContent = c.title || "（无题）";
+  sum.appendChild(title);
+  if (c.vuln_ref) {
+    var vr = el("span");
+    vr.textContent = "vuln_ref=" + c.vuln_ref;
+    sum.appendChild(vr);
+  }
+  var h = el("span", "hash");
+  h.textContent = "raw:" + (c.content_hash_raw || "").slice(0, 12) +
+                  " norm:" + (c.content_hash_norm || "").slice(0, 12);
+  h.title = "content_hash_raw=" + c.content_hash_raw +
+            "  content_hash_norm=" + c.content_hash_norm;
+  sum.appendChild(h);
+  card.appendChild(sum);
+
+  var detail = el("div", "detail");
+  var dl = el("dl");
+  kv(dl, "observed_at", c.observed_at);
+  kv(dl, "network_position", c.network_position);
+  kv(dl, "source_type / repro_kind", (c.source_type || "?") + " / " + (c.repro_kind || "?"));
+  kv(dl, "repro_command", c.repro_command);
+  kv(dl, "content_hash_raw", c.content_hash_raw);
+  kv(dl, "content_hash_norm", c.content_hash_norm);
+  kv(dl, "artifact_path", c.artifact_path);
+  kv(dl, "card_path", c.card_path);
+  kv(dl, "linked_finding", c.linked_finding);
+  kv(dl, "pair_group", c.pair_group);
+  kv(dl, "raw_excerpt", c.raw_excerpt);
+  kv(dl, "created", c.created);
+  detail.appendChild(dl);
+  var hint = el("div", "hint");
+  hint.textContent = "重放三态取 timeline 最新 replay-probe 行；哈希为请求响应指纹。";
+  detail.appendChild(hint);
+  card.appendChild(detail);
+
+  sum.addEventListener("click", function () {
+    card.classList.toggle("open");
+  });
+  return card;
+}
+
+function renderCards(cards) {
+  var box = document.getElementById("cards");
+  box.textContent = "";
+  if (!cards.length) {
+    var empty = el("div");
+    empty.textContent = "（无证据卡）";
+    box.appendChild(empty);
+    return;
+  }
+  cards.forEach(function (c) { box.appendChild(renderCard(c)); });
+}
+
+function refresh() {
+  fetch("/api/evidence.json").then(function (r) { return r.json(); })
+    .then(function (d) { renderStats(d.stats); renderCards(d.cards); })
+    .catch(function () { /* 拉取失败保原画面 */ });
+}
+
+refresh();
+setInterval(refresh, 10000);
+</script>
+</body>
+</html>
