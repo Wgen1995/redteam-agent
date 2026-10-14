@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>探隐 TanYin · 架构图集 × 定位体检</title><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;background:#f6f7f9;color:#1e293b;line-height:1.65}.wrap{max-width:1420px;margin:0 auto;padding:26px 20px 80px}h1{font-size:25px;color:#0f172a}h1 small{display:block;font-size:13px;color:#64748b;font-weight:400;margin-top:4px}h2.sec{font-size:19px;margin:34px 0 6px;color:#0f172a;border-left:5px solid #0d9488;padding-left:10px}p.secsub{font-size:13px;color:#64748b;margin-bottom:10px}.svgwrap{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px;overflow-x:auto;margin-bottom:8px}svg{min-width:900px;width:100%;height:auto;display:block}.note{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin-top:14px;font-size:13px;color:#475569}footer{margin-top:26px;font-size:12px;color:#94a3b8;text-align:center}</style></head><body><div class="wrap">
+<h1>探隐 TanYin · 架构图集 × 定位体检<small>同款于 panorama/artex-analysis.html（ARTEX 图集）——四张矢量图回答：我们是不是四不像 · 作战心脏长什么样 · 13 本账为什么拆 · 终局怎么和 ARTEX 合体</small></h1>
+<h2 class="sec">图 1 · 分层架构 +「四不像」体检</h2><p class="secsub">三层互不越权 + 分发圈 + 度量圈；四个名字（opencode/python/claude-code/DSH）各是各的层</p><div class="svgwrap"><svg viewBox="0 0 1200 620" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker></defs>
+<text x="30" y="28" font-size="15" font-weight="700" fill="#0f172a">图1 · 探隐分层架构：三层互不越权 + 外面两圈（分发·度量）——每个部件一句话说得清</text>
+<rect x="30" y="46" width="830" height="86" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.6"/><text x="445" y="94" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">① AI 战士层（拳头 · 可换）,opencode 跑 glm-5.3（12 战实证宿主）· 技能跨宿主（codex 已配/claude 待需）· 战术归 AI</text>
+<line x1="445" y1="132" x2="445" y2="158" stroke="#475569" stroke-width="1.8"  marker-end="url(#a1)"/>
+<rect x="30" y="160" width="830" height="96" rx="10" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.6"/><text x="445" y="213" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">② 账本判据层（脊柱 · 不可换）,13 本 TSV + timeline 哈希链 + E-index 证据卡 · 45 条 CLI 带前置校验 · 九门唯一合法流程（嘴说无效）</text>
+<line x1="445" y1="256" x2="445" y2="282" stroke="#475569" stroke-width="1.8"  marker-end="url(#a1)"/>
+<rect x="30" y="284" width="830" height="86" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/><text x="445" y="332" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">③ Python 保活层（保姆 · 零依赖）,tanyin-runner 看门狗：stall 检测/重启/快照/budget 执法 · launchd 常驻 · 纯标准库</text>
+<rect x="890" y="46" width="280" height="150" rx="10" fill="#fffbeb" stroke="#b45309" stroke-width="1.6"/><text x="1030" y="126" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">分发圈,门A 真实授权目标
+门B/C 练兵场靶场 · 同一战士
+同一套账本，唯一区别=监督员</text>
+<rect x="890" y="212" width="280" height="158" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/><text x="1030" y="296" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">度量圈,battle.py harness · 56-GT 召回
+McNemar/Levene 双臂实验
+N=5 判决链（×12 战实绩）</text>
+<line x1="890" y1="120" x2="860" y2="100" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="5,5" marker-end="url(#a2)"/>
+<line x1="890" y1="290" x2="860" y2="250" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="5,5" marker-end="url(#a2)"/>
+<text x="30" y="420" font-size="13" font-weight="700" fill="#0f172a">「四不像」体检表——四个名字，其实各是各的层：</text>
+<text x="30" y="448" font-size="12" fill="#334155">· opencode = 战士的躯壳（可替换件，codex/claude-code 同位）——12 战全在它身上跑</text>
+<text x="30" y="472" font-size="12" fill="#334155">· python = 脊柱+保姆（账本 CLI/runner/battle）——零依赖是部署律，不是炫技</text>
+<text x="30" y="496" font-size="12" fill="#334155">· claude code = 预留的第三躯壳（模板立项未实施——建议砍掉直到有真需求，防真杂）</text>
+<text x="30" y="520" font-size="12" fill="#334155">· DSH = 我的驾驶舱（开发环境），不是探隐的部件——产品里没有它，交付里也不会有</text>
+<text x="30" y="548" font-size="12" fill="#0f766e" font-weight="700">判据：能一句话说清职责+接口契约（TSV schema/CLI 门/phases API）的层=干净；说不清的才叫杂。</text>
+<text x="30" y="572" font-size="11.5" fill="#64748b">现状：①③干净；②是灵魂；claude-code 是唯一建议收敛点（v0.8 清单之外的新决定：先砍后补）。</text>
+</svg></div>
+<h2 class="sec">图 2 · 作战循环心脏（九门 P0→P6）</h2><p class="secsub">过门只能靠 gate 命令；完成判定只认 phases API</p><div class="svgwrap"><svg viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker><marker id="b2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker></defs>
+<text x="30" y="28" font-size="15" font-weight="700" fill="#0f172a">图2 · 作战循环心脏：九门漏斗 P0→P6（过门只能靠 gate 命令，带前置校验）</text>
+<rect x="40" y="76" width="160" height="48" rx="8" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/><text x="120" y="98" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">P0 授权八问</text><text x="120" y="113" text-anchor="middle" font-size="10" fill="#475569">scope 圈定</text>
+<rect x="40" y="166" width="160" height="48" rx="8" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/><text x="120" y="188" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">P1 侦察</text><text x="120" y="203" text-anchor="middle" font-size="10" fill="#475569">资产入账</text>
+<rect x="40" y="256" width="160" height="48" rx="8" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/><text x="120" y="278" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">P2-P3 意图→验证</text><text x="120" y="293" text-anchor="middle" font-size="10" fill="#475569">intents 不蒸发</text>
+<rect x="40" y="346" width="160" height="48" rx="8" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/><text x="120" y="368" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">P4 重放实证</text><text x="120" y="383" text-anchor="middle" font-size="10" fill="#475569">无 VERIFIED 不计分</text>
+<rect x="40" y="436" width="160" height="48" rx="8" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/><text x="120" y="458" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">P5.5 人工签发</text><text x="120" y="473" text-anchor="middle" font-size="10" fill="#475569">P6 报告交付</text>
+<line x1="120" y1="124" x2="120" y2="166" stroke="#0d9488" stroke-width="1.8"  marker-end="url(#b1)"/>
+<line x1="120" y1="214" x2="120" y2="256" stroke="#0d9488" stroke-width="1.8"  marker-end="url(#b1)"/>
+<line x1="120" y1="304" x2="120" y2="346" stroke="#0d9488" stroke-width="1.8"  marker-end="url(#b1)"/>
+<line x1="120" y1="394" x2="120" y2="436" stroke="#0d9488" stroke-width="1.8"  marker-end="url(#b1)"/>
+<rect x="335" y="162" width="230" height="56" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/><text x="450" y="188" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">账本执法（贯穿全程）</text><text x="450" y="203" text-anchor="middle" font-size="10" fill="#475569">budget 空账过门=gate-fail</text>
+<rect x="335" y="302" width="230" height="56" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/><text x="450" y="328" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">watchdog 执法</text><text x="450" y="343" text-anchor="middle" font-size="10" fill="#475569">stall/重启/快照 30s</text>
+<line x1="200" y1="285" x2="335" y2="210" stroke="#b45309" stroke-width="1.8" stroke-dasharray="4,4" marker-end="url(#b2)"/>
+<line x1="335" y1="330" x2="200" y2="300" stroke="#b45309" stroke-width="1.8" stroke-dasharray="4,4" marker-end="url(#b2)"/>
+<rect x="650" y="70" width="300" height="60" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/><text x="800" y="98" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">AI 战士循环</text><text x="800" y="113" text-anchor="middle" font-size="10" fill="#475569">侦察→假设→验证→落账（b10 指令注入可中途改向）</text>
+<rect x="650" y="230" width="300" height="60" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="800" y="258" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">引擎总线（v0.6+）</text><text x="800" y="273" text-anchor="middle" font-size="10" fill="#475569">vuln-agent 等挂入 · 引擎产假设不产发现</text>
+<rect x="650" y="390" width="300" height="60" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/><text x="800" y="418" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">度量飞轮</text><text x="800" y="433" text-anchor="middle" font-size="10" fill="#475569">battle settle → 评分 → 判决 → 回灌改进（×12 战）</text>
+<line x1="800" y1="130" x2="800" y2="230" stroke="#7c3aed" stroke-width="1.8"  marker-end="url(#b2)"/>
+<line x1="800" y1="290" x2="800" y2="390" stroke="#dc2626" stroke-width="1.8"  marker-end="url(#b2)"/>
+<line x1="650" y1="218" x2="680" y2="90" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="4,4" marker-end="url(#b2)"/><text x="665" y="154" text-anchor="middle" font-size="10.5" fill="#64748b">读判据</text>
+<line x1="650" y1="350" x2="680" y2="420" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="4,4" marker-end="url(#b2)"/><text x="665" y="385" text-anchor="middle" font-size="10.5" fill="#64748b">喂实绩</text>
+<text x="30" y="530" font-size="11.5" fill="#64748b">完成判定只认 phases status 只读 API 的 PASS（rc=0 不算）——嘴说无效，账本无门事件时回落 grep+WARN（诚实降级）</text>
+</svg></div>
+<h2 class="sec">图 3 · 13 本账 + 仓外战场</h2><p class="secsub">每组独立执法语义；TSV 是刻意选型不是落后</p><div class="svgwrap"><svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif">
+<text x="30" y="28" font-size="15" font-weight="700" fill="#0f172a">图3 · 13 本账（每组=独立执法语义，混了执法就废）+ 仓外战场数据</text>
+<rect x="30" y="50" width="360" height="200" rx="12" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.6"/>
+<text x="210" y="78" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0f766e">战前四表（圈地）</text>
+<text x="210" y="106" text-anchor="middle" font-size="12" fill="#334155">goals 目标 · scope 范围(圈外不碰)</text>
+<text x="210" y="130" text-anchor="middle" font-size="12" fill="#334155">creds 凭据 · approvals 审批(P5.5签发落此)</text>
+<text x="210" y="160" text-anchor="middle" font-size="11" fill="#64748b">纪律：授权前移，无 scope 不开工</text>
+<rect x="420" y="50" width="360" height="200" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.6"/>
+<text x="600" y="78" text-anchor="middle" font-size="13.5" font-weight="800" fill="#6d28d9">作战四表（过程）</text>
+<text x="600" y="106" text-anchor="middle" font-size="12" fill="#334155">assets 资产 · facts 事实(要么消费要么弃)</text>
+<text x="600" y="130" text-anchor="middle" font-size="12" fill="#334155">intents 意图(不许蒸发) · findings 发现(可supersede)</text>
+<text x="600" y="160" text-anchor="middle" font-size="11" fill="#64748b">纪律：每一行要么有下文要么有显式死法</text>
+<rect x="810" y="50" width="360" height="200" rx="12" fill="#fffbeb" stroke="#b45309" stroke-width="1.6"/>
+<text x="990" y="78" text-anchor="middle" font-size="13.5" font-weight="800" fill="#b45309">判据三表+证据+预算（审计）</text>
+<text x="990" y="106" text-anchor="middle" font-size="12" fill="#334155">timeline 哈希链(改=断链) · edges 十种边</text>
+<text x="990" y="130" text-anchor="middle" font-size="12" fill="#334155">matrix 覆盖(空格必须消灭或披露)</text>
+<text x="990" y="154" text-anchor="middle" font-size="12" fill="#334155">E-index 可重放证据卡 · budget 预算</text>
+<text x="990" y="184" text-anchor="middle" font-size="11" fill="#64748b">纪律：这些表是给门和评分器看的，不是给 LLM 看的</text>
+<rect x="30" y="290" width="1140" height="80" rx="12" fill="#f8fafc" stroke="#64748b" stroke-width="1.4"/>
+<text x="600" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">仓外战场（~/.tanyin）：battles 战报 · settle 报告 · GT 真值(56 分母) —— 与仓库分离，防评测数据污染代码库</text>
+<text x="600" y="346" text-anchor="middle" font-size="11.5" fill="#64748b">统计链：单对 p=0.001 → 3v3 方差压缩 → N=5 终审（教训：b30/b36 换 keying 必须全量重结算再进统计）</text>
+<text x="30" y="410" font-size="12.5" font-weight="700" fill="#0f766e">对照 ARTEX：它 2 个逻辑图落 1 个可变 Postgres（给 agent 用的工作记忆）；我们 13 本账+链（给门/评分器/审计用的执法依据）——运行态它合并得对，审计态我们拆得对。</text>
+<text x="30" y="440" font-size="11.5" fill="#64748b">TSV 而非 DB：零依赖部署律 + git 可 diff 账本 + 哈希链不需要数据库——这是刻意选型，不是落后。</text>
+</svg></div>
+<h2 class="sec">图 4 · 终局合体（与 ARTEX 图集呼应）</h2><p class="secsub">运行态合并、审计态分离；v0.8 行动清单待开</p><div class="svgwrap"><svg viewBox="0 0 1200 540" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="c1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker><marker id="c2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+<text x="30" y="28" font-size="15" font-weight="700" fill="#0f172a">图4 · 终局合体：ARTEX 当广度引擎，探隐当裁判——运行态合并，审计态分离</text>
+<rect x="30" y="50" width="1140" height="92" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/><text x="600" y="101" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">ARTEX 引擎层（广度 · 运行态）,planner+worker×N 并发 · 资产图 · 过程级互查 · llmpool failover——它自己的 Postgres 当工作记忆，随便它合并</text>
+<line x1="600" y1="142" x2="600" y2="170" stroke="#dc2626" stroke-width="1.8"  marker-end="url(#c1)"/>
+<text x="790" y="162" font-size="11.5" fill="#b91c1c" font-weight="700">引擎产假设不产发现（fusion 既定律）</text>
+<rect x="30" y="172" width="1140" height="84" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/><text x="600" y="219" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">探隐 intents 层（裁判 · 审计态）,意图池统一排序 · engine-hyp 配额≤40% 保自主广度 · prereq 门控（v0.8b todolist 稳定器落此）</text>
+<line x1="600" y1="256" x2="600" y2="284" stroke="#475569" stroke-width="1.8"  marker-end="url(#c2)"/>
+<rect x="30" y="286" width="1140" height="92" rx="10" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.6"/><text x="600" y="337" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">探隐 13 账+九门（签名 · 审计态）,重放三态+精度门 · timeline 哈希链 · budget 执法 · battle 度量——每个产出落账，签得了名</text>
+<rect x="30" y="410" width="1140" height="60" rx="10" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+<text x="600" y="436" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b45309">前置关卡：靶场对标 n=3（同 56-GT 同 scorer）——数据定「挂它的引擎层」还是「只借机制（v0.8a/b/c）」</text>
+<text x="600" y="458" text-anchor="middle" font-size="11.5" fill="#78350f">AGPL：借思想不借代码——学机制零风险，抄代码=我们整体开源</text>
+<text x="30" y="510" font-size="11.5" fill="#64748b">v0.8 行动清单（已呈批待「开」）：a=llmpool failover · b=chain todolist 稳定器 · c=trace-search · d-f=中期（MITM/retester/锚点）</text>
+</svg></div>
+<div class="note"><b>体检结论</b>：①opencode（躯壳，12 战实证）②python（脊柱+保姆，零依赖律）③账本（灵魂）——三层契约清晰不杂；claude-code 是唯一虚位（建议砍到有真需求再立）；DSH 是驾驶舱不是产品。「四不像」的观感来自四个名字都在对话里出现，但产品里只有 1+2+3。</div>
+<footer>探隐架构图集 · 2026-10-11 · 事实源 docs/design/architecture-map-v3.md + 本会话实勘 · 姊妹篇 panorama/artex-analysis.html</footer>
+</div></body></html>
