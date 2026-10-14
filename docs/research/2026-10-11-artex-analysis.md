@@ -59,3 +59,16 @@ planner.go 实读确认：唯一意图生成者；transcript 原始会话持久�
 优势：双图+锚点是真创新（资产真值与任务过程分离）；todolist 攻击链稳定器直击多 agent 最痛处；过程级信息交换精巧；工程成熟度极高。
 
 局限（对照探隐）：无防幻觉精度门（finding 由 agent 写图无独立重放实证）；无哈希链防篡改（Postgres 可改）；无统计判决层（覆盖度≠召回率，无 GT 实验）；证据=被动流量录制而非主动可重放配方；部署重（Postgres/二进制）；预算无场景时钟/执法。
+
+
+---
+
+## 深读增补（2026-10-11 同日，五路子代理舰队）
+
+全仓五视角深读（15-20 文件/路，来源行号全标注）已归档 artex-deep-dive/0-index.md（索引+交叉验证）。要点：
+1. **fail-open 家族实锤**：intercept judge 默认关且失败按 allow（guard 链）；traffic MITM 失败开门透传（traffic.go:399-431）；activity 写失败 3 次丢弃——全子系统一致"宁可退化不可停摆"。
+2. **todolist 纯内存**（planner.go:47）：重启丢串行链——README 宣称的"稳定攻击链"在重启面前无保护。
+3. **45 表全景+kind×state 矩阵 CHECK**（schema.sql:184-193）：图结构有基本防线，但边方向仅注释约定、零审计链（sha256 仅在归档包）。
+4. **llmpool 全参数**（v0.8a 蓝图）：错误分类表/硬熔断 1 次软 3 次/冷却 1-5-30min/"首个事件前才可转移"铁律/进程级 Registry 落库恢复。
+5. **技能工程**：三层拆分+独立 message 注入+压缩后逐字重注入+三段式 prompt（纪律段代码锁定）——pentest-core SKILL.md 升级直接参照。
+6. **哲学总判**：ARTEX availability-first，探隐 integrity-first——合体架构=运行态用它/审计态用我们，五路证据支撑该分层。
