@@ -1,98 +1,191 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>ARTEX 实勘 · 架构解剖与探隐对比</title><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;background:#f6f7f9;color:#1e293b;line-height:1.65}.wrap{max-width:1420px;margin:0 auto;padding:26px 20px 80px}h1{font-size:25px;color:#0f172a}h1 small{display:block;font-size:13px;color:#64748b;font-weight:400;margin-top:4px;max-width:1000px}h2.sec{font-size:19px;margin:34px 0 6px;color:#0f172a;border-left:5px solid #0d9488;padding-left:10px}p.secsub{font-size:13px;color:#64748b;margin-bottom:14px}.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px;margin:12px 0}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:900px){.grid2{grid-template-columns:1fr}}.box{border-radius:10px;padding:10px 12px;font-size:13px;border:1.5px solid}.b-fe{border-color:#0d9488;background:#f0fdfa}.b-srv{border-color:#2563eb;background:#eff6ff}.b-ag{border-color:#7c3aed;background:#f5f3ff}.b-db{border-color:#b45309;background:#fffbeb}.b-sub{border-color:#64748b;background:#f8fafc}.b-ty{border-color:#dc2626;background:#fef2f2}.arrow{ text-align:center;color:#94a3b8;font-size:15px;margin:2px 0}.cap{font-size:12px;color:#64748b;text-align:center;margin-top:6px}table.dict{width:100%;border-collapse:collapse;margin-top:8px;background:#fff;font-size:13.5px}table.dict th{background:#0f172a;color:#e2e8f0;text-align:left;padding:8px 12px}table.dict td{border-bottom:1px solid #e2e8f0;padding:8px 12px;vertical-align:top}table.dict td:first-child{white-space:nowrap;font-weight:600;width:170px}.win{color:#0d9488;font-weight:700}.lose{color:#dc2626;font-weight:700}.tie{color:#64748b;font-weight:700}.bar{height:16px;border-radius:8px;background:#e2e8f0;overflow:hidden;margin:3px 0 8px}.bar>i{display:block;height:100%;background:#0d9488}.bar.a>i{background:#2563eb}.pill{display:inline-block;font-size:11.5px;font-weight:700;border-radius:20px;padding:2px 10px;margin:1px 2px}.p-g{background:#ccfbf1;color:#0f766e}.p-r{background:#fee2e2;color:#b91c1c}.p-y{background:#fef9c3;color:#a16207}.flow{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:#0f172a;color:#a5f3fc;border-radius:10px;padding:14px 16px;white-space:pre;overflow-x:auto;line-height:1.8}.note{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin-top:14px;font-size:13px;color:#475569}.big{font-size:15px;font-weight:700;color:#0f172a}footer{margin-top:26px;font-size:12px;color:#94a3b8;text-align:center}</style></head><body>
-<div class="wrap">
-<h1>ARTEX 实勘 · 架构解剖 × 探隐对比决策<small>百度 agent+ 攻防挑战赛冠军项目全仓解剖（810 文件实勘+源码抽读）→ 双图架构/事件驱动引擎/三大自主性机制 → 与探隐 12 维矩阵对比 → 合体架构终局方案。配套文字版：docs/research/2026-10-11-artex-*.md</small></h1>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>ARTEX 实勘 · 架构图集 × 探隐对比</title><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;background:#f6f7f9;color:#1e293b;line-height:1.65}.wrap{max-width:1420px;margin:0 auto;padding:26px 20px 80px}h1{font-size:25px;color:#0f172a}h1 small{display:block;font-size:13px;color:#64748b;font-weight:400;margin-top:4px}h2.sec{font-size:19px;margin:34px 0 6px;color:#0f172a;border-left:5px solid #0d9488;padding-left:10px}p.secsub{font-size:13px;color:#64748b;margin-bottom:10px}.svgwrap{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px;overflow-x:auto;margin-bottom:8px}svg{min-width:900px;width:100%;height:auto;display:block}table.dict{width:100%;border-collapse:collapse;margin-top:8px;background:#fff;font-size:13.5px}table.dict th{background:#0f172a;color:#e2e8f0;text-align:left;padding:8px 12px}table.dict td{border-bottom:1px solid #e2e8f0;padding:8px 12px;vertical-align:top}.win{color:#0d9488;font-weight:700}.lose{color:#dc2626;font-weight:700}.tie{color:#64748b;font-weight:700}.note{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin-top:14px;font-size:13px;color:#475569}footer{margin-top:26px;font-size:12px;color:#94a3b8;text-align:center}</style></head><body><div class="wrap">
+<h1>ARTEX 实勘 · 架构图集 × 探隐对比决策<small>七张矢量图：分层架构 / 双图架构 / 引擎闭环 / 三大机制 / 12 维矩阵 / 战力对比 / 合体方案。文字版 docs/research/2026-10-11-artex-*.md（2026-10-11 全仓实勘）</small></h1>
 
-<h2 class="sec">① 项目身份</h2><p class="secsub">竞赛冠军的基因：为「找到更多」优化，而非为「每个发现可辩护」优化</p>
-<div class="card"><table class="dict"><tr><th>项</th><th>事实</th></tr>
-<tr><td>定位</td><td>AI 自主渗透测试系统 · 百度 agent+ 攻防挑战赛 <span class="pill p-g">冠军</span></td></tr>
-<tr><td>形态</td><td>Go 单体（go:embed 内嵌 Next.js，单二进制）+ PostgreSQL + 自研 norma SDK（vendored 210 文件）</td></tr>
-<tr><td>规模</td><td>810 文件 / 8.3MB · agent 52 · server 103 · db 97</td></tr>
-<tr><td>许可</td><td>AGPL-3.0（改码分发须开源；直接使用不限制）</td></tr>
-<tr><td>许可补充</td><td>作者附加：建议仅学习研究+本地验证（用户已澄清授权场景自行判断）</td></tr></table></div>
+<h2 class="sec">图 1 · 总体分层架构</h2><p class="secsub">四层堆叠+支撑子系统（810 文件实勘归类）</p><div class="svgwrap"><svg viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker></defs>
+<text x="30" y="30" font-size="15" font-weight="700" fill="#0f172a">ARTEX 总体分层架构（Go 单二进制 · 内嵌 Next.js · PostgreSQL）</text>
+<rect x="30" y="50" width="880" height="74" rx="10" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.6"/><text x="470" y="83" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">前端 Next.js（go:embed 内嵌 · :8787）</text><text x="470" y="103" text-anchor="middle" font-size="11.5" fill="#475569">仪表盘 · 任务 · 资产 · 覆盖图 · 探索链路 · 流量 · 人在环路对话 · 审批 · LLM 配置</text>
+<line x1="470" y1="124" x2="470" y2="152" stroke="#475569" stroke-width="1.8"  marker-end="url(#a1)"/>
+<rect x="30" y="154" width="880" height="64" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/><text x="470" y="182" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">server（Go net/http）</text><text x="470" y="202" text-anchor="middle" font-size="11.5" fill="#475569">REST /api/* + JWT 鉴权 + SSE 活动流 · Manager 托管任务/引擎/store 生命周期</text>
+<line x1="470" y1="218" x2="470" y2="246" stroke="#475569" stroke-width="1.8"  marker-end="url(#a1)"/>
+<rect x="30" y="248" width="880" height="96" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.6"/><text x="470" y="292" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">engine（每任务）+ agent 层</text><text x="470" y="312" text-anchor="middle" font-size="11.5" fill="#475569">plannerLoop ×1（唯一意图源）+ worker goroutine ×N · goals 目标分解 · mainagent 人在环路 · retester 复测</text>
+<line x1="470" y1="344" x2="470" y2="372" stroke="#475569" stroke-width="1.8"  marker-end="url(#a1)"/>
+<rect x="30" y="374" width="880" height="60" rx="10" fill="#fffbeb" stroke="#b45309" stroke-width="1.6"/><text x="470" y="400" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">PostgreSQL 双图落库（pgx）</text><text x="470" y="420" text-anchor="middle" font-size="11.5" fill="#475569">资产图+探索图+锚点 · schema go:embed 启动幂等迁移（重启即迁移）</text>
+<rect x="940" y="50" width="230" height="384" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="1.6"/><text x="1055" y="247" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">支撑子系统</text>
+<text x="1055" y="92" text-anchor="middle" font-size="11.5" fill="#334155">traffic · MITM 记录代理 :8788</text>
+<text x="1055" y="118" text-anchor="middle" font-size="11.5" fill="#334155">intercept+guard · 审批门+守卫</text>
+<text x="1055" y="144" text-anchor="middle" font-size="11.5" fill="#334155">llmpool · 多 LLM 健康度池</text>
+<text x="1055" y="170" text-anchor="middle" font-size="11.5" fill="#334155">llmrec · LLM 调用录制</text>
+<text x="1055" y="196" text-anchor="middle" font-size="11.5" fill="#334155">notify · 钉钉/飞书/邮件</text>
+<text x="1055" y="222" text-anchor="middle" font-size="11.5" fill="#334155">enrich · DNS/HTTP 异步补全</text>
+<text x="1055" y="248" text-anchor="middle" font-size="11.5" fill="#334155">evidence · 证据存储</text>
+<text x="1055" y="274" text-anchor="middle" font-size="11.5" fill="#334155">report · findings→报告</text>
+<text x="1055" y="300" text-anchor="middle" font-size="11.5" fill="#334155">mcphttp · HTTP/SSE 双协议</text>
+<text x="1055" y="326" text-anchor="middle" font-size="11.5" fill="#334155">selfupdate · 自更新+3连败回滚</text>
+<text x="1055" y="352" text-anchor="middle" font-size="11.5" fill="#334155">skills · api-recon/playwright-cli</text>
+<text x="1055" y="378" text-anchor="middle" font-size="11.5" fill="#334155">sidequestion · 侧问预算</text>
+<text x="1055" y="404" text-anchor="middle" font-size="11.5" fill="#334155">norma SDK · vendored 210 文件</text>
+<line x1="940" y1="296" x2="910" y2="296" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="5,5" marker-end="url(#a2)"/>
+<text x="30" y="480" font-size="12" fill="#64748b">意图单源律：只有 planner 能生成意图（防 worker 自增殖）；worker 领一条意图、执行完写回即停 · 全程经 MITM 代理留痕+CA 验证</text>
+<text x="30" y="504" font-size="12" fill="#64748b">进程模型：单 Go 二进制（内嵌前端）+ Postgres；每任务一个 engine 实例（planner×1 + worker×N goroutine）</text>
+</svg></div>
 
-<h2 class="sec">② 总体分层架构</h2><p class="secsub">四层+支撑子系统全景（源码树实勘 810 文件归类）</p>
-<div class="card">
-<div class="box b-fe"><b>前端 Next.js（go:embed 内嵌 :8787）</b> — 仪表盘 · 任务 · 资产 · 覆盖图 · 探索链路 · 流量 · 人在环路对话 · 审批 · LLM 配置</div>
-<div class="arrow">▼</div>
-<div class="box b-srv"><b>server（Go net/http）</b> — REST /api/* + JWT + SSE 活动流 · Manager 托管任务/引擎/store 生命周期</div>
-<div class="arrow">▼</div>
-<div class="box b-ag"><b>engine（每任务）+ agent 层</b> — plannerLoop ×1（唯一意图源）+ worker goroutine ×N · goals 目标分解 · mainagent 人在环路 · retester 复测 agent</div>
-<div class="arrow">▼</div>
-<div class="box b-db"><b>PostgreSQL 双图落库（pgx）</b> — schema go:embed 启动幂等迁移（重启即迁移）</div>
-<div class="cap">支撑子系统：traffic MITM 记录代理(:8788) / intercept+guard 审批门 / enrich / llmpool 健康池 / llmrec 调用录制 / notify 26 文件(钉钉/飞书/邮件) / report / evidence / mcphttp / selfupdate(自更新+回滚) / skills / sidequestion</div>
-</div>
+<h2 class="sec">图 2 · 双图架构（核心创新Ⅰ）</h2><p class="secsub">探索图=过程链 ⇋锚点⇋ 资产图=真值库</p><div class="svgwrap"><svg viewBox="0 0 1200 620" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="g1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker><marker id="g2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker><marker id="g3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker></defs>
+<text x="30" y="30" font-size="15" font-weight="700" fill="#0f172a">核心创新Ⅰ · 双图架构：探索图（过程）⇋ 锚点 ⇋ 资产图（真值）</text>
+<rect x="24" y="52" width="560" height="540" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-dasharray="6,4" stroke-width="1.2"/>
+<text x="44" y="80" font-size="13.5" font-weight="700" fill="#6d28d9">探索图 · 每任务独立 · 推进链</text>
+<rect x="60" y="108" width="120" height="44" rx="8" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/><text x="120" y="134" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">goal 目标</text>
+<rect x="240" y="178" width="120" height="44" rx="8" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/><text x="300" y="204" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">intent A 意图</text>
+<rect x="60" y="258" width="120" height="44" rx="8" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/><text x="120" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">fact 事实</text>
+<rect x="240" y="338" width="120" height="44" rx="8" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/><text x="300" y="364" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">intent B</text>
+<rect x="80" y="438" width="120" height="44" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/><text x="140" y="464" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">finding 漏洞</text>
+<line x1="180" y1="130" x2="240" y2="186" stroke="#7c3aed" stroke-width="1.8"  marker-end="url(#g1)"/><text x="196" y="154" text-anchor="middle" font-size="10.5" fill="#64748b">spawns</text>
+<line x1="300" y1="222" x2="180" y2="262" stroke="#7c3aed" stroke-width="1.8"  marker-end="url(#g1)"/><text x="224" y="240" text-anchor="middle" font-size="10.5" fill="#64748b">yields</text>
+<line x1="180" y1="302" x2="240" y2="340" stroke="#7c3aed" stroke-width="1.8"  marker-end="url(#g1)"/><text x="240" y="321" text-anchor="middle" font-size="10.5" fill="#64748b">derived_from</text>
+<line x1="300" y1="382" x2="190" y2="442" stroke="#dc2626" stroke-width="1.8"  marker-end="url(#g1)"/><text x="271" y="414" text-anchor="middle" font-size="10.5" fill="#64748b">proves</text>
+<rect x="360" y="280" width="120" height="40" rx="8" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/><text x="420" y="304" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">hint 提示</text>
+<text x="44" y="560" font-size="11.5" fill="#64748b">血缘边回答：这个方向派生自哪些事实、产出了什么</text>
+<rect x="616" y="52" width="560" height="540" rx="14" fill="#fffbeb" stroke="#b45309" stroke-dasharray="6,4" stroke-width="1.2"/>
+<text x="636" y="80" font-size="13.5" font-weight="700" fill="#b45309">资产图 · 全局共享 · 真值库</text>
+<rect x="821" y="108" width="150" height="44" rx="8" fill="#fff" stroke="#b45309" stroke-width="1.5"/><text x="896" y="134" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">company 公司</text>
+<rect x="811" y="190" width="170" height="40" rx="8" fill="#fff" stroke="#b45309" stroke-width="1.5"/><text x="896" y="214" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">root_domain</text>
+<rect x="690" y="270" width="140" height="40" rx="8" fill="#fff" stroke="#b45309" stroke-width="1.5"/><text x="760" y="294" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">subdomain</text>
+<rect x="940" y="270" width="120" height="40" rx="8" fill="#fff" stroke="#b45309" stroke-width="1.5"/><text x="1000" y="294" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">ip / service</text>
+<rect x="690" y="350" width="140" height="40" rx="8" fill="#fff" stroke="#b45309" stroke-width="1.5"/><text x="760" y="374" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">service</text>
+<rect x="795" y="430" width="130" height="40" rx="8" fill="#fff" stroke="#b45309" stroke-width="1.5"/><text x="860" y="454" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">endpoint</text>
+<line x1="896" y1="152" x2="896" y2="190" stroke="#b45309" stroke-width="1.8"  marker-end="url(#g2)"/>
+<line x1="860" y1="228" x2="790" y2="270" stroke="#b45309" stroke-width="1.8"  marker-end="url(#g2)"/>
+<line x1="930" y1="228" x2="1000" y2="270" stroke="#b45309" stroke-width="1.8"  marker-end="url(#g2)"/>
+<line x1="760" y1="310" x2="760" y2="350" stroke="#b45309" stroke-width="1.8"  marker-end="url(#g2)"/>
+<line x1="795" y1="350" x2="830" y2="432" stroke="#b45309" stroke-width="1.8"  marker-end="url(#g2)"/>
+<text x="636" y="540" font-size="11.5" fill="#64748b">父子关系与去重 key 全由程序计算——agent 只提交原始信息（不信 LLM 画图）</text>
+<line x1="360" y1="214" x2="694" y2="286" stroke="#0d9488" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#g3)"/><text x="527" y="250" text-anchor="middle" font-size="10.5" fill="#64748b">anchor</text>
+<line x1="200" y1="470" x2="795" y2="452" stroke="#0d9488" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#g3)"/><text x="497.5" y="453" text-anchor="middle" font-size="10.5" fill="#64748b">anchor</text>
+<line x1="300" y1="240" x2="1000" y2="272" stroke="#0d9488" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#g3)"/><text x="650" y="248" text-anchor="middle" font-size="10.5" fill="#64748b">anchor</text>
+<text x="330" y="600" font-size="12" fill="#0f766e" font-weight="700">桥表 exploration_anchors(node_id, asset_id)：方向→打过哪些资产 / 资产→被哪些意图测过 ⇒ 资产覆盖度+覆盖图</text>
+</svg></div>
 
-<h2 class="sec">③ 核心创新Ⅰ · 双图架构</h2><p class="secsub">「目标是什么」（资产真值）与「测到什么程度」（任务推进链）分离——两图靠锚点相连</p>
-<div class="card"><div class="grid2">
-<div><div class="box b-ag"><b>探索图（每任务独立 · 推进链）</b><br>goal ─spawns→ intent A ─yields→ fact ─derived_from→ intent B ─proves→ finding<br><span class="pill p-y">血缘边全链可溯</span></div></div>
-<div><div class="box b-db"><b>资产图（全局共享 · 真值库）</b><br>root_domain → subdomain → service → endpoint（归属公司）<br><span class="pill p-g">父子关系/去重 key 全由程序算——不信 LLM 画图</span></div></div>
-</div>
-<div class="arrow">⇕ exploration_anchors(node_id, asset_id) 桥表锚定</div>
-<div class="cap">双向查询：方向→打过哪些资产 / 资产→被哪些意图测过 ⇒ 资产覆盖度 + 覆盖图高亮</div></div>
+<h2 class="sec">图 3 · 事件驱动引擎闭环（核心创新Ⅱ）</h2><p class="secsub">图变更→planner→frontier→worker→MITM 执行→写回→再唤醒</p><div class="svgwrap"><svg viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="l1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/></marker></defs>
+<text x="30" y="30" font-size="15" font-weight="700" fill="#0f172a">核心创新Ⅱ · 事件驱动引擎闭环（每任务）</text>
+<rect x="450" y="62" width="300" height="56" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/><text x="600" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">图变更 debounce</text><text x="600" y="103" text-anchor="middle" font-size="10" fill="#475569">资产图/探索图任何写回</text>
+<rect x="450" y="170" width="300" height="60" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/><text x="600" y="198" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">planner 唤醒（全新无状态会话）</text><text x="600" y="213" text-anchor="middle" font-size="10" fill="#475569">读态势：graph_overview 预取+coverage/scope</text>
+<rect x="830" y="292" width="240" height="56" rx="8" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/><text x="950" y="318" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">frontier 意图队列</text><text x="950" y="333" text-anchor="middle" font-size="10" fill="#475569">派 0..N（多数唤醒派 0）</text>
+<rect x="470" y="290" width="260" height="60" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="600" y="318" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">worker claimNext 领一条</text><text x="600" y="333" text-anchor="middle" font-size="10" fill="#475569">领到即执行，做完即停</text>
+<rect x="90" y="410" width="300" height="60" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/><text x="240" y="438" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">真实工具执行</text><text x="240" y="453" text-anchor="middle" font-size="10" fill="#475569">Kali / Bash / HTTP · 全程 MITM 代理:8788 留痕+CA 验证</text>
+<rect x="470" y="532" width="340" height="56" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/><text x="640" y="558" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">写回 fact / asset / finding + 每步 activity</text><text x="640" y="573" text-anchor="middle" font-size="10" fill="#475569">写回即触发下一次图变更 → 闭环</text>
+<line x1="600" y1="118" x2="600" y2="168" stroke="#0f172a" stroke-width="1.8"  marker-end="url(#l1)"/>
+<line x1="660" y1="224" x2="850" y2="294" stroke="#0f172a" stroke-width="1.8"  marker-end="url(#l1)"/><text x="755" y="259" text-anchor="middle" font-size="10.5" fill="#64748b">spawns intents</text>
+<line x1="830" y1="332" x2="740" y2="330" stroke="#0f172a" stroke-width="1.8"  marker-end="url(#l1)"/><text x="785" y="331" text-anchor="middle" font-size="10.5" fill="#64748b">claim</text>
+<line x1="480" y1="336" x2="390" y2="408" stroke="#0f172a" stroke-width="1.8"  marker-end="url(#l1)"/><text x="435" y="372" text-anchor="middle" font-size="10.5" fill="#64748b">execute</text>
+<line x1="390" y1="470" x2="490" y2="536" stroke="#0f172a" stroke-width="1.8"  marker-end="url(#l1)"/>
+<line x1="812" y1="560" x2="1050" y2="560" stroke="#0d9488" stroke-width="1.8" stroke-dasharray="4,4" marker-end="url(#l1)"/>
+<path d="M 1050 560 L 1050 90" stroke="#0d9488" stroke-width="1.8" stroke-dasharray="4,4" fill="none" marker-end="url(#l1)"/>
+<text x="1075" y="330" font-size="11.5" fill="#0f766e" transform="rotate(90 1075 330)">再次唤醒 · 直到 prove_goal</text>
+<text x="30" y="620" font-size="12" fill="#64748b">planner.go 实读：killWork/steerWork 引擎回调（运行中意图可杀/可中途改向）· transcript 原始会话持久化 · compaction 上下文窗口</text>
+</svg></div>
 
-<h2 class="sec">④ 核心创新Ⅱ · 事件驱动引擎闭环</h2>
-<div class="card"><div class="flow">图变更(debounce) ─▶ 唤醒 planner（读态势：graph_overview 预取 + coverage/scope）
-                              │
-                              ▼ 派 0..N 意图进 frontier（多数唤醒派 0 —— 无新方向即不动）
-                              ▼
- worker claimNext 领【一条】意图 ─▶ 真实工具执行（Kali/Bash/HTTP 全程经 MITM 代理留痕+CA 验证）
-                              ▼
-        写回 fact/asset/finding + 每步 activity ─▶ 图变更 ─▶ 再唤醒 … 直到 prove_goal</div>
-<div class="cap">planner.go 实读：killWork/steerWork 回调（运行中可杀可改向 · 与探隐 b10 指令注入同思路）· transcript 持久化 · compaction 窗口</div></div>
+<h2 class="sec">图 4 · 三大自主性机制（核心创新Ⅲ）</h2><p class="secsub">过程级信息交换 / 共享 todolist / 人在环路三面</p><div class="svgwrap"><svg viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker><marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker></defs>
+<text x="30" y="30" font-size="15" font-weight="700" fill="#0f172a">核心创新Ⅲ · 三大自主性机制</text>
+<text x="30" y="58" font-size="13" font-weight="700" fill="#2563eb">机制 1 · worker 过程级信息交换（黑板）</text>
+<rect x="90" y="84" width="220" height="52" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="200" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">worker A（意图 #12）</text><text x="200" y="123" text-anchor="middle" font-size="10" fill="#475569">每步 activity 落过程库</text>
+<rect x="450" y="84" width="220" height="52" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="560" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">worker B（意图 #34）</text><text x="560" y="123" text-anchor="middle" font-size="10" fill="#475569">每步 activity 落过程库</text>
+<rect x="830" y="84" width="220" height="52" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/><text x="940" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">worker C（意图 #56）</text><text x="940" y="123" text-anchor="middle" font-size="10" fill="#475569">search_all_worker_traces(q)</text>
+<rect x="300" y="196" width="600" height="48" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+<text x="600" y="224" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">探索图 · activity 过程库（执行过程全集）</text>
+<line x1="200" y1="136" x2="400" y2="196" stroke="#2563eb" stroke-width="1.8"  marker-end="url(#m1)"/>
+<line x1="560" y1="136" x2="600" y2="196" stroke="#2563eb" stroke-width="1.8"  marker-end="url(#m1)"/>
+<line x1="940" y1="136" x2="830" y2="196" stroke="#dc2626" stroke-width="1.8"  marker-end="url(#m2)"/><text x="915" y="176" text-anchor="middle" font-size="10.5" fill="#64748b">①检索</text>
+<line x1="830" y1="220" x2="940" y2="130" stroke="#dc2626" stroke-width="1.8"  marker-end="url(#m2)"/><text x="895" y="191" text-anchor="middle" font-size="10.5" fill="#64748b">②命中 A/B 步骤(排除自己) ③get_worker_trace ④取完整过程</text>
+<text x="30" y="286" font-size="11.5" fill="#64748b">价值：fact 还没写进图，观察已经被战友复用——信息以「执行过程」粒度流动，边界不变（各 worker 仍只做自己领的意图）</text>
+<text x="30" y="330" font-size="13" font-weight="700" fill="#7c3aed">机制 2 · planner 共享 todolist 分轮派发（攻击链稳定器）</text>
+<rect x="95" y="367" width="150" height="46" rx="8" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/><text x="170" y="388" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">① 注入点</text><text x="170" y="403" text-anchor="middle" font-size="10" fill="#475569">已完成 ✓</text>
+<rect x="315" y="367" width="150" height="46" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/><text x="390" y="388" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">② 取凭据</text><text x="390" y="403" text-anchor="middle" font-size="10" fill="#475569">进行中</text>
+<rect x="535" y="367" width="150" height="46" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/><text x="610" y="388" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">③ 横向</text><text x="610" y="403" text-anchor="middle" font-size="10" fill="#475569">待前置</text>
+<rect x="755" y="367" width="150" height="46" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/><text x="830" y="388" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">④ 提权</text><text x="830" y="403" text-anchor="middle" font-size="10" fill="#475569">待前置</text>
+<line x1="245" y1="390" x2="315" y2="390" stroke="#7c3aed" stroke-width="1.8"  marker-end="url(#m3)"/><text x="280" y="390" text-anchor="middle" font-size="10.5" fill="#64748b">前置满足</text>
+<line x1="465" y1="390" x2="535" y2="390" stroke="#7c3aed" stroke-width="1.8"  marker-end="url(#m3)"/>
+<line x1="685" y1="390" x2="755" y2="390" stroke="#7c3aed" stroke-width="1.8"  marker-end="url(#m3)"/>
+<rect x="70" y="480" width="200" height="40" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/><text x="170" y="504" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">第1轮唤醒 → 派意图①</text>
+<rect x="345" y="480" width="210" height="40" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/><text x="450" y="504" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">第2轮（①产出fact）→派②</text>
+<rect x="645" y="480" width="210" height="40" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/><text x="750" y="504" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">第3轮（②产出fact）→派③</text>
+<line x1="170" y1="420" x2="170" y2="480" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="3,3" marker-end="url(#m3)"/>
+<line x1="450" y1="420" x2="450" y2="480" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="3,3" marker-end="url(#m3)"/>
+<line x1="750" y1="420" x2="750" y2="480" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="3,3" marker-end="url(#m3)"/>
+<text x="1010" y="395" font-size="11" fill="#64748b">共享 todolist</text><text x="1010" y="410" font-size="11" fill="#64748b">按任务保留</text><text x="1010" y="425" font-size="11" fill="#64748b">跨唤醒常驻</text>
+<text x="30" y="560" font-size="11.5" fill="#64748b">每次唤醒是全新无状态会话——靠常驻清单把串行利用链「记录一次、分轮派发」：事件驱动下多步链不乱序、不重复（能走完整利用链的关键）</text>
+<text x="30" y="604" font-size="13" font-weight="700" fill="#b45309">机制 3 · 人在环路三面</text>
+<rect x="75" y="632" width="250" height="56" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/><text x="200" y="658" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">mainagent 对话</text><text x="200" y="673" text-anchor="middle" font-size="10" fill="#475569">审批卡片可展开详情（沿 AegisHook 组件）</text>
+<rect x="435" y="632" width="250" height="56" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/><text x="560" y="658" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">retester 复测 agent</text><text x="560" y="673" text-anchor="middle" font-size="10" fill="#475569">三态：仍可复现/已修复/无法确认 · 已修复自动同步</text>
+<rect x="795" y="632" width="250" height="56" rx="8" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/><text x="920" y="658" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">sidequestion 侧问</text><text x="920" y="673" text-anchor="middle" font-size="10" fill="#475569">旁路提问 · CONTEXT_BUDGET 预算管理</text>
+<line x1="560" y1="688" x2="450" y2="688" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="3,3" marker-end="url(#m3)"/>
+<line x1="920" y1="688" x2="810" y2="688" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="3,3" marker-end="url(#m3)"/>
+<text x="30" y="740" font-size="11.5" fill="#64748b">复测闭环：会话成功且结论「已修复」→ 漏洞状态自动更新；执行/失败/停止保留原状态；证据与会话链接永久留档</text>
+<text x="30" y="780" font-size="12.5" font-weight="700" fill="#0f766e">对照探隐：todolist≈探隐引擎总线（vuln-agent 串行链）正缺的稳定器 · 过程交换≈trace-search 借脑项 · retester≈P4 重放的时间维延伸</text>
+</svg></div>
 
-<h2 class="sec">⑤ 核心创新Ⅲ · 三大自主性机制</h2>
-<div class="card"><div class="grid2">
-<div class="box b-ag"><b>worker 过程级信息交换</b><br>search_all_worker_traces(q) 检索其他 worker 执行过程（排除自己）→ get_worker_trace 取完整步骤。<br><span class="pill p-g">fact 未入图，观察已可复用</span> 边界不变（各 worker 仍只做自己意图）</div>
-<div class="box b-ag"><b>planner 共享 todolist</b><br>每次唤醒=全新无状态会话；常驻 todolist 把串行利用链记录一次、分轮派发（前置满足才派下一步）。<br><span class="pill p-g">事件驱动下多步链不乱序不重复——走完整利用链的关键</span></div>
-<div class="box b-ag"><b>人在环路三面</b><br>mainagent 对话审批（卡片可展开详情）· retester 独立复测（三态结论，已修复自动同步）· sidequestion 侧问预算管理</div>
-</div></div>
-
-<h2 class="sec">⑥ 探隐 vs ARTEX · 12 维矩阵</h2><p class="secsub">深挖 12 维：绿=探隐优 · 蓝=ARTEX 优 · 灰=平手（代差=整整一代的差距）</p>
-<div class="card"><table class="dict"><tr><th>维度</th><th>ARTEX</th><th>探隐</th><th>优方</th></tr>
+<h2 class="sec">图 5 · 12 维能力矩阵</h2><div class="svgwrap"><table class="dict"><tr><th>维度</th><th>ARTEX</th><th>探隐</th><th>优方</th></tr>
 <tr><td>多 agent 并发</td><td>planner+worker×N 可 kill/steer</td><td>单战士+子代理</td><td class="lose">ARTEX</td></tr>
 <tr><td>资产建模</td><td>双图+锚点+ScopeSentry 同步</td><td>assets.tsv+matrix</td><td class="lose">ARTEX</td></tr>
 <tr><td>攻击链稳定性</td><td>共享 todolist 分轮派发</td><td>九门串行</td><td class="tie">平手</td></tr>
 <tr><td>证据纪律</td><td>流量 MITM 被动录</td><td>E-index 可重放卡+三态+精度门</td><td class="win">探隐 · 代差</td></tr>
-<tr><td>防篡改审计</td><td>Postgres 可改</td><td>timeline 哈希链，改账=断链可检</td><td class="win">探隐 · 代差</td></tr>
-<tr><td>效果测量</td><td>无召回/GT/统计</td><td>×12 战+McNemar+Levene 双臂</td><td class="win">探隐 · 代差</td></tr>
-<tr><td>幻觉防御</td><td>无独立实证强制</td><td>无 VERIFIED 不计分（烂帐=0 连坐）</td><td class="win">探隐</td></tr>
-<tr><td>预算纪律</td><td>turns/LLM 成本</td><td>budget 执法+空账过门 gate-fail</td><td class="win">探隐</td></tr>
+<tr><td>防篡改审计</td><td>Postgres 可改</td><td>timeline 哈希链</td><td class="win">探隐 · 代差</td></tr>
+<tr><td>效果测量</td><td>无召回/GT/统计</td><td>×12 战+McNemar+Levene</td><td class="win">探隐 · 代差</td></tr>
+<tr><td>幻觉防御</td><td>无独立实证强制</td><td>无 VERIFIED 不计分</td><td class="win">探隐</td></tr>
+<tr><td>预算纪律</td><td>turns/LLM 成本</td><td>budget 执法+gate-fail</td><td class="win">探隐</td></tr>
 <tr><td>UI 可视化</td><td>全套</td><td>CLI+TSV</td><td class="lose">ARTEX</td></tr>
-<tr><td>工程成熟度</td><td>自更新回滚/LLM 池/多通道通知</td><td>零依赖+launchd+ask（朴素）</td><td class="lose">ARTEX</td></tr>
-<tr><td>移植性</td><td>单二进制但需 Postgres</td><td>python3 零依赖跨 5 宿主</td><td class="win">探隐</td></tr>
-<tr><td>授权适配</td><td>AGPL 不限使用（改码分发须开源）</td><td>授权链内建（P0 八问/P5.5 签发）</td><td class="win">探隐</td></tr></table></div>
+<tr><td>工程成熟度</td><td>自更新回滚/LLM 池/通知</td><td>零依赖+launchd+ask</td><td class="lose">ARTEX</td></tr>
+<tr><td>移植性</td><td>单二进制需 Postgres</td><td>python3 零依赖跨 5 宿主</td><td class="win">探隐</td></tr>
+<tr><td>授权适配</td><td>AGPL 不限使用（改码分发须开源）</td><td>授权链内建</td><td class="win">探隐</td></tr></table></div>
 
-<h2 class="sec">⑦ 战力直观对比（探隐实测 vs ARTEX 未测项）</h2>
-<div class="card">
-<div class="big">证据三柱（职业交付的护城河）</div>
-<div>重放实证精度门<span class="pill p-r">ARTEX 无</span></div><div class="bar"><i style="width:0%"></i></div>
-<div class="bar a"><i style="width:100%"></i></div><div class="cap">上：ARTEX / 下：探隐（E-index 重放三态+零分律）</div>
-<div style="margin-top:10px">效果测量（召回基线）<span class="pill p-r">ARTEX 从未测过自己</span></div>
-<div class="bar a"><i style="width:0%"></i></div>
-<div class="bar"><i style="width:70%"></i></div><div class="cap">探隐 12 战中位 0.66-0.70（56 分母召回）</div>
-<div style="margin-top:10px">并发广度</div>
-<div class="bar a"><i style="width:90%"></i></div>
-<div class="bar"><i style="width:35%"></i></div><div class="cap">ARTEX worker×N 事件驱动 vs 探隐单战士</div></div>
+<h2 class="sec">图 6 · 战力直观对比</h2><p class="secsub">定性评估条形图（双方从未同台测量——对标实验要补的空白）</p><div class="svgwrap"><svg viewBox="0 0 1200 480" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif">
+<text x="30" y="30" font-size="15" font-weight="700" fill="#0f172a">战力直观对比（蓝=ARTEX · 绿=探隐 · 定性评估，非同尺测量）</text>
+<text x="30" y="64" font-size="12.5" font-weight="700" fill="#0f172a">证据纪律（可重放实证+精度门）</text>
+  <rect x="150" y="52" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="52" width="120" height="17" rx="8" fill="#2563eb"/>
+  <text x="280" y="65" font-size="10.5" fill="#1d4ed8" font-weight="700">ARTEX</text>
+  <rect x="150" y="73" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="73" width="800" height="17" rx="8" fill="#0d9488"/>
+  <text x="960" y="87" font-size="10.5" fill="#0f766e" font-weight="700">探隐</text>
+  <text x="975" y="72" font-size="10.5" fill="#64748b">代差：ARTEX 仅流量被动录</text><text x="30" y="142" font-size="12.5" font-weight="700" fill="#0f172a">防篡改审计（哈希链）</text>
+  <rect x="150" y="130" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="130" width="40" height="17" rx="8" fill="#2563eb"/>
+  <text x="200" y="143" font-size="10.5" fill="#1d4ed8" font-weight="700">ARTEX</text>
+  <rect x="150" y="151" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="151" width="800" height="17" rx="8" fill="#0d9488"/>
+  <text x="960" y="165" font-size="10.5" fill="#0f766e" font-weight="700">探隐</text>
+  <text x="975" y="150" font-size="10.5" fill="#64748b">代差：Postgres 可改 vs 断链可检</text><text x="30" y="220" font-size="12.5" font-weight="700" fill="#0f172a">效果测量（召回基线+统计）</text>
+  <rect x="150" y="208" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="208" width="0" height="17" rx="8" fill="#2563eb"/>
+  <text x="160" y="221" font-size="10.5" fill="#1d4ed8" font-weight="700">ARTEX</text>
+  <rect x="150" y="229" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="229" width="760" height="17" rx="8" fill="#0d9488"/>
+  <text x="920" y="243" font-size="10.5" fill="#0f766e" font-weight="700">探隐</text>
+  <text x="975" y="228" font-size="10.5" fill="#64748b">ARTEX 从未测过自己</text><text x="30" y="298" font-size="12.5" font-weight="700" fill="#0f172a">多 agent 并发广度</text>
+  <rect x="150" y="286" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="286" width="760" height="17" rx="8" fill="#2563eb"/>
+  <text x="920" y="299" font-size="10.5" fill="#1d4ed8" font-weight="700">ARTEX</text>
+  <rect x="150" y="307" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="307" width="280" height="17" rx="8" fill="#0d9488"/>
+  <text x="440" y="321" font-size="10.5" fill="#0f766e" font-weight="700">探隐</text>
+  <text x="975" y="306" font-size="10.5" fill="#64748b">worker×N vs 单战士+子代理</text><text x="30" y="376" font-size="12.5" font-weight="700" fill="#0f172a">资产建模与覆盖度</text>
+  <rect x="150" y="364" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="364" width="720" height="17" rx="8" fill="#2563eb"/>
+  <text x="880" y="377" font-size="10.5" fill="#1d4ed8" font-weight="700">ARTEX</text>
+  <rect x="150" y="385" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="385" width="320" height="17" rx="8" fill="#0d9488"/>
+  <text x="480" y="399" font-size="10.5" fill="#0f766e" font-weight="700">探隐</text>
+  <text x="975" y="384" font-size="10.5" fill="#64748b">双图+锚点+ScopeSentry</text><text x="30" y="454" font-size="12.5" font-weight="700" fill="#0f172a">工程成熟度（更新/通知/池）</text>
+  <rect x="150" y="442" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="442" width="720" height="17" rx="8" fill="#2563eb"/>
+  <text x="880" y="455" font-size="10.5" fill="#1d4ed8" font-weight="700">ARTEX</text>
+  <rect x="150" y="463" width="800" height="17" rx="8" fill="#e2e8f0"/><rect x="150" y="463" width="360" height="17" rx="8" fill="#0d9488"/>
+  <text x="520" y="477" font-size="10.5" fill="#0f766e" font-weight="700">探隐</text>
+  <text x="975" y="462" font-size="10.5" fill="#64748b">自更新回滚/多通道/LLM 池</text>
+<text x="30" y="560" font-size="11.5" fill="#64748b" transform="translate(0,-80)">说明：双方从未同台测过——这正是「靶场对标实验」（56-GT · n=3 · 同 scorer）要补的数据空白</text>
+</svg></div>
 
-<h2 class="sec">⑧ 终局方案 · 合体架构（移除合规轴后重算）</h2><p class="secsub">不是二选一：ARTEX 当引擎挂上探隐引擎总线——广度归 ARTEX，签名归探隐</p>
-<div class="card">
-<div class="box b-srv"><b>ARTEX 引擎层（广度）</b> — planner+worker×N 并发 · 双图资产建模 · 覆盖图 · 过程级信息交换</div>
-<div class="arrow">▼ 引擎产假设不产发现（fusion 既定律 · docs/design/engine-fusion-architecture.md）</div>
-<div class="box b-ty"><b>探隐 intents 层（裁判）</b> — 意图池+预算仲裁（engine-hyp 配额≤40%）</div>
-<div class="arrow">▼</div>
-<div class="box b-ty"><b>重放实证+精度门 → 哈希链账本 → 可签名交付</b>（E-index 三态 · timeline 链 · McNemar 实验面）</div>
-<div class="cap">前置关卡：56-GT 靶场对标 n=3（召回+精度幻觉率+耗时）——用数据定「用它的引擎层」还是「只借机制」</div></div>
+<h2 class="sec">图 7 · 终局合体架构</h2><p class="secsub">ARTEX 当引擎挂探隐总线：广度归 ARTEX，签名归探隐</p><div class="svgwrap"><svg viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif"><defs><marker id="f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker><marker id="f2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+<text x="30" y="30" font-size="15" font-weight="700" fill="#0f172a">终局方案 · 合体架构：广度归 ARTEX，签名归探隐</text>
+<rect x="30" y="60" width="1140" height="100" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/><text x="600" y="106" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">ARTEX 引擎层（广度）</text><text x="600" y="126" text-anchor="middle" font-size="11.5" fill="#475569">planner+worker×N 并发 · 双图资产建模 · 覆盖图 · 过程级信息交换 · llmpool failover</text>
+<line x1="600" y1="160" x2="600" y2="190" stroke="#dc2626" stroke-width="1.8"  marker-end="url(#f1)"/>
+<text x="760" y="182" font-size="11.5" fill="#b91c1c" font-weight="700">引擎产假设不产发现（fusion 既定律）</text>
+<rect x="30" y="192" width="1140" height="88" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/><text x="600" y="232" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">探隐 intents 层（裁判）</text><text x="600" y="252" text-anchor="middle" font-size="11.5" fill="#475569">意图池统一排序：置信度×矩阵新颖度 · engine-hyp 配额≤40% 保自主广度 · 预算执法</text>
+<line x1="600" y1="280" x2="600" y2="310" stroke="#475569" stroke-width="1.8"  marker-end="url(#f2)"/>
+<rect x="30" y="312" width="1140" height="108" rx="10" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.6"/><text x="600" y="362" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">探隐实证+账本层（签名）</text><text x="600" y="382" text-anchor="middle" font-size="11.5" fill="#475569">重放三态+精度门（无 VERIFIED 不计分）· timeline 哈希链（改账=断链）· CVSS+FIX_MAP · McNemar 实验面</text>
+<rect x="30" y="452" width="1140" height="66" rx="10" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+<text x="600" y="478" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b45309">前置关卡 · 靶场对标实验（预登记）</text>
+<text x="600" y="500" text-anchor="middle" font-size="11.5" fill="#78350f">同 56-GT 靶场 · 各 n=3 · 同 scorer(keying v8) · 测召回+精度（幻觉率）+耗时 → 数据定「用它的引擎层」还是「只借机制」</text>
+</svg></div>
 
-<h2 class="sec">⑨ 借脑清单（只抄思想零代码，免疫 AGPL）</h2>
-<div class="card"><table class="dict"><tr><th>#</th><th>机制</th><th>落点</th><th>优先级</th></tr>
-<tr><td>1</td><td>llmpool 健康度 failover</td><td>bigmodel 断连对冲（b31-34 全灭教训）</td><td class="win">速赢</td></tr>
-<tr><td>2</td><td>共享 todolist 分轮派发</td><td>引擎总线串行链稳定器（vuln-agent 正需要）</td><td class="win">速赢</td></tr>
-<tr><td>3</td><td>trace-search 过程级互查</td><td>子代理互查（须过记账律：过程也入链）</td><td class="win">速赢</td></tr>
-<tr><td>4</td><td>MITM 全程留痕</td><td>E-index 流量面补强</td><td>中期</td></tr>
-<tr><td>5</td><td>retester 复测闭环</td><td>P4 重放的时间维延伸</td><td>中期</td></tr>
-<tr><td>6</td><td>资产锚点语义</td><td>matrix 消格语义强化</td><td>中期</td></tr></table></div>
-
-<div class="note"><b>最终判断</b>：不是「用别人工具 vs 自建」，而是「广度引擎 vs 签名能力」——前者可借可合体，后者只有探隐。探隐缺 ARTEX 的编排成熟度（能借）；ARTEX 缺探隐的证据灵魂（借不走）。</div>
-<footer>ARTEX 实勘报告可视化版 · 2026-10-11 · 基于 810 文件树+源码抽读 · 文字版 docs/research/2026-10-11-artex-*.md</footer>
+<div class="note"><b>最终判断</b>：不是「用别人工具 vs 自建」，而是「广度引擎 vs 签名能力」。探隐缺 ARTEX 的编排成熟度（能借，免疫 AGPL 只借思想）；ARTEX 缺探隐的证据灵魂（借不走）。合体前必过靶场对标数据关。</div>
+<footer>ARTEX 实勘图集 · 2026-10-11 · 810 文件树+源码抽读 · 文字版 docs/research/2026-10-11-artex-*.md</footer>
 </div></body></html>
