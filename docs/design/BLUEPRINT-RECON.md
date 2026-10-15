@@ -21,7 +21,7 @@
 | html/ imported/ | 资产 | — |
 
 ## 计划档对账（20 件）
-批次 1→v0.9d 全部收口在案;**例外**: 2026-10-09-b11-gateloop-experiment.md——**计划在库未执行**（闸门实验真身在此，v1.0b 前执行;我此前说"闸门待设计"是没查库）。
+批次 1→v0.9d 全部收口在案。b11-gateloop-experiment **已在 b26 执行落地**（E4 评审指出本表初版误记"未执行"——九专家评审 01-engineering 曾点评其写放大;主会话把 gateloop 与 Tier2 hooks 两事混为一谈）。**真正待办= Tier2 hooks 真挂载实验**（宿主级拦截闸门,与 gateloop 无关）,排 v1.0b 期间。
 
 ## 知识飞轮资产（已建成!差点被重新设计）
 - 库: knowledge/ 15 目录（concepts 8 页/precedents 5 页/patterns 2 页/retros/checklists/staging/graph.ndjson/log.md 190 行）
