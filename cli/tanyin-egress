@@ -132,6 +132,31 @@ def cmd_dryrun():
     return 0
 
 
+def cmd_selfcheck(rest):
+    """selfcheck 子命令（SEC-2 舰 S2，v0.9.6）：安装/自检——ACL 可解析+代理可起停。
+
+    完整实挂安装步骤（RUNBOOK，文档化收口；不动 ZhuLong——8900 常驻服务不在
+    本舰作业面）见 cli/ledger/egress_mount.py 模块 docstring：compile → selfcheck
+    → runner start（内嵌挂载+env 强制+request-ticket 机械记账）→ 战毕 shutdown。
+    退出码 0=自检过/2=ACL 不合法或环境问题（fail-closed）。"""
+    import argparse
+    ap = argparse.ArgumentParser(prog="tanyin-egress selfcheck")
+    ap.add_argument("--acl", required=True, help="egress.acl 路径（compile 产物）")
+    a = ap.parse_args(rest)
+    try:
+        httpd = egress_proxy.serve(a.acl, 0, egress_log=None)
+    except ValueError as e:
+        sys.stderr.write("REJECT selfcheck ACL 不合法（fail-closed）: %s\n" % e)
+        return 2
+    except OSError as e:
+        sys.stderr.write("环境问题: %s\n" % e)
+        return 2
+    print("OK selfcheck acl=%s proxy=127.0.0.1:%d 起停正常" % (a.acl, httpd.server_address[1]))
+    print("# 安装步骤: compile -> selfcheck -> runner start（内嵌挂载）——详见 cli/ledger/egress_mount.py")
+    httpd.server_close()
+    return 0
+
+
 def cmd_serve(rest):
     """serve 子命令（批次 6 T10；裁决 H）：Tier3 代理本体前台常驻（无守护进程纪律
     合规——操作者显式起服、Ctrl-C 优雅退出）。退出码 0=正常退出/2=用法或 ACL 不合法。"""
@@ -169,8 +194,8 @@ def cmd_serve(rest):
 
 def main(argv):
     # __main__ 传全量 sys.argv（compile/verify/dry-run 既有 argv[1] 取子命令形态同源）
-    if len(argv) > 1 and argv[1] == "serve":
-        return cmd_serve(argv[2:])
+    if len(argv) > 1 and argv[1] in ("serve", "selfcheck"):
+        return {"serve": cmd_serve, "selfcheck": cmd_selfcheck}[argv[1]](argv[2:])
     if len(argv) < 4 or argv[2] != "--goal-dir":
         return usage()
     sub, gd = argv[1], argv[3]

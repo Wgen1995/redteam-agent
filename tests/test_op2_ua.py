@@ -31,7 +31,9 @@ REPLAY = os.path.join(CLI, "tanyin-replay")
 GUARD = os.path.join(CLI, "tanyin-guard")
 LEDGER = os.path.join(CLI, "tanyin-ledger")
 FIX = os.path.join(HERE, "fixtures", "G-g1")
-TS = "2026-10-14T10:00:00Z"
+# SEC-2 舰 S4（v0.9.6）适配：replay 增授权窗门（G-g1 窗 2026-09-01..09-30）——
+# 本文件面是 UA 治理非窗口语义，TS 挪回窗内（原 2026-10-14 超窗会被新门 REJECT）。
+TS = "2026-09-24T10:00:00Z"
 PY = sys.executable
 
 sys.path.insert(0, CLI)
@@ -134,6 +136,15 @@ class TestReplayUAGovernance(unittest.TestCase):
     def test_self_named_probe_family_neutralized(self):
         for bad in ("probe/1.2", "tanyin-replay/1", "tanyin-probe/1.0", "replay/1"):
             _Capture.captured = []
+            # SEC-2 舰 S4 适配：单 EV 次数帽=3——4 连放同 EV 会在第 4 次被新门 REJECT；
+            # 本用例面是 UA 家族中性化，逐次换新 goal 目录（每次计数归 1）。
+            shutil.rmtree(self.gd)
+            shutil.copytree(FIX, self.gd)
+            r = subprocess.run([PY, LEDGER, "add-scope", "--goal-dir", self.gd,
+                                "--kind=include", "--matcher=127.0.0.0/8",
+                                "--timestamp=" + TS],
+                               capture_output=True, text=True, encoding="utf-8")
+            self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
             ev = self._mint_card(bad)
             got = self._replay(ev)
             self.assertEqual(got, ua_mod.NEUTRAL_UA, "自名家族须中性化: " + bad)

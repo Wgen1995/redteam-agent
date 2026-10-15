@@ -3,11 +3,20 @@
 """tanyin-replay（批次 4 T5）——POC 独立重放驱动（铁律 7 对外请求例外#1）。
 
 replay：EV 卡片盲重放——解析 raw_request（HTTP 报文文本）→{{vault:cred-N}} 进程内解密替换
-（真值不进 argv/不落盘，R2）→host 过 scope include/exclude（出界=REJECT exit 1）→http.client
-直发→matcher 评估→三态（R3）：连接层失败=env-diff（REPAIRED 候选）/全中=reproduced
-（VERIFIED）/不中=not-reproduced（REJECTED）/无 matcher=manual。
+（真值不进 argv/不落盘，R2）→治理四门（SEC-2 舰 S4，v0.9.6）→host 过 scope 单源判定
+（enforce.load_scope，出界=REJECT exit 1）→http.client 直发→matcher 评估→三态（R3）：
+连接层失败=env-diff（REPAIRED 候选）/全中=reproduced（VERIFIED）/不中=not-reproduced
+（REJECTED）/无 matcher=manual。
 每请求落 timeline request: 事件（§4.10）；判定产物 replay/<EV-id>/<seq>.json 只增不覆盖。
 matcher-test：离线评估（REPAIRED 修复循环）。退出码 0/1/2 对齐 Strix。
+
+S4 治理四门（评审 02-security-enforcement.md S4：无窗口/无分类/无帽三裸奔收口）：
+①授权窗——申报钟 --timestamp ∈ goals.tsv [valid_from, valid_until]（date-only 边界取
+自然日：起日 00:00:00/止日 23:59:59；空界=无约束；坏界=fail-closed REJECT）；
+②危险方法分类——非 GET 默认拒，--allow-method=POST（逗号多值）显式开；
+③次数帽——单 EV 判定产物满 REPLAY_CAP（3）份即拒，无 CLI 豁免（防被俘战士自抬帽）；
+④scope 单源——host_in_scope 吃 enforce.load_scope/scope_verdict（Tier1/2/3 同源），
+自带第二套 amendment_of 跳行读法退役。
 
 Ruling（计划骨架勘误，HANDOFF 批次4 T5 节）：未知 EV id=exit 2（用法问题可重跑），
 骨架的 exit 1 与计划测试冲突，按接口口径「2=用法」取测试侧；占位符无真值=REJECT exit 1
@@ -16,6 +25,7 @@ import http.client, json, os, re, socket, ssl, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import cards, core, matchers, ua, vault  # noqa: E402
+from ledger.enforce import load_scope, parse_ts, scope_verdict  # noqa: E402  SEC-2 S4 单源
 from ledger.schemas import TABLES  # noqa: E402
 from ledger.core import ensure_utf8_stdio  # noqa: E402
 
@@ -24,6 +34,9 @@ TAB = chr(9)
 PLACEHOLDER = re.compile(r"\{\{vault:cred-(\d+)\}\}")
 REQUEST_LINE = re.compile(r"^([A-Z]+) (\S+) HTTP/(1\.[01])$")
 SUGGEST = {"reproduced": "VERIFIED", "not-reproduced": "REJECTED", "env-diff": "REPAIRED"}
+# SEC-2 舰 S4 ③次数帽：单 EV 判定产物上限（评审修正方向「3 次后转 manual」的机械面；
+# 无 CLI 豁免——帽是执法件不是参数）。
+REPLAY_CAP = 3
 
 
 class _SecretMissing(Exception):
@@ -33,6 +46,7 @@ class _SecretMissing(Exception):
 def usage():
     sys.stderr.write("用法: tanyin-replay replay --goal-dir D --id=<EV-id> [--scheme=http|https]"
                      " [--port=N] [--timeout=10] [--timestamp=T] [--ua=UA]"
+                     " [--allow-method=POST[,DELETE]]（非 GET 默认拒，显式开）"
                      " | matcher-test --expected-file P --response-file F" + chr(10))
     return 2
 
@@ -84,23 +98,32 @@ append_tl = _partial(_append_tl_locked, actor="replay", phase="P4")
 
 
 def host_in_scope(gd, host):
-    """scope 门链（R2）：amendment 已废行跳过；exclude 命中=界外；include 至少一行命中。"""
-    from ledger.write_cmds import _match_value
-    s = core.Session(gd)
-    hit = False
-    fi = TABLES["scope.tsv"].index("amendment_of")
-    superseded = {r[fi] for r in s.rows("scope.tsv") if r[fi]}
-    for r in s.rows("scope.tsv"):
-        if r[0] in superseded:
-            continue
-        kind = r[TABLES["scope.tsv"].index("kind")]
-        if kind not in ("include", "exclude"):
-            continue
-        if _match_value(host, r[TABLES["scope.tsv"].index("matcher")]):
-            if kind == "exclude":
-                return False
-            hit = True
-    return hit
+    """scope 门链（R2；SEC-2 舰 S4 单源收口）：判定吃 enforce.load_scope/scope_verdict
+    ——Tier1 guard/Tier2 hooks/Tier3 egress 同一读法（amendment 链同 matcher 后行覆盖
+    先行），本文件自带的第二套 amendment_of 跳行实现退役（评审 S4：两套读法对同一
+    scope.tsv 在「修订行改 matcher」场景判定分歧）。oob/界外一律非 in=拒。"""
+    return scope_verdict(host, load_scope(core.Session(gd))) == "in"
+
+
+def _bound_epoch(raw, end_of_day=False):
+    """授权边界解析（S4 ①）：date-only（YYYY-MM-DD）→起日 00:00:00Z/止日 23:59:59Z
+    （自然日语义——「授权至 9-30」含当日）；完整 ISO 直解；空=无界 None；
+    非法=ValueError（调用方 fail-closed REJECT）。"""
+    t = (raw or "").strip()
+    if not t:
+        return None
+    if len(t) == 10 and t[4] == "-" and t[7] == "-":
+        t += "T23:59:59Z" if end_of_day else "T00:00:00Z"
+    return parse_ts(t)
+
+
+def _goal_window(s):
+    """goals.tsv 首行 (valid_from, valid_until) 原文；无行=("", "")。"""
+    gi = TABLES["goals.tsv"].index
+    grows = s.rows("goals.tsv")
+    if not grows:
+        return "", ""
+    return grows[0][gi("valid_from")].strip(), grows[0][gi("valid_until")].strip()
 
 
 def cmd_replay(gd, rest):
@@ -194,6 +217,43 @@ def cmd_replay(gd, rest):
     if not ts:
         sys.stderr.write("replay 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
         return 2
+    # ---- SEC-2 舰 S4 治理四门（v0.9.6，评审 S4「无窗/无分类/无帽」收口）----
+    # ①授权时间窗：申报钟 ts ∈ [valid_from, valid_until]；坏界 fail-closed。
+    gf, gu = _goal_window(s)
+    try:
+        t_e = parse_ts(ts)
+        f_e = _bound_epoch(gf)
+        u_e = _bound_epoch(gu, end_of_day=True)
+    except ValueError:
+        sys.stderr.write("REJECT\treplay\t授权窗口边界不可解析（fail-closed）: valid_from=%s valid_until=%s\n"
+                         % (gf or "-", gu or "-"))
+        append_tl(gd, ts, "request: %s%s via=replay REJECT=authz-window bad-bound" % (host, path))
+        return 1
+    if (f_e is not None and t_e < f_e) or (u_e is not None and t_e > u_e):
+        why = "未开始" if (f_e is not None and t_e < f_e) else "已过期"
+        sys.stderr.write("REJECT\treplay\t授权窗口外（%s）: valid_from=%s valid_until=%s\n"
+                         % (why, gf or "-", gu or "-"))
+        append_tl(gd, ts, "request: %s%s via=replay REJECT=authz-window %s valid=%s..%s"
+                  % (host, path, why, gf or "-", gu or "-"))
+        return 1
+    # ②危险方法分类：非 GET 默认拒（二次伤害面：POST/PUT/DELETE 重放=重复脏数据/
+    # 重复触发 SIEM）；--allow-method=M 逗号多值显式开。
+    allowed = {"GET"} | {m.strip().upper() for m in kv.get("--allow-method", "").split(",") if m.strip()}
+    if method.upper() not in allowed:
+        sys.stderr.write("REJECT\treplay\t危险方法默认拒（method=%s；非 GET 须 --allow-method=%s 显式开）\n"
+                         % (method.upper(), method.upper()))
+        append_tl(gd, ts, "request: %s%s via=replay REJECT=method method=%s" % (host, path, method.upper()))
+        return 1
+    # ③次数帽：单 EV 判定产物满 REPLAY_CAP 份即拒（DoS 面：chain+循环无节流的机械上限；
+    # 无 CLI 豁免）。拒行不落产物——帽计的是实际发包次数。
+    _rd = os.path.join(gd, "replay", rid)
+    _used = len([x for x in os.listdir(_rd) if x.endswith(".json")]) if os.path.isdir(_rd) else 0
+    if _used >= REPLAY_CAP:
+        sys.stderr.write("REJECT\treplay\t单 EV 重放次数帽（used=%d cap=%d）——转 manual 判定或另起 EV\n"
+                         % (_used, REPLAY_CAP))
+        append_tl(gd, ts, "request: %s%s via=replay REJECT=replay-cap used=%d cap=%d"
+                  % (host, path, _used, REPLAY_CAP))
+        return 1
     if not host_in_scope(gd, host):
         append_tl(gd, ts, "request: %s%s via=replay REJECT=out-of-scope" % (host, path))
         sys.stderr.write("REJECT\treplay\t目标 host 界外（scope include/exclude 判定）: %s\n" % host)

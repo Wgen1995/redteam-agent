@@ -20,6 +20,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import watchdog as wd  # noqa: E402  b10 看门狗计算核（零依赖）
+from ledger import egress_mount  # noqa: E402  SEC-2 舰 S2（v0.9.6）：Tier3 egress 实挂
 
 ISOLATION_ENV = {
     "OPENCODE_DISABLE_AUTOUPDATE": "true",
@@ -73,13 +74,16 @@ def kill_group(proc):
             pass
 
 
-def launch(cwd, prompt, log_path, model=None):
+def launch(cwd, prompt, log_path, model=None, env_extra=None):
     cmd = ["opencode", "run"]
     if model:
         cmd += ["--model", model]
     cmd.append(prompt)
     env = dict(os.environ)
     env.update(ISOLATION_ENV)
+    # SEC-2 舰 S2：env 强制出网上代理（HTTP(S)_PROXY/NO_PROXY）——战士进程
+    # 零配合零感知，出网机械过 egress decide 四态（egress_mount 单源）。
+    env.update(env_extra or {})
     logf = open(log_path, "a", encoding="utf-8")
     kw = dict()
     if os.name == "nt":
@@ -169,7 +173,23 @@ def main():
               "cwd=%s max_restarts=%d stall=%.1fm soft=%.1fm backoff=%.0fs directive=%s" % (
                   args.cwd, args.max_restarts, args.stall_min, args.soft_stall_min,
                   args.backoff_base, args.directive_file or "off"))
-    proc = launch(args.cwd, first_prompt, args.log, args.model)
+    # SEC-2 舰 S2（v0.9.6）：Tier3 egress 实挂——egress.acl 在场即内嵌起代理
+    # （127.0.0.1 随机端口，随战斗生命周期开关）；无 compile 产物=off 如实披露；
+    # ACL 损坏=fail-closed 拒启动（零执法静默降级禁止）。安装/自检步骤见
+    # cli/ledger/egress_mount.py 模块 docstring（不动 ZhuLong——8900 常驻）。
+    try:
+        egm = egress_mount.mount(args.ledger_dir)
+    except ValueError as e:
+        log_event(runner_log, "EGRESS-MOUNT-REJECT", "acl 不合法 fail-closed 拒启动: %s" % e)
+        return 2
+    if egm:
+        log_event(runner_log, "EGRESS-MOUNT",
+                  "port=%d log=%s（子进程 env 已强制代理；安装/自检见 egress_mount.py）"
+                  % (egm.port, egm.egress_log))
+    else:
+        log_event(runner_log, "EGRESS-MOUNT", "off（无 egress.acl——先 tanyin-egress compile）")
+    war_env = egm.env() if egm else None
+    proc = launch(args.cwd, first_prompt, args.log, args.model, env_extra=war_env)
     log_event(runner_log, "LAUNCH", "pid=%d (first prompt)" % proc.pid)
 
     restarts = 0
@@ -200,7 +220,7 @@ def main():
             log_event(runner_log, "BACKOFF", "%.0fs before restart n=%d" % (delay, restarts + 1))
             time.sleep(delay)
         prompt = (resume_prompt + "\n\n" + extra.strip()) if extra.strip() else resume_prompt
-        proc = launch(args.cwd, prompt, args.log, args.model)
+        proc = launch(args.cwd, prompt, args.log, args.model, env_extra=war_env)
         restarts += 1
         last_progress = time.time()
         last_log_sz = fsize(args.log)
@@ -215,6 +235,10 @@ def main():
         sz = fsize(args.log)
         tl = timeline_rows(args.ledger_dir)
         active = sz != last_log_sz or tl != last_tl
+        # SEC-2 舰 S2：egress-log 增量 -> timeline request-ticket 机械记账
+        # （active 判定先于记账——本 tick 铸的票不冒充本 tick 的战士活性）。
+        if egm:
+            egm.poll_tickets(args.ledger_dir)
         tick = wd.next_tick(active, tick=args.tick_sec)   # b10：自适应监听
         # b10：战中指令通道——digest 变化才触发（kill+带令续跑=multica pending 语义）
         if args.directive_file:
@@ -331,6 +355,9 @@ def main():
 
     rc = proc.poll()
     log_event(runner_log, "DONE", "final_rc=%s restarts=%d timeline=%d" % (rc, restarts, timeline_rows(args.ledger_dir)))
+    if egm:
+        egm.poll_tickets(args.ledger_dir)   # 收尾轮：战尾判决不漏记
+        egm.shutdown()                      # 随战斗生命周期关停（无常驻进程）
     notify_user("探隐 runner", "战毕 DONE restarts=%d" % restarts)
     if caffeinate_proc:
         try:
