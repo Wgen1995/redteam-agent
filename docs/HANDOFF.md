@@ -1429,3 +1429,6 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - **并行竞态**: OP1/OP2 同改 tanyin-guard 两次冲突，已按最新盘态合流，全量验证共存。
 - **欠账（明记）**: EV 卡 ua 列须 02a 契约批次；Tier2 hooks 真挂载实验=宿主闸门（下批）；mint_wall_sync 修复由主会话执行（子代理白名单制代价）。
 - 全量 1321/1321 OK（主会话亲跑，还上批对账口径债）。
+
+## 2026-10-15 · 常备配方入档
+- DSH 插件市场获取配方（search/add/免装解包/codeload 取 GitHub 源+相关包清单）落 docs/research/dsh-plugin-marketplace.md——以后凡涉插件市场先查此档。
