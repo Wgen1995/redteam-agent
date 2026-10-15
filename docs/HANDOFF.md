@@ -1445,3 +1445,8 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - **在航（勿忘验收）**: v0.9d 三舰（U换肤总览/S会话页/Z ZhuLong互通）+GenSift 分析舰（6-gensift.md,含「消消乐/扫雷」思路解读）。
 - **流程承诺**: superpowers 全流程常开; 每批必: 计划冻结→红绿→亲验→commit→HANDOFF/双胎→push。
 - v0.9d 计划已冻结（2026-10-15-v09d-ui.md,c1d0ef9）。
+
+## 2026-10-15 · 蓝图巡检律立律（用户问责： 只读尾行不巡全图）
+- 险情: 主会话差点把已建成的知识飞轮当新设计重做（实况: knowledge/ 15 目录+tanyin-knowledge 命令面+喂养战例全在）; FD 卡/发现流优先级/闸门实验计划同样在库被忽视。
+- 处置: docs/design/BLUEPRINT-RECON.md 对账表入档;立**蓝图巡检律**——任何设计提案前必查 design/plans/knowledge 三处并引用现状,违律提案作废;每批开工前重读本表。
+- v1.0a 双图一桥设计前必读: graph-driven-ops.md + engine-fusion-architecture §6;v0.9d 总览页复用 fd-report-card-spec+finding-stream-priority。
