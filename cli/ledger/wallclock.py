@@ -12,8 +12,12 @@ from .phases_engine import _append_event
 _WALL_RE = re.compile(r"clock-sync wall=(\S+) phase=(\S+)(?: note=(.*))?$")
 
 
-def event_text(phase, note=""):
-    iso = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+def _now_iso():
+    return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def event_text(phase, note="", iso=None):
+    iso = iso or _now_iso()
     parts = ["clock-sync wall=%s phase=%s" % (iso, phase)]
     if note:
         parts.append("note=%s" % note)
@@ -21,8 +25,11 @@ def event_text(phase, note=""):
 
 
 def mint_wall_sync(goal_dir, phase, note=""):
-    ev = event_text(phase, note)
-    _append_event(goal_dir, "P-lifecycle", ev)
+    # 签名漂移修复（OPSEC 批收尾）：_append_event 第 4 参 ts 必填（phases_engine
+    # 批次后新增）——ts 与 wall= 同刻，单源 _now_iso。
+    iso = _now_iso()
+    ev = event_text(phase, note, iso)
+    _append_event(goal_dir, "P-lifecycle", ev, iso)
     return ev
 
 
