@@ -8,6 +8,8 @@
   GET /api/stream       → SSE timeline 追尾流（?tail=N 覆盖存量尾条数）
   GET /coverage|/graph|/evidence            → v0.9b 观察面三页（静态）
   GET /api/matrix|graph|evidence.json       → v0.9b 三只读投影（projections 单源）
+  GET /metrics                               → v0.9c 度量页（静态：双臂召回曲线）
+  GET /api/metrics.json                      → v0.9c 双臂战例度量（metrics 单源）
 启动：cd cli && python -m webui.server --ledger-dir D（T5 接 CLI 入口）。
 """
 import json, os, socket, sys, urllib.parse
@@ -21,17 +23,19 @@ if _CLI_DIR not in sys.path:                     # -m/直跑兜底：cli/ 上 pa
 from . import snapshot as _snap  # noqa: E402
 from . import sse as _sse        # noqa: E402
 from . import projections as _proj  # noqa: E402  (v0.9b 三页只读装配)
+from . import metrics as _met  # noqa: E402  (v0.9c 度量页只读装配)
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 DEFAULT_HOST, DEFAULT_PORT, DEFAULT_TAIL = "127.0.0.1", 8900, 50
 POLL_S, KEEPALIVE_S = _sse.DEFAULT_POLL_S, _sse.DEFAULT_KEEPALIVE_S
 _PAGE_API = {"/api/matrix.json": _proj.matrix_view,     # v0.9b 三页 API（只读装配单源）
              "/api/graph.json": _proj.graph_view,
-             "/api/evidence.json": _proj.evidence_view}
+             "/api/evidence.json": _proj.evidence_view,
+             "/api/metrics.json": (lambda ledger_dir: _met.metrics_view())}  # v0.9c（battles 装配与 ledger 无涉）
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "tanyin-web/0.9b"
+    server_version = "tanyin-web/0.9c"
     protocol_version = "HTTP/1.1"
     timeout = 60                                  # 空闲 keep-alive 连接回收（SSE 写循环不受影响）
 
@@ -43,10 +47,10 @@ class Handler(BaseHTTPRequestHandler):
         u = urllib.parse.urlparse(self.path)
         if u.path == "/":
             return self._serve_page("index.html")
-        if u.path in ("/coverage", "/graph", "/evidence"):        # v0.9b 观察面三页
+        if u.path in ("/coverage", "/graph", "/evidence",
+                      "/metrics"):                                 # v0.9b 三页+v0.9c 度量页
             return self._serve_page(u.path.lstrip("/") + ".html")
-        if u.path in ("/api/matrix.json", "/api/graph.json",
-                      "/api/evidence.json"):                       # v0.9b 三只读投影
+        if u.path in _PAGE_API:                                    # 页 API 单源表（v0.9b+v0.9c）
             return self._serve_json(_PAGE_API[u.path](self.server.ledger_dir))
         if u.path == "/api/state.json":
             return self._serve_state()
@@ -190,7 +194,7 @@ def main(argv):
         return 2
     srv = make_server(kv["host"], kv["port"], gd, tail=kv["tail"])
     port = srv.server_address[1]
-    print("tanyin-web v0.9b 只读观察面: %s:%d/ ledger=%s tail=%d"
+    print("tanyin-web v0.9c 只读观察面: %s:%d/ ledger=%s tail=%d"
           % (kv["host"], port, gd, kv["tail"]))
     sys.stdout.flush()
     try:

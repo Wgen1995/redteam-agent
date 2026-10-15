@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>探隐观察面 · 度量</title>
+<style>
+  :root { --bg:#0f1216; --card:#171c23; --ink:#e8edf2; --dim:#8b98a5;
+          --ok:#3fbf6f; --bad:#e05252; --accent:#4fa3d1; --gold:#d4a017; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:14px/1.5 "PingFang SC","Hiragino Sans GB",Microsoft YaHei,sans-serif; }
+  header { display:flex; align-items:baseline; gap:16px; padding:14px 22px;
+           border-bottom:1px solid #232a33; }
+  header h1 { font-size:18px; margin:0; letter-spacing:1px; }
+  nav { display:flex; gap:14px; font-size:12px; }
+  nav a { color:var(--accent); text-decoration:none; }
+  nav a.here { color:var(--ink); border-bottom:1px solid var(--accent); }
+  main { padding:18px 22px; max-width:1200px; }
+  section { background:var(--card); border:1px solid #232a33; border-radius:8px;
+            padding:14px 16px; margin-bottom:16px; }
+  section h2 { font-size:13px; margin:0 0 10px; color:var(--dim);
+               font-weight:600; letter-spacing:2px; }
+  #stats { display:flex; flex-wrap:wrap; gap:10px; }
+  .card { border:1px solid #232a33; border-radius:6px; padding:8px 14px;
+          min-width:150px; font-size:13px; }
+  .card .t { color:var(--dim); font-size:11px; letter-spacing:1px; margin-bottom:2px; }
+  .card .v { font-size:16px; font-weight:600; color:var(--accent); }
+  .card .v.gold { color:var(--gold); }
+  .card .s { color:var(--dim); font-size:11px; margin-top:2px; }
+  .card .v.sig { color:var(--bad); }
+  #legend { font-size:12px; color:var(--dim); display:flex; flex-wrap:wrap;
+            gap:6px 16px; margin-bottom:8px; }
+  #legend .sw { display:inline-block; width:14px; height:3px;
+                border-radius:2px; margin-right:5px; vertical-align:3px; }
+  #chart-wrap { overflow-x:auto; }
+  #chart { display:block; width:100%; min-width:720px; height:auto; }
+  #table { border-collapse:collapse; font-size:12px; width:100%; }
+  #table th, #table td { border:1px solid #232a33; padding:4px 8px;
+                         white-space:nowrap; }
+  #table thead th { color:var(--dim); font-weight:600; text-align:left; }
+  #table td.num { font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .tag { display:inline-block; padding:0 6px; border-radius:3px; font-size:11px; }
+  .tag.control { background:#1d3a52; color:#7db8dd; }
+  .tag.treat { background:#3d3110; color:#e3b95c; }
+  .tag.unknown { background:#2a2f37; color:var(--dim); }
+  .tag.fail { background:#5a1c1c; color:#ff9d9d; }
+  .tag.pass { background:#173a26; color:#7fd6a1; }
+  footer { color:var(--dim); font-size:11px; padding:8px 22px 18px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>度量 · 双臂召回曲线</h1>
+  <nav>
+    <a href="/">总览</a><a href="/coverage">覆盖热图</a>
+    <a href="/graph">十边图</a><a href="/evidence">证据卡</a>
+    <a class="here" href="/metrics">度量</a>
+  </nav>
+</header>
+<main>
+  <section>
+    <h2>统计卡 · 各臂均值 / 池化 McNemar</h2>
+    <div id="stats">载入中…</div>
+  </section>
+  <section>
+    <h2>召回曲线 · x=战序 y=recall（settle 评分）</h2>
+    <div id="legend">
+      <span><i class="sw" style="background:#4fa3d1"></i>对照臂（directive 空）</span>
+      <span><i class="sw" style="background:#d4a017"></i>处置臂（directive 预置指令）</span>
+      <span><i class="sw" style="background:#8b98a5"></i>未知臂（早期战无 directive）</span>
+    </div>
+    <div id="chart-wrap"><svg id="chart" viewBox="0 0 860 300"
+         xmlns="http://www.w3.org/2000/svg"></svg></div>
+  </section>
+  <section>
+    <h2>逐战明细 · settle-report 装配（悬停 MISSING 看 GT 项）</h2>
+    <div style="overflow-x:auto"><table id="table"></table></div>
+  </section>
+</main>
+<footer>tanyin-web v0.9c · 度量页只读投影（battles/settle-report + gt · 零写入）</footer>
+<script>
+"use strict";
+/* 数据面：/api/metrics.json（battles/stats/mcnemar 单源装配）；
+   渲染面：SVG 折线（createElementNS）+统计卡+明细表，零框架零 CDN。 */
+var ARM = {"对照": {"color": "#4fa3d1", "cls": "control"},
+           "处置": {"color": "#d4a017", "cls": "treat"},
+           null: {"color": "#8b98a5", "cls": "unknown"}};
+var NS = "http://www.w3.org/2000/svg";
+var W = 860, H = 300, PAD_L = 44, PAD_R = 16, PAD_T = 14, PAD_B = 34;
+
+function el(tag, attrs) {
+  var n = document.createElementNS(NS, tag);
+  for (var k in attrs) { n.setAttribute(k, attrs[k]); }
+  return n;
+}
+
+function fmt(x, d) { return Number(x).toFixed(d === undefined ? 3 : d); }
+
+function renderStats(data) {
+  var box = document.getElementById("stats");
+  box.textContent = "";
+  ["对照", "处置"].forEach(function (arm) {
+    var st = data.stats && data.stats[arm];
+    if (!st) { return; }
+    var c = document.createElement("div");
+    c.className = "card";
+    var v = document.createElement("div");
+    v.className = "v" + (arm === "处置" ? " gold" : "");
+    v.textContent = fmt(st.mean, 3);
+    c.innerHTML = '<div class="t">' + arm + '臂 · mean recall（n=' + st.n + '）</div>';
+    c.appendChild(v);
+    var s = document.createElement("div");
+    s.className = "s";
+    s.textContent = "区间 " + fmt(st.min, 3) + " ~ " + fmt(st.max, 3);
+    c.appendChild(s);
+    box.appendChild(c);
+  });
+  var mc = data.mcnemar;
+  var m = document.createElement("div");
+  m.className = "card";
+  if (!mc) {
+    m.innerHTML = '<div class="t">McNemar exact（配对二项）</div>' +
+      '<div class="v">—</div><div class="s">未有两臂样本，配对不可用</div>';
+  } else {
+    m.innerHTML = '<div class="t">McNemar exact（共有 GT ' + mc.shared + ' 项池化）</div>';
+    var v = document.createElement("div");
+    v.className = "v" + (mc.p < 0.05 ? " sig" : "");
+    v.textContent = "p=" + mc.p;
+    m.appendChild(v);
+    var s = document.createElement("div");
+    s.className = "s";
+    s.textContent = "b=" + mc.b + " c=" + mc.c + "（n=" + mc.n + "）· " + mc.verdict;
+    m.appendChild(s);
+  }
+  box.appendChild(m);
+}
+
+function renderChart(battles) {
+  var svg = document.getElementById("chart");
+  while (svg.firstChild) { svg.removeChild(svg.firstChild); }
+  var n = battles.length;
+  var iw = W - PAD_L - PAD_R, ih = H - PAD_T - PAD_B;
+  function x(i) { return n <= 1 ? PAD_L + iw / 2 : PAD_L + iw * i / (n - 1); }
+  function y(r) { return PAD_T + ih * (1 - r); }
+  var g, i, t;
+  [0, 0.25, 0.5, 0.75, 1].forEach(function (r) {
+    svg.appendChild(el("line", {x1: PAD_L, x2: W - PAD_R, y1: y(r), y2: y(r),
+                                stroke: "#232a33", "stroke-width": 1}));
+    t = el("text", {x: PAD_L - 8, y: y(r) + 4, "text-anchor": "end",
+                    "font-size": 10, fill: "#8b98a5"});
+    t.textContent = r.toFixed(2);
+    svg.appendChild(t);
+  });
+  battles.forEach(function (b, idx) {
+    t = el("text", {x: x(idx), y: H - 12, "text-anchor": "middle",
+                    "font-size": 10, fill: "#8b98a5"});
+    t.textContent = "b" + b.n;
+    svg.appendChild(t);
+  });
+  ["对照", "处置"].forEach(function (arm) {
+    var pts = battles.map(function (b, idx) {
+      return b.arm === arm ? [x(idx), y(b.recall), b] : null;
+    }).filter(Boolean);
+    if (pts.length > 1) {
+      svg.appendChild(el("polyline", {
+        points: pts.map(function (p) { return p[0] + "," + p[1]; }).join(" "),
+        fill: "none", stroke: ARM[arm].color, "stroke-width": 2}));
+    }
+    pts.forEach(function (p) {
+      g = el("circle", {cx: p[0], cy: p[1], r: 4, fill: ARM[arm].color});
+      var title = el("title", {});
+      title.textContent = p[2].id + " " + (p[2].arm || "未知") +
+        " recall=" + fmt(p[2].recall) + " (" + p[2].hits + "/" + p[2].total + ")";
+      g.appendChild(title);
+      svg.appendChild(g);
+    });
+  });
+  battles.forEach(function (b, idx) {
+    if (b.arm !== null && b.arm !== undefined) { return; }
+    g = el("circle", {cx: x(idx), cy: y(b.recall), r: 3.5, fill: ARM[null].color});
+    var title = el("title", {});
+    title.textContent = b.id + " 未知臂 recall=" + fmt(b.recall);
+    g.appendChild(title);
+    svg.appendChild(g);
+  });
+}
+
+function renderTable(battles) {
+  var tb = document.getElementById("table");
+  tb.innerHTML = "";
+  var head = document.createElement("thead");
+  head.innerHTML = "<tr><th>战例</th><th>臂</th><th>recall</th><th>命中/分母</th>" +
+    "<th>MISSING</th><th>GT 配对</th><th>verify-chain</th></tr>";
+  tb.appendChild(head);
+  var body = document.createElement("tbody");
+  battles.forEach(function (b) {
+    var tr = document.createElement("tr");
+    var arm = b.arm === null || b.arm === undefined ? "未知" : b.arm;
+    var cls = b.arm === null || b.arm === undefined ? "unknown" : ARM[b.arm].cls;
+    var chain = b.chain ? b.chain : "—";
+    tr.innerHTML =
+      '<td class="num">' + b.id + "</td>" +
+      '<td><span class="tag ' + cls + '">' + arm + "</span></td>" +
+      '<td class="num">' + fmt(b.recall) + "</td>" +
+      '<td class="num">' + b.hits + "/" + b.total + "</td>" +
+      '<td class="num" title="' + (b.missing.join(" ") || "无") + '">' +
+      b.missing.length + "</td>" +
+      '<td class="num">' + (Object.keys(b.per_item).length || "—") + "</td>" +
+      '<td><span class="tag ' + (b.chain === "PASS" ? "pass" :
+        (b.chain === "FAIL" ? "fail" : "unknown")) + '">' + chain + "</span></td>";
+    body.appendChild(tr);
+  });
+  tb.appendChild(body);
+}
+
+fetch("/api/metrics.json").then(function (r) { return r.json(); }).then(function (data) {
+  renderStats(data);
+  renderChart(data.battles);
+  renderTable(data.battles);
+}).catch(function (e) {
+  document.getElementById("stats").textContent = "装配失败：" + e;
+});
+</script>
+</body>
+</html>
