@@ -170,5 +170,63 @@ def battles_metrics(battles_dir=None):
 
 
 def metrics_view(battles_dir=None):
-    """server /api/metrics.json 单源入口（_PAGE_API 挂载点；只读装配）。"""
-    return battles_metrics(battles_dir)
+    """server /api/metrics.json 单源入口（_PAGE_API 挂载点；只读装配）；
+    v0.9d 增 experiments 键——预登记实验登记处投影（度量页「预登记实验」小节同源）。"""
+    out = battles_metrics(battles_dir)
+    out["experiments"] = experiments_view()
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 实验登记处（v0.9d · 计划 2026-10-14-exp-registry R1/R2）——预登记纪律的只读投影。
+# 格式律：experiments/<exp-id>.tsv，行式 field<TAB>value（11 字段，可 grep）；
+# 预登记先落 tsv 再开战；判决后回填 verdict；无登记=度量页不认。
+# ---------------------------------------------------------------------------
+
+EXP_FIELDS = ("id", "question", "battles_control", "battles_treatment", "gt_gen",
+              "decision_rule", "registered", "status", "verdict", "source", "note")
+
+
+def default_repo_root():
+    """仓库根=本文件（cli/webui/metrics.py）上三级——登记处挂 <repo>/experiments。"""
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def parse_exp_tsv(text):
+    """登记 tsv 文本 → dict：field<TAB>value 行式；坏行（空/无制表符）跳过，
+    重复字段后值覆盖；值两侧空白剥净（grep 友好的行式格式，多代降级）。"""
+    out = {}
+    for line in text.splitlines():
+        if not line.strip() or "\t" not in line:
+            continue
+        field, value = line.split("\t", 1)
+        field = field.strip()
+        if field:
+            out[field] = value.strip()
+    return out
+
+
+def experiments_view(repo_root=None):
+    """实验登记处列表（只读，零写入）：<repo>/experiments/*.tsv 逐个解析 →
+    规范化 dict 列表（11 字段齐、缺字段降级空串、按 id 升序）；
+    无 id 的登记/非 .tsv 文件/无目录一律跳过（降级为空表，前端显示「无预登记实验」）。"""
+    exp_dir = os.path.join(repo_root or default_repo_root(), "experiments")
+    try:
+        names = sorted(os.listdir(exp_dir))
+    except OSError:
+        return []
+    out = []
+    for name in names:
+        if not name.endswith(".tsv"):
+            continue
+        try:
+            with open(os.path.join(exp_dir, name), encoding="utf-8",
+                      errors="replace") as f:
+                doc = parse_exp_tsv(f.read())
+        except OSError:
+            continue
+        if not doc.get("id"):
+            continue                                   # 无 id=坏登记，跳过
+        out.append(dict((k, doc.get(k, "")) for k in EXP_FIELDS))
+    out.sort(key=lambda e: e["id"])
+    return out

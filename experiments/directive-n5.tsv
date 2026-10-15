@@ -1,0 +1,11 @@
+id	directive-n5
+question	预置指令（处置臂 directive）是否提升检出力/压缩战间方差（方差压缩器假设，N=5 双臂）
+battles_control	b29 b30 b35 b36 b37
+battles_treatment	b28 b38 b39 b40 b42
+gt_gen	一战一 gen（G-r28…G-r42，56 项共享 GT 位）
+decision_rule	池化 McNemar exact 双尾 p<0.05 判显著；Brown-Forsythe 检方差齐性（判前登记于主会话）
+registered	2026-10-11 主会话预登记；tsv 判后回填 2026-10-14（v0.9c 诚实披露补录）
+status	已判决（判后回填）
+verdict	子集不可复原
+source	docs/HANDOFF.md:1356-1361（值匹配考据）+ 2026-10-14 机械验证（metrics.py 现行装配）
+note	逐战 recall 值与 HANDOFF:1358 全匹配（对照 [0.41,0.64,0.66,0.70,0.70] 均值 0.622/处置 [0.46,0.57,0.59,0.62,0.70] 均值 0.588，现行数据复核 0.6214/0.5893 一致）；但用 cli/webui/metrics.py 现行装配+池化跑该子集得 b=3 c=0 p=0.25 不复现判决值。受约束穷举（值匹配组合 3×1，对照 0.70 三候选 b27/b35/b37）与全空间穷举（6758 个 ≤5v≤5 子集）均无 b=8 c=17；全池处置命中⊆对照命中（c=0）。判决时点 per-GT 快照未存档——keying 升级后存量战报重结算（b30/b36 口径已变，HANDOFF:1342/1361），b=8 c=17 p=0.107752 无法从现数据机械复现。原判决方向不受影响：现行数据 b=3 c=0 p=0.25 同向不显著，「指令策略检出力内=彻底无效果」结论维持。
