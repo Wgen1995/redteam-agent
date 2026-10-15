@@ -1407,3 +1407,10 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - **观察面三页（25 测）**: /coverage 矩阵热图（事件溯源取最新格，frozen/cold/empty 欠账红标）+/graph 十边图（NODE_TABLES/LAYER 同源分层 SVG，10 kind 边两两互异着色钉死，attack 金/cross_ref 虚/supersedes 点）+/evidence 证据卡（vuln_ref 经 linked_finding 联查，verdict=timeline 最新 replay-probe 三态+env-diff+未重放分桶）。投影律：三视图+三 API 字节不变测试钉死。
 - **集成（主会话）**: index.html 补导航三链+版本 0.9b；projections.py 新模块承接三视图（snapshot.py 保持 v0.9a 原样）。
 - 全量 1241/1241 OK（主会话亲跑）。观察面 IA 现存 5 页：仪表盘/活动流/热图/十边图/证据卡——**只差度量页（v0.9c）**。
+
+## 2026-10-14 · v0.9c 度量页落地（「开」批第三程）——观察面 IA 六页收官
+- metrics.py（25 测）: battles_metrics 逐战装配（settle-report.txt 容错两代冒号/directive.txt 字节数判臂/未结算跳过/缺 GT 降级）+mcnemar_exact（与 scripts/rerun.py 逐点钉死，b=8,c=17→p=0.107752 精确回归锚）+pooled_mcnemar；/metrics 页=SVG 双臂折线+统计卡（均值/b/c/p/结论语）+逐战明细；导航六链齐。
+- 真实数据端到端： 13 战全解析，recall/arm 与战报逐战吻合。
+- **诚实披露（数据来源缺口）**: 页面池化口径（任一战命中即命中）得 b=4,c=0,p=0.125；HANDOFF 发布的 b=8,c=17 出自当年 N=5 预登记子集，**子集清单未入库**→页面无法逐字复现该判决。数学函数已钉死，口径差异在 metrics.py docstring 自文档化。
+- **由此立种（度量纪真律）**: 未来预登记实验的子集清单必须落 repo（如 experiments/<name>.tsv），判决可机械复现——已列入下批种子。
+- 全量 1266/1266 OK（主会话亲跑）。观察面 IA 全集： 仪表盘/活动流/热图/十边图/证据卡/度量。
