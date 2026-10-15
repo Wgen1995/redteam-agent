@@ -329,9 +329,13 @@ class TestCLIEntryV09a(Base):
 # ---------------------------------------------------------------------------
 
 PHASES_YAML = os.path.join(HERE, "..", "phases", "phases.yaml")
+STATUS_JS = os.path.join(CLI, "webui", "static", "status.js")
 STATIC_PAGES = ("index.html", "coverage.html", "graph.html",
                 "evidence.html", "metrics.html")
-NAV_WANT = {"/", "/coverage", "/graph", "/evidence", "/metrics"}
+# v0.9d 八视图 nav（战局总览/活动流/会话/热图/十边图/证据卡/度量/实验）
+# —— /activity /session /experiments 由后续舰落页，此处只钉全站同构。
+NAV_WANT = {"/", "/activity", "/session", "/coverage", "/graph",
+            "/evidence", "/metrics", "/experiments"}
 
 
 def _page_src(name):
@@ -340,21 +344,27 @@ def _page_src(name):
 
 
 class TestPhasesLampNineGates(unittest.TestCase):
-    """热修1：九门灯补 P6.0——首页 PHASES 与 phases.yaml states 门数全序一致。"""
+    """热修1（v0.9d 随新结构更新）：九门单源挪入 status.js——门 id+中文名与
+    phases.yaml states 全序 + gates.title 全等（首页 var PHASES 退位）。"""
 
-    def test_index_phases_equals_yaml_states(self):
-        src = _page_src("index.html")
-        m = re.search(r"var PHASES = \[([^\]]*)\];", src)
-        self.assertIsNotNone(m, "index.html 缺 PHASES 数组")
-        js = [p.strip().strip('"').strip("'") for p in m.group(1).split(",")]
+    def test_status_js_gates_equal_yaml(self):
+        with open(STATUS_JS, encoding="utf-8") as f:
+            src = f.read()
+        m = re.search(r"TY\.NINE_GATES\s*=\s*\[(.*?)\];", src, re.S)
+        self.assertIsNotNone(m, "status.js 缺 NINE_GATES 表")
+        got = re.findall(r'id:\s*"([^"]+)"\s*,\s*name:\s*"([^"]+)"', m.group(1))
         with open(PHASES_YAML, encoding="utf-8") as f:
-            ym = re.search(r"^states:\s*\[([^\]]*)\]", f.read(), re.M)
+            ytext = f.read()
+        ym = re.search(r"^states:\s*\[([^\]]*)\]", ytext, re.M)
         self.assertIsNotNone(ym, "phases.yaml 缺 states 行")
         yml = [p.strip() for p in ym.group(1).split(",")]
-        self.assertEqual(len(js), len(yml),
-                         "门数漂移: 首页 %d 门 vs yaml %d 门" % (len(js), len(yml)))
-        self.assertEqual(js, yml, "门全序漂移")
-        self.assertIn("P6.0", js, "清理门 P6.0 缺席")
+        titles = dict(re.findall(r"^  (P[0-9.]+):\s*$\s*\n\s+title:\s*(\S+)",
+                                 ytext, re.M))
+        self.assertEqual([g[0] for g in got], yml,
+                         "门全序漂移: %s vs %s" % (got, yml))
+        self.assertEqual([g[1] for g in got],
+                         [titles[i] for i in yml], "门中文名漂移")
+        self.assertIn("P6.0", [g[0] for g in got], "清理门 P6.0 缺席")
 
 
 class TestVersionSingleSource(unittest.TestCase):
@@ -408,12 +418,16 @@ class TestFaviconNo404(ServerBase):
 
 
 class TestCssVarParity(unittest.TestCase):
-    """热修4：五页 :root 公共变量齐——metrics 补 --idle 对齐视觉单源变量表。"""
+    """热修4（v0.9d 随新结构更新）：五页视觉单源变量表镜像齐——浅色 :root 与
+    深色 html[data-theme=dark] 同名成对，--idle 在两主题都不缺。"""
 
-    def test_idle_var_on_all_pages(self):
+    def test_idle_var_on_all_pages_both_themes(self):
         for name in STATIC_PAGES:
-            self.assertIn("--idle:#4a545e", _page_src(name),
-                          name + " 缺 --idle:#4a545e")
+            src = _page_src(name)
+            self.assertGreaterEqual(src.count("--idle:"), 2,
+                                    name + " 浅/深主题 --idle 未成对")
+            self.assertIn('html[data-theme="dark"]', src,
+                          name + " 缺深色镜像块")
 
 
 class TestBudgetWarnThreshold(unittest.TestCase):
