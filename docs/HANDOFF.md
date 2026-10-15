@@ -1450,3 +1450,9 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - 险情: 主会话差点把已建成的知识飞轮当新设计重做（实况: knowledge/ 15 目录+tanyin-knowledge 命令面+喂养战例全在）; FD 卡/发现流优先级/闸门实验计划同样在库被忽视。
 - 处置: docs/design/BLUEPRINT-RECON.md 对账表入档;立**蓝图巡检律**——任何设计提案前必查 design/plans/knowledge 三处并引用现状,违律提案作废;每批开工前重读本表。
 - v1.0a 双图一桥设计前必读: graph-driven-ops.md + engine-fusion-architecture §6;v0.9d 总览页复用 fd-report-card-spec+finding-stream-priority。
+
+## 2026-10-15 · 方向修正案 1 号（六专家评审合流）
+- 六专家归队: E1 架构(80% 缺地基)/E2 安全(优先级偏)/E3 产品(执行偏航)/E4 度量(刻度错)/E5 工程债(还债顺序病)/E6 白盒(有条件通过)——方向零否决,执行层修四件。
+- 新路线: v0.9d 收口批→v0.9.6 执法升权→v0.9.7 循环地基→v1.0a 白盒重设计→v1.0b 常驻循环(b26 对账)→v1.0c 控制面。三票制: 执法/地基/收口=v1.0b 前不可豁免门票。
+- 还债新律: 哪颗先炸驱动,不顺手驱动。呈用户三裁决: 修正案整体/sqlite3 投影分层/ZhuLong 闸门。
+- 在航: S 会话页（追加令三条: /activity 页+/experiments 302+/status.js 静态句柄+版本串合流）。
