@@ -9,7 +9,7 @@
 | ui-design-v1.md | 现行 | v0.9d 执行依据（侧栏骨架+12 级灰阶）|
 | tanyin-target-form.md | 已超越（法律仍有效）| 五律/语言律由 product-v1 继承 |
 | architecture-map-v3.md | **维护中** | 蓝图双胎（每批同步）|
-| engine-fusion-architecture.md | §1-5 已建（judge/llmpool）;**§6 循环层=v1.0b 素材** | 自主循环设计必须对照 §6 |
+| engine-fusion-architecture.md | **§1-5 部分虚建**（judge/llmpool 模块在但生产零接线,E1-F4）;§6 实为施工顺序而非循环层设计（E1-F7 勘误）| v1.0b 循环设计以 contracts 单写者+四原则异步总线为准,§6 仅参考 |
 | **graph-driven-ops.md** | 部分建（十边图）| **v1.0a 双图一桥设计前必读**——图驱动作业早有设计 |
 | **completeness-recon-knowledge-evolution.md** | 已并入 b5 飞轮 | 知识演化思考已在库，知识类新提案先查它 |
 | **fd-report-card-spec.md** | 已建（FD 渲染/evices 账）| v0.9d 总览「最新发现列表」直接复用其规格 |
