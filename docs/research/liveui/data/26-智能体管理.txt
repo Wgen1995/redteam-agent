@@ -1,0 +1,137 @@
+CyberStrike
+AI
+v1.7.23
+API 文档
+GitHub
+跟随系统
+🌐
+中文
+7
+工作台
+仪表盘
+对话
+安全防护
+人机协同
+调用拦截
+安全作业
+项目管理
+资产管理
+资产概览
+资产库
+信息收集
+漏洞管理
+任务管理
+工作流
+WebShell管理
+C2
+监听器
+会话
+任务
+载荷
+事件
+流量伪装
+文件管理
+能力中心
+MCP
+MCP状态监控
+MCP管理
+知识
+检索历史
+知识管理
+技能
+技能状态
+技能管理
+智能体
+智能体管理
+角色
+角色管理
+平台管理
+平台权限
+系统设置
+Agent 管理
+刷新
+新建 Agent
+
+Agent 在 agents 目录（config 中 agents_dir）下以 .md 维护：YAML front matter + 正文为系统提示词；主代理为 Deep 协调者，不参与 task 子代理列表。
+
+目录: /Users/wgen/Documents/AI For Security & Compliance/ai-assisted-security-verification-platform/CyberStrikeAI/agents
+Plan-Execute 规划主代理主代理
+orchestrator-plan-execute.md · id: cyberstrike-plan-execute
+plan_execute 模式下的规划/重规划侧主代理：拆解目标、修订计划，由执行器调用 MCP 工具落地（不使用 Deep 的 task 子代理）；计划中每步须含完整目标与范围，禁止让执行器凭猜测补全 URL/IP。
+编辑
+删除
+Supervisor 监督主代理主代理
+orchestrator-supervisor.md · id: cyberstrike-supervisor
+supervisor 模式下的协调者：通过 transfer 委派专家子代理，必要时亲自使用 MCP；完成目标时用 exit 结束（运行时会追加专家列表与 exit 说明）；transfer 前必须提供完整目标与范围。
+编辑
+删除
+协调主代理主代理
+orchestrator.md · id: cyberstrike-deep
+多代理模式下的 Deep 编排者：在已授权安全场景中与 MCP 工具、task 子代理协同，负责规划、委派、汇总与对用户交付；派单前必须向子代理提供完整目标与范围。
+编辑
+删除
+攻击面枚举专员子代理
+attack-surface-enumeration.md · id: attack-surface-enumeration
+基于侦察/情报输入，梳理服务、技术栈、依赖与潜在入口；输出结构化攻击面图谱与验证优先级，并要求主 Agent 提供完整目标与范围。
+编辑
+删除
+清理与回滚专员子代理
+cleanup-rollback.md · id: cleanup-rollback
+为授权测试设计清理/回滚验证清单，确保最小残留与可审计可复核，并要求主 Agent 提供完整目标与变更上下文。
+编辑
+删除
+参与规划专员子代理
+engagement-planning.md · id: engagement-planning
+定义参与范围、规则(ROE)与成功标准；产出迭代式测试蓝图与证据清单（不执行入侵），并要求主 Agent 提供完整目标与约束信息。
+编辑
+删除
+影响与数据外泄证明专员子代理
+impact-exfiltration.md · id: impact-exfiltration
+以最小影响方式设计“业务影响/数据可达性”的证明方案；强调脱敏、最小化数据暴露与回滚，并要求主 Agent 提供完整目标与范围。
+编辑
+删除
+信息收集专员子代理
+intel-collection.md · id: intel-collection
+公开情报、资产指纹、泄露线索、目录与接口发现、第三方暴露面梳理；适合在授权范围内做大范围情报汇总，并要求主 Agent 提供完整目标与范围。
+编辑
+删除
+内网横向专员子代理
+lateral-movement.md · id: lateral-movement
+已获得初始据点后的内网发现、凭证与会话利用、横向移动与权限维持思路（仅授权演练/渗透环境），并要求主 Agent 提供完整目标与网段范围。
+编辑
+删除
+运维安全与干扰最小化专员子代理
+opsec-evasion.md · id: opsec-evasion
+从测试噪声、可观测性、蓝队告警与回滚风险角度，设计“低干扰验证策略”和证据采集方式（不提供绕过手段），并要求主 Agent 提供完整目标与范围。
+编辑
+删除
+渗透测试专员子代理
+penetration.md · id: penetration
+授权范围内的漏洞验证、利用链构造、权限提升与影响证明；在得到侦察/情报输入后做深度利用与复现，并要求主 Agent 提供完整目标与范围。
+编辑
+删除
+持久化与后续通道专员子代理
+persistence-maintenance.md · id: persistence-maintenance
+评估授权环境下的持久化/维持访问思路、风险权衡与回滚验证；以最小影响方式证明可行性，并要求主 Agent 提供完整目标与边界。
+编辑
+删除
+权限提升专员子代理
+privilege-escalation.md · id: privilege-escalation
+在已获得初始访问/受限权限的前提下，评估权限提升可能性、证据需求与安全验证方法（仅限授权环境），并要求主 Agent 提供完整目标与当前权限上下文。
+编辑
+删除
+侦察专员子代理
+recon.md · id: recon
+负责信息收集、资产测绘与初始攻击面分析；要求主 Agent 在委派时提供完整目标（URL/IP:Port/域名+路径）与范围。
+编辑
+删除
+报告撰写与修复建议专员子代理
+reporting-remediation.md · id: reporting-remediation
+将已收集的证据汇总为可交付报告结构，并给出面向修复的建议与回归验证要点；要求主 Agent 提供完整目标与证据上下文。
+编辑
+删除
+漏洞分诊专员子代理
+vulnerability-triage.md · id: vulnerability-triage
+基于攻击面与证据线索进行漏洞候选筛选、优先级排序与“验证路径”设计（以证据为中心，不直接武器化），并要求主 Agent 提供完整目标与输入证据。
+编辑
+删除

@@ -1,0 +1,2677 @@
+[
+ {
+  "num": 1,
+  "slug": "login",
+  "url": "/login",
+  "final_url": "/login",
+  "note": "登录页（未提交态）",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙 ZhuLong\nAI SECURITY VERIFICATION PLATFORM\n用户名\n密码\n登 录",
+  "text_len": 55,
+  "buttons": [
+   "登 录"
+  ],
+  "hrefs": [],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(238, 240, 244)",
+     2
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(255, 255, 255, 0.92)",
+     1
+    ],
+    [
+     "rgb(37, 99, 235)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [
+   "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "shot": "zhulong-01-login.png"
+ },
+ {
+  "num": 2,
+  "slug": "home",
+  "url": "/",
+  "final_url": "/",
+  "note": "首页满幅舞台",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n烛龙 ZhuLong\nAI 安全验证平台\n\n睁眼为昼，照穿一切暗处。\n\nAI 驱动的智能漏洞挖掘平台，将安全专家经验转化为可编排的智能体集群。以 AI 编排引擎与人工验证闭环，资产、漏洞、任务、证据一屏尽览；每一次验证从触发到报告，全程可追溯、可复核。\n\nCHAPTER 01\n降生 · 钟山之神\n\n烛阴者，钟山之神也——身长千里，视为昼，瞑为夜。烛龙之名，取「持火照幽」之志：照亮软件世界的每一处暗面。\n\nCHAPTER 02\n开眼 · 视为昼\n\n睁眼即是白昼。资产测绘引擎一睁眼，全网资产与影子资产无所遁形——看得见，才守得住。\n\nCHAPTER 03\n吐焰 · 息为风\n\n白盒、黑盒、混合三系引擎如焰相续，深度检测与智能降噪并行，每一个告警都值得被认真对待。\n\nCHAPTER 04\n化形 · 不饮不食不息\n\n多引擎步序编排：上步产物直通下步，步级全程可溯——烛龙化形，编排落成。\n\nCHAPTER 05\n烛照 · 证据成卷\n\n从触发到归档，全过程证据链自动成卷，合同五问皆有所答。安全不是一句承诺，而是一摞可复核的凭据。\n\n执行模式\n三种执行模式，覆盖全量场景\n开始使用 →\n开眼\nDRAGON EYE · 广域照亮\n资产\n全网资产一屏尽览\n影子资产自动发现\n资产变更实时感知\n吐焰\nFLAME · 深度挖掘\n检测\n三系引擎并行扫描\n七态流水全程可溯\n误报智能降噪\n化形\nSHAPESHIFT · 多体协同\n智能体\n多引擎步序编排\n上步产物直通下步\n步级全程可溯",
+  "text_len": 694,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "CHAPTER 01\n降生 · 钟山之神\n\n烛阴者，钟山之神也——身长千里，视为昼，瞑为夜。烛龙之名，取「持火照幽」之志：照亮软件世界的每一处暗面。",
+   "CHAPTER 02\n开眼 · 视为昼\n\n睁眼即是白昼。资产测绘引擎一睁眼，全网资产与影子资产无所遁形——看得见，才守得住。",
+   "CHAPTER 03\n吐焰 · 息为风\n\n白盒、黑盒、混合三系引擎如焰相续，深度检测与智能降噪并行，每一个告警都值得被认真对待。",
+   "CHAPTER 04\n化形 · 不饮不食不息\n\n多引擎步序编排：上步产物直通下步，步级全程可溯——烛龙化形，编排落成。",
+   "CHAPTER 05\n烛照 · 证据成卷\n\n从触发到归档，全过程证据链自动成卷，合同五问皆有所答。安全不是一句承诺，而是一摞可复核的凭据。",
+   "开始使用 →"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(37, 99, 235)",
+     6
+    ],
+    [
+     "rgb(255, 255, 255)",
+     3
+    ],
+    [
+     "color(srgb 1 1 1 / 0.62)",
+     3
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "rgb(242, 244, 248)",
+     1
+    ],
+    [
+     "color(srgb 0.145098 0.388235 0.921569 / 0.11)",
+     1
+    ],
+    [
+     "color(srgb 0.85098 0.466667 0.0235294 / 0.11)",
+     1
+    ],
+    [
+     "color(srgb 0.0196078 0.588235 0.411765 / 0.11)",
+     1
+    ]
+   ],
+   "animEls": 3,
+   "animNames": [
+    [
+     "homeHalo-b4e148ca",
+     3
+    ]
+   ],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-02-home.png"
+ },
+ {
+  "num": 3,
+  "slug": "story-kaiyan",
+  "url": "/story/kaiyan",
+  "final_url": "/story/kaiyan",
+  "note": "五章故事深链·开眼章",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n02\n\nCHAPTER 02\n\n开眼 · 视为昼\n\nKaiyan\n\n睁眼即是白昼。资产测绘引擎一睁眼，全网资产与影子资产无所遁形——看得见，才守得住。\n开眼·广域照亮·覆盖优先\n睁眼为昼万物毕现\n都看到了\n开始体验\n上一章 · 降生 · 钟山之神\n吐焰 · 息为风 · 下一章",
+  "text_len": 197,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "上一章 · 降生 · 钟山之神",
+   "吐焰 · 息为风 · 下一章"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users",
+   "/projects",
+   "/story/jiangsheng",
+   "/story/tuyan"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgb(255, 255, 255)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-03-story-kaiyan.png"
+ },
+ {
+  "num": 4,
+  "slug": "projects",
+  "url": "/projects",
+  "final_url": "/projects",
+  "note": "项目卡片网格",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n项目概览\n\n统一展示用户权限范围内的所有项目和管理\n\n新建项目\n全部\nweb\nhost\nk8s\nmobile\nother\n7 个项目\n删除\nwgen01-probe\n敏感\nother\n成员：\n暂无\n暂无\n创建人：wgen01\n创建时间：2026-10-15 15:11\n成员\n编辑项目\n删除项目\n<img src=x onerror=\"window.__xsstest1=1\">XSSPJ\n敏感\nweb\n成员：\n暂无\n暂无\n创建人：admin\n创建时间：2026-10-15 14:51\n成员\n编辑项目\n删除项目\nADMIN-SEC\n敏感\nweb\n成员：\n暂无\n暂无\n创建人：admin\n创建时间：2026-10-15 13:48\n成员\n编辑项目\n删除项目\nPENTER-WEB\n敏感\nweb\n成员：\n暂无\n暂无\n创建人：penter\n创建时间：2026-10-15 13:48\n成员\n编辑项目\n删除项目\n1111\n敏感\nweb\n成员：\n暂无\n暂无\n创建人：admin\n创建时间：2026-09-09 08:56\n成员\n编辑项目\n删除项目\n2222\n敏感\nweb\n成员：\n暂无\n暂无\n创建人：admin\n创建时间：2026-09-06 19:59\n成员\n编辑项目\n删除项目\n走查样例项目\n敏感\nweb\n成员：\n暂无\n暂无\n创建人：admin\n创建时间：2026-09-03 20:28\n成员\n编辑项目\n删除项目\n共 7 条\n‹\n1\n›\n每页\n选择…\n▾\n1 / 1 页",
+  "text_len": 693,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "新建项目",
+   "全部",
+   "web",
+   "host",
+   "k8s",
+   "mobile",
+   "other",
+   "删除",
+   "‹",
+   "1",
+   "›",
+   "选择…\n▾"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     38
+    ],
+    [
+     "oklab(0.665845 0.0827062 0.133972 / 0.1)",
+     7
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     7
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "rgb(37, 99, 235)",
+     1
+    ],
+    [
+     "rgb(248, 250, 252)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-04-projects.png"
+ },
+ {
+  "num": 5,
+  "slug": "tasks",
+  "url": "/tasks",
+  "final_url": "/tasks",
+  "note": "任务中心·七桶KPI+列表",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n任务中心\n\n统一显示当前用户的项目下的所有测试任务，追踪分发，执行与同步状态\n\n运行概览\n12\n全部\n0\n排队中\n0\n运行中\n5\n成功\n3\n失败\n3\n已取消\n1\n软删\n项目：全部 ▾\n引擎 ▾\n模式 ▾\n共 12 条\n删除\n自动刷新 30s\n实时\n实时事件（SSE）BO3 提供\n导入历史会话\n新建任务\n勾选框\t序号\t任务名称\t项目\t资源池\t引擎\t模式\t测试对象\t阶段进度\t任务状态\t创建人\t创建时间\t漏洞判定率\t操作\n\n查看报告\n\t1\ti56-xss-probe27c2996aa\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tblocked-loopback-direct·环境\t\n等待调度\n4/4\n\t失败\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n重跑\n删除\n\n\n查看报告\n\t2\tzhulong@2\twgen01-probe\t—\t\nzhulong@2\n\t\n开眼\n\t—\t\n1 段完成\n1/1\n\t成功\twgen01\t2026-10-15\t0/3（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t3\tzhulong@2\tADMIN-SEC\t—\t\nzhulong@2\n\t\n开眼\n\t—\t\n1 段完成\n1/1\n\t成功\tadmin\t2026-10-15\t0/3（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t4\ti56-runner-auditcaa5b9fc\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tblocked-loopback-direct·环境\t\n等待调度\n0/4\n\t失败\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n重跑\n删除\n\n\n查看报告\n\t5\t<svg onload=window.__xsstest2=1></svg>XSSTASKb2180648\t<img src=x onerror=\"window.__xsstest1=1\">XSSPJ\t内置共享执行器\t\nzhulong@2\n\t\n开眼\n\t\"><script>window.__xsstest3=1</script>XSSOBJ·对象\t\n等待调度\n0/6\n\t已取消\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t6\t主机自检-i37-r291f64f3b\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tbypass-loopback-nipio·环境\t\n等待调度\n3/3\n\t成功\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t7\t主机自检-i379cf636ed\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tbypass-loopback-nipio·环境\t\n等待调度\n1/1\n\t已取消\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t8\tpentest-demo-task46e4b693\tADMIN-SEC\t内置共享执行器\t\ndemo@2\n\t\ndemo\n\tupload-test.bin·对象\t\n等待调度\n0/3\n\t软删\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n\n\n查看报告\n\t9\tdemo-whiteboxf09a01cf\tADMIN-SEC\t内置共享执行器\t\ndemo@2\n\t\ndemo\n\tpoc-code.py·对象\t\n等待调度\n0/3\n\t失败\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n重跑\n删除\n\n\n查看报告\n\t10\tT7 daemon 远程径真跑（example.com 被动只读）\t走查样例项目\t内置共享执行器\t\nzhulong@2\n\t\n开眼\n\texample.com 被动目标简报（T7 daemon 远程径）·对象\t\n等待调度\n0/6\n\t成功\tadmin\t202",
+  "text_len": 1890,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "运行概览",
+   "12\n全部",
+   "0\n排队中",
+   "0\n运行中",
+   "5\n成功",
+   "3\n失败",
+   "3\n已取消",
+   "1\n软删",
+   "项目：全部 ▾",
+   "引擎 ▾",
+   "模式 ▾",
+   "删除",
+   "自动刷新 30s",
+   "导入历史会话",
+   "新建任务",
+   "7c2996aa",
+   "caa5b9fc",
+   "b2180648",
+   "91f64f3b",
+   "9cf636ed",
+   "46e4b693",
+   "f09a01cf",
+   "‹",
+   "1",
+   "2",
+   "›",
+   "10 条/页\n▾"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users",
+   "/tasks/12",
+   "/assets?tab=environments",
+   "/tasks/11",
+   "/tasks/10",
+   "/tasks/9",
+   "/assets?tab=environments",
+   "/tasks/8",
+   "/assets?tab=targets",
+   "/tasks/7",
+   "/assets?tab=environments",
+   "/tasks/6",
+   "/assets?tab=environments",
+   "/tasks/5",
+   "/assets?tab=targets",
+   "/tasks/4",
+   "/assets?tab=targets",
+   "/tasks/3",
+   "/assets?tab=targets"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     91
+    ],
+    [
+     "rgb(203, 213, 225)",
+     26
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     15
+    ],
+    [
+     "oklab(0.207678 -0.00293915 -0.0397103 / 0.08)",
+     7
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     4
+    ],
+    [
+     "color(srgb 0.862745 0.14902 0.14902 / 0.1)",
+     3
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     3
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     1
+    ],
+    [
+     "rgb(100, 116, 139)",
+     1
+    ],
+    [
+     "rgb(37, 99, 235)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 1272
+  },
+  "console_errors": [],
+  "shot": "zhulong-05-tasks.png"
+ },
+ {
+  "num": 6,
+  "slug": "tasks-overview",
+  "url": "/tasks?overview=1",
+  "final_url": "/tasks?overview=1",
+  "note": "运行概览区（ConsoleOverview）",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n任务中心\n\n统一显示当前用户的项目下的所有测试任务，追踪分发，执行与同步状态\n\n运行概览\n实时（0）\n自动刷新 30s\n暂无任务\n队列（0）\n暂无排队任务——已启动的任务将在此等待机器资源\n12\n全部\n0\n排队中\n0\n运行中\n5\n成功\n3\n失败\n3\n已取消\n1\n软删\n项目：全部 ▾\n引擎 ▾\n模式 ▾\n共 12 条\n删除\n自动刷新 30s\n实时\n实时事件（SSE）BO3 提供\n导入历史会话\n新建任务\n勾选框\t序号\t任务名称\t项目\t资源池\t引擎\t模式\t测试对象\t阶段进度\t任务状态\t创建人\t创建时间\t漏洞判定率\t操作\n\n查看报告\n\t1\ti56-xss-probe27c2996aa\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tblocked-loopback-direct·环境\t\n等待调度\n4/4\n\t失败\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n重跑\n删除\n\n\n查看报告\n\t2\tzhulong@2\twgen01-probe\t—\t\nzhulong@2\n\t\n开眼\n\t—\t\n1 段完成\n1/1\n\t成功\twgen01\t2026-10-15\t0/3（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t3\tzhulong@2\tADMIN-SEC\t—\t\nzhulong@2\n\t\n开眼\n\t—\t\n1 段完成\n1/1\n\t成功\tadmin\t2026-10-15\t0/3（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t4\ti56-runner-auditcaa5b9fc\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tblocked-loopback-direct·环境\t\n等待调度\n0/4\n\t失败\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n重跑\n删除\n\n\n查看报告\n\t5\t<svg onload=window.__xsstest2=1></svg>XSSTASKb2180648\t<img src=x onerror=\"window.__xsstest1=1\">XSSPJ\t内置共享执行器\t\nzhulong@2\n\t\n开眼\n\t\"><script>window.__xsstest3=1</script>XSSOBJ·对象\t\n等待调度\n0/6\n\t已取消\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t6\t主机自检-i37-r291f64f3b\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tbypass-loopback-nipio·环境\t\n等待调度\n3/3\n\t成功\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t7\t主机自检-i379cf636ed\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tbypass-loopback-nipio·环境\t\n等待调度\n1/1\n\t已取消\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t8\tpentest-demo-task46e4b693\tADMIN-SEC\t内置共享执行器\t\ndemo@2\n\t\ndemo\n\tupload-test.bin·对象\t\n等待调度\n0/3\n\t软删\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n\n\n查看报告\n\t9\tdemo-whiteboxf09a01cf\tADMIN-SEC\t内置共享执行器\t\ndemo@2\n\t\ndemo\n\tpoc-code.py·对象\t\n等待调度\n0/3\n\t失败\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n重跑\n删除\n\n\n查看报告\n\t10\tT7 daemon 远程径真跑（example.com 被动只读）\t走查样例项目\t内置共享执行器\t\nzhulong@2\n\t\n开眼\n\texample.co",
+  "text_len": 1940,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "运行概览",
+   "自动刷新 30s",
+   "12\n全部",
+   "0\n排队中",
+   "0\n运行中",
+   "5\n成功",
+   "3\n失败",
+   "3\n已取消",
+   "1\n软删",
+   "项目：全部 ▾",
+   "引擎 ▾",
+   "模式 ▾",
+   "删除",
+   "自动刷新 30s",
+   "导入历史会话",
+   "新建任务",
+   "7c2996aa",
+   "caa5b9fc",
+   "b2180648",
+   "91f64f3b",
+   "9cf636ed",
+   "46e4b693",
+   "f09a01cf",
+   "‹",
+   "1",
+   "2",
+   "›",
+   "10 条/页\n▾"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users",
+   "/tasks/12",
+   "/assets?tab=environments",
+   "/tasks/11",
+   "/tasks/10",
+   "/tasks/9",
+   "/assets?tab=environments",
+   "/tasks/8",
+   "/assets?tab=targets",
+   "/tasks/7",
+   "/assets?tab=environments",
+   "/tasks/6",
+   "/assets?tab=environments",
+   "/tasks/5",
+   "/assets?tab=targets",
+   "/tasks/4",
+   "/assets?tab=targets",
+   "/tasks/3",
+   "/assets?tab=targets"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     91
+    ],
+    [
+     "rgb(203, 213, 225)",
+     26
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     14
+    ],
+    [
+     "oklab(0.207678 -0.00293915 -0.0397103 / 0.08)",
+     7
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     4
+    ],
+    [
+     "color(srgb 0.862745 0.14902 0.14902 / 0.1)",
+     3
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     3
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "color(srgb 1 1 1 / 0.62)",
+     1
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     1
+    ],
+    [
+     "rgb(100, 116, 139)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 1484
+  },
+  "console_errors": [],
+  "shot": "zhulong-06-tasks-overview.png"
+ },
+ {
+  "num": 7,
+  "slug": "tasks-status-filter",
+  "url": "/tasks?status=success",
+  "final_url": "/tasks?status=success",
+  "note": "七桶KPI深链 status=success",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n任务中心\n\n统一显示当前用户的项目下的所有测试任务，追踪分发，执行与同步状态\n\n运行概览\n12\n全部\n0\n排队中\n0\n运行中\n5\n成功\n3\n失败\n3\n已取消\n1\n软删\n项目：全部 ▾\n引擎 ▾\n模式 ▾\n共 5 条\n删除\n自动刷新 30s\n实时\n实时事件（SSE）BO3 提供\n导入历史会话\n新建任务\n勾选框\t序号\t任务名称\t项目\t资源池\t引擎\t模式\t测试对象\t阶段进度\t任务状态\t创建人\t创建时间\t漏洞判定率\t操作\n\n查看报告\n\t1\tzhulong@2\twgen01-probe\t—\t\nzhulong@2\n\t\n开眼\n\t—\t\n1 段完成\n1/1\n\t成功\twgen01\t2026-10-15\t0/3（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t2\tzhulong@2\tADMIN-SEC\t—\t\nzhulong@2\n\t\n开眼\n\t—\t\n1 段完成\n1/1\n\t成功\tadmin\t2026-10-15\t0/3（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t3\t主机自检-i37-r291f64f3b\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tbypass-loopback-nipio·环境\t\n等待调度\n3/3\n\t成功\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t4\tT7 daemon 远程径真跑（example.com 被动只读）\t走查样例项目\t内置共享执行器\t\nzhulong@2\n\t\n开眼\n\texample.com 被动目标简报（T7 daemon 远程径）·对象\t\n等待调度\n0/6\n\t成功\tadmin\t2026-09-19\t0/1（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t5\tT5 真跑：zhulong×opencode·example.com 轻量核verify\t走查样例项目\t内置共享执行器\t\nzhulong@2\n\t\n开眼\n\texample.com 被动目标简报（T5）·对象\t\n等待调度\n0/6\n\t成功\tadmin\t2026-09-19\t0/3（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n共 5 条\n‹\n1\n›\n每页\n10 条/页\n▾\n1 / 1 页\n计划管理\n0\n\n暂无计划",
+  "text_len": 1058,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "运行概览",
+   "12\n全部",
+   "0\n排队中",
+   "0\n运行中",
+   "5\n成功",
+   "3\n失败",
+   "3\n已取消",
+   "1\n软删",
+   "项目：全部 ▾",
+   "引擎 ▾",
+   "模式 ▾",
+   "删除",
+   "自动刷新 30s",
+   "导入历史会话",
+   "新建任务",
+   "91f64f3b",
+   "‹",
+   "1",
+   "›",
+   "10 条/页\n▾"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users",
+   "/tasks/11",
+   "/tasks/10",
+   "/tasks/7",
+   "/assets?tab=environments",
+   "/tasks/3",
+   "/assets?tab=targets",
+   "/tasks/2",
+   "/assets?tab=targets"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     54
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     15
+    ],
+    [
+     "rgb(203, 213, 225)",
+     13
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     5
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     1
+    ],
+    [
+     "rgb(100, 116, 139)",
+     1
+    ],
+    [
+     "rgb(37, 99, 235)",
+     1
+    ],
+    [
+     "oklab(0.207678 -0.00293915 -0.0397103 / 0.08)",
+     1
+    ],
+    [
+     "rgb(248, 250, 252)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 918
+  },
+  "console_errors": [],
+  "shot": "zhulong-07-tasks-status-filter.png"
+ },
+ {
+  "num": 8,
+  "slug": "task-detail-success",
+  "url": "/tasks/11",
+  "final_url": "/tasks/11",
+  "note": "任务详情 live面+终端+日志 源行:查看报告 2 zhulong@2 wgen01-probe — zhulong@2 开眼 — 1 段完成 1/1 成功 wgen01 2026-10-15 0/",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n返回任务列表\n任务详情 · zhulong@2\nzhulong@2\n成功\n项目\nwgen01-probe\n创建人\nwgen01\n创建时间\n2026-10-15\n引擎\nzhulong@2\n模式\n开眼\n测试对象\n—\n1 段完成\n1/1\n成本与用量\n暂无用量数据\n历史 · 运行日志\n产物\n漏洞关联\n终审\n04-findings-verify.md\n3.4 KB\nreport.md\n1.6 KB",
+  "text_len": 254,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "返回任务列表",
+   "历史 · 运行日志",
+   "产物",
+   "漏洞关联",
+   "终审"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users",
+   "/api/tasks/11/artifacts/11/raw",
+   "/api/tasks/11/artifacts/12/raw"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgb(255, 255, 255)",
+     1
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.6)",
+     1
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-08-task-detail-success.png",
+  "live_panel": [
+   "历史 · 运行日志"
+  ]
+ },
+ {
+  "num": 9,
+  "slug": "failed",
+  "url": "/tasks/12",
+  "final_url": "/tasks/12",
+  "note": "任务详情 live面+终端+日志 源行:查看报告 1 i56-xss-probe27c2996aa ADMIN-SEC 内置共享执行器 genlpe@1 开眼 blocked-loopback-dir",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n返回任务列表\n任务详情 · i56-xss-probe2\ni56-xss-probe2\n失败\n项目\nADMIN-SEC\n创建人\nadmin\n创建时间\n2026-10-15\n建单锚\n7c2996aa\n引擎\ngenlpe@1\n模式\n开眼\n测试对象\nblocked-loopback-direct·环境\n等待调度\n4/4\n成本与用量\n成本（USD）\n0.00\n输入 Tokens\n29,116\n输出 Tokens\n812\n历史 · 运行日志\n{\"kind\":\"default\",\"message\":\"收齐门禁未在期限内补齐（required 产物缺失——超时收口）\"}\n产物\n漏洞关联\n终审\naudit-report.md\n995 B",
+  "text_len": 373,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "返回任务列表",
+   "7c2996aa",
+   "历史 · 运行日志",
+   "产物",
+   "漏洞关联",
+   "终审"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users",
+   "/assets?tab=environments",
+   "/api/tasks/12/artifacts/13/raw"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(203, 213, 225)",
+     3
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgb(255, 255, 255)",
+     1
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.6)",
+     1
+    ],
+    [
+     "color(srgb 0.862745 0.14902 0.14902 / 0.1)",
+     1
+    ],
+    [
+     "oklab(0.577107 0.191166 0.0987778 / 0.08)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-09-failed.png",
+  "live_panel": [
+   "历史 · 运行日志"
+  ]
+ },
+ {
+  "num": 10,
+  "slug": "vulns",
+  "url": "/vulns",
+  "final_url": "/vulns",
+  "note": "漏洞中心·筛选面板+三态KPI",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n漏洞中心\n\n统一管理当前项目的漏洞生命周期，覆盖上报，验证与处理全流程\n\n进入下载中心\n3\nP1 漏洞（严重≥High）\n致命 2\n严重 1\n中危 0\n低危 1\n信息 9\n严重分布\n8%\n确认率\n11\n疑似 · AI 初判，待人工终审\n1\n确认是 · 终审通过，真实漏洞\n1\n确认非 · 终审驳回，误报\n全部\n白盒\n黑盒\n高级筛选\n任务：全部\n▾\n等级：全部\n▾\n共 13 条\n自动刷新 30s\n导出\n\t标题\t等级\t终审\tPOC\t静态 PoC\t动态 PoC\t引擎\t任务\t更新时间\n▼\n\t操作\n\t\n日志敏感信息写入置信 实证\nWB-3\n\t信息\t疑似\t已提供\t\n无\t\n无\tzhulong\t\n#11\n按此任务筛选\n敏感项目\t2026-10-15\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\n默认配置不当置信 实证\nWB-2\n\t信息\t疑似\t已提供\t\n无\t\n无\tzhulong\t\n#11\n按此任务筛选\n敏感项目\t2026-10-15\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\n默认配置不当置信 实证\nWB-1\n\t信息\t疑似\t已提供\t\n无\t\n无\tzhulong\t\n#11\n按此任务筛选\n敏感项目\t2026-10-15\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\n日志敏感信息写入置信 实证\nWB-3\n\t信息\t疑似\t已提供\t\n无\t\n无\tzhulong\t\n#10\n按此任务筛选\n敏感项目\t2026-10-15\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\n默认配置不当置信 实证\nWB-2\n\t信息\t疑似\t已提供\t\n无\t\n无\tzhulong\t\n#10\n按此任务筛选\n敏感项目\t2026-10-15\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\n默认配置不当置信 实证\nWB-1\n\t信息\t疑似\t已提供\t\n无\t\n无\tzhulong\t\n#10\n按此任务筛选\n敏感项目\t2026-10-15\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\n默认配置不当置信 实证\nWB-1\n\t低危\t疑似\t已提供\t有\t\n无\tzhulong\t\n#3\n按此任务筛选\n敏感项目\t2026-09-19\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\n日志敏感信息写入置信 实证\nWB-3\n\t信息\t疑似\t已提供\t有\t\n无\tzhulong\t\n#2\n按此任务筛选\n敏感项目\t2026-09-19\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\n默认配置不当置信 实证\nWB-2\n\t信息\t疑似\t已提供\t有\t\n无\tzhulong\t\n#2\n按此任务筛选\n敏感项目\t2026-09-19\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\n默认配置不当置信 实证\nWB-1\n\t信息\t疑似\t已提供\t有\t\n无\tzhulong\t\n#2\n按此任务筛选\n敏感项目\t2026-09-19\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n\n\t\nSQL注入置信 实证\nseed-1\n\t致命\t确认非\t已复现\t\n无\t\n无\tzhulong\t\n#1\n按此任务筛选\n敏感项目\t2026-09-06\t\n查看详情\n重新判定\n导出漏洞（单条即下）\n删除\n\n\t\n默认配置不当置信 线索\nseed-3\n\t致命\t确认是\t无\t\n无\t\n无\tzhulong\t\n#1\n按此任务筛选\n敏感项目\t2026-09-05\t\n查看详情\n重新判定\n导出漏洞（单条即下）\n删除\n\n\t\n缺少授权置信 条件成立\nseed-2\n\t严重\t疑似\t草稿\t\n无\t\n无\tzhulong\t\n#1\n按此任务筛选\n敏感项目\t2026-09-04\t\n查看详情\n判定\n导出漏洞（单条即下）\n删除\n共 13 条\n‹\n1\n›\n每页\n20 条/页\n▾\n1 / 1 页",
+  "text_len": 1587,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "进入下载中心",
+   "3\nP1 漏洞（严重≥High）",
+   "8%\n确认率",
+   "11\n疑似 · AI 初判，待人工终审",
+   "1\n确认是 · 终审通过，真实漏洞",
+   "1\n确认非 · 终审驳回，误报",
+   "全部",
+   "白盒",
+   "黑盒",
+   "高级筛选",
+   "任务：全部\n▾",
+   "等级：全部\n▾",
+   "自动刷新 30s",
+   "导出",
+   "等级",
+   "更新时间\n▼",
+   "日志敏感信息写入置信 实证",
+   "已提供",
+   "#11",
+   "默认配置不当置信 实证",
+   "已提供",
+   "#11",
+   "默认配置不当置信 实证",
+   "已提供",
+   "#11",
+   "日志敏感信息写入置信 实证",
+   "已提供",
+   "#10",
+   "默认配置不当置信 实证",
+   "已提供",
+   "#10",
+   "默认配置不当置信 实证"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     77
+    ],
+    [
+     "oklab(0.207678 -0.00293915 -0.0397103 / 0.3)",
+     22
+    ],
+    [
+     "oklab(0.665845 0.0827062 0.133972 / 0.1)",
+     13
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     12
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     11
+    ],
+    [
+     "oklab(0.713655 -0.00286007 -0.0189416 / 0.12)",
+     9
+    ],
+    [
+     "oklab(0.627048 -0.145936 0.0869728 / 0.1)",
+     4
+    ],
+    [
+     "rgb(246, 247, 249)",
+     2
+    ],
+    [
+     "oklab(0.710632 0.15384 0.0628371 / 0.12)",
+     2
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     1
+    ],
+    [
+     "oklab(0.713726 -0.0379879 -0.138233 / 0.12)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 1362
+  },
+  "console_errors": [],
+  "shot": "zhulong-10-vulns.png"
+ },
+ {
+  "num": 11,
+  "slug": "vulns-verdict-filter",
+  "url": "/vulns?verdicts=confirmed",
+  "final_url": "/vulns?verdicts=confirmed",
+  "note": "KPI深链 verdicts=confirmed",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n漏洞中心\n\n统一管理当前项目的漏洞生命周期，覆盖上报，验证与处理全流程\n\n进入下载中心\n1\nP1 漏洞（严重≥High）\n致命 1\n严重 0\n中危 0\n低危 0\n信息 0\n严重分布\n100%\n确认率\n0\n疑似 · AI 初判，待人工终审\n1\n确认是 · 终审通过，真实漏洞\n0\n确认非 · 终审驳回，误报\n全部\n白盒\n黑盒\n高级筛选\n1\n任务：全部\n▾\n等级：全部\n▾\n共 1 条\n自动刷新 30s\n导出\n终审：确认是\n\t标题\t等级\t终审\tPOC\t静态 PoC\t动态 PoC\t引擎\t任务\t更新时间\n▼\n\t操作\n\t\n默认配置不当置信 线索\nseed-3\n\t致命\t确认是\t无\t\n无\t\n无\tzhulong\t\n#1\n按此任务筛选\n敏感项目\t2026-09-05\t\n查看详情\n重新判定\n导出漏洞（单条即下）\n删除\n共 1 条\n‹\n1\n›\n每页\n20 条/页\n▾\n1 / 1 页",
+  "text_len": 442,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "进入下载中心",
+   "1\nP1 漏洞（严重≥High）",
+   "100%\n确认率",
+   "0\n疑似 · AI 初判，待人工终审",
+   "1\n确认是 · 终审通过，真实漏洞",
+   "0\n确认非 · 终审驳回，误报",
+   "全部",
+   "白盒",
+   "黑盒",
+   "高级筛选\n1",
+   "任务：全部\n▾",
+   "等级：全部\n▾",
+   "自动刷新 30s",
+   "导出",
+   "等级",
+   "更新时间\n▼",
+   "默认配置不当置信 线索",
+   "#1",
+   "‹",
+   "1",
+   "›",
+   "20 条/页\n▾"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     17
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     11
+    ],
+    [
+     "rgb(246, 247, 249)",
+     2
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     2
+    ],
+    [
+     "oklab(0.207678 -0.00293915 -0.0397103 / 0.3)",
+     2
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "rgb(37, 99, 235)",
+     1
+    ],
+    [
+     "oklab(0.710632 0.15384 0.0628371 / 0.12)",
+     1
+    ],
+    [
+     "color(srgb 0.862745 0.14902 0.14902 / 0.1)",
+     1
+    ],
+    [
+     "oklab(0.665845 0.0827062 0.133972 / 0.1)",
+     1
+    ],
+    [
+     "rgb(248, 250, 252)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-11-vulns-verdict-filter.png"
+ },
+ {
+  "num": 15,
+  "slug": "assets-resources",
+  "url": "/assets?tab=resources",
+  "final_url": "/assets?tab=resources",
+  "note": "资产Tab:resources",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n资产管理\n\n测试算力资源池 · 谁跑、跑什么、在哪跑、用什么知识跑\n\n算力资源池\n测试对象\n测试环境\n知识图谱\n引擎\n路径一 · 自动接入（本机）\n自动接入\n服务器装了 CLI 就自动探测入池。逐项可控：停用某个 CLI = 本机不再接该类任务（能力闸门即时生效）。\n名称\t版本\t路径\t启用\nclaude\t2.1.238 (Claude Code)\t/opt/homebrew/bin/claude\t\n\nopencode\t1.19.0\t/opt/homebrew/bin/opencode\t\n\nnode\tv26.5.0\t/opt/homebrew/bin/node\t\n\ndemo\tdemo@2\t/Users/wgen/Documents/AI For Security & Compliance/ai-assisted-security-verification-platform/apps/server/scripts/demo-cli.mjs\t\n\ngit\tgit version 2.50.1 (Apple Git-155)\t/usr/bin/git\t\n\ndocker\t29.4.0\t/usr/local/bin/docker\t\n重新探测\n停用项不入能力面、不接新任务（进行中的跑完）\nnode 为内置脚本运行时，停用将连带停用 demo\n自动接入·为何整行不可停\n自动接入的执行器不可停用：停用会强制终止在跑任务，并失去兜底执行器；本机卸载 CLI 后能力将随之收缩（重新探测即得真值）\n6\n接入 · 自动 1 · 手动 5\n1\n在线\n0/6\n机器槽占用\n3\n离线/宽限/归档\n名称\t机型\t能力徽章\t机器槽\t状态\t最后心跳\t操作\n\n内置共享执行器\n自动接入\n自动接入的执行器不可停用：停用会强制终止在跑任务，并失去兜底执行器；本机卸载 CLI 后能力将随之收缩（重新探测即得真值）\n\t常开\t\nclaude\nCLI 能力：claude\nopencode\nCLI 能力：opencode\ndemo\nCLI 能力：demo\ngit\nCLI 能力：git\ndocker\nCLI 能力：docker\n\t\n0/1\n\t\n在线\n\t刚刚\t探测报告 ▾\n\nwgen-MBP（手动接入 T7）\n共享\n\t工作机\t\nclaude\nCLI 能力：claude\nopencode\nCLI 能力：opencode\ngit\nCLI 能力：git\n\t\n0/1\n\t\n离线\n失联\n\t26 天前\t详情停用归档\n1\n▾\n\n\npentest-runner-01\n共享\n\t工作机\t\nclaude\nCLI 能力：claude\ndemo\nCLI 能力：demo\n\t\n0/1\n\t\n离线\n失联\n\t1 小时前\t详情停用归档\n1\n▾\n\n\ni41-masterkey-verify\n共享\n\t工作机\t\nzzz-nonexistent-cli\nCLI 能力：zzz-nonexistent-cli\n\t\n0/1\n\t\n已停用\n\t1 小时前\t详情启用归档\n1\n▾\n\n\ni41-verify-2\n共享\n\t工作机\t—\t\n0/1\n\t\n已停用\n\t—\t详情启用归档\n1\n▾\n\n\ni56-audit-runner-01\n共享\n\t工作机\t\nopencode\nCLI 能力：opencode\nclaude\nCLI 能力：claude\nnode\nCLI 能力：node\ndemo\nCLI 能力：demo\n\t\n0/1\n\t\n离线\n失联\n\t31 分钟前\t详情停用归档\n1\n▾\n池活动\n接入\ni56-audit-runner-01\n系统\n2026-10-15 15:01\n停用\ni41-verify-2\nadmin\n2026-10-15 14:40\n停用\ni41-masterkey-verify\nadmin\n2026-10-15 14:40\n接入\ni41-verify-2\n系统\n2026-10-15 14:38\n接入\ni41-masterkey-verify\n系统\n2026-10-15 14:38\n接入\npentest-runner-01\n系统\n2026-10-15 14:20\n重新探测\n内置共享执行器\nadmin\n2026-09-19 12:07\n重新探测\n内置共",
+  "text_len": 3283,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "算力资源池",
+   "测试对象",
+   "测试环境",
+   "知识图谱",
+   "引擎",
+   "重新探测",
+   "6\n接入 · 自动 1 · 手动 5",
+   "1\n在线",
+   "0/6\n机器槽占用",
+   "3\n离线/宽限/归档",
+   "探测报告 ▾",
+   "详情",
+   "停用",
+   "归档",
+   "1\n▾",
+   "详情",
+   "停用",
+   "归档",
+   "1\n▾",
+   "详情",
+   "启用",
+   "归档",
+   "1\n▾",
+   "详情",
+   "启用",
+   "归档",
+   "1\n▾",
+   "详情",
+   "停用",
+   "归档",
+   "1\n▾",
+   "＋接入新机器"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     33
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     17
+    ],
+    [
+     "color(srgb 0.85098 0.466667 0.0235294 / 0.1)",
+     12
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     8
+    ],
+    [
+     "rgb(187, 247, 208)",
+     6
+    ],
+    [
+     "rgb(22, 163, 74)",
+     6
+    ],
+    [
+     "rgb(226, 232, 240)",
+     6
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     3
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     2
+    ],
+    [
+     "rgb(37, 99, 235)",
+     2
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 2747
+  },
+  "console_errors": [],
+  "shot": "zhulong-15-assets-resources.png"
+ },
+ {
+  "num": 16,
+  "slug": "assets-catalog",
+  "url": "/assets?tab=catalog",
+  "final_url": "/assets?tab=catalog",
+  "note": "资产Tab:catalog",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n资产管理\n\n测试算力资源池 · 谁跑、跑什么、在哪跑、用什么知识跑\n\n算力资源池\n测试对象\n测试环境\n知识图谱\n引擎\n路径一 · 自动接入（本机）\n自动接入\n服务器装了 CLI 就自动探测入池。逐项可控：停用某个 CLI = 本机不再接该类任务（能力闸门即时生效）。\n名称\t版本\t路径\t启用\nclaude\t2.1.238 (Claude Code)\t/opt/homebrew/bin/claude\t\n\nopencode\t1.19.0\t/opt/homebrew/bin/opencode\t\n\nnode\tv26.5.0\t/opt/homebrew/bin/node\t\n\ndemo\tdemo@2\t/Users/wgen/Documents/AI For Security & Compliance/ai-assisted-security-verification-platform/apps/server/scripts/demo-cli.mjs\t\n\ngit\tgit version 2.50.1 (Apple Git-155)\t/usr/bin/git\t\n\ndocker\t29.4.0\t/usr/local/bin/docker\t\n重新探测\n停用项不入能力面、不接新任务（进行中的跑完）\nnode 为内置脚本运行时，停用将连带停用 demo\n自动接入·为何整行不可停\n自动接入的执行器不可停用：停用会强制终止在跑任务，并失去兜底执行器；本机卸载 CLI 后能力将随之收缩（重新探测即得真值）\n6\n接入 · 自动 1 · 手动 5\n1\n在线\n0/6\n机器槽占用\n3\n离线/宽限/归档\n名称\t机型\t能力徽章\t机器槽\t状态\t最后心跳\t操作\n\n内置共享执行器\n自动接入\n自动接入的执行器不可停用：停用会强制终止在跑任务，并失去兜底执行器；本机卸载 CLI 后能力将随之收缩（重新探测即得真值）\n\t常开\t\nclaude\nCLI 能力：claude\nopencode\nCLI 能力：opencode\ndemo\nCLI 能力：demo\ngit\nCLI 能力：git\ndocker\nCLI 能力：docker\n\t\n0/1\n\t\n在线\n\t刚刚\t探测报告 ▾\n\nwgen-MBP（手动接入 T7）\n共享\n\t工作机\t\nclaude\nCLI 能力：claude\nopencode\nCLI 能力：opencode\ngit\nCLI 能力：git\n\t\n0/1\n\t\n离线\n失联\n\t26 天前\t详情停用归档\n1\n▾\n\n\npentest-runner-01\n共享\n\t工作机\t\nclaude\nCLI 能力：claude\ndemo\nCLI 能力：demo\n\t\n0/1\n\t\n离线\n失联\n\t1 小时前\t详情停用归档\n1\n▾\n\n\ni41-masterkey-verify\n共享\n\t工作机\t\nzzz-nonexistent-cli\nCLI 能力：zzz-nonexistent-cli\n\t\n0/1\n\t\n已停用\n\t1 小时前\t详情启用归档\n1\n▾\n\n\ni41-verify-2\n共享\n\t工作机\t—\t\n0/1\n\t\n已停用\n\t—\t详情启用归档\n1\n▾\n\n\ni56-audit-runner-01\n共享\n\t工作机\t\nopencode\nCLI 能力：opencode\nclaude\nCLI 能力：claude\nnode\nCLI 能力：node\ndemo\nCLI 能力：demo\n\t\n0/1\n\t\n离线\n失联\n\t31 分钟前\t详情停用归档\n1\n▾\n池活动\n接入\ni56-audit-runner-01\n系统\n2026-10-15 15:01\n停用\ni41-verify-2\nadmin\n2026-10-15 14:40\n停用\ni41-masterkey-verify\nadmin\n2026-10-15 14:40\n接入\ni41-verify-2\n系统\n2026-10-15 14:38\n接入\ni41-masterkey-verify\n系统\n2026-10-15 14:38\n接入\npentest-runner-01\n系统\n2026-10-15 14:20\n重新探测\n内置共享执行器\nadmin\n2026-09-19 12:07\n重新探测\n内置共",
+  "text_len": 3283,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "算力资源池",
+   "测试对象",
+   "测试环境",
+   "知识图谱",
+   "引擎",
+   "重新探测",
+   "6\n接入 · 自动 1 · 手动 5",
+   "1\n在线",
+   "0/6\n机器槽占用",
+   "3\n离线/宽限/归档",
+   "探测报告 ▾",
+   "详情",
+   "停用",
+   "归档",
+   "1\n▾",
+   "详情",
+   "停用",
+   "归档",
+   "1\n▾",
+   "详情",
+   "启用",
+   "归档",
+   "1\n▾",
+   "详情",
+   "启用",
+   "归档",
+   "1\n▾",
+   "详情",
+   "停用",
+   "归档",
+   "1\n▾",
+   "＋接入新机器"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     33
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     17
+    ],
+    [
+     "color(srgb 0.85098 0.466667 0.0235294 / 0.1)",
+     12
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     8
+    ],
+    [
+     "rgb(187, 247, 208)",
+     6
+    ],
+    [
+     "rgb(22, 163, 74)",
+     6
+    ],
+    [
+     "rgb(226, 232, 240)",
+     6
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     3
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     2
+    ],
+    [
+     "rgb(37, 99, 235)",
+     2
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 2747
+  },
+  "console_errors": [],
+  "shot": "zhulong-16-assets-catalog.png"
+ },
+ {
+  "num": 17,
+  "slug": "assets-targets",
+  "url": "/assets?tab=targets",
+  "final_url": "/assets?tab=targets",
+  "note": "资产Tab:targets",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n资产管理\n\n测试算力资源池 · 谁跑、跑什么、在哪跑、用什么知识跑\n\n算力资源池\n测试对象\n测试环境\n知识图谱\n引擎\n登记对象\n上传\n名称\t类型\t来源\t可见性\t版本指纹\t更新时间\t操作\nxss-render-poc-html\t文档\t上传\t私有\t0ac35474\t2026-10-15\t\n上传版本\n下载\n删除\n\n\"><script>window.__xsstest3=1</script>XSSOBJ\t文档\t本机路径\t私有\t—\t2026-10-15\t\n上传版本\n下载\n删除\n\nupload-test.bin\t文档\t上传\t私有\tfcb5d752\t2026-10-15\t\n上传版本\n下载\n删除\n\npoc-code.py\t代码\t上传\t私有\t598aa90d\t2026-10-15\t\n上传版本\n下载\n删除\n\nsecret-poc.txt\t文档\t上传\t私有\tcd570723\t2026-10-15\t\n上传版本\n下载\n删除\n\nexample.com 被动目标简报（T7 daemon 远程径）\t文档\t上传\t私有\tf9b14d5a\t2026-09-19\t\n上传版本\n下载\n删除\n\nexample.com 被动目标简报（T5）\t文档\t上传\t私有\td8047f6b\t2026-09-19\t\n上传版本\n下载\n删除\n共 7 条\n‹\n1\n›\n每页\n20 条/页\n▾\n1 / 1 页",
+  "text_len": 636,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "算力资源池",
+   "测试对象",
+   "测试环境",
+   "知识图谱",
+   "引擎",
+   "登记对象",
+   "上传",
+   "‹",
+   "1",
+   "›",
+   "20 条/页\n▾"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users",
+   "/api/objects/7/download",
+   "/api/objects/6/download",
+   "/api/objects/5/download",
+   "/api/objects/4/download",
+   "/api/objects/3/download",
+   "/api/objects/2/download",
+   "/api/objects/1/download"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     25
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     7
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     7
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "rgb(37, 99, 235)",
+     1
+    ],
+    [
+     "rgb(248, 250, 252)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-17-assets-targets.png"
+ },
+ {
+  "num": 18,
+  "slug": "assets-environments",
+  "url": "/assets?tab=environments",
+  "final_url": "/assets?tab=environments",
+  "note": "资产Tab:environments",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n资产管理\n\n测试算力资源池 · 谁跑、跑什么、在哪跑、用什么知识跑\n\n算力资源池\n测试对象\n测试环境\n知识图谱\n引擎\n登记环境\n名称\t类型\tendpoint\t凭据\t指纹健康\t操作\n<IMG SRC=x OnErRoR=window.__xsstest4=1>XSSENV\tWeb\thttp://127.0.0.1:9\t未设置\t未探活\t\n健康检查\n\nblocked-loopback-direct\tWeb\thttp://127.0.0.1:7090/api/health\t未设置\t未探活\t\n健康检查\n\nbypass-decimal-ip\tWeb\thttp://2130706433:7090/api/health\t未设置\t未探活\t\n健康检查\n\nbypass-metadata-nipio\tWeb\thttp://169-254-169-254.nip.io/\t未设置\t异常\t\n健康检查\n\nbypass-loopback-nipio\tWeb\thttp://127-0-0-1.nip.io:7090/api/health\t未设置\t健康\t\n健康检查\n共 5 条\n‹\n1\n›\n每页\n20 条/页\n▾\n1 / 1 页",
+  "text_len": 561,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "算力资源池",
+   "测试对象",
+   "测试环境",
+   "知识图谱",
+   "引擎",
+   "登记环境",
+   "‹",
+   "1",
+   "›",
+   "20 条/页\n▾"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     8
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     6
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "rgb(37, 99, 235)",
+     1
+    ],
+    [
+     "color(srgb 0.862745 0.14902 0.14902 / 0.1)",
+     1
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     1
+    ],
+    [
+     "rgb(248, 250, 252)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-18-assets-environments.png"
+ },
+ {
+  "num": 19,
+  "slug": "assets-knowledge",
+  "url": "/assets?tab=knowledge",
+  "final_url": "/assets?tab=knowledge",
+  "note": "资产Tab:knowledge",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n资产管理\n\n测试算力资源池 · 谁跑、跑什么、在哪跑、用什么知识跑\n\n算力资源池\n测试对象\n测试环境\n知识图谱\n引擎\n19\n漏洞类\n227\n合规规则\n5\n提权五族",
+  "text_len": 140,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "算力资源池",
+   "测试对象",
+   "测试环境",
+   "知识图谱",
+   "引擎",
+   "19\n漏洞类",
+   "227\n合规规则",
+   "5\n提权五族"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     4
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-19-assets-knowledge.png"
+ },
+ {
+  "num": 20,
+  "slug": "assets-engines",
+  "url": "/assets?tab=engines",
+  "final_url": "/assets?tab=engines",
+  "note": "资产Tab:engines",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n资产管理\n\n测试算力资源池 · 谁跑、跑什么、在哪跑、用什么知识跑\n\n算力资源池\n测试对象\n测试环境\n知识图谱\n引擎\n\n引擎治理（安装/启停/版本）属插件治理写操作——BO4\n\n演示引擎\nv2\n白盒\nenabled\ndemo\n发现 0\n检查更新\n插件安装/升级/卸载与检查更新在 BO4 提供\nGenCPT\nv1\n黑盒\nenabled\ngencpt\n发现 0\n检查更新\n插件安装/升级/卸载与检查更新在 BO4 提供\nGenLPE\nv1\n黑盒\nenabled\ngenlpe\n发现 0\n检查更新\n插件安装/升级/卸载与检查更新在 BO4 提供\n探隐红队\nv1\n黑盒\nenabled\ntanyin\n发现 0\n检查更新\n插件安装/升级/卸载与检查更新在 BO4 提供\n烛龙\nv2\n白盒\nenabled\nzhulong\n发现 13\n检查更新\n插件安装/升级/卸载与检查更新在 BO4 提供",
+  "text_len": 449,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "算力资源池",
+   "测试对象",
+   "测试环境",
+   "知识图谱",
+   "引擎",
+   "检查更新",
+   "检查更新",
+   "检查更新",
+   "检查更新",
+   "检查更新"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     16
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     5
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     5
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     5
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-20-assets-engines.png"
+ },
+ {
+  "num": 21,
+  "slug": "downloads",
+  "url": "/downloads",
+  "final_url": "/downloads",
+  "note": "下载中心·7天过期制",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n下载中心\n\n统一管理任务报告、漏洞清单与评估集生成物，生成后 7 天内可下载\n\n自动刷新 30s\n名称\t类型\t任务\t大小\t创建人\t创建时间\t过期时间\t状态\t操作\n评估集·zhulong\t评估集\t—\t337 B\tadmin\t2026-09-08\t已过期\t已过期\t\n\n评估集·zhulong\t评估集\t—\t337 B\tadmin\t2026-09-08\t已过期\t已过期\t\n\n漏洞清单·所选（1 条）\t清单\t—\t163 B\tadmin\t2026-09-07\t已过期\t已过期\t\n\n漏洞清单·全部\t清单\t—\t327 B\tadmin\t2026-09-07\t已过期\t已过期\t\n\n评估集·zhulong\t评估集\t—\t337 B\tadmin\t2026-09-07\t已过期\t已过期\t\n\n评估集·zhulong\t评估集\t—\t337 B\tadmin\t2026-09-07\t已过期\t已过期\t\n\n漏洞清单·全部\t清单\t—\t327 B\tadmin\t2026-09-07\t已过期\t已过期\t\n\n评估集·zhulong\t评估集\t—\t337 B\tadmin\t2026-09-07\t已过期\t已过期\t\n\n任务报告·走查样例·种子任务\t报告\t走查样例·种子任务\t730 B\tadmin\t2026-09-07\t已过期\t已过期\t",
+  "text_len": 597,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "自动刷新 30s"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     5
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     3
+    ],
+    [
+     "rgb(255, 255, 255)",
+     2
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-21-downloads.png"
+ },
+ {
+  "num": 22,
+  "slug": "admin-users",
+  "url": "/admin/users",
+  "final_url": "/admin/users",
+  "note": "RBAC 用户管理",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n用户管理\n\n成员账号、角色与启停管理（仅管理员）\n\n平台健康\n生成于 2026-10-15 15:46 · findings 聚合 0ms\nFindings\n总数\n13\n24h 新增\n6\n查询耗时\n0ms\n任务吞吐（24h）\n新建\n9\n完成\n3\n失败\n4\nWAL\njournal_mode\nwal\nsynchronous\n1\nbusy_timeout\n5000ms\n计划任务\n活跃\n0\n总数\n0\n下次触发\n—\n队列\n排队\n0\n运行\n0\nSSE 连接\n0\n新建用户\n用户名\t角色\t状态\t登录状态\t创建时间\t操作\nadmin（我）\t管理员\t启用\t在线\t2026-09-04\t\n编辑用户\n不能禁用自己\n\nwgen01\t安全工程师\t启用\t在线\t2026-09-05\t\n编辑用户\n禁用\n重置密码\n授权\n删除用户\n\npenter\t安全工程师\t启用\t在线\t2026-10-15\t\n编辑用户\n禁用\n重置密码\n授权\n删除用户\n\nviewer\t漏洞审计员\t启用\t在线\t2026-10-15\t\n编辑用户\n禁用\n重置密码\n授权\n删除用户",
+  "text_len": 515,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "新建用户"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     20
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     8
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     6
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     3
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "rgb(37, 99, 235)",
+     1
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     1
+    ],
+    [
+     "oklab(0.984146 -0.00124156 -0.00314122 / 0.382641)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-22-admin-users.png"
+ },
+ {
+  "num": 23,
+  "slug": "home-dark",
+  "url": "/",
+  "final_url": "/",
+  "note": "暗色镜像（theme-toggle 后）",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n烛龙 ZhuLong\nAI 安全验证平台\n\n睁眼为昼，照穿一切暗处。\n\nAI 驱动的智能漏洞挖掘平台，将安全专家经验转化为可编排的智能体集群。以 AI 编排引擎与人工验证闭环，资产、漏洞、任务、证据一屏尽览；每一次验证从触发到报告，全程可追溯、可复核。\n\nCHAPTER 01\n降生 · 钟山之神\n\n烛阴者，钟山之神也——身长千里，视为昼，瞑为夜。烛龙之名，取「持火照幽」之志：照亮软件世界的每一处暗面。\n\nCHAPTER 02\n开眼 · 视为昼\n\n睁眼即是白昼。资产测绘引擎一睁眼，全网资产与影子资产无所遁形——看得见，才守得住。\n\nCHAPTER 03\n吐焰 · 息为风\n\n白盒、黑盒、混合三系引擎如焰相续，深度检测与智能降噪并行，每一个告警都值得被认真对待。\n\nCHAPTER 04\n化形 · 不饮不食不息\n\n多引擎步序编排：上步产物直通下步，步级全程可溯——烛龙化形，编排落成。\n\nCHAPTER 05\n烛照 · 证据成卷\n\n从触发到归档，全过程证据链自动成卷，合同五问皆有所答。安全不是一句承诺，而是一摞可复核的凭据。\n\n执行模式\n三种执行模式，覆盖全量场景\n开始使用 →\n开眼\nDRAGON EYE · 广域照亮\n资产\n全网资产一屏尽览\n影子资产自动发现\n资产变更实时感知\n吐焰\nFLAME · 深度挖掘\n检测\n三系引擎并行扫描\n七态流水全程可溯\n误报智能降噪\n化形\nSHAPESHIFT · 多体协同\n智能体\n多引擎步序编排\n上步产物直通下步\n步级全程可溯",
+  "text_len": 694,
+  "buttons": [],
+  "hrefs": [],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(15, 23, 42)",
+   "color": "rgb(226, 232, 240)",
+   "tokens": {
+    "--zl-eye": "#38bdf8",
+    "--zl-flame": "#fbbf24",
+    "--zl-form": "#a78bfa",
+    "--zl-bg": "#0f172a",
+    "--zl-card": "#1e293b",
+    "--zl-well": "#334155",
+    "--zl-fg": "#e2e8f0",
+    "--zl-fg-muted": "#94a3b8",
+    "--zl-primary": "#fbbf24",
+    "--zl-danger": "#f87171",
+    "--zl-info": "#38bdf8"
+   },
+   "topColors": [
+    [
+     "rgb(37, 99, 235)",
+     6
+    ],
+    [
+     "rgb(21, 28, 38)",
+     3
+    ],
+    [
+     "color(srgb 0.0823529 0.109804 0.14902 / 0.62)",
+     3
+    ],
+    [
+     "rgb(15, 23, 42)",
+     1
+    ],
+    [
+     "rgba(99, 102, 241, 0.14)",
+     1
+    ],
+    [
+     "rgb(28, 36, 50)",
+     1
+    ],
+    [
+     "rgb(10, 13, 20)",
+     1
+    ],
+    [
+     "color(srgb 0.145098 0.388235 0.921569 / 0.11)",
+     1
+    ],
+    [
+     "color(srgb 0.85098 0.466667 0.0235294 / 0.11)",
+     1
+    ],
+    [
+     "color(srgb 0.0196078 0.588235 0.411765 / 0.11)",
+     1
+    ]
+   ],
+   "animEls": 3,
+   "animNames": [
+    [
+     "homeHalo-b4e148ca",
+     3
+    ]
+   ],
+   "htmlClass": "dark",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-23-home-dark.png"
+ },
+ {
+  "num": 24,
+  "slug": "hdr-downloads-popover",
+  "url": "/tasks",
+  "final_url": "/tasks",
+  "note": "顶栏下载头带浮层",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n下载中心\n评估集\n评估集·zhulong\n已过期\n评估集\n评估集·zhulong\n已过期\n清单\n漏洞清单·所选（1 条）\n已过期\n清单\n漏洞清单·全部\n已过期\n评估集\n评估集·zhulong\n已过期\n查看全部\n全部项目 ▾\nA\nadmin· 管理员\n任务中心\n\n统一显示当前用户的项目下的所有测试任务，追踪分发，执行与同步状态\n\n运行概览\n12\n全部\n0\n排队中\n0\n运行中\n5\n成功\n3\n失败\n3\n已取消\n1\n软删\n项目：全部 ▾\n引擎 ▾\n模式 ▾\n共 12 条\n删除\n自动刷新 30s\n实时\n实时事件（SSE）BO3 提供\n导入历史会话\n新建任务\n勾选框\t序号\t任务名称\t项目\t资源池\t引擎\t模式\t测试对象\t阶段进度\t任务状态\t创建人\t创建时间\t漏洞判定率\t操作\n\n查看报告\n\t1\ti56-xss-probe27c2996aa\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tblocked-loopback-direct·环境\t\n等待调度\n4/4\n\t失败\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n重跑\n删除\n\n\n查看报告\n\t2\tzhulong@2\twgen01-probe\t—\t\nzhulong@2\n\t\n开眼\n\t—\t\n1 段完成\n1/1\n\t成功\twgen01\t2026-10-15\t0/3（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t3\tzhulong@2\tADMIN-SEC\t—\t\nzhulong@2\n\t\n开眼\n\t—\t\n1 段完成\n1/1\n\t成功\tadmin\t2026-10-15\t0/3（0%）\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n重跑\n删除\n\n\n查看报告\n\t4\ti56-runner-auditcaa5b9fc\tADMIN-SEC\t内置共享执行器\t\ngenlpe@1\n\t\n开眼\n\tblocked-loopback-direct·环境\t\n等待调度\n0/4\n\t失败\tadmin\t2026-10-15\t—\t\n查看详情\n查看报告\n查看漏洞\n下载报告\n失败原因\n重跑\n删除\n\n\n查看报告\n\t5\t<svg onload=window.__xsstest2=1></svg>XSSTASKb2180648\t<im",
+  "text_len": 0,
+  "buttons": [],
+  "hrefs": [],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     92
+    ],
+    [
+     "rgb(203, 213, 225)",
+     26
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.55)",
+     14
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     7
+    ],
+    [
+     "oklab(0.207678 -0.00293915 -0.0397103 / 0.08)",
+     7
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     5
+    ],
+    [
+     "color(srgb 0.862745 0.14902 0.14902 / 0.1)",
+     3
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgba(37, 99, 235, 0.04)",
+     1
+    ],
+    [
+     "rgb(238, 240, 244)",
+     1
+    ],
+    [
+     "color(srgb 0.00784314 0.517647 0.780392 / 0.1)",
+     1
+    ],
+    [
+     "rgb(100, 116, 139)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 1272
+  },
+  "console_errors": [],
+  "shot": "zhulong-24-hdr-downloads-popover.png"
+ },
+ {
+  "num": 25,
+  "slug": "not-found",
+  "url": "/definitely-not-a-route",
+  "final_url": "/definitely-not-a-route",
+  "note": "404 四态样本",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n页面不存在\n\n资源不存在或不可见\n\n返回首页",
+  "text_len": 81,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A"
+  ],
+  "hrefs": [
+   "/",
+   "/",
+   "/projects",
+   "/tasks",
+   "/vulns",
+   "/assets",
+   "/admin/users",
+   "/"
+  ],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "color": "rgb(15, 23, 42)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgb(255, 255, 255)",
+     1
+    ],
+    [
+     "rgb(238, 240, 244)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-25-not-found.png"
+ },
+ {
+  "num": 12,
+  "slug": "vuln-detail-pending",
+  "url": "/vulns/13",
+  "final_url": "/vulns/13",
+  "note": "漏洞详情（疑似·未终审）六章+右列终审卡常开",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n返回漏洞列表\n日志敏感信息写入置信 实证\nWB-3\n疑似\n待终审\n敏感项目\nPOC详情\n导出漏洞\n删除漏洞\n章节导航\n识别信息\n概述\n机理\n证据\n影响\nPoC\n修复\n识别信息\n编号\nWB-3\n等级\n信息（Info）\n漏洞类\n日志敏感信息写入\nCWE-532\n置信\n实证\n引擎\nzhulong\n映射器\nzhulong@2\n任务\n#11\n敏感项目\n敏感项目\n出处\n04-findings-verify.md:64\n来源\n新发现\n创建时间\n2026-10-15 15:11\n更新时间\n2026-10-15 15:11\n概述\n\n【CWE-532】置信 实证\n\n机理\n\ntaint\n\n证据\n- URL: https://example.com/ 与 http://example.com/（两次响应一致）\n- 响应头片段（原样摘录）：\n\n```\nserver: cloudflare\ncf-cache-status: HIT\ncf-ray: a3d247217c76ac6b-FRA\n```\n\n- 观察：`server` 直接披露边缘服务商标识，`cf-ray`/`cf-cache-status` 披露 CDN 缓存命中等运维细节（`-FRA` 后缀同时披露边缘节点地理区域法兰克福）。\n- 影响说明：属于 CDN 接入的常见且几乎不可避免的外露信息，风险接近零，定级 Info；仅作为指纹面记录，不构成实际漏洞。\n影响\n\n严重度 Info（CVSS:3.1/AV:N/AC:L）· 类 CWE-532\n\nPoC\n静态 PoC\n无\n文本在场（单元测试 POC）\n动态 PoC\n无\n执行验证（真实环境 POC）\n\n前置：\n步骤：静态复验思路：`curl -sS -I https://example.com` 查看是否存在 `server: cloudflare`、`cf-ray`、`cf-cache-status` 头即可复现。 → --- → ## 汇总 → | 编号 | 类别 | 级别 | 置信 | → |------|------|------|------| → | WB-1 | 配置错误 | Info | 断言 | → | WB-2 | 配置错误 | Info | 断言 | → | WB-3 | 敏感信息泄露 | Info | 断言 | → 正向基线（非缺陷，供参考）：TLS 证书链校验通过（curl `ssl_verify_result=0`）、协商 HTTP/2、响应未设置任何 Cookie、正文为纯静态 HTML（无脚本/表单/内联敏感数据），攻击面极小。\n预期：响应差异/时延特征见步骤\n验证：按步骤复验\n\n修复\n\n暂无修复\n\n终审\n标注（0 条）\n确认是\n确认该问题是真实漏洞\n确认非\n确认该问题是误报\n疑似\n撤回判定·回到疑似\n等级\n选择…\n▾\n漏洞类\n▾\n理由注记\n取消\n确认终审",
+  "text_len": 1263,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "返回漏洞列表",
+   "POC详情",
+   "导出漏洞",
+   "删除漏洞",
+   "识别信息",
+   "概述",
+   "机理",
+   "证据",
+   "影响",
+   "PoC",
+   "修复",
+   "终审",
+   "标注（0 条）",
+   "确认是\n确认该问题是真实漏洞",
+   "确认非\n确认该问题是误报",
+   "疑似\n撤回判定·回到疑似",
+   "选择…\n▾",
+   "▾",
+   "取消",
+   "确认终审",
+   "备注",
+   "PoC",
+   "类型修正",
+   "发布标注"
+  ],
+  "hrefs": [],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     15
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.6)",
+     4
+    ],
+    [
+     "rgb(246, 247, 249)",
+     3
+    ],
+    [
+     "oklab(0.665845 0.0827062 0.133972 / 0.1)",
+     2
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.8)",
+     2
+    ],
+    [
+     "rgb(248, 250, 252)",
+     2
+    ],
+    [
+     "oklab(0.207678 -0.00293915 -0.0397103 / 0.3)",
+     2
+    ],
+    [
+     "oklab(0.975935 -0.000228226 -0.0028348 / 0.95)",
+     1
+    ],
+    [
+     "color(srgb 0.392157 0.454902 0.545098 / 0.1)",
+     1
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.4)",
+     1
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.7)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 1348
+  },
+  "console_errors": [],
+  "shot": "zhulong-12-vuln-detail-pending.png"
+ },
+ {
+  "num": 13,
+  "slug": "vuln-detail-confirmed",
+  "url": "/vulns/3",
+  "final_url": "/vulns/3",
+  "note": "漏洞详情（判过·确认是）终审章+标注Tab默认",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n返回漏洞列表\n默认配置不当置信 线索\nseed-3\n确认是\n终审通过\n敏感项目\nPOC详情\n导出漏洞\n删除漏洞\n章节导航\n识别信息\n概述\n机理\n证据\n影响\nPoC\n修复\n终审\n识别信息\n编号\nseed-3\n等级\n致命（Critical）\n漏洞类\n默认配置不当\nCWE-16\n置信\n线索\n引擎\nzhulong\n映射器\nseed-v1\n任务\n走查样例·种子任务\n敏感项目\n敏感项目\n出处\nnginx/app.conf:12\n来源\n新发现\n创建时间\n2026-09-04 11:34\n更新时间\n2026-09-05 21:33\n概述\n\n【CWE-16】置信 线索\n\n机理\n\nstatistical\n\n证据\nCookie 未带 Secure 标记——仅内网 HTTP 场景可利用·生产 HTTPS 下不成立\n影响\n\n严重度 Medium（CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N）· 类 CWE-16\n\nPoC\n静态 PoC\n无\n文本在场（单元测试 POC）\n动态 PoC\n无\n执行验证（真实环境 POC）\n\n暂无PoC\n\n修复\n\n暂无修复\n\n终审\n确认是\n终审通过\n等级：致命\n判定人：admin\n判定时间：2026-09-05 21:33\n\n4523423535\n\n终审\n标注（6 条）\n确认是\n终审通过\n等级：致命（Critical）\n漏洞类：默认配置不当\nCWE-16\n判定人 admin · 判定时间 2026-09-05 21:33\n重新判定",
+  "text_len": 706,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "返回漏洞列表",
+   "POC详情",
+   "导出漏洞",
+   "删除漏洞",
+   "识别信息",
+   "概述",
+   "机理",
+   "证据",
+   "影响",
+   "PoC",
+   "修复",
+   "终审",
+   "终审",
+   "标注（6 条）",
+   "重新判定",
+   "备注",
+   "PoC",
+   "类型修正",
+   "发布标注"
+  ],
+  "hrefs": [],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     15
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.4)",
+     8
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.6)",
+     4
+    ],
+    [
+     "color(srgb 0.862745 0.14902 0.14902 / 0.1)",
+     3
+    ],
+    [
+     "rgb(246, 247, 249)",
+     2
+    ],
+    [
+     "oklab(0.665845 0.0827062 0.133972 / 0.1)",
+     2
+    ],
+    [
+     "color(srgb 0.972549 0.980392 0.988235 / 0.8)",
+     2
+    ],
+    [
+     "oklab(0.207678 -0.00293915 -0.0397103 / 0.3)",
+     2
+    ],
+    [
+     "oklab(0.975935 -0.000228226 -0.0028348 / 0.95)",
+     1
+    ],
+    [
+     "rgb(248, 250, 252)",
+     1
+    ],
+    [
+     "oklab(0.710632 0.15384 0.0628371 / 0.12)",
+     1
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.7)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 1166
+  },
+  "console_errors": [],
+  "shot": "zhulong-13-vuln-detail-confirmed.png"
+ },
+ {
+  "num": 14,
+  "slug": "vuln-poc",
+  "url": "/vulns/13/poc",
+  "final_url": "/vulns/13/poc",
+  "note": "PoC 四元组维护页",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n返回详情\n漏洞中心/WB-3 详情/POC 与复现\nWB-3\n信息\n已提供\n日志敏感信息写入\nCWE-532\n ｜ zhulong ｜ 出处 04-findings-verify.md:64\n前置条件\n复现步骤\n预期结果\n验证方法\n保存 PoC\n导出 Markdown\n标注时间线\n展开",
+  "text_len": 202,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "漏洞中心",
+   "WB-3 详情",
+   "保存 PoC",
+   "导出 Markdown",
+   "标注时间线\n展开"
+  ],
+  "hrefs": [],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(255, 255, 255)",
+     12
+    ],
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.6)",
+     1
+    ],
+    [
+     "oklab(0.713655 -0.00286007 -0.0189416 / 0.12)",
+     1
+    ],
+    [
+     "oklab(0.587604 -0.0652444 -0.122562 / 0.12)",
+     1
+    ],
+    [
+     "rgb(37, 99, 235)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 937
+  },
+  "console_errors": [],
+  "shot": "zhulong-14-vuln-poc.png"
+ },
+ {
+  "num": 26,
+  "slug": "task-detail-runlog",
+  "url": "/tasks/11",
+  "final_url": "/tasks/11",
+  "note": "任务详情·历史运行日志Tab（run.log查看器）",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n返回任务列表\n任务详情 · zhulong@2\nzhulong@2\n成功\n项目\nwgen01-probe\n创建人\nwgen01\n创建时间\n2026-10-15\n引擎\nzhulong@2\n模式\n开眼\n测试对象\n—\n1 段完成\n1/1\n成本与用量\n暂无用量数据\n历史 · 运行日志\n运行日志\ntask_id=11\nrun_id=imp-1792048298-l7este\n本 run 无服务端运行日志\n产物\n漏洞关联\n终审\n04-findings-verify.md\n3.4 KB\nreport.md\n1.6 KB",
+  "text_len": 314,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "返回任务列表",
+   "历史 · 运行日志",
+   "产物",
+   "漏洞关联",
+   "终审"
+  ],
+  "hrefs": [],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgb(255, 255, 255)",
+     1
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.6)",
+     1
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-26-task-detail-runlog.png"
+ },
+ {
+  "num": 27,
+  "slug": "task-detail-verdict-tab",
+  "url": "/tasks/11",
+  "final_url": "/tasks/11",
+  "note": "任务详情·终审Tab",
+  "err": "",
+  "title": "烛龙 ZhuLong",
+  "text_head": "烛龙\nZhuLong\n首页\n项目管理\n测试任务\n漏洞中心\n资产管理\n用户管理\n全部项目 ▾\nA\nadmin· 管理员\n返回任务列表\n任务详情 · zhulong@2\nzhulong@2\n成功\n项目\nwgen01-probe\n创建人\nwgen01\n创建时间\n2026-10-15\n引擎\nzhulong@2\n模式\n开眼\n测试对象\n—\n1 段完成\n1/1\n成本与用量\n暂无用量数据\n历史 · 运行日志\n运行日志\ntask_id=11\nrun_id=imp-1792048298-l7este\n本 run 无服务端运行日志\n产物\n漏洞关联\n终审\n漏洞判定率\n0/3（0%）\n查看漏洞",
+  "text_len": 287,
+  "buttons": [
+   "首页",
+   "项目管理",
+   "测试任务",
+   "漏洞中心",
+   "资产管理",
+   "用户管理",
+   "全部项目 ▾",
+   "A",
+   "返回任务列表",
+   "历史 · 运行日志",
+   "产物",
+   "漏洞关联",
+   "终审"
+  ],
+  "hrefs": [],
+  "vis": {
+   "fonts": "-apple-system, \"system-ui\", \"PingFang SC\", \"HarmonyOS Sans SC\", \"Microsoft YaHei\", system-ui, sans-serif",
+   "bodyBg": "rgb(246, 247, 249)",
+   "tokens": {
+    "--zl-eye": "#0284c7",
+    "--zl-flame": "#f59e0b",
+    "--zl-form": "#7c3aed",
+    "--zl-bg": "#f6f7f9",
+    "--zl-card": "#ffffff",
+    "--zl-well": "#f8fafc",
+    "--zl-fg": "#0f172a",
+    "--zl-fg-muted": "#64748b",
+    "--zl-primary": "#f59e0b",
+    "--zl-danger": "#dc2626",
+    "--zl-info": "#0284c7"
+   },
+   "topColors": [
+    [
+     "rgb(246, 247, 249)",
+     1
+    ],
+    [
+     "rgb(255, 255, 255)",
+     1
+    ],
+    [
+     "oklab(0.984146 -0.00124145 -0.00314122 / 0.6)",
+     1
+    ],
+    [
+     "color(srgb 0.0862745 0.639216 0.290196 / 0.1)",
+     1
+    ]
+   ],
+   "animEls": 0,
+   "animNames": [],
+   "htmlClass": "",
+   "docH": 900
+  },
+  "console_errors": [],
+  "shot": "zhulong-27-task-detail-verdict-tab.png"
+ }
+]

@@ -1,0 +1,140 @@
+CyberStrike
+AI
+v1.7.23
+API 文档
+GitHub
+跟随系统
+🌐
+中文
+7
+工作台
+仪表盘
+对话
+安全防护
+人机协同
+调用拦截
+安全作业
+项目管理
+资产管理
+资产概览
+资产库
+信息收集
+漏洞管理
+任务管理
+工作流
+WebShell管理
+C2
+监听器
+会话
+任务
+载荷
+事件
+流量伪装
+文件管理
+能力中心
+MCP
+MCP状态监控
+MCP管理
+知识
+检索历史
+知识管理
+技能
+技能状态
+技能管理
+智能体
+智能体管理
+角色
+角色管理
+平台管理
+平台权限
+系统设置
+项目管理
+显示已归档
+刷新
++ 新建项目
+项目列表
+1
+烛龙靶场置顶
+2 小时前
+⋯
+1-1/1
+‹
+1/1
+›
+每页
+50
+20
+50
+100
+烛龙靶场
+进行中
+5 条事实
+4 个漏洞
+1 个对话
+
+烛龙作为靶场
+
+2 小时前
+漏洞管理
++ 添加事实
+事实黑板
+攻击路径
+资产库
+关联对话
+关联漏洞
+设置
+搜索
+分类
+全部
+全部
+target
+auth
+infra
+business
+finding
+chain
+exploit
+poc
+note
+置信度
+全部
+全部
+已确认
+待确认
+已废弃
+仅待补全
+隐藏废弃
+Key	分类	摘要	关系	Body	置信度	更新	操作
+note/test-coverage-matrix	note	烛龙平台全量渗透测试覆盖矩阵：4 条记录（2 high/1 low/1 info）+ 11 类防御有效项；白盒+黑盒双轨验证完毕	—	有详情	已确认	1 小时前	
+编辑
+详情
+废弃
+删除
+
+exploit/vite-fs-db-leak
+关联漏洞 ID: e4285f9c…
+	exploit	Vite @fs 未认证下载 zl.db 全库（311KB 密码哈希+业务数据）与服务端源码；fs.allow=monorepo 根目录过宽；会话令牌仅存哈希故劫持不成立	↑0 ↓1	可复现	已确认	1 小时前	
+编辑
+详情
+废弃
+删除
+
+exploit/ssrf-healthcheck-dns-bypass
+关联漏洞 ID: 1fd20686…
+	exploit	环境探活 SSRF 闸门绕过：nip.io DNS 域名绕过 forbiddenHealthHost 字面量检查，实测 127-0-0-1.nip.io:7090 探活返回 200，metadata IP 网络层已触达	↑0 ↓1	可复现	已确认	1 小时前	
+编辑
+详情
+废弃
+删除
+
+infra/attack-surface-map	infra	攻击面测绘完成：3081 Vite 前端 + 7090 后端直连，38+ API 端点清单已固化；setup 已关闭；@fs 项目内任意读已确认；沙箱需找装配面缺口	—	有详情	已确认	1 小时前	
+编辑
+详情
+废弃
+删除
+
+target/zhulong-platform	target	烛龙 ZhuLong 测试平台 @ http://localhost:3081：Vite dev server 前端 + Node 后端 API（38+ 端点），admin/Whg1995! 已登录获 zl_sess 会话；@fs 源码泄露面待验证	↑2 ↓0	有详情	已确认	2 小时前	
+编辑
+详情
+废弃
+删除

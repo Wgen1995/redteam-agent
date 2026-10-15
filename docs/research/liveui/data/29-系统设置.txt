@@ -1,0 +1,153 @@
+CyberStrike
+AI
+v1.7.23
+API 文档
+GitHub
+跟随系统
+🌐
+中文
+7
+工作台
+仪表盘
+对话
+安全防护
+人机协同
+调用拦截
+安全作业
+项目管理
+资产管理
+资产概览
+资产库
+信息收集
+漏洞管理
+任务管理
+工作流
+WebShell管理
+C2
+监听器
+会话
+任务
+载荷
+事件
+流量伪装
+文件管理
+能力中心
+MCP
+MCP状态监控
+MCP管理
+知识
+检索历史
+知识管理
+技能
+技能状态
+技能管理
+智能体
+智能体管理
+角色
+角色管理
+平台管理
+平台权限
+系统设置
+系统设置
+基本设置
+人机协同
+资产管理
+知识库
+C2
+机器人设置
+终端
+安全设置
+日志审计
+存储清理
+一键更新
+基本设置
+AI 通道配置
+
+已保存 2 个通道
+
+新增
+保存更改
+当前通道
+GLM * · glm-5.3
+▾
+GLM * · glm-5.3
+Qwen Max · -
+批量探活
+复制
+设为默认
+删除
+编辑当前选择的通道
+
+表单保存后会更新该通道配置。
+
+默认通道
+OpenAI 兼容
+glm-5.3
+open.bigmodel.cn
+配置完整
+连接信息
+
+先确认服务商、地址、密钥和模型，测试连接会使用这些信息。
+
+测试连接
+通道名称
+API 提供商
+OpenAI / 兼容 OpenAI 协议
+▾
+OpenAI / 兼容 OpenAI 协议
+Claude (Anthropic Messages API)
+Base URL *
+API Key *
+模型 *
+获取列表
+额度设置
+
+Token 上限控制上下文窗口和单次输出。
+
+最大上下文 Token 数
+内存压缩和攻击链构建共用此配置，默认 120000
+最大输出 Token 数
+单次模型回复的输出上限，默认 32768
+推理设置
+作为该 AI 通道的默认推理设置；对话页「会话设置」可覆盖。
+视觉分析（analyze_image）
+启用视觉分析工具 analyze_image
+启用后注册 MCP 工具；图片仅在单次 VL 调用中出现，Agent 上下文只保留文字摘要。保存并应用后生效。
+提供商
+默认 AI 通道（留空复用）
+▾
+默认 AI 通道（留空复用）
+OpenAI / 兼容 OpenAI 协议
+Claude (Anthropic Messages API)
+Base URL
+API Key
+视觉模型 *
+获取列表
+高级：预处理与限制
+测试连接
+Agent 配置
+最大迭代次数
+工具单轮等待秒数
+Agent 等待工具的单轮上限；到时返回 execution_id，worker 继续后台执行，可用 wait_tool_execution 继续等待。0 表示等到完成。
+单 MCP 并发上限
+每个外部 MCP server 同时运行的工具数；0 使用默认 2，-1 不限制。
+外部 MCP 全局并发上限
+所有外部 MCP 工具的总并发；0 使用默认 16，-1 不限制。
+MCP 熔断失败阈值
+同一 MCP server 连续失败达到阈值后临时熔断；0 使用默认 3，-1 关闭熔断。
+MCP 熔断冷却秒数
+server 熔断后的等待时间；0 使用默认 60 秒。
+启用 Eino 多代理
+开启后对话页可选「多代理」模式；子代理在 multi_agent.sub_agents 或 agents 目录配置；编排方式见下方「预置编排」。
+plan_execute 外层循环上限
+仅 plan_execute 有效；execute 与 replan 之间的最大轮次。
+机器人默认对话模式
+Eino 单代理（ADK）
+▾
+Eino 单代理（ADK）
+Deep（DeepAgent）
+Plan-Execute
+Supervisor（专家路由）
+企业微信 / 钉钉 / 飞书机器人每条消息使用的执行模式；Deep / Plan-Execute / Supervisor 需启用多代理。
+高级设置
+应用配置

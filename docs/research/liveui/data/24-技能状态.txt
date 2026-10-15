@@ -1,0 +1,135 @@
+CyberStrike
+AI
+v1.7.23
+API 文档
+GitHub
+跟随系统
+🌐
+中文
+7
+工作台
+仪表盘
+对话
+安全防护
+人机协同
+调用拦截
+安全作业
+项目管理
+资产管理
+资产概览
+资产库
+信息收集
+漏洞管理
+任务管理
+工作流
+WebShell管理
+C2
+监听器
+会话
+任务
+载荷
+事件
+流量伪装
+文件管理
+能力中心
+MCP
+MCP状态监控
+MCP管理
+知识
+检索历史
+知识管理
+技能
+技能状态
+技能管理
+智能体
+智能体管理
+角色
+角色管理
+平台管理
+平台权限
+系统设置
+Skills状态监控
+刷新
+调用统计
+总Skills数
+23
+总调用次数
+1
+成功调用
+1
+失败调用
+0
+成功率
+100.0%
+Skills调用统计
+清空统计
+Skill名称	总调用	成功	失败	成功率	最后调用时间
+pentest-agent-os	1	1	0	
+100.0%
+	2026-10-15 13:38:29
+active-directory-attack	0	0	0	
+0.0%
+	-
+ai-llm-app-attack	0	0	0	
+0.0%
+	-
+attack-surface-recon	0	0	0	
+0.0%
+	-
+binary-mobile-reversing	0	0	0	
+0.0%
+	-
+blockchain-contract-attack	0	0	0	
+0.0%
+	-
+capability-primitive-search	0	0	0	
+0.0%
+	-
+cloud-attack-methods	0	0	0	
+0.0%
+	-
+component-vuln-intel	0	0	0	
+0.0%
+	-
+cyberstrike-eino-demo	0	0	0	
+0.0%
+	-
+initial-access-phishing	0	0	0	
+0.0%
+	-
+pentest-blackboard	0	0	0	
+0.0%
+	-
+pentest-output-standards	0	0	0	
+0.0%
+	-
+pentest-verification	0	0	0	
+0.0%
+	-
+post-exploitation	0	0	0	
+0.0%
+	-
+proxy-tool-bootstrap	0	0	0	
+0.0%
+	-
+redteam-opsec	0	0	0	
+0.0%
+	-
+source-code-hunting	0	0	0	
+0.0%
+	-
+specialized-attack-playbooks	0	0	0	
+0.0%
+	-
+unlimited-attack-scope	0	0	0	
+0.0%
+	-
+web-attack-methods	0	0	0	
+0.0%
+	-
+wireless-hardware-attack	0	0	0	
+0.0%
+	-
+zero-day-discovery	0	0	0	
+0.0%
+	-

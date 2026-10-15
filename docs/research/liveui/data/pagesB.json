@@ -1,0 +1,1435 @@
+[
+ {
+  "idx": 20,
+  "label": "MCP状态监控",
+  "hash": "#mcp-monitor",
+  "url": "https://127.0.0.1:8443/#mcp-monitor",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [
+   "id=monitor-tool-filter",
+   "id=monitor-status-filter",
+   "id=monitor-select-all",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "id=monitor-page-size"
+  ],
+  "tableRows": 31,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 7531,
+   "animCount": 49,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 83,
+   "bgImage": null
+  },
+  "shot": "shots/csai-20-MCP状态监控.png",
+  "textChars": 2093
+ },
+ {
+  "idx": 21,
+  "label": "MCP管理",
+  "hash": "#mcp-management",
+  "url": "https://127.0.0.1:8443/#mcp-management",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [
+   "id=tools-search",
+   "id=tool-amass",
+   "checkbox",
+   "id=tool-angr",
+   "checkbox",
+   "id=tool-api-schema-analyzer",
+   "checkbox",
+   "id=tool-arjun",
+   "checkbox",
+   "id=tool-arp-scan",
+   "checkbox",
+   "id=tool-batch_task_add_task",
+   "checkbox",
+   "id=tool-batch_task_create",
+   "checkbox",
+   "id=tool-batch_task_delete",
+   "checkbox",
+   "id=tool-batch_task_get",
+   "checkbox",
+   "id=tool-batch_task_list",
+   "checkbox",
+   "id=tool-batch_task_pause",
+   "checkbox",
+   "id=tool-batch_task_remove_task",
+   "checkbox"
+  ],
+  "tableRows": 31,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 8057,
+   "animCount": 48,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 90,
+   "bgImage": null
+  },
+  "shot": "shots/csai-21-MCP管理.png",
+  "textChars": 4150
+ },
+ {
+  "idx": 22,
+  "label": "检索历史",
+  "hash": "#knowledge-retrieval-logs",
+  "url": "https://127.0.0.1:8443/#knowledge-retrieval-logs",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [
+   "id=retrieval-logs-conversation-id",
+   "id=retrieval-logs-message-id"
+  ],
+  "tableRows": 31,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 8057,
+   "animCount": 48,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 90,
+   "bgImage": null
+  },
+  "shot": "shots/csai-22-检索历史.png",
+  "textChars": 298
+ },
+ {
+  "idx": 23,
+  "label": "知识管理",
+  "hash": "#knowledge-management",
+  "url": "https://127.0.0.1:8443/#knowledge-management",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [
+   "id=knowledge-search"
+  ],
+  "tableRows": 31,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 8061,
+   "animCount": 48,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 90,
+   "bgImage": null
+  },
+  "shot": "shots/csai-23-知识管理.png",
+  "textChars": 329
+ },
+ {
+  "idx": 24,
+  "label": "技能状态",
+  "hash": "#skills-monitor",
+  "url": "https://127.0.0.1:8443/#skills-monitor",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [],
+  "tableRows": 55,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 8429,
+   "animCount": 48,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 113,
+   "bgImage": null
+  },
+  "shot": "shots/csai-24-技能状态.png",
+  "textChars": 1213
+ },
+ {
+  "idx": 25,
+  "label": "技能管理",
+  "hash": "#skills-management",
+  "url": "https://127.0.0.1:8443/#skills-management",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [
+   "id=skills-search",
+   "id=skills-page-size-pagination"
+  ],
+  "tableRows": 55,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 8762,
+   "animCount": 48,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 132,
+   "bgImage": null
+  },
+  "shot": "shots/csai-25-技能管理.png",
+  "textChars": 4860
+ },
+ {
+  "idx": 26,
+  "label": "智能体管理",
+  "hash": "#agents-management",
+  "url": "https://127.0.0.1:8443/#agents-management",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [],
+  "tableRows": 55,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 8937,
+   "animCount": 48,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 148,
+   "bgImage": null
+  },
+  "shot": "shots/csai-26-智能体管理.png",
+  "textChars": 2708
+ },
+ {
+  "idx": 27,
+  "label": "角色管理",
+  "hash": "#roles-management",
+  "url": "https://127.0.0.1:8443/#roles-management",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [
+   "id=roles-search"
+  ],
+  "tableRows": 55,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 9091,
+   "animCount": 48,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 161,
+   "bgImage": null
+  },
+  "shot": "shots/csai-27-角色管理.png",
+  "textChars": 892
+ },
+ {
+  "idx": 28,
+  "label": "平台权限",
+  "hash": "#platform-rbac",
+  "url": "https://127.0.0.1:8443/#platform-rbac",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [
+   "id=rbac-user-search",
+   "checkbox",
+   "checkbox",
+   "checkbox",
+   "checkbox"
+  ],
+  "tableRows": 55,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 9487,
+   "animCount": 48,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 182,
+   "bgImage": null
+  },
+  "shot": "shots/csai-28-平台权限.png",
+  "textChars": 679
+ },
+ {
+  "idx": 29,
+  "label": "系统设置",
+  "hash": "#settings",
+  "url": "https://127.0.0.1:8443/#settings",
+  "title": "CyberStrikeAI",
+  "headings": [
+   "H3:漏洞严重程度分布",
+   "H3:推荐操作",
+   "H3:批量任务队列",
+   "H3:工具执行次数",
+   "H3:最近事件",
+   "H3:能力总览",
+   "H3:拦截策略",
+   "H3:拦截规则",
+   "H3:最新执行记录",
+   "H3:协议分布",
+   "H3:资产增减趋势",
+   "H3:风险发现趋势",
+   "H3:扫描覆盖",
+   "H3:连接信息"
+  ],
+  "buttons": [
+   "登录",
+   "API 文档",
+   "GitHub",
+   "跟随系统",
+   "🌐\n中文",
+   "7",
+   "标记已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "查看",
+   "已读",
+   "刷新",
+   "全部状态",
+   "全部状态",
+   "待处理",
+   "已确认",
+   "已修复",
+   "已忽略",
+   "误报",
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "前往对话",
+   "+ 新任务",
+   "烛龙靶场📌",
+   "无项目",
+   "全部项目",
+   "⋯",
+   "‹",
+   "›",
+   "攻击链",
+   "烛龙靶场",
+   "Eino 单代理（ADK）",
+   "人工审批：关闭"
+  ],
+  "tabs": [
+   "最近漏洞",
+   "近期事实",
+   "C2",
+   "WebShell",
+   "0",
+   "审计策略",
+   "工具白名单",
+   "审计日志",
+   "加载中...",
+   "审批模式",
+   "审查编辑模式",
+   "行号目标所属项目状态校验结果"
+  ],
+  "inputs": [
+   "id=ai-channel-select",
+   "id=ai-channel-name",
+   "id=openai-provider",
+   "id=openai-base-url",
+   "id=openai-api-key",
+   "id=openai-model",
+   "id=openai-max-total-tokens",
+   "id=openai-max-completion-tokens",
+   "id=openai-reasoning-mode",
+   "id=openai-reasoning-effort",
+   "id=openai-reasoning-profile",
+   "id=openai-reasoning-allow-client",
+   "id=vision-enabled",
+   "id=vision-provider",
+   "id=vision-base-url",
+   "id=vision-api-key",
+   "id=vision-model",
+   "id=vision-max-image-bytes",
+   "id=vision-max-dimension",
+   "id=vision-jpeg-quality",
+   "id=vision-max-payload-bytes",
+   "id=vision-skip-preprocess-bytes",
+   "id=vision-detail",
+   "id=vision-timeout-seconds",
+   "id=agent-max-iterations"
+  ],
+  "tableRows": 55,
+  "style": {
+   "bodyBg": "rgb(248, 249, 250)",
+   "bodyColor": "rgb(26, 26, 26)",
+   "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+   "fontSize": "16px",
+   "btnSample": "rgb(255, 255, 255)",
+   "headColor": "rgb(26, 26, 26)",
+   "elCount": 9487,
+   "animCount": 48,
+   "animNames": [
+    [
+     "loginOverlayIn",
+     1
+    ],
+    [
+     "loginCardIn",
+     1
+    ],
+    [
+     "dashboard-last-flash",
+     1
+    ],
+    [
+     "dashboard-alert-slide-in",
+     1
+    ],
+    [
+     "donut-leader-draw",
+     3
+    ],
+    [
+     "donut-segment-in",
+     3
+    ],
+    [
+     "donut-label-pop",
+     3
+    ],
+    [
+     "dashboard-bar-fill-in",
+     11
+    ]
+   ],
+   "badgeCount": 182,
+   "bgImage": null
+  },
+  "shot": "shots/csai-29-系统设置.png",
+  "textChars": 1627
+ }
+]
