@@ -1420,3 +1420,12 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - **directive-n5 回填=子集不可复原（穷举定谔）**: 值匹配子集（对照 b29/30/35/36/37、处置 b28/38/39/40/42）现行池化得 b=3,c=0,p=0.25；受约束穷举与全空间 6758 个 ≤5v≤5 子集均无 b=8,c=17——判决时点 per-GT 快照未存档，keying 升级重结算致漂移（b30/b36 口径变化 HANDOFF:1342/1361 自证）。**原判决方向维持**: 现行数据同向不显著，「指令策略无效果」结论不动。
 - **教训（已由律吸收）**: 判决可复现性三要素=子集清单+per-GT 快照+结算口径版本；未来预登记实验三件同存 experiments/。
 - 全量 1280/1280 OK（主会话亲验 39/39 后放行）。
+
+## 2026-10-15 · OPSEC 外功批收官（WC+OP1+OP2 三舰+主会话修复）——审计表①②③⑤行闭账
+- **wall_clock 接线（9 测）**: battle.py 三铸点 init/launch/settle（settle 先于 verify-chain 入链）+wall_gaps 断连窗口 WARN（b31-34 型事故可机检）；agent boot 账本未生跳过不炸（fail-open 观测轨）。
+- **OP1（21 测）**: rate 查询面→执法面（guard 滑窗门+budgetctl 派发门八问⑥必填 fail-closed 拒派）；DENYLIST v2 +13 调用形态锚定模式（slowloris.py/hulk.py/-T5/--risk=3/ab -n 等，文档字样零误伤）；nuclei 固化 -rl 50 -etags dos,intrusive（engines/nuclei/adapter.py，白名单外偏差=grep 真身律）。
+- **OP2（11 测）**: ledger/ua.py 单源（自名全录+第三方保真）；replay --ua 旗标+出站整形（自名/缺省→中性 Mozilla/5.0 (compatible)）；request-ticket 升级 tokenize 脱敏 full argv（占位 <cred-N>，白名单冻结裁量）；fixtures 616 文件 617 处自名 UA 清洗（gold 全绿佐证零漂移）。
+- **主会话修复**: wallclock.mint_wall_sync 签名漂移（_append_event 增必填 ts 后 3 参调即 TypeError，WC 舰举报+主会话实证）——ts 与 wall= 同刻单源；修复后 9 测仍绿。
+- **并行竞态**: OP1/OP2 同改 tanyin-guard 两次冲突，已按最新盘态合流，全量验证共存。
+- **欠账（明记）**: EV 卡 ua 列须 02a 契约批次；Tier2 hooks 真挂载实验=宿主闸门（下批）；mint_wall_sync 修复由主会话执行（子代理白名单制代价）。
+- 全量 1321/1321 OK（主会话亲跑，还上批对账口径债）。
