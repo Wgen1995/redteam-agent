@@ -4,6 +4,7 @@
 法律（docs/design/tanyin-target-form.md §3）：纯 stdlib、ThreadingHTTPServer 线程模型、
 禁 asyncio；观察面只读投影（零写入账本）。路由（v0.9a 三分支 + v0.9b 三页）：
   GET /                 → static/index.html（手写仪表盘）
+  GET /favicon.ico      → 204 消音（漫游报告 §三4：免每页 console 404）
   GET /api/state.json   → snapshot 快照 JSON
   GET /api/stream       → SSE timeline 追尾流（?tail=N 覆盖存量尾条数）
   GET /coverage|/graph|/evidence            → v0.9b 观察面三页（静态）
@@ -47,6 +48,11 @@ class Handler(BaseHTTPRequestHandler):
         u = urllib.parse.urlparse(self.path)
         if u.path == "/":
             return self._serve_page("index.html")
+        if u.path == "/favicon.ico":                       # 漫游报告 §三4：favicon 消音
+            self.send_response(204)                        # 204 无 body——单点根治五页 404
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         if u.path in ("/coverage", "/graph", "/evidence",
                       "/metrics"):                                 # v0.9b 三页+v0.9c 度量页
             return self._serve_page(u.path.lstrip("/") + ".html")

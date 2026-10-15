@@ -4,7 +4,7 @@
 python3 -m unittest tests.test_v09a_webui
 法律（docs/design/tanyin-target-form.md §3）：纯 stdlib、3.9 兼容、观察面只读投影零写入。
 """
-import json, os, shutil, sys, tempfile, unittest
+import json, os, re, shutil, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "..", "cli")
@@ -320,6 +320,122 @@ class TestCLIEntryV09a(Base):
         src = open(os.path.join(CLI, "webui", "server.py"), encoding="utf-8").read()
         self.assertIn("from ledger.runtime import bootstrap", src)
         self.assertIn("bootstrap(__file__)", src)
+
+
+# ---------------------------------------------------------------------------
+# v0.9d 热修批（docs/research/liveui/walk-tanyin.md §三 一致性发现 1-5）
+# 白名单内最小修：九门灯 P6.0 / 版本单源 / 导航同构 / favicon 消音 / --idle 变量
+# / budget ≥80% 预警 / 活动流非法时间戳防御。
+# ---------------------------------------------------------------------------
+
+PHASES_YAML = os.path.join(HERE, "..", "phases", "phases.yaml")
+STATIC_PAGES = ("index.html", "coverage.html", "graph.html",
+                "evidence.html", "metrics.html")
+NAV_WANT = {"/", "/coverage", "/graph", "/evidence", "/metrics"}
+
+
+def _page_src(name):
+    with open(os.path.join(CLI, "webui", "static", name), encoding="utf-8") as f:
+        return f.read()
+
+
+class TestPhasesLampNineGates(unittest.TestCase):
+    """热修1：九门灯补 P6.0——首页 PHASES 与 phases.yaml states 门数全序一致。"""
+
+    def test_index_phases_equals_yaml_states(self):
+        src = _page_src("index.html")
+        m = re.search(r"var PHASES = \[([^\]]*)\];", src)
+        self.assertIsNotNone(m, "index.html 缺 PHASES 数组")
+        js = [p.strip().strip('"').strip("'") for p in m.group(1).split(",")]
+        with open(PHASES_YAML, encoding="utf-8") as f:
+            ym = re.search(r"^states:\s*\[([^\]]*)\]", f.read(), re.M)
+        self.assertIsNotNone(ym, "phases.yaml 缺 states 行")
+        yml = [p.strip() for p in ym.group(1).split(",")]
+        self.assertEqual(len(js), len(yml),
+                         "门数漂移: 首页 %d 门 vs yaml %d 门" % (len(js), len(yml)))
+        self.assertEqual(js, yml, "门全序漂移")
+        self.assertIn("P6.0", js, "清理门 P6.0 缺席")
+
+
+class TestVersionSingleSource(unittest.TestCase):
+    """热修2：五页版本号对齐 server banner——server_version 单源防漂移。"""
+
+    def test_all_page_versions_match_server_banner(self):
+        banner = srv_mod.Handler.server_version          # "tanyin-web/0.9c"
+        want = "v" + banner.split("/", 1)[1]
+        for name in STATIC_PAGES:
+            src = _page_src(name)
+            # 只对 title/footer 行的版本声明做单源断言（用户可见版本面；
+            # JS 注释里的功能代号——如 metrics 页 v0.9d 小节标记——不算版本声明）
+            lines = [ln for ln in src.splitlines()
+                     if "<title>" in ln or "<footer" in ln]
+            self.assertTrue(lines, name + " 无 title/footer 行")
+            found = set()
+            for ln in lines:
+                found |= set(re.findall(r"v\d+\.\d+[a-z]\b", ln))
+            self.assertTrue(found, name + " title/footer 无版本号可对齐")
+            for v in found:
+                self.assertEqual(v, want, name + " 版本漂移: " + v + " != " + want)
+
+
+class TestNavConsistency(unittest.TestCase):
+    """热修3：五页导航同构——总览/覆盖热图/十边图/证据卡/度量 全站同集。"""
+
+    def test_all_pages_share_nav_set(self):
+        for name in STATIC_PAGES:
+            src = _page_src(name)
+            m = re.search(r"<nav[^>]*>(.*?)</nav>", src, re.S)
+            self.assertIsNotNone(m, name + " 缺 nav 块")
+            got = set(re.findall(r'href="(/[^"]*)"', m.group(1)))
+            self.assertEqual(got, NAV_WANT,
+                             name + " 导航漂移: " + str(got ^ NAV_WANT))
+
+
+class TestFaviconNo404(ServerBase):
+    """热修3b：/favicon.ico 204 消音（服务端单点根治，五页零改动）。"""
+
+    def _get(self, path, timeout=5):
+        import http.client
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=timeout)
+        conn.request("GET", path)
+        return conn, conn.getresponse()
+
+    def test_favicon_returns_204(self):
+        conn, resp = self._get("/favicon.ico")
+        self.assertEqual(resp.status, 204)
+        self.assertEqual(resp.read(), b"")
+        conn.close()
+
+
+class TestCssVarParity(unittest.TestCase):
+    """热修4：五页 :root 公共变量齐——metrics 补 --idle 对齐视觉单源变量表。"""
+
+    def test_idle_var_on_all_pages(self):
+        for name in STATIC_PAGES:
+            self.assertIn("--idle:#4a545e", _page_src(name),
+                          name + " 缺 --idle:#4a545e")
+
+
+class TestBudgetWarnThreshold(unittest.TestCase):
+    """热修5a：预算用量 ≥80% 预警——含 80.0 边界，条与数值同着 --bad。"""
+
+    def test_threshold_ge_80_and_bad_color(self):
+        src = _page_src("index.html")
+        self.assertIn("pct >= 80", src, "阈值须为 ≥80（含边界）")
+        self.assertIn(".bar-top .left-val.hot", src, "数值预警样式缺席")
+        rule = src.split(".bar-top .left-val.hot")[1].split("}")[0]
+        self.assertIn("color:var(--bad)", rule, "预警色未用 --bad")
+
+
+class TestFeedTsDefense(unittest.TestCase):
+    """热修5b：活动流时间戳防御——非法 ts 降级原文本+⚠着色，渲染零异常。"""
+
+    def test_bad_ts_marked_and_guarded(self):
+        src = _page_src("index.html")
+        self.assertIn("function tsValid(", src, "缺时间戳校验函数")
+        self.assertIn("isNaN(", src, "缺 Date 解析失败检测")
+        self.assertIn("\u26a0", src, "缺 ⚠ 非法标记")
+        self.assertIn("ts-bad", src, "非法时间戳未着预警 class")
 
 
 if __name__ == "__main__":

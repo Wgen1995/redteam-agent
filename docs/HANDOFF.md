@@ -1432,3 +1432,9 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 
 ## 2026-10-15 · 常备配方入档
 - DSH 插件市场获取配方（search/add/免装解包/codeload 取 GitHub 源+相关包清单）落 docs/research/dsh-plugin-marketplace.md——以后凡涉插件市场先查此档。
+
+## 2026-10-15 · 热修批收官（漫游自查 5 bug+防漂移钉，7 新测）
+- 九门灯补 P6.0（首页 PHASES 与 phases.yaml 门数+全序相等钉死）/版本单源 0.9c（五页 title/footer==server_version 派生钉）/五页导航同构（含 index「总览」自指）/favicon server 204 单点根治/metrics 补 --idle/budget ≥80% 预警色（数值+条同着 --bad）/活动流时间戳防御（tsValid 形状+UTC 回程比对，非法降级原文+⚠，账本冻结不动）。
+- 全量 1328/1328（主会话亲跑，断网重跑一次取判定）。
+- **新债入册**: phases_engine.cmd_status 的 seq 也是 8 门（白名单外未动）→ state.json 无 P6.0 键，清理门灯恒显 PENDING 兜底；真实 PASS/FAIL 待后续批修。
+- 研究档同步： 使用手册三卷齐（CSAI 422/ARTEX 566/multica 353 行）+五漫游+插件终审+沟通律/市场配方入档。

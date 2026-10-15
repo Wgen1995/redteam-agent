@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>探隐观察面 tanyin-web v0.9b</title>
+<title>探隐观察面 tanyin-web v0.9c</title>
 <style>
   :root { --bg:#0f1216; --card:#171c23; --ink:#e8edf2; --dim:#8b98a5;
           --ok:#3fbf6f; --bad:#e05252; --idle:#4a545e; --accent:#4fa3d1; }
@@ -41,6 +41,7 @@
   .bar-row .bar-top { display:flex; justify-content:space-between;
                       font-size:12px; margin-bottom:4px; }
   .bar-row .bar-top .left-val { color:var(--accent); }
+  .bar-row .bar-top .left-val.hot { color:var(--bad); font-weight:600; }
   .bar-track { height:8px; border-radius:4px; background:#10151b;
                border:1px solid #232a33; overflow:hidden; }
   .bar-fill { height:100%; width:0; background:var(--accent);
@@ -52,6 +53,7 @@
   #feed li { padding:3px 8px; border-bottom:1px dashed #20262e;
              white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   #feed .ts { color:var(--dim); }
+  #feed .ts-bad { color:var(--bad); }
   #feed .actor { color:var(--accent); }
   #feed .sha8 { color:var(--dim); }
   footer { color:var(--dim); font-size:11px; padding:8px 22px 18px; }
@@ -62,7 +64,7 @@
   <h1>探隐观察面</h1>
   <span id="goal-meta">载入中…</span>
   <span id="sse-state">SSE 连接中</span>
-  <nav><a href="/coverage">覆盖热图</a><a href="/graph">十边图</a><a href="/evidence">证据卡</a><a href="/metrics">度量</a></nav>
+  <nav><a href="/">总览</a><a href="/coverage">覆盖热图</a><a href="/graph">十边图</a><a href="/evidence">证据卡</a><a href="/metrics">度量</a></nav>
 </header>
 <main>
   <section id="phases-card">
@@ -78,10 +80,10 @@
     <ul id="feed"></ul>
   </section>
 </main>
-<footer>tanyin-web v0.9a · 只读投影（零写入账本） · 纯 stdlib 服务 + 手写前端</footer>
+<footer>tanyin-web v0.9c · 只读投影（零写入账本） · 纯 stdlib 服务 + 手写前端</footer>
 <script>
 "use strict";
-var PHASES = ["P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6"];
+var PHASES = ["P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6.0", "P6"];
 var FEED_CAP = 200;
 
 function el(tag, cls) {
@@ -139,7 +141,7 @@ function renderBudget(budget) {
     var fill = el("div", "bar-fill");
     var pct = d.limit > 0 ? Math.min(100, d.used / d.limit * 100) : 0;
     fill.style.width = pct.toFixed(1) + "%";
-    if (pct > 80) { fill.className = "bar-fill hot"; }
+    if (pct >= 80) { fill.className = "bar-fill hot"; val.className = "left-val hot"; }
     track.appendChild(fill);
     row.appendChild(top); row.appendChild(track);
     box.appendChild(row);
@@ -156,9 +158,24 @@ function refreshState() {
     .catch(function () { /* 快照失败保原画面，下轮再试 */ });
 }
 
+function tsValid(s) {
+  /* 严格 ISO-8601 UTC 校验：形状正则 + Date 可解析 + 分量回程比对
+     （timeline 数据侧坏行——如 14:89:00Z——渲染侧降级，账本冻结不动）。 */
+  if (typeof s !== "string") { return false; }
+  var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?Z$/.exec(s);
+  if (!m) { return false; }
+  var d = new Date(s);
+  if (isNaN(d.getTime())) { return false; }
+  return d.getUTCFullYear() === +m[1] && (d.getUTCMonth() + 1) === +m[2] &&
+         d.getUTCDate() === +m[3] && d.getUTCHours() === +m[4] &&
+         d.getUTCMinutes() === +m[5] && d.getUTCSeconds() === +m[6];
+}
+
 function feedRow(ev) {
   var li = el("li");
-  var ts = el("span", "ts"); ts.textContent = ev.ts + " ";
+  var bad = !tsValid(ev.ts);
+  var ts = el("span", bad ? "ts ts-bad" : "ts");
+  ts.textContent = ev.ts + (bad ? " ⚠ " : " ");
   var actor = el("span", "actor"); actor.textContent = ev.actor + " ";
   var body = el("span");
   body.textContent = "[" + (ev.phase || "-") + "] " + ev.event + " ";
