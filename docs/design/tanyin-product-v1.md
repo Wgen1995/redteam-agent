@@ -19,3 +19,17 @@ v0.9d 界面大改（皮肤 ZhulongFire+八视图+人话律+会话页只读+ZhuL
 
 ## 界面基线
 八视图: 战局总览(重做)/活动流/会话(新)/热图/十边图/证据卡/度量/实验。皮肤=ZhulongFire（#2563EB/一屏式/深浅双主题/动效≤3）。偷单 40+ 条见 docs/research/liveui/ 各报告。
+
+## 修正案 A · 白盒引擎设计（2026-10-15 用户共创定稿，v1.0a）
+双车道:
+- 车道A 确定性解析器（零 LLM）: OpenAPI/Swagger→endpoints/params/auth; 安装包(zip/tar/jar/apk)解包→清单文件→资产; 源码 pattern 扫描（路由/硬编码密钥/危险 sink，借鉴 GenSift .pattern 文件）。产出全部带出处（文件:行）经锚点挂资产图。
+- 车道B LLM 深度审计（吸收 GenSift——用户自己的资产 Wgen1995/GenSift,本地 ~/.claude/skills/gensift）: sink 卡逐卡五步证伪+盲验证,作为规划者按需调用的深度车道; 卡片结论回写证据卡走探隐 replay 验证。覆盖不可谈判律继承（所有 endpoint/sink 入矩阵,不可抽样）。
+- 运行契约=用户四原则（提交即返回/领取不等待/超时显式化/账本两相性）。
+
+## 修正案 B · 语言性能决策（Python vs Go,2026-10-15）
+**留 Python（置信 85%）**。依据: 实测瓶颈=LLM API 延迟(秒级)>>>本地 CPU; 单操作员规模; 解析热点 Python 正则底层 C 速度+multiprocessing 可救。
+**Go 边车触发器**（任一触发→仅热点件做 Go 隔离二进制,账本链留 Python 不重写）:
+①典型仓库白盒解析实测>10min 且分块/多进程救不了 ②并发战士>50 或多租户 ③客户机无 python 的分发硬需求。
+
+## 修正案 C · 共创模式（用户令）
+用户随时补充内容（需求/方向/参照物/自己的资产如 GenSift）——每条当日落入 spec 修正案或 HANDOFF,绝不丢失; 参照物分析统一入 docs/research/liveui/ 编号续延。
