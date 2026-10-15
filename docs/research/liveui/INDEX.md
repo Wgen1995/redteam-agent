@@ -10,7 +10,7 @@
 | 3-cyberstrike.md | CSAI 源码深析（零框架大型化标本）| ✅ |
 | 4-zhulong.md | ZhuLong 源码+tanyin 互操作发现 | ✅ |
 | 5-dsh-plugins.md | 两插件终审（双薄桥 0.91）| ✅ |
-| 6-gensift.md | 用户 GenSift 技能分析（含消消乐/扫雷解读）| ⏳ 在航 |
+| 6-gensift.md | 用户 GenSift 技能分析（含消消乐/扫雷解读）| ✅ |
 | 7-codex-security.md | OpenAI codex-security 机制+可复用判决 | ⏳ 在航 |
 | walk-*.md ×5 | 五系统界面漫游+探隐 before 基线 | ✅ |
 | ../manuals/usage-guide-*.md ×3 | 三系统使用手册 | ✅ |
