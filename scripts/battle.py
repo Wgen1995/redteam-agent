@@ -121,6 +121,61 @@ def ledger(*args):
     return run([sys.executable, LEDGER] + list(args))
 
 
+WALL_ACTOR = "battle"        # 外环工具名（llmpool_wire actor=llmpool 先例）
+WALL_PHASE = "P-lifecycle"   # 跨阶段基础设施事件轨（wallclock/llmpool_wire 同轨）
+
+
+def _ledger_mods():
+    """lazy 导 ledger（脚本形态：ROOT/cli 不在默认 sys.path）。"""
+    sys.path.insert(0, os.path.join(ROOT, "cli"))
+    from ledger import core, timeline, wallclock
+    return core, timeline, wallclock
+
+
+def mint_wall(goal_dir, phase, note=""):
+    """Task WC 三铸点共用：clock-sync 墙钟事件铸入 goal 账本哈希链。
+
+    - payload=ledger.wallclock.event_text——detect_gaps 解析的单源格式；
+    - 行写=ledger.timeline.append_tl_locked 单源写方（v0.8 Task W llmpool_wire
+      先例：goal 锁内读表→算链→写回，不私铸链行）。已知偏差：wallclock.
+      mint_wall_sync 旧路经 phases_engine._append_event，该函数签名漂移
+      （ts 必填化）后调即 TypeError，wallclock.py 不在本任务白名单——接线
+      不经它；payload/检出仍复用 wallclock 模块保格式单源。
+    - 行 ts=负载 wall= 值（行与负载墙钟严格同源）；actor="battle"、
+      phase="P-lifecycle"、revert 空。
+    - fail-open 观测轨：账本未生（agent 模式 init/launch 正常态——账本由
+      战士自建）跳过；铸造失败仅 WARN 不外抛——墙钟轨不炸战斗主流程。
+    """
+    try:
+        if not os.path.isfile(os.path.join(goal_dir, "timeline.tsv")):
+            print("[wall] 账本未生，跳过 %s 铸点（agent 模式正常态）" % phase)
+            return None
+        _core, timeline, wallclock = _ledger_mods()
+        ev = wallclock.event_text(phase, note)
+        ts = ev.split("wall=")[1].split()[0]
+        timeline.append_tl_locked(goal_dir, ts, ev, WALL_ACTOR, WALL_PHASE)
+        print("[wall] %s" % ev)
+        return ev
+    except Exception as e:
+        print("[wall] WARN %s 铸点失败：%r（观测轨 fail-open，主流程继续）" % (phase, e))
+        return None
+
+
+def wall_gaps(goal_dir, min_sec=900):
+    """settle 侧断连窗口检出：timeline 行过 wallclock.detect_gaps（v0.7b 纯函数）。
+
+    detect_gaps 吃 dict/str 行——Session.rows 返回列表行，str(list) 自带
+    引号尾料会撑爆 _WALL_RE 的 $ 锚（无 note 行失配），故先抽 event 列。"""
+    try:
+        core, _timeline, wallclock = _ledger_mods()
+        ev_i = core.TABLES["timeline.tsv"].index("event")
+        return wallclock.detect_gaps(
+            [r[ev_i] for r in core.Session(goal_dir).rows("timeline.tsv")], min_sec)
+    except Exception as e:
+        print("[wall] WARN 断连窗口读取失败：%r" % e)
+        return []
+
+
 def cmd_init(a):
     p = paths(a.n, a.gen)
     os.makedirs(p["probe"], exist_ok=True)
@@ -179,6 +234,7 @@ def cmd_init(a):
     if not _sc.mission_clean(mission):
         sys.exit("任务书泄漏 ground-truth 字样——eval integrity 红线，init 终止")
     ensure_gt(a.gen)   # GT 出仓：评测真相拷 ~/.tanyin/gt/<gen>.json
+    mint_wall(p["goal"], "init", "battle-%d,boot=%s" % (a.n, a.boot_mode))   # Task WC：战始 clock-sync（agent 模式账本未生=正常跳过）
     print("任务书：%s（boot=%s，场景钟=%s）" % (p["mission"], a.boot_mode, ts))
 
 
@@ -208,6 +264,7 @@ def cmd_launch(a):
     print("引擎已点火 runner-pid=%d（soft-stall=%smin backoff=%ss directive=%s）"
           % (proc.pid, a.soft_stall_min, a.backoff_base, p["directive"]))
     print("watch：%s" % p["runner"])
+    mint_wall(p["goal"], "launch", "battle-%d,runner-pid=%d" % (a.n, proc.pid))   # Task WC：战士 spawn 铸点（agent 模式账本未生=正常跳过）
 
 
 def cmd_watch(a):
@@ -225,6 +282,11 @@ def cmd_settle(a):
     p = paths(a.n, a.gen)
     if not os.path.exists(os.path.join(p["goal"], "findings.tsv")):
         sys.exit("findings.tsv 不存在——战未毕或未开铸")
+    # Task WC（2026-10-14 opsec-wallclock）：结算铸点在 verify-chain 前——
+    # clock-sync 自身入链断言覆盖；铸后即检断连窗口（b31-34 断连 2h 型）。
+    mint_wall(p["goal"], "settle", "battle-%d" % a.n)
+    for _ev, _gap in wall_gaps(p["goal"]):
+        print("[wall] WARN 断连窗口 %.0fs：%s" % (_gap, _ev))
     # P0 加固（会诊⑥/架构缺口②·b25 verify-chain FAIL 实锤）：settle 先过硬
     # 链断言——收官账本 verify-chain 必须 PASS，否则拒绝结算并指向修复路径
     # （b25 即死于此：尾部三门手工旁路缺 gate-exit:P5/P5.5）。
