@@ -51,7 +51,7 @@ KNOWN_COMMANDS = {
                "next-id", "pending-intents", "redact-scan", "scope-check",
                "set-cred-status", "set-intent-status", "set-replay-state",
                "state-rebuild", "supersede-finding", "unconsumed-facts", "validate",
-               "verify-chain"],
+               "verify-chain", "zhulong-export"],   # v0.9d Ship Z：ZhuLong 互通导出（入口挂载面）
     "phases": ["cached", "denominator-ready", "gate", "rebuild-state", "restart",
                "resume-kit", "trigger-audit", "validate"],
     "guard": ["deploy-vault", "exec", "inject"],

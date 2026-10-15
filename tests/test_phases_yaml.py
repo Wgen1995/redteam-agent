@@ -14,8 +14,13 @@ YAML_PATH = os.path.join(ROOT, "phases", "phases.yaml")
 GATES9 = ("P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6.0", "P6")
 
 from ledger import registry
+from ledger import zhulong_export  # v0.9d Ship Z：入口挂载命令（cli/tanyin-ledger 同序增补）
 
-KNOWN = registry.all_commands() | {"tanyin-report", "tanyin-redact"}
+# 命令面＝registry.all_commands()∪入口挂载面（cli/tanyin-ledger 组装期把 zhulong_export
+# 增补进 registry._MODULES——进程内两面同生效；此处按同一单源并集，禁手抄名单）。
+ENTRY_MOUNTED = set(zhulong_export.HANDLERS)
+
+KNOWN = registry.all_commands() | ENTRY_MOUNTED | {"tanyin-report", "tanyin-redact"}
 
 
 class TestParse(unittest.TestCase):
@@ -74,14 +79,17 @@ class TestParse(unittest.TestCase):
         self.assertEqual(doc['k2'], 'v')
 
 class TestValidate(unittest.TestCase):
-    def test_all_commands_face_48(self):
-        """Interfaces 承诺单源=48 基名（裁决：四个原生带 ledger- 前缀的校验命令计入
+    def test_all_commands_face_49(self):
+        """Interfaces 承诺单源=49 基名（裁决：四个原生带 ledger- 前缀的校验命令计入
         基名——无无前缀孪生；双前缀别名不进基名集；41→44=批次 4 图谱驱动增补
         71d3b7c：graph-neighbors/graph-paths/graph-horizon 三只读图查询，微版本勘误；
         44→45=2026-10-10 P0 加固批 E3：anchor 链头锚定；
-        45→48=v0.8 Task B：chain-create/chain-advance/chain-ls 链式稳定器）。"""
-        face = registry.all_commands()
-        self.assertEqual(len(face), 48)
+        45→48=v0.8 Task B：chain-create/chain-advance/chain-ls 链式稳定器；
+        48→49=v0.9d Ship Z：zhulong-export ZhuLong findings 互通——入口挂载
+        （cli/tanyin-ledger 组装期进 registry._MODULES，白名单边界内唯一接线点））。"""
+        face = registry.all_commands() | ENTRY_MOUNTED
+        self.assertEqual(len(face), 49)
+        self.assertIn("zhulong-export", face)
         for c in ("chain-create", "chain-advance", "chain-ls"):
             self.assertIn(c, face)
         self.assertIn("anchor", face)

@@ -7,6 +7,16 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import registry
 from ledger.core import ensure_utf8_stdio
 
+# Ship Z（v0.9d）：zhulong-export（ZhuLong findings 互通）经入口挂载——registry
+# 模块表在入口组装期增补（lookup/all_commands 两面同生效）；命令面 48→49，
+# face 单源断言=registry.all_commands()∪zhulong_export.HANDLERS（tests/test_phases_yaml）。
+try:
+    from ledger import zhulong_export as _zhulong_export  # noqa: F401
+    if "zhulong_export" not in registry._MODULES:
+        registry._MODULES.append("zhulong_export")
+except ImportError:
+    pass  # 施工中间态模块缺席自动跳过（registry 同律）
+
 ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8（py -3 等价入口同样生效）
 
 USAGE = "用法: tanyin-ledger <command> --goal-dir <dir> [参数]  (契约附录 A: contracts/02a)"
