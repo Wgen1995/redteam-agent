@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """tanyin-guard（批次 2 T1）——Tier 1 执行通道级包装器。"""
-import hashlib, os, subprocess, sys
+import hashlib, os, re, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core, vault
-from ledger.enforce import deny_forms, deny_hit, grant_row_exists, load_scope, out_of_scope_hosts, permitted_actions_covered
+from ledger.enforce import (deny_forms, deny_hit, fmt, grant_row_exists, load_scope,
+                            nuclei_params_ok, out_of_scope_hosts, parse_ts,
+                            permitted_actions_covered, rate_window)
 from ledger.schemas import TABLES
 from ledger.core import ensure_utf8_stdio
 
@@ -28,6 +30,18 @@ def tokenize_output(text, secrets):
         if s:
             text = text.replace(s, "{{vault:cred-%s}}" % n)
     return text
+
+
+def tokenize_argv(cmd, secrets):
+    """full argv 脱敏铸造（OP2，02-opsec 缺口#3「request-ticket 只记 cmd[0]+argc
+    ——full argv 不落账，流量画像不可重建」）——复用 tokenize_output 的 vault
+    真值长值优先占位替换；timeline 事件列不在 special.py {{vault:}} 占位符白名单
+    （creds.secret_ref/E-index.repro_command 冻结口径），占位形降格 <cred-N> 防
+    redact-scan 误报泄漏；token 内 TAB/CRLF 清洗为空格防 TSV 列破格。"""
+    line = " ".join(str(t).replace(chr(9), " ").replace(chr(13), " ").replace(chr(10), " ")
+                    for t in cmd)
+    line = tokenize_output(line, secrets)
+    return re.sub(r"\{\{vault:cred-(\d+)\}\}", r"<cred-\1>", line)
 
 # 批次 10 T5（P2#9）：timeline 铸造单源=ledger.timeline——本地复制退役，
 # partial 绑定保既有调用点签名/行为不变（actor=guard, phase=P3）。
@@ -111,7 +125,7 @@ def cmd_deploy_vault(gd, rest):
     return 0
 
 def gate_chain(gd, cmd, ts, cred="", action=""):
-    """exec/inject 共用门链（洞 2 修复）：deny-list → scope → permitted_actions → request-ticket。
+    """exec/inject 共用门链（洞 2 修复）：deny-list → nuclei 参数 → scope → permitted_actions → rate → request-ticket。
 
     门链先于 vault 取件——越权请求的执法结论不因凭据缺失/存在而改变。
     通过返回 None；拒绝返回 1（REJECT 已打印、timeline 已落账）。
@@ -119,6 +133,9 @@ def gate_chain(gd, cmd, ts, cred="", action=""):
     account 的 account-grant 行（缺=REJECT 无覆盖面）；--action 在场⇒须在该 cred 的
     permitted_actions 并集（分号 _mv 同语义，enforce 单源）；拒绝事件词
     guard-reject permitted-actions 落账留痕。
+    OP1（2026-10-14，02-opsec 缺口1）：nuclei 固化参数门（缺 -rl/-etags
+    dos,intrusive=REJECT）+ rate 滑窗执法位（goals.rate_limit 已申报⇒执行前置
+    核速，超窗=REJECT；单源=enforce.rate_window）。
     """
     # deny-list 双形比对（批次 7 T4，C2 反例一）：字面 joined + argv 归一形
     # （拆组合短旗标/长旗标映射/sh -c 内嵌 payload）——「rm -r -f /」类变体
@@ -131,6 +148,15 @@ def gate_chain(gd, cmd, ts, cred="", action=""):
             break
     if hit:
         print("REJECT" + TAB + "guard" + TAB + "deny-list 命中: " + hit)
+        return 1
+    # nuclei OPSEC 参数门（OP1，02-opsec 缺口1「nuclei 无 -rl/-etags」）：经执行
+    # 通道的 nuclei 必固化 -rl 限速与 -etags dos,intrusive——调用位在
+    # engines/nuclei/adapter.py，此处机械执法防绕过（DoS 风险机械受控）。
+    miss = nuclei_params_ok(cmd)
+    if miss:
+        print("REJECT" + TAB + "guard" + TAB + "nuclei 须固化 -rl 限速与 "
+              "-etags dos,intrusive（缺失: " + miss + "）")
+        append_tl(gd, ts, "guard-reject nuclei-params missing=" + miss)
         return 1
     s = core.Session(gd)
     # 界外判定只扫参数（cmd[1:]）：argv[0] 是程序路径而非目标主机；Windows 下
@@ -152,7 +178,26 @@ def gate_chain(gd, cmd, ts, cred="", action=""):
               + "permitted-actions cred=%s action=%s 未被 account-grant 覆盖" % (cred, action))
         append_tl(gd, ts, "guard-reject permitted-actions cred=%s action=%s" % (cred, action))
         return 1
-    append_tl(gd, ts, "request-ticket cmd=" + cmd[0] + " argc=%d" % len(cmd))
+    # rate 滑窗执法位（OP1，02-opsec 缺口1「budgetctl rate 未接 gate_chain——
+    # 真实战从未启用」）：goals.rate_limit 已申报 ⇒ 每次执行前置核速，窗锚=本次
+    # --timestamp（单源=enforce.rate_window）；超窗 used>limit=REJECT 落账。
+    # 未申报不在本门拦——必填执法位=budgetctl enforce 派发门（P0 八问⑥），
+    # 本门沿用查询面 env 语义（零破坏过渡，见 tests/test_op1_enforce.py）。
+    rw = rate_window(s, parse_ts(ts))
+    if rw["state"] == "over":
+        print("REJECT" + TAB + "guard" + TAB + "rate-limit" + TAB + "used=" + fmt(rw["used"])
+              + TAB + "limit=" + fmt(rw["limit"]) + TAB + "window=" + str(rw["window"]) + "s")
+        append_tl(gd, ts, "guard-reject rate-limit used=%s limit=%s window=%ds"
+                  % (fmt(rw["used"]), fmt(rw["limit"]), rw["window"]))
+        return 1
+    # OP2（02-opsec 建议表 S 级「request-ticket 落 full argv（tokenize 脱敏）」）：
+    # 记账从 cmd[0]+argc 升级为脱敏 full argv——流量画像可重建；vault 真值
+    # 复用 tokenize_output 替换（读 manifest 不改判罚语义，加载失败降级旧形）。
+    try:
+        _secrets = vault_secrets(gd)
+    except Exception:
+        _secrets = []
+    append_tl(gd, ts, "request-ticket argc=%d argv=%s" % (len(cmd), tokenize_argv(cmd, _secrets)))
     return None
 
 

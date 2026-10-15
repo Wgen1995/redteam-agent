@@ -7,15 +7,22 @@ enforce --intent-id：add-intent 前置门（§8.7）。goals.budget 三元组 v
   零余量即拒派——不存在「再跑一轮看看」）；limit<=0 或 None 的维视为未启用跳过
   （$ 第四维默认关=夹具 dollar_budget "0"；converge-check 联动：超支 used>limit 必 REJECT）。
   intent 已在账则并查份额叶（share 同律）；不在账=待铸 id，仅查根门。
+  OP1（2026-10-14，02-opsec 建议表第一行「P0 八问⑥必填」）：goals.rate_limit
+  未申报=REJECT rate-limit-unset、不可解析=REJECT rate-limit-bad（fail-closed，
+  「预算必须是代码不是话术」）——申报后速率由 tanyin-guard gate_chain 滑窗
+  执法位收口（enforce.rate_window 单源）。
 rate：goals.rate_limit（如 600/10m）滑窗聚合 budget.tsv.requests_delta，窗（now-window, now]
   左开右闭；now=--now 或 budget.tsv 最大时间戳（无行=当前 UTC，可重放口径）；used>limit=REJECT
   exit 1。REJECT 落 timeline budgetctl-reject（链式续写）；PASS 只读不落账（查询面零副作用）。
+  OP1：滑窗实现单源迁 ledger.enforce（rate_window/parse_rate/parse_ts——budgetctl
+  查询面与 guard 执法面共用同一窗口，防两份漂移）；本文件输出/退出码字节不变。
 退出码：0=OK 1=REJECT 2=用法/环境（批次纪律）。
 """
-import datetime, json, os, sys, time
+import json, os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core, query_cmds
+from ledger.enforce import fmt, parse_rate, parse_ts, rate_window
 from ledger.schemas import TABLES
 from ledger.core import ensure_utf8_stdio
 
@@ -38,33 +45,9 @@ from ledger.timeline import append_tl_locked as _append_tl_locked
 append_tl = _partial(_append_tl_locked, actor="budgetctl", phase="P2")
 
 
-def parse_ts(tok):
-    t = tok.strip()
-    if t.endswith("Z"):
-        t = t[:-1] + "+00:00"
-    dt = datetime.datetime.fromisoformat(t)
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=datetime.timezone.utc)
-    return dt.timestamp()
-
-
-def fmt(x):
-    return str(int(x)) if float(x).is_integer() else ("%.6g" % x)
-
-
-def parse_rate(tok):
-    """'600/10m' -> (600.0, 600)；单位 s/m/h，缺省=秒。"""
-    n, _, w = tok.strip().partition("/")
-    if not n:
-        raise ValueError("rate_limit 空")
-    limit = query_cmds.parse_num(n)
-    mult = {"s": 1, "m": 60, "h": 3600}
-    w = w.strip()
-    if w and w[-1].lower() in mult:
-        secs = int(w[:-1]) * mult[w[-1].lower()]
-    else:
-        secs = int(w) if w else 0
-    return limit, secs
+# OP1（2026-10-14）：parse_ts/fmt/parse_rate 本地定义退役——单源=ledger.enforce
+# （budgetctl 查询面与 guard 执法面共用，import 见上；tests/test_op1_enforce.py
+# ::RateWindowUnit::test_single_source_no_local_copies 钉死不再回拷）。
 
 
 def _reject(gd, ts, js, line):
@@ -84,10 +67,26 @@ def cmd_enforce(gd, rest):
         sys.stderr.write("enforce 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
         return 2
     ts = kv["--timestamp"]
-    tree = query_cmds.budget_tree(core.Session(gd))
+    s = core.Session(gd)
+    tree = query_cmds.budget_tree(s)
     if tree["goal"] is None:
         sys.stderr.write("环境问题: goals.tsv 无预算行" + chr(10))
         return 2
+    # OP1（02-opsec 建议表第一行）：P0 八问⑥ rate_limit 必填——add-intent 派发门
+    # 拒未申报速率上限的 goal；申报后由 tanyin-guard gate_chain 滑窗执法位收口。
+    # 不可解析同拒（fail-closed）：申报了但读不懂=等同未申报。
+    grows = s.rows("goals.tsv")
+    rate_raw = (grows[0][TABLES["goals.tsv"].index("rate_limit")] if grows else "").strip()
+    if not rate_raw:
+        return _reject(gd, ts, {"mode": "enforce", "intent": iid, "check": "rate-limit-unset"},
+                       "REJECT" + TAB + "rate-limit-unset" + TAB + "P0 八问⑥ goals.rate_limit 未申报"
+                       + TAB + "（速率上限必填——gate_chain 执法位无从启用）")
+    try:
+        parse_rate(rate_raw)
+    except ValueError:
+        return _reject(gd, ts, {"mode": "enforce", "intent": iid, "check": "rate-limit-bad"},
+                       "REJECT" + TAB + "rate-limit-bad" + TAB
+                       + "goals.rate_limit 不可解析: " + rate_raw)
     for k in DIMS:  # 根门：goal 任一维余量耗尽
         lim = tree["goal"]["limit"][k]
         if lim is None or lim <= 0:
@@ -125,41 +124,31 @@ def cmd_rate(gd, rest):
         sys.stderr.write("rate 须带 --timestamp=ISO8601（EPOCH 缺省已退役）" + chr(10))
         return 2
     s = core.Session(gd)
-    grows = s.rows("goals.tsv")
-    if not grows:
+    if not s.rows("goals.tsv"):
         sys.stderr.write("环境问题: goals.tsv 缺失" + chr(10))
         return 2
-    rate_raw = grows[0][TABLES["goals.tsv"].index("rate_limit")]
-    if not rate_raw.strip():
+    # OP1：滑窗单源=ledger.enforce.rate_window（guard 执法位同窗）；--now 缺省时
+    # 窗口锚=账本最大流水时间（无行=当前 UTC，可重放口径）。四态映射保持既有
+    # 输出/退出码字节不变（unset/bad*=env 2；over=REJECT 1；ok=OK 0）。
+    now = parse_ts(kv["--now"]) if kv.get("--now") else None
+    w = rate_window(s, now)
+    if w["state"] == "unset":
         sys.stderr.write("环境问题: goals.rate_limit 未配置" + chr(10))
         return 2
-    try:
-        limit, wsecs = parse_rate(rate_raw)
-    except ValueError:
-        sys.stderr.write("环境问题: rate_limit 不可解析: " + rate_raw + chr(10))
+    if w["state"] == "bad-limit":
+        sys.stderr.write("环境问题: rate_limit 不可解析: " + w["raw"] + chr(10))
         return 2
-    brows = s.rows("budget.tsv")
-    try:
-        stamps = [parse_ts(r[0]) for r in brows]
-    except ValueError as e:
-        sys.stderr.write("环境问题: budget.tsv 时间戳不可解析: %s" % e + chr(10))
+    if w["state"] == "bad-stamp":
+        sys.stderr.write("环境问题: budget.tsv 时间戳不可解析: %s" % w["err"] + chr(10))
         return 2
-    if kv.get("--now"):
-        now = parse_ts(kv["--now"])
-    elif stamps:
-        now = max(stamps)  # 可重放口径：缺省锚定账本最新流水时间
-    else:
-        now = time.time()
-    ri = TABLES["budget.tsv"].index("requests_delta")
-    used = sum(query_cmds.parse_num(r[ri]) for r, t in zip(brows, stamps)
-               if now - wsecs < t <= now)
-    if used > limit:
+    if w["state"] == "over":
         return _reject(gd, kv["--timestamp"],
-                       {"mode": "rate", "used": used, "limit": limit, "window": wsecs},
-                       "REJECT" + TAB + "rate-limit" + TAB + "used=" + fmt(used) +
-                       TAB + "limit=" + fmt(limit) + TAB + "window=" + str(wsecs) + "s")
-    print("OK" + TAB + "rate" + TAB + "limit=" + fmt(limit) + "/" + str(wsecs) + "s" +
-          TAB + "used=" + fmt(used) + TAB + "left=" + fmt(limit - used))
+                       {"mode": "rate", "used": w["used"], "limit": w["limit"],
+                        "window": w["window"]},
+                       "REJECT" + TAB + "rate-limit" + TAB + "used=" + fmt(w["used"]) +
+                       TAB + "limit=" + fmt(w["limit"]) + TAB + "window=" + str(w["window"]) + "s")
+    print("OK" + TAB + "rate" + TAB + "limit=" + fmt(w["limit"]) + "/" + str(w["window"]) + "s" +
+          TAB + "used=" + fmt(w["used"]) + TAB + "left=" + fmt(w["limit"] - w["used"]))
     return 0
 
 

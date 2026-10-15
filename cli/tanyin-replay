@@ -15,7 +15,7 @@ Ruling（计划骨架勘误，HANDOFF 批次4 T5 节）：未知 EV id=exit 2（
 import http.client, json, os, re, socket, ssl, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ledger import cards, core, matchers, vault  # noqa: E402
+from ledger import cards, core, matchers, ua, vault  # noqa: E402
 from ledger.schemas import TABLES  # noqa: E402
 from ledger.core import ensure_utf8_stdio  # noqa: E402
 
@@ -32,7 +32,7 @@ class _SecretMissing(Exception):
 
 def usage():
     sys.stderr.write("用法: tanyin-replay replay --goal-dir D --id=<EV-id> [--scheme=http|https]"
-                     " [--port=N] [--timeout=10] [--timestamp=T]"
+                     " [--port=N] [--timeout=10] [--timestamp=T] [--ua=UA]"
                      " | matcher-test --expected-file P --response-file F" + chr(10))
     return 2
 
@@ -212,6 +212,13 @@ def cmd_replay(gd, rest):
     except _SecretMissing as e:
         sys.stderr.write("REJECT\treplay\t占位符无真值（vault 缺 key/缺条目/缺密位）: %s\n" % e)
         return 1
+    # OP2（02-opsec 审计#1「UA 自报家门」）：禁自名 UA——卡片自名/缺 UA 头
+    # 一律中性默认（TANYIN_UA env 可配），--ua 显式覆盖一切，第三方 UA 保真
+    # 透传（重放保真不归因）。出站最后一道整形，卡片原文不回写。
+    ua_out = ua.resolve_ua(headers.get("user-agent", ""), kv.get("--ua", ""),
+                           os.environ.get(ua.ENV_UA, ""))
+    if ua_out is not None:
+        headers["user-agent"] = ua_out
     append_tl(gd, ts, "request: %s%s via=replay" % (host, path))
     try:
         conn_cls = http.client.HTTPSConnection if scheme == "https" else http.client.HTTPConnection

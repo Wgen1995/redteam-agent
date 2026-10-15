@@ -153,8 +153,13 @@ def main(argv):
         print("OK submission.json status=blocked reason=nuclei-missing")
         return 0
     guard = os.path.join(ROOT, "cli", "tanyin-guard")
+    # OP1（2026-10-14，02-opsec 缺口1「nuclei 无 -rl/-etags」）：调用模板固化
+    # -rl 50（限速）+ -etags dos,intrusive（dos/侵入类模板排除）——guard 执行
+    # 通道同款机械执法（enforce.nuclei_params_ok，缺参=REJECT），只改模板参数
+    # 不动二进制（tools.lock digest 不涉）。
     cmd = [sys.executable, guard, "exec", "--goal-dir", args["--goal-dir"], "--",
-           "nuclei", "-jsonl", "-t", os.path.join(HERE, "templates"),
+           "nuclei", "-jsonl", "-rl", "50", "-etags", "dos,intrusive",
+           "-t", os.path.join(HERE, "templates"),
            "-u", args["--target"]]
     r = subprocess.run(cmd, capture_output=True, text=True, timeout=1800,
                        encoding="utf-8", errors="replace")

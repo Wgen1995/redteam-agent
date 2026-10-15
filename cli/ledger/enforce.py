@@ -12,10 +12,13 @@ deny-list / scope include/exclude/oob 加载 / 主机提取 / 界外判定。sco
 不做主动测试（REJECT 注明 oob），仅 Tier3 egress 放行其回连。tanyin-egress compile
 同用 load_scope——账本=执法策略单一事实源，消除两层解释矛盾。
 """
+import datetime
 import ipaddress
 import os
 import re
+import time
 
+from . import query_cmds
 from .schemas import TABLES
 
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -44,6 +47,14 @@ DENY_EMBEDDED = [
     "mkfs", "dd if=", "dd of=/dev/",
     "shutdown", "reboot", "halt", "init 0", "init 6",
     "format ", "> /dev/sd", "> /dev/vd", "chmod -R 777 /",
+    # v2 增补（OP1，2026-10-14，02-opsec 缺口3——「打穿别打塌」只覆盖删库级）：
+    # DoS 专用工具以调用形态锚定（脚本名.扩展名/-d 旗标形）——文档字样
+    # （cat hulk-notes.md / grep hulk）不含调用形不误伤；激进档/BENCHMARK 型=
+    # nmap -T5 / sqlmap risk·level 满档 / ab·hey·wrk·siege 并发压测旗标形。
+    "slowloris.py", "slowloris.pl", "hulk.py", "goldeneye.py", "torshammer.py",
+    "slowhttptest -d",
+    "-T5", "--risk=3", "--level=5",
+    "ab -n", "hey -z", "siege -c", "wrk -t",
 ]
 
 
@@ -120,6 +131,97 @@ def deny_forms(cmd):
             if ptoks:
                 forms.append(" ".join(normalize_cmd(ptoks)))
     return forms
+
+
+# ---- OP1（2026-10-14，02-opsec 缺口1/3）：rate 滑窗单源 + nuclei 固化执法 ----
+# budgetctl rate（查询面）与 tanyin-guard gate_chain（执法位）共用同一窗口实现，
+# 防两份漂移（deny/scope 单源同律）；P0 八问⑥必填的派发门在 budgetctl enforce。
+
+
+def fmt(x):
+    """数值输出形：整数值去小数点，否则 %.6g（budgetctl/guard 消息共用）。"""
+    return str(int(x)) if float(x).is_integer() else ("%.6g" % x)
+
+
+def parse_rate(tok):
+    """'600/10m' -> (limit, secs)；单位 s/m/h，缺省=秒（OP1 自 budgetctl 单源迁入）。"""
+    n, _, w = tok.strip().partition("/")
+    if not n:
+        raise ValueError("rate_limit 空")
+    limit = query_cmds.parse_num(n)
+    mult = {"s": 1, "m": 60, "h": 3600}
+    w = w.strip()
+    if w and w[-1].lower() in mult:
+        secs = int(w[:-1]) * mult[w[-1].lower()]
+    else:
+        secs = int(w) if w else 0
+    return limit, secs
+
+
+def parse_ts(tok):
+    """ISO8601 → epoch 秒（Z 后缀归 UTC；naive 视 UTC。OP1 自 budgetctl 单源迁入）。"""
+    t = tok.strip()
+    if t.endswith("Z"):
+        t = t[:-1] + "+00:00"
+    dt = datetime.datetime.fromisoformat(t)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=datetime.timezone.utc)
+    return dt.timestamp()
+
+
+def rate_window(session, now=None):
+    """goals.rate_limit 滑窗聚合 budget.tsv.requests_delta（OP1 执法位单源）。
+
+    窗（now-window, now] 左开右闭；now 缺省=账本最大流水时间（无行=当前 UTC，
+    可重放口径）。返回 dict：state ∈ ok|over|unset|bad-limit|bad-stamp，
+    limit/window/used 随行（unset/bad* 为零值）。执法侧（gate_chain）只认 over；
+    查询侧（budgetctl rate）unset/bad* 映射 env 退出 2；必填执法位=budgetctl
+    enforce 派发门（P0 八问⑥，「预算必须是代码不是话术」）。
+    """
+    grows = session.rows("goals.tsv")
+    raw = (grows[0][TABLES["goals.tsv"].index("rate_limit")].strip()
+           if grows else "")
+    if not raw:
+        return {"state": "unset", "raw": raw, "limit": None, "window": 0, "used": 0.0}
+    try:
+        limit, wsecs = parse_rate(raw)
+    except ValueError:
+        return {"state": "bad-limit", "raw": raw, "limit": None, "window": 0, "used": 0.0}
+    brows = session.rows("budget.tsv")
+    try:
+        stamps = [parse_ts(r[0]) for r in brows]
+    except ValueError as e:
+        return {"state": "bad-stamp", "raw": raw, "limit": limit, "window": wsecs,
+                "used": 0.0, "err": str(e)}
+    if now is None:
+        now = max(stamps) if stamps else time.time()
+    ri = TABLES["budget.tsv"].index("requests_delta")
+    used = sum(query_cmds.parse_num(r[ri]) for r, t in zip(brows, stamps)
+               if now - wsecs < t <= now)
+    return {"state": "over" if used > limit else "ok", "raw": raw,
+            "limit": limit, "window": wsecs, "used": used}
+
+
+def nuclei_params_ok(cmd):
+    """nuclei 固化参数核查（OP1，02-opsec 缺口1「nuclei 无 -rl/-etags」）。
+
+    经执行通道的 nuclei 必带 -rl 限速与 -etags dos,intrusive（dos/intrusive
+    类模板排除）；调用位固化=engines/nuclei/adapter.py，此处机械执法防绕过。
+    返回 None=合规；否则返回缺失项描述（如 "-rl -etags dos,intrusive"）。
+    """
+    if not cmd or os.path.basename(cmd[0]) != "nuclei":
+        return None
+    missing = []
+    if "-rl" not in cmd:
+        missing.append("-rl")
+    if "-etags" in cmd:
+        i = cmd.index("-etags")
+        tags = [t.strip() for t in (cmd[i + 1] if i + 1 < len(cmd) else "").split(",")]
+        if not ("dos" in tags and "intrusive" in tags):
+            missing.append("-etags dos,intrusive")
+    else:
+        missing.append("-etags dos,intrusive")
+    return " ".join(missing) or None
 
 
 def load_scope(session):
