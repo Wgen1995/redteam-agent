@@ -555,20 +555,27 @@ class TestPlaywrightSmoke(SteeringBase):
         base = "http://127.0.0.1:%d" % self.port
         try:
             with sync_playwright() as p:
-                browser = p.chromium.launch()
+                browser = p.chromium.launch(channel="chrome")
         except Exception as e:  # 浏览器二进制缺席
             self.skipTest("chromium 不可启动: %r" % e)
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            browser = p.chromium.launch(channel="chrome")
             page = browser.new_page()
             page.goto(base + "/login")
             page.fill("#op-password", OP_KEY)
             page.click("#op-login")
             page.wait_for_url("**/new", timeout=5000)
+            # v0.9.8·二: 向导四步——基本信息→范围→预算→确认（口径与批一同）
             page.fill("#f-name", "冒烟战")
-            page.fill("#f-scope", "10.0.0.0/24\n*.smoke.example")
-            page.fill("#f-budget", "1000;100;10")
             page.fill("#f-note", "冒烟")
+            page.click("#btn-next")
+            page.fill("#f-scope", "10.0.0.0/24\n*.smoke.example")
+            page.click("#btn-next")
+            page.fill("#f-budget-tokens", "1000")
+            page.fill("#f-budget-reqs", "100")
+            page.fill("#f-budget-hours", "10")
+            page.click("#btn-next")
+            page.wait_for_selector("#sum-name")
             page.click("#f-submit")
             page.wait_for_selector("#new-result.ok", timeout=10000)
             txt = page.inner_text("#new-result")

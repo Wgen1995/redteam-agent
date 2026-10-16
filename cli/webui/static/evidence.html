@@ -83,11 +83,15 @@
                   border:1px solid var(--line); border-radius:var(--radius);
                   background:var(--card); color:var(--ink); }
   #theme-toggle:hover { border-color:var(--accent); color:var(--accent); }
-  /* v0.9.8 方向盘：报告下载钮（须登录；零动效预算内——无过渡无动画） */
-  #report-dl { padding:4px 12px; cursor:pointer; font:inherit; font-size:12px;
-               border:1px solid var(--accent); border-radius:var(--radius);
+  /* v0.9.8 方向盘·二：报告下载钮（带下载图标；悬停=实底化强调；零动效） */
+  #report-dl { display:inline-flex; align-items:center; gap:8px;
+               padding:4px 16px; cursor:pointer; font:inherit; font-size:12px;
+               font-weight:600; border:1px solid var(--accent);
+               border-radius:var(--radius);
                background:var(--card); color:var(--accent); }
-  #report-dl:hover { background:var(--soft); }
+  #report-dl svg { flex:none; }
+  #report-dl:hover { background:var(--accent); color:var(--accent-ink);
+                     border-color:var(--accent); }
   #report-dl:disabled { opacity:.6; cursor:wait; }
   @media (max-width:920px) {
     #shell { grid-template-columns:1fr; }
@@ -183,7 +187,14 @@
       <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
         <option value="">切换任务…</option>
       </select>
-      <button id="report-dl" type="button" title="下载当前任务的报告产物（无则触发生成）">下载报告</button>
+      <button id="report-dl" type="button" title="下载当前任务的报告产物（无则触发生成）">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"
+             stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M8 1.5v9"></path>
+          <path d="M4.5 7 8 10.5 11.5 7"></path>
+          <path d="M2 12.5V14h12v-1.5"></path>
+        </svg>
+        下载报告</button>
       <button id="theme-toggle" type="button">深色</button>
     </header>
 <main>

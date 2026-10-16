@@ -77,29 +77,48 @@
                    border:1px solid var(--line); border-radius:var(--radius);
                    background:var(--card); color:var(--ink); }
   /* v0.9.8 方向盘：顶栏开战钮（品牌实底；零动效预算内——无过渡无动画） */
-  #start-btn { padding:4px 16px; border:none; border-radius:var(--radius);
+  #start-btn { display:inline-flex; align-items:center; gap:8px;
+               padding:4px 16px; border:none; border-radius:var(--radius);
                background:var(--accent); color:var(--accent-ink);
                font-size:12px; font-weight:600; text-decoration:none;
                letter-spacing:1px; }
+  #start-btn svg { flex:none; }
   #start-btn:hover { background:color-mix(in srgb, var(--accent) 85%, var(--g12)); }
-  /* 待审卡：红点=有待审；条目=时间+事件+清理命令（等宽数据块）+两键 */
+  /* 待审卡：红点=有待审；列表行=标题+来源行+清理命令（等宽数据块）+批准/拒两钮 */
   #approval-card .adot { display:inline-block; width:8px; height:8px;
                          border-radius:50%; background:var(--bad);
                          margin-left:4px; vertical-align:baseline; }
   #approval-list { list-style:none; margin:0; padding:0; }
-  #approval-list li { display:flex; flex-wrap:wrap; gap:8px 12px;
-                      align-items:baseline; padding:8px 4px;
+  #approval-list li { display:flex; align-items:center; gap:12px;
+                      padding:8px 4px;
                       border-bottom:1px dashed var(--line); }
   #approval-list li:last-child { border-bottom:none; }
-  .ap-when { font-size:12px; color:var(--dim); }
-  .ap-ev { font-size:13px; font-weight:600; word-break:break-all; }
-  .ap-cmd { font-family:var(--font-mono); font-size:12px; color:var(--dim);
-            word-break:break-all; }
-  #approval-list button { font:inherit; font-size:12px; padding:4px 12px;
+  .ap-main { flex:1; min-width:0; }
+  .ap-ev { display:block; font-size:13px; font-weight:600; word-break:break-all; }
+  .ap-src { display:block; font-size:12px; color:var(--dim); }
+  .ap-cmd { display:block; font-family:var(--font-mono); font-size:12px;
+            color:var(--dim); word-break:break-all;
+            margin-top:4px; padding:4px 8px;
+            background:var(--g2); border-radius:var(--radius); }
+  .ap-acts { display:flex; gap:8px; flex:none; }
+  #approval-list button { display:inline-flex; align-items:center; gap:4px;
+                          font:inherit; font-size:12px; padding:4px 12px;
                           border:1px solid var(--line); border-radius:var(--radius);
                           background:var(--card); color:var(--ink); cursor:pointer; }
   #approval-list button:hover { border-color:var(--accent); color:var(--accent); }
-  #approval-list button.ap-ok { color:var(--ok); border-color:var(--ok); }
+  #approval-list button.ap-ok { color:var(--accent-ink);
+                                background:var(--ok); border-color:var(--ok); }
+  #approval-list button.ap-ok:hover { color:var(--accent-ink);
+                                      background:color-mix(in srgb, var(--ok) 85%, var(--g12)); }
+  #approval-list button.ap-no { color:var(--bad); border-color:var(--bad); }
+  #approval-list button.ap-no:hover { background:color-mix(in srgb, var(--bad) 8%, var(--card)); }
+  #approval-list li.done { color:var(--dim); font-size:13px; }
+  /* 空态：插画级（手绘内联 SVG + 两行文案，multica 空列表密度） */
+  .ap-empty { display:flex; flex-direction:column; align-items:center;
+              gap:4px; padding:20px 0 8px; text-align:center; }
+  .ap-empty svg { color:var(--dim); margin-bottom:4px; }
+  .ap-empty-t { font-size:13px; font-weight:600; color:var(--ink); margin:0; }
+  .ap-empty-s { font-size:12px; color:var(--dim); margin:0; }
   #approval-card .ap-login { font-size:12px; color:var(--dim); }
   #side-toggle { display:none; padding:4px 12px; cursor:pointer;
                  border:1px solid var(--line); border-radius:var(--radius);
@@ -252,7 +271,14 @@
       <h1>总览</h1>
       <p class="page-sub">你在看什么：本次授权渗透测试的整体进展——当前所处阶段、预算余量、最新发现。本页只读，不可修改。</p>
       <span id="sse-state">实时连接中…</span>
-      <a href="/new" id="start-btn">开战</a>
+      <a href="/new" id="start-btn">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"
+             stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <circle cx="8" cy="8" r="5.5"></circle>
+          <path d="M8 .8v3M8 12.2v3M.8 8h3M12.2 8h3"></path>
+          <circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"></circle>
+        </svg>
+        开战</a>
       <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
         <option value="">切换任务…</option>
       </select>
@@ -328,6 +354,15 @@
       <p class="state-msg">载入中…</p>
       <div class="content">
         <ul id="approval-list"></ul>
+        <div class="ap-empty" id="ap-empty" hidden>
+          <svg width="32" height="32" viewBox="0 0 16 16" fill="none"
+               stroke="currentColor" stroke-width="1" aria-hidden="true">
+            <path d="M2 9.5 8 13l6-3.5"></path>
+            <path d="M2 6.5 8 10l6-3.5L8 3 2 6.5Z"></path>
+          </svg>
+          <p class="ap-empty-t">暂无待审</p>
+          <p class="ap-empty-s">外部操作的清理与核销都已收口——保持这个状态。</p>
+        </div>
         <p class="ap-login" id="ap-login" hidden>登录后可在此审批：<a href="/login">操作员登录</a></p>
       </div>
     </div>
@@ -726,30 +761,44 @@ setInterval(refreshKpi, 10000);
   }).then(function (doc) {
     if (!doc) { return; }
     var pend = doc.pending || [];
+    var emptyBox = document.getElementById("ap-empty");
     if (!pend.length) {
       dot.hidden = true;
-      st("empty", doc.key_configured ? "暂无待审事项" :
-        "暂无待审事项（审批密钥未配置，无法提交决定）");
+      if (doc.key_configured) {
+        st("ready");
+        emptyBox.hidden = false;              /* 插画级空态 */
+      } else {
+        st("empty", "暂无待审事项（审批密钥未配置，无法提交决定）");
+      }
       return;
     }
     dot.hidden = false;
     pend.forEach(function (p) {
       var li = document.createElement("li");
-      var when = document.createElement("span");
-      when.className = "ap-when";
-      when.textContent = p.ts || "";
-      var ev = document.createElement("span");
+      var main = document.createElement("div");
+      main.className = "ap-main";
+      var ev = document.createElement("span");          /* 标题 */
       ev.className = "ap-ev";
       ev.textContent = p.event || "";
-      var cmd = document.createElement("span");
-      cmd.className = "ap-cmd";
-      cmd.textContent = p.revert_cmd || "";
-      var bEx = document.createElement("button");
-      bEx.type = "button"; bEx.textContent = "豁免";
+      var src = document.createElement("span");         /* 来源+时间 */
+      src.className = "ap-src";
+      src.textContent = "来源 时间线行 " + p.row + " · " + (p.ts || "时间未记");
+      main.appendChild(ev);
+      main.appendChild(src);
+      if (p.revert_cmd) {
+        var cmd = document.createElement("code");       /* 清理命令=等宽数据块 */
+        cmd.className = "ap-cmd";
+        cmd.textContent = p.revert_cmd;
+        main.appendChild(cmd);
+      }
+      var acts = document.createElement("div");
+      acts.className = "ap-acts";
+      var bOk = document.createElement("button");
+      bOk.type = "button"; bOk.className = "ap-ok"; bOk.textContent = "批准";
       var bRj = document.createElement("button");
-      bRj.type = "button"; bRj.textContent = "拒绝";
+      bRj.type = "button"; bRj.className = "ap-no"; bRj.textContent = "拒绝";
       function decide(d, btn) {
-        bEx.disabled = bRj.disabled = true;
+        bOk.disabled = bRj.disabled = true;
         fetch("/api/approval", {
           method: "POST",
           headers: { "Content-Type": "application/json",
@@ -761,18 +810,20 @@ setInterval(refreshKpi, 10000);
           return r.json();
         }).then(function (j) {
           if (j && j.ok) {
-            li.textContent = "已" + (d === "exempted" ? "豁免" : "拒绝") +
+            li.className = "done";
+            li.textContent = "已" + (d === "approved" ? "批准" : "拒绝") +
               "（留痕行 " + j.timeline_row + "）";
           } else {
-            bEx.disabled = bRj.disabled = false;
+            bOk.disabled = bRj.disabled = false;
             alert((j && j.error) || "提交被拒");
           }
         }).catch(function (e) { alert("网络错误：" + String(e)); });
       }
-      bEx.addEventListener("click", function () { decide("exempted", bEx); });
+      bOk.addEventListener("click", function () { decide("approved", bOk); });
       bRj.addEventListener("click", function () { decide("rejected", bRj); });
-      li.appendChild(when); li.appendChild(ev); li.appendChild(cmd);
-      li.appendChild(bEx); li.appendChild(bRj);
+      li.appendChild(main);
+      acts.appendChild(bOk); acts.appendChild(bRj);
+      li.appendChild(acts);
       list.appendChild(li);
     });
     st("ready");

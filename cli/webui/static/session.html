@@ -127,22 +127,57 @@
            border:1px solid var(--line); border-radius:var(--radius);
            background:var(--card); color:var(--ink); }
   #retry:hover { border-color:var(--accent); color:var(--accent); }
-  /* v0.9.8 方向盘：操控台（须登录；急停=实底红。零动效预算内——无过渡无动画） */
-  #cockpit .cockpit-row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  /* v0.9.8 方向盘·二：操控台升级（输入区+发送/暂停=黄描边/急停=红实心+二次确认层）。
+     输入区形态=DeepSeek Harness/multica 对话底栏；分色语义=CSAI 三级刹车。 */
+  #cockpit .say-row { display:flex; gap:8px; align-items:stretch; }
   #say-box { flex:1 1 320px; font:inherit; font-size:13px; padding:8px 12px;
              border:1px solid var(--line); border-radius:var(--radius);
              background:var(--card); color:var(--ink); }
   #say-box:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-  #cockpit button { font:inherit; font-size:12px; padding:4px 16px; cursor:pointer;
-                    border:1px solid var(--line); border-radius:var(--radius);
-                    background:var(--card); color:var(--ink); }
-  #cockpit button:hover { border-color:var(--accent); color:var(--accent); }
-  #cockpit button#stop-btn { border-color:var(--bad); color:var(--bad);
-                             font-weight:600; }
-  #cockpit button#stop-btn:hover { background:var(--bad);
-                                   color:var(--card); }
+  #say-send { display:inline-flex; align-items:center; gap:8px; font:inherit;
+              font-size:12px; font-weight:600; padding:4px 20px; cursor:pointer;
+              border:1px solid var(--accent); border-radius:var(--radius);
+              background:var(--accent); color:var(--accent-ink); }
+  #say-send:hover { background:color-mix(in srgb, var(--accent) 85%, var(--g12)); }
+  #cockpit .ctl-row { display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+                      margin-top:8px; }
+  #cockpit button.ctl { display:inline-flex; align-items:center; gap:4px;
+                        font:inherit; font-size:12px; padding:4px 16px;
+                        cursor:pointer; border:1px solid var(--line);
+                        border-radius:var(--radius);
+                        background:var(--card); color:var(--ink); }
+  #cockpit button.ctl:hover { border-color:var(--accent); color:var(--accent); }
+  /* 暂停=黄描边（警示但不危险） */
+  #cockpit button.ctl-pause { border-color:var(--warn); color:var(--warn);
+                              font-weight:600; }
+  #cockpit button.ctl-pause:hover { border-color:var(--warn); color:var(--warn);
+    background:color-mix(in srgb, var(--warn) 8%, var(--card)); }
+  /* 急停=红实心（危险终结钮——全页唯一实底红） */
+  #cockpit button.ctl-stop { border-color:var(--bad); background:var(--bad);
+                             color:var(--card); font-weight:600; }
+  #cockpit button.ctl-stop:hover { background:color-mix(in srgb, var(--bad) 85%, var(--g12)); }
   #cockpit .cockpit-state { margin:8px 0 0; font-size:12px; color:var(--dim);
                             min-height:18px; }
+  /* 急停二次确认层（页内弹层，替代系统确认框；Esc/取消可退） */
+  #stop-confirm { position:fixed; inset:0; z-index:60; display:flex;
+                  align-items:center; justify-content:center; padding:24px;
+                  background:color-mix(in srgb, var(--g12) 45%, transparent); }
+  #stop-confirm[hidden] { display:none; }
+  #stop-confirm .sc-card { background:var(--card); border:1px solid var(--bad);
+                           border-radius:var(--radius); box-shadow:var(--shadow-3);
+                           padding:20px; width:min(400px, 92vw); }
+  #stop-confirm h3 { display:flex; align-items:center; gap:8px; font-size:15px;
+                     margin:0 0 8px; color:var(--bad); }
+  #stop-confirm p { font-size:13px; color:var(--dim); margin:0 0 16px; }
+  #stop-confirm .sc-acts { display:flex; justify-content:flex-end; gap:8px; }
+  #stop-confirm button { font:inherit; font-size:12px; font-weight:600;
+                         padding:4px 16px; cursor:pointer;
+                         border:1px solid var(--line); border-radius:var(--radius);
+                         background:var(--card); color:var(--ink); }
+  #stop-confirm button:hover { border-color:var(--accent); color:var(--accent); }
+  #stop-confirm #stop-yes { border-color:var(--bad); background:var(--bad);
+                            color:var(--card); }
+  #stop-confirm #stop-yes:hover { background:color-mix(in srgb, var(--bad) 85%, var(--g12)); }
   #stats .content { display:flex; flex-wrap:wrap; gap:8px 20px; font-size:13px; }
   #stats .num { font-weight:600; font-variant-numeric:tabular-nums; }
   .n-bad { color:var(--bad); } .n-ok { color:var(--ok); }
@@ -242,13 +277,40 @@
   </section>
   <section id="cockpit">
     <h2>操控台 · 你的操作（须操作员登录；每次操作留痕并回显行号）</h2>
-    <div class="cockpit-row">
+    <div class="say-row">
       <input id="say-box" type="text" maxlength="2000"
              placeholder="对当前任务下达一句话指令…" aria-label="指令内容">
-      <button id="say-send" type="button">发送</button>
-      <button id="pause-btn" type="button">暂停</button>
-      <button id="resume-btn" type="button">恢复</button>
-      <button id="stop-btn" type="button">急停</button>
+      <button id="say-send" type="button">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"
+             stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M1.5 8 14 1.5 10.5 14 8 8.8 1.5 8Z"></path>
+        </svg>
+        发送
+      </button>
+    </div>
+    <div class="ctl-row">
+      <button id="pause-btn" type="button" class="ctl ctl-pause">
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="none"
+             stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M5.5 3v10M10.5 3v10"></path>
+        </svg>
+        暂停
+      </button>
+      <button id="resume-btn" type="button" class="ctl">
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="none"
+             stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M5 3l8 5-8 5V3Z"></path>
+        </svg>
+        恢复
+      </button>
+      <button id="stop-btn" type="button" class="ctl ctl-stop">
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="none"
+             stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M5 1.5h6L14.5 5v6L11 14.5H5L1.5 11V5L5 1.5Z"></path>
+          <path d="M5.5 5.5l5 5M10.5 5.5l-5 5"></path>
+        </svg>
+        急停
+      </button>
     </div>
     <p class="cockpit-state" id="say-state">未登录也可浏览本页；下达指令须先登录。</p>
   </section>
@@ -272,6 +334,24 @@
     </div>
   </section>
 </main>
+<div id="stop-confirm" hidden>
+  <div class="sc-card" role="dialog" aria-modal="true"
+       aria-labelledby="stop-title" aria-describedby="stop-desc">
+    <h3 id="stop-title">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"
+           stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M5 1.5h6L14.5 5v6L11 14.5H5L1.5 11V5L5 1.5Z"></path>
+        <path d="M8 5v3.4"></path><path d="M8 11v.2"></path>
+      </svg>
+      确认急停？
+    </h3>
+    <p id="stop-desc">急停会立刻终止执行进程并记录 EXIT，正在跑的步骤不再收尾。这是不可撤销的操作。</p>
+    <div class="sc-acts">
+      <button id="stop-no" type="button">取消</button>
+      <button id="stop-yes" type="button">确认急停</button>
+    </div>
+  </div>
+</div>
 <footer>探隐 v0.9d · 本页数据全部来自战斗记录，只能看不能改</footer>
   </div><!-- /main-col -->
 </div><!-- /shell -->
@@ -535,8 +615,23 @@ document.getElementById("pause-btn").addEventListener("click", function () {
 document.getElementById("resume-btn").addEventListener("click", function () {
   cockpitPost("/api/battle/control", { action: "resume" });
 });
+/* 急停=二次确认层（页内弹层；确认才发 stop——不再弹系统确认框） */
+var stopLayer = document.getElementById("stop-confirm");
 document.getElementById("stop-btn").addEventListener("click", function () {
-  if (!window.confirm("确认急停？将终止执行进程并记录 EXIT。")) { return; }
+  stopLayer.hidden = false;
+  document.getElementById("stop-yes").focus();
+});
+document.getElementById("stop-no").addEventListener("click", function () {
+  stopLayer.hidden = true;
+});
+stopLayer.addEventListener("click", function (ev) {
+  if (ev.target === stopLayer) { stopLayer.hidden = true; }   /* 点遮罩可退 */
+});
+document.addEventListener("keydown", function (ev) {
+  if (ev.key === "Escape" && !stopLayer.hidden) { stopLayer.hidden = true; }
+});
+document.getElementById("stop-yes").addEventListener("click", function () {
+  stopLayer.hidden = true;
   cockpitPost("/api/battle/control", { action: "stop" });
 });
 
