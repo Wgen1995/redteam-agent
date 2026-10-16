@@ -1,6 +1,6 @@
 # VulnClaw 实机试用报告(live trial)· v2
 
-> **v2(2026-10-16 深夜)增补**:父会话兑现 LLM key(D0)后补完「LLM 实战轮」,见 §9;§1–§8 为 v1(无 key 卡点轮)原样保留。
+> **v2(2026-10-16 深夜)增补**:§9 = LLM 实战轮(glm-4-flash,D0 key 兑现);§10 = glm-4.7 重测轮(D1 终审,同卡对照,**终审判词:插槽位保留**);§1–§8 为 v1(无 key 卡点轮)原样保留。
 > 2026-10-16 · 执行环境:macOS 26.5.1 (arm64) · Python 3.12.14 · Node v26.5.0
 > 对象:[Netw0rkNoob/VulnClaw](https://github.com/Netw0rkNoob/VulnClaw) v0.4.0,commit `3b71e26`(2026-09-16,PR #281 merge)
 > 姊妹篇:`2026-09-24-vulnclaw-analysis.md`(静态分析);本篇一切结论以实机运行为准。
@@ -378,4 +378,61 @@ vulnclaw report /tmp/vulnclaw-home/sessions/<ts>_http___localhost_3081.json
 ```
 
 实战轮工件:/tmp/vulnclaw-home/runs/zhulong-live2/(63 文件)、session 20261016_232229_http___localhost_3081.json(136 tool_calls / 128 evidence / 3 findings)、3 个子代理 session(a-0005/a-0010/a-0011)、报告 report_20261016_235504_*.md。
+
+---
+
+## 10. glm-4.7 重测轮(D1 终审:同卡重打,唯一变量=模型档)
+
+### 10.1 设置与运行
+
+- 通道:父会话配好的 WGEN001(/Users/wgen/.venvs/vulnclaw,**PyPI 版 0.4.0**,~/.vulnclaw 配置 glm-4.7 + reasoning_effort high;key 在配置文件中,本报告不打印)。1-token 预检 200(观察:网关对 glm-4.7 请求回报的 model 字段为 glm-5.3-flash,记档)。
+- 同卡对照:同靶场 3081 / 同凭据 / 同 goal(含固定句式 scope)/ 同 --max-steps 30 / 同 30 分钟盒 / 同 --stream+--force-fresh+auto_review。
+- 结果:**约 17 分钟「goal reached」自终止**(flash 轮 30 分钟未达目标);主环 4 turns、33 次工具调用、21 条证据;收尾再次撞 P0#2(见 10.2④)。
+
+### 10.2 四问对照(终审重点)
+
+**① SPA 登录盲区:破。** turn 2 即直接 POST /api/auth/login → 200(证据 e010,拿到 zl_sess 会话 cookie),随后用 cookie 做认证矩阵。flash 轮全卡死在这里(两次 no_path「找不到登录表单」)。
+
+**② 发现数与复现成立率:5 条实证发现,独立复现 5/5 全中。**
+
+| # | 发现(模型 FINAL,证据引用) | 独立复现 | 判定 |
+|---|---|---|---|
+| F1 Low | 生产暴露 Vite dev server:全前端源码直出(VulnDetailView.vue 147KB)、/@vite/client 205KB 泄露工具链版本+pnpm 布局+/Users/wgen 绝对路径;边界诚实:/@fs/etc/passwd 恰当 403 | 三项全复现:200/147325B、200/205350B(vite@8.2.2+node24 串)、403 | **成立** |
+| F2 Low | 每用户名硬锁定=故意 DoS(wgen01/penter/viewer 5 错即锁 15min,伪造用户名同型,无枚举 oracle) | 未重复验证(避免再锁账号);模型自带 e016/e018 证据+副作用披露 | **成立(自证)** |
+| F3 Info | /api/health 匿名泄露运维元数据(db/diskPct/queueDepth/sseConnections/version/心跳参数等) | 复现:200,含全部所述字段 | **成立** |
+| F4 Info | /api/users/candidates 认证后返全部用户名+bizRole(匿名 401) | 复验匿名 401(与模型一致) | **成立** |
+| F5 Info | 会话 cookie:HttpOnly+SameSite=Lax 有、Secure 缺、Max-Age 7 天 | 与 e010/e018 一致 | **成立** |
+
+- **否定结果同样带证据**(往往更值钱):SQLi(枚举/数字校验+参数化,引号、OR-1-1、sort/order 子查询变体全等价)、路径穿越(runId 正则+/@fs 403+伪 artifact 404)、匿名访问(敏感 GET 全 401)、弱口令(8 候选×3 用户全拒)、会话熵(256-bit 不相关 token)。
+- 未测清单诚实:横向越权需低权会话(未造号)、写操作不做、XSS 无 v-html sink。
+
+**③ 委派空转:零复发。** 33 次工具调用 agent_run=0(flash 轮 17 次),全亲自完成;evidence_search 对 50KB 证据做正则反查,预算全花在刀刃上。
+
+**④ 真值闸门二轮实弹:守住,但暴露两条新缝。** FINAL 引用 e005–e021,complete_reason/verified_claim 落账;确定性报告仍「已验证 0 / 待验证 4(未在报告中显示)」。新缝:(a)**模型把 5 条实证发现写在 FINAL 文本里而非走 finding 工具** → findings 商店只有 4 条规则层「[自动]」候选,其证据串是模板碎片、甚至与模型自己的 SQLi 否定结论相矛盾——消费方必须解析 final_answer,findings[] 只能当线索队列;(b)**纪律观察**:为验 F2 把 3 个种子用户真实锁了 15 分钟(模型如实披露副作用)——goal 级「禁止破坏性利用」没拦住锁定类副作用,接战士层应把副作用黑名单写进 TaskConstraints(blocked_actions/notes)做结构化执法。
+
+### 10.3 与 flash 轮同卡对比
+
+| 指标 | glm-4-flash(§9) | glm-4.7(§10) |
+|---|---|---|
+| 时长/结局 | 30min,未达 goal | **17min,goal reached** |
+| 主环 turns / 工具调用 | 7 / 136 | **4 / 33** |
+| agent_run 委派 | 17 次(3 needs_user + 2 budget_exhausted 空转) | **0** |
+| SPA 登录盲区 | 未破 | **turn 2 破** |
+| findings 候选层 | 3 条全弱证据 | 4 条规则层候选(噪声) |
+| FINAL 实证发现 | 0 | **5 条,独立复现 5/5** |
+| 带证据否定结果 | 无 | **5 项** |
+| P0#2 收尾崩溃 | 是 | **是(PyPI 版同款复现)** |
+| 蒸馏 | lessons=0 | **lessons=0(仍空载)** |
+
+### 10.4 终审判词(插槽去留)
+
+- **发现力=模型档次,且是质变不是线性差距**:同引擎同剧本,4-flash 零战果,4.7 交出专业级带证据报告(含否定结果与边界自述——正是「探隐战士」要的输出形态)。
+- **判词:插槽位保留。** 接缝四件套(账本/闸门/scope/审批)两轮实弹均达标;glm-4.7 档已具备战士产出质量。
+- 上线前置四条:①修/绕 P0#2(每个完成的 solve 都崩收尾;手动 vulnclaw report 可绕)②消费 final_answer+verified_claims 而非 findings[](规则层自动候选降权为线索)③副作用黑名单(锁定类)进 TaskConstraints 结构化执法 ④成本核算外挂网关侧(usage 计量两轮皆不可信)。
+- 值得提上游的 issue:P0#1/P0#2 两崩溃;蒸馏器连真报告都蒸不出 lesson(两轮 lessons=0)。
+
+### 10.5 本轮工件
+
+run ~/.vulnclaw/runs/zhulong-47/(events.jsonl:finding_added×4 → run_complete → distillation_completed lessons=0)、session ~/.vulnclaw/sessions/20261017_003221_http___localhost_3081.json(33 tool_calls / 21 evidence / 4 findings / final_answer 全文)、确定性报告 report_20261017_004516_*.md、运行日志 /tmp/vulnclaw-runbox/live47.log。
+
 
