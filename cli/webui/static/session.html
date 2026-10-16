@@ -364,7 +364,7 @@ function renderMeta(doc) {
   if (b.settle) {
     kv("防篡改校验", b.settle.chain === "PASS" ? "正常"
       : b.settle.chain === "FAIL" ? "报警" : (b.settle.chain || "—"));
-    kv("【待定】", b.settle.recall + "（找到 " + b.settle.hits +
+    kv("召回率", b.settle.recall + "（找到 " + b.settle.hits +
                       " / 预埋 " + b.settle.total + "）");
   }
   if (b.mission) {
