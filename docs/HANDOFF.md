@@ -1469,3 +1469,10 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - **全量 1479/1479 主会话亲跑 OK**（1403→1479）。测试总数演进留档。
 - 未提交（用户遗产,永不代commit）: .opencode/skills/pentest-{core,engagement}/SKILL.md;panorama/tanyin-architecture_副本.html（与 v3 不同,存疑未动）。
 - 观察: 8900 服务无需重启（纯静态换装,刷新即见侧栏新肤）。
+
+## 2026-10-16 · 二开判决+两热修+档案告警（grilling Round1 进行中）
+- 二开判决(8-fork-candidates): ARTEX❌(AGPL/13万行Go底座/norma闭源死锁)/CSAI❌整仓但✅唯一合法抄页库(Apache2+零框架)/multica❌无源/ZhuLong✅引擎闸(对方仓已合 tanyin@1 manifest+mapper,只剩 import 闸 engineId 一行)。UI底盘二开否。
+- 热修1: TY.setState 吃子树致 session 三块全崩(S 舰下水即坏,HTTP200≠页面活——验收教训: 渲染层钉已加 test_v09d_closeout)。修后实测三块 ready+3轮260卡。
+- 热修2: 首页发现流非法时间戳⚠标警(timeline:427 的 14:89=E2-S3 自报时钟能绕格式的实据;feed 流本有红⚠)。**根因待办→地基批: 铸行路径加时间戳格式校验(现在只锚单调)**。
+- 告警: PRINCIPLES/USER-CHARTER 曾从工作树消失→git 救回;工艺舰已收三条禁令(docs 禁碰/status.js 热修语义保留/改前重读)。
+- 在航: 工艺舰(字体间距颜色)。Round1 四问待用户: 死线性质/二开总闸/对象(已有事实判决)/方向盘批。
