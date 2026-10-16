@@ -1518,3 +1518,8 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - 逐件基线先行件已建: 10-五产品逐件基线总表.md(306724c)+蓝图v3 ARTEX 21路由表(8b37d37)。
 - 五舰重对齐已派(A artex/B csai/C zhulong+multica/D vulnclaw/E 内部清障),输出 docs/reviews/2026-10-18-realign/,归后合成蓝图v4。
 - 名已定 GraphLed(1b7ad0f);栈D-f与C2法律与八波批准仍等用户。
+
+## 2026-10-17 · 开工令(用户拍板)
+- 用户原话「你是AI要写几个月吗??? C2/WebShell 做」——①工期按AI节奏(周计,非人月) ②C2/WebShell 批准做(法律件用户已拍) ③动工门视为已过,W1 立即开工。
+- 栈决定(工程手段我拍): webui 用 Vite+Vue3 投影面,核心账本/CLI 保持 stdlib 零依赖(零依赖律修正案: 只约束核心件)。
+- W1 施工舰三艘并行: F1 授权真化+launch+GraphLed定名 / F2 battle auto 一键链 / F3 VulnClaw 插槽落地;T3 serve收口+T5 D2 统计包候下一波槽位(重对齐五舰在航占5/8)。
