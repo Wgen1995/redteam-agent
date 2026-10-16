@@ -191,3 +191,11 @@ P5 报告 → P5.5 ★您签发★ → P6 沉淀    ▼
 - 互通: zhulong-export（tanyin@1 平铺包，dry-run 默认零网络，vault 脱敏漂移钉）
 - 会话页: session_view.py 只读装配（transcript 三态配对+介入穿插）;活动页 SSE 追尾
 - 测试: 1328→1403（+24 皮肤 +38 会话 +13 互通 +13 热修）;命令面 48→49
+
+## v0.9.6（2026-10-16）执法面升权
+- S1 信任根: warrior_env 白名单单源（launch 一律经它;密钥类 env 物理不可达;真子进程 kernel 级实证）
+- S3 执法钟: 限速/预算窗锚链上单调（自报时戳降参考;回拨拒）
+- S5 知识签名门: promote/approve 持钥签名+EV 链复核钩子
+- S2 egress 实挂: runner 起内嵌代理强制 env（零配合）;request-ticket 机械记账 verify PASS
+- S4 replay 四门: 授权窗/非 GET 默认拒/次数帽 3/scope 单源
+- 测试 1403→1479;观察面收口（侧栏/12 灰阶/外链/人话/发现流）同日
