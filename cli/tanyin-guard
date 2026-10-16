@@ -5,9 +5,11 @@ import hashlib, os, re, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core, vault
-from ledger.enforce import (deny_forms, deny_hit, fmt, grant_row_exists, load_scope,
-                            nuclei_params_ok, out_of_scope_hosts, parse_ts,
-                            permitted_actions_covered, rate_window)
+from ledger.enforce import (TIME_TRAVEL_TOLERANCE, chain_time, deny_forms, deny_hit,
+                            enforcement_anchor, enforcement_write_hit, fmt,
+                            grant_row_exists, load_scope, nuclei_params_ok,
+                            out_of_scope_hosts, parse_ts, permitted_actions_covered,
+                            rate_window, time_travel_verdict)
 from ledger.schemas import TABLES
 from ledger.core import ensure_utf8_stdio
 
@@ -158,6 +160,14 @@ def gate_chain(gd, cmd, ts, cred="", action=""):
               "-etags dos,intrusive（缺失: " + miss + "）")
         append_tl(gd, ts, "guard-reject nuclei-params missing=" + miss)
         return 1
+    # S1（SEC-1 舰 2026-10-15）：执法面写命令对战士只读——approvals/approvers
+    # 两账写通道拦截（操作员侧持钥通道；密钥 env 已由 runner 白名单摘出战士面）。
+    ro = enforcement_write_hit(cmd)
+    if ro:
+        print("REJECT" + TAB + "guard" + TAB + "执法面只读: " + ro
+              + "（approvals/approvers 写命令走操作员侧通道——战士面禁写）")
+        append_tl(gd, ts, "guard-reject enforcement-readonly cmd=" + ro)
+        return 1
     s = core.Session(gd)
     # 界外判定只扫参数（cmd[1:]）：argv[0] 是程序路径而非目标主机；Windows 下
     # "C:\Program Files\...\python.exe" 会被空白切分误判为主机名（POSIX 绝对路径则碰巧被跳过）
@@ -178,12 +188,28 @@ def gate_chain(gd, cmd, ts, cred="", action=""):
               + "permitted-actions cred=%s action=%s 未被 account-grant 覆盖" % (cred, action))
         append_tl(gd, ts, "guard-reject permitted-actions cred=%s action=%s" % (cred, action))
         return 1
+    # S3（SEC-1 舰 2026-10-15）：执法钟防时间旅行——自报 --timestamp 降参考，
+    # 锚=账本链上时刻（timeline seq 单调+链上时间戳）；战斗内回拨/前跳超容差
+    # =REJECT 上账。REJECT 行时戳用链上钟（拒绝行不得把链尖推向谎报时刻）。
+    claimed = parse_ts(ts)
+    chain = chain_time(s)
+    verdict = time_travel_verdict(claimed, chain[0] if chain else None)
+    if verdict:
+        delta = int(claimed - (chain[0] if chain else claimed))
+        print("REJECT" + TAB + "guard" + TAB + "time-travel" + TAB
+              + "mode=" + verdict + TAB + "delta=%ds" % delta + TAB
+              + "tolerance=%ds" % TIME_TRAVEL_TOLERANCE + TAB
+              + "chain=" + (chain[1] if chain else "-"))
+        append_tl(gd, (chain[1] if chain else ts),
+                  "guard-reject time-travel mode=%s delta=%ds tolerance=%ds"
+                  % (verdict, delta, TIME_TRAVEL_TOLERANCE))
+        return 1
     # rate 滑窗执法位（OP1，02-opsec 缺口1「budgetctl rate 未接 gate_chain——
-    # 真实战从未启用」）：goals.rate_limit 已申报 ⇒ 每次执行前置核速，窗锚=本次
-    # --timestamp（单源=enforce.rate_window）；超窗 used>limit=REJECT 落账。
-    # 未申报不在本门拦——必填执法位=budgetctl enforce 派发门（P0 八问⑥），
-    # 本门沿用查询面 env 语义（零破坏过渡，见 tests/test_op1_enforce.py）。
-    rw = rate_window(s, parse_ts(ts))
+    # 真实战从未启用」）：goals.rate_limit 已申报 ⇒ 每次执行前置核速；窗锚=
+    # 链上钟钳制后的申报时戳（S3 单源=enforce.enforcement_anchor），超窗
+    # used>limit=REJECT 落账。未申报不在本门拦——必填执法位=budgetctl enforce
+    # 派发门（P0 八问⑥），本门沿用查询面 env 语义（零破坏过渡）。
+    rw = rate_window(s, enforcement_anchor(claimed, chain[0] if chain else None))
     if rw["state"] == "over":
         print("REJECT" + TAB + "guard" + TAB + "rate-limit" + TAB + "used=" + fmt(rw["used"])
               + TAB + "limit=" + fmt(rw["limit"]) + TAB + "window=" + str(rw["window"]) + "s")

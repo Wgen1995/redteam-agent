@@ -9,6 +9,7 @@ client-map add）REJECT（exit 1，防 CI 误写种子）。退出码对齐 Stri
 0=通过 / 1=门禁失败（Reject） / 2=用法或环境问题（KnowledgeError）。"""
 import datetime
 import hashlib
+import hmac
 import json
 import shutil
 import os
@@ -538,6 +539,23 @@ def lint(kdir, ts, today=None, freshness_days=180):
                 elif not re.match(r"\d{4}-\d{2}-\d{2}$", cells[5]):
                     fails += 1
                     print("FAIL K3 快照 published 日期格式: 行 %d %r" % (ln_no, cells[5]))
+    # S5（SEC-1 舰 2026-10-15）：无签名行 lint 拒——TANYIN_APPROVAL_KEY 在场时，
+    # approve for=promote 行与 promote 事件行须带有效持钥 sig（键缺席=legacy 跳过
+    # ——靶场/CI 零破坏；种子库无此二类行，冻结面同律不受扰）。
+    akey = _approval_key()
+    if akey is not None:
+        for parts in _log_lines(kdir, "approve", "for=promote"):
+            if not _approve_line_sig_ok(parts, akey):
+                fails += 1
+                print("FAIL S5 无签名审批行: approve for=promote %s（缺有效 sig=）"
+                      % parts[2])
+        for parts in _log_lines(kdir, "promote"):
+            sm = _SIG_RE.search(parts[3])
+            if not sm or not hmac.compare_digest(
+                    sm.group(1),
+                    kn_sig("promote|%s|%s" % (parts[2], parts[0]), akey)):
+                fails += 1
+                print("FAIL S5 无签名晋升行: promote %s（缺有效 sig=）" % parts[2])
     # 保鲜检查（T13）：仅当 --today 显式传入；stale=告警不判 FAIL
     if today:
         try:
@@ -584,7 +602,8 @@ def h_lint(ctx, rest):
 
 def h_promote(ctx, rest):
     kv, _pos = parse_argv(rest)
-    return promote(ctx, kv.get("page", ""), kv.get("timestamp", ""))
+    return promote(ctx, kv.get("page", ""), kv.get("timestamp", ""),
+                   sig=kv.get("sig", ""), goal_dir=kv.get("goal-dir", "") or None)
 
 
 def h_demote(ctx, rest):
@@ -602,8 +621,14 @@ COMMIT_TARGET = {"technique": "concepts", "precedent": "precedents",
                  "pattern": "patterns/learned"}
 
 
-def approve(kdir, page, approver, ts, reject=False, reason=""):
-    """staging 页 lint-passed→approved（否则 Reject）；staging.tsv+log.md 双落。"""
+def approve(kdir, page, approver, ts, reject=False, reason="", sig="", for_scope=""):
+    """staging 页 lint-passed→approved（否则 Reject）；staging.tsv+log.md 双落。
+
+    S5（2026-10-15）签名门：TANYIN_APPROVAL_KEY 在场 ⇒ 须
+    --sig=HMAC-SHA256(key, approve|page|approver|ts)，签名进 log 行；键缺席
+    =legacy。--for=promote（晋升审批专用通道）：对 patterns/learned 页铸
+    approve for=promote log 行（不进 staging 状态机）——必须持钥（无键=Reject）。
+    """
     if not ts or not TSV_TS.match(ts):
         raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
     if not reject and not approver:
@@ -612,6 +637,27 @@ def approve(kdir, page, approver, ts, reject=False, reason=""):
     # （登记=approvers add 显式留痕；任意非空串放行=零身份锚反例收口）。
     if not reject and not any(r[0] == approver for r in _approvers_rows(kdir)):
         raise Reject("approver 不在名录（先 tanyin-knowledge approvers add 登记）: " + approver)
+    akey = _approval_key()
+    if not reject and akey is not None:
+        if not sig:
+            raise Reject("TANYIN_APPROVAL_KEY 在场：approve 须 "
+                         "--sig=<HMAC-SHA256(key, approve|page|approver|ts)>"
+                         "（操作员持钥通道）")
+        if not hmac.compare_digest(
+                sig, kn_sig("approve|%s|%s|%s" % (page, approver, ts), akey)):
+            raise Reject("--sig 验签失败（HMAC 与 approve|page|approver|ts 不匹配）")
+    if for_scope:
+        if akey is None:
+            raise Reject("--for=%s 须操作员持钥通道（TANYIN_APPROVAL_KEY 在场才可用）"
+                         % for_scope)
+        if _find_page(kdir, page, ("patterns/learned",))[1] is None:
+            raise Reject("--for 通道须对 patterns/learned 页执行: %s" % page)
+        detail = "approver=%s for=%s" % (approver, for_scope)
+        if akey is not None:
+            detail += " sig=%s" % sig
+        _append_log(kdir, ts, "approve", page, detail)
+        print("approved: %s（for=%s，持钥签名入行）" % (page, for_scope))
+        return 0
     path = os.path.join(kdir, "staging", "staging.tsv")
     rows = _read_tsv(path, STAGING_COLS)
     row = next((r for r in rows if r[1] == page), None)
@@ -631,7 +677,10 @@ def approve(kdir, page, approver, ts, reject=False, reason=""):
     row[8] = approver
     row[9] = ts
     _write_tsv(path, STAGING_COLS, rows)
-    _append_log(kdir, ts, "approve", page, "approver=%s" % approver)
+    detail = "approver=%s" % approver
+    if akey is not None:
+        detail += " sig=%s" % sig
+    _append_log(kdir, ts, "approve", page, detail)
     print("approved: " + page)
     return 0
 
@@ -977,6 +1026,55 @@ def _log_has(kdir, event, page_id, needle):
     return False
 
 
+# ---------------------------------------------------------------------------
+# SEC-1 舰 S5（2026-10-15 v0.9.6）：promote 签名门——操作员持钥 env
+# TANYIN_APPROVAL_KEY（复用 S1 审批 HMAC 通道构造：HMAC-SHA256(
+# SHA256(key), message)）；键仅操作员侧 env，runner warrior_env 白名单已将
+# 其剥离出战士面。键在场 ⇒ approve/promote 须 --sig、签名进 log.md 行、
+# promote 门槛③升验签、lint 拒无签名行；键缺席=legacy（靶场/CI 零破坏）。
+# ---------------------------------------------------------------------------
+
+_SIG_RE = re.compile(r"(?:^|\s)sig=([0-9a-f]{64})(?:\s|$)")
+_APPROVER_RE = re.compile(r"approver=(.*?)(?:\s+for=|\s+sig=|$)")
+
+
+def _approval_key():
+    k = os.environ.get("TANYIN_APPROVAL_KEY", "")
+    return k.encode("utf-8") if k else None
+
+
+def kn_sig(message, key_bytes):
+    """持钥签名（与 write_cmds._approval_sig 同构——同一操作员密钥双面通用）。"""
+    return hmac.new(hashlib.sha256(key_bytes).digest(),
+                    message.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def _log_lines(kdir, event, needle=""):
+    """log.md 行抽取：event 匹配且 detail 含 needle → [ts,event,id,detail] 列表。"""
+    p = os.path.join(kdir, "log.md")
+    if not os.path.isfile(p):
+        return []
+    out = []
+    with open(p, encoding="utf-8") as f:
+        for ln in f:
+            parts = ln.rstrip("\n").split("|")
+            if len(parts) >= 4 and parts[1] == event and needle in parts[3]:
+                out.append(parts)
+    return out
+
+
+def _approve_line_sig_ok(parts, key_bytes):
+    """approve 行验签：sig 覆盖 approve|page|approver|ts（approver 取 detail
+    approver= 值段，止于 for=/sig=/行尾——非 ASCII 名录名同律）。"""
+    m = _APPROVER_RE.search(parts[3])
+    sm = _SIG_RE.search(parts[3])
+    if not m or not sm:
+        return False
+    return hmac.compare_digest(
+        sm.group(1),
+        kn_sig("approve|%s|%s|%s" % (parts[2], m.group(1), parts[0]), key_bytes))
+
+
 def _find_page(kdir, page_id, zones):
     """按目录序定位页文件；返回 (zone, path) 或 (None, None)。"""
     for z in zones:
@@ -1011,17 +1109,29 @@ def _applied_patterns(pfm):
     return [str(a).strip() for a in applied if str(a).strip()]
 
 
-def promote(kdir, page_id, ts):
-    """四门槛机检（R9/契约 14 §4，learned→core）：
+def promote(kdir, page_id, ts, sig="", goal_dir=None):
+    """四门槛机检（R9/契约 14 §4，learned→core）+ S5 签名门：
     ①复现≥2=被 ≥2 先例页 applied_patterns 引用（页 id 计数）；
     ②跨目标有效=引用先例 client 去重 ≥2；
-    ③人工审批=log.md 存在 approve 且 detail 含 for=promote（在场检查——质量判断
-      留人审 checklist，铁律 7：CLI 不判「值不值得晋升」）；
+    ③人工审批=log.md 存在 approve 且 detail 含 for=promote——S5（2026-10-15）：
+      TANYIN_APPROVAL_KEY 在场时升验签（行须带有效 sig=，无签名行=缺口）；
     ④无指纹泄漏=该页 redact 哨兵（special 形态+真域名/IP）零命中。
+    S5 签名门：键在场 ⇒ promote 须 --sig=HMAC-SHA256(key, promote|page|ts)，
+    签名进 promote log 行（无签名不得铸 core）；键缺席=legacy。
+    S5 EV 链复核钩子：--goal-dir=账本目录 ⇒ 复核记录（ev-recheck）铸上
+    timeline 哈希链，verify-chain 可验。
     全过→patterns/learned/→patterns/core/ 移动+status=core+log 落账；
     不全过=REJECT 附缺口清单（exit 1）。"""
     if not ts or not TSV_TS.match(ts):
         raise KnowledgeError("--timestamp 必填（ISO8601；G-23 禁墙钟）")
+    akey = _approval_key()
+    if akey is not None:
+        if not sig:
+            raise Reject("TANYIN_APPROVAL_KEY 在场：promote 须 "
+                         "--sig=<HMAC-SHA256(key, promote|page|ts)>（操作员持钥门"
+                         "——无签名不得铸 core）")
+        if not hmac.compare_digest(sig, kn_sig("promote|%s|%s" % (page_id, ts), akey)):
+            raise Reject("--sig 验签失败（HMAC 与 promote|page|ts 不匹配）")
     zone, src = _find_page(kdir, page_id, ("patterns/learned",))
     if src is None:
         raise Reject("promote 须对 patterns/learned 页执行: %s（learned 区无此页）" % page_id)
@@ -1048,6 +1158,11 @@ def promote(kdir, page_id, ts):
         gates.append("②跨目标有效 缺：引用先例 client 去重 %d 个" % len(ref_clients))
     if not _log_has(kdir, "approve", page_id, "for=promote"):
         gates.append("③人工审批 缺：log.md 无 approve for=promote 行")
+    elif akey is not None and not any(
+            _approve_line_sig_ok(p, akey)
+            for p in _log_lines(kdir, "approve", "for=promote") if p[2] == page_id):
+        gates.append("③人工审批 缺：approve for=promote 行无有效持钥签名（sig=）"
+                     "——S5 签名门，无签名行不算数")
     page_text = fm_raw + "\n" + body
     leak_n = len(special.scan_text(page_text))
     leak_n += sum(1 for ln in page_text.splitlines()
@@ -1063,8 +1178,18 @@ def promote(kdir, page_id, ts):
     with open(dst, "w", encoding="utf-8", newline="\n") as f:
         f.write(_fm_transform(text, {"status": "core"}))
     os.remove(src)
-    _append_log(kdir, ts, "promote", page_id,
-                "learned->core refs=%d clients=%d" % (len(ref_ids), len(ref_clients)))
+    detail = "learned->core refs=%d clients=%d" % (len(ref_ids), len(ref_clients))
+    if akey is not None:
+        detail += " sig=%s" % sig
+    _append_log(kdir, ts, "promote", page_id, detail)
+    if goal_dir:
+        # S5 EV 链复核钩子：复核记录铸上 goal 账本哈希链（ev-recheck 行，
+        # verify-chain 可验——复核不再只是库内自洽文本）。
+        from .timeline import append_tl_locked
+        append_tl_locked(goal_dir, ts,
+                         "knowledge ev-recheck page=%s refs=%d clients=%d" % (
+                             page_id, len(ref_ids), len(ref_clients)),
+                         actor="knowledge", phase="P6")
     print("promoted: %s（learned→core）" % page_id)
     return 0
 
@@ -1180,7 +1305,8 @@ def h_approve(ctx, rest):
     kv, _pos = parse_argv(rest)
     return approve(ctx, kv.get("page", ""), kv.get("approver", ""),
                    kv.get("timestamp", ""), reject=bool(kv.get("reject")),
-                   reason=kv.get("reason", ""))
+                   reason=kv.get("reason", ""), sig=kv.get("sig", ""),
+                   for_scope=kv.get("for", ""))
 
 
 def h_commit(ctx, rest):

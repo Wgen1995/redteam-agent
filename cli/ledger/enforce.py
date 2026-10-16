@@ -202,6 +202,89 @@ def rate_window(session, now=None):
             "limit": limit, "window": wsecs, "used": used}
 
 
+# ---- SEC-1 舰 S3（2026-10-15 v0.9.6 执法面升权批）：执法钟防时间旅行 ----
+# 时钟锚=账本链上时刻（timeline.tsv 追加单链，seq 单调）——自报 --timestamp 降
+# 参考：战斗内回拨/前跳超容差=REJECT 上账（guard gate_chain 执法）。容差缺省
+# 30 天：battle 场景钟为虚构日历（G-23 禁墙钟），既有战斗/测试语料的链尖-申报
+# 差实测 ≤22 天（如 op2_ua G-g1 链尖 09-23 vs 申报 10-14）；收紧容差须全量重校
+# 语料后再动。限速窗锚由 enforcement_anchor 链上钳制后传入——纯自报锚
+# （guard 旧形 rate_window(s, parse_ts(ts))）退役。
+
+TIME_TRAVEL_TOLERANCE = 30 * 86400
+
+
+def chain_time(session):
+    """执法钟：timeline.tsv 链上最大时刻 → (epoch, iso)；空链/全不可解析=None。
+
+    首戳立锚语义：链上无行时不判（第一条申报时刻即锚——后续再回拨/前跳才比对）。
+    """
+    best = None
+    for r in session.rows("timeline.tsv"):
+        try:
+            t = parse_ts(r[0])
+        except (ValueError, IndexError, TypeError):
+            continue
+        if best is None or t > best[0]:
+            best = (t, r[0])
+    return best
+
+
+def time_travel_verdict(claimed, chain, tolerance=None):
+    """自报时戳 vs 链上钟：|Δ|>容差 → 'rollback'|'jump'；链空或容差内 → None。"""
+    if chain is None:
+        return None
+    tol = TIME_TRAVEL_TOLERANCE if tolerance is None else tolerance
+    if claimed < chain - tol:
+        return "rollback"
+    if claimed > chain + tol:
+        return "jump"
+    return None
+
+
+def enforcement_anchor(claimed, chain, tolerance=None):
+    """限速/预算窗锚：自报时戳以链上钟 ±容差钳制（越界值已被 time-travel 门
+    REJECT，此处防御性钳制保证窗锚永不裸吃自报极值）；链空=首戳立锚。"""
+    if chain is None:
+        return claimed
+    tol = TIME_TRAVEL_TOLERANCE if tolerance is None else tolerance
+    return min(max(claimed, chain - tol), chain + tol)
+
+
+# ---- SEC-1 舰 S1：执法面写命令对战士只读（guard 层拦截） ----
+# approvals（tanyin-ledger approve→approvals.tsv）/approvers（tanyin-knowledge
+# approvers add→approvers.tsv）两账写通道与战士同权同体=门自己拉的闩——降只读。
+ENFORCEMENT_WRITE_SUBS = {"tanyin-ledger": ("approve",), "tanyin-knowledge": ("approvers",)}
+
+
+def enforcement_write_hit(cmd):
+    """argv 扫描（含 sh -c 内嵌 payload 形）：tanyin-ledger approve /
+    tanyin-knowledge approvers add 命中返回描述串；None=放行。
+
+    python3 前缀/绝对路径/.cmd Windows 形同律（basename 归一后比对）；只读
+    子命令（verify-chain / approvers list 等）不命中。
+    """
+    forms = [ [str(t) for t in cmd] ]
+    toks = forms[0]
+    if toks and os.path.basename(toks[0]).lower() in _SHELL_WRAPPERS and "-c" in toks[1:]:
+        i = toks.index("-c")
+        if i + 1 < len(toks):
+            forms.append(toks[i + 1].split())
+    for toks in forms:
+        for i, tok in enumerate(toks):
+            name = os.path.basename(tok).lower()
+            if name.endswith(".cmd"):
+                name = name[:-4]
+            if name not in ENFORCEMENT_WRITE_SUBS:
+                continue
+            rest = toks[i + 1:]
+            sub = next((t for t in rest if not t.startswith("-")), "")
+            if name == "tanyin-ledger" and sub == "approve":
+                return "tanyin-ledger approve"
+            if name == "tanyin-knowledge" and sub == "approvers" and "add" in rest:
+                return "tanyin-knowledge approvers add"
+    return None
+
+
 def nuclei_params_ok(cmd):
     """nuclei 固化参数核查（OP1，02-opsec 缺口1「nuclei 无 -rl/-etags」）。
 

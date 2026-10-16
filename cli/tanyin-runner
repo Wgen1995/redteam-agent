@@ -30,6 +30,29 @@ ISOLATION_ENV = {
     "OPENCODE_SKIP_SAFE_CHECK": "1",
 }
 
+# SEC-1 舰 S1（2026-10-15 v0.9.6）：战士进程 env 白名单——信任根摘出。
+# 继承面只放行必需系统变量 + 非密 TANYIN_HOME/TANYIN_UA。grep 全仓 TANYIN_*
+# 注入点逐一过白名单：judge_client 的 JUDGE_*（judge API key）、write_cmds 的
+# APPROVAL_KEY（审批 HMAC 钥）、vault 的 VAULT_*（主钥/口令/密钥文件）、
+# zhulong_export 的 ZHULONG_*（外送凭据）、check_cmds/phases 的 ANCHOR_*、
+# llmpool 的 LLMPOOL_STATE、evals 的 RANGE_SESSION、webui 的 WEBUI_DEBUG、
+# viz 的 VIZ_DATA__——密钥类/操作员面配置全剥离，密钥永不进战士 env。
+WARRIOR_ENV_ALLOW = {
+    "PATH", "HOME", "LANG", "LC_ALL", "LC_CTYPE", "LC_MESSAGES", "TERM",
+    "TMPDIR", "TMP", "TEMP", "SHELL", "USER", "LOGNAME", "USERNAME",
+    "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_CACHE_HOME",
+    "TANYIN_HOME", "TANYIN_UA",
+}
+
+
+def warrior_env(base=None):
+    """战士进程最小 env：白名单外全剥离（自报 base 缺省=操作员 os.environ）。
+
+    S1 信任根摘出单源：launch() 一律经此建 env——旧形 dict(os.environ) 退役。
+    """
+    base = os.environ if base is None else base
+    return {k: v for k, v in base.items() if k in WARRIOR_ENV_ALLOW}
+
 RESUME_PREAMBLE = (
     "【引擎续跑】上一会话中断。本任务状态全落盘于账本（不依赖会话记忆）："
     "先走恢复协议（verify-chain -> state-rebuild -> resume-kit），再从中断处继续，勿重复已落账条目。"
@@ -79,7 +102,7 @@ def launch(cwd, prompt, log_path, model=None, env_extra=None):
     if model:
         cmd += ["--model", model]
     cmd.append(prompt)
-    env = dict(os.environ)
+    env = warrior_env()   # S1：战士面白名单 env（密钥类 TANYIN_* 全剥离）
     env.update(ISOLATION_ENV)
     # SEC-2 舰 S2：env 强制出网上代理（HTTP(S)_PROXY/NO_PROXY）——战士进程
     # 零配合零感知，出网机械过 egress decide 四态（egress_mount 单源）。
@@ -173,6 +196,12 @@ def main():
               "cwd=%s max_restarts=%d stall=%.1fm soft=%.1fm backoff=%.0fs directive=%s" % (
                   args.cwd, args.max_restarts, args.stall_min, args.soft_stall_min,
                   args.backoff_base, args.directive_file or "off"))
+    # S1：env 白名单摘除披露——只记变量名不记值（密钥名上账、真值零落盘）。
+    _scrub_all = sorted(k for k in os.environ if k not in WARRIOR_ENV_ALLOW)
+    _scrub_tanyin = [k for k in _scrub_all if k.startswith("TANYIN_")]
+    if _scrub_all:
+        log_event(runner_log, "ENV-SCRUB",
+                  "stripped=%d tanyin=%s" % (len(_scrub_all), ",".join(_scrub_tanyin) or "-"))
     # SEC-2 舰 S2（v0.9.6）：Tier3 egress 实挂——egress.acl 在场即内嵌起代理
     # （127.0.0.1 随机端口，随战斗生命周期开关）；无 compile 产物=off 如实披露；
     # ACL 损坏=fail-closed 拒启动（零执法静默降级禁止）。安装/自检步骤见
