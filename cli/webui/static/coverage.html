@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>探隐观察面 · 覆盖热图 tanyin-web v0.9d</title>
+<title>探隐观察面 · 测试覆盖</title>
 <style>
   /* ── craft-v09d 皮肤单源（七页同文）：色值只落令牌区，规则区一律 var() ──
      灰阶 12 级单坡双主题镜像：浅 g1 最浅→g12 最深，深主题同名反向；
@@ -50,7 +50,7 @@
   a { color:var(--accent); }
   :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   /* 侧栏骨架（ui-design-v1 冻结）：左三分组 看战况/看战果/管战场
-     + 顶栏（战局切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
+     + 顶栏（任务切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
   .side-check { display:none; }
   #shell { display:grid; grid-template-columns:190px 1fr; min-height:100vh; }
   #side { padding:16px 8px; border-right:1px solid var(--line);
@@ -119,7 +119,7 @@
            background:color-mix(in srgb, currentColor 12%, var(--card)); }
   #sse-state { font-size:12px; color:var(--dim); }
   #sse-state.open { color:var(--ok); }
-  /* 待测格统计 */
+  /* 覆盖统计 */
   #stats .content { display:flex; flex-wrap:wrap; gap:8px 24px; font-size:13px; }
   #stats .num { color:var(--accent); font-weight:600; }
   #stats .num.bad { color:var(--bad); }
@@ -132,7 +132,7 @@
   .sw-cold { background:var(--soft); border:1px solid var(--accent); }
   .sw-frozen { background:var(--soft); border:1px solid var(--dim); }
   .sw-empty { background:var(--card); border:1px solid var(--bad); }
-  /* 热图（格三态语义走 status.js 单源：冷格/冻结格/欠账红标）；
+  /* 测试覆盖表（格三态语义走 status.js 单源：已测/锁定/未测红标）；
      格内状态字符=数据面 → 等宽 */
   #heatmap-wrap { overflow-x:auto; }
   table#heatmap { border-collapse:collapse; font-size:12px; }
@@ -146,10 +146,10 @@
                 box-shadow:inset 0 0 0 2px var(--accent); }
   td.c-empty { background:var(--card); color:var(--bad);
                box-shadow:inset 0 0 0 1px var(--bad); }
-  td.c-empty:after { content:"欠"; font-size:12px; margin-left:4px; }
+  td.c-empty:after { content:"未测"; font-size:12px; margin-left:4px; }
   td.c-frozen:after { content:"◆"; color:var(--accent); font-size:12px;
                       margin-left:4px; }
-  /* KPI 过滤态（#f=empty：只看欠账空格，其余降透明度） */
+  /* 筛选态（#f=empty：仅显示未测，其余降透明度） */
   #filter-note { display:none; font-size:12px; color:var(--accent);
                  margin:0 0 8px; }
   body.filter-empty #filter-note { display:block; }
@@ -166,11 +166,11 @@
     <nav>
       <div class="nav-group">
         <h3>看战况</h3>
-        <a href="/">总览</a><a href="/activity">活动</a><a href="/session">会话</a><a class="here" href="/coverage">热图</a><a href="/graph">十边</a><a href="/evidence">证据</a>
+        <a href="/">总览</a><a href="/activity">动态</a><a href="/session">对话</a><a class="here" href="/coverage">测试覆盖</a><a href="/graph">攻击路线</a><a href="/evidence">发现</a>
       </div>
       <div class="nav-group">
         <h3>看战果</h3>
-        <a href="/metrics">度量</a><a href="/experiments">实验</a>
+        <a href="/metrics">战报</a><a href="/experiments">实验</a>
       </div>
       <div class="nav-group">
         <h3>管战场</h3>
@@ -181,16 +181,16 @@
   <div id="main-col">
     <header id="topbar">
       <label for="side-check" id="side-toggle">☰ 目录</label>
-      <h1>覆盖热图</h1>
-      <p class="page-sub">你在看什么：每个资产（行）× 每类漏洞（列）一格——灰蓝格=已测，◆=冻结锚点，红框「欠」=还没打的欠账。点战局总览的欠账数字会跳到这里并只亮红格。</p>
-      <select id="battle-switch" aria-label="切换战局（跳会话页回放）">
-        <option value="">战局切换…</option>
+      <h1>测试覆盖</h1>
+      <p class="page-sub">你在看什么：资产（行）× 漏洞类别（列）的覆盖对照表——灰蓝=已测，◆=锁定基准，红框=未测。点击总览页的未测数字可跳转至本页并仅高亮未测部分。</p>
+      <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
+        <option value="">切换任务…</option>
       </select>
       <button id="theme-toggle" type="button">深色</button>
     </header>
 <main>
   <section>
-    <h2>待测格统计 · 还差多少格收官</h2>
+    <h2>统计</h2>
     <div id="stats" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -199,16 +199,16 @@
     </div>
   </section>
   <section>
-    <h2>图例 · 三种格子</h2>
+    <h2>图例 · 三种状态</h2>
     <div id="legend">
-      <span><i class="sw sw-cold"></i>冷格·已测格（x 证实 / ? 存疑 / - 不适用 / ! 阻断）</span>
-      <span><i class="sw sw-frozen"></i>冻结格（锚点冻结 ◆）</span>
-      <span><i class="sw sw-empty"></i>待测格（空格欠账，红标——还没打的格子）</span>
+      <span><i class="sw sw-cold"></i>已测（标记含义：x=已验证 / ?=待确认 / -=不适用 / !=受阻）</span>
+      <span><i class="sw sw-frozen"></i>已锁定（◆=锁定基准，结果不再变化）</span>
+      <span><i class="sw sw-empty"></i>未测（红框标示）</span>
     </div>
   </section>
   <section>
-    <h2>攻击面 × 漏洞类（悬停看 reason / intent / updated）</h2>
-    <p id="filter-note">当前过滤：只看欠账空格（点数字跳进来的） · <a href="/coverage">清除过滤</a></p>
+    <h2>资产 × 漏洞类别（悬停查看原因与更新时间）</h2>
+    <p id="filter-note">当前筛选：仅显示未测（自总览页跳入） · <a href="/coverage">清除筛选</a></p>
     <div id="heatmap-box" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -218,7 +218,7 @@
     </div>
   </section>
 </main>
-<footer>tanyin-web v0.9d · 覆盖热图只读投影（矩阵账 · 零写入账本）</footer>
+<footer>探隐 v0.9d · 本页数据全部来自战斗记录，只能看不能改</footer>
   </div><!-- /main-col -->
 </div><!-- /shell -->
 <script>
@@ -240,7 +240,7 @@ function setBox(box, stateName, msgText) {
 }
 
 /* —— 主题切换钮（单源逻辑在 status.js） —— */
-/* —— 顶栏战局切换（选项来自 /api/session.json；选中跳会话页回放） —— */
+/* —— 顶栏任务切换（选项来自 /api/session.json；选中跳对话页） —— */
 var battleSwitch = document.getElementById("battle-switch");
 if (battleSwitch) {
   fetch("/api/session.json").then(function (r) { return r.json(); })
@@ -270,12 +270,12 @@ function renderStats(st) {
   var content = box.querySelector(".content");
   content.textContent = "";
   if (!st || !st.cells) {
-    setBox(box, "empty", "暂无矩阵数据——未开战或还没初始化矩阵");
+    setBox(box, "empty", "暂无覆盖数据（测试尚未开始）");
     return;
   }
   var pct = Math.round(st.set / st.cells * 1000) / 10;
-  [["格总数", st.cells, ""], ["已测格", st.set, ""],
-   ["欠账空格", st.empty, "bad"], ["冻结格", st.frozen, ""]]
+  [["总数", st.cells, ""], ["已测", st.set, ""],
+   ["未测", st.empty, "bad"], ["已锁定", st.frozen, ""]]
     .forEach(function (it) {
       var span = el("span");
       var num = el("span", "num" + (it[2] ? " " + it[2] : ""));
@@ -285,18 +285,27 @@ function renderStats(st) {
       content.appendChild(span);
     });
   var cov = el("span");
-  cov.textContent = "已测格率 " + pct + "%";
+  cov.textContent = "覆盖率 " + pct + "% · 未测【待定】 " + st.empty +
+                    " / 共 " + st.cells;
   content.appendChild(cov);
   setBox(box, "ready");
 }
 
+/* 漏洞类别表头中文短名（悬停看原始代号——OWASP 测试类别） */
+var VULN_CN = {
+  "wstg-info": "信息收集", "wstg-conf": "配置管理", "wstg-idnt": "身份标识",
+  "wstg-authn": "身份认证", "wstg-authz": "授权控制", "wstg-sess": "会话管理",
+  "wstg-inpv": "输入校验", "wstg-errh": "错误处理", "wstg-cryp": "加密机制",
+  "wstg-busl": "业务逻辑", "wstg-clnt": "客户端", "wstg-apit": "接口测试"
+};
+
 function cellTitle(r) {
   var parts = [r.attack_surface + " × " + r.vuln_class,
-               "state=" + (r.state || "（空·欠账）")];
-  if (r.reason) { parts.push("reason=" + r.reason); }
-  if (r.intent_id) { parts.push("intent=" + r.intent_id); }
-  if (r.updated) { parts.push("updated=" + r.updated); }
-  if (r.frozen_at) { parts.push("frozen_at=" + r.frozen_at); }
+               "状态=" + (r.state || "（未测）")];
+  if (r.reason) { parts.push("原因=" + r.reason); }
+  if (r.intent_id) { parts.push("意图=" + r.intent_id); }
+  if (r.updated) { parts.push("更新时间=" + r.updated); }
+  if (r.frozen_at) { parts.push("锁定时间=" + r.frozen_at); }
   return parts.join("  ·  ");
 }
 
@@ -305,16 +314,17 @@ function renderHeatmap(d) {
   var box = document.getElementById("heatmap-box");
   tb.textContent = "";
   if (!d.rows.length) {
-    setBox(box, "empty", "暂无矩阵数据——账本矩阵为空");
+    setBox(box, "empty", "暂无覆盖数据");
     return;
   }
   var head = el("thead"), hr = el("tr");
   var corner = el("th");
-  corner.textContent = "资产 ＼ 漏洞类";
+  corner.textContent = "资产 ＼ 漏洞类别";
   hr.appendChild(corner);
   d.vuln_classes.forEach(function (vc) {
     var th = el("th");
-    th.textContent = vc;
+    th.textContent = VULN_CN[vc] || vc;   /* 中文短名；悬停=原始代号 */
+    th.title = vc;
     hr.appendChild(th);
   });
   head.appendChild(hr);
@@ -333,10 +343,10 @@ function renderHeatmap(d) {
       });
       if (!hit) {
         td.textContent = "—";
-        td.title = "无行（键缺席）";
+        td.title = "无记录";
         return tr.appendChild(td);
       }
-      /* 空格（欠账）优先定底色；冻结叠加冰框；已置=冷格（TY.CELL_STATE 语义） */
+      /* 未测格优先定底色；锁定叠加描边；已置=已测（TY.CELL_STATE 语义） */
       td.className = hit.state ? "c-cold" : "c-empty";
       if (hit.frozen) { td.className += " c-frozen"; }
       td.textContent = hit.state || "·";
@@ -349,7 +359,7 @@ function renderHeatmap(d) {
   setBox(box, "ready");
 }
 
-/* —— KPI 过滤（#f=empty：战局总览点欠账数字跳入） —— */
+/* —— 筛选联动（#f=empty：总览页点未测数字跳入） —— */
 function applyFilter() {
   var f = (location.hash || "").replace(/^#/, "");
   var kv = {};

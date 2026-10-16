@@ -1,46 +1,48 @@
 "use strict";
 /* tanyin-web status.js · 状态语义单源（v0.9d 收口批切全站外链）
    语义照 ARTEX status.ts「状态先讲清语义边界再上色」——抄语义不抄代码：
-   九门门态 / 证据重放态 / 矩阵格态 → 中文标签+tone 一处定义，七页共用。
+   阶段进度（九步）/ 证据复测结果 / 覆盖表格态 → 中文标签+tone 一处定义，七页共用。
    本文件即单源；页面 <head> 外链引用（URL=/status.js，
-   server.py 白名单句柄字节级伺服本文件——E3 评审 F2 裁决）。 */
+   server.py 白名单句柄字节级伺服本文件——E3 评审 F2 裁决）。
+   copy-v09d 批：用户可见文案全部换人话（门名去「门」字系，内部代号只留在注释里）。 */
 
 var TY = window.TY || {};
 
-/* 九门：id+中文名 —— 与 phases/phases.yaml 的 states 全序 + gates.title 一致 */
+/* 九步阶段：id 全序与 phases/phases.yaml 的 states 一致；
+   中文名=人话显示层（yaml 里的 title 是内部代号，不直出用户面） */
 TY.NINE_GATES = [
-  { id: "P0", name: "授权门" },
-  { id: "P1", name: "测绘" },
+  { id: "P0", name: "授权确认" },
+  { id: "P1", name: "信息收集" },
   { id: "P2", name: "规划" },
-  { id: "P3", name: "演进循环" },
+  { id: "P3", name: "循环测试" },
   { id: "P4", name: "汇总" },
   { id: "P5", name: "报告" },
-  { id: "P5.5", name: "签发门" },
-  { id: "P6.0", name: "清理门" },
-  { id: "P6", name: "沉淀" }
+  { id: "P5.5", name: "报告签发" },
+  { id: "P6.0", name: "收尾清理" },
+  { id: "P6", name: "成果归档" }
 ];
 
-/* 门态：过门=绿 / 拦下=红 / 未到=灰（label=单字徽章文案） */
+/* 阶段状态：通过=绿 / 未通过=红 / 未开始=灰 */
 TY.GATE_STATE = {
-  "PASS": { label: "过", tone: "ok" },
-  "FAIL": { label: "拦", tone: "bad" },
-  "PENDING": { label: "待", tone: "idle" }
+  "PASS": { label: "通过", tone: "ok" },
+  "FAIL": { label: "未通过", tone: "bad" },
+  "PENDING": { label: "未开始", tone: "idle" }
 };
 
-/* 证据重放态：空串=未重放（timeline 无对应 replay-probe 行） */
+/* 证据复测结果：空串=还没复测（战斗记录里没有对应的复测行） */
 TY.REPLAY_STATE = {
   "reproduced": { label: "已复现", tone: "ok" },
   "not-reproduced": { label: "未复现", tone: "bad" },
-  "manual": { label: "人工", tone: "warn" },
+  "manual": { label: "需人工", tone: "warn" },
   "env-diff": { label: "环境差异", tone: "warn" },
-  "": { label: "未重放", tone: "idle" }
+  "": { label: "未复测", tone: "idle" }
 };
 
-/* 矩阵格态：空格=欠账（覆盖热图三态语义） */
+/* 覆盖表格态：空格=还没测（测试覆盖表三态语义） */
 TY.CELL_STATE = {
-  "cold": { label: "已测格", tone: "ok" },
-  "frozen": { label: "冻结格", tone: "info" },
-  "empty": { label: "欠账空格", tone: "bad" }
+  "cold": { label: "已测", tone: "ok" },
+  "frozen": { label: "已锁定", tone: "info" },
+  "empty": { label: "未测", tone: "bad" }
 };
 
 /* 主题：浅色默认 + 深色镜像（CSS 变量同名成对）；localStorage 记忆——偏好只存本浏览器 */

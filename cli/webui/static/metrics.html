@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>探隐观察面 · 度量 tanyin-web v0.9d</title>
+<title>探隐观察面 · 战报</title>
 <style>
   /* ── craft-v09d 皮肤单源（七页同文）：色值只落令牌区，规则区一律 var() ──
      灰阶 12 级单坡双主题镜像：浅 g1 最浅→g12 最深，深主题同名反向；
@@ -50,7 +50,7 @@
   a { color:var(--accent); }
   :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   /* 侧栏骨架（ui-design-v1 冻结）：左三分组 看战况/看战果/管战场
-     + 顶栏（战局切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
+     + 顶栏（任务切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
   .side-check { display:none; }
   #shell { display:grid; grid-template-columns:190px 1fr; min-height:100vh; }
   #side { padding:16px 8px; border-right:1px solid var(--line);
@@ -130,7 +130,7 @@
   .card .v.gold { color:var(--warn); }
   .card .s { color:var(--dim); font-size:12px; margin-top:4px; }
   .card .v.sig { color:var(--bad); }
-  /* 图例（臂色=皮肤变量，双主题自适应） */
+  /* 图例（组色=皮肤变量，双主题自适应） */
   #legend { font-size:12px; color:var(--dim); display:flex; flex-wrap:wrap;
             gap:8px 16px; margin-bottom:8px; }
   #legend .sw { display:inline-block; width:14px; height:3px;
@@ -174,11 +174,11 @@
     <nav>
       <div class="nav-group">
         <h3>看战况</h3>
-        <a href="/">总览</a><a href="/activity">活动</a><a href="/session">会话</a><a href="/coverage">热图</a><a href="/graph">十边</a><a href="/evidence">证据</a>
+        <a href="/">总览</a><a href="/activity">动态</a><a href="/session">对话</a><a href="/coverage">测试覆盖</a><a href="/graph">攻击路线</a><a href="/evidence">发现</a>
       </div>
       <div class="nav-group">
         <h3>看战果</h3>
-        <a class="here" href="/metrics">度量</a><a href="/experiments">实验</a>
+        <a class="here" href="/metrics">战报</a><a href="/experiments">实验</a>
       </div>
       <div class="nav-group">
         <h3>管战场</h3>
@@ -189,16 +189,16 @@
   <div id="main-col">
     <header id="topbar">
       <label for="side-check" id="side-toggle">☰ 目录</label>
-      <h1>度量</h1>
-      <p class="page-sub">你在看什么：AI 战士找得全不全——每场练习战的召回率曲线（找全靶场预埋漏洞没有）、对照组与试验组（对照=不带预置指令 / 试验=带预置指令）谁更强、逐战明细。数字不会撒谎。</p>
-      <select id="battle-switch" aria-label="切换战局（跳会话页回放）">
-        <option value="">战局切换…</option>
+      <h1>战报</h1>
+      <p class="page-sub">你在看什么：AI 对靶场预埋漏洞的检出情况——每场测试的【待定】曲线（预埋漏洞命中比例）、对照组与试验组对比（对照=不带预置指令 / 试验=带预置指令）、逐场明细。数字全部来自结算记录。</p>
+      <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
+        <option value="">切换任务…</option>
       </select>
       <button id="theme-toggle" type="button">深色</button>
     </header>
 <main>
   <section>
-    <h2>统计卡 · 各臂均值 / 合并统计（多战并一起算）显著性检验（差异是不是巧合）</h2>
+    <h2>统计 · 各组平均【待定】 / 合并结果 · 差异检验</h2>
     <div id="stats" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -207,20 +207,20 @@
     </div>
   </section>
   <section>
-    <h2>提前登记实验（开战前先落 tsv 再开战） · 登记处投影（experiments/*.tsv · 无登记不认）</h2>
+    <h2>提前登记实验（开测前先登记再开测，未提前登记的不计入）</h2>
     <div id="experiments" class="empty">载入中…</div>
   </section>
   <section>
-    <h2>召回曲线 · 横轴=战序 纵轴=召回率</h2>
+    <h2>【待定】曲线 · 横轴=测试场次 · 纵轴=【待定】</h2>
     <div id="chart-box" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
       <p class="state-msg">载入中…</p>
       <div class="content">
         <div id="legend">
-          <span><i class="sw" style="background:var(--accent)"></i>对照臂（不带预置指令）</span>
-          <span><i class="sw" style="background:var(--warn)"></i>处置臂（带预置指令）</span>
-          <span><i class="sw" style="background:var(--idle)"></i>未知臂（早期战无标记）</span>
+          <span><i class="sw" style="background:var(--accent)"></i>对照组（不带预置指令）</span>
+          <span><i class="sw" style="background:var(--warn)"></i>试验组（带预置指令）</span>
+          <span><i class="sw" style="background:var(--idle)"></i>未标记组（早期的测试没记是哪组）</span>
         </div>
         <div id="chart-wrap"><svg id="chart" viewBox="0 0 860 300"
              xmlns="http://www.w3.org/2000/svg"></svg></div>
@@ -228,7 +228,7 @@
     </div>
   </section>
   <section>
-    <h2>逐战明细 · 结算报告装配（悬停 MISSING 看漏了什么）</h2>
+    <h2>逐场明细 · 悬停「漏了什么」列数字查看具体项</h2>
     <div id="table-box" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -237,16 +237,18 @@
     </div>
   </section>
 </main>
-<footer>tanyin-web v0.9d · 度量页只读投影（战例结算报告 + 预埋答案 · 零写入）</footer>
+<footer>探隐 v0.9d · 本页数据全部来自战斗记录，只能看不能改</footer>
   </div><!-- /main-col -->
 </div><!-- /shell -->
 <script>
 "use strict";
 /* 数据面：/api/metrics.json（battles/stats/mcnemar/experiments 单源装配）；
-   渲染面：SVG 折线（createElementNS）+统计卡+明细表，臂色取皮肤变量，零框架零 CDN。 */
+   渲染面：SVG 折线（createElementNS）+统计卡+明细表，组色取皮肤变量，零框架零 CDN。 */
 var NS = "http://www.w3.org/2000/svg";
 var W = 860, H = 300, PAD_L = 44, PAD_R = 16, PAD_T = 14, PAD_B = 34;
 var CONTROL = "对照", TREAT = "处置";
+/* 分组显示名（数据值→用户语：处置=试验组，参照图例措辞；数据本体不改） */
+var ARM_CN = { "对照": "对照", "处置": "试验" };
 
 function el(tag, attrs) {
   var n = document.createElementNS(NS, tag);
@@ -269,7 +271,7 @@ function setBox(box, stateName, msgText) {
   if (m && msgText) { m.textContent = msgText; }
 }
 
-/* 臂配色：皮肤变量双主题自适应（对照=品牌蓝 / 处置=警示金 / 未知=灰） */
+/* 组配色：皮肤变量双主题自适应（对照=品牌蓝 / 试验=警示金 / 未标记=灰） */
 function armColor(arm) {
   if (arm === CONTROL) { return cssVar("--accent"); }
   if (arm === TREAT) { return cssVar("--warn"); }
@@ -282,7 +284,7 @@ function armCls(arm) {
 }
 
 /* —— 主题切换钮（单源逻辑在 status.js；换肤后重画取色） —— */
-/* —— 顶栏战局切换（选项来自 /api/session.json；选中跳会话页回放） —— */
+/* —— 顶栏任务切换（选项来自 /api/session.json；选中跳对话页） —— */
 var battleSwitch = document.getElementById("battle-switch");
 if (battleSwitch) {
   fetch("/api/session.json").then(function (r) { return r.json(); })
@@ -294,7 +296,7 @@ if (battleSwitch) {
         battleSwitch.appendChild(o);
       });
       if (doc.battle && doc.battle.n) { battleSwitch.value = String(doc.battle.n); }
-    }).catch(function () { /* 战例表拉不到：切换器保持占位项 */ });
+    }).catch(function () { /* 任务表拉不到：切换器保持占位项 */ });
   battleSwitch.addEventListener("change", function () {
     if (this.value) { window.location.href = "/session?battle=" + this.value; }
   });
@@ -318,7 +320,7 @@ function renderStats(data) {
     var c = h("div", "card");
     var v = h("div", "v" + (arm === TREAT ? " gold" : ""));
     v.textContent = fmt(st.mean, 3);
-    c.innerHTML = '<div class="t">' + arm + '臂 · 平均召回（n=' + st.n + '）</div>';
+    c.innerHTML = '<div class="t">' + ARM_CN[arm] + '组 · 平均【待定】（' + st.n + ' 场）</div>';
     c.appendChild(v);
     var s = h("div", "s");
     s.textContent = "区间 " + fmt(st.min, 3) + " ~ " + fmt(st.max, 3);
@@ -328,15 +330,18 @@ function renderStats(data) {
   var mc = data.mcnemar;
   var m = h("div", "card");
   if (!mc) {
-    m.innerHTML = '<div class="t">显著性检验（配对二项）</div>' +
-      '<div class="v">—</div><div class="s">未有两臂样本，配对不可用</div>';
+    m.innerHTML = '<div class="t">差异检验（两组配对比较）</div>' +
+      '<div class="v">—</div><div class="s">两组无法构成配对样本，检验不可用</div>';
   } else {
-    m.innerHTML = '<div class="t">显著性检验（共有答案 ' + mc.shared + ' 项·合并统计）</div>';
+    m.innerHTML = '<div class="t">差异检验（两组共同预埋 ' + mc.shared +
+      ' 项 · 合并计算）</div>';
     var v = h("div", "v" + (mc.p < 0.05 ? " sig" : ""));
     v.textContent = "p=" + mc.p;
     m.appendChild(v);
     var s = h("div", "s");
-    s.textContent = "b=" + mc.b + " c=" + mc.c + "（n=" + mc.n + "）· " + mc.verdict;
+    s.textContent = "只有对照组找到 " + mc.b + " 项 / 只有试验组找到 " + mc.c +
+      " 项（共 " + mc.n + " 项）· " + mc.verdict;
+    s.title = "p≥0.05 = 没把握说两组有差异；b=只有对照组找到的项数，c=只有试验组找到的项数";
     m.appendChild(s);
   }
   holder.appendChild(m);
@@ -363,7 +368,7 @@ function renderChart(battles) {
   battles.forEach(function (b, idx) {
     t = el("text", {x: x(idx), y: H - 12, "text-anchor": "middle",
                     "font-size": 12, fill: dim});
-    t.textContent = "b" + b.n;
+    t.textContent = "第" + b.n + "场";
     svg.appendChild(t);
   });
   [CONTROL, TREAT].forEach(function (arm) {
@@ -378,8 +383,9 @@ function renderChart(battles) {
     pts.forEach(function (p) {
       g = el("circle", {cx: p[0], cy: p[1], r: 4, fill: armColor(arm)});
       var title = el("title", {});
-      title.textContent = p[2].id + " " + (p[2].arm || "未知") +
-        " 召回=" + fmt(p[2].recall) + " (" + p[2].hits + "/" + p[2].total + ")";
+      title.textContent = p[2].id + " " + (ARM_CN[p[2].arm] || "未标记") +
+        " 【待定】=" + fmt(p[2].recall) + "（找到 " + p[2].hits + "/预埋 " +
+        p[2].total + "）";
       g.appendChild(title);
       svg.appendChild(g);
     });
@@ -388,7 +394,7 @@ function renderChart(battles) {
     if (b.arm !== null && b.arm !== undefined) { return; }
     g = el("circle", {cx: x(idx), cy: y(b.recall), r: 3.5, fill: armColor(null)});
     var title = el("title", {});
-    title.textContent = b.id + " 未知臂 召回=" + fmt(b.recall);
+    title.textContent = b.id + " 未标记组 【待定】=" + fmt(b.recall);
     g.appendChild(title);
     svg.appendChild(g);
   });
@@ -398,15 +404,17 @@ function renderTable(battles) {
   var tb = document.getElementById("table");
   tb.innerHTML = "";
   var head = document.createElement("thead");
-  head.innerHTML = "<tr><th>战例</th><th>臂</th><th>召回率</th><th>命中/答案数</th>" +
-    "<th>漏了什么</th><th>答案配对</th><th>链验证</th></tr>";
+  head.innerHTML = "<tr><th>场次</th><th>分组</th><th>【待定】</th><th>找到/预埋数</th>" +
+    "<th>漏了什么</th><th>逐题对照</th><th>防篡改校验</th></tr>";
   tb.appendChild(head);
   var body = document.createElement("tbody");
   battles.forEach(function (b) {
     var tr = document.createElement("tr");
-    var arm = b.arm === null || b.arm === undefined ? "未知" : b.arm;
+    var arm = b.arm === null || b.arm === undefined
+      ? "未标记" : (ARM_CN[b.arm] || b.arm);
     var cls = armCls(b.arm);
-    var chain = b.chain ? b.chain : "—";
+    var chain = b.chain === "PASS" ? "正常" : b.chain === "FAIL" ? "报警"
+      : (b.chain || "—");
     tr.innerHTML =
       '<td class="num">' + b.id + "</td>" +
       '<td><span class="tag ' + cls + '">' + arm + "</span></td>" +
@@ -424,7 +432,7 @@ function renderTable(battles) {
 
 function renderExperiments(exps) {
   /* 提前登记实验小节（v0.9d）：无登记 → 「无提前登记实验」；在册 →
-     exp-id/question/verdict/battles 表（登记处 tsv 的只读投影）。 */
+     编号/问题/结论/场次表（登记处 tsv 的只读展示）。 */
   var box = document.getElementById("experiments");
   box.textContent = "";
   box.className = "";
@@ -435,8 +443,8 @@ function renderExperiments(exps) {
   }
   var tb = document.createElement("table");
   var head = document.createElement("thead");
-  head.innerHTML = "<tr><th>exp-id</th><th>question</th><th>verdict</th>" +
-    "<th>对照臂</th><th>处置臂</th><th>status/registered</th></tr>";
+  head.innerHTML = "<tr><th>编号</th><th>问题</th><th>结论</th>" +
+    "<th>对照组</th><th>试验组</th><th>状态 / 登记时间</th></tr>";
   tb.appendChild(head);
   var body = document.createElement("tbody");
   exps.forEach(function (e) {
@@ -464,9 +472,9 @@ function refresh() {
     renderExperiments(data.experiments);
     if (!data.battles || !data.battles.length) {
       setBox(document.getElementById("chart-box"), "empty",
-             "暂无已结算战例（未开战或未结算）");
+             "暂无已完成的测试（尚未开始或尚未结算）");
       setBox(document.getElementById("table-box"), "empty",
-             "暂无已结算战例（未开战或未结算）");
+             "暂无已完成的测试（尚未开始或尚未结算）");
       return;
     }
     renderChart(data.battles);

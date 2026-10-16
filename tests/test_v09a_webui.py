@@ -364,9 +364,10 @@ class TestPhasesLampNineGates(unittest.TestCase):
                                  ytext, re.M))
         self.assertEqual([g[0] for g in got], yml,
                          "门全序漂移: %s vs %s" % (got, yml))
-        self.assertEqual([g[1] for g in got],
-                         [titles[i] for i in yml], "门中文名漂移")
-        self.assertIn("P6.0", [g[0] for g in got], "清理门 P6.0 缺席")
+        # copy-v09d 批：中文名=人话显示层（yaml title 内部代号不直出）——钉非空+去门字系
+        for gid, name in got:
+            self.assertNotIn("门", name, "门名仍是门字系黑话: %s" % name)
+        self.assertIn("P6.0", [g[0] for g in got], "P6.0 缺席")
 
 
 class TestVersionSingleSource(unittest.TestCase):

@@ -57,7 +57,8 @@ class TestStatusJsSingleSource(unittest.TestCase):
         self.assertTrue(os.path.isfile(STATUS_JS), "cli/webui/static/status.js 缺席")
 
     def test_nine_gates_match_phases_yaml(self):
-        """九门 id+中文名 == phases.yaml states 全序 + gates.title（顺序/门数/名全等）。"""
+        """copy-v09d 批后：门 id 全序仍 == phases.yaml states（防漂移）；
+        中文名=人话显示层（yaml title 为内部代号不直出用户面——不再等值钉）。"""
         js = _status_js()
         m = re.search(r"TY\.NINE_GATES\s*=\s*\[(.*?)\];", js, re.S)
         self.assertIsNotNone(m, "status.js 缺 TY.NINE_GATES 表")
@@ -66,9 +67,9 @@ class TestStatusJsSingleSource(unittest.TestCase):
         want = _yaml_gates()
         self.assertEqual([g[0] for g in got], [w[0] for w in want],
                          "门 id 全序漂移: %s vs yaml %s" % (got, want))
-        self.assertEqual([g[1] for g in got], [w[1] for w in want],
-                         "门中文名漂移: %s vs yaml %s" % (got, want))
-        self.assertIn(("P6.0", "清理门"), got, "清理门 P6.0 缺席")
+        for g in got:                       # 人话律：门名禁「门」字系
+            self.assertNotIn("门", g[1], "门名仍是门字系黑话: %s" % (g,))
+        self.assertIn(("P6.0", "收尾清理"), got, "收尾清理 P6.0 缺席")
 
     def test_state_semantics_tables(self):
         """三张语义表：门态/重放三态/矩阵格态——中文标签+tone 一处定义。"""
@@ -83,10 +84,10 @@ class TestStatusJsSingleSource(unittest.TestCase):
         for st in ("PASS", "FAIL", "PENDING"):
             self.assertIn('"%s"' % st, gate, "GATE_STATE 缺 " + st)
         replay = re.search(r"TY\.REPLAY_STATE\s*=\s*\{(.*?)\};", js, re.S).group(1)
-        for lbl in ("已复现", "未复现", "人工", "环境差异", "未重放"):
+        for lbl in ("已复现", "未复现", "需人工", "环境差异", "未复测"):
             self.assertIn(lbl, replay, "REPLAY_STATE 缺中文标签 " + lbl)
         cell = re.search(r"TY\.CELL_STATE\s*=\s*\{(.*?)\};", js, re.S).group(1)
-        self.assertIn("欠账空格", cell, "CELL_STATE 缺欠账空格语义")
+        self.assertIn("未测", cell, "CELL_STATE 缺未测语义")
 
     def test_status_js_zero_network(self):
         js = _status_js()

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>探隐观察面 · 十边图 tanyin-web v0.9d</title>
+<title>探隐观察面 · 攻击路线</title>
 <style>
   /* ── craft-v09d 皮肤单源（七页同文）：色值只落令牌区，规则区一律 var() ──
      灰阶 12 级单坡双主题镜像：浅 g1 最浅→g12 最深，深主题同名反向；
@@ -50,7 +50,7 @@
   a { color:var(--accent); }
   :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   /* 侧栏骨架（ui-design-v1 冻结）：左三分组 看战况/看战果/管战场
-     + 顶栏（战局切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
+     + 顶栏（任务切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
   .side-check { display:none; }
   #shell { display:grid; grid-template-columns:190px 1fr; min-height:100vh; }
   #side { padding:16px 8px; border-right:1px solid var(--line);
@@ -145,11 +145,11 @@
     <nav>
       <div class="nav-group">
         <h3>看战况</h3>
-        <a href="/">总览</a><a href="/activity">活动</a><a href="/session">会话</a><a href="/coverage">热图</a><a class="here" href="/graph">十边</a><a href="/evidence">证据</a>
+        <a href="/">总览</a><a href="/activity">动态</a><a href="/session">对话</a><a href="/coverage">测试覆盖</a><a class="here" href="/graph">攻击路线</a><a href="/evidence">发现</a>
       </div>
       <div class="nav-group">
         <h3>看战果</h3>
-        <a href="/metrics">度量</a><a href="/experiments">实验</a>
+        <a href="/metrics">战报</a><a href="/experiments">实验</a>
       </div>
       <div class="nav-group">
         <h3>管战场</h3>
@@ -160,16 +160,16 @@
   <div id="main-col">
     <header id="topbar">
       <label for="side-check" id="side-toggle">☰ 目录</label>
-      <h1>十边图</h1>
-      <p class="page-sub">你在看什么：这一仗打出来的所有对象（目标→意图→资产/凭据→事实→发现→证据）之间谁连着谁——十种连线各一色，点节点看详情。</p>
-      <select id="battle-switch" aria-label="切换战局（跳会话页回放）">
-        <option value="">战局切换…</option>
+      <h1>攻击路线</h1>
+      <p class="page-sub">你在看什么：本次测试涉及的全部对象（目标→意图→资产/凭据→事实→发现→证据）及其关联关系——十种关系类型以线型与颜色区分，点击节点查看详情。</p>
+      <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
+        <option value="">切换任务…</option>
       </select>
       <button id="theme-toggle" type="button">深色</button>
     </header>
 <main>
   <section>
-    <h2>图谱统计</h2>
+    <h2>统计</h2>
     <div id="stats" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -178,11 +178,11 @@
     </div>
   </section>
   <section>
-    <h2>边着色图例 · 十种连线全区分（attack 实线金 / cross_ref 虚线 / supersedes 点线 / scope-rel 灰）</h2>
+    <h2>连线图例 · 十种关系各一种样式（悬停看原始代号）</h2>
     <div id="edge-legend"></div>
   </section>
   <section>
-    <h2>分层布局（目标→意图→资产/凭据→事实→发现→证据 · 候选半透明 · 点击节点看详情）</h2>
+    <h2>分层布局（目标→意图→资产/凭据→事实→发现→证据）· AI 推测未经证实的节点以较低不透明度显示 · 点击节点查看详情</h2>
     <div id="graph-box" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -190,12 +190,12 @@
       <p class="state-msg">载入中…</p>
       <div class="content">
         <svg id="graph" xmlns="http://www.w3.org/2000/svg"></svg>
-        <div id="detail">点击节点查看详情</div>
+        <div id="detail">点节点看详情</div>
       </div>
     </div>
   </section>
 </main>
-<footer>tanyin-web v0.9d · 十边图只读投影（血缘边账 · 十种 kind · 零写入账本）</footer>
+<footer>探隐 v0.9d · 本页数据全部来自战斗记录，只能看不能改</footer>
   </div><!-- /main-col -->
 </div><!-- /shell -->
 <script>
@@ -231,7 +231,7 @@ function setBox(box, stateName, msgText) {
 }
 
 /* —— 主题切换钮（单源逻辑在 status.js；换肤后重画取色） —— */
-/* —— 顶栏战局切换（选项来自 /api/session.json；选中跳会话页回放） —— */
+/* —— 顶栏任务切换（选项来自 /api/session.json；选中跳对话页） —— */
 var battleSwitch = document.getElementById("battle-switch");
 if (battleSwitch) {
   fetch("/api/session.json").then(function (r) { return r.json(); })
@@ -257,6 +257,14 @@ themeBtn.addEventListener("click", function () {
   refresh();                                  /* SVG 重新取皮肤变量色 */
 });
 
+/* 连线关系中文短名（title=原始代号——第二落点） */
+var KIND_CN = {
+  "spawns": "生成", "yields": "得出", "derived_from": "推导自",
+  "proves": "证明", "parent": "隶属于", "attack": "攻击路径",
+  "cross_ref": "交叉引用", "evidences": "证据支撑",
+  "supersedes": "取代", "scope-rel": "范围关系"
+};
+
 function renderStats(st) {
   var box = document.getElementById("stats");
   var content = box.querySelector(".content");
@@ -267,7 +275,7 @@ function renderStats(st) {
   content.appendChild(a);
   content.appendChild(document.createTextNode(" · 连线 "));
   content.appendChild(b);
-  content.appendChild(document.createTextNode("（血缘账十种 kind 全集投影）"));
+  content.appendChild(document.createTextNode("（连线共十种类型）"));
   setBox(box, "ready");
 }
 
@@ -285,7 +293,8 @@ function renderEdgeLegend(d) {
     sw.appendChild(line);
     var cnt = d.edges.filter(function (e) { return e.kind === k; }).length;
     var lab = el("span");
-    lab.textContent = k + " ×" + cnt;
+    lab.textContent = (KIND_CN[k] || k) + " ×" + cnt;
+    lab.title = k;
     item.appendChild(sw); item.appendChild(lab);
     box.appendChild(item);
   });
@@ -341,7 +350,7 @@ function renderGraph(d) {
     g.addEventListener("click", function () {
       document.getElementById("detail").textContent =
         "节点 " + n.id + " · 类型 " + n.kind + " · 层 " + LAYER_NAMES[n.layer] +
-        (n.candidate ? " · 候选（半透明）" : "");
+        (n.candidate ? " · AI 推测未经证实（显示较淡）" : "");
     });
     svg.appendChild(g);
   });
@@ -353,7 +362,7 @@ function refresh() {
       if (!d.nodes.length) {
         renderStats(d.stats);
         setBox(document.getElementById("graph-box"), "empty",
-               "暂无图谱——账本还没建任何节点/连线");
+               "暂无路线图——暂无对象或连线");
         return;
       }
       renderStats(d.stats); renderEdgeLegend(d); renderGraph(d);

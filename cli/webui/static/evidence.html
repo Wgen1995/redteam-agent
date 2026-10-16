@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>探隐观察面 · 证据卡 tanyin-web v0.9d</title>
+<title>探隐观察面 · 发现</title>
 <style>
   /* ── craft-v09d 皮肤单源（七页同文）：色值只落令牌区，规则区一律 var() ──
      灰阶 12 级单坡双主题镜像：浅 g1 最浅→g12 最深，深主题同名反向；
@@ -50,7 +50,7 @@
   a { color:var(--accent); }
   :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   /* 侧栏骨架（ui-design-v1 冻结）：左三分组 看战况/看战果/管战场
-     + 顶栏（战局切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
+     + 顶栏（任务切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
   .side-check { display:none; }
   #shell { display:grid; grid-template-columns:190px 1fr; min-height:100vh; }
   #side { padding:16px 8px; border-right:1px solid var(--line);
@@ -157,11 +157,11 @@
     <nav>
       <div class="nav-group">
         <h3>看战况</h3>
-        <a href="/">总览</a><a href="/activity">活动</a><a href="/session">会话</a><a href="/coverage">热图</a><a href="/graph">十边</a><a class="here" href="/evidence">证据</a>
+        <a href="/">总览</a><a href="/activity">动态</a><a href="/session">对话</a><a href="/coverage">测试覆盖</a><a href="/graph">攻击路线</a><a class="here" href="/evidence">发现</a>
       </div>
       <div class="nav-group">
         <h3>看战果</h3>
-        <a href="/metrics">度量</a><a href="/experiments">实验</a>
+        <a href="/metrics">战报</a><a href="/experiments">实验</a>
       </div>
       <div class="nav-group">
         <h3>管战场</h3>
@@ -172,16 +172,16 @@
   <div id="main-col">
     <header id="topbar">
       <label for="side-check" id="side-toggle">☰ 目录</label>
-      <h1>证据卡</h1>
-      <p class="page-sub">你在看什么：每个发现背后的原始证据——命令输出/响应/截图，以及独立重放有没有复现。点卡片展开明细；点战局总览的数字会带着过滤跳进来。</p>
-      <select id="battle-switch" aria-label="切换战局（跳会话页回放）">
-        <option value="">战局切换…</option>
+      <h1>发现</h1>
+      <p class="page-sub">你在看什么：每个发现对应的原始证据——命令输出、响应报文、截图，以及独立复测的验证结果。点击卡片展开明细；从总览页点击数字可带筛选跳转至本页。</p>
+      <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
+        <option value="">切换任务…</option>
       </select>
       <button id="theme-toggle" type="button">深色</button>
     </header>
 <main>
   <section>
-    <h2>重放三态 · 证据编号（每张卡唯一编号）汇总</h2>
+    <h2>复测结果汇总（每条证据有唯一编号）</h2>
     <div id="stats" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -190,7 +190,7 @@
     </div>
   </section>
   <section>
-    <h2>证据卡列表（点卡片展开明细）</h2>
+    <h2>证据列表（点卡片展开明细）</h2>
     <p id="filter-note"></p>
     <div id="cards-box" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
@@ -201,13 +201,13 @@
     </div>
   </section>
 </main>
-<footer>tanyin-web v0.9d · 证据卡只读投影（证据编号账 + 重放记录 · 零写入账本）</footer>
+<footer>探隐 v0.9d · 本页数据全部来自战斗记录，只能看不能改</footer>
   </div><!-- /main-col -->
 </div><!-- /shell -->
 <script>
 "use strict";
-/* 数据面：/api/evidence.json（证据编号行 + 挂接发现→漏洞编号 + 重放态 verdict）；
-   渲染面：纯 DOM 卡片（重放语义走 status.js 单源），点击 classList 切 open，零框架零 CDN。 */
+/* 数据面：/api/evidence.json（证据索引行 + 挂接发现→漏洞编号 + 复测结果 verdict）；
+   渲染面：纯 DOM 卡片（复测语义走 status.js 单源），点击 classList 切 open，零框架零 CDN。 */
 
 function el(tag, cls) {
   var n = document.createElement(tag);
@@ -223,7 +223,7 @@ function setBox(box, stateName, msgText) {
 }
 
 /* —— 主题切换钮（单源逻辑在 status.js） —— */
-/* —— 顶栏战局切换（选项来自 /api/session.json；选中跳会话页回放） —— */
+/* —— 顶栏任务切换（选项来自 /api/session.json；选中跳对话页） —— */
 var battleSwitch = document.getElementById("battle-switch");
 if (battleSwitch) {
   fetch("/api/session.json").then(function (r) { return r.json(); })
@@ -248,7 +248,7 @@ themeBtn.addEventListener("click", function () {
   TY.syncThemeButton(themeBtn);
 });
 
-/* 重放徽章：标签+tone 全走 TY.REPLAY_STATE 单源（中文一处定义） */
+/* 复测徽章：标签+tone 全走 TY.REPLAY_STATE 单源（中文一处定义） */
 function verdictBadge(v) {
   var sem = TY.REPLAY_STATE[v || ""] || TY.REPLAY_STATE[""];
   var b = el("span", "badge t-" + sem.tone);
@@ -257,7 +257,7 @@ function verdictBadge(v) {
 }
 
 var FILTERS = { "reproduced": "已复现", "not-reproduced": "未复现",
-                "manual": "人工", "env-diff": "环境差异" };
+                "manual": "需人工", "env-diff": "环境差异" };
 var activeFilter = null;
 var anchored = {};                /* 每发现首张卡铸 id=f-<发现号> 锚点（防重复） */
 
@@ -266,14 +266,14 @@ function renderStats(st) {
   var content = box.querySelector(".content");
   content.textContent = "";
   if (!st.cards) {
-    setBox(box, "empty", "暂无证据数据（证据编号账为空）");
+    setBox(box, "empty", "暂无证据（无记录）");
     return;
   }
-  [["卡总数", st.cards, ""], ["已复现", st.reproduced, "t-ok"],
+  [["证据总数", st.cards, ""], ["已复现", st.reproduced, "t-ok"],
    ["未复现", st.not_reproduced, "t-bad"],
-   ["人工", st.manual, "t-warn"],
+   ["需人工", st.manual, "t-warn"],
    ["环境差异", st.env_diff, "t-warn"],
-   ["未重放", st.unprobed, "t-idle"]]
+   ["未复测", st.unprobed, "t-idle"]]
     .forEach(function (it) {
       var span = el("span");
       var num = el("span", "num " + it[2]);
@@ -306,10 +306,10 @@ function renderCard(c) {
   var sum = el("div", "summary");
   sum.appendChild(verdictBadge(c.verdict));
   var id = el("span", "id");
-  id.textContent = c.id;
+  id.textContent = "证据 #" + String(c.id).replace(/^EV-/, "");
   sum.appendChild(id);
   var title = el("span", "title");
-  title.textContent = c.title || "（无题）";
+  title.textContent = c.title || "（无标题）";
   sum.appendChild(title);
   if (c.vuln_ref) {
     var vr = el("span");
@@ -317,10 +317,10 @@ function renderCard(c) {
     sum.appendChild(vr);
   }
   var h = el("span", "hash");
-  h.textContent = "raw:" + (c.content_hash_raw || "").slice(0, 12) +
-                  " norm:" + (c.content_hash_norm || "").slice(0, 12);
-  h.title = "content_hash_raw=" + c.content_hash_raw +
-            "  content_hash_norm=" + c.content_hash_norm;
+  h.textContent = "数据指纹 " + (c.content_hash_raw || "").slice(0, 12) +
+                  " / " + (c.content_hash_norm || "").slice(0, 12);
+  h.title = "原始数据指纹 content_hash_raw=" + c.content_hash_raw +
+            "  规范化数据指纹 content_hash_norm=" + c.content_hash_norm;
   sum.appendChild(h);
   card.appendChild(sum);
 
@@ -328,19 +328,19 @@ function renderCard(c) {
   var dl = el("dl");
   kv(dl, "观测时间", c.observed_at);
   kv(dl, "网络位置", c.network_position);
-  kv(dl, "来源 / 复现方式", (c.source_type || "?") + " / " + (c.repro_kind || "?"));
-  kv(dl, "复现命令", c.repro_command);
-  kv(dl, "原始哈希", c.content_hash_raw);
-  kv(dl, "归一哈希", c.content_hash_norm);
+  kv(dl, "来源 / 复测方式", (c.source_type || "?") + " / " + (c.repro_kind || "?"));
+  kv(dl, "复测命令", c.repro_command);
+  kv(dl, "原始数据指纹", c.content_hash_raw);
+  kv(dl, "规范化数据指纹", c.content_hash_norm);
   kv(dl, "产物路径", c.artifact_path);
   kv(dl, "卡片路径", c.card_path);
   kv(dl, "挂接发现", c.linked_finding);
   kv(dl, "配对组", c.pair_group);
   kv(dl, "原文摘录", c.raw_excerpt);
-  kv(dl, "落账时间", c.created);
+  kv(dl, "记录时间", c.created);
   detail.appendChild(dl);
   var hint = el("div", "hint");
-  hint.textContent = "重放态取账本时间线最新重放行；哈希为请求响应指纹。";
+  hint.textContent = "复测结果取自战斗记录中最近一次复测；数据指纹用于校验证据内容是否被改动。";
   detail.appendChild(hint);
   card.appendChild(detail);
 
@@ -356,7 +356,7 @@ function renderCards(cards) {
   holder.textContent = "";
   anchored = {};
   if (!cards.length) {
-    setBox(box, "empty", "暂无证据卡——发现落账后这里出卡");
+    setBox(box, "empty", "暂无证据卡——产生发现后将在此展示对应卡片");
     return;
   }
   var shown = 0;
@@ -366,13 +366,13 @@ function renderCards(cards) {
     shown += 1;
   });
   if (!shown) {
-    setBox(box, "empty", "过滤后无匹配卡（" + FILTERS[activeFilter] + "）");
+    setBox(box, "empty", "筛选后没有匹配的卡（" + FILTERS[activeFilter] + "）");
     return;
   }
   setBox(box, "ready");
 }
 
-/* —— KPI 过滤（#f=reproduced 等重放态：总览点数字跳入）+ 发现锚定
+/* —— 筛选联动（#f=reproduced 等复测态：总览点数字跳入）+ 发现锚定
    （#f=<发现号>：总览发现流点条目跳入——高亮该发现的证据卡并滚动到首张） —— */
 var anchorFd = null;
 
@@ -391,7 +391,8 @@ function applyAnchor(fid) {
     document.body.classList.add("filtered");
     note.textContent = "";
     note.appendChild(document.createTextNode(
-      "已定位发现 " + fid + " 的证据卡（高亮+滚动） · "));
+      "已定位发现 #" + String(fid).replace(/^FD-/, "") +
+      " 的证据卡（已高亮并滚动至此） · "));
     var clear = el("a");
     clear.href = "/evidence";
     clear.textContent = "清除定位";
@@ -411,16 +412,16 @@ function applyFilter() {
     if (i > 0) { kv2[p.slice(0, i)] = p.slice(i + 1); }
   });
   var want = FILTERS[kv2.f] ? kv2.f : null;
-  anchorFd = !want && kv2.f ? kv2.f : null;      /* 非重放态值=发现号锚定 */
+  anchorFd = !want && kv2.f ? kv2.f : null;      /* 非复测态值=发现号锚定 */
   if (want !== activeFilter) {
     activeFilter = want;
     var note = document.getElementById("filter-note");
     if (want) {
       note.textContent = "";
-      var t1 = document.createTextNode("当前过滤：只看" + FILTERS[want] + " · ");
+      var t1 = document.createTextNode("当前筛选：只看" + FILTERS[want] + " · ");
       var clear = el("a");
       clear.href = "/evidence";
-      clear.textContent = "清除过滤";
+      clear.textContent = "清除筛选";
       note.appendChild(t1); note.appendChild(clear);
     } else {
       note.textContent = "";

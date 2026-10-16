@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>探隐观察面 · 活动流 tanyin-web v0.9d</title>
+<title>探隐观察面 · 动态</title>
 <style>
   /* ── craft-v09d 皮肤单源（七页同文）：色值只落令牌区，规则区一律 var() ──
      灰阶 12 级单坡双主题镜像：浅 g1 最浅→g12 最深，深主题同名反向；
@@ -50,7 +50,7 @@
   a { color:var(--accent); }
   :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   /* 侧栏骨架（ui-design-v1 冻结）：左三分组 看战况/看战果/管战场
-     + 顶栏（战局切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
+     + 顶栏（任务切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
   .side-check { display:none; }
   #shell { display:grid; grid-template-columns:190px 1fr; min-height:100vh; }
   #side { padding:16px 8px; border-right:1px solid var(--line);
@@ -140,11 +140,11 @@
     <nav>
       <div class="nav-group">
         <h3>看战况</h3>
-        <a href="/">总览</a><a class="here" href="/activity">活动</a><a href="/session">会话</a><a href="/coverage">热图</a><a href="/graph">十边</a><a href="/evidence">证据</a>
+        <a href="/">总览</a><a class="here" href="/activity">动态</a><a href="/session">对话</a><a href="/coverage">测试覆盖</a><a href="/graph">攻击路线</a><a href="/evidence">发现</a>
       </div>
       <div class="nav-group">
         <h3>看战果</h3>
-        <a href="/metrics">度量</a><a href="/experiments">实验</a>
+        <a href="/metrics">战报</a><a href="/experiments">实验</a>
       </div>
       <div class="nav-group">
         <h3>管战场</h3>
@@ -155,17 +155,17 @@
   <div id="main-col">
     <header id="topbar">
       <label for="side-check" id="side-toggle">☰ 目录</label>
-      <h1>活动流</h1>
-      <p class="page-sub">你在看什么：账本时间线的实时追尾——战士每写一笔账（发现/证据/门禁/重放）都在这里滚过。总览页的活动流区块同源数据，独立成页方便挂着看。</p>
-      <span id="sse-state">SSE 连接中</span>
-      <select id="battle-switch" aria-label="切换战局（跳会话页回放）">
-        <option value="">战局切换…</option>
+      <h1>动态</h1>
+      <p class="page-sub">你在看什么：测试过程的实时事件流——执行测试的 AI 每产生一条记录（发现漏洞、保存证据、通过阶段检查、复测）即实时滚动显示，最新在前。与总览页「最新动态」同源，独立成页便于持续监视。</p>
+      <span id="sse-state">实时连接中…</span>
+      <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
+        <option value="">切换任务…</option>
       </select>
       <button id="theme-toggle" type="button">深色</button>
     </header>
 <main>
   <section>
-    <h2>时间线 · 实时追尾（最近在上）</h2>
+    <h2>时间线 · 实时滚动（最新在前）</h2>
     <div id="feed-box" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -177,7 +177,7 @@
     </div>
   </section>
 </main>
-<footer>tanyin-web v0.9d · 活动流只读投影（timeline.tsv · SSE 追尾 · 零写入账本）</footer>
+<footer>探隐 v0.9d · 本页数据全部来自战斗记录，只能看不能改</footer>
   </div><!-- /main-col -->
 </div><!-- /shell -->
 <script>
@@ -228,7 +228,7 @@ var feedBox = document.getElementById("feed-box");
 
 fetch("/api/state.json").then(function (r) { return r.json(); }).then(function (st) {
   if (!st || !st.timeline_rows) {
-    TY.setState(feedBox, "empty", "账本时间线为空（未开战或未铸账）");
+    TY.setState(feedBox, "empty", "暂无记录（测试尚未开始）");
   }
 }).catch(function (e) {
   TY.setState(feedBox, "error", TY.failText(e));
@@ -236,8 +236,8 @@ fetch("/api/state.json").then(function (r) { return r.json(); }).then(function (
 
 var es = new EventSource("/api/stream?tail=100");
 var badge = document.getElementById("sse-state");
-es.onopen = function () { badge.textContent = "SSE 已连接"; badge.className = "open"; };
-es.onerror = function () { badge.textContent = "SSE 重连中"; badge.className = ""; };
+es.onopen = function () { badge.textContent = "实时连接正常"; badge.className = "open"; };
+es.onerror = function () { badge.textContent = "实时连接断开，自动重连中…"; badge.className = ""; };
 es.onmessage = function (e) {
   var ev;
   try { ev = JSON.parse(e.data); } catch (err) { return; }
@@ -246,7 +246,7 @@ es.onmessage = function (e) {
   TY.setState(feedBox, "ready");
 };
 
-/* —— 顶栏战局切换（选项来自 /api/session.json；选中跳会话页回放） —— */
+/* —— 顶栏任务切换（选项来自 /api/session.json；选中跳对话页） —— */
 var battleSwitch = document.getElementById("battle-switch");
 if (battleSwitch) {
   fetch("/api/session.json").then(function (r) { return r.json(); })
