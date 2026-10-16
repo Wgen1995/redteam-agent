@@ -17,3 +17,6 @@
 | 2c | artex-visual-baseline | ARTEX 参照 DOM 级视觉基准+七页差距+50条黑话替词+工艺/方向盘分流 | 2026-10-16 |
 | 8 | fork-candidates | 二开底子四候选判决（ARTEX❌AGPL/CSAI✅抄页库/multica❌无源/ZhuLong✅引擎闸）+UI底盘二开否 | 2026-10-16 |
 | 2d | data/artex-export-user-benchmark.html | **用户亲交的 UI 标准答案**(原文件入库,一切界面/文案以它为第一基准) | 2026-10-16 |
+| live x3 | walk-artex-live / walk-csai-live / walk-zhulong-live | **三系统活体巡访批#1**（用户真战斗数据：ARTEX 51 findings 已暂停+意图链+37 拦截；CSAI 开战/指挥/审批流 36 弹窗编目；ZhuLong 靶场侧弹壳清单） | 2026-10-16 |
+| live-recon-1 | live-recon-1.md | 探隐改进清单（方向盘批/对话页/战报页三组 30 条，每条带 walk 节号出处） | 2026-10-16 |
+| 手册x4 | ../manuals/usage-guide-zhulong.md | ZhuLong 使用手册（第四本，格式对齐前三本；含战斗痕迹交叉索引） | 2026-10-16 |
