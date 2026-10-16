@@ -14,3 +14,4 @@
 | 7-codex-security.md | OpenAI codex-security 机制+可复用判决 | ⏳ 在航 |
 | walk-*.md ×5 | 五系统界面漫游+探隐 before 基线 | ✅ |
 | ../manuals/usage-guide-*.md ×3 | 三系统使用手册 | ✅ |
+| 2c | artex-visual-baseline | ARTEX 参照 DOM 级视觉基准+七页差距+50条黑话替词+工艺/方向盘分流 | 2026-10-16 |
