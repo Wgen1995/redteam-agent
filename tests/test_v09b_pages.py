@@ -387,7 +387,10 @@ PAGES = {
                       ('id="heatmap"', 'id="legend"', 'id="stats"',
                        "c-empty", "c-frozen", "c-cold")),
     "graph.html": ("/api/graph.json",
-                   ('id="graph"', 'id="edge-legend"', 'id="detail"', "createElementNS")),
+                   ('id="graph"', 'id="edge-legend"', 'id="detail"',
+                    "createElementNS",
+                    # 画布段升级批追加钩子：缩放控件/小地图/节点卡
+                    'id="zoom-fit"', 'id="minimap"', "node-card")),
     "evidence.html": ("/api/evidence.json",
                       ('id="cards"', "classList", "open")),
 }
