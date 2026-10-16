@@ -265,7 +265,9 @@ class TestDashboardV09a(Base):
     def test_zero_framework_zero_cdn(self):
         """语言律：零框架零构建零 CDN（离线可用）。"""
         src = open(INDEX_HTML, encoding="utf-8").read()
-        self.assertNotIn("<script src=", src)        # 无外链脚本
+        # v0.9d 收口批（E3 评审 F2）：唯一外链=/status.js（server 字节级伺服）
+        self.assertEqual(src.count('<script src="/status.js"></script>'), 1)
+        self.assertEqual(src.count("<script src="), 1, "只许 status.js 一支外链")
         self.assertNotIn("https://", src)            # 无 CDN/外域引用
         self.assertNotIn("http://", src)
 
@@ -396,7 +398,8 @@ class TestNavConsistency(unittest.TestCase):
             src = _page_src(name)
             m = re.search(r"<nav[^>]*>(.*?)</nav>", src, re.S)
             self.assertIsNotNone(m, name + " 缺 nav 块")
-            got = set(re.findall(r'href="(/[^"]*)"', m.group(1)))
+            # v0.9d 侧栏：设置占位链 /#settings 带 #——不入路径抽取集
+            got = set(re.findall(r'href="(/[^"#?]*)"', m.group(1)))
             self.assertEqual(got, NAV_WANT,
                              name + " 导航漂移: " + str(got ^ NAV_WANT))
 

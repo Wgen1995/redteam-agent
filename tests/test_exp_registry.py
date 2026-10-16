@@ -182,13 +182,14 @@ class TestWiringV09d(unittest.TestCase):
         self.assertEqual(_tree_bytes(os.path.join(REPO, "experiments")), repo_before)
 
     def test_page_has_experiments_section(self):
-        """metrics.html：「预登记实验」小节节点+空登记文案（无登记显示）。"""
+        """metrics.html：「提前登记实验」小节节点+空登记文案（无登记显示）。"""
         p = os.path.join(CLI, "webui", "static", "metrics.html")
         with open(p, encoding="utf-8") as f:
             src = f.read()
         self.assertIn('id="experiments"', src)
-        self.assertIn("无预登记实验", src)
-        self.assertIn("预登记实验", src)
+        # 文案随 v0.9d 收口批人话律词表：预登记→提前登记
+        self.assertIn("无提前登记实验", src)
+        self.assertIn("提前登记实验", src)
 
 
 class ServerBaseV09d(unittest.TestCase):

@@ -121,6 +121,12 @@ def evidence_view(goal_dir):
             "raw_excerpt": r[tei["raw_excerpt"]], "created": r[tei["created"]],
             "vuln_ref": frow[tf["vuln_ref"]] if frow else "",
             "verdict": verdicts.get(r[0], ""),
+            # v0.9d 收口批（主会话裁决①）：挂接发现行就在手边——只读带出四字段，
+            # 供总览发现流 severity 徽章/高危置顶用（finding-stream-priority 规格）。
+            "finding_title": frow[tf["title"]] if frow else "",
+            "finding_impact": frow[tf["impact"]] if frow else "",
+            "finding_status": frow[tf["status"]] if frow else "",
+            "finding_asset": frow[tf["affected_asset_id"]] if frow else "",
         })
     stats = {"cards": len(cards), "unprobed": sum(1 for c in cards if not c["verdict"])}
     for k in VERDICT_KEYS:

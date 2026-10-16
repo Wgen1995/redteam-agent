@@ -1,9 +1,9 @@
 "use strict";
-/* tanyin-web status.js · 状态语义单源（v0.9d ZhulongFire 换肤批）
+/* tanyin-web status.js · 状态语义单源（v0.9d 收口批切全站外链）
    语义照 ARTEX status.ts「状态先讲清语义边界再上色」——抄语义不抄代码：
-   九门门态 / 证据重放态 / 矩阵格态 → 中文标签+tone 一处定义，五页共用。
-   本文件即单源；五页 <head> 内嵌字节级副本（tests/test_v09d_skin.py 字节钉同步——
-   常驻 0.9c 老进程无 /status.js 路由，页面必须完全自包含，不得外链引用本文件）。 */
+   九门门态 / 证据重放态 / 矩阵格态 → 中文标签+tone 一处定义，七页共用。
+   本文件即单源；页面 <head> 外链引用（URL=/status.js，
+   server.py 白名单句柄字节级伺服本文件——E3 评审 F2 裁决）。 */
 
 var TY = window.TY || {};
 
@@ -38,7 +38,7 @@ TY.REPLAY_STATE = {
 
 /* 矩阵格态：空格=欠账（覆盖热图三态语义） */
 TY.CELL_STATE = {
-  "cold": { label: "已置格", tone: "ok" },
+  "cold": { label: "已测格", tone: "ok" },
   "frozen": { label: "冻结格", tone: "info" },
   "empty": { label: "欠账空格", tone: "bad" }
 };
@@ -85,5 +85,10 @@ TY.failText = function (err) {
   return "加载失败：" + err + "（自动重试，画面保留上次数据）";
 };
 
-/* 载入即恢复主题（内嵌于 <head>，早于正文绘制——深色用户不白闪） */
+/* 载入即恢复主题（<head> 外链早于正文绘制——深色用户不白闪）。
+   v0.9d 收口批顺修：此前 bootTheme() 只调用未定义，每页尾部抛 TypeError。 */
+TY.bootTheme = function () {
+  return TY.applyTheme(TY.savedTheme());
+};
+
 TY.bootTheme();

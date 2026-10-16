@@ -3,8 +3,9 @@
 
 python3 -m unittest tests.test_v09d_skin
 依据 docs/superpowers/plans/2026-10-15-v09d-ui.md Ship U + docs/design/tanyin-product-v1.md 界面基线。
-约束铁律：页面完全自包含（常驻 0.9c 老进程无 /status.js 路由——五页内嵌字节级副本）、
-零框架零 CDN 零外域、浅色默认+深色镜像（localStorage 记忆）、动效全站≤3 处、只读投影零写入。
+约束铁律（v0.9d 收口批 E3 F2 裁决后）：status.js 全站外链（页面 <head> 引用 /status.js 恰一次，
+server 白名单句柄字节级伺服单源——内嵌副本纪律退役）、零框架零 CDN 零外域、
+浅色默认+深色镜像（localStorage 记忆）、动效全站≤3 处、只读投影零写入。
 """
 import os
 import re
@@ -95,25 +96,24 @@ class TestStatusJsSingleSource(unittest.TestCase):
 
 
 class TestEmbeddedCopySync(unittest.TestCase):
-    """字节钉：五页内嵌 status.js 副本与单源文件全文字节一致（防漂移）。"""
+    """外链钉（v0.9d 收口批 E3 评审 F2 裁决——内嵌字节钉退役）：
+    五页引用 /status.js 存在+唯一+在 <head>（server 侧已有字节伺服，
+    磁盘=served 的漂移钉见 tests/test_v09d_closeout.py）。"""
 
-    def test_embedded_equals_file_on_all_pages(self):
-        want = _status_js()
+    def test_reference_once_in_head_on_all_pages(self):
         for name in PAGES:
             src = _src(name)
-            self.assertIn(BEGIN_MARK, src, name + " 缺内嵌起点标记")
-            self.assertIn(END_MARK, src, name + " 缺内嵌终点标记")
-            self.assertEqual(src.count(BEGIN_MARK), 1, name + " 内嵌段不唯一")
-            seg = src.split(BEGIN_MARK, 1)[1].split(END_MARK, 1)[0]
-            self.assertTrue(seg.startswith("\n"), name + " BEGIN 标记后应换行")
-            self.assertTrue(seg.endswith("\n"), name + " END 标记前应换行")
-            self.assertEqual(seg[1:], want,
-                             name + " 内嵌副本与 status.js 字节漂移（改单源须五页同步）")
+            head = src.split("</head>")[0]
+            self.assertEqual(head.count('<script src="/status.js"></script>'), 1,
+                             name + " 须在 <head> 外链 /status.js 恰一次")
+            self.assertEqual(src.count("<script src="), 1,
+                             name + " 只许 status.js 一支外链脚本")
 
-    def test_no_script_src_reference(self):
-        """自包含律：老进程无 /status.js 路由——页面不得外链引用单源文件。"""
+    def test_no_embedded_copy_left(self):
+        """内嵌副本纪律退役后的反向钉：标记残留=回潮。"""
         for name in PAGES:
-            self.assertNotIn('src="/status.js"', _src(name), name)
+            self.assertNotIn(BEGIN_MARK, _src(name), name + " 内嵌副本回潮")
+            self.assertNotIn(END_MARK, _src(name), name)
 
 
 class TestZhulongFireSkin(unittest.TestCase):
@@ -268,8 +268,9 @@ class TestMetricsExperimentsUntouched(unittest.TestCase):
     def test_experiments_section_kept(self):
         src = _src("metrics.html")
         self.assertIn('id="experiments"', src)
-        self.assertIn("无预登记实验", src)
-        self.assertIn("预登记实验", src)
+        # 文案随 v0.9d 收口批人话律词表：预登记→提前登记
+        self.assertIn("无提前登记实验", src)
+        self.assertIn("提前登记实验", src)
 
 
 if __name__ == "__main__":

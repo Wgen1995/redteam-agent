@@ -411,7 +411,11 @@ class TestPagesV09b(Base):
     def test_zero_framework_zero_cdn(self):
         for name in PAGES:
             src = self._src(name)
-            self.assertNotIn("<script src=", src, name)       # 无外链脚本
+            # v0.9d 收口批（E3 F2）：唯一外链=/status.js（server 字节级伺服）
+            self.assertEqual(src.count('<script src="/status.js"></script>'),
+                             1, name)
+            self.assertEqual(src.count("<script src="), 1,
+                             name + " 只许 status.js 一支外链")
             self.assertNotIn("https://", src, name)           # 无 CDN/外域
             # W3C SVG 命名空间是合法内联常量（test_viz 同款豁免）
             self.assertNotIn("http://", src.replace("http://www.w3.org", ""), name)

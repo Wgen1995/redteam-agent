@@ -5,34 +5,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>探隐观察面 · 十边图 tanyin-web v0.9d</title>
 <style>
-  /* ZhulongFire 皮肤：浅色默认 + 深色镜像（变量同名成对，切 html[data-theme]） */
-  :root { --bg:#f6f8fb; --card:#ffffff; --ink:#182230; --dim:#5c6b80;
-          --line:#d9e1ec; --accent:#2563EB; --accent-ink:#ffffff;
+  /* ZhulongFire 皮肤 v2（v0.9d 收口批）：12 级灰阶 --g1(最浅)→--g12(最深)，
+     深主题镜像（g1 最深→g12 最浅——索引=离背景近远，两主题同语义）；
+     灰系核心变量挂灰阶；圆角半径 8px 统一令牌。 */
+  :root { --g1:#ffffff; --g2:#f6f8fb; --g3:#eef2f7; --g4:#e3e9f2;
+          --g5:#d9e1ec; --g6:#c6d0df; --g7:#a5b1c4; --g8:#8593a8;
+          --g9:#5c6b80; --g10:#46536a; --g11:#2e3949; --g12:#182230;
+          --radius:8px;
+          --bg:var(--g2); --card:var(--g1); --ink:var(--g12); --dim:var(--g9);
+          --line:var(--g5); --accent:#2563EB; --accent-ink:#ffffff;
           --soft:#e9effd; --ok:#157347; --bad:#d92d20; --warn:#b54708;
-          --idle:#8593a8; --skeleton:#e3e9f2; }
-  html[data-theme="dark"] { --bg:#0d1320; --card:#151d2e; --ink:#e8eef8;
-          --dim:#8fa0b8; --line:#2a3752; --accent:#7aa5ff; --accent-ink:#0b1220;
+          --idle:var(--g8); --skeleton:var(--g4); }
+  html[data-theme="dark"] { --g1:#0d1320; --g2:#151d2e; --g3:#1c2740;
+          --g4:#232f4d; --g5:#2a3752; --g6:#3a4867; --g7:#4d5c80;
+          --g8:#66759a; --g9:#8fa0b8; --g10:#b9c4d8; --g11:#d4dcea;
+          --g12:#e8eef8;
+          --radius:8px;
+          --bg:var(--g1); --card:var(--g2); --ink:var(--g12); --dim:var(--g9);
+          --line:var(--g5); --accent:#7aa5ff; --accent-ink:#0b1220;
           --soft:#1d2a47; --ok:#3ecf8e; --bad:#ff7a70; --warn:#f0b429;
-          --idle:#66759a; --skeleton:#1e2a44; }
+          --idle:var(--g8); --skeleton:var(--g3); }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--ink);
          font:14px/1.5 "PingFang SC","Hiragino Sans GB",Microsoft YaHei,sans-serif; }
   a { color:var(--accent); }
-  header { display:flex; align-items:baseline; flex-wrap:wrap; gap:6px 16px;
-           padding:14px 22px; border-bottom:1px solid var(--line); }
-  header h1 { font-size:18px; margin:0; letter-spacing:1px; }
+  /* 侧栏骨架（ui-design-v1 冻结）：左三分组 看战况/看战果/管战场
+     + 顶栏（战局切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
+  .side-check { display:none; }
+  #shell { display:grid; grid-template-columns:190px 1fr; min-height:100vh; }
+  #side { padding:14px 10px; border-right:1px solid var(--line);
+          background:var(--card); }
+  #side .brand { font-size:15px; font-weight:600; letter-spacing:2px;
+                 padding:2px 10px 12px; }
+  .nav-group { margin-bottom:14px; }
+  .nav-group h3 { font-size:11px; color:var(--dim); font-weight:600;
+                  letter-spacing:2px; margin:0 0 4px; padding:0 10px; }
+  #side nav a { display:block; padding:6px 10px; font-size:13px;
+                color:var(--dim); text-decoration:none; white-space:nowrap;
+                border-radius:var(--radius); }
+  #side nav a:hover { color:var(--accent); background:var(--soft); }
+  #side nav a.here { color:var(--accent); background:var(--soft);
+                     font-weight:600; }
+  #topbar { display:flex; align-items:baseline; flex-wrap:wrap;
+            gap:6px 14px; padding:12px 22px; border-bottom:1px solid var(--line);
+            background:var(--card); }
+  #topbar h1 { font-size:18px; margin:0; letter-spacing:1px; }
   .page-sub { flex-basis:100%; margin:0; color:var(--dim); font-size:12px; }
-  header nav { display:flex; gap:2px 12px; font-size:12px; margin-left:auto; }
-  header nav a { color:var(--dim); text-decoration:none; white-space:nowrap; }
-  header nav a:hover { color:var(--accent); }
-  header nav a.here { color:var(--accent); border-bottom:2px solid var(--accent);
-                      font-weight:600; }
+  #battle-switch { margin-left:auto; font:inherit; font-size:12px;
+                   padding:3px 8px; border:1px solid var(--line);
+                   border-radius:var(--radius); background:var(--card);
+                   color:var(--ink); }
+  #side-toggle { display:none; font:inherit; font-size:12px; padding:3px 10px;
+                 cursor:pointer; border:1px solid var(--line);
+                 border-radius:var(--radius); background:var(--card);
+                 color:var(--ink); }
   #theme-toggle { font:inherit; font-size:12px; padding:3px 12px; cursor:pointer;
-                  border:1px solid var(--line); border-radius:14px;
+                  border:1px solid var(--line); border-radius:var(--radius);
                   background:var(--card); color:var(--ink); }
   #theme-toggle:hover { border-color:var(--accent); color:var(--accent); }
+  @media (max-width:920px) {
+    #shell { grid-template-columns:1fr; }
+    #side { display:none; }
+    #side-toggle { display:inline-block; }
+    .side-check:checked ~ #shell #side { display:block; border-right:none;
+                                         border-bottom:1px solid var(--line); }
+  }
   main { padding:18px 22px; max-width:1200px; }
-  section { background:var(--card); border:1px solid var(--line); border-radius:8px;
+  section { background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
             padding:14px 16px; margin-bottom:16px; }
   section h2 { font-size:13px; margin:0 0 10px; color:var(--dim);
                font-weight:600; letter-spacing:2px; }
@@ -43,7 +82,7 @@
   .statebox[data-state="loading"] .state-msg { display:block; }
   .statebox[data-state="empty"] .state-msg { display:block; }
   .statebox[data-state="error"] .state-msg { display:block; color:var(--bad); }
-  .skeleton { display:none; height:12px; border-radius:4px;
+  .skeleton { display:none; height:12px; border-radius:calc(var(--radius)/2);
               background:var(--skeleton); margin:6px 0; }
   .statebox[data-state="loading"] .skeleton { display:block; }
   .skeleton.sk-a { width:55%; }
@@ -62,116 +101,45 @@
                  color:var(--dim); align-items:center; }
   #edge-legend .item { display:inline-flex; align-items:center; gap:5px; }
   #edge-legend svg { display:block; }
-  #graph { width:100%; background:var(--bg); border-radius:6px; display:block; }
+  #graph { width:100%; background:var(--bg); border-radius:var(--radius); display:block; }
   #detail { min-height:40px; color:var(--dim); font-size:13px; margin-top:10px; }
   .node { cursor:pointer; }
   .node text { font:12px ui-monospace,Menlo,Consolas,monospace; }
   .node.candidate { opacity:.45; }
   .layer-head { font:11px ui-monospace,Menlo,Consolas,monospace; }
 </style>
-<script>
-/* STATUS-JS:BEGIN */
-"use strict";
-/* tanyin-web status.js · 状态语义单源（v0.9d ZhulongFire 换肤批）
-   语义照 ARTEX status.ts「状态先讲清语义边界再上色」——抄语义不抄代码：
-   九门门态 / 证据重放态 / 矩阵格态 → 中文标签+tone 一处定义，五页共用。
-   本文件即单源；五页 <head> 内嵌字节级副本（tests/test_v09d_skin.py 字节钉同步——
-   常驻 0.9c 老进程无 /status.js 路由，页面必须完全自包含，不得外链引用本文件）。 */
-
-var TY = window.TY || {};
-
-/* 九门：id+中文名 —— 与 phases/phases.yaml 的 states 全序 + gates.title 一致 */
-TY.NINE_GATES = [
-  { id: "P0", name: "授权门" },
-  { id: "P1", name: "测绘" },
-  { id: "P2", name: "规划" },
-  { id: "P3", name: "演进循环" },
-  { id: "P4", name: "汇总" },
-  { id: "P5", name: "报告" },
-  { id: "P5.5", name: "签发门" },
-  { id: "P6.0", name: "清理门" },
-  { id: "P6", name: "沉淀" }
-];
-
-/* 门态：过门=绿 / 拦下=红 / 未到=灰（label=单字徽章文案） */
-TY.GATE_STATE = {
-  "PASS": { label: "过", tone: "ok" },
-  "FAIL": { label: "拦", tone: "bad" },
-  "PENDING": { label: "待", tone: "idle" }
-};
-
-/* 证据重放态：空串=未重放（timeline 无对应 replay-probe 行） */
-TY.REPLAY_STATE = {
-  "reproduced": { label: "已复现", tone: "ok" },
-  "not-reproduced": { label: "未复现", tone: "bad" },
-  "manual": { label: "人工", tone: "warn" },
-  "env-diff": { label: "环境差异", tone: "warn" },
-  "": { label: "未重放", tone: "idle" }
-};
-
-/* 矩阵格态：空格=欠账（覆盖热图三态语义） */
-TY.CELL_STATE = {
-  "cold": { label: "已置格", tone: "ok" },
-  "frozen": { label: "冻结格", tone: "info" },
-  "empty": { label: "欠账空格", tone: "bad" }
-};
-
-/* 主题：浅色默认 + 深色镜像（CSS 变量同名成对）；localStorage 记忆——偏好只存本浏览器 */
-TY.THEME_KEY = "tanyin-theme";
-
-TY.applyTheme = function (theme) {
-  var t = theme === "dark" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", t);
-  return t;
-};
-
-TY.savedTheme = function () {
-  try { return window.localStorage.getItem(TY.THEME_KEY); }
-  catch (err) { return null; }               /* 隐私模式禁存：回浅色默认 */
-};
-
-TY.toggleTheme = function () {
-  var now = document.documentElement.getAttribute("data-theme") === "dark"
-    ? "light" : "dark";
-  TY.applyTheme(now);
-  try { window.localStorage.setItem(TY.THEME_KEY, now); }
-  catch (err) { /* 存不进也照样换肤 */ }
-  return now;
-};
-
-TY.syncThemeButton = function (btn) {
-  if (!btn) { return; }
-  var dark = document.documentElement.getAttribute("data-theme") === "dark";
-  btn.textContent = dark ? "浅色" : "深色";
-  btn.setAttribute("aria-label", dark ? "切换到浅色主题" : "切换到深色主题");
-};
-
-/* 四态纪律：骨架/加载/空/错误 —— 一处实现五页共用（骨架=静默灰条占位，零动效） */
-TY.setState = function (box, state, text) {
-  if (!box) { return null; }
-  box.setAttribute("data-state", state);
-  if (text !== undefined && text !== null) { box.textContent = text; }
-  return box;
-};
-
-TY.failText = function (err) {
-  return "加载失败：" + err + "（自动重试，画面保留上次数据）";
-};
-
-/* 载入即恢复主题（内嵌于 <head>，早于正文绘制——深色用户不白闪） */
-TY.bootTheme();
-/* STATUS-JS:END */
-</script>
+<script src="/status.js"></script>
 </head>
 <body>
-<header>
-  <h1>十边图</h1>
-  <p class="page-sub">你在看什么：这一仗打出来的所有对象（目标→意图→资产/凭据→事实→发现→证据）之间谁连着谁——十种连线各一色，点节点看详情。</p>
-  <nav>
-    <a href="/">战局总览</a><a href="/activity">活动流</a><a href="/session">会话</a><a href="/coverage">热图</a><a class="here" href="/graph">十边图</a><a href="/evidence">证据卡</a><a href="/metrics">度量</a><a href="/experiments">实验</a>
-  </nav>
-  <button id="theme-toggle" type="button">深色</button>
-</header>
+<input type="checkbox" id="side-check" class="side-check" aria-hidden="true">
+<div id="shell">
+  <aside id="side">
+    <div class="brand">探隐</div>
+    <nav>
+      <div class="nav-group">
+        <h3>看战况</h3>
+        <a href="/">总览</a><a href="/activity">活动</a><a href="/session">会话</a><a href="/coverage">热图</a><a class="here" href="/graph">十边</a><a href="/evidence">证据</a>
+      </div>
+      <div class="nav-group">
+        <h3>看战果</h3>
+        <a href="/metrics">度量</a><a href="/experiments">实验</a>
+      </div>
+      <div class="nav-group">
+        <h3>管战场</h3>
+        <a href="/#settings">设置（占位）</a>
+      </div>
+    </nav>
+  </aside>
+  <div id="main-col">
+    <header id="topbar">
+      <label for="side-check" id="side-toggle">☰ 目录</label>
+      <h1>十边图</h1>
+      <p class="page-sub">你在看什么：这一仗打出来的所有对象（目标→意图→资产/凭据→事实→发现→证据）之间谁连着谁——十种连线各一色，点节点看详情。</p>
+      <select id="battle-switch" aria-label="切换战局（跳会话页回放）">
+        <option value="">战局切换…</option>
+      </select>
+      <button id="theme-toggle" type="button">深色</button>
+    </header>
 <main>
   <section>
     <h2>图谱统计</h2>
@@ -201,6 +169,8 @@ TY.bootTheme();
   </section>
 </main>
 <footer>tanyin-web v0.9d · 十边图只读投影（血缘边账 · 十种 kind · 零写入账本）</footer>
+  </div><!-- /main-col -->
+</div><!-- /shell -->
 <script>
 "use strict";
 /* 数据面：/api/graph.json（节点 id+kind+layer / 边 10 kind / edge_style 着色单源）；
@@ -234,6 +204,24 @@ function setBox(box, stateName, msgText) {
 }
 
 /* —— 主题切换钮（单源逻辑在 status.js；换肤后重画取色） —— */
+/* —— 顶栏战局切换（选项来自 /api/session.json；选中跳会话页回放） —— */
+var battleSwitch = document.getElementById("battle-switch");
+if (battleSwitch) {
+  fetch("/api/session.json").then(function (r) { return r.json(); })
+    .then(function (doc) {
+      (doc.battles || []).forEach(function (b) {
+        var o = document.createElement("option");
+        o.value = String(b.n);
+        o.textContent = b.id;
+        battleSwitch.appendChild(o);
+      });
+      if (doc.battle && doc.battle.n) { battleSwitch.value = String(doc.battle.n); }
+    }).catch(function () { /* 战例表拉不到：切换器保持占位项 */ });
+  battleSwitch.addEventListener("change", function () {
+    if (this.value) { window.location.href = "/session?battle=" + this.value; }
+  });
+}
+
 var themeBtn = document.getElementById("theme-toggle");
 TY.syncThemeButton(themeBtn);
 themeBtn.addEventListener("click", function () {

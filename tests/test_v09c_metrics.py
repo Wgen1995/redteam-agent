@@ -367,7 +367,9 @@ class TestPageV09c(unittest.TestCase):
 
     def test_zero_framework_zero_cdn(self):
         src = self._src()
-        self.assertNotIn("<script src=", src)
+        # v0.9d 收口批（E3 F2）：唯一外链=/status.js（server 字节级伺服）
+        self.assertEqual(src.count('<script src="/status.js"></script>'), 1)
+        self.assertEqual(src.count("<script src="), 1, "只许 status.js 一支外链")
         self.assertNotIn("https://", src)
         self.assertNotIn("http://", src.replace("http://www.w3.org", ""))
 
