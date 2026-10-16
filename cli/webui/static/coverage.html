@@ -285,7 +285,7 @@ function renderStats(st) {
       content.appendChild(span);
     });
   var cov = el("span");
-  cov.textContent = "覆盖率 " + pct + "% · 未测【待定】 " + st.empty +
+  cov.textContent = "覆盖率 " + pct + "% · 未测项 " + st.empty +
                     " / 共 " + st.cells;
   content.appendChild(cov);
   setBox(box, "ready");

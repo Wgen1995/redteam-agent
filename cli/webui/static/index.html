@@ -257,7 +257,7 @@
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
       <p class="state-msg">载入中…</p>
-      <a class="kpi" href="/coverage#f=empty"><span class="kpi-v" id="kpi-empty">—</span><span class="kpi-t">未测【待定】（查看测试覆盖）</span></a>
+      <a class="kpi" href="/coverage#f=empty"><span class="kpi-v" id="kpi-empty">—</span><span class="kpi-t">未测项（查看测试覆盖）</span></a>
       <a class="kpi" href="/evidence"><span class="kpi-v" id="kpi-cards">—</span><span class="kpi-t">证据总数</span></a>
       <a class="kpi" href="/evidence#f=reproduced"><span class="kpi-v" id="kpi-reproduced">—</span><span class="kpi-t">已复现（点击筛选）</span></a>
       <a class="kpi" href="/evidence#f=not-reproduced"><span class="kpi-v" id="kpi-nr">—</span><span class="kpi-t">未复现（点击筛选）</span></a>
@@ -414,7 +414,7 @@ function renderBattle(s, ev) {
 
 /* —— KPI（可点过滤跳转：点数字带 #f= 过滤参跳对应页） —— */
 var KPI_DEFS = [
-  { id: "kpi-empty", href: "/coverage#f=empty", t: "未测【待定】（查看测试覆盖）", v: "—" },
+  { id: "kpi-empty", href: "/coverage#f=empty", t: "未测项（查看测试覆盖）", v: "—" },
   { id: "kpi-cards", href: "/evidence", t: "证据总数", v: "—" },
   { id: "kpi-reproduced", href: "/evidence#f=reproduced", t: "已复现（点击筛选）", v: "—" },
   { id: "kpi-nr", href: "/evidence#f=not-reproduced", t: "未复现（点击筛选）", v: "—" },

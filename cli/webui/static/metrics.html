@@ -190,7 +190,7 @@
     <header id="topbar">
       <label for="side-check" id="side-toggle">☰ 目录</label>
       <h1>战报</h1>
-      <p class="page-sub">你在看什么：AI 对靶场预埋漏洞的检出情况——每场测试的【待定】曲线（预埋漏洞命中比例）、对照组与试验组对比（对照=不带预置指令 / 试验=带预置指令）、逐场明细。数字全部来自结算记录。</p>
+      <p class="page-sub">你在看什么：AI 对靶场预埋漏洞的检出情况——每场测试的召回率曲线（预埋漏洞命中比例）、对照组与试验组对比（对照=不带预置指令 / 试验=带预置指令）、逐场明细。数字全部来自结算记录。</p>
       <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
         <option value="">切换任务…</option>
       </select>
@@ -198,7 +198,7 @@
     </header>
 <main>
   <section>
-    <h2>统计 · 各组平均【待定】 / 合并结果 · 差异检验</h2>
+    <h2>统计 · 各组平均召回率 / 合并结果 · 差异检验</h2>
     <div id="stats" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -211,7 +211,7 @@
     <div id="experiments" class="empty">载入中…</div>
   </section>
   <section>
-    <h2>【待定】曲线 · 横轴=测试场次 · 纵轴=【待定】</h2>
+    <h2>召回率曲线 · 横轴=测试场次 · 纵轴=召回率</h2>
     <div id="chart-box" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
@@ -320,7 +320,7 @@ function renderStats(data) {
     var c = h("div", "card");
     var v = h("div", "v" + (arm === TREAT ? " gold" : ""));
     v.textContent = fmt(st.mean, 3);
-    c.innerHTML = '<div class="t">' + ARM_CN[arm] + '组 · 平均【待定】（' + st.n + ' 场）</div>';
+    c.innerHTML = '<div class="t">' + ARM_CN[arm] + '组 · 平均召回率（' + st.n + ' 场）</div>';
     c.appendChild(v);
     var s = h("div", "s");
     s.textContent = "区间 " + fmt(st.min, 3) + " ~ " + fmt(st.max, 3);
@@ -384,7 +384,7 @@ function renderChart(battles) {
       g = el("circle", {cx: p[0], cy: p[1], r: 4, fill: armColor(arm)});
       var title = el("title", {});
       title.textContent = p[2].id + " " + (ARM_CN[p[2].arm] || "未标记") +
-        " 【待定】=" + fmt(p[2].recall) + "（找到 " + p[2].hits + "/预埋 " +
+        " 召回率=" + fmt(p[2].recall) + "（找到 " + p[2].hits + "/预埋 " +
         p[2].total + "）";
       g.appendChild(title);
       svg.appendChild(g);
@@ -394,7 +394,7 @@ function renderChart(battles) {
     if (b.arm !== null && b.arm !== undefined) { return; }
     g = el("circle", {cx: x(idx), cy: y(b.recall), r: 3.5, fill: armColor(null)});
     var title = el("title", {});
-    title.textContent = b.id + " 未标记组 【待定】=" + fmt(b.recall);
+    title.textContent = b.id + " 未标记组 召回率=" + fmt(b.recall);
     g.appendChild(title);
     svg.appendChild(g);
   });
@@ -404,7 +404,7 @@ function renderTable(battles) {
   var tb = document.getElementById("table");
   tb.innerHTML = "";
   var head = document.createElement("thead");
-  head.innerHTML = "<tr><th>场次</th><th>分组</th><th>【待定】</th><th>找到/预埋数</th>" +
+  head.innerHTML = "<tr><th>场次</th><th>分组</th><th>召回率</th><th>找到/预埋数</th>" +
     "<th>漏了什么</th><th>逐题对照</th><th>防篡改校验</th></tr>";
   tb.appendChild(head);
   var body = document.createElement("tbody");

@@ -119,21 +119,124 @@
            background:color-mix(in srgb, currentColor 12%, var(--card)); }
   #sse-state { font-size:12px; color:var(--dim); }
   #sse-state.open { color:var(--ok); }
-  /* 页内 */
+  /* 页内 · 统计与图例 */
   #stats .content { font-size:13px; color:var(--dim); }
   #stats .num { color:var(--accent); font-weight:600; }
   #edge-legend { display:flex; flex-wrap:wrap; gap:8px 16px; font-size:12px;
                  color:var(--dim); align-items:center; }
   #edge-legend .item { display:inline-flex; align-items:center; gap:4px; }
   #edge-legend svg { display:block; }
-  #graph { width:100%; background:var(--bg); border-radius:var(--radius);
-           display:block; }
-  #detail { min-height:40px; color:var(--dim); font-size:13px;
-            margin-top:12px; }
-  .node { cursor:pointer; }
-  .node text { font-family:var(--font-mono); font-size:12px; }
-  .node.candidate { opacity:.45; }
-  .layer-head { font-family:var(--font-mono); font-size:12px; }
+  /* ── 战场画布（画布段重做）：画布=地图，手写 pan/zoom，零库零动效 ── */
+  #graph { position:relative; width:100%; height:72vh; min-height:480px;
+           overflow:hidden; background:var(--bg);
+           border:1px solid var(--line); border-radius:var(--radius);
+           cursor:grab; touch-action:none; user-select:none; }
+  #graph.grabbing { cursor:grabbing; }
+  #world { position:absolute; top:0; left:0; transform-origin:0 0;
+           pointer-events:none;
+           background-image:radial-gradient(circle, var(--g4) 1px, transparent 1px);
+           background-size:24px 24px; }
+  #edge-layer { position:absolute; top:0; left:0; pointer-events:none; }
+  .col-head { position:absolute; font-size:12px; font-weight:600;
+              color:var(--dim); letter-spacing:2px; white-space:nowrap; }
+  /* 节点=卡：徽章+编号角标+完整标题（两行截断）+状态色点；未证实整体淡显 */
+  .node-card { position:absolute; width:240px; height:84px; padding:8px 12px;
+               pointer-events:auto; overflow:hidden; cursor:pointer;
+               background:var(--card); border:1px solid var(--line);
+               border-radius:var(--radius); box-shadow:var(--shadow-1); }
+  .node-card:hover { border-color:var(--accent); }
+  .node-card.selected { box-shadow:var(--shadow-2), 0 0 0 2px var(--accent); }
+  .node-card.unverified { opacity:.45; }
+  .nc-head { display:flex; align-items:center; gap:4px; }
+  .nc-badge { font-size:12px; padding:0 8px; line-height:20px;
+              white-space:nowrap; color:var(--dim);
+              border-radius:calc(var(--radius)/2);
+              background:color-mix(in srgb, currentColor 12%, var(--card)); }
+  .nc-badge.k-G { color:var(--accent); }
+  .nc-badge.k-INT, .nc-badge.k-CRED { color:var(--warn); }
+  .nc-badge.k-FD { color:var(--bad); }
+  .nc-badge.k-EV { color:var(--ok); }
+  .nc-impact { font-size:12px; padding:0 8px; line-height:20px;
+               white-space:nowrap; color:var(--idle);
+               border-radius:calc(var(--radius)/2);
+               background:color-mix(in srgb, currentColor 12%, var(--card)); }
+  .nc-impact[data-impact="高"] { color:var(--bad); }
+  .nc-impact[data-impact="中"] { color:var(--warn); }
+  .nc-impact[data-impact="低"] { color:var(--idle); }
+  .nc-num { margin-left:auto; font-family:var(--font-mono); font-size:12px;
+            color:var(--dim); white-space:nowrap; }
+  .nc-dot { width:8px; height:8px; flex:none; border-radius:50%;
+            background:var(--idle); }
+  .nc-dot[data-status="已完成"] { background:var(--ok); }
+  .nc-dot[data-status="进行中"] { background:var(--accent); }
+  .nc-dot[data-status="未证实"] { background:var(--warn); }
+  .nc-title { margin:4px 0 0; font-size:13px; line-height:20px; height:40px;
+              overflow:hidden; display:-webkit-box;
+              -webkit-box-orient:vertical; -webkit-line-clamp:2; }
+  /* 边名常显（缩放低于 0.4 隐藏避免糊） */
+  #edge-layer text.edge-label { font-family:var(--font-sans); font-size:12px;
+                                fill:var(--dim); stroke:var(--card);
+                                stroke-width:3; paint-order:stroke; }
+  #world.labels-off #edge-layer text.edge-label { display:none; }
+  /* 缩放控件（浮层） */
+  #canvas-tools { position:absolute; top:12px; left:12px; z-index:5;
+                  display:flex; align-items:center; gap:8px; }
+  #canvas-tools button { font:inherit; font-size:12px; padding:4px 8px;
+                         cursor:pointer; color:var(--ink);
+                         border:1px solid var(--line);
+                         border-radius:var(--radius);
+                         background:var(--card); box-shadow:var(--shadow-2); }
+  #canvas-tools button:hover { border-color:var(--accent); color:var(--accent); }
+  #zoom-level { font-family:var(--font-mono); font-size:12px;
+                color:var(--dim); padding:4px 8px;
+                border-radius:var(--radius); background:var(--card);
+                box-shadow:var(--shadow-2); }
+  /* 右下小地图：全节点缩影+当前视口框（点击跳转） */
+  #minimap { position:absolute; right:12px; bottom:12px; width:200px;
+             height:160px; z-index:5; overflow:hidden; cursor:pointer;
+             background:var(--card); border:1px solid var(--line);
+             border-radius:var(--radius); box-shadow:var(--shadow-2); }
+  #mini-nodes { position:absolute; top:0; left:0; right:0; bottom:0; }
+  .mdot { position:absolute; width:4px; height:4px; border-radius:50%;
+          pointer-events:none; background:var(--idle); }
+  .mdot.k-G { background:var(--accent); }
+  .mdot.k-INT, .mdot.k-CRED { background:var(--warn); }
+  .mdot.k-FD { background:var(--bad); }
+  .mdot.k-EV { background:var(--ok); }
+  #mini-view { position:absolute; pointer-events:none;
+               border:1px solid var(--accent);
+               background:color-mix(in srgb, var(--accent) 10%, transparent); }
+  /* 点卡=详情侧板：右侧滑出（动效预算已满——工艺令：零新增过渡，纯位移切换） */
+  #detail { position:absolute; top:0; right:0; bottom:0; width:340px;
+            max-width:80%; z-index:8; overflow-y:auto; padding:16px;
+            background:var(--card); border-left:1px solid var(--line);
+            box-shadow:var(--shadow-3); visibility:hidden;
+            transform:translateX(100%); }
+  #detail.open { visibility:visible; transform:translateX(0); }
+  .d-head { display:flex; align-items:center; gap:8px; }
+  .d-head .nc-num { font-size:15px; }
+  #detail-close { font:inherit; font-size:12px; padding:4px 8px;
+                  cursor:pointer; color:var(--ink);
+                  border:1px solid var(--line); border-radius:var(--radius);
+                  background:var(--card); }
+  #detail-close:hover { border-color:var(--accent); color:var(--accent); }
+  #d-title { font-size:15px; line-height:24px; margin:12px 0 0;
+             word-break:break-all; }
+  #d-meta { display:grid; grid-template-columns:64px 1fr; gap:4px 8px;
+            margin:12px 0 0; }
+  #d-meta dt { font-size:12px; color:var(--dim); }
+  #d-meta dd { margin:0; font-size:13px; display:flex;
+               align-items:center; gap:8px; }
+  .d-sub { font-size:12px; color:var(--dim); font-weight:600;
+           letter-spacing:1px; margin:16px 0 0; }
+  .d-edge { display:flex; align-items:center; gap:8px; padding:8px;
+            margin:4px 0 0; font-size:13px; cursor:pointer;
+            border:1px solid var(--line); border-radius:var(--radius); }
+  .d-edge:hover { border-color:var(--accent); }
+  .de-dir { flex:none; color:var(--dim); font-family:var(--font-mono); }
+  .de-kind { flex:none; font-size:12px; color:var(--accent); }
+  .de-node { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .d-empty { margin:4px 0 0; font-size:12px; color:var(--dim); }
   </style>
 <script src="/status.js"></script>
 </head>
@@ -161,7 +264,7 @@
     <header id="topbar">
       <label for="side-check" id="side-toggle">☰ 目录</label>
       <h1>攻击路线</h1>
-      <p class="page-sub">你在看什么：本次测试涉及的全部对象（目标→意图→资产/凭据→事实→发现→证据）及其关联关系——十种关系类型以线型与颜色区分，点击节点查看详情。</p>
+      <p class="page-sub">你在看什么：本次测试涉及的全部对象（目标→意图→资产/凭据→事实→发现→证据）及其关联关系——画布即战场地图：拖拽平移、滚轮缩放（10%~200%）、右下小地图点击跳转、全图按钮一览整战场；点节点卡在右侧看全部字段，未证实对象整体淡显。</p>
       <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
         <option value="">切换任务…</option>
       </select>
@@ -182,15 +285,37 @@
     <div id="edge-legend"></div>
   </section>
   <section>
-    <h2>分层布局（目标→意图→资产/凭据→事实→发现→证据）· AI 推测未经证实的节点以较低不透明度显示 · 点击节点查看详情</h2>
+    <h2>战场画布 · 拖拽平移 / 滚轮缩放 / 全图一览 · 点节点卡看详情（未证实整体淡显）</h2>
     <div id="graph-box" class="statebox" data-state="loading">
       <div class="skeleton sk-a"></div>
       <div class="skeleton sk-b"></div>
       <div class="skeleton sk-c"></div>
       <p class="state-msg">载入中…</p>
       <div class="content">
-        <svg id="graph" xmlns="http://www.w3.org/2000/svg"></svg>
-        <div id="detail">点节点看详情</div>
+        <div id="graph">
+          <div id="world"></div>
+          <div id="canvas-tools">
+            <button id="zoom-out" type="button" aria-label="缩小">−</button>
+            <span id="zoom-level">100%</span>
+            <button id="zoom-in" type="button" aria-label="放大">+</button>
+            <button id="zoom-fit" type="button" aria-label="全图一览">全图</button>
+          </div>
+          <div id="minimap" aria-label="小地图（点击跳转）">
+            <div id="mini-nodes"></div>
+            <div id="mini-view"></div>
+          </div>
+          <aside id="detail" data-node="" aria-hidden="true">
+            <header class="d-head">
+              <span id="d-badge" class="nc-badge"></span>
+              <span id="d-num" class="nc-num"></span>
+              <button id="detail-close" type="button" aria-label="关闭详情">×</button>
+            </header>
+            <h3 id="d-title"></h3>
+            <dl id="d-meta"></dl>
+            <h4 id="d-edge-title" class="d-sub">关联</h4>
+            <div id="d-edges"></div>
+          </aside>
+        </div>
       </div>
     </div>
   </section>
@@ -200,11 +325,26 @@
 </div><!-- /shell -->
 <script>
 "use strict";
-/* 数据面：/api/graph.json（节点 id+kind+layer / 边 10 kind / edge_style 着色单源）；
-   渲染面：vanilla SVG 静态分层布局（viz_render 同语义升级），色取皮肤变量，零框架零 CDN。 */
+/* 数据面：/api/graph.json（节点 num/badge/title/status/unverified/impact/layer
+   + 边 10 kind + edge_style 着色单源）；
+   渲染面：画布=地图（手写 pan/zoom + 全图 + 小地图 + 节点卡 + 详情侧板），
+   CSS transform + 原生事件，零框架零 CDN 零动效。只读——本页不改任何数据。 */
 var NS = "http://www.w3.org/2000/svg";
-var COL_W = 170, ROW_H = 34, TOP = 48, LEFT = 30;
+var ZOOM_MIN = 0.1, ZOOM_MAX = 2, LABEL_MIN = 0.4, ZOOM_STEP = 1.25;
+var CARD_W = 240, CARD_H = 84, COL_GAP = 64, ROW_H = 96, HEAD_H = 36, PAD = 24;
 var LAYER_NAMES = { 0: "目标", 1: "意图", 2: "资产/凭据", 3: "事实", 4: "发现", 5: "证据" };
+var KIND_CN = {
+  "spawns": "生成", "yields": "得出", "derived_from": "推导自",
+  "proves": "证明", "parent": "隶属于", "attack": "攻击路径",
+  "cross_ref": "交叉引用", "evidences": "证据支撑",
+  "supersedes": "取代", "scope-rel": "范围关系"
+};
+
+var viewport = document.getElementById("graph");
+var world = document.getElementById("world");
+var minimap = document.getElementById("minimap");
+var graph = null, lay = null, booted = false, selectedId = null;
+var view = { x: 0, y: 0, s: 1 };
 
 function svgEl(tag, attrs) {
   var n = document.createElementNS(NS, tag);
@@ -218,7 +358,7 @@ function el(tag, cls) {
   if (cls) { n.className = cls; }
   return n;
 }
-/* 文本一律 textContent 落节点——账本文本不当 HTML 解析（防注入） */
+/* 文本一律 textContent 落节点——数据文本不当 HTML 解析（防注入） */
 
 function cssVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -230,7 +370,14 @@ function setBox(box, stateName, msgText) {
   if (m && msgText) { m.textContent = msgText; }
 }
 
-/* —— 主题切换钮（单源逻辑在 status.js；换肤后重画取色） —— */
+function nodeById(id) {
+  if (!graph) { return null; }
+  for (var i = 0; i < graph.nodes.length; i++) {
+    if (graph.nodes[i].id === id) { return graph.nodes[i]; }
+  }
+  return null;
+}
+
 /* —— 顶栏任务切换（选项来自 /api/session.json；选中跳对话页） —— */
 var battleSwitch = document.getElementById("battle-switch");
 if (battleSwitch) {
@@ -249,32 +396,27 @@ if (battleSwitch) {
   });
 }
 
+/* —— 主题切换（单源逻辑在 status.js；本页配色全走 CSS 变量，换肤即生效） —— */
 var themeBtn = document.getElementById("theme-toggle");
 TY.syncThemeButton(themeBtn);
 themeBtn.addEventListener("click", function () {
   TY.toggleTheme();
   TY.syncThemeButton(themeBtn);
-  refresh();                                  /* SVG 重新取皮肤变量色 */
 });
-
-/* 连线关系中文短名（title=原始代号——第二落点） */
-var KIND_CN = {
-  "spawns": "生成", "yields": "得出", "derived_from": "推导自",
-  "proves": "证明", "parent": "隶属于", "attack": "攻击路径",
-  "cross_ref": "交叉引用", "evidences": "证据支撑",
-  "supersedes": "取代", "scope-rel": "范围关系"
-};
 
 function renderStats(st) {
   var box = document.getElementById("stats");
   var content = box.querySelector(".content");
   content.textContent = "";
-  var a = el("span", "num"), b = el("span", "num");
-  a.textContent = st.nodes; b.textContent = st.edges;
+  function num(v) { var s = el("span", "num"); s.textContent = v; return s; }
   content.appendChild(document.createTextNode("节点 "));
-  content.appendChild(a);
+  content.appendChild(num(st.nodes));
   content.appendChild(document.createTextNode(" · 连线 "));
-  content.appendChild(b);
+  content.appendChild(num(st.edges));
+  if (st.unverified) {
+    content.appendChild(document.createTextNode(" · 未证实 "));
+    content.appendChild(num(st.unverified));
+  }
   content.appendChild(document.createTextNode("（连线共十种类型）"));
   setBox(box, "ready");
 }
@@ -282,8 +424,7 @@ function renderStats(st) {
 function renderEdgeLegend(d) {
   var box = document.getElementById("edge-legend");
   box.textContent = "";
-  var kinds = Object.keys(d.edge_style).sort();
-  kinds.forEach(function (k) {
+  Object.keys(d.edge_style).sort().forEach(function (k) {
     var st = d.edge_style[k];
     var item = el("span", "item");
     var sw = svgEl("svg", { width: 34, height: 8 });
@@ -300,73 +441,419 @@ function renderEdgeLegend(d) {
   });
 }
 
+/* —— 分层布局：层=列（目标→…→证据 从左到右），层内按编号自然序叠放 —— */
 function layout(nodes) {
-  /* 静态分层：层=列，层内按 id 序叠放（确定性，无随机源） */
-  var byLayer = {}, pos = {}, maxRows = 1;
+  var byLayer = {}, pos = {}, counts = {}, maxRows = 1;
   nodes.forEach(function (n) {
-    (byLayer[n.layer] = byLayer[n.layer] || []).push(n);
+    var l = Number(n.layer) || 0;
+    (byLayer[l] = byLayer[l] || []).push(n);
   });
   Object.keys(byLayer).forEach(function (l) {
-    byLayer[l].sort(function (a, b) { return a.id < b.id ? -1 : 1; })
-      .forEach(function (n, i) {
-        pos[n.id] = [LEFT + Number(l) * COL_W + 10, TOP + i * ROW_H + 14];
-      });
-    maxRows = Math.max(maxRows, byLayer[l].length);
-  });
-  return { pos: pos, width: LEFT + 6 * COL_W, height: TOP + maxRows * ROW_H + 20 };
-}
-
-function renderGraph(d) {
-  var svg = document.getElementById("graph");
-  while (svg.firstChild) { svg.removeChild(svg.firstChild); }
-  var ink = cssVar("--ink"), dim = cssVar("--dim"), accent = cssVar("--accent");
-  var lay = layout(d.nodes);
-  svg.setAttribute("viewBox", "0 0 " + lay.width + " " + lay.height);
-  svg.setAttribute("height", lay.height);
-  Object.keys(LAYER_NAMES).forEach(function (l) {
-    var t = svgEl("text", { x: LEFT + Number(l) * COL_W + 10, y: 24,
-                            "class": "layer-head", fill: dim });
-    t.textContent = LAYER_NAMES[l] + "（" + l + "）";
-    svg.appendChild(t);
-  });
-  d.edges.forEach(function (e) {
-    var p1 = lay.pos[e.src], p2 = lay.pos[e.dst];
-    if (!p1 || !p2) { return; }              /* 端点不在节点集：跳画不跳数据 */
-    var st = d.edge_style[e.kind] || { color: accent, dash: "" };
-    var attrs = { x1: p1[0] + 6, y1: p1[1] + 4, x2: p2[0] - 6, y2: p2[1] + 4,
-                  stroke: st.color, "stroke-width": 1.5,
-                  "stroke-dasharray": st.dash || "none",
-                  opacity: .85 };
-    svg.appendChild(svgEl("line", attrs));
-  });
-  d.nodes.forEach(function (n) {
-    var p = lay.pos[n.id];
-    var g = svgEl("g", { "class": "node" + (n.candidate ? " candidate" : "") });
-    var dot = svgEl("circle", { cx: p[0], cy: p[1] + 4, r: 4,
-                                fill: n.candidate ? dim : accent });
-    var t = svgEl("text", { x: p[0] + 9, y: p[1] + 8, fill: n.candidate ? dim : ink });
-    t.textContent = n.kind + ":" + n.id;
-    g.appendChild(dot); g.appendChild(t);
-    g.addEventListener("click", function () {
-      document.getElementById("detail").textContent =
-        "节点 " + n.id + " · 类型 " + n.kind + " · 层 " + LAYER_NAMES[n.layer] +
-        (n.candidate ? " · AI 推测未经证实（显示较淡）" : "");
+    var col = byLayer[l];
+    col.sort(function (a, b) {
+      return String(a.num || a.id).localeCompare(String(b.num || b.id),
+                                                 "zh", { numeric: true });
     });
-    svg.appendChild(g);
+    var left = PAD + Number(l) * (CARD_W + COL_GAP);
+    col.forEach(function (n, i) { pos[n.id] = [left, HEAD_H + i * ROW_H]; });
+    counts[l] = col.length;
+    maxRows = Math.max(maxRows, col.length);
   });
+  return { pos: pos, counts: counts, maxRows: maxRows,
+           w: PAD * 2 + 6 * CARD_W + 5 * COL_GAP,
+           h: HEAD_H + maxRows * ROW_H + PAD };
 }
 
+/* 从卡中心朝对面走，求与卡边框（外扩 8px）的交点——边线不吃进卡身 */
+function borderPoint(cx, cy, tx, ty, hw, hh) {
+  var dx = tx - cx, dy = ty - cy;
+  var kx = Math.abs(dx) < 1e-6 ? 1e9 : hw / Math.abs(dx);
+  var ky = Math.abs(dy) < 1e-6 ? 1e9 : hh / Math.abs(dy);
+  var k = Math.min(kx, ky);
+  return [cx + dx * k, cy + dy * k];
+}
+
+function renderCard(n) {
+  var p = lay.pos[n.id];
+  var c = el("article", "node-card" + (n.unverified ? " unverified" : ""));
+  c.style.left = p[0] + "px";
+  c.style.top = p[1] + "px";
+  c.setAttribute("data-id", n.id);
+  c.setAttribute("data-kind", n.kind || "");
+  c.setAttribute("tabindex", "0");
+  c.setAttribute("role", "button");
+  c.setAttribute("aria-label",
+    (n.badge || n.kind || "") + " " + (n.num || n.id) + "：" + (n.title || ""));
+  var head = el("header", "nc-head");
+  var badge = el("span", "nc-badge k-" + (n.kind || ""));
+  badge.textContent = n.badge || n.kind || n.id;
+  head.appendChild(badge);
+  if (n.impact) {                              /* 发现卡：危级徽章（高红/中黄/低灰） */
+    var im = el("span", "nc-impact");
+    im.setAttribute("data-impact", n.impact);
+    im.title = "影响程度：" + n.impact;
+    im.textContent = n.impact;
+    head.appendChild(im);
+  }
+  var num = el("span", "nc-num");
+  num.textContent = n.num || n.id;
+  head.appendChild(num);
+  var dot = el("span", "nc-dot");
+  if (n.status) { dot.setAttribute("data-status", n.status); }
+  dot.title = n.status || "";
+  head.appendChild(dot);
+  c.appendChild(head);
+  var t = el("p", "nc-title");
+  t.textContent = n.title || "";
+  t.title = n.title || "";                     /* 截断省略的悬停兜底 */
+  c.appendChild(t);
+  return c;
+}
+
+function renderWorld(d) {
+  lay = layout(d.nodes);
+  world.textContent = "";
+  world.style.width = lay.w + "px";
+  world.style.height = lay.h + "px";
+  var svg = svgEl("svg", { id: "edge-layer", width: lay.w, height: lay.h,
+                           viewBox: "0 0 " + lay.w + " " + lay.h });
+  world.appendChild(svg);
+  /* 每型一色箭头（着色语义=数据面 edge_style 单源） */
+  var defs = svgEl("defs");
+  Object.keys(d.edge_style).forEach(function (k) {
+    var st = d.edge_style[k];
+    var mk = svgEl("marker", { id: "mk-" + k, viewBox: "0 0 10 10",
+      refX: 9, refY: 5, markerWidth: 9, markerHeight: 9, orient: "auto",
+      markerUnits: "userSpaceOnUse" });
+    mk.appendChild(svgEl("path", { d: "M0,0 L10,5 L0,10 Z", fill: st.color }));
+    defs.appendChild(mk);
+  });
+  svg.appendChild(defs);
+  var fallback = cssVar("--accent");
+  d.edges.forEach(function (e) {
+    var a = lay.pos[e.src], b = lay.pos[e.dst];
+    if (!a || !b) { return; }                  /* 端点不在节点集：跳画不跳数据 */
+    var st = d.edge_style[e.kind] || { color: fallback, dash: "" };
+    var c1 = [a[0] + CARD_W / 2, a[1] + CARD_H / 2];
+    var c2 = [b[0] + CARD_W / 2, b[1] + CARD_H / 2];
+    var p1 = borderPoint(c1[0], c1[1], c2[0], c2[1], CARD_W / 2 + 8, CARD_H / 2 + 8);
+    var p2 = borderPoint(c2[0], c2[1], c1[0], c1[1], CARD_W / 2 + 8, CARD_H / 2 + 8);
+    var line = svgEl("line", { x1: p1[0].toFixed(1), y1: p1[1].toFixed(1),
+                               x2: p2[0].toFixed(1), y2: p2[1].toFixed(1),
+                               stroke: st.color, "stroke-width": 1.5,
+                               opacity: .85 });
+    if (st.dash) { line.setAttribute("stroke-dasharray", st.dash); }
+    line.setAttribute("marker-end", "url(#mk-" + e.kind + ")");
+    svg.appendChild(line);
+    var label = svgEl("text", { x: ((p1[0] + p2[0]) / 2).toFixed(1),
+                                y: ((p1[1] + p2[1]) / 2 - 6).toFixed(1),
+                                "class": "edge-label", "text-anchor": "middle" });
+    label.textContent = KIND_CN[e.kind] || e.label || e.kind;
+    var tip = svgEl("title");
+    tip.textContent = e.kind;                  /* 原始代号——第二落点 */
+    label.appendChild(tip);
+    svg.appendChild(label);
+  });
+  Object.keys(LAYER_NAMES).forEach(function (l) {
+    var h = el("div", "col-head");
+    h.style.left = (PAD + Number(l) * (CARD_W + COL_GAP)) + "px";
+    h.style.top = "8px";
+    h.textContent = LAYER_NAMES[l] + " · " + (lay.counts[l] || 0);
+    world.appendChild(h);
+  });
+  d.nodes.forEach(function (n) { world.appendChild(renderCard(n)); });
+}
+
+/* —— 视口数学：transform 单点落值，读数/边名开关/小地图同步从这里走 —— */
+function viewportRect() {
+  var r = viewport.getBoundingClientRect();
+  return { w: r.width, h: r.height };
+}
+function clampS(s) { return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, s)); }
+function applyView() {
+  world.style.transform =
+    "translate(" + view.x + "px," + view.y + "px) scale(" + view.s + ")";
+  document.getElementById("zoom-level").textContent =
+    Math.round(view.s * 100) + "%";
+  world.classList.toggle("labels-off", view.s < LABEL_MIN);
+  updateMiniView();
+}
+function zoomAt(cx, cy, factor) {
+  var ns = clampS(view.s * factor);
+  var k = ns / view.s;
+  view.x = cx - (cx - view.x) * k;
+  view.y = cy - (cy - view.y) * k;
+  view.s = ns;
+  applyView();
+}
+function fitView() {                            /* 全图：整战场一览（ARTEX 全景感） */
+  if (!lay) { return; }
+  var vp = viewportRect();
+  var s = clampS(Math.min((vp.w - PAD) / lay.w, (vp.h - PAD) / lay.h));
+  view.s = s;
+  view.x = (vp.w - lay.w * s) / 2;
+  view.y = (vp.h - lay.h * s) / 2;
+  applyView();
+}
+function centerOnWorld(wx, wy, s) {
+  if (!lay) { return; }
+  var vp = viewportRect();
+  view.s = clampS(s === undefined ? view.s : s);
+  view.x = vp.w / 2 - wx * view.s;
+  view.y = vp.h / 2 - wy * view.s;
+  applyView();
+}
+function focusNode(id) {                        /* 侧板关联跳转：居中并保证可读倍率 */
+  var n = nodeById(id);
+  if (!n || !lay || !lay.pos[id]) { return; }
+  var p = lay.pos[id];
+  centerOnWorld(p[0] + CARD_W / 2, p[1] + CARD_H / 2, Math.max(view.s, 0.8));
+  openDetail(id);
+}
+
+/* —— 小地图：全节点缩影 + 当前视口框，点击跳转 —— */
+function miniMetrics() {
+  if (!lay) { return null; }
+  var r = minimap.getBoundingClientRect();
+  if (!r.width || !r.height) { return null; }
+  var s = Math.min(r.width / lay.w, r.height / lay.h);
+  return { s: s, ox: (r.width - lay.w * s) / 2, oy: (r.height - lay.h * s) / 2 };
+}
+function renderMiniDots() {
+  var host = document.getElementById("mini-nodes");
+  if (!host || !lay || !graph) { return; }
+  host.textContent = "";
+  var m = miniMetrics();
+  if (!m) { return; }
+  graph.nodes.forEach(function (n) {
+    var p = lay.pos[n.id];
+    if (!p) { return; }
+    var d = el("span", "mdot" + (n.kind ? " k-" + n.kind : ""));
+    d.style.left = (m.ox + (p[0] + CARD_W / 2) * m.s - 2).toFixed(1) + "px";
+    d.style.top = (m.oy + (p[1] + CARD_H / 2) * m.s - 2).toFixed(1) + "px";
+    host.appendChild(d);
+  });
+}
+function updateMiniView() {
+  var v = document.getElementById("mini-view");
+  var m = miniMetrics();
+  if (!v || !m) { return; }
+  var vp = viewportRect();
+  v.style.left = (m.ox + (-view.x / view.s) * m.s).toFixed(1) + "px";
+  v.style.top = (m.oy + (-view.y / view.s) * m.s).toFixed(1) + "px";
+  v.style.width = Math.max(0, vp.w / view.s * m.s).toFixed(1) + "px";
+  v.style.height = Math.max(0, vp.h / view.s * m.s).toFixed(1) + "px";
+}
+function minimapJump(e) {
+  var m = miniMetrics();
+  if (!m) { return; }
+  var r = minimap.getBoundingClientRect();
+  centerOnWorld((e.clientX - r.left - m.ox) / m.s,
+                (e.clientY - r.top - m.oy) / m.s);
+}
+minimap.addEventListener("click", minimapJump);
+
+/* —— 详情侧板：节点全部字段全文 + 关联边列表（点行跳对面节点） —— */
+function addMeta(dtText, fill) {
+  var meta = document.getElementById("d-meta");
+  var dt = el("dt"); dt.textContent = dtText;
+  var dd = el("dd"); fill(dd);
+  meta.appendChild(dt); meta.appendChild(dd);
+}
+function renderDetail(n) {
+  var badge = document.getElementById("d-badge");
+  badge.className = "nc-badge k-" + (n.kind || "");
+  badge.textContent = n.badge || n.kind || n.id;
+  document.getElementById("d-num").textContent = n.num || n.id;
+  document.getElementById("d-title").textContent = n.title || "（无标题）";
+  var meta = document.getElementById("d-meta");
+  meta.textContent = "";
+  addMeta("状态", function (dd) {
+    var dot = el("span", "nc-dot");
+    if (n.status) { dot.setAttribute("data-status", n.status); }
+    dd.appendChild(dot);
+    dd.appendChild(document.createTextNode(n.status || "未知"));
+  });
+  if (n.impact) {
+    addMeta("影响", function (dd) {
+      var im = el("span", "nc-impact");
+      im.setAttribute("data-impact", n.impact);
+      im.textContent = n.impact;
+      dd.appendChild(im);
+      dd.appendChild(document.createTextNode("影响程度"));
+    });
+  }
+  addMeta("层级", function (dd) {
+    dd.textContent = (LAYER_NAMES[n.layer] || "未知") + "（第 " +
+                     ((Number(n.layer) || 0) + 1) + " 列）";
+  });
+  addMeta("编号", function (dd) { dd.textContent = n.num || "—"; });
+  addMeta("对象号", function (dd) { dd.textContent = n.id; });
+  var host = document.getElementById("d-edges");
+  host.textContent = "";
+  var rel = (graph ? graph.edges : []).filter(function (e) {
+    return e.src === n.id || e.dst === n.id;
+  });
+  document.getElementById("d-edge-title").textContent = "关联 · " + rel.length + " 条";
+  if (!rel.length) {
+    var empty = el("p", "d-empty");
+    empty.textContent = "暂无关联连线";
+    host.appendChild(empty);
+    return;
+  }
+  rel.forEach(function (e) {
+    var out = e.src === n.id;
+    var otherId = out ? e.dst : e.src;
+    var other = nodeById(otherId);
+    var row = el("div", "d-edge");
+    row.setAttribute("data-to", otherId);
+    row.setAttribute("role", "button");
+    row.setAttribute("tabindex", "0");
+    var dir = el("span", "de-dir");
+    dir.textContent = out ? "→" : "←";
+    var kind = el("span", "de-kind");
+    kind.textContent = KIND_CN[e.kind] || e.label || e.kind;
+    kind.title = e.kind;
+    var node = el("span", "de-node");
+    node.textContent = other
+      ? (other.badge || "") + " " + (other.num || other.id) + " · " + (other.title || "")
+      : otherId;
+    node.title = node.textContent;
+    row.appendChild(dir); row.appendChild(kind); row.appendChild(node);
+    row.addEventListener("click", function () { focusNode(otherId); });
+    row.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" || ev.key === " ") {
+        ev.preventDefault(); focusNode(otherId);
+      }
+    });
+    host.appendChild(row);
+  });
+}
+function markSelected() {
+  Array.prototype.forEach.call(
+    world.querySelectorAll(".node-card.selected"),
+    function (c) { c.classList.remove("selected"); });
+  if (!selectedId) { return; }
+  var cur = world.querySelector('.node-card[data-id="' + selectedId + '"]');
+  if (cur) { cur.classList.add("selected"); }
+}
+function openDetail(id) {
+  var n = nodeById(id);
+  if (!n) { return; }
+  selectedId = id;
+  markSelected();
+  var box = document.getElementById("detail");
+  box.setAttribute("data-node", id);
+  renderDetail(n);
+  box.classList.add("open");
+  box.setAttribute("aria-hidden", "false");
+}
+function closeDetail() {
+  selectedId = null;
+  markSelected();
+  var box = document.getElementById("detail");
+  box.classList.remove("open");
+  box.setAttribute("aria-hidden", "true");
+  box.setAttribute("data-node", "");
+}
+document.getElementById("detail-close").addEventListener("click", closeDetail);
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") { closeDetail(); }
+});
+
+/* —— 画布交互：拖拽平移（点卡=位移小于阈值才算点）+ 滚轮缩放（锚点在光标） —— */
+var drag = { on: false, moved: false, sx: 0, sy: 0, vx: 0, vy: 0, id: null, target: null };
+function interactive(t) {
+  return !!(t && t.closest && t.closest("button, #minimap, #detail, a, select"));
+}
+viewport.addEventListener("pointerdown", function (e) {
+  if (e.button !== 0 || interactive(e.target)) { return; }
+  drag.on = true; drag.moved = false;
+  drag.sx = e.clientX; drag.sy = e.clientY;
+  drag.vx = view.x; drag.vy = view.y;
+  drag.id = e.pointerId; drag.target = e.target;
+  viewport.setPointerCapture(e.pointerId);
+});
+viewport.addEventListener("pointermove", function (e) {
+  if (!drag.on || e.pointerId !== drag.id) { return; }
+  var dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+  if (!drag.moved && Math.abs(dx) + Math.abs(dy) > 4) {
+    drag.moved = true;
+    viewport.classList.add("grabbing");
+  }
+  if (drag.moved) {
+    view.x = drag.vx + dx;
+    view.y = drag.vy + dy;
+    applyView();
+  }
+});
+function endDrag(e) {
+  if (!drag.on || e.pointerId !== drag.id) { return; }
+  drag.on = false;
+  viewport.classList.remove("grabbing");
+  if (!drag.moved) {                           /* 原地点击：点卡开侧板，点空地收起 */
+    var card = drag.target && drag.target.closest
+      ? drag.target.closest(".node-card") : null;
+    if (card) { openDetail(card.getAttribute("data-id")); }
+    else { closeDetail(); }
+  }
+}
+viewport.addEventListener("pointerup", endDrag);
+viewport.addEventListener("pointercancel", endDrag);
+viewport.addEventListener("keydown", function (e) {
+  var card = e.target && e.target.closest
+    ? e.target.closest(".node-card") : null;
+  if (card && (e.key === "Enter" || e.key === " ")) {
+    e.preventDefault();
+    openDetail(card.getAttribute("data-id"));
+  }
+});
+viewport.addEventListener("wheel", function (e) {
+  if (interactive(e.target)) { return; }
+  e.preventDefault();
+  var r = viewport.getBoundingClientRect();
+  zoomAt(e.clientX - r.left, e.clientY - r.top,
+         e.deltaY < 0 ? ZOOM_STEP : 1 / ZOOM_STEP);
+}, { passive: false });
+document.getElementById("zoom-in").addEventListener("click", function () {
+  var vp = viewportRect();
+  zoomAt(vp.w / 2, vp.h / 2, ZOOM_STEP);
+});
+document.getElementById("zoom-out").addEventListener("click", function () {
+  var vp = viewportRect();
+  zoomAt(vp.w / 2, vp.h / 2, 1 / ZOOM_STEP);
+});
+document.getElementById("zoom-fit").addEventListener("click", fitView);
+window.addEventListener("resize", function () {
+  renderMiniDots();
+  updateMiniView();
+});
+
+/* —— 数据环：10 秒轮询；重画保视口（pan/zoom 不被刷新吃掉）、保侧板 —— */
+function afterReady() {
+  if (!booted) { fitView(); booted = true; }
+  renderMiniDots();
+  updateMiniView();
+  if (selectedId) {
+    var n = nodeById(selectedId);
+    if (n) { renderDetail(n); } else { closeDetail(); }
+  }
+}
 function refresh() {
   fetch("/api/graph.json").then(function (r) { return r.json(); })
     .then(function (d) {
+      graph = d;
+      renderStats(d.stats);
+      renderEdgeLegend(d);
       if (!d.nodes.length) {
-        renderStats(d.stats);
         setBox(document.getElementById("graph-box"), "empty",
                "暂无路线图——暂无对象或连线");
+        booted = false;                         /* 空转后再来数据：重新全图 */
         return;
       }
-      renderStats(d.stats); renderEdgeLegend(d); renderGraph(d);
+      renderWorld(d);
       setBox(document.getElementById("graph-box"), "ready");
+      afterReady();
     })
     .catch(function (e) {
       setBox(document.getElementById("stats"), "error", TY.failText(e));
