@@ -249,3 +249,6 @@
 - 白名单内改动: cli/webui/static/{index,activity,session,coverage,graph,evidence,metrics}.html + status.js；tests/test_ui_copy.py（新）；tests/test_v09d_skin.py、tests/test_v09a_webui.py（断言适配）；docs/research/liveui/copy-v09d-report.md + shots/copy-v09d/。
 - 禁碰确认: server.py、cli/ledger/**、docs 其它文件、phases/phases.yaml 均**零改动**；零 git 操作；8900 未触碰。
 - 内部代号第二落点: wstg-*/连线 kind/哈希字段名均经 title 提示或注释保留原始代号。
+
+## 用户裁决(2026-10-16)
+- ③重放按钮词=**复测**(用户原话)。①计量词/②召回替词仍待裁决(界面【待定】占位)。
