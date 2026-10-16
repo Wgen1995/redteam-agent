@@ -483,3 +483,12 @@ class TestFindingStreamPriority(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestSetStateHotfix(unittest.TestCase):
+    """setState 热修钉: 文本落 .state-msg,禁 box.textContent 吃子树(2026-10-16 session 三块崩根因)"""
+
+    def test_setstate_writes_state_msg_not_box(self):
+        src = open(os.path.join(STATIC, "status.js"), encoding="utf-8").read()
+        self.assertIn('querySelector(".state-msg")', src, "setState 必须经 .state-msg 子节点写文本")
+        self.assertNotIn("box.textContent = text", src, "禁止 box.textContent=text 吃掉 .content 子树")

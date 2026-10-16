@@ -77,7 +77,18 @@ TY.syncThemeButton = function (btn) {
 TY.setState = function (box, state, text) {
   if (!box) { return null; }
   box.setAttribute("data-state", state);
-  if (text !== undefined && text !== null) { box.textContent = text; }
+  if (text !== undefined && text !== null) {
+    /* 热修: 文本必须落 .state-msg 子节点——旧实现 box.textContent=text 会吃掉
+       .content/.skeleton 子树,后续渲染 querySelector(".content") 得 null 即崩
+       (session 页三块全崩根因,2026-10-16 视觉评审舰 DOM 普查抓获) */
+    var msg = box.querySelector(".state-msg");
+    if (!msg) {
+      msg = document.createElement("p");
+      msg.className = "state-msg";
+      box.appendChild(msg);
+    }
+    msg.textContent = text;
+  }
   return box;
 };
 
