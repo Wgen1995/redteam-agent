@@ -76,6 +76,31 @@
   #battle-switch { margin-left:auto; padding:4px 8px;
                    border:1px solid var(--line); border-radius:var(--radius);
                    background:var(--card); color:var(--ink); }
+  /* v0.9.8 方向盘：顶栏开战钮（品牌实底；零动效预算内——无过渡无动画） */
+  #start-btn { padding:4px 16px; border:none; border-radius:var(--radius);
+               background:var(--accent); color:var(--accent-ink);
+               font-size:12px; font-weight:600; text-decoration:none;
+               letter-spacing:1px; }
+  #start-btn:hover { background:color-mix(in srgb, var(--accent) 85%, var(--g12)); }
+  /* 待审卡：红点=有待审；条目=时间+事件+清理命令（等宽数据块）+两键 */
+  #approval-card .adot { display:inline-block; width:10px; height:10px;
+                         border-radius:50%; background:var(--bad);
+                         margin-left:6px; vertical-align:baseline; }
+  #approval-list { list-style:none; margin:0; padding:0; }
+  #approval-list li { display:flex; flex-wrap:wrap; gap:8px 12px;
+                      align-items:baseline; padding:8px 4px;
+                      border-bottom:1px dashed var(--line); }
+  #approval-list li:last-child { border-bottom:none; }
+  .ap-when { font-size:12px; color:var(--dim); }
+  .ap-ev { font-size:13px; font-weight:600; word-break:break-all; }
+  .ap-cmd { font-family:var(--font-mono); font-size:12px; color:var(--dim);
+            word-break:break-all; }
+  #approval-list button { font:inherit; font-size:12px; padding:2px 10px;
+                          border:1px solid var(--line); border-radius:var(--radius);
+                          background:var(--card); color:var(--ink); cursor:pointer; }
+  #approval-list button:hover { border-color:var(--accent); color:var(--accent); }
+  #approval-list button.ap-ok { color:var(--ok); border-color:var(--ok); }
+  #approval-card .ap-login { font-size:12px; color:var(--dim); }
   #side-toggle { display:none; padding:4px 12px; cursor:pointer;
                  border:1px solid var(--line); border-radius:var(--radius);
                  background:var(--card); color:var(--ink); }
@@ -227,6 +252,7 @@
       <h1>总览</h1>
       <p class="page-sub">你在看什么：本次授权渗透测试的整体进展——当前所处阶段、预算余量、最新发现。本页只读，不可修改。</p>
       <span id="sse-state">实时连接中…</span>
+      <a href="/new" id="start-btn">开战</a>
       <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
         <option value="">切换任务…</option>
       </select>
@@ -293,6 +319,17 @@
       <div class="skeleton sk-b"></div>
       <p class="state-msg">载入中…</p>
       <div class="content"><ul id="latest-list"></ul></div>
+    </div>
+  </section>
+  <section id="approval-card">
+    <h2>待审事项 · 外部操作清理核销<span id="approval-dot" class="adot" hidden></span></h2>
+    <div id="approval-box" class="statebox" data-state="loading">
+      <div class="skeleton sk-a"></div>
+      <p class="state-msg">载入中…</p>
+      <div class="content">
+        <ul id="approval-list"></ul>
+        <p class="ap-login" id="ap-login" hidden>登录后可在此审批：<a href="/login">操作员登录</a></p>
+      </div>
     </div>
   </section>
   <section id="settings">
@@ -668,6 +705,79 @@ refreshState();
 refreshKpi();
 setInterval(refreshState, 5000);
 setInterval(refreshKpi, 10000);
+
+/* —— v0.9.8 方向盘：待审卡（读 /api/approval 须会话；未登录收敛为登录提示，
+   不打扰只读浏览）。条目=尚未核销也未豁免的外部操作；决定须持钥签名回传。 —— */
+(function () {
+  var box = document.getElementById("approval-box");
+  var list = document.getElementById("approval-list");
+  var dot = document.getElementById("approval-dot");
+  var loginHint = document.getElementById("ap-login");
+  if (!box) { return; }
+  function st(s, msg) { TY.setState(box, s, msg); }
+  fetch("/api/approval").then(function (r) {
+    if (r.status === 401) {
+      dot.hidden = true;
+      loginHint.hidden = false;
+      st("empty", "审批须操作员登录（只读浏览不受影响）");
+      return null;
+    }
+    return r.json();
+  }).then(function (doc) {
+    if (!doc) { return; }
+    var pend = doc.pending || [];
+    if (!pend.length) {
+      dot.hidden = true;
+      st("empty", doc.key_configured ? "暂无待审事项" :
+        "暂无待审事项（审批密钥未配置，无法提交决定）");
+      return;
+    }
+    dot.hidden = false;
+    pend.forEach(function (p) {
+      var li = document.createElement("li");
+      var when = document.createElement("span");
+      when.className = "ap-when";
+      when.textContent = p.ts || "";
+      var ev = document.createElement("span");
+      ev.className = "ap-ev";
+      ev.textContent = p.event || "";
+      var cmd = document.createElement("span");
+      cmd.className = "ap-cmd";
+      cmd.textContent = p.revert_cmd || "";
+      var bEx = document.createElement("button");
+      bEx.type = "button"; bEx.textContent = "豁免";
+      var bRj = document.createElement("button");
+      bRj.type = "button"; bRj.textContent = "拒绝";
+      function decide(d, btn) {
+        bEx.disabled = bRj.disabled = true;
+        fetch("/api/approval", {
+          method: "POST",
+          headers: { "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest" },
+          body: JSON.stringify({ row: p.row, decision: d,
+                                 _approval_sig: p._approval_sig })
+        }).then(function (r) {
+          if (r.status === 401) { window.location.href = "/login"; return null; }
+          return r.json();
+        }).then(function (j) {
+          if (j && j.ok) {
+            li.textContent = "已" + (d === "exempted" ? "豁免" : "拒绝") +
+              "（留痕行 " + j.timeline_row + "）";
+          } else {
+            bEx.disabled = bRj.disabled = false;
+            alert((j && j.error) || "提交被拒");
+          }
+        }).catch(function (e) { alert("网络错误：" + String(e)); });
+      }
+      bEx.addEventListener("click", function () { decide("exempted", bEx); });
+      bRj.addEventListener("click", function () { decide("rejected", bRj); });
+      li.appendChild(when); li.appendChild(ev); li.appendChild(cmd);
+      li.appendChild(bEx); li.appendChild(bRj);
+      list.appendChild(li);
+    });
+    st("ready");
+  }).catch(function (e) { st("error", TY.failText(e)); });
+})();
 </script>
 </body>
 </html>

@@ -83,6 +83,12 @@
                   border:1px solid var(--line); border-radius:var(--radius);
                   background:var(--card); color:var(--ink); }
   #theme-toggle:hover { border-color:var(--accent); color:var(--accent); }
+  /* v0.9.8 方向盘：报告下载钮（须登录；零动效预算内——无过渡无动画） */
+  #report-dl { padding:4px 12px; cursor:pointer; font:inherit; font-size:12px;
+               border:1px solid var(--accent); border-radius:var(--radius);
+               background:var(--card); color:var(--accent); }
+  #report-dl:hover { background:var(--soft); }
+  #report-dl:disabled { opacity:.6; cursor:wait; }
   @media (max-width:920px) {
     #shell { grid-template-columns:1fr; }
     #side { display:none; }
@@ -177,6 +183,7 @@
       <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
         <option value="">切换任务…</option>
       </select>
+      <button id="report-dl" type="button" title="下载当前任务的报告产物（无则触发生成）">下载报告</button>
       <button id="theme-toggle" type="button">深色</button>
     </header>
 <main>
@@ -452,6 +459,36 @@ function refresh() {
 
 refresh();
 setInterval(refresh, 10000);
+
+/* —— v0.9.8 方向盘：下载报告（POST 窄门；缓存命中即回文件，无产物触发生成；
+   401 跳登录；无果如实弹拒因） —— */
+document.getElementById("report-dl").addEventListener("click", function () {
+  var btn = this;
+  btn.disabled = true;
+  fetch("/api/report/download", {
+    method: "POST",
+    headers: { "Content-Type": "application/json",
+               "X-Requested-With": "XMLHttpRequest" },
+    body: "{}"
+  }).then(function (r) {
+    if (r.status === 401) { window.location.href = "/login"; return null; }
+    if (!r.ok) { return r.json().then(function (j) {
+      throw new Error(j.error || ("HTTP " + r.status));
+    }); }
+    var disp = r.headers.get("Content-Disposition") || "";
+    var m = /filename=([^;]+)/.exec(disp);
+    return r.blob().then(function (b) {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(b);
+      a.download = m ? m[1] : "report.md";
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(a.href);
+      a.remove();
+    });
+  }).catch(function (e) { alert("下载被拒：" + String(e.message || e)); })
+    .then(function () { btn.disabled = false; });
+});
 </script>
 </body>
 </html>
