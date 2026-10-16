@@ -1,5 +1,6 @@
-# VulnClaw 实机试用报告(live trial)
+# VulnClaw 实机试用报告(live trial)· v2
 
+> **v2(2026-10-16 深夜)增补**:父会话兑现 LLM key(D0)后补完「LLM 实战轮」,见 §9;§1–§8 为 v1(无 key 卡点轮)原样保留。
 > 2026-10-16 · 执行环境:macOS 26.5.1 (arm64) · Python 3.12.14 · Node v26.5.0
 > 对象:[Netw0rkNoob/VulnClaw](https://github.com/Netw0rkNoob/VulnClaw) v0.4.0,commit `3b71e26`(2026-09-16,PR #281 merge)
 > 姊妹篇:`2026-09-24-vulnclaw-analysis.md`(静态分析);本篇一切结论以实机运行为准。
@@ -273,3 +274,108 @@ cd /tmp/vulnclaw-src && /tmp/vulnclaw-venv/bin/python -m pytest tests/run/test_r
 2. solve 子命令的 scope 旗标缺口、`solve` 非 stream P0 bug → 值得向上游提 issue(先核对 main 分支是否已修)。
 3. 靶场凭据路径(登录后的授权面验证)本轮未触达,原因见 §3。
 4. 子代理编组(`VULNCLAW_SUBAGENT_*`)、persistent 周期模式、web/tui 面板未测(超本轮范围)。
+
+---
+
+## 9. LLM 实战轮(v2 增补:key 兑现后的真机对靶)
+
+### 9.1 端点诊断矩阵(1-token 级 ping,key 经环境变量注入,零落盘)
+
+| 协议/端点 | 模型 | 结果 |
+|---|---|---|
+| OpenAI-chat @ /api/coding/paas/v4 | glm-4.7/4.6/4.5/4.5-air | HTTP 429 code 1113「余额不足或无可用资源包」 |
+| OpenAI-chat @ /api/paas/v4 | glm-4.7 | 同上 1113 |
+| OpenAI-chat @ /api/v1 | glm-4.7/4.6/4-flash | HTTP 403 model_access_denied(端点活,key 无模型权限) |
+| Anthropic @ /api/anthropic | glm-5.3 | 429 1113(与父会话主会话诊断一致) |
+| OpenAI-chat @ /api/coding/paas/v4 | glm-4-flash | **HTTP 200(本 key 唯一活通道)** |
+| Anthropic @ /api/anthropic | glm-4-flash | **HTTP 200(双协议均活)** |
+
+- VulnClaw 为纯 OpenAI chat.completions 栈(llm_client.py 只走 chat.completions.create),anthropic 协议用不上 → 实战配置 base_url=/api/coding/paas/v4 + model=glm-4-flash。
+- key 纪律:仅 VULNCLAW_LLM_API_KEY 等环境变量注入;跑后全工件 grep 验证 **key 零落盘**;唯一暴露面=运行期进程命令行(ps 可见,环境变量注入的固有风险,记卫生注记)。
+
+### 9.2 实战执行(30 分钟时间盒,恰好自终止)
+
+```bash
+VULNCLAW_LLM_API_KEY=$KEY VULNCLAW_LLM_BASE_URL=https://open.bigmodel.cn/api/coding/paas/v4 \
+VULNCLAW_LLM_MODEL=glm-4-flash VULNCLAW_SAFETY_PERMISSION_MODE=auto_review \
+vulnclaw solve http://localhost:3081 --goal "授权靶场只读安全评估:…;仅允许测试 3081 端口,禁止测试 8900,3000,8787,8443 端口;…登录凭据经 CLI 透传" \
+  --max-steps 30 --run-name zhulong-live2 --stream --force-fresh
+```
+
+- **上轮教训兑现**:goal 带固定句式后,session 账本 task_constraints = {allowed_ports:[3081], blocked_ports:[8900,3000,8787,8443], allowed_hosts:[localhost], strict_mode:true}——端口级硬执法真实落地;constraint_violations=0;工具调用 URL 全量审计 **100% 指向 localhost:3081**,禁碰端口零接触。
+- 运行 ~30 分钟自行终止:主环 7 turns,事件账本记 run_complete + distillation_completed(lessons: 0)。
+
+### 9.3 工具调用序列全景(session 账本实测统计)
+
+**136 次工具调用 / 128 条证据 / 80 步(含子代理)**:
+
+| 工具 | 次数 | 说明 |
+|---|---|---|
+| fetch | 44 | 主力请求工具 |
+| http_probe_batch | 42 | 批量变体探测 |
+| agent_run | 17 | 子代理委派(6 executor + 1 后台 group-leader a-0005 + 重复委派) |
+| source_extract | 11 | 源码信号提取 |
+| dir_enum | 9 | 目录枚举 |
+| python_execute | 7 | payload 构造/解析 |
+| shell_command | 3 | 本地命令 |
+| js_recon / evidence_search / evidence_list | 1/1/1 | 佐证 |
+
+**行为画像(glm-4-flash 档)**:主环前 2 轮亲自干活(效果最好),此后陷入「委派空转」——3 个 executor 以 needs_user「stopped after repeated turns without tool calls」收场,2 个 budget_exhausted「runaway safety budget reached」(各自真跑了 30/17 次工具调用、229KB/100KB 证据),2 次重复 no_path「找不到登录表单」(**SPA 盲区**:fetch 看不到 JS 渲染的表单,而 main.ts 证据注释里明明写着 /api/auth/* 端点——高信号事实提取没接上,没绕行打 API)。
+
+### 9.4 战果判定(发现清单 × 复现核验)
+
+引擎产出 **3 条 findings + 1 条 verified_claim**:
+
+| # | 标题 | 级别 | 引擎自标 | 我的复现 | 判定 |
+|---|---|---|---|---|---|
+| 1 | [自动] 远程代码执行 | Critical | verified=false/pending/L2,证据=URL 列表+长度数字 | GET /api/ → 404 E_NOT_FOUND | 不成立(弱证据候选) |
+| 2 | [自动] 弱口令/暴力破解 | Medium | 同上 | 无从证(引擎未做爆破) | 不成立 |
+| 3 | [自动] 认证绕过 | High | 同上 | 未带凭据 GET /api/auth/user → 404(非 200) | 未证实 |
+| 4 | 端点图谱(verified_claim c001) | — | verified,证据 e050/e060 | /login /admin /api /api/auth/login、logout、user 全部真实存在 | **成立,可复现** |
+
+- 授权面自验(一次性):正确凭据 POST /api/auth/login → 200 返回 user+permissions 对象(admin/isAdmin/canManageUsers)——引擎拿到了凭据却始终没登录成功(SPA 表单盲区的直接代价)。
+- **命中率:0/3(候选层全弱证据);情报层(端点图谱)1/1 成立**。对照 ZhuLong 已知漏洞清单的完整命中率,待父会话给清单后对表。
+
+### 9.5 三环实测(有 key 版)
+
+- **真值结算**:闸门全程守住——3 条自动候选无一被标 verified;vulnclaw report 输出「已验证漏洞: 0 个 / 待验证: 3 个(**未在报告中显示**)/ 需人工复核: 2 个」,详细发现留空——「未验证不写入」端到端贯彻。v1 的「引擎诚实」结论在有利可图场景(有 LLM、有候选)下同样成立。
+- **知识库/蒸馏**:distillation 真的跑了(distillation_completed, lessons: 0)——因无可蒸馏的已验证教训,空载收场;kb/experience/ 仍空。飞轮「转了但空转」。
+- **度量**:**usage 计量是坏的**——子代理结果里 requests=0/tokens=0,但实际发生了 16/30/17 次工具调用与 229KB 证据;token/成本无法从它的账本读出,只能去网关侧对账(接战士层时成本核算要外挂)。
+
+### 9.6 新增 P0 #2:CLI 收尾组装 findings 崩溃
+
+```
+TypeError: 'int' object is not subscriptable   # cli/main.py:1609
+  for idx, claim in enumerate((agent_state.get("verified_claims") or [])[:50], ...)
+```
+
+- 收尾把 verified_claims 转 findings 时崩 → complete 事件没发出、自动报告没触发;而 orchestrator 已记 run_complete + exit_code 0——两层状态不一致(CLI 层崩溃 vs 编排层完成)。
+- 规避:手动 vulnclaw report <session.json> 可正常出报告(实测)。
+
+### 9.7 「有 key 后能打几分」——形态决策 C 证伪实验结论
+
+| 维度 | 评分 | 依据 |
+|---|---|---|
+| 编排/账本/scope 执法/真值闸门 | **高** | 约束结构化落地零违规、三层账本完整、未验证不写入端到端守住 |
+| 实战发现力(glm-4-flash 档) | **低** | 30 分钟 0 条可验证漏洞;预算大半烧在子代理委派空转;SPA 盲区不绕行;上下文里的 /api/auth 线索没接住 |
+| 成本可观测性 | **低** | usage 计量失效,token 消耗只能网关侧对账 |
+| 工程完成度 | **中低** | 两个 P0(solve 非 stream 必崩、收尾 assembly 崩)都踩在主路径上 |
+
+**插槽位判定:骨架可用、弹药不足。** 接缝(账本/闸门/scope/审批)达标且经住了实弹检验;但战士智力=模型档次,glm-4-flash 不足以胜任探隐(委派循环+盲区硬撞)。建议:①用 glm-4.7+ 或强模型在同一剧本重测发现力后再定去留;②若保留插槽,先修/绕两个 P0,子代理并发参数调小(VULNCLAW_SUBAGENT_* 系列关到最小)防委派空转烧预算;③成本核算外挂网关侧。
+
+### 9.8 实战轮复现附录
+
+```bash
+export VULNCLAW_CONFIG_DIR=/tmp/vulnclaw-home
+export VULNCLAW_LLM_API_KEY=$KEY                                    # 环境变量注入,禁落盘
+export VULNCLAW_LLM_BASE_URL=https://open.bigmodel.cn/api/coding/paas/v4
+export VULNCLAW_LLM_MODEL=glm-4-flash                               # 本 key 唯一活通道(§9.1 矩阵)
+cd /tmp/vulnclaw-runbox
+vulnclaw solve http://localhost:3081 --goal "…仅允许测试 3081 端口,禁止测试 8900,3000,8787,8443 端口…" \
+  --max-steps 30 --run-name zhulong-live2 --stream --force-fresh
+# 收尾崩溃(P0#2)后手动出报告:
+vulnclaw report /tmp/vulnclaw-home/sessions/<ts>_http___localhost_3081.json
+```
+
+实战轮工件:/tmp/vulnclaw-home/runs/zhulong-live2/(63 文件)、session 20261016_232229_http___localhost_3081.json(136 tool_calls / 128 evidence / 3 findings)、3 个子代理 session(a-0005/a-0010/a-0011)、报告 report_20261016_235504_*.md。
+
