@@ -98,7 +98,7 @@ CLI 工具箱（`cli/`，python3 标准库，tools.lock 锁定）**只允许四�
 
 | 允许类 | 判据 | 工具（§3.4） |
 |---|---|---|
-| 确定性账本运算 | 输入输出可字节级回归（黄金夹具可钉死） | tanyin-ledger（37 条账本命令） |
+| 确定性账本运算 | 输入输出可字节级回归（黄金夹具可钉死） | tanyin-ledger（账本命令;2026-10-17 勘误:实为 49 条=48 核心+1 互通件,以 registry.all_commands() 为单源,本档历史值 37 为签名批次 0 时点冻结） |
 | 机械执法与脱敏 | 规则是数据文件非语义判断 | tanyin-guard（scope-guard 包装器）、tanyin-redact、tanyin-canary、tanyin-egress |
 | 确定性重建与投影 | 从账本零 LLM 方差生成 | tanyin-report（聚合器）、tanyin-viz、tanyin-replay（重放驱动） |
 | 安装与自检 | 环境探测、验签 | tanyin-install、tanyin-selfcheck |
@@ -449,7 +449,7 @@ back_edges:
 
 补充语义：P0「无授权只许读文档」由 Tier 0 硬门实现（无 goals 行时一切写命令 REJECT）；受管重启自动档护栏=重启计入预算、重启速率上限（1 次/N 分钟防递归 spawn）、timeline 记 managed-restart 事件、单活跃会话约束；工件即缓存幂等续跑=intent done 且 `submissions/<intent-id>/submission.json` 存在则重入跳过。
 
-### 5.3 命令集（37 条，签名批次 0 冻结）
+### 5.3 命令集（历史 37 条,签名批次 0 时点;2026-10-17 勘误:现行 49 条,单源=registry.all_commands(),D4 矛盾就此关闭）
 
 - **写命令 19**（含 set-cred-status：改 creds.status 属状态变更，归写入）：add-goal / add-scope / add-intent / set-intent-status / add-fact / add-finding / supersede-finding / add-asset / add-edge / add-evidence / approve / matrix-set / checkpoint / append-timeline / matrix-freeze / budget-log + add-cred、amend-scope。
 - **查询命令 11**：unconsumed-facts / pending-intents / matrix-gaps / converge-check / next-id / intent-status / matrix-get / scope-check / budget-check / cleanup-checklist、redact-scan（交付前终检）。
