@@ -15,3 +15,4 @@
 | walk-*.md ×5 | 五系统界面漫游+探隐 before 基线 | ✅ |
 | ../manuals/usage-guide-*.md ×3 | 三系统使用手册 | ✅ |
 | 2c | artex-visual-baseline | ARTEX 参照 DOM 级视觉基准+七页差距+50条黑话替词+工艺/方向盘分流 | 2026-10-16 |
+| 8 | fork-candidates | 二开底子四候选判决（ARTEX❌AGPL/CSAI✅抄页库/multica❌无源/ZhuLong✅引擎闸）+UI底盘二开否 | 2026-10-16 |
