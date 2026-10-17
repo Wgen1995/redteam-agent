@@ -36,7 +36,8 @@ class ToolCard:
         self.binary = binary
         self.tier = tier
         self.rate = rate
-        self.deny_extra = list(deny_extra or [])
+        # None=未声明（纪律错误），[]=显式空覆盖——构造不抹掉 distinctions
+        self.deny_extra = None if deny_extra is None else list(deny_extra)
         self.revert = revert
         self.example = list(example or [])
         self.risk = risk

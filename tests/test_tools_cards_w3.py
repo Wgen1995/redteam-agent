@@ -71,5 +71,67 @@ class TestRegistry25Cards(unittest.TestCase):
         self.assertIsNone(tool_cards.get_card("w3-tmp-probe"))
 
 
+class TestDisciplineCompleteness(unittest.TestCase):
+    """每卡纪律字段完整性：七字段显式齐备、值域合法、示例=binary 打头。"""
+
+    def test_every_card_passes_discipline_check(self):
+        bad = {}
+        for c in tool_cards.all_cards():
+            errs = c.discipline_errors()
+            if errs:
+                bad[c.name] = errs
+        self.assertEqual(bad, {}, "纪律字段不备的卡: %s" % bad)
+
+    def test_every_card_has_seven_discipline_fields_nonempty(self):
+        for c in tool_cards.all_cards():
+            for field in ("name", "tier", "rate", "revert", "risk"):
+                self.assertTrue(getattr(c, field), "%s.%s 空" % (c.name, field))
+            self.assertIsNotNone(c.deny_extra, "%s.deny_extra 未声明" % c.name)
+            self.assertTrue(c.example, "%s.example 空" % c.name)
+
+    def test_tier_and_risk_in_enum(self):
+        for c in tool_cards.all_cards():
+            self.assertIn(c.tier, tool_cards.TIERS, c.name)
+            self.assertIn(c.risk, tool_cards.RISKS, c.name)
+
+    def test_rate_syntax_valid(self):
+        for c in tool_cards.all_cards():
+            self.assertRegex(c.rate, tool_cards.RATE_RE.pattern,
+                             "%s.rate 形非法: %r" % (c.name, c.rate))
+
+    def test_example_command_starts_with_binary(self):
+        for c in tool_cards.all_cards():
+            self.assertEqual(c.example[0], c.binary, c.name)
+
+    def test_l3_cards_exactly_sqlmap_and_impacket(self):
+        l3 = sorted(c.name for c in tool_cards.all_cards() if c.tier == "L3")
+        self.assertEqual(l3, ["impacket", "sqlmap"],
+                         "L3 档（审批门挂卡面）必须恰为 sqlmap+impacket")
+
+    def test_l3_cards_require_approval_flag(self):
+        for c in tool_cards.all_cards():
+            self.assertEqual(c.requires_approval, c.tier == "L3", c.name)
+
+    def test_readonly_revert_declared_explicitly(self):
+        """只读卡 revert=none(只读) 显式声明；非只读=核销义务文案（has_obligation 真）。"""
+        for c in tool_cards.all_cards():
+            if c.revert == tool_cards.READONLY_REVERT:
+                self.assertFalse(c.has_revert_obligation, c.name)
+            else:
+                self.assertTrue(c.has_revert_obligation, c.name)
+
+    def test_register_incomplete_card_rejected(self):
+        bad = tool_cards.ToolCard(
+            name="w3-bad", binary="", tier="L9", rate="", deny_extra=None,
+            revert="", example=[], risk="extreme", category="", summary="")
+        errs = bad.discipline_errors()
+        for frag in ("binary", "tier", "rate", "deny_extra", "revert",
+                     "example", "risk", "category", "summary"):
+            self.assertTrue(any(frag in e for e in errs),
+                            "缺字段 %s 未被 discipline_errors 报出" % frag)
+        with self.assertRaises(tool_cards.CardError):
+            tool_cards.register(bad)
+
+
 if __name__ == "__main__":
     unittest.main()
