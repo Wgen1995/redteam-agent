@@ -386,8 +386,59 @@ class TestGraphApi(ConsoleBase):
                          '边入场=两端都到场（EV 行 9）')
 
 
+
+# ===========================================================================
+# 五、发现 API（验证状态三态=已验证/待验证/已失效 + CVSS 实算 + 证据原文抽屉）
+# ===========================================================================
+
+class TestFindingsApi(ConsoleBase):
+
+    def test_states_three_way_real_counts(self):
+        d = self.api('/api/console/findings.json')
+        self.assertEqual(d['total'], 3)
+        self.assertEqual(d['states'], {'已验证': 1, '待验证': 1, '已失效': 1},
+                         '验证状态三态=exploitation_status 事件溯源最新')
+        st = {f['id']: f['verify_state'] for f in d['findings']}
+        self.assertEqual(st, {'FD-c1-0001': '已验证',
+                              'FD-c1-0002': '待验证',
+                              'FD-c1-0003': '已失效'})
+
+    def test_finding_fields_and_impact(self):
+        d = self.api('/api/console/findings.json')
+        f1 = [f for f in d['findings'] if f['id'] == 'FD-c1-0001'][0]
+        for k in ('id', 'title', 'verify_state', 'impact', 'confidence',
+                  'vuln_ref', 'asset', 'created', 'cvss', 'evidence'):
+            self.assertIn(k, f1, '发现缺字段 ' + k)
+        self.assertEqual(f1['impact'], '中')
+        self.assertEqual(f1['vuln_ref'], 'CWE-307')
+        self.assertEqual(f1['asset'], 'AST-c1-0001')
+
+    def test_cvss_computed_from_real_vector(self):
+        d = self.api('/api/console/findings.json')
+        f1 = [f for f in d['findings'] if f['id'] == 'FD-c1-0001'][0]
+        self.assertAlmostEqual(f1['cvss']['score'], 9.8,
+                               places=1, msg='向量在场=ledger.cvss 实算')
+        self.assertEqual(f1['cvss']['severity'], '严重')
+        self.assertIn('CVSS:3.1/AV:N', f1['cvss']['vector'])
+        f2 = [f for f in d['findings'] if f['id'] == 'FD-c1-0002'][0]
+        self.assertIsNone(f2['cvss'], '无向量=未评定（不虚构分数）')
+
+    def test_evidence_raw_request_response(self):
+        d = self.api('/api/console/findings.json')
+        f1 = [f for f in d['findings'] if f['id'] == 'FD-c1-0001'][0]
+        ev = f1['evidence']
+        self.assertEqual(ev[0]['id'], 'EV-c1-0001')
+        self.assertIn('curl', ev[0]['request'],
+                      '原始请求=证据卡复现命令真转抄')
+        self.assertIn('HTTP/1.1 200 OK', ev[0]['response'],
+                      '响应节选=证据卡原文真转抄')
+        f2 = [f for f in d['findings'] if f['id'] == 'FD-c1-0002'][0]
+        self.assertEqual(f2['evidence'], [], '无证据挂接=空表不虚构')
+
+
 if __name__ == '__main__':
     unittest.main()
+
 
 
 

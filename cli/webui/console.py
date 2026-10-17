@@ -238,3 +238,70 @@ def graph_view(goal_dir, battles_dir):
             "timeline_rows": frames,
             "replay": {"frames": frames,
                         "note": "演变回放：回到任意历史时刻看攻击链路（帧=记录行号）"}}
+
+# ---- 发现库（验证状态三态 + CVSS 实算 + 证据原文抽屉）-----------------------
+_CVSS_SEV_CN = {"critical": "严重", "high": "高", "medium": "中",
+                "low": "低", "none": "无"}
+
+
+def _cvss_of(texts):
+    """文本堆里找 CVSS:3.1 向量 → ledger.cvss 实算；缺向量=None（未评定）。"""
+    from ledger import cvss as _cvss
+    for text in texts:
+        m = _CVSS_RE.search(text or "")
+        if not m:
+            continue
+        av, ac, pr, ui, sc, c, i, a = m.groups()
+        try:
+            score = _cvss.base(av, ac, pr, ui, sc, c, i, a)
+        except ValueError:
+            continue
+        return {"vector": m.group(0), "score": round(score, 1),
+                "severity": _CVSS_SEV_CN[_cvss.severity(score)]}
+    return None
+
+
+def findings_view(goal_dir, battles_dir):
+    """发现页投影：验证状态三态+CVSS+挂接证据原文（事件溯源最新，只读）。"""
+    s = core.Session(goal_dir)
+    fd = _qc.latest_by(s.rows("findings.tsv"), "findings.tsv", ["id"])
+    fi = {f: i for i, f in enumerate(core.TABLES["findings.tsv"])}
+    ei = {f: i for i, f in enumerate(core.TABLES["E-index.tsv"])}
+    ev_rows = {r[0]: r for r in s.rows("E-index.tsv")}   # 证据 id → 行
+    findings = []
+    for key in sorted(fd):
+        r = fd[key]                       # latest_by 键=元组，行内取 id
+        rid = r[fi["id"]]
+        state = VERIFY_STATES.get(r[fi["exploitation_status"]].strip(),
+                                  "待验证")
+        ev_ids = [x for x in re.split(r"[;,\s]+",
+                                      r[fi["evidence_ids"]] or "") if x]
+        ev_ids += [eid for eid, e in ev_rows.items()
+                   if e[ei["linked_finding"]] == rid and eid not in ev_ids]
+        evid = []
+        for eid in ev_ids:
+            e = ev_rows.get(eid)
+            if e is None:
+                continue
+            evid.append({"id": eid, "title": e[ei["title"]],
+                         "request": e[ei["repro_command"]],
+                         "response": e[ei["raw_excerpt"]]})
+        texts = [r[fi["description_brief"]], r[fi["reproducible_steps"]]]
+        texts += [e["request"] + "\n" + e["response"] for e in evid]
+        findings.append({
+            "id": rid, "title": r[fi["title"]],
+            "verify_state": state,
+            "impact": r[fi["impact"]],
+            "confidence": r[fi["confidence"]],
+            "vuln_ref": r[fi["vuln_ref"]],
+            "asset": r[fi["affected_asset_id"]],
+            "created": r[fi["created"]],
+            "description": r[fi["description_brief"]],
+            "steps": r[fi["reproducible_steps"]],
+            "cvss": _cvss_of(texts),
+            "evidence": evid,
+        })
+    states = {v: sum(1 for f in findings if f["verify_state"] == v)
+              for v in ("已验证", "待验证", "已失效")}
+    return {"findings": findings, "total": len(findings),
+            "states": states, "state_names": list(VERIFY_STATES.values())}
