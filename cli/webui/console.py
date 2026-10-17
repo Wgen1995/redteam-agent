@@ -21,10 +21,15 @@ from ledger import session_view as _sv
 from . import snapshot as _snap
 
 # ---- ui-copy-standard-v1 上屏名词（执行阶段名/验证状态）--------------------
-PHASE_NAMES = {"P0": "授权确认", "P1": "范围检查", "P2": "预算", "P3": "执行",
-               "P4": "复测", "P5": "报告", "P5.5": "签发", "P6.0": "清理",
-               "P6": "沉淀"}
-PHASE_ORDER = ("P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6.0", "P6")
+# 门枚举单源律：门 id 与门序一律自 core.GATE_ORDER 派生（本文件禁第二份门
+# 字面量——tests/test_gen_counts 机检）；中文名=文案词表按 GATE_ORDER 序对齐。
+_PHASE_LABELS = ("授权确认", "范围检查", "预算", "执行", "复测", "报告",
+                 "签发", "清理", "沉淀")
+if len(_PHASE_LABELS) != len(core.GATE_ORDER):
+    raise RuntimeError("阶段名词表与 core.GATE_ORDER 失配（%d≠%d）"
+                       % (len(_PHASE_LABELS), len(core.GATE_ORDER)))
+PHASE_NAMES = dict(zip(core.GATE_ORDER, _PHASE_LABELS))
+PHASE_ORDER = core.GATE_ORDER
 VERIFY_STATES = {"verified": "已验证", "suspected": "待验证",
                  "ruled_out": "已失效"}
 ACTIVITY_TAIL = 12
@@ -305,3 +310,44 @@ def findings_view(goal_dir, battles_dir):
               for v in ("已验证", "待验证", "已失效")}
     return {"findings": findings, "total": len(findings),
             "states": states, "state_names": list(VERIFY_STATES.values())}
+
+def intercept_view(goal_dir, battles_dir):
+    """四层拦截只读表（法/范围/副作用/资源）——规则句+在场配置真数，不虚构命中。"""
+    s = core.Session(goal_dir)
+    grows = s.rows("goals.tsv")
+    gi = {f: i for i, f in enumerate(core.TABLES["goals.tsv"])}
+    tl = s.rows("timeline.tsv")
+    last_ts = tl[-1][0] if tl else ""
+    vf = grows[0][gi["valid_from"]] if grows else ""
+    vu = grows[0][gi["valid_until"]] if grows else ""
+    in_window = bool(vf and vu and vf <= last_ts <= vu)
+    si = {f: i for i, f in enumerate(core.TABLES["scope.tsv"])}
+    includes = sum(1 for r in s.rows("scope.tsv")
+                   if r[si["kind"]] == "include")
+    canary = sum(1 for r in tl if "canary-deploy" in r[3])
+    acl_path = os.path.join(goal_dir, "egress.acl")
+    acl_present = os.path.isfile(acl_path)
+    deny_rules = 0
+    if acl_present:
+        with open(acl_path, encoding="utf-8") as f:
+            deny_rules = sum(1 for ln in f
+                             if ln.strip().startswith("deny"))
+    layers = [
+        {"level": "L0", "name": "授权窗口", "hits": None,
+         "rule": "授权窗口外一律拒绝（宁停不越）",
+         "window": "%s ~ %s" % (vf, vu), "in_window": in_window,
+         "detail": "按记录尾行时刻判定: %s" % (last_ts or "无记录")},
+        {"level": "L1", "name": "范围与蜜签", "hits": None,
+         "rule": "范围白名单外主机一律拒绝；蜜签部署后回连即报警",
+         "scope_includes": includes, "canary_deploys": canary,
+         "detail": "范围白名单 %d 条 · 蜜签部署 %d 次" % (includes, canary)},
+        {"level": "L2", "name": "副作用黑名单", "hits": None,
+         "rule": "删库/关机/外发域名黑名单先行拦截（默认拒绝外发）",
+         "acl_present": acl_present, "deny_rules": deny_rules,
+         "detail": ("外发清单在场，deny 规则 %d 条" % deny_rules)
+                    if acl_present else "外发清单不在场（如实披露）"},
+        {"level": "L3", "name": "资源护栏", "hits": None,
+         "rule": "子进程限额：内存 2G / 进程数 64 / CPU 300 秒",
+         "detail": "进程级限额在执行侧生效，记录面无命中计数"},
+    ]
+    return {"layers": layers}

@@ -140,6 +140,7 @@ def build_console_goal(gd):
         (TS[7], "总控", "P3", "usage: run=G-c1-0001-r1 tokens=450000 est_tokens=448000", ""),
         (TS[7], "replay", "P4", "replay-probe EV-c1-0001 verdict=reproduced", ""),
         (TS[7], "CLI", "P3", "request: sqlmap -u ... --level=3", "rm -f /tmp/sqlmap-marker"),
+        (TS[7], "CLI", "P3", "request: ffuf -w dict.txt -u http://shop.example/FUZZ", "rm -f /tmp/ffuf.lock"),
     ]))
     return gd
 
@@ -436,8 +437,83 @@ class TestFindingsApi(ConsoleBase):
         self.assertEqual(f2['evidence'], [], '无证据挂接=空表不虚构')
 
 
-if __name__ == '__main__':
+
+# ===========================================================================
+# 六、审批真提交（过 TANYIN_APPROVAL_KEY 持钥通道）+ 四层拦截只读表
+# ===========================================================================
+
+class TestApprovalE2E(ConsoleBase):
+
+    def test_get_pending_queue_with_sig(self):
+        d = self.api('/api/approval')
+        self.assertEqual(d['pending_count'], 2, '两条待审（sqlmap+ffuf）')
+        self.assertTrue(d['key_configured'])
+        p0 = d['pending'][0]
+        for k in ('row', 'ts', 'event', 'revert_cmd', 'command_hash',
+                  '_approval_sig'):
+            self.assertIn(k, p0)
+        self.assertIn('sqlmap', p0['event'])
+
+    def test_approve_real_ledger_write(self):
+        d = self.api('/api/approval')
+        p0 = d['pending'][0]
+        r = self.write_req('/api/approval', {
+            'decision': 'approved', 'row': p0['row'],
+            '_approval_sig': p0['_approval_sig']})
+        self.assertEqual(r['status'], 200, r['body'][:200].decode('utf-8', 'ignore'))
+        out = self.jbody(r)
+        self.assertTrue(out['ok'])
+        self.assertEqual(out['decision'], 'approved')
+        with open(os.path.join(self.goal, 'approvals.tsv'), encoding='utf-8') as f:
+            ap = f.read()
+        self.assertIn('approved', ap, '审批决定真落表')
+
+    def test_reject_real_ledger_write(self):
+        d = self.api('/api/approval')
+        p1 = [p for p in d['pending'] if 'ffuf' in p['event']][0]
+        r = self.write_req('/api/approval', {
+            'decision': 'rejected', 'row': p1['row'],
+            '_approval_sig': p1['_approval_sig']})
+        self.assertEqual(r['status'], 200)
+        self.assertEqual(self.jbody(r)['decision'], 'rejected')
+        with open(os.path.join(self.goal, 'approvals.tsv'), encoding='utf-8') as f:
+            self.assertIn('rejected', f.read(), '拒绝决定真落表')
+        d2 = self.api('/api/approval')
+        got = [p for p in d2['pending'] if 'ffuf' in p['event']][0]
+        self.assertEqual(got.get('decided'), 'rejected',
+                         '已决项带决定标记（页面据此移出队列）')
+        sqlmap = [p for p in d2['pending'] if 'sqlmap' in p['event']][0]
+        self.assertNotIn('decided', sqlmap, '未决项不带决定标记')
+
+    def test_submit_without_sig_403(self):
+        r = self.write_req('/api/approval', {'decision': 'approved', 'row': 12})
+        self.assertEqual(r['status'], 403, '缺持钥签名=拒')
+
+
+class TestInterceptApi(ConsoleBase):
+
+    def test_four_layers_real_projection(self):
+        d = self.api('/api/console/intercept.json')
+        layers = {L['level']: L for L in d['layers']}
+        self.assertEqual(sorted(layers), ['L0', 'L1', 'L2', 'L3'],
+                         '四层拦截=法/范围/副作用/资源')
+        self.assertEqual(layers['L0']['name'], '授权窗口')
+        self.assertIn('2026-11-01T00:00:00Z', layers['L0']['window'])
+        self.assertTrue(layers['L0']['in_window'],
+                        '按记录尾行时刻判定（禁 datetime.now）')
+        self.assertEqual(layers['L1']['name'], '范围与蜜签')
+        self.assertEqual(layers['L1']['scope_includes'], 1,
+                         '范围层=scope include 真行数')
+        self.assertEqual(layers['L2']['name'], '副作用黑名单')
+        self.assertFalse(layers['L2']['acl_present'], '无 egress.acl=如实披露')
+        self.assertEqual(layers['L3']['name'], '资源护栏')
+        for L in d['layers']:
+            self.assertIn('rule', L, '每层须有人话规则句')
+
+
+if __name__ == '____main__':
     unittest.main()
+
 
 
 
