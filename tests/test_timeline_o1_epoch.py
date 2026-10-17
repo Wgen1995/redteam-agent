@@ -258,5 +258,67 @@ class TestEpochHygiene(WireBase):
                          'epoch tmp 残留必须被复用/清扫')
 
 
+# ------------------------------------------------- ⑥ 尾读边界补齐（接盘 TDD 补齐）
+
+class TestTailEdgeCases(WireBase):
+    """O(1) 尾读自身的边界分支——窗口回退/空行文件/冷账本/宽容 epoch/多字节撕裂。
+
+    ⑥-1 单行超窗（> _TAIL_WINDOW）：_tail_bytes 逐窗回退必须取到完整长行——取半行
+        = prev_hash 接错 = 链断（O(1) 优化自毁事实源，红线中的红线）；
+    ⑥-2 仅空行文件：非 write_tsv 产物——拒追加零半写（与全空判据同源）；
+    ⑥-3 冷账本（timeline.tsv 缺失）：GENESIS 起链，Session 读面互通；
+    ⑥-4 read_rows 对缺失 timeline.tsv=[]（读投影不虚构文件）；
+    ⑥-5 epoch 工件损坏：宽容降 0 世不炸读，追加后正常递增（戳非事实源）；
+    ⑥-6 多字节字符半截尾：UTF-8 撕裂=拒追加零半写（fail-closed 同律）。
+    """
+
+    def test_row_longer_than_tail_window_backs_off(self):
+        long_event = '长行-' + 'x' * (TL._TAIL_WINDOW + 8192)   # ~16KiB，esc 后仍单行
+        TL.append_tl_locked(self.gd, '2026-10-18T05:00:00Z', long_event, 'bench', 'P3')
+        TL.append_tl_locked(self.gd, '2026-10-18T05:00:01Z', '回退后续行', 'bench', 'P3')
+        rows = core.read_tsv(os.path.join(self.gd, 'timeline.tsv'), NCOL)
+        self.assertEqual(len(rows), 10)
+        self.assertTrue(chain_ok(rows), '长行窗口回退取半行=接链断（prev 取错）')
+        self.assertEqual(rows[-1][5], rows[-2][6], '续行 prev_hash 必须接长行 hash')
+
+    def test_blank_only_file_append_fail_closed_zero_halfwrite(self):
+        with open(os.path.join(self.gd, 'timeline.tsv'), 'wb') as f:
+            f.write(b'\n\n\n')
+        before = self.tl_bytes()
+        with self.assertRaises(TL.TornTimelineError):
+            TL.append_tl_locked(self.gd, '2026-10-18T05:01:00Z', '必然被拒', 'bench', 'P3')
+        self.assertEqual(self.tl_bytes(), before, '零半写：空行文件拒追加')
+
+    def test_cold_goal_without_timeline_starts_genesis(self):
+        os.unlink(os.path.join(self.gd, 'timeline.tsv'))
+        row = TL.append_tl_locked(self.gd, '2026-10-18T05:02:00Z', '冷启动-1', 'bench', 'P3')
+        self.assertEqual(row[5], core.GENESIS, '冷账本首行必须接 GENESIS')
+        rows = core.read_tsv(os.path.join(self.gd, 'timeline.tsv'), NCOL)
+        self.assertEqual(len(rows), 1)
+        self.assertTrue(chain_ok(rows))
+        self.assertEqual(core.Session(self.gd).validate(), [], 'Session 读面互通零错')
+        self.assertTrue(core.Session(self.gd).verify_chain()[0])
+
+    def test_read_rows_missing_timeline_returns_empty(self):
+        os.unlink(os.path.join(self.gd, 'timeline.tsv'))
+        self.assertEqual(TL.read_rows(self.gd), [], '读投影不得虚构文件')
+
+    def test_epoch_garbage_lenient_zero_then_bumps(self):
+        with open(os.path.join(self.gd, EPOCH_NAME), 'w', encoding='utf-8') as f:
+            f.write('garbage')
+        self.assertEqual(TL._read_epoch(self.gd), 0, '损坏戳宽容降 0 世')
+        TL.append_tl_locked(self.gd, '2026-10-18T05:03:00Z', '宽容-1', 'bench', 'P3')
+        self.assertEqual(TL._read_epoch(self.gd), 1, '损坏后追加正常递增一世')
+
+    def test_torn_multibyte_tail_rejected_zero_halfwrite(self):
+        TL.append_tl_locked(self.gd, '2026-10-18T05:04:00Z', '正常-1', 'bench', 'P3')
+        with open(os.path.join(self.gd, 'timeline.tsv'), 'ab') as f:
+            f.write('事件中文'.encode('utf-8')[:2])   # 多字节字符半截=追加窗撕裂形态
+        before = self.tl_bytes()
+        with self.assertRaises((TL.TornTimelineError, ValueError)):
+            TL.append_tl_locked(self.gd, '2026-10-18T05:04:01Z', '必然被拒', 'bench', 'P3')
+        self.assertEqual(self.tl_bytes(), before, '零半写：多字节撕裂尾拒追加')
+
+
 if __name__ == '__main__':
     unittest.main()
