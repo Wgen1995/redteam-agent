@@ -82,7 +82,8 @@ def all_commands():
     HANDLERS 里的 ledger- 前缀键分两种：有无前缀孪生键的=双前缀注册别名（剔出基名集，
     如 ledger-add-goal之于add-goal）；无孪生的=原生名本就带前缀的四条校验命令
     （ledger-scope-coverage/ledger-tree-check/ledger-replay-summary/ledger-terminal-gate，
-    计入基名）。builtin 三条（validate/verify-chain/next-id）一并计入——合计 41。"""
+    计入基名）。builtin 三条（validate/verify-chain/next-id）一并计入——计数见
+    docs/counts.json（docs/gen_counts.py 单源生成，W2 枚举单源化③）。"""
     names = {"validate", "verify-chain", "next-id"}
     keys = set()
     for m in _MODULES:
@@ -96,3 +97,17 @@ def all_commands():
             continue   # 双前缀别名，非基名
         names.add(k)
     return names
+
+
+def dispatch_face():
+    """全派发面（W2 枚举单源化④）——builtin 三条+全 HANDLERS 键（含 ledger- 前缀
+    孪生别名）。selfcheck KNOWN_COMMANDS['ledger'] 自本函数派生（手抄冻结清单删），
+    新命令落 registry 即自动入白名单——「忘登记」类漂移绝根。"""
+    names = {"validate", "verify-chain", "next-id"}
+    for m in _MODULES:
+        try:
+            mod = importlib.import_module("ledger." + m)
+        except ImportError:
+            continue
+        names |= set(getattr(mod, "HANDLERS", {}))
+    return frozenset(names)

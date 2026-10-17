@@ -17,7 +17,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from ledger import supply_chain  # noqa: E402
+from ledger import registry, supply_chain  # noqa: E402
 from ledger.install_core import DEFAULT_HOME_expanded, DEFAULT_INSTALL_ROOT_expanded  # noqa: E402
 
 _REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -32,27 +32,9 @@ _TEXT_EXTS = {".md", ".py", ".json", ".tsv", ".yaml", ".lock"}
 # 随其交付任务入表，此前文档若出现带子命令的引用即红=有意绊线）。
 KNOWN_COMMANDS = {
     # （v0.5a F7：SKILL 索引同步检查见 skill_index_commands/mission_clean）
-    "ledger": ["add-asset", "add-cred", "add-edge", "add-evidence", "add-fact",
-               "add-finding", "add-goal", "add-intent", "add-scope", "amend-scope",
-               "anchor", "append-timeline", "approve", "budget-check", "budget-log", "checkpoint",
-               "chain-advance", "chain-create", "chain-ls",
-               "cleanup-checklist", "converge-check", "graph-horizon", "graph-neighbors",
-               "graph-paths", "hash-recheck", "intent-lease", "intent-status",
-               "ledger-add-asset",
-               "ledger-add-cred", "ledger-add-edge", "ledger-add-evidence",
-               "ledger-add-fact", "ledger-add-finding", "ledger-add-goal",
-               "ledger-add-intent", "ledger-add-scope", "ledger-amend-scope",
-               "ledger-append-timeline", "ledger-approve", "ledger-budget-log",
-               "ledger-chain-advance", "ledger-chain-create", "ledger-chain-ls",
-               "ledger-checkpoint", "ledger-matrix-freeze", "ledger-matrix-set",
-               "ledger-replay-summary", "ledger-scope-coverage", "ledger-set-cred-status",
-               "ledger-set-intent-status", "ledger-supersede-finding",
-               "ledger-terminal-gate", "ledger-tree-check", "matrix-audit",
-               "matrix-freeze", "matrix-gaps", "matrix-get", "matrix-init", "matrix-set",
-               "next-id", "pending-intents", "redact-scan", "scope-check",
-               "set-cred-status", "set-intent-status", "set-replay-state",
-               "state-rebuild", "supersede-finding", "unconsumed-facts", "validate",
-               "verify-chain", "zhulong-export"],   # v0.9d Ship Z：ZhuLong 互通导出（入口挂载面）
+    # W2 枚举单源化④：ledger 面=registry.dispatch_face() 单源派生（02 评审
+    # P0-2④——68 名手抄冻结清单删；新命令落 registry 即自动入白名单）。
+    "ledger": sorted(registry.dispatch_face()),   # v0.9d Ship Z：ZhuLong 互通导出（入口挂载面）
     "phases": ["cached", "denominator-ready", "gate", "rebuild-state", "restart",
                "resume-kit", "trigger-audit", "validate"],
     "guard": ["deploy-vault", "exec", "inject"],
