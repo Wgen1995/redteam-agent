@@ -241,5 +241,108 @@ class TestApprovalGate(SqlmapWallBase):
         self.assertEqual(p["wall"], "pass", "同 id 取最新行（改判语义）")
 
 
+LOG_INJ = os.path.join(HERE, "fixtures", "engine", "sqlmap-log", "injectable.log")
+LOG_CLEAN = os.path.join(HERE, "fixtures", "engine", "sqlmap-log", "clean.log")
+
+
+class TestResultNormalize(SqlmapWallBase):
+    """结果解析进 findings 队列：canned sqlmap 控制台 log→统一提交 schema。"""
+
+    def log_run(self, *extra):
+        return subprocess.run(
+            [sys.executable, ADAPTER, "--intent-id", "INT-g1-0300", "--out-dir", self.out,
+             "--log-file", LOG_INJ] + list(extra),
+            capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+    def test_injectable_log_maps_to_findings(self):
+        r = self.log_run()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        sub = json.load(open(os.path.join(self.out, "submission.json"), encoding="utf-8"))
+        self.assertEqual(sub["engine"], "sqlmap")
+        self.assertEqual(sub["status"], "done")
+        self.assertGreaterEqual(len(sub["findings"]), 2, "两注入点（GET id/POST q）都进队列")
+        by_key = {f["dedup_key_proposed"]: f for f in sub["findings"]}
+        self.assertIn("GET:id+sqlmap", by_key)
+        self.assertIn("POST:q+sqlmap", by_key, "跨参数去重键须分立")
+        f = by_key["GET:id+sqlmap"]
+        self.assertIn("SQL注入", f["title"])
+        self.assertIn("id", f["title"])
+        self.assertEqual(f["confidence"], "C3")
+        self.assertEqual(f["impact"], "高")
+        self.assertEqual(f["exploitation_status"], "suspected")
+        self.assertEqual(f["network_position"], "internet")
+        self.assertTrue(f["reproducible_steps"], "POC 四要素：步骤≥1 强制")
+        self.assertTrue(f["preconditions"])
+        self.assertEqual(f["expected_matcher"]["matchers"][0]["words"], ["injectable"])
+
+    def test_payload_in_steps(self):
+        self.log_run()
+        sub = json.load(open(os.path.join(self.out, "submission.json"), encoding="utf-8"))
+        steps = " ".join(" ".join(f["reproducible_steps"]) for f in sub["findings"])
+        self.assertIn("id=1' AND 5088=5088-- -", steps, "Payload 行随发现走（Burp 可直贴）")
+
+    def test_technique_dedup_same_param_collapses(self):
+        """同参数同技法只报一次；同参数不同技法（盲注/时间盲）分立入队列。"""
+        self.log_run()
+        sub = json.load(open(os.path.join(self.out, "submission.json"), encoding="utf-8"))
+        keys = [f["dedup_key_proposed"] for f in sub["findings"]]
+        self.assertEqual(len(keys), len(set(keys)), "dedup_key_proposed 无重复")
+        self.assertIn("GET:id+sqlmap", keys)
+
+    def test_dbms_fact_carried(self):
+        self.log_run()
+        sub = json.load(open(os.path.join(self.out, "submission.json"), encoding="utf-8"))
+        self.assertTrue(any("MySQL" in f.get("detail", "") for f in sub["facts"]),
+                        "back-end DBMS 识别入 facts（往往更值钱的负面/环境事实同权）")
+
+    def test_clean_log_no_findings_with_negative_fact(self):
+        r = subprocess.run(
+            [sys.executable, ADAPTER, "--intent-id", "INT-g1-0301", "--out-dir", self.out,
+             "--log-file", LOG_CLEAN],
+            capture_output=True, text=True, encoding="utf-8", errors="replace")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        sub = json.load(open(os.path.join(self.out, "submission.json"), encoding="utf-8"))
+        self.assertEqual(sub["status"], "no-findings", "契约 5 值枚举：干净面=no-findings")
+        self.assertEqual(sub["findings"], [])
+        self.assertTrue(any("不可注入" in f.get("detail", "") or "injectable" in f.get("detail", "")
+                            for f in sub["facts"]), "负面结果如实入 facts 不静默")
+
+    def test_schema_nine_fields(self):
+        self.log_run()
+        sub = json.load(open(os.path.join(self.out, "submission.json"), encoding="utf-8"))
+        self.assertEqual(sorted(sub.keys()),
+                         sorted(["intent_id", "engine", "status", "facts", "findings",
+                                 "assets", "edges", "creds", "operations_log"]))
+
+
+class TestRunFaceBlocked(SqlmapWallBase):
+    """--run 面：墙先于一切执行——缺二进制=blocked 提交（环境受阻语义 exit 0）。"""
+
+    def test_run_without_sqlmap_binary_blocks(self):
+        r = subprocess.run(
+            [sys.executable, ADAPTER, "--intent-id", "INT-g1-0300", "--out-dir", self.out,
+             "--run", "--goal-dir", self.out, "--target", TGT,
+             "--sqlmap", os.path.join(self.out, "no-such-sqlmap")],
+            capture_output=True, text=True, encoding="utf-8", errors="replace")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        sub = json.load(open(os.path.join(self.out, "submission.json"), encoding="utf-8"))
+        self.assertEqual(sub["status"], "blocked")
+        self.assertIn("sqlmap", r.stdout)
+        log = open(os.path.join(self.out, "operations.log"), encoding="utf-8").read()
+        self.assertIn("sqlmap", log, "log 落 blocked 缘由（审计回放面）")
+
+    def test_run_wall_violation_blocks_before_binary_lookup(self):
+        """审批缺省拒在二进制查找之前——墙序：计划→审批→环境。"""
+        r = subprocess.run(
+            [sys.executable, ADAPTER, "--intent-id", "INT-g1-0300", "--out-dir", self.out,
+             "--run", "--goal-dir", self.out, "--target", TGT, "--level", "3",
+             "--sqlmap", os.path.join(self.out, "no-such-sqlmap")],
+            capture_output=True, text=True, encoding="utf-8", errors="replace")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        sub = json.load(open(os.path.join(self.out, "submission.json"), encoding="utf-8"))
+        self.assertEqual(sub["status"], "blocked")
+        self.assertIn("审批", r.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

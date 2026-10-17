@@ -28,13 +28,15 @@ L3 审批挂接（Cycle B）：--level>1 / --risk>1 / 任何 -D/-T 枚举请求 
 import hashlib
 import json
 import os
+import re
+import shutil
 import sys
 from urllib.parse import urlsplit
 
 USAGE = ("用法: adapter.py --intent-id=I --out-dir=D (--plan --target=URL [旋钮] | "
          "--log-file=F | --run --goal-dir=G --target=URL [旋钮])\n"
          "旋钮: --param=P --level=N --risk=N --delay=S --database=DB --table=T "
-         "--dbs=A,B --tables=A,B --approval=APR-id --sqlmap=BIN\n")
+         "--dbs=A,B --tables=A,B --approval=APR-id --sqlmap=BIN --timestamp=T\n")
 
 # 交战纪律禁碰端口（cli/ledger 同源口径；vulnclaw 适配器同款落地）
 FORBIDDEN_PORTS = (8900, 3000, 8787, 8443)
@@ -211,17 +213,187 @@ def _blocked_plan(reason):
             "command_hash": "", "needs_approval": False}
 
 
+# ------------------------------------------------------------- 结果解析（findings 队列）
+
+# 运行期命中行：[INFO] GET parameter 'id' is '<technique>' injectable[, for 'MySQL']
+INJ_RT = re.compile(r"(?:(GET|POST|PUT|URI|Cookie|User-Agent|header)\s+)?"
+                    r"parameter '([^']+)' is '([^']+)' injectable(?:, for '([^']+)')?")
+# 收尾汇总块：Parameter: id / 缩进 Type:/Title:/Payload: 四行族
+PARAM_SUM = re.compile(r"^Parameter:\s*(\S+)\s*$")
+SUM_FIELD = re.compile(r"^\s+(Type|Title|Payload):\s+(.+)$")
+DBMS_LINE = re.compile(r"the back-end DBMS is (.+?)\s*$")
+NEG_LINE = "all tested parameters do not appear to be injectable"
+
+
+def parse_log(text):
+    """sqlmap 控制台 log → [(place, param, tech, dbms)] + payload 表 + dbms + 负面。
+
+    运行期行与收尾汇总块双源合并（同 place:param 并技法、payload 取汇总块原文）；
+    「does not seem to be injectable」类半负面不在此列（仅全否定行算负面事实）。"""
+    inj, payloads, dbms, negative = {}, {}, "", False
+    cur_param, place_of = None, {}
+    for ln in (text or "").splitlines():
+        m = INJ_RT.search(ln)
+        if m:
+            place, param, tech, db = m.group(1) or "", m.group(2), m.group(3), m.group(4)
+            inj.setdefault((place, param), {"techs": [], "dbms": ""})
+            slot = inj[(place, param)]
+            if tech not in slot["techs"]:
+                slot["techs"].append(tech)
+            if db:
+                slot["dbms"] = db
+            place_of.setdefault(param, place)
+            continue
+        if NEG_LINE in ln:
+            negative = True
+            continue
+        m = DBMS_LINE.search(ln)
+        if m and not dbms:
+            dbms = m.group(1)
+            continue
+        m = PARAM_SUM.match(ln)
+        if m:
+            cur_param = m.group(1)
+            continue
+        m = SUM_FIELD.match(ln)
+        if m and cur_param:
+            kind, val = m.group(1), m.group(2).strip()
+            if kind == "Payload":
+                place = place_of.get(cur_param, "")
+                payloads.setdefault((place, cur_param), val)
+    return inj, payloads, dbms, negative
+
+
+def normalize(text, intent_id, evidence_ref):
+    """解析结果 → 统一提交 schema（契约 07 九字段；引擎只提议 dedup_key）。"""
+    inj, payloads, dbms, negative = parse_log(text)
+    findings = []
+    for (place, param), slot in sorted(inj.items()):
+        techs = slot["techs"]
+        shown = "、".join(techs[:2]) + ("等" if len(techs) > 2 else "")
+        payload = payloads.get((place, param), "")
+        steps = ["sqlmap 受控档复扫（--plan/--run 同源参数墙：--batch --delay 强制 --threads=1）"]
+        if payload:
+            steps.append("Payload: " + payload)
+        findings.append({
+            "title": "SQL注入 %s参数 %s（%s）" % (place or "", param, shown),
+            "confidence": "C3", "impact": "高", "exploitation_status": "suspected",
+            "auth_context": "", "reproducible_steps": steps,
+            "evidence_refs": [evidence_ref],
+            "location": "%s参数 %s" % (place or "参数", param),
+            "dedup_key_proposed": "%s:%s+sqlmap" % (place, param),
+            "network_position": "internet",
+            "preconditions": ["目标可达（internet 视角）", "注入点=%s参数 %s" % (place or "?", param)]
+            + (["back-end DBMS: " + slot["dbms"]] if slot["dbms"] else []),
+            "expected_matcher": {"matchers": [{"type": "word", "words": ["injectable"]}]},
+        })
+    facts = []
+    if dbms:
+        facts.append({"kind": "info", "target": "back-end DBMS",
+                      "detail": "识别: " + dbms, "confidence": 0.9})
+    if negative or not findings:
+        detail = ("全部测试参数不可注入（" + NEG_LINE + "）——负面结果如实入账不静默"
+                  if negative else "本次输出未见注入命中行")
+        facts.append({"kind": "info", "target": "sqlmap", "detail": detail,
+                      "confidence": 0.8})
+    return {"intent_id": intent_id, "engine": "sqlmap",
+            "status": "done" if findings else "no-findings",
+            "facts": facts, "findings": findings, "assets": [], "edges": [],
+            "creds": [], "operations_log": "operations.log"}
+
+
+def _blocked_sub(intent_id):
+    return {"intent_id": intent_id, "engine": "sqlmap", "status": "blocked",
+            "facts": [], "findings": [], "assets": [], "edges": [], "creds": [],
+            "operations_log": "operations.log"}
+
+
+def _dump(sub, path):
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(sub, f, ensure_ascii=False, indent=1, sort_keys=True)
+
+
+def _timeline_ts(goal_dir):
+    """guard 通道时戳：timeline 末行只读回取（确定性投影；禁 datetime.now 进产物）。"""
+    try:
+        rows = open(os.path.join(goal_dir, "timeline.tsv"), encoding="utf-8",
+                    errors="replace").read().splitlines()
+    except OSError:
+        return ""
+    # timeline.tsv 列序（契约 01）：seq/timestamp/event/actor/phase/revert/hash——
+    # 取末行第二列；畸形行宽容跳过（空串=上层 blocked，不猜时戳）。
+    for ln in reversed(rows):
+        cells = ln.split("\t")
+        if len(cells) >= 2 and cells[1]:
+            return cells[1]
+    return ""
+
+
 def main(argv):
     args = parse_argv(argv)
     for k in ("--intent-id", "--out-dir"):
         if not args.get(k):
             sys.stderr.write(USAGE)
             return 2
+    os.makedirs(args["--out-dir"], exist_ok=True)
+    log = open(os.path.join(args["--out-dir"], "operations.log"), "w",
+               encoding="utf-8", newline="\n")
+    sub_path = os.path.join(args["--out-dir"], "submission.json")
     if "--plan" in args:
         plan = plan_profile(args)
+        log.write("plan: wall=%s reason=%s\ncanonical: %s\n"
+                  % (plan["wall"], plan["reason"], plan["canonical"]))
         print(json.dumps(plan, ensure_ascii=False, sort_keys=True))
         return 0
-    sys.stderr.write("W3 分批施工：--log-file/--run 面随后续循环落位\n" + USAGE)
+    if args.get("--log-file"):
+        text = open(args["--log-file"], encoding="utf-8", errors="replace").read()
+        sub = normalize(text, args["--intent-id"], os.path.basename(args["--log-file"]))
+        _dump(sub, sub_path)
+        log.write("normalize: findings=%d facts=%d source=%s\n"
+                  % (len(sub["findings"]), len(sub["facts"]), args["--log-file"]))
+        print("OK submission.json status=%s findings=%d" % (sub["status"], len(sub["findings"])))
+        return 0
+    if "--run" in args:
+        plan = plan_profile(args)   # 墙先于一切执行（计划→审批→环境→执行）
+        if plan["wall"] != "pass":
+            _dump(_blocked_sub(args["--intent-id"]), sub_path)
+            log.write("wall: BLOCKED %s\n" % plan["reason"])
+            print("OK submission.json status=blocked reason=%s"
+                  % " ".join(plan["reason"].split())[:120])
+            return 0
+        binary = args.get("--sqlmap", "") or shutil.which("sqlmap")
+        if not binary or not os.path.isfile(binary):
+            _dump(_blocked_sub(args["--intent-id"]), sub_path)
+            log.write("env: sqlmap 可执行缺失（运行时绝不自动安装——契约 10 §4）\n")
+            print("OK submission.json status=blocked reason=sqlmap-missing")
+            return 0
+        ts = args.get("--timestamp", "") or _timeline_ts(args.get("--goal-dir", ""))
+        if not ts:
+            _dump(_blocked_sub(args["--intent-id"]), sub_path)
+            log.write("env: guard 通道时戳不可得（--timestamp 或 timeline 末行）\n")
+            print("OK submission.json status=blocked reason=timestamp-unavailable")
+            return 0
+        guard = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                             "cli", "tanyin-guard")
+        cmd = [sys.executable, guard, "exec", "--goal-dir", args["--goal-dir"],
+               "--timestamp=" + ts, "--timeout=600", "--", binary] + plan["argv"][1:]
+        log.write("run: %s\ncanonical: %s\n" % (" ".join(cmd), plan["canonical"]))
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=1800,
+                           encoding="utf-8", errors="replace")
+        outl = os.path.join(args["--out-dir"], "sqlmap-output.log")
+        with open(outl, "w", encoding="utf-8", newline="\n") as f:
+            f.write(r.stdout)
+        log.write("exit=%d\n" % r.returncode)
+        if r.returncode != 0:
+            _dump(_blocked_sub(args["--intent-id"]), sub_path)
+            print("OK submission.json status=blocked reason=guard-exit-%d" % r.returncode)
+            return 0
+        sub = normalize(r.stdout, args["--intent-id"], "sqlmap-output.log")
+        _dump(sub, sub_path)
+        log.write("normalize: findings=%d\n" % len(sub["findings"]))
+        print("OK submission.json status=%s findings=%d" % (sub["status"], len(sub["findings"])))
+        return 0
+    sys.stderr.write(USAGE)
     return 2
 
 
