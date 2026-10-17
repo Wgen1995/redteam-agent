@@ -511,7 +511,8 @@ def cmd_status(goal_dir, rest):
         else:
             sys.stderr.write("用法: tanyin-phases status --goal-dir D [--phase=P]\n")
             return 2
-    seq = ["P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6"]
+    seq = list(GATE_ORDER)  # W2 枚举单源化①：门序自 core 单源派生——手抄 seq 缺
+    # P6.0=活 bug（清理门灯恒 PENDING，05 评审 F1）；禁再造第二份门枚举。
     if phase is not None and phase not in seq:
         sys.stderr.write("未知门: %s（九门=%s）\n" % (phase, "/".join(seq)))
         return 2
@@ -668,7 +669,8 @@ def denominator_ready(goal_dir):
     decoy_p = os.path.join(goal_dir, "canary", "recon-decoys.tsv")
     planted = []
     if os.path.exists(decoy_p):
-        ai, vi = core.TABLES["assets.tsv"].index("in_scope"), core.TABLES["assets.tsv"].index("value")
+        ai, vi = (core.TABLES["assets.tsv"].index("in_scope"),
+                 core.TABLES["assets.tsv"].index("value"))
         have = {r[vi] for r in arows if r[ai] in DENOM_IN_SCOPE_VALUES}
         planted = [l.split(chr(9))[1] for l in open(decoy_p, encoding="utf-8").read().splitlines()
                    if l.strip()]
@@ -729,7 +731,7 @@ def trigger_audit(goal_dir):
 
     # ① asset-added（in_scope）→ 该表面有 submatrix-mint 事件/子矩阵行/绑定 intent
     ast_by_id = {r[0]: r for r in s.rows("assets.tsv")}
-    ai, vi = core.TABLES["assets.tsv"].index("in_scope"), core.TABLES["assets.tsv"].index("value")
+    vi = core.TABLES["assets.tsv"].index("value")
     surfaces = {r[0] for r in s.rows("matrix.tsv")}
     seen = set()
     for e in events:

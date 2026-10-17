@@ -90,3 +90,47 @@ class TestShouldFullGate(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestGateOrderSingleSource(unittest.TestCase):
+    """W2 枚举单源化①：cmd_status 门序=core.GATE_ORDER 单源派生（禁第二份枚举）。
+
+    红现状：phases_engine.cmd_status 手抄 seq 缺 P6.0（清理门）——timeline 已有
+    gate-exit:P6.0 PASS 事件时 status 仍不报该门、--phase=P6.0 被拒 rc=2，
+    webui 清理门灯恒 PENDING（05 评审 F1 点名的活 bug）。"""
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp()
+        for f in os.listdir(FIX):
+            shutil.copy(os.path.join(FIX, f), self.d)
+
+    def tearDown(self):
+        shutil.rmtree(self.d)
+
+    def _append_p60_pass(self):
+        # cmd_status 只读事件词（不做链校验）——按表列形追加一行 gate-exit:P6.0
+        with open(os.path.join(self.d, "timeline.tsv"), "a", encoding="utf-8",
+                  newline="\n") as f:
+            f.write("2026-09-24T10:00:00Z\t总控\tP6.0\t"
+                    "gate-exit:P6.0 asserts=2 result=PASS\t\tx\ty\t2\n")
+
+    def test_status_reports_p60_row(self):
+        self._append_p60_pass()
+        r = ph(self.d)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("phase=P6.0", r.stdout, "status 须报清理门 P6.0 行（GATE_ORDER 在册门）")
+        self.assertIn("result=PASS", r.stdout)
+
+    def test_phase_p60_accepted(self):
+        self._append_p60_pass()
+        r = ph(self.d, "--phase=P6.0")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("result=PASS", r.stdout)
+
+    def test_status_row_count_equals_gate_order(self):
+        from ledger import core
+        r = ph(self.d)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        rows = [ln for ln in r.stdout.splitlines() if ln.startswith("STATUS	phase=")]
+        self.assertEqual(len(rows), len(core.GATE_ORDER),
+                         "全量 status 行数=GATE_ORDER 门数（九门单源），实得 %d 行" % len(rows))
