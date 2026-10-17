@@ -1535,3 +1535,23 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 ## 2026-10-18 · W1-T4 battle auto 一键全链(F2 舰)
 - scripts/battle.py 新增 auto 子命令: init(建战=真授权四件落账+五查授权校验,无豁免通道)→launch(runner 点火+runner.pid 落盘)→看护(收敛四条件轮询/活性/idle 断连救场 auto-rescue/max-hours 战钟,救场耗尽 auto-giveup)→自动 settle(matrix-freeze 后 converge∈{converged,budget-exhausted} 才结算,链断 rc2)→自动 report(tanyin-report aggregate 出草稿,P5.5 签发永不代签);参数 --goal-dir/--max-hours/--idle-timeout;人工点只留审批卡与 P5.5;测试 tests/test_battle_auto.py 假战士全链 SIM(PATH 注入 opencode 替身,幂等断点续跑) 5 用例全绿+相邻 battle 面 62 用例绿(wallclock_wire 9+gold r24/r25 8+v09c_metrics 25+runner_watchdog/report_agg 20);探知项: report aggregate 13 表前置使无人审批卡的静战 ENV2(auto 如实 rc1 报缺,不私造空表)——建议 W2 账本侧立项 add-goal 时铺 13 空表。
 
+
+## 2026-10-18 · W1 验收关账
+- 全量 suite: OK	revision=9
+OK	revision=9
+OK	S-g1-0003	scope.tsv
+OK	S-g1-0004	scope.tsv
+OK	render	FD-g1-0002
+OK	签发凭证 report/signed/pass.json（goal=G-g1 ts=2026-09-24T09:00:00Z）
+OK	artifact	/var/folders/hb/n7hf0_3j09scymx9b2r3dl1h0000gn/T/tmpk_gbsm11/G-g1/report/findings.json
+OK	artifact	/var/folders/hb/n7hf0_3j09scymx9b2r3dl1h0000gn/T/tmpk_gbsm11/G-g1/report/findings.sarif
+OK	artifact	/var/folders/hb/n7hf0_3j09scymx9b2r3dl1h0000gn/T/tmpk_gbsm11/G-g1/report/signed/report-2026-09-24T090000Z.md
+OK	签发凭证 report/signed/pass.json（goal=G-g1 ts=2026-09-24T09:00:00Z）
+OK	artifact	/var/folders/hb/n7hf0_3j09scymx9b2r3dl1h0000gn/T/tmpfpj4_339/G-g1/report/findings.json
+OK	artifact	/var/folders/hb/n7hf0_3j09scymx9b2r3dl1h0000gn/T/tmpfpj4_339/G-g1/report/findings.sarif
+OK	artifact	/var/folders/hb/n7hf0_3j09scymx9b2r3dl1h0000gn/T/tmpfpj4_339/G-g1/report/signed/report-2026-09-24T090000Z.md
+OK	hash=a347edd7
+Ran 1661 tests in 453.476s
+OK(双证: bash-1260 exit0 + 本轮计数)
+- W1 五件战果: 授权八问真化+读面门(1cb568a)/launch(同上)/battle auto(d7fcffb)/VulnClaw插槽(25561ba)/GraphLed定名——基线表三行已翻已超。
+- W2 五舰在航(01651ce8地基/1e4baba2单源退出码/e7a6d5f1CI护栏/af8a5d63租约多战帧化/7f74585c serve收口)。
