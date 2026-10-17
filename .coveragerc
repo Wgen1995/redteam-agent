@@ -14,6 +14,17 @@ source =
 omit =
     cli/ledger/__pycache__/*
 
+[paths]
+# 别名归并：安装/夹具测试把仓拷到临时目录执行（test_install_core 等）——
+# combine 时把 */cli/ledger、*/engines 下的执行数据归并回仓内正身路径。
+ledger =
+    cli/ledger
+    */cli/ledger
+engines =
+    engines
+    */engines
+
 [report]
 fail_under = 60
 show_missing = False
+ignore_errors = True

@@ -87,7 +87,8 @@ _CONSOLE_PAGES = {"/console": "console_dash.html",
 _CONSOLE_API = {"/api/console/overview.json": "overview",   # W6 控制台 API（只读投影）
                  "/api/console/live.json": "live",
                  "/api/console/graph.json": "graph",
-                 "/api/console/findings.json": "findings"}
+                 "/api/console/findings.json": "findings",
+                 "/api/console/intercept.json": "intercept"}
 
 _PAGE_API = {"/api/matrix.json": _proj.matrix_view,     # v0.9b 三页 API（只读装配单源）
              "/api/graph.json": _proj.graph_view,
@@ -968,6 +969,17 @@ class Handler(BaseHTTPRequestHandler):
         idx_d = _core.TABLES["approvals.tsv"].index("decision")
         idx_t = _core.TABLES["approvals.tsv"].index("timestamp")
         idx_i = _core.TABLES["approvals.tsv"].index("id")
+        idx_n = _core.TABLES["approvals.tsv"].index("note")
+        # W6 审批页：决定回链（note 含原事件文本——_post_approval 落笔式）→
+        # 已决项带 decided 标记，页面据此移出队列（核销口径 _replay_status 不变）。
+        decided = {}
+        for a in arows:
+            for p in pending:
+                if p["event"] and p["event"] in a[idx_n]:
+                    decided[p["row"]] = a[idx_d]
+        for p in pending:
+            if p["row"] in decided:
+                p["decided"] = decided[p["row"]]
         recent = [{"id": a[idx_i], "decision": a[idx_d], "timestamp": a[idx_t]}
                   for a in arows[-5:]]
         return {"pending": pending, "pending_count": len(pending),

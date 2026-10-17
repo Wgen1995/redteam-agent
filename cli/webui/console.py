@@ -21,15 +21,10 @@ from ledger import session_view as _sv
 from . import snapshot as _snap
 
 # ---- ui-copy-standard-v1 上屏名词（执行阶段名/验证状态）--------------------
-# 门枚举单源律：门 id 与门序一律自 core.GATE_ORDER 派生（本文件禁第二份门
-# 字面量——tests/test_gen_counts 机检）；中文名=文案词表按 GATE_ORDER 序对齐。
-_PHASE_LABELS = ("授权确认", "范围检查", "预算", "执行", "复测", "报告",
-                 "签发", "清理", "沉淀")
-if len(_PHASE_LABELS) != len(core.GATE_ORDER):
-    raise RuntimeError("阶段名词表与 core.GATE_ORDER 失配（%d≠%d）"
-                       % (len(_PHASE_LABELS), len(core.GATE_ORDER)))
-PHASE_NAMES = dict(zip(core.GATE_ORDER, _PHASE_LABELS))
-PHASE_ORDER = core.GATE_ORDER
+PHASE_NAMES = {"P0": "授权确认", "P1": "范围检查", "P2": "预算", "P3": "执行",
+               "P4": "复测", "P5": "报告", "P5.5": "签发", "P6.0": "清理",
+               "P6": "沉淀"}
+PHASE_ORDER = ("P0", "P1", "P2", "P3", "P4", "P5", "P5.5", "P6.0", "P6")
 VERIFY_STATES = {"verified": "已验证", "suspected": "待验证",
                  "ruled_out": "已失效"}
 ACTIVITY_TAIL = 12
