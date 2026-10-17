@@ -407,5 +407,80 @@ class TestSayDualWrite(ServerBase):
         conn.close()
 
 
+# ===========================================================================
+# C. 页面层（static/pages/broadcast.html 结构钉——四态+介入条+输入+SSE+吸附滚动）
+# ===========================================================================
+
+PAGE_MARKS = (
+    # 顶部任务条: 战选择/代目录/实时通道状态/行计数
+    'id="battle-pick"', 'id="stream-dot"', 'id="stream-tip"', 'id="row-count"',
+    # 介入说明条（P5.3 布局钉）
+    'id="intervene-bar"',
+    # 历史视图联动: URL frame 参数横幅+回到最新
+    'id="hist-banner"', 'id="hist-text"', 'id="btn-latest"', '回到最新',
+    # 四态（空/加载/错误含重试/正常）
+    'id="st-empty"', 'id="st-loading"', 'id="st-error"', 'id="btn-retry"',
+    'id="st-normal"',
+    # 气泡流+自动滚动可暂停吸附
+    'id="feed"', 'id="follow-chip"',
+    # 底部输入框+发送（POST 既有 /api/battle/say 指令通道）
+    'id="say-input"', 'id="btn-send"', 'id="send-note"',
+    # 气泡结构: 时间+账本行号角标+原文回显+hover 证据链接
+    'bub-time', 'row-badge', 'bub-raw', 'ev-link', '查看证据',
+    # 宿主壳接入（UI-1 app.js）+页签导出
+    'nav.push', "id: 'broadcast'", 'typeof nav.push', 'BroadcastTab',
+)
+FETCH_MARKS = ("'/api/v2/broadcast.json", "EventSource('/api/stream?tail=0')",
+               "'/api/battle/say'", "X-Requested-With")
+BANNED_WORDS = ("战士", "琥珀线", "八问", "作战室", "三态")   # 宪法#41 界面人话律
+
+
+class TestPageStructure(unittest.TestCase):
+    """播报页结构钉: 四态齐备/介入条/输入/SSE 复用/证据跳转/零 CDN/人话律。"""
+
+    def _src(self):
+        with open(PAGE_PATH, encoding="utf-8") as f:
+            return f.read()
+
+    def test_zones_and_states_present(self):
+        src = self._src()
+        for m in PAGE_MARKS:
+            self.assertIn(m, src, "缺 " + m)
+        for m in FETCH_MARKS:
+            self.assertIn(m, src, "须接 " + m)
+
+    def test_copy_constitution_no_jargon(self):
+        """宪法#41: 战士→智能体等映射上屏;内部代号禁绝。"""
+        src = self._src()
+        for w in BANNED_WORDS:
+            self.assertNotIn(w, src, "禁词上屏: " + w)
+        for w in ("智能体", "操作员", "介入"):
+            self.assertIn(w, src)
+
+    def test_zero_framework_zero_cdn(self):
+        src = self._src()
+        self.assertEqual(src.count("<script src="), 1, "只许共享壳一外链")
+        self.assertIn('<script src="/static/app.js"></script>', src)
+        self.assertNotIn("https://", src)
+        self.assertNotIn("http://", src.replace("127.0.0.1", ""))  # 无外链
+
+    def test_line_budget_about_450(self):
+        """~450 行量纲（P5.3 页签）;JS<2000。"""
+        src = self._src()
+        n = len(src.splitlines())
+        self.assertGreaterEqual(n, 400, "低于量纲下限: %d" % n)
+        self.assertLessEqual(n, 800, "超量纲上限: %d" % n)
+        blocks = src.split("<script>")[1:]
+        js = sum(len(b.split("</script>")[0].splitlines()) for b in blocks)
+        self.assertLess(js, 2000)
+
+    def test_frame_history_and_stream_guard_in_js(self):
+        """历史视图: frame 在场禁 SSE/禁发送;对齐旗决定 SSE 或轮询。"""
+        src = self._src()
+        self.assertIn("stream_aligned", src)
+        self.assertIn("setInterval", src)          # 未对齐回落轮询
+        self.assertIn("frame", src)
+
+
 if __name__ == "__main__":
     unittest.main()

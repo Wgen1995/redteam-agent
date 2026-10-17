@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>播报 · 任务详情 · GraphLed</title>
+<!-- 设计权威 docs/design/ui-spec-complete-v1.md §P5.3 + battle-cockpit-v1.md 页签3
+     + contextual-chat-v1.md 消息流形态（本页=任务级锚特例，锚定对话全量版另舰）。
+     视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费
+     nav.push 自注册（守卫式）。数据单源：/api/v2/broadcast.json + /api/battle/say
+     + /api/stream（SSE 复用，过登录门）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;--purple:#a78bfa;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+display:flex;flex-direction:column;overflow:hidden}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+.sp{flex:1}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:6px 14px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover{background:var(--g5);color:var(--gc)}
+.btn.acc{background:var(--acc2);border-color:var(--acc2);color:#08130d;font-weight:600}
+.btn.acc:hover{background:var(--acc)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+/* ── 顶部任务条 ─────────────────────────────────────── */
+#top{height:44px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 14px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#battle-pick{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:4px 8px;border-radius:4px;font-size:12px;font-family:var(--mono)}
+#goal-chip{font-family:var(--mono);font-size:11px;color:var(--g8)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.dot.on{background:var(--acc);box-shadow:0 0 6px rgba(61,220,151,.6)}
+.dot.warn{background:var(--warn)}
+.dot.off{background:var(--g6)}
+#stream-tip{color:var(--g8);font-size:11px}
+#row-count{font-family:var(--mono);font-size:11.5px;color:var(--g9)}
+/* ── 历史视图横幅（URL frame 参数） ─────────────────── */
+#hist-banner{display:none;background:rgba(232,179,75,.08);border-bottom:1px solid rgba(232,179,75,.35);
+padding:6px 14px;font-size:12px;color:var(--warn);align-items:center;gap:10px;flex-shrink:0}
+#hist-banner.on{display:flex}
+#hist-text{font-family:var(--mono);font-size:11.5px}
+#btn-latest{margin-left:auto}
+/* ── 介入说明条（P5.3 布局钉） ───────────────────────── */
+#intervene-bar{background:var(--g1);border-bottom:1px solid var(--g3);
+padding:8px 14px;font-size:12px;color:var(--g9);line-height:1.7;flex-shrink:0}
+#intervene-bar b{color:var(--info);font-weight:500}
+/* ── 四态 ───────────────────────────────────────────── */
+.state{display:none;flex:1;overflow:hidden;position:relative}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:520px;margin:10vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:32px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:10px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.9}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .wrap{max-width:720px;margin:24px auto;padding:0 16px}
+.sk{border:1px solid var(--g4);border-left:3px solid var(--g5);border-radius:8px;
+background:var(--g2);padding:12px 14px;margin-bottom:14px;animation:sh 1.2s ease-in-out infinite}
+.sk .a{height:11px;width:120px;border-radius:3px;background:var(--g4);margin-bottom:8px}
+.sk .b{height:13px;border-radius:3px;background:var(--g3);margin-bottom:6px}
+.sk .b.w1{width:82%}.sk .b.w2{width:58%}
+.sk.op{border-left:none;border-right:3px solid var(--g5);margin-left:auto;width:70%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+#st-loading .tip{color:var(--g8);font-size:12px;text-align:center}
+/* ── 气泡流（正常态） ───────────────────────────────── */
+#feed{height:100%;overflow-y:auto;padding:16px 18px 56px;scroll-behavior:smooth}
+#feed::-webkit-scrollbar{width:6px}#feed::-webkit-scrollbar-thumb{background:var(--g4)}
+.bub{max-width:78%;border:1px solid var(--g4);border-radius:8px;
+padding:10px 12px;margin:10px 0;background:var(--g2);position:relative}
+.k-agent{border-left:3px solid var(--purple)}
+.k-operator{margin-left:auto;border-right:3px solid var(--info);
+background:rgba(90,169,230,.05)}
+.bub-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.who{font-size:11px;color:var(--g9);letter-spacing:.5px}
+.k-agent .who{color:var(--purple)}.k-operator .who{color:var(--info)}
+.bub-time{font-size:11px;color:var(--g8);font-family:var(--mono);margin-left:auto}
+.row-badge{font-family:var(--mono);font-size:10.5px;color:var(--g7);background:var(--g3);
+border:1px solid var(--g5);border-radius:3px;padding:0 6px;cursor:pointer;line-height:1.6}
+.row-badge:hover{color:var(--gc);border-color:var(--g7)}
+.bub-text{font-size:13px;color:var(--gb);line-height:1.7;word-break:break-word;white-space:pre-wrap}
+.bub-raw{font-family:var(--mono);font-size:10.5px;color:var(--g6);margin-top:6px;
+max-height:1.5em;overflow:hidden;cursor:pointer;white-space:pre-wrap;word-break:break-all;
+border-top:1px dashed var(--g3);padding-top:4px}
+.bub-raw:hover{color:var(--g8)}
+.bub-raw.open{max-height:none;color:var(--g8)}
+.ev-link{display:inline-block;margin-top:7px;margin-right:8px;font-size:11.5px;
+color:var(--info);opacity:0;transition:opacity .12s;
+border:1px solid rgba(90,169,230,.35);border-radius:4px;padding:2px 8px}
+.bub:hover .ev-link,.bub:focus-within .ev-link{opacity:1}
+#feed-empty{color:var(--g8);font-size:12.5px;text-align:center;padding:24px 0}
+/* 自动滚动暂停后的吸附钮 */
+#follow-chip{display:none;position:absolute;bottom:16px;right:20px;
+background:var(--g3);border:1px solid var(--acc2);color:var(--acc);
+border-radius:16px;padding:5px 14px;font-size:12px;cursor:pointer;z-index:5}
+#follow-chip.on{display:block}
+#follow-chip:hover{background:var(--g4)}
+/* ── 底部输入（介入通道） ───────────────────────────── */
+#composer{background:var(--g1);border-top:1px solid var(--g3);padding:10px 14px;
+display:flex;align-items:center;gap:10px;flex-shrink:0}
+#say-input{flex:1;background:var(--g2);border:1px solid var(--g5);border-radius:4px;
+color:var(--gc);padding:9px 12px;font-size:13px;font-family:inherit}
+#say-input:focus{outline:none;border-color:var(--acc2)}
+#say-input:disabled{opacity:.5}
+#send-note{font-size:11.5px;color:var(--g8);max-width:46%;text-align:right}
+#send-note.ok{color:var(--acc)}#send-note.err{color:var(--dang)}
+/* 宿主壳抽屉形态（任务详情页签内嵌时收窄） */
+body.mode-drawer #feed{padding:10px 12px 48px}
+body.mode-drawer .bub{max-width:92%}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">任务详情 · <b>播报</b></span>
+  <select id="battle-pick" title="切换任务"></select>
+  <span id="goal-chip"></span>
+  <span class="sp"></span>
+  <span class="dot off" id="stream-dot"></span><span id="stream-tip">未连接</span>
+  <span id="row-count"></span>
+</header>
+<div id="hist-banner">
+  <span>⏱ 历史视图</span><span id="hist-text"></span>
+  <button class="btn sm" id="btn-latest">回到最新</button>
+</div>
+<div id="intervene-bar">
+  <b>介入说明</b>：在这里发送的每条指令都会写入任务的指令通道，并在账本留一行痕迹
+  （气泡右上角行号可回查、可复制）；智能体下一轮巡检时带上指令继续执行。
+  介入不改变边界——范围、预算与审批门照常生效，不是绕过控制的通道。
+</div>
+<section class="state" id="st-loading">
+  <div class="wrap">
+    <div class="sk"><div class="a"></div><div class="b w1"></div></div>
+    <div class="sk op"><div class="a"></div><div class="b w2"></div></div>
+    <div class="sk"><div class="a"></div><div class="b w1"></div><div class="b w2"></div></div>
+  </div>
+  <p class="tip">正在拉取任务播报…</p>
+</section>
+<section class="state" id="st-empty">
+  <div class="box">
+    <h3>智能体尚未播报</h3>
+    <p id="empty-hint">任务起步后，每一步执行都会在这里实时直播：<br>
+    气泡带账本行号角标（点击复制行址），悬停气泡可「查看证据」跳转证据卡。</p>
+  </div>
+</section>
+<section class="state" id="st-error">
+  <div class="box">
+    <h3>播报导出失败</h3>
+    <p><code id="err-detail"></code></p>
+    <p style="margin-top:12px"><button class="btn" id="btn-retry">重试</button></p>
+  </div>
+</section>
+<section class="state on" id="st-normal">
+  <div id="feed" aria-live="polite"></div>
+  <button id="follow-chip">↓ 回到最新，继续跟随</button>
+</section>
+<footer id="composer">
+  <input id="say-input" maxlength="2000"
+         placeholder="对智能体说…（发送即写入指令通道并留痕账本）">
+  <button class="btn acc" id="btn-send">发送</button>
+  <span id="send-note"></span>
+</footer>
+<script src="/static/app.js"></script>
+<script>
+/* ================= 播报页签（任务级直播流） =================
+ * 数据单源：GET /api/v2/broadcast.json?battle=N&frame=M（投影分类/人话/证据锚
+ * 全在服务端，本页零重复分类）；实时=SSE 复用 /api/stream?tail=0（服务器账本
+ * 与所选任务最新代同址时 stream_aligned=true，帧 id=行号同轴直收；未对齐回落
+ * 4s 轮询，诚实披露）；发送=POST 既有 /api/battle/say（指令文件+timeline 双落，
+ * 回执 timeline_row 即行号角标，正文页面侧补显——账本只记长度）。 */
+'use strict';
+function $(id) { return document.getElementById(id); }
+function params() {
+  var q = {};
+  new URLSearchParams(location.search).forEach(function (v, k) { q[k] = v; });
+  return q;
+}
+var Q = params();
+var BATTLE = Q.battle || '';            /* 任务号（空=最新任务） */
+var BATTLE_ID = BATTLE ? 'battle-' + BATTLE : '';
+var FRAME = Q.frame || '';              /* 历史帧（timeline 行号，只显示该帧之前） */
+var LAST = { rows: {}, lastRow: 0, data: null };
+var follow = true, ES = null, POLL = null, syncTimer = null, sending = false;
+
+function apiQ() {
+  var s = '?';
+  if (BATTLE) { s += 'battle=' + encodeURIComponent(BATTLE) + '&'; }
+  if (FRAME) { s += 'frame=' + encodeURIComponent(FRAME) + '&'; }
+  return '/api/v2/broadcast.json' + (s.length > 1 ? s.slice(0, -1) : '');
+}
+function setState(name) {
+  ['st-empty', 'st-loading', 'st-error', 'st-normal'].forEach(function (id) {
+    $(id).classList.toggle('on', id === name);
+  });
+  if (name === 'st-normal') { setFollow(follow); snap(); }
+}
+function fmtTime(ts) {
+  return (ts || '').replace('T', ' ').replace('Z', '') || '—';
+}
+function setStream(mode, tip) {
+  var d = $('stream-dot');
+  d.className = 'dot ' + mode;
+  $('stream-tip').textContent = tip;
+}
+function sayNote(kind, text) {
+  var n = $('send-note');
+  n.className = kind || '';
+  n.textContent = text || '';
+}
+function copyText(text) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text);
+      return true;
+    }
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    return true;
+  } catch (e) { return false; }
+}
+
+/* ---------------- 气泡渲染 ---------------- */
+function bubble(r, isLocal) {
+  var d = document.createElement('div');
+  d.className = 'bub k-' + r.kind;
+  d.dataset.row = r.row;
+  var head = document.createElement('div'); head.className = 'bub-head';
+  var who = document.createElement('span'); who.className = 'who';
+  who.textContent = r.kind === 'operator' ? '操作员' : '智能体';
+  var t = document.createElement('span'); t.className = 'bub-time';
+  t.textContent = fmtTime(r.ts);
+  var badge = document.createElement('button'); badge.className = 'row-badge';
+  badge.textContent = '#' + r.row;
+  badge.title = '账本行 ' + r.row + '（timeline.tsv）——点击复制行址';
+  badge.onclick = function () {
+    var addr = (BATTLE_ID || 'battle') + ' timeline#' + r.row;
+    copyText(addr);
+    badge.textContent = '已复制';
+    setTimeout(function () { badge.textContent = '#' + r.row; }, 1200);
+  };
+  head.appendChild(who); head.appendChild(t); head.appendChild(badge);
+  var body = document.createElement('div'); body.className = 'bub-text';
+  body.textContent = r.text;
+  d.appendChild(head); d.appendChild(body);
+  var raw = document.createElement('div'); raw.className = 'bub-raw';
+  raw.textContent = r.event || '';
+  raw.title = '账本原文（点击展开/收起）';
+  raw.onclick = function () { raw.classList.toggle('open'); };
+  d.appendChild(raw);
+  (r.evidence || []).forEach(function (ev) {
+    var a = document.createElement('a'); a.className = 'ev-link';
+    a.href = ev.finding ? '/evidence#f=' + encodeURIComponent(ev.finding) : '/evidence';
+    a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = '查看证据 ' + ev.id;
+    a.title = ev.finding ? ('证据卡 ' + ev.id + '——挂接发现 ' + ev.finding)
+                         : ('证据卡 ' + ev.id);
+    d.appendChild(a);
+  });
+  if (isLocal) { d.classList.add('just-sent'); }
+  return d;
+}
+function appendBubble(r, isLocal) {
+  if (r.row in LAST.rows) { return; }
+  LAST.rows[r.row] = true;
+  if (r.row > LAST.lastRow) { LAST.lastRow = r.row; }
+  $('feed').appendChild(bubble(r, isLocal));
+  if (follow) { snap(); }
+}
+
+/* ---------------- 自动滚动：可暂停 + 吸附 ---------------- */
+function snap() {
+  var f = $('feed');
+  if (follow) { f.scrollTop = f.scrollHeight; }
+}
+function setFollow(v) {
+  follow = v;
+  $('follow-chip').classList.toggle('on', !v && !FRAME);
+}
+$('feed').addEventListener('scroll', function () {
+  var f = this;
+  var atBottom = f.scrollHeight - f.scrollTop - f.clientHeight < 28;
+  if (atBottom !== follow) { setFollow(atBottom); }
+});
+$('follow-chip').onclick = function () {
+  setFollow(true);
+  snap();
+  scheduleSync();
+};
+
+/* ---------------- 装配 ---------------- */
+function fillMeta(d) {
+  var pick = $('battle-pick');
+  pick.innerHTML = '';
+  (d.battles || []).forEach(function (b) {
+    var o = document.createElement('option');
+    o.value = b.n; o.textContent = 'battle-' + b.n;
+    if (d.battle && d.battle.n === b.n) { o.selected = true; }
+    pick.appendChild(o);
+  });
+  if (!(d.battles || []).length) {
+    var o = document.createElement('option');
+    o.textContent = '（无任务）'; pick.appendChild(o);
+  }
+  $('goal-chip').textContent = d.stream_goal || '';
+  $('row-count').textContent =
+    '已播 ' + (d.counts ? d.counts.shown : 0) + ' · 账本 ' + d.latest_row + ' 行';
+}
+function onData(d) {
+  if (d.error) { return showError(d.error); }
+  LAST.data = d;
+  LAST.rows = {}; LAST.lastRow = 0;
+  $('feed').innerHTML = '';
+  fillMeta(d);
+  if (FRAME) {
+    $('hist-banner').classList.add('on');
+    $('hist-text').textContent = '帧 ' + FRAME + ' / ' + d.latest_row + '——只显示该帧之前，实时通道已暂停';
+    $('say-input').disabled = true;
+    $('say-input').placeholder = '历史视图下不发送——回到最新后可介入';
+  } else if (!BATTLE && d.battle) {
+    BATTLE = String(d.battle.n);
+    BATTLE_ID = d.battle.id;
+  }
+  if (!d.rows.length && !FRAME) {
+    if (!(d.battles || []).length) {
+      $('empty-hint').innerHTML = '尚无任务——先在「新建任务」完成授权立项与点火，<br>再回到这里看智能体直播。';
+    }
+    return setState('st-empty');
+  }
+  setState('st-normal');
+  d.rows.forEach(function (r) { appendBubble(r); });
+  if (!d.rows.length) {
+    var e = document.createElement('div');
+    e.id = 'feed-empty';
+    e.textContent = '该帧之前没有播报行。';
+    $('feed').appendChild(e);
+  }
+  startStream(d);
+}
+function load() {
+  setState('st-loading');
+  stopStream();
+  fetch(apiQ()).then(function (r) {
+    if (r.status === 401) { location.href = '/login'; throw new Error('须登录'); }
+    if (!r.ok) { return r.json().catch(function () { return {}; })
+      .then(function (j) { throw new Error(j.error || ('HTTP ' + r.status)); }); }
+    return r.json();
+  }).then(onData).catch(function (err) { showError(err.message); });
+}
+function showError(msg) {
+  $('err-detail').textContent = String(msg || '未知错误');
+  setState('st-error');
+}
+$('btn-retry').onclick = load;
+
+/* ---------------- 实时：SSE 复用 / 轮询回落 ---------------- */
+function stopStream() {
+  if (ES) { ES.close(); ES = null; }
+  if (POLL) { clearInterval(POLL); POLL = null; }
+}
+function startStream(d) {
+  if (FRAME) { return setStream('off', '历史视图——实时已暂停'); }
+  if (d.stream_aligned) {
+    setStream('on', '实时 · 连接中');
+    ES = new EventSource('/api/stream?tail=0');
+    ES.onopen = function () { setStream('on', '实时 · 已连接（行号同轴）'); };
+    ES.onerror = function () { setStream('warn', '实时 · 连接中断，自动重连中'); };
+    ES.onmessage = function () { scheduleSync(); };
+  } else {
+    POLL = setInterval(scheduleSync, 4000);
+    setStream('warn', '轮询 4s（实时流与该任务目录不同源）');
+  }
+}
+function scheduleSync() {
+  if (syncTimer || FRAME) { return; }
+  syncTimer = setTimeout(function () { syncTimer = null; sync(); }, 300);
+}
+function sync() {
+  fetch(apiQ()).then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || d.error) { return; }
+      d.rows.forEach(function (r) {
+        if (!(r.row in LAST.rows)) { appendBubble(r); }
+      });
+      LAST.data = d;
+      fillMeta(d);
+    }).catch(function () { /* 轮询瞬时失败不弹错，下一轮再试 */ });
+}
+
+/* ---------------- 发送（介入通道，双落回执） ---------------- */
+function setSending(v) {
+  sending = v;
+  $('btn-send').disabled = v;
+  $('btn-send').textContent = v ? '发送中…' : '发送';
+}
+function nowTs() {
+  return new Date().toISOString().replace('.000', '');
+}
+function send() {
+  var text = $('say-input').value.trim();
+  if (!text || sending) { return; }
+  if (FRAME) { return sayNote('err', '历史视图下不发送——先回到最新'); }
+  if (!BATTLE) { return sayNote('err', '缺任务上下文——请从任务详情进入本页签'); }
+  setSending(true);
+  sayNote('', '');
+  fetch('/api/battle/say', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json',
+               'X-Requested-With': 'XMLHttpRequest' },
+    body: JSON.stringify({ battle: Number(BATTLE), text: text })
+  }).then(function (r) {
+    return r.json().then(function (j) { return { st: r.status, j: j }; });
+  }).then(function (res) {
+    if (res.st === 200 && res.j.ok) {
+      appendBubble({ row: res.j.timeline_row, ts: nowTs(), kind: 'operator',
+                     text: text, len: text.length,
+                     event: 'battle-say ' + BATTLE_ID + ' len=' + text.length,
+                     evidence: [] }, true);
+      $('say-input').value = '';
+      sayNote('ok', '已入账 #' + res.j.timeline_row + ' · 指令通道已更新，智能体下轮巡检带上');
+      setFollow(true); snap();
+    } else {
+      sayNote('err', '发送被拒：' + ((res.j && res.j.error) || ('HTTP ' + res.st)));
+    }
+  }).catch(function (e) {
+    sayNote('err', '网络错误：' + e.message);
+  }).then(function () { setSending(false); });
+}
+$('btn-send').onclick = send;
+$('say-input').addEventListener('keydown', function (ev) {
+  if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); send(); }
+});
+
+/* ---------------- 历史视图/任务切换 ---------------- */
+$('btn-latest').onclick = function () {
+  location.href = BATTLE ? ('?battle=' + BATTLE) : location.pathname;
+};
+$('battle-pick').onchange = function () {
+  location.href = '?battle=' + this.value;
+};
+
+/* ---------------- 宿主接入（任务详情页签内嵌） ---------------- */
+window.addEventListener('message', function (ev) {
+  var d = ev.data;
+  if (d && d.type === 'broadcast:open') {
+    if (d.battle) { BATTLE = String(d.battle); BATTLE_ID = 'battle-' + BATTLE; }
+    FRAME = d.frame ? String(d.frame) : '';
+    document.body.classList.toggle('mode-drawer', d.mode === 'drawer');
+    load();
+  }
+});
+window.BroadcastTab = {
+  open: function (opt) {
+    opt = opt || {};
+    if (opt.battle) { BATTLE = String(opt.battle); BATTLE_ID = 'battle-' + BATTLE; }
+    if (opt.frame !== undefined) { FRAME = opt.frame ? String(opt.frame) : ''; }
+    document.body.classList.toggle('mode-drawer', opt.mode === 'drawer');
+    load();
+  },
+  reload: load
+};
+
+/* ---------------- 启动 ---------------- */
+(function boot() {
+  if (FRAME) {
+    $('hist-banner').classList.add('on');
+    $('hist-text').textContent = '帧 ' + FRAME + '——加载中';
+  }
+  load();
+})();
+/* 共享壳自注册（UI-1 舰 /static/app.js；壳未挂载时静默跳过，本页独立可用） */
+try {
+  if (window.nav && typeof nav.push === 'function') {
+    nav.push({ id: 'broadcast', label: '播报', group: '任务详情' });
+  }
+} catch (e) { /* 壳异常不殃及本页 */ }
+</script>
+</body>
+</html>
