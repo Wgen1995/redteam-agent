@@ -19,6 +19,7 @@
 """
 import errno
 import json
+import math
 import os
 import re
 import tempfile
@@ -122,6 +123,10 @@ def admit(root, battle, *, budget_usd=0.0, ports=(), pid=None,
     """
     if not _BATTLE.match(battle or ""):
         raise ValueError("battle 须 battle-N 形: %r" % (battle,))
+    budget_usd = float(budget_usd)
+    if not math.isfinite(budget_usd) or budget_usd < 0:
+        raise ValueError("budget_usd 须非负有限数（负数压低 budget_used、"
+                         "NaN 恒假比较可穿帽——fail-closed）: %r" % (budget_usd,))
     pid_alive = pid_alive or _default_pid_alive
     now = time.time() if now is None else now
     with _lock(root):

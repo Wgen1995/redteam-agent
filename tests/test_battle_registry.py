@@ -118,6 +118,21 @@ class TestBattleRegistry(unittest.TestCase):
         self.assertEqual([e["battle"] for e in br.snapshot(self.root)["entries"]],
                          ["battle-2"])
 
+    # --- 申报执法 ------------------------------------------------------------
+
+    def test_negative_budget_rejected(self):
+        """负预算申报=调用方程序错（负数入册会压低 budget_used——仲裁面禁洞）。"""
+        with self.assertRaises(ValueError):
+            br.admit(self.root, "battle-1", budget_usd=-5.0,
+                     pid_alive=alive_pids(111))
+
+    def test_non_finite_budget_rejected(self):
+        """NaN/inf 申报=ValueError（NaN 恒假比较可穿一切帽——fail-closed）。"""
+        for bad in (float("nan"), float("inf")):
+            with self.assertRaises(ValueError):
+                br.admit(self.root, "battle-1", budget_usd=bad,
+                         pid_alive=alive_pids(111))
+
     # --- 注册表纪律 -----------------------------------------------------------
 
     def test_bad_battle_name_raises(self):
