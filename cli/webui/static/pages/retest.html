@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>复测 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md §P5.5。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;--purple:#a78bfa;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#battle-pick{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:5px 10px;border-radius:4px;font-size:12px}
+#rt-counts{color:var(--g8);font-size:12px;font-family:var(--mono)}
+body.mode-tab #top{display:none}   /* 嵌入任务详情壳时隐本页顶条（壳自带） */
+#top .sp{flex:1}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:6px 14px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover{background:var(--g5);color:var(--gc)}
+.btn.sm{padding:3px 10px;font-size:11.5px}
+/* 四态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区 */
+#wrap{width:100%;max-width:1180px;margin:0 auto;padding:18px 24px 60px}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+.cols{display:grid;grid-template-columns:7fr 5fr;gap:14px}
+@media(max-width:980px){.cols{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);text-align:left;font-weight:500;padding:8px 10px;
+border-bottom:1px solid var(--g4);font-size:11.5px;letter-spacing:.4px}
+td{padding:8px 10px;border-bottom:1px solid var(--g3);color:var(--gb)}
+tr:hover td{background:var(--g2)}
+tr.sel td{background:var(--g3)}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-y{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-r{background:rgba(232,99,90,.14);color:var(--dang)}
+.t-n{background:var(--g4);color:var(--g9)}
+.scrollbox{max-height:460px;overflow-y:auto}
+.scrollbox::-webkit-scrollbar{width:5px}.scrollbox::-webkit-scrollbar-thumb{background:var(--g4)}
+.btn-retest{background:var(--acc2);border:1px solid var(--acc2);color:#08130d;
+font-weight:600;border-radius:4px;cursor:pointer;padding:3px 10px;font-size:11.5px}
+.btn-retest:hover{background:var(--acc)}
+.btn-retest:disabled{background:var(--g4);border-color:var(--g5);color:var(--g7);cursor:not-allowed}
+/* 历史时间线 */
+#rt-timeline .step{position:relative;padding:0 0 18px 22px;border-left:2px solid var(--g4);
+margin-left:8px}
+#rt-timeline .step:last-child{border-left-color:transparent}
+#rt-timeline .dot{position:absolute;left:-6px;top:2px;width:10px;height:10px;
+border-radius:50%;background:var(--g6);border:2px solid var(--g1)}
+#rt-timeline .step.ok .dot{background:var(--dang)}
+#rt-timeline .step.na .dot{background:var(--acc)}
+#rt-timeline .step.env .dot{background:var(--warn)}
+#rt-timeline .hd{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#rt-timeline .at{font-family:var(--mono);font-size:11.5px;color:var(--g8)}
+#rt-timeline .trig{color:var(--g7);font-size:11px}
+#rt-timeline .dur{font-family:var(--mono);font-size:11px;color:var(--info)}
+#rt-timeline .diff{color:var(--ga);font-size:12px;margin-top:3px;line-height:1.6}
+#rt-timeline .rowref{font-family:var(--mono);font-size:10.5px;color:var(--g7);cursor:help}
+#rt-timeline .none{color:var(--g8);font-size:12.5px;padding:8px 2px}
+#rt-hint{margin-top:10px;color:var(--g8);font-size:11.5px;line-height:1.7}
+#retest-panel{position:fixed;inset:0;background:rgba(10,11,13,.7);display:none;
+align-items:center;justify-content:center;z-index:50}
+#retest-panel.on{display:flex}
+#retest-panel .box{width:560px;background:var(--g2);border:1px solid var(--g5);
+border-radius:8px;padding:20px}
+#retest-panel h3{color:var(--gc);font-size:14px;margin-bottom:8px}
+#retest-panel pre{background:var(--g1);border:1px solid var(--g4);border-radius:6px;
+padding:10px;font-family:var(--mono);font-size:11.5px;color:var(--ga);
+overflow-x:auto;white-space:pre-wrap;margin:8px 0}
+#retest-panel .msg{font-size:12px;margin-top:8px;min-height:18px;color:var(--g8)}
+#retest-panel .msg.ok{color:var(--acc)}#retest-panel .msg.err{color:var(--dang)}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">任务详情 · <b>复测</b></span>
+  <select id="battle-pick" title="切换任务"></select>
+  <span id="goal-chip" class="mono" style="color:var(--g7);font-size:11px"></span>
+  <span class="sp"></span>
+  <span id="rt-counts"></span>
+</header>
+
+<div id="st-empty" class="state"><div class="box">
+  <h3>尚无发现</h3>
+  <p>智能体完成意图后，发现自动进入复测队列。<br>
+  每条发现的复测结果都会入账本，可随时回看。</p>
+</div></div>
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在读取复测账本…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>复测数据加载失败</h3>
+  <p>原因：<code id="err-detail"></code></p>
+  <p><button id="btn-retry" class="btn">重试</button></p>
+</div></div>
+
+<div id="st-normal" class="state"><div id="wrap">
+  <div class="cols">
+    <div class="pane">
+      <h3>复测队列<span class="sub">按距上次复测最久排序；有证据的发现可发起复测</span></h3>
+      <div class="scrollbox"><table id="rq-table">
+        <thead><tr><th>发现</th><th>上次结果</th><th>距上次</th><th>客户反馈</th><th>操作</th></tr></thead>
+        <tbody id="rq-body"></tbody>
+      </table></div>
+    </div>
+    <div class="pane">
+      <h3 id="rt-title">复测历史<span class="sub">时间 / 结果 / 差异</span></h3>
+      <div id="rt-timeline" class="scrollbox" style="max-height:460px"></div>
+      <div id="rt-hint">触发方式分「自动复测」（到期自动重放）与「手动」（操作员发起）；每次复测逐次入账本，「差异」对比相邻两次的结果与状态码，客户可验。</div>
+    </div>
+  </div>
+</div></div>
+
+<div id="retest-panel"><div class="box">
+  <h3 id="rp-title">发起复测</h3>
+  <p style="color:var(--g8);font-size:12px">将对该发现的全部证据执行机械重放（写入动作走重放路由；本页为观察面，路由未挂载时可复制命令到操作台执行）。</p>
+  <pre id="rp-cmd"></pre>
+  <div class="row" style="display:flex;gap:8px">
+    <button id="rp-go" class="btn" style="background:var(--acc2);border-color:var(--acc2);color:#08130d;font-weight:600">立即复测</button>
+    <button id="rp-close" class="btn">关闭</button>
+  </div>
+  <div id="rp-msg" class="msg"></div>
+</div></div>
+
+<script src="/static/app.js"></script>
+<script>
+/* 数据单源：GET /api/v2/retest.json?battle=N（复测队列+历史投影；只读）。
+   写入=POST /api/v2/finding/replay（写入路由由持有舰挂载，在则用，缺=诚实降级）。 */
+'use strict';
+function $(id){return document.getElementById(id);}
+function params(){
+  var q={};window.location.search.slice(1).split('&').forEach(function(kv){
+    if(!kv)return;var p=kv.split('=',2);q[decodeURIComponent(p[0])]=decodeURIComponent(p[1]||'');});
+  return q;
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+var Q=params();
+var BATTLE=Q.battle||'';
+var LAST=null,SELECT=null;
+var API_REPLAY='/api/v2/finding/replay';
+
+var VERDICT_CLS={
+  'reproduced':'ok','not-reproduced':'na','env-diff':'env','manual':''};
+var VERDICT_BADGE={
+  'reproduced':'<span class="tag t-r">复现</span>',
+  'not-reproduced':'<span class="tag t-g">未复现</span>',
+  'env-diff':'<span class="tag t-y">环境差异</span>',
+  'manual':'<span class="tag t-n">人工判定</span>'};
+
+function hrefWith(extra){
+  var parts=[];
+  if(BATTLE){parts.push('battle='+encodeURIComponent(BATTLE));}
+  if(extra){parts.push(extra);}
+  return location.pathname+(parts.length?'?'+parts.join('&'):'');
+}
+
+function setState(name){
+  ['st-empty','st-loading','st-error','st-normal'].forEach(function(id){
+    $(id).classList.toggle('on',id==='st-'+name);});
+}
+
+function load(){
+  setState('loading');
+  var url='/api/v2/retest.json'+(BATTLE?('?battle='+encodeURIComponent(BATTLE)):'');
+  fetch(url,{credentials:'same-origin'}).then(function(r){
+    return r.json().then(function(j){return {status:r.status,body:j};});
+  }).then(function(res){
+    if(!res){throw new Error('空响应');}
+    if(res.status===404&&res.body&&res.body.error){
+      setState('empty');renderBattlePick(res.body);return;}
+    if(res.status!==200){
+      throw new Error((res.body&&res.body.error)||('HTTP '+res.status));}
+    render(res.body);
+  }).catch(function(err){
+    $('err-detail').textContent=err.message||String(err);
+    setState('error');
+  });
+}
+
+function renderBattlePick(d){
+  var pick=$('battle-pick');
+  pick.innerHTML='';
+  (d.battles||[]).forEach(function(b){
+    var o=document.createElement('option');
+    o.value=b.n;o.textContent='battle-'+b.n;
+    if(d.battle&&d.battle.n===b.n){o.selected=true;}
+    pick.appendChild(o);
+  });
+  if(!(d.battles||[]).length){
+    var o=document.createElement('option');
+    o.value='';o.textContent=d.goal||'当前账本';pick.appendChild(o);
+  }
+  $('goal-chip').textContent=d.goal||'';
+}
+
+function render(d){
+  renderBattlePick(d);
+  var c=d.counts||{};
+  $('rt-counts').textContent='发现 '+c.findings+' · 可复测 '+c.replayable+
+    ' · 累计复测 '+(c.runs_total||0)+' 次';
+  var body=$('rq-body');
+  body.innerHTML='';
+  var queue=d.queue||[];
+  if(!queue.length){setState('empty');return;}
+  queue.forEach(function(f){
+    var tr=document.createElement('tr');
+    var badge=f.last_verdict?VERDICT_BADGE[f.last_verdict]||('<span class="tag t-n">'+esc(f.last_verdict)+'</span>')
+      :'<span class="tag t-n">未复测</span>';
+    var fb=f.has_feedback
+      ?'<span class="tag t-y">有反馈</span>'
+      :'<span class="tag t-n">无</span>';
+    tr.innerHTML='<td><a href="finding-detail.html?id='+encodeURIComponent(f.id)+
+      (BATTLE?('&battle='+encodeURIComponent(BATTLE)):'')+'" title="'+esc(f.title)+'">'+
+      '<span class="mono">'+esc(f.id)+'</span></a><div style="color:var(--g8);font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(f.title)+'</div></td>'+
+      '<td>'+badge+'<div style="color:var(--g7);font-size:11px;margin-top:2px">已复测 '+f.runs+' 次</div></td>'+
+      '<td class="mono">'+esc(f.since_last_text||'—')+'<div style="color:var(--g7);font-size:10.5px">'+esc(f.last_at||f.created||'')+'</div></td>'+
+      '<td>'+fb+'</td>'+
+      '<td><button class="btn-retest"'+(f.replayable?'':' disabled title="无证据卡，不可机械重放"')+
+      ' data-id="'+esc(f.id)+'">立即复测</button></td>';
+    tr.addEventListener('click',function(){selectFinding(f.id);});
+    tr.dataset.fid=f.id;
+    body.appendChild(tr);
+  });
+  body.querySelectorAll('.btn-retest').forEach(function(btn){
+    btn.addEventListener('click',function(ev){
+      ev.stopPropagation();
+      var f=queue.filter(function(x){return x.id===btn.dataset.id;})[0];
+      if(f){openRetestPanel(f);}
+    });
+  });
+  setState('normal');
+  selectFinding(SELECT&&(queue.some(function(f){return f.id===SELECT;}))?SELECT:queue[0].id);
+}
+
+function selectFinding(fid){
+  SELECT=fid;
+  var rows=$('rq-body').querySelectorAll('tr');
+  rows.forEach(function(tr){tr.classList.toggle('sel',tr.dataset.fid===fid);});
+  var f=(LAST&&LAST.queue||[]).filter(function(x){return x.id===fid;})[0];
+  if(!f){return;}
+  $('rt-title').innerHTML=esc(f.id)+' 复测历史<span class="sub">'+esc(f.title)+'</span>';
+  var tl=$('rt-timeline');
+  tl.innerHTML='';
+  var hist=f.history||[];
+  if(!hist.length){
+    tl.innerHTML='<div class="none">尚未复测——首次复测后此处显示逐次时间线（时间 / 结果 / 差异）。</div>';
+    return;
+  }
+  hist.forEach(function(h){
+    var step=document.createElement('div');
+    step.className='step '+(VERDICT_CLS[h.verdict]||'');
+    var badge=VERDICT_BADGE[h.verdict]||('<span class="tag t-n">'+esc(h.verdict)+'</span>');
+    step.innerHTML='<span class="dot"></span>'+
+      '<div class="hd"><span class="at">'+esc(h.at)+'</span>'+badge+
+      '<span class="trig">'+esc(h.trigger)+'</span>'+
+      (h.duration_ms!=null?('<span class="dur">'+h.duration_ms+' ms</span>'):'')+
+      '<span class="rowref" title="账本 timeline 全局行号">行 '+h.row+'</span></div>'+
+      '<div class="diff">差异：'+esc(h.diff||'—')+
+      ' · 证据 <span class="mono">'+esc(h.ev_id)+'</span></div>';
+    tl.appendChild(step);
+  });
+}
+
+function openRetestPanel(f){
+  $('rp-title').textContent='立即复测 · '+f.id;
+  $('rp-cmd').textContent='tanyin-replay --goal-dir <账本目录> --id '+
+    (f.history&&f.history.length?f.history[f.history.length-1].ev_id:(f.id+'（无证据卡）'));
+  var msg=$('rp-msg');msg.className='msg';msg.textContent='';
+  $('retest-panel').classList.add('on');
+  $('rp-go').onclick=function(){attemptReplay(f);};
+}
+function attemptReplay(f){
+  var msg=$('rp-msg');
+  msg.className='msg';msg.textContent='正在发起复测…';
+  fetch(API_REPLAY,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+    credentials:'same-origin',
+    body:JSON.stringify({id:f.id,battle:BATTLE||''})
+  }).then(function(r){
+    if(r.ok){
+      msg.className='msg ok';
+      msg.textContent='复测已受理——稍后刷新查看最新结果与差异。';
+      setTimeout(load,1200);
+      return null;
+    }
+    throw new Error('HTTP '+r.status);
+  }).catch(function(err){
+    msg.className='msg err';
+    msg.textContent='复测写入路由未挂载（'+err.message+
+      '）——本页为只读观察面；请复制上方命令在操作台执行。';
+  });
+}
+$('rp-close').onclick=function(){$('retest-panel').classList.remove('on');};
+$('retest-panel').addEventListener('click',function(ev){
+  if(ev.target===this){this.classList.remove('on');}
+});
+
+$('btn-retry').onclick=load;
+$('battle-pick').onchange=function(){
+  location.href=this.value?('?battle='+this.value):location.pathname;
+};
+
+/* 宿主壳接入（mode-tab=嵌入任务详情壳；独立打开亦可用） */
+function applyMode(embed){
+  document.body.classList.toggle('mode-tab',!!embed);
+}
+window.RetestTab={
+  mode:'tab',
+  open:function(opt){opt=opt||{};applyMode(opt.embed);
+    if(opt.battle!==undefined){BATTLE=String(opt.battle||'');}load();},
+  reload:load
+};
+
+(function boot(){load();})();
+/* 共享壳自注册（UI-1 舰 /static/app.js；壳未挂载时静默跳过，本页独立可用） */
+try{
+  if(window.nav&&typeof nav.push==='function'){
+    nav.push({ id: 'retest', label: '复测', group: '任务详情' });
+  }
+}catch(e){/* 壳异常不殃及本页 */}
+</script>
+</body>
+</html>
