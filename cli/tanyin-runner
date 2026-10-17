@@ -65,9 +65,16 @@ def now():
 
 
 def log_event(runner_log, event, detail=""):
-    line = "%s\t%s\t%s" % (now(), event, detail)
+    """runner.tsv 行 + 帧文件双写（W2·C:G2 帧化：kind 词面同源、schema_version
+    锚+seq；帧=审计镜像，写失败不阻主流程）。杀点调用序=先 log_event 后
+    kill_group（DIRECTIVE/STALL/BUDGET-ENFORCE/ASK-ANSWERED 全在杀前记账），
+    双写后「先写帧后杀」纪律自持——取消/续跑的尾账不再丢。"""
+    ts = now()
+    line = "%s\t%s\t%s" % (ts, event, detail)
     with open(runner_log, "a", encoding="utf-8") as f:
         f.write(line + "\n")
+    from ledger.frames import append_frame, frames_path_for
+    append_frame(frames_path_for(runner_log), ts, event, detail=detail)
     print("[runner] " + line)
 
 

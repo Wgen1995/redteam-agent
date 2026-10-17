@@ -40,6 +40,7 @@ from ledger.trace_search import RUNNER_LOG_NAMES, default_battles_dir  # noqa: F
 
 RUNNER_TSV_NAME = "opencode-run.log.runner.tsv"
 TRANSCRIPT_NAME = "opencode-run.log"
+FRAMES_NAME = "opencode-run.log.frames.ndjson"   # W2·C:G2 帧化契约（frames.py 单源）
 INTERVENTION_ACTORS = ("总控", "canary", "egress")
 PROGRESS = "PROGRESS"
 SEGMENT_STARTERS = ("LAUNCH", "RESTART")
@@ -71,6 +72,21 @@ def _read_text(path):
 
 
 # --- transcript 投影 -----------------------------------------------------------
+
+
+def _frames_rounds(battle_dir):
+    """W2·C:G2 帧优先投影：帧文件在场且含战士帧（round/text/tool_use/
+    tool_result）→ frames.frames_to_rounds（tool_use↔tool_result 按 call_id
+    精确配对，修 :15 行首标记猜配对的脆弱点）；否则 None=回落标记法
+    （opencode TUI 无 id 旧捕获的兼容路径，原样保留不破坏）。"""
+    from . import frames as _frames
+    text = _read_text(os.path.join(battle_dir, FRAMES_NAME))
+    if not text:
+        return None
+    parsed = _frames.parse_frames(text)
+    if not _frames.has_warrior_frames(parsed):
+        return None
+    return _frames.frames_to_rounds(parsed)
 
 
 def _is_marker(line):
@@ -286,8 +302,10 @@ def session_view(battle_dir):
     meta = _battle_meta(battle_dir)
     runner_rows = parse_runner_tsv(
         _read_text(os.path.join(battle_dir, RUNNER_TSV_NAME)) or "")
-    rounds = parse_transcript(
-        _read_text(os.path.join(battle_dir, TRANSCRIPT_NAME)) or "")
+    rounds = _frames_rounds(battle_dir)   # 帧优先（call_id 配对）；None=标记法回落
+    if rounds is None:
+        rounds = parse_transcript(
+            _read_text(os.path.join(battle_dir, TRANSCRIPT_NAME)) or "")
     inter = _interventions(battle_dir)
 
     seg_rows = _segments(runner_rows)
