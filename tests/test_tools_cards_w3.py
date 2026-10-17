@@ -7,7 +7,11 @@
 install/KEY-MANAGEMENT.md）：tests/fixtures/keys/test-signing-key.pem。
 """
 import os
+import shutil
+import shutil
+import subprocess
 import sys
+import tempfile
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -18,6 +22,7 @@ sys.path.insert(0, CLI)
 from tools import cards as tool_cards  # noqa: E402
 from tools import lock as tool_lock  # noqa: E402
 from tools import install as tool_install  # noqa: E402
+from tools import gate as tool_gate  # noqa: E402
 
 TEST_KEY = os.path.join(HERE, "fixtures", "keys", "test-signing-key.pem")
 TEST_PUB = os.path.join(HERE, "fixtures", "keys", "test-release.pub")
@@ -278,6 +283,151 @@ class TestInstallCard(unittest.TestCase):
                              state_path=self.state)
         raw = open(self.state, "rb").read()
         self.assertNotIn(b"\r\n", raw)
+
+
+LEDGER_ENTRY = os.path.join(ROOT, "cli", "tanyin-ledger")
+PY = sys.executable
+
+
+def _ledger(gd, *args):
+    return subprocess.run([PY, LEDGER_ENTRY, args[0], "--goal-dir", gd]
+                          + list(args[1:]), capture_output=True, text=True,
+                          encoding="utf-8", errors="replace")
+
+
+class TestCardGate(unittest.TestCase):
+    """②执行入口卡层门链：未注册拒/供应链门/黑名单覆盖/限速旗标/L3 审批挂卡。
+
+    四层 scope 与全局 deny-list 在委托层（tanyin-guard exec 同源执法）——
+    卡层不做第二份解释（防漂移），本组测卡层自有门；guard 委托面=集成组。
+    """
+
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory()
+        self.addCleanup(self.td.cleanup)
+        self.gd = shutil.copytree(FIXTURE, os.path.join(self.td.name, "G-g1"))
+        self.state = os.path.join(self.td.name, "installed.tsv")
+        for n in ("curl", "nuclei", "ffuf", "nmap", "sqlmap", "impacket",
+                  "redis-cli", "dig"):
+            ok, why = tool_install.install(n, "2026-10-18T10:00:00Z",
+                                           state_path=self.state)
+            assert ok, why
+
+    def gate(self, name, args, ts="2026-10-18T12:00:00Z"):
+        return tool_gate.card_gate(self.gd, name, args, ts,
+                                   state_path=self.state)
+
+    def test_unknown_card_rejected(self):
+        ok, why = self.gate("metasploit", ["-h"])
+        self.assertFalse(ok)
+        self.assertIn("unknown-tool", why)
+
+    def test_empty_card_name_rejected(self):
+        ok, why = self.gate("", [])
+        self.assertFalse(ok)
+        self.assertIn("unknown-tool", why)
+
+    def test_not_installed_card_rejected(self):
+        ok, why = self.gate("nikto", ["-h", "https://api.shop.example"])
+        self.assertFalse(ok)
+        self.assertIn("card-not-installed", why)
+
+    def test_tampered_lock_rejected_at_exec(self):
+        entries = tool_lock.load(tool_lock.DEFAULT_LOCK_PATH)
+        entries["dig"]["sha256"] = "ab" * 32
+        bad_lock = os.path.join(self.td.name, "tools-bad.lock")
+        tool_lock.write_entries(bad_lock, entries)
+        ok, why = tool_gate.card_gate(
+            self.gd, "dig", ["+short", "A", "api.shop.example"],
+            "2026-10-18T12:00:00Z", state_path=self.state,
+            lock_path=bad_lock)
+        self.assertFalse(ok, "执行时 lock 现场复验不过必须拒: " + why)
+        self.assertIn("supply-chain", why)
+
+    def test_deny_extra_pattern_rejected(self):
+        ok, why = self.gate("redis-cli", ["-h", "db.shop.example", "FLUSHALL"])
+        self.assertFalse(ok)
+        self.assertIn("deny-extra", why)
+        self.assertIn("FLUSHALL", why)
+
+    def test_nmap_t5_aggressive_rejected(self):
+        ok, why = self.gate("nmap", ["-T5", "-p", "443", "api.shop.example"])
+        self.assertFalse(ok)
+        self.assertIn("deny-extra", why)
+
+    def test_sqlmap_max_risk_rejected(self):
+        ok, why = self.gate("sqlmap", ["-u", "https://api.shop.example/?id=1",
+                                       "--batch", "--risk=3"])
+        self.assertFalse(ok)
+        self.assertIn("deny-extra", why)
+
+    def test_nuclei_missing_rate_flag_rejected(self):
+        ok, why = self.gate("nuclei", ["-u", "https://api.shop.example"])
+        self.assertFalse(ok)
+        self.assertIn("card-rate", why)
+        self.assertIn("-rl", why)
+
+    def test_ffuf_missing_rate_flag_rejected(self):
+        ok, why = self.gate("ffuf", ["-w", "w.txt",
+                                     "-u", "https://api.shop.example/FUZZ"])
+        self.assertFalse(ok)
+        self.assertIn("card-rate", why)
+
+    def test_nuclei_with_rate_flag_passes_card_layer(self):
+        ok, why = self.gate("nuclei", ["-rl", "10", "-etags", "dos,intrusive",
+                                       "-u", "https://api.shop.example"])
+        self.assertTrue(ok, why)
+
+    def test_l3_without_approval_rejected(self):
+        ok, why = self.gate("sqlmap", ["-u", "https://api.shop.example/?id=1",
+                                       "--batch", "--delay=1",
+                                       "--risk=1", "--level=1"])
+        self.assertFalse(ok)
+        self.assertIn("approval-required", why)
+
+    def test_l3_impacket_without_approval_rejected(self):
+        ok, why = self.gate("impacket", ["dc.shop.example/user:x"])
+        self.assertFalse(ok)
+        self.assertIn("approval-required", why)
+
+    def _approve_hash(self, argv):
+        chash = tool_gate.command_hash(argv)
+        r = _ledger(self.gd, "approve",
+                    "--command-hash=" + chash, "--decision=approved",
+                    "--approver=client-cso", "--timestamp=2026-10-18T11:00:00Z",
+                    "--note=W3 L3 卡人审")
+        assert r.returncode == 0, r.stdout + r.stderr
+        return chash
+
+    def test_l3_with_approved_hash_passes(self):
+        argv = ["sqlmap", "-u", "https://api.shop.example/?id=1", "--batch",
+                "--delay=1", "--risk=1", "--level=1"]
+        self._approve_hash(argv)
+        ok, why = self.gate("sqlmap", argv[1:])
+        self.assertTrue(ok, why)
+
+    def test_l3_approval_bound_to_exact_command(self):
+        """审批绑定 command_hash：换一个参数（不同命令）≠ 已批命令，仍拒。"""
+        argv = ["sqlmap", "-u", "https://api.shop.example/?id=2", "--batch",
+                "--delay=1", "--risk=1", "--level=1"]
+        self._approve_hash(argv)
+        other = ["sqlmap", "-u", "https://api.shop.example/?id=999", "--batch",
+                 "--delay=1", "--risk=1", "--level=1"]
+        ok, why = self.gate("sqlmap", other[1:])
+        self.assertFalse(ok)
+        self.assertIn("approval-required", why)
+
+    def test_non_l3_needs_no_approval(self):
+        ok, why = self.gate("curl", ["-sS", "--max-time", "10",
+                                     "https://api.shop.example/"])
+        self.assertTrue(ok, why)
+
+    def test_fixture_legacy_approval_not_honored_for_other_cmds(self):
+        """夹具遗留 approved 行（bbbb..）不得放行任意 L3 命令——哈希逐字对照。"""
+        ok, why = self.gate("sqlmap", ["-u", "https://api.shop.example/?id=1",
+                                       "--batch"])
+        self.assertFalse(ok)
+        self.assertIn("approval-required", why)
 
 
 if __name__ == "__main__":
