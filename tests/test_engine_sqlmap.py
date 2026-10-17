@@ -9,7 +9,7 @@
 4 限库限表（-D 须在 --dbs 白名单；-T 须伴 -D 且在 --tables 白名单）
 5 数据面旗标结构性不可达（--dump/--os-shell 等写/外带面永不进 argv）
 """
-import json, os, subprocess, sys, tempfile, unittest
+import hashlib, json, os, subprocess, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
@@ -163,6 +163,82 @@ class TestReadonlyProfile(SqlmapWallBase):
         b = self.plan_json("--param", "id")
         self.assertNotEqual(a["command_hash"], b["command_hash"],
                             "hash 须随计划命令变化（L3 逐条审批锚）")
+
+
+class TestApprovalGate(SqlmapWallBase):
+    """L3 审批挂接：approved 行+command_hash 逐条匹配才放行；缺省拒。
+
+    approvals.tsv 七列（契约 01）：id/command_hash/decision/approver/timestamp/note/
+    schema_version——引擎只读（单写者），decision=approved 且 hash=计划命令 sha256
+    才算背书（批的是这条命令，不是意图泛授权）。
+    """
+
+    APR_COLS = 7
+
+    def goal_dir(self, rows):
+        gd = tempfile.mkdtemp()
+        with open(os.path.join(gd, "approvals.tsv"), "w", encoding="utf-8", newline="\n") as f:
+            for r in rows:
+                cells = list(r) + [""] * (self.APR_COLS - len(r))
+                f.write("\t".join(cells[:self.APR_COLS]) + "\n")
+        return gd
+
+    def hash_of(self, *extra):
+        """计划命令 sha256（canonical 形——与 --plan 同源拼装）。"""
+        p = self.plan_json("--approval", "APR-1", *extra)  # 先吃缺省拒块拿 canonical
+        return p["command_hash"], p
+
+    def test_rejected_decision_denied(self):
+        chash, _ = self.hash_of("--level", "2")
+        gd = self.goal_dir([["APR-1", "0" * 64, "rejected", "人工", "2026-10-18T09:00:00Z"]])
+        p = self.plan_json("--level", "2", "--approval", "APR-1", "--goal-dir", gd)
+        self.assertEqual(p["wall"], "blocked")
+        self.assertIn("审批", p["reason"])
+
+    def test_hash_mismatch_denied(self):
+        gd = self.goal_dir([["APR-1", "0" * 64, "approved", "人工", "2026-10-18T09:00:00Z"]])
+        p = self.plan_json("--level", "2", "--approval", "APR-1", "--goal-dir", gd)
+        self.assertEqual(p["wall"], "blocked")
+        self.assertIn("command_hash", p["reason"], "hash 不符须出示锚")
+
+    def test_approved_hash_match_passes(self):
+        chash, _ = self.hash_of("--level", "2")
+        gd = self.goal_dir([[("APR-1"), chash, "approved", "人工",
+                             "2026-10-18T09:00:00Z", "W3 sqlmap 提级", "2"]])
+        p = self.plan_json("--level", "2", "--approval", "APR-1", "--goal-dir", gd)
+        self.assertEqual(p["wall"], "pass", p)
+        self.assertTrue(p["needs_approval"])
+        self.assertIn("--level=2", p["argv"])
+
+    def test_unknown_approval_id_denied(self):
+        gd = self.goal_dir([["APR-9", "0" * 64, "approved", "人工", "2026-10-18T09:00:00Z"]])
+        p = self.plan_json("--level", "2", "--approval", "APR-1", "--goal-dir", gd)
+        self.assertEqual(p["wall"], "blocked")
+        self.assertIn("审批", p["reason"])
+
+    def test_approval_without_goal_dir_denied(self):
+        p = self.plan_json("--level", "2", "--approval", "APR-1")
+        self.assertEqual(p["wall"], "blocked")
+        self.assertIn("goal-dir", p["reason"], "审批行只读 goal 账本——缺目录=无从核验")
+
+    def test_missing_approvals_file_default_deny(self):
+        gd = tempfile.mkdtemp()  # 无 approvals.tsv
+        p = self.plan_json("--level", "2", "--approval", "APR-1", "--goal-dir", gd)
+        self.assertEqual(p["wall"], "blocked")
+        self.assertIn("审批", p["reason"])
+
+    def test_malformed_rows_tolerated_but_default_deny(self):
+        gd = self.goal_dir([["only-three-cells"]])
+        p = self.plan_json("--level", "2", "--approval", "APR-1", "--goal-dir", gd)
+        self.assertEqual(p["wall"], "blocked", "畸形行宽容跳过，但结论=缺省拒")
+
+    def test_latest_row_for_id_wins(self):
+        chash, _ = self.hash_of("--level", "2")
+        gd = self.goal_dir([
+            ["APR-1", "0" * 64, "rejected", "人工", "2026-10-18T09:00:00Z"],
+            ["APR-1", chash, "approved", "人工", "2026-10-18T10:00:00Z"]])
+        p = self.plan_json("--level", "2", "--approval", "APR-1", "--goal-dir", gd)
+        self.assertEqual(p["wall"], "pass", "同 id 取最新行（改判语义）")
 
 
 if __name__ == "__main__":

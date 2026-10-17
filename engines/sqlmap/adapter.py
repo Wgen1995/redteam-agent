@@ -101,6 +101,35 @@ def _target_port(target):
         return None
 
 
+def verify_approval(goal_dir, ap_id, chash):
+    """L3 审批行核验（只读 goal 账本——引擎不写，单写者纪律）。
+
+    approvals.tsv 七列（契约 01）：id/command_hash/decision/approver/timestamp/note/
+    schema_version；同 id 取最新行（改判语义，ctx.latest 同口径）。缺文件/畸形行/
+    行缺=缺省拒（fail-closed——审批是放行门，宽容方向只能是拒）。
+    返回 (ok, reason)。"""
+    if not goal_dir:
+        return False, "审批核验缺 --goal-dir（审批行只读 goal 账本，无从核验）"
+    path = os.path.join(goal_dir, "approvals.tsv")
+    row = None
+    try:
+        with open(path, encoding="utf-8", errors="replace") as f:
+            for ln in f:
+                cells = ln.rstrip("\n").split("\t")
+                if len(cells) >= 4 and cells[0] == ap_id:
+                    row = cells   # 后行覆盖前行=最新行胜
+    except OSError:
+        return False, "审批缺省拒: approvals.tsv 不可读（%s）" % path
+    if row is None:
+        return False, "审批缺省拒: %s 无行（先 tanyin-ledger approve 落 approved 行）" % ap_id
+    if row[2] != "approved":
+        return False, "审批缺省拒: %s decision=%s（须 approved）" % (ap_id, row[2])
+    if row[1] != chash:
+        return False, ("审批缺省拒: %s command_hash 不符（行=%s… 计划=%s…——逐条审批"
+                       "锚，批的就是这条命令）" % (ap_id, row[1][:12], chash[:12]))
+    return True, ""
+
+
 def plan_profile(a):
     """参数墙单源：旋钮 dict → 计划。返回
     {wall: pass|blocked, reason, argv, canonical, command_hash, needs_approval}。
@@ -162,12 +191,17 @@ def plan_profile(a):
     # L3 审批缺省拒：提级（level>1/risk>1）或任何 -D/-T 枚举请求 ⇒ 须 approved 行
     # 背书（行匹配核验=Cycle B 落位；此处先立「无审批不放行」的门）。审批锚=
     # command_hash（计划命令 sha256，逐条审批——批的就是这条命令，不是意图泛授权）。
-    if needs_approval and not a.get("--approval"):
-        return {"wall": "blocked", "needs_approval": True,
-                "reason": ("L3 审批缺省拒: level=%d risk=%d database=%s table=%s 须"
-                           " --approval=APR-… 指向 approved 行（command_hash=%s 计划命令: %s）"
-                           % (level_v, risk_v, database or "-", table or "-", chash, canonical)),
-                "argv": [], "canonical": canonical, "command_hash": chash}
+    if needs_approval:
+        if not a.get("--approval"):
+            return {"wall": "blocked", "needs_approval": True,
+                    "reason": ("L3 审批缺省拒: level=%d risk=%d database=%s table=%s 须"
+                               " --approval=APR-… 指向 approved 行（command_hash=%s 计划命令: %s）"
+                               % (level_v, risk_v, database or "-", table or "-", chash, canonical)),
+                    "argv": [], "canonical": canonical, "command_hash": chash}
+        ok, why = verify_approval(a.get("--goal-dir", ""), a["--approval"], chash)
+        if not ok:
+            return {"wall": "blocked", "needs_approval": True, "reason": why,
+                    "argv": [], "canonical": canonical, "command_hash": chash}
     return {"wall": "pass", "reason": "", "argv": argv, "canonical": canonical,
             "command_hash": chash, "needs_approval": needs_approval}
 
