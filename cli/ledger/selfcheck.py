@@ -69,6 +69,8 @@ KNOWN_COMMANDS = {
     # 批次 6 T12：tanyin-report 三子命令 forward 面（文件结构图冻结口径）；render/sign
     # 随 T13/T14 交付，lint 随 T14 交付时增补入表。
     "report": ["aggregate", "lint", "render", "sign"],  # lint=批次 6 T14 增补
+    # W2 serve 收口：tanyin-serve 单命令起 webui（start/status/stop 随 T3 交付入表）。
+    "serve": ["start", "status", "stop"],
 }
 
 # 引用形态：tanyin-<tool> <sub>（子命令 token 限 ASCII 小写字母/数字/连字符——
