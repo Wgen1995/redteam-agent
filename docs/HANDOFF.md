@@ -1555,3 +1555,4 @@ Ran 1661 tests in 453.476s
 OK(双证: bash-1260 exit0 + 本轮计数)
 - W1 五件战果: 授权八问真化+读面门(1cb568a)/launch(同上)/battle auto(d7fcffb)/VulnClaw插槽(25561ba)/GraphLed定名——基线表三行已翻已超。
 - W2 五舰在航(01651ce8地基/1e4baba2单源退出码/e7a6d5f1CI护栏/af8a5d63租约多战帧化/7f74585c serve收口)。
+- W2 timeline舰完工(207bf97验活续完+a9d9e5d边界补齐): O(1)尾追加(尾窗回退/O_APPEND+fsync/epoch递增)+撕裂读封口(TornTimelineError fail-closed零半写)——n=10000 total=2.70s尾/首比0.99;金样run_golden.sh三PASS+gold系全绿;新增18测+相邻44+金样系84全OK,零碰他舰文件。
