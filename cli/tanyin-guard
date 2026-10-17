@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """tanyin-guard（批次 2 T1）——Tier 1 执行通道级包装器。"""
-import hashlib, os, re, subprocess, sys
+import hashlib, json, os, re, subprocess, sys
+
+try:
+    import resource as _resource   # B:G2 三帽执法面（POSIX）
+except ImportError:               # Windows 无 resource 模块——见 _guard_spawn 平台边界
+    _resource = None
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger import core, vault
@@ -10,7 +15,6 @@ from ledger.enforce import (TIME_TRAVEL_TOLERANCE, chain_time, deny_forms, deny_
                             grant_row_exists, load_scope, nuclei_params_ok,
                             out_of_scope_hosts, parse_ts, permitted_actions_covered,
                             rate_window, time_travel_verdict)
-from ledger.schemas import TABLES
 from ledger.core import ensure_utf8_stdio
 
 ensure_utf8_stdio()  # Windows 控制台默认 GBK：中文输出统一 UTF-8
@@ -265,6 +269,137 @@ def _parse_timeout(raw):
     return t if 1 <= t <= 600 else None
 
 
+# ===== B:G2 资源上限（W2·CI 护栏舰附带；B-csai 全件对齐 G2 裁决）=====
+# 规格: exec/inject 位统一 resource.setrlimit 三帽(RLIMIT_AS/RLIMIT_NPROC/
+# RLIMIT_CPU), 参数=goal 侧 amendment 可调(13 表列集冻结→guard-limits.json
+# 侧车承载, 先例=engines task-constraints.json), 施加失败=REJECT(fail-closed
+# 同律: 支持面上施加失败子进程绝不执行)。
+# 平台边界(实证探针见 tests/test_guard_rlimits_b_g2.py): Windows 无 resource
+# 模块——未声明帽=既有行为零漂移(dev/CI 面), 声明了帽=REJECT(声明即执法义务);
+# macOS 内核不收任何有限 RLIMIT_AS 值(8G..128G 全拒)——AS 无执法力平台=披露
+# 放行(CPU/NPROC 仍帽); cgroup/JobObject 深档=部署文档可选(B:G2 裁决原文)。
+# 缺省帽常开(POSIX): as=4G(VA 帽, CSAI 2GB 内存语义放宽防误杀大 VA 预留引擎)/
+# nproc=256(CSAI processguard 同值)/cpu=600(=guard --timeout 上限同律背板)。
+
+GUARD_LIMITS_FILE = "guard-limits.json"
+RLIMIT_DEFAULTS = {"rlimit_as": 4 << 30, "rlimit_nproc": 256, "rlimit_cpu": 600}
+_RLIMIT_BOUNDS = {"rlimit_as": (16 << 20, 64 << 30),
+                  "rlimit_nproc": (1, 4096), "rlimit_cpu": (1, 86400)}
+_SIZE_SUFFIX = {"K": 1024, "M": 1024 ** 2, "G": 1024 ** 3}
+
+
+def _parse_size(raw):
+    """'512M'/'2G'/整数字节 → 字节数；非法 → None。"""
+    if isinstance(raw, bool):
+        return None
+    if isinstance(raw, int):
+        return raw
+    m = re.match(r"^(\d+)([KMG])?$", str(raw).strip())
+    if not m:
+        return None
+    return int(m.group(1)) * _SIZE_SUFFIX[m.group(2) or ""]
+
+
+def load_guard_limits(gd):
+    """侧车 → (resolved, err, present)。缺文件=(缺省帽, None, False)。
+    坏 JSON/非对象/未知键/值非法或越界=(None, err, True)——fail-closed REJECT 面。"""
+    p = os.path.join(gd, GUARD_LIMITS_FILE)
+    if not os.path.exists(p):
+        return dict(RLIMIT_DEFAULTS), None, False
+    try:
+        with open(p, encoding="utf-8") as f:
+            raw = json.load(f)
+    except Exception as e:
+        return None, "bad-json(%s)" % e, True
+    if not isinstance(raw, dict):
+        return None, "sidecar-须为对象", True
+    for k in raw:
+        if k not in RLIMIT_DEFAULTS:
+            return None, "unknown-key:%s" % k, True
+    out = dict(RLIMIT_DEFAULTS)
+    for k, v in raw.items():
+        val = _parse_size(v) if k == "rlimit_as" else v
+        if isinstance(val, bool) or not isinstance(val, int):
+            return None, "bad-value:%s=%r" % (k, v), True
+        lo, hi = _RLIMIT_BOUNDS[k]
+        if not lo <= val <= hi:
+            return None, "out-of-bounds:%s=%r(域 %d..%d)" % (k, v, lo, hi), True
+        out[k] = val
+    return out, None, True
+
+
+def _as_capable(cap):
+    """RLIMIT_AS 平台执法力探针（soft-only、set 后即还原=可逆）。
+    ValueError(macOS 把内核拒收包成此形)=平台不支持→False 披露放行;
+    OSError(Linux 真施加失败/EPERM)=原样上抛→调用方 REJECT(fail-closed)。"""
+    res = _resource.RLIMIT_AS
+    orig = _resource.getrlimit(res)
+    try:
+        _resource.setrlimit(res, (cap, orig[1]))
+    except ValueError:
+        return False
+    finally:
+        try:
+            _resource.setrlimit(res, orig)
+        except Exception:
+            pass
+    return True
+
+
+def _guard_spawn(gd, ts, cmd, timeout, env=None):
+    """exec/inject 单源受帽 spawn: 侧车校验→(amendment 报账)→preexec 施帽。
+    施加序 CPU→NPROC→AS(探针过才入列)——支持面上的失败=SubprocessError→
+    REJECT, 子进程绝不裸跑。返回 CompletedProcess; REJECT 已打印+落账→None。"""
+    limits, err, present = load_guard_limits(gd)
+    if err is not None:
+        print("REJECT" + TAB + "guard" + TAB + "rlimit" + TAB
+              + "reason=bad-limits detail=" + err)
+        append_tl(gd, ts, "guard-reject rlimit reason=bad-limits detail=" + err)
+        return None
+    kw = dict(capture_output=True, text=True, timeout=timeout,
+              encoding="utf-8", errors="replace")
+    if env is not None:
+        kw["env"] = env
+    if _resource is None:
+        if present:
+            print("REJECT" + TAB + "guard" + TAB + "rlimit" + TAB
+                  + "reason=platform-missing detail=resource 模块不可用"
+                    "（JobObject 档=部署文档可选）")
+            append_tl(gd, ts, "guard-reject rlimit reason=platform-missing")
+            return None
+        return subprocess.run(cmd, **kw)
+    try:
+        capable = _as_capable(limits["rlimit_as"])
+    except OSError:
+        print("REJECT" + TAB + "guard" + TAB + "rlimit" + TAB
+              + "reason=apply-failed detail=as 探针失败(EPERM/真施加失败)")
+        append_tl(gd, ts, "guard-reject rlimit reason=apply-failed detail=as-probe")
+        return None
+    plan = [(_resource.RLIMIT_CPU, limits["rlimit_cpu"]),
+            (_resource.RLIMIT_NPROC, limits["rlimit_nproc"])]
+    if capable:
+        plan.append((_resource.RLIMIT_AS, limits["rlimit_as"]))
+    if present:   # amendment 审计镜像（缺省路径零新行=既有行数断言面不破）
+        note = "" if capable else " as-disclose=platform-unsupported"
+        append_tl(gd, ts, "guard-rlimit as=%d nproc=%d cpu=%d src=%s%s"
+                  % (limits["rlimit_as"], limits["rlimit_nproc"],
+                     limits["rlimit_cpu"], GUARD_LIMITS_FILE, note))
+
+    def _apply():
+        for res, val in plan:
+            _resource.setrlimit(res, (val, val))
+
+    try:
+        return subprocess.run(cmd, preexec_fn=_apply, **kw)
+    except subprocess.TimeoutExpired:
+        raise   # 墙钟超时≠施加失败——交调用方 timeout REJECT 面
+    except subprocess.SubprocessError:
+        print("REJECT" + TAB + "guard" + TAB + "rlimit" + TAB
+              + "reason=apply-failed detail=setrlimit 施加失败，子进程未执行")
+        append_tl(gd, ts, "guard-reject rlimit reason=apply-failed")
+        return None
+
+
 def cmd_exec(gd, rest, ts=None):
     cred, action, timeout_raw, front_ts, rest = _split_front(rest)
     ts = ts or front_ts   # 前置 --timestamp 形（批次 10 T5）
@@ -286,13 +421,14 @@ def cmd_exec(gd, rest, ts=None):
     if rc is not None:
         return rc
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=t,
-                           encoding="utf-8", errors="replace")
+        r = _guard_spawn(gd, ts, cmd, t)   # B:G2: 受帽 spawn（REJECT→None）
     except subprocess.TimeoutExpired:
         print("REJECT" + TAB + "guard" + TAB + "timeout t=%ds（guard --timeout 通道，缺省 60 上限 600）" % t)
         return 1
     except FileNotFoundError:
         print("REJECT" + TAB + "guard" + TAB + "命令不存在: " + cmd[0])
+        return 1
+    if r is None:   # B:G2: 帽校验/施加 REJECT 已打印落账
         return 1
     secrets = vault_secrets(gd)
     sys.stdout.write(tokenize_output(r.stdout, secrets))
@@ -344,13 +480,14 @@ def main(argv):
         env["TY_CRED_SECRET"] = sec
         append_tl(gd, kv["--timestamp"], "vault-inject cred=" + kv["--cred"])
         try:
-            r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=t,
-                               encoding="utf-8", errors="replace")
+            r = _guard_spawn(gd, kv["--timestamp"], cmd, t, env=env)   # B:G2 同帽
         except subprocess.TimeoutExpired:
             print("REJECT" + TAB + "guard" + TAB + "timeout t=%ds（guard --timeout 通道，缺省 60 上限 600）" % t)
             return 1
         except FileNotFoundError:
             print("REJECT" + TAB + "guard" + TAB + "命令不存在: " + cmd[0])
+            return 1
+        if r is None:   # B:G2: 帽校验/施加 REJECT 已打印落账
             return 1
         secrets = vault_secrets(gd)
         sys.stdout.write(tokenize_output(r.stdout, secrets))
