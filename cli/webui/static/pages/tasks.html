@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>任务列表 · GraphLed</title>
+<!-- 设计权威 docs/design/ui-spec-complete-v1.md §P3（T5 施工）+task-lifecycle-v1.md
+     状态机（12 态→界面七态子集投影，服务端 api_v2_tasks 单源）。
+     视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律——「任务」不说「战」，预算琥珀线→预算预警线）。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。
+     数据单源：/api/v2/tasks.json（battles+goals+findings+budget+timeline 聚合投影）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;--purple:#a78bfa;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+display:flex;flex-direction:column;overflow:hidden}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+.sp{flex:1}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:6px 14px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover{background:var(--g5);color:var(--gc)}
+.btn.acc{background:var(--acc2);border-color:var(--acc2);color:#08130d;font-weight:600}
+.btn.acc:hover{background:var(--acc)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+/* ── 顶栏 ─────────────────────────────────────────── */
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 14px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#total-chip{font-family:var(--mono);font-size:11.5px;color:var(--g8)}
+/* ── 工具栏（搜索+筛选+新建） ─────────────────────── */
+#bar{background:var(--g1);border-bottom:1px solid var(--g3);padding:10px 14px;
+display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0}
+#q-search{width:240px;background:var(--g2);border:1px solid var(--g5);border-radius:4px;
+color:var(--gc);padding:6px 10px;font-size:12.5px}
+#q-search:focus{outline:none;border-color:var(--acc2)}
+select{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:5px 8px;border-radius:4px;font-size:12px}
+#bar label{color:var(--g8);font-size:11.5px}
+#btn-new{margin-left:auto}
+/* ── 四态 ─────────────────────────────────────────── */
+.state{display:none;flex:1;overflow:hidden;position:relative}
+.state.on{display:flex;flex-direction:column}
+#st-empty .box,#st-error .box{max-width:520px;margin:10vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:32px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:10px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.9}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-empty .btn{margin-top:14px}
+#st-loading .wrap{flex:1;max-width:920px;width:100%;margin:20px auto;padding:0 16px}
+.sk{border:1px solid var(--g4);border-left:3px solid var(--g5);border-radius:8px;
+background:var(--g2);padding:12px 14px;margin-bottom:12px;animation:sh 1.2s ease-in-out infinite}
+.sk .a{height:11px;width:160px;border-radius:3px;background:var(--g4);margin-bottom:8px}
+.sk .b{height:13px;border-radius:3px;background:var(--g3)}
+.sk .b.w1{width:70%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+#st-loading .tip{color:var(--g8);font-size:12px;text-align:center;padding-bottom:16px}
+/* ── 任务表（正常态） ─────────────────────────────── */
+#tbl-wrap{flex:1;overflow:auto;padding:0 14px}
+#tbl-wrap::-webkit-scrollbar{width:6px}#tbl-wrap::-webkit-scrollbar-thumb{background:var(--g4)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+th{color:var(--g8);text-align:left;font-weight:500;padding:8px 10px;
+border-bottom:1px solid var(--g4);font-size:11.5px;letter-spacing:.4px;
+position:sticky;top:0;background:var(--g1);cursor:pointer;user-select:none;
+white-space:nowrap;z-index:2}
+th:hover{color:var(--ga)}
+th .arr{font-family:var(--mono);color:var(--acc);margin-left:4px;font-size:10px}
+td{padding:9px 10px;border-bottom:1px solid var(--g3);color:var(--gb);vertical-align:middle}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:var(--g2)}
+.c-name b{color:var(--gc);font-weight:600;display:block;font-size:12.5px}
+.c-name .bid{font-family:var(--mono);font-size:10.5px;color:var(--g7)}
+.c-target{color:var(--g9);max-width:260px;overflow:hidden;text-overflow:ellipsis;
+white-space:nowrap;font-size:12px}
+.c-updated,.c-start{font-family:var(--mono);font-size:11.5px;color:var(--g8);white-space:nowrap}
+/* 状态徽章 */
+.badge{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;
+font-weight:500;white-space:nowrap}
+.b-草稿{background:var(--g4);color:var(--g9)}
+.b-待授权{background:rgba(232,179,75,.14);color:var(--warn)}
+.b-执行中{background:rgba(90,169,230,.14);color:var(--info)}
+.b-复测{background:rgba(167,139,250,.14);color:var(--purple)}
+.b-待签发{background:rgba(232,179,75,.14);color:var(--warn)}
+.b-已签发{background:rgba(61,220,151,.14);color:var(--acc)}
+.b-已归档{background:var(--g4);color:var(--g8)}
+.b-已中止,.b-环境失败{background:rgba(232,99,90,.14);color:var(--dang)}
+.badge .dt{font-weight:400;font-size:10px;color:var(--g7);margin-left:4px}
+/* 预算进度条（80% 预算预警线） */
+.c-budget{min-width:150px}
+.bud-line{display:flex;align-items:baseline;gap:6px;font-family:var(--mono);
+font-size:11px;color:var(--g9);margin-bottom:3px}
+.bud-line .pct{color:var(--gb)}
+.bud-line .pct.warn{color:var(--warn)}
+.bud-line .pct.over{color:var(--dang)}
+.bar{position:relative;height:6px;background:var(--g4);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:3px;background:var(--acc2)}
+.bar i.warn{background:var(--warn)}
+.bar i.over{background:var(--dang)}
+.amber-line{position:absolute;top:-2px;bottom:-2px;left:80%;width:1px;
+background:var(--warn);opacity:.75}
+.bar .amber-line{top:0;bottom:0}
+.bud-cap{position:relative;height:8px}
+.bud-cap .amber-line{left:80%;width:1px;height:8px;position:absolute}
+.bud-tip{font-size:10px;color:var(--g7);margin-top:2px}
+/* 发现双色（已验证/待验证） */
+.c-findings{white-space:nowrap;font-family:var(--mono);font-size:12px}
+.fv-ok{color:var(--acc);font-weight:600}
+.fv-pend{color:var(--warn)}
+.fv-out{color:var(--g6)}
+.fv-sep{color:var(--g6);margin:0 2px}
+/* 分页 */
+#pager{display:flex;align-items:center;gap:10px;padding:8px 14px;flex-shrink:0;
+background:var(--g1);border-top:1px solid var(--g3);font-size:12px;color:var(--g8)}
+#pager .mono{font-size:11.5px}
+#page-info{font-family:var(--mono);font-size:11.5px}
+#empty-filter{color:var(--g8);font-size:12.5px;text-align:center;padding:30px 0}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb"><b>任务列表</b></span>
+  <span id="total-chip"></span>
+  <span class="sp"></span>
+  <span style="color:var(--g8);font-size:11px">数据源 battles+goals+findings+budget 聚合</span>
+</header>
+<div id="bar">
+  <input id="q-search" type="search" maxlength="80" placeholder="搜索任务：名称 / 目标 / 编号">
+  <label for="f-state">状态</label>
+  <select id="f-state"><option value="全部">全部</option></select>
+  <label for="f-time">更新时间</label>
+  <select id="f-time">
+    <option value="all">全部</option>
+    <option value="24h">近 24 小时</option>
+    <option value="7d">近 7 天</option>
+    <option value="30d">近 30 天</option>
+  </select>
+  <button class="btn acc" id="btn-new" title="授权八问齐备才能创建——宪法 #41">＋ 新建任务</button>
+</div>
+<section class="state" id="st-loading">
+  <div class="wrap">
+    <div class="sk"><div class="a"></div><div class="b w1"></div></div>
+    <div class="sk"><div class="a"></div><div class="b w1"></div></div>
+    <div class="sk"><div class="a"></div><div class="b w1"></div></div>
+  </div>
+  <p class="tip">正在拉取任务列表…</p>
+</section>
+<section class="state" id="st-empty">
+  <div class="box">
+    <h3>第一个任务从这里开始</h3>
+    <p>这里会列出每一次授权测试任务：状态、预算消耗与发现计数。<br>
+    新建任务需要先备齐授权八问——授权书原件、窗口期、范围白名单。</p>
+    <button class="btn acc" id="btn-new-empty">＋ 新建任务</button>
+  </div>
+</section>
+<section class="state" id="st-error">
+  <div class="box">
+    <h3>任务列表加载失败</h3>
+    <p><code id="err-detail"></code></p>
+    <p style="margin-top:12px"><button class="btn" id="btn-retry">重试</button></p>
+  </div>
+</section>
+<section class="state on" id="st-normal">
+  <div id="tbl-wrap">
+    <table id="tbl-tasks">
+      <thead><tr>
+        <th data-k="name">任务 <span class="arr" data-arr="name"></span></th>
+        <th data-k="target">目标 <span class="arr" data-arr="target"></span></th>
+        <th data-k="state">状态 <span class="arr" data-arr="state"></span></th>
+        <th data-k="budget">预算（已用 / 上限） <span class="arr" data-arr="budget"></span></th>
+        <th data-k="findings">发现（已验证 / 待验证） <span class="arr" data-arr="findings"></span></th>
+        <th data-k="created">开始时间 <span class="arr" data-arr="created"></span></th>
+        <th data-k="updated">更新时间 <span class="arr" data-arr="updated"></span></th>
+      </tr></thead>
+      <tbody id="tasks-tbody"></tbody>
+    </table>
+    <div id="empty-filter" hidden>当前筛选条件下没有任务——换个状态或时间试试。</div>
+  </div>
+  <div id="pager">
+    <button class="btn" id="pg-prev">上一页</button>
+    <span id="page-info"></span>
+    <button class="btn" id="pg-next">下一页</button>
+    <span class="sp"></span>
+    <span>每页 20 条</span>
+  </div>
+</section>
+<script src="/static/app.js"></script>
+<script>
+/* ================= 任务列表页（P3） =================
+ * 数据单源：GET /api/v2/tasks.json——每仗一行（状态徽章/预算/发现/时间全在
+ * 服务端聚合，本页只做筛选[状态/时间/搜索]+列头排序+分页 20/页+行点击进
+ * 任务详情）。预算进度条 80% 处立「预算预警线」（宪法#41 人话词——琥珀线
+ * 是内部代号不上屏）。行点击 → 任务详情（P5 作战室页未落期间先到既有
+ * 会话页 /session?battle=N，TASK_DETAIL 基一处可切）。 */
+'use strict';
+function $(id) { return document.getElementById(id); }
+var PAGE_SIZE = 20;
+var TASK_DETAIL = '/session?battle=';      /* P5 任务详情落地后改指新页 */
+var NEW_TASK_URL = 'new-task.html';        /* P4 新建任务（同 pages 目录兄弟页） */
+var DATA = null;                           /* 服务端全量列表 */
+var view = { q: '', state: '全部', time: 'all',
+             sortK: 'updated', sortDesc: true, page: 1 };
+
+function setState(name) {
+  ['st-empty', 'st-loading', 'st-error', 'st-normal'].forEach(function (id) {
+    $(id).classList.toggle('on', id === name);
+  });
+}
+function fmtTs(ts) {
+  return (ts || '').replace('T', ' ').replace('Z', '') || '—';
+}
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function fmtNum(n) {
+  var v = Number(n) || 0;
+  if (v >= 1e9) { return (v / 1e9).toFixed(1) + 'G'; }
+  if (v >= 1e6) { return (v / 1e6).toFixed(v % 1e6 === 0 ? 0 : 1) + 'M'; }
+  if (v >= 1e3) { return (v / 1e3).toFixed(v % 1e3 === 0 ? 0 : 1) + 'K'; }
+  return String(v);
+}
+function withinTime(ts, mode) {
+  if (mode === 'all' || !ts) { return true; }
+  var hours = mode === '24h' ? 24 : (mode === '7d' ? 168 : 720);
+  var t = Date.parse(ts);
+  if (isNaN(t)) { return true; }               /* 坏时刻不滤（诚实显示） */
+  return (Date.now() - t) / 3600000 <= hours;
+}
+function filtered() {
+  var q = view.q.trim().toLowerCase();
+  var out = [];
+  (DATA && DATA.battles ? DATA.battles : []).forEach(function (b) {
+    if (view.state !== '全部' && b.state.label !== view.state) { return; }
+    if (!withinTime(b.updated, view.time)) { return; }
+    if (q) {
+      var hay = (b.name + ' ' + b.objective + ' ' + b.battle + ' ' +
+                 (b.goal || '')).toLowerCase();
+      if (hay.indexOf(q) < 0) { return; }
+    }
+    out.push(b);
+  });
+  var k = view.sortK, dir = view.sortDesc ? -1 : 1;
+  out.sort(function (a, b) {
+    var va = sortVal(a, k), vb = sortVal(b, k);
+    if (va < vb) { return -1 * dir; }
+    if (va > vb) { return 1 * dir; }
+    return b.n - a.n;                            /* 平局战号新者优先 */
+  });
+  return out;
+}
+function sortVal(b, k) {
+  if (k === 'budget') { return b.budget && b.budget.token ? b.budget.token.pct : 0; }
+  if (k === 'findings') { return b.findings ? b.findings.total : 0; }
+  if (k === 'state') { return b.state ? b.state.label : ''; }
+  return String(b[k] || '');
+}
+
+/* ---------------- 渲染 ---------------- */
+function badge(st) {
+  var cls = 'b-' + (st.label || '');
+  var dt = st.detail ? '<span class="dt">' + esc(st.detail) + '</span>' : '';
+  return '<span class="badge ' + cls + '" title="' + esc(st.detail || st.label) +
+         '">' + esc(st.label) + dt + '</span>';
+}
+function budgetCell(bud) {
+  var t = bud && bud.token ? bud.token : { used: 0, cap: 0, pct: 0, warn: false, over: false };
+  var cls = t.over ? 'over' : (t.warn ? 'warn' : '');
+  var pct = Math.min(100, Math.round(t.pct));
+  var html = '<div class="bud-line"><span class="pct ' + cls + '">' +
+             (t.pct || 0) + '%</span><span>' + fmtNum(t.used) + ' / ' +
+             fmtNum(t.cap) + ' token</span></div>';
+  html += '<div class="bud-cap"><div class="bar"><i class="' + cls + '" style="width:' +
+          pct + '%"></i><span class="amber-line"></span></div></div>';
+  var extra = [];
+  if (bud && bud.requests) {
+    extra.push('请求 ' + fmtNum(bud.requests.used) + '/' + fmtNum(bud.requests.cap));
+  }
+  if (bud && bud.hours) {
+    extra.push('时长 ' + fmtNum(bud.hours.used) + 'h/' + fmtNum(bud.hours.cap) + 'h');
+  }
+  html += '<div class="bud-tip" title="预算预警线=硬顶的 80%（宪法#41）；口径：网关侧计量">' +
+          '预算预警线 80%' + (extra.length ? ' · ' + esc(extra.join(' · ')) : '') + '</div>';
+  return html;
+}
+function findingsCell(f) {
+  f = f || { total: 0, verified: 0, pending: 0, ruled_out: 0 };
+  var out = '<span class="fv-ok" title="已验证">' + f.verified + '</span>' +
+            '<span class="fv-sep">/</span>' +
+            '<span class="fv-pend" title="待验证">' + f.pending + '</span>';
+  if (f.ruled_out) {
+    out += '<span class="fv-sep">·</span><span class="fv-out" title="已失效">' +
+           f.ruled_out + '</span>';
+  }
+  out += '<span class="fv-sep">·</span><span style="color:var(--g7)" title="active 总数">' +
+         f.total + '</span>';
+  return out;
+}
+function rowHtml(b) {
+  return '<tr data-n="' + b.n + '" title="点击进入任务详情">' +
+    '<td class="c-name"><b>' + esc(b.name || '（未命名）') + '</b>' +
+    '<span class="bid">' + esc(b.battle) + (b.goal ? ' · ' + esc(b.goal) : '') + '</span></td>' +
+    '<td class="c-target" title="' + esc(b.objective || '') + '">' +
+      esc(b.objective ? (b.objective.length > 60 ? b.objective.slice(0, 60) + '…' : b.objective) : '—') + '</td>' +
+    '<td class="c-state">' + badge(b.state) + '</td>' +
+    '<td class="c-budget">' + budgetCell(b.budget) + '</td>' +
+    '<td class="c-findings">' + findingsCell(b.findings) + '</td>' +
+    '<td class="c-start">' + fmtTs(b.created) + '</td>' +
+    '<td class="c-updated">' + fmtTs(b.updated) + '</td></tr>';
+}
+function openDetail(n) {
+  location.href = TASK_DETAIL + encodeURIComponent(n);
+}
+function render() {
+  var rows = filtered();
+  var pages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+  if (view.page > pages) { view.page = pages; }
+  var start = (view.page - 1) * PAGE_SIZE;
+  var slice = rows.slice(start, start + PAGE_SIZE);
+  var tb = $('tasks-tbody');
+  tb.innerHTML = slice.map(rowHtml).join('');
+  Array.prototype.forEach.call(tb.querySelectorAll('tr'), function (tr) {
+    tr.onclick = function () { openDetail(Number(tr.getAttribute('data-n'))); };
+  });
+  $('empty-filter').hidden = slice.length > 0;
+  $('page-info').textContent = rows.length
+    ? ('第 ' + view.page + ' / ' + pages + ' 页 · 共 ' + rows.length + ' 条') : '0 条';
+  $('pg-prev').disabled = view.page <= 1;
+  $('pg-next').disabled = view.page >= pages;
+  var ths = document.querySelectorAll('#tbl-tasks th');
+  Array.prototype.forEach.call(ths, function (th) {
+    var arr = th.querySelector('.arr');
+    if (arr) { arr.textContent = th.getAttribute('data-k') === view.sortK
+      ? (view.sortDesc ? '▼' : '▲') : ''; }
+  });
+}
+
+/* ---------------- 装配 ---------------- */
+function fillStates(d) {
+  var sel = $('f-state');
+  var cur = sel.value || '全部';
+  sel.innerHTML = '';
+  (d.states && d.states.length ? d.states : [{ label: '全部' }]).forEach(function (s) {
+    var o = document.createElement('option');
+    o.value = s.label; o.textContent = s.label;
+    sel.appendChild(o);
+  });
+  var cnt = d.counts && d.counts.by_label ? d.counts.by_label : {};
+  Array.prototype.forEach.call(sel.options, function (o) {
+    if (o.value !== '全部' && cnt[o.value]) { o.textContent = o.value + '（' + cnt[o.value] + '）'; }
+  });
+  sel.value = cur;
+}
+function onData(d) {
+  if (d.error) { return showError(d.error); }
+  DATA = d;
+  fillStates(d);
+  var n = d.counts ? d.counts.battles : 0;
+  $('total-chip').textContent = n ? ('共 ' + n + ' 个任务') : '';
+  if (!n) {
+    setState('st-empty');
+    return;
+  }
+  setState('st-normal');
+  render();
+}
+function load() {
+  setState('st-loading');
+  fetch('/api/v2/tasks.json').then(function (r) {
+    if (r.status === 401) { location.href = '/login'; throw new Error('须登录'); }
+    if (!r.ok) { return r.json().catch(function () { return {}; })
+      .then(function (j) { throw new Error(j.error || ('HTTP ' + r.status)); }); }
+    return r.json();
+  }).then(onData).catch(function (err) { showError(err.message); });
+}
+function showError(msg) {
+  $('err-detail').textContent = String(msg || '未知错误');
+  setState('st-error');
+}
+$('btn-retry').onclick = load;
+$('btn-new').onclick = function () { location.href = NEW_TASK_URL; };
+$('btn-new-empty').onclick = function () { location.href = NEW_TASK_URL; };
+$('q-search').addEventListener('input', function () {
+  view.q = this.value; view.page = 1; if (DATA) { render(); }
+});
+$('f-state').addEventListener('change', function () {
+  view.state = this.value; view.page = 1; if (DATA) { render(); }
+});
+$('f-time').addEventListener('change', function () {
+  view.time = this.value; view.page = 1; if (DATA) { render(); }
+});
+$('pg-prev').onclick = function () { view.page -= 1; render(); };
+$('pg-next').onclick = function () { view.page += 1; render(); };
+Array.prototype.forEach.call(document.querySelectorAll('#tbl-tasks th'), function (th) {
+  th.onclick = function () {
+    var k = th.getAttribute('data-k');
+    if (view.sortK === k) { view.sortDesc = !view.sortDesc; }
+    else { view.sortK = k; view.sortDesc = (k === 'updated' || k === 'budget' || k === 'findings'); }
+    render();
+  };
+});
+
+/* 共享壳自注册（UI-1 舰 /static/app.js；壳未挂载时静默跳过，本页独立可用） */
+try {
+  if (window.nav && typeof nav.push === 'function') {
+    nav.push({ id: 'tasks', label: '任务列表', group: '任务' });
+  }
+} catch (e) { /* 壳异常不殃及本页 */ }
+
+load();
+</script>
+</body>
+</html>
