@@ -102,11 +102,12 @@ def frames_to_rounds(frames):
 
     round 帧开新轮（title=轮头）；条目先于首 round 帧 → 轮头 "" 容错轮
     （parse_transcript 空容错同义）；tool_use 即落卡（state=open），同
-    call_id 的 tool_result 回填就地配对（paired=True）；无主 result=orphan 卡。
+    call_id 的 tool_result 回填就地配对（paired=True；call_id 会话全局
+    唯一→配对不受轮界切断，迟到结果回填原轮原卡）；无主 result=orphan 卡。
     """
     rounds, cur_entries = [], []
     head = None
-    cards = {}   # call_id → 卡 dict（就地配对）
+    cards = {}   # call_id → 卡 dict（会话全局就地配对——不随轮重置）
 
     def _flush():
         nonlocal cur_entries
@@ -119,7 +120,6 @@ def frames_to_rounds(frames):
         if kind == "round":
             _flush()
             head = str(f.get("title") or f.get("detail") or "")
-            cards = {}
         elif kind == "text":
             cur_entries.append({"kind": "text",
                                 "lines": str(f.get("text") or "").splitlines()})

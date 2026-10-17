@@ -82,6 +82,25 @@ class TestFramesContract(unittest.TestCase):
         self.assertEqual(by_id["B"]["state"], "error")
         self.assertEqual(by_id["B"]["output"], ["Error: boom"])
 
+    def test_result_after_round_boundary_pairs_back(self):
+        """跨轮迟到结果：call_id 会话全局唯一→配对不受轮界切断
+        （迟到结果回填原轮原卡；不得在新轮伪造孤儿卡+旧卡永 open 的假象）。"""
+        frames = [
+            fr.dump_frame("t1", "round", title="> round one"),
+            fr.dump_frame("t2", "tool_use", call_id="X", tool="Bash", title="$ slow"),
+            fr.dump_frame("t3", "round", title="> round two"),
+            fr.dump_frame("t4", "text", text="第二轮先说话"),
+            fr.dump_frame("t5", "tool_result", call_id="X", state="ok", output=["late"]),
+        ]
+        rounds = fr.frames_to_rounds(frames)
+        self.assertEqual([r["head"] for r in rounds], ["> round one", "> round two"])
+        r1_tools = [e for e in rounds[0]["entries"] if e["kind"] == "tool"]
+        self.assertTrue(r1_tools[0]["paired"], "迟到结果须回填原轮原卡")
+        self.assertEqual(r1_tools[0]["state"], "ok")
+        self.assertEqual(r1_tools[0]["output"], ["late"])
+        r2_tools = [e for e in rounds[1]["entries"] if e["kind"] == "tool"]
+        self.assertEqual(r2_tools, [], "迟到结果不得在新轮伪造孤儿卡")
+
     def test_unpaired_use_is_open_not_fabricated(self):
         frames = [fr.dump_frame("t1", "tool_use", call_id="C", tool="Grep", title="Grep x")]
         cards = [e for e in fr.frames_to_rounds(frames)[0]["entries"]
