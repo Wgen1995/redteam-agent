@@ -308,7 +308,7 @@ class WarriorLoop(object):
                 now = self._ts()
                 mine = self.io.my_active_intents(now)
                 if mine:
-                    intent, resumed = mine[0], True
+                    intent = mine[0]          # 断点续跑：接管自己活租约
                 else:
                     cand = self.io.claimable_intents()
                     if not cand:
@@ -321,8 +321,6 @@ class WarriorLoop(object):
                                             ts=now)
                     if not ok:
                         continue      # 认领竞败（双抢互斥）：下一轮再选
-                    resumed = False
-                del resumed
                 self.report.processed += 1
                 status, detail = self.process_intent(intent,
                                                      steers_pending)
