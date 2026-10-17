@@ -6,3 +6,7 @@ __pycache__/
 
 .tmp-secw40/
 .multica/
+
+# coverage 计量工件（W2·CI 护栏⑤：主进程+子进程数据文件）
+.coverage
+.coverage.*
