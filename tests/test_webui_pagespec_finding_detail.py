@@ -382,6 +382,75 @@ def resp_text(p):
     return p["response"]["full"]
 
 
+class TestCvssEvidenceFallback(Base):
+    """cycle② 向量兜底律（UI-1 实勘：findings 行无 CVSS 向量字段）。
+
+    向量在场（描述/复现/证据原文含 CVSS:3.1/…）才实算并示向量+雷达；
+    否则等级=真实 impact 高中低、向量区诚实示「待评定」——禁虚构向量。
+    优先序：发现卡 front-matter → 发现卡正文 → 证据原文（工件+摘录）。
+    """
+
+    VEC_EV = "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:L/A:N"
+
+    def _attach(self, art, excerpt=""):
+        """给 FD-t1-0002（卡无向量）挂一条携带文本的证据工件。"""
+        gd = os.path.join(self.td.name, "G-cvss")
+        shutil.copytree(self.gd, gd)
+        ev = "EV-t2-0001"
+        p = os.path.join(gd, "artifacts", ev + ".raw")
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "wb") as f:
+            f.write(art)
+        hraw, hnorm = artifact_hashes(art)
+        rows = core.Session(gd).rows("E-index.tsv")
+        rows.append(row("E-index.tsv", id=ev, title="向量携带证据", source_type="capture",
+                        observed_at=TS4, network_position="internet",
+                        repro_command="", repro_kind="single",
+                        content_hash_raw=hraw, content_hash_norm=hnorm,
+                        artifact_path="artifacts/" + ev + ".raw",
+                        card_path="evidence/" + ev + ".md",
+                        linked_finding="FD-t1-0002", raw_excerpt=excerpt,
+                        schema_version="2", created=TS4))
+        core.write_tsv(os.path.join(gd, "E-index.tsv"), rows)
+        _write(os.path.join(gd, "evidence", ev + ".md"),
+               "---\nid: " + ev + "\ntitle: 向量携带证据\nsource_type: capture\n"
+               "observed_at: " + TS4 + "\nraw_request: ''\n---\n"
+               "## 原始响应摘录（脱敏+定长）与判定依据\nscanner\n")
+        return gd
+
+    def test_vector_from_evidence_artifact(self):
+        gd = self._attach(b"scanner: risk high, vector " + self.VEC_EV.encode() +
+                          b" (auto-scored)")
+        st, p = api.finding_detail({"id": "FD-t1-0002"}, gd)
+        self.assertEqual(st, 200)
+        self.assertEqual(p["cvss"]["vector"], self.VEC_EV)
+        self.assertEqual(p["cvss"]["source"], "evidence-raw")
+        self.assertIsNotNone(p["cvss"]["score"])
+        self.assertFalse(p["cvss"]["pending"])
+
+    def test_vector_from_evidence_excerpt(self):
+        gd = self._attach(b"plain artifact text", excerpt="评级依据 " + self.VEC_EV)
+        _, p = api.finding_detail({"id": "FD-t1-0002"}, gd)
+        self.assertEqual(p["cvss"]["vector"], self.VEC_EV)
+        self.assertEqual(p["cvss"]["source"], "evidence-raw")
+        self.assertFalse(p["cvss"]["pending"])
+
+    def test_binary_artifact_tolerated_no_vector(self):
+        gd = self._attach(b"\xff\xfe\x00\x01\x80binary-blob-no-vector")
+        st, p = api.finding_detail({"id": "FD-t1-0002"}, gd)
+        self.assertEqual(st, 200)                            # 非法 utf-8 不炸
+        self.assertTrue(p["cvss"]["pending"])                # 无向量=待评定（禁虚构）
+        self.assertEqual(p["cvss"]["vector"], "")
+        self.assertEqual(p["finding"]["impact"], "中")      # 等级=真实 impact
+
+    def test_card_vector_wins_over_evidence(self):
+        gd = self._attach(b"CVSS:3.1/AV:P/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:N")
+        _, p = api.finding_detail({"id": "FD-t1-0001"}, gd)
+        self.assertEqual(p["cvss"]["source"], "finding-card")
+        self.assertEqual(p["cvss"]["vector"], VEC)
+        self.assertEqual(p["cvss"]["score"], 9.1)           # 卡向量优先
+
+
 # ═══════════════════════════════ ② 挂载层 ═══════════════════════════════
 
 class _V2MountHandler(srv_mod.Handler):
@@ -540,6 +609,20 @@ class TestPageStructure(Base):
         self.assertIn('<script src="/static/app.js"></script>', src)
         self.assertEqual(src.count("https://"), 1, "唯一外链=CVSS 官方计算器")
         self.assertIn("https://www.first.org/cvss/calculator", src)
+
+    def test_ask_ai_anchor_placeholder(self):
+        """「问 AI」按钮位：锚定对话设计已入库（contextual-chat-v1）——只留锚点不实现。
+
+        锚=账本行址（表+行号+行哈希）；本页以 data-anchor-* 携带发现行址；
+        点击仅出占位说明，零对话请求（对话面板 W6 落地后接壳常驻面板）。
+        """
+        src = self._src()
+        self.assertIn('id="btn-ask-ai"', src)
+        self.assertIn("问 AI", src)                          # 文案=设计档原词
+        self.assertIn('data-anchor-table="findings.tsv"', src)
+        self.assertIn("data-anchor-id", src)
+        self.assertIn("锚定对话", src)                       # 占位说明明示排期
+        self.assertNotIn("api/v2/ask", src)                 # 留锚点≠实现：零请求
 
     def test_js_under_2000_lines_page_over_600(self):
         src = self._src()

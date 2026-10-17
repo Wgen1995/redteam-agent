@@ -183,6 +183,15 @@ border:1px solid rgba(61,220,151,.35);color:var(--acc)}
 #replay-panel .cmd{font-family:var(--mono);font-size:11.5px;color:var(--ga);
 word-break:break-all;margin:4px 0}
 .copy-ok{color:var(--acc)!important;border-color:var(--acc2)!important}
+/* 「问 AI」锚点位（contextual-chat-v1 已入库；只留锚点不实现） */
+#ask-ai-wrap{position:relative}
+#btn-ask-ai{border-style:dashed}          /* 虚线边=预留位视觉语言 */
+#ask-ai-note{display:none;position:absolute;top:32px;right:0;width:300px;
+background:var(--g2);border:1px solid var(--g5);border-radius:6px;padding:10px 12px;
+color:var(--g9);font-size:11.5px;line-height:1.7;z-index:70}
+#ask-ai-note.on{display:block}
+#ask-ai-note b{color:var(--ga);font-weight:500}
+#ask-ai-note .mono{color:var(--g8)}
 /* 抽屉形态（窄列）与全屏形态 */
 body.mode-full #wrap{max-width:1060px}
 body.mode-drawer #wrap{max-width:640px;padding:12px 14px 40px}
@@ -190,8 +199,8 @@ body.mode-drawer #zone-head .grid{grid-template-columns:auto 1fr}
 body.mode-drawer #zone-head .states{align-items:flex-start;text-align:left}
 body.mode-drawer .basis{max-width:none;text-align:left}
 body.mode-drawer #cvss-score{font-size:30px}
-body.mode-drawer #top .crumb .full-only{display:none}
-body.mode-full #top .crumb .drawer-only{display:none}
+body.mode-drawer .full-only{display:none!important}
+body.mode-full .drawer-only{display:none!important}
 </style>
 </head>
 <body class="mode-full">
@@ -199,6 +208,17 @@ body.mode-full #top .crumb .drawer-only{display:none}
 <div id="top">
   <span class="crumb"><b>发现</b> / 漏洞详情 <span class="full-only" id="crumb-goal"></span></span>
   <span class="sp"></span>
+  <!-- 「问 AI」按钮位：锚定对话设计已入库(contextual-chat-v1)，先留锚点不实现。
+       锚=账本行址(表+行)；data-anchor-* 即锚数据，对话面板(W6)落地后由此接入。 -->
+  <span id="ask-ai-wrap">
+    <button class="btn sm ghost" id="btn-ask-ai" data-anchor-table="findings.tsv" data-anchor-id=""
+            title="锚定对话（设计中）：以本发现的账本行址为锚向 AI 提问">问 AI</button>
+    <div id="ask-ai-note">
+      <b>锚定对话面板排期 W6</b>——本按钮为预留锚点，暂不发起对话。<br>
+      届时 AI 自动取得上下文：本发现账本行（<span class="mono" id="ask-ai-anchor">findings.tsv</span>）
+      +关联证据卡+所属任务阶段，零手工粘贴。
+    </div>
+  </span>
   <button class="btn sm ghost drawer-only" id="btn-fullscreen" title="在新页全屏打开">⛶ 全屏打开</button>
   <button class="btn sm ghost full-only" id="btn-drawer" title="切换抽屉形态预览">▭ 抽屉形态</button>
 </div>
@@ -443,19 +463,19 @@ function renderRadar(vector) {
       fill: 'none', stroke: '#252930', 'stroke-width': 1 }));
   });
   var poly = [];
-  for (i = 0; i < n; i++) {
-    var ang = -Math.PI / 2 + i * 2 * Math.PI / n;
-    var v = radarVal(RADAR_AXES[i], m[RADAR_AXES[i]] || '');
+  for (var j = 0; j < n; j++) {
+    var ang = -Math.PI / 2 + j * 2 * Math.PI / n;
+    var v = radarVal(RADAR_AXES[j], m[RADAR_AXES[j]] || '');
     poly.push((cx + R * v * Math.cos(ang)).toFixed(1) + ',' + (cy + R * v * Math.sin(ang)).toFixed(1));
     svg.appendChild(svgEl('line', { x1: cx, y1: cy,
       x2: cx + R * Math.cos(ang), y2: cy + R * Math.sin(ang), stroke: '#1d2026' }));
     var lx = cx + (R + 15) * Math.cos(ang), ly = cy + (R + 15) * Math.sin(ang);
     var t = svgEl('text', { x: lx.toFixed(1), y: (ly + 3).toFixed(1),
       'text-anchor': 'middle', 'class': 'rl' });
-    t.textContent = RADAR_AXES[i] + (m[RADAR_AXES[i]] ? ':' + m[RADAR_AXES[i]] : '');
+    t.textContent = RADAR_AXES[j] + (m[RADAR_AXES[j]] ? ':' + m[RADAR_AXES[j]] : '');
     svg.appendChild(t);
     var cap = svgEl('title');
-    cap.textContent = RADAR_NAMES[RADAR_AXES[i]];
+    cap.textContent = RADAR_NAMES[RADAR_AXES[j]];
     t.appendChild(cap);
   }
   svg.appendChild(svgEl('polygon', { points: poly.join(' '),
@@ -475,6 +495,8 @@ function renderHead(p) {
     (f.affected_asset_id ? ' · 资产 ' + f.affected_asset_id : '') +
     (p.goal ? ' · 任务 ' + p.goal : '');
   $('crumb-goal').textContent = p.goal ? '· ' + p.goal : '';
+  $('btn-ask-ai').setAttribute('data-anchor-id', f.id);   /* 锚=账本行址 */
+  $('ask-ai-anchor').textContent = 'findings.tsv · ' + f.id;
 
   var cs = $('cvss-score');
   if (p.cvss.pending || p.cvss.score == null) {
@@ -759,6 +781,7 @@ function renderLifeline(p) {
 }
 
 function render(p) {
+  CURRENT = p;                                   /* btn-replay / 宿主取当前档案 */
   renderHead(p);
   renderDesc(p);
   renderEvidence(p);
@@ -769,6 +792,7 @@ function render(p) {
 
 /* ================= 装载 ================= */
 var LAST = { id: '', goal: '' };
+var CURRENT = null;                              /* 最近一次成功装载的档案 */
 function load(id, goal) {
   LAST = { id: id, goal: goal };
   if (!id) { showState('st-empty'); return; }
@@ -786,7 +810,7 @@ function load(id, goal) {
     }
     render(res.body);
   }).catch(function (err) {
-    $('err-detail').textContent = '网络/服务不可达：' + err.message;
+    $('err-detail').textContent = '装载失败：' + err.message;
     showState('st-error');
   });
 }
@@ -847,6 +871,9 @@ $('replay-panel').addEventListener('click', function (ev) {
   if (ev.target === this) { this.classList.remove('on'); }
 });
 
+/* ================= 「问 AI」锚点位（不实现：零对话请求） ================= */
+$('btn-ask-ai').onclick = function () { $('ask-ai-note').classList.toggle('on'); };
+
 /* ================= 形态切换与宿主接入 ================= */
 $('btn-fullscreen').onclick = function () {
   window.open(hrefWith({ mode: 'full' }), '_blank');
@@ -883,10 +910,6 @@ window.FindingDetail = {
     openReplayPanel(CURRENT);
   };
 })();
-var CURRENT = null;
-var _render = render;
-render = function (p) { CURRENT = p; _render(p); };   /* btn-replay 取当前档案 */
-
 /* 共享壳自注册（UI-1 舰 /static/app.js；壳未挂载时静默跳过，本页独立可用） */
 try {
   if (window.nav && typeof nav.push === 'function') {

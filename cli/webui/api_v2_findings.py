@@ -19,8 +19,10 @@ UI-1 舰）分发——挂法钉在 tests/test_webui_pagespec_finding_detail.py
       → 证据区「查看原始报文」懒载：请求(卡片 raw_request)+响应(工件原文；
         is_http=工件以 HTTP/ 状态行起 → head=仅头/full=全文)。
 
-CVSS：向量单源（finding 卡 front-matter cvss_vector，兜底正文 regex）→
-v3.1 基础分官方公式服务端计算（spec：候选未验证=『待评定』，不造分）。
+CVSS：向量单源——优先序=发现卡 front-matter cvss_vector → 发现卡正文 regex
+（描述/复现）→ 证据原文 regex（工件+摘录；UI-1 实勘 findings 行无向量字段，
+向量在场才实算，禁虚构）→ v3.1 基础分官方公式服务端计算（缺向量/缺度量=
+『待评定』，不造分；等级=真实 impact 高中低）。
 """
 import json
 import math
@@ -96,6 +98,15 @@ def _read_text(path):
     try:
         with open(path, encoding="utf-8") as f:
             return f.read()
+    except OSError:
+        return ""
+
+
+def _read_text_loose(path):
+    """宽容读（bytes→utf-8 replace）：证据工件可含非法 utf-8/二进制段，不炸。"""
+    try:
+        with open(path, "rb") as f:
+            return f.read().decode("utf-8", "replace")
     except OSError:
         return ""
 
@@ -267,16 +278,24 @@ def finding_detail(query, ledger_dir):
             os.path.isfile(os.path.join(gd, r[tei["artifact_path"]])),
         })
 
-    # —— CVSS：卡 front-matter cvss_vector → 官方公式分；缺=待评定 ——
+    # —— CVSS：卡 front-matter → 卡正文(描述/复现) → 证据原文；缺=待评定 ——
     fm, body = _card(gd, frow[tf["card_path"]])
     fields = _parse_fm(fm)
     secs = _sections(body)
     vector = str(fields.get("cvss_vector") or "").strip()
     src = "finding-card"
     if not vector:
-        m = _CVSS_VEC_RE.search(_read_text(os.path.join(gd, frow[tf["card_path"]])))
+        m = _CVSS_VEC_RE.search((fm or "") + "\n" + body)
         if m:
             vector, src = m.group(0).rstrip("/"), "finding-card-regex"
+    if not vector:                       # 兜底③：证据原文（工件宽容读+在册摘录）
+        for e in evidence:
+            blob = _read_text_loose(os.path.join(gd, e["artifact_path"])) \
+                if e["artifact_path"] else ""
+            m = _CVSS_VEC_RE.search(blob + "\n" + e["raw_excerpt"])
+            if m:
+                vector, src = m.group(0).rstrip("/"), "evidence-raw"
+                break
     score = cvss_score_from_vector(vector) if vector else None
     cvss = {"vector": vector, "score": score, "pending": score is None,
             "source": src if vector else ""}
