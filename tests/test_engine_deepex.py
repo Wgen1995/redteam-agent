@@ -15,6 +15,8 @@ FINDINGS = os.path.join(HERE, "fixtures", "engine", "deepex-findings.json")
 
 sys.path.insert(0, os.path.join(ROOT, "engines", "deepex"))
 import derive  # noqa: E402
+sys.path.insert(0, os.path.join(ROOT, "cli"))
+from ledger import enforce  # noqa: E402
 
 
 class DeepexBase(unittest.TestCase):
@@ -129,6 +131,88 @@ class TestCredIntentCLI(DeepexBase):
         log = os.path.join(self.out, "operations.log")
         self.assertTrue(os.path.isfile(log))
         self.assertIn("cred-intents", open(log, encoding="utf-8").read())
+
+
+class TestForensicTemplate(DeepexBase):
+    """③ RCE 取证模板：命令执行类发现→取证包（非破坏三连+证据卡），禁删改。"""
+
+    def rce(self):
+        return self.by_dedup(self.findings, "/api/ping")[0]
+
+    def test_trio_is_fixed_non_destructive(self):
+        self.assertEqual(derive.FORENSIC_TRIO, ("whoami", "id", "hostname"),
+                         "非破坏三连固定序，禁增删")
+
+    def test_rce_finding_triggers_package(self):
+        pkgs = derive.forensic_packages(self.findings)
+        hit = [p for p in pkgs if p["source_finding"] == "/api/ping+rce"]
+        self.assertEqual(len(hit), 1)
+        self.assertEqual(tuple(hit[0]["commands"]), derive.FORENSIC_TRIO)
+        self.assertTrue(hit[0]["immutable"], "模板不可变标记（消费面禁改）")
+
+    def test_non_rce_findings_no_package(self):
+        pkgs = derive.forensic_packages(self.findings)
+        srcs = {p["source_finding"] for p in pkgs}
+        self.assertNotIn("GET:id+sqlmap", srcs)
+        self.assertNotIn("/backup/db_backup.sql+fileread", srcs)
+
+    def test_trio_passes_guard_denylist(self):
+        """黑名单兼容：三连逐条过 guard deny 机械（原形+归一形+sh 包装形全过）。"""
+        for c in derive.FORENSIC_TRIO:
+            for form in enforce.deny_forms([c]):
+                self.assertIsNone(enforce.deny_hit(form), "deny 命中: %r ← %s" % (form, c))
+            for form in enforce.deny_forms(["sh", "-c", c]):
+                self.assertIsNone(enforce.deny_hit(form), "sh 包装 deny 命中: %r" % form)
+
+    def test_extra_commands_rejected(self):
+        """禁删改：模板不可追加——任何 extra（含破坏性）一律拒。"""
+        with self.assertRaises(ValueError):
+            derive.forensic_packages([self.rce()], extra=["rm -rf /"])
+        with self.assertRaises(ValueError):
+            derive.forensic_packages([self.rce()], extra=["whoami"])
+
+    def test_destructive_input_never_reaches_commands(self):
+        pkgs = derive.forensic_packages([dict(self.rce(), title="命令执行; rm -rf / 注入")])
+        blob = json.dumps(pkgs, ensure_ascii=False)
+        for p in pkgs:
+            self.assertEqual(tuple(p["commands"]), derive.FORENSIC_TRIO,
+                             "发现文本含破坏载荷也不改三连")
+        self.assertNotIn("rm -rf", blob, "包体不回带破坏载荷原文")
+
+    def test_evidence_cards_one_per_command(self):
+        pkgs = derive.forensic_packages([self.rce()])
+        cards = pkgs[0]["evidence_cards"]
+        self.assertEqual(len(cards), 3, "一命令一证据卡（落账锚）")
+        self.assertEqual([c["command"] for c in cards], list(derive.FORENSIC_TRIO))
+        for c in cards:
+            self.assertTrue(c["expected_matcher"]["matchers"])
+            self.assertEqual(c["capture"], "stdout")
+            self.assertEqual(c["redaction"], "vault-tokenize")
+
+    def test_package_deterministic(self):
+        a = derive.forensic_packages([self.rce()])
+        b = derive.forensic_packages([self.rce()])
+        self.assertEqual(json.dumps(a, sort_keys=True), json.dumps(b, sort_keys=True))
+
+    def test_empty_input(self):
+        self.assertEqual(derive.forensic_packages([]), [])
+        self.assertEqual(derive.forensic_packages(None), [])
+
+
+class TestForensicCLI(DeepexBase):
+    """CLI 面：同一发现流双产物——取证包落 artifacts/forensic-packages.json。"""
+
+    def test_cli_writes_forensic_artifact(self):
+        r = subprocess.run(
+            [sys.executable, DERIVE, "--findings-file", FINDINGS, "--out-dir", self.out],
+            capture_output=True, text=True, encoding="utf-8", errors="replace")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        p = os.path.join(self.out, "artifacts", "forensic-packages.json")
+        self.assertTrue(os.path.isfile(p))
+        doc = json.load(open(p, encoding="utf-8"))
+        self.assertEqual(doc["count"], 1, "恰一条 RCE 发现触发取证包")
+        self.assertIn("forensic", open(os.path.join(self.out, "operations.log"),
+                                       encoding="utf-8").read())
 
 
 if __name__ == "__main__":

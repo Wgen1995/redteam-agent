@@ -17,12 +17,16 @@ docs/reviews/2026-10-17-exceed-review/03-渗透工作流专家.md P1-1「文件�
    submissions/<intent-id>/artifacts/ 布局同源），总控验收后落 intents。
 
 RCE 取证模板（③）同层另一文件面：forensics 包（whoami/id/hostname 非破坏三连），
-见 forensic_packages()。
-"""
+见 forensic_packages()——三连固定禁增删，逐条过 guard deny 机械（黑名单兼容）。"""
 import json
 import os
 import re
 import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(HERE))          # engines/deepex → 仓根
+sys.path.insert(0, os.path.join(ROOT, "cli"))
+from ledger import enforce  # noqa: E402  （guard deny 机械单源——黑名单兼容复用）
 
 USAGE = "用法: derive.py --findings-file=F --out-dir=D [--submission-file=S]\n"
 
@@ -67,6 +71,15 @@ def redact(text):
         return m.group(1) + m.group(2) + REDACTED
     out = SECRET_ASSIGN.sub(_sub, text)
     return SECRET_LITERAL.sub(REDACTED, out)
+
+
+def strip_payload(text):
+    """破坏载荷剥离：deny-list 单源——标题回显含 rm -rf / 等命中模式整段置换。"""
+    out = text or ""
+    for pat in enforce.DENY_LIST:
+        if pat in out:
+            out = out.replace(pat, "[载荷已剥离]")
+    return out
 
 
 def read_file_match(finding):
@@ -130,6 +143,64 @@ def load_findings(args):
     return None, ""
 
 
+# ------------------------------------------------------- ③ RCE 取证模板
+
+# 非破坏三连：固定序、无参数、零写入——身份取证最小集（禁增删，测试钉死）。
+FORENSIC_TRIO = ("whoami", "id", "hostname")
+# 命令执行类发现签名（title+location；中英双形）
+RCE_MARKERS = re.compile(
+    r"(?:\brce\b|remote\s+code\s+execution|os\s+command\s+injection|"
+    r"command\s+injection|code\s+exec(?:ution)?|命令执行|远程代码执行|系统命令注入)", re.I)
+# 三连各自的预期匹配（证据卡 expected——输出形状锚，非回显命令名）
+FORENSIC_MATCHERS = {
+    "whoami": {"matchers": [{"type": "regex", "regex": [r"\S+"]}]},
+    "id": {"matchers": [{"type": "word", "words": ["uid="]}]},
+    "hostname": {"matchers": [{"type": "regex", "regex": [r"[A-Za-z0-9._-]+"]}]},
+}
+
+
+def is_rce_finding(finding):
+    text = " ".join(str(finding.get(k, "")) for k in ("title", "location"))
+    return bool(RCE_MARKERS.search(text))
+
+
+def forensic_packages(findings, extra=None):
+    """命令执行类发现→取证包（非破坏三连+证据卡落账锚）。禁删改：
+
+    - extra 非空即拒（ValueError）——模板不可追加/替换/裁剪，含「看起来无害」的
+      追加（whoami 也拒：三连就是三连，开了口子就是删改通道）。
+    - 三连逐条经 guard deny 机械（deny_forms+deny_hit，cli/ledger 单源）终检——
+      黑名单兼容是运行前提不是愿望；发现文本含破坏载荷也不进包体。"""
+    if extra:
+        raise ValueError("禁删改: 取证模板三连不可增删（extra=%d 项被拒——"
+                         "口子一开即是删改通道）" % len(extra))
+    if not findings:
+        return []
+    for c in FORENSIC_TRIO:   # 黑名单兼容终检（单源机械，非措辞自觉）
+        for form in enforce.deny_forms([c]):
+            hit = enforce.deny_hit(form)
+            if hit:
+                raise RuntimeError("取证三连 deny 命中（黑名单不兼容）: %s ← %s" % (c, hit))
+    packages = []
+    for f in findings:
+        if not isinstance(f, dict) or not f.get("dedup_key_proposed") or not is_rce_finding(f):
+            continue
+        packages.append({
+            "source_finding": f["dedup_key_proposed"],
+            "finding_title": strip_payload(redact(str(f.get("title", ""))))[:80],
+            "commands": list(FORENSIC_TRIO),
+            "immutable": True,
+            "execution_channel": "tanyin-guard exec（request-ticket 落账）",
+            "evidence_cards": [
+                {"command": c, "capture": "stdout", "redaction": "vault-tokenize",
+                 "expected_matcher": FORENSIC_MATCHERS[c]}
+                for c in FORENSIC_TRIO
+            ],
+        })
+    packages.sort(key=lambda p: p["source_finding"])
+    return packages
+
+
 def parse_argv(argv):
     args, i = {}, 1
     while i < len(argv):
@@ -157,6 +228,7 @@ def main(argv):
         return 2
     findings, src = load_findings(args)
     intents, skipped = derive_cred_intents(findings)
+    packages = forensic_packages(findings)
     art_dir = os.path.join(args["--out-dir"], "artifacts")
     os.makedirs(art_dir, exist_ok=True)
     doc = {"intents": intents, "source": os.path.basename(src or ""),
@@ -164,11 +236,19 @@ def main(argv):
     path = os.path.join(art_dir, "derived-cred-intents.json")
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(doc, f, ensure_ascii=False, indent=1, sort_keys=True)
+    fdoc = {"packages": packages, "source": os.path.basename(src or ""),
+            "count": len(packages)}
+    fpath = os.path.join(art_dir, "forensic-packages.json")
+    with open(fpath, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(fdoc, f, ensure_ascii=False, indent=1, sort_keys=True)
     with open(os.path.join(args["--out-dir"], "operations.log"), "w",
               encoding="utf-8", newline="\n") as f:
-        f.write("cred-intents: %d 项（源=%s skipped=%d）\n" % (len(intents), src, skipped))
+        f.write("cred-intents: %d 项（源=%s skipped=%d）\n"
+                "forensic-packages: %d 包（三连=%s）\n"
+                % (len(intents), src, skipped, len(packages), ",".join(FORENSIC_TRIO)))
     print("OK artifacts/derived-cred-intents.json intents=%d skipped=%d"
           % (len(intents), skipped))
+    print("OK artifacts/forensic-packages.json packages=%d" % len(packages))
     return 0
 
 
