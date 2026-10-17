@@ -3,7 +3,11 @@
 入口经 lookup 派发。模块缺失（施工中间态）自动跳过。"""
 import importlib
 
-_MODULES = ["write_cmds", "query_cmds", "check_cmds", "special", "matrix_init", "graph_cmds"]
+# W2 枚举单源化②：zhulong_export（Ship Z v0.9d，ZhuLong findings 互通）归模块表
+# 在册——入口曾组装期 patch 本表（跨模块改私有属性，02 评审 P0-2②），已删；模块缺席
+# 自动跳过律同表内其他成员。
+_MODULES = ["write_cmds", "query_cmds", "check_cmds", "special", "matrix_init",
+            "graph_cmds", "zhulong_export"]
 
 # 写命令模块注册表单源（批次 7 T2，C1 并发半边；台账「写命令锁覆盖 18/19 缺失」并入）——
 # WRITE_COMMANDS 自写命令模块的 HANDLERS 键集派生，禁手抄名单：
@@ -72,7 +76,8 @@ def lookup(cmd):
 
 
 def all_commands():
-    """枚举 41 命令基名——引擎「九门断言命令存在性」检查的单源（批次 3 T2）。
+    """枚举命令面基名——引擎「九门断言命令存在性」检查的单源（批次 3 T2；
+    计数不手抄——docs/gen_counts.py 自本函数派生生成为准，W2 枚举单源化③）。
 
     HANDLERS 里的 ledger- 前缀键分两种：有无前缀孪生键的=双前缀注册别名（剔出基名集，
     如 ledger-add-goal之于add-goal）；无孪生的=原生名本就带前缀的四条校验命令
