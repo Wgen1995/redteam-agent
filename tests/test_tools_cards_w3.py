@@ -474,8 +474,7 @@ class TestExecuteDelegation(unittest.TestCase):
         self.assertEqual(argv[:3], [PY, GUARD_ENTRY, "exec"])
         self.assertIn("--goal-dir", argv)
         self.assertEqual(argv[argv.index("--goal-dir") + 1], self.gd)
-        self.assertEqual(argv[argv.index("--timestamp") + 1],
-                         "2026-10-18T12:00:00Z")
+        self.assertIn("--timestamp=2026-10-18T12:00:00Z", argv)
         sep = argv.index("--")
         self.assertEqual(argv[sep + 1:], ["curl", "-sS",
                                           "https://api.shop.example/"])
@@ -641,6 +640,88 @@ class TestToolsCli(unittest.TestCase):
     def test_usage_no_args(self):
         r = tools_cli()
         self.assertEqual(r.returncode, 2)
+
+
+class TestGuardIntegration(unittest.TestCase):
+    """②执行入口真集成：真 guard 子进程（不注入 spawn）——四层 scope Tier1、
+    全局副作用黑名单、审批放行后到 spawn 的全链。拒绝路径全在 spawn 前截断
+    （零触网）；放行路径用本机必缺 binary（bloodhound-python）锚「命令不存在」
+    ——证明门链全过后才到执行位。"""
+
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory()
+        self.addCleanup(self.td.cleanup)
+        self.gd = shutil.copytree(FIXTURE, os.path.join(self.td.name, "G-g1"))
+        self.state = os.path.join(self.td.name, "installed.tsv")
+        for n in ("curl", "bloodhound", "sqlmap"):
+            ok, why = tool_install.install(n, "2026-10-18T10:00:00Z",
+                                           state_path=self.state)
+            assert ok, why
+
+    def exec_card(self, name, args, ts="2026-10-18T12:00:00Z"):
+        return tool_gate.execute(self.gd, name, args, ts,
+                                 state_path=self.state)
+
+    def test_out_of_scope_host_rejected_by_guard(self):
+        rc, out, err = self.exec_card(
+            "curl", ["-sS", "https://evil.example/"])
+        self.assertEqual(rc, 1)
+        combined = out + err
+        self.assertIn("REJECT", combined)
+        self.assertIn("界外目标", combined, "四层 scope Tier1 经 guard 委托生效")
+
+    def test_global_denylist_rejected_by_guard(self):
+        rc, out, err = self.exec_card(
+            "curl", ["-sS", "--max-time", "10", "shutdown"])
+        self.assertEqual(rc, 1)
+        self.assertIn("deny-list", (out + err), "全局副作用黑名单经 guard 生效")
+
+    def test_exclude_scope_rejected_by_guard(self):
+        r = _ledger(self.gd, "add-scope", "--kind=exclude",
+                    "--matcher=banned.shop.example",
+                    "--timestamp=2026-09-23T09:30:00Z")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        rc, out, err = self.exec_card(
+            "curl", ["-sS", "https://banned.shop.example/"])
+        self.assertEqual(rc, 1)
+        self.assertIn("exclude", (out + err).lower())
+
+    def test_full_chain_pass_reaches_spawn_missing_binary(self):
+        rc, out, err = self.exec_card(
+            "bloodhound", ["-d", "shop.example", "-c", "All"])
+        self.assertEqual(rc, 1)
+        combined = out + err
+        self.assertIn("命令不存在", combined,
+                      "门链全过→到执行位（binary 缺=guard 命令不存在）")
+        self.assertNotIn("deny-list", combined)
+        self.assertNotIn("界外", combined)
+
+    def test_l3_e2e_approval_then_guard_chain(self):
+        argv = ["sqlmap", "-u", "https://api.shop.example/?id=1", "--batch",
+                "--delay=1", "--risk=1", "--level=1"]
+        rc, out, err = self.exec_card("sqlmap", argv[1:])
+        self.assertEqual(rc, 1)
+        self.assertIn("approval-required", err, "未批先拒（卡层）")
+        chash = tool_gate.command_hash(argv)
+        r = _ledger(self.gd, "approve", "--command-hash=" + chash,
+                    "--decision=approved", "--approver=client-cso",
+                    "--timestamp=2026-10-18T11:00:00Z", "--note=W3 E2E")
+        self.assertEqual(r.returncode == 0 or "已存在" in r.stdout + r.stderr,
+                         True, r.stdout + r.stderr)
+        rc2, out2, err2 = self.exec_card("sqlmap", argv[1:])
+        combined = out2 + err2
+        self.assertNotIn("approval-required", err2, "已批放行卡层")
+        self.assertIn("命令不存在", combined,
+                      "卡层放行→guard 门链→执行位（binary 缺锚）")
+
+    def test_cli_exec_end_to_end_guard_reject(self):
+        env = {"TANYIN_TOOLS_STATE": self.state}
+        r = tools_cli("exec", "--goal-dir", self.gd,
+                      "--timestamp=2026-10-18T12:00:00Z",
+                      "--", "curl", "-sS", "https://evil.example/",
+                      env_extra=env)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("界外目标", r.stdout + r.stderr)
 
 
 if __name__ == "__main__":

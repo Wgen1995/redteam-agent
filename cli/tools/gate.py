@@ -148,7 +148,7 @@ def execute(goal_dir, name, args, ts, spawn=None, state_path=None,
         return 1, "", why + chr(10)
     runner = spawn or _guard_spawn
     guard_argv = [_sys_exe(), _guard_entry(), "exec",
-                  "--goal-dir", goal_dir, "--timestamp", ts, "--"] + argv
+                  "--goal-dir", goal_dir, "--timestamp=" + ts, "--"] + argv
     try:
         rc, out, err = runner(guard_argv)
     except FileNotFoundError as e:
