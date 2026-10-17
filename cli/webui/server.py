@@ -541,19 +541,26 @@ class Handler(BaseHTTPRequestHandler):
         data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
         self._send(200, "application/json", data)
 
+    def _console_goal_dir(self, u):
+        """?battle=N → 该任务最新代目录；缺省=ledger_dir；坏参/不存在=(None, 错误)。"""
+        q = urllib.parse.parse_qs(u.query)
+        if "battle" not in q:
+            return self.server.ledger_dir, None
+        n = _norm_battle(q["battle"][0])
+        home = _battle_home(self.server, n) if n is not None else None
+        gd = _latest_gen(home) if home and os.path.isdir(home) else None
+        if gd is None:
+            return None, "任务不存在: " + q["battle"][0]
+        return gd, None
+
     def _serve_console(self, u):
         """W6 控制台投影分发（登录门已 401；?battle=N 选任务，坏参/不存在=404 JSON）。"""
         from . import console as _console
-        q = urllib.parse.parse_qs(u.query)
-        gd = self.server.ledger_dir
-        if "battle" in q:
-            n = _norm_battle(q["battle"][0])
-            home = _battle_home(self.server, n) if n is not None else None
-            gd = _latest_gen(home) if home and os.path.isdir(home) else None
-            if gd is None:
-                return self._send(404, "application/json",
-                                  json.dumps({"error": "任务不存在: " + q["battle"][0]},
-                                             ensure_ascii=False).encode("utf-8"))
+        gd, err = self._console_goal_dir(u)
+        if err:
+            return self._send(404, "application/json",
+                              json.dumps({"error": err},
+                                         ensure_ascii=False).encode("utf-8"))
         view = getattr(_console, _CONSOLE_API[u.path] + "_view")
         try:
             return self._serve_json(view(gd, _battles_root(self.server)))
@@ -579,6 +586,11 @@ class Handler(BaseHTTPRequestHandler):
 
     def _serve_stream(self, u):
         q = urllib.parse.parse_qs(u.query)
+        gd, err = self._console_goal_dir(u)         # W6：流随 ?battle=N 换源
+        if err:
+            return self._send(404, "application/json",
+                              json.dumps({"error": err},
+                                         ensure_ascii=False).encode("utf-8"))
         tail = self.server.tail
         if "tail" in q and q["tail"][0].isdigit():
             tail = int(q["tail"][0])
@@ -589,7 +601,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Connection", "close")         # 无限流无长度：帧后即断语义
         self.end_headers()
         self.close_connection = True
-        path = os.path.join(self.server.ledger_dir, "timeline.tsv")
+        path = os.path.join(gd, "timeline.tsv")
         try:
             for fr in _sse.events(path, start_tail=tail,
                                   poll_interval=self.server.poll_s,

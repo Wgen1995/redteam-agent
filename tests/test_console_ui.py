@@ -671,8 +671,56 @@ class TestUiCopyStandard(unittest.TestCase):
                           _static_src(name), name + ' 标题须规范名')
 
 
+
+# ===========================================================================
+# 八、SSE 跨任务换源钉（流须随 ?battle=N 取任务时间线，缺省行为不漂移）
+# ===========================================================================
+
+class TestStreamBattleSwitch(ConsoleBase):
+
+    def _mk_battle2(self):
+        """第二任务（独立时间线标记行）：证 SSE/投影随 ?battle=N 切换。"""
+        gd2 = build_console_goal(
+            os.path.join(self.battles, "battle-2", "G-c2"))
+        core.write_tsv(os.path.join(gd2, "timeline.tsv"), chained_tl([
+            (TS[0], "总控", "P0", "add-goal G-c2-0001", ""),
+            (TS[1], "CLI", "P3", "marker-battle-two-probe", ""),
+        ]))
+        return gd2
+
+    def _read_stream(self, path, want=None, budget=3.0):
+        """逐字节收流（SSE 无 EOF：到 want 或时限即收手）。"""
+        import time as _t
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=1.0)
+        conn.request("GET", path, headers={"Cookie": "tanyin_sess=" + self.cookie})
+        resp = conn.getresponse()
+        buf = b""
+        deadline = _t.time() + budget
+        try:
+            while _t.time() < deadline and len(buf) < 4096:
+                if want and want.encode("utf-8") in buf:
+                    break
+                buf += resp.read(1)
+        except OSError:
+            pass                      # 时限到/对端关——收到多少算多少
+        finally:
+            conn.close()
+        return buf.decode("utf-8", "ignore")
+
+    def test_stream_follows_battle_param(self):
+        self._mk_battle2()
+        chunk = self._read_stream("/api/stream?tail=2&battle=2",
+                                   want="marker-battle-two-probe")
+        self.assertIn("marker-battle-two-probe", chunk,
+                      "SSE 流须随 ?battle=N 换源（否则跨任务错接）")
+        chunk2 = self._read_stream("/api/stream?tail=2", budget=1.5)
+        self.assertNotIn("marker-battle-two-probe", chunk2,
+                         "默认流仍取 ledger_dir（缺省行为不漂移）")
+
+
 if __name__ == '__main__':
     unittest.main()
+
 
 
 
