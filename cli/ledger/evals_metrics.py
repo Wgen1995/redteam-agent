@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
-"""evals 运行器裁决引擎（退出码 0/1/2，裁决 A；runner 注册表单源）。
+"""evals 运行器裁决引擎（退出码 0/1/2/3，裁决 A；runner 注册表单源）。
 
 0=本套全部硬门 PASS；1=任一硬门 FAIL；2=存在 ENV-SKIP 且无硬门 FAIL 且无 PASS
-（全 skip 才 2；部分 skip+有 PASS=0 并在 counts 披露）。warn 门 FAIL 不影响退出码。
+（全 skip 才 2；部分 skip+有 PASS=0 并在 counts 披露）；3=仅未验证候选——硬门
+全过+有 PASS+counts.candidates>0（W2 退出码分离/D 舰 G4：CI 黄灯，跑了但有
+候选没实证，不静默绿；优先级=硬门 FAIL>全 ENV-SKIP>候选黄灯>干净绿）。
+warn 门 FAIL 不影响退出码。
 时间戳一律显式字面量（禁墙钟，evals 可重放纪律）。"""
 import argparse, json, os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ledger.evals_schema import MetricsError, load_metrics  # noqa: E402
 
-EXIT_PASS, EXIT_GATE_FAIL, EXIT_ENV = 0, 1, 2
+EXIT_PASS, EXIT_GATE_FAIL, EXIT_ENV, EXIT_CANDIDATES = 0, 1, 2, 3
 _RUNNERS = {}
 
 
@@ -52,7 +55,9 @@ def run_suite(metrics, suite, goal_dir, out_path=None, ts="2026-09-24T00:00:00Z"
             counts["fail"] += 1
     counts["candidates"] = sum(int(r.get("candidates") or 0) for r in results)
     hard_fail = counts["fail"] > 0
-    code = EXIT_GATE_FAIL if hard_fail else (EXIT_ENV if counts["pass"] == 0 else EXIT_PASS)
+    code = EXIT_GATE_FAIL if hard_fail else (
+        EXIT_ENV if counts["pass"] == 0 else (
+            EXIT_CANDIDATES if counts["candidates"] > 0 else EXIT_PASS))
     report = {"format_version": 1, "suite": suite, "started_at": ts,
               "results": results, "counts": counts, "exit": code}
     if out_path:
