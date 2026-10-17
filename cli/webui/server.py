@@ -84,6 +84,8 @@ _CONSOLE_PAGES = {"/console": "console_dash.html",
                   "/console/findings": "console_findings.html",
                   "/console/approval": "console_approval.html"}
 
+_CONSOLE_API = {"/api/console/overview.json": "overview"}   # W6 控制台 API（只读投影）
+
 _PAGE_API = {"/api/matrix.json": _proj.matrix_view,     # v0.9b 三页 API（只读装配单源）
              "/api/graph.json": _proj.graph_view,
              "/api/evidence.json": _proj.evidence_view,
@@ -489,6 +491,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._serve_session_battle(u)   # v0.9d ?battle=N 选战（表项=无参最新）
         if u.path in _PAGE_API:                                    # 页 API 单源表（v0.9b+v0.9c+v0.9d）
             return self._serve_json(_PAGE_API[u.path](self.server.ledger_dir))
+        if u.path in _CONSOLE_API:                                 # W6 控制台只读投影
+            return self._serve_console(u)
         if u.path == "/api/state.json":
             return self._serve_state()
         if u.path == "/api/stream":
@@ -515,6 +519,25 @@ class Handler(BaseHTTPRequestHandler):
     def _serve_json(self, payload):
         data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
         self._send(200, "application/json", data)
+
+    def _serve_console(self, u):
+        """W6 控制台投影分发（登录门已 401；?battle=N 选任务，坏参/不存在=404 JSON）。"""
+        from . import console as _console
+        q = urllib.parse.parse_qs(u.query)
+        gd = self.server.ledger_dir
+        if "battle" in q:
+            n = _norm_battle(q["battle"][0])
+            home = _battle_home(self.server, n) if n is not None else None
+            gd = _latest_gen(home) if home and os.path.isdir(home) else None
+            if gd is None:
+                return self._send(404, "application/json",
+                                  json.dumps({"error": "任务不存在: " + q["battle"][0]},
+                                             ensure_ascii=False).encode("utf-8"))
+        view = getattr(_console, _CONSOLE_API[u.path] + "_view")
+        try:
+            return self._serve_json(view(gd, _battles_root(self.server)))
+        except Exception as e:                       # 读面容错：坏账不 500
+            return self._fail(422, {"error": "控制台投影失败: %r" % e})
 
     def _serve_state(self):
         self._serve_json(_snap.snapshot(self.server.ledger_dir, tail=self.server.tail))

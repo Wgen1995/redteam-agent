@@ -233,5 +233,50 @@ class TestConsoleRoutesAndGate(ConsoleBase):
             self.assertIn("error", self.jbody(r), p)
 
 
-if __name__ == "__main__":
+
+# ===========================================================================
+# 二、总览 API（token 经济学=usage 真行 + 活动流=timeline 尾 + 门灯卡片真数）
+# ===========================================================================
+
+class TestOverviewApi(ConsoleBase):
+
+    def test_contract_and_real_values(self):
+        d = self.api('/api/console/overview.json')
+        for k in ('goal', 'cards', 'token_usage', 'activity', 'battles'):
+            self.assertIn(k, d, 'overview 缺键 ' + k)
+        self.assertEqual(d['goal']['id'], 'G-c1-0001')
+        self.assertEqual(d['goal']['target'], 'shop.example')
+        self.assertEqual(d['cards']['verified_findings'], 1)
+        self.assertEqual(d['cards']['findings_total'], 3)
+        self.assertEqual(d['cards']['graph_nodes'], 7)  # G1+INT1+AST1+FD3+EV1
+        self.assertEqual(d['cards']['evidence_cards'], 1)
+        self.assertEqual(d['cards']['budget']['token']['limit'], 1000.0)
+        self.assertEqual(d['cards']['budget']['token']['used'], 600.0)
+        self.assertEqual(d['cards']['budget']['token']['left'], 400.0)
+        tu = d['token_usage']
+        self.assertEqual(tu['total_tokens'], 450000)
+        self.assertEqual(tu['total_est_tokens'], 448000)
+        self.assertEqual(tu['runs'][0]['run'], 'G-c1-0001-r1')
+        self.assertEqual(tu['runs'][0]['tokens'], 450000)
+        self.assertIn('口径', tu['note'])
+        acts = d['activity']
+        self.assertTrue(acts, '活动流非空')
+        self.assertEqual(acts[-1]['actor'], 'CLI')
+        self.assertIn('sqlmap', acts[-1]['event'])
+        for a in acts:
+            for f in ('ts', 'actor', 'phase', 'event'):
+                self.assertIn(f, a)
+        self.assertEqual(d['battles'][0]['id'], 'battle-1')
+        self.assertEqual(d['battles'][0]['target'], 'shop.example')
+
+    def test_battle_param_selects_and_404(self):
+        d = self.api('/api/console/overview.json?battle=1')
+        self.assertEqual(d['goal']['id'], 'G-c1-0001')
+        r = self.req('GET', '/api/console/overview.json?battle=99')
+        self.assertEqual(r['status'], 404, '不存在的任务须 404')
+        self.assertIn('error', self.jbody(r))
+
+
+if __name__ == '__main__':
     unittest.main()
+
