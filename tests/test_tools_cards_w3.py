@@ -536,5 +536,112 @@ class TestExecuteDelegation(unittest.TestCase):
         self.assertTrue(ok, "execute 落账后链式哈希必须仍完整: line %s" % bad)
 
 
+TOOLS_ENTRY = os.path.join(ROOT, "cli", "tanyin-tools")
+
+
+def tools_cli(*args, env_extra=None):
+    env = dict(os.environ)
+    if env_extra:
+        env.update(env_extra)
+    return subprocess.run([PY, TOOLS_ENTRY] + list(args), capture_output=True,
+                          text=True, encoding="utf-8", errors="replace", env=env)
+
+
+class TestToolsCli(unittest.TestCase):
+    """③卡片清单命令：list 列卡 / show 查卡详情 / install 装卡验签 /
+    verify-lock 全量验签 / exec 执行入口（全走 gate 门链）。"""
+
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory()
+        self.addCleanup(self.td.cleanup)
+        self.state = os.path.join(self.td.name, "installed.tsv")
+        self.gd = shutil.copytree(FIXTURE, os.path.join(self.td.name, "G-g1"))
+        self.env = {"TANYIN_TOOLS_STATE": self.state}
+
+    def test_list_shows_25_cards_with_discipline_columns(self):
+        r = tools_cli("list", env_extra=self.env)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        for n in REQUIRED_25:
+            self.assertIn(n, r.stdout)
+        self.assertIn("tier", r.stdout.lower())
+        self.assertIn("rate", r.stdout.lower())
+        self.assertIn("risk", r.stdout.lower())
+        self.assertIn("25", r.stdout, "清单须报卡计数")
+
+    def test_list_marks_installed_cards(self):
+        tool_install.install("curl", "2026-10-18T10:00:00Z",
+                             state_path=self.state)
+        r = tools_cli("list", env_extra=self.env)
+        self.assertEqual(r.returncode, 0)
+        line = [ln for ln in r.stdout.splitlines()
+                if ln.startswith("curl" + chr(9))][0]
+        self.assertIn("in-service", line, "在役卡须有标记")
+
+    def test_show_card_detail_full_discipline(self):
+        r = tools_cli("show", "nuclei", env_extra=self.env)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        for frag in ("nuclei", "L1", "10/s", "medium", "-rl",
+                     "-etags", "dos,intrusive", "w3-1"):
+            self.assertIn(frag, r.stdout, "show 详情缺 %r" % frag)
+
+    def test_show_l3_card_discloses_approval_gate(self):
+        r = tools_cli("show", "sqlmap", env_extra=self.env)
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("L3", r.stdout)
+        self.assertIn("审批门", r.stdout)
+
+    def test_show_unknown_card_usage_error(self):
+        r = tools_cli("show", "metasploit", env_extra=self.env)
+        self.assertEqual(r.returncode, 2)
+
+    def test_install_via_cli_ok_then_reject_unknown(self):
+        r = tools_cli("install", "dig", "--timestamp=2026-10-18T10:00:00Z",
+                      env_extra=self.env)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("dig", r.stdout)
+        r2 = tools_cli("install", "metasploit",
+                       "--timestamp=2026-10-18T10:00:00Z", env_extra=self.env)
+        self.assertEqual(r2.returncode, 1)
+        self.assertIn("unknown-tool", r2.stdout + r2.stderr)
+
+    def test_verify_lock_all_pass(self):
+        r = tools_cli("verify-lock", env_extra=self.env)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("25", r.stdout)
+
+    def test_verify_lock_tampered_fails(self):
+        entries = tool_lock.load(tool_lock.DEFAULT_LOCK_PATH)
+        entries["nikto"]["sha256"] = "ab" * 32
+        bad = os.path.join(self.td.name, "tools-bad.lock")
+        tool_lock.write_entries(bad, entries)
+        r = tools_cli("verify-lock", "--lock=" + bad, env_extra=self.env)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("nikto", r.stdout + r.stderr)
+
+    def test_exec_not_installed_rejected(self):
+        r = tools_cli("exec", "--goal-dir", self.gd,
+                      "--timestamp=2026-10-18T12:00:00Z",
+                      "--", "curl", "-sS", "https://api.shop.example/",
+                      env_extra=self.env)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("card-not-installed", r.stdout + r.stderr)
+
+    def test_exec_unknown_rejected(self):
+        r = tools_cli("exec", "--goal-dir", self.gd,
+                      "--timestamp=2026-10-18T12:00:00Z",
+                      "--", "metasploit", "-h", env_extra=self.env)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("unknown-tool", r.stdout + r.stderr)
+
+    def test_exec_requires_timestamp(self):
+        r = tools_cli("exec", "--goal-dir", self.gd, "--", "curl", "-h",
+                      env_extra=self.env)
+        self.assertEqual(r.returncode, 2, "EPOCH 缺省退役律：--timestamp 必填")
+
+    def test_usage_no_args(self):
+        r = tools_cli()
+        self.assertEqual(r.returncode, 2)
+
+
 if __name__ == "__main__":
     unittest.main()
