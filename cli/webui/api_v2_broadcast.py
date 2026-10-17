@@ -166,11 +166,16 @@ def _ev_refs(event):
     return out
 
 
-def broadcast_view(battles_dir=None, battle=None, frame=None, tail=DEFAULT_TAIL):
-    """播报投影 → {battle, battles, frame, latest_row, tail, rows, counts}。
+def broadcast_view(battles_dir=None, battle=None, frame=None, tail=DEFAULT_TAIL,
+                   stream_source=None):
+    """播报投影 → {battle, battles, frame, latest_row, tail, rows, counts,
+    stream_aligned, stream_goal}。
 
     只读零写入;战不存在 → {"error": ..., "battles": [...]};
     坏战号/坏帧值 → ValueError。
+    stream_source: 服务器 --ledger-dir（SSE /api/stream 的账本源）——与所选战
+    最新代目录同址时 stream_aligned=True（页面直连 SSE,行号同轴）;否则 False
+    （页面回落轮询,诚实披露）。默认 None=不判（False）。
     """
     root = battles_dir if battles_dir is not None else default_battles_dir()
     battles = list_battles(root)
@@ -181,9 +186,14 @@ def broadcast_view(battles_dir=None, battle=None, frame=None, tail=DEFAULT_TAIL)
         return {"error": "battle 不存在: %s" % _read_int(battle, "battle"),
                 "battles": battles}
 
-    rows, latest_row = [], 0
+    rows, latest_row, stream_aligned, stream_goal = [], 0, False, ""
     if picked is not None:
         battle_dir = os.path.join(root, picked)
+        stream_goal = _latest_gen(battle_dir)
+        stream_aligned = bool(
+            stream_source and stream_goal and
+            os.path.realpath(os.path.join(battle_dir, stream_goal))
+            == os.path.realpath(str(stream_source)))
         anchors = _ev_anchors(battle_dir)
         for no, cols in _timeline_rows(battle_dir):
             latest_row = no
@@ -217,6 +227,61 @@ def broadcast_view(battles_dir=None, battle=None, frame=None, tail=DEFAULT_TAIL)
             "latest_row": latest_row,
             "tail": tail_no,
             "rows": rows,
+            "stream_aligned": stream_aligned,
+            "stream_goal": stream_goal,
             "counts": {"agent": sum(1 for r in rows if r["kind"] == "agent"),
                        "operator": sum(1 for r in rows if r["kind"] == "operator"),
                        "shown": len(rows)}}
+
+
+def _latest_gen(battle_dir):
+    """战目录最新代目录名（G-* 自然序,server._latest_gen 同律）;无=None。"""
+    try:
+        gens = sorted(n for n in os.listdir(battle_dir)
+                      if n.startswith("G-")
+                      and os.path.isdir(os.path.join(battle_dir, n)))
+    except OSError:
+        return None
+    return gens[-1] if gens else None
+
+
+# ------------------------------------------------------- include 挂载口（T1 同形）--
+
+ROUTE_BROADCAST = "/api/v2/broadcast.json"
+ROUTES = {ROUTE_BROADCAST: None}      # 尾部赋真身（前向引用）
+
+
+def broadcast_route(query, ledger_dir=None, battles_dir=None):
+    """路由适配层: query dict → (status, payload)。
+
+    错误映射（session_api/_serve_session_battle 先例）: ValueError=422（坏参）,
+    error 形=404（战不存在）;正常=200。会话门不在此层——include 挂载点
+    （UI-1 api_pages.py）先过 Handler._session_ok 再分发,本函数不重复判。
+    """
+    try:
+        payload = broadcast_view(
+            battles_dir=battles_dir or None,
+            battle=query.get("battle"),
+            frame=query.get("frame"),
+            tail=query.get("tail"),
+            stream_source=ledger_dir or None)
+    except ValueError as e:
+        return 422, {"error": str(e)}
+    if "error" in payload:
+        return 404, payload
+    return 200, payload
+
+
+ROUTES[ROUTE_BROADCAST] = broadcast_route
+
+
+def dispatch(path, query, ledger_dir=None, battles_dir=None):
+    """include 机制分发口 → (status, payload) | None(非本域路由)。
+
+    UI-1 挂法（tests/test_webui_pagespec_broadcast.py _V2MountHandler 钉）:
+        dispatch(path, query, server.ledger_dir, battles_dir=server.battles_dir)
+    """
+    fn = ROUTES.get(path)
+    if fn is None:
+        return None
+    return fn(query, ledger_dir, battles_dir=battles_dir)
