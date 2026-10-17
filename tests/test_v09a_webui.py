@@ -177,13 +177,16 @@ class ServerBase(Base):
 
     def setUp(self):
         super().setUp()
+        from tests import webui_login
         self.srv = srv_mod.make_server("127.0.0.1", 0, self.gd,
-                                       tail=3, poll_s=0.05, keepalive_s=1.0)
+                                       tail=3, poll_s=0.05, keepalive_s=1.0,
+                                       operator_key=webui_login.OP_KEY)
         self.port = self.srv.server_address[1]
         import threading
         t = threading.Thread(target=self.srv.serve_forever, daemon=True)
         t.start()
         self.addCleanup(self._stop_server)
+        self.sid = webui_login.login(self.port)   # B舰 P0 后：读面须会话
 
     def _stop_server(self):
         self.srv.stopping = True
@@ -196,8 +199,9 @@ class TestServerV09a(ServerBase):
 
     def _get(self, path, timeout=5):
         import http.client
+        from tests import webui_login
         conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=timeout)
-        conn.request("GET", path)
+        conn.request("GET", path, headers=webui_login.cookie(self.sid))
         return conn, conn.getresponse()
 
     def test_index_html(self):
@@ -222,8 +226,10 @@ class TestServerV09a(ServerBase):
 
     def test_stream_sse(self):
         import http.client
+        from tests import webui_login
         conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=3.0)
-        conn.request("GET", "/api/stream")
+        conn.request("GET", "/api/stream",
+                     headers=webui_login.cookie(self.sid))
         resp = conn.getresponse()
         self.assertEqual(resp.status, 200)
         self.assertTrue(resp.getheader("Content-Type").startswith("text/event-stream"))
@@ -410,8 +416,9 @@ class TestFaviconNo404(ServerBase):
 
     def _get(self, path, timeout=5):
         import http.client
+        from tests import webui_login
         conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=timeout)
-        conn.request("GET", path)
+        conn.request("GET", path, headers=webui_login.cookie(self.sid))
         return conn, conn.getresponse()
 
     def test_favicon_returns_204(self):

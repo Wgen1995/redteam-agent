@@ -118,17 +118,21 @@ class TestNewWizardStructure(unittest.TestCase):
         self.assertIn("scope-warning", src, "缺「无范围不开」醒目提示区")
         self.assertIn("无范围不开", _label_zone("new.html"), "醒目文案须可见")
 
-    def test_unwired_fields_aria_disabled(self):
+    def test_dead_fields_cut_and_exec_now_live(self):
+        """W1-T2 后法律：未接线摆设件（审批/并发/调度）砍净不留影；
+        立即执行真启用（已接 launch 点火）——不许再挂「即将支持」假装。"""
         src = _src("new.html")
-        for ctl in ("f-approval", "f-concurrency", "f-schedule",
-                    "f-exec-now"):
-            self.assertIn('id="' + ctl + '"', src, "缺未接线控件 " + ctl)
-            m = re.search(r'id="' + ctl + '"[^>]*', src)
-            self.assertIn('aria-disabled="true"', m.group(0),
-                          ctl + " 须 aria-disabled=true")
-            self.assertIn("disabled", m.group(0), ctl + " 须真禁用")
-        self.assertIn("即将支持", _label_zone("new.html"), "须标注「即将支持」")
-        self.assertIn("暂只展示", src, "Agent 审批选项须标注暂只展示")
+        for ctl in ("f-approval", "f-concurrency", "f-schedule"):
+            self.assertNotIn('id="' + ctl + '"', src, ctl + " 已砍——不许留摆设")
+        m = re.search(r'id="f-exec-now"[^>]*', src)
+        self.assertIsNotNone(m, "缺立即执行控件")
+        self.assertNotIn("disabled", m.group(0), "立即执行须真启用")
+        self.assertNotIn("aria-disabled", m.group(0))
+        self.assertNotIn("即将支持", src)
+        self.assertNotIn("后端未接线", src)
+        # 真接线证据：control 路由 + launch 动作入页
+        self.assertIn("/api/battle/control", src)
+        self.assertIn('"launch"', src)
 
     def test_budget_number_and_unit_assembly(self):
         src = _src("new.html")
@@ -172,7 +176,8 @@ class TestLoginPageCraft(unittest.TestCase):
         src = _src("login.html")
         self.assertIn("<svg", src, "须有品牌标（内联 SVG）")
         zone = _label_zone("login.html")
-        self.assertIn("探隐", zone)
+        self.assertIn("GraphLed", zone, "W1-T7 定名：品牌须 GraphLed")
+        self.assertNotIn("探隐", zone)
         self.assertTrue(re.search(r"定位|只读|授权|观察", zone),
                         "须有一句定位文案")
 
@@ -329,11 +334,17 @@ class TestPlaywrightWizardSmoke(unittest.TestCase):
             from playwright.sync_api import sync_playwright
         except ImportError:
             self.skipTest("playwright 缺席 ENV-SKIP")
-        from tests.test_v098_steering import OP_KEY, SteeringBase
+        from tests.test_v098_steering import (OP_KEY, SteeringBase,
+                                              AUTH_DOC, AUTH_SHA)
+        import hashlib
+        import os
         base = SteeringBase()
         base.setUp()
         self.addCleanup(base.td.cleanup)
         self.addCleanup(base.srv.shutdown)
+        auth_path = os.path.join(base.td.name, "auth-wizard.pdf")
+        with open(auth_path, "wb") as f:
+            f.write(AUTH_DOC)
         try:
             with sync_playwright() as p:
                 try:
@@ -352,26 +363,37 @@ class TestPlaywrightWizardSmoke(unittest.TestCase):
                             seen["payload"] = None
                         seen["xrw"] = req.headers.get("x-requested-with")
                 page.on("request", on_req)
-                page.goto("http://127.0.0.1:%d/new" % base.port)
-                # 步1: 基本信息
+                # B舰 P0 后：读面须会话——先经登录页拿 cookie 再进 /new
+                page.goto("http://127.0.0.1:%d/login" % base.port)
+                page.fill("#op-password", OP_KEY)
+                page.click("#op-login")
+                page.wait_for_url("**/new", timeout=8000)
+                # 步1: 基本信息 + ①授权件上传 + ②窗口
                 page.fill("#f-name", "冒烟向导战")
                 page.fill("#f-note", "四步向导冒烟")
+                page.set_input_files("#f-auth-file", auth_path)
+                page.fill("#f-signer", "王安全（CISO）")
+                page.fill("#f-valid-from", "2026-10-16T00:00:00Z")
+                page.fill("#f-valid-until", "2026-10-23T00:00:00Z")
+                page.wait_for_function(      # sha256 浏览器实算完才放行
+                    "() => !document.getElementById('btn-next').disabled")
                 page.click("#btn-next")
-                # 步2: 范围白名单（标签条实时解析）
+                # 步2: 范围白名单（标签条实时解析）+ ④联系人
                 page.fill("#f-scope", "10.0.0.0/24\n*.smoke.example")
                 page.wait_for_selector("#scope-tags .stag")
+                page.fill("#f-contact", "138-0000-0000（王安全）")
                 page.click("#btn-next")
-                # 步3: 预算与策略（未接线字段禁用态）
+                # 步3: 预算 + ⑥凭据来源
                 page.fill("#f-budget-tokens", "1000")
                 page.fill("#f-budget-reqs", "100")
                 page.fill("#f-budget-hours", "10")
-                self.assertEqual(
-                    page.get_attribute("#f-approval", "aria-disabled"), "true")
+                page.fill("#f-cred-source", "客户提供测试账号")
                 page.click("#btn-next")
-                # 步4: 确认摘要 → 提交（未登录：请求须发出并 401 跳登录）
+                # 步4: 确认摘要 → ⑧法律勾选 → 提交（已登录=200 回执）
                 page.wait_for_selector("#sum-name")
+                page.check("#f-legal-ack")
                 page.click("#f-submit")
-                page.wait_for_url("**/login**", timeout=8000)
+                page.wait_for_selector("#new-result.ok", timeout=10000)
                 self.assertEqual(seen.get("method"), "POST")
                 self.assertTrue(seen["url"].endswith("/api/battle/new"))
                 self.assertEqual(seen.get("xrw"), "XMLHttpRequest")
@@ -380,6 +402,16 @@ class TestPlaywrightWizardSmoke(unittest.TestCase):
                 self.assertEqual(pl.get("scope"),
                                  ["10.0.0.0/24", "*.smoke.example"])
                 self.assertEqual(pl.get("budget"), "1000;100;10")
+                # 八问全量入 payload（①sha 前端实算值与原件一致）
+                au = pl.get("auth") or {}
+                self.assertEqual(au.get("sha256"), AUTH_SHA)
+                self.assertTrue(au.get("content_b64"))
+                self.assertEqual(au.get("signer"), "王安全（CISO）")
+                self.assertEqual(pl.get("emergency_contact"),
+                                 "138-0000-0000（王安全）")
+                self.assertEqual(pl.get("cred_source"), "客户提供测试账号")
+                self.assertIs(pl.get("legal_ack"), True)
+                self.assertIn("battle-", page.inner_text("#new-result"))
                 browser.close()
         finally:
             pass

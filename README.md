@@ -1,6 +1,6 @@
-# 探隐 TanYin · 一人红队 AI 自动化渗透平台
+# GraphLed · 一人红队 AI 自动化渗透平台
 
-> 账本为法，技能为术，引擎为骨，插件为面。运行时无关（DSH / opencode / codex），macOS/Linux/Windows 三平台。
+> 账本为骨，图谱为形——前身「探隐 TanYin」。运行时无关（DSH / opencode / codex），macOS/Linux/Windows 三平台。
 
 AI 战士按九门流程（P0 授权门→P1 测绘→P2 规划→P3 演进→P4 重放验证→P5 签发）对授权目标作战，每个发现都有可重放证据卡，全程账本留痕防篡改。
 

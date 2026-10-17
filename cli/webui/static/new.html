@@ -3,11 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>探隐 · 新建任务</title>
+<title>GraphLed · 新建任务</title>
 <style>
-  /* craft-v09d 皮肤同源（操作员向导页：色值只落令牌区，规则区一律 var()；
-     间距 4px 网格；字号五档 12/13/15/20/24。向导骨架=ZhuLong 建任务四段式，
-     字段密度=CSAI 批量队列弹窗，表单分区=multica manual 建智能体页。 */
+  /* craft-v09d 皮肤同源（W1 授权八问版：向导骨架不变，字段面=真八问，
+     无摆设件——未接线的装饰控件一律砍掉，不留假件）。 */
   :root { --g1:#ffffff; --g2:#f6f8fb; --g4:#e3e9f4; --g5:#d9e1ec;
           --g6:#c6d0df; --g9:#5c6b80; --g12:#182230; --radius:8px;
           --font-sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",Roboto,
@@ -20,7 +19,7 @@
           --soft:color-mix(in srgb, var(--accent) 8%, var(--card));
           --ok:#157347; --bad:#d92d20; }
   html[data-theme="dark"] { --g1:#182230; --g2:#2e3949; --g4:#5c6b80;
-          --g5:#8593a8; --g6:#c6d0df; --g9:#e3e9f2; --g12:#ffffff;
+          --g5:#8593a8; --g6:#c6d0df; --g9:#e8e9f2; --g12:#ffffff;
           --shadow-1:0 1px 2px color-mix(in srgb, var(--g1) 45%, transparent);
           --shadow-2:0 4px 12px color-mix(in srgb, var(--g1) 55%, transparent);
           --bg:var(--g1); --card:var(--g2); --ink:var(--g12); --dim:var(--g6);
@@ -40,7 +39,7 @@
   header .sub { color:var(--dim); font-size:12px; flex-basis:100%; margin:0; }
   header a { margin-left:auto; font-size:12px; }
   main { max-width:720px; margin:0 auto; padding:20px 24px; }
-  /* —— 步骤指示器（ZhuLong §1.4 向导骨架：圆点+连线+标签；可回改已完成步） —— */
+  /* —— 步骤指示器（圆点+连线+标签；可回改已完成步） —— */
   #wiz-steps { list-style:none; display:flex; align-items:center; gap:8px;
                margin:0 0 16px; padding:12px 16px; background:var(--card);
                border:1px solid var(--line); border-radius:var(--radius);
@@ -66,6 +65,7 @@
               box-shadow:var(--shadow-1); }
   .step > h2 { font-size:20px; margin:0 0 4px; font-weight:600; }
   .step > .step-sub { font-size:12px; color:var(--dim); margin:0 0 16px; }
+  .step > h3 { font-size:13px; font-weight:600; margin:16px 0 8px; }
   .field { margin-bottom:16px; }
   .field label { display:block; font-size:13px; color:var(--ink);
                  font-weight:600; margin-bottom:4px; }
@@ -78,6 +78,10 @@
                     resize:vertical; }
   .field input:focus-visible, .field textarea:focus-visible,
   .field select:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .sha-line { font-family:var(--font-mono); font-size:12px; color:var(--ok);
+              word-break:break-all; margin:4px 0 0; }
+  .sha-line.wait { color:var(--dim); }
   /* 范围标签条（实时解析：逐行 → 标签；红=格式不对/绿=可用） */
   #scope-tags { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 0;
                 padding:8px; border:1px dashed var(--line);
@@ -103,18 +107,15 @@
                    background:color-mix(in srgb, var(--bad) 6%, var(--card));
                    color:var(--bad); }
   .scope-warning svg { flex:none; margin-top:4px; }
-  /* 未接线策略组（CSAI 语义选项；后端未接——真禁用+即将支持，不假装能用） */
-  .strategy-head { display:flex; align-items:center; gap:8px; margin:0 0 8px; }
-  .strategy-head h3 { font-size:13px; font-weight:600; margin:0; }
-  .soon { font-size:12px; color:var(--dim); padding:4px 8px; white-space:nowrap;
-          border-radius:calc(var(--radius)/2);
-          background:color-mix(in srgb, var(--dim) 10%, var(--card)); }
-  .field.soon-field { opacity:.72; }
-  .field.soon-field label::after { content:"（即将支持）"; font-size:12px;
-                                   color:var(--dim); font-weight:400; }
   .budget-row { display:flex; gap:8px; }
   .budget-row input { flex:1; }
   .budget-row select { flex:none; width:auto; }
+  /* 法律确认区（⑧：勾选才放行提交） */
+  .legal-box { display:flex; gap:8px; align-items:flex-start; margin:0 0 16px;
+               padding:12px; font-size:13px; border:1px solid var(--line);
+               border-left-width:4px; border-radius:var(--radius);
+               background:var(--soft); }
+  .legal-box input { width:16px; height:16px; flex:none; margin-top:4px; }
   /* 确认摘要（合同式逐项回显） */
   .sum { margin:0 0 16px; border:1px solid var(--line);
          border-radius:var(--radius); }
@@ -124,9 +125,6 @@
   .sum dt { flex:none; width:96px; color:var(--dim); margin:0; }
   .sum dd { margin:0; word-break:break-all; font-weight:600; }
   .sum .sum-tags { display:flex; flex-wrap:wrap; gap:4px; }
-  .sum-unwired { font-size:12px; color:var(--dim); margin:0 0 16px;
-                 padding:8px 12px; border:1px dashed var(--line);
-                 border-radius:var(--radius); }
   /* 向导底导航 */
   .wiz-nav { display:flex; justify-content:space-between; gap:8px;
              margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
@@ -145,7 +143,7 @@
               font:inherit; font-weight:600; padding:8px 24px; border:none;
               border-radius:var(--radius); background:var(--accent);
               color:var(--accent-ink); cursor:pointer; }
-  #f-submit:disabled { opacity:.6; cursor:wait; }
+  #f-submit:disabled { opacity:.6; cursor:not-allowed; }
   #new-result { margin-top:16px; padding:12px; border-radius:var(--radius);
                 font-size:13px; display:none; }
   #new-result.ok { display:block; background:var(--soft); color:var(--ink); }
@@ -159,7 +157,7 @@
 <body>
 <header>
   <h1>新建任务</h1>
-  <p class="sub">四步任务书：基本信息 → 范围白名单 → 预算与策略 → 确认开战。范围必填——没有范围不开战；全部提交经登录校验并逐条留痕。</p>
+  <p class="sub">四步任务书：基本信息与授权 → 范围与联系人 → 预算与强度 → 确认开战。授权八问缺一不开战；全部提交经登录校验并逐条留痕。</p>
   <a href="/">返回总览</a>
 </header>
 <main>
@@ -177,7 +175,7 @@
   <form id="new-form" novalidate>
     <section class="step" data-step="1" id="step-1">
       <h2>基本信息</h2>
-      <p class="step-sub">先说清这一战测什么。名称会作为任务目标留档，说明写给随后接手复盘的人。</p>
+      <p class="step-sub">先说清这一战测什么，再交授权原件——八问从①②开始，缺一不开战。</p>
       <div class="field">
         <label for="f-name">任务名称（目标）</label>
         <input id="f-name" type="text" maxlength="120" required
@@ -190,11 +188,37 @@
                   placeholder="一句话说明本战目的与背景"></textarea>
         <p class="hint">写给人工审批与复盘：为何而测、想验证什么。可留空。</p>
       </div>
+      <h3>① 授权文件（原件上传，缺件不开战）</h3>
+      <div class="field">
+        <label for="f-auth-file">授权文件原件（PDF/图片/文本）</label>
+        <input id="f-auth-file" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.md" required>
+        <p class="sha-line wait" id="auth-sha-out">选择文件后在此显示 sha256（浏览器本地计算，原件字节随表单上送）</p>
+        <p class="hint">原件将原文落盘入战目录，服务端按本 sha256 实测比对——不一致整战拒收。</p>
+      </div>
+      <h3>② 授权窗口期（签署方与起止时刻）</h3>
+      <div class="field">
+        <label for="f-signer">签署方（授权人/职务）</label>
+        <input id="f-signer" type="text" maxlength="80" required
+               placeholder="如：王安全（CISO）">
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="f-valid-from">窗口起（UTC）</label>
+          <input id="f-valid-from" type="text" maxlength="20" required
+                 placeholder="2026-10-18T00:00:00Z" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z">
+        </div>
+        <div class="field">
+          <label for="f-valid-until">窗口止（UTC）</label>
+          <input id="f-valid-until" type="text" maxlength="20" required
+                 placeholder="2026-10-25T00:00:00Z" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z">
+          <p class="hint">形如 2026-10-25T00:00:00Z；止须晚于起。</p>
+        </div>
+      </div>
     </section>
 
     <section class="step" data-step="2" id="step-2" hidden>
       <h2>范围白名单</h2>
-      <p class="step-sub">每行一条：域名后缀（*.example.com）或网段（10.0.0.0/24）。录入即解析成标签，红标=格式不认。</p>
+      <p class="step-sub">③ 每行一条：域名后缀（*.example.com）或网段（10.0.0.0/24）。录入即解析成标签，红标=格式不认。④ 范围外的资产一律不碰。</p>
       <div class="scope-warning" id="scope-warning">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"
              stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -210,11 +234,18 @@
         <div id="scope-tags" aria-live="polite" aria-label="范围解析结果"></div>
         <p id="scope-hint" role="status">尚未录入范围。</p>
       </div>
+      <h3>④ 带外（OOB）紧急联系人</h3>
+      <div class="field">
+        <label for="f-contact">OOB 紧急联系人（电话/通道）</label>
+        <input id="f-contact" type="text" maxlength="120" required
+               placeholder="如：138-0000-0000（王安全）">
+        <p class="hint">出事时第一时间能叫停的授权方通道——写入任务书与目标行。</p>
+      </div>
     </section>
 
     <section class="step" data-step="3" id="step-3" hidden>
       <h2>预算与策略</h2>
-      <p class="step-sub">预算硬顶三段（令牌;请求数;小时数），触顶即停。策略四项后端未接线，本次提交不生效。</p>
+      <p class="step-sub">⑤ 预算硬顶三段（令牌;请求数;小时数），触顶即停。⑥ 凭据来源与 ⑦ 强度档如实选——写入任务背景。</p>
       <div class="field">
         <label for="f-budget-tokens">令牌硬顶</label>
         <div class="budget-row">
@@ -239,50 +270,57 @@
                inputmode="numeric">
         <p class="hint">任务最长运行时长，到点即停。默认 40 小时。</p>
       </div>
-      <div class="strategy-head">
-        <h3>工具审批与调度策略</h3>
-        <span class="soon">即将支持 · 后端未接线</span>
+      <h3>⑥ 凭据来源</h3>
+      <div class="field">
+        <label for="f-cred-source">测试凭据从哪来</label>
+        <input id="f-cred-source" type="text" maxlength="200" required
+               placeholder="如：客户提供测试账号 / 自注册 / 无凭据仅探测">
+        <p class="hint">如实写明来源；没有凭据就写「无凭据仅探测」——不虚构。</p>
       </div>
-      <div class="field soon-field">
-        <label for="f-approval">工具审批策略</label>
-        <select id="f-approval" disabled aria-disabled="true">
-          <option value="off" selected>关闭审批</option>
-          <option value="human">人工审批</option>
-          <option value="agent">Agent 审批（暂只展示，后端未接）</option>
-        </select>
-        <p class="hint">选人工审批时，危险工具执行前会等你点头。</p>
-      </div>
-      <div class="field soon-field">
-        <label for="f-concurrency">并发数（1-8）</label>
-        <input id="f-concurrency" type="number" min="1" max="8" step="1" value="1"
-               disabled aria-disabled="true">
-        <p class="hint">同时执行的子任务数。默认 1 为串行；含扫描类工具时建议 1-2。</p>
-      </div>
-      <div class="field soon-field">
-        <label for="f-schedule">调度方式</label>
-        <select id="f-schedule" disabled aria-disabled="true">
-          <option value="manual" selected>手动执行</option>
-          <option value="cron">调度表达式（Cron）</option>
-        </select>
-      </div>
-      <div class="field soon-field">
-        <label for="f-exec-now">创建后立即执行</label>
-        <input id="f-exec-now" type="checkbox" disabled aria-disabled="true">
-        <p class="hint">默认创建后待命，勾选则建好即跑。</p>
+      <h3>⑦ 强度档</h3>
+      <div class="grid-2">
+        <div class="field">
+          <label for="f-model-tier">模型档</label>
+          <select id="f-model-tier">
+            <option value="strong" selected>strong（强模型主力）</option>
+            <option value="weak">weak（弱模型省预算）</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-guard-tier">护栏档</label>
+          <select id="f-guard-tier">
+            <option value="T1">T1（最严）</option>
+            <option value="T2">T2（标准）</option>
+            <option value="T3" selected>T3（授权充分）</option>
+          </select>
+          <p class="hint">授权越充分，护栏可越宽——仍受范围白名单硬约束。</p>
+        </div>
       </div>
     </section>
 
     <section class="step" data-step="4" id="step-4" hidden>
       <h2>确认开战</h2>
-      <p class="step-sub">任务书摘要如下，请逐项核对。确认后经登录校验提交，每一步写入均留痕可查。</p>
+      <p class="step-sub">任务书摘要如下，请逐项核对。⑧ 勾选法律确认后才可提交；每一步写入均留痕可查。</p>
       <dl class="sum">
         <div><dt>任务名称</dt><dd id="sum-name">—</dd></div>
         <div><dt>说明</dt><dd id="sum-note">—</dd></div>
+        <div><dt>授权文件</dt><dd id="sum-auth">—</dd></div>
+        <div><dt>授权窗口</dt><dd id="sum-window">—</dd></div>
         <div><dt>范围白名单</dt><dd class="sum-tags" id="sum-scope">—</dd></div>
+        <div><dt>OOB 联系人</dt><dd id="sum-contact">—</dd></div>
         <div><dt>预算硬顶</dt><dd id="sum-budget">—</dd></div>
+        <div><dt>凭据来源</dt><dd id="sum-cred">—</dd></div>
+        <div><dt>强度档</dt><dd id="sum-tier">—</dd></div>
       </dl>
-      <p class="sum-unwired">工具审批 · 并发 · 调度 · 立即执行：后端未接线，本次提交不生效（不写入任务书）。</p>
-      <button id="f-submit" type="submit">
+      <div class="legal-box">
+        <input id="f-legal-ack" type="checkbox" required aria-label="法律条款确认">
+        <label for="f-legal-ack">⑧ 我确认：已获目标方有效书面授权且原件已上传；测试仅限范围白名单内进行，预算触顶即停；OOB 紧急通道畅通；违反授权的后果与法律责任由签署本表单的操作员承担。</label>
+      </div>
+      <div class="field">
+        <input id="f-exec-now" type="checkbox">
+        <p class="hint">创建后立即执行：建战成功即点火引擎（runner）开跑；不勾则建好待命，去对话页手动点火。</p>
+      </div>
+      <button id="f-submit" type="submit" disabled>
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"
              stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <circle cx="8" cy="8" r="5.5"></circle>
@@ -312,18 +350,26 @@
   </form>
   <div id="new-result" role="status"></div>
 </main>
-<footer>探隐 v0.9.8 · 本页提交写操作，全部经登录校验并逐条留痕</footer>
+<footer>GraphLed v0.9.8 · 本页提交写操作，全部经登录校验并逐条留痕</footer>
 <script>
 "use strict";
-/* v0.9.8 方向盘·二：向导式四步任务书（POST /api/battle/new——窄门：JSON+自定义头+会话）。
-   提交口径与批一逐字节一致：payload={name,scope[],budget,note}；401 跳登录；422 如实展示拒因。
-   步进=纯显隐切换；已完成步可点指示器回改；未接线策略=禁用态不入 payload。 */
+/* W1 授权八问版向导（POST /api/battle/new——窄门：JSON+自定义头+会话）。
+   八问=活控件全上送：auth{filename,sha256,content_b64,signer,valid_from,valid_until}
+   + emergency_contact/cred_source/model_tier/guard_tier/legal_ack；
+   sha256 在浏览器用 WebCrypto 实算，服务端按真校验链比对原件；
+   「立即执行」已真接线：建战成功后 POST /api/battle/control action=launch 点火。
+   401 跳登录；422 如实展示拒因；无摆设件。 */
 var cur = 1;
+var authFile = null, authSha = "", authB64 = "";
 
 function scopeValid(s) {
   if (/^(\*\.)?[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/i.test(s)) { return true; }
   if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})?$/.test(s)) { return true; }
   return false;
+}
+
+function isoZ(s) {
+  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(s);
 }
 
 function scopeLines() {
@@ -367,11 +413,55 @@ function budgetString() {
   return [t * unit, r, h].join(";");
 }
 
+/* ① 原件入浏览器：arrayBuffer 实读 → WebCrypto SHA-256 实算 → base64 上送字节 */
+function loadAuthFile(file) {
+  var out = document.getElementById("auth-sha-out");
+  authFile = file || null; authSha = ""; authB64 = "";
+  if (!authFile) {
+    out.className = "sha-line wait";
+    out.textContent = "选择文件后在此显示 sha256（浏览器本地计算）";
+    return;
+  }
+  out.className = "sha-line wait";
+  out.textContent = "正在计算 sha256…";
+  file.arrayBuffer().then(function (buf) {
+    return crypto.subtle.digest("SHA-256", buf).then(function (h) {
+      var bytes = new Uint8Array(buf);
+      var dv = new Uint8Array(h);      // digest 回 ArrayBuffer——先包视图再逐字节
+      var hex = [], i;
+      for (i = 0; i < dv.length; i += 1) {
+        hex.push(("0" + dv[i].toString(16)).slice(-2));
+      }
+      authSha = hex.join("");
+      var s = "", step = 0x8000;
+      for (i = 0; i < bytes.length; i += step) {
+        s += String.fromCharCode.apply(null, bytes.subarray(i, i + step));
+      }
+      authB64 = btoa(s);
+      out.className = "sha-line";
+      out.textContent = authFile.name + " · sha256=" + authSha;
+      refreshNext();
+    });
+  }).catch(function (e) {
+    out.className = "sha-line wait";
+    out.textContent = "读取原件失败：" + String(e) + "——重新选择文件";
+    authFile = null; authSha = ""; authB64 = "";
+    refreshNext();
+  });
+}
+
 function renderSummary() {
   document.getElementById("sum-name").textContent =
     document.getElementById("f-name").value.trim() || "—";
   document.getElementById("sum-note").textContent =
     document.getElementById("f-note").value.trim() || "（未填）";
+  document.getElementById("sum-auth").textContent = authFile
+    ? (authFile.name + "（sha256 " + authSha.slice(0, 16) + "…）") : "—";
+  var vf = document.getElementById("f-valid-from").value.trim();
+  var vu = document.getElementById("f-valid-until").value.trim();
+  var sg = document.getElementById("f-signer").value.trim();
+  document.getElementById("sum-window").textContent =
+    (vf && vu) ? (sg + "：" + vf + " 至 " + vu) : "—";
   var box = document.getElementById("sum-scope");
   box.textContent = "";
   var lines = scopeLines();
@@ -382,23 +472,49 @@ function renderSummary() {
     t.textContent = s;
     box.appendChild(t);
   });
+  document.getElementById("sum-contact").textContent =
+    document.getElementById("f-contact").value.trim() || "—";
   document.getElementById("sum-budget").textContent =
     budgetString() + "（令牌;请求数;小时数）";
+  document.getElementById("sum-cred").textContent =
+    document.getElementById("f-cred-source").value.trim() || "—";
+  document.getElementById("sum-tier").textContent =
+    document.getElementById("f-model-tier").value + " / " +
+    document.getElementById("f-guard-tier").value;
 }
 
 function stepOk(n) {
-  if (n === 1) { return document.getElementById("f-name").value.trim().length > 0; }
+  if (n === 1) {
+    var vf = document.getElementById("f-valid-from").value.trim();
+    var vu = document.getElementById("f-valid-until").value.trim();
+    return document.getElementById("f-name").value.trim().length > 0 &&
+      !!authFile && authSha.length === 64 && authB64.length > 0 &&
+      document.getElementById("f-signer").value.trim().length > 0 &&
+      isoZ(vf) && isoZ(vu) && vu > vf;
+  }
   if (n === 2) {
     var lines = scopeLines();
-    return lines.length > 0 && lines.every(scopeValid);
+    return lines.length > 0 && lines.every(scopeValid) &&
+      document.getElementById("f-contact").value.trim().length > 0;
+  }
+  if (n === 3) {
+    var seg = budgetString().split(";");
+    return seg.length === 3 && seg.every(function (x) { return parseInt(x, 10) >= 1; }) &&
+      document.getElementById("f-cred-source").value.trim().length > 0;
   }
   return true;
+}
+
+function refreshNext() {
+  if (cur < 4) {
+    document.getElementById("btn-next").disabled = !stepOk(cur);
+  }
 }
 
 function go(n) {
   cur = n;
   var panels = document.querySelectorAll(".step");
-  for (var i = 0; i < panels.length; i++) {
+  for (var i = 0; i < panels.length; i += 1) {
     panels[i].hidden = String(i + 1) !== String(n);
   }
   document.querySelectorAll("#wiz-steps li.st").forEach(function (li) {
@@ -414,7 +530,7 @@ function go(n) {
   document.getElementById("btn-next").hidden = n === 4;
   document.getElementById("btn-next").disabled = !stepOk(n);
   if (n === 4) { renderSummary(); }
-  var first = document.querySelector('.step[data-step="' + n + '"] input, .step[data-step="' + n + '"] textarea');
+  var first = document.querySelector('.step[data-step="' + n + '"] input:not([type=checkbox]), .step[data-step="' + n + '"] textarea');
   if (first) { first.focus(); }
 }
 
@@ -430,15 +546,38 @@ document.querySelectorAll("#wiz-steps li.st").forEach(function (li) {
     if (s < cur) { go(s); }              /* 已完成步可回改 */
   });
 });
-document.getElementById("f-name").addEventListener("input", function () {
-  if (cur === 1) { document.getElementById("btn-next").disabled = !stepOk(1); }
+["f-name", "f-signer", "f-valid-from", "f-valid-until"].forEach(function (id) {
+  document.getElementById(id).addEventListener("input", refreshNext);
+});
+document.getElementById("f-auth-file").addEventListener("change", function (ev) {
+  loadAuthFile(ev.target.files && ev.target.files[0]);
 });
 document.getElementById("f-scope").addEventListener("input", function () {
   renderScope();
-  if (cur === 2) { document.getElementById("btn-next").disabled = !stepOk(2); }
+  refreshNext();
+});
+document.getElementById("f-contact").addEventListener("input", refreshNext);
+["f-budget-tokens", "f-budget-reqs", "f-budget-hours"].forEach(function (id) {
+  document.getElementById(id).addEventListener("input", refreshNext);
+});
+document.getElementById("f-cred-source").addEventListener("input", refreshNext);
+document.getElementById("f-legal-ack").addEventListener("change", function () {
+  document.getElementById("f-submit").disabled =
+    !document.getElementById("f-legal-ack").checked;
 });
 
-/* 提交：与批一逐字节同口径（窄门：JSON+自定义头+会话；回执=任务号+立项+留痕行号） */
+/* 点火：建战成功后（勾了立即执行）真调 control 链 */
+function launchBattle(n) {
+  return fetch("/api/battle/control", { method: "POST",
+    headers: { "Content-Type": "application/json",
+               "X-Requested-With": "XMLHttpRequest" },
+    body: JSON.stringify({ battle: n, action: "launch" })
+  }).then(function (r) {
+    return r.json().then(function (j) { return { s: r.status, j: j }; });
+  });
+}
+
+/* 提交：八问全量上送（窄门：JSON+自定义头+会话；回执=任务号+立项+留痕行号） */
 document.getElementById("new-form").addEventListener("submit", function (ev) {
   ev.preventDefault();
   var out = document.getElementById("new-result");
@@ -448,7 +587,20 @@ document.getElementById("new-form").addEventListener("submit", function (ev) {
     name: document.getElementById("f-name").value.trim(),
     scope: scopeLines(),
     budget: budgetString(),
-    note: document.getElementById("f-note").value.trim()
+    note: document.getElementById("f-note").value.trim(),
+    auth: {
+      filename: authFile ? authFile.name : "",
+      sha256: authSha,
+      content_b64: authB64,
+      signer: document.getElementById("f-signer").value.trim(),
+      valid_from: document.getElementById("f-valid-from").value.trim(),
+      valid_until: document.getElementById("f-valid-until").value.trim()
+    },
+    emergency_contact: document.getElementById("f-contact").value.trim(),
+    cred_source: document.getElementById("f-cred-source").value.trim(),
+    model_tier: document.getElementById("f-model-tier").value,
+    guard_tier: document.getElementById("f-guard-tier").value,
+    legal_ack: document.getElementById("f-legal-ack").checked
   };
   var btn = document.getElementById("f-submit");
   btn.disabled = true;
@@ -460,7 +612,6 @@ document.getElementById("new-form").addEventListener("submit", function (ev) {
     if (r.status === 401) { window.location.href = "/login"; return null; }
     return r.json().then(function (j) { return { s: r.status, j: j }; });
   }).then(function (res) {
-    btn.disabled = false;
     if (!res) { return; }
     var j = res.j || {};
     if (res.s === 200 && j.ok) {
@@ -469,7 +620,22 @@ document.getElementById("new-form").addEventListener("submit", function (ev) {
       }).join(" · ");
       out.className = "ok";
       out.textContent = "已创建任务 battle-" + j.battle +
-        "（立项 " + j.goal_id + "；留痕：" + rows + "）";
+        "（立项 " + j.goal_id + "；授权件 " + (j.auth_doc || "已落盘") +
+        "；留痕：" + rows + "）";
+      if (document.getElementById("f-exec-now").checked) {
+        out.textContent += "；正在点火…";
+        launchBattle(j.battle).then(function (r2) {
+          var j2 = r2.j || {};
+          if (r2.s === 200 && j2.ok) {
+            out.textContent = "已创建任务 battle-" + j.battle + " 并点火（runner pid=" +
+              j2.runner_pid + "；留痕行 " + j2.timeline_row + "）。";
+          } else {
+            out.textContent += "点火被拒（HTTP " + r2.s + "）：" + (j2.error || "未知原因");
+          }
+        }).catch(function (e) {
+          out.textContent += "点火网络错误：" + String(e);
+        });
+      }
       return;
     }
     out.className = "bad";

@@ -23,8 +23,10 @@
 v0.9.8 方向盘批——第一批写操作（窄门律，docs/superpowers/plans/2026-10-16-steering-wheel.md）：
   POST /login                                 → 操作员口令（TANYIN_OPERATOR_KEY，缺省随机+banner；
                                                会话 cookie HttpOnly；错 5 锁 60s）
-  POST /api/battle/new                        → 新建战斗：add-goal+add-scope（scope 空=422）
+  POST /api/battle/new                        → 新建战斗：授权八问缺一=422（缺授权豁免
+                                               通道已废——真授权件先落盘，add-goal 实测 sha 一致才收行）
   POST /api/battle/control                    → pause/resume（b10 指令文件通道）/stop（killpg+EXIT）
+                                               /launch（任务书 goals/scope 单源装配+指令基线+runner 点火+留痕）
   POST /api/battle/say                        → 对话指令：指令文件+append-timeline 留痕
   GET  /api/approval                          → 待审只读投影（须会话；附持钥签名）
   POST /api/approval                          → 审批：_approval_sig HMAC（SEC-1）→ approve 落账
@@ -92,12 +94,18 @@ REPORT_CLI = os.path.join(_CLI_DIR, "tanyin-report")
 SESSION_COOKIE = "tanyin_sess"
 SESSION_TTL_S = 8 * 3600                  # 会话时长：一个工作班次
 LOGIN_MAX_FAILS, LOGIN_LOCK_S = 5, 60     # 错 5 次锁 60s（计划 §第一段）
-CTRL_ACTIONS = ("pause", "resume", "stop")
+CTRL_ACTIONS = ("pause", "resume", "stop", "launch")   # W1-T2：launch=点火钮
 APPROVE_DECISIONS = ("approved", "rejected", "exempted")
 GEN_OF_NEW_BATTLE = "G-w1"               # 方向盘新战代名（battle.py --gen 同位）
 WALL_PHASE_LIFECYCLE = "P-lifecycle"     # battle.py WALL_PHASE 先例：跨阶段控制事件轨
 RUNNER_TSV = "opencode-run.log.runner.tsv"
 DIRECTIVE_TXT = "directive.txt"
+MISSION_TXT = "mission.txt"                  # W1-T2：launch 任务书（goals/scope 行单源装配）
+RUNNER_LOG = "opencode-run.log"             # battle.py paths 同名位
+ASK_MD = "ask.md"
+RUNNER_OUT = "runner.out"
+RUNNER_CLI = os.path.join(_CLI_DIR, "tanyin-runner")
+_REPO_ROOT = os.path.dirname(_CLI_DIR)      # battle.py ROOT 同位（runner --cwd）
 
 
 def _utc_now():
@@ -243,10 +251,169 @@ def _pid_alive(pid):
         return False
 
 
+# ---------------- W1-T1/T2：授权八问校验 + 任务书装配 + runner 点火 -------------
+
+_ISO_Z_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+_HEX64_RE = re.compile(r"^[0-9a-fA-F]{64}$")
+_MODEL_TIERS = ("strong", "weak")
+_GUARD_TIERS = ("T1", "T2", "T3")
+
+
+def _iso_z(v):
+    """YYYY-MM-DDTHH:MM:SSZ 严格形（范围真解析；write_cmds._ts_range_check 同纪律）。"""
+    s = str(v or "")
+    if not _ISO_Z_RE.match(s):
+        return None
+    try:
+        datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError:
+        return None
+    return s
+
+
+def _safe_doc_name(filename):
+    """授权件落盘名消毒：剥路径只留 basename（防穿越出 goal 目录/覆盖 tsv）。"""
+    name = os.path.basename(str(filename or "").replace("\\", "/")).strip()
+    if not name or name in (".", "..") or name.endswith(".tsv"):
+        return ""
+    return name
+
+
+def _auth_eight_questions(body):
+    """授权八问校验（W1-T1）：缺一=（中文拒因, None）；全过=（"", auth 结构化 dict）。
+    ①授权文件（原件字节+sha256+签署方）②窗口期 ③范围 ④OOB 联系人 ⑤预算
+    ⑥凭据来源 ⑦强度档 ⑧法律条款勾选——豁免通道已废，不再伪造授权四件。"""
+    auth = body.get("auth")
+    if not isinstance(auth, dict):
+        return "授权八问 ①缺授权文件：须上传授权原件（表单 auth 件缺席）", None
+    filename = str(auth.get("filename") or "").strip()
+    sha256 = str(auth.get("sha256") or "").strip()
+    signer = str(auth.get("signer") or "").strip()
+    content_b64 = auth.get("content_b64")
+    if not filename or not sha256 or not content_b64:
+        return "授权八问 ①缺授权文件：文件名/sha256/原件字节（content_b64）缺一不可", None
+    if not _HEX64_RE.match(sha256):
+        return "授权八问 ①授权文件 sha256 非 64 位 hex", None
+    import base64 as _b64
+    try:
+        doc_bytes = _b64.b64decode(str(content_b64), validate=True)
+    except (ValueError, TypeError):
+        return "授权八问 ①授权文件原件字节（content_b64）非合法 base64", None
+    if not doc_bytes:
+        return "授权八问 ①授权文件原件为空字节", None
+    if not signer:
+        return "授权八问 ①授权文件缺签署方（signer）", None
+    safe = _safe_doc_name(filename)
+    if not safe:
+        return "授权八问 ①授权文件名不可用作落盘名: %s" % filename, None
+    valid_from = _iso_z(auth.get("valid_from"))
+    valid_until = _iso_z(auth.get("valid_until"))
+    if not valid_from or not valid_until:
+        return ("授权八问 ②授权窗口期缺或格式不认（须 2026-10-18T00:00:00Z 形）: "
+                "%s → %s" % (auth.get("valid_from"), auth.get("valid_until")), None)
+    if valid_until <= valid_from:
+        return "授权八问 ②授权窗口期非法：valid_until<=valid_from", None
+    scope = body.get("scope")
+    if not isinstance(scope, list) or not [s for s in scope if str(s).strip()]:
+        return "授权八问 ③范围白名单缺：至少一条（无范围的测试一律不开）", None
+    contact = str(body.get("emergency_contact") or "").strip()
+    if not contact:
+        return "授权八问 ④缺 OOB 紧急联系人（授权方 7×24 可达通道）", None
+    budget = str(body.get("budget") or "").strip()
+    if not budget:
+        return "授权八问 ⑤缺预算硬顶（token;requests;hours 三段）", None
+    cred_source = str(body.get("cred_source") or "").strip()
+    if not cred_source:
+        return "授权八问 ⑥缺凭据来源（测试账号从哪来：客户提供/自注册/无凭据探测）", None
+    model_tier = str(body.get("model_tier") or "").strip()
+    guard_tier = str(body.get("guard_tier") or "").strip()
+    if model_tier not in _MODEL_TIERS or guard_tier not in _GUARD_TIERS:
+        return ("授权八问 ⑦强度档缺或非枚举（model_tier 须 strong|weak、"
+                "guard_tier 须 T1|T2|T3）: %s/%s" % (model_tier, guard_tier)), None
+    if body.get("legal_ack") is not True:
+        return "授权八问 ⑧法律条款未勾选（legal_ack 须真布尔 true）", None
+    out = {"doc_name": safe, "sha256": sha256.lower(), "doc_bytes": doc_bytes,
+           "signer": signer, "valid_from": valid_from, "valid_until": valid_until}
+    return "", out
+
+
+def _mission_text(battle_no, goal_dir):
+    """launch 任务书：goals/scope 记录行单源装配（目标/预算/授权/范围入文，不虚构）。"""
+    from ledger import core as _core
+
+    def col(tname, r, k):
+        return r[_core.TABLES[tname].index(k)]
+
+    s = _core.Session(goal_dir)
+    lines = ["【GraphLed 任务书】battle-%d（自 goals/scope 记录行单源装配，不虚构）" % battle_no,
+             "按授权对以下目标执行渗透测试；授权外的资产一律不碰，预算触顶即停。", ""]
+    for g in s.rows("goals.tsv"):
+        lines.append("目标：%s" % col("goals.tsv", g, "target"))
+        if col("goals.tsv", g, "objective"):
+            lines.append("说明：%s" % col("goals.tsv", g, "objective"))
+        lines.append("授权：%s 签署，窗口 %s 至 %s（授权件 %s，sha256=%s）"
+                     % (col("goals.tsv", g, "signer"),
+                        col("goals.tsv", g, "valid_from"),
+                        col("goals.tsv", g, "valid_until"),
+                        col("goals.tsv", g, "auth_doc"),
+                        col("goals.tsv", g, "auth_sha256")))
+        if col("goals.tsv", g, "emergency_contact"):
+            lines.append("OOB 紧急联系人：%s" % col("goals.tsv", g, "emergency_contact"))
+        lines.append("预算硬顶：%s（令牌;请求数;小时数）" % col("goals.tsv", g, "budget"))
+        if col("goals.tsv", g, "business_context"):
+            lines.append("背景：%s" % col("goals.tsv", g, "business_context"))
+        lines.append("强度档：model=%s guard=%s" % (col("goals.tsv", g, "model_tier"),
+                                                    col("goals.tsv", g, "guard_tier")))
+    lines.append("")
+    lines.append("范围（scope 记录行）：")
+    for r in s.rows("scope.tsv"):
+        lines.append("- [%s] %s%s" % (col("scope.tsv", r, "kind"),
+                                      col("scope.tsv", r, "matcher"),
+                                      ("（%s）" % col("scope.tsv", r, "note"))
+                                      if col("scope.tsv", r, "note") else ""))
+    if not s.rows("scope.tsv"):
+        lines.append("（无 scope 行——按授权窗口与目标面自律）")
+    lines.append("")
+    lines.append("每一步写入均留痕可查；发现须附可重放证据；到窗或触顶自动收口。")
+    return "\n".join(lines) + "\n"
+
+
+def _runner_argv(battle_home, goal_dir):
+    """runner 参数表（battle.py cmd_launch 同参式：tanyin-runner start 全参）。"""
+    return [sys.executable, RUNNER_CLI, "start",
+            "--cwd", _REPO_ROOT,
+            "--prompt-file", os.path.join(battle_home, MISSION_TXT),
+            "--log", os.path.join(battle_home, RUNNER_LOG),
+            "--ledger-dir", goal_dir,
+            "--max-restarts", "3", "--stall-min", "8",
+            "--soft-stall-min", "3", "--backoff-base", "30",
+            "--directive-file", os.path.join(battle_home, DIRECTIVE_TXT),
+            "--ask-file", os.path.join(battle_home, ASK_MD)]
+
+
+def _spawn_runner(battle_home, goal_dir):
+    """点火 runner（battle.py 同式：新会话组+输出收 runner.out）；返回 pid。"""
+    env = dict(os.environ, TANYIN_ANCHOR_AUTO="1")
+    kw = {"creationflags": subprocess.CREATE_NO_WINDOW} if os.name == "nt" \
+        else {"start_new_session": True}
+    with open(os.path.join(battle_home, RUNNER_OUT), "a", encoding="utf-8") as out:
+        proc = subprocess.Popen(_runner_argv(battle_home, goal_dir),
+                                stdout=out, stderr=subprocess.STDOUT,
+                                stdin=subprocess.DEVNULL, cwd=_REPO_ROOT, env=env, **kw)
+    return proc.pid
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "tanyin-web/0.9d"
     protocol_version = "HTTP/1.1"
     timeout = 60                                  # 空闲 keep-alive 连接回收（SSE 写循环不受影响）
+
+    # B舰 P0 修（读面零鉴权）: do_GET 全读面过登录门（写面同源会话校验）。
+    # 例外仅 /login（登录页自身）与 /favicon.ico（204 消音，无数据）；
+    # 未登录：页路由 302 跳 /login，API/SSE 401 JSON。
+    _OPEN_GET = ("/login", "/favicon.ico")
+    _PAGE_GET = ("/", "/coverage", "/graph", "/evidence", "/metrics",
+                 "/session", "/activity", "/new", "/experiments", "/status.js")
 
     def log_message(self, fmt, *args):           # 静默（长连接轮询会刷屏；env 开话痨）
         if os.environ.get("TANYIN_WEBUI_DEBUG"):
@@ -254,6 +421,14 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         u = urllib.parse.urlparse(self.path)
+        if u.path not in self._OPEN_GET and not self._session_ok():
+            if u.path in self._PAGE_GET:            # 页路由：带去登录（回来自动回原页由 /login 承担）
+                self.send_response(302)
+                self.send_header("Location", "/login")
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return
+            return self._fail(401, {"error": "未登录或会话过期——读面须操作员会话"})
         if u.path == "/":
             return self._serve_page("index.html")
         if u.path == "/favicon.ico":                       # 漫游报告 §三4：favicon 消音
@@ -494,12 +669,10 @@ class Handler(BaseHTTPRequestHandler):
         scope = body.get("scope")
         if not name:
             return self._fail(422, {"error": "任务名称必填"})
-        if not isinstance(scope, list) or not [s for s in scope
-                                               if str(s).strip()]:
-            return self._fail(422, {"error": "范围白名单必填（至少一条）——"
-                                              "无范围的测试一律不开（ARTEX 自扩之训）"})
-        if not budget:
-            return self._fail(422, {"error": "预算硬顶必填（token;requests;hours 三段）"})
+        # W1-T1 授权八问（场景占位豁免通道已废：本路由只收真授权件）
+        err, auth = _auth_eight_questions(body)
+        if err:
+            return self._fail(422, {"ok": False, "error": err})
         root = _battles_root(self.server)
         try:
             nums = [int(m.group(1)) for e in os.listdir(root)
@@ -510,19 +683,26 @@ class Handler(BaseHTTPRequestHandler):
         home = os.path.join(root, "battle-%d" % n)
         gd = os.path.join(home, GEN_OF_NEW_BATTLE)
         os.makedirs(gd, exist_ok=True)
+        # ①授权原件先落盘（消毒名）；add-goal 真校验链随后实测 sha——一致才收行
+        with open(os.path.join(gd, auth["doc_name"]), "wb") as f:
+            f.write(auth["doc_bytes"])
         ts = _utc_now()
-        until = (datetime.datetime.utcnow() + datetime.timedelta(days=7)
-                 ).strftime("%Y-%m-%dT%H:%M:%SZ")
-        # 授权四件=场景占位（allow-missing-auth 豁免通道；sha=名称+时刻指纹）
-        auth_sha = _sha256_hex("webui-scenario:%s:%s" % (name, ts))
+        context = "凭据来源：" + str(body.get("cred_source") or "").strip()
+        if note:
+            context += "；说明：" + note
         receipts = [_ledger_receipt("add-goal", gd, [
             "--target=" + name, "--objective=" + (note or "（观察面开战，未填说明）"),
-            "--auth-doc=AUTH-WEBUI-%d.pdf" % n, "--auth-sha256=" + auth_sha,
-            "--signer=操作员(观察面)", "--valid-from=" + ts, "--valid-until=" + until,
-            "--budget=" + budget, "--model-tier=strong", "--guard-tier=T3",
-            "--allow-missing-auth=1", "--timestamp=" + ts])]
+            "--auth-doc=" + auth["doc_name"], "--auth-sha256=" + auth["sha256"],
+            "--signer=" + auth["signer"],
+            "--valid-from=" + auth["valid_from"], "--valid-until=" + auth["valid_until"],
+            "--emergency-contact=" + str(body.get("emergency_contact") or "").strip(),
+            "--budget=" + budget,
+            "--business-context=" + context,
+            "--model-tier=" + str(body.get("model_tier") or "").strip(),
+            "--guard-tier=" + str(body.get("guard_tier") or "").strip(),
+            "--timestamp=" + ts])]
         if receipts[0]["rc"] != 0:
-            # 立项即拒=整战不落（清空本次新建的空目录，防占号）
+            # 立项即拒=整战不落（清空本次新建的空目录，防占号留壳）
             import shutil
             if not os.path.exists(os.path.join(gd, "goals.tsv")):
                 shutil.rmtree(home, ignore_errors=True)
@@ -538,6 +718,7 @@ class Handler(BaseHTTPRequestHandler):
         ok = all(r["rc"] == 0 for r in receipts)
         payload = {"ok": ok, "battle": n, "goal_dir": gd,
                    "goal_id": receipts[0]["id"], "ledger": receipts,
+                   "auth_doc": auth["doc_name"],
                    "timeline_rows": _tl_count(gd)}
         if not ok:
             payload["error"] = "部分范围行被拒（详见 ledger 回执）"
@@ -555,7 +736,7 @@ class Handler(BaseHTTPRequestHandler):
         if n is None:
             return self._fail(422, {"error": "battle 须战号（整数）"})
         if action not in CTRL_ACTIONS:
-            return self._fail(422, {"error": "action 须 pause|resume|stop"})
+            return self._fail(422, {"error": "action 须 pause|resume|stop|launch"})
         home = _battle_home(self.server, n)
         if not os.path.isdir(home):
             return self._fail(404, {"error": "战目录不存在: battle-%d" % n})
@@ -563,6 +744,37 @@ class Handler(BaseHTTPRequestHandler):
         if gd is None:
             return self._fail(404, {"error": "battle-%d 无记录目录（G-*）——先立项" % n})
         ts = _utc_now()
+        if action == "launch":
+            # W1-T2 点火钮：已在跑=拒 → 任务书（无则装配，人工改过不覆盖）→
+            # 指令基线（空文件=digest 基线，battle.py 同式）→ runner spawn → 留痕
+            live = _find_runner_pids(home)
+            if live:
+                return self._fail(422, {"ok": False,
+                                        "error": "battle-%d 已在跑（runner pid=%s）——"
+                                                 "先 stop 再点火，不许双跑"
+                                                 % (n, ",".join(str(p) for p in live))})
+            mission = os.path.join(home, MISSION_TXT)
+            if not os.path.isfile(mission):
+                with open(mission, "w", encoding="utf-8") as f:
+                    f.write(_mission_text(n, gd))
+            directive = os.path.join(home, DIRECTIVE_TXT)
+            if not os.path.isfile(directive):
+                with open(directive, "w", encoding="utf-8") as f:
+                    f.write("")
+            pid = _spawn_runner(home, gd)
+            r = _ledger_receipt("append-timeline", gd, [
+                "--actor=人工", "--phase=" + WALL_PHASE_LIFECYCLE,
+                "--event=battle-launch battle-%d runner-pid=%d mission=%s"
+                % (n, pid, MISSION_TXT),
+                "--timestamp=" + ts])
+            if r["rc"] != 0:
+                return self._fail(422, {"ok": False, "error": "留痕被拒：" + r["out"],
+                                        "ledger": r})
+            return self._serve_json({"ok": True, "action": "launch", "battle": n,
+                                     "runner_pid": pid, "mission": mission,
+                                     "timeline_row": r["timeline_row"],
+                                     "note": "引擎已点火；任务书=mission.txt，"
+                                             "指令通道=directive.txt"})
         if action in ("pause", "resume"):
             word = "暂停" if action == "pause" else "恢复"
             text = ("【操作员%s令】时间 %s 说明：操作员经观察面下达%s。"

@@ -11,6 +11,7 @@
 
 python3 -m unittest tests.test_v098_steering
 """
+import base64
 import hashlib
 import hmac
 import http.client
@@ -69,6 +70,33 @@ def build_goal(gd, with_revert=False):
         specs[1] = (TS2, "总控", "P1", "scan surface done", "")
     core.write_tsv(os.path.join(gd, "timeline.tsv"), chained_tl(specs))
     return gd
+
+
+# W1-T1 后：/api/battle/new 只收授权八问全量（豁免通道已废）——本文件payload 单源。
+AUTH_DOC = b"AUTH-DOC-steering authorization letter bytes 9876543210"
+AUTH_SHA = hashlib.sha256(AUTH_DOC).hexdigest()
+
+
+def auth_over(**kw):
+    a = {"filename": "auth-b1.pdf", "sha256": AUTH_SHA,
+         "content_b64": base64.b64encode(AUTH_DOC).decode("ascii"),
+         "signer": "王安全（CISO）",
+         "valid_from": "2026-10-16T00:00:00Z",
+         "valid_until": "2026-10-23T00:00:00Z"}
+    a.update(kw)
+    return a
+
+
+def full_payload(**over):
+    p = {"name": "汽配外网", "note": "批一：外网面",
+         "scope": ["10.0.0.0/24", "*.example.com"],
+         "budget": "1000;100;10", "auth": auth_over(),
+         "emergency_contact": "138-0000-0000（王安全）",
+         "cred_source": "客户提供测试账号",
+         "model_tier": "strong", "guard_tier": "T3",
+         "legal_ack": True}
+    p.update(over)
+    return p
 
 
 class SteeringBase(unittest.TestCase):
@@ -171,41 +199,55 @@ class TestLoginGate(SteeringBase):
         body = self.jbody(r)
         self.assertIn("error", body)
 
-    def test_read_pages_still_open_without_login(self):
-        for path in ("/", "/api/state.json", "/login"):
+    def test_read_pages_gated_without_login(self):
+        """B舰 P0 后法律：读面过登录门——/login 开放；页 302 跳登录、API 401。"""
+        r = self.req("GET", "/login")
+        self.assertEqual(r["status"], 200)
+        self.cookie = ""
+        for path in ("/", "/session", "/new"):
             r = self.req("GET", path)
-            self.assertEqual(r["status"], 200, path)
+            self.assertEqual(r["status"], 302, path)
+            self.assertEqual(r["headers"].get("location"), "/login", path)
+        r = self.req("GET", "/api/state.json")
+        self.assertEqual(r["status"], 401)
+        # 登录后读面照常
+        self.login()
+        for path in ("/", "/api/state.json"):
+            self.assertEqual(self.req("GET", path)["status"], 200, path)
 
 
 class TestBattleNew(SteeringBase):
-    """钮 1 /api/battle/new: scope 空 422; 成事落 goals/scope+行号回执。"""
+    """钮 1 /api/battle/new: 授权八问缺一 422; 全量成事落 goals/scope+行号回执。"""
 
     def test_scope_empty_422(self):
         self.login()
-        r = self.write_req("/api/battle/new",
-                           {"name": "汽配外网", "scope": [], "budget": "1000;100;10",
-                            "note": "批一"})
+        r = self.write_req("/api/battle/new", full_payload(scope=[]))
         self.assertEqual(r["status"], 422)
         self.assertIn("范围", self.jbody(r)["error"])
 
     def test_scope_missing_422(self):
         self.login()
-        r = self.write_req("/api/battle/new",
-                           {"name": "汽配外网", "budget": "1000;100;10", "note": "批一"})
+        p = full_payload()
+        del p["scope"]
+        r = self.write_req("/api/battle/new", p)
         self.assertEqual(r["status"], 422)
 
     def test_name_empty_422(self):
         self.login()
+        r = self.write_req("/api/battle/new", full_payload(name=""))
+        self.assertEqual(r["status"], 422)
+
+    def test_old_payload_without_auth_422(self):
+        """W1-T1 钉：旧四键口径（无授权件）不再被收——豁免通道已废。"""
+        self.login()
         r = self.write_req("/api/battle/new",
-                           {"name": "", "scope": ["10.0.0.0/24"], "budget": "1;1;1",
-                            "note": ""})
+                           {"name": "汽配外网", "scope": ["10.0.0.0/24"],
+                            "budget": "1000;100;10", "note": "批一"})
         self.assertEqual(r["status"], 422)
 
     def test_new_ok_goal_scope_ledger_rows(self):
         self.login()
-        r = self.write_req("/api/battle/new",
-                           {"name": "汽配外网", "scope": ["10.0.0.0/24", "*.example.com"],
-                            "budget": "1000;100;10", "note": "批一：外网面"})
+        r = self.write_req("/api/battle/new", full_payload())
         self.assertEqual(r["status"], 200)
         body = self.jbody(r)
         self.assertEqual(body["battle"], 2)          # battle-1 在,新战=2
@@ -214,6 +256,10 @@ class TestBattleNew(SteeringBase):
         grows = core.Session(gd).rows("goals.tsv")
         self.assertEqual(len(grows), 1)
         self.assertEqual(grows[0][T["goals.tsv"].index("target")], "汽配外网")
+        # 真授权件落盘+实测 sha 入行（豁免废除后的产物）
+        self.assertEqual(grows[0][T["goals.tsv"].index("auth_sha256")], AUTH_SHA)
+        with open(os.path.join(gd, "auth-b1.pdf"), "rb") as f:
+            self.assertEqual(hashlib.sha256(f.read()).hexdigest(), AUTH_SHA)
         srows = core.Session(gd).rows("scope.tsv")
         self.assertEqual(sorted(r2[T["scope.tsv"].index("matcher")] for r2 in srows),
                          ["*.example.com", "10.0.0.0/24"])
@@ -231,8 +277,7 @@ class TestBattleNew(SteeringBase):
     def test_new_bad_matcher_rejected_by_ledger(self):
         self.login()
         r = self.write_req("/api/battle/new",
-                           {"name": "x", "scope": ["bad matcher!!"],
-                            "budget": "1;1;1", "note": ""})
+                           full_payload(scope=["bad matcher!!"]))
         self.assertEqual(r["status"], 422)
         # 账本级 REJECT: goals 行已落,scope 拒——如实回执 rc=1
         body = self.jbody(r)
@@ -477,10 +522,11 @@ class TestStaticPages(SteeringBase):
         self.assertIn("type=\"password\"", body)
 
     def test_new_page_form_fields(self):
+        self.login()                                  # B舰 P0 后：读面须会话
         r = self.req("GET", "/new")
         self.assertEqual(r["status"], 200)
         body = r["body"].decode("utf-8")
-        for needle in ("任务名称", "范围白名单", "预算", "说明"):
+        for needle in ("任务名称", "范围白名单", "预算", "说明", "授权文件"):
             self.assertIn(needle, body)
 
     def test_index_has_start_button_and_approval_card(self):
@@ -558,6 +604,9 @@ class TestPlaywrightSmoke(SteeringBase):
                 browser = p.chromium.launch(channel="chrome")
         except Exception as e:  # 浏览器二进制缺席
             self.skipTest("chromium 不可启动: %r" % e)
+        auth_path = os.path.join(self.td.name, "auth-smoke.pdf")
+        with open(auth_path, "wb") as f:
+            f.write(AUTH_DOC)
         with sync_playwright() as p:
             browser = p.chromium.launch(channel="chrome")
             page = browser.new_page()
@@ -565,17 +614,27 @@ class TestPlaywrightSmoke(SteeringBase):
             page.fill("#op-password", OP_KEY)
             page.click("#op-login")
             page.wait_for_url("**/new", timeout=5000)
-            # v0.9.8·二: 向导四步——基本信息→范围→预算→确认（口径与批一同）
+            # W1 授权八问向导：基本信息+①授权件+②窗口 → 范围+④联系人
+            # → 预算+⑥凭据+⑦强度 → ⑧法律勾选+提交（③⑤在二/三步内）
             page.fill("#f-name", "冒烟战")
             page.fill("#f-note", "冒烟")
+            page.set_input_files("#f-auth-file", auth_path)
+            page.fill("#f-signer", "王安全（CISO）")
+            page.fill("#f-valid-from", "2026-10-16T00:00:00Z")
+            page.fill("#f-valid-until", "2026-10-23T00:00:00Z")
+            page.wait_for_function(          # sha256 浏览器实算完才放行
+                "() => !document.getElementById('btn-next').disabled")
             page.click("#btn-next")
             page.fill("#f-scope", "10.0.0.0/24\n*.smoke.example")
+            page.fill("#f-contact", "138-0000-0000（王安全）")
             page.click("#btn-next")
             page.fill("#f-budget-tokens", "1000")
             page.fill("#f-budget-reqs", "100")
             page.fill("#f-budget-hours", "10")
+            page.fill("#f-cred-source", "客户提供测试账号")
             page.click("#btn-next")
             page.wait_for_selector("#sum-name")
+            page.check("#f-legal-ack")
             page.click("#f-submit")
             page.wait_for_selector("#new-result.ok", timeout=10000)
             txt = page.inner_text("#new-result")

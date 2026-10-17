@@ -10,8 +10,8 @@ status.js 无 HTML 结构: 剥掉注释后全文按标签区对待(该文件本�
 
 禁词表(用户钦定,出现任何一项=红):
   九门 | 十边 | 账本 | 验链 | 召回 | 九门\|十边\|账本\|验链\|投影 | EV- | FD- | G-r\d | opencode-run
-替词钉(词典定稿): 菜单=总览/动态/对话/测试覆盖/攻击路线/发现/战报;
-  footer=「探隐 v0.9d · 本页数据全部来自战斗记录，只能看不能改」;
+替词钉(词典定稿,W1-T7 品牌定名 GraphLed): 菜单=总览/动态/对话/测试覆盖/攻击路线/发现/战报;
+  footer=「GraphLed v0.9d · 本页数据全部来自战斗记录，只能看不能改」;
   PENDING→未开始; 门名去「门」字系; 重放态/格态中文人话标签。
 """
 import os
@@ -37,7 +37,7 @@ H1_WORDS = {"index.html": "总览", "activity.html": "动态",
             "graph.html": "攻击路线", "evidence.html": "发现",
             "metrics.html": "战报"}
 
-FOOTER_WANT = "探隐 v0.9d · 本页数据全部来自战斗记录，只能看不能改"
+FOOTER_WANT = "GraphLed v0.9d · 本页数据全部来自战斗记录，只能看不能改"   # W1-T7 定名
 
 
 def _src(name):

@@ -216,13 +216,16 @@ class TestGraphCanvasSmoke(unittest.TestCase):
         except Exception as e:                       # noqa: BLE001
             raise unittest.SkipTest("playwright 不可用: %s" % e)
         from webui import server as srv_mod
+        from tests import webui_login
         cls.td = tempfile.TemporaryDirectory()
         cls.gd = build_canvas_fixture(cls.td.name)
         cls.srv = srv_mod.make_server("127.0.0.1", 0, cls.gd,
-                                      tail=3, poll_s=0.05, keepalive_s=1.0)
+                                      tail=3, poll_s=0.05, keepalive_s=1.0,
+                                      operator_key=webui_login.OP_KEY)
         cls.port = cls.srv.server_address[1]
         t = threading.Thread(target=cls.srv.serve_forever, daemon=True)
         t.start()
+        cls.sid = webui_login.login(cls.port)     # B舰 P0 后：读面须会话
         cls.pw = sync_playwright().start()
         try:
             try:
@@ -233,6 +236,8 @@ class TestGraphCanvasSmoke(unittest.TestCase):
             cls._teardown_all()
             raise unittest.SkipTest("浏览器不可用: %s" % e)
         cls.context = cls.browser.new_context()
+        cls.context.add_cookies([{"name": "tanyin_sess", "value": cls.sid,
+                                  "url": "http://127.0.0.1:%d" % cls.port}])
 
     @classmethod
     def _teardown_all(cls):

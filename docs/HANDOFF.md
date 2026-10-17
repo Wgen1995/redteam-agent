@@ -1529,6 +1529,9 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - 夹具=vulnclaw-live-trial §10 真实会话(20261017_003221)修剪版;测试 tests/test_engine_vulnclaw_adapter.py 17 用例(适配器+registry 接线)全绿,相邻引擎 16 用例绿;selfcheck cmd-index/encoding 过。
 - 遗留: golden 面未注册(等总控定夺);--run 实弹路径待有效 key 轮真机验证。
 
+## 2026-10-18 · W1-T1+T2+T7 授权八问真实化+launch 点火+GraphLed 定名+读面登录门(F1 舰,含 B舰P0)
+- T1: webui server.py --allow-missing-auth 豁免通道废除(源码级钉死不复发);/api/battle/new 改授权八问全量收单(①授权原件 base64+浏览器 WebCrypto 实算 sha256→消毒名落盘→tanyin-ledger add-goal 真校验链实测 sha 一致才收行 ②窗口期 ③范围 ④OOB ⑤预算 ⑥凭据 ⑦强度档 ⑧法律勾选,缺一=422 且零落目录);new.html 八问活控件表单,摆设件(审批/并发/调度)砍净。T2: CTRL_ACTIONS 增 launch——已在跑=拒→mission.txt(goals/scope 行单源装配,人工改过不覆盖)+directive.txt 基线→runner spawn(battle.py 同参式)→timeline 留痕;「立即执行」勾选真接线 control/launch。T7: README 与 webui 九页 title/页脚/品牌位定名 GraphLed(注明前身探隐 TanYin;内部 tanyin-* 命令名不动)。B舰P0: do_GET 读面零鉴权修——除 /login 与 /favicon.ico 外全过会话(未登录=页 302 跳登录/API 401 JSON);tests/webui_login.py 共用登录夹具。测试: 新增 tests/test_webui_authform.py 33 用例(豁免死钉/八问缺一拒/launch 链路/表单接线/定名/读面门)全绿;相邻 webui 全家 15 模块 356 用例一次跑 OK(含 chrome 活体三处);cli/ledger/** 零触碰。
+
 ## 2026-10-18 · W1-T4 battle auto 一键全链(F2 舰)
 - scripts/battle.py 新增 auto 子命令: init(建战=真授权四件落账+五查授权校验,无豁免通道)→launch(runner 点火+runner.pid 落盘)→看护(收敛四条件轮询/活性/idle 断连救场 auto-rescue/max-hours 战钟,救场耗尽 auto-giveup)→自动 settle(matrix-freeze 后 converge∈{converged,budget-exhausted} 才结算,链断 rc2)→自动 report(tanyin-report aggregate 出草稿,P5.5 签发永不代签);参数 --goal-dir/--max-hours/--idle-timeout;人工点只留审批卡与 P5.5;测试 tests/test_battle_auto.py 假战士全链 SIM(PATH 注入 opencode 替身,幂等断点续跑) 5 用例全绿+相邻 battle 面 62 用例绿(wallclock_wire 9+gold r24/r25 8+v09c_metrics 25+runner_watchdog/report_agg 20);探知项: report aggregate 13 表前置使无人审批卡的静战 ENV2(auto 如实 rc1 报缺,不私造空表)——建议 W2 账本侧立项 add-goal 时铺 13 空表。
 

@@ -298,12 +298,15 @@ class _ServerBase(unittest.TestCase):
         self.td = tempfile.TemporaryDirectory()
         self.addCleanup(self.td.cleanup)
         from webui import server as srv_mod
+        from tests import webui_login
         self.srv = srv_mod.make_server("127.0.0.1", 0, self.td.name,
-                                       tail=3, poll_s=0.05, keepalive_s=1.0)
+                                       tail=3, poll_s=0.05, keepalive_s=1.0,
+                                       operator_key=webui_login.OP_KEY)
         self.port = self.srv.server_address[1]
         t = threading.Thread(target=self.srv.serve_forever, daemon=True)
         t.start()
         self.addCleanup(self._stop)
+        self.sid = webui_login.login(self.port)   # B舰 P0 后：读面须会话
 
     def _stop(self):
         self.srv.stopping = True
@@ -311,8 +314,9 @@ class _ServerBase(unittest.TestCase):
         self.srv.server_close()
 
     def _get(self, path, timeout=5):
+        from tests import webui_login
         conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=timeout)
-        conn.request("GET", path)
+        conn.request("GET", path, headers=webui_login.cookie(self.sid))
         return conn, conn.getresponse()
 
 
