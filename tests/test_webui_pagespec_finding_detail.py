@@ -632,5 +632,16 @@ class TestPageStructure(Base):
         self.assertLess(nlines, 2000)
         self.assertGreaterEqual(len(src.splitlines()), 600, "P6 全量页 ~700 行量纲")
 
+    def test_js_hygiene_strict_mode_safe(self):
+        """浏览器实炮教训钉：'use strict' 下裸循环变量=ReferenceError（雷达函数
+        曾因 for(i=...) 断渲染）；svgEl 无参调用=Object.keys(undefined) 炸。"""
+        import re as _re
+        src = self._src()
+        js = src.split("<script>")[1].split("</script>")[0]
+        for m in _re.finditer(r"for\s*\(([^)]{0,40})", js):
+            self.assertTrue(m.group(1).lstrip().startswith("var "),
+                            "循环变量须 var 声明（严格模式）: " + m.group(0))
+        self.assertIn("attrs = attrs || {}", js)   # SVG 无属性元素豁免
+
 if __name__ == "__main__":
     unittest.main()
