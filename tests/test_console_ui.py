@@ -334,7 +334,60 @@ class TestLiveApi(ConsoleBase):
         self.assertEqual(evs[-1]['actor'], 'CLI')
 
 
+
+# ===========================================================================
+# 四、攻击链路 API（节点入场帧=timeline 行号；回放条帧数=timeline 真行数钉）
+# ===========================================================================
+
+class TestGraphApi(ConsoleBase):
+
+    def test_frames_equal_timeline_rows(self):
+        d = self.api('/api/console/graph.json')
+        self.assertIn('replay', d)
+        self.assertEqual(d['replay']['frames'], 12,
+                         '回放条帧数=timeline 真实行数（12 行夹具）')
+        self.assertEqual(d['timeline_rows'], 12)
+        with open(os.path.join(self.goal, 'timeline.tsv'), encoding='utf-8') as f:
+            real_rows = sum(1 for _ in f)
+        self.assertEqual(d['replay']['frames'], real_rows,
+                         '帧数钉与磁盘实况一致')
+
+    def test_node_born_row_from_real_timeline(self):
+        d = self.api('/api/console/graph.json')
+        born = {n['id']: n.get('born_row') for n in d['nodes']}
+        self.assertEqual(born.get('G-c1-0001'), 1, '目标=add-goal 行 1')
+        self.assertEqual(born.get('AST-c1-0001'), 4, '资产=add-asset 行 4')
+        self.assertEqual(born.get('INT-c1-0001'), 5, '意图=add-intent 行 5')
+        self.assertEqual(born.get('FD-c1-0001'), 6, '发现=add-finding 行 6')
+        self.assertEqual(born.get('EV-c1-0001'), 9, '证据=add-evidence 行 9')
+        for n in d['nodes']:
+            self.assertIn('born_row', n, '每节点都带入场帧')
+            self.assertIn(n['kind'], ('G', 'INT', 'AST', 'CRED', 'F', 'FD', 'EV'))
+
+    def test_legend_kinds_real_seven_plus_ten(self):
+        d = self.api('/api/console/graph.json')
+        nk = {k['kind']: k['name'] for k in d['node_kinds']}
+        self.assertEqual(nk, {'G': '目标', 'INT': '意图', 'AST': '资产',
+                              'CRED': '凭据', 'F': '事实', 'FD': '发现',
+                              'EV': '证据'}, '节点型=真实 7 型（不虚构 11 型）')
+        ek = {k['kind']: k['name'] for k in d['edge_kinds']}
+        self.assertEqual(len(ek), 10, '边型=真实 10 型')
+        self.assertEqual(ek.get('proves'), '证明')
+        self.assertEqual(ek.get('parent'), '隶属于')
+        for k in d['node_kinds'] + d['edge_kinds']:
+            self.assertIn('color', k, '图例须带色标')
+
+    def test_edges_carry_kind_and_born(self):
+        d = self.api('/api/console/graph.json')
+        edges = {e['id']: e for e in d['edges']}
+        self.assertIn('E-c1-0002', edges)
+        self.assertEqual(edges['E-c1-0002']['kind'], 'proves')
+        self.assertEqual(edges['E-c1-0002']['born_row'], 9,
+                         '边入场=两端都到场（EV 行 9）')
+
+
 if __name__ == '__main__':
     unittest.main()
+
 
 

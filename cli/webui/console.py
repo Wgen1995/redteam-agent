@@ -14,6 +14,8 @@ Python 3.9 纯 stdlib；文案律=docs/design/ui-copy-standard-v1.md——上屏
 import os
 import re
 
+_ID_RE = re.compile(r"\b(?:G|S|INT|AST|CRED|F|FD|EV|E)-[A-Za-z0-9\-]+")
+
 from ledger import core, query_cmds as _qc, viz_render
 from ledger import session_view as _sv
 from . import snapshot as _snap
@@ -179,3 +181,60 @@ def live_view(goal_dir, battles_dir, tail=ACTIVITY_TAIL):
             "convergence": {"state": state, "conditions": conditions},
             "events": [_snap.row_to_event(r) for r in tl[-tail:]],
             "timeline_rows": len(tl)}
+
+# ---- 攻击链路（图例色=数据编码色，非界面装饰；帧=timeline 行号）-------------
+NODE_COLORS = {"G": "#e8b34b", "INT": "#a78bfa", "AST": "#5aa9e6",
+               "CRED": "#d4a017", "F": "#8b949f", "FD": "#e8635a",
+               "EV": "#3ddc97"}
+EDGE_KIND_CN = {"spawns": "生成", "yields": "得出", "derived_from": "推导自",
+                "proves": "证明", "parent": "隶属于", "attack": "攻击路径",
+                "cross_ref": "交叉引用", "evidences": "证据支撑",
+                "supersedes": "取代", "scope-rel": "范围关系"}
+
+
+def _born_rows(s):
+    """timeline 行号 → 各 id 首次出现行（1 基）：真实入场帧（不虚构时刻）。"""
+    idx = _tl_index()
+    born = {}
+    for no, r in enumerate(s.rows("timeline.tsv"), 1):
+        ev = r[idx["event"]]
+        for token in _ID_RE.findall(ev):
+            if token not in born:
+                born[token] = no
+    return born
+
+
+def graph_view(goal_dir, battles_dir):
+    """攻击链路页投影：节点（含入场帧）+边+真实图例（7 节点型+10 边型）+帧数。"""
+    from . import projections as _proj
+    s = core.Session(goal_dir)
+    tl = s.rows("timeline.tsv")
+    frames = len(tl)
+    born = _born_rows(s)
+    base = _proj.graph_view(goal_dir)          # 富卡单源（num/badge/title/status）
+    nodes = []
+    for n in base["nodes"]:
+        n2 = dict(n)
+        n2["born_row"] = born.get(n["id"], frames)   # 无入场行=末帧（记录缺失诚实降级）
+        n2["color"] = NODE_COLORS[n["kind"]]
+        nodes.append(n2)
+    born_by_id = {n["id"]: n["born_row"] for n in nodes}
+    edges = []
+    for e in base["edges"]:
+        e2 = dict(e)
+        sb = born_by_id.get(e["src"], frames)
+        db = born_by_id.get(e["dst"], frames)
+        e2["born_row"] = max(sb, db)            # 两端都到场边才在场
+        edges.append(e2)
+    node_kinds = [{"kind": k, "name": _proj.BADGES[k],
+                   "color": NODE_COLORS[k]}
+                  for _t, k in viz_render.NODE_TABLES]   # 元组=(表名, 前缀)
+    edge_kinds = [{"kind": k, "name": EDGE_KIND_CN[k],
+                   "color": _proj.EDGE_STYLES[k]["color"]}
+                  for k in EDGE_KIND_CN]
+    return {"nodes": nodes, "edges": edges,
+            "node_kinds": node_kinds, "edge_kinds": edge_kinds,
+            "edge_style": base["edge_style"],
+            "timeline_rows": frames,
+            "replay": {"frames": frames,
+                        "note": "演变回放：回到任意历史时刻看攻击链路（帧=记录行号）"}}

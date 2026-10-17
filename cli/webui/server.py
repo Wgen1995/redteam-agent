@@ -85,7 +85,8 @@ _CONSOLE_PAGES = {"/console": "console_dash.html",
                   "/console/approval": "console_approval.html"}
 
 _CONSOLE_API = {"/api/console/overview.json": "overview",   # W6 控制台 API（只读投影）
-                 "/api/console/live.json": "live"}
+                 "/api/console/live.json": "live",
+                 "/api/console/graph.json": "graph"}
 
 _PAGE_API = {"/api/matrix.json": _proj.matrix_view,     # v0.9b 三页 API（只读装配单源）
              "/api/graph.json": _proj.graph_view,
