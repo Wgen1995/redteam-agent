@@ -4,8 +4,98 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GraphLed · 攻击链路</title>
+<link rel="stylesheet" href="/console.css">
 </head>
-<body>
-<div id="console_graph">攻击链路 · 数据载入中（fetch /api/console/graph.json）</div>
+<body data-nav="攻击链路">
+<aside id="side"></aside>
+<div id="main">
+  <div id="top"></div>
+  <div id="view">
+    <h2 class="pt">攻击链路 · 不断演变</h2>
+    <p class="pd">节点=测试对象与产物 · 拖动底部演变回放条，回到任意历史时刻看链路生长</p>
+    <div id="graphwrap">
+      <div class="legend" id="graph-legend"></div>
+      <svg id="graphsvg" viewBox="0 0 1120 560"></svg>
+      <div id="replay">
+        <input type="range" id="replay-range" min="1" max="1" value="1">
+        <div class="fr"><span id="replay-pos"></span><span>演变回放 · 帧号=记录行号</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/console.js"></script>
+<script>
+window.PAGE_API = "/api/console/graph.json";
+var LAYER_R = [70, 150, 150, 230, 310, 390];
+window.PAGE_INIT = function (d) {
+  var nodes = d.nodes || [], edges = d.edges || [], frames = (d.replay && d.replay.frames) || 1;
+  document.getElementById("graph-legend").innerHTML =
+    (d.node_kinds || []).concat(d.edge_kinds || []).map(function (k) {
+      return "<span><i class=\"ln\" style=\"background:" + k.color + "\"></i>" + GL.esc(k.name) + "</span>";
+    }).join("");
+  var range = document.getElementById("replay-range");
+  range.max = frames;
+  range.value = frames;
+  var svg = document.getElementById("graphsvg");
+  var NS = "http://www.w3.org/2000/svg";
+  // 确定性布局：按层环布（同层内按 id 序等分角），无随机因素。
+  var byLayer = {};
+  nodes.forEach(function (n) { (byLayer[n.layer] = byLayer[n.layer] || []).push(n); });
+  var pos = {};
+  Object.keys(byLayer).forEach(function (layer) {
+    var arr = byLayer[layer].sort(function (a, b) { return a.id < b.id ? -1 : 1; });
+    var r = LAYER_R[Math.min(layer, LAYER_R.length - 1)] || 200;
+    arr.forEach(function (n, i) {
+      var ang = (i / arr.length) * Math.PI * 2 + (layer * 0.5);
+      pos[n.id] = { x: 560 + Math.cos(ang) * r * 1.35, y: 280 + Math.sin(ang) * r };
+    });
+  });
+  var edgeColor = {};
+  (d.edge_kinds || []).forEach(function (k) { edgeColor[k.kind] = k.color; });
+  var eh = "";
+  edges.forEach(function (e) {
+    var a = pos[e.src], b = pos[e.dst];
+    if (!a || !b) return;
+    eh += '<line class="gedge" data-born="' + e.born_row + '" x1="' + a.x.toFixed(0) + '" y1="' + a.y.toFixed(0) +
+      '" x2="' + b.x.toFixed(0) + '" y2="' + b.y.toFixed(0) + '" stroke="' + (edgeColor[e.kind] || "#252930") +
+      '" stroke-width="1" opacity="0.9"><title>' + GL.esc(e.kind) + "</title></line>";
+  });
+  var nh = "";
+  nodes.forEach(function (n, i) {
+    var p = pos[n.id] || { x: 560, y: 280 };
+    nh += '<g class="gnode" data-born="' + n.born_row + '" data-i="' + i + '" transform="translate(' +
+      p.x.toFixed(0) + "," + p.y.toFixed(0) + ')"><circle r="' + (n.kind === "FD" || n.kind === "G" ? 9 : 6) +
+      '" fill="' + n.color + '" opacity=".9"><title>' + GL.esc(n.badge + " · " + n.title + " · 入场帧 " + n.born_row) +
+      "</title></circle>" + (i % 3 === 0 ? '<text y="-12" text-anchor="middle">' + GL.esc(n.num) + "</text>" : "") + "</g>";
+  });
+  svg.innerHTML = eh + nh;
+  var nodeEls = svg.querySelectorAll(".gnode"), edgeEls = svg.querySelectorAll(".gedge");
+  function replay(v) {
+    var visible = 0;
+    nodeEls.forEach(function (g) {
+      var on = +g.dataset.born <= +v;
+      g.style.opacity = on ? 1 : 0.06;
+      if (on) visible++;
+    });
+    edgeEls.forEach(function (l) { l.style.opacity = +l.dataset.born <= +v ? 0.9 : 0.04; });
+    document.getElementById("replay-pos").textContent =
+      "第 " + v + " / " + frames + " 帧 · 节点 " + visible + " / " + nodes.length;
+  }
+  range.addEventListener("input", function () { replay(range.value); });
+  svg.addEventListener("click", function (ev) {
+    var g = ev.target.closest(".gnode");
+    if (!g) return;
+    var n = nodes[+g.dataset.i];
+    GL.drawer('<h3>' + GL.esc(n.badge + " · " + n.num) + "</h3>" +
+      '<p style="color:var(--g8);font-size:12px;margin:6px 0 12px">入场帧 第 ' + n.born_row + " 行 · 状态 " + GL.esc(n.status) + "</p>" +
+      '<table><tr><th>属性</th><th>值</th></tr>' +
+      "<tr><td>名称</td><td>" + GL.esc(n.title) + "</td></tr>" +
+      "<tr><td>类型</td><td>" + GL.esc(n.badge) + "</td></tr>" +
+      (n.impact ? "<tr><td>影响</td><td>" + GL.esc(n.impact) + "</td></tr>" : "") +
+      "<tr><td>编号</td><td class=\"mono\">" + GL.esc(n.id) + "</td></tr></table>");
+  });
+  replay(frames);
+};
+</script>
 </body>
 </html>

@@ -4,8 +4,65 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GraphLed · 总览</title>
+<link rel="stylesheet" href="/console.css">
 </head>
-<body>
-<div id="console_dash">总览 · 数据载入中（fetch /api/console/overview.json）</div>
+<body data-nav="总览">
+<aside id="side"></aside>
+<div id="main">
+  <div id="top"></div>
+  <div id="view">
+    <h2 class="pt">总览</h2>
+    <p class="pd">全局态势 · 用量与成本 · 活动流（数据全部来自任务记录，只能看不能改）</p>
+    <div class="grid cards4" id="ov-cards"></div>
+    <div class="grid cards2" style="margin-top:14px">
+      <div class="pane">
+        <h3>用量与成本（按运行批次）</h3>
+        <table id="token-table">
+          <tr><th>运行批次</th><th>实际用量(token)</th><th>估算(token)</th><th>时刻</th></tr>
+        </table>
+        <p id="token-note" style="color:var(--g8);font-size:11px;margin-top:8px"></p>
+      </div>
+      <div class="pane">
+        <h3>活动流（实时 · 记录尾部）</h3>
+        <div class="scrollbox feed" id="activity-feed"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/console.js"></script>
+<script>
+window.PAGE_API = "/api/console/overview.json";
+window.PAGE_INIT = function (d) {
+  var c = d.cards || {}, g = d.goal || {}, tu = d.token_usage || {};
+  var pct = c.budget && c.budget.token && c.budget.token.limit
+    ? Math.round(100 * c.budget.token.used / c.budget.token.limit) : 0;
+  function card(k, v, cls, s) {
+    return '<div class="card"><div class="k">' + k + '</div><div class="v ' + (cls || "") + '">' +
+      v + '</div><div class="s">' + (s || "") + "</div></div>";
+  }
+  document.getElementById("ov-cards").innerHTML =
+    card("已验证发现", GL.fmtNum(c.verified_findings), "acc", "共 " + GL.fmtNum(c.findings_total) + " 条（三态合计）") +
+    card("预算消耗", (c.budget && c.budget.token
+      ? GL.fmtNum(Math.round(c.budget.token.used)) + " / " + GL.fmtNum(c.budget.token.limit) : "—"),
+      pct >= 80 ? "dang" : (pct >= 50 ? "warn" : ""), "token 口径 " + pct + "%") +
+    card("图谱节点", GL.fmtNum(c.graph_nodes), "acc", "按节点类型分色 · 见攻击链路页") +
+    card("证据卡", GL.fmtNum(c.evidence_cards), "", "记录 " + GL.fmtNum(c.timeline_rows) + " 行");
+  var tb = document.getElementById("token-table");
+  (tu.runs || []).forEach(function (u) {
+    tb.insertAdjacentHTML("beforeend",
+      "<tr><td class=\"mono\">" + GL.esc(u.run) + "</td><td class=\"mono\">" + GL.fmtNum(u.tokens) +
+      "</td><td class=\"mono\">" + GL.fmtNum(u.est_tokens) + "</td><td class=\"mono\">" + GL.esc(u.ts) + "</td></tr>");
+  });
+  if (!(tu.runs || []).length) {
+    tb.insertAdjacentHTML("beforeend", '<tr><td colspan="4" class="empty">尚无真实用量记录</td></tr>');
+  }
+  document.getElementById("token-note").textContent = tu.note || "";
+  var feed = document.getElementById("activity-feed");
+  feed.innerHTML = (d.activity || []).map(function (a) {
+    return "<div><span class=\"t\">" + GL.esc(a.ts) + "</span><span class=\"tag t-b\">" + GL.esc(a.actor) +
+      "</span> " + GL.esc(a.event) + "</div>";
+  }).join("") || '<div class="empty">暂无活动</div>';
+};
+</script>
 </body>
 </html>

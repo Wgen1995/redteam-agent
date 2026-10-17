@@ -4,8 +4,95 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GraphLed · 审批</title>
+<link rel="stylesheet" href="/console.css">
 </head>
-<body>
-<div id="console_approval">审批 · 数据载入中（fetch /api/console/approval.json）</div>
+<body data-nav="审批">
+<aside id="side"></aside>
+<div id="main">
+  <div id="top"></div>
+  <div id="view">
+    <h2 class="pt">审批</h2>
+    <p class="pd">高风险动作终审 · 批准或拒绝都会写入记录 · 四层拦截只读可见</p>
+    <div class="grid cards2">
+      <div class="pane">
+        <h3>待审队列</h3>
+        <div class="scrollbox" style="max-height:440px">
+          <table id="ap-queue">
+            <tr><th>行号</th><th>动作</th><th>恢复命令</th><th>决定</th></tr>
+          </table>
+        </div>
+        <div id="ap-history" style="margin-top:10px"></div>
+      </div>
+      <div class="pane">
+        <h3>四层拦截（只读）</h3>
+        <table id="intercept-table">
+          <tr><th>层</th><th>名称</th><th>规则</th><th>实况</th></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/console.js"></script>
+<script>
+window.OVERRIDE_API = true;   // 审批页数据源=既有 /api/approval + intercept（见下）
+window.PAGE_API = "/api/console/intercept.json";
+function escCmd(s) { return GL.esc(s); }
+function renderQueue(pending, keyConfigured) {
+  var tb = document.getElementById("ap-queue");
+  tb.querySelectorAll("tr[data-row]").forEach(function (r) { r.remove(); });
+  var open = (pending || []).filter(function (p) { return !p.decided; });
+  open.forEach(function (p) {
+    tb.insertAdjacentHTML("beforeend",
+      '<tr data-row="' + p.row + '" data-sig="' + GL.esc(p._approval_sig) + '">' +
+      '<td class="mono">' + p.row + "</td>" +
+      '<td class="mono" style="font-size:11px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + escCmd(p.event) + '">' + escCmd(p.event) + "</td>" +
+      '<td class="mono" style="font-size:11px" title="' + escCmd(p.revert_cmd) + '">' + escCmd((p.revert_cmd || "").slice(0, 24)) + "</td>" +
+      '<td><button class="btn sm acc" data-decision="approved">批准执行</button> ' +
+      '<button class="btn sm dang" data-decision="rejected">拒绝</button></td></tr>');
+  });
+  if (!open.length) {
+    tb.insertAdjacentHTML("beforeend", '<tr><td colspan="4" class="empty">' +
+      (keyConfigured ? "队列为空——无待审动作" : "审批密钥未配置（TANYIN_APPROVAL_KEY 缺席），持钥通道关闭") + "</td></tr>");
+  }
+}
+window.PAGE_INIT = function (d) {
+  var tb = document.getElementById("intercept-table");
+  (d.layers || []).forEach(function (L) {
+    tb.insertAdjacentHTML("beforeend",
+      "<tr><td class=\"mono\">" + GL.esc(L.level) + "</td><td>" + GL.esc(L.name) + "</td>" +
+      "<td style=\"font-size:11.5px\">" + GL.esc(L.rule) + "</td>" +
+      '<td style="font-size:11px;color:var(--g9)">' + GL.esc(L.detail) + "</td></tr>");
+  });
+  GL.api("/api/approval").then(function (ap) {
+    renderQueue(ap.pending, ap.key_configured);
+    var hist = document.getElementById("ap-history");
+    if ((ap.recent || []).length) {
+      hist.innerHTML = "<h3 style=\"font-size:12px;margin-bottom:6px\">近期决定</h3>" +
+        ap.recent.map(function (a) {
+          return "<div class=\"row\" style=\"padding:3px 0\"><span class=\"mono\">" + GL.esc(a.id) + "</span>" +
+            '<span class="tag ' + (a.decision === "approved" ? "t-g" : a.decision === "rejected" ? "t-r" : "t-y") + '">' +
+            GL.esc(a.decision) + '</span><span class="mono" style="color:var(--g8)">' + GL.esc(a.timestamp) + "</span></div>";
+        }).join("");
+    }
+  });
+  document.getElementById("ap-queue").addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-decision]");
+    if (!btn) return;
+    var tr = btn.closest("tr[data-row]");
+    btn.disabled = true;
+    GL.postJSON("/api/approval", {
+      decision: btn.dataset.decision, row: +tr.dataset.row, _approval_sig: tr.dataset.sig
+    }).then(function (r) {
+      if (r.status === 200 && r.json.ok) {
+        GL.notice(r.json.decision === "approved" ? "已批准并写入记录" : "已拒绝并写入记录");
+        GL.api("/api/approval").then(function (ap) { renderQueue(ap.pending, ap.key_configured); });
+      } else {
+        btn.disabled = false;
+        GL.notice("提交被拒：" + ((r.json && r.json.error) || r.status));
+      }
+    });
+  });
+};
+</script>
 </body>
 </html>

@@ -84,6 +84,9 @@ _CONSOLE_PAGES = {"/console": "console_dash.html",
                   "/console/findings": "console_findings.html",
                   "/console/approval": "console_approval.html"}
 
+_CONSOLE_ASSETS = {"/console.css": ("console.css", "text/css; charset=utf-8"),
+                   "/console.js": ("console.js", "text/javascript; charset=utf-8")}
+
 _CONSOLE_API = {"/api/console/overview.json": "overview",   # W6 控制台 API（只读投影）
                  "/api/console/live.json": "live",
                  "/api/console/graph.json": "graph",
@@ -446,7 +449,8 @@ class Handler(BaseHTTPRequestHandler):
     _PAGE_GET = ("/", "/coverage", "/graph", "/evidence", "/metrics",
                  "/session", "/activity", "/new", "/experiments", "/status.js",
                  "/console", "/console/live", "/console/graph",          # W6 控制台
-                 "/console/findings", "/console/approval")               # 五新页
+                 "/console/findings", "/console/approval",               # 五新页
+                 "/console.css", "/console.js")                          # 壳资产（status.js 同例）
 
     def log_message(self, fmt, *args):           # 静默（长连接轮询会刷屏；env 开话痨）
         if os.environ.get("TANYIN_WEBUI_DEBUG"):
@@ -483,6 +487,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._serve_page(u.path.lstrip("/") + ".html")
         if u.path in _CONSOLE_PAGES:                            # W6 控制台五页
             return self._serve_page(_CONSOLE_PAGES[u.path])
+        if u.path in _CONSOLE_ASSETS:                           # 壳资产（content-type 分型）
+            return self._serve_asset(_CONSOLE_ASSETS[u.path])
         if u.path == "/api/approval":                            # v0.9.8 待审投影（须会话）
             return self._serve_approval_get(u)
         if u.path == "/experiments":                               # v0.9d 度量页锚 302（nav 八链）
@@ -510,6 +516,17 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-cache")
         self.end_headers()
         self.wfile.write(body)
+
+    def _serve_asset(self, pair):
+        """壳静态资产（/console.css·/console.js——status.js 白名单同例）。"""
+        name, ctype = pair
+        try:
+            with open(os.path.join(STATIC_DIR, name), "rb") as f:
+                body = f.read()
+        except OSError:
+            return self._send(500, "text/plain; charset=utf-8",
+                              name.encode("ascii", "ignore") + b" missing\n")
+        self._send(200, ctype, body)
 
     def _serve_page(self, name):
         try:

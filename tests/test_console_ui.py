@@ -263,7 +263,7 @@ class TestOverviewApi(ConsoleBase):
         acts = d['activity']
         self.assertTrue(acts, '活动流非空')
         self.assertEqual(acts[-1]['actor'], 'CLI')
-        self.assertIn('sqlmap', acts[-1]['event'])
+        self.assertIn('ffuf', acts[-1]['event'])
         for a in acts:
             for f in ('ts', 'actor', 'phase', 'event'):
                 self.assertIn(f, a)
@@ -331,7 +331,7 @@ class TestLiveApi(ConsoleBase):
         d = self.api('/api/console/live.json')
         evs = d['events']
         self.assertTrue(evs)
-        self.assertIn('sqlmap', evs[-1]['event'])
+        self.assertIn('ffuf', evs[-1]['event'])
         self.assertEqual(evs[-1]['actor'], 'CLI')
 
 
@@ -345,9 +345,9 @@ class TestGraphApi(ConsoleBase):
     def test_frames_equal_timeline_rows(self):
         d = self.api('/api/console/graph.json')
         self.assertIn('replay', d)
-        self.assertEqual(d['replay']['frames'], 12,
-                         '回放条帧数=timeline 真实行数（12 行夹具）')
-        self.assertEqual(d['timeline_rows'], 12)
+        self.assertEqual(d['replay']['frames'], 13,
+                         '回放条帧数=timeline 真实行数（13 行夹具）')
+        self.assertEqual(d['timeline_rows'], 13)
         with open(os.path.join(self.goal, 'timeline.tsv'), encoding='utf-8') as f:
             real_rows = sum(1 for _ in f)
         self.assertEqual(d['replay']['frames'], real_rows,
@@ -511,8 +511,169 @@ class TestInterceptApi(ConsoleBase):
             self.assertIn('rule', L, '每层须有人话规则句')
 
 
-if __name__ == '____main__':
+
+# ===========================================================================
+# 七、静态资产与页面结构钉（壳=侧栏+顶栏+Ctrl+K；数据全 JS fetch 真接）
+# ===========================================================================
+
+NEW_PAGES = ('console_dash.html', 'console_live.html', 'console_graph.html',
+             'console_findings.html', 'console_approval.html')
+
+
+def _static_src(name):
+    with open(os.path.join(STATIC, name), encoding='utf-8') as f:
+        return f.read()
+
+
+class TestShellAssets(ConsoleBase):
+
+    def test_console_css_js_routes_gated(self):
+        r = self.req('GET', '/console.css')
+        self.assertEqual(r['status'], 200)
+        self.assertIn('text/css', r['headers'].get('content-type', ''))
+        r = self.req('GET', '/console.js')
+        self.assertEqual(r['status'], 200)
+        self.assertIn('javascript', r['headers'].get('content-type', ''))
+        self.cookie = ''
+        for p in ('/console.css', '/console.js'):
+            self.assertEqual(self.req('GET', p)['status'], 302,
+                             p + ' 未登录须 302（读面铁律）')
+
+    def test_pages_link_shell_and_api(self):
+        for name, api in (('console_dash.html', '/api/console/overview.json'),
+                          ('console_live.html', '/api/console/live.json'),
+                          ('console_graph.html', '/api/console/graph.json'),
+                          ('console_findings.html', '/api/console/findings.json')):
+            src = _static_src(name)
+            self.assertIn('/console.css', src, name + ' 缺壳样式')
+            self.assertIn('/console.js', src, name + ' 缺壳脚本')
+            self.assertIn(api, src, name + ' 缺真数据 API 接线')
+        src = _static_src('console_approval.html')
+        self.assertIn('/api/approval', src, '审批页须接既有审批 API')
+        self.assertIn('/api/console/intercept.json', src)
+
+
+class TestPageStructure(unittest.TestCase):
+
+    def test_dash_structure(self):
+        src = _static_src('console_dash.html')
+        for hook in ('id="ov-cards"', 'id="token-table"',
+                     'id="activity-feed"', 'id="side"', 'id="top"'):
+            self.assertIn(hook, src, '总览缺 ' + hook)
+
+    def test_live_structure(self):
+        src = _static_src('console_live.html')
+        for hook in ('id="phase-lamps"', 'id="budget-burn"',
+                     'id="converge-box"', 'id="event-feed"'):
+            self.assertIn(hook, src, '实时动态缺 ' + hook)
+        self.assertIn('/api/stream', src, '事件流须接 SSE 真流')
+        self.assertIn('执行阶段', src, '阶段灯区须有「执行阶段」人话标题')
+        self.assertIn('预算预警线', src, '预算区须用「预算预警线」规范词')
+
+    def test_graph_structure(self):
+        src = _static_src('console_graph.html')
+        for hook in ('id="graphsvg"', 'id="graph-legend"',
+                     'id="replay-range"', 'id="replay-pos"'):
+            self.assertIn(hook, src, '攻击链路缺 ' + hook)
+        self.assertIn('演变回放', src, '回放条须自解释（回到任意历史时刻）')
+
+    def test_findings_structure(self):
+        src = _static_src('console_findings.html')
+        for hook in ('id="state-seg"', 'id="findings-table"'):
+            self.assertIn(hook, src, '发现缺 ' + hook)
+        self.assertIn('GL.drawer', src, '发现页须挂详情抽屉')
+        self.assertIn('d.id = "drawer"', _static_src('console.js'),
+                      '抽屉容器由壳统一创建')
+        for st in ('已验证', '待验证', '已失效'):
+            self.assertIn('data-state="%s"' % st, src, '筛选缺状态 ' + st)
+        self.assertIn('验证状态', src, '筛选项须名「验证状态」')
+
+    def test_approval_structure(self):
+        src = _static_src('console_approval.html')
+        for hook in ('id="ap-queue"', 'id="intercept-table"',
+                     'data-decision="approved"', 'data-decision="rejected"'):
+            self.assertIn(hook, src, '审批缺 ' + hook)
+        self.assertIn('X-Requested-With', _static_src('console.js'),
+                      '写请求须带 CSRF 自定义头')
+
+
+class TestNavShell(unittest.TestCase):
+
+    def test_nav_23_items_with_standard_names(self):
+        src = _static_src('console.js')
+        m = re.search(r'NAV\s*=\s*\[(.*?)\];', src, re.S)
+        self.assertIsNotNone(m, 'console.js 缺 NAV 常量')
+        items = re.findall(r'\[\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"[^\]]*\]', m.group(1))
+        self.assertEqual(len(items), 23, '导航=23 项（未建页占位不许假数据）')
+        for name in ('总览', '新建任务', '实时动态', '攻击链路', '发现',
+                     '任务详情', '审批', '证据', '基准评测', '资产覆盖',
+                     '实时日志', '设置', '用户与角色'):
+            self.assertIn(name, src, '导航缺规范名 ' + name)
+
+    def test_placeholder_badge_and_selector_and_cmdk(self):
+        src = _static_src('console.js')
+        self.assertIn('建设中·排期W6', src, '未建页须显示建设中占位')
+        self.assertIn('battle-select', src, '顶栏须有任务选择器')
+        self.assertTrue('(e.metaKey || e.ctrlKey)' in src and '"k"' in src,
+                        'Ctrl+K 全局搜索钩子')
+        self.assertIn('cmdk', src)
+
+
+class TestUiCopyStandard(unittest.TestCase):
+    """ui-copy-standard-v1：界面只说人话——禁词不上屏，规范词在场。"""
+
+    BANNED = re.compile('看战况|看战果|管战场|战士|八问|琥珀线|三态|九门|十边|'
+                        '账本|验链|投影|E-index|开战|作战|战况|战果|战场|战报|战役')
+
+    def test_no_banned_words_in_label_zone(self):
+        import html.parser
+
+        class Vis(html.parser.HTMLParser):
+            SKIP = ('script', 'style', 'pre', 'code', 'textarea', 'template')
+
+            def __init__(self):
+                super().__init__(convert_charrefs=True)
+                self.chunks = []
+                self.depth = 0
+
+            def handle_starttag(self, tag, attrs):
+                if tag in self.SKIP:
+                    self.depth += 1
+
+            def handle_endtag(self, tag):
+                if tag in self.SKIP and self.depth:
+                    self.depth -= 1
+
+            def handle_data(self, data):
+                if not self.depth:
+                    self.chunks.append(data)
+
+        for name in NEW_PAGES + ('console.js',):
+            src = _static_src(name)
+            if name.endswith('.js'):
+                src = re.sub(r'/\*.*?\*/', '', src, flags=re.S)
+                src = re.sub(r'(^|[^:])//[^\n]*', r'\1', src)
+                text = src
+            else:
+                p = Vis()
+                p.feed(src)
+                p.close()
+                text = '\n'.join(p.chunks)
+            hit = self.BANNED.search(text)
+            self.assertIsNone(hit, '%s 标签区禁词: %r' % (name, hit and hit.group(0)))
+
+    def test_page_titles_standard_names(self):
+        want = {'console_dash.html': '总览', 'console_live.html': '实时动态',
+                'console_graph.html': '攻击链路', 'console_findings.html': '发现',
+                'console_approval.html': '审批'}
+        for name, word in want.items():
+            self.assertIn('<title>GraphLed · %s</title>' % word,
+                          _static_src(name), name + ' 标题须规范名')
+
+
+if __name__ == '__main__':
     unittest.main()
+
 
 
 

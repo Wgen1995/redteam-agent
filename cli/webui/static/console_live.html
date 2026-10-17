@@ -4,8 +4,91 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GraphLed · 实时动态</title>
+<link rel="stylesheet" href="/console.css">
 </head>
-<body>
-<div id="console_live">实时动态 · 数据载入中（fetch /api/console/live.json）</div>
+<body data-nav="实时动态">
+<aside id="side"></aside>
+<div id="main">
+  <div id="top"></div>
+  <div id="view">
+    <h2 class="pt">实时动态</h2>
+    <p class="pd">执行阶段 · 预算烧速 · 收敛判定 · 事件流（只读，实时刷新）</p>
+    <div class="pane">
+      <h3>执行阶段（九段流水：授权确认 → 沉淀）</h3>
+      <div class="lamps" id="phase-lamps"></div>
+    </div>
+    <div class="grid cards2">
+      <div class="pane">
+        <h3>预算烧速（累计 token 用量）</h3>
+        <div id="budget-burn"></div>
+        <p style="color:var(--g8);font-size:11px;margin-top:6px">
+          <span class="tag t-y">预算预警线</span>=限额硬顶 <span class="mono" id="budget-limit"></span> ·
+          已用 <span class="mono" id="budget-used"></span>
+        </p>
+      </div>
+      <div class="pane">
+        <h3>收敛判定（四条件）</h3>
+        <div id="converge-box"></div>
+      </div>
+    </div>
+    <div class="pane">
+      <h3>事件流（实时追加）</h3>
+      <div class="scrollbox feed" id="event-feed"></div>
+    </div>
+  </div>
+</div>
+<script src="/console.js"></script>
+<script>
+window.PAGE_API = "/api/console/live.json";
+var ST_CN = { PASS: "通过", FAIL: "未过", PENDING: "未开始" };
+var CV_CN = { converged: "已收敛", running: "进行中", "budget-exhausted": "预算触顶" };
+window.PAGE_INIT = function (d) {
+  document.getElementById("phase-lamps").innerHTML = (d.phases || []).map(function (p) {
+    return '<div class="lamp" title="' + GL.esc(p.id) + '"><span class="nm">' + GL.esc(p.name) +
+      '</span><span class="st ' + p.result + '">' + (ST_CN[p.result] || p.result) + "</span></div>";
+  }).join("");
+  var b = d.budget || {}, tk = b.token || {}, s = b.series || [];
+  var W = 400, H = 120, lim = tk.limit || 0;
+  var maxV = Math.max(lim, s.length ? s[s.length - 1].cum_tokens : 1) || 1;
+  function x(i) { return s.length > 1 ? (i / (s.length - 1)) * W : 0; }
+  function y(v) { return H - 8 - (v / maxV) * (H - 20); }
+  var pts = s.map(function (p, i) { return x(i).toFixed(1) + "," + y(p.cum_tokens).toFixed(1); }).join(" ");
+  document.getElementById("budget-burn").innerHTML =
+    '<svg width="100%" height="' + H + '" viewBox="0 0 ' + W + " " + H + '">' +
+    (lim ? '<line x1="0" y1="' + y(lim) + '" x2="' + W + '" y2="' + y(lim) + '" stroke="#e8b34b" stroke-dasharray="4 4"/><text x="6" y="' + Math.max(12, y(lim) - 4) + '" fill="#e8b34b" font-size="9">限额 ' + GL.fmtNum(lim) + "</text>" : "") +
+    '<polyline points="' + pts + '" fill="none" stroke="#3ddc97" stroke-width="2"/></svg>' +
+    (s.length ? "" : '<div class="empty">尚无预算流水</div>');
+  document.getElementById("budget-limit").textContent = GL.fmtNum(lim);
+  document.getElementById("budget-used").textContent = GL.fmtNum(Math.round(tk.used || 0));
+  var cv = d.convergence || {};
+  document.getElementById("converge-box").innerHTML =
+    '<div class="row" style="margin-bottom:8px"><span class="tag ' +
+    (cv.state === "converged" ? "t-g" : cv.state === "budget-exhausted" ? "t-r" : "t-y") + '">' +
+    (CV_CN[cv.state] || cv.state) + "</span></div>" +
+    (cv.conditions || []).map(function (c) {
+      return '<div class="row" style="justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--g3)">' +
+        "<span>" + GL.esc(c.name) + "</span><span class=\"mono\">" +
+        (c.ok ? '<span class="tag t-g">满足</span>' : '<span class="tag t-r">未满足·' + GL.fmtNum(c.count) + "</span>") +
+        "</span></div>";
+    }).join("");
+  var feed = document.getElementById("event-feed");
+  feed.innerHTML = (d.events || []).map(function (a) {
+    return "<div><span class=\"t\">" + GL.esc(a.ts) + "</span><span class=\"tag t-b\">" + GL.esc(a.actor) +
+      "</span> " + GL.esc(a.event) + "</div>";
+  }).join("") || '<div class="empty">暂无事件</div>';
+  try {
+    var es = new EventSource(GL.withBattle("/api/stream?tail=0"));
+    es.onmessage = function (ev) {
+      try {
+        var row = JSON.parse(ev.data);
+        if (!row || !row.event) return;
+        feed.insertAdjacentHTML("afterbegin",
+          "<div><span class=\"t\">" + GL.esc(row.ts || "") + "</span><span class=\"tag t-b\">" +
+          GL.esc(row.actor || "") + "</span> " + GL.esc(row.event) + "</div>");
+      } catch (e) { /* 追加行形态异常即跳过（不装真） */ }
+    };
+  } catch (e) { /* 浏览器不支持 SSE 时静态列表仍可用 */ }
+};
+</script>
 </body>
 </html>

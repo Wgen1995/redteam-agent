@@ -4,8 +4,103 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GraphLed · 发现</title>
+<link rel="stylesheet" href="/console.css">
 </head>
-<body>
-<div id="console_findings">发现 · 数据载入中（fetch /api/console/findings.json）</div>
+<body data-nav="发现">
+<aside id="side"></aside>
+<div id="main">
+  <div id="top"></div>
+  <div id="view">
+    <h2 class="pt">发现</h2>
+    <p class="pd">按验证状态筛选 · 点行看详情（原始请求/响应取自证据卡原文）</p>
+    <div class="row" style="margin-bottom:12px">
+      <span style="color:var(--g8);font-size:12px">验证状态</span>
+      <span class="seg" id="state-seg">
+        <b class="on" data-state="all">全部</b>
+        <b data-state="已验证">已验证</b>
+        <b data-state="待验证">待验证</b>
+        <b data-state="已失效">已失效</b>
+      </span>
+    </div>
+    <div class="pane">
+      <div class="scrollbox" style="max-height:520px">
+        <table id="findings-table">
+          <tr><th>编号</th><th>等级</th><th>发现</th><th>类型</th><th>CVSS</th><th>验证状态</th><th>资产</th></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/console.js"></script>
+<script>
+window.PAGE_API = "/api/console/findings.json";
+var FINDINGS = [];
+function sevTag(impact) {
+  return impact === "高" ? "t-r" : impact === "中" ? "t-y" : "t-n";
+}
+function stateTag(st) {
+  return st === "已验证" ? "t-g" : st === "已失效" ? "t-n" : "t-y";
+}
+function renderRows() {
+  var tb = document.getElementById("findings-table");
+  tb.querySelectorAll("tr[data-state]").forEach(function (r) { r.remove(); });
+  FINDINGS.forEach(function (f, i) {
+    tb.insertAdjacentHTML("beforeend",
+      '<tr class="frow" data-state="' + f.verify_state + '" data-i="' + i + '" style="cursor:pointer">' +
+      '<td class="mono">' + GL.esc(f.id) + "</td>" +
+      "<td><span class=\"tag " + sevTag(f.impact) + "\"></span>" + GL.esc(f.impact || "—") + "</td>" +
+      "<td>" + GL.esc(f.title) + "</td>" +
+      '<td class="mono">' + GL.esc(f.vuln_ref || "—") + "</td>" +
+      '<td class="mono"' + (f.cvss ? ' title="' + GL.esc(f.cvss.vector) + '"' : "") + ">" +
+      (f.cvss ? f.cvss.score.toFixed(1) + " · " + GL.esc(f.cvss.severity) : "未评定") + "</td>" +
+      "<td><span class=\"tag " + stateTag(f.verify_state) + "\">" + GL.esc(f.verify_state) + "</span></td>" +
+      '<td class="mono">' + GL.esc(f.asset || "—") + "</td></tr>");
+  });
+  var any = tb.querySelectorAll("tr[data-state]").length;
+  if (!any) tb.insertAdjacentHTML("beforeend", '<tr><td colspan="7" class="empty">暂无发现记录</td></tr>');
+}
+window.PAGE_INIT = function (d) {
+  FINDINGS = d.findings || [];
+  var counts = { all: FINDINGS.length };
+  ["已验证", "待验证", "已失效"].forEach(function (st) {
+    counts[st] = (d.states || {})[st] || 0;
+  });
+  document.querySelectorAll("#state-seg b").forEach(function (b) {
+    b.textContent = b.dataset.state === "all" ? "全部 " + counts.all : b.dataset.state + " " + counts[b.dataset.state];
+  });
+  renderRows();
+  document.getElementById("state-seg").addEventListener("click", function (e) {
+    var b = e.target.closest("b");
+    if (!b) return;
+    document.querySelectorAll("#state-seg b").forEach(function (x) { x.classList.remove("on"); });
+    b.classList.add("on");
+    var st = b.dataset.state;
+    document.querySelectorAll("#findings-table tr[data-state]").forEach(function (r) {
+      r.style.display = (st === "all" || r.dataset.state === st) ? "" : "none";
+    });
+  });
+  document.getElementById("findings-table").addEventListener("click", function (e) {
+    var tr = e.target.closest("tr[data-i]");
+    if (!tr) return;
+    var f = FINDINGS[+tr.dataset.i];
+    var evh = (f.evidence || []).map(function (ev, i) {
+      return '<h3 style="font-size:12px;margin-top:12px">证据 ' + (i + 1) + " · " + GL.esc(ev.title) + "</h3>" +
+        "<h3 style=\"font-size:11px;color:var(--g8)\">原始请求</h3>" +
+        '<pre class="raw">' + GL.esc(ev.request || "（无）") + "</pre>" +
+        "<h3 style=\"font-size:11px;color:var(--g8)\">响应节选</h3>" +
+        '<pre class="raw">' + GL.esc(ev.response || "（无）") + "</pre>";
+    }).join("") || '<div class="empty" style="margin-top:12px">暂无挂接证据</div>';
+    GL.drawer(
+      "<h3>" + GL.esc(f.id) + " · " + GL.esc(f.title) + "</h3>" +
+      '<p style="color:var(--g8);font-size:12px">' + GL.esc(f.verify_state) + " · 影响 " + GL.esc(f.impact || "—") +
+      " · 置信 " + GL.esc(f.confidence || "—") +
+      (f.cvss ? " · CVSS " + f.cvss.score.toFixed(1) + "（" + GL.esc(f.cvss.severity) + "）" : " · CVSS 未评定") + "</p>" +
+      (f.description ? '<div class="card" style="font-size:12.5px;margin-top:10px">' + GL.esc(f.description) + "</div>" : "") +
+      evh +
+      '<p style="color:var(--g8);font-size:11px;margin-top:10px">记录于 ' + GL.esc(f.created || "—") + "</p>"
+    );
+  });
+};
+</script>
 </body>
 </html>
