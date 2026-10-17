@@ -30,7 +30,7 @@
 │   分级击杀 ✅(b10) │ 重启退避 ✅(b10) │ 战中指令注入 ✅(b10) │ 预算执法 ✅(v0.5a) │
 │   LOGONLY-ALIVE ✅ │ ask:human WAIT ✅ │ caffeinate+通知 ✅(v0.5a) │
 │ ┌─────────────────────────────────────────────────────────┐ │
-│ │ ② 判据层 · 账本法 ✅（45条CLI命令·哈希链·状态在盘）           │ │
+│ │ ② 判据层 · 账本法 ✅（49条CLI(单源registry)命令·哈希链·状态在盘）           │ │
 │ │   管「跑得好不好」：真伪·清帐·覆盖·收敛（细目见第四节）         │ │
 │ │ ┌───────────────────────────────────────────────────┐   │ │
 │ │ │ ③ AI 指挥层 · 技能战士 ✅ —— 管「下一步打什么」，全权 │   │ │
@@ -162,7 +162,7 @@ P5 报告 → P5.5 ★您签发★ → P6 沉淀    ▼
 ## v0.8+v0.9a 批次终局行（2026-10-14，五路子代理并行+主会话集成）
 - **v0.8 借脑三件套+judge 全落**： llmpool（错误分类/硬1软3熔断/60-300-1800 阶梯/429 独立 rate 道固定 60s/±20% 抖动/状态原子落盘重启恢复/事件回调入 timeline，50 测）；chain 稳定器（chain-create/advance/ls 三命令入册，prereq=[INT-…] 虚拟列仿批次7 先例，双保险=查询过滤+写入 Reject，13 测）；trace-search（literal-only 零 import re，流式扫描，sha256 只读证明，13 测）；judge_client（stdlib 直连 openai 兼容端点，温度0/512 上限，token 级严格解析 12 reason 码 fail-closed，23 测）。
 - **v0.9a 观察面骨架落**： cli/webui/{snapshot,sse,server}+static 首页（ThreadingHTTPServer 三路由，九门灯+budget 条+EventSource 活动流；python -m webui.server，默认 127.0.0.1:8900，20 测）；投影律测试钉死（目录字节不变）。**SSE 实测（spec 风险①关闭）**：5 并发×20.3s 零断流零缺帧，RSS 增长 0.3-0.5MB，未触发 asyncio 触发器。
-- **命令面 45→48**： chain 三键入 _IMPL（双前缀别名+goal 写锁），四处绊线同步（test_phases_yaml face 48/test_write_cmds HANDLERS 22/selfcheck.KNOWN_COMMANDS +6 词条/SKILL 双胎索引 48 条）——第四处绊线为全量回归抓出后补同步（绊线本职）。
+- **命令面 (历史45→48)**： chain 三键入 _IMPL（双前缀别名+goal 写锁），四处绊线同步（test_phases_yaml face 48/test_write_cmds HANDLERS 22/selfcheck.KNOWN_COMMANDS +6 词条/SKILL 双胎索引 48 条）——第四处绊线为全量回归抓出后补同步（绊线本职）。
 - **全量 1210/1210 OK**（主会话亲跑两轮：首轮抓出 1 失绊线，修后全绿）。
 - 形态法在案： docs/design/tanyin-target-form.md（四面一体+Python stdlib/Web 原生语言律）。
 
@@ -190,7 +190,7 @@ P5 报告 → P5.5 ★您签发★ → P6 沉淀    ▼
 - 新单源: status.js（状态语义）;server 静态白名单句柄（/status.js）
 - 互通: zhulong-export（tanyin@1 平铺包，dry-run 默认零网络，vault 脱敏漂移钉）
 - 会话页: session_view.py 只读装配（transcript 三态配对+介入穿插）;活动页 SSE 追尾
-- 测试: 1328→1403（+24 皮肤 +38 会话 +13 互通 +13 热修）;命令面 48→49
+- 测试: 1328→1403（+24 皮肤 +38 会话 +13 互通 +13 热修）;命令面 (历史48→现行49)
 
 ## v0.9.6（2026-10-16）执法面升权
 - S1 信任根: warrior_env 白名单单源（launch 一律经它;密钥类 env 物理不可达;真子进程 kernel 级实证）

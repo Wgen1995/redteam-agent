@@ -1,0 +1,21 @@
+# C舰 · ZhuLong + multica 全件对齐（逐件表）
+
+> 战役: 2026-10-18 逐件级重对齐（用户令: 「全部从新对齐分析,所有的一切,目标是超越所有」）。
+> 本舰域: ZhuLong（烛龙）+ multica 两家全面。产出=逐件表，一行一记录，禁止维度级判词（「架构6成」这类话已被用户否决）。
+> 判词四档: **已超**（超越点实打实）/ **已排**（波次有名有姓）/ **声明取舍**（对等策略，用户知情）/ **真空白**（不许留——发现即给方案）。
+>
+> **语料与代号**（双出处律）:
+> - Z:n = `docs/research/manuals/usage-guide-zhulong.md` 第 n 行（214 行完整实读）
+> - M:n = `docs/research/manuals/usage-guide-multica.md` 第 n 行（353 行完整实读）
+> - D:n = `.research/repos/multica/server/pkg/agent/dsh.go` 第 n 行（479 行源码完整实读）
+> - 我方 = 本仓（GraphLed，旧名探隐 TanYin）。我方引用一律 `文件:行`，全部实读核对，没有的写「无」。
+>
+> 写作纪律: 只读语料与代码；唯一写入=本档；照实骂；人话。
+
+---
+
+## 〇 先把两家底摸清（一段话各交代）
+
+**ZhuLong 是什么**（Z:4,13）: Vue3+Hono+SQLite 的「AI 安全验证平台控制台」——项目/对象/环境组织成资产，引擎（插件制）挂算力池（本机+远程runner）跑任务，会话日志经 mapper 解析成结构化漏洞，三态人工终审收口，下载中心交付。源码就在隔壁仓（`ai-assisted-security-verification-platform`），我们已有互通件 `cli/ledger/zhulong_export.py`（见 Z-41）。它同时是被 ARTEX/CSAI 打的靶场（Z:7）——它的伤疤就是我们的免费评测集。
+
+**multica 是什么**（M:11,13）: 开源「AI 数字员工」任务平台——CLI 编码代理注册为运行时（Runtime），运行时之上定义智能体（Agent），编成小队（Squad），用任务（Issue）派工，收件箱/聊天/Autopilot 驱动人机协作。**它不是安全产品**，但把「任务面板×AI员工真跑×跑在自己电脑上」这套作业编排做到了产品级——我们的 Web 控制台要超越的正是这套编排体验。它的 DSH 运行时适配器（dsh.go 479 行）是我们能拿到的唯一一份「别人怎么驱动 DSH」的源码级参考。
