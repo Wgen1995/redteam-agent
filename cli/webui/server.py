@@ -63,6 +63,7 @@ from . import sse as _sse        # noqa: E402
 from . import projections as _proj  # noqa: E402  (v0.9b 三页只读装配)
 from . import metrics as _met  # noqa: E402  (v0.9c 度量页只读装配)
 from ledger import session_view as _sv  # noqa: E402  (v0.9d 会话页只读装配)
+from ledger import battle_registry as _breg  # noqa: E402  (W2·01P0-4 多战仲裁接线)
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 DEFAULT_HOST, DEFAULT_PORT, DEFAULT_TAIL = "127.0.0.1", 8900, 50
@@ -95,6 +96,9 @@ SESSION_COOKIE = "tanyin_sess"
 SESSION_TTL_S = 8 * 3600                  # 会话时长：一个工作班次
 LOGIN_MAX_FAILS, LOGIN_LOCK_S = 5, 60     # 错 5 次锁 60s（计划 §第一段）
 CTRL_ACTIONS = ("pause", "resume", "stop", "launch")   # W1-T2：launch=点火钮
+BATTLE_FORBID_PORTS = (8900, 3000, 8787, 8443)   # W2·01P0-4 平台保留口（webui
+#   8900+操作员常驻面 3000/8787/8443）——战斗端口申报禁碰（battle_registry 同表）
+BATTLE_BUDGET_CAP_ENV = "TANYIN_BATTLE_BUDGET_CAP_USD"   # 缺省不设帽=登记仍在
 APPROVE_DECISIONS = ("approved", "rejected", "exempted")
 GEN_OF_NEW_BATTLE = "G-w1"               # 方向盘新战代名（battle.py --gen 同位）
 WALL_PHASE_LIFECYCLE = "P-lifecycle"     # battle.py WALL_PHASE 先例：跨阶段控制事件轨
@@ -156,6 +160,20 @@ def _ledger_receipt(cmd, goal_dir, args):
 
 def _battles_root(server):
     return server.battles_dir or _sv.default_battles_dir()   # session_view 同源
+
+
+def _breg_verdict_brief(verdict):
+    """仲裁拒决人话摘要（数学披露：used/demand/cap 原数入体——可审计）。"""
+    if verdict.get("reason") == "budget-cap":
+        return "在册预算 %.6g + 申报 %.6g = %.6g > 帽 %.6g" % (
+            verdict.get("budget_used", 0.0),
+            verdict.get("budget_demand", 0.0) - verdict.get("budget_used", 0.0),
+            verdict.get("budget_demand", 0.0), verdict.get("budget_cap", 0.0))
+    if verdict.get("reason") == "already-registered":
+        return "战在册未出（先 stop 释放再点火；死 pid 册自愈回收）"
+    if verdict.get("conflict_ports"):
+        return "端口冲突/保留: %s" % verdict["conflict_ports"]
+    return str(verdict.get("reason", ""))
 
 
 def _battle_home(server, battle_no):
@@ -753,6 +771,35 @@ class Handler(BaseHTTPRequestHandler):
                                         "error": "battle-%d 已在跑（runner pid=%s）——"
                                                  "先 stop 再点火，不许双跑"
                                                  % (n, ",".join(str(p) for p in live))})
+            # W2·01P0-4 多战仲裁接线：battles 根在册（预算帽+在册互斥）——册比
+            # pid 扫描保守（扫描扑空而在册行活=fail-closed 拒双跑）；申报额
+            # 请求体 budget_usd（缺省 0），帽=TANYIN_BATTLE_BUDGET_CAP_USD（缺省
+            # 不设帽·登记仍在）；拒绝判决带数学披露原样回体（可审计）。
+            try:
+                budget_usd = float(body.get("budget_usd") or 0.0)
+            except (TypeError, ValueError):
+                budget_usd = -1.0
+            if not (budget_usd >= 0.0):   # NaN 同拒（负/NaN 申报=输入域 422）
+                return self._fail(422, {"ok": False,
+                                        "error": "budget_usd 须非负数（多战预算申报）"})
+            cap_raw = os.environ.get(BATTLE_BUDGET_CAP_ENV)
+            cap = None
+            if cap_raw not in (None, ""):
+                try:
+                    cap = float(cap_raw)
+                except ValueError:
+                    return self._fail(422, {"ok": False, "error":
+                                            "环境 %s 须数字: %r"
+                                            % (BATTLE_BUDGET_CAP_ENV, cap_raw)})
+            verdict = _breg.admit(_battles_root(self.server), "battle-%d" % n,
+                                  budget_usd=budget_usd, cap_budget_usd=cap,
+                                  forbid_ports=BATTLE_FORBID_PORTS)
+            if not verdict["allowed"]:
+                return self._fail(422, {"ok": False,
+                                        "error": "多战仲裁拒（%s）——%s"
+                                                 % (verdict["reason"],
+                                                    _breg_verdict_brief(verdict)),
+                                        "verdict": verdict})
             mission = os.path.join(home, MISSION_TXT)
             if not os.path.isfile(mission):
                 with open(mission, "w", encoding="utf-8") as f:
@@ -762,6 +809,7 @@ class Handler(BaseHTTPRequestHandler):
                 with open(directive, "w", encoding="utf-8") as f:
                     f.write("")
             pid = _spawn_runner(home, gd)
+            _breg.set_pid(_battles_root(self.server), "battle-%d" % n, pid)
             r = _ledger_receipt("append-timeline", gd, [
                 "--actor=人工", "--phase=" + WALL_PHASE_LIFECYCLE,
                 "--event=battle-launch battle-%d runner-pid=%d mission=%s"
@@ -808,6 +856,7 @@ class Handler(BaseHTTPRequestHandler):
             f.write("%s\tEXIT\toperator-stop runner=%s warrior=%s\n"
                     % (ts, ",".join(str(p) for p in runner_pids) or "none",
                        wpid if wpid is not None else "none"))
+        released = _breg.release(_battles_root(self.server), "battle-%d" % n)
         r = _ledger_receipt("append-timeline", gd, [
             "--actor=人工", "--phase=" + WALL_PHASE_LIFECYCLE,
             "--event=battle-stop battle-%d runner=%d warrior=%s"
@@ -822,6 +871,7 @@ class Handler(BaseHTTPRequestHandler):
                                  "runner_killed": runner_killed,
                                  "warrior_killed": warrior_killed,
                                  "warrior_pid": wpid,
+                                 "released": released or False,
                                  "timeline_row": r["timeline_row"]})
 
     # ---- 钮 3：/api/battle/say ----

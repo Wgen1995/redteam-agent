@@ -22,6 +22,7 @@ import http.client
 import json
 import os
 import re
+import subprocess
 import sys
 import threading
 import unittest
@@ -380,6 +381,82 @@ class TestLaunchAction(AuthFormBase):
         self.assertEqual(flag("--prompt-file"), os.path.join(home, "mission.txt"))
         self.assertEqual(flag("--directive-file"),
                          os.path.join(home, srv_mod.DIRECTIVE_TXT))
+
+
+class TestLaunchRegistryArbitration(AuthFormBase):
+    """W2·01P0-4 多战执法面接线：launch/stop ↔ battle_registry（battles 根仲裁）。
+
+    serve 舰 HANDOFF 记档：前任 server.py 接线被还原一次、由本领地重做——
+    本类=重做件的行为钉（册行仲裁+预算帽数学披露+停战出册）。
+    """
+
+    def _launch(self, battle=1, live_pid=False, **extra):
+        """点火助手。live_pid=True 时 spawn 真 sleeper 并以其 pid 为 runner pid
+        （在册行 pid 须活——否则下一次仲裁前被死 pid 自愈回收，钉不住册行）。"""
+        pid = 4242 + battle
+        if live_pid:
+            sleeper = subprocess.Popen(
+                [sys.executable, "-c", "import time; time.sleep(120)"])
+            self.addCleanup(sleeper.kill)
+            pid = sleeper.pid
+        with mock.patch.object(srv_mod, "_spawn_runner", return_value=pid):
+            return self.write_req("/api/battle/control",
+                                  dict(battle=battle, action="launch", **extra))
+
+    def test_launch_admits_battle_with_runner_pid(self):
+        r = self._launch()
+        self.assertEqual(r["status"], 200, r["body"])
+        from ledger import battle_registry as br
+        snap = br.snapshot(self.battles)
+        self.assertEqual([e["battle"] for e in snap["entries"]], ["battle-1"])
+        self.assertEqual(snap["entries"][0]["pid"], 4243,
+                         "spawn 后须 set_pid（admit→spawn→set_pid 点火窗口闭合）")
+
+    def test_second_launch_rejected_by_registry_row(self):
+        """runner pid 扫描扑空但在册行活=册比扫描保守（fail-closed 拒双跑）。"""
+        self.assertEqual(self._launch(live_pid=True)["status"], 200)
+        with mock.patch.object(srv_mod, "_spawn_runner", return_value=9999) as sp:
+            r2 = self.write_req("/api/battle/control",
+                                {"battle": 1, "action": "launch"})
+        self.assertEqual(r2["status"], 422)
+        body = self.jbody(r2)
+        self.assertIn("already-registered", body["error"])
+        sp.assert_not_called()
+
+    def test_budget_cap_env_arbitrates_across_battles(self):
+        """TANYIN_BATTLE_BUDGET_CAP_USD：battle-1 申报 60 → battle-2 申报 50=
+        拒（60+50>100 数学披露入错误体）；改 40=放行。"""
+        build_goal(os.path.join(self.battles, "battle-2", "G-t2"))
+        with mock.patch.dict(os.environ, {"TANYIN_BATTLE_BUDGET_CAP_USD": "100"}):
+            self.assertEqual(
+                self._launch(live_pid=True, budget_usd=60)["status"], 200)
+            r2 = self._launch(battle=2, live_pid=True, budget_usd=50)
+            self.assertEqual(r2["status"], 422)
+            body = self.jbody(r2)
+            self.assertIn("budget-cap", body["error"])
+            self.assertEqual(body["verdict"]["budget_used"], 60.0)
+            self.assertEqual(body["verdict"]["budget_demand"], 110.0)
+            r3 = self._launch(battle=2, live_pid=True, budget_usd=40)
+            self.assertEqual(r3["status"], 200, r3["body"])
+
+    def test_bad_budget_declaration_rejected(self):
+        r = self._launch(budget_usd="abc")
+        self.assertEqual(r["status"], 422)
+        self.assertIn("budget_usd", self.jbody(r)["error"])
+
+    def test_stop_releases_registry_row(self):
+        self.assertEqual(self._launch()["status"], 200)
+        r = self.write_req("/api/battle/control", {"battle": 1, "action": "stop"})
+        self.assertEqual(r["status"], 200, r["body"])
+        from ledger import battle_registry as br
+        self.assertEqual(br.snapshot(self.battles)["entries"], [],
+                         "停战须出册（预算/端口释放）")
+        self.assertIn("released", self.jbody(r))
+
+    def test_platform_reserved_ports_frozen(self):
+        for p in (8900, 3000, 8787, 8443):
+            self.assertIn(p, srv_mod.BATTLE_FORBID_PORTS,
+                          "平台保留口须进战斗禁碰集: %d" % p)
 
 
 # ===========================================================================
