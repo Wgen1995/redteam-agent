@@ -31,6 +31,7 @@ import json
 import os
 import re
 import shutil
+import threading
 import tempfile
 import unittest
 
@@ -42,6 +43,7 @@ sys.path.insert(0, CLI)
 from ledger import core  # noqa: E402
 from ledger.norm import artifact_hashes  # noqa: E402
 from webui import api_v2_reports as api  # noqa: E402
+from webui import server as srv_mod  # noqa: E402
 
 T = core.TABLES
 TS1 = "2026-10-20T01:00:00Z"
@@ -574,6 +576,163 @@ class TestRenderPin(Base):
         before = dir_bytes(gd)
         api.render_pin(gd)
         self.assertEqual(dir_bytes(gd), before)
+
+
+
+# ══════════════════════════ ③ 挂载层+重新渲染路由 ══════════════════════════
+
+class TestRerenderRoute(Base):
+    """「重新渲染」钮懒载口：dispatch 单源分发（同输入同输出钉独立口）。"""
+
+    def test_dispatch_rerender(self):
+        st, p = api.dispatch(api.ROUTE_RERENDER, {"battle": "1"}, None,
+                             battles_dir=self.root)
+        self.assertEqual(st, 200)
+        self.assertTrue(p["pin_ok"])
+        self.assertEqual(len(p["render_runs"]), 2)
+        self.assertIn("input_hash", p)
+
+    def test_dispatch_rerender_goal_param(self):
+        st, p = api.dispatch(api.ROUTE_RERENDER, {"goal": "G-t2"}, None,
+                             battles_dir=self.root)
+        self.assertEqual(st, 200)
+        self.assertNotEqual(p["input_hash"], "")
+
+    def test_dispatch_rerender_404_422_400(self):
+        st, _ = api.dispatch(api.ROUTE_RERENDER, {"battle": "99"}, None,
+                             battles_dir=self.root)
+        self.assertEqual(st, 404)
+        st, _ = api.dispatch(api.ROUTE_RERENDER, {"battle": "x!"}, None,
+                             battles_dir=self.root)
+        self.assertEqual(st, 422)
+        st, _ = api.dispatch(api.ROUTE_RERENDER, {}, None, battles_dir=self.root)
+        self.assertEqual(st, 400)
+
+    def test_dispatch_list_and_detail_through_table(self):
+        st, p = api.dispatch(api.ROUTE_LIST, {}, None, battles_dir=self.root)
+        self.assertEqual(st, 200)
+        self.assertEqual(p["counts"]["battles"], 3)
+        st, p = api.dispatch(api.ROUTE_DETAIL, {"battle": "2"}, None,
+                             battles_dir=self.root)
+        self.assertEqual(st, 200)
+        self.assertEqual(p["state"]["status"], "待签发")
+
+    def test_dispatch_unknown_path_none(self):
+        self.assertIsNone(api.dispatch("/api/v2/nope", {}, None,
+                                        battles_dir=self.root))
+
+
+class _V2MountHandler(srv_mod.Handler):
+    """include 挂法钉（api_pages.py 未落地——UI-1 在飞）：/api/v2/* 过会话门后
+    分发 api_v2_reports.dispatch（broadcast 同形：battles_dir 由 server 注入）。"""
+
+    def do_GET(self):
+        import urllib.parse
+        u = urllib.parse.urlparse(self.path)
+        if u.path in api.ROUTES:
+            if not self._session_ok():
+                return self._fail(401, {"error": "未登录或会话过期——读面须操作员会话"})
+            q = {k: v[0] for k, v in urllib.parse.parse_qs(u.query).items()}
+            out = api.dispatch(u.path, q, self.server.ledger_dir,
+                               battles_dir=self.server.battles_dir)
+            if out is None:
+                return super().do_GET()
+            status, payload = out
+            return self._send(status, "application/json",
+                              json.dumps(payload, ensure_ascii=False).encode("utf-8"))
+        return super().do_GET()
+
+
+class ServerBase(Base):
+    def setUp(self):
+        super().setUp()
+        from tests import webui_login
+        self.srv = srv_mod.WebServer(
+            ("127.0.0.1", 0), _V2MountHandler,
+            ledger_dir=os.path.join(self.root, "battle-1", "G-t1"),
+            operator_key=webui_login.OP_KEY, battles_dir=self.root)
+        self.port = self.srv.server_address[1]
+        t = threading.Thread(target=self.srv.serve_forever, daemon=True)
+        t.start()
+        self.addCleanup(self._stop)
+        self.sid = webui_login.login(self.port)
+
+    def _stop(self):
+        self.srv.stopping = True
+        self.srv.shutdown()
+        self.srv.server_close()
+
+    def _get(self, path, cookie=True):
+        import http.client
+        from tests import webui_login
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
+        hdrs = webui_login.cookie(self.sid) if cookie else {}
+        conn.request("GET", path, headers=hdrs)
+        return conn, conn.getresponse()
+
+
+class TestV2MountContract(ServerBase):
+    """/api/v2/* 会话门+分发（动态口=server_address[1]，禁碰 8900）。"""
+
+    def test_401_without_session(self):
+        conn, resp = self._get("/api/v2/report-list.json", cookie=False)
+        self.assertEqual(resp.status, 401)
+        self.assertEqual(json.loads(resp.read().decode("utf-8"))["error"],
+                         "未登录或会话过期——读面须操作员会话")
+        conn.close()
+
+    def test_list_over_http(self):
+        conn, resp = self._get("/api/v2/report-list.json")
+        self.assertEqual(resp.status, 200)
+        p = json.loads(resp.read().decode("utf-8"))
+        self.assertEqual(p["counts"], {"signed": 1, "pending": 1, "draft": 1,
+                                       "battles": 3})
+        conn.close()
+
+    def test_detail_over_http(self):
+        conn, resp = self._get("/api/v2/report-detail?battle=1")
+        self.assertEqual(resp.status, 200)
+        p = json.loads(resp.read().decode("utf-8"))
+        self.assertEqual(p["cover"]["report_no"], "G-t1-0001")
+        self.assertTrue(p["meta"]["pin_ok"])
+        conn.close()
+
+    def test_rerender_over_http(self):
+        conn, resp = self._get("/api/v2/report-rerender.json?battle=1")
+        self.assertEqual(resp.status, 200)
+        p = json.loads(resp.read().decode("utf-8"))
+        self.assertTrue(p["pin_ok"])
+        self.assertEqual(p["render_runs"][0], p["render_runs"][1])
+        conn.close()
+
+    def test_detail_goal_param_over_http(self):
+        conn, resp = self._get("/api/v2/report-detail?goal=G-t2")
+        self.assertEqual(resp.status, 200)
+        p = json.loads(resp.read().decode("utf-8"))
+        self.assertEqual(p["battle"]["id"], "battle-2")
+        conn.close()
+
+    def test_unknown_battle_404_over_http(self):
+        conn, resp = self._get("/api/v2/report-detail?battle=99")
+        self.assertEqual(resp.status, 404)
+        conn.close()
+
+    def test_unknown_v2_path_falls_through_404(self):
+        conn, resp = self._get("/api/v2/nope")
+        self.assertEqual(resp.status, 404)
+        conn.close()
+
+    def test_http_hits_readonly(self):
+        before = dir_bytes(self.root)
+        for pth in ("/api/v2/report-list.json",
+                    "/api/v2/report-detail?battle=1",
+                    "/api/v2/report-rerender.json?battle=2",
+                    "/api/v2/report-detail?goal=G-t3"):
+            conn, resp = self._get(pth)
+            self.assertEqual(resp.status, 200, pth)
+            resp.read()
+            conn.close()
+        self.assertEqual(dir_bytes(self.root), before)
 
 
 if __name__ == "__main__":

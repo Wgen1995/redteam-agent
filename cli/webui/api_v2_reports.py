@@ -684,6 +684,54 @@ ROUTES[ROUTE_LIST] = report_list_route
 ROUTES[ROUTE_DETAIL] = report_detail_route
 
 
+def _pick_goal(query, ledger_dir, battles_dir):
+    """公共定位：battle=N / goal=G-xx → (gd, battle_info, battles) | 错误 payload。
+
+    ValueError=坏战号（422 面）；dict 带 error=不存在（404 面）；None 元组=缺参。
+    """
+    root = battles_dir if battles_dir is not None else default_battles_dir()
+    battles = list_battles(root)
+    battle, goal = query.get("battle"), (query.get("goal") or "").strip() or None
+    if battle is None and not goal:
+        return None, None, {"error": "缺 battle/goal 参数（battle=N 或 goal=G-xx）"}
+    if battle is not None:
+        n = _norm_battle(battle)
+        if n is None:
+            raise ValueError("battle 无法解析为整数: %r" % (battle,))
+        hit = [b for b in battles if b["n"] == n]
+        if not hit:
+            return None, None, {"error": "battle 不存在: %s" % n,
+                                "battles": [{"id": b["id"], "n": b["n"]}
+                                            for b in battles]}
+        gd = _latest_goal_dir(os.path.join(root, hit[0]["id"]))
+        if gd is None:
+            return None, None, {"error": "battle-%d 无记录目录（G-*）——先立项" % n,
+                                "battles": [{"id": b["id"], "n": b["n"]}
+                                            for b in battles]}
+        return gd, {"id": hit[0]["id"], "n": n}, None
+    gd, info = _resolve_goal(battles, root, goal, ledger_dir)
+    if gd is None:
+        return None, None, {"error": "goal 不存在: %s" % goal,
+                            "battles": [{"id": b["id"], "n": b["n"]}
+                                        for b in battles]}
+    return gd, info, None
+
+
+def rerender_route(query, ledger_dir=None, battles_dir=None):
+    """「重新渲染」懒载路由：同输入同输出钉独立口（详情页按钮打这里）。"""
+    try:
+        gd, _info, err = _pick_goal(query, ledger_dir,
+                                    battles_dir if battles_dir else None)
+    except ValueError as e:
+        return 422, {"error": str(e)}
+    if err is not None:
+        return (400 if "缺 battle/goal" in err["error"] else 404), err
+    return 200, render_pin(gd)
+
+
+ROUTES[ROUTE_RERENDER] = rerender_route
+
+
 def dispatch(path, query, ledger_dir=None, battles_dir=None):
     """include 机制分发口 → (status, payload) | None(非本域路由)。
 
