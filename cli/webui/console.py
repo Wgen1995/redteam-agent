@@ -138,3 +138,44 @@ def overview_view(goal_dir, battles_dir, tail=ACTIVITY_TAIL):
         "battles": _battles_view(battles_dir),
         "phase_names": PHASE_NAMES,
     }
+
+def live_view(goal_dir, battles_dir, tail=ACTIVITY_TAIL):
+    """实时动态页投影：九阶段灯+预算烧速+收敛四条件+事件流（全部真推导）。"""
+    s = core.Session(goal_dir)
+    raw = _snap.phases_status(goal_dir)                 # phases_engine 只读 status
+    phases = [{"id": pid, "name": PHASE_NAMES[pid],
+               "result": raw.get(pid, "PENDING")} for pid in PHASE_ORDER]
+    bi = {f: i for i, f in enumerate(core.TABLES["budget.tsv"])}
+    cum_t = cum_r = 0.0
+    series = []
+    for r in s.rows("budget.tsv"):
+        try:
+            cum_t += float(r[bi["token_delta"]] or 0)
+            cum_r += float(r[bi["requests_delta"]] or 0)
+        except ValueError:
+            pass
+        series.append({"ts": r[bi["timestamp"]],
+                       "token_delta": int(r[bi["token_delta"]] or 0),
+                       "cum_tokens": int(cum_t), "cum_requests": int(cum_r)})
+    budget = _snap.budget_view(s)
+    budget["series"] = series
+    gaps = _qc.matrix_gap_cells(s)
+    facts_open = _qc.unconsumed_facts(s)
+    intents_blocked = _qc.blocked_intents(s)
+    over = _qc.budget_exhausted(s)
+    conditions = [
+        {"key": "matrix_gaps", "name": "测试矩阵空格清零",
+         "ok": not gaps, "count": len(gaps)},
+        {"key": "unconsumed_facts", "name": "无未消费事实",
+         "ok": not facts_open, "count": len(facts_open)},
+        {"key": "blocked_intents", "name": "无阻塞测试项",
+         "ok": not intents_blocked, "count": len(intents_blocked)},
+        {"key": "budget_exhausted", "name": "预算未穿顶",
+         "ok": not over, "count": 1 if over else 0},
+    ]
+    state = _qc.converge_state(s)
+    tl = s.rows("timeline.tsv")
+    return {"phases": phases, "budget": budget,
+            "convergence": {"state": state, "conditions": conditions},
+            "events": [_snap.row_to_event(r) for r in tl[-tail:]],
+            "timeline_rows": len(tl)}

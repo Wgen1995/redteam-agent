@@ -277,6 +277,64 @@ class TestOverviewApi(ConsoleBase):
         self.assertIn('error', self.jbody(r))
 
 
+
+# ===========================================================================
+# 三、实时动态 API（九阶段灯=执行阶段名 + 预算烧速真曲线 + 收敛四条件 + 事件流）
+# ===========================================================================
+
+class TestLiveApi(ConsoleBase):
+
+    def test_phases_nine_with_standard_names(self):
+        d = self.api('/api/console/live.json')
+        self.assertIn('phases', d)
+        ph = d['phases']
+        self.assertEqual(len(ph), 9, '九个执行阶段')
+        names = [p['name'] for p in ph]
+        self.assertEqual(names, ['授权确认', '范围检查', '预算', '执行', '复测',
+                                 '报告', '签发', '清理', '沉淀'])
+        self.assertEqual([p['id'] for p in ph],
+                         ['P0', 'P1', 'P2', 'P3', 'P4', 'P5', 'P5.5', 'P6.0', 'P6'])
+        self.assertEqual(ph[0]['result'], 'PASS', 'P0 过门=真 timeline 行推导')
+        self.assertEqual(ph[1]['result'], 'PENDING')
+        for p in ph:
+            self.assertIn(p['result'], ('PASS', 'FAIL', 'PENDING'))
+
+    def test_budget_burn_series_real_cumulative(self):
+        d = self.api('/api/console/live.json')
+        b = d['budget']
+        self.assertEqual(b['token']['limit'], 1000.0)
+        self.assertEqual(b['token']['used'], 600.0)
+        series = b['series']
+        self.assertEqual([p['cum_tokens'] for p in series], [100, 300, 600],
+                         '烧速=预算流水累计（错行=没接真数）')
+        self.assertEqual([p['token_delta'] for p in series], [100, 200, 300],
+                         '单笔增量也随行携带')
+        self.assertEqual([p['cum_requests'] for p in series], [10, 30, 60])
+        self.assertEqual(series[0]['ts'], TS[0])
+
+    def test_convergence_four_conditions(self):
+        d = self.api('/api/console/live.json')
+        cv = d['convergence']
+        self.assertEqual(cv['state'], 'converged',
+                         '空矩阵+无未消费事实+无阻塞意图+预算未穿=收敛')
+        cond = {c['key']: c for c in cv['conditions']}
+        self.assertEqual(sorted(cond), ['blocked_intents', 'budget_exhausted',
+                                        'matrix_gaps', 'unconsumed_facts'])
+        self.assertEqual(cond['matrix_gaps']['count'], 0)
+        self.assertFalse(cond['matrix_gaps']['ok'] is None)
+        for c in cv['conditions']:
+            self.assertIn('name', c, '条件须有人话名')
+            self.assertIn('ok', c)
+
+    def test_events_tail_real_rows(self):
+        d = self.api('/api/console/live.json')
+        evs = d['events']
+        self.assertTrue(evs)
+        self.assertIn('sqlmap', evs[-1]['event'])
+        self.assertEqual(evs[-1]['actor'], 'CLI')
+
+
 if __name__ == '__main__':
     unittest.main()
+
 
