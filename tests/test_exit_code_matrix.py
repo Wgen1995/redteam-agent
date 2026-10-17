@@ -13,6 +13,7 @@ import os, sys, unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, os.path.join(ROOT, "cli"))
+import subprocess  # noqa: E402
 from ledger import evals_metrics  # noqa: E402
 
 
@@ -188,6 +189,70 @@ class TestFindingCandidatesRunner(unittest.TestCase):
             self.assertEqual(rep3["counts"]["candidates"], 1)
             code0, _ = evals_metrics.run_suite(ms, "s", _goal_with_findings(td, ["verified"]), None)
             self.assertEqual(code0, 0, "端到端：verified 在册→rc0")
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+def _cli(*args):
+    return subprocess.run([sys.executable] + list(args), cwd=ROOT,
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+
+def _run_evals(metrics_path, goal_dir):
+    return _cli(os.path.join("cli", "tanyin-evals"), "run",
+                "--metrics", metrics_path, "--suite", "s", "--goal-dir", goal_dir)
+
+
+class TestFaceExitMatrix(unittest.TestCase):
+    """CLI 面级退出码矩阵（W2 退出码分离验收面）：rc0/1/2/3 全格在册。
+
+    rc0=门过；rc1=门禁 FAIL（含 vacuous 反绿 T17）；rc2=环境/用法（goal 缺/
+    指标文件缺——b7/b8 env 分型先例全墙面钉）；rc3=仅未验证候选（evals 面，
+    temp 指标集真跑子进程）。载体=[sys.executable, path] 纪律。"""
+
+    def test_rc0_pass_faces(self):
+        for args in ((os.path.join("cli", "tanyin-ledger"), "validate", "--goal-dir", FIX),
+                     (os.path.join("cli", "tanyin-phases"), "status", "--goal-dir", FIX)):
+            r = _cli(*args)
+            self.assertEqual(r.returncode, 0, "%s→rc0: %s%s" % (args[0], r.stdout, r.stderr))
+
+    def test_rc1_gate_fail_faces(self):
+        g = _cli(os.path.join("cli", "tanyin-phases"), "gate", "--goal-dir", FIX,
+                 "--phase=P5", "--timestamp=2026-09-24T10:00:00Z")
+        self.assertEqual(g.returncode, 1, "P5 夹具断言不过=门禁 FAIL 非 env: %s" % g.stdout)
+        v = _run_evals(os.path.join(ROOT, "no-such-metrics.json"), ROOT)
+        self.assertEqual(v.returncode, 1, "指标文件缺=vacuous FAIL rc=1（T17 反绿口径）: %s" % v.stdout)
+
+    def test_rc2_env_faces(self):
+        miss = "/nonexistent-goal-matrix"
+        faces = (os.path.join("cli", "tanyin-ledger"), os.path.join("cli", "tanyin-phases"),
+                 os.path.join("cli", "tanyin-replay"), os.path.join("cli", "tanyin-viz"),
+                 os.path.join("cli", "tanyin-budgetctl"), os.path.join("cli", "tanyin-guard"))
+        for entry in faces:
+            r = _cli(entry, "validate" if entry.endswith("tanyin-ledger") else "status",
+                     "--goal-dir", miss)
+            self.assertEqual(r.returncode, 2, "%s 缺 goal=env rc=2: %s%s" % (entry, r.stdout, r.stderr))
+        r = _cli(os.path.join("cli", "tanyin-evals"), "list",
+                 "--metrics", os.path.join(ROOT, "no-such-metrics.json"))
+        self.assertEqual(r.returncode, 2, "evals list 指标缺=env rc=2")
+
+    def test_rc3_only_candidates_and_rc0_after_verified(self):
+        import json as _json
+        import shutil
+        import tempfile
+        metric = {"id": "M-matrix-cand", "layer": "L2", "gate": "hard", "kind": "threshold",
+                  "title": "矩阵 rc3 面", "baseline": {"value": "collect-first", "frozen_at": None},
+                  "source": {"runner": "finding-candidates", "args": []}, "desc": "matrix"}
+        with tempfile.TemporaryDirectory() as td:
+            mp = os.path.join(td, "m.json")
+            with open(mp, "w", encoding="utf-8") as f:
+                _json.dump({"format_version": 1, "metrics": [metric], "suites": {"s": ["M-matrix-cand"]}}, f)
+            r3 = _run_evals(mp, _goal_with_findings(td, ["suspected"]))
+            self.assertEqual(r3.returncode, 3, "仅未验证候选→rc3 黄灯: %s%s" % (r3.stdout, r3.stderr))
+            r0 = _run_evals(mp, _goal_with_findings(td, ["verified"]))
+            self.assertEqual(r0.returncode, 0, "verified 在册→rc0: %s%s" % (r0.stdout, r0.stderr))
 
 
 if __name__ == "__main__":
