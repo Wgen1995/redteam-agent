@@ -1,0 +1,24 @@
+{
+ "source": "open.bigmodel.cn /api/coding/paas/v4 网关侧 usage 导出（WGEN001）",
+ "note": "引擎内建 usage 计量两轮实测 requests=0/tokens=0 不可信（vulnclaw-live-trial §9.5/§10.4④）——成本以网关侧为准外挂回填",
+ "records": [
+  {
+   "id": "gw-001",
+   "model": "glm-4.7",
+   "requests": 9,
+   "input_tokens": 52144,
+   "output_tokens": 9022,
+   "total_tokens": 61166,
+   "cost_usd": 0
+  },
+  {
+   "id": "gw-002",
+   "model": "glm-4.7",
+   "requests": 25,
+   "input_tokens": 41830,
+   "output_tokens": 6611,
+   "total_tokens": 48441,
+   "cost_usd": 0
+  }
+ ]
+}

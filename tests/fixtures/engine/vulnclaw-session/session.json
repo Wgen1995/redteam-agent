@@ -1,0 +1,1125 @@
+{
+ "active_skill_selection": null,
+ "agent_state": {
+  "compact_summary": "",
+  "complete_reason": "上述报告基于 e005–e021 记录的证据；两个可操作的发现（F1 开发服务器暴露，F2 锁定 DoS）以及三个信息泄露级别项（F3/F4/F5），在严格的只读范围内，注入/遍历/匿名访问/弱密码/会话熵呈负面结果。",
+  "completed": true,
+  "completion_rejections": [],
+  "context_compactions": [],
+  "context_digest": {
+   "evidence_ids": [],
+   "summary": "",
+   "updated_at": "2026-10-17T00:31:15.265738",
+   "version": 1
+  },
+  "correction_hints": [
+   "Diagnostic: fetch failed or returned an error; this result is tool-health evidence.",
+   "Diagnostic: all tool calls in this batch failed.",
+   "Diagnostic: http_probe_batch failed or returned an error; this result is tool-health evidence.",
+   "Diagnostic: evidence_search failed or returned an error; this result is tool-health evidence.",
+   "Diagnostic: evidence_view failed or returned an error; this result is tool-health evidence.",
+   "Diagnostic: python_execute failed or returned an error; this result is tool-health evidence.",
+   "Diagnostic: same-body probe results were observed with an audited request surface; response equivalence and request delivery remain part of the evidence context."
+  ],
+  "evidence": [
+   {
+    "created_at": "2026-10-17T00:31:25.988087",
+    "id": "e001",
+    "key_args": "{\"max_body_chars\": 20000, \"url\": \"http://localhost:3081/\"}",
+    "status": 200,
+    "summary": "Request: GET http://localhost:3081/ Status: 200 Headers: {'vary': 'Origin', 'content-type'...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": false
+   },
+   {
+    "created_at": "2026-10-17T00:31:25.993094",
+    "id": "e002",
+    "key_args": "{\"url\": \"http://localhost:3081/robots.txt\"}",
+    "status": 200,
+    "summary": "Request: GET http://localhost:3081/robots.txt Status: 200 Headers: {'vary': 'Origin', 'con...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": false
+   },
+   {
+    "created_at": "2026-10-17T00:31:34.974292",
+    "id": "e003",
+    "key_args": "{\"max_body_chars\": 30000, \"url\": \"http://localhost:3081/src/main.ts\"}",
+    "status": 200,
+    "summary": "Request: GET http://localhost:3081/src/main.ts Status: 200 Headers: {'vary': 'Origin', 'co...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": false
+   },
+   {
+    "created_at": "2026-10-17T00:31:34.975575",
+    "id": "e004",
+    "key_args": "{\"auto_probe\": false, \"url\": \"http://localhost:3081/\"}",
+    "status": 0,
+    "summary": "# JS 信息收集 — http://localhost:3081/ (抓取 0 个 JS) ## 接口/路径 (1) /src/main.ts ## 关联域名 (0) ## 绝对...(fixture裁剪)",
+    "tool": "js_recon",
+    "truncated": false
+   },
+   {
+    "created_at": "2026-10-17T00:31:42.983766",
+    "id": "e005",
+    "key_args": "{\"max_body_chars\": 40000, \"url\": \"http://localhost:3081/src/router/index.ts\"}",
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=12352 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:31:42.989107",
+    "id": "e006",
+    "key_args": "{\"max_body_chars\": 30000, \"url\": \"http://localhost:3081/src/services/http.ts\"}",
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=11716 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:32:05.320146",
+    "id": "e007",
+    "key_args": "{\"max_body_chars\": 30000, \"url\": \"http://localhost:3081/src/stores/auth.ts\"}",
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=6626 chars; full raw evidence is stored sepa...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:32:05.323690",
+    "id": "e008",
+    "key_args": "{\"max_body_chars\": 20000, \"url\": \"http://localhost:3081/src/stores/app.ts\"}",
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=8272 chars; full raw evidence is stored sepa...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:32:10.339475",
+    "id": "e009",
+    "key_args": "{\"max_body_chars\": 50000, \"url\": \"http://localhost:3081/src/services/http-api.ts...(fixture裁剪)",
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=50383 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:32:39.805947",
+    "id": "e010",
+    "key_args": "{\"body\": \"{\\\"username\\\": \\\"admin\\\", \\\"password\\\": \\\"Whg1995!\\\"}\", \"headers\": {\"c...(fixture裁剪)",
+    "status": 200,
+    "summary": "Request: POST http://localhost:3081/api/auth/login Status: 200 Headers: {'vary': 'Origin',...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": false
+   },
+   {
+    "created_at": "2026-10-17T00:33:25.226149",
+    "id": "e011",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 2500, \"requests\": [{\"lab...(fixture裁剪)",
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=10647 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "http_probe_batch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:34:27.802926",
+    "id": "e012",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 1200, \"requests\": [{\"hea...(fixture裁剪)",
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=12035 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "http_probe_batch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:36:15.581161",
+    "id": "e013",
+    "key_args": "{\"code\": \"import requests, json, itertools\\n\\nurl = \\\"http://localhost:3081/api/...(fixture裁剪)",
+    "status": 0,
+    "summary": "[!] python_execute execution refused (no_channel): no trusted approval channel is installe...(fixture裁剪)",
+    "tool": "python_execute",
+    "truncated": false
+   },
+   {
+    "created_at": "2026-10-17T00:36:15.587897",
+    "id": "e014",
+    "key_args": "{\"max_body_chars\": 15000, \"url\": \"http://localhost:3081/src/stores/finding.ts\"}",
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=11758 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "fetch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:37:01.582132",
+    "id": "e015",
+    "key_args": "{\"max_body_chars\": 400, \"requests\": [{\"data\": \"{\\\"username\\\":\\\"wgen01\\\",\\\"passwo...(fixture裁剪)",
+    "status": 0,
+    "summary": "# http_probe_batch results (25 request(s)) [1] ERROR login-wgen01-1 /api/auth/login :: url...(fixture裁剪)",
+    "tool": "http_probe_batch",
+    "truncated": false
+   },
+   {
+    "created_at": "2026-10-17T00:37:23.502912",
+    "id": "e016",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 500, \"requests\": [{\"data...(fixture裁剪)",
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=16902 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "http_probe_batch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:38:33.367247",
+    "id": "e017",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 1500, \"requests\": [{\"hea...(fixture裁剪)",
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=14284 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "http_probe_batch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:39:35.432173",
+    "id": "e018",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 2000, \"requests\": [{\"hea...(fixture裁剪)",
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=13061 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "http_probe_batch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.556847",
+    "id": "e019",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 2500, \"requests\": [{\"hea...(fixture裁剪)",
+    "status": 0,
+    "summary": "# http_probe_batch results (5 request(s)) [1] GET settings 404 len=72 hash=d56c011e70f0 2m...(fixture裁剪)",
+    "tool": "http_probe_batch",
+    "truncated": false
+   },
+   {
+    "created_at": "2026-10-17T00:40:29.468338",
+    "id": "e020",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 9000, \"requests\": [{\"lab...(fixture裁剪)",
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=32542 chars; full raw evidence is stored sep...(fixture裁剪)",
+    "tool": "http_probe_batch",
+    "truncated": true
+   },
+   {
+    "created_at": "2026-10-17T00:41:24.413101",
+    "id": "e021",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 2500, \"requests\": [{\"lab...(fixture裁剪)",
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=8076 chars; full raw evidence is stored sepa...(fixture裁剪)",
+    "tool": "http_probe_batch",
+    "truncated": true
+   }
+  ],
+  "final_answer": "[evidence check] 已收集所有剩余证据。e021：匿名 `/api/setup` → 404，匿名 `/api/users/candidates` → 401（用户名列表需要身份验证），发现-13详情返回了已植入的 PoC 文本（正常），`/@vite/client` 以匿名方式提供完整的 HMR 客户端，其中包含工具链/绝对路径（vite@8.2.2, pnpm layout, `/Users/wgen/...`）。Task-11 详情暴露了元数据（requestId/tokens/artifactsComplete），用于管理员可见性。枚举和验证阶段已完成；最终汇总后续直接进行（无需并行工作）。\n\n---\n\n## ZhuLong Web 应用 (http://localhost:3081) — 只读评估报告\n\n### 已验证的发现\n\n**F1 · Low/信息泄露 · 生产环境暴露了 Vite 开发服务器（全前端源码 + 路径泄露）**\n- 未经身份验证的 GET `/src/main.ts`, `/src/router.ts`, `/src/stores/*.ts`, `/src/views/PocView.vue` (147KB `/src/views/VulnDetailView.vue`), `/@vite/client` → **200 text/javascript**，返回完整源码及内联 base64 源码映射 (e005–e009, e014, e020, e021)。\n- 工作区绝对路径和工具链版本通过 `/@fs` 403 页面 (`/Users/wgen/Documents/AI For Security & Compliance/...`, pnpm, vite@8.2.2, node24/esbuild/tsx/yaml) 以及 `/@vite/client` 导入泄露 (e012, e021)。\n- `/@fs/etc/passwd` 正确返回 403 (e012) — 文件系统访问受限；泄露的是源码/元数据，而非任意文件。\n- 修复：构建并使用静态服务器/反向代理部署，而不是使用 `vite dev`。\n\n**F2 · Low/弱认证 · 每个用户名的锁定 = 故意 DoS，无枚举 oracle**\n- 5次错误尝试 → 15分钟锁定，以用户名字符串作为键：wgen01/penter/viewer 在5次失败后被锁定 (e016)；伪造用户 `nosuchuser_zz` 显示出相同的模式 — 第6次尝试时被锁定 (e018)。攻击者可以锁定任何已知用户名，包括 `admin`；基于 IP 的暴力破解速度限制在 5次尝试/15分钟/用户名。\n- 我们自己测试中的副作用：在报告时 wgen01/penter/viewer 仍处于锁定状态 (e016)。\n- 修复：逐步退避 + 基于 IP 的限制，而不是仅使用无限期的针对用户名的硬锁定。\n\n**F3 · Info/信息泄露 · 匿名 `/api/health`** 返回运行时/版本、运行时间、队列统计、SSE 连接计数、generatedAt (e011)；每个响应都带有 `x-request-id`/`x-trace-id`。修复：需要身份验证或剥离详细信息。\n\n**F4 · Info · `/api/users/candidates` (已认证)** 向已认证的调用者返回所有用户名 + bizRoles (e017)；匿名 → 401 (e021)。操作员范围的可见性未验证。\n\n**F5 · Info/会话加固** `zl_sess`：HttpOnly + SameSite=Lax 存在；`Secure` 缺失 (HTTP 实验)，`Max-Age=604800` (7天持久会话) (e010, e018)。\n\n### 负面结果（已测试，不可重现）\n- **SQLi**: 严格的枚举/数字验证 (pageSize 20/50/100, sort/order enums, limit number, id number) + 参数化行为 — `domain='` ≡ `domain=' OR '1'='1` (相同主体), `objectType='` → 200 `[]`, `engineId='` → 空列表，没有错误泄露 (e017)。\n- **路径遍历**: runId 正则表达式 `^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$` → `..%2F..%2Fetc%2Fpasswd` 400 (e017); `/@fs/etc/passwd` 403 (e012); 伪造 artifact id → 清理过的 404 (e017)。\n- **匿名访问**: findings/tasks/projects/candidates 详情全部 → 401 (e011, e020, e021)。\n- **弱密码**: 针对 wgen01/penter/viewer 的前 8 个候选密码均未成功 (e015/e016)；管理员密码为强密码。\n- **会话熵**: 两个登录生成了完全不相关的 43 字符 base64url token (≈256-bit) (e010, e012)。\n\n### 剩余（只读范围内未测试）\n- **操作员/审计员横向与垂直授权**: 需要低权限会话；密码重置 = 写操作（范围外），且账户被锁定 (e016)。前端代码显示了服务器端能力门控 (`poc-save = admin ∨ operator 成员`, e020)，但未进行运行时验证。\n- **存储型 XSS**: 在获取的视图中没有 `v-html` sink (e020)；无浏览器可用，禁止写操作。\n- **其他 HTTP 动词 / mass-assignment**: 需要写操作 — 未测试。\n\n### 范围合规性\n仅探测了 `localhost:3081`；从未触及 8900/3000/8787/8443；零写操作或破坏性操作（所有验证均为 GET 或登录 POST）。\n\nFINAL: 上述报告基于 e005–e021 记录的证据；两个可操作的发现（F1 开发服务器暴露，F2 锁定 DoS）以及三个信息泄露级别项（F3/F4/F5），在严格的只读范围内，注入/遍历/匿名访问/弱密码/会话熵呈负面结果。",
+  "goal": "授权靶场只读安全评估:枚举 ZhuLong Web 应用的页面与 API,登录后寻找并验证可复现漏洞(越权/注入/弱认证/信息泄露等),每条结论必须附请求与响应证据;仅允许测试 3081 端口,禁止测试 8900,3000,8787,8443 端口;禁止破坏性利用;登录凭据:用户名 admin,密码 Whg1995!",
+  "origin": "http://localhost:3081",
+  "pending_questions": [],
+  "pinned_facts": [
+   {
+    "created_at": "2026-10-17T00:31:34.975986",
+    "evidence_id": "e004",
+    "text": "Observed URL: http://localhost:3081/"
+   },
+   {
+    "created_at": "2026-10-17T00:32:39.806385",
+    "evidence_id": "e010",
+    "text": "Observed URL: http://localhost:3081/api/auth/login"
+   },
+   {
+    "created_at": "2026-10-17T00:38:33.372843",
+    "evidence_id": "e017",
+    "text": "Observed URL: http://localhost:3081/api/findings?page=1&pageSize=5"
+   },
+   {
+    "created_at": "2026-10-17T00:38:33.372847",
+    "evidence_id": "e017",
+    "text": "Observed URL: http://localhost:3081/api/findings?domain=%27"
+   },
+   {
+    "created_at": "2026-10-17T00:38:33.372851",
+    "evidence_id": "e017",
+    "text": "Observed URL: http://localhost:3081/api/findings?domain=%27%20OR%20%271%27%3D%27...(fixture裁剪)"
+   },
+   {
+    "created_at": "2026-10-17T00:38:33.372855",
+    "evidence_id": "e017",
+    "text": "Observed URL: http://localhost:3081/api/findings?sort=%28SELECT%201%29"
+   },
+   {
+    "created_at": "2026-10-17T00:38:33.372858",
+    "evidence_id": "e017",
+    "text": "Observed URL: http://localhost:3081/api/findings?order=desc%2C%28SELECT%201%29"
+   },
+   {
+    "created_at": "2026-10-17T00:38:53.069884",
+    "evidence_id": "",
+    "text": "Observed URL: http://localhost:3081/api/tasks/1/runs/..%2F..%2Fetc%2Fpasswd/run-...(fixture裁剪)"
+   },
+   {
+    "created_at": "2026-10-17T00:38:53.069895",
+    "evidence_id": "",
+    "text": "Observed URL: http://localhost:3081/api/tasks/1/artifacts/99999/raw"
+   },
+   {
+    "created_at": "2026-10-17T00:38:53.072411",
+    "evidence_id": "",
+    "text": "Observed URL: http://localhost:3081/api/admin/audit?objectType=%27"
+   },
+   {
+    "created_at": "2026-10-17T00:38:53.072420",
+    "evidence_id": "",
+    "text": "Observed URL: http://localhost:3081/api/tasks?engineId=%27"
+   },
+   {
+    "created_at": "2026-10-17T00:38:53.072427",
+    "evidence_id": "",
+    "text": "Observed URL: http://localhost:3081/api/downloads"
+   },
+   {
+    "created_at": "2026-10-17T00:39:35.437805",
+    "evidence_id": "e018",
+    "text": "Observed URL: http://localhost:3081/api/findings?pageSize=20"
+   },
+   {
+    "created_at": "2026-10-17T00:39:35.437812",
+    "evidence_id": "e018",
+    "text": "Observed URL: http://localhost:3081/api/downloads/9/file"
+   },
+   {
+    "created_at": "2026-10-17T00:39:35.437816",
+    "evidence_id": "e018",
+    "text": "Observed URL: http://localhost:3081/api/admin/audit?objectType=user&limit=20"
+   },
+   {
+    "created_at": "2026-10-17T00:39:35.437820",
+    "evidence_id": "e018",
+    "text": "Observed URL: http://localhost:3081/api/projects"
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.559577",
+    "evidence_id": "e019",
+    "text": "Observed URL: http://localhost:3081/api/settings"
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.559584",
+    "evidence_id": "e019",
+    "text": "Observed URL: http://localhost:3081/api/providers"
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.559588",
+    "evidence_id": "e019",
+    "text": "Observed URL: http://localhost:3081/api/admin/providers"
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.559593",
+    "evidence_id": "e019",
+    "text": "Observed URL: http://localhost:3081/api/models"
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.559597",
+    "evidence_id": "e019",
+    "text": "Observed URL: http://localhost:3081/api/plugins"
+   },
+   {
+    "created_at": "2026-10-17T00:41:24.376265",
+    "evidence_id": "",
+    "text": "Observed URL: http://localhost:3081/api/tasks/11"
+   }
+  ],
+  "progress_signals": [
+   {
+    "created_at": "2026-10-17T00:31:34.975916",
+    "detail": "URL(s) observed: http://localhost:3081/",
+    "evidence_id": "e004",
+    "kind": "tool_observation",
+    "tool": "js_recon"
+   },
+   {
+    "created_at": "2026-10-17T00:31:34.975926",
+    "detail": "path(s) observed: /src/main.ts",
+    "evidence_id": "e004",
+    "kind": "tool_observation",
+    "tool": "js_recon"
+   },
+   {
+    "created_at": "2026-10-17T00:31:54.985847",
+    "detail": "path(s) observed: /src/(views, /node_modules/.vite/deps/vue-router.js, /src/stor...(fixture裁剪)",
+    "evidence_id": "",
+    "kind": "tool_observation",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:32:21.701655",
+    "detail": "path(s) observed: /api/, /api/auth/login, /api/auth/logout, /api/auth/me",
+    "evidence_id": "",
+    "kind": "tool_observation",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:32:39.763320",
+    "detail": "path(s) observed: /api/(admin, /api/users/candidates, /api/plugins, /api/plugins...(fixture裁剪)",
+    "evidence_id": "",
+    "kind": "tool_observation",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:32:39.806213",
+    "detail": "HTTP status observed: 200",
+    "evidence_id": "e010",
+    "kind": "tool_observation",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:32:39.806218",
+    "detail": "URL(s) observed: http://localhost:3081/api/auth/login",
+    "evidence_id": "e010",
+    "kind": "tool_observation",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:37:01.583001",
+    "detail": "path(s) observed: /api/auth/login",
+    "evidence_id": "e015",
+    "kind": "tool_observation",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:37:23.505552",
+    "detail": "URL(s) observed: http://localhost:3081/api/auth/login",
+    "evidence_id": "e016",
+    "kind": "tool_observation",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:38:33.370497",
+    "detail": "URL(s) observed: http://localhost:3081/api/findings?page=1&pageSize=5, http://lo...(fixture裁剪)",
+    "evidence_id": "e017",
+    "kind": "tool_observation",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:38:53.069437",
+    "detail": "URL(s) observed: http://localhost:3081/api/tasks/1/runs/..%2F..%2Fetc%2Fpasswd/r...(fixture裁剪)",
+    "evidence_id": "",
+    "kind": "tool_observation",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:38:53.071864",
+    "detail": "URL(s) observed: http://localhost:3081/api/admin/audit?objectType=%27, http://lo...(fixture裁剪)",
+    "evidence_id": "",
+    "kind": "tool_observation",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:39:35.435530",
+    "detail": "URL(s) observed: http://localhost:3081/api/findings?pageSize=20, http://localhos...(fixture裁剪)",
+    "evidence_id": "e018",
+    "kind": "tool_observation",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.543032",
+    "detail": "path(s) observed: /login, /src/views/LoginView.vue, /setup, /src/views/SetupView...(fixture裁剪)",
+    "evidence_id": "",
+    "kind": "tool_observation",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.558534",
+    "detail": "URL(s) observed: http://localhost:3081/api/settings, http://localhost:3081/api/p...(fixture裁剪)",
+    "evidence_id": "e019",
+    "kind": "tool_observation",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:41:24.376022",
+    "detail": "URL(s) observed: http://localhost:3081/api/tasks/11",
+    "evidence_id": "",
+    "kind": "tool_observation",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:41:24.377441",
+    "detail": "URL(s) observed: http://localhost:3081/api/downloads",
+    "evidence_id": "",
+    "kind": "tool_observation",
+    "tool": "evidence_search"
+   }
+  ],
+  "steps": [
+   {
+    "created_at": "2026-10-17T00:32:21.707505",
+    "index": 1,
+    "observation": "e004: # JS 信息收集 — http://localhost:3081/ (抓取 0 个 JS) ## 接口/路径 (1) /src/main.ts #...(fixture裁剪)",
+    "reason": "",
+    "tool_calls": [
+     "fetch",
+     "fetch",
+     "fetch",
+     "js_recon",
+     "fetch",
+     "fetch",
+     "evidence_search",
+     "fetch",
+     "fetch",
+     "fetch",
+     "evidence_search"
+    ]
+   },
+   {
+    "created_at": "2026-10-17T00:37:01.585745",
+    "index": 2,
+    "observation": "e010: Request: POST http://localhost:3081/api/auth/login Status: 200 Headers: {'...(fixture裁剪)",
+    "reason": "",
+    "tool_calls": [
+     "evidence_search",
+     "fetch",
+     "http_probe_batch",
+     "http_probe_batch",
+     "evidence_search",
+     "evidence_search",
+     "evidence_view",
+     "python_execute",
+     "fetch",
+     "http_probe_batch"
+    ]
+   },
+   {
+    "created_at": "2026-10-17T00:40:43.018630",
+    "index": 3,
+    "observation": "e016: [active-context high-signal preview] raw_size=16902 chars; full raw eviden...(fixture裁剪)",
+    "reason": "",
+    "tool_calls": [
+     "http_probe_batch",
+     "http_probe_batch",
+     "evidence_search",
+     "evidence_search",
+     "http_probe_batch",
+     "evidence_search",
+     "http_probe_batch",
+     "http_probe_batch",
+     "evidence_search"
+    ]
+   },
+   {
+    "created_at": "2026-10-17T00:42:18.686565",
+    "index": 4,
+    "observation": "e021: [active-context high-signal preview] raw_size=8076 chars; full raw evidenc...(fixture裁剪)",
+    "reason": "[evidence check] 已收集所有剩余证据。e021：匿名 `/api/setup` → 404，匿名 `/api/users/candidates`...(fixture裁剪)",
+    "tool_calls": [
+     "evidence_search",
+     "evidence_search",
+     "http_probe_batch"
+    ]
+   }
+  ],
+  "tool_calls": [
+   {
+    "created_at": "2026-10-17T00:31:25.988145",
+    "duration_ms": 36,
+    "error_type": "",
+    "evidence_id": "e001",
+    "key_args": "{\"max_body_chars\": 20000, \"url\": \"http://localhost:3081/\"}",
+    "ok": true,
+    "status": 200,
+    "summary": "Request: GET http://localhost:3081/ Status: 200 Headers: {'vary': 'Origin', 'con...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:31:25.993127",
+    "duration_ms": 10,
+    "error_type": "",
+    "evidence_id": "e002",
+    "key_args": "{\"url\": \"http://localhost:3081/robots.txt\"}",
+    "ok": true,
+    "status": 200,
+    "summary": "Request: GET http://localhost:3081/robots.txt Status: 200 Headers: {'vary': 'Ori...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:31:34.974332",
+    "duration_ms": 10,
+    "error_type": "",
+    "evidence_id": "e003",
+    "key_args": "{\"max_body_chars\": 30000, \"url\": \"http://localhost:3081/src/main.ts\"}",
+    "ok": true,
+    "status": 200,
+    "summary": "Request: GET http://localhost:3081/src/main.ts Status: 200 Headers: {'vary': 'Or...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:31:34.975602",
+    "duration_ms": 10,
+    "error_type": "",
+    "evidence_id": "e004",
+    "key_args": "{\"auto_probe\": false, \"url\": \"http://localhost:3081/\"}",
+    "ok": true,
+    "status": 0,
+    "summary": "# JS 信息收集 — http://localhost:3081/ (抓取 0 个 JS) ## 接口/路径 (1) /src/main.ts ## 关联域名...(fixture裁剪)",
+    "tool": "js_recon"
+   },
+   {
+    "created_at": "2026-10-17T00:31:42.983834",
+    "duration_ms": 5,
+    "error_type": "",
+    "evidence_id": "e005",
+    "key_args": "{\"max_body_chars\": 40000, \"url\": \"http://localhost:3081/src/router/index.ts\"}",
+    "ok": true,
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=12352 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:31:42.989135",
+    "duration_ms": 9,
+    "error_type": "",
+    "evidence_id": "e006",
+    "key_args": "{\"max_body_chars\": 30000, \"url\": \"http://localhost:3081/src/services/http.ts\"}",
+    "ok": true,
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=11716 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:31:54.983208",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e005",
+    "key_args": "{\"context_chars\": 120, \"evidence_id\": \"e005\", \"limit\": 40, \"query\": \"/src/(views...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# evidence_search query='/src/(views|stores|services|composables)/[A-Za-z0-9_./-...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:32:05.320191",
+    "duration_ms": 3,
+    "error_type": "",
+    "evidence_id": "e007",
+    "key_args": "{\"max_body_chars\": 30000, \"url\": \"http://localhost:3081/src/stores/auth.ts\"}",
+    "ok": true,
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=6626 chars; full raw evidence is s...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:32:05.323717",
+    "duration_ms": 6,
+    "error_type": "",
+    "evidence_id": "e008",
+    "key_args": "{\"max_body_chars\": 20000, \"url\": \"http://localhost:3081/src/stores/app.ts\"}",
+    "ok": true,
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=8272 chars; full raw evidence is s...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:32:10.339532",
+    "duration_ms": 7,
+    "error_type": "",
+    "evidence_id": "e009",
+    "key_args": "{\"max_body_chars\": 50000, \"url\": \"http://localhost:3081/src/services/http-api.ts...(fixture裁剪)",
+    "ok": true,
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=50383 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:32:21.697951",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e009",
+    "key_args": "{\"context_chars\": 60, \"evidence_id\": \"e009\", \"limit\": 100, \"query\": \"[\\\"'`]/api/...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# evidence_search query='[\"\\'`]/api/[A-Za-z0-9/_${}:.$&-]*' hits=50 (context_cha...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:32:39.761940",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e009",
+    "key_args": "{\"context_chars\": 50, \"evidence_id\": \"e009\", \"limit\": 60, \"query\": \"[\\\"'`]/api/(...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# evidence_search query='[\"\\'`]/api/(admin|assets|knowledge|engines|plugins|user...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:32:39.805972",
+    "duration_ms": 46,
+    "error_type": "",
+    "evidence_id": "e010",
+    "key_args": "{\"body\": \"{\\\"username\\\": \\\"admin\\\", \\\"password\\\": \\\"Whg1995!\\\"}\", \"headers\": {\"c...(fixture裁剪)",
+    "ok": true,
+    "status": 200,
+    "summary": "Request: POST http://localhost:3081/api/auth/login Status: 200 Headers: {'vary':...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:33:25.226187",
+    "duration_ms": 40,
+    "error_type": "",
+    "evidence_id": "e011",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 2500, \"requests\": [{\"lab...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=10647 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:34:27.803022",
+    "duration_ms": 32,
+    "error_type": "",
+    "evidence_id": "e012",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 1200, \"requests\": [{\"hea...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=12035 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:35:24.932848",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e012",
+    "key_args": "{\"context_chars\": 260, \"evidence_id\": \"e012\", \"limit\": 8, \"query\": \"access-contr...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "No raw evidence matches 'access-control-allow-origin|Access-Control-Allow-Origin...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:35:24.933450",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e012",
+    "key_args": "{\"context_chars\": 200, \"evidence_id\": \"e012\", \"limit\": 6, \"query\": \"outside of V...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# evidence_search query='outside of Vite serving allow list' hits=2 (context_cha...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:35:27.663186",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e012",
+    "key_args": "{\"evidence_id\": \"e012\", \"limit\": 2600, \"offset\": 6200}",
+    "ok": true,
+    "status": 0,
+    "summary": "e012: tool=http_probe_batch status=0 bytes=12035 range=6200:8800 next_offset=880...(fixture裁剪)",
+    "tool": "evidence_view"
+   },
+   {
+    "created_at": "2026-10-17T00:36:15.581199",
+    "duration_ms": 3,
+    "error_type": "",
+    "evidence_id": "e013",
+    "key_args": "{\"code\": \"import requests, json, itertools\\n\\nurl = \\\"http://localhost:3081/api/...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "[!] python_execute execution refused (no_channel): no trusted approval channel i...(fixture裁剪)",
+    "tool": "python_execute"
+   },
+   {
+    "created_at": "2026-10-17T00:36:15.587946",
+    "duration_ms": 5,
+    "error_type": "",
+    "evidence_id": "e014",
+    "key_args": "{\"max_body_chars\": 15000, \"url\": \"http://localhost:3081/src/stores/finding.ts\"}",
+    "ok": true,
+    "status": 200,
+    "summary": "[active-context high-signal preview] raw_size=11758 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "fetch"
+   },
+   {
+    "created_at": "2026-10-17T00:37:01.582205",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e015",
+    "key_args": "{\"max_body_chars\": 400, \"requests\": [{\"data\": \"{\\\"username\\\":\\\"wgen01\\\",\\\"passwo...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# http_probe_batch results (25 request(s)) [1] ERROR login-wgen01-1 /api/auth/lo...(fixture裁剪)",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:37:23.502949",
+    "duration_ms": 445,
+    "error_type": "",
+    "evidence_id": "e016",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 500, \"requests\": [{\"data...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=16902 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:38:33.367288",
+    "duration_ms": 39,
+    "error_type": "",
+    "evidence_id": "e017",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 1500, \"requests\": [{\"hea...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=14284 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:38:53.068776",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e017",
+    "key_args": "{\"context_chars\": 300, \"evidence_id\": \"e017\", \"limit\": 4, \"query\": \"runlog-trave...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# evidence_search query='runlog-traversal|artifact-raw-missing' hits=2 (context_...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:38:53.071117",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e017",
+    "key_args": "{\"context_chars\": 260, \"evidence_id\": \"e017\", \"limit\": 6, \"query\": \"audit-object...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# evidence_search query='audit-objecttype-quote|tasks-engineid-quote|downloads-l...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:39:35.432229",
+    "duration_ms": 33,
+    "error_type": "",
+    "evidence_id": "e018",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 2000, \"requests\": [{\"hea...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=13061 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.540895",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e005",
+    "key_args": "{\"context_chars\": 120, \"evidence_id\": \"e005\", \"limit\": 25, \"query\": \"views/[A-Za...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# evidence_search query='views/[A-Za-z-]+\\\\.vue' hits=15 (context_chars=120) e00...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:40:09.556894",
+    "duration_ms": 16,
+    "error_type": "",
+    "evidence_id": "e019",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 2500, \"requests\": [{\"hea...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# http_probe_batch results (5 request(s)) [1] GET settings 404 len=72 hash=d56c0...(fixture裁剪)",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:40:29.468362",
+    "duration_ms": 237,
+    "error_type": "",
+    "evidence_id": "e020",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 9000, \"requests\": [{\"lab...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=32542 chars; full raw evidence is ...(fixture裁剪)",
+    "tool": "http_probe_batch"
+   },
+   {
+    "created_at": "2026-10-17T00:40:43.017895",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e020",
+    "key_args": "{\"context_chars\": 150, \"evidence_id\": \"e020\", \"limit\": 12, \"query\": \"v-html\"}",
+    "ok": true,
+    "status": 0,
+    "summary": "No raw evidence matches 'v-html' in e020.",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:41:24.375660",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e020",
+    "key_args": "{\"context_chars\": 420, \"evidence_id\": \"e020\", \"limit\": 2, \"query\": \"task-11-deta...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# evidence_search query='task-11-detail' hits=1 (context_chars=420) e020@29369:2...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:41:24.376691",
+    "duration_ms": 0,
+    "error_type": "",
+    "evidence_id": "e017",
+    "key_args": "{\"context_chars\": 500, \"evidence_id\": \"e017\", \"limit\": 2, \"query\": \"评估集·zhulong\"...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "# evidence_search query='评估集·zhulong' hits=2 (context_chars=500) e017@8690:8701 ...(fixture裁剪)",
+    "tool": "evidence_search"
+   },
+   {
+    "created_at": "2026-10-17T00:41:24.413144",
+    "duration_ms": 33,
+    "error_type": "",
+    "evidence_id": "e021",
+    "key_args": "{\"base_url\": \"http://localhost:3081\", \"max_body_chars\": 2500, \"requests\": [{\"lab...(fixture裁剪)",
+    "ok": true,
+    "status": 0,
+    "summary": "[active-context high-signal preview] raw_size=8076 chars; full raw evidence is s...(fixture裁剪)",
+    "tool": "http_probe_batch"
+   }
+  ],
+  "tool_health": {
+   "evidence_search": {
+    "consecutive_failures": 0,
+    "failures": 1,
+    "last_duration_ms": 0,
+    "last_error": "",
+    "status": "healthy",
+    "successes": 10,
+    "tool": "evidence_search",
+    "updated_at": "2026-10-17T00:41:24.376828"
+   },
+   "evidence_view": {
+    "consecutive_failures": 1,
+    "failures": 1,
+    "last_duration_ms": 0,
+    "last_error": "response_headers={\"vary\":\"Origin\",\"content-type\":\"text/html\",\"cache-control\":\"no-cache\",\"etag\":\"W/\\\"174-I9E32k ...[truncated]... 26 16:34:27 GMT\",\"connection\":\"keep-alive\",\"keep-alive\":\"timeout=5\",\"content-length\":\"372\"}",
+    "status": "degraded",
+    "successes": 0,
+    "tool": "evidence_view",
+    "updated_at": "2026-10-17T00:35:27.663347"
+   },
+   "fetch": {
+    "consecutive_failures": 1,
+    "failures": 9,
+    "last_duration_ms": 5,
+    "last_error": "Headers: {'vary': 'Origin', 'content-type': 'text/javascript', 'cache-control': 'no-cache', 'etag': 'W/\"d44-ny ...[truncated]... :15 GMT', 'connection': 'keep-alive', 'keep-alive': 'timeout=5', 'content-length': '11815'}",
+    "status": "degraded",
+    "successes": 1,
+    "tool": "fetch",
+    "updated_at": "2026-10-17T00:36:15.588114"
+   },
+   "http_probe_batch": {
+    "consecutive_failures": 2,
+    "failures": 4,
+    "last_duration_ms": 33,
+    "last_error": "response_headers={\"vary\":\"Origin\",\"content-type\":\"text/javascript\",\"cache-control\":\"no-cache\",\"etag\":\"W/\\\"9747 ...[truncated]... 16:41:24 GMT\",\"connection\":\"keep-alive\",\"keep-alive\":\"timeout=5\",\"content-length\":\"205350\"}",
+    "status": "degraded",
+    "successes": 5,
+    "tool": "http_probe_batch",
+    "updated_at": "2026-10-17T00:41:24.413354"
+   },
+   "js_recon": {
+    "consecutive_failures": 0,
+    "failures": 0,
+    "last_duration_ms": 10,
+    "last_error": "",
+    "status": "healthy",
+    "successes": 1,
+    "tool": "js_recon",
+    "updated_at": "2026-10-17T00:31:34.975637"
+   },
+   "python_execute": {
+    "consecutive_failures": 1,
+    "failures": 1,
+    "last_duration_ms": 3,
+    "last_error": "[!] python_execute execution refused (no_channel): no trusted approval channel is installed. Run interactively (CLI/TUI) to approve executions, or configure safety.permission_mode explicitly.",
+    "status": "degraded",
+    "successes": 0,
+    "tool": "python_execute",
+    "updated_at": "2026-10-17T00:36:15.581240"
+   }
+  },
+  "verified_claims": [
+   {
+    "claim": "上述报告基于 e005–e021 记录的证据；两个可操作的发现（F1 开发服务器暴露，F2 锁定 DoS）以及三个信息泄露级别项（F3/F4/F5），在严格的只读范围内，注入/遍历/匿名访问/弱密码/会话熵呈负面结果。",
+    "created_at": "2026-10-17T00:42:18.738217",
+    "evidence_ids": [
+     "e005",
+     "e021"
+    ],
+    "id": "c001"
+   }
+  ]
+ },
+ "confirmed_facts": [],
+ "constraint_violation_events": [],
+ "constraint_violations": [],
+ "executed_steps": [],
+ "findings": [
+  {
+   "code_location": null,
+   "cve": null,
+   "cvss": null,
+   "cwe": null,
+   "description": "自动检测：SQLi",
+   "endpoint": null,
+   "evidence": "http://localhost:3081 | /api/setup | /api/users/candidates | /client | SQLi**: 严格的枚举/数字验证 (pageSize 20/50/100, sort/order enums, limit number, id numbe | id | Id",
+   "evidence_level": "L2",
+   "evidence_refs": [],
+   "finding_id": "SQL注入_http://localhost:3081",
+   "impact": "",
+   "lifecycle_status": "needs_manual_review",
+   "method": null,
+   "poc_script": null,
+   "remediation": "",
+   "severity": "High",
+   "skill_provenance": null,
+   "subagent_provenance": null,
+   "target": "http://localhost:3081",
+   "title": "[自动] SQL注入",
+   "verification_note": "",
+   "verification_status": "pending",
+   "verified": false,
+   "verified_at": null,
+   "vuln_type": "SQL注入"
+  },
+  {
+   "code_location": null,
+   "cve": null,
+   "cvss": null,
+   "cwe": null,
+   "description": "自动检测：XSS",
+   "endpoint": null,
+   "evidence": "http://localhost:3081 | /api/setup | /api/users/candidates | /client | SQLi**: 严格的枚举/数字验证 (pageSize 20/50/100, sort/order enums, limit number, id numbe | id | Id",
+   "evidence_level": "L2",
+   "evidence_refs": [],
+   "finding_id": "XSS跨站脚本_http://localhost:3081",
+   "impact": "",
+   "lifecycle_status": "pending_verification",
+   "method": null,
+   "poc_script": null,
+   "remediation": "",
+   "severity": "Medium",
+   "skill_provenance": null,
+   "subagent_provenance": null,
+   "target": "http://localhost:3081",
+   "title": "[自动] XSS跨站脚本",
+   "verification_note": "",
+   "verification_status": "pending",
+   "verified": false,
+   "verified_at": null,
+   "vuln_type": "XSS跨站脚本"
+  },
+  {
+   "code_location": null,
+   "cve": null,
+   "cvss": null,
+   "cwe": null,
+   "description": "自动检测：路径遍历",
+   "endpoint": null,
+   "evidence": "http://localhost:3081 | /api/setup | /api/users/candidates | /client | SQLi**: 严格的枚举/数字验证 (pageSize 20/50/100, sort/order enums, limit number, id numbe | id | Id",
+   "evidence_level": "L2",
+   "evidence_refs": [],
+   "finding_id": "文件包含/遍历_http://localhost:3081",
+   "impact": "",
+   "lifecycle_status": "pending_verification",
+   "method": null,
+   "poc_script": null,
+   "remediation": "",
+   "severity": "Medium",
+   "skill_provenance": null,
+   "subagent_provenance": null,
+   "target": "http://localhost:3081",
+   "title": "[自动] 文件包含/遍历",
+   "verification_note": "",
+   "verification_status": "pending",
+   "verified": false,
+   "verified_at": null,
+   "vuln_type": "文件包含/遍历"
+  },
+  {
+   "code_location": null,
+   "cve": null,
+   "cvss": null,
+   "cwe": null,
+   "description": "自动检测：暴力破解",
+   "endpoint": null,
+   "evidence": "http://localhost:3081 | /api/setup | /api/users/candidates | /client | SQLi**: 严格的枚举/数字验证 (pageSize 20/50/100, sort/order enums, limit number, id numbe | id | Id",
+   "evidence_level": "L2",
+   "evidence_refs": [],
+   "finding_id": "弱口令/暴力破解_http://localhost:3081",
+   "impact": "",
+   "lifecycle_status": "pending_verification",
+   "method": null,
+   "poc_script": null,
+   "remediation": "",
+   "severity": "Medium",
+   "skill_provenance": null,
+   "subagent_provenance": null,
+   "target": "http://localhost:3081",
+   "title": "[自动] 弱口令/暴力破解",
+   "verification_note": "",
+   "verification_status": "pending",
+   "verified": false,
+   "verified_at": null,
+   "vuln_type": "弱口令/暴力破解"
+  }
+ ],
+ "lifecycle_status": "",
+ "notes": [],
+ "parent_session_id": "",
+ "phase": "idle",
+ "reasoning": {
+  "active_path_index": -1,
+  "constraints": [],
+  "facts": [],
+  "paths": []
+ },
+ "recon_data": {},
+ "recon_dimension4_active": false,
+ "recon_dimensions_completed": {
+  "domain": false,
+  "personnel": false,
+  "server": false,
+  "website": false
+ },
+ "reflexion_snapshot": {},
+ "resume_meta": {},
+ "resume_summary": "",
+ "run_id": "",
+ "semantic_dedup_threshold": 0.75,
+ "session_kind": "parent",
+ "skill_selection_events": [],
+ "started_at": "2026-10-17T00:31:15.259913",
+ "step_records": [],
+ "subagent_events": [],
+ "subagent_evidence_provenance": {},
+ "target": "http://localhost:3081",
+ "task_constraints": {
+  "allowed_actions": [],
+  "allowed_hosts": [
+   "localhost"
+  ],
+  "allowed_paths": [],
+  "allowed_ports": [
+   3081
+  ],
+  "blocked_actions": [],
+  "blocked_hosts": [],
+  "blocked_paths": [],
+  "blocked_ports": [
+   8900,
+   3000,
+   8787,
+   8443
+  ],
+  "notes": [],
+  "strict_mode": true
+ },
+ "task_id": "",
+ "unverified_assumptions": []
+}

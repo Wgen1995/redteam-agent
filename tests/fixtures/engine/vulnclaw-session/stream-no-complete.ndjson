@@ -1,0 +1,5 @@
+{"type":"log","message":"[*] Target: http://localhost:3081 (authorized, read-only)"}
+{"type":"log","message":"turn 1 → recon: fetch / (e001) 200 text/html"}
+{"type":"log","message":"turn 2 → POST /api/auth/login → 200 (e010) session cookie obtained"}
+{"type":"log","message":"turn 4 → FINAL: 上述报告基于 e005–e021 记录的证据……"}
+{"type":"status","message":"run_complete recorded by orchestrator (exit_code=0)"}

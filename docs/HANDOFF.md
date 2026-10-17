@@ -1523,3 +1523,8 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - 用户原话「你是AI要写几个月吗??? C2/WebShell 做」——①工期按AI节奏(周计,非人月) ②C2/WebShell 批准做(法律件用户已拍) ③动工门视为已过,W1 立即开工。
 - 栈决定(工程手段我拍): webui 用 Vite+Vue3 投影面,核心账本/CLI 保持 stdlib 零依赖(零依赖律修正案: 只约束核心件)。
 - W1 施工舰三艘并行: F1 授权真化+launch+GraphLed定名 / F2 battle auto 一键链 / F3 VulnClaw 插槽落地;T3 serve收口+T5 D2 统计包候下一波槽位(重对齐五舰在航占5/8)。
+
+## 2026-10-18 · W1-T6 VulnClaw 插槽适配器落地(F3 四件)
+- engines/vulnclaw/{adapter.py,MANIFEST.md}: §10.4 上线前置四件全落地——①消费 final_answer+verified_claims(F 段→findings C2/verified,eNNN 区间展开;findings[] 规则层候选降权 vuln-clue 线索队列) ②副作用黑名单(删库/关机/外发)预筛 fail-closed+task-constraints.json 11 键(blocked_actions+禁碰端口+strict,否定措辞「禁止删库」不误拦) ③网关侧 usage 外挂回填(--usage-file 求和入 fact+归档,缺位如实记,内建计量不采信) ④P0#2 绕过(verified_claims int 形状容忍+complete 缺席/崩溃签名→session.json 手动归一+手动 report)。
+- 夹具=vulnclaw-live-trial §10 真实会话(20261017_003221)修剪版;测试 tests/test_engine_vulnclaw_adapter.py 17 用例(适配器+registry 接线)全绿,相邻引擎 16 用例绿;selfcheck cmd-index/encoding 过。
+- 遗留: golden 面未注册(等总控定夺);--run 实弹路径待有效 key 轮真机验证。
