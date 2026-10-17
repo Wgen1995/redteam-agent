@@ -1528,3 +1528,7 @@ auth 聚焦+慢速退避指令换来深度只 +1（xxe-01），赔掉广度 14 �
 - engines/vulnclaw/{adapter.py,MANIFEST.md}: §10.4 上线前置四件全落地——①消费 final_answer+verified_claims(F 段→findings C2/verified,eNNN 区间展开;findings[] 规则层候选降权 vuln-clue 线索队列) ②副作用黑名单(删库/关机/外发)预筛 fail-closed+task-constraints.json 11 键(blocked_actions+禁碰端口+strict,否定措辞「禁止删库」不误拦) ③网关侧 usage 外挂回填(--usage-file 求和入 fact+归档,缺位如实记,内建计量不采信) ④P0#2 绕过(verified_claims int 形状容忍+complete 缺席/崩溃签名→session.json 手动归一+手动 report)。
 - 夹具=vulnclaw-live-trial §10 真实会话(20261017_003221)修剪版;测试 tests/test_engine_vulnclaw_adapter.py 17 用例(适配器+registry 接线)全绿,相邻引擎 16 用例绿;selfcheck cmd-index/encoding 过。
 - 遗留: golden 面未注册(等总控定夺);--run 实弹路径待有效 key 轮真机验证。
+
+## 2026-10-18 · W1-T4 battle auto 一键全链(F2 舰)
+- scripts/battle.py 新增 auto 子命令: init(建战=真授权四件落账+五查授权校验,无豁免通道)→launch(runner 点火+runner.pid 落盘)→看护(收敛四条件轮询/活性/idle 断连救场 auto-rescue/max-hours 战钟,救场耗尽 auto-giveup)→自动 settle(matrix-freeze 后 converge∈{converged,budget-exhausted} 才结算,链断 rc2)→自动 report(tanyin-report aggregate 出草稿,P5.5 签发永不代签);参数 --goal-dir/--max-hours/--idle-timeout;人工点只留审批卡与 P5.5;测试 tests/test_battle_auto.py 假战士全链 SIM(PATH 注入 opencode 替身,幂等断点续跑) 5 用例全绿+相邻 battle 面 62 用例绿(wallclock_wire 9+gold r24/r25 8+v09c_metrics 25+runner_watchdog/report_agg 20);探知项: report aggregate 13 表前置使无人审批卡的静战 ENV2(auto 如实 rc1 报缺,不私造空表)——建议 W2 账本侧立项 add-goal 时铺 13 空表。
+
