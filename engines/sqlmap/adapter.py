@@ -213,6 +213,12 @@ def _blocked_plan(reason):
             "command_hash": "", "needs_approval": False}
 
 
+# guard 通道路径锚（engines/sqlmap/adapter.py → 仓根/cli/tanyin-guard——目录深度
+# 常错点钉死：dirname×2 于文件=engines，须再上一层才是仓根；测试 TestRunFacePaths）
+GUARD = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__)))), "cli", "tanyin-guard")
+
+
 # ------------------------------------------------------------- 结果解析（findings 队列）
 
 # 运行期命中行：[INFO] GET parameter 'id' is '<technique>' injectable[, for 'MySQL']
@@ -373,8 +379,7 @@ def main(argv):
             log.write("env: guard 通道时戳不可得（--timestamp 或 timeline 末行）\n")
             print("OK submission.json status=blocked reason=timestamp-unavailable")
             return 0
-        guard = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                             "cli", "tanyin-guard")
+        guard = GUARD
         cmd = [sys.executable, guard, "exec", "--goal-dir", args["--goal-dir"],
                "--timestamp=" + ts, "--timeout=600", "--", binary] + plan["argv"][1:]
         log.write("run: %s\ncanonical: %s\n" % (" ".join(cmd), plan["canonical"]))

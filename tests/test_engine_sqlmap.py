@@ -344,5 +344,15 @@ class TestRunFaceBlocked(SqlmapWallBase):
         self.assertIn("审批", r.stdout)
 
 
+class TestRunFacePaths(SqlmapWallBase):
+    """--run 面路径锚：guard 通道必须可解析（engines/sqlmap→仓根/cli）。"""
+
+    def test_guard_path_resolvable(self):
+        sys.path.insert(0, os.path.join(ROOT, "engines", "sqlmap"))
+        import adapter  # noqa: E402
+        self.assertTrue(os.path.isfile(adapter.GUARD),
+                        "guard 路径错算（目录深度坑）: " + adapter.GUARD)
+
+
 if __name__ == "__main__":
     unittest.main()
