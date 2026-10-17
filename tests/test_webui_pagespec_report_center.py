@@ -30,6 +30,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import tempfile
 import unittest
 
@@ -343,6 +344,236 @@ class TestReportListProjection(Base):
         b4 = [b for b in p["battles"] if b["battle"] == "battle-4"][0]
         self.assertEqual(b4["status"], "草稿")
         self.assertEqual(b4["findings"]["total"], 0)
+
+
+
+# ═══════════════════════════════ ② 详情投影 ═══════════════════════════════
+
+class TestReportDetailProjection(Base):
+    """渲染预览六节+元信息卡（哈希/版本链/签发状态/双签位/绑定复检）。"""
+
+    def gd(self, battle):
+        return os.path.join(self.root, battle, {"battle-1": "G-t1",
+                                                "battle-2": "G-t2",
+                                                "battle-3": "G-t3"}[battle])
+
+    def test_state_and_cover(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        self.assertEqual(p["goal"], "G-t1")
+        self.assertEqual(p["battle"], {"id": "battle-1", "n": 1})
+        self.assertEqual(p["state"]["status"], "已签发")
+        self.assertTrue(p["state"]["locked"])
+        self.assertEqual(p["state"]["issued_at"], TS6)
+        cov = p["cover"]
+        self.assertEqual(cov["report_no"], "G-t1-0001")
+        self.assertEqual(cov["target"], "shop-t1.example")
+        self.assertEqual(cov["signer"], "客户安全部")
+        self.assertEqual(cov["valid_from"], "2026-10-01T00:00:00Z")
+        self.assertEqual(cov["valid_until"], "2026-10-31T00:00:00Z")
+        self.assertEqual(cov["budget"], "2M;50000;40")
+        self.assertEqual(cov["guard_tier"], "T3")
+
+    def test_authorization_summary(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        a = p["authorization"]
+        self.assertEqual(a["auth_doc"], "auth/G-t1-0001.pdf")
+        want = hashlib.sha256(AUTH_BYTES).hexdigest()
+        self.assertEqual(a["auth_sha256"], want)
+        self.assertEqual(a["sha_trunc"], want[:12])
+        self.assertEqual(a["scope_counts"], {"include": 2, "exclude": 1, "oob": 1,
+                                             "account-grant": 0})
+        self.assertEqual(len(a["amendment_heads"]), 4)
+
+    def test_findings_table_with_badges(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        rows = {f["id"]: f for f in p["findings"]["rows"]}
+        self.assertEqual(rows["FD-t1-0001"]["impact"], "高")
+        self.assertEqual(rows["FD-t1-0001"]["verify_state"], "已验证")
+        self.assertIn("verified", rows["FD-t1-0001"]["verify_basis"])
+        self.assertEqual(rows["FD-t1-0002"]["impact"], "中")
+        self.assertEqual(rows["FD-t1-0002"]["verify_state"], "待验证")
+        self.assertEqual(p["findings"]["counts"], {"total": 2, "verified": 1,
+                                                   "pending": 1, "ruled_out": 0})
+
+    def test_evidence_appendix(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        evs = p["evidence"]
+        self.assertEqual([e["id"] for e in evs], ["EV-t1-0001", "EV-t1-0002"])
+        self.assertEqual(evs[0]["hash_trunc"],
+                         artifact_hashes(ART1)[0][:12])
+        self.assertEqual(evs[0]["linked_finding"], "FD-t1-0001")
+
+    def test_coverage_honesty(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        cov = p["coverage"]
+        self.assertEqual(cov["tested"],
+                         [{"attack_surface": "web.admin-panel",
+                           "vuln_class": "authz.diff", "state": "x"}])
+        un = {(u["attack_surface"], u["vuln_class"]): u for u in cov["untested"]}
+        self.assertEqual(set(un), {("web.login", "authn.no-rate-limit"),
+                                   ("web.mail", "config.misconfig"),
+                                   ("web.api", "inj.sql"), ("web.api", "inj.xss")})
+        self.assertEqual(un[("web.login", "authn.no-rate-limit")]["label"], "受阻")
+        self.assertIn("预算止", un[("web.login", "authn.no-rate-limit")]["reason"])
+        self.assertEqual(un[("web.mail", "config.misconfig")]["label"], "范围外")
+        self.assertEqual(un[("web.api", "inj.sql")]["label"], "未测")
+        self.assertEqual(cov["intents_open"], ["INT-t1-0002"])
+        self.assertEqual(cov["closure"], "20.0%（1/5）")
+
+    def test_methodology_appendix(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        m = p["methodology"]
+        self.assertEqual(m["gates_passed"], [])
+        self.assertEqual(m["intents_open"], 1)
+        self.assertEqual(m["intents_closed"], 1)
+        self.assertEqual(m["budget_terminal"], "normal")
+        self.assertEqual(m["guard_tier"], "T3")
+        self.assertEqual(m["timeline_rows"], 7)
+        self.assertTrue(m["chain_ok"])
+
+    def test_meta_input_hash_and_pin(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        meta = p["meta"]
+        self.assertRegex(meta["input_hash"], r"^[0-9a-f]{64}$")
+        self.assertGreater(meta["input_files"], 10)
+        self.assertEqual(len(meta["render_runs"]), 2)
+        self.assertEqual(meta["render_runs"][0], meta["render_runs"][1])
+        self.assertTrue(meta["pin_ok"])
+        self.assertEqual(meta["render_hash"], meta["render_runs"][0])
+        self.assertEqual(meta["output_chars"], len(p["markdown"]))
+        self.assertEqual(meta["render_hash"],
+                         hashlib.sha256(p["markdown"].encode("utf-8")).hexdigest())
+
+    def test_markdown_projection_sections(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        md = p["markdown"]
+        for head in ("# 渗透测试报告", "## 授权与范围", "## 发现明细",
+                     "## 证据附录", "## 覆盖诚实", "## 方法论"):
+            self.assertIn(head, md)
+        self.assertIn("shop-t1.example", md)
+        self.assertIn("FD-t1-0001", md)
+        self.assertIn("EV-t1-0001", md)
+
+    def test_version_chain_signed(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        vs = p["meta"]["versions"]
+        self.assertEqual([v["v"] for v in vs], [1, 2])
+        self.assertTrue(all(v["kind"] == "signed" for v in vs))
+        self.assertEqual(vs[0]["ts"], TS5)
+        self.assertEqual(vs[1]["ts"], TS6)
+        self.assertEqual(vs[1]["sha256"],
+                         _sha256_file(os.path.join(self.gd("battle-1"),
+                                                   vs[1]["file"])))
+
+    def test_version_chain_pending_draft(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=2)
+        vs = p["meta"]["versions"]
+        self.assertEqual(len(vs), 1)
+        self.assertEqual(vs[0]["kind"], "draft")
+        self.assertEqual(p["state"]["status"], "待签发")
+
+    def test_signature_cards_dual(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        sigs = p["meta"]["signatures"]
+        self.assertEqual(len(sigs), 2)
+        self.assertTrue(all(s["filled"] for s in sigs))
+        self.assertEqual(sigs[0]["approver"], "操作员·wgen")
+        self.assertEqual(sigs[1]["approver"], "复核员·li")
+        self.assertTrue(p["meta"]["dual_complete"])
+
+    def test_signature_cards_pending_single(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=2)
+        sigs = p["meta"]["signatures"]
+        self.assertTrue(sigs[0]["filled"])
+        self.assertFalse(sigs[1]["filled"])
+        self.assertFalse(p["meta"]["dual_complete"])
+
+    def test_credential_binding_ok(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=1)
+        c = p["meta"]["credential"]
+        self.assertEqual(c["ts"], TS6)
+        self.assertTrue(c["gates_pass"])
+        self.assertEqual(c["artifacts"], 5)
+        self.assertTrue(c["binding_ok"])
+        self.assertEqual(c["bad"], [])
+
+    def test_credential_binding_tamper_detected(self):
+        root2 = os.path.join(self.td.name, "b2")
+        shutil.copytree(self.root, root2)
+        tgt = os.path.join(root2, "battle-1", "G-t1", "report", "signed",
+                           "report-2026-10-20T060000Z.md")
+        with open(tgt, "ab") as f:
+            f.write(b"tampered")
+        p = api.report_detail_view(battles_dir=root2, battle=1)
+        self.assertFalse(p["meta"]["credential"]["binding_ok"])
+        self.assertTrue(p["meta"]["credential"]["bad"])
+        self.assertEqual(p["state"]["status"], "已签发")     # 锁定不因篡改回退
+
+    def test_draft_state_full_shape(self):
+        p = api.report_detail_view(battles_dir=self.root, battle=3)
+        self.assertEqual(p["state"]["status"], "草稿")
+        self.assertFalse(p["state"]["locked"])
+        self.assertEqual(p["meta"]["versions"], [])
+        self.assertEqual(len(p["findings"]["rows"]), 2)      # 发现仍在（账面）
+        self.assertTrue(p["meta"]["pin_ok"])                 # 草稿同钉渲染
+
+    def test_goal_param_resolves_within_battles_root(self):
+        p = api.report_detail_view(battles_dir=self.root, goal="G-t2")
+        self.assertEqual(p["goal"], "G-t2")
+        self.assertEqual(p["battle"], {"id": "battle-2", "n": 2})
+
+    def test_goal_param_falls_back_to_ledger_dir(self):
+        gd3 = os.path.join(self.td.name, "G-solo")
+        build_goal(gd3, "pending")
+        p = api.report_detail_view(battles_dir=self.root, goal="G-solo",
+                                   ledger_dir=gd3)
+        self.assertEqual(p["goal"], "G-solo")
+        self.assertIsNone(p["battle"])
+
+    def test_404_422_400_shapes(self):
+        st, out = api.report_detail_route({"battle": "99"}, None, self.root)
+        self.assertEqual(st, 404)
+        self.assertIn("error", out)
+        self.assertIn("battles", out)
+        st, _ = api.report_detail_route({"battle": "abc"}, None, self.root)
+        self.assertEqual(st, 422)
+        st, _ = api.report_detail_route({}, None, self.root)
+        self.assertEqual(st, 400)
+
+    def test_readonly_and_deterministic(self):
+        before = dir_bytes(self.root)
+        a = api.report_detail_view(battles_dir=self.root, battle=1)
+        b = api.report_detail_view(battles_dir=self.root, battle=1)
+        self.assertEqual(dir_bytes(self.root), before)
+        self.assertEqual(a, b)
+
+
+class TestRenderPin(Base):
+    """同输入同输出钉：渲染纯函数两跑逐字节一致；输入动→哈希动。"""
+
+    def test_two_runs_identical(self):
+        gd = os.path.join(self.root, "battle-1", "G-t1")
+        pin = api.render_pin(gd)
+        self.assertEqual(pin["render_runs"][0], pin["render_runs"][1])
+        self.assertTrue(pin["pin_ok"])
+        self.assertEqual(pin["render_hash"], pin["render_runs"][0])
+
+    def test_input_change_moves_both_hashes(self):
+        gd = os.path.join(self.root, "battle-1", "G-t1")
+        before = api.render_pin(gd)
+        rows = core.Session(gd).rows("goals.tsv")
+        rows[-1][T["goals.tsv"].index("target")] = "shop-t1-renamed.example"
+        core.write_tsv(os.path.join(gd, "goals.tsv"), rows)
+        after = api.render_pin(gd)
+        self.assertNotEqual(after["input_hash"], before["input_hash"])
+        self.assertNotEqual(after["render_hash"], before["render_hash"])
+        self.assertTrue(after["pin_ok"])                     # 动后仍自一致
+
+    def test_readonly(self):
+        gd = os.path.join(self.root, "battle-1", "G-t1")
+        before = dir_bytes(gd)
+        api.render_pin(gd)
+        self.assertEqual(dir_bytes(gd), before)
 
 
 if __name__ == "__main__":
