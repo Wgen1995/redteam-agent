@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资产覆盖 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md §P5.7
+     （覆盖诚实法条的可视化：只主张已验证项，未测如实披露）。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#battle-pick{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:5px 10px;border-radius:4px;font-size:12px}
+body.mode-tab #top{display:none}   /* 嵌入任务详情壳时隐本页顶条 */
+#cv-counts{color:var(--g8);font-size:12px;font-family:var(--mono)}
+#top .sp{flex:1}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:6px 14px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover{background:var(--g5);color:var(--gc)}
+/* 四态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区 */
+#wrap{width:100%;max-width:1280px;margin:0 auto;padding:18px 24px 60px}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+/* 热图 */
+#heat-scroll{overflow-x:auto;max-height:560px;overflow-y:auto}
+#heat-scroll::-webkit-scrollbar{width:5px;height:5px}
+#heat-scroll::-webkit-scrollbar-thumb{background:var(--g4)}
+#heat-grid{border-collapse:separate;border-spacing:3px;font-size:11.5px}
+#heat-grid th{color:var(--g8);font-weight:500;font-size:10.5px;padding:2px 6px;
+white-space:nowrap;font-family:var(--mono)}
+#heat-grid th.surf{color:var(--ga);text-align:right;max-width:180px;overflow:hidden;
+text-overflow:ellipsis;font-family:var(--mono)}
+.heat-cell{width:52px;height:30px;border-radius:3px;text-align:center;
+font-family:var(--mono);font-size:11px;color:var(--gc);cursor:default;
+border:1px solid var(--g4);position:relative}
+.heat-cell.void{background:transparent;border-style:dotted;border-color:var(--g5);color:var(--g7)}
+/* 未测=斜纹（覆盖诚实法条：一眼可辨） */
+.heat-cell.st-empty-cell{
+  background:repeating-linear-gradient(45deg,var(--g3),var(--g3) 4px,var(--g2) 4px,var(--g2) 8px);
+  color:var(--g7)}
+.heat-cell.st-dash{background:var(--g4);color:var(--g9);opacity:.75}
+.heat-cell.st-q{background:rgba(232,179,75,.30);color:var(--warn)}
+.heat-cell.st-bang{background:rgba(232,99,90,.30);color:var(--dang)}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-y{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-r{background:rgba(232,99,90,.14);color:var(--dang)}
+.t-n{background:var(--g4);color:var(--g9)}
+#cv-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;color:var(--g8);
+font-size:11px;align-items:center}
+#cv-legend .sw{display:inline-block;width:14px;height:14px;border-radius:3px;
+border:1px solid var(--g5);vertical-align:-2px;margin-right:5px}
+#cv-legend .sw.hatch{background:repeating-linear-gradient(45deg,var(--g3),var(--g3) 3px,var(--g2) 3px,var(--g2) 6px)}
+#cv-legend .sw.deep{background:rgba(61,220,151,.55)}
+#cv-legend .sw.dash{background:var(--g4)}
+#cv-legend .sw.q{background:rgba(232,179,75,.30)}
+#cv-legend .sw.bang{background:rgba(232,99,90,.30)}
+/* 未测清单 */
+table.list{width:100%;border-collapse:collapse;font-size:12.5px}
+.list th{color:var(--g8);text-align:left;font-weight:500;padding:8px 10px;
+border-bottom:1px solid var(--g4);font-size:11.5px}
+.list td{padding:8px 10px;border-bottom:1px solid var(--g3)}
+.list tr:hover td{background:var(--g2)}
+.scrollbox{max-height:360px;overflow-y:auto}
+.scrollbox::-webkit-scrollbar{width:5px}.scrollbox::-webkit-scrollbar-thumb{background:var(--g4)}
+#cv-note{color:var(--g8);font-size:11.5px;margin-top:10px;line-height:1.7}
+#cv-note b{color:var(--g9);font-weight:500}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">任务详情 · <b>资产覆盖</b></span>
+  <select id="battle-pick" title="切换任务"></select>
+  <span id="goal-chip" class="mono" style="color:var(--g7);font-size:11px"></span>
+  <span class="sp"></span>
+  <span id="cv-counts"></span>
+</header>
+
+<div id="st-empty" class="state"><div class="box">
+  <h3>覆盖矩阵尚未建立</h3>
+  <p>任务进入执行阶段后会建立「资产 × 意图族」覆盖矩阵，<br>
+  每格的测试状态与未测原因在此如实披露。</p>
+</div></div>
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在读取覆盖矩阵…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>覆盖数据加载失败</h3>
+  <p>原因：<code id="err-detail"></code></p>
+  <p><button id="btn-retry" class="btn">重试</button></p>
+</div></div>
+
+<div id="st-normal" class="state"><div id="wrap">
+  <div class="pane">
+    <h3>覆盖热图<span class="sub">资产 × 意图族 · 格色=已测请求数对数色阶 · 未测=斜纹</span></h3>
+    <div id="heat-scroll"><table id="heat-grid"></table></div>
+    <div id="cv-legend">
+      <span><span class="sw deep"></span>已覆盖（色深=请求数对数色阶）</span>
+      <span><span class="sw hatch"></span>未测</span>
+      <span><span class="sw dash"></span>不适用（测过·无此面）</span>
+      <span><span class="sw q"></span>存疑</span>
+      <span><span class="sw bang"></span>受阻</span>
+      <span>空框=未建格</span>
+    </div>
+  </div>
+  <div class="pane">
+    <h3>未测清单<span class="sub">资产 / 未测意图 / 原因（范围外 · 无凭据 · 预算止 · 待测 · 存疑）</span></h3>
+    <div class="scrollbox"><table id="ut-table" class="list">
+      <thead><tr><th>资产</th><th>未测意图</th><th>状态</th><th>原因</th><th>说明</th></tr></thead>
+      <tbody id="ut-body"></tbody>
+    </table></div>
+    <div id="cv-note">覆盖口径：<b>（已覆盖 + 不适用）÷ 总格数</b>；本表与报告的覆盖承诺同源——只主张已验证项，未测项与原因全部如实列出。</div>
+  </div>
+</div></div>
+
+<script src="/static/app.js"></script>
+<script>
+/* 数据单源：GET /api/v2/coverage.json?battle=N（矩阵格+请求深度+未测清单；只读）。 */
+'use strict';
+function $(id){return document.getElementById(id);}
+function params(){
+  var q={};window.location.search.slice(1).split('&').forEach(function(kv){
+    if(!kv)return;var p=kv.split('=',2);q[decodeURIComponent(p[0])]=decodeURIComponent(p[1]||'');});
+  return q;
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+var Q=params();
+var BATTLE=Q.battle||'';
+var LAST=null;
+
+function setState(name){
+  ['st-empty','st-loading','st-error','st-normal'].forEach(function(id){
+    $(id).classList.toggle('on',id==='st-'+name);});
+}
+
+function load(){
+  setState('loading');
+  fetch('/api/v2/coverage.json'+(BATTLE?('?battle='+encodeURIComponent(BATTLE)):''),
+        {credentials:'same-origin'}).then(function(r){
+    return r.json().then(function(j){return {status:r.status,body:j};});
+  }).then(function(res){
+    if(res.status===404&&res.body&&res.body.error){
+      setState('empty');renderBattlePick(res.body);return;}
+    if(res.status!==200){
+      throw new Error((res.body&&res.body.error)||('HTTP '+res.status));}
+    render(res.body);
+  }).catch(function(err){
+    $('err-detail').textContent=err.message||String(err);
+    setState('error');
+  });
+}
+
+function renderBattlePick(d){
+  var pick=$('battle-pick');
+  pick.innerHTML='';
+  (d.battles||[]).forEach(function(b){
+    var o=document.createElement('option');
+    o.value=b.n;o.textContent='battle-'+b.n;
+    if(d.battle&&d.battle.n===b.n){o.selected=true;}
+    pick.appendChild(o);
+  });
+  if(!(d.battles||[]).length){
+    var o=document.createElement('option');
+    o.value='';o.textContent=d.goal||'当前账本';pick.appendChild(o);
+  }
+  $('goal-chip').textContent=d.goal||'';
+}
+
+/* ── 热图着色：对数色阶（深度=Math.log2(请求数+1)，投影层同公式） ── */
+function depthOf(reqs){return Math.log2((reqs||0)+1);}
+function heatAlpha(reqs,maxD){
+  var d=depthOf(reqs);
+  return (0.10+0.50*(maxD>0?d/maxD:0)).toFixed(3);
+}
+function cellTip(s,vc,c){
+  return s+' × '+vc+'\n状态：'+(c.state_zh||'未测')+
+    '　请求数：'+(c.requests||0)+
+    (c.reason?('\n说明：'+c.reason):'')+
+    (c.intent_id?('\n意图：'+c.intent_id):'')+
+    (c.updated?('\n更新：'+c.updated):'');
+}
+function render(d){
+  renderBattlePick(d);
+  var c=d.counts||{};
+  $('cv-counts').textContent='总格 '+c.cells+' · 已覆盖 '+c.covered+
+    ' · 覆盖率 '+(c.coverage_pct||0)+'%'+(d.matrix_frozen?' · 矩阵已冻结':'');
+  var classes=d.classes||[];
+  var surfaces=d.surfaces||[];
+  var maxD=0;surfaces.forEach(function(s){maxD=Math.max(maxD,depthOf(s.requests));});
+  var grid=$('heat-grid');
+  grid.innerHTML='';
+  var thead=document.createElement('thead');
+  var hr=document.createElement('tr');
+  hr.innerHTML='<th class="surf">资产 \\ 请求数</th>'+classes.map(function(vc){
+    return '<th>'+esc(vc)+'</th>';
+  }).join('');
+  thead.appendChild(hr);grid.appendChild(thead);
+  var tb=document.createElement('tbody');
+  surfaces.forEach(function(su){
+    var tr=document.createElement('tr');
+    var oos=su.in_scope==='out_of_scope';
+    var head='<th class="surf" title="'+esc(su.name)+'">'+esc(su.name)+
+      (oos?' <span style="color:var(--warn)">范围外</span>':'')+
+      '<div style="color:var(--g7);font-size:10px">请求 '+(su.requests||0)+'</div></th>';
+    var tds=classes.map(function(vc){
+      var c=(su.cells||{})[vc];
+      if(!c){return '<td><div class="heat-cell void" title="未建格">·</div></td>';}
+      if(c.state==='x'){
+        var a=heatAlpha(c.requests,maxD);
+        return '<td><div class="heat-cell" style="background:rgba(61,220,151,'+a+
+          ')" title="'+esc(cellTip(su.name,vc,c))+'">'+(c.requests||0)+'</div></td>';
+      }
+      if(c.state===''){return '<td><div class="heat-cell st-empty-cell" title="'+
+        esc(cellTip(su.name,vc,c))+'">未测</div></td>';}
+      if(c.state==='-'){return '<td><div class="heat-cell st-dash" title="'+
+        esc(cellTip(su.name,vc,c))+'">—</div></td>';}
+      if(c.state==='?'){return '<td><div class="heat-cell st-q" title="'+
+        esc(cellTip(su.name,vc,c))+'">?</div></td>';}
+      if(c.state==='!'){return '<td><div class="heat-cell st-bang" title="'+
+        esc(cellTip(su.name,vc,c))+'">!</div></td>';}
+      return '<td><div class="heat-cell void">·</div></td>';
+    }).join('');
+    tr.innerHTML=head+tds;
+    tb.appendChild(tr);
+  });
+  grid.appendChild(tb);
+
+  var ut=$('ut-body');
+  ut.innerHTML='';
+  (d.untested||[]).forEach(function(u){
+    var tr=document.createElement('tr');
+    var cls={'out_of_scope':'t-y','no_cred':'t-b','budget_stop':'t-y',
+             'pending':'t-n','inconclusive':'t-n','blocked':'t-r','other':'t-n'}[u.reason_code]||'t-n';
+    tr.innerHTML='<td class="mono">'+esc(u.surface)+'</td>'+
+      '<td class="mono">'+esc(u.vclass)+'</td>'+
+      '<td><span class="tag t-n">'+esc(u.state_zh)+'</span></td>'+
+      '<td><span class="tag '+cls+'">'+esc(u.reason_zh)+'</span></td>'+
+      '<td style="color:var(--ga)">'+esc(u.reason||'—')+
+      (u.intent_id?(' · 意图 <span class="mono">'+esc(u.intent_id)+'</span>'):'')+'</td>';
+    ut.appendChild(tr);
+  });
+  if(!(d.untested||[]).length){
+    ut.innerHTML='<tr><td colspan="5" style="color:var(--g8);padding:14px">无未测格——全部格已覆盖或不适用。</td></tr>';
+  }
+  if(!(d.surfaces||[]).length){setState('empty');return;}
+  setState('normal');
+}
+
+$('btn-retry').onclick=load;
+$('battle-pick').onchange=function(){
+  location.href=this.value?('?battle='+this.value):location.pathname;
+};
+
+/* 宿主壳接入（mode-tab=嵌入任务详情壳；独立打开亦可用） */
+function applyMode(embed){
+  document.body.classList.toggle('mode-tab',!!embed);
+}
+window.CoverageTab={
+  mode:'tab',
+  open:function(opt){opt=opt||{};applyMode(opt.embed);
+    if(opt.battle!==undefined){BATTLE=String(opt.battle||'');}load();},
+  reload:load
+};
+
+(function boot(){load();})();
+/* 共享壳自注册（UI-1 舰 /static/app.js；壳未挂载时静默跳过，本页独立可用） */
+try{
+  if(window.nav&&typeof nav.push==='function'){
+    nav.push({ id: 'coverage', label: '资产覆盖', group: '任务详情' });
+  }
+}catch(e){/* 壳异常不殃及本页 */}
+</script>
+</body>
+</html>
