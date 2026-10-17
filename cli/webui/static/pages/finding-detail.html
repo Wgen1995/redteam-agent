@@ -439,6 +439,7 @@ function radarVal(axis, v) {
   return w && v in w ? w[v] : 0;
 }
 function svgEl(tag, attrs) {
+  attrs = attrs || {};                          /* 无属性元素(title 等)同样合法 */
   var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
   Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
   return el;
