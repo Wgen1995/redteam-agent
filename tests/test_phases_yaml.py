@@ -79,16 +79,17 @@ class TestParse(unittest.TestCase):
         self.assertEqual(doc['k2'], 'v')
 
 class TestValidate(unittest.TestCase):
-    def test_all_commands_face_49(self):
-        """Interfaces 承诺单源=49 基名（裁决：四个原生带 ledger- 前缀的校验命令计入
+    def test_all_commands_face_50(self):
+        """Interfaces 承诺单源=50 基名（裁决：四个原生带 ledger- 前缀的校验命令计入
         基名——无无前缀孪生；双前缀别名不进基名集；41→44=批次 4 图谱驱动增补
         71d3b7c：graph-neighbors/graph-paths/graph-horizon 三只读图查询，微版本勘误；
         44→45=2026-10-10 P0 加固批 E3：anchor 链头锚定；
         45→48=v0.8 Task B：chain-create/chain-advance/chain-ls 链式稳定器；
         48→49=v0.9d Ship Z：zhulong-export ZhuLong findings 互通——入口挂载
-        （cli/tanyin-ledger 组装期进 registry._MODULES，白名单边界内唯一接线点））。"""
+        （cli/tanyin-ledger 组装期进 registry._MODULES，白名单边界内唯一接线点）；
+        49→50=W2·01P0-2：intent-lease 租约审计面（只读查询，expired=退出码 1）。"""
         face = registry.all_commands() | ENTRY_MOUNTED
-        self.assertEqual(len(face), 49)
+        self.assertEqual(len(face), 50)
         self.assertIn("zhulong-export", face)
         for c in ("chain-create", "chain-advance", "chain-ls"):
             self.assertIn(c, face)
