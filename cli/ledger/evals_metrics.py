@@ -265,6 +265,35 @@ def _token_usage(ctx):
     return {"status": "PASS", "actual": "median=%.3f n=%d" % (rep["median"], rep["n"])}
 
 
+@register("finding-candidates")
+def _finding_candidates(ctx):
+    """rc3 数据源（W2 退出码分离/D 舰 G4）：账本 active 发现但零 verified=仅未验证候选。
+
+    findings.tsv 单源：live=status 非 superseded（latest_by 幂等取末行）；
+    verified=exploitation_status=="verified"（webui projections 同口径）；候选=live
+    且 exploitation_status 非 verified/ruled_out。verified>0 → 候选不报（「仅候选」
+    态不成立——pending 重放义务归 M02 replay-rate 硬门执法，本 runner 只出黄灯）。
+    findings.tsv 缺=OSError→_one 转 ENV-SKIP。交战指标集按需声明本 runner
+    （metrics-v1.json static 套未接——仓根无战斗账本，接入即恒 ENV-SKIP 无增益）。"""
+    from ledger import check_cmds
+    if not os.path.isfile(os.path.join(ctx["goal_dir"], "findings.tsv")):
+        raise EnvironmentError("findings.tsv 缺（无战斗账本可盘，防 vacuous 绿——T17 同律）")
+    s = check_cmds.core.Session(ctx["goal_dir"])
+    latest = check_cmds.latest_by(s.rows("findings.tsv"), "findings.tsv", ["id"])
+    live = [r for r in latest.values()
+            if check_cmds._cell(r, "findings.tsv", "status") != "superseded"]
+    verified = [r for r in live
+                if check_cmds._cell(r, "findings.tsv", "exploitation_status") == "verified"]
+    unverified = [r for r in live
+                  if check_cmds._cell(r, "findings.tsv", "exploitation_status")
+                  not in ("verified", "ruled_out")]
+    cands = len(unverified) if not verified else 0
+    return {"status": "PASS", "candidates": cands,
+            "actual": "live=%d verified=%d unverified=%d%s"
+            % (len(live), len(verified), len(unverified),
+               "（仅候选→rc3 黄灯）" if cands else "")}
+
+
 @register("manual")
 def _manual(ctx):
     """L3 对齐专用：恒 ENV-SKIP（设计 §9.3 发布前人工项不阻塞 CI；契约 15 §4 R-T1-2）。"""

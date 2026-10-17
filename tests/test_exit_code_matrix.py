@@ -94,3 +94,101 @@ class TestSuiteExitMatrix(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+TAB = chr(9)
+FIX = os.path.join(HERE, "fixtures", "G-g1")
+FINDINGS_COLS = 19
+
+
+def _finding(fid, exploit, status="active"):
+    row = [""] * FINDINGS_COLS
+    row[0], row[1], row[2] = fid, "INT-g1-0001", "矩阵用发现"
+    row[3], row[4], row[5] = "C2", "中", exploit
+    row[15] = "findings-cards/%s.md" % fid
+    row[16] = status
+    row[17] = "2"
+    row[18] = "2026-10-17T00:00:00Z"
+    return TAB.join(row)
+
+
+def _goal_with_findings(td, exploits):
+    import shutil
+    gd = os.path.join(td, "g-" + "-".join(e or "empty" for e in exploits))
+    shutil.copytree(FIX, gd)
+    rows = [_finding("FD-m-%02d" % i, e) for i, e in enumerate(exploits, 1)]
+    with open(os.path.join(gd, "findings.tsv"), "w", encoding="utf-8", newline=chr(10)) as f:
+        f.write("".join(r + chr(10) for r in rows))
+    return gd
+
+
+class TestFindingCandidatesRunner(unittest.TestCase):
+    """rc3 数据源：finding-candidates runner——账本 active 发现但零 verified（G4 原文）。
+
+    findings.tsv 单源：live=status 非 superseded；verified=exploitation_status
+    =="verified"（projections 同口径）；候选=live 且非 verified/ruled_out。
+    verified>0 → 候选不报（「仅候选」态不成立；pending 重放义务归 M02 硬门）。"""
+
+    def _ctx(self, goal_dir):
+        return {"goal_dir": goal_dir, "args": [], "ts": "2026-10-17T00:00:00Z", "metric": {}}
+
+    def test_only_unverified_reports_candidates(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            gd = _goal_with_findings(td, ["suspected", ""])
+            out = evals_metrics._RUNNERS["finding-candidates"](self._ctx(gd))
+            self.assertEqual(out["status"], "PASS")
+            self.assertEqual(out["candidates"], 2, "active 且零 verified=候选全报: %s" % out["actual"])
+
+    def test_verified_present_zero_candidates(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            gd = _goal_with_findings(td, ["verified", "suspected"])
+            out = evals_metrics._RUNNERS["finding-candidates"](self._ctx(gd))
+            self.assertEqual(out["candidates"], 0,
+                             "verified 在档→非「仅候选」态: %s" % out["actual"])
+            self.assertIn("verified=1", out["actual"])
+
+    def test_superseded_not_candidate(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            gd = _goal_with_findings(td, ["suspected"])
+            with open(os.path.join(gd, "findings.tsv"), "a", encoding="utf-8") as f:
+                pass
+            out = evals_metrics._RUNNERS["finding-candidates"](self._ctx(gd))
+            self.assertEqual(out["candidates"], 1)
+            # 全 superseded→零 live→零候选（vacuous 绿不在此 runner 面：空账本归 ENV 面）
+            gd2 = _goal_with_findings(td, [])
+            with open(os.path.join(gd2, "findings.tsv"), "a", encoding="utf-8") as f:
+                f.write(_finding("FD-m-99", "verified", status="superseded") + chr(10))
+            out2 = evals_metrics._RUNNERS["finding-candidates"](self._ctx(gd2))
+            self.assertEqual(out2["candidates"], 0)
+
+    def test_missing_ledger_env(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            empty = os.path.join(td, "no-ledger")
+            os.makedirs(empty)
+            with self.assertRaises(OSError):
+                evals_metrics._RUNNERS["finding-candidates"](self._ctx(empty))
+
+    def test_e2e_suite_rc3_then_rc0(self):
+        import tempfile
+        self._saved2 = dict(evals_metrics._RUNNERS)
+        evals_metrics._RUNNERS.clear()
+        evals_metrics._RUNNERS.update(self._saved2)  # 真 runner 面上叠 synthetic
+        @evals_metrics.register("syn-matrix-pass")
+        def _p(ctx):
+            return {"status": "PASS", "actual": 1}
+        with tempfile.TemporaryDirectory() as td:
+            ms = _suite(_metric("A", "syn-matrix-pass"),
+                        _metric("B", "finding-candidates"))
+            code3, rep3 = evals_metrics.run_suite(ms, "s", _goal_with_findings(td, ["suspected"]), None)
+            self.assertEqual(code3, 3, "端到端：仅未验证候选→rc3 黄灯")
+            self.assertEqual(rep3["counts"]["candidates"], 1)
+            code0, _ = evals_metrics.run_suite(ms, "s", _goal_with_findings(td, ["verified"]), None)
+            self.assertEqual(code0, 0, "端到端：verified 在册→rc0")
+
+
+if __name__ == "__main__":
+    unittest.main()
