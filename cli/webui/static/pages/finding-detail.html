@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漏洞详情 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md §P6。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;--purple:#a78bfa;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+/* ── 顶条 ─────────────────────────────────────────────── */
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:6px 14px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover{background:var(--g5);color:var(--gc)}
+.btn.acc{background:var(--acc2);border-color:var(--acc2);color:#08130d;font-weight:600}
+.btn.acc:hover{background:var(--acc)}
+.btn.sm{padding:3px 10px;font-size:11.5px}
+.btn.ghost{background:transparent}
+/* ── 四态 ─────────────────────────────────────────────── */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+#st-loading .tip{color:var(--g8);font-size:12px;text-align:center;margin-top:6px}
+/* ── 五区骨架 ─────────────────────────────────────────── */
+#wrap{width:100%;max-width:1060px;margin:0 auto;padding:18px 24px 60px}
+.zone{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:16px;margin-bottom:14px}
+.zone>h2{font-size:13px;color:var(--gc);margin-bottom:12px;letter-spacing:.4px}
+.zone>h2 .zn{color:var(--g7);font-family:var(--mono);margin-right:8px}
+.zone .empty{color:var(--g8);font-size:12.5px;padding:10px 2px}
+.mono{font-family:var(--mono)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-y{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-r{background:rgba(232,99,90,.14);color:var(--dang)}
+.t-b{background:rgba(90,169,230,.14);color:var(--info)}
+.t-p{background:rgba(167,139,250,.14);color:var(--purple)}
+.t-n{background:var(--g4);color:var(--g9)}
+/* ① 头区 */
+#zone-head .h1{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+#sev-badge{font-size:12px;padding:3px 10px;border-radius:4px;font-weight:600;margin-top:3px}
+#sev-badge.s-hi{background:rgba(232,99,90,.16);color:var(--dang);border:1px solid rgba(232,99,90,.4)}
+#sev-badge.s-mid{background:rgba(232,179,75,.14);color:var(--warn);border:1px solid rgba(232,179,75,.4)}
+#sev-badge.s-lo{background:var(--g4);color:var(--g9);border:1px solid var(--g6)}
+#fd-title{font-size:17px;color:var(--gc);font-weight:600;line-height:1.4}
+#fd-id{font-family:var(--mono);font-size:11.5px;color:var(--g8);margin-top:2px}
+#zone-head .grid{display:grid;grid-template-columns:auto 1fr auto;gap:18px;
+align-items:center;margin-top:14px}
+#cvss-score{font-family:var(--mono);font-size:38px;color:var(--gc);line-height:1}
+#cvss-score.pend{font-size:22px;color:var(--g8);padding-top:9px}
+#cvss-score .u{font-size:12px;color:var(--g8)}
+#cvss-vector{font-family:var(--mono);font-size:12px;color:var(--info);cursor:pointer;
+word-break:break-all;line-height:1.7;user-select:text}
+#cvss-vector:hover{text-decoration:underline}
+#cvss-vector .hint{color:var(--g8);font-size:11px;display:block;cursor:default}
+#cvss-radar{display:none;margin-top:10px}
+#cvss-radar.on{display:block}
+#cvss-radar svg{background:var(--g1);border:1px solid var(--g4);border-radius:6px}
+#cvss-radar .rl{fill:var(--g9);font-size:9px;font-family:var(--mono)}
+#cvss-calc-link{font-size:11.5px;margin-top:4px;display:inline-block}
+#zone-head .states{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+#verify-badge{font-size:12.5px;padding:3px 12px;border-radius:4px;font-weight:600}
+#retest-status{color:var(--g8);font-size:12px;text-align:right}
+#retest-status b{color:var(--ga);font-weight:500}
+.basis{color:var(--g7);font-size:11px;max-width:300px;text-align:right}
+/* ② 描述区 */
+#fd-brief{font-size:15px;font-weight:600;color:var(--gc);margin-bottom:10px}
+#fd-tech{color:var(--ga);font-size:13px;line-height:1.8;display:none;
+border-top:1px dashed var(--g4);padding-top:10px;margin-top:4px;white-space:pre-wrap}
+#fd-tech.on{display:block}
+#btn-tech{margin-bottom:6px}
+#fix-card{background:var(--g1);border:1px solid var(--g5);border-radius:6px;
+padding:12px 14px;margin-top:12px}
+#fix-card h3{font-size:12.5px;color:var(--acc);margin-bottom:10px}
+#fix-card .fl{display:grid;grid-template-columns:88px 1fr;gap:8px 12px;font-size:12.5px}
+#fix-card .fl .k{color:var(--g8)}
+#fix-card .fl .v{color:var(--gb);word-break:break-all}
+#fix-verify{font-family:var(--mono);color:var(--warn);font-size:12px;word-break:break-all}
+#fix-card .pend{color:var(--g8);font-size:12px;line-height:1.8}
+#fix-card .fb{margin-top:10px;border-top:1px dashed var(--g4);padding-top:8px}
+#fix-card .fb .k{color:var(--g7);font-size:11px;margin-bottom:4px}
+#fix-card .cmd{font-family:var(--mono);font-size:11.5px;color:var(--ga);word-break:break-all;
+margin:2px 0}
+/* ③ 证据区 */
+.ev-card{background:var(--g1);border:1px solid var(--g4);border-radius:6px;
+padding:12px 14px;margin-bottom:10px}
+.ev-card .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ev-card .id{font-family:var(--mono);font-size:12px;color:var(--info)}
+.ev-card .tt{color:var(--gc);font-size:13px;font-weight:500}
+.ev-card .mt{color:var(--g8);font-size:11.5px;margin-left:auto;font-family:var(--mono)}
+.ev-hash{font-family:var(--mono);font-size:11.5px;color:var(--ga);margin-top:8px;
+word-break:break-all}
+.ev-hash .ok{color:var(--acc)}
+.ev-hash .bad{color:var(--dang)}
+.ev-hash .unk{color:var(--g8)}
+.rawpane{display:none;margin-top:10px;border-top:1px dashed var(--g4);padding-top:10px}
+.rawpane.on{display:block}
+.rawpane h4{font-size:11.5px;color:var(--g8);margin:8px 0 4px;font-weight:500}
+pre.raw{background:var(--g0);border:1px solid var(--g4);border-radius:6px;padding:10px 12px;
+font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ga);overflow-x:auto;
+white-space:pre-wrap;word-break:break-all;max-height:340px;overflow-y:auto}
+.seg{display:inline-flex;border:1px solid var(--g5);border-radius:4px;overflow:hidden;
+vertical-align:middle}
+.seg b{padding:3px 12px;font-size:11.5px;color:var(--g8);cursor:pointer;font-weight:500;
+user-select:none}
+.seg b.on{background:var(--g4);color:var(--acc)}
+.seg.off{opacity:.4;pointer-events:none}
+#chain-bar{display:none;background:rgba(61,220,151,.08);border:1px solid rgba(61,220,151,.35);
+color:var(--acc);border-radius:6px;padding:10px 14px;font-size:12.5px;margin-top:4px}
+#chain-bar.on{display:block}
+#chain-broken{display:none;background:rgba(232,99,90,.10);border:1px solid rgba(232,99,90,.45);
+color:var(--dang);border-radius:6px;padding:10px 14px;font-size:12.5px;margin-top:4px}
+#chain-broken.on{display:block}
+#chain-broken ul{margin:6px 0 0 18px}
+#chain-broken li{font-size:12px;line-height:1.8}
+#chain-detail{color:var(--g8);font-size:11.5px;margin-top:6px}
+/* ④ 重放史区 */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);text-align:left;font-weight:500;padding:8px 10px;
+border-bottom:1px solid var(--g4);font-size:11.5px;letter-spacing:.4px}
+td{padding:8px 10px;border-bottom:1px solid var(--g3);color:var(--gb)}
+tr:hover td{background:var(--g2)}
+td.mono{font-size:12px}
+#replay-note{color:var(--g7);font-size:11.5px;margin-top:10px}
+/* ⑤ 生命线区 */
+#lifeline{overflow-x:auto;padding:14px 6px 6px}
+#lifeline .track{display:flex;align-items:flex-start;min-width:max-content;position:relative;
+padding:0 6px}
+#lifeline .track:before{content:"";position:absolute;top:7px;left:14px;right:14px;
+height:2px;background:var(--g5)}
+.nd{position:relative;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
+width:108px}
+.nd .dot{width:13px;height:13px;border-radius:50%;background:var(--g6);
+border:2px solid var(--g3);z-index:1}
+.nd.k-first .dot{background:var(--info)}
+.nd.k-replay .dot{background:var(--ga)}
+.nd.k-retest .dot{background:var(--purple)}
+.nd.k-feedback .dot{background:var(--warn)}
+.nd.k-current .dot{background:var(--acc);box-shadow:0 0 8px rgba(61,220,151,.6)}
+.nd .lb{margin-top:8px;font-size:11px;color:var(--ga);text-align:center;line-height:1.5}
+.nd .ts{font-family:var(--mono);font-size:10px;color:var(--g7);margin-top:2px}
+.nd .v{margin-top:3px}
+/* 重放面板（立即重放=写入尝试+失败降级） */
+#replay-panel{display:none;position:fixed;inset:0;background:rgba(10,11,13,.72);
+z-index:60;align-items:center;justify-content:center}
+#replay-panel.on{display:flex}
+#replay-panel .box{width:560px;max-width:92vw;background:var(--g2);
+border:1px solid var(--g5);border-radius:8px;padding:18px}
+#replay-panel h3{color:var(--gc);font-size:14px;margin-bottom:6px}
+#replay-panel .sub{color:var(--g8);font-size:12px;margin-bottom:12px;line-height:1.7}
+#replay-panel .msg{font-size:12px;border-radius:4px;padding:8px 12px;margin-bottom:12px;
+display:none}
+#replay-panel .msg.err{display:block;background:rgba(232,99,90,.10);
+border:1px solid rgba(232,99,90,.4);color:var(--dang)}
+#replay-panel .msg.ok{display:block;background:rgba(61,220,151,.08);
+border:1px solid rgba(61,220,151,.35);color:var(--acc)}
+#replay-panel .cmd{font-family:var(--mono);font-size:11.5px;color:var(--ga);
+word-break:break-all;margin:4px 0}
+.copy-ok{color:var(--acc)!important;border-color:var(--acc2)!important}
+/* 抽屉形态（窄列）与全屏形态 */
+body.mode-full #wrap{max-width:1060px}
+body.mode-drawer #wrap{max-width:640px;padding:12px 14px 40px}
+body.mode-drawer #zone-head .grid{grid-template-columns:auto 1fr}
+body.mode-drawer #zone-head .states{align-items:flex-start;text-align:left}
+body.mode-drawer .basis{max-width:none;text-align:left}
+body.mode-drawer #cvss-score{font-size:30px}
+body.mode-drawer #top .crumb .full-only{display:none}
+body.mode-full #top .crumb .drawer-only{display:none}
+</style>
+</head>
+<body class="mode-full">
+
+<div id="top">
+  <span class="crumb"><b>发现</b> / 漏洞详情 <span class="full-only" id="crumb-goal"></span></span>
+  <span class="sp"></span>
+  <button class="btn sm ghost drawer-only" id="btn-fullscreen" title="在新页全屏打开">⛶ 全屏打开</button>
+  <button class="btn sm ghost full-only" id="btn-drawer" title="切换抽屉形态预览">▭ 抽屉形态</button>
+</div>
+
+<!-- 四态之一：空（无 id 参数/未从发现表进入） -->
+<div class="state" id="st-empty">
+  <div class="box">
+    <h3>未指定发现</h3>
+    <p>从任务详情的「发现」页签点击一条发现行打开漏洞详情；<br>
+       或在地址栏带上 <span class="mono">?id=FD-xxxx</span>（可加 <span class="mono">&amp;goal=G-xx</span> 指定任务）。</p>
+  </div>
+</div>
+
+<!-- 四态之二：加载（骨架屏） -->
+<div class="state" id="st-loading">
+  <div class="sk">
+    <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+    <div class="ln w2"></div><div class="ln w1"></div>
+  </div>
+  <div class="tip">正在装载漏洞档案（findings / evidence / timeline 投影）…</div>
+</div>
+
+<!-- 四态之三：错误（有重试） -->
+<div class="state" id="st-error">
+  <div class="box">
+    <h3>装载失败</h3>
+    <p><code id="err-detail">（未知错误）</code></p>
+    <p style="margin-top:14px"><button class="btn acc" id="btn-retry">重试</button></p>
+  </div>
+</div>
+
+<!-- 四态之四：正常（五区全量） -->
+<div class="state" id="st-normal"><div id="wrap">
+
+  <!-- ① 头区：等级徽章+标题 | CVSS 大字+向量(点开八维雷达) | 验证状态+立即重放 | 复测状态 -->
+  <section class="zone" id="zone-head">
+    <div class="h1">
+      <span id="sev-badge" class="s-lo">低</span>
+      <div>
+        <div id="fd-title">—</div>
+        <div id="fd-id">—</div>
+      </div>
+    </div>
+    <div class="grid">
+      <div id="cvss-score" class="pend">待评定<span class="u"> /10</span></div>
+      <div>
+        <span id="cvss-vector">（无 CVSS 向量——候选未验证，待评定）<span class="hint">点击向量展开八维雷达；分值由向量按 CVSS v3.1 官方公式计算</span></span>
+        <div id="cvss-radar"></div>
+        <a id="cvss-calc-link" target="_blank" rel="noopener">在 CVSS 官方计算器中核对 ↗</a>
+      </div>
+      <div class="states">
+        <span id="verify-badge" class="t-n">待验证</span>
+        <button class="btn acc" id="btn-replay">▶ 立即重放验证</button>
+        <div id="retest-status">复测状态 <b>未复测</b></div>
+        <div class="basis" id="verify-basis"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 描述区：一句话结论 + 技术描述(折叠) + 修复建议子卡 -->
+  <section class="zone" id="zone-desc">
+    <h2><span class="zn">02</span>描述与修复建议</h2>
+    <div id="fd-brief">—</div>
+    <button class="btn sm" id="btn-tech">展开技术描述 ▾</button>
+    <div id="fd-tech">—</div>
+    <div id="fix-card">
+      <h3>修复建议</h3>
+      <div class="fl">
+        <span class="k">根因</span><span class="v" id="fix-root">—</span>
+        <span class="k">修复代码位</span><span class="v mono" id="fix-code">—</span>
+        <span class="k">修复后验证</span>
+        <span class="v">
+          <span id="fix-verify">—</span>
+          <button class="btn sm" id="btn-copy-verify">复制</button>
+        </span>
+      </div>
+      <div class="fb" id="fix-fallback">
+        <div class="k">证据复现命令（修复后逐一回放，均不应再复现）</div>
+        <div id="fix-fallback-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 证据区：EV 卡列表 + 查看原始报文 + 证据链完整性 -->
+  <section class="zone" id="zone-evidence">
+    <h2><span class="zn">03</span>证据</h2>
+    <div id="ev-list"></div>
+    <div id="chain-bar">✓ 证据链完整</div>
+    <div id="chain-broken">✗ 证据链断裂
+      <ul id="chain-breaks"></ul>
+    </div>
+    <div id="chain-detail"></div>
+  </section>
+
+  <!-- ④ 重放史区：次序/时刻/结果/耗时/触发方式 -->
+  <section class="zone" id="zone-replay">
+    <h2><span class="zn">04</span>重放史</h2>
+    <div id="replay-wrap">
+      <table id="replay-table">
+        <thead><tr><th>次序</th><th>时刻</th><th>结果</th><th>耗时</th><th>触发方式</th></tr></thead>
+        <tbody id="replay-body"></tbody>
+      </table>
+      <div id="replay-note">重放全记录入账本（timeline 链式哈希逐行可验），客户可自行验真。</div>
+    </div>
+  </section>
+
+  <!-- ⑤ 生命线：首次发现→各次重放→自动复测→客户反馈→当前态 -->
+  <section class="zone" id="zone-lifeline">
+    <h2><span class="zn">05</span>生命线</h2>
+    <div id="lifeline"><div class="track" id="lf-track"></div></div>
+  </section>
+
+</div></div>
+
+<!-- 立即重放面板：尝试写入路由；未挂载(404/405)则降级为可复制命令 -->
+<div id="replay-panel">
+  <div class="box">
+    <h3>立即重放验证</h3>
+    <div class="sub">对 <span class="mono" id="rp-fid">—</span> 挂接的全部证据执行机械重放。
+      本页为只读观察面——重放写入由操作台写入路由承接。</div>
+    <div class="msg" id="rp-msg"></div>
+    <div class="k" style="color:var(--g8);font-size:11px;margin-bottom:4px">逐条重放命令（复制到操作台执行）</div>
+    <div id="rp-cmds"></div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn acc" id="rp-go">发起重放</button>
+      <button class="btn" id="rp-close">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+'use strict';
+/* ================= 常量与工具 ================= */
+var API_DETAIL = '/api/v2/finding-detail';
+var API_RAW = '/api/v2/evidence-raw';
+var API_REPLAY = '/api/v2/finding/replay';   /* 写入路由（读面舰不建；在则用） */
+var $ = function (id) { return document.getElementById(id); };
+var VERDICT_TAG = { 'reproduced': ['t-g', '复现'], 'not-reproduced': ['t-y', '未复现'],
+                    'env-diff': ['t-b', '环境差异'], 'manual': ['t-p', '人工判定'] };
+var SEV_CLS = { '高': 's-hi', '中': 's-mid', '低': 's-lo' };
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function fmtMs(ms) {
+  if (ms == null) { return '—'; }
+  return ms >= 1000 ? (ms / 1000).toFixed(1) + ' s' : ms + ' ms';
+}
+function fmtTs(ts) {
+  var m = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/.exec(ts || '');
+  return m ? m[1] + ' ' + m[2] : (ts || '—');
+}
+function copyText(btn, text) {
+  if (!text) { return; }
+  function done() {
+    var old = btn.textContent;
+    btn.textContent = '已复制';
+    btn.classList.add('copy-ok');
+    setTimeout(function () { btn.textContent = old; btn.classList.remove('copy-ok'); }, 1400);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, function () { legacyCopy(text); done(); });
+  } else { legacyCopy(text); done(); }
+}
+function legacyCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) { /* 不可复制环境：选中文本即可手抄 */ }
+  document.body.removeChild(ta);
+}
+
+/* ================= 四态切换 ================= */
+function showState(name) {
+  ['st-empty', 'st-loading', 'st-error', 'st-normal'].forEach(function (id) {
+    $(id).classList.toggle('on', id === name);
+  });
+}
+
+/* ================= 参数与形态 ================= */
+function params() {
+  var q = {};
+  new URLSearchParams(location.search).forEach(function (v, k) { q[k] = v; });
+  return q;
+}
+function applyMode(mode) {
+  var drawer = mode === 'drawer';
+  document.body.classList.toggle('mode-drawer', drawer);
+  document.body.classList.toggle('mode-full', !drawer);
+}
+function hrefWith(kv) {
+  var q = new URLSearchParams(location.search);
+  Object.keys(kv).forEach(function (k) { q.set(k, kv[k]); });
+  return location.pathname + '?' + q.toString();
+}
+
+/* ================= CVSS 八维雷达（SVG 自绘） ================= */
+var CVSS_W = {
+  AV: { N: 0.85, A: 0.62, L: 0.55, P: 0.20 },
+  AC: { L: 0.77, H: 0.44 },
+  PR: { N: 0.85, L: 0.62, H: 0.27 },
+  UI: { N: 0.85, R: 0.62 },
+  C: { H: 0.56, L: 0.22, N: 0 },
+  I: { H: 0.56, L: 0.22, N: 0 },
+  A: { H: 0.56, L: 0.22, N: 0 }
+};
+var RADAR_AXES = ['AV', 'AC', 'PR', 'UI', 'S', 'C', 'I', 'A'];
+var RADAR_NAMES = { AV: '攻击途径', AC: '攻击复杂度', PR: '所需权限', UI: '用户交互',
+                    S: '影响范围', C: '机密性', I: '完整性', A: '可用性' };
+function radarVal(axis, v) {
+  if (axis === 'S') { return v === 'C' ? 0.9 : 0.3; }   /* 展示归一：改域更宽 */
+  var w = CVSS_W[axis];
+  return w && v in w ? w[v] : 0;
+}
+function svgEl(tag, attrs) {
+  var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+  return el;
+}
+function renderRadar(vector) {
+  var host = $('cvss-radar');
+  host.innerHTML = '';
+  var m = {};
+  vector.split('/').slice(1).forEach(function (p) {
+    var kv = p.split(':');
+    if (kv.length === 2) { m[kv[0]] = kv[1]; }
+  });
+  var cx = 86, cy = 78, R = 58, n = RADAR_AXES.length;
+  var svg = svgEl('svg', { width: 260, height: 158, viewBox: '0 0 260 158' });
+  [0.25, 0.5, 0.75, 1].forEach(function (f) {
+    var pts = [];
+    for (var i = 0; i < n; i++) {
+      var a = -Math.PI / 2 + i * 2 * Math.PI / n;
+      pts.push((cx + R * f * Math.cos(a)).toFixed(1) + ',' + (cy + R * f * Math.sin(a)).toFixed(1));
+    }
+    svg.appendChild(svgEl('polygon', { points: pts.join(' '),
+      fill: 'none', stroke: '#252930', 'stroke-width': 1 }));
+  });
+  var poly = [];
+  for (i = 0; i < n; i++) {
+    var ang = -Math.PI / 2 + i * 2 * Math.PI / n;
+    var v = radarVal(RADAR_AXES[i], m[RADAR_AXES[i]] || '');
+    poly.push((cx + R * v * Math.cos(ang)).toFixed(1) + ',' + (cy + R * v * Math.sin(ang)).toFixed(1));
+    svg.appendChild(svgEl('line', { x1: cx, y1: cy,
+      x2: cx + R * Math.cos(ang), y2: cy + R * Math.sin(ang), stroke: '#1d2026' }));
+    var lx = cx + (R + 15) * Math.cos(ang), ly = cy + (R + 15) * Math.sin(ang);
+    var t = svgEl('text', { x: lx.toFixed(1), y: (ly + 3).toFixed(1),
+      'text-anchor': 'middle', 'class': 'rl' });
+    t.textContent = RADAR_AXES[i] + (m[RADAR_AXES[i]] ? ':' + m[RADAR_AXES[i]] : '');
+    svg.appendChild(t);
+    var cap = svgEl('title');
+    cap.textContent = RADAR_NAMES[RADAR_AXES[i]];
+    t.appendChild(cap);
+  }
+  svg.appendChild(svgEl('polygon', { points: poly.join(' '),
+    fill: 'rgba(61,220,151,.18)', stroke: '#3ddc97', 'stroke-width': 1.5 }));
+  host.appendChild(svg);
+}
+
+/* ================= 五区渲染 ================= */
+function renderHead(p) {
+  var f = p.finding;
+  var sev = f.impact || '低';
+  var sb = $('sev-badge');
+  sb.textContent = sev;
+  sb.className = SEV_CLS[sev] || 's-lo';
+  $('fd-title').textContent = f.title || f.id;
+  $('fd-id').textContent = f.id + (f.vuln_ref ? ' · ' + f.vuln_ref : '') +
+    (f.affected_asset_id ? ' · 资产 ' + f.affected_asset_id : '') +
+    (p.goal ? ' · 任务 ' + p.goal : '');
+  $('crumb-goal').textContent = p.goal ? '· ' + p.goal : '';
+
+  var cs = $('cvss-score');
+  if (p.cvss.pending || p.cvss.score == null) {
+    cs.className = 'pend';
+    cs.innerHTML = '待评定<span class="u"> /10</span>';
+    $('cvss-vector').innerHTML = '（无 CVSS 向量——候选未验证，待评定）' +
+      '<span class="hint">向量由发现卡携带后，分值按 CVSS v3.1 官方公式计算</span>';
+    $('cvss-calc-link').style.display = 'none';
+  } else {
+    cs.className = '';
+    cs.innerHTML = p.cvss.score.toFixed(1) + '<span class="u"> /10 · CVSS v3.1</span>';
+    $('cvss-vector').innerHTML = '';
+    var v = document.createElement('span');
+    v.textContent = p.cvss.vector;
+    v.style.cursor = 'pointer';
+    v.title = '点击展开/收起八维雷达';
+    v.onclick = function () { $('cvss-radar').classList.toggle('on'); };
+    $('cvss-vector').appendChild(v);
+    var hint = document.createElement('span');
+    hint.className = 'hint';
+    hint.textContent = '点击向量串展开八维雷达小图';
+    $('cvss-vector').appendChild(hint);
+    $('cvss-calc-link').style.display = '';
+    $('cvss-calc-link').href = 'https://www.first.org/cvss/calculator/3.1#' + p.cvss.vector;
+    renderRadar(p.cvss.vector);
+  }
+
+  var vb = $('verify-badge');
+  vb.textContent = p.verification.state;
+  vb.className = { '已验证': 't-g', '待验证': 't-y', '已失效': 't-n' }[p.verification.state] || 't-n';
+  $('verify-basis').textContent = p.verification.basis || '';
+  var rt = p.retest;
+  $('retest-status').innerHTML = '复测状态 <b>' + esc(rt.state) + '</b>' +
+    (rt.runs ? '（' + rt.runs + ' 次·最近 ' + esc(fmtTs(rt.last_at)) + '）' : '');
+}
+
+function renderDesc(p) {
+  $('fd-brief').textContent = p.finding.description_brief || p.finding.title || '（无一句话结论）';
+  var tech = $('fd-tech');
+  tech.textContent = p.tech_desc || '（技术描述待撰写——发现卡「漏洞叙述」节未成文）';
+  var open = false;
+  $('btn-tech').textContent = '展开技术描述 ▾';
+  $('btn-tech').onclick = function () {
+    open = !open;
+    tech.classList.toggle('on', open);
+    this.textContent = open ? '收起技术描述 ▴' : '展开技术描述 ▾';
+  };
+  var fix = p.fix;
+  $('fix-root').textContent = fix.written ? (fix.root_cause || '—') : '（修复建议待撰写）';
+  $('fix-code').textContent = fix.written ? (fix.code_location || '—') : '—';
+  $('fix-verify').textContent = fix.written ? (fix.verify_command || '—') : '—';
+  $('btn-copy-verify').style.display = fix.verify_command ? '' : 'none';
+  $('btn-copy-verify').onclick = function () { copyText(this, fix.verify_command); };
+  var list = $('fix-fallback-list');
+  list.innerHTML = '';
+  (fix.fallback_commands || []).forEach(function (cmd) {
+    var div = document.createElement('div');
+    div.className = 'cmd';
+    div.textContent = cmd;
+    var b = document.createElement('button');
+    b.className = 'btn sm';
+    b.textContent = '复制';
+    b.style.marginLeft = '8px';
+    b.onclick = function () { copyText(this, cmd); };
+    div.appendChild(b);
+    list.appendChild(div);
+  });
+  if (!(fix.fallback_commands || []).length) {
+    var e = document.createElement('div');
+    e.className = 'cmd';
+    e.textContent = '（无挂接证据——无复现命令）';
+    list.appendChild(e);
+  }
+}
+
+function verdictTag(v) {
+  var vt = VERDICT_TAG[v];
+  if (!vt) { return '<span class="tag t-n">未重放</span>'; }
+  return '<span class="tag ' + vt[0] + '">' + vt[1] + '</span>';
+}
+
+function renderEvidence(p) {
+  var list = $('ev-list');
+  list.innerHTML = '';
+  if (!(p.evidence || []).length) {
+    list.innerHTML = '<div class="empty">尚无证据——智能体完成对应意图后自动收录。</div>';
+  }
+  p.evidence.forEach(function (e) {
+    var card = document.createElement('div');
+    card.className = 'ev-card';
+    var hashCls = e.hash_ok === true ? 'ok' : (e.hash_ok === false ? 'bad' : 'unk');
+    var hashTxt = e.hash_ok === true ? '哈希核验一致' :
+      (e.hash_ok === false ? '哈希不符（疑似被改动）' : '工件缺失，未核验');
+    card.innerHTML =
+      '<div class="top">' +
+        '<span class="id">' + esc(e.id) + '</span>' +
+        '<span class="tt">' + esc(e.title) + '</span>' +
+        '<span class="tag t-n">' + esc(e.source_type) + '</span>' +
+        (e.verdict ? verdictTag(e.verdict) : '<span class="tag t-n">未重放</span>') +
+        '<span class="mt">' + esc(fmtTs(e.observed_at)) + '</span>' +
+      '</div>' +
+      '<div class="ev-hash">' + esc(e.hash_trunc) + '… ' +
+        '<span class="' + hashCls + '">' + hashTxt + '</span> ' +
+        '<button class="btn sm act-copy-hash">复制完整哈希</button>' +
+        '<button class="btn sm act-copy-cmd" style="margin-left:6px">复制复现命令</button>' +
+        (e.has_request || e.has_artifact ?
+          ' <button class="btn sm act-raw" style="margin-left:6px">查看原始报文 ▾</button>' : '') +
+      '</div>' +
+      '<div class="rawpane"></div>';
+    card.querySelector('.act-copy-hash').onclick = function () {
+      copyText(this, e.content_hash_raw);
+    };
+    if (e.repro_command) {
+      card.querySelector('.act-copy-cmd').onclick = function () {
+        copyText(this, e.repro_command);
+      };
+    } else {
+      card.querySelector('.act-copy-cmd').style.display = 'none';
+    }
+    var rawBtn = card.querySelector('.act-raw');
+    if (rawBtn) {
+      rawBtn.onclick = function () { toggleRaw(this, card, e); };
+    }
+    list.appendChild(card);
+  });
+  renderChain(p);
+}
+
+function toggleRaw(btn, card, e) {
+  var pane = card.querySelector('.rawpane');
+  if (pane.classList.toggle('on')) {
+    btn.textContent = '收起原始报文 ▴';
+    if (!pane.dataset.loaded) { loadRaw(pane, e); }
+  } else {
+    btn.textContent = '查看原始报文 ▾';
+  }
+}
+
+function loadRaw(pane, e) {
+  pane.dataset.loaded = '1';
+  pane.innerHTML = '<div class="empty">装载原始报文…</div>';
+  var q = '?id=' + encodeURIComponent(e.id) + (params().goal ? '&goal=' + encodeURIComponent(params().goal) : '');
+  fetch(API_RAW + q).then(function (r) {
+    if (!r.ok) { throw new Error('HTTP ' + r.status); }
+    return r.json();
+  }).then(function (d) { paintRaw(pane, d); }).catch(function (err) {
+    pane.innerHTML = '';
+    var errDiv = document.createElement('div');
+    errDiv.className = 'empty';
+    errDiv.style.color = 'var(--dang)';
+    errDiv.textContent = '原始报文装载失败：' + err.message;
+    var retry = document.createElement('button');
+    retry.className = 'btn sm';
+    retry.style.marginLeft = '8px';
+    retry.textContent = '重试';
+    retry.onclick = function () { delete pane.dataset.loaded; loadRaw(pane, e); };
+    errDiv.appendChild(retry);
+    pane.appendChild(errDiv);
+  });
+}
+
+function paintRaw(pane, d) {
+  pane.innerHTML = '';
+  if (d.hash_ok === true) {
+    var ok = document.createElement('div');
+    ok.className = 'ev-hash';
+    ok.innerHTML = '<span class="ok">✓ 工件哈希与本卡一致（' + esc(d.hash_detail || '') + '）</span>';
+    pane.appendChild(ok);
+  } else if (d.hash_ok === false) {
+    var bad = document.createElement('div');
+    bad.className = 'ev-hash';
+    bad.innerHTML = '<span class="bad">✗ ' + esc(d.hash_detail || '哈希不符') + '</span>';
+    pane.appendChild(bad);
+  }
+  if (d.has_request) {
+    var h1 = document.createElement('h4');
+    h1.textContent = '请求（证据卡 raw_request 原文）';
+    var preq = document.createElement('pre');
+    preq.className = 'raw';
+    preq.textContent = d.request;
+    var b1 = document.createElement('button');
+    b1.className = 'btn sm';
+    b1.textContent = '复制请求';
+    b1.onclick = function () { copyText(this, d.request); };
+    pane.appendChild(h1); pane.appendChild(preq); pane.appendChild(b1);
+  }
+  var h2 = document.createElement('h4');
+  h2.textContent = '响应（工件原文）';
+  var seg = document.createElement('span');
+  seg.className = 'seg' + (d.response.is_http ? '' : ' off');
+  seg.style.marginLeft = '8px';
+  seg.title = d.response.is_http ? '仅头 / 全文 切换' : '非 HTTP 工件，无响应头';
+  var bHead = document.createElement('b');
+  bHead.textContent = '仅头';
+  var bFull = document.createElement('b');
+  bFull.textContent = '全文';
+  bFull.className = d.response.is_http ? '' : 'on';
+  if (d.response.is_http) { bHead.className = 'on'; }
+  seg.appendChild(bHead); seg.appendChild(bFull);
+  var pre = document.createElement('pre');
+  pre.className = 'raw';
+  var show = function (which) {
+    pre.textContent = which === 'head' ? d.response.head : d.response.full;
+    bHead.classList.toggle('on', which === 'head' && d.response.is_http);
+    bFull.classList.toggle('on', which === 'full' || !d.response.is_http);
+  };
+  bHead.onclick = function () { show('head'); };
+  bFull.onclick = function () { show('full'); };
+  show(d.response.is_http ? 'head' : 'full');
+  var b2 = document.createElement('button');
+  b2.className = 'btn sm';
+  b2.style.marginLeft = '8px';
+  b2.textContent = '复制响应';
+  b2.onclick = function () { copyText(this, pre.textContent); };
+  pane.appendChild(h2); pane.appendChild(seg); pane.appendChild(pre); pane.appendChild(b2);
+}
+
+function renderChain(p) {
+  var bar = $('chain-bar'), broken = $('chain-broken'), det = $('chain-detail');
+  var checks = (p.chain && p.chain.checks) || [];
+  if (p.chain && p.chain.ok) {
+    bar.classList.add('on');
+    broken.classList.remove('on');
+    bar.textContent = '✓ 证据链完整——' + checks.length + ' 项核验全部通过';
+  } else {
+    bar.classList.remove('on');
+    broken.classList.add('on');
+    var ul = $('chain-breaks');
+    ul.innerHTML = '';
+    checks.filter(function (c) { return c.ok === false; }).forEach(function (c) {
+      var li = document.createElement('li');
+      li.textContent = c.name + '：' + c.detail;
+      ul.appendChild(li);
+    });
+  }
+  det.textContent = checks.map(function (c) {
+    return c.name + (c.ok === false ? '✗' : (c.ok === true ? '✓' : '—'));
+  }).join(' · ');
+}
+
+function renderReplay(p) {
+  var body = $('replay-body');
+  body.innerHTML = '';
+  if (!(p.replays || []).length) {
+    $('replay-wrap').querySelector('.empty') &&
+      $('replay-wrap').querySelector('.empty').remove();
+    var empty = document.createElement('div');
+    empty.className = 'empty';
+    empty.textContent = '未重放——CVSS 显示「待评定」；挂接证据后可发起机械重放。';
+    $('replay-table').style.display = 'none';
+    $('replay-wrap').insertBefore(empty, $('replay-note'));
+  } else {
+    $('replay-table').style.display = '';
+    var emp = $('replay-wrap').querySelector('.empty');
+    if (emp) { emp.remove(); }
+    p.replays.forEach(function (r) {
+      var tr = document.createElement('tr');
+      tr.title = '证据 ' + r.ev_id;
+      tr.innerHTML =
+        '<td class="mono">#' + r.seq + '</td>' +
+        '<td class="mono">' + esc(fmtTs(r.at)) + '</td>' +
+        '<td>' + verdictTag(r.verdict) + '</td>' +
+        '<td class="mono">' + esc(fmtMs(r.duration_ms)) + '</td>' +
+        '<td>' + esc(r.trigger) + '</td>';
+      body.appendChild(tr);
+    });
+  }
+}
+
+function renderLifeline(p) {
+  var track = $('lf-track');
+  track.innerHTML = '';
+  (p.lifeline || []).forEach(function (n) {
+    var nd = document.createElement('div');
+    nd.className = 'nd k-' + n.kind;
+    nd.innerHTML = '<div class="dot"></div>' +
+      '<div class="lb">' + esc(n.label) +
+      (n.verdict ? '<div class="v">' + verdictTag(n.verdict) + '</div>' : '') + '</div>' +
+      '<div class="ts">' + esc(fmtTs(n.at)) + '</div>';
+    track.appendChild(nd);
+  });
+}
+
+function render(p) {
+  renderHead(p);
+  renderDesc(p);
+  renderEvidence(p);
+  renderReplay(p);
+  renderLifeline(p);
+  showState('st-normal');
+}
+
+/* ================= 装载 ================= */
+var LAST = { id: '', goal: '' };
+function load(id, goal) {
+  LAST = { id: id, goal: goal };
+  if (!id) { showState('st-empty'); return; }
+  showState('st-loading');
+  var q = '?id=' + encodeURIComponent(id) +
+    (goal ? '&goal=' + encodeURIComponent(goal) : '');
+  fetch(API_DETAIL + q).then(function (r) {
+    return r.json().then(function (d) { return { status: r.status, body: d }; });
+  }).then(function (res) {
+    if (res.status !== 200) {
+      $('err-detail').textContent = (res.body && res.body.error) ||
+        ('HTTP ' + res.status + '（未知错误）');
+      showState('st-error');
+      return;
+    }
+    render(res.body);
+  }).catch(function (err) {
+    $('err-detail').textContent = '网络/服务不可达：' + err.message;
+    showState('st-error');
+  });
+}
+$('btn-retry').onclick = function () { load(LAST.id, LAST.goal); };
+
+/* ================= 立即重放（写入尝试+降级） ================= */
+function openReplayPanel(p) {
+  $('rp-fid').textContent = p.finding.id;
+  $('rp-msg').className = 'msg';
+  var cmds = $('rp-cmds');
+  cmds.innerHTML = '';
+  (p.fix.fallback_commands || []).forEach(function (cmd) {
+    var div = document.createElement('div');
+    div.className = 'cmd';
+    div.textContent = cmd;
+    var b = document.createElement('button');
+    b.className = 'btn sm';
+    b.style.marginLeft = '8px';
+    b.textContent = '复制';
+    b.onclick = function () { copyText(this, cmd); };
+    div.appendChild(b);
+    cmds.appendChild(div);
+  });
+  if (!(p.fix.fallback_commands || []).length) {
+    var e = document.createElement('div');
+    e.className = 'cmd';
+    e.textContent = '（无挂接证据——无可重放命令）';
+    cmds.appendChild(e);
+  }
+  $('replay-panel').classList.add('on');
+  $('rp-go').onclick = function () { attemptReplay(p); };
+}
+function attemptReplay(p) {
+  var msg = $('rp-msg');
+  msg.className = 'msg';
+  msg.textContent = '正在发起重放…';
+  fetch(API_REPLAY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+    credentials: 'same-origin',
+    body: JSON.stringify({ id: p.finding.id, goal: LAST.goal || '' })
+  }).then(function (r) {
+    if (r.ok) {
+      msg.className = 'msg ok';
+      msg.textContent = '重放已受理——稍后刷新查看最新裁决。';
+      setTimeout(function () { load(LAST.id, LAST.goal); }, 1200);
+      return null;
+    }
+    throw new Error('HTTP ' + r.status);
+  }).catch(function (err) {
+    msg.className = 'msg err';
+    msg.textContent = '重放写入路由未挂载（' + err.message +
+      '）——本页为只读观察面；请复制上方命令在操作台执行，或在任务详情发起。';
+  });
+}
+$('rp-close').onclick = function () { $('replay-panel').classList.remove('on'); };
+$('replay-panel').addEventListener('click', function (ev) {
+  if (ev.target === this) { this.classList.remove('on'); }
+});
+
+/* ================= 形态切换与宿主接入 ================= */
+$('btn-fullscreen').onclick = function () {
+  window.open(hrefWith({ mode: 'full' }), '_blank');
+};
+$('btn-drawer').onclick = function () {
+  var toDrawer = !document.body.classList.contains('mode-drawer');
+  applyMode(toDrawer ? 'drawer' : 'full');
+  try { history.replaceState(null, '', hrefWith({ mode: toDrawer ? 'drawer' : 'full' })); }
+  catch (e) { /* file:// 等环境无 replaceState 权限 */ }
+};
+window.addEventListener('message', function (ev) {
+  var d = ev.data;
+  if (d && d.type === 'finding-detail:open' && d.id) {
+    applyMode(d.mode || 'drawer');
+    load(d.id, d.goal || '');
+  }
+});
+window.FindingDetail = {
+  open: function (opt) {
+    opt = opt || {};
+    applyMode(opt.mode || 'drawer');
+    load(opt.id || '', opt.goal || '');
+  },
+  reload: function () { load(LAST.id, LAST.goal); }
+};
+
+/* ================= 启动 ================= */
+(function boot() {
+  var q = params();
+  applyMode(q.mode);
+  load(q.id || '', q.goal || '');
+  $('btn-replay').onclick = function () {
+    if (!CURRENT) { return; }
+    openReplayPanel(CURRENT);
+  };
+})();
+var CURRENT = null;
+var _render = render;
+render = function (p) { CURRENT = p; _render(p); };   /* btn-replay 取当前档案 */
+
+/* 共享壳自注册（UI-1 舰 /static/app.js；壳未挂载时静默跳过，本页独立可用） */
+try {
+  if (window.nav && typeof nav.push === 'function') {
+    nav.push({ id: 'finding-detail', label: '漏洞详情', group: '发现' });
+  }
+} catch (e) { /* 壳异常不殃及本页 */ }
+</script>
+</body>
+</html>

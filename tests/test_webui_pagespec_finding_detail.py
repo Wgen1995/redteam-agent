@@ -477,6 +477,77 @@ class TestV2MountContract(ServerBase):
             conn.close()
         self.assertEqual(dir_bytes(self.gd), before)
 
+# ═══════════════════════════════ ③ 页面层 ═══════════════════════════════
+
+PAGE = os.path.join(CLI, "webui", "static", "pages", "finding-detail.html")
+ZONE_MARKS = (
+    # 五区容器
+    'id="zone-head"', 'id="zone-desc"', 'id="zone-evidence"',
+    'id="zone-replay"', 'id="zone-lifeline"',
+    # 头区：徽章/CVSS/向量雷达/验证态/重放钮/复测态
+    'id="sev-badge"', 'id="cvss-score"', 'id="cvss-vector"', 'id="cvss-radar"',
+    'id="verify-badge"', 'id="btn-replay"', 'id="retest-status"',
+    # 描述区：一句话结论/技术描述/修复建议子卡
+    'id="fd-brief"', 'id="fd-tech"', 'id="fix-card"', 'id="fix-root"',
+    'id="fix-code"', 'id="fix-verify"', 'id="btn-copy-verify"',
+    # 证据区：EV 卡列表/链完整性
+    'id="ev-list"', 'id="chain-bar"', 'id="chain-broken"',
+    # 重放史区
+    'id="replay-table"',
+    # 生命线区
+    'id="lifeline"',
+    # 四态（空/加载/错误含重试/正常）
+    'id="st-empty"', 'id="st-loading"', 'id="st-error"', 'id="btn-retry"',
+    'id="st-normal"',
+    # 两形态（抽屉/全屏）+ 宿主壳接入
+    "mode-drawer", "mode-full", "FindingDetail",
+    # 零框架自绘雷达
+    "createElementNS",
+    # 响应切换 仅头/全文
+    "仅头", "全文",
+    # CVSS 官方计算器链接（spec P6 交互）
+    "first.org/cvss/calculator",
+    # 立即重放按钮的写入尝试 + 失败降级
+    "/api/v2/finding/replay",
+    # 复制能力（哈希截断+复制/验证命令复制/报文复制）
+    "copyText",
+)
+FETCH_MARKS = ("'/api/v2/finding-detail", "'/api/v2/evidence-raw")
+
+
+class TestPageStructure(Base):
+    def _src(self):
+        with open(PAGE, encoding="utf-8") as f:
+            return f.read()
+
+    def test_five_zones_and_states_present(self):
+        src = self._src()
+        for m in ZONE_MARKS:
+            self.assertIn(m, src, "缺 " + m)
+        for m in FETCH_MARKS:
+            self.assertIn(m, src, "须拉取 " + m)
+
+    def test_nav_self_registration_guarded(self):
+        src = self._src()
+        self.assertIn("nav.push", src)
+        self.assertIn("id: 'finding-detail'", src)
+        self.assertIn("group: '发现'", src)
+        self.assertIn("typeof nav.push", src)               # 壳未落也不炸
+
+    def test_zero_framework_zero_cdn(self):
+        src = self._src()
+        self.assertEqual(src.count("<script src="), 1, "只许共享壳一外链")
+        self.assertIn('<script src="/static/app.js"></script>', src)
+        self.assertEqual(src.count("https://"), 1, "唯一外链=CVSS 官方计算器")
+        self.assertIn("https://www.first.org/cvss/calculator", src)
+
+    def test_js_under_2000_lines_page_over_600(self):
+        src = self._src()
+        blocks = src.split("<script>")[1:]
+        self.assertGreaterEqual(len(blocks), 1)
+        nlines = sum(len(b.split("</script>")[0].splitlines()) for b in blocks)
+        self.assertLess(nlines, 2000)
+        self.assertGreaterEqual(len(src.splitlines()), 600, "P6 全量页 ~700 行量纲")
 
 if __name__ == "__main__":
     unittest.main()
