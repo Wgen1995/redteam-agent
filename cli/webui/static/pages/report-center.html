@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>报告中心 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律：旧军语不上屏，统一说「报告」「任务」）。设计权威 ui-spec-complete-v1.md §P7。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。
+     数据源：reports 目录+findings+matrix+timeline 只读投影（/api/v2/report-*）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;--purple:#a78bfa;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+/* ── 顶条 ─────────────────────────────────────────────── */
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:6px 14px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover{background:var(--g5);color:var(--gc)}
+.btn.acc{background:var(--acc2);border-color:var(--acc2);color:#08130d;font-weight:600}
+.btn.acc:hover{background:var(--acc)}
+.btn.sm{padding:3px 10px;font-size:11.5px}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+/* ── 四态 ─────────────────────────────────────────────── */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+#st-loading .tip{color:var(--g8);font-size:12px;text-align:center;margin-top:6px}
+/* ── 通用件 ───────────────────────────────────────────── */
+.mono{font-family:var(--mono)}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-y{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-r{background:rgba(232,99,90,.14);color:var(--dang)}
+.t-b{background:rgba(90,169,230,.14);color:var(--info)}
+.t-n{background:var(--g4);color:var(--g9)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);text-align:left;font-weight:500;padding:8px 10px;
+border-bottom:1px solid var(--g4);font-size:11.5px;letter-spacing:.4px}
+td{padding:8px 10px;border-bottom:1px solid var(--g3);color:var(--gb)}
+tr:hover td{background:var(--g2)}
+td.mono{font-size:12px}
+.empty{color:var(--g8);font-size:12.5px;padding:10px 2px}
+/* ── 列表视图 ─────────────────────────────────────────── */
+#view-list{display:none}
+#view-list.on{display:block}
+#list-head{max-width:1120px;margin:0 auto;padding:18px 24px 0}
+#list-head h1{font-size:17px;color:var(--gc);font-weight:600}
+#list-head .sub{color:var(--g8);font-size:12px;margin-top:4px;margin-bottom:12px}
+#list-summary{display:flex;gap:8px;flex-wrap:wrap}
+#list-wrap{max-width:1120px;margin:14px auto 60px;padding:0 24px;
+background:var(--g2);border:1px solid var(--g4);border-radius:6px}
+.st-badge{font-size:12px;padding:2px 10px;border-radius:4px;font-weight:600}
+.st-badge.signed{background:rgba(61,220,151,.14);color:var(--acc);
+border:1px solid rgba(61,220,151,.4)}
+.st-badge.pending{background:rgba(232,179,75,.12);color:var(--warn);
+border:1px solid rgba(232,179,75,.4)}
+.st-badge.draft{background:var(--g4);color:var(--g9);border:1px solid var(--g6)}
+.lock-ico{color:var(--acc);margin-left:4px;font-size:11px}
+/* ── 详情视图：左预览+右元信息 ─────────────────────────── */
+#view-detail{display:none}
+#view-detail.on{display:block}
+#detail-wrap{max-width:1320px;margin:0 auto;padding:16px 24px 60px;
+display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:16px;align-items:start}
+@media (max-width:980px){#detail-wrap{grid-template-columns:1fr}}
+.sec{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:16px;margin-bottom:14px;scroll-margin-top:12px}
+.sec>h2{font-size:13px;color:var(--gc);margin-bottom:12px;letter-spacing:.4px}
+.sec>h2 .zn{color:var(--g7);font-family:var(--mono);margin-right:8px}
+/* 章节锚导航 */
+#secnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;position:sticky;
+top:8px;z-index:5;background:rgba(10,11,13,.92);border:1px solid var(--g3);
+border-radius:6px;padding:8px 10px}
+#secnav a{color:var(--g9);font-size:12px;padding:3px 10px;border-radius:4px;
+background:var(--g3);cursor:pointer}
+#secnav a:hover{color:var(--acc);text-decoration:none;background:var(--g4)}
+/* 封面节 */
+#sec-cover .rno{font-family:var(--mono);font-size:12px;color:var(--info)}
+#sec-cover h3{font-size:19px;color:var(--gc);margin:4px 0 2px;font-weight:600}
+#sec-cover .obj{color:var(--ga);font-size:13px}
+#cover-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px 18px;margin-top:14px}
+#cover-grid .k{color:var(--g8);font-size:11px;margin-bottom:3px}
+#cover-grid .v{color:var(--gb);font-size:12.5px;word-break:break-all}
+#locked-at{margin-top:12px;display:none;background:rgba(61,220,151,.08);
+border:1px solid rgba(61,220,151,.35);color:var(--acc);border-radius:6px;
+padding:8px 12px;font-size:12.5px}
+#locked-at.on{display:block}
+/* 授权摘要 */
+#authz .fl{display:grid;grid-template-columns:96px 1fr;gap:8px 12px;font-size:12.5px}
+#authz .fl .k{color:var(--g8)}
+#authz .fl .v{color:var(--gb);word-break:break-all}
+.sha{font-family:var(--mono);font-size:11.5px;color:var(--ga);word-break:break-all}
+/* 发现表 */
+#fd-table td a{font-family:var(--mono);font-size:12px}
+#fd-table .tt{color:var(--gc)}
+/* 证据附录 */
+.ev-line{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+padding:7px 2px;border-bottom:1px dashed var(--g3);font-size:12.5px}
+.ev-line:last-child{border-bottom:none}
+.ev-line .id{font-family:var(--mono);color:var(--info);font-size:12px}
+.ev-line .tt{color:var(--gb)}
+.ev-line .mt{color:var(--g8);font-size:11px;margin-left:auto;font-family:var(--mono)}
+.ev-line .lf{color:var(--g7);font-size:11px;font-family:var(--mono)}
+/* 覆盖诚实节（黄底=未测清单，spec P7 覆盖承诺样式） */
+#coverage .subh{font-size:12px;color:var(--ga);margin:12px 0 6px;font-weight:600}
+#coverage .subh .n{font-family:var(--mono);color:var(--g8);font-weight:400}
+#cov-tested .chip{display:inline-block;margin:0 6px 6px 0;padding:2px 9px;
+border-radius:4px;background:rgba(61,220,151,.10);border:1px solid rgba(61,220,151,.3);
+color:var(--acc);font-size:11.5px;font-family:var(--mono)}
+#cov-untable td.lab{white-space:nowrap}
+#cov-untable tr.untest td{background:rgba(232,179,75,.05)}   /* 未测行黄底 */
+#cov-closure{margin-top:10px;color:var(--ga);font-size:12.5px}
+#cov-closure b{color:var(--warn);font-weight:600}
+#cov-intents{margin-top:6px;color:var(--g8);font-size:12px}
+/* 方法论附录 */
+#method .ml{display:grid;grid-template-columns:120px 1fr;gap:8px 12px;font-size:12.5px}
+#method .ml .k{color:var(--g8)}
+#method .ml .v{color:var(--gb);word-break:break-all}
+/* ── 右侧元信息卡 ─────────────────────────────────────── */
+#meta{position:sticky;top:8px}
+#meta .card{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:12px}
+#meta .card h3{font-size:12.5px;color:var(--gc);margin-bottom:10px;letter-spacing:.4px}
+#meta .card h3 .zn{color:var(--g7);font-family:var(--mono);margin-right:6px}
+#meta-input-hash .hv{font-family:var(--mono);font-size:11.5px;color:var(--ga);
+word-break:break-all;line-height:1.7}
+#meta-input-hash .nf{color:var(--g7);font-size:11px;margin-top:4px}
+/* 两次哈希比对（同输入同输出钉） */
+#pin-runs{margin-top:10px;border-top:1px dashed var(--g4);padding-top:10px}
+#pin-runs .k{color:var(--g8);font-size:11px;margin-bottom:4px}
+#pin-run-1,#pin-run-2{font-family:var(--mono);font-size:11px;word-break:break-all;
+color:var(--ga);line-height:1.6}
+#pin-verdict{margin-top:8px;font-size:12px;border-radius:4px;padding:6px 10px;display:none}
+#pin-verdict.on{display:block}
+#pin-verdict.ok{background:rgba(61,220,151,.08);border:1px solid rgba(61,220,151,.35);
+color:var(--acc)}
+#pin-verdict.bad{background:rgba(232,99,90,.10);border:1px solid rgba(232,99,90,.4);
+color:var(--dang)}
+/* 版本链 */
+.ver-line{display:flex;align-items:center;gap:8px;padding:5px 0;
+border-bottom:1px dashed var(--g3);font-size:12px}
+.ver-line:last-child{border-bottom:none}
+.ver-line .v{font-family:var(--mono);color:var(--info);width:26px;flex-shrink:0}
+.ver-line .ts{font-family:var(--mono);color:var(--g9);font-size:11px}
+.ver-line .file{font-family:var(--mono);color:var(--g7);font-size:10.5px;
+word-break:break-all;flex:1;min-width:0}
+/* 签发流程位：草稿→待签发→双签→已签发 */
+#flow{display:flex;align-items:center;gap:0;margin-bottom:12px}
+#flow .step{flex:1;text-align:center;position:relative;color:var(--g8);font-size:11px;
+padding:6px 0}
+#flow .step .dot{width:11px;height:11px;border-radius:50%;background:var(--g5);
+border:2px solid var(--g3);margin:0 auto 4px}
+#flow .step.done{color:var(--ga)}
+#flow .step.done .dot{background:var(--acc2);border-color:var(--acc2)}
+#flow .step.cur{color:var(--acc);font-weight:600}
+#flow .step.cur .dot{background:var(--acc);box-shadow:0 0 8px rgba(61,220,151,.6)}
+#flow .step:not(:last-child):after{content:"";position:absolute;top:11px;right:-7px;
+width:14px;height:2px;background:var(--g5)}
+#flow .step.done:not(:last-child):after{background:var(--acc2)}
+.sig-card{background:var(--g1);border:1px solid var(--g4);border-radius:6px;
+padding:10px 12px;margin-bottom:8px}
+.sig-card.filled{border-color:rgba(61,220,151,.35)}
+.sig-card.unfilled{border-style:dashed}
+.sig-card .who{display:flex;align-items:center;gap:8px}
+.sig-card .who b{color:var(--gc);font-size:12.5px;font-weight:600}
+.sig-card .who .ok{color:var(--acc);font-size:11px}
+.sig-card .meta6{color:var(--g8);font-size:11px;margin-top:4px;font-family:var(--mono)}
+.sig-card .note{color:var(--g9);font-size:11px;margin-top:2px}
+.sig-card .wait{color:var(--g7);font-size:12px}
+#binding-bar{display:none;border-radius:6px;padding:8px 12px;font-size:12px;margin-top:8px}
+#binding-bar.on{display:block}
+#binding-bar.ok{background:rgba(61,220,151,.08);border:1px solid rgba(61,220,151,.35);
+color:var(--acc)}
+#binding-bar.bad{background:rgba(232,99,90,.10);border:1px solid rgba(232,99,90,.4);
+color:var(--dang)}
+#binding-bar ul{margin:4px 0 0 16px}
+#binding-bar li{font-size:11px;font-family:var(--mono);word-break:break-all;line-height:1.7}
+/* 操作钮列 */
+#meta .acts{display:flex;flex-direction:column;gap:8px}
+#meta .acts .btn{width:100%}
+#meta-note{color:var(--g7);font-size:11px;line-height:1.7;margin-top:8px}
+/* ── 轻提示 ───────────────────────────────────────────── */
+#toast{position:fixed;top:60px;right:24px;max-width:420px;background:var(--g3);
+border:1px solid var(--g5);border-radius:6px;padding:10px 16px;font-size:12.5px;
+color:var(--gb);display:none;z-index:99;word-break:break-all}
+#toast.on{display:block}
+#toast.err{border-color:rgba(232,99,90,.5);color:var(--dang)}
+#toast.ok{border-color:var(--acc2);color:var(--acc)}
+.copy-ok{color:var(--acc)!important;border-color:var(--acc2)!important}
+/* ── 打印样式（导出 PDF=同渲染：只留左侧预览） ────────── */
+@media print{
+  body{background:#fff;color:#111}
+  #top,#secnav,#meta,#toast,.btn{display:none!important}
+  #view-detail{display:block!important}
+  #detail-wrap{display:block;max-width:none;padding:0}
+  .sec{border-color:#ccc;background:#fff;break-inside:avoid}
+  .sec>h2{color:#111}
+  .state{display:none}
+  #st-normal{display:block}
+}
+</style>
+</head>
+<body>
+
+<div id="top">
+  <span class="crumb"><b>报告中心</b> <span id="crumb-where">/ 报告列表</span></span>
+  <span class="sp"></span>
+  <button class="btn sm ghost" id="btn-back" style="display:none">← 返回列表</button>
+  <button class="btn sm ghost" id="btn-print" style="display:none">打印报告</button>
+</div>
+
+<!-- 四态之一：空（尚无任务——报告随任务生成） -->
+<div class="state" id="st-empty">
+  <div class="box">
+    <h3>还没有可展示的报告</h3>
+    <p>报告中心按任务组织：新建任务后，系统在执行过程中沉淀发现与覆盖记录，<br>
+       报告随之生成（草稿 → 待签发 → 双人签发 → 已签发锁定）。</p>
+  </div>
+</div>
+
+<!-- 四态之二：加载（骨架屏） -->
+<div class="state" id="st-loading">
+  <div class="sk">
+    <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+    <div class="ln w2"></div><div class="ln w1"></div>
+  </div>
+  <div class="tip" id="loading-tip">正在装载报告列表（reports / findings / matrix / timeline 投影）…</div>
+</div>
+
+<!-- 四态之三：错误（有重试） -->
+<div class="state" id="st-error">
+  <div class="box">
+    <h3>装载失败</h3>
+    <p><code id="err-detail">（未知错误）</code></p>
+    <p style="margin-top:14px"><button class="btn acc" id="btn-retry">重试</button></p>
+  </div>
+</div>
+
+<!-- 四态之四：正常（列表+详情两视图） -->
+<div class="state" id="st-normal">
+
+  <!-- 视图 A：报告列表（每仗一行） -->
+  <div id="view-list">
+    <div id="list-head">
+      <h1>报告中心</h1>
+      <div class="sub">每个任务一行：状态（草稿 / 待签发 / 已签发）· 版本数 · 最后渲染时间。数据来自账本只读投影。</div>
+      <div id="list-summary"></div>
+    </div>
+    <div id="list-wrap">
+      <table id="report-table">
+        <thead><tr>
+          <th>任务</th><th>报告编号</th><th id="col-status">状态</th>
+          <th id="col-versions">版本数</th><th id="col-last-render">最后渲染时间</th>
+          <th>发现（已验证/总）</th><th>操作</th>
+        </tr></thead>
+        <tbody id="report-body"></tbody>
+      </table>
+      <div class="empty" id="list-empty" style="display:none">该筛选下暂无任务。</div>
+    </div>
+  </div>
+
+  <!-- 视图 B：报告详情（左渲染预览 + 右元信息卡） -->
+  <div id="view-detail">
+    <div id="detail-wrap">
+      <!-- 左：渲染预览六节 + 章节锚导航 -->
+      <div>
+        <div id="secnav">
+          <a data-go="sec-cover">封面</a>
+          <a data-go="sec-authz">授权摘要</a>
+          <a data-go="sec-findings">发现表</a>
+          <a data-go="sec-evidence">证据附录</a>
+          <a data-go="sec-coverage">覆盖诚实</a>
+          <a data-go="sec-method">方法论</a>
+        </div>
+
+        <section class="sec" id="sec-cover">
+          <h2><span class="zn">01</span>封面</h2>
+          <div class="rno" id="cover-no">—</div>
+          <h3 id="cover-target">—</h3>
+          <div class="obj" id="cover-obj"></div>
+          <div id="cover-grid">
+            <div><div class="k">签署方</div><div class="v" id="cover-signer">—</div></div>
+            <div><div class="k">授权窗口</div><div class="v mono" id="cover-window">—</div></div>
+            <div><div class="k">预算上限</div><div class="v mono" id="cover-budget">—</div></div>
+            <div><div class="k">守卫档</div><div class="v mono" id="cover-tier">—</div></div>
+            <div><div class="k">报告状态</div><div class="v" id="cover-status">—</div></div>
+          </div>
+          <div id="locked-at"></div>
+        </section>
+
+        <section class="sec" id="sec-authz">
+          <h2><span class="zn">02</span>授权摘要</h2>
+          <div id="authz">
+            <div class="fl">
+              <span class="k">授权书</span><span class="v mono" id="authz-doc">—</span>
+              <span class="k">原件哈希</span>
+              <span class="v">
+                <span class="sha" id="authz-sha">—</span>
+                <button class="btn sm" id="btn-copy-sha">复制完整哈希</button>
+              </span>
+              <span class="k">范围计数</span><span class="v mono" id="authz-counts">—</span>
+              <span class="k">范围修订头</span><span class="v mono" id="authz-heads">—</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="sec" id="sec-findings">
+          <h2><span class="zn">03</span>发现表</h2>
+          <table id="fd-table">
+            <thead><tr><th>编号</th><th>标题</th><th>等级</th><th>验证状态</th>
+              <th>资产</th><th>证据数</th></tr></thead>
+            <tbody id="fd-body"></tbody>
+          </table>
+          <div class="empty" id="fd-empty" style="display:none">
+            尚无发现——智能体完成对应意图后自动收录。</div>
+        </section>
+
+        <section class="sec" id="sec-evidence">
+          <h2><span class="zn">04</span>证据附录</h2>
+          <div id="ev-lines"></div>
+          <div class="empty" id="ev-empty" style="display:none">无挂接证据。</div>
+        </section>
+
+        <section class="sec" id="sec-coverage">
+          <h2><span class="zn">05</span>覆盖诚实</h2>
+          <div class="subh">已测矩阵 <span class="n" id="cov-tested-n">（0）</span></div>
+          <div id="cov-tested"></div>
+          <div class="subh">未测清单与原因 <span class="n" id="cov-un-n">（0）</span></div>
+          <table id="cov-untable">
+            <thead><tr><th>格（资产面 × 漏洞类）</th><th>标记</th><th>原因</th></tr></thead>
+            <tbody id="cov-un-body"></tbody>
+          </table>
+          <div id="cov-closure">闭合率 <b>—</b></div>
+          <div id="cov-intents"></div>
+        </section>
+
+        <section class="sec" id="sec-method">
+          <h2><span class="zn">06</span>方法论附录</h2>
+          <div id="method">
+            <div class="ml">
+              <span class="k">门通过序</span><span class="v" id="m-gates">—</span>
+              <span class="k">意图（开/闭）</span><span class="v mono" id="m-intents">—</span>
+              <span class="k">预算终态</span><span class="v" id="m-budget">—</span>
+              <span class="k">守卫档披露</span><span class="v mono" id="m-tier">—</span>
+              <span class="k">账本时间链</span><span class="v" id="m-chain">—</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 右：元信息卡 -->
+      <div id="meta">
+        <div class="card" id="meta-input-hash">
+          <h3><span class="zn">A</span>渲染输入哈希</h3>
+          <div class="hv" id="ih-value">—</div>
+          <div class="nf" id="ih-files"></div>
+          <button class="btn sm" id="btn-copy-ih">复制完整哈希</button>
+          <div id="pin-runs">
+            <div class="k">同输入同输出钉——两次渲染哈希比对：</div>
+            <div id="pin-run-1">—</div>
+            <div id="pin-run-2">—</div>
+            <div id="pin-verdict"></div>
+          </div>
+        </div>
+
+        <div class="card" id="meta-versions">
+          <h3><span class="zn">B</span>版本链</h3>
+          <div id="ver-lines"></div>
+          <div class="empty" id="ver-empty" style="display:none">尚无版本——报告未渲染。</div>
+        </div>
+
+        <div class="card" id="meta-sign">
+          <h3><span class="zn">C</span>签发流程</h3>
+          <div id="flow">
+            <div class="step" id="flow-draft"><div class="dot"></div>草稿</div>
+            <div class="step" id="flow-pending"><div class="dot"></div>待签发</div>
+            <div class="step" id="flow-signed"><div class="dot"></div>已签发</div>
+          </div>
+          <div id="sig-cards">
+            <div class="sig-card" id="sig-slot-1"></div>
+            <div class="sig-card" id="sig-slot-2"></div>
+          </div>
+          <div id="binding-bar"></div>
+        </div>
+
+        <div class="card">
+          <h3><span class="zn">D</span>操作</h3>
+          <div class="acts">
+            <button class="btn acc" id="btn-rerender">重新渲染</button>
+            <button class="btn" id="btn-download-md">下载报告（MD）</button>
+            <button class="btn" id="btn-download-html">下载报告（HTML）</button>
+            <button class="btn" id="btn-print2">打印报告</button>
+          </div>
+          <div id="meta-note">MD 下载走既有下载件（/api/report/download）；
+            HTML 由本页渲染预览就地生成；打印与 PDF 同渲染。签发动作在操作台
+            签发门执行（本页只读）。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/static/app.js"></script>
+<script>
+'use strict';
+/* ================= 常量与工具 ================= */
+var API_LIST = '/api/v2/report-list.json';
+var API_DETAIL = '/api/v2/report-detail';
+var API_RERENDER = '/api/v2/report-rerender.json';
+var API_DOWNLOAD = '/api/report/download';       /* 既有下载件（写路由 POST） */
+var $ = function (id) { return document.getElementById(id); };
+var LAST = { view: 'list', battle: '', goal: '' };
+var CURRENT = null;
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function fmtTs(ts) {
+  var m = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/.exec(ts || '');
+  return m ? m[1] + ' ' + m[2] : (ts || '—');
+}
+function copyText(btn, text) {
+  if (!text) { return; }
+  function done() {
+    var old = btn.textContent;
+    btn.textContent = '已复制';
+    btn.classList.add('copy-ok');
+    setTimeout(function () { btn.textContent = old; btn.classList.remove('copy-ok'); }, 1400);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, function () { legacyCopy(text); done(); });
+  } else { legacyCopy(text); done(); }
+}
+function legacyCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) { /* 选中文本即可手抄 */ }
+  document.body.removeChild(ta);
+}
+function toast(msg, cls) {
+  var t = $('toast');
+  t.textContent = msg;
+  t.className = 'on ' + (cls || '');
+  clearTimeout(t._h);
+  t._h = setTimeout(function () { t.className = ''; }, 4200);
+}
+
+/* ================= 四态与两视图 ================= */
+function showState(name) {
+  ['st-empty', 'st-loading', 'st-error', 'st-normal'].forEach(function (id) {
+    $(id).classList.toggle('on', id === name);
+  });
+}
+function showView(name) {
+  LAST.view = name;
+  $('view-list').classList.toggle('on', name === 'list');
+  $('view-detail').classList.toggle('on', name === 'detail');
+  $('btn-back').style.display = name === 'detail' ? '' : 'none';
+  $('btn-print').style.display = name === 'detail' ? '' : 'none';
+  $('crumb-where').textContent = name === 'detail' ? '/ 报告详情' : '/ 报告列表';
+}
+function params() {
+  var q = {};
+  new URLSearchParams(location.search).forEach(function (v, k) { q[k] = v; });
+  return q;
+}
+
+/* ================= 状态徽章词表 ================= */
+var ST_CLS = { '已签发': 'signed', '待签发': 'pending', '草稿': 'draft' };
+var ST_TAG = { '已签发': 't-g', '待签发': 't-y', '草稿': 't-n' };
+var VERIFY_TAG = { '已验证': 't-g', '待验证': 't-y', '已失效': 't-n' };
+var SEV_TAG = { '高': 't-r', '中': 't-y', '低': 't-n' };
+function stBadge(st, locked) {
+  return '<span class="st-badge ' + (ST_CLS[st] || 'draft') + '">' + esc(st) + '</span>' +
+    (locked ? '<span class="lock-ico" title="已签发锁定">🔒</span>' : '');
+}
+
+/* ================= 视图 A：报告列表 ================= */
+function loadList() {
+  showState('st-loading');
+  $('loading-tip').textContent = '正在装载报告列表（reports / findings / matrix / timeline 投影）…';
+  fetch(API_LIST, { credentials: 'same-origin' }).then(function (r) {
+    if (!r.ok) { throw new Error('HTTP ' + r.status); }
+    return r.json();
+  }).then(function (p) {
+    renderList(p);
+    if (!p.battles.length) { showState('st-empty'); return; }
+    showState('st-normal');
+    showView('list');
+  }).catch(function (err) { fail(err); });
+}
+
+function renderList(p) {
+  var c = p.counts || {};
+  $('list-summary').innerHTML =
+    '<span class="tag t-g">已签发 ' + (c.signed || 0) + '</span>' +
+    '<span class="tag t-y">待签发 ' + (c.pending || 0) + '</span>' +
+    '<span class="tag t-n">草稿 ' + (c.draft || 0) + '</span>' +
+    '<span class="tag t-b">任务 ' + (c.battles || 0) + '</span>';
+  var body = $('report-body');
+  body.innerHTML = '';
+  (p.battles || []).forEach(function (b) {
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="mono">' + esc(b.battle) + '</td>' +
+      '<td class="mono">' + esc(b.goal_id || b.goal || '—') + '<div style="color:var(--g7);font-size:11px">' + esc(b.target || '') + '</div></td>' +
+      '<td id="col-status">' + stBadge(b.status, b.locked) + '</td>' +
+      '<td class="mono" id="col-versions-cell">' + (b.versions ? b.versions + ' 版' : '—') + '</td>' +
+      '<td class="mono">' + (b.last_render ? fmtTs(b.last_render) : '—') + '</td>' +
+      '<td class="mono">' + (b.findings.verified || 0) + ' / ' + (b.findings.total || 0) + '</td>' +
+      '<td>' +
+        '<button class="btn sm acc act-view">查看报告</button> ' +
+        '<button class="btn sm act-dl"' + (b.has_download ? '' : ' disabled title="尚无渲染工件"') + '>下载报告</button>' +
+      '</td>';
+    tr.querySelector('.act-view').onclick = function () { openDetail(b.battle, ''); };
+    tr.querySelector('.act-dl').onclick = function () { downloadMd(this); };
+    body.appendChild(tr);
+  });
+  $('list-empty').style.display = (p.battles || []).length ? 'none' : '';
+}
+
+/* ================= 视图 B：报告详情 ================= */
+function openDetail(battle, goal) {
+  LAST.battle = battle || '';
+  LAST.goal = goal || '';
+  showState('st-loading');
+  $('loading-tip').textContent = '正在渲染报告（确定性重建·同输入同输出）…';
+  var q = [];
+  if (LAST.battle) { q.push('battle=' + encodeURIComponent(LAST.battle)); }
+  if (LAST.goal) { q.push('goal=' + encodeURIComponent(LAST.goal)); }
+  fetch(API_DETAIL + (q.length ? '?' + q.join('&') : ''), { credentials: 'same-origin' })
+    .then(function (r) {
+      if (!r.ok) { throw new Error('HTTP ' + r.status); }
+      return r.json();
+    }).then(function (p) {
+      CURRENT = p;
+      renderDetail(p);
+      showState('st-normal');
+      showView('detail');
+      try {
+        history.replaceState(null, '', location.pathname + (q.length ? '?' + q.join('&') : ''));
+      } catch (e) { /* file:// 无权限 */ }
+    }).catch(function (err) { fail(err); });
+}
+
+function renderCover(p) {
+  var c = p.cover, st = p.state;
+  $('cover-no').textContent = '报告编号 ' + (c.report_no || p.goal);
+  $('cover-target').textContent = c.target || '—';
+  $('cover-obj').textContent = c.objective || '';
+  $('cover-signer').textContent = c.signer || '—';
+  $('cover-window').textContent = fmtTs(c.valid_from) + ' ~ ' + fmtTs(c.valid_until);
+  $('cover-budget').textContent = c.budget || '—';
+  $('cover-tier').textContent = c.guard_tier || '—';
+  $('cover-status').innerHTML = stBadge(st.status, st.locked);
+  var lk = $('locked-at');
+  if (st.locked) {
+    lk.className = 'on';
+    lk.textContent = '🔒 已签发·锁定（签发时刻 ' + fmtTs(st.issued_at) + '）——签发后不可再改，重新渲染仅验证一致性。';
+  } else {
+    lk.className = '';
+  }
+}
+
+function renderAuthz(p) {
+  var a = p.authorization;
+  $('authz-doc').textContent = a.auth_doc || '—';
+  $('authz-sha').textContent = (a.sha_trunc || '') + '…';
+  $('btn-copy-sha').onclick = function () { copyText(this, a.auth_sha256); };
+  var c = a.scope_counts || {};
+  $('authz-counts').textContent = 'include=' + (c.include || 0) +
+    '  exclude=' + (c.exclude || 0) + '  oob=' + (c.oob || 0) +
+    '  account-grant=' + (c['account-grant'] || 0);
+  $('authz-heads').textContent = (a.amendment_heads || []).join(', ') || '无';
+}
+
+function renderFindings(p) {
+  var body = $('fd-body');
+  body.innerHTML = '';
+  var rows = (p.findings && p.findings.rows) || [];
+  $('fd-empty').style.display = rows.length ? 'none' : '';
+  rows.forEach(function (f) {
+    var tr = document.createElement('tr');
+    var href = 'finding-detail.html?id=' + encodeURIComponent(f.id) +
+      (p.goal ? '&goal=' + encodeURIComponent(p.goal) : '');
+    tr.innerHTML =
+      '<td class="mono"><a href="' + href + '" title="打开漏洞详情">' + esc(f.id) + ' ↗</a></td>' +
+      '<td class="tt">' + esc(f.title) + '</td>' +
+      '<td><span class="tag ' + (SEV_TAG[f.impact] || 't-n') + '">' + esc(f.impact || '低') + '</span></td>' +
+      '<td><span class="tag ' + (VERIFY_TAG[f.verify_state] || 't-n') + '" title="' + esc(f.verify_basis || '') + '">' + esc(f.verify_state) + '</span></td>' +
+      '<td class="mono">' + esc(f.asset || '—') + '</td>' +
+      '<td class="mono">' + (f.evidence_count || 0) + '</td>';
+    body.appendChild(tr);
+  });
+}
+
+function renderEvidence(p) {
+  var host = $('ev-lines');
+  host.innerHTML = '';
+  var evs = p.evidence || [];
+  $('ev-empty').style.display = evs.length ? 'none' : '';
+  evs.forEach(function (e) {
+    var div = document.createElement('div');
+    div.className = 'ev-line';
+    div.innerHTML =
+      '<span class="id">' + esc(e.id) + '</span>' +
+      '<span class="tt">' + esc(e.title) + '</span>' +
+      '<span class="lf">挂接 ' + esc(e.linked_finding || '—') + '</span>' +
+      '<span class="mt">' + fmtTs(e.observed_at) + '</span>' +
+      '<div style="width:100%"><span class="sha">' + esc(e.hash_trunc) + '…</span></div>';
+    host.appendChild(div);
+  });
+}
+
+function renderCoverage(p) {
+  var cv = p.coverage || {};
+  var tested = cv.tested || [];
+  var host = $('cov-tested');
+  host.innerHTML = '';
+  $('cov-tested-n').textContent = '（' + tested.length + '）';
+  if (!tested.length) {
+    host.innerHTML = '<div class="empty">尚无已测格。</div>';
+  }
+  tested.forEach(function (t) {
+    var s = document.createElement('span');
+    s.className = 'chip';
+    s.textContent = t.attack_surface + ' × ' + t.vuln_class;
+    host.appendChild(s);
+  });
+  var un = cv.untested || [];
+  $('cov-un-n').textContent = '（' + un.length + '）';
+  var body = $('cov-un-body');
+  body.innerHTML = '';
+  if (!un.length) {
+    body.innerHTML = '<tr><td colspan="3" class="empty">无未测格。</td></tr>';
+  }
+  un.forEach(function (u) {
+    var tr = document.createElement('tr');
+    tr.className = 'untest';
+    tr.innerHTML =
+      '<td class="mono">' + esc(u.attack_surface) + ' × ' + esc(u.vuln_class) + '</td>' +
+      '<td class="lab"><span class="tag ' + (u.label === '未测' ? 't-y' : 't-n') + '">' + esc(u.label) + '</span></td>' +
+      '<td>' + esc(u.reason || '原因未记录') + '</td>';
+    body.appendChild(tr);
+  });
+  $('cov-closure').innerHTML = '闭合率 <b>' + esc(cv.closure || 'n/a') + '</b>（已测 / 全格）';
+  var io = cv.intents_open || [];
+  $('cov-intents').textContent = io.length
+    ? '未跑意图（未测范围一并披露）：' + io.join('、')
+    : '无未跑意图。';
+}
+
+function renderMethod(p) {
+  var m = p.methodology || {};
+  $('m-gates').textContent = (m.gates_passed || []).join(' → ') || '无（尚无过门记录）';
+  $('m-intents').textContent = (m.intents_open || 0) + ' / ' + (m.intents_closed || 0);
+  $('m-budget').textContent = m.budget_terminal === 'exhausted'
+    ? '预算触顶（诚实终止口径）' : (m.budget_terminal === 'normal' ? '正常' : '—');
+  $('m-tier').textContent = (m.guard_tier || '—') +
+    (m.timeline_tier_last ? '（timeline 末值 ' + m.timeline_tier_last + '）' : '');
+  $('m-chain').innerHTML = (m.chain_ok
+    ? '<span class="tag t-g">链完整</span> ' : '<span class="tag t-r">断链</span> ') +
+    'timeline ' + (m.timeline_rows || 0) + ' 行';
+}
+
+/* —— 元信息卡 —— */
+function renderPin(meta, tag) {
+  $('pin-run-1').textContent = '第 1 次渲染 sha256=' + (meta.render_runs[0] || '').slice(0, 16) + '…';
+  $('pin-run-2').textContent = '第 2 次渲染 sha256=' + (meta.render_runs[1] || '').slice(0, 16) + '…';
+  var v = $('pin-verdict');
+  if (meta.pin_ok) {
+    v.className = 'on ok';
+    v.textContent = '✓ 两次渲染一致（同输入同输出）——' + (tag || '确定性重建成立');
+  } else {
+    v.className = 'on bad';
+    v.textContent = '✗ 两次渲染不一致——输入在渲染间被改动，请重试。';
+  }
+}
+
+function renderVersions(meta) {
+  var host = $('ver-lines');
+  host.innerHTML = '';
+  var vs = meta.versions || [];
+  $('ver-empty').style.display = vs.length ? 'none' : '';
+  vs.forEach(function (v) {
+    var div = document.createElement('div');
+    div.className = 'ver-line';
+    div.innerHTML =
+      '<span class="v">v' + v.v + '</span>' +
+      '<span class="tag ' + (v.kind === 'signed' ? 't-g' : 't-y') + '">' +
+      (v.kind === 'signed' ? '签发稿' : '草稿·待签发') + '</span>' +
+      '<span class="ts">' + (v.ts ? fmtTs(v.ts) : '当前') + '</span>' +
+      '<span class="file" title="sha256=' + esc(v.sha256 || '') + '">' + esc(v.file) + '</span>';
+    host.appendChild(div);
+  });
+}
+
+function renderSigCard(slot, data) {
+  slot.className = 'sig-card ' + (data.filled ? 'filled' : 'unfilled');
+  if (data.filled) {
+    slot.innerHTML =
+      '<div class="who"><b>' + esc(data.approver || '—') + '</b>' +
+      '<span class="ok">已签 ✓</span></div>' +
+      '<div class="meta6">' + fmtTs(data.timestamp) + '</div>' +
+      (data.note ? '<div class="note">' + esc(data.note) + '</div>' : '');
+  } else {
+    slot.innerHTML = '<div class="wait">第 ' + data.slot + ' 签·待签' +
+      '（签发门要求人工批准在案——双人复核）</div>';
+  }
+}
+
+function renderSign(p) {
+  var st = p.state, meta = p.meta;
+  var idx = { '草稿': 0, '待签发': 1, '已签发': 2 }[st.status] || 0;
+  ['flow-draft', 'flow-pending', 'flow-signed'].forEach(function (id, i) {
+    var el = $(id);
+    el.className = 'step' + (i < idx ? ' done' : '') + (i === idx ? ' cur' : '');
+  });
+  var sigs = meta.signatures || [{}, {}];
+  renderSigCard($('sig-slot-1'), sigs[0] || { slot: 1, filled: false });
+  renderSigCard($('sig-slot-2'), sigs[1] || { slot: 2, filled: false });
+  if (st.status === '待签发' && meta.dual_complete) {
+    $('sig-slot-2').insertAdjacentHTML('beforeend',
+      '<div class="meta6" style="color:var(--acc)">双签就绪——可在操作台执行签发。</div>');
+  }
+  var cred = meta.credential;
+  var bar = $('binding-bar');
+  if (cred) {
+    var ok = cred.binding_ok && cred.gates_pass;
+    bar.className = 'on ' + (ok ? 'ok' : 'bad');
+    var html = ok
+      ? '✓ 签发凭证完整：' + cred.artifacts + ' 件工件绑定复检一致（签发时刻 ' + fmtTs(cred.ts) + '）'
+      : '✗ 签发凭证异常：' + (cred.binding_ok ? '门未全过' : '绑定失配');
+    if (!ok && cred.bad && cred.bad.length) {
+      html += '<ul>' + cred.bad.slice(0, 5).map(function (b) {
+        return '<li>' + esc(b) + '</li>';
+      }).join('') + '</ul>';
+    }
+    bar.innerHTML = html;
+  } else {
+    bar.className = '';
+  }
+}
+
+function renderDetail(p) {
+  renderCover(p);
+  renderAuthz(p);
+  renderFindings(p);
+  renderEvidence(p);
+  renderCoverage(p);
+  renderMethod(p);
+  var meta = p.meta || {};
+  $('ih-value').textContent = (meta.input_hash || '').slice(0, 24) + '…';
+  $('ih-files').textContent = '输入工件 ' + (meta.input_files || 0) + ' 件（13 表+证据卡+工件）';
+  $('btn-copy-ih').onclick = function () { copyText(this, meta.input_hash); };
+  renderPin(meta);
+  renderVersions(meta);
+  renderSign(p);
+}
+
+/* ================= 重新渲染（同输入同输出钉） ================= */
+function rerender() {
+  if (!CURRENT) { return; }
+  var b = $('btn-rerender');
+  b.disabled = true;
+  b.textContent = '渲染中…';
+  var q = [];
+  if (LAST.battle) { q.push('battle=' + encodeURIComponent(LAST.battle)); }
+  if (LAST.goal) { q.push('goal=' + encodeURIComponent(LAST.goal)); }
+  fetch(API_RERENDER + (q.length ? '?' + q.join('&') : ''), { credentials: 'same-origin' })
+    .then(function (r) {
+      if (!r.ok) { throw new Error('HTTP ' + r.status); }
+      return r.json();
+    }).then(function (pin) {
+      renderPin(pin, '与首次装载哈希' +
+        (CURRENT && pin.render_hash === CURRENT.meta.render_hash ? '相同' : '不同（输入已变）'));
+      b.disabled = false;
+      b.textContent = '重新渲染';
+    }).catch(function (err) {
+      b.disabled = false;
+      b.textContent = '重新渲染';
+      toast('重新渲染失败：' + err.message, 'err');
+    });
+}
+
+/* ================= 下载与打印 ================= */
+function saveBlob(data, name, type) {
+  var url = URL.createObjectURL(new Blob([data], { type: type }));
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 600);
+}
+
+function downloadMd(btn) {
+  fetch(API_DOWNLOAD, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+    credentials: 'same-origin',
+    body: '{}'
+  }).then(function (r) {
+    if (!r.ok) {
+      return r.json().catch(function () { return { error: 'HTTP ' + r.status }; })
+        .then(function (j) { throw new Error(j.error || ('HTTP ' + r.status)); });
+    }
+    return r.blob().then(function (blob) {
+      var cd = r.headers.get('Content-Disposition') || '';
+      var m = /filename=(.+)$/.exec(cd);
+      saveBlob(blob, m ? m[1] : 'report.md', blob.type || 'text/markdown');
+      toast('报告产物已开始下载（' + (r.headers.get('X-Report-Files') || '1') + ' 件）', 'ok');
+    });
+  }).catch(function (err) {
+    toast('下载失败：' + err.message, 'err');
+  });
+}
+
+function downloadHtml() {
+  if (!CURRENT) { return; }
+  var inner = document.createElement('div');
+  ['sec-cover', 'sec-authz', 'sec-findings', 'sec-evidence', 'sec-coverage', 'sec-method']
+    .forEach(function (id) {
+      var node = $(id).cloneNode(true);
+      inner.appendChild(node);
+    });
+  var doc = '<!DOCTYPE html>\n<html lang="zh"><head><meta charset="UTF-8">' +
+    '<title>渗透测试报告 · ' + esc(CURRENT.cover.report_no || CURRENT.goal) + '</title>' +
+    '<style>body{font:14px/1.7 -apple-system,"PingFang SC",sans-serif;color:#1a1a1a;' +
+    'background:#fff;max-width:900px;margin:24px auto;padding:0 20px}' +
+    'h2{font-size:15px;border-bottom:2px solid #ddd;padding-bottom:4px;margin:22px 0 10px}' +
+    'h3{font-size:18px;margin:6px 0}table{width:100%;border-collapse:collapse;font-size:12.5px}' +
+    'th,td{border:1px solid #ddd;padding:6px 8px;text-align:left}' +
+    '.mono{font-family:Menlo,Consolas,monospace}</style></head><body>' +
+    inner.innerHTML + '</body></html>\n';
+  saveBlob(doc, 'report-' + (CURRENT.cover.report_no || CURRENT.goal) + '.html',
+    'text/html; charset=utf-8');
+  toast('HTML 报告已生成（本页渲染预览同源）', 'ok');
+}
+
+function printReport() { window.print(); }
+
+/* ================= 错误与重试 ================= */
+function fail(err) {
+  $('err-detail').textContent = err && err.message ? err.message : String(err);
+  showState('st-error');
+}
+function retry() {
+  if (LAST.view === 'detail' && (LAST.battle || LAST.goal)) {
+    openDetail(LAST.battle, LAST.goal);
+  } else {
+    loadList();
+  }
+}
+
+/* ================= 事件与启动 ================= */
+$('btn-retry').onclick = retry;
+$('btn-back').onclick = function () {
+  try { history.replaceState(null, '', location.pathname); } catch (e) { }
+  loadList();
+};
+$('btn-rerender').onclick = rerender;
+$('btn-download-md').onclick = function () { downloadMd(this); };
+$('btn-download-html').onclick = downloadHtml;
+$('btn-print').onclick = printReport;
+$('btn-print2').onclick = printReport;
+Array.prototype.forEach.call(document.querySelectorAll('#secnav a'), function (a) {
+  a.onclick = function () {
+    var t = $(a.getAttribute('data-go'));
+    if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  };
+});
+
+(function boot() {
+  var q = params();
+  if (q.battle || q.goal) {
+    openDetail(q.battle || '', q.goal || '');
+  } else {
+    loadList();
+  }
+})();
+/* 共享壳自注册（UI-1 舰 /static/app.js；壳未挂载时静默跳过，本页独立可用） */
+try {
+  if (window.nav && typeof nav.push === 'function') {
+    nav.push({ id: 'report-center', label: '报告中心', group: '报告' });
+  }
+} catch (e) { /* 壳异常不殃及本页 */ }
+</script>
+</body>
+</html>

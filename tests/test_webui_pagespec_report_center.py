@@ -735,5 +735,95 @@ class TestV2MountContract(ServerBase):
         self.assertEqual(dir_bytes(self.root), before)
 
 
+
+# ═══════════════════════════════ ④ 页面层 ═══════════════════════════════
+
+PAGE = os.path.join(CLI, "webui", "static", "pages", "report-center.html")
+ZONE_MARKS = (
+    # 四态（空/加载/错误含重试/正常）
+    'id="st-empty"', 'id="st-loading"', 'id="st-error"', 'id="btn-retry"',
+    'id="st-normal"',
+    # 两视图：报告列表 + 报告详情
+    'id="view-list"', 'id="view-detail"',
+    # 列表视图：每仗一行（状态徽章/版本数/最后渲染时间/查看/下载）
+    'id="report-table"', 'id="report-body"', 'id="list-summary"',
+    'id="col-status"', 'id="col-versions"', 'id="col-last-render"',
+    # 详情左栏六节（渲染预览）
+    'id="sec-cover"', 'id="sec-authz"', 'id="sec-findings"', 'id="sec-evidence"',
+    'id="sec-coverage"', 'id="sec-method"',
+    # 章节锚导航
+    'id="secnav"',
+    # 详情右栏元信息卡：渲染输入哈希/版本链/签发状态/双人签发位
+    'id="meta-input-hash"', 'id="meta-versions"', 'id="meta-sign"',
+    'id="sig-cards"', 'id="sig-slot-1"', 'id="sig-slot-2"',
+    # 签发流程位：待签发→双签两签名卡→已签发锁定+时间戳
+    'id="flow-draft"', 'id="flow-pending"', 'id="flow-signed"',
+    'id="locked-at"', 'id="binding-bar"',
+    # 重新渲染钮+两次哈希比对展示
+    'id="btn-rerender"', 'id="pin-runs"', 'id="pin-run-1"', 'id="pin-run-2"',
+    'id="pin-verdict"',
+    # 下载（MD 走既有下载件 / HTML / 打印=同渲染）
+    'id="btn-download-md"', 'id="btn-download-html"', 'id="btn-print"',
+    # 返回列表
+    'id="btn-back"',
+)
+FETCH_MARKS = ("'/api/v2/report-list.json", "'/api/v2/report-detail",
+               "'/api/v2/report-rerender.json", "/api/report/download")
+
+
+class TestPageStructure(Base):
+    def _src(self):
+        with open(PAGE, encoding="utf-8") as f:
+            return f.read()
+
+    def test_zones_and_states_present(self):
+        src = self._src()
+        for m in ZONE_MARKS:
+            self.assertIn(m, src, "缺 " + m)
+        for m in FETCH_MARKS:
+            self.assertIn(m, src, "须拉取 " + m)
+
+    def test_nav_self_registration_guarded(self):
+        src = self._src()
+        self.assertIn("nav.push", src)
+        self.assertIn("id: 'report-center'", src)
+        self.assertIn("group: '报告'", src)
+        self.assertIn("typeof nav.push", src)               # 壳未落也不炸
+
+    def test_zero_framework_zero_cdn(self):
+        src = self._src()
+        self.assertEqual(src.count("<script src="), 1, "只许共享壳一外链")
+        self.assertIn('<script src="/static/app.js"></script>', src)
+        self.assertEqual(src.count("https://"), 0, "零外链（报告中心无外跳）")
+
+    def test_copy_law_no_zhanbao(self):
+        """宪法#41：战报→报告；界面只说人话（任务不说战）；按钮=动词+宾语。"""
+        src = self._src()
+        self.assertNotIn("战报", src)
+        self.assertNotIn("看战果", src)
+        self.assertIn("报告中心", src)
+        self.assertIn("任务", src)
+        self.assertIn("重新渲染", src)
+        self.assertIn("下载报告", src)
+        self.assertIn("两次", src)                          # 同输入同输出钉文案
+        self.assertIn("一致", src)
+
+    def test_finding_rows_link_to_p6(self):
+        src = self._src()
+        self.assertIn("finding-detail.html?id=", src)       # 发现行→漏洞详情
+
+    def test_print_css_same_render(self):
+        src = self._src()
+        self.assertIn("@media print", src)                  # 导出PDF=同渲染
+
+    def test_js_under_2000_page_over_600(self):
+        src = self._src()
+        blocks = src.split("<script>")[1:]
+        self.assertGreaterEqual(len(blocks), 1)
+        nlines = sum(len(b.split("</script>")[0].splitlines()) for b in blocks)
+        self.assertLess(nlines, 2000)
+        self.assertGreaterEqual(len(src.splitlines()), 600, "P7 全量页量纲")
+
+
 if __name__ == "__main__":
     unittest.main()
