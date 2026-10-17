@@ -1,0 +1,51 @@
+id	title	source_id	source_topic	status	updated
+CP-0001	SQL 注入多变体测试域（联合/盲注/报错/堆叠/二次注入）	KP-0006	redteam-sqli-detail-pack	learned	2026-09-24
+CP-0002	XSS 跨站脚本三型测试域（反射/存储/DOM 型）	KP-0006	redteam-xss-detail-pack	learned	2026-09-24
+CP-0003	SSRF 服务端请求伪造测试域（基础/盲/协议/云元数据）	KP-0006	redteam-ssrf-detail-pack	learned	2026-09-24
+CP-0004	SSTI 服务端模板注入测试域（多引擎识别与沙箱逃逸）	KP-0006	redteam-ssti-detail-pack	learned	2026-09-24
+CP-0005	不安全反序列化 gadget 链测试域（Java/PHP/Python/.NET）	KP-0006	redteam-deserialize-detail-pack	learned	2026-09-24
+CP-0006	OS 命令注入测试域（直接/盲注/OOB/参数注入）	KP-0006	redteam-cmdi-detail-pack	learned	2026-09-24
+CP-0007	CORS 跨域配置错误测试域（Origin 反射/信任链/凭据泄露）	KP-0006	redteam-cors-miscfg-detail-pack	learned	2026-09-24
+CP-0008	开放重定向测试域（参数/OAuth 回跳/Meta/JS 重定向）	KP-0006	redteam-open-redirect-detail-pack	learned	2026-09-24
+CP-0009	AI 与 MCP 安全评估测试域(注入/工具滥用/信任边界)	KP-0006	ai-mcp-security	learned	2026-10-18
+CP-0010	安卓应用 runtime-first 渗透测试域(驱动/抓包/按需逆向)	KP-0006	android-pentest	learned	2026-10-18
+CP-0011	客户端逆向与稳定重放测试域(签名恢复/加密还原)	KP-0006	client-reverse	learned	2026-10-18
+CP-0012	编码解码与加解密工具域(识别/链式解码/JWT 处理)	KP-0006	crypto-toolkit	learned	2026-10-18
+CP-0013	CTF 密码学攻击域(RSA/AES/ECC/PRNG/格)	KP-0006	ctf-crypto	learned	2026-10-18
+CP-0014	CTF 杂项域(沙箱逃逸/编码链/隐写/VM 逆向/提权)	KP-0006	ctf-misc	learned	2026-10-18
+CP-0015	CTF Web 实战域(弱比较/伪协议/绕过定位/题型速判)	KP-0006	ctf-web	learned	2026-10-18
+CP-0016	CVE 分流与优先级排序域(版本证据→候选→适用性)	KP-0006	cve-triage	learned	2026-10-18
+CP-0017	众测平台 scope 卫兵流程域(读范围/执法/逐资产/平台报告)	KP-0006	hackerone	learned	2026-10-18
+CP-0018	内网渗透高级域(横向/凭据/提权/隧道/AD/ADCS)	KP-0006	intranet-pentest-advanced	learned	2026-10-18
+CP-0019	OSINT 四维情报收集域(服务器/网站/域名/人员)	KP-0006	osint-recon	learned	2026-10-18
+CP-0020	渗透工具选型速查域(分类/按任务匹配)	KP-0006	pentest-tools	learned	2026-10-18
+CP-0021	快速路由卡片域(已知方向→先验哪类)	KP-0006	rapid-checklist	learned	2026-10-18
+CP-0022	AD 域渗透测试域(Kerberos 攻击/域提权/横向/GPO)	KP-0006	redteam-ad-detail-pack	learned	2026-10-18
+CP-0023	API 安全测试域(BOLA/批量分配/认证绕过/GraphQL)	KP-0006	redteam-api-detail-pack	learned	2026-10-18
+CP-0024	认证与授权漏洞测试域(密码策略/JWT/OAuth/MFA)	KP-0006	redteam-auth-detail-pack	learned	2026-10-18
+CP-0025	缓存投毒测试域(unkeyed 输入/缓存欺骗/CDN 差异)	KP-0006	redteam-cache-poison-detail-pack	learned	2026-10-18
+CP-0026	点击劫持测试域(框架保护/拖放劫持)	KP-0006	redteam-clickjacking-detail-pack	learned	2026-10-18
+CP-0027	云安全测试域(IAM/存储桶/元数据/Serverless/K8s)	KP-0006	redteam-cloud-detail-pack	learned	2026-10-18
+CP-0028	白盒代码审计域(入口优先/sink 追踪/数据流/依赖)	KP-0006	redteam-code-audit-detail-pack	learned	2026-10-18
+CP-0029	容器安全测试域(逃逸/RBAC/镜像/网络策略)	KP-0006	redteam-container-detail-pack	learned	2026-10-18
+CP-0030	密码学弱点测试域(弱算法/填充 oracle/密钥管理)	KP-0006	redteam-crypto-detail-pack	learned	2026-10-18
+CP-0031	CSRF 跨站请求伪造测试域(Token/SameSite/JSON)	KP-0006	redteam-csrf-detail-pack	learned	2026-10-18
+CP-0032	CVE 匹配与适用性评估域(五门/候选清单)	KP-0006	redteam-cve-lookup	learned	2026-10-18
+CP-0033	CVE 验证域(证据门/被动优先/适配器登记)	KP-0006	redteam-cve-validation	learned	2026-10-18
+CP-0034	防御规避与绕过测试域(WAF/AV/EDR/日志面)	KP-0006	redteam-evasion-detail-pack	learned	2026-10-18
+CP-0035	文件操作漏洞测试域(穿越/LFI/RFI/上传)	KP-0006	redteam-file-detail-pack	learned	2026-10-18
+CP-0036	通用注入测试域(NoSQL/LDAP/XPath/EL/Header)	KP-0006	redteam-injection-detail-pack	learned	2026-10-18
+CP-0037	业务逻辑漏洞测试域(竞态/流程跳过/价格篡改/IDOR)	KP-0006	redteam-logic-detail-pack	learned	2026-10-18
+CP-0038	移动应用安全测试域(存储/证书绑定/组件暴露)	KP-0006	redteam-mobile-detail-pack	learned	2026-10-18
+CP-0039	网络层渗透测试域(服务暴露/协议降级/分段)	KP-0006	redteam-network-detail-pack	learned	2026-10-18
+CP-0040	Payload 构造分析域(投递面分类/检测对照)	KP-0006	redteam-payload-detail-pack	learned	2026-10-18
+CP-0041	后渗透测试域(提权/持久化/横向/数据收集)	KP-0006	redteam-postex-detail-pack	learned	2026-10-18
+CP-0042	信息收集与侦察域(子域/端口/目录/指纹/OSINT)	KP-0006	redteam-recon-detail-pack	learned	2026-10-18
+CP-0043	裸目标侦察入口域(资产画像六步/不利用)	KP-0006	redteam-recon-intake	learned	2026-10-18
+CP-0044	逆向工程分析域(反编译/协议/固件/脱壳)	KP-0006	redteam-reverse-detail-pack	learned	2026-10-18
+CP-0045	子域名接管测试域(CNAME 悬挂/NS/云服务)	KP-0006	redteam-subdomain-takeover-detail-pack	learned	2026-10-18
+CP-0046	Web 综合路由域(攻击面分派/子域技能汇总)	KP-0006	redteam-web-detail-pack	learned	2026-10-18
+CP-0047	XXE 外部实体注入测试域(文件读取/盲/OOB/参数实体)	KP-0006	redteam-xxe-detail-pack	learned	2026-10-18
+CP-0048	安全知识检索与引用纪律域(幻觉防护/标注分级)	KP-0006	secknowledge-skill	learned	2026-10-18
+CP-0049	Web 应用渗透全流程域(栈识别→目录→认证→输入→逻辑)	KP-0006	web-pentest	learned	2026-10-18
+CP-0050	Web 高级安全测试域(注入族/协议/认证逻辑/文件部署)	KP-0006	web-security-advanced	learned	2026-10-18
