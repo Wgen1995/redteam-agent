@@ -1556,3 +1556,4 @@ OK(双证: bash-1260 exit0 + 本轮计数)
 - W1 五件战果: 授权八问真化+读面门(1cb568a)/launch(同上)/battle auto(d7fcffb)/VulnClaw插槽(25561ba)/GraphLed定名——基线表三行已翻已超。
 - W2 五舰在航(01651ce8地基/1e4baba2单源退出码/e7a6d5f1CI护栏/af8a5d63租约多战帧化/7f74585c serve收口)。
 - W2 timeline舰完工(207bf97验活续完+a9d9e5d边界补齐): O(1)尾追加(尾窗回退/O_APPEND+fsync/epoch递增)+撕裂读封口(TornTimelineError fail-closed零半写)——n=10000 total=2.70s尾/首比0.99;金样run_golden.sh三PASS+gold系全绿;新增18测+相邻44+金样系84全OK,零碰他舰文件。
+- W2 serve收口完航(623bc11/dfedb94/c523583 三步小提交): tanyin-serve 单命令起停 webui(start/status/stop·冲突紧邻降级+区间20全忙rc2·日志落位$TANYIN_HOME/serve)+--json全通道stdout纯JSON直读+退出码矩阵对齐W2b(rc1拒/rc2用法·环境·gate-error/rc3黄灯)+KNOWN_COMMANDS入册; tests.test_serve_cli 21测OK+邻面webui八套180测OK; 注意: 前任server.py(W2·01P0-4多战仲裁接线)非本任务领地已还原一次,后由该领地同胞重做勿再动; test_serve_cli前身助手二次getresponse炸点已修
