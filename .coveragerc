@@ -9,7 +9,7 @@
 parallel = True
 branch = False
 source =
-    cli.ledger,
+    cli/ledger
     engines
 omit =
     cli/ledger/__pycache__/*
