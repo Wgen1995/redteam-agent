@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""tanyin-serve（W2 serve 收口 · W1 遗留 T3）——单命令起 webui 方向盘。
+
+宪法#3 红字: clone 即用 —— tanyin-serve start 一条命令后台起 webui
+（自动选口 / 静默后台 / 日志落位 $TANYIN_HOME/serve/serve.log，
+状态文件 serve.json 单实例模型——对齐 tanyin-* 家族风格）。
+
+CLI 输出契约（与 W2b 单源退出码矩阵对齐）:
+  --json  全命令旗标: stdout=单个 JSON 对象（json.loads 直读不炸，零装饰行；
+          test_ui_craft 钉页面 CSS 纯净，本旗标对称钉 stdout 纯净）。
+  退出码  0 成功 / 1 REJECT（start 已在跑 · stop/status 未在跑）
+          2 用法·环境（未知子命令/旗标、缺 ledger 目录、端口区间全忙）；
+          未预期异常同样 rc2 但 stderr 带 gate-error: 前缀（bug 永不伪装 1）
+          3 黄灯（status: stale=状态在而进程亡 / degraded=进程在而端点不应答）。
+"""
+import json, os, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ledger.core import ensure_utf8_stdio  # noqa: E402
+
+ensure_utf8_stdio()   # Windows 控制台 GBK: 中文提示统一 UTF-8
+
+DEFAULT_HOST, DEFAULT_PORT = "127.0.0.1", 8900   # 缺省口=产品形态钉（--help 披露）
+PORT_SCAN_SPAN = 20    # 有界扫描: 请求口起连续 20 口全忙=环境域 rc2（不无限漂移）
+SUBS = ("start", "status", "stop")
+FLAGS = ("--ledger-dir", "--port", "--host", "--json")
+USAGE = (
+    "用法: tanyin-serve <start|status|stop> [--ledger-dir D] [--port N] [--host H] [--json]" + chr(10)
+    + "  start   后台起 webui（缺省口 8900，忙则紧邻自动改口；缺省 ledger=最新战）" + chr(10)
+    + "  status  查在跑状态（running / not-running / stale / degraded）" + chr(10)
+    + "  stop    停后台 webui 并归还端口" + chr(10)
+    + "  --json  stdout=单 JSON 对象（机器直读）；缺省=给人看的行")
+
+
+def _emit(payload, json_mode):
+    """单点输出: --json=stdout 单 JSON 对象; 人话=关键行（含 url）。"""
+    if json_mode:
+        print(json.dumps(payload, ensure_ascii=False))
+        return
+    if payload.get("url"):
+        print(payload["url"])
+    if payload.get("state") == "not-running":
+        print("未在跑（无 serve 状态文件）")
+
+
+def _fail(action, rc, reason, json_mode, usage=False, extra=None):
+    payload = {"ok": False, "action": action, "reason": reason}
+    if extra:
+        payload.update(extra)
+    if json_mode:
+        print(json.dumps(payload, ensure_ascii=False))
+    else:
+        sys.stderr.write(reason + chr(10))
+        if usage:
+            sys.stderr.write(USAGE + chr(10))
+    return rc
+
+
+def _parse(rest):
+    """--key=value / --key value 双形态归一（tanyin-viz 同款）; 裸旗标值=空串。"""
+    kv, i = {}, 0
+    while i < len(rest):
+        a = rest[i]
+        if not a.startswith("--"):
+            return None, "未知参数: " + a
+        if a in kv or any(a.startswith(f + "=") for f in FLAGS):
+            pass
+        if "=" in a:
+            kv[a.split("=", 1)[0]] = a.partition("=")[2]
+            i += 1
+        elif i + 1 < len(rest) and not rest[i + 1].startswith("--"):
+            kv[a] = rest[i + 1]
+            i += 2
+        else:
+            kv[a] = ""
+            i += 1
+    unknown = [k for k in kv if k not in FLAGS]
+    if unknown:
+        return None, "未知旗标: " + ",".join(sorted(unknown))
+    if "--port" in kv and kv["--port"] != "":
+        try:
+            kv["--port"] = int(kv["--port"])
+        except ValueError:
+            return None, "--port 须整数"
+    return kv, None
+
+
+def main(argv):
+    json_mode = "--json" in argv[1:]
+    try:
+        return _dispatch(argv, json_mode)
+    except SystemExit:
+        raise
+    except Exception as e:   # noqa: BLE001 — W2b P0-3: bug 永不伪装 1
+        msg = "gate-error: %s: %s" % (type(e).__name__, e)
+        sys.stderr.write(msg + chr(10))
+        if json_mode:
+            print(json.dumps({"ok": False, "action": "?", "reason": msg},
+                             ensure_ascii=False))
+        return 2
+
+
+def _dispatch(argv, json_mode):
+    args = argv[1:]
+    if not args or args[0] in ("-h", "--help"):
+        print(USAGE)
+        return 0
+    sub = args[0]
+    if sub not in SUBS:
+        return _fail(sub, 2, "未知子命令: %s（可用: %s）" % (sub, "/".join(SUBS)),
+                     json_mode, usage=True)
+    kv, err = _parse(args[1:])
+    if err:
+        return _fail(sub, 2, err, json_mode, usage=True)
+    if sub == "start":
+        return _cmd_start(kv, json_mode)
+    if sub == "status":
+        return _fail("status", 2, "start 未施工完", json_mode)
+    return _fail("stop", 2, "stop 未施工完", json_mode)
+
+
+def _cmd_start(kv, json_mode):
+    gd = kv.get("--ledger-dir", "")
+    if gd and not os.path.isdir(gd):
+        return _fail("start", 2, "环境问题: ledger 目录不存在 " + gd, json_mode)
+    if not gd:
+        return _fail("start", 2,
+                     "环境问题: 未找到可服 ledger（无战且未给 --ledger-dir）", json_mode)
+    return _fail("start", 2, "环境问题: 起服逻辑未施工完", json_mode)
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
