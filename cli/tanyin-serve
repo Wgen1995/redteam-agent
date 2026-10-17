@@ -14,7 +14,8 @@ CLI 输出契约（与 W2b 单源退出码矩阵对齐）:
           未预期异常同样 rc2 但 stderr 带 gate-error: 前缀（bug 永不伪装 1）
           3 黄灯（status: stale=状态在而进程亡 / degraded=进程在而端点不应答）。
 """
-import json, os, sys
+import http.client
+import json, os, signal, socket, subprocess, sys, time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ledger.core import ensure_utf8_stdio  # noqa: E402
@@ -22,7 +23,9 @@ from ledger.core import ensure_utf8_stdio  # noqa: E402
 ensure_utf8_stdio()   # Windows 控制台 GBK: 中文提示统一 UTF-8
 
 DEFAULT_HOST, DEFAULT_PORT = "127.0.0.1", 8900   # 缺省口=产品形态钉（--help 披露）
-PORT_SCAN_SPAN = 20    # 有界扫描: 请求口起连续 20 口全忙=环境域 rc2（不无限漂移）
+PORT_SCAN_SPAN = 20      # 有界扫描: 请求口起连续 20 口全忙=环境域 rc2（不无限漂移）
+READY_TIMEOUT_S = 15.0   # 点火后等 webui 端点应答上限（超时=rc2 附日志尾）
+STOP_WAIT_S = 6.0        # SIGTERM 后等进程退出的上限（超时=SIGKILL 补刀）
 SUBS = ("start", "status", "stop")
 FLAGS = ("--ledger-dir", "--port", "--host", "--json")
 USAGE = (
@@ -33,15 +36,92 @@ USAGE = (
     + "  --json  stdout=单 JSON 对象（机器直读）；缺省=给人看的行")
 
 
+# ---------------------------------------------------------------- 状态与探针
+
+def _state_dir():
+    """$TANYIN_HOME/serve（缺省 ~/.tanyin/serve）——状态+日志落位（禁令#34: 不落 /tmp）。"""
+    home = os.environ.get("TANYIN_HOME") or os.path.join(os.path.expanduser("~"), ".tanyin")
+    return os.path.join(home, "serve")
+
+
+def _state_path():
+    return os.path.join(_state_dir(), "serve.json")
+
+
+def _log_path():
+    return os.path.join(_state_dir(), "serve.log")
+
+
+def _read_state():
+    try:
+        with open(_state_path(), encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+def _pid_alive(pid):
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except (OSError, ValueError, TypeError):
+        return False
+
+
+def _port_free(port):
+    """bind 探测即释放（存在微小竞态，由点火后端点探活兜底）。"""
+    s = socket.socket()
+    try:
+        s.bind(("127.0.0.1", port))
+        return True
+    except OSError:
+        return False
+    finally:
+        s.close()
+
+
+def _http_status(port, host=DEFAULT_HOST, timeout=2.0):
+    """探活: 返回 HTTP 状态码（favicon 消音口=未登录开放面）; 连不上返回 None。"""
+    try:
+        conn = http.client.HTTPConnection(host, int(port), timeout=timeout)
+        conn.request("GET", "/favicon.ico")
+        resp = conn.getresponse()
+        resp.read()
+        conn.close()
+        return resp.status
+    except OSError:
+        return None
+
+
+def _latest_goal_dir():
+    """缺省 ledger=最新战最新 goal（mtime 序; battle 无 goal 则让位次新战）。"""
+    from ledger.trace_search import default_battles_dir
+    root = default_battles_dir()
+    if not os.path.isdir(root):
+        return ""
+    battles = sorted((os.path.join(root, d) for d in os.listdir(root)
+                      if d.startswith("battle-")
+                      and os.path.isdir(os.path.join(root, d))),
+                     key=os.path.getmtime, reverse=True)
+    for b in battles:
+        gs = [os.path.join(b, g) for g in os.listdir(b)
+              if g.startswith("G-") and os.path.isdir(os.path.join(b, g))]
+        if gs:
+            return max(gs, key=os.path.getmtime)
+    return ""
+
+
+# ---------------------------------------------------------------- 输出面
+
 def _emit(payload, json_mode):
-    """单点输出: --json=stdout 单 JSON 对象; 人话=关键行（含 url）。"""
+    """单点输出: --json=stdout 单 JSON 对象（纯净钉）; 人话=关键行。"""
     if json_mode:
         print(json.dumps(payload, ensure_ascii=False))
         return
     if payload.get("url"):
         print(payload["url"])
-    if payload.get("state") == "not-running":
-        print("未在跑（无 serve 状态文件）")
+    if payload.get("pid"):
+        print("pid=%s 日志=%s" % (payload.get("pid"), payload.get("log", "")))
 
 
 def _fail(action, rc, reason, json_mode, usage=False, extra=None):
@@ -64,8 +144,6 @@ def _parse(rest):
         a = rest[i]
         if not a.startswith("--"):
             return None, "未知参数: " + a
-        if a in kv or any(a.startswith(f + "=") for f in FLAGS):
-            pass
         if "=" in a:
             kv[a.split("=", 1)[0]] = a.partition("=")[2]
             i += 1
@@ -81,10 +159,137 @@ def _parse(rest):
     if "--port" in kv and kv["--port"] != "":
         try:
             kv["--port"] = int(kv["--port"])
-        except ValueError:
+        except (TypeError, ValueError):
             return None, "--port 须整数"
     return kv, None
 
+
+# ---------------------------------------------------------------- 子命令
+
+def _cmd_start(kv, json_mode):
+    gd = kv.get("--ledger-dir", "")
+    if not gd:
+        gd = _latest_goal_dir()
+        if not gd:
+            return _fail("start", 2, "环境问题: 未找到可服 ledger（battles 下无战"
+                                     "且未给 --ledger-dir）——先建战或用 --ledger-dir 指定",
+                         json_mode)
+    if not os.path.isdir(gd):
+        return _fail("start", 2, "环境问题: ledger 目录不存在 " + gd, json_mode)
+    st = _read_state()
+    if st and _pid_alive(st.get("pid")):   # 单实例: 已在跑=REJECT rc1（launch 先例）
+        return _fail("start", 1, "already-running", json_mode,
+                     extra={"state": "running", "pid": st.get("pid"),
+                            "url": st.get("url", ""), "port": st.get("port")})
+    host = kv.get("--host") or DEFAULT_HOST
+    requested = kv.get("--port")
+    requested = DEFAULT_PORT if requested in (None, "") else int(requested)
+    chosen = None
+    for off in range(PORT_SCAN_SPAN):      # 冲突降级: 紧邻下一空闲口（有界 20 止）
+        cand = requested + off
+        if _port_free(cand):
+            chosen = cand
+            break
+    if chosen is None:
+        return _fail("start", 2, "环境问题: 端口 %d 起连续 %d 口全忙"
+                                 % (requested, PORT_SCAN_SPAN), json_mode)
+    os.makedirs(_state_dir(), exist_ok=True)
+    log = _log_path()
+    cli_dir = os.path.dirname(os.path.abspath(__file__))
+    with open(log, "ab") as lf:            # 静默后台: 输出全量落 serve.log
+        proc = subprocess.Popen(   # -m webui.server=家族规范起法（相对导入面）
+            [sys.executable, "-u", "-m", "webui.server", "--ledger-dir", gd,
+             "--host", host, "--port", str(chosen)],
+            stdout=lf, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
+            cwd=cli_dir, start_new_session=True)
+    deadline = time.time() + READY_TIMEOUT_S
+    while time.time() < deadline:
+        if _http_status(chosen, host) is not None:
+            break
+        if proc.poll() is not None:        # 进程早夭（如端口被抢 bind 失败）
+            break
+        time.sleep(0.1)
+    if _http_status(chosen, host) is None:
+        proc.kill()
+        tail = ""
+        try:
+            with open(log, encoding="utf-8", errors="replace") as f:
+                tail = f.read()[-400:]
+        except OSError:
+            pass
+        return _fail("start", 2, "环境问题: webui 点火后端点未应答（端口 %d）日志尾: %s"
+                                 % (chosen, tail), json_mode)
+    state = {"pid": proc.pid, "port": chosen, "host": host,
+             "url": "http://%s:%d/" % (host, chosen),
+             "ledger_dir": gd, "log": log,
+             "started": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    with open(_state_path(), "w", encoding="utf-8", newline="\n") as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    payload = {"ok": True, "action": "start", "state": "running",
+               "requested_port": requested}
+    payload.update(state)
+    _emit(payload, json_mode)
+    return 0
+
+
+def _cmd_status(kv, json_mode):
+    st = _read_state()
+    if not st:
+        return _fail("status", 1, "not-running", json_mode,
+                     extra={"state": "not-running"})
+    pid = st.get("pid")
+    if not _pid_alive(pid):
+        return _fail("status", 3, "stale: 状态文件在而进程亡（pid=%s）——"
+                                  "不静默绿（W2b rc3 黄灯）" % pid, json_mode,
+                     extra={"state": "stale", "pid": pid})
+    if _http_status(st.get("port", 0), st.get("host", DEFAULT_HOST)) is None:
+        return _fail("status", 3, "degraded: 进程在而端点不应答"
+                                  "（pid=%s port=%s）——不静默绿（W2b rc3 黄灯）"
+                                  % (pid, st.get("port")), json_mode,
+                     extra={"state": "degraded", "pid": pid})
+    payload = {"ok": True, "action": "status", "state": "running"}
+    payload.update({k: st[k] for k in
+                    ("pid", "port", "host", "url", "ledger_dir", "log")
+                    if k in st})
+    _emit(payload, json_mode)
+    return 0
+
+
+def _cmd_stop(kv, json_mode):
+    st = _read_state()
+    if not st or not _pid_alive(st.get("pid")):
+        try:
+            os.remove(_state_path())       # 残状态出清（进程已亡=不在跑）
+        except OSError:
+            pass
+        return _fail("stop", 1, "not-running", json_mode,
+                     extra={"state": "not-running"})
+    pid = int(st["pid"])
+    try:
+        os.kill(pid, signal.SIGTERM)
+    except OSError:
+        pass
+    deadline = time.time() + STOP_WAIT_S
+    while time.time() < deadline and _pid_alive(pid):
+        time.sleep(0.1)
+    if _pid_alive(pid):
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except OSError:
+            pass
+        time.sleep(0.2)
+    try:
+        os.remove(_state_path())
+    except OSError:
+        pass
+    _emit({"ok": True, "action": "stop", "state": "stopped",
+           "pid": st.get("pid"), "port": st.get("port"),
+           "url": st.get("url", "")}, json_mode)
+    return 0
+
+
+# ---------------------------------------------------------------- 入口
 
 def main(argv):
     json_mode = "--json" in argv[1:]
@@ -116,18 +321,8 @@ def _dispatch(argv, json_mode):
     if sub == "start":
         return _cmd_start(kv, json_mode)
     if sub == "status":
-        return _fail("status", 2, "start 未施工完", json_mode)
-    return _fail("stop", 2, "stop 未施工完", json_mode)
-
-
-def _cmd_start(kv, json_mode):
-    gd = kv.get("--ledger-dir", "")
-    if gd and not os.path.isdir(gd):
-        return _fail("start", 2, "环境问题: ledger 目录不存在 " + gd, json_mode)
-    if not gd:
-        return _fail("start", 2,
-                     "环境问题: 未找到可服 ledger（无战且未给 --ledger-dir）", json_mode)
-    return _fail("start", 2, "环境问题: 起服逻辑未施工完", json_mode)
+        return _cmd_status(kv, json_mode)
+    return _cmd_stop(kv, json_mode)
 
 
 if __name__ == "__main__":

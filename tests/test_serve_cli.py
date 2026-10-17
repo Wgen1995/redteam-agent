@@ -91,12 +91,13 @@ def build_goal(battle_dir, gen="G-t3"):
 
 
 def http_status(port, path="/favicon.ico", timeout=2):
-    """探活: 返回 HTTP 状态码; 连不上返回 None。"""
+    """探活: 返回 HTTP 状态码; 连不上返回 None。（接手注: 原稿二次
+    getresponse() 必炸 ResponseNotReady——同一响应对象读尽即收，单次调用。）"""
     try:
         conn = http.client.HTTPConnection("127.0.0.1", port, timeout=timeout)
         conn.request("GET", path)
-        st = conn.getresponse().status
         resp = conn.getresponse()
+        st = resp.status
         resp.read()
         conn.close()
         return st
