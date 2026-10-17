@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技法库 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md §P8-P18（技法库）。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;--purple:#a78bfa;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+body.mode-tab #top{display:none}   /* 嵌入任务详情壳时隐本页顶条（壳自带） */
+#top .sp{flex:1}
+#tech-search{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:6px 10px;border-radius:4px;font-size:12.5px;width:260px}
+#tech-search:focus{outline:none;border-color:var(--acc2)}
+#tech-counts{color:var(--g8);font-size:12px;font-family:var(--mono)}
+/* 四态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区：左列表+右详情 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1280px;margin:0 auto;padding:18px 24px 60px}
+.cols{display:grid;grid-template-columns:5fr 7fr;gap:14px;align-items:start}
+@media(max-width:980px){.cols{grid-template-columns:1fr}}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+#tech-list{display:grid;gap:8px;max-height:640px;overflow-y:auto;padding-right:4px}
+#tech-list::-webkit-scrollbar{width:5px}#tech-list::-webkit-scrollbar-thumb{background:var(--g4)}
+.tcard{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:10px 12px;cursor:pointer;transition:border-color .12s}
+.tcard:hover{border-color:var(--g5)}
+.tcard.sel{border-color:var(--acc2);background:var(--g3)}
+.tcard .hd{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tcard .cid{font-family:var(--mono);font-size:11px;color:var(--g8)}
+.tcard .ct{color:var(--gc);font-size:13px;flex:1;min-width:0;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-y{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-r{background:rgba(232,99,90,.14);color:var(--dang)}
+.t-n{background:var(--g4);color:var(--g9)}
+.tcard .meta{display:flex;gap:10px;margin-top:4px;color:var(--g8);font-size:11px}
+.tcard .meta .cost{font-family:var(--mono)}
+/* 详情区：六节只读 */
+#tech-detail .hd{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+#tech-detail h4{font-size:15px;color:var(--gc);flex:1;min-width:200px}
+#tech-detail .kv{color:var(--g8);font-size:11.5px;line-height:1.9;margin:6px 0 10px;
+border-bottom:1px dashed var(--g4);padding-bottom:8px}
+#tech-detail .kv b{color:var(--ga);font-weight:500}
+.sec{margin-bottom:12px}
+.sec h5{font-size:12.5px;color:var(--acc);margin-bottom:4px;letter-spacing:.5px}
+.sec pre{background:var(--g1);border:1px solid var(--g4);border-radius:6px;
+padding:10px;font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ga);
+overflow-x:auto;white-space:pre-wrap;margin:0}
+.sec pre.raw{color:var(--gb)}
+#tech-detail .none{color:var(--g8);font-size:12.5px;padding:14px 0;text-align:center}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:6px 14px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover{background:var(--g5);color:var(--gc)}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">系统 · <b>技法库</b></span>
+  <span class="sp"></span>
+  <input id="tech-search" type="search" placeholder="搜技法：标题 / 漏洞类 / 适用面 / 编号">
+  <span id="tech-counts"></span>
+</header>
+
+<div id="st-empty" class="state"><div class="box">
+  <h3>技法库还是空的</h3>
+  <p>技法卡由知识库沉淀生成：每张卡写明场景、步骤、工具引用、纪律标注、
+  证据标准与边界，供智能体执行时引用。沉淀后此处自动列出。</p>
+</div></div>
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在读取技法卡…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>技法库读取失败</h3>
+  <p id="err-detail"><code></code></p>
+  <button id="btn-retry" class="btn" type="button">重试</button>
+</div></div>
+
+<div id="st-normal" class="state">
+  <div id="wrap">
+    <div class="cols">
+      <div class="pane">
+        <h3>技法卡 <span class="sub" id="list-sub"></span></h3>
+        <div id="tech-list"></div>
+      </div>
+      <div class="pane" id="tech-detail-pane">
+        <h3>卡详情 <span class="sub">六节结构 · 只读</span></h3>
+        <div id="tech-detail"><div class="none">左侧选择一张技法卡查看详情</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+/* T6·技法库页：50 卡列表+搜索+卡详情六节只读（场景/步骤/工具引用/纪律标注/
+   证据标准/边界）。四态=空/加载/错误/正常。服务端 /api/v2/techniques.json
+   全量给（真全量），页端本地过滤即时响应；点卡取详情（id 参数）。
+   宿主壳存在则 nav.push 自注册（守卫式消费 UI-1 舰契约）。 */
+(function () {
+  var state = { cards: [], counts: {}, sel: null, q: "" };
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    ["st-empty", "st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === name);
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function costTag(n) {
+    var cls = n >= 3 ? "t-r" : n === 2 ? "t-y" : "t-g";
+    return '<span class="tag ' + cls + ' mono">成本档 ' + n + "</span>";
+  }
+
+  function renderList() {
+    var list = $("tech-list");
+    var needle = state.q.trim().toLowerCase();
+    var shown = state.cards.filter(function (c) {
+      if (!needle) { return true; }
+      return (c.id + " " + c.title + " " + c.vuln_class + " " + c.applicability)
+        .toLowerCase().indexOf(needle) >= 0;
+    });
+    list.innerHTML = "";
+    shown.forEach(function (c) {
+      var div = document.createElement("div");
+      div.className = "tcard" + (state.sel === c.id ? " sel" : "");
+      div.setAttribute("data-id", c.id);
+      div.innerHTML =
+        '<div class="hd"><span class="cid">' + esc(c.id) + "</span>" +
+        '<span class="ct" title="' + esc(c.title) + '">' + esc(c.title) + "</span>" +
+        (c.shape === "六节"
+          ? '<span class="tag t-g">六节</span>'
+          : '<span class="tag t-n">' + esc(c.shape) + "</span>") + "</div>" +
+        '<div class="meta"><span class="mono">' + esc(c.vuln_class) + "</span>" +
+        (c.cost_hint != null ? costTag(c.cost_hint) : "") +
+        "<span>状态 " + esc(c.status || "—") + "</span></div>";
+      div.addEventListener("click", function () { selectCard(c.id); });
+      list.appendChild(div);
+    });
+    if (!shown.length) {
+      list.innerHTML = '<div class="none" style="color:var(--g8);font-size:12.5px;' +
+        'padding:14px 0;text-align:center">没有匹配「' + esc(state.q) + "」的技法卡</div>";
+    }
+    var counts = state.counts || {};
+    $("tech-counts").textContent = shown.length + " / " + (counts.total || 0) + " 张";
+    $("list-sub").textContent =
+      (counts.six_section || 0) + " 六节 · " + (counts.legacy || 0) + " 早期四节";
+  }
+
+  function renderDetail(d) {
+    var box = $("tech-detail");
+    if (!d || d.error) {
+      box.innerHTML = '<div class="none">' +
+        esc(d && d.error ? d.error : "左侧选择一张技法卡查看详情") + "</div>";
+      return;
+    }
+    var html = '<div class="hd"><span class="cid mono">' + esc(d.id) + "</span>" +
+      '<span class="tag ' + (d.shape === "六节" ? "t-g" : "t-n") + '">' + esc(d.shape) +
+      "</span><h4>" + esc(d.title) + "</h4></div>";
+    html += '<div class="kv"><b>漏洞类</b> <span class="mono">' + esc(d.vuln_class) +
+      "</span> · <b>适用面</b> " + esc(d.applicability) +
+      " · <b>最近验证</b> " + esc(d.last_verified || "—") +
+      " · <b>来源</b> " + esc(d.source_id || "—") + "</div>";
+    /* 六节只读展示：场景/步骤/工具引用/纪律标注/证据标准/边界 */
+    (d.sections || []).forEach(function (s) {
+      html += '<div class="sec"><h5>' + esc(s.name) + "</h5>" +
+        '<pre class="raw">' + esc(s.body) + "</pre></div>";
+    });
+    if (d.failure_modes) {
+      html += '<div class="sec"><h5>失败模式（元数据）</h5><pre>' +
+        esc(d.failure_modes) + "</pre></div>";
+    }
+    box.innerHTML = html;
+  }
+
+  function selectCard(id) {
+    state.sel = id;
+    renderList();
+    renderDetail({ error: "正在读取 " + id + " …" });
+    fetch('/api/v2/techniques.json?id=' + encodeURIComponent(id))
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p.error) { renderDetail(p); return; }
+        renderDetail(p.card);
+      })
+      .catch(function (e) { renderDetail({ error: "详情读取失败：" + e }); });
+  }
+
+  function load() {
+    show("st-loading");
+    fetch('/api/v2/techniques.json')
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        state.cards = p.cards || [];
+        state.counts = p.counts || {};
+        if (!state.cards.length && !state.q) { show("st-empty"); return; }
+        renderList();
+        renderDetail(null);
+        show("st-normal");
+      })
+      .catch(function (e) {
+        $("err-detail").innerHTML = "<code>" + esc(e) + "</code>";
+        show("st-error");
+      });
+  }
+
+  $("tech-search").addEventListener("input", function () {
+    state.q = this.value;
+    renderList();
+  });
+  $("btn-retry").addEventListener("click", load);
+
+  /* 宿主壳自注册（共享壳缺席时本页独立可用——守卫式消费 UI-1 舰契约） */
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: 'techniques', title: '技法库', group: '系统' });
+  }
+  if (window.__TAB_ID__ === "TechniquesTab") { document.body.classList.add("mode-tab"); }
+
+  load();
+})();
+</script>
+</body>
+</html>
