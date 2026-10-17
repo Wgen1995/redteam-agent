@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""M08 弱模型档协议可检测（批次 6 T2）——缺命令步骤的「终止报告」形态可检测。
+r"""M08 弱模型档协议可检测（批次 6 T2）——缺命令步骤的「终止报告」形态可检测。
 
 纯函数定义于测试模块（eval 专用，不入 CLI 面——铁律 7）；
 规则=存在以 `- cmd:` 起行或 \`\`\`bash 围栏内的行且含 tanyin- 前缀命令。"""
 import os, unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 SAMPLE = os.path.join(HERE, "evals", "samples", "p4-no-command.md")
-FENCE = "\`\`\`"  # 三个反引号（避模板/转义歧义，单源）
+FENCE = r"\`\`\`"  # 三个反引号（避模板/转义歧义，单源）
 
 
 def has_executable_command(duty_lines):

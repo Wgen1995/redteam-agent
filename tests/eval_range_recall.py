@@ -22,7 +22,6 @@ import argparse
 import json
 import re
 import os
-import re
 import shutil
 import sys
 from urllib.parse import parse_qsl, urlencode, urlsplit

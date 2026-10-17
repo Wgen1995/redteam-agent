@@ -4,7 +4,7 @@
 python3 -m unittest tests.test_v09a_webui
 法律（docs/design/tanyin-target-form.md §3）：纯 stdlib、3.9 兼容、观察面只读投影零写入。
 """
-import json, os, re, shutil, sys, tempfile, unittest
+import json, os, re, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "..", "cli")
@@ -366,8 +366,6 @@ class TestPhasesLampNineGates(unittest.TestCase):
         ym = re.search(r"^states:\s*\[([^\]]*)\]", ytext, re.M)
         self.assertIsNotNone(ym, "phases.yaml 缺 states 行")
         yml = [p.strip() for p in ym.group(1).split(",")]
-        titles = dict(re.findall(r"^  (P[0-9.]+):\s*$\s*\n\s+title:\s*(\S+)",
-                                 ytext, re.M))
         self.assertEqual([g[0] for g in got], yml,
                          "门全序漂移: %s vs %s" % (got, yml))
         # copy-v09d 批：中文名=人话显示层（yaml title 内部代号不直出）——钉非空+去门字系

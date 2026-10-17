@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """批次4 T3：P4 重放门断言转强制——expect 文本去 SKIP 后 gate 不再记 skip。"""
-import os, shutil, subprocess, sys, tempfile, unittest
+import os, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")

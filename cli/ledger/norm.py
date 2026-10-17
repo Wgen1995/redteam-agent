@@ -12,7 +12,7 @@ vs check_cmds.normalize_artifact 值替换+<ts>+split/join——语义不同致�
   2. 删 CR——跨平台行尾归一；
   3. ISO8601 时间戳（YYYY-MM-DD[T ]HH:MM:SS(.frac)?(Z|±HH[:MM])?）→ 哨兵 <ts>；
   4. epoch 秒（1[6-9] 接 8 位数字，词边界）→ 哨兵 <ts>；
-  5. nonce/csrf 值（键[=:]值，值=[^\s;]+）→「键=<n>」——仅替换值，键与行内其余
+  5. nonce/csrf 值（键[=:]值，值=[^\\s;]+）→「键=<n>」——仅替换值，键与行内其余
      字符全部保留（对照写路径旧 _NORM_DROP 整行丢弃=宽松侧，弃用）；
   6. 逐行 rstrip + split/join（"\n"）——尾随空行/结尾换行结构保留（对照写路径旧
      splitlines/join：结尾换行丢失=任何带尾换行文本工件恒失配）。

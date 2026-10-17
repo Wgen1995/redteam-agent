@@ -300,7 +300,7 @@ def next_id(kdir, sub_dir, prefix):
     if os.path.isdir(d):
         for root, _dirs, files in os.walk(d):
             for fn in files:
-                m = re.match("^" + prefix + "-(\d{4})\.md$", fn)
+                m = re.match("^" + prefix + r"-(\d{4})\.md$", fn)
                 if m:
                     mx = max(mx, int(m.group(1)))
     return "%s-%04d" % (prefix, mx + 1)

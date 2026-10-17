@@ -9,7 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "cli"))
 sys.path.insert(0, os.path.join(HERE, ".."))
 
-from tests.test_dryrun_p0p2 import fresh_drydir, ledger, phases, dry_run_p0_p2, TS
+from tests.test_dryrun_p0p2 import fresh_drydir, ledger, dry_run_p0_p2, TS
 
 
 class TestGateAuthority(unittest.TestCase):

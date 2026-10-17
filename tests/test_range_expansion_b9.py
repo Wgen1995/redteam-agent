@@ -4,7 +4,7 @@
 GT v2 键形（svc-* 无端口 canonical）+八新类覆盖+二级路径占比≥40%+
 认证态靶配行为差分通道（弱口令成功即发 X-Auth-Token——dict §二 通道修复）。
 """
-import json, os, re, unittest
+import json, os, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 GT_PATH = os.path.join(HERE, "range", "ground-truth.json")

@@ -9,9 +9,8 @@ graph-horizon 可达集×矩阵空格 join（喂 P3 派发：可达空格先行�
 确定性：邻接排序+BFS/DFS 定序+清单排序；输出摘要化（计数+清单）。
 命令面 41→44：微版本勘误（同 G-1 先例；铁律 7 允许类=确定性账本运算，无攻击决策）。"""
 from . import core
-from .schemas import TABLES
 from .query_cmds import (UsageError, usage_guard, parse_kv, latest_by, latest_matrix,
-                         _cell, _idx)
+                         _cell)
 import sys as _sys
 
 TAB = chr(9)

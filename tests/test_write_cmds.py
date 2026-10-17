@@ -383,7 +383,6 @@ class TestAddFinding(Base):
         self.assert_rej(call("add-finding", self.gd, *self.BASE), snap, "supersede")
 
     def test_reject_c2_without_evidence(self):
-        snap = self.snap()
         args = [a for a in self.BASE if not a.startswith("--confidence=")]
         args = [a for a in args if not a.startswith("--evidence-ids=")] + ["--confidence=C2"]
         self.assert_rej(call("add-finding", self.gd, *args), snapshot(self.gd), "C2")

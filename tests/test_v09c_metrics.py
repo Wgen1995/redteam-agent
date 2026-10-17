@@ -247,7 +247,6 @@ class TestMcnemarV09c(unittest.TestCase):
 
     def test_pairs_only_on_shared(self):
         """只对两臂共有 GT 项集合配对：独有项不入 b/c。"""
-        ids = ["s1", "s2", "s3"]
         a = {"s1": True, "s2": False, "s3": True, "a-only": True}
         b = {"s1": False, "s2": True, "s3": True, "b-only": False}
         r = _pair(a, b)

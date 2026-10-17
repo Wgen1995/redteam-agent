@@ -28,7 +28,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ledger import query_cmds  # noqa: E402
 from ledger.check_cmds import REPLAY_EVENT  # noqa: E402  重放事件形态单源
-from ledger.core import GATE_EXIT_EVENT, Session  # noqa: E402
+from ledger.core import Session  # noqa: E402
 from ledger.schemas import TABLES  # noqa: E402
 
 PROJECTION_KEYS = ("goal", "scope_summary", "findings", "matrix", "coverage",

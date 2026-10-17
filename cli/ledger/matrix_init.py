@@ -96,7 +96,6 @@ def run_matrix_init(goal_dir, rest):
                   + "from-assets 映射后词表类为空（在册 in_scope 资产类型无适用类）")
             return 1
     mf = TABLES["matrix.tsv"]
-    mi = {f: i for i, f in enumerate(mf)}
     new_rows = []
     for surf in surfaces:
         for vc in classes:
@@ -110,7 +109,6 @@ def run_matrix_init(goal_dir, rest):
     event = "matrix-init vocab=%s sha=%s surfaces=%d classes=%d" % (ver, sha, len(surfaces), len(classes))
     wo = [ts, "CLI", "P1", event, "", prev, "2"]
     h = core.row_hash(prev, wo)
-    tlf = TABLES["timeline.tsv"]
     tl_rows.append([wo[0], wo[1], wo[2], wo[3], wo[4], prev, h, "2"])
     core.write_tsv(tl_path, tl_rows)
     print("PASS\tmatrix-init\trows=%d surfaces=%d classes=%d vocab=%s@%s" % (len(new_rows), len(surfaces), len(classes), ver, sha))

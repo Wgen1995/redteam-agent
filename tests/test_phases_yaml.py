@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """批次 3 T1/T2：phases.yaml 解析器与 schema 校验器测试。
 范式：读仓库真实 phases/phases.yaml；篡改例写临时文件，不动本体。"""
-import os, shutil, sys, tempfile, unittest
-from contextlib import redirect_stdout, redirect_stderr
-import io
+import os, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")

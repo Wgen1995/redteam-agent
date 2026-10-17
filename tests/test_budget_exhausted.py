@@ -157,7 +157,6 @@ class TestTerminalB(Base):
 class TestTerminalBNormal(unittest.TestCase):
     def test_normal_terminal_no_interim(self):
         """终态 A（normal）不产中期报告——支线语义只在 exhausted 分支生效。"""
-        import json
         self.assertFalse(os.path.exists(os.path.join(
             FIX, "report", "signed", "interim-report.md")),
             "共享夹具零触碰：interim 支线不得写共享夹具")

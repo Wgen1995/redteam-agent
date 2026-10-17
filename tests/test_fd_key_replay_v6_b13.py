@@ -4,7 +4,7 @@
 
 红：FD 键行不解锁 EV→0 分（G-r14 实况）。绿：FD 键行按 findings 链展开为其全部 EV。
 前代（EV 键）零漂移；FD 键 REJECTED 阻断同展开。"""
-import json, os, shutil, sys, tempfile, unittest
+import json, os, sys, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..'))

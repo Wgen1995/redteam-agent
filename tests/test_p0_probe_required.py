@@ -66,7 +66,7 @@ class TestProbeRequired(unittest.TestCase):
         idx = os.path.join(self.d, "E-index.tsv")
         with open(idx, encoding="utf-8") as f:
             lines = [ln for ln in f.read().splitlines() if ln.strip()]
-        li = 11  # schemas.json E-index.tsv: linked_finding（夹具无表头行）
+        # schemas.json E-index.tsv: linked_finding=第 11 列（夹具无表头行）
         row = ["EV-g1-0002", "挂接证据", "command", TS, "internet",
                "curl -s http://x/", "single", "a" * 64, "b" * 64, "", "",
                "FD-g1-0001", "", "ex", "2", TS]

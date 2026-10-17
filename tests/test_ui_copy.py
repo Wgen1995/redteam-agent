@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""copy-v09d 界面文案人话律——禁词钉 + 替词钉（用户钦定词典的测试面）。
+r"""copy-v09d 界面文案人话律——禁词钉 + 替词钉（用户钦定词典的测试面）。
 
 范围: 观察面七页 HTML + status.js 的「标签区」:
   nav 链接文字 / h1-h6 / button / option / legend / 统计项名 / 说明段落

@@ -12,11 +12,9 @@ import math, os, re   # datetime 退役（G-23 批次5 T4：_now() 墙钟删除�
 
 from . import core
 from . import state_md
-from .norm import normalize_artifact, artifact_hashes as _norm_hashes  # norm 轨单源（评审 C-1）
-from .schemas import TABLES
+from .norm import artifact_hashes as _norm_hashes  # norm 轨单源（评审 C-1）
 from .query_cmds import (TAB, UsageError, parse_kv, usage_guard, _idx, _cell,
-                         latest_intents, latest_matrix, latest_by, unconsumed_facts,
-                         matrix_gap_cells, budget_exhausted)
+                         latest_matrix, latest_by, matrix_gap_cells)
 
 REPLAY_STATES = ("VERIFIED", "REPAIRED", "REJECTED")
 REPLAY_EVENT = re.compile(r"^replay:((?:EV|FD)-[^:\s]+):(VERIFIED|REPAIRED|REJECTED)(?:\s.*)?$")
@@ -196,7 +194,6 @@ def _append_timeline(s, goal_dir, event, ts, actor="CLI", phase="P4", revert="")
 
 
 def h_set_replay_state(goal_dir, rest):
-    import sys
     args, pos = parse_kv(rest)
     if pos or set(args) - {"id", "state", "note", "timestamp", "manual"} \
             or "id" not in args or "state" not in args \

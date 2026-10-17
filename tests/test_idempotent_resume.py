@@ -5,7 +5,7 @@ from contextlib import redirect_stdout
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "cli"))
-from ledger import core, phases_engine as pe
+from ledger import phases_engine as pe
 
 FIX = os.path.join(HERE, "fixtures", "G-g1")
 TAB = chr(9)

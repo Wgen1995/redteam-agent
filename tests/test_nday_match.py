@@ -2,7 +2,7 @@
 """批次5 T14：K3 本地 CVE 快照（cve-snapshot.tsv 七列精选+README 更新纪律/联网
 仅核验边界 R11）+ nday-match 离线 CPE 匹配（前缀+版本区间元组比较 [start,end)；
 零联网 import 断言；输出附快照日期 G-32）。"""
-import os, re, subprocess, sys, unittest
+import os, subprocess, sys, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")

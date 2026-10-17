@@ -16,7 +16,7 @@ ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, os.path.join(ROOT, "cli"))
 sys.path.insert(0, ROOT)
 from ledger import knowledge
-from tests.test_dryrun_p0p2 import fresh_drydir, ledger, phases, TS
+from tests.test_dryrun_p0p2 import ledger, phases, TS
 
 LEDGER = os.path.join(ROOT, "cli", "tanyin-ledger")
 TAB = chr(9)

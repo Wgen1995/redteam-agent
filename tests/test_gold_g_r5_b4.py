@@ -27,7 +27,7 @@ class TestGoldGR5(unittest.TestCase):
         self.assertEqual(len(missing), 35)
 
     def test_replay_all_verified_no_forcing(self):
-        verified, blocked = set(), set()
+        verified = set()
         for ln in self.rows['timeline.tsv'][1:]:
             f = ln.split('\t') if isinstance(ln, str) else ln
             ev = f[3] if len(f) > 3 else ''

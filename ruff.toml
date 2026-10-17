@@ -1,0 +1,24 @@
+# W2·CI 护栏（e7a6d5f1）——ruff 零错误基线
+# 选取律：
+# - 只收「真错误」类： E9 语法 / F 全组 pyflakes（未用名/未定义名/重定义）/
+#   W605 转义序列 / E711-E722（比较真值、裸 except）——基线=零错误，增量不得回潮。
+# - 风格类（E401 多 import 一行 / E402 import 位 / E701-E702 单行多句 / E741 歧义名）
+#   = 仓风既有（300+ 文件历史形），不进基线——渐进收紧走后续修订（同 mypy 渐进律，
+#   防一次大重写与在航舰冲突）。
+# - tests/fixtures 排除： 金样测试数据（sha256 入 E-index 链），「修复」=破坏金样。
+# - docs/design/imported 排除： 外部参考工件（GenCPT 等）非本仓源。
+target-version = "py39"
+line-length = 100
+
+extend-exclude = [
+    "docs/design/imported",
+    "tests/fixtures",
+    ".opencode",
+    ".research",
+    "experiments",
+    "secw41-work",
+    "secw52-work",
+]
+
+[lint]
+select = ["E9", "F", "W605", "E711", "E712", "E713", "E714", "E721", "E722"]

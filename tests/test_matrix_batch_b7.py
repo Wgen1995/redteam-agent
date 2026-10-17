@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, os.path.join(ROOT, "cli"))
 sys.path.insert(0, ROOT)
-from tests.test_dryrun_p0p2 import fresh_drydir, ledger, phases, TS
+from tests.test_dryrun_p0p2 import fresh_drydir, ledger, TS
 
 LEDGER = os.path.join(ROOT, "cli", "tanyin-ledger")
 FIX = os.path.join(HERE, "fixtures", "G-g1")

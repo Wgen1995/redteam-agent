@@ -4,7 +4,7 @@
 夹具=G-g1 复制+CLI 铸造（add-evidence 前置工件落盘锚双指纹→覆盖 EV 卡 raw_request
 〔R-T5 批次4 预铸卡先例〕→add-finding）；raw_request 取无 body GET 形（受限 YAML 子集
 块标量丢空行的解析实况——正文体请求走工件原件，见 HANDOFF R-T13-2）。时间戳全字面量。"""
-import json, os, shutil, subprocess, sys, tempfile, unittest
+import os, shutil, subprocess, sys, tempfile, unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, os.path.join(ROOT, "cli"))

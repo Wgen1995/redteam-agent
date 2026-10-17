@@ -11,7 +11,7 @@ docs/superpowers/plans/2026-10-15-v096-enforcement.md SEC-2 舰条目 4。
 机械性实证：客户端（外联工具替身 urllib）零配合——仅凭 runner 侧注入的代理 env，
 allow 域放行、界外域 403，且每次判决自动铸 request-ticket 入 timeline（增量不重复）。
 """
-import http.server, json, os, shutil, socketserver, subprocess, sys, tempfile, threading, unittest
+import http.server, os, shutil, socketserver, subprocess, sys, tempfile, threading, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")

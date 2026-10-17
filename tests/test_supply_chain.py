@@ -4,7 +4,6 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
-import sys
 sys.path.insert(0, os.path.join(ROOT, "cli"))
 from ledger import supply_chain  # noqa: E402
 

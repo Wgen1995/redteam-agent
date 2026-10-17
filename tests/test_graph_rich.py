@@ -10,14 +10,14 @@ python3 -m unittest tests.test_graph_rich
 或终态未证成，淡显标记）/impact 仅发现/事件溯源 latest-wins（同 id 追加行取最新）
 /边保持 10 型+标签/向后兼容（test_v09b_pages 的 id/label/candidate/layer 语义不变）。
 """
-import json, os, re, tempfile, unittest
+import json, os, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "..", "cli")
 import sys  # noqa: E402
 
 sys.path.insert(0, CLI)
-from ledger import core, viz_render  # noqa: E402
+from ledger import core  # noqa: E402
 from ledger.write_cmds import EDGE_KINDS  # noqa: E402
 
 from webui import projections as proj_mod  # noqa: E402

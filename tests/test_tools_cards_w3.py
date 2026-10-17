@@ -18,6 +18,7 @@ CLI = os.path.join(ROOT, "cli")
 sys.path.insert(0, CLI)
 
 from tools import cards as tool_cards  # noqa: E402
+from tools import lock as tool_lock  # noqa: E402
 
 TEST_KEY = os.path.join(HERE, "fixtures", "keys", "test-signing-key.pem")
 TEST_PUB = os.path.join(HERE, "fixtures", "keys", "test-release.pub")
@@ -131,6 +132,81 @@ class TestDisciplineCompleteness(unittest.TestCase):
                             "缺字段 %s 未被 discipline_errors 报出" % frag)
         with self.assertRaises(tool_cards.CardError):
             tool_cards.register(bad)
+
+
+class TestToolsLock(unittest.TestCase):
+    """④tools.lock 供应链锁定（版本+sha256+ECDSA 验签；测试钥锚=批次 4 先例）。"""
+
+    def test_lock_file_covers_all_25_cards(self):
+        entries = tool_lock.load(tool_lock.DEFAULT_LOCK_PATH)
+        self.assertEqual(sorted(entries), sorted(REQUIRED_25),
+                         "lock 键面=注册表 25 卡全量")
+
+    def test_lock_all_entries_signature_verifies(self):
+        results = tool_lock.verify_all(tool_lock.DEFAULT_LOCK_PATH, TEST_PUB)
+        bad = [(n, why) for n, ok, why in results if not ok]
+        self.assertEqual(bad, [], "验签不过: %s" % bad)
+
+    def test_lock_entries_match_registry_digest(self):
+        for name in REQUIRED_25:
+            ok, why = tool_lock.verify_card(tool_cards.get_card(name),
+                                            tool_lock.DEFAULT_LOCK_PATH, TEST_PUB)
+            self.assertTrue(ok, "%s 卡内容与 lock 锚不符: %s" % (name, why))
+
+    def test_tampered_sha256_rejected(self):
+        entries = tool_lock.load(tool_lock.DEFAULT_LOCK_PATH)
+        entries["nuclei"]["sha256"] = "ab" * 32
+        ok, why = tool_lock._verify_entry("nuclei", entries["nuclei"], TEST_PUB)
+        self.assertFalse(ok, "篡改 sha256 必须验签失败: " + why)
+
+    def test_tampered_sig_rejected(self):
+        entries = tool_lock.load(tool_lock.DEFAULT_LOCK_PATH)
+        entries["nmap"]["sig"] = "00" * 32
+        ok, why = tool_lock._verify_entry("nmap", entries["nmap"], TEST_PUB)
+        self.assertFalse(ok, "篡改 sig 必须失败: " + why)
+
+    def test_nonhex_sig_fail_closed(self):
+        ok, why = tool_lock._verify_entry(
+            "dig", {"version": "w3-1", "sha256": "cd" * 32, "sig": "XYZ"}, TEST_PUB)
+        self.assertFalse(ok, "非 hex sig=fail-closed: " + why)
+
+    def test_missing_entry_fails_card_verify(self):
+        entries = tool_lock.load(tool_lock.DEFAULT_LOCK_PATH)
+        del entries["curl"]
+        tmp = os.path.join(tempfile.mkdtemp(), "tools.lock")
+        tool_lock.write_entries(tmp, entries)
+        self.addCleanup(shutil.rmtree, os.path.dirname(tmp))
+        ok, why = tool_lock.verify_card(tool_cards.get_card("curl"), tmp, TEST_PUB)
+        self.assertFalse(ok, "缺条目必须失败: " + why)
+
+    def test_card_content_drift_detected(self):
+        """红队反例：注册表卡内容被改（如限速放松）——sha256 与 lock 锚不符必拒。"""
+        c = tool_cards.get_card("ffuf")
+        orig = c.rate
+        c.rate = "9999/s"
+        try:
+            ok, why = tool_lock.verify_card(c, tool_lock.DEFAULT_LOCK_PATH, TEST_PUB)
+            self.assertFalse(ok, "卡内容漂移必须检出: " + why)
+            self.assertIn("sha256", why)
+        finally:
+            c.rate = orig
+
+    def test_sign_verify_roundtrip_with_test_key(self):
+        c = tool_cards.ToolCard(
+            name="w3-sign-probe", binary="w3-sign-probe", tier="L0",
+            rate="local", deny_extra=[], revert="none(只读)",
+            example=["w3-sign-probe", "--version"], risk="low",
+            category="recon", summary="签名往返探针", version="rt-1")
+        sig = tool_lock.sign_card(c, TEST_KEY)
+        entry = {"version": c.version, "sha256": tool_lock.card_digest(c),
+                 "sig": sig}
+        ok, why = tool_lock._verify_entry(c.name, entry, TEST_PUB)
+        self.assertTrue(ok, why)
+
+    def test_lock_file_lf_no_bom(self):
+        raw = open(tool_lock.DEFAULT_LOCK_PATH, "rb").read()
+        self.assertFalse(raw.startswith(b"\xef\xbb\xbf"), "BOM 禁入")
+        self.assertNotIn(b"\r\n", raw, "CRLF 禁入（selfcheck encoding 律）")
 
 
 if __name__ == "__main__":

@@ -22,7 +22,6 @@ class TestSupersede(Base):
     def test_supersede_flow(self):
         self.assert_ok(call("add-finding", self.gd, *self.FIRST))
         old_id = self.rows("findings.tsv")[-1][0]
-        snap = self.snap()
         res = call("add-finding", self.gd, *(self.BASE + ["--supersede=" + old_id]))
         self.assert_ok(res)
         rows = self.rows("findings.tsv")
@@ -59,7 +58,6 @@ class TestDeferredRevive(Base):
         self.assert_ok(call("set-intent-status", self.gd, "--id=" + iid, "--status=deferred",
                             "--reason=等凭据", "--activation=creds.status;eq;active",
                             "--timestamp=" + TS))
-        snap = self.snap()
         res = call("set-intent-status", self.gd, "--id=" + iid, "--status=pending",
                    "--reason=凭据已到手，复活", "--timestamp=" + TS)
         self.assert_ok(res)

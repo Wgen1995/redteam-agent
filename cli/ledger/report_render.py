@@ -197,9 +197,6 @@ def _segment_text(goal_dir, s, fd_row):
     ev_cards = [(r, _load_card(goal_dir, r)) for r in evs]
     poc = next(((r, c) for r, c in ev_cards
                 if c and (c.get("raw_request") or "").strip()), None)
-    excerpt = next(((_cell("E-index.tsv", r, "raw_excerpt"))
-                    for r, _c in ev_cards
-                    if _cell("E-index.tsv", r, "raw_excerpt").strip()), "")
     ev_ids = [_cell("E-index.tsv", r, "id") for r, _c in ev_cards]
     replay_tri, replay_ts = _replay_line(s, fd_id, ev_ids)
     verified = _cell("findings.tsv", fd_row, "exploitation_status") == "verified"

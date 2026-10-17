@@ -3,7 +3,7 @@
 
 八专家架构 P2：五工具各自复制 append_tl+EPOCH 缺省（guard:32/canary:63/
 budgetctl:35/replay:80/egress:25）——单源化+墙钟/EPOCH 缺省退役。"""
-import os, re, shutil, sys, tempfile, unittest
+import os, shutil, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, '..')

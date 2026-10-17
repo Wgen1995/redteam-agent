@@ -4,7 +4,6 @@
 b31-34 API 断连 2h、b30 冻 7h 均靠人工对表才发现——本模块让断连窗口可机检：
 mint_wall_sync 在战斗生命周期点铸一枚；detect_gaps 纯函数供 settle/审计报嫌疑窗口。"""
 import datetime
-import os
 import re
 
 from .phases_engine import _append_event

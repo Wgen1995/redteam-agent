@@ -3,7 +3,7 @@
 
 八专家架构 P2：shared/LEDGER.md 名存实亡（12 处悬空引用）。修=实体化指针页，
 升格 02a 为正式稿留人工终审（人工项）。"""
-import glob, os, re, unittest
+import glob, os, unittest
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 

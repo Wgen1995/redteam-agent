@@ -16,10 +16,8 @@ P5.5 签发（auto 永不代批/代签——P5.5 signoff 留人工，见 A 例�
 
 python3 -m unittest tests.test_battle_auto
 """
-import datetime
 import hashlib
 import os
-import re
 import shutil
 import subprocess
 import sys

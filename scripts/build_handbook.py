@@ -536,15 +536,6 @@ def relink():
                     hd = find_anchor(vol, rowtext)
             newhref = '../docs/learning/html/' + vol + ('#' + hd['id'] if hd else '')
             return whole.replace(href, newhref)
-            best = None
-            for hd in hds:
-                if hd['level'] > 3: continue
-                t = normalize(hd['text'])
-                if not t: continue
-                if t == key or (len(key) >= 2 and key in t) or (len(t) >= 2 and t in key):
-                    best = hd; break
-            newhref = '../docs/learning/html/' + vol + ('#' + best['id'] if best else '')
-            return whole.replace(href, newhref)
         src2 = re.sub(r'<a\s+href="([^"]*VOL-[^"]*\.md[^"]*)"[^>]*>(.*?)</a>', sub, src, flags=re.S)
         # 其余裸 .md 链接 → .html
         src2 = re.sub(r'(href=")(\.\./docs/learning/)(VOL-[\w-]+)\.md(")', r'\1\2html/\3.html\4', src2)

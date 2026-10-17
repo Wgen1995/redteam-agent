@@ -954,7 +954,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 cp = _run_cli(REPORT_CLI, "render", gd, ["--all", "--out=" + draft])
                 render_rc = cp.returncode
-            except subprocess.SubprocessError as e:
+            except subprocess.SubprocessError:
                 render_rc = -1
             mds = self._draft_mds(draft)
         if not mds:

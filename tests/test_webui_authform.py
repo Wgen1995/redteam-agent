@@ -349,7 +349,7 @@ class TestLaunchAction(AuthFormBase):
 
     def test_launch_rejected_when_runner_already_alive(self):
         with mock.patch.object(srv_mod, "_find_runner_pids",
-                               return_value=[9999]) as fp, \
+                               return_value=[9999]), \
                 mock.patch.object(srv_mod, "_spawn_runner",
                                   return_value=1) as sp:
             r = self.write_req("/api/battle/control",

@@ -22,7 +22,7 @@ UA 治理 + request-ticket full argv。
      清洗面：改写即断账本哈希链，出站执法已在 replay 层根治（计划口径「grep
      自报点位」限于会外发的点位文件）。docs 引文（审计/计划原文）同不扫。
 """
-import http.server, json, os, re, shutil, socketserver, subprocess, sys, tempfile, threading, unittest
+import http.server, os, re, shutil, socketserver, subprocess, sys, tempfile, threading, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, ".."))

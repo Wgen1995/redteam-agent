@@ -122,12 +122,10 @@ class TestFindingsJson(Base):
         self._mint()
         sys.path.insert(0, os.path.join(ROOT, "cli"))
         from ledger.core import esc, unesc
-        from ledger.schemas import TABLES
         p = os.path.join(self.gd, "findings.tsv")
         with open(p, encoding="utf-8") as f:
             rows = [[unesc(c) for c in ln.split("\t")]
                     for ln in f.read().splitlines() if ln.strip()]
-        fi = TABLES["findings.tsv"].index
         src = next(r for r in rows if r[0] == FD_ID)
         dup = list(src)
         dup[0] = "FD-g1-0003"

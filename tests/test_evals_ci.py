@@ -1,7 +1,7 @@
 # tests/test_evals_ci.py
 # -*- coding: utf-8 -*-
 """T4 CI 全量化：evals job 接线契约在场断言（文本级；批次 6）。"""
-import os, sys, unittest
+import os, unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 

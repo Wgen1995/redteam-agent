@@ -24,7 +24,6 @@ docs/reviews/2026-10-10-nine-expert-review/02-opsec.md 关键缺口1「授权窗
 """
 import datetime
 import os
-import re
 import shutil
 import sys
 import tempfile

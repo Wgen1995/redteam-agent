@@ -9,7 +9,7 @@ CLI 裸 traceback 退出（rc=1 且 stderr 有 Traceback，无用法提示）。
 rc=2（用法域，可修正重跑）；缺文件面维持 T17 vacuous rc=1 口径不变（零指标
 文件/指标文件缺两例照旧）。
 """
-import json, os, subprocess, sys, tempfile, unittest
+import os, subprocess, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")

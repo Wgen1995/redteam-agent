@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, os.path.join(ROOT, "cli"))
 from ledger import phases_engine as pe  # noqa: E402
-from ledger import report_agg, report_lint, report_render, selfcheck  # noqa: E402
+from ledger import report_lint, report_render, selfcheck  # noqa: E402
 from ledger import registry  # noqa: E402
 from ledger.schemas import TABLES  # noqa: E402
 

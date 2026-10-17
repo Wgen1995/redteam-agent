@@ -5,7 +5,6 @@
 批次 6 节/HANDOFF R11 行/不造数据断言（记录表复核列初始态=待真人填写，禁预填结论）。
 """
 import os
-import sys
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))

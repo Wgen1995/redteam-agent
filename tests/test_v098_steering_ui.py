@@ -103,8 +103,6 @@ class TestNewWizardStructure(unittest.TestCase):
 
     def test_only_first_step_initially_visible(self):
         src = _src("new.html")
-        panels = re.findall(
-            r'<section[^>]*class="step[^"]*"[^>]*>(?!</)', src)
         hidden = re.findall(
             r'<section[^>]*class="step[^"]*"[^>]*data-step="(\d)"[^>]*hidden',
             src)
@@ -336,7 +334,6 @@ class TestPlaywrightWizardSmoke(unittest.TestCase):
             self.skipTest("playwright 缺席 ENV-SKIP")
         from tests.test_v098_steering import (OP_KEY, SteeringBase,
                                               AUTH_DOC, AUTH_SHA)
-        import hashlib
         import os
         base = SteeringBase()
         base.setUp()

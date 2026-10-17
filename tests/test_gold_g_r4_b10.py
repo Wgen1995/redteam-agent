@@ -4,7 +4,7 @@
 三轮战完整会话（精度门勘误后快照）入 fixtures——CI 对 scorer 演进做端到端
 锁定：v3 键形+精度门+post_auth 链全链路 recall=0.56（28/50）；missing=22；
 重放验证计数=32（34-2 勘误 REJECTED）；任何 scorer 回归即红。"""
-import json, os, re, sys, unittest
+import json, os, sys, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)

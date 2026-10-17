@@ -28,12 +28,12 @@ class TestArtifactMaterialize(unittest.TestCase):
         shutil.rmtree(self.d)
 
     def test_missing_artifact_backfilled_from_excerpt(self):
-        out = run(self.d, 'add-evidence', '--title=T2 回填', '--source-type=command',
-                  '--observed-at=' + TS, '--network-position=intranet',
-                  '--repro-command=GET /probe', '--repro-kind=single',
-                  '--artifact=evidence/m1.raw', '--raw-excerpt=BODY-MARKER-77',
-                  '--timestamp=' + TS).stdout
-        ev = out.split()[1]
+        run(self.d, 'add-evidence', '--title=T2 回填', '--source-type=command',
+
+            '--observed-at=' + TS, '--network-position=intranet',
+            '--repro-command=GET /probe', '--repro-kind=single',
+            '--artifact=evidence/m1.raw', '--raw-excerpt=BODY-MARKER-77',
+            '--timestamp=' + TS)
         p = os.path.join(self.d, 'evidence', 'm1.raw')
         self.assertTrue(os.path.isfile(p), '工件须落真身')
         body = open(p, encoding='utf-8').read()
@@ -47,11 +47,11 @@ class TestArtifactMaterialize(unittest.TestCase):
         os.makedirs(os.path.join(self.d, 'art'), exist_ok=True)
         with open(os.path.join(self.d, 'art', 'pre.txt'), 'w', encoding='utf-8') as f:
             f.write('PRE-EXISTING')
-        out = run(self.d, 'add-evidence', '--title=T2 保留', '--source-type=command',
-                  '--observed-at=' + TS, '--network-position=intranet',
-                  '--repro-command=GET /probe', '--repro-kind=single',
-                  '--artifact=art/pre.txt', '--raw-excerpt=OTHER',
-                  '--timestamp=' + TS).stdout
+        run(self.d, 'add-evidence', '--title=T2 保留', '--source-type=command',
+            '--observed-at=' + TS, '--network-position=intranet',
+            '--repro-command=GET /probe', '--repro-kind=single',
+            '--artifact=art/pre.txt', '--raw-excerpt=OTHER',
+            '--timestamp=' + TS)
         body = open(os.path.join(self.d, 'art', 'pre.txt'), encoding='utf-8').read()
         self.assertEqual(body, 'PRE-EXISTING', '既有非空工件不得覆写')
 

@@ -97,10 +97,10 @@ def _finding_stream(s):
 def render_html(s):
     payload = json.dumps(build_island(s), ensure_ascii=False, sort_keys=True)
     # 数据岛嵌入防 </script> 提前闭合（JSON 合法转义 /）
-    return TEMPLATE.replace("__TANYIN_DATA__", payload.replace("</", "<\/"))
+    return TEMPLATE.replace("__TANYIN_DATA__", payload.replace("</", r"<\/"))
 
 
-TEMPLATE = """<!DOCTYPE html>
+TEMPLATE = r"""<!DOCTYPE html>
 <html lang="zh">
 <head>
 <meta charset="utf-8">
