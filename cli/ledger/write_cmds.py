@@ -13,6 +13,7 @@ contracts/02（终审裁决：写 19/查 11/校验 10）、contracts/02a（41 �
 """
 import ipaddress
 import os
+import datetime
 import re
 import sys
 
@@ -508,6 +509,52 @@ def _prereq_of(detail):
 _INTENT_TERMINAL = {st for st, nxt in _INTENT_ARROWS.items() if not nxt}
 
 
+# W2·01P0-2 intents 租约（01-架构专家 P0-2；多战士宪法 contracts/01 单写者+
+# 07 派单的领卷件）------------------------------------------------------------
+# detail 虚拟列承载 [owner:W-x][lease:<到期钟>]（先例=批次 7 T13 [prereq:]
+# 自由文本承载位——13 表列集冻结）。执法三律：
+# - 双抢互斥：他主租约未过期再领=REJECT（同主重复领取同样 REJECT，禁叠加）；
+# - 超时回收：租约过期，领取=先落 blocked[reason=lease-expired] 回收行
+#   （active→blocked 合法箭头）再落 active 重授行——事件溯源两行全审计；
+# - 自动可复活：blocked[reason=lease-expired]→active 免 --approval
+#   （其余 blocked 复活执法不松，仍须审批引用）。
+LEASE_EXPIRED_REASON = "lease-expired"
+LEASE_DEFAULT_MIN = 60
+_OWNER_MARK_RE = re.compile(r"\[(?:owner|lease):[^\[\]]*\]")   # 重授剥旧标（不叠标）
+_OWNER_RE = re.compile(r"\[owner:([^\[\]\s]+)\]")
+_LEASE_RE = re.compile(r"\[lease:([^\[\]\s]+)\]")
+_WALL_TS_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})")
+
+
+def parse_wall_ts(s):
+    """秒级钟文本 → naive datetime（Z/无后缀同纳；不可解析 → None）。"""
+    m = _WALL_TS_RE.match(s or "")
+    if not m:
+        return None
+    y, mo, d, h, mi, se = (int(x) for x in m.groups())
+    try:
+        return datetime.datetime(y, mo, d, h, mi, se)
+    except ValueError:
+        return None
+
+
+def lease_of_detail(detail):
+    """detail → (owner, 到期钟文本)；无标记=("", "")。查询面与写面单源。"""
+    mo, ml = _OWNER_RE.search(detail or ""), _LEASE_RE.search(detail or "")
+    return (mo.group(1) if mo else "", ml.group(1) if ml else "")
+
+
+def _claim_detail(detail, owner, expiry_text):
+    """重授 detail：剥旧 owner/lease 标记再落新标（接管不叠标）。"""
+    base = _OWNER_MARK_RE.sub("", detail or "").rstrip()
+    return (base + " " if base else "") + "[owner:%s][lease:%s]" % (owner, expiry_text)
+
+
+def _lease_live(expiry_dt, now_dt):
+    """租约活性：到期钟在现在钟之后=活（缺钟=过期，活体优先回收防死锁）。"""
+    return expiry_dt is not None and now_dt is not None and expiry_dt > now_dt
+
+
 def _latest_intent_map(ctx):
     """intents 事件溯源最新行映射（id→行，文件序后者覆盖前者）。"""
     out = {}
@@ -541,7 +588,35 @@ def _intent_status_body(ctx, args, evname):
     if st not in {"candidate", "pending", "active", "done", "blocked", "rejected", "deferred"}:
         raise Reject("status 不在状态机枚举: " + st)
     cur_st = ctx.val("intents.tsv", cur, "status")
-    if st not in _INTENT_ARROWS.get(cur_st, set()):
+    # W2·01P0-2 租约执法（--owner 声明领取主；chain-advance 无此参数=零行为漂移）
+    owner = args.get("owner", "") or ""
+    lease_min = LEASE_DEFAULT_MIN
+    if args.get("lease-min"):
+        try:
+            lease_min = int(args["lease-min"])
+        except ValueError:
+            raise Reject("lease-min 须正整数分钟: " + args["lease-min"])
+        if lease_min <= 0:
+            raise Reject("lease-min 须正整数分钟: " + args["lease-min"])
+        if not owner:
+            raise Reject("lease-min 须与 --owner 并用（租约归属领取主）")
+    if owner and not re.fullmatch(r"[^\[\]\s]{1,64}", owner):
+        raise Reject("owner 须非空白且不含 []（标记安全）: " + owner)
+    takeover = False
+    if owner and st == "active" and cur_st == "active":
+        cur_owner, cur_exp_text = lease_of_detail(ctx.val("intents.tsv", cur, "detail"))
+        if cur_owner:
+            now_dt = parse_wall_ts(args["timestamp"])
+            if now_dt is None:
+                raise Reject("timestamp 不可解析（租约比对需秒级钟）: " + args["timestamp"])
+            if _lease_live(parse_wall_ts(cur_exp_text), now_dt):
+                if cur_owner != owner:
+                    raise Reject("租约互斥：意图被 %s 领走未过期（lease=%s）——防双战士同抢"
+                                 % (cur_owner, cur_exp_text))
+                raise Reject("已持有未过期租约（重复领取不叠加）: %s lease=%s"
+                             % (owner, cur_exp_text))
+            takeover = True   # 超时回收：先落 blocked(lease-expired) 行再重授
+    if st not in _INTENT_ARROWS.get(cur_st, set()) and not takeover:
         raise Reject("status 转移不沿状态机（%s→%s，§4.5）" % (cur_st, st))
     _prereq_gate(ctx, cur, st)
     reason = args.get("reason", "")
@@ -551,14 +626,34 @@ def _intent_status_body(ctx, args, evname):
     if st == "deferred" and not _activation_ok(activation):
         raise Reject("deferred 附 activation 须 field;op;value 三段: " + activation)
     if cur_st == "blocked" and st == "active":
+        # W2·01P0-2 自动可复活律：blocked[reason=lease-expired] 免审批复活
+        # （其余 blocked 复活执法不松——仍须审批引用）
+        auto_revive = ctx.val("intents.tsv", cur, "reason") == LEASE_EXPIRED_REASON
         ap = args.get("approval", "")
-        if not ap or not ctx.approved(ap):
-            raise Reject("blocked 不可自动复活：须 --approval 指向 approved 行")
+        if not auto_revive and (not ap or not ctx.approved(ap)):
+            raise Reject("blocked 不可自动复活：须 --approval 指向 approved 行"
+                         "（例外=lease-expired 租约回收行自动可复活）")
+    if takeover:   # 超时回收行：active→blocked(lease-expired) 合法箭头先行落账
+        brow = list(cur)
+        brow[ctx.idx("intents.tsv", "status")] = "blocked"
+        brow[ctx.idx("intents.tsv", "reason")] = LEASE_EXPIRED_REASON
+        brow[ctx.idx("intents.tsv", "created")] = args["timestamp"]
+        ctx.append("intents.tsv", brow)
+        ctx.event(args["timestamp"], "%s %s:%s" % (evname, args["id"], "blocked"),
+                  phase=args.get("phase", ""))
     row = list(cur)
     row[ctx.idx("intents.tsv", "status")] = st
     row[ctx.idx("intents.tsv", "reason")] = reason
     row[ctx.idx("intents.tsv", "activation")] = activation
     row[ctx.idx("intents.tsv", "created")] = args["timestamp"]
+    if owner and st == "active":   # 领走落标记：到期钟=领取钟+lease_min（剥旧标不叠标）
+        claim_dt = parse_wall_ts(args["timestamp"])
+        if claim_dt is None:
+            raise Reject("timestamp 不可解析（租约铸造需秒级钟）: " + args["timestamp"])
+        expiry = (claim_dt + datetime.timedelta(minutes=lease_min)).strftime(
+            "%Y-%m-%dT%H:%M:%S") + ("Z" if args["timestamp"].endswith("Z") else "")
+        row[ctx.idx("intents.tsv", "detail")] = _claim_detail(
+            ctx.val("intents.tsv", cur, "detail"), owner, expiry)
     ctx.append("intents.tsv", row)
     ctx.event(args["timestamp"], "%s %s:%s" % (evname, args["id"], st), phase=args.get("phase", ""))
     ctx.commit({"intents.tsv", "timeline.tsv"})
@@ -566,7 +661,8 @@ def _intent_status_body(ctx, args, evname):
 
 
 def _set_intent_status(goal_dir, rest):
-    args = _parse(rest, {"id", "status", "reason", "activation", "approval", "timestamp", "phase"})
+    args = _parse(rest, {"id", "status", "reason", "activation", "approval", "timestamp", "phase",
+                         "owner", "lease-min"})   # W2·01P0-2 租约领取参数
     _req(args, ["id", "status", "timestamp"])
     ctx = Ctx(goal_dir)
     ctx.tier0()

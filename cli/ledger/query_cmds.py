@@ -319,6 +319,45 @@ def h_pending_intents(goal_dir, rest):
     return 0
 
 
+def h_intent_lease(goal_dir, rest):
+    """W2·01P0-2 租约审计：active 意图的 [owner:][lease:] 标记 → held/expired 盘点。
+
+    只读、确定性（禁 datetime.now——比对钟全取 --timestamp 入参）。输出首行
+    #leases=held=N expired=M unleased=K；行流=文件序 TSV
+    id<TAB>owner<TAB>lease<TAB>state<TAB>created（事件溯源取最新行；unleased=
+    active 无标记行不进行流只计数）。退出码：存在过期租约=1（可回收信号，
+    回收动作=set-intent-status 接管执法），否则 0。
+    """
+    from .write_cmds import lease_of_detail, parse_wall_ts
+    args, pos = parse_kv(rest)
+    if pos or set(args) != {"timestamp"}:
+        raise UsageError("intent-lease --timestamp=<秒级钟>")
+    now = parse_wall_ts(args["timestamp"])
+    if now is None:
+        raise UsageError("--timestamp 需秒级钟（形如 2026-10-20T08:10:00Z）")
+    s = core.Session(goal_dir)
+    latest = {r[0]: r for r in s.rows("intents.tsv")}   # 事件溯源取最新（id→行）
+    held = expired = unleased = 0
+    lines = []
+    for iid in sorted(latest):
+        r = latest[iid]
+        if _cell(r, "intents.tsv", "status") != "active":
+            continue
+        owner, exp_text = lease_of_detail(_cell(r, "intents.tsv", "detail"))
+        if not owner:
+            unleased += 1
+            continue
+        state = "held" if parse_wall_ts(exp_text) and parse_wall_ts(exp_text) > now else "expired"
+        held += state == "held"
+        expired += state == "expired"
+        lines.append(TAB.join([iid, owner, exp_text, state,
+                               _cell(r, "intents.tsv", "created")]))
+    print("#leases=held=%d expired=%d unleased=%d" % (held, expired, unleased))
+    for ln in lines:
+        print(ln)
+    return 1 if expired else 0
+
+
 def h_matrix_gaps(goal_dir, rest):
     args, pos = parse_kv(rest)
     if pos:
@@ -498,6 +537,7 @@ HANDLERS = {name: usage_guard(fn) for name, fn in {
     "matrix-gaps": h_matrix_gaps,
     "converge-check": h_converge_check,
     "intent-status": h_intent_status,
+    "intent-lease": h_intent_lease,
     "matrix-get": h_matrix_get,
     "scope-check": h_scope_check,
     "budget-check": h_budget_check,
