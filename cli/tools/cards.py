@@ -202,7 +202,7 @@ def _build():
                  "low", "web", "Web 技术栈指纹"),
         # --- 横移/内网组（B49：agents 可见面纪律标注）---
         ToolCard("impacket", "impacket-wmiexec", "L3", "local", [],
-                 "远端会话与落地文件清理（C$\Admin$ temp 落件核销+会话注销）",
+                 "远端会话与落地文件清理（C$\\Admin$ temp 落件核销+会话注销）",
                  ["impacket-wmiexec", "target.example/user:{{vault:cred-N}}"],
                  "critical", "lateral", "内网横移远程执行（L3 审批挂卡：未批即拒；impacket 系执行器）"),
         ToolCard("kerberoast", "impacket-GetUserSPNs", "L2", "local", [],

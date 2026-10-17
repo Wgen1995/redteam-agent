@@ -9,7 +9,7 @@
 4 限库限表（-D 须在 --dbs 白名单；-T 须伴 -D 且在 --tables 白名单）
 5 数据面旗标结构性不可达（--dump/--os-shell 等写/外带面永不进 argv）
 """
-import hashlib, json, os, subprocess, sys, tempfile, unittest
+import json, os, subprocess, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")

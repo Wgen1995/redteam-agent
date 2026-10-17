@@ -240,7 +240,6 @@ class TestFaceExitMatrix(unittest.TestCase):
 
     def test_rc3_only_candidates_and_rc0_after_verified(self):
         import json as _json
-        import shutil
         import tempfile
         metric = {"id": "M-matrix-cand", "layer": "L2", "gate": "hard", "kind": "threshold",
                   "title": "矩阵 rc3 面", "baseline": {"value": "collect-first", "frozen_at": None},

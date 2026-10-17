@@ -1,0 +1,19 @@
+# W2·CI 护栏（e7a6d5f1）——coverage 60% 起（渐进上调）。
+# 口径说明（诚实计量）：
+# - source = cli.ledger + engines：测试以子进程 spawn 无扩展名 CLI（tanyin-guard 等）
+#   的执行不计入（coverage 只跟 unittest 主进程 import 面）；cli/ledger 与 engines
+#   为可 import 的执法/适配单源面，是可计量的最大诚实分母。
+# - fail_under=60 为起步门槛（任务书「60% 起」），后续批次随直连测试补齐上调。
+[run]
+# parallel: 子进程各落 .coverage.* 数据文件，report 前 coverage combine
+parallel = True
+branch = False
+source =
+    cli.ledger,
+    engines
+omit =
+    cli/ledger/__pycache__/*
+
+[report]
+fail_under = 60
+show_missing = False

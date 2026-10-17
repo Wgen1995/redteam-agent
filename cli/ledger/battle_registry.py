@@ -17,7 +17,6 @@
   Python 3.9 纯 stdlib；本模块是运行态执法面（非账本），wall 钟仅入
   registered_at 留痕，判决逻辑零取钟（now/pid_alive 全可注入=确定性可测）。
 """
-import errno
 import json
 import math
 import os

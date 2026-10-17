@@ -45,7 +45,7 @@ INTERVENTION_ACTORS = ("总控", "canary", "egress")
 PROGRESS = "PROGRESS"
 SEGMENT_STARTERS = ("LAUNCH", "RESTART")
 
-_ANSI = re.compile("\x1b\[[0-9;]*m")
+_ANSI = re.compile("\x1b\\[[0-9;]*m")
 _BATTLE = re.compile(r"^battle-(\d+)$")
 _TL_COUNT = re.compile(r"timeline=(\d+)")
 _RECALL = re.compile(r"recall=([0-9.]+) \((\d+)/(\d+)\)")

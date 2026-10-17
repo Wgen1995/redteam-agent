@@ -8,7 +8,6 @@ install/KEY-MANAGEMENT.md）：tests/fixtures/keys/test-signing-key.pem。
 """
 import os
 import shutil
-import shutil
 import subprocess
 import sys
 import tempfile
