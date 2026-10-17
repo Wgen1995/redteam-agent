@@ -17,6 +17,7 @@ TIERS = ("L0", "L1", "L2", "L3")
 RISKS = ("low", "medium", "high", "critical")
 RATE_RE = re.compile(r"^(\d+/(s|m)|local|serial)$")
 READONLY_REVERT = "none(只读)"
+READONLY_PREFIX = "none(只读"
 
 
 class CardError(Exception):
@@ -80,7 +81,8 @@ class ToolCard:
 
     @property
     def has_revert_obligation(self):
-        return self.revert != READONLY_REVERT
+        """none(只读*) 家族=无核销义务（数据用描述性只读变体：只读扫描/只读查询…）。"""
+        return not self.revert.startswith(READONLY_PREFIX)
 
     def as_public_dict(self):
         """清单/详情命令的稳定投影（不含内部路径）。"""

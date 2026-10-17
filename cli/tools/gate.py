@@ -94,3 +94,71 @@ def card_gate(goal_dir, name, args, ts, state_path=None, lock_path=None,
                            "（approve --command-hash %s 后方可执行）"
                            % (card.name, command_hash(argv)))
     return True, "ok"
+
+
+def _guard_spawn(argv):
+    """真执行器：tanyin-guard exec 子进程（guard 自带脱敏/取票/门链）。"""
+    import subprocess
+    r = subprocess.run(argv, capture_output=True, text=True, timeout=600,
+                       encoding="utf-8", errors="replace")
+    return r.returncode, r.stdout or "", r.stderr or ""
+
+
+def _append_tl(gd, ts, event, revert=""):
+    """timeline 落账（ledger.timeline 单源；guard append_tl 同律 O(1) 尾追加）。"""
+    from ledger.timeline import append_tl_locked
+    append_tl_locked(gd, ts, event, actor="tools", phase="P3", revert=revert)
+
+
+def _reject_event(name, reason):
+    """tools-reject 事件行（guard-reject 同型；TAB/换行清洗防列破格）。"""
+    flat = " ".join(str(reason).split())
+    return ("tools-reject card=%s %s" % (name, flat)).strip()
+
+
+def _sys_exe():
+    import sys
+    return sys.executable
+
+
+def _guard_entry():
+    return os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))), "tanyin-guard")
+
+
+def execute(goal_dir, name, args, ts, spawn=None, state_path=None,
+            lock_path=None, pub=None):
+    """工具卡执行入口（W3②：卡片调用必过现有执法层）。
+
+    门序：卡层门链（card_gate）→ 委托 tanyin-guard exec（四层 scope/全局
+    deny-list/nuclei 参数/限速滑窗/时间旅行/凭据覆盖面=guard 既有门链零复制）
+    → 成功且卡带 revert 义务时落账核销义务（P6.0 清理律的义务面）。
+    返回 (rc, stdout, stderr)：卡层拒=1（tools-reject 已落账）；guard 拒=1
+    （guard-reject 由 guard 落账）；环境不可用=2。spawn 注入位=单测委托面。
+    """
+    card = tool_cards.get_card(name)
+    argv = ([card.binary] + [str(a) for a in args]) if card else [str(name)]
+    ok, why = card_gate(goal_dir, name, args, ts, state_path=state_path,
+                        lock_path=lock_path, pub=pub)
+    if not ok:
+        try:
+            _append_tl(goal_dir, ts, _reject_event(name, why))
+        except Exception:  # noqa: BLE001 —— 落账失败不洗白拒绝（拒绝优先返回）
+            pass
+        return 1, "", why + chr(10)
+    runner = spawn or _guard_spawn
+    guard_argv = [_sys_exe(), _guard_entry(), "exec",
+                  "--goal-dir", goal_dir, "--timestamp", ts, "--"] + argv
+    try:
+        rc, out, err = runner(guard_argv)
+    except FileNotFoundError as e:
+        return 2, "", "guard 通道不可达: %s" % e
+    if rc == 0:
+        rev = card.revert if card.has_revert_obligation else ""
+        try:
+            _append_tl(goal_dir, ts,
+                       "tool-card-exec name=%s rc=0 tier=%s rate=%s"
+                       % (card.name, card.tier, card.rate), revert=rev)
+        except Exception:  # noqa: BLE001 —— 落账失败不抹杀执行结果
+            pass
+    return rc, out, err

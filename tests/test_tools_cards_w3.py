@@ -118,9 +118,9 @@ class TestDisciplineCompleteness(unittest.TestCase):
             self.assertEqual(c.requires_approval, c.tier == "L3", c.name)
 
     def test_readonly_revert_declared_explicitly(self):
-        """只读卡 revert=none(只读) 显式声明；非只读=核销义务文案（has_obligation 真）。"""
+        """只读卡 revert=none(只读*) 家族显式声明；非只读=核销义务文案。"""
         for c in tool_cards.all_cards():
-            if c.revert == tool_cards.READONLY_REVERT:
+            if c.revert.startswith(tool_cards.READONLY_PREFIX):
                 self.assertFalse(c.has_revert_obligation, c.name)
             else:
                 self.assertTrue(c.has_revert_obligation, c.name)
@@ -428,6 +428,112 @@ class TestCardGate(unittest.TestCase):
                                        "--batch"])
         self.assertFalse(ok)
         self.assertIn("approval-required", why)
+
+
+GUARD_ENTRY = os.path.normpath(os.path.join(ROOT, "cli", "tanyin-guard"))
+
+
+class FakeSpawn:
+    """记录委托 argv 的假执行器（不触网不落地——execute 委托面单测）。"""
+
+    def __init__(self, rc=0, out="", err=""):
+        self.calls = []
+        self.rc, self.out, self.err = rc, out, err
+
+    def __call__(self, argv):
+        self.calls.append(list(argv))
+        return self.rc, self.out, self.err
+
+
+class TestExecuteDelegation(unittest.TestCase):
+    """②执行入口委托面：卡层门过 → tanyin-guard exec 原样门链（四层 scope/
+    全局 deny-list/时间旅行——guard 单源）；revert 义务落账 timeline。"""
+
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory()
+        self.addCleanup(self.td.cleanup)
+        self.gd = shutil.copytree(FIXTURE, os.path.join(self.td.name, "G-g1"))
+        self.state = os.path.join(self.td.name, "installed.tsv")
+        for n in ("curl", "kubectl", "dig"):
+            ok, why = tool_install.install(n, "2026-10-18T10:00:00Z",
+                                           state_path=self.state)
+            assert ok, why
+
+    def timeline_text(self):
+        with open(os.path.join(self.gd, "timeline.tsv"), encoding="utf-8") as f:
+            return f.read()
+
+    def test_delegation_argv_shape(self):
+        sp = FakeSpawn()
+        rc, _, _ = tool_gate.execute(
+            self.gd, "curl", ["-sS", "https://api.shop.example/"],
+            "2026-10-18T12:00:00Z", spawn=sp, state_path=self.state)
+        self.assertEqual(rc, 0)
+        self.assertEqual(len(sp.calls), 1, "门过即恰一次委托")
+        argv = sp.calls[0]
+        self.assertEqual(argv[:3], [PY, GUARD_ENTRY, "exec"])
+        self.assertIn("--goal-dir", argv)
+        self.assertEqual(argv[argv.index("--goal-dir") + 1], self.gd)
+        self.assertEqual(argv[argv.index("--timestamp") + 1],
+                         "2026-10-18T12:00:00Z")
+        sep = argv.index("--")
+        self.assertEqual(argv[sep + 1:], ["curl", "-sS",
+                                          "https://api.shop.example/"])
+
+    def test_card_gate_reject_skips_guard_and_logs(self):
+        sp = FakeSpawn()
+        before = self.timeline_text()
+        rc, _, err = tool_gate.execute(
+            self.gd, "metasploit", ["-h"], "2026-10-18T12:00:00Z",
+            spawn=sp, state_path=self.state)
+        self.assertEqual(rc, 1)
+        self.assertEqual(sp.calls, [], "卡层拒=零委托（guard 不被调用）")
+        self.assertIn("unknown-tool", err)
+        after = self.timeline_text()
+        self.assertTrue(after.startswith(before), "既有 timeline 行不可改写")
+        self.assertIn("tools-reject", after[len(before):])
+        self.assertIn("metasploit", after[len(before):])
+
+    def test_guard_reject_propagates_rc(self):
+        sp = FakeSpawn(rc=1, err="REJECT" + chr(9) + "guard" + chr(9)
+                       + "界外目标: evil.example")
+        rc, _, err = tool_gate.execute(
+            self.gd, "curl", ["-sS", "https://evil.example/"],
+            "2026-10-18T12:00:00Z", spawn=sp, state_path=self.state)
+        self.assertEqual(rc, 1, "guard REJECT 退出码原样传播")
+        self.assertIn("界外目标", err)
+
+    def test_success_with_revert_obligation_logged(self):
+        sp = FakeSpawn(rc=0)
+        rc, _, _ = tool_gate.execute(
+            self.gd, "kubectl", ["--context", "eng", "apply", "-f", "job.yml"],
+            "2026-10-18T12:00:00Z", spawn=sp, state_path=self.state)
+        self.assertEqual(rc, 0)
+        added = self.timeline_text()
+        self.assertIn("tool-card-exec", added)
+        self.assertIn("name=kubectl", added)
+        self.assertIn("delete -f", added, "revert 义务核销命令须入账")
+
+    def test_success_readonly_card_no_revert_payload(self):
+        sp = FakeSpawn(rc=0)
+        rc, _, _ = tool_gate.execute(
+            self.gd, "dig", ["+short", "A", "api.shop.example"],
+            "2026-10-18T12:00:00Z", spawn=sp, state_path=self.state)
+        self.assertEqual(rc, 0)
+        with open(os.path.join(self.gd, "timeline.tsv"), encoding="utf-8") as f:
+            rows = [ln.split(chr(9)) for ln in f.read().splitlines()]
+        evrows = [r for r in rows if len(r) > 4 and "tool-card-exec" in r[3]]
+        self.assertEqual(len(evrows), 1)
+        self.assertEqual(evrows[0][4], "", "只读卡 revert 列空（无义务不虚记）")
+
+    def test_timeline_chain_still_verifies_after_execute(self):
+        sp = FakeSpawn(rc=0)
+        tool_gate.execute(self.gd, "curl", ["-sS", "https://api.shop.example/"],
+                          "2026-10-18T12:00:00Z", spawn=sp, state_path=self.state)
+        from ledger import core as ledger_core
+        sess = ledger_core.Session(self.gd)
+        ok, bad = sess.verify_chain()
+        self.assertTrue(ok, "execute 落账后链式哈希必须仍完整: line %s" % bad)
 
 
 if __name__ == "__main__":
