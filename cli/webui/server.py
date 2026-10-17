@@ -77,6 +77,13 @@ def _session_api(battle):
     return out
 
 
+# W6 控制台五页（总览/实时动态/攻击链路/发现/审批——ui-copy-standard-v1 导航名词）
+_CONSOLE_PAGES = {"/console": "console_dash.html",
+                  "/console/live": "console_live.html",
+                  "/console/graph": "console_graph.html",
+                  "/console/findings": "console_findings.html",
+                  "/console/approval": "console_approval.html"}
+
 _PAGE_API = {"/api/matrix.json": _proj.matrix_view,     # v0.9b 三页 API（只读装配单源）
              "/api/graph.json": _proj.graph_view,
              "/api/evidence.json": _proj.evidence_view,
@@ -431,7 +438,9 @@ class Handler(BaseHTTPRequestHandler):
     # 未登录：页路由 302 跳 /login，API/SSE 401 JSON。
     _OPEN_GET = ("/login", "/favicon.ico")
     _PAGE_GET = ("/", "/coverage", "/graph", "/evidence", "/metrics",
-                 "/session", "/activity", "/new", "/experiments", "/status.js")
+                 "/session", "/activity", "/new", "/experiments", "/status.js",
+                 "/console", "/console/live", "/console/graph",          # W6 控制台
+                 "/console/findings", "/console/approval")               # 五新页
 
     def log_message(self, fmt, *args):           # 静默（长连接轮询会刷屏；env 开话痨）
         if os.environ.get("TANYIN_WEBUI_DEBUG"):
@@ -466,6 +475,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._serve_page(u.path.lstrip("/") + ".html")
         if u.path in ("/login", "/new"):                         # v0.9.8 方向盘两页
             return self._serve_page(u.path.lstrip("/") + ".html")
+        if u.path in _CONSOLE_PAGES:                            # W6 控制台五页
+            return self._serve_page(_CONSOLE_PAGES[u.path])
         if u.path == "/api/approval":                            # v0.9.8 待审投影（须会话）
             return self._serve_approval_get(u)
         if u.path == "/experiments":                               # v0.9d 度量页锚 302（nav 八链）
