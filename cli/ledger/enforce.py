@@ -322,7 +322,7 @@ def load_scope(session):
         if m not in eff:
             order.append(m)
         eff[m] = r[ki]
-    out = {"include": [], "exclude": [], "oob": []}
+    out: dict = {"include": [], "exclude": [], "oob": []}
     for m in order:
         if eff[m] in out:
             out[eff[m]].append(m)
@@ -496,7 +496,8 @@ def permitted_actions_covered(session, cred, action):
     add-cred 覆盖校验同口径），action 须并集精确命中（防子串假阳性）；
     无 grant 行=False（无覆盖面）。"""
     si = TABLES["scope.tsv"].index
-    covered, hit = set(), False
+    covered: set = set()
+    hit = False
     for r in session.rows("scope.tsv"):
         if r[si("kind")] == "account-grant" and r[si("account")] == cred:
             hit = True

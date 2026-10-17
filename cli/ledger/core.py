@@ -92,7 +92,7 @@ def ensure_utf8_stdio():
     老 Python 无 reconfigure 则静默跳过；仅入口脚本调用，库导入无副作用。"""
     for s in (sys.stdout, sys.stderr):
         try:
-            s.reconfigure(encoding="utf-8", errors="replace")
+            s.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]  # TextIO 基类无 reconfigure（运行时有则用，无则 except 跳过）
         except (AttributeError, ValueError, OSError):
             pass
 

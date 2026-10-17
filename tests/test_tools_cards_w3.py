@@ -7,9 +7,7 @@
 install/KEY-MANAGEMENT.md）：tests/fixtures/keys/test-signing-key.pem。
 """
 import os
-import shutil
 import sys
-import tempfile
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -19,6 +17,7 @@ sys.path.insert(0, CLI)
 
 from tools import cards as tool_cards  # noqa: E402
 from tools import lock as tool_lock  # noqa: E402
+from tools import install as tool_install  # noqa: E402
 
 TEST_KEY = os.path.join(HERE, "fixtures", "keys", "test-signing-key.pem")
 TEST_PUB = os.path.join(HERE, "fixtures", "keys", "test-release.pub")
@@ -207,6 +206,78 @@ class TestToolsLock(unittest.TestCase):
         raw = open(tool_lock.DEFAULT_LOCK_PATH, "rb").read()
         self.assertFalse(raw.startswith(b"\xef\xbb\xbf"), "BOM 禁入")
         self.assertNotIn(b"\r\n", raw, "CRLF 禁入（selfcheck encoding 律）")
+
+
+class TestInstallCard(unittest.TestCase):
+    """③装卡验签：验签不过不装、在役清单 sha 鲜度、幂等重装。"""
+
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory()
+        self.addCleanup(self.td.cleanup)
+        self.state = os.path.join(self.td.name, "installed.tsv")
+
+    def test_install_writes_state_and_is_installed(self):
+        ok, why = tool_install.install("nuclei", "2026-10-18T10:00:00Z",
+                                       state_path=self.state)
+        self.assertTrue(ok, why)
+        self.assertTrue(tool_install.is_installed(
+            tool_cards.get_card("nuclei"), state_path=self.state))
+
+    def test_not_installed_before_install(self):
+        self.assertFalse(tool_install.is_installed(
+            tool_cards.get_card("nuclei"), state_path=self.state))
+
+    def test_install_idempotent_same_digest(self):
+        tool_install.install("dig", "2026-10-18T10:00:00Z", state_path=self.state)
+        ok, why = tool_install.install("dig", "2026-10-18T11:00:00Z",
+                                       state_path=self.state)
+        self.assertTrue(ok, why)
+        rows = tool_install.load_state(self.state)
+        self.assertEqual(len([r for r in rows if r["name"] == "dig"]), 1,
+                         "同摘要重装=幂等不重复入册")
+
+    def test_install_unknown_card_rejected(self):
+        ok, why = tool_install.install("metasploit", "2026-10-18T10:00:00Z",
+                                       state_path=self.state)
+        self.assertFalse(ok)
+        self.assertIn("unknown-tool", why)
+
+    def test_install_tampered_lock_refused(self):
+        entries = tool_lock.load(tool_lock.DEFAULT_LOCK_PATH)
+        entries["nikto"]["sha256"] = "ab" * 32
+        tmp_lock = os.path.join(self.td.name, "tools.lock")
+        tool_lock.write_entries(tmp_lock, entries)
+        ok, why = tool_install.install("nikto", "2026-10-18T10:00:00Z",
+                                       state_path=self.state,
+                                       lock_path=tmp_lock)
+        self.assertFalse(ok, "篡改 lock 不得装卡: " + why)
+        self.assertFalse(tool_install.is_installed(
+            tool_cards.get_card("nikto"), state_path=self.state))
+
+    def test_stale_install_after_card_drift(self):
+        tool_install.install("ffuf", "2026-10-18T10:00:00Z", state_path=self.state)
+        c = tool_cards.get_card("ffuf")
+        orig = c.rate
+        c.rate = "9999/s"
+        try:
+            self.assertFalse(tool_install.is_installed(
+                c, state_path=self.state), "卡漂移后在役行过期（sha 不符）")
+        finally:
+            c.rate = orig
+        self.assertTrue(tool_install.is_installed(
+            c, state_path=self.state), "复原后在役行重新有效")
+
+    def test_uninstall_removes_roster_row(self):
+        tool_install.install("curl", "2026-10-18T10:00:00Z", state_path=self.state)
+        tool_install.uninstall("curl", state_path=self.state)
+        self.assertFalse(tool_install.is_installed(
+            tool_cards.get_card("curl"), state_path=self.state))
+
+    def test_state_lf_no_crlf(self):
+        tool_install.install("openssl", "2026-10-18T10:00:00Z",
+                             state_path=self.state)
+        raw = open(self.state, "rb").read()
+        self.assertNotIn(b"\r\n", raw)
 
 
 if __name__ == "__main__":

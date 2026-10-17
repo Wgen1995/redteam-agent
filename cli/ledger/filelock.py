@@ -15,7 +15,7 @@ def _lock_nt(fd, timeout):
     deadline = time.monotonic() + timeout
     while True:
         try:
-            msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+            msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)  # type: ignore[attr-defined]  # msvcrt.locking 仅 Windows typeshed 面
             return
         except OSError:
             if time.monotonic() >= deadline:
@@ -25,7 +25,7 @@ def _lock_nt(fd, timeout):
 
 def _unlock_nt(fd):
     import msvcrt
-    msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+    msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # type: ignore[attr-defined]  # 同上
 
 
 @contextlib.contextmanager
