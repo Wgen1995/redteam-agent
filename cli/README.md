@@ -1,6 +1,6 @@
 # tanyin-ledger · 账本命令箱（批次 1）
 
-探隐 TanYin 的 13 表 TSV 账本唯一写入口。契约基线 contracts-v2（44 命令 / 147 字段 / 九门 / 10 边）。
+探隐 TanYin 的 13 表 TSV 账本唯一写入口。契约基线 contracts-v2（50 命令 / 149 字段 / 九门 / 10 边；计数单源派生=docs/counts.json，docs/gen_counts.py 生成——禁手抄）。
 
 ## 用法
 
@@ -42,14 +42,14 @@ py -3 hooks\simulate.py --goal-dir sessions\G-g1 --host dsh -- curl http://x/
 ## 测试与回归
 
 ```
-python3 -m unittest discover -s tests       # 181 单测（含 02a §32 跳门检测 7 例 + Tier2 模拟器 8 例）
-python3 tests/run_golden.py                 # 黄金回归 44 命令（21 读+20 写+3 图查询），两次执行确定性自证
+python3 -m unittest discover -s tests       # 全量单测（计数随批增，以实跑 Ran N 为准）
+python3 tests/run_golden.py                 # 黄金回归（面数与构成以 PASS 行单源输出为准；docs/counts.json 记账），两次执行确定性自证
 python3 tests/make_fixtures.py              # 重铸夹具（13 表确定性样本）
 ```
 
 ## 目录
 
-- cli/ledger/core.py：转义/147 字段 schema/ID 铸造/链式哈希（禁改：契约生成）
+- cli/ledger/core.py：转义/149 字段 schema/ID 铸造/链式哈希（禁改：契约生成）
 - cli/ledger/schemas.json：由 contracts/01 机械生成（禁手改）
 - shared/VOCAB.md：词表（WSTG v4.2，版本化）
 - tests/golden/：基线锁（漂移即 FAIL）
@@ -71,7 +71,7 @@ python3 tests/make_fixtures.py              # 重铸夹具（13 表确定性样�
 
 ## 批次 3：总控 SKILL 路由器 + phases.yaml 引擎 + 受管重启/恢复体系
 
-认知与确定性分离：仓库根 SKILL.md=常驻权威集路由器（<2K token，八节结构）；phases/P0..P6.md=九门方法论按需加载；phases/phases.yaml=九门状态机声明层——执法权威仍在 44 条账本命令，断言→命令调用判定协议冻于 phases/PROTOCOL.md（批次 3 两份批次间接口合订本：协议+常驻集清单，另附干跑口径/分母就绪门）。
+认知与确定性分离：仓库根 SKILL.md=常驻权威集路由器（<2K token，八节结构）；phases/P0..P6.md=九门方法论按需加载；phases/phases.yaml=九门状态机声明层——执法权威仍在账本命令（计数见 docs/counts.json 单源），断言→命令调用判定协议冻于 phases/PROTOCOL.md（批次 3 两份批次间接口合订本：协议+常驻集清单，另附干跑口径/分母就绪门）。
 
 ### tanyin-phases 子命令速查（第 11 工具；契约 09 勘误 10→11）
 

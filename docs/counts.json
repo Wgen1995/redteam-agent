@@ -1,0 +1,7 @@
+{
+ "format_version": 1,
+ "golden_faces": 54,
+ "ledger_commands": 50,
+ "ledger_fields": 149,
+ "ledger_gates": 9
+}
