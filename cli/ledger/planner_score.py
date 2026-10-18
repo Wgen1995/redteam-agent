@@ -143,10 +143,13 @@ def gap_cells(s):
 
 
 def _reach_set(s):
-    """可达空格集（R-SCO-1：graph_cmds 单源，scope-root 起点集）。"""
-    nodes, _adj = _build(s)
+    """可达空格集（R-SCO-1：graph_cmds 单源，scope-root 起点集）。
+
+    图只建一遍（评审 M-5）：预建 (nodes, adj) 经 graph 参传入
+    reachable_gap_cells 复用——旧路径自建 _build 后函数内部再建一遍。"""
+    graph = _build(s)
     _reach, reach_gaps, _unreach = reachable_gap_cells(
-        s, _scope_root_targets(s, nodes))
+        s, _scope_root_targets(s, graph[0]), graph=graph)
     return set(reach_gaps)
 
 

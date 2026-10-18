@@ -145,17 +145,19 @@ def _scope_root_targets(s, nodes):
             if _cell(r, "assets.tsv", "type") == "root-domain" and r[0] in nodes}
 
 
-def reachable_gap_cells(s, starts):
+def reachable_gap_cells(s, starts, graph=None):
     """可达集 × 矩阵空格 join（graph-horizon/converge-check 单源，批次5 T7·G-28 前半）。
 
     starts=起点节点 id 集（converge 传 _scope_root_targets 的 scope-root 资产集；
     horizon 传 {--from}）。Ruling（R-T7-1）：计划片段签名 reachable_gap_cells(s) 固定
     起点=scope-root，与「h_graph_horizon 改调它、行为零变」冲突（horizon 起点=--from
     任意节点）——按行为零变优先将起点集参数化，语义两处共用同一 BFS+空格 join。
-    返回 (reach, reach_gaps, unreach_gaps)：gaps=(attack_surface, vuln_class) 空格对
-    （latest 行 state 空），按行键排序；reach/unreach 以「表面值 ∈ 可达资产值集」二分。
+    graph=(nodes, adj) 预建图（评审 M-5：调用方已建图时复用，行为零变；缺省
+    自建=既有调用面不变）。返回 (reach, reach_gaps, unreach_gaps)：gaps=
+    (attack_surface, vuln_class) 空格对（latest 行 state 空），按行键排序；
+    reach/unreach 以「表面值 ∈ 可达资产值集」二分。
     """
-    nodes, adj = _build(s)
+    nodes, adj = graph if graph is not None else _build(s)
     reach = {n for n in starts if n in nodes}
     frontier = sorted(reach)
     while frontier:

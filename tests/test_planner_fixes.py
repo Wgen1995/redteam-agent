@@ -467,5 +467,33 @@ class TestPlannerCliEntries(Base):
                         "启动须记事件入账本（可审计+首轮必武装）")
 
 
+# ============================================================ M-5 图单建 ==
+
+from ledger import graph_cmds as GC            # noqa: E402
+from ledger import planner_score as PLS        # noqa: E402
+
+
+class TestReachSetSingleBuild(Base):
+    """M-5：_reach_set 自建 _build 后 reachable_gap_cells 内部又 _build 一
+    遍（planner_score.py:147 与 graph_cmds.py:158 双建）——万格下图构建常数
+    可感；修法=预建图经参传入复用（行为零变）。"""
+
+    def test_reach_set_builds_graph_once(self):
+        s = Session(self.gd)
+        real = GC._build
+        calls = []
+
+        def spy(s_):
+            calls.append(1)
+            return real(s_)
+
+        with mock.patch.object(GC, "_build", new=spy),                 mock.patch.object(PLS, "_build", new=spy):
+            reach = PLS._reach_set(s)
+        self.assertEqual(len(calls), 1,
+                         "可达集图只建一遍（M-5：双建=万格常数浪费）")
+        self.assertIn(("admin.shop.example", "inj.sql"), reach,
+                      "预建图路径可达空格结果不变（行为零变）")
+
+
 if __name__ == "__main__":
     unittest.main()
