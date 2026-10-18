@@ -3,64 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generated" content="2026-10-18 10:16">
-<meta name="generator" content="panorama 手写页（状态=blueprint.json；路由/文件=仓内实勘 git f844987）">
-<title>界面地图 · GraphLed 蓝图</title>
-<style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
-.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
-.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
-.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
-.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
-.nav a:hover{border-color:#30363d}
-h1{color:#f0f6fc;font-size:26px;margin:2px 0 6px}.sub{color:#8b949e;font-size:13px}
-h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
-.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
-.bar{display:flex;height:18px;border-radius:9px;overflow:hidden;border:1px solid #30363d;max-width:680px;margin:12px 0 6px}
-.bar span{height:100%}.bar .ok{background:#238636}.bar .mount{background:#b08800}.bar .fly{background:#1f6feb}.bar .design{background:#8957e5}.bar .empty{background:#484f58}
-.counts{font-size:12.5px;color:#8b949e}
+<meta name="generated" content="2026-10-19 全景大合并 v2">
+<meta name="generator" content="panorama 手写页（状态=blueprint.json 实读 26 项；路由/文件=仓内实勘；对照精华=tanyin-vs-artex.html 全文实读）">
+<title>界面地图 · GraphLed 蓝图</title><style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:linear-gradient(180deg,#10161f,#0d1117);border:1px solid #30363d;border-radius:12px;padding:9px 13px;margin-bottom:22px;position:sticky;top:0;z-index:5;box-shadow:0 6px 22px rgba(1,4,9,.6)}
+.nav .brand{font-weight:700;margin-right:8px;font-size:14px;background:linear-gradient(90deg,#ffe9b0,#7fd49a 60%,#a5c8ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:2px}
+.nav a{color:#a5c8ff;text-decoration:none;font-size:12.5px;padding:3px 10px;border-radius:8px;border:1px solid transparent}
+.nav a:hover{border-color:#58a6ff66;color:#dbe7ff}
+.nav a.on{background:#0d2246;border-color:#58a6ff;color:#a5c8ff;box-shadow:0 0 12px rgba(88,166,255,.35)}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#0d2246 46%,#0f2e1b 100%);border:1px solid #30363d;border-radius:14px;padding:24px 26px 20px;margin-bottom:8px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#e3b341,#58a6ff,#3fb950,#bc8cff)}
+h1{color:#f0f6fc;font-size:28px;margin:2px 0 6px}
+.sub{color:#8b949e;font-size:13px}
+.hero .def{font-size:15px;color:#e2e8f0;margin:10px 0 4px}
+.hero .def b{color:#7fd49a}
+.mile{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.mile .m{background:rgba(22,27,34,.85);border:1px solid #30363d;border-radius:10px;padding:8px 14px;font-size:12.5px;color:#c9d1d9}
+.mile .m b{display:block;color:#ffe9b0;font-size:13px}
+.band{margin:36px 0 14px;padding:13px 18px 11px;border-radius:12px;background:linear-gradient(90deg,#12203a 0%,#10161f 55%,#0d1117 100%);border:1px solid #26344b;position:relative}
+.band::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:5px;border-radius:3px;background:linear-gradient(180deg,#58a6ff,#6fc3d0)}
+.band h2{margin:0;font-size:20px;color:#e2e8f0}
+.band .bsub{margin:3px 0 0;font-size:12.5px;color:#6fc3d0}
+.band.amber::before{background:linear-gradient(180deg,#e3b341,#f85149)}
+.band.green::before{background:linear-gradient(180deg,#3fb950,#39c5cf)}
+.band.purple::before{background:linear-gradient(180deg,#bc8cff,#58a6ff)}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px;transition:border-color .15s,box-shadow .15s}
+.card:hover{border-color:#3d4f66;box-shadow:0 8px 24px rgba(1,4,9,.5)}
+.cbar{border-left:4px solid #58a6ff;background:linear-gradient(90deg,#101826,#161b22 70%)}
+.cbar.amber{border-left-color:#e3b341}.cbar.green{border-left-color:#3fb950}.cbar.purple{border-left-color:#bc8cff}.cbar.red{border-left-color:#f85149}.cbar.cyan{border-left-color:#39c5cf}
+.bdg{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:9px;border:1px solid;white-space:nowrap}
+.bdg.amber{background:#3a2c0e;border-color:#e3b341;color:#ffe9b0}
+.bdg.blue{background:#0d2246;border-color:#58a6ff;color:#a5c8ff}
+.bdg.green{background:#0f2e1b;border-color:#3fb950;color:#7fd49a}
+.bdg.purple{background:#241b38;border-color:#bc8cff;color:#d9c2ff}
+.bdg.red{background:#3d1418;border-color:#f85149;color:#ffd7d5}
+.bdg.cyan{background:#0b2b31;border-color:#39c5cf;color:#a8e6ee}
+.bdg.grey{background:#161b22;border-color:#30363d;color:#8b949e}
+.pages{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:960px){.pages{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.pages{grid-template-columns:1fr}}
+a.tile{display:block;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden}
+a.tile::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#58a6ff,#39c5cf)}
+a.tile.t2::before{background:linear-gradient(90deg,#e3b341,#f85149)}
+a.tile.t3::before{background:linear-gradient(90deg,#3fb950,#39c5cf)}
+a.tile.t4::before{background:linear-gradient(90deg,#bc8cff,#58a6ff)}
+a.tile.t5::before{background:linear-gradient(90deg,#e3b341,#3fb950)}
+a.tile:hover{border-color:#58a6ff;box-shadow:0 0 16px rgba(88,166,255,.25);transform:translateY(-2px)}
+a.tile h3{margin:0 0 4px;font-size:15px;color:#dbe7ff}
+a.tile p{margin:0;font-size:12.5px;color:#8b949e}
+a.tile .st{font-size:11px;margin-left:6px;color:#d29922}
+.archgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.archgrid{grid-template-columns:1fr}}
+.arch h3{margin:0 0 6px;font-size:15px;color:#f0f6fc;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.arch .val{font-size:12px;color:#6fc3d0;margin:2px 0 8px}
+.arch ul{margin:6px 0 0;padding-left:0;list-style:none}
+.arch ul li{font-size:12.5px;color:#c9d1d9;padding:3px 0 3px 16px;position:relative}
+.arch ul li::before{content:"▸";position:absolute;left:1px;color:#e3b341}
+.arch ul li b{color:#ffe9b0}
+.arch .path{font-size:11px;color:#6e7681;margin-top:8px;word-break:break-all}
+.arch .path a{color:#58a6ff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:#a5c8ff;text-align:left;font-weight:600;background:#12203a;padding:7px 10px;border-bottom:1px solid #30363d}
+td{padding:7px 10px;border-bottom:1px solid #21262d;vertical-align:top}
+tr:hover td{background:#10161f}
+td a{color:#58a6ff}td.v{color:#8b949e}
+a{color:#58a6ff}
+.quote{border-left:3px solid #e3b341;background:#171310;border-radius:0 8px 8px 0;padding:6px 12px;color:#cdb896;font-size:12.5px;margin:10px 0}
+.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
+.kv{font-size:13px;margin:4px 0}.kv b{color:#f0f6fc}</style>
+<style>
 .uigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
 .uihead{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .uihead h3{margin:0;font-size:15px;color:#f0f6fc}
-.st{font-size:12px;padding:2px 10px;border-radius:12px;border:1px solid #30363d;white-space:nowrap}
-.st.ok{border-color:#238636;color:#3fb950}.st.mount{border-color:#b08800;color:#d29922}
-.st.fly{border-color:#1f6feb;color:#58a6ff}.st.design{border-color:#8957e5;color:#bc8cff}
+.st.ok{background:#0f2e1b;border-color:#238636;color:#3fb950}
+.st.mount{background:#3a2c0e;border-color:#b08800;color:#d29922}
+.st.fly{background:#0d2246;border-color:#1f6feb;color:#58a6ff}
+.st.design{background:#241b38;border-color:#8957e5;color:#bc8cff}
 .st.empty{color:#6e7681;border-color:#30363d}
 .cap{font-size:12.5px;color:#c9d1d9;margin:8px 0 6px}
 .route{font-size:11.5px;color:#8b949e;word-break:break-all}
 .route code{color:#79c0ff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
-.quote{border-left:3px solid #30363d;padding:2px 12px;color:#8b949e;font-size:12.5px;margin:8px 0}
-a{color:#58a6ff}
-.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}</style>
-</head>
+.bar{display:flex;height:18px;border-radius:9px;overflow:hidden;border:1px solid #30363d;max-width:680px;margin:12px 0 6px}
+.bar span{height:100%}.bar .ok{background:#238636}.bar .mount{background:#b08800}.bar .fly{background:#1f6feb}.bar .design{background:#8957e5}.bar .empty{background:#484f58}
+.counts{font-size:12.5px;color:#8b949e}
+.vsgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.vsgrid{grid-template-columns:1fr}}
+.chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+.chain .cstep{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:4px 10px;font-size:12px;color:#c9d1d9}
+.chain .cstep.bad{border-color:#f85149;color:#ffd7d5;background:#3d1418}
+.chain .carr{color:#f85149;font-weight:700}
+.chain .cut{background:#0f2e1b;border-color:#3fb950;color:#7fd49a}
+</style></head>
 <body>
 <div class="wrap">
 <nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="index.html">首页</a>
 <a href="graphled-blueprint.html">进度总图</a>
 <a href="graphled-architecture.html">全景架构</a>
 <a href="graphled-ui-map.html" class="on">界面地图</a>
 <a href="graphled-enemies.html">六产品对齐</a>
 <a href="graphled-roadmap.html">能力阶梯</a>
 <a href="graphled-methodology.html">交战思维</a>
-<a href="index.html">首页</a></nav>
+<a href="graphled-knowledge.html">知识全景</a>
+<a href="graphled-history.html">演进总析</a></nav>
 
-<h1>界面地图 · 23 项逐页对账</h1>
-<p class="sub">状态一律以 panorama/blueprint.json 的 ui 数组为准（铁律：界面状态=blueprint.json）；路由与页面文件为仓内实勘。人话口径：「可点」=浏览器里现在就能用；「接电」=页面已造好、正在往生产口接线；「在建」=舰队在造；「设计」=图纸定稿等排产；「空白」=还没动工。</p>
+<div class="hero">
+<h1>界面地图 · 26 项逐页对账</h1>
+<p class="sub">状态一律以 panorama/blueprint.json 的 ui 数组为准（铁律：界面状态=blueprint.json，本页数字为 2026-10-19 总装通电批后实读：26 项，可点 19）；路由与页面文件为仓内实勘。人话口径：「可点」=浏览器里现在就能用；「接电/总装通电」=页面已造好并接进生产路由（git d211fdc 批）；「在建」=舰队在造；「设计」=图纸定稿等排产；「空白」=还没动工。</p>
+</div>
 
-<h2>计数条（按 ui 数组实算）</h2>
+<div class="band"><h2>计数条（按 ui 数组实算）</h2><p class="bsub">两个口径都如实上屏：本条按 blueprint.json ui 数组机器实算；柱四判词原文另列，互不冒充</p></div>
 <div class="card">
 <div class="bar">
-<span class="ok" style="width:8.7%" title="可点 2"></span>
-<span class="mount" style="width:43.5%" title="接电 10"></span>
-<span class="fly" style="width:30.4%" title="在建 7"></span>
-<span class="design" style="width:4.3%" title="设计 1"></span>
-<span class="empty" style="width:13.0%" title="空白 3"></span>
+<span class="ok" style="width:73.1%" title="可点 19"></span>
+<span class="mount" style="width:0%" title="接电 0"></span>
+<span class="fly" style="width:11.5%" title="在建 3"></span>
+<span class="design" style="width:3.8%" title="设计 1"></span>
+<span class="empty" style="width:11.5%" title="空白 3"></span>
 </div>
-<div class="counts">共 23 项：可点 2 · 接电 10 · 在建 7 · 设计 1 · 空白 3</div>
-<div class="quote">柱四判词原文（blueprint.json）：「对照ARTEX 22项: 4可点/9接电/7在建/3空白」——判词口径与 ui 数组不同（22 项 vs 23 项、可点 4 vs 2、接电 9 vs 10），本页计数按数组实算，两口径都如实上屏不互相冒充。</div>
+<div class="counts">共 26 项：可点 19 · 接电 0 · 在建 3 · 设计 1 · 空白 3</div>
+<div class="quote">柱四判词原文（blueprint.json 2026-10-19 总装通电批）：「总装通电: 界面26项中 15可点/7在建/1设计/3空白」——ui 数组机器实算为 26 项：可点 19/在建 3/设计 1/空白 3；判词 15/7 为总装通电时点数，数组随后又升四项（本页计数按数组实算，两口径都上屏不互相冒充，前史判词「对照ARTEX 22项: 4可点/9接电/7在建/3空白」见 docs/reviews/ A 档原档）。</div>
 </div>
 
-<h2>23 项网格</h2>
+<div class="band green"><h2>26 项网格</h2><p class="bsub">每项=状态徽章+一句话能力+对应路由/文件出处（git 提交实读）</p></div>
 <div class="uigrid">
 <section class="card">
 <div class="uihead"><h3>仪表盘</h3><span class="st ok">✅ 可点</span></div>
@@ -71,73 +137,73 @@ a{color:#58a6ff}
 <p class="cap">三态筛选（已验证/待验证/已失效）+CVSS 评分+证据原文抽屉，curl 可真转抄。</p>
 <p class="route">生产路由 <code>/console/findings</code>（git 5aa5d9e 冒烟收口）</p></section>
 <section class="card">
-<div class="uihead"><h3>任务</h3><span class="st mount">🔧 接电</span></div>
+<div class="uihead"><h3>任务</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">任务列表：状态七态徽章、预算已用对帽进度条（80% 预警线）、发现双色、搜索排序分页。</p>
-<p class="route">页已建 <code>pages/tasks.html</code>，待挂载（git 7eb6a9e；投影 /api/v2/tasks.json）</p></section>
+<p class="route">页 <code>pages/tasks.html</code>；总装通电批已接电（git d211fdc；投影 /api/v2/tasks.json）</p></section>
 <section class="card">
-<div class="uihead"><h3>新建任务</h3><span class="st mount">🔧 接电</span></div>
+<div class="uihead"><h3>新建任务</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">整页表单：授权书拖拽上传（浏览器实算 sha256）+八问完备性指示器 0/8→8/8，齐了才亮「创建」。</p>
-<p class="route">页已建 <code>pages/new-task.html</code> 待挂载；旧简版 <code>/new</code> 在生产（git 6a4d158）</p></section>
+<p class="route">页 <code>pages/new-task.html</code>；总装通电批已接电，旧简版 <code>/new</code> 同在（git 6a4d158/d211fdc）</p></section>
 <section class="card">
-<div class="uihead"><h3>漏洞详情</h3><span class="st mount">🔧 接电</span></div>
+<div class="uihead"><h3>漏洞详情</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">单条发现的详情页：证据链、验证状态、时间线。</p>
-<p class="route">页已建 <code>pages/finding-detail.html</code>，待挂载（T5 批）</p></section>
+<p class="route">页 <code>pages/finding-detail.html</code>（T5 批建页；总装通电 git d211fdc 已接电）</p></section>
 <section class="card">
-<div class="uihead"><h3>播报（日志）</h3><span class="st mount">🔧 接电</span></div>
-<p class="cap">任务执行过程的播报板视图（live 活动流的任务内版）。</p>
-<p class="route">页已建 <code>pages/broadcast.html</code>，待挂载（投影 api_v2_broadcast）</p></section>
+<div class="uihead"><h3>播报（日志）</h3><span class="st ok">✅ 可点</span></div>
+<p class="cap">任务执行过程的播报板视图：智能体直播气泡+账本行号角标+URL frame 历史视图。</p>
+<p class="route">页 <code>pages/broadcast.html</code>（git 8b71791，28 测）；总装通电已接电</p></section>
 <section class="card">
-<div class="uihead"><h3>复测</h3><span class="st mount">🔧 接电</span></div>
-<p class="cap">对已修复发现自动复测排队与结果（复测页已建，blueprint 柱三）。</p>
-<p class="route">页已建 <code>pages/retest.html</code>，待挂载（投影 api_v2_retest）</p></section>
+<div class="uihead"><h3>复测</h3><span class="st ok">✅ 可点</span></div>
+<p class="cap">对已修复发现自动复测排队与结果：逐发现复测历史+差异（verdict 变化+状态码漂移）。</p>
+<p class="route">页 <code>pages/retest.html</code>（git cc73b68，23 测）；总装通电已接电</p></section>
 <section class="card">
-<div class="uihead"><h3>资产</h3><span class="st mount">🔧 接电</span></div>
+<div class="uihead"><h3>资产</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">资产表：类型/授权复判（绿✓/范围外黄标）/已测请求数/关联发现，DSL 搜索（AND/OR/NOT+通配）。</p>
-<p class="route">页已建 <code>pages/assets.html</code>，待挂载（git b6a9c36；生产旧版 <code>/coverage</code> 族）</p></section>
+<p class="route">页 <code>pages/assets.html</code>（git b6a9c36，19 测）；总装通电已接电</p></section>
 <section class="card">
-<div class="uihead"><h3>资产覆盖</h3><span class="st mount">🔧 接电</span></div>
+<div class="uihead"><h3>资产覆盖</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">资产×意图族热图（五态格+对数色阶）+未测清单带原因，覆盖率口径诚实披露。</p>
-<p class="route">新版 <code>pages/coverage.html</code> 待挂载；旧版生产路由 <code>/coverage</code> 在役（git 1e637bb）</p></section>
+<p class="route">新版 <code>pages/coverage.html</code>（git 1e637bb，20 测）；总装通电已接电，旧版生产路由 <code>/coverage</code> 同在役</p></section>
 <section class="card">
-<div class="uihead"><h3>拦截审批</h3><span class="st mount">🔧 接电</span></div>
+<div class="uihead"><h3>拦截审批</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">审批卡三钮（批准/拒绝/改参）+AI 预审仅供参考+四层拦截流水表；全局版跨任务排队。</p>
-<p class="route">全局页 <code>pages/approval-center.html</code> 待挂载（git 55ec139）；简版生产 <code>/console/approval</code> ✅</p></section>
+<p class="route">全局页 <code>pages/approval-center.html</code>（git 55ec139，18 测）；总装通电已接电；简版生产 <code>/console/approval</code> ✅</p></section>
 <section class="card">
-<div class="uihead"><h3>报告中心</h3><span class="st mount">🔧 接电</span></div>
+<div class="uihead"><h3>报告中心</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">报告列表+详情六节预览、渲染输入哈希钉、版本链、双签位（草稿→待签发→已签发锁定）。</p>
-<p class="route">页已建 <code>pages/report-center.html</code>，待挂载（git 9d576f0/f9e61ac）</p></section>
+<p class="route">页 <code>pages/report-center.html</code>（git 9d576f0/f9e61ac）；总装通电已接电</p></section>
 <section class="card">
-<div class="uihead"><h3>技法（Skill）</h3><span class="st mount">🔧 接电</span></div>
+<div class="uihead"><h3>技法（Skill）</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">50 张技法卡列表+搜索，卡详情六节只读（场景/步骤/工具引用/纪律标注/证据标准/边界）。</p>
-<p class="route">页已建 <code>pages/techniques.html</code>，待挂载（git c846f46）</p></section>
+<p class="route">页 <code>pages/techniques.html</code>（git c846f46，17 测）；总装通电已接电</p></section>
 <section class="card">
-<div class="uihead"><h3>工作空间</h3><span class="st fly">✈️ 在建</span></div>
+<div class="uihead"><h3>工作空间</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">任务产物（工件）浏览+下载：有界漫游、类别推导、路径监狱防逃逸、2MB 上限。</p>
-<p class="route">页文件已在 <code>pages/workspace.html</code>（git f844987），blueprint 状态仍记 ✈️ 在建——以 blueprint.json 为准</p></section>
+<p class="route">页 <code>pages/workspace.html</code>（git f844987，17 测）；总装通电已接电 ✅</p></section>
 <section class="card">
-<div class="uihead"><h3>LLM 录制</h3><span class="st fly">✈️ 在建</span></div>
-<p class="cap">模型调用流水页：每次调用的道、耗时、token 计量与判定记录（底子=llmpool 283 行）。</p>
-<p class="route">未建；W6 规格在册（exceed 蓝图 §四b llm-records 行）</p></section>
+<div class="uihead"><h3>LLM 录制</h3><span class="st ok">✅ 可点</span></div>
+<p class="cap">模型调用流水页：每次调用的道、耗时、token 计量与判定记录；请求响应原文对 mono 保真。</p>
+<p class="route">页（git ca8f418，19 测）三路由总装通电已接电——blueprint.json 已升 ✅（2026-10-19）</p></section>
 <section class="card">
-<div class="uihead"><h3>对话</h3><span class="st fly">✈️ 在建</span></div>
-<p class="cap">介入对话页：每任务一线程，操作员指令注入+历史回放，介入本身入链。</p>
-<p class="route">未建页；写通道 <code>/api/battle/say</code> 已在生产（server.py:615-644）</p></section>
+<div class="uihead"><h3>对话（只读问答）</h3><span class="st ok">✅ 可点</span></div>
+<p class="cap">锚定对话：点开任意账本实体问 AI，锚=表+行号+内容指纹；答案引用逐个对回真实行，只读律零写账。</p>
+<p class="route">MVP git 7a27336（POST /api/v2/ask，21 测）；总装通电已接电；写通道 <code>/api/battle/say</code> 已在生产</p></section>
 <section class="card">
 <div class="uihead"><h3>工具执行</h3><span class="st fly">✈️ 在建</span></div>
 <p class="cap">工具卡注册表页：25 卡的档位/限速/黑名单/回滚义务一屏可查，装卡验签。</p>
-<p class="route">未建；CLI 面 tanyin-tools list/show/install 已在役（W3 工具卡舰）</p></section>
+<p class="route">页文件已收编（git 205c409，63 测三页含本页）；blueprint 仍记 ✈️ 在建——以 blueprint.json 为准</p></section>
 <section class="card">
 <div class="uihead"><h3>LLM 状态</h3><span class="st fly">✈️ 在建</span></div>
-<p class="cap">模型池管理页：多道健康、冷却状态、插槽验签。</p>
-<p class="route">未建；llmpool 离线判定核已建（错误分类+分道冷却+抖动）</p></section>
+<p class="cap">模型池管理页：多道健康、冷却状态、插槽验签；密钥永不上屏。</p>
+<p class="route">页文件已收编（git 205c409）；blueprint 仍记 ✈️——以 blueprint.json 为准</p></section>
 <section class="card">
-<div class="uihead"><h3>系统配置</h3><span class="st fly">✈️ 在建</span></div>
+<div class="uihead"><h3>系统配置</h3><span class="st ok">✅ 可点</span></div>
 <p class="cap">设置页：账本参数读写面（goals 档位/预算三元组/速率窗/范围修订链/豁免/修订史）。</p>
-<p class="route">页文件已在 <code>pages/settings.html</code>（git 52284f1，24 测），blueprint 状态仍记 ✈️——以 blueprint.json 为准</p></section>
+<p class="route">页 <code>pages/settings.html</code>（git 52284f1，24 测）；总装通电已接电 ✅</p></section>
 <section class="card">
 <div class="uihead"><h3>CommandPalette</h3><span class="st fly">✈️ 在建</span></div>
 <p class="cap">⌘K/Ctrl+K 全局命令面板：9 页路由+高频动作统一入口。</p>
-<p class="route">壳已带 Ctrl+K（console.js，W6⑦）；独立面板页未建</p></section>
+<p class="route">壳已带 Ctrl+K（console.js，W6⑦）；独立面板页（_palette.js）在造——以 blueprint.json 为准</p></section>
 <section class="card">
 <div class="uihead"><h3>资产同步</h3><span class="st design">📐 设计</span></div>
 <p class="cap">外部资产源（如 ScopeSentry）导入同步的对等件。</p>
@@ -154,19 +220,98 @@ a{color:#58a6ff}
 <div class="uihead"><h3>通知推送</h3><span class="st empty">⬜ 空白</span></div>
 <p class="cap">钉钉/飞书/企微/Telegram/Email 五渠道+投递五态记录+重试。</p>
 <p class="route">未建；W7 webhook 起（A 档 C5：只排了 1/6）</p></section>
+<section class="card">
+<div class="uihead"><h3>资产库（跨任务）</h3><span class="st ok">✅ 可点</span></div>
+<p class="cap">跨任务资产登记读面：按资产值归并（同值=同一登记对象）、各任务复判分列、跨任务计数卡。</p>
+<p class="route">页 <code>pages/asset-registry.html</code>（git c8728cb，15 测）；总装通电已接电 ✅</p></section>
+<section class="card">
+<div class="uihead"><h3>评测对比</h3><span class="st ok">✅ 可点</span></div>
+<p class="cap">D2 三臂同考读面：登记处行式解析+臂×结算行联表（均值只进已结算）+verdict 逐字上屏。</p>
+<p class="route">页 <code>pages/evals-compare.html</code>（git 3ef562b，13 测）；总装通电已接电 ✅</p></section>
+<section class="card">
+<div class="uihead"><h3>能力曲线</h3><span class="st ok">✅ 可点</span></div>
+<p class="cap">越打越强可视：每仗评测聚合只读投影（仗序号×召回/误报/每美元发现/覆盖率），下降段=告警旗。</p>
+<p class="route">API <code>/api/v2/capability.json</code>（git 6844f87，演进飞轮三件之二）+页面总装通电已接电 ✅</p></section>
 </div>
 
-<h2>边注</h2>
+<div class="band amber"><h2>旧页精华吸收：探隐 vs ARTEX 对比件（tanyin-vs-artex.html，2026-10-14）</h2><p class="bsub">界面为什么长这样、为什么不能照抄 ARTEX——五工位同构对照+图法对比+三条后果链+终局合体，全文精华在此（原档零删改留档）</p></div>
+
+<div class="band"><h2>图A · 五工位同构对照：同一条作战流水线，两家在每个工位上的做法</h2><p class="bsub">它强在工位①②（规划并发），我们强在工位③④⑤——交付的信誉恰好压在后三个工位上</p></div>
+<div class="vsgrid">
+<section class="card cbar blue">
+<h3 style="margin:0 0 8px;color:#dbe7ff">ARTEX（竞赛冠军 · 广度优化）</h3>
+<table>
+<tr><th>工位</th><th>做法</th><th>判</th></tr>
+<tr><td>规划</td><td class="v">planner 拆链 + 共享 todolist 分轮派</td><td>✅ 强</td></tr>
+<tr><td>执行</td><td class="v">worker×N 并发 + 真工具 + MITM 录流量</td><td>✅ 强</td></tr>
+<tr><td>记录</td><td class="v">2 逻辑图落 1 个可变 Postgres（给 LLM 看）</td><td>⚠️ 给 LLM 看</td></tr>
+<tr><td>验证</td><td class="v">无独立重放，agent 自己写发现</td><td>❌ 幻觉可进图</td></tr>
+<tr><td>交付</td><td class="v">UI 报告+覆盖图，无 GT 无统计</td><td>❌ 无测量</td></tr>
+</table>
+<p class="cap" style="margin-bottom:0">它的账是给 agent 用的工作记忆：合并成图方便 LLM 读态势——竞赛里这是对的（快抢分）；风险链=发现由 agent 写图→无第二方复验→幻觉发现与真发现同形→直接进报告；改库=改历史（Postgres 单点可变，无链无门）。</p>
+</section>
+<section class="card cbar green">
+<h3 style="margin:0 0 8px;color:#cbf5d8">探隐/GraphLed（交付工程 · 签名优化）</h3>
+<table>
+<tr><th>工位</th><th>做法</th><th>判</th></tr>
+<tr><td>规划</td><td class="v">AI 战士自主 + b10 指令可中途改向</td><td>✅ 实证 12 战</td></tr>
+<tr><td>执行</td><td class="v">单战士+侦察/重放子代理</td><td>⚠️ 并发弱</td></tr>
+<tr><td>记录</td><td class="v">13 本 TSV+哈希链 + 十种边图法（给门看）</td><td>✅ 给门看</td></tr>
+<tr><td>验证</td><td class="v">P4 机械重放三态，无 VERIFIED=0 分</td><td>✅ 精度门</td></tr>
+<tr><td>交付</td><td class="v">settle×56-GT + McNemar 双臂</td><td>✅ 可测量</td></tr>
+</table>
+<p class="cap" style="margin-bottom:0">我们的账是给门和评分器用的执法依据：拆成多本因为每本一条纪律（intents 不蒸发/supersedes 幂等/空账过门=gate-fail）；保障链=发现→evidences 边→E-index 证据卡→P4 机械重放→无 VERIFIED 不计分→烂帐 0 分连坐。</p>
+</section>
+</div>
+
+<div class="band purple"><h2>图B · 图法对比：边的词汇表（左 ARTEX 4+锚点 · 右 探隐 10 边）</h2><p class="bsub">结论：图的表达力我们是超集——它画得出关系，我们画得出责任</p></div>
 <div class="card">
-<p class="cap" style="margin-top:0">① 还有一页不在 23 项清单里：<code>pages/asset-registry.html</code> 跨任务资产库（按资产值归并、各任务复判分列，git c8728cb），归 W7 资产库族，此处只登记不计数。</p>
-<p class="cap">② 「工作空间」「系统配置」两页的页面文件已在仓（git f844987 / 52284f1），但 blueprint.json 仍记 ✈️ 在建——状态以 blueprint.json 为准，舰队落地会更新该文件；本页下次重生成即跟随。</p>
+<table>
+<tr><th>对比项</th><th>ARTEX</th><th>探隐/GraphLed</th></tr>
+<tr><td>血缘四件套</td><td class="v">spawns / yields / derived_from / proves（落可变 Postgres）</td><td>同名同语义——词汇正确，与我们不谋而合</td></tr>
+<tr><td>锚点/覆盖</td><td class="v">anchors 桥表（意图/发现↔资产，仅展示覆盖度）</td><td>scope-rel：资产锚授权圈，<b>圈外拒收</b>=anchor 的执法版</td></tr>
+<tr><td>证据语义</td><td class="v">✕ evidences——发现没有「出生证明」边</td><td>✓ evidences：发现→E-index 证据卡，无 VERIFIED 不计分</td></tr>
+<tr><td>修正语义</td><td class="v">✕ supersedes——判决错了只能改库</td><td>✓ supersedes：修正链+墓碑，重复边幂等拒收</td></tr>
+<tr><td>其他</td><td class="v">✕ attack / cross_ref</td><td>✓ attack（发现⇄资产）+ cross_ref 任意表互引</td></tr>
+<tr><td>纪律</td><td class="v">边只是记录：写进库就完事，无幂等律/蒸发律/链</td><td>方向由 _EDGE_DIR 强制（错向=Reject）；每条边写入即进 timeline 哈希链</td></tr>
+</table>
+<p class="cap" style="margin-bottom:0">评价（原文）：同一套词汇，但每条边是法律不是便签。</p>
+</div>
+
+<div class="band red"><h2>图C · 三条后果链：「直接用」的机制推演（不是观点）</h2><p class="bsub">竞赛场景都不罚（快抢分就赢），交付场景都致命——这就是目标函数差异</p></div>
+<div class="card">
+<p class="kv"><b>① 幻觉链：</b></p>
+<div class="chain"><span class="cstep bad">agent 写发现</span><span class="carr">▼</span><span class="cstep bad">无第二方复验</span><span class="carr">▼</span><span class="cstep bad">幻觉与真发现同形</span><span class="carr">▼</span><span class="cstep bad">假发现进客户报告</span><span class="carr">▼</span><span class="cstep bad">信誉一次性破产</span></div>
+<p class="kv" style="color:#7fd49a">探隐断点：evidences 边 + P4 机械重放 + 无 VERIFIED=0 分（烂帐连坐逼战士自纠）</p>
+<p class="kv"><b>② 篡改链：</b></p>
+<div class="chain"><span class="cstep bad">单点可变 Postgres</span><span class="carr">▼</span><span class="cstep bad">有库权限即可改史</span><span class="carr">▼</span><span class="cstep bad">审计只能选择相信</span><span class="carr">▼</span><span class="cstep bad">交付不可辩护</span></div>
+<p class="kv" style="color:#7fd49a">探隐断点：timeline 哈希链（改一行断链可检）+45 条 CLI 前置校验（嘴说无效）</p>
+<p class="kv"><b>③ 测量链：</b></p>
+<div class="chain"><span class="cstep bad">从未测过召回/精度</span><span class="carr">▼</span><span class="cstep bad">换工具=盲换</span><span class="carr">▼</span><span class="cstep bad">无法给承诺</span><span class="carr">▼</span><span class="cstep bad">出问题无法归因</span></div>
+<p class="kv" style="color:#7fd49a">探隐断点：56-GT 分母召回 ×12 战 + McNemar + 双臂——每次改动都有判决</p>
+</div>
+
+<div class="band"><h2>图D · 决策树与终局合体（广度归它 · 签名归我）</h2><p class="bsub">授权前提已确认（用户澄清）——本决策纯技术依据；一句话：直接用=拿它的强度换走你的信誉；自己建+借脑=强度可借，信誉不押</p></div>
+<div class="card cbar cyan">
+<table>
+<tr><th>问题</th><th>分支</th><th>处置</th></tr>
+<tr><td rowspan="2">这活儿的产出要「签名」吗？<br>（进客户报告/过审计/定 SLA）</td><td>否——演示/靶场/资产广扫</td><td>直接用 ARTEX 合理 ✅：内部靶场演练、大面资产 recon、UI 演示、并发广扫；用它的产出前，过我方 E-index 重放验证</td></tr>
+<tr><td>是——授权交付</td><td>必须自己建 ❌换不得：精度门/哈希链/九门/测量层=签名能力本体；深度改造它=AGPL 传染（改码提供服务须开源）；12 战数据/技能/图法沉淀在自己的飞轮里</td></tr>
+</table>
+<p class="kv"><b>终局合体：</b>ARTEX 当广度引擎（外挂进程，只读边界）→ 产假设不产发现 → 探隐 intents 层裁决 → evidences/P4 重放 → 哈希链落账 → settle 计分；前置关卡=靶场同题对打 n=3（56-GT 同 scorer）——用数据定挂不挂它的引擎层。</p>
+<p class="src">逐条展开的机制级论证（精度门/审计性/测量/AGPL/沉淀方向/它三处确实比我们强）见原档 tanyin-vs-artex.html「为什么不直接用」节；决策文字版 docs/research/2026-10-11-artex-vs-tanyin.md。A 档 96 件全件对齐即此对比件的后续（见 <a href="graphled-enemies.html">六产品对齐</a> 页）。</p>
+</div>
+
+<div class="band green"><h2>边注</h2><p class="bsub">口径与登记的三件诚实披露</p></div>
+<div class="card">
+<p class="cap" style="margin-top:0">① 还有一页不在 26 项清单里：<code>pages/asset-registry.html</code> 跨任务资产库曾在边注登记（git c8728cb），现 blueprint.json 已正式登记并随总装通电升 ✅ 可点（上表含它）。</p>
+<p class="cap">② 「工具执行」「LLM 状态」两页的页面文件已收编（git 205c409，63 测），但 blueprint.json 仍记 ✈️ 在建——状态以 blueprint.json 为准，舰队落地会更新该文件；本页下次重写即跟随。</p>
 <p class="cap">③ 生产口 8900 的既有路由（server.py:449-453 实读）：<code>/</code> <code>/coverage</code> <code>/graph</code> <code>/evidence</code> <code>/metrics</code> <code>/session</code> <code>/activity</code> <code>/new</code> <code>/console</code> 五页族——读面全部过登录门（B 舰 P0 修复后）。</p>
 </div>
 
 <p class="meta">
-状态真源=panorama/blueprint.json（23 项 ui 数组）· 路由/文件=cli/webui/server.py 与 cli/webui/static/pages/ 实勘 · 能力一句=git 提交记录与 HANDOFF 实读 ·
-快照 2026-10-18 10:16 · git f844987 ·
-姊妹页：<a href="graphled-blueprint.html">进度总图</a> · <a href="graphled-architecture.html">全景架构</a> · <a href="index.html">首页</a>。
+状态真源=panorama/blueprint.json（26 项 ui 数组，2026-10-19 实读）· 路由/文件=cli/webui/server.py 与 cli/webui/static/pages/ 实勘 · 能力一句=git 提交记录与 HANDOFF 实读 · 对比精华=tanyin-vs-artex.html 全文实读（2026-10-14 原档零删改）·
+姊妹页：<a href="graphled-blueprint.html">进度总图</a> · <a href="graphled-architecture.html">全景架构</a> · <a href="graphled-enemies.html">六产品对齐</a>（ARTEX 96 件逐件判词）· <a href="index.html">首页</a>。
 </p>
 </div>
 </body>

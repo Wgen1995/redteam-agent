@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generated" content="2026-10-19 全景大合并 v2">
+<meta name="generator" content="panorama 手写页（真源=docs/RATIFICATIONS.md 17 案+docs/USER-CHARTER.md 55 法+git log 709 提交关键节点实读）">
+<title>演进总析 · GraphLed 蓝图</title><style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:linear-gradient(180deg,#10161f,#0d1117);border:1px solid #30363d;border-radius:12px;padding:9px 13px;margin-bottom:22px;position:sticky;top:0;z-index:5;box-shadow:0 6px 22px rgba(1,4,9,.6)}
+.nav .brand{font-weight:700;margin-right:8px;font-size:14px;background:linear-gradient(90deg,#ffe9b0,#7fd49a 60%,#a5c8ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:2px}
+.nav a{color:#a5c8ff;text-decoration:none;font-size:12.5px;padding:3px 10px;border-radius:8px;border:1px solid transparent}
+.nav a:hover{border-color:#58a6ff66;color:#dbe7ff}
+.nav a.on{background:#0d2246;border-color:#58a6ff;color:#a5c8ff;box-shadow:0 0 12px rgba(88,166,255,.35)}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#0d2246 46%,#0f2e1b 100%);border:1px solid #30363d;border-radius:14px;padding:24px 26px 20px;margin-bottom:8px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#e3b341,#58a6ff,#3fb950,#bc8cff)}
+h1{color:#f0f6fc;font-size:28px;margin:2px 0 6px}
+.sub{color:#8b949e;font-size:13px}
+.hero .def{font-size:15px;color:#e2e8f0;margin:10px 0 4px}
+.hero .def b{color:#7fd49a}
+.mile{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.mile .m{background:rgba(22,27,34,.85);border:1px solid #30363d;border-radius:10px;padding:8px 14px;font-size:12.5px;color:#c9d1d9}
+.mile .m b{display:block;color:#ffe9b0;font-size:13px}
+.band{margin:36px 0 14px;padding:13px 18px 11px;border-radius:12px;background:linear-gradient(90deg,#12203a 0%,#10161f 55%,#0d1117 100%);border:1px solid #26344b;position:relative}
+.band::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:5px;border-radius:3px;background:linear-gradient(180deg,#58a6ff,#6fc3d0)}
+.band h2{margin:0;font-size:20px;color:#e2e8f0}
+.band .bsub{margin:3px 0 0;font-size:12.5px;color:#6fc3d0}
+.band.amber::before{background:linear-gradient(180deg,#e3b341,#f85149)}
+.band.green::before{background:linear-gradient(180deg,#3fb950,#39c5cf)}
+.band.purple::before{background:linear-gradient(180deg,#bc8cff,#58a6ff)}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px;transition:border-color .15s,box-shadow .15s}
+.card:hover{border-color:#3d4f66;box-shadow:0 8px 24px rgba(1,4,9,.5)}
+.cbar{border-left:4px solid #58a6ff;background:linear-gradient(90deg,#101826,#161b22 70%)}
+.cbar.amber{border-left-color:#e3b341}.cbar.green{border-left-color:#3fb950}.cbar.purple{border-left-color:#bc8cff}.cbar.red{border-left-color:#f85149}.cbar.cyan{border-left-color:#39c5cf}
+.bdg{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:9px;border:1px solid;white-space:nowrap}
+.bdg.amber{background:#3a2c0e;border-color:#e3b341;color:#ffe9b0}
+.bdg.blue{background:#0d2246;border-color:#58a6ff;color:#a5c8ff}
+.bdg.green{background:#0f2e1b;border-color:#3fb950;color:#7fd49a}
+.bdg.purple{background:#241b38;border-color:#bc8cff;color:#d9c2ff}
+.bdg.red{background:#3d1418;border-color:#f85149;color:#ffd7d5}
+.bdg.cyan{background:#0b2b31;border-color:#39c5cf;color:#a8e6ee}
+.bdg.grey{background:#161b22;border-color:#30363d;color:#8b949e}
+.pages{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:960px){.pages{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.pages{grid-template-columns:1fr}}
+a.tile{display:block;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden}
+a.tile::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#58a6ff,#39c5cf)}
+a.tile.t2::before{background:linear-gradient(90deg,#e3b341,#f85149)}
+a.tile.t3::before{background:linear-gradient(90deg,#3fb950,#39c5cf)}
+a.tile.t4::before{background:linear-gradient(90deg,#bc8cff,#58a6ff)}
+a.tile.t5::before{background:linear-gradient(90deg,#e3b341,#3fb950)}
+a.tile:hover{border-color:#58a6ff;box-shadow:0 0 16px rgba(88,166,255,.25);transform:translateY(-2px)}
+a.tile h3{margin:0 0 4px;font-size:15px;color:#dbe7ff}
+a.tile p{margin:0;font-size:12.5px;color:#8b949e}
+a.tile .st{font-size:11px;margin-left:6px;color:#d29922}
+.archgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.archgrid{grid-template-columns:1fr}}
+.arch h3{margin:0 0 6px;font-size:15px;color:#f0f6fc;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.arch .val{font-size:12px;color:#6fc3d0;margin:2px 0 8px}
+.arch ul{margin:6px 0 0;padding-left:0;list-style:none}
+.arch ul li{font-size:12.5px;color:#c9d1d9;padding:3px 0 3px 16px;position:relative}
+.arch ul li::before{content:"▸";position:absolute;left:1px;color:#e3b341}
+.arch ul li b{color:#ffe9b0}
+.arch .path{font-size:11px;color:#6e7681;margin-top:8px;word-break:break-all}
+.arch .path a{color:#58a6ff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:#a5c8ff;text-align:left;font-weight:600;background:#12203a;padding:7px 10px;border-bottom:1px solid #30363d}
+td{padding:7px 10px;border-bottom:1px solid #21262d;vertical-align:top}
+tr:hover td{background:#10161f}
+td a{color:#58a6ff}td.v{color:#8b949e}
+a{color:#58a6ff}
+.quote{border-left:3px solid #e3b341;background:#171310;border-radius:0 8px 8px 0;padding:6px 12px;color:#cdb896;font-size:12.5px;margin:10px 0}
+.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
+.kv{font-size:13px;margin:4px 0}.kv b{color:#f0f6fc}</style>
+<style>
+.era{margin:26px 0 10px;padding:12px 18px 10px;border-radius:12px;position:relative;border:1px solid}
+.era h3{margin:0;font-size:17px;color:#e2e8f0}
+.era .esub{margin:2px 0 0;font-size:12px;color:#6fc3d0}
+.era::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:5px;border-radius:3px}
+.era.e1{background:linear-gradient(90deg,#0d2246,#10161f 60%,#0d1117);border-color:#26344b}.era.e1::before{background:linear-gradient(180deg,#58a6ff,#6fc3d0)}
+.era.e2{background:linear-gradient(90deg,#0b2b31,#10161f 60%,#0d1117);border-color:#1d4a52}.era.e2::before{background:linear-gradient(180deg,#39c5cf,#3fb950)}
+.era.e3{background:linear-gradient(90deg,#3a2c0e,#10161f 60%,#0d1117);border-color:#4a3a14}.era.e3::before{background:linear-gradient(180deg,#e3b341,#f85149)}
+.era.e4{background:linear-gradient(90deg,#0f2e1b,#10161f 60%,#0d1117);border-color:#1d4a2a}.era.e4::before{background:linear-gradient(180deg,#3fb950,#58a6ff)}
+.tl{list-style:none;margin:10px 0 0;padding:0}
+.tl li{display:grid;grid-template-columns:150px 1fr 110px 210px;gap:10px;padding:8px 10px;border-bottom:1px solid #21262d;font-size:12.3px;align-items:start}
+.tl li:last-child{border-bottom:none}
+.tl .when{color:#a5c8ff;font-weight:700}
+.tl .what b{color:#ffe9b0}
+.tl .why{color:#8b949e}
+.tl .land{font-size:11.8px}
+.land.yes{color:#7fd49a}.land.part{color:#ffe9b0}.land.no{color:#ffd7d5}
+@media(max-width:1000px){.tl li{grid-template-columns:1fr}}
+.law{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:800px){.law{grid-template-columns:1fr}}
+.law .card h3{margin:0 0 6px;font-size:14.5px;color:#f0f6fc}
+.law ul{margin:0;padding-left:0;list-style:none}
+.law ul li{font-size:12.2px;color:#c9d1d9;padding:2.5px 0 2.5px 15px;position:relative}
+.law ul li::before{content:"▸";position:absolute;left:1px;color:#58a6ff}
+.law ul li b{color:#ffe9b0}
+.kv{font-size:13px;margin:4px 0}.kv b{color:#f0f6fc}
+.src{color:#8b949e;font-size:11.5px}
+</style></head>
+<body>
+<div class="wrap">
+<nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="index.html">首页</a>
+<a href="graphled-blueprint.html">进度总图</a>
+<a href="graphled-architecture.html">全景架构</a>
+<a href="graphled-ui-map.html">界面地图</a>
+<a href="graphled-enemies.html">六产品对齐</a>
+<a href="graphled-roadmap.html">能力阶梯</a>
+<a href="graphled-methodology.html">交战思维</a>
+<a href="graphled-knowledge.html">知识全景</a>
+<a href="graphled-history.html" class="on">演进总析</a></nav>
+
+<div class="hero">
+<h1>演进总析 · TanYin 时代 → GraphLed</h1>
+<p class="sub">第九页（新增）：「历史包括现在所有综合分析」的直接交付——重大决策时间线逐条上屏，每条=<b>何时 / 裁了什么 / 为什么 / 现在落没落地</b>。真源=docs/RATIFICATIONS.md（17 案裁定清单）+ docs/USER-CHARTER.md（55 条宪法，编号至 #52）+ git log（709 个提交关键节点实读）+ 三代全景图与 HANDOFF 开发流水。零虚构，每条可回溯。</p>
+</div>
+
+<div class="band purple"><h2>四个时代一句话</h2><p class="bsub">创世（设计定稿与账本地基）→ 换血（观察面+执法升权+评审改向）→ 定名（GraphLed+波次施工+六产品对齐）→ 收口（第一性排序+飞轮落成+挂载在飞）</p></div>
+<div class="card">
+<p class="kv"><b>时代一 TanYin 创世（2026-09-17 → 09-26）：</b>从「探隐」第一行设计稿到 737 测试的账本地基——把「被管住的 AI 渗透平台」从哲学画成可施工的图纸。</p>
+<p class="kv"><b>时代二 观察面与评审（2026-10-11 → 10-16）：</b>对手实勘+自我体检+九页观察面+执法升权五件+六专家评审零否决——从「能用」到「敢看敢评」。</p>
+<p class="kv"><b>时代三 GraphLed 定名与波次（2026-10-17 → 10-18）：</b>大改名+W1-W8 八波施工总账+六产品 306 件对齐+宪法 #40-48 八连颁——从「探隐项目」到「GraphLed 产品」。</p>
+<p class="kv"><b>时代四 收口与飞轮（2026-10-19 起）：</b>第一性排序修正（找漏洞排第一）+评测棘轮落成+LLM 录制/锚定对话落成+17 页挂载在飞——从「建零件」到「接电出活」。</p>
+</div>
+
+<div class="era e1"><h3>时代一 · TanYin 创世（09-17 → 09-26）</h3><p class="esub">图纸定稿 → 契约冻结 → 批次施工 → 12 战实验：账本地基在这一周半里铸成</p></div>
+<div class="card">
+<ul class="tl">
+<li><span class="when">2026-09-17</span><span class="what"><b>TanYin v1 原稿</b>：REQUIREMENTS.md 立为最高权威，26 域设计；五专家审计 A1-A20 阻断级+B1-B17 简化全部采纳</span><span class="why">为什么：先审后建，阻断级问题不过夜</span><span class="land yes">落地：原稿十页存 docs/design/imported/，审计结论全数消化</span></li>
+<li><span class="when">2026-09-18</span><span class="what"><b>web-blackbox 引擎首发设计</b>（四段流程骨架+提交文件协议）</span><span class="why">为什么：首批一号引擎，黑盒主战士</span><span class="land yes">落地：engines/ 插槽在役（0.57-0.70 实战）</span></li>
+<li><span class="when">2026-09-20</span><span class="what"><b>融合裁决 401 行</b>：概念对齐（同/叠/独）+十大裁决+十个拍板点</span><span class="why">为什么：两套设计并存必乱，先裁再融</span><span class="land yes">落地：拍板点全部关闭，ADR-P1~P4 直落 v2</span></li>
+<li><span class="when">2026-09-21</span><span class="what"><b>v2 综合设计定稿 701 行</b>（唯一权威）+契约冻结（13 表/41 命令/边词汇/四层档位）；同日知识五页成册（methodology/techstack/toolchain/ai-pentest/roadmap）</span><span class="why">为什么：schema 先冻再动，变更走版本迁移；人的知识同步图谱化</span><span class="land yes">落地：contracts-v2 在役（命令后增至 45）；知识五页本次已并入知识全景/交战思维/能力阶梯页</span></li>
+<li><span class="when">2026-09-22/23</span><span class="what"><b>全景架构图 v1→v2</b>：工程原图（表名字段全细节）→ 按 SPEC 重绘「从哲学到 13 本账」长卷</span><span class="why">为什么：工程密度太高读不动，汇报模式需要一版看得懂的</span><span class="land yes">落地：v3 与本九页的直系祖先（旧图零删改留档）</span></li>
+<li><span class="when">09-21 → 09-26</span><span class="what"><b>批次 0-6 全线施工</b>：批次 0 契约→1 账本命令+金样→2 门禁（enforce 单源+CI 双平台）→3 总控 skill+受管重启→4 引擎层（web-blackbox/vuln-agent/身份矩阵差分）→5 知识飞轮→6 三层验收+安装矩阵+报告管线，收口 737 测试全绿</span><span class="why">为什么：设计不落地=白设计，批次制保每步有验收</span><span class="land yes">落地：45 条 CLI/13 表/引擎插槽/报告管线全部在役至今</span></li>
+<li><span class="when">09 月底 → 10 月</span><span class="what"><b>12 战实验纪元</b>：keying v8 迭代、b24 断网三度点火零账损、b27 82 分钟无人看护 0.70、McNemar/Levene 双臂统计、N=5 判决链</span><span class="why">为什么：换 keying 必须全量重结算再进统计（b30/b36 教训）——效果要有数学证明</span><span class="land yes">落地：battle.py+GT 真值集；56-GT 分母成为评测地基</span></li>
+</ul>
+</div>
+
+<div class="era e2"><h3>时代二 · 观察面与评审（10-11 → 10-16）</h3><p class="esub">对手解剖 → 自我体检 → 九页观察面 → 执法升权 S1-S5 → 六专家零否决：从「能用」到「敢看敢评」</p></div>
+<div class="card">
+<ul class="tl">
+<li><span class="when">2026-10-11</span><span class="what"><b>ARTEX 实勘 810 文件</b>（四层堆叠/双图架构/事件驱动闭环/三大自主机制/12 维矩阵）+ 探隐 vs ARTEX 决策件（五工位对照+三条后果链+终局合体）</span><span class="why">为什么：90 天之约要有对手坐标系；「广度引擎 vs 签名能力」定性</span><span class="land yes">落地：A 档 96 件全件对齐的思想前身；合体方案=终局架构参考</span></li>
+<li><span class="when">2026-10-14</span><span class="what"><b>tanyin-atlas 定位体检</b>：三层职责判据（拳头/脊柱/保姆）+「四不像」自查</span><span class="why">为什么：四个名字都在对话里出现，产品里到底有几个件</span><span class="land yes">落地：分层判据沿用至今（全景架构页六大件即其现状版）</span></li>
+<li><span class="when">10-14 → 10-16</span><span class="what"><b>观察面九页四连批</b>：v0.9a 骨架（九门灯/SSE 活动流）→v0.9b 热图十边图证据卡→v0.9c 度量页+实验登记→v0.9d 九页纪元（8900 伺服）+互通导出 zhulong-export</span><span class="why">为什么：用户裁定「8900 活体页面=唯一视觉验收面」（视觉伴侣律 #29）</span><span class="land yes">落地：8900 在役；W6 五控制台页按此皮肤落成</span></li>
+<li><span class="when">2026-10-16</span><span class="what"><b>执法升权五件 S1-S5</b>（v0.9.6）：信任根摘出/防时间旅行/知识签名门/出网代理强制/重放四门</span><span class="why">为什么：不批则自主化=给被俘战士扩权——升权先于放手</span><span class="land yes">落地：全量 1479→1491 测背书在役</span></li>
+<li><span class="when">10-15/16</span><span class="what"><b>六专家评审轮</b>（E1 架构·E2 安全·E3 产品·E4 度量·E5 工程债·E6 白盒）：方向零否决，刀口全在执行层；方向修正案三票制（票①收口+票②执法已兑现/票③循环地基排队）</span><span class="why">为什么：多专家独立评审制（宪法 #11「我提了你就做不行」）</span><span class="land yes">落地：新路线 v0.9.7 地基→v1.0a 白盒→v1.0b 常驻→v1.0c 控制面排定</span></li>
+<li><span class="when">2026-10-16</span><span class="what"><b>USER-CHARTER 全量整理</b>（55 条法，全会话原话逐条回溯）；用户四连怒斥界面→产品=你能按到什么</span><span class="why">为什么：用户意志要积累成账（账本在你不在册=账白记）</span><span class="land yes">落地：宪法体系至今在执法（本页下半逐条对账）</span></li>
+<li><span class="when">2026-10-16</span><span class="what"><b>全景架构 v3 定稿</b>=v2 全量+⑫建造实况带+⑬对账带</span><span class="why">为什么：画了≠建了——诚实呈现差距，不装完成</span><span class="land yes">落地：用户原话「这种还不错」；本九页即其后代</span></li>
+</ul>
+</div>
+
+<div class="era e3"><h3>时代三 · GraphLed 定名与波次（10-17 → 10-18）</h3><p class="esub">超越律 → 八波总账 → 大改名 → 六产品 306 件对齐 → 宪法八连颁 → W1 完 → 蓝图全景集</p></div>
+<div class="card">
+<ul class="tl">
+<li><span class="when">2026-10-17</span><span class="what"><b>宪法 #36-39 连颁</b>：实时落帐律/呈件律/超越律（默认方案永远是超越版，禁呈降级选项）/栈与 C2 落档（Vite+Vue3 投影面、C2 用户批做）</span><span class="why">为什么：「你懂什么叫超越吗」之训——界面不许问要不要简洁版</span><span class="land yes">落地：后续每批按此执法；C2 已落 1,446 行 53 测</span></li>
+<li><span class="when">2026-10-17</span><span class="what"><b>exceed 蓝图 W1-W8 八波施工总账</b>（诚实总价 ≈53,000-65,000 行）+控制台最终态原型 v2（满数据版）</span><span class="why">为什么：要超过五产品就得先知道欠谁多少账</span><span class="land yes">落地：W1 已完；W2-W8 在册（见能力阶梯页总账表）</span></li>
+<li><span class="when">2026-10-18</span><span class="what"><b>定名 GraphLed</b>（探隐 TanYin→GraphLed）：终局架构裁定=自有战士运行时+llmpool、DSH 二开否、宿主降级可拔插座</span><span class="why">为什么：图谱（Graph）+账本领航（Led）——名字即架构</span><span class="land yes">落地：战士运行时 2,350 行 123 测在役（超 ~2,000 行预估）</span></li>
+<li><span class="when">2026-10-18</span><span class="what"><b>六产品全件对齐 A-E</b>（306 件：已超 96/已排 140/取舍 34/真空白 35）</span><span class="why">为什么：参照即基线律 #33——五家同类页面=验收线不是可选参考</span><span class="land yes">落地：真空白全给方案入波次；E 舰吸收三件已进规格</span></li>
+<li><span class="when">2026-10-18</span><span class="what"><b>宪法 #40-48 八连颁</b>：沟通节奏/界面人话/量纲（禁时间预算）/核心优先（误报漏报=生死）/专业异议/分域门/交流落帐/零沉没成本/提问带荐</span><span class="why">为什么：用户六连批+点名——节奏、人话、量纲一次立齐</span><span class="land yes">落地：本全景集全部页面的行文口径即按此执法</span></li>
+<li><span class="when">2026-10-18</span><span class="what"><b>W1 止血与兑现收口</b>：授权真上传（八问缺一=422）/读面登录门/battle auto 一键链/VulnClaw 插槽落地/定名收尾；追认清单 14 案全按推荐✅（git bf08a1e）</span><span class="why">为什么：先修地板再长个——授权与登录是产品的底线件</span><span class="land yes">落地：exceed 蓝图 v4 总判「W1 已完」</span></li>
+<li><span class="when">2026-10-18</span><span class="what"><b>蓝图全景集七页建成</b>（git 353d9d9）：进度总图（gen_blueprint.py 修坏稿从 blueprint.json 生成）+架构/界面/对齐/阶梯/思维六页手写+index 枢纽</span><span class="why">为什么：用户令「后续我看蓝图就知道进度了」</span><span class="land yes">落地：本次全景大合并 v2 扩为九页+旗舰样式换装</span></li>
+</ul>
+</div>
+
+<div class="era e4"><h3>时代四 · 收口与飞轮（10-19 起，进行中）</h3><p class="esub">第一性排序修正 → 评测棘轮落成 → LLM 录制/锚定对话 → 17 页挂载在飞：从「建零件」到「接电出活」</p></div>
+<div class="card">
+<ul class="tl">
+<li><span class="when">2026-10-19</span><span class="what"><b>第一性排序修正</b>（用户裁定「AI 能找到漏洞排第一，效果不好就是垃圾」）：①找漏洞能力（召回/误报/漏报）②AI 自动化 ③验证/账本 ④界面/多人——前面是 1 后面是 0</span><span class="why">为什么：产品叙事从「可信」改为「有效优先、可信第二」</span><span class="land yes">落地：blueprint.json 四支柱即按此排序（柱一=找到漏洞）</span></li>
+<li><span class="when">2026-10-19</span><span class="what"><b>宪法 #50-52</b>：设计资产保全律（旧页零删改）/账先用律/对话全话律（说人话但不简化）</span><span class="why">为什么：「不要弄丢以前的设计」+「和我说话也不要简化」</span><span class="land yes">落地：本页+首页旧全景精华速览=直接执行件</span></li>
+<li><span class="when">2026-10-19</span><span class="what"><b>E 舰 cyber-harness 全件对齐</b>（67 件：三空洞=我三山峰）+即刻吸收三件（两段判定/浏览器会话卡/同轮工具并行）；#17 修订 C（用户裁定「双签没什么价值」：双签仅留报告签发位、角色两档、W7 行数随减）</span><span class="why">为什么：专业异议律 #44——用户方向采纳+前辩作废自纠入档</span><span class="land yes">落地：吸收三件已排 W2/W3/W5；修订 C 已落 timeline actor 留名</span></li>
+<li><span class="when">2026-10-19</span><span class="what"><b>GT 评测集加厚入库</b>（git 1f036de/64ebf80）：6 战场+源码 GT 10 行+FP 诱饵 5 对+三战基线 0.62/0.62/0.70（FP=31/3/1）</span><span class="why">为什么：宪法 #43 测量地基——没有 GT 就没有「越打越强」的证明</span><span class="land yes">落地：gt-index.tsv 6 战场行+capability_gate 消费契约</span></li>
+<li><span class="when">2026-10-19</span><span class="what"><b>LLM 录制页+锚定对话 MVP 落成</b>（git ca8f418/7a27336/944b6b2）：战士调用留痕只读投影+点开任意账本行问 AI（锚=表+行号+指纹，引用逐个对回真实行，只读律零写账）</span><span class="why">为什么：裁定案 #8 锚定对话=业界空白，W6 已留锚点</span><span class="land part">落一半：API 与页已建成，挂载接线在飞（blueprint 🔧）</span></li>
+<li><span class="when">2026-10-19</span><span class="what"><b>演进飞轮三件落地</b>（git 6844f87/8721d0a）：评测棘轮（能力件变更合并前自动评测对比，回退超阈拒合并，baseline 只紧不松）+能力曲线 API（每仗聚合只读投影，下降段=告警旗）+避坑卡 schema（失败路径入册）</span><span class="why">为什么：宪法 #43 核心件=误报漏报率机器，能力回归当工程回归管</span><span class="land part">落大半：三件已入册（20 真战冒烟 recall 0.5673/fp 0.0044）；曲线页面待接线即亮</span></li>
+<li><span class="when">2026-10-19</span><span class="what"><b>全景大合并 v2</b>（本页所在的提交）：旧 16 档案精华全部上屏+旗舰样式换装+新增知识全景/演进总析两页+gen_blueprint.py CSS 同步升级</span><span class="why">为什么：用户裁定「旧页退役但精华一点不许丢」+「新页太灰太寡要旧页质感」</span><span class="land yes">落地：九页互相链接成集，旧页零删改留档</span></li>
+</ul>
+</div>
+
+<div class="band"><h2>裁定案 17 案对账（docs/RATIFICATIONS.md 全量）</h2><p class="bsub">#1-14 已于 2026-10-18 全按推荐✅追认（git bf08a1e）；#15/16/17 状态「✅待你」=推荐追认中——每案的落地实况逐条对账</p></div>
+<div class="card">
+<table>
+<tr><th>#</th><th>裁定案</th><th>推荐与实况</th><th>落地</th></tr>
+<tr><td>1</td><td>终局架构：自有战士运行时+llmpool，DSH 二开否</td><td class="v">战士运行时 2,350 行 123 测在役（超 ~2,000 行预估）</td><td class="land yes">✅ 已落地</td></tr>
+<tr><td>2</td><td>ZhuLong 裁决：互通导出做、导入闸紧</td><td class="v">zhulong_export 五族导出+对方仓 mapper-tanyin 已合；导入=W7 sync</td><td class="land part">◐ 出向已落，进向在册</td></tr>
+<tr><td>3</td><td>门三速度（毫秒/亚秒/人审）+分域异步门</td><td class="v">分域门已入宪法 #45；三档门规格排 W2</td><td class="land part">◐ 律已立，三档规格在册</td></tr>
+<tr><td>4</td><td>SQLite 投影层（源=TSV）</td><td class="v">O7 优化的前置；GT 入库已用投影</td><td class="land yes">✅ 已落地</td></tr>
+<tr><td>5</td><td>零沉没成本五层重审</td><td class="v">UI 层 W7 升 FastAPI 定案（投影面 Vite+Vue3）</td><td class="land yes">✅ 已落地</td></tr>
+<tr><td>6</td><td>产品终极定义：界面=指挥台/核=账本执法/战士=动力总成</td><td class="v">三件各自落成中（界面 26 项在册/账本 13 表在役/战士在役）</td><td class="land part">◐ 定义在执法，三件齐=完</td></tr>
+<tr><td>7</td><td>借体期审计结论</td><td class="v">三残留风险已缓解（借体期收尾）</td><td class="land yes">✅ 已落地</td></tr>
+<tr><td>8</td><td>锚定对话设计（点账本行问 AI）</td><td class="v">MVP git 7a27336 已落成（21 测），挂载在飞</td><td class="land part">◐ MVP 已落，接线中</td></tr>
+<tr><td>9</td><td>智能体编制：缺规划者/观察者/介入对话三件</td><td class="v">排 W5（常驻规划者）/W6（介入对话页）</td><td class="land no">◻ 已排未建</td></tr>
+<tr><td>10</td><td>实时三件：图谱实时/行级重跑/活矩阵</td><td class="v">排 W6 界面超越波</td><td class="land no">◻ 已排未建</td></tr>
+<tr><td>11</td><td>任务生命周期状态机（900 行）</td><td class="v">并入 W6</td><td class="land no">◻ 已排未建</td></tr>
+<tr><td>12</td><td>goals 约束三律</td><td class="v">已生效（W5 已落）</td><td class="land yes">✅ 已落地</td></tr>
+<tr><td>13</td><td>开发节奏 v2（烛龙方法论）</td><td class="v">节奏闸 git d2f63fd 在役；三件持续</td><td class="land yes">✅ 已落地</td></tr>
+<tr><td>14</td><td>威胁建模岗（0.5-1 时/批）</td><td class="v">设计稿待 #15 一并呈</td><td class="land part">◐ 稿已成待呈</td></tr>
+<tr><td>15</td><td>源码审计五接口 <span class="bdg amber">✅待你</span></td><td class="v">source-audit-v1.md 定稿；触发判据=审计合同占比&gt;30% 升一级入口</td><td class="land no">◻ 设计定稿待追认</td></tr>
+<tr><td>16</td><td>演进飞轮三件 <span class="bdg green">三件已落成</span></td><td class="v">评测棘轮+能力曲线 API+避坑卡（git 6844f87/8721d0a）——落地跑在追认前面</td><td class="land yes">✅ 已落地（待追认盖章）</td></tr>
+<tr><td>17</td><td>多用户与资产库（修订 C 已裁）<span class="bdg amber">✅待你</span></td><td class="v">修订 C 用户裁定（git 39625e4）：双签仅留报告签发位+角色两档——W7 行数随减</td><td class="land part">◐ 修订已裁，主体 W7 待启</td></tr>
+</table>
+<p class="src">追认机制：设计稿不追认=不许开工（宪法 #25「不能先做后补票」）；#15-17 三案呈上后用户点头即转正式裁定。</p>
+</div>
+
+<div class="band green"><h2>宪法 55 法速查（docs/USER-CHARTER.md 分区 digest）</h2><p class="bsub">全会话原话逐条回溯而成——本全景集的行文与口径全部按此执法</p></div>
+<div class="law">
+<section class="card cbar">
+<h3>A 产品方向（#1-5）</h3>
+<ul>
+<li><b>#1 90 天之约</b>：拿出 AI 渗透测试的完整可用产品</li>
+<li><b>#2 产品叙事</b>：被管住的 AI 渗透测试，不谈「自主武器」</li>
+<li><b>#3 每步可解释</b>：为什么做/结果如何验证，用户能看懂</li>
+<li><b>#4 产品一句话</b>：AI 战士+人类卫士+账本执法，交付签名级报告</li>
+<li><b>#5 目标用户</b>：渗透测试工程师/安全顾问/企业安全团队</li>
+</ul>
+</section>
+<section class="card cbar blue">
+<h3>B 流程（#6-12）</h3>
+<ul>
+<li><b>#6 施工铁律</b>：测试先行/账本先行/门禁先行</li>
+<li><b>#7 五道门</b>：授权/预算/审计/验证/清理</li>
+<li><b>#8 会话零散存档</b>：仅支持会话末端存档</li>
+<li><b>#9 界面真数据</b>：演示页假数据=违规</li>
+<li><b>#10 五专家审计</b>：阻断级问题不过夜</li>
+<li><b>#11 我提了你就做不行</b>：多专家独立评审制</li>
+<li><b>#12 原话入档</b>：决策原话直接进 RATIFICATIONS</li>
+</ul>
+</section>
+<section class="card cbar">
+<h3>C 沟通（#13-16）与 D 界面（#17-21）</h3>
+<ul>
+<li><b>#13-16</b>：不问两遍（先给方案再要补充）/节奏回复/读文件先记版本时间/时间说清</li>
+<li><b>#17-21</b>（用户四连怒斥界面的产物）：产品=你能按到什么/每个按钮都真实响应/必须能点进去看出错详情/名称必须与真实模块对得上/一个模块多个入口保持一致</li>
+</ul>
+</section>
+<section class="card cbar amber">
+<h3>E 资产（#22-24）· F 悬决（#25-27）· G 追加（#28-39）</h3>
+<ul>
+<li><b>#22-24</b>：设计稿全部入 docs/design/ 版本化/帮手与本体同仓/docs/learning/ 知识沉淀</li>
+<li><b>#25-27</b>：设计不追认不许开工/悬决排进 RATIFICATIONS/不追认但已有共识=悬决处理</li>
+<li><b>#28-39</b>：全景图（融合裁决时点四页）/裁决必须上屏/里程碑交付非中期报告/视觉伴侣（8900=唯一视觉验收面）/证据脱敏/不变式上屏/C2 落档/#36 实时落帐/#37 呈件律/#38 超越律/#39 栈与 C2 落档</li>
+</ul>
+</section>
+<section class="card cbar red">
+<h3>宪法区 #40-52（2026-10-18/19 八+四连颁）</h3>
+<ul>
+<li><b>#40</b> 沟通节奏（批件反馈按批）· <b>#41</b> 界面人话（黑话首现即译）· <b>#42</b> 量纲（禁时间预算，只报行数/测试数/通过率）· <b>#43</b> 误报率/漏报率=生死指标·核心优先· <b>#44</b> 专业异议（用户方向采纳+辩词作废自纠）· <b>#45</b> 分域门（按域分不整体停）· <b>#46</b> 交流落帐· <b>#47</b> 零沉没成本（不是推翻重来是补）· <b>#48</b> 提问带荐</li>
+<li><b>#49</b> 第一性排序（AI 找到漏洞排第一：①找漏洞能力②AI 自动化③验证账本④界面多人）· <b>#50</b> 设计资产保全（旧页零删改）· <b>#51</b> 账先用· <b>#52</b> 对话全话（说人话但不简化）</li>
+<li>另有附录三件（落名制/无码不盖章/新旧账房）与 G 区增补（克制优化/全景图一处/用户临时叫停即停）</li>
+</ul>
+</section>
+</div>
+
+<div class="band amber"><h2>git 关键节点精选（709 提交中的路标）</h2><p class="bsub">哈希可在仓内 git show 回查；此处只列改向级节点</p></div>
+<div class="card">
+<table>
+<tr><th>提交</th><th>日期</th><th>一句话</th></tr>
+<tr><td class="v">（批次 0-6 系列）</td><td>09-21→26</td><td>账本地基铸成：契约→账本命令→门禁→总控→引擎→知识飞轮→验收，737 测</td></tr>
+<tr><td class="v">（12 战系列 battle.py）</td><td>09 月底→10 月</td><td>keying v8 迭代+McNemar/Levene 双臂——效果测量地基</td></tr>
+<tr><td class="v">（观察面四连批）</td><td>10-14→16</td><td>v0.9a→d 九页纪元+8900 伺服+S1-S5 执法升权 1479→1491 测</td></tr>
+<tr><td class="v">c02c72d</td><td>10-17 前</td><td>资源三帽 CPU/进程/内存 fail-closed</td></tr>
+<tr><td class="v">d2f63fd</td><td>10-17</td><td>节奏闸——要砍哪波用户明砍，不许静默压丢</td></tr>
+<tr><td class="v">bf08a1e</td><td>10-18</td><td>追认清单 14 案全按推荐✅</td></tr>
+<tr><td class="v">205c409</td><td>10-18</td><td>界面三页收编：工具执行+LLM 状态+系统配置——63 测</td></tr>
+<tr><td class="v">353d9d9</td><td>10-18</td><td>全景舰七页（本集前身）</td></tr>
+<tr><td class="v">39625e4</td><td>10-19</td><td>#17 修订 C：双签仅留报告位+两档角色（用户裁定，timeline actor 留名）</td></tr>
+<tr><td class="v">1f036de / 64ebf80</td><td>10-19</td><td>GT 评测集加厚：6 战场+三战基线 0.62/0.62/0.70</td></tr>
+<tr><td class="v">944b6b2 → ca8f418 / 7a27336</td><td>10-19</td><td>LLM 录制页+锚定对话 MVP（19+21 测）</td></tr>
+<tr><td class="v">6844f87 / 8721d0a</td><td>10-19</td><td>演进飞轮三件落地：评测棘轮+能力曲线 API+避坑卡</td></tr>
+<tr><td class="v">（本次提交）</td><td>10-19</td><td>全景大合并 v2：九页+旗舰样式+16 档案精华上屏</td></tr>
+</table>
+</div>
+
+<div class="band"><h2>读史三问（本页的用法）</h2><p class="bsub">为什么这段历史可信/下一步看哪/和别的页怎么配合</p></div>
+<div class="card">
+<p class="kv"><b>① 可信度：</b>每条时间线都给出三类交叉证据（裁定档原文/git 哈希/页面现存物）——单一来源的叙事不收；判「落地」只认现存物（文件+测试+路由），不认宣称。</p>
+<p class="kv"><b>② 下一步：</b>时代的分水岭是「第一性排序修正」（#49）——一切后续工作按 ①找漏洞②自动化③验证④界面 排优先级，卡点=首仗判卷（见能力阶梯页五道门）。</p>
+<p class="kv"><b>③ 配合：</b>本页讲「为什么变成现在这样」；<a href="graphled-architecture.html">全景架构</a>讲「现在长什么样」；<a href="graphled-blueprint.html">进度总图</a>讲「建到哪了」——三页连读=完整态势。</p>
+</div>
+
+<p class="meta">
+真源=docs/RATIFICATIONS.md（17 案）+docs/USER-CHARTER.md（55 法）+git log（709 提交关键节点实读）+三代全景图与 HANDOFF 开发流水实读 · 快照时点=2026-10-19 ·
+姊妹页：<a href="index.html">首页</a>（16 档案精华速览）· <a href="graphled-architecture.html">全景架构</a> · <a href="graphled-blueprint.html">进度总图</a>。
+</p>
+</div>
+</body>
+</html>

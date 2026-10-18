@@ -3,107 +3,308 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generated" content="2026-10-18 10:16">
-<meta name="generator" content="panorama 手写页（GraphLed 蓝图全景集入口）">
+<meta name="generated" content="2026-10-19 全景大合并 v2">
+<meta name="generator" content="panorama 手写页（GraphLed 蓝图全景集入口·九页版）">
 <title>GraphLed 蓝图全景 · 首页</title>
 <style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
-.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
-.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
-.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
-.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
-.nav a:hover{border-color:#30363d}
-h1{color:#f0f6fc;font-size:27px;margin:2px 0 6px}.sub{color:#8b949e;font-size:13px}
-h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
-.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
-.hero{background:linear-gradient(135deg,#0d1117 60%,#11251a);border:1px solid #23863666;border-radius:14px;padding:22px 24px;margin-bottom:8px}
-.hero .def{font-size:15.5px;color:#f0f6fc;margin:10px 0 4px}
-.hero .def b{color:#3fb950}
+.wrap{max-width:1280px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:linear-gradient(180deg,#10161f,#0d1117);border:1px solid #30363d;border-radius:12px;padding:9px 13px;margin-bottom:22px;position:sticky;top:0;z-index:5;box-shadow:0 6px 22px rgba(1,4,9,.6)}
+.nav .brand{font-weight:700;margin-right:8px;font-size:14px;background:linear-gradient(90deg,#ffe9b0,#7fd49a 60%,#a5c8ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:2px}
+.nav a{color:#a5c8ff;text-decoration:none;font-size:12.5px;padding:3px 10px;border-radius:8px;border:1px solid transparent}
+.nav a:hover{border-color:#58a6ff66;color:#dbe7ff}
+.nav a.on{background:#0d2246;border-color:#58a6ff;color:#a5c8ff;box-shadow:0 0 12px rgba(88,166,255,.35)}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#0d2246 46%,#0f2e1b 100%);border:1px solid #30363d;border-radius:14px;padding:24px 26px 20px;margin-bottom:8px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#e3b341,#58a6ff,#3fb950,#bc8cff)}
+h1{color:#f0f6fc;font-size:28px;margin:2px 0 6px}
+.sub{color:#8b949e;font-size:13px}
+.hero .def{font-size:15px;color:#e2e8f0;margin:10px 0 4px}
+.hero .def b{color:#7fd49a}
 .mile{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.mile .m{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:8px 14px;font-size:12.5px;color:#c9d1d9}
-.mile .m b{display:block;color:#f0f6fc;font-size:13.5px}
+.mile .m{background:rgba(22,27,34,.85);border:1px solid #30363d;border-radius:10px;padding:8px 14px;font-size:12.5px;color:#c9d1d9}
+.mile .m b{display:block;color:#ffe9b0;font-size:13px}
+.band{margin:36px 0 14px;padding:13px 18px 11px;border-radius:12px;background:linear-gradient(90deg,#12203a 0%,#10161f 55%,#0d1117 100%);border:1px solid #26344b;position:relative}
+.band::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:5px;border-radius:3px;background:linear-gradient(180deg,#58a6ff,#6fc3d0)}
+.band h2{margin:0;font-size:20px;color:#e2e8f0}
+.band .bsub{margin:3px 0 0;font-size:12.5px;color:#6fc3d0}
+.band.amber::before{background:linear-gradient(180deg,#e3b341,#f85149)}
+.band.green::before{background:linear-gradient(180deg,#3fb950,#39c5cf)}
+.band.purple::before{background:linear-gradient(180deg,#bc8cff,#58a6ff)}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px;transition:border-color .15s,box-shadow .15s}
+.card:hover{border-color:#3d4f66;box-shadow:0 8px 24px rgba(1,4,9,.5)}
+.cbar{border-left:4px solid #58a6ff;background:linear-gradient(90deg,#101826,#161b22 70%)}
+.cbar.amber{border-left-color:#e3b341}.cbar.green{border-left-color:#3fb950}.cbar.purple{border-left-color:#bc8cff}.cbar.red{border-left-color:#f85149}.cbar.cyan{border-left-color:#39c5cf}
+.bdg{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:9px;border:1px solid;white-space:nowrap}
+.bdg.amber{background:#3a2c0e;border-color:#e3b341;color:#ffe9b0}
+.bdg.blue{background:#0d2246;border-color:#58a6ff;color:#a5c8ff}
+.bdg.green{background:#0f2e1b;border-color:#3fb950;color:#7fd49a}
+.bdg.purple{background:#241b38;border-color:#bc8cff;color:#d9c2ff}
+.bdg.red{background:#3d1418;border-color:#f85149;color:#ffd7d5}
+.bdg.cyan{background:#0b2b31;border-color:#39c5cf;color:#a8e6ee}
+.bdg.grey{background:#161b22;border-color:#30363d;color:#8b949e}
 .pages{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-@media(max-width:900px){.pages{grid-template-columns:1fr 1fr}}
-@media(max-width:620px){.pages{grid-template-columns:1fr}}
-a.tile{display:block;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s}
-a.tile:hover{border-color:#1f6feb}
-a.tile h3{margin:0 0 4px;font-size:15px;color:#58a6ff}
+@media(max-width:960px){.pages{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.pages{grid-template-columns:1fr}}
+a.tile{display:block;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden}
+a.tile::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#58a6ff,#39c5cf)}
+a.tile.t2::before{background:linear-gradient(90deg,#e3b341,#f85149)}
+a.tile.t3::before{background:linear-gradient(90deg,#3fb950,#39c5cf)}
+a.tile.t4::before{background:linear-gradient(90deg,#bc8cff,#58a6ff)}
+a.tile.t5::before{background:linear-gradient(90deg,#e3b341,#3fb950)}
+a.tile:hover{border-color:#58a6ff;box-shadow:0 0 16px rgba(88,166,255,.25);transform:translateY(-2px)}
+a.tile h3{margin:0 0 4px;font-size:15px;color:#dbe7ff}
 a.tile p{margin:0;font-size:12.5px;color:#8b949e}
 a.tile .st{font-size:11px;margin-left:6px;color:#d29922}
+.archgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.archgrid{grid-template-columns:1fr}}
+.arch h3{margin:0 0 6px;font-size:15px;color:#f0f6fc;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.arch .val{font-size:12px;color:#6fc3d0;margin:2px 0 8px}
+.arch ul{margin:6px 0 0;padding-left:0;list-style:none}
+.arch ul li{font-size:12.5px;color:#c9d1d9;padding:3px 0 3px 16px;position:relative}
+.arch ul li::before{content:"▸";position:absolute;left:1px;color:#e3b341}
+.arch ul li b{color:#ffe9b0}
+.arch .path{font-size:11px;color:#6e7681;margin-top:8px;word-break:break-all}
+.arch .path a{color:#58a6ff}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{color:#8b949e;text-align:left;font-weight:600;background:#161b22;padding:6px 8px;border-bottom:1px solid #30363d}
-td{padding:7px 8px;border-bottom:1px solid #21262d;vertical-align:top}
-td a{color:#58a6ff}
-td.v{color:#8b949e}
+th{color:#a5c8ff;text-align:left;font-weight:600;background:#12203a;padding:7px 10px;border-bottom:1px solid #30363d}
+td{padding:7px 10px;border-bottom:1px solid #21262d;vertical-align:top}
+tr:hover td{background:#10161f}
+td a{color:#58a6ff}td.v{color:#8b949e}
 a{color:#58a6ff}
+.quote{border-left:3px solid #e3b341;background:#171310;border-radius:0 8px 8px 0;padding:6px 12px;color:#cdb896;font-size:12.5px;margin:10px 0}
 .meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
-.quote{border-left:3px solid #30363d;padding:2px 12px;color:#8b949e;font-size:12.5px;margin:8px 0}</style>
+.kv{font-size:13px;margin:4px 0}.kv b{color:#f0f6fc}</style>
 </head>
 <body>
 <div class="wrap">
 <nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="index.html" class="on">首页</a>
 <a href="graphled-blueprint.html">进度总图</a>
 <a href="graphled-architecture.html">全景架构</a>
 <a href="graphled-ui-map.html">界面地图</a>
 <a href="graphled-enemies.html">六产品对齐</a>
 <a href="graphled-roadmap.html">能力阶梯</a>
 <a href="graphled-methodology.html">交战思维</a>
-<a href="index.html" class="on">首页</a></nav>
+<a href="graphled-knowledge.html">知识全景</a>
+<a href="graphled-history.html">演进总析</a></nav>
 
 <div class="hero">
 <h1>GraphLed 蓝图全景</h1>
-<p class="sub">一人红队 AI 自动化平台 · 这套图回答一个问题：<b>建到哪了</b>。数据真源=panorama/blueprint.json + 仓内文件实勘，零虚构（更新时间 2026-10-18 10:16，快照 git f844987）。</p>
+<p class="sub">一人红队 AI 自动化平台 · 这套图回答一个问题：<b>建到哪了</b>。九页纯手写 HTML/CSS（零 CDN 零框架零图片），数据真源=panorama/blueprint.json + 仓内文件实勘，零虚构（更新时间 2026-10-19，全景大合并 v2）。</p>
 <p class="def">产品一句话（用户已定稿，USER-CHARTER 第 4 条）：<b>ARTEX 的用法 + 银行级不可篡改记录 + 每个漏洞必须实证 + 越打越强有数学证明。</b></p>
 <div class="mile">
-<div class="m"><b>当前里程碑</b>总装挂载在飞——14 页界面建成件往生产口接电</div>
+<div class="m"><b>当前里程碑</b>总装通电——界面 26 项 19 可点（blueprint.json 实读）；评测棘轮已落成（git 8721d0a）</div>
 <div class="m"><b>首仗前置</b>复活靶场 + 点亮真模型生产道（channels.json 已备）</div>
 <div class="m"><b>家底</b>全仓 2,537 个测试函数（238 个测试文件实数）· CI 八作业 · coverage 89%</div>
+<div class="m"><b>本集誓言</b>旧全景 16 档案的精华已全部摘录上屏——不看旧页，这一套也够</div>
 </div>
 </div>
 
-<h2>七页导航（互相链接，看进度从这进）</h2>
+<div class="band"><h2>九页导航（互相链接，看进度从这进）</h2><p class="bsub">七页旧集 + 新增「知识全景」「演进总析」两页 = 九页；样式按 tanyin-architecture-v3 旗舰视觉语言重做（暗底富色彩·分节大标题带·彩色徽章·高密度）</p></div>
 <div class="pages">
-<a class="tile" href="graphled-blueprint.html"><h3>📊 进度总图</h3><p>核心页：四支柱逐项状态+23 项界面芯片+里程碑。数据从 blueprint.json 生成。</p><span class="st">python3 panorama/gen_blueprint.py 再生成</span></a>
-<a class="tile" href="graphled-architecture.html"><h3>🏗️ 全景架构</h3><p>六大件数据流向（账本/守卫/战士/工具引擎/评测飞轮/界面），每件行数+测试数+状态。</p></a>
-<a class="tile" href="graphled-ui-map.html"><h3>🖥️ 界面地图</h3><p>23 项界面逐页对账：状态色+一句话能力+对应路由，头部计数条。</p></a>
-<a class="tile" href="graphled-enemies.html"><h3>🆚 六产品对齐</h3><p>ARTEX/CSAI/ZhuLong/multica/VulnClaw/cyber-harness 六家 306 件判词+即刻吸收三件。</p></a>
-<a class="tile" href="graphled-roadmap.html"><h3>🪜 能力阶梯</h3><p>五道阶段门（无时间预算，宪法 #42）：首仗判卷→评测棘轮→挂载收口→W7→远期。</p></a>
-<a class="tile" href="graphled-methodology.html"><h3>🧭 交战思维</h3><p>一仗怎么打：八问授权→意图链→战士执行→机械重放→复测→报告签发，每步标注执法件。</p></a>
+<a class="tile" href="graphled-blueprint.html"><h3>📊 进度总图</h3><p>核心页：四支柱逐项状态+界面芯片+里程碑。数据从 blueprint.json 生成（gen_blueprint.py）。</p><span class="st">python3 panorama/gen_blueprint.py 再生成</span></a>
+<a class="tile t2" href="graphled-architecture.html"><h3>🏗️ 全景架构</h3><p>思想脉络→现状：tanyin 架构 v1→v2→v3 三代演进史 + 当前六大件数据流向，一页贯通。</p></a>
+<a class="tile t3" href="graphled-ui-map.html"><h3>🖥️ 界面地图</h3><p>23 项界面逐页对账 + 探隐 vs ARTEX 五工位同构对照、图法对比、三条后果链精华。</p></a>
+<a class="tile t4" href="graphled-enemies.html"><h3>🆚 六产品对齐</h3><p>ARTEX/CSAI/ZhuLong/multica/VulnClaw/cyber-harness 306 件判词 + ARTEX 实勘七大发现精华。</p></a>
+<a class="tile t5" href="graphled-roadmap.html"><h3>🪜 能力阶梯</h3><p>双梯合一：人的 L0-L5 成长阶梯（旧 roadmap 全量吸收）+ 系统五道阶段门（无时间预算）。</p></a>
+<a class="tile t2" href="graphled-methodology.html"><h3>🧭 交战思维</h3><p>原典全吸收：八步生命周期/四框架/facts 渐进/思维转换 + 系统执法版六步流程同页对照。</p></a>
+<a class="tile" href="graphled-knowledge.html"><h3>📚 知识全景</h3><p>技术栈六层地图 + 工具链五组矩阵 + AI 渗透六赛道/13 项目/十大模式——三页知识精华合一。</p><span class="st">新增第八页</span></a>
+<a class="tile t4" href="graphled-history.html"><h3>🕰️ 演进总析</h3><p>TanYin 时代→GraphLed 重大决策时间线：17 案裁定+宪法 52 法+git 关键节点，逐条对落地。</p><span class="st">新增第九页</span></a>
+<a class="tile t3" href="graphled-blueprint.html"><h3>🔢 数据真源</h3><p>blueprint.json——舰队落地即更新该文件，python3 panorama/gen_blueprint.py 一键重生成总图。</p></a>
 </div>
 
-<h2>历史档案专区（宪法 #50 设计资产保全律：旧页零删改，一等资产可追溯）</h2>
-<div class="card">
-<table>
-<tr><th>档案</th><th>一句话价值</th></tr>
-<tr><td><a href="tanyin-architecture.html">tanyin-architecture.html</a></td><td class="v">架构思想第一版——全景图长卷的起点</td></tr>
-<tr><td><a href="tanyin-architecture-v2.html">tanyin-architecture-v2.html</a></td><td class="v">架构 v2——「从哲学到 13 本账」的运行长卷定型</td></tr>
-<tr><td><a href="tanyin-architecture-v3.html">tanyin-architecture-v3.html</a></td><td class="v">架构思想源头——v3 带「建造实况带」与「对账带」（用户原话「这种还不错」即指此版）</td></tr>
-<tr><td><a href="tanyin-architecture_副本.html">tanyin-architecture_副本.html</a></td><td class="v">v3 手工副本（工作快照，未入册）</td></tr>
-<tr><td><a href="tanyin-atlas.html">tanyin-atlas.html</a></td><td class="v">架构图集 × 定位体检——早期自我盘点</td></tr>
-<tr><td><a href="tanyin-vs-artex.html">tanyin-vs-artex.html</a></td><td class="v">首次与 ARTEX 对表——后来 A 档全件对齐的前身</td></tr>
-<tr><td><a href="design.html">design.html</a></td><td class="v">设计全景导航——四支柱/五层架构/12 表账本的设计谱系入口</td></tr>
-<tr><td><a href="methodology.html">methodology.html</a></td><td class="v">交战思维原典——面向人手的八步流程与四框架对照</td></tr>
-<tr><td><a href="roadmap.html">roadmap.html</a></td><td class="v">成长路线原典——L0-L5 能力阶梯（无时间约束）</td></tr>
-<tr><td><a href="techstack.html">techstack.html</a></td><td class="v">技术栈全景——六层知识地图 61 个知识点</td></tr>
-<tr><td><a href="toolchain.html">toolchain.html</a></td><td class="v">工具链全景——五组工具矩阵与场景战术矩阵</td></tr>
-<tr><td><a href="ai-pentest.html">ai-pentest.html</a></td><td class="v">AI 渗透全景——六赛道地图与 13 个代表项目档案</td></tr>
-<tr><td><a href="artex-analysis.html">artex-analysis.html</a></td><td class="v">ARTEX 实勘图集（配 artex-one-look.svg）——对手解剖第一档</td></tr>
-<tr><td><a href="graphled-console-prototype.html">graphled-console-prototype.html</a></td><td class="v">控制台最终态原型 v2（满数据版）——W6 五页真身的原型母本</td></tr>
-<tr><td><a href="notes/">notes/</a></td><td class="v">全景笔记区——绘图过程中的草稿与批注</td></tr>
-<tr><td><a href="blueprint.json">blueprint.json</a></td><td class="v">进度数据真源——舰队落地即更新，重生成总图用它</td></tr>
-</table>
-<p class="quote">演进关系：新七页（graphled-*，2026-10-18 全新建）演进自上列旧档，分工=旧图讲「怎么想清楚」（设计谱系），新图讲「建到哪了」（进度实况）。新旧冲突处一律在新图侧注「演进自 vX+差异点」（见 <a href="graphled-architecture.html">全景架构</a> 页演进侧注），旧页一字不动。</p>
+<div class="band amber"><h2>旧全景精华速览（宪法 #50：旧页零删改；精华已上屏，不必再翻旧页）</h2><p class="bsub">16 份旧档案各自最核心的内容直接摘录如下——用户裁定「今后只看新集」，所以这里放的是实质内容不是链接堆；原文件一字不动留档可溯</p></div>
+<div class="archgrid">
+
+<section class="card cbar arch">
+<h3>tanyin-architecture <span class="bdg amber">v1 工程原图</span><span class="bdg grey">112KB · 2026-09-22</span></h3>
+<p class="val">架构思想第一版——把「被管住的 AI 渗透平台」画成可点查的工程长卷，表名/字段/命令全细节</p>
+<ul>
+<li><b>作战循环八器官</b>（轮辐图）：盘点战况→翻老笔记(kb-match 召回先例)→立意图(add-intent)→过门执行(guard-exec 五关)→先落原始(put-raw)→验收提取(claim-submissions)→暂存打法(stage-play)→查闭合(check-matrix)→next-round 再转；<b>收敛=图属性</b>，该测的全部有归属才许停机</li>
+<li><b>账本表族三问法</b>：每张表说清「记什么/谁写/谁读」——goals 档案袋（字段缺一拒收）、scope 机器可判边界、facts 未消费事实=下轮信号、findings 两维评级必附证据指针、E-index 双指纹+复现命令、timeline 链式哈希可全量重建</li>
+<li><b>guard 五关</b>：黑名单→范围→留票→参数化→脱敏；界外/拼接/危险全拒，<b>拒绝本身留痕</b></li>
+<li><b>四层执法</b>：账本级（写前拒）→命令边界（参数化禁拼接，目标数据=注入载体）→宿主拦截（fail-closed）→出网代理（白名单+域名锁定+诱饵巡检）</li>
+<li><b>知识飞轮</b>：脱敏→暂存→机器检查+用户审批→四门槛（可复现/有证据/已脱敏/已评审）→正式库；开局指纹匹配召回，先例直接派生意图</li>
+</ul>
+<p class="path">留档：<a href="tanyin-architecture.html">tanyin-architecture.html</a>（工程模式原图字节保留于 v3 页内）</p>
+</section>
+
+<section class="card cbar arch">
+<h3>tanyin-architecture-v2 <span class="bdg blue">运行长卷定型</span><span class="bdg grey">772KB · 2026-09-23</span></h3>
+<p class="val">「从哲学到 13 本账」——按 SPEC 单生成器从零重画的汇报模式长卷，v3 与新九页的直系祖先</p>
+<ul>
+<li><b>⓿ 设计哲学六不变式</b>：推理=图上走（图谱=灵魂）/账本=唯一事实/追加不删/验收通过才可写入/纵深不信任/人握方向盘——每条「不靠自觉，靠结构」</li>
+<li><b>⓿.5 三个 AI 与手铐</b>：总控 AI（读全部账本·生成计划·验收落账；不能绕门禁直写）/子代理 AI（领活执行·无直写权·见不到凭据真值）/引擎三件（判定+生成+测绘，产出进交作业区待验收）；角色徽章金=人·蓝=总控·紫=子代理·绿=系统（新九页彩色徽章体系即源于此）</li>
+<li><b>④ 作战循环心脏</b>：八个器官像流水线转圈，转一圈=一轮，转到收敛才停；submissions/ 交作业区（子代理唯一产出通道）+evidence/ 外置证据库（双指纹防调包）</li>
+<li><b>⑨⑩ 13 本账与生命周期</b>：11 本 TSV+knowledge/ 知识库+submissions/；盘上比 v2 汇报面还多出 edges.tsv（10 边型）与 budget.tsv 预算树两本</li>
+<li><b>⑪ 引擎层三专业引擎</b>：vuln_agent（代码级判定+14 误报哨兵）/GenCPT（49 模式 13 档·必过对抗验证）/web-blackbox（攻击面测绘+权限差分）</li>
+</ul>
+<p class="path">留档：<a href="tanyin-architecture-v2.html">tanyin-architecture-v2.html</a></p>
+</section>
+
+<section class="card cbar green arch">
+<h3>tanyin-architecture-v3 <span class="bdg green">思想源头旗舰</span><span class="bdg grey">796KB · 2026-10-16</span></h3>
+<p class="val">v2 全量保留＋建造实况——用户原话「这种还不错」即指此版；本九页的视觉语言与内容血脉均演进自它</p>
+<ul>
+<li><b>⑫ 建造实况带</b>（10-14→10-16 工地日记）：观察面九页 v0.9a→d（九门灯·SSE 活动流·热图十边图证据卡·度量页，8900 已伺服）；执法升权五件 S1-S5（信任根摘出/防时间旅行/知识签名门/出网代理强制/重放四门）；六专家评审零否决·方向修正案三票制</li>
+<li><b>⑬ 对账带（诚实呈现差距）</b>：④作战循环「常驻」形态未建（战内版已实证：b24 断网三度点火零账损、b27 82 分钟无人看护 0.70）→排 v1.0b；⑪引擎三件实战挂载待接；⑨13 本账 13/13 已在盘</li>
+<li><b>一句话总账</b>：宫殿（v2）=设计全量在册；工地=执法面+观察面+账本纪律已到 1479/1491 测；差距三处全部排入门票序列——在册不蒸发、不装完成</li>
+</ul>
+<p class="path">留档：<a href="tanyin-architecture-v3.html">tanyin-architecture-v3.html</a>（含 v1 工程模式原图切换）</p>
+</section>
+
+<section class="card cbar arch">
+<h3>tanyin-architecture_副本 <span class="bdg grey">工作快照</span></h3>
+<p class="val">v1 的手工副本（与 v1 逐字节相同，cmp 实测 112,311 字节一致）——工作现场留档，内容同 v1 不重复摘录</p>
+<p class="path">留档：<a href="tanyin-architecture_副本.html">tanyin-architecture_副本.html</a>（未入 git 史，本次随全景集一并保存）</p>
+</section>
+
+<section class="card cbar cyan arch">
+<h3>tanyin-atlas <span class="bdg cyan">定位体检</span><span class="bdg grey">26KB · 2026-10-14</span></h3>
+<p class="val">架构图集×「是不是四不像」自我盘点——三层职责一句话说得清的判据至今在用</p>
+<ul>
+<li><b>分层体检</b>：①AI 战士层=拳头（可换：opencode 12 战实证躯壳）②账本判据层=脊柱（不可换：13 TSV+哈希链+九门）③Python 保活层=保姆（零依赖 runner 看门狗：stall 检测/重启/快照/预算执法）＋分发圈（真授权/靶场同一战士同一账本）＋度量圈（56-GT 召回×McNemar×12 战）</li>
+<li><b>四不像判据</b>：能一句话说清职责+接口契约的层=干净；claude-code 第三躯壳先砍后补；DSH=驾驶舱不是产品部件——「四个名字都在对话里出现，但产品里只有 1+2+3」</li>
+<li><b>完成判定铁律</b>：过门只能靠 gate 命令；完成判定只认 phases status 只读 API 的 PASS（rc=0 不算，嘴说无效）</li>
+<li><b>13 账三组纪律</b>：战前四表（圈地）/作战四表（每行要么有下文要么有显式死法）/判据三表+证据+预算（给门和评分器看，不是给 LLM 看）</li>
+<li><b>十种边图法</b>：血缘 4（spawns/yields/derived_from/proves）+资产授权 3（parent/attack/scope-rel）+证据判决 2（evidences 无 VERIFIED 不计分/supersedes 幂等拒收）+cross_ref；方向由 _EDGE_DIR 强制，错向=Reject</li>
+</ul>
+<p class="path">留档：<a href="tanyin-atlas.html">tanyin-atlas.html</a></p>
+</section>
+
+<section class="card cbar red arch">
+<h3>tanyin-vs-artex <span class="bdg red">首次对表</span><span class="bdg grey">24KB · 2026-10-14</span></h3>
+<p class="val">与 ARTEX 正面对比的决策件——五工位对照+三条后果链，是后来 A 档全件对齐的思想前身（精华已并入「界面地图」页）</p>
+<ul>
+<li><b>五工位同构对照</b>：规划（planner 拆链 vs AI 战士自主+b10 改向）/执行（worker×N 并发 vs 单战士+子代理）/记录（双图落可变 Postgres 给 LLM 看 vs 13 账十边给门看）/验证（无独立重放·agent 自己写发现 vs P4 机械重放三态）/交付（UI 报告无 GT vs settle×56-GT McNemar）——它强在工位①②，我们强在③④⑤，交付信誉恰在后三件</li>
+<li><b>三条后果链</b>：幻觉链（agent 写发现→无二方复验→假发现进客户报告→信誉一次性破产）/篡改链（单点可变 Postgres，改库=改史）/测量链（从未测召回→换工具=盲换）——竞赛场景都不罚，交付场景都致命</li>
+<li><b>决策树与终局</b>：产出要「签名」吗？否=直接用合理；是=必须自建（精度门/哈希链/九门/测量=签名能力本体）；终局合体=广度归 ARTEX（外挂只读产假设），签名归探隐（intents 层裁决+P4 重放+哈希链落账）</li>
+<li><b>AGPL 边界</b>：不改直接用没事；深度定制接进流程再经网络提供服务=须开源整个修改版——借思想零风险，借代码交出主权</li>
+</ul>
+<p class="path">留档：<a href="tanyin-vs-artex.html">tanyin-vs-artex.html</a> · 全文对照见 <a href="graphled-ui-map.html">界面地图</a> 页</p>
+</section>
+
+<section class="card cbar purple arch">
+<h3>design <span class="bdg purple">设计谱系入口</span><span class="bdg grey">38KB · 2026-09-21 起</span></h3>
+<p class="val">设计全景导航——探隐 v2 定稿（701 行）的图谱化入口：四支柱/ADR/12 机制卡/批次 0-7</p>
+<ul>
+<li><b>v2 一句话定稿</b>：图谱账本（13 表 TSV）+九个 Phase 门+四层执法+凭据治理+身份矩阵差分=自研渗透 skill 的完整设计；形态=skill 主体（认知决策）+薄 CLI 工具箱（确定性与执法，python3 标准库）+档位化 hook/egress（进程级防线）</li>
+<li><b>ADR-P1~P4 用户拍板</b>：融合出 v2/五宿主一起进首批（DSH·opencode·codex·walcode·CodeBuddy）/skill 主体+薄 CLI+档位化执法（推翻纯零代码 D 决议，「LLM 只调用不实现」「凡未给出命令的步骤不得执行」两条真纪律保留）/其余七点按融合建议</li>
+<li><b>12 机制卡精华</b>：{{vault:cred-N}} 四关卡（执行前回注→落盘前掩码→上下文前 tokenize→交付前终检）/POC 四要素+独立重放门（REJECTED 降 C3 或转 fact）/三层验收（黄金夹具→交战 evals→TSecBench 对齐）/探索迭代「开局不定死」五条生长通路/身份矩阵差分（全行业空白，单人收益密度最高）</li>
+<li><b>设计演进链四步</b>：TanYin v1 原稿（REQUIREMENTS.md 最高权威）→导入消化（两份 JSON）→融合裁决（401 行，十大裁决）→v2 定稿（701 行，唯一权威）</li>
+<li><b>调研底账改写四个决策</b>：Threatswarm 实洞（D3 竟是真人演的）→ADR-P3 拒绝纯 prompt；Strix 底座实测→证伪「套现成框架」；TSecBench 六域→验收第三层；Cairn 44.6% 多阶段成功率→「状态复杂度是解药」</li>
+</ul>
+<p class="path">留档：<a href="design.html">design.html</a> · 深读走 docs/design/html/ 设计文档站</p>
+</section>
+
+<section class="card cbar amber arch">
+<h3>methodology <span class="bdg amber">交战思维原典</span><span class="bdg grey">16KB · 2026-09-21</span></h3>
+<p class="val">面向人手的渗透方法论原典——方法论源头，全部精华已逐条吸收进「交战思维」页，一字不丢</p>
+<ul>
+<li><b>八步生命周期</b>：授权与范围（没写进范围的等于没测）→侦察（小步快跑，不上来全端口轰炸）→攻击面分析→打点（凭据是事实不是终点）→提权（先摸清杀软/EDR）→横向（域判断先于一切）→收尾（清理同样受 RoE 约束）→报告（结论先行+交叉三查：概述数字=矩阵合计=明细条数）</li>
+<li><b>四框架口诀</b>：项目管流程用 PTES，Web 覆盖度用 WSTG，内网阶段用 ATT&CK 自查，报告叙事用 Kill Chain——四者不互斥，完整交付里都会出现</li>
+<li><b>facts 渐进决策模型</b>：黑盒卡住的实质=事实缺口；缺口→动作→新事实，直到利用路径前置条件闭合；「说不清下一步由哪条缺口驱动的动作不做」</li>
+<li><b>审计员→渗透者转换</b>：代码即真相→响应即真相+证据链；完备性从覆盖所有调用点→「路径打通」；边界单位从函数/数据流→资产/信任边界；时间模型从不受限→授权窗口硬约束</li>
+<li><b>验证口径</b>：任取一条结论在 Repeater 重放应得一致响应；做不到的降级「疑似」不得写报告；三个断链陷阱（只看页面渲染/DevTools 改参数绕过代理/截图只截结果不截请求）</li>
+</ul>
+<p class="path">留档：<a href="methodology.html">methodology.html</a> · 系统执法版对照见 <a href="graphled-methodology.html">交战思维</a> 页</p>
+</section>
+
+<section class="card cbar green arch">
+<h3>roadmap <span class="bdg green">成长路线原典</span><span class="bdg grey">27KB · 2026-09-21</span></h3>
+<p class="val">L0-L5 能力阶梯（里程碑制不设时间表）——全部内容已吸收进「能力阶梯」页</p>
+<ul>
+<li><b>六级主线</b>：L0 空机 30 分钟重建测试环境→L1 只看 advisory 复现单 CVE+POC 卡片→L2 vulhub 五类抽签打穿→L3 HTB easy 3 小时双 flag→L4 授权项目辅助位零返工→L5 一人红队独立交付（GOAD 内网落地+复测闭环）</li>
+<li><b>每级四件套</b>：能力清单/验收标准（能独立做到什么）/推荐靶场与材料/自测清单；升级唯一标准=验收+自测全过——练多久不算数，做到才算数</li>
+<li><b>靶场全景表 12 平台</b>：vulhub（L1-L2 主战场）/PortSwigger（内功）/HTB（L3 验收主场）/GOAD（5VM 两林三域六模块 A-F 递进）/THM Wreath/upload-labs/sqli-labs/DVWA·bWAPP/Juice Shop/InsecureBankv2/malware-traffic-analysis/攻防世界+自建靶标</li>
+<li><b>AI 辅助维度</b>：每级自测含「AI:」项——payload 分段先自己写再让 AI 评卷；AI 拿的 flag 记 0 分；类迁移推理（L2 灵魂）不外包；L5 人机分工三高 ROI 区=recon 测绘/身份矩阵差分/报告聚合</li>
+<li><b>自测通过率模板</b>：通过率=已通过项÷该级总数；只按「能独立做到」计数，看 writeup 照抄不算</li>
+</ul>
+<p class="path">留档：<a href="roadmap.html">roadmap.html</a> · 与系统五道门合并见 <a href="graphled-roadmap.html">能力阶梯</a> 页</p>
+</section>
+
+<section class="card cbar arch">
+<h3>techstack <span class="bdg blue">技术栈全景</span><span class="bdg grey">34KB · 2026-09-21</span></h3>
+<p class="val">六层知识地图 61 个知识点——精华已吸收进「知识全景」页</p>
+<ul>
+<li><b>六层=一条攻击链的上下游</b>：①外部侦察层（资产→端口→入口→指纹→CVE→验证）②Web 应用层（进得去/进得深/拿得稳）③内网与域层（立足→隧道→凭据→提权→横向→域控）④源码联动层（审计员降维打法）⑤客户端层（EXE/APK/协议）⑥交付层（报告/POC 卡/CVSS/等保）</li>
+<li><b>优先级三级标记</b>：核心=必学地基/重点=拉开差距/进阶=按需深入；<b>掌握标准=可验收动作</b>——做到了才算学会</li>
+<li><b>掌握标准样例</b>：①对任一授权目标完整跑「子域→nmap→httpx→ffuf→JS 提取」产出入口点清单；③GOAD 结业能独立画出完整路径图并逐节点标注事件 ID；⑥一洞一卡，同事盲测 10-15 分钟复现成功且定级一致</li>
+<li><b>内容提炼自 VOL-01~VOL-08 手册十二卷</b>，与工具链/思路逻辑页互为犄角</li>
+</ul>
+<p class="path">留档：<a href="techstack.html">techstack.html</a> · 全量分层见 <a href="graphled-knowledge.html">知识全景</a> 页</p>
+</section>
+
+<section class="card cbar cyan arch">
+<h3>toolchain <span class="bdg cyan">工具链全景</span><span class="bdg grey">27KB · 2026-09-21</span></h3>
+<p class="val">五组工具矩阵+战术组合——精华已吸收进「知识全景」页</p>
+<ul>
+<li><b>五组矩阵</b>：侦察组（nmap/httpx/ffuf/OneForAll+subfinder）/Web 代理组（Burp Suite/mitmproxy）/验证利用组（sqlmap/nuclei/fscan·vulmap）/后渗透组（Metasploit/CobaltStrike 概念与合规边界/frp）/辅助组（CyberChef/代码环境/笔记截图规范）——每工具四问：做什么/一句话原理/核心命令/陷阱</li>
+<li><b>战术矩阵七链路</b>：外网资产测绘→Web 打点→已知漏洞批量验证→App/客户端攻击面→内网首探→横向与跳板→证据整理（每链=场景→工具链→输出物）</li>
+<li><b>三决策要点</b>：噪音控制（fscan 快全吵，-nobr 起步防锁域账号）/速率与时间窗（-T2~T3 写进 RoE，慢即是稳）/授权边界（C2 与 frp 的 VPS IP 必须列入授权附录）</li>
+<li><b>心法</b>：每条链路的最后一站永远是「证据落盘」；先手工确认，再自动化放大；定制字典＞通用字典</li>
+</ul>
+<p class="path">留档：<a href="toolchain.html">toolchain.html</a> · 矩阵精选见 <a href="graphled-knowledge.html">知识全景</a> 页</p>
+</section>
+
+<section class="card cbar purple arch">
+<h3>ai-pentest <span class="bdg purple">AI 渗透全景</span><span class="bdg grey">47KB · 2026-09-21</span></h3>
+<p class="val">六赛道地图+13 项目档案+十大架构模式——精华已吸收进「知识全景」页</p>
+<ul>
+<li><b>调研三结论</b>：①没有可直接采用的完整体（13 个深度对象仅 nuclei 拿到 adopt-as-dependency，其余 12 个 copy-pattern）；②赛道空白恰是机会（交战状态契约/程序化 scope 执法/凭据占位符治理/认证后身份矩阵/中文合规报告全行业缺位）；③供应链红线（ARL/水泽/ENScan_GO 原仓库已删只剩镜像；nuclei-templates 必须钉 commit+验签）</li>
+<li><b>六大赛道</b>：AI 渗透 agent（三代演进）/coding-agent skill 生态（与目标形态同源）/非 AI 自动化引擎（编排与状态十年前就做对）/对抗模拟（计划-执行-事实状态机）/商业 SOTA 与评测（XBOW 登顶 HackerOne）/漏洞数据格式（SARIF 等，红队语义真空）——正确组装=<b>用非 AI 赛道的骨架，跑 AI 的大脑</b></li>
+<li><b>十大架构模式 P1-P10</b>：交战目录即状态契约/资产事实中间层/确定性门禁在循环外/验证后才算发现（证据收据制）/POC 即数据/报告确定性重建/工件即缓存幂等续跑/预算限流树/覆盖负空间台账（展望）/凭据占位符网关（展望）——入选标准=趋同演化（互不相关项目独立出现 ≥3 次）</li>
+<li><b>协作位</b>：AI=知识渊博、反应极快、但会自信编造且不能替你担责的远程同事；AI 消灭的是杂活（chores）不是能力（competence）；判据一句话——「把这件事交给 AI 三个月，你的验收标准还能过吗」</li>
+<li><b>四防陷阱</b>：幻觉战果/越界风险/凭据泄漏/供应链投毒——每类都有实测样本与架构级反制</li>
+</ul>
+<p class="path">留档：<a href="ai-pentest.html">ai-pentest.html</a> · 精选见 <a href="graphled-knowledge.html">知识全景</a> 页</p>
+</section>
+
+<section class="card cbar red arch">
+<h3>artex-analysis <span class="bdg red">ARTEX 实勘图集</span><span class="bdg grey">35KB+SVG · 2026-10-11</span></h3>
+<p class="val">810 文件树+源码抽读的对手解剖第一档——精华已吸收进「六产品对齐」页</p>
+<ul>
+<li><b>总体分层（四层堆叠）</b>：前端 Next.js（go:embed 内嵌 :8787）/server（Go net/http+JWT+SSE+Manager）/engine 每任务（plannerLoop×1 唯一意图源+worker goroutine×N）/PostgreSQL 双图落库；支撑子系统 15 件（MITM :8788/审批守卫/llmpool/llmrec/通知/selfupdate 3 连败回滚/skills/mcphttp…）</li>
+<li><b>双图架构（核心创新Ⅰ）</b>：探索图=过程链（goal→intent→fact→finding，血缘边 spawns/yields/derived_from/proves）⇋锚点桥表⇋资产图=真值库；父子关系与去重 key 全由程序计算——不信 LLM 画图</li>
+<li><b>事件驱动闭环（核心创新Ⅱ）</b>：图变更 debounce→planner 全新无状态唤醒（graph_overview 预取）→frontier 意图队列派 0..N→worker claimNext 领一条→真实工具执行（全程 MITM 留痕）→写回→再唤醒直到 prove_goal；killWork/steerWork 可杀可改向</li>
+<li><b>三大自主机制（核心创新Ⅲ）</b>：worker 过程级信息交换（黑板：search_all_worker_traces 检索战友过程）/planner 共享 todolist 分轮派发（事件驱动下多步利用链不乱序的关键=攻击链稳定器）/人在环路三面（mainagent 对话+审批卡/retester 复测三态自动同步/sidequestion 侧问预算）</li>
+<li><b>12 维矩阵判词</b>：ARTEX 优在多 agent 并发/资产建模/UI 可视化/工程成熟度；探隐代差在证据纪律/防篡改审计/效果测量——双方从未同台测量，正是靶场对标实验要补的空白</li>
+</ul>
+<p class="path">留档：<a href="artex-analysis.html">artex-analysis.html</a>（配 <a href="artex-one-look.svg">artex-one-look.svg</a> 一览图）· 并入 <a href="graphled-enemies.html">六产品对齐</a> 页</p>
+</section>
+
+<section class="card cbar green arch">
+<h3>graphled-console-prototype <span class="bdg green">原型母本</span><span class="bdg grey">58KB · 2026-10-17</span></h3>
+<p class="val">控制台最终态原型 v2（满数据版）——W6 五页真身的原型母本</p>
+<ul>
+<li><b>battle-42 满数据演示</b>：ZhuLong 靶场、预算 ¥6.80/20.00 实时烧速、链完整性 ● PASS、操作员 wgen、急停按钮常驻——「GraphLed 账本为骨·图谱为形」的原型宣言</li>
+<li><b>五页形态在此定型</b>：总览/实时动态/攻击链路（演变回放=帧号即记录行号）/发现（三态+CVSS+证据抽屉）/审批（三钮+四层拦截表）——5849718 按此原型皮肤（console.css 12 级灰阶+单强调）落成六页真身</li>
+<li><b>23 页菜单+Ctrl+K 命令面板</b>的导航形态亦源于此原型</li>
+</ul>
+<p class="path">留档：<a href="graphled-console-prototype.html">graphled-console-prototype.html</a></p>
+</section>
+
+<section class="card cbar arch">
+<h3>notes/ 与 blueprint.json <span class="bdg grey">档案底账</span></h3>
+<p class="val">全景笔记区（绘图过程草稿与批注）+ 进度数据真源（舰队落地即更新，重生成总图用它）</p>
+<ul>
+<li><b>notes/</b>：全景绘图过程中的草稿与批注（如 tanyin-section-draft.md 分节草稿）——思想形成过程的现场留档</li>
+<li><b>blueprint.json</b>：四支柱+25 项界面状态+里程碑的唯一机器可读真源；「工作空间」「系统配置」等页文件已在仓但状态仍记 ✈️——<b>状态以 blueprint.json 为准</b>，舰队落地会更新该文件</li>
+</ul>
+<p class="path">留档：<a href="notes/">notes/</a> · <a href="blueprint.json">blueprint.json</a></p>
+</section>
 </div>
 
-<h2>配套手册</h2>
-<div class="card">
-<p class="sub" style="margin:0">人的成长看 <a href="../docs/learning/html/index.html">十二卷深度手册</a>（docs/learning/），系统的进度看本七页——图是地图，册是教材。</p>
+<div class="band"><h2>演进关系与配套手册</h2><p class="bsub">新旧分工：旧图讲「怎么想清楚」（设计谱系），新图讲「建到哪了」（进度实况）——精华已合并上屏，旧页零删改</p></div>
+<div class="card cbar">
+<p class="kv"><b>演进链：</b>methodology/techstack/toolchain/ai-pentest/roadmap（知识五页，2026-09-21）→ tanyin-architecture v1→v2→v3（架构三代，09-22→10-16）→ atlas/vs-artex/artex-analysis（体检与对表三页，10-11→14）→ GraphLed 九页（本集，10-18 起）。新旧冲突处一律在新图侧注「演进自 vX+差异点」，旧页一字不动（宪法 #50）。</p>
+<p class="kv"><b>样式血缘：</b>本集视觉语言提炼自 tanyin-architecture-v3 旗舰（暗底 #0d1117+富色彩徽章：金=人/蓝=结构/绿=系统/紫=设计/红=执法；8-12px 圆角卡；分节大标题带；高信息密度）并吸收 design.html 的渐变头部与悬浮卡片——用户裁定「新页太灰太寡」，故全集体换装（2026-10-19 全景大合并 v2）。</p>
+<p class="kv"><b>配套：</b>人的成长看 <a href="../docs/learning/html/index.html">十二卷深度手册</a>（docs/learning/），系统的进度看本九页——图是地图，册是教材；重大决策的「何时/裁了什么/为什么/落没落地」看 <a href="graphled-history.html">演进总析</a> 页。</p>
 </div>
 
 <p class="meta">
-GraphLed 蓝图全景集 · 七页纯 HTML/CSS（零 CDN 零框架零图片）· 暗色 #0d1117 ·
-进度总图由 panorama/gen_blueprint.py 从 blueprint.json 生成，其余六页手写、数字带出处 ·
-更新时间 2026-10-18 10:16 · 快照 git f844987 ·
+GraphLed 蓝图全景集 · 九页纯 HTML/CSS（零 CDN 零框架零图片）· 暗色 #0d1117 · 旗舰样式血缘=tanyin-architecture-v3 ·
+进度总图由 panorama/gen_blueprint.py 从 blueprint.json 生成，其余八页手写、数字带出处 ·
+更新 2026-10-19（全景大合并 v2：旧 16 档案精华上屏+样式换装+新增知识全景/演进总析两页）·
 本仓测试禁占口 8900/3000/8787/8443，蓝图页静态自检用随机口。
 </p>
 </div>

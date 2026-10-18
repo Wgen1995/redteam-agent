@@ -3,91 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generated" content="2026-10-18 10:16">
-<meta name="generator" content="panorama 手写页（数字=仓内文件实勘,快照 git f844987）">
-<title>全景架构 · GraphLed 蓝图</title>
-<style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
-.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
-.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
-.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
-.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
-.nav a:hover{border-color:#30363d}
-h1{color:#f0f6fc;font-size:26px;margin:2px 0 6px}.sub{color:#8b949e;font-size:13px}
-h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
-.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
+<meta name="generated" content="2026-10-19 全景大合并 v2">
+<meta name="generator" content="panorama 手写页（数字=仓内文件实勘;演进史=tanyin-architecture v1/v2/v3 三档实读）">
+<title>全景架构 · GraphLed 蓝图</title><style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:linear-gradient(180deg,#10161f,#0d1117);border:1px solid #30363d;border-radius:12px;padding:9px 13px;margin-bottom:22px;position:sticky;top:0;z-index:5;box-shadow:0 6px 22px rgba(1,4,9,.6)}
+.nav .brand{font-weight:700;margin-right:8px;font-size:14px;background:linear-gradient(90deg,#ffe9b0,#7fd49a 60%,#a5c8ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:2px}
+.nav a{color:#a5c8ff;text-decoration:none;font-size:12.5px;padding:3px 10px;border-radius:8px;border:1px solid transparent}
+.nav a:hover{border-color:#58a6ff66;color:#dbe7ff}
+.nav a.on{background:#0d2246;border-color:#58a6ff;color:#a5c8ff;box-shadow:0 0 12px rgba(88,166,255,.35)}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#0d2246 46%,#0f2e1b 100%);border:1px solid #30363d;border-radius:14px;padding:24px 26px 20px;margin-bottom:8px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#e3b341,#58a6ff,#3fb950,#bc8cff)}
+h1{color:#f0f6fc;font-size:28px;margin:2px 0 6px}
+.sub{color:#8b949e;font-size:13px}
+.hero .def{font-size:15px;color:#e2e8f0;margin:10px 0 4px}
+.hero .def b{color:#7fd49a}
+.mile{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.mile .m{background:rgba(22,27,34,.85);border:1px solid #30363d;border-radius:10px;padding:8px 14px;font-size:12.5px;color:#c9d1d9}
+.mile .m b{display:block;color:#ffe9b0;font-size:13px}
+.band{margin:36px 0 14px;padding:13px 18px 11px;border-radius:12px;background:linear-gradient(90deg,#12203a 0%,#10161f 55%,#0d1117 100%);border:1px solid #26344b;position:relative}
+.band::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:5px;border-radius:3px;background:linear-gradient(180deg,#58a6ff,#6fc3d0)}
+.band h2{margin:0;font-size:20px;color:#e2e8f0}
+.band .bsub{margin:3px 0 0;font-size:12.5px;color:#6fc3d0}
+.band.amber::before{background:linear-gradient(180deg,#e3b341,#f85149)}
+.band.green::before{background:linear-gradient(180deg,#3fb950,#39c5cf)}
+.band.purple::before{background:linear-gradient(180deg,#bc8cff,#58a6ff)}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px;transition:border-color .15s,box-shadow .15s}
+.card:hover{border-color:#3d4f66;box-shadow:0 8px 24px rgba(1,4,9,.5)}
+.cbar{border-left:4px solid #58a6ff;background:linear-gradient(90deg,#101826,#161b22 70%)}
+.cbar.amber{border-left-color:#e3b341}.cbar.green{border-left-color:#3fb950}.cbar.purple{border-left-color:#bc8cff}.cbar.red{border-left-color:#f85149}.cbar.cyan{border-left-color:#39c5cf}
+.bdg{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:9px;border:1px solid;white-space:nowrap}
+.bdg.amber{background:#3a2c0e;border-color:#e3b341;color:#ffe9b0}
+.bdg.blue{background:#0d2246;border-color:#58a6ff;color:#a5c8ff}
+.bdg.green{background:#0f2e1b;border-color:#3fb950;color:#7fd49a}
+.bdg.purple{background:#241b38;border-color:#bc8cff;color:#d9c2ff}
+.bdg.red{background:#3d1418;border-color:#f85149;color:#ffd7d5}
+.bdg.cyan{background:#0b2b31;border-color:#39c5cf;color:#a8e6ee}
+.bdg.grey{background:#161b22;border-color:#30363d;color:#8b949e}
+.pages{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:960px){.pages{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.pages{grid-template-columns:1fr}}
+a.tile{display:block;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden}
+a.tile::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#58a6ff,#39c5cf)}
+a.tile.t2::before{background:linear-gradient(90deg,#e3b341,#f85149)}
+a.tile.t3::before{background:linear-gradient(90deg,#3fb950,#39c5cf)}
+a.tile.t4::before{background:linear-gradient(90deg,#bc8cff,#58a6ff)}
+a.tile.t5::before{background:linear-gradient(90deg,#e3b341,#3fb950)}
+a.tile:hover{border-color:#58a6ff;box-shadow:0 0 16px rgba(88,166,255,.25);transform:translateY(-2px)}
+a.tile h3{margin:0 0 4px;font-size:15px;color:#dbe7ff}
+a.tile p{margin:0;font-size:12.5px;color:#8b949e}
+a.tile .st{font-size:11px;margin-left:6px;color:#d29922}
+.archgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.archgrid{grid-template-columns:1fr}}
+.arch h3{margin:0 0 6px;font-size:15px;color:#f0f6fc;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.arch .val{font-size:12px;color:#6fc3d0;margin:2px 0 8px}
+.arch ul{margin:6px 0 0;padding-left:0;list-style:none}
+.arch ul li{font-size:12.5px;color:#c9d1d9;padding:3px 0 3px 16px;position:relative}
+.arch ul li::before{content:"▸";position:absolute;left:1px;color:#e3b341}
+.arch ul li b{color:#ffe9b0}
+.arch .path{font-size:11px;color:#6e7681;margin-top:8px;word-break:break-all}
+.arch .path a{color:#58a6ff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:#a5c8ff;text-align:left;font-weight:600;background:#12203a;padding:7px 10px;border-bottom:1px solid #30363d}
+td{padding:7px 10px;border-bottom:1px solid #21262d;vertical-align:top}
+tr:hover td{background:#10161f}
+td a{color:#58a6ff}td.v{color:#8b949e}
+a{color:#58a6ff}
+.quote{border-left:3px solid #e3b341;background:#171310;border-radius:0 8px 8px 0;padding:6px 12px;color:#cdb896;font-size:12.5px;margin:10px 0}
+.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
+.kv{font-size:13px;margin:4px 0}.kv b{color:#f0f6fc}</style>
+<style>
 .grid6{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:900px){.grid6{grid-template-columns:1fr}}
 .comhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
 .comhead h3{margin:0;font-size:16px;color:#f0f6fc}
-.st{font-size:12px;padding:2px 10px;border-radius:12px;border:1px solid #30363d;white-space:nowrap}
-.st.ok{border-color:#238636;color:#3fb950}.st.mount{border-color:#b08800;color:#d29922}
-.st.fly{border-color:#1f6feb;color:#58a6ff}.st.design{border-color:#8957e5;color:#bc8cff}
-.st.empty{color:#6e7681}
 .nums{font-size:12.5px;color:#d29922;margin:6px 0}
 .kv{font-size:13px;margin:4px 0}
 .src{color:#8b949e;font-size:11.5px}
 .flow{display:flex;flex-direction:column;align-items:center}
-.fbox{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:10px 16px;font-size:13px;text-align:center;max-width:520px}
+.fbox{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:10px 16px;font-size:13px;text-align:center;max-width:540px}
 .fbox b{color:#f0f6fc}
 .fbox .s{color:#8b949e;font-size:11.5px;display:block}
 .frow{display:flex;gap:12px;align-items:stretch;justify-content:center;flex-wrap:wrap}
 .farrow{width:2px;height:20px;background:#30363d;position:relative;margin:3px 0 9px}
 .farrow::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#30363d}
 .fside{border-style:dashed}
-.quote{border-left:3px solid #30363d;padding:2px 12px;color:#8b949e;font-size:12.5px;margin:10px 0}
-a{color:#58a6ff}
-.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
-.tag{display:inline-block;font-size:11px;color:#8b949e;border:1px solid #30363d;border-radius:6px;padding:0 6px;margin-left:6px;vertical-align:middle}</style>
-</head>
+.evo{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:960px){.evo{grid-template-columns:1fr}}
+.evo .card h3{margin:0 0 4px;font-size:15.5px;color:#f0f6fc}
+.evo .era{font-size:11px;color:#8b949e;margin-bottom:8px}
+.evo .idea{font-size:12.5px;color:#6fc3d0;margin:6px 0}
+.evo ul{margin:6px 0 0;padding-left:0;list-style:none}
+.evo ul li{font-size:12.3px;color:#c9d1d9;padding:2.5px 0 2.5px 15px;position:relative}
+.evo ul li::before{content:"▸";position:absolute;left:1px;color:#58a6ff}
+.evo .why{margin-top:8px;border-top:1px dashed #30363d;padding-top:6px;font-size:12px;color:#ffe9b0;background:#171310;border-radius:0 0 10px 10px;padding:6px 10px}
+.tag{display:inline-block;font-size:11px;color:#8b949e;border:1px solid #30363d;border-radius:6px;padding:0 6px;margin-left:6px;vertical-align:middle}
+</style></head>
 <body>
 <div class="wrap">
 <nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="index.html">首页</a>
 <a href="graphled-blueprint.html">进度总图</a>
 <a href="graphled-architecture.html" class="on">全景架构</a>
 <a href="graphled-ui-map.html">界面地图</a>
 <a href="graphled-enemies.html">六产品对齐</a>
 <a href="graphled-roadmap.html">能力阶梯</a>
 <a href="graphled-methodology.html">交战思维</a>
-<a href="index.html">首页</a></nav>
+<a href="graphled-knowledge.html">知识全景</a>
+<a href="graphled-history.html">演进总析</a></nav>
 
-<h1>全景架构 · 六大件数据流向</h1>
-<p class="sub">人话词表（宪法 #41，黑话首现即译）：<b>账本</b>=13 张表加哈希链，系统的唯一事实记录，改一行全链变红；<b>守卫</b>=每条命令出手前的门禁；<b>战士</b>=自带 AI 大脑的执行进程；<b>工具卡</b>=带纪律标注（限速/黑名单/回滚义务）的工具使用说明；<b>评测飞轮</b>=用考卷证明"越打越强"的机制。行数/测试数均为仓内文件实勘（快照 2026-10-18 10:16，git f844987；仓在航，数字会继续长）。</p>
+<div class="hero">
+<h1>全景架构 · 思想脉络 → 现状</h1>
+<p class="sub">人话词表（宪法 #41，黑话首现即译）：<b>账本</b>=13 张表加哈希链，系统的唯一事实记录，改一行全链变红；<b>守卫</b>=每条命令出手前的门禁；<b>战士</b>=自带 AI 大脑的执行进程；<b>工具卡</b>=带纪律标注（限速/黑名单/回滚义务）的工具使用说明；<b>评测飞轮</b>=用考卷证明「越打越强」的机制。本页上半=三代架构图的思想脉络（v1→v2→v3，旧档实读），下半=当前六大件实况（行数/测试数为仓内文件实勘，仓在航会继续长）。</p>
+</div>
 
-<h2>数据流向（一图）</h2>
+<div class="band purple"><h2>思想脉络：tanyin-architecture 三代演进史（2026-09-22 → 10-16）</h2><p class="bsub">每代=核心思想+遗产+为何必须演进——新九页（含本页）即 v3 的直系后代；三代旧图零删改留档，可从首页历史档案进入</p></div>
+<div class="evo">
+<section class="card cbar">
+<h3>v1 · 工程原图 <span class="bdg grey">112KB · 09-22</span></h3>
+<p class="era">探隐 TanYin · 全景架构（第一版，用户令绘）</p>
+<p class="idea">核心思想：把「被管住的 AI 渗透平台」画成<b>工程师可点查的长卷</b>——表名/字段/命令全细节，每张账本表「记什么/谁写/谁读」三问说清。</p>
+<ul>
+<li>作战循环八器官轮辐图：盘点战况→翻老笔记→立意图→过门执行→先落原始→验收提取→暂存打法→查闭合→再转一轮（收敛=图属性）</li>
+<li>guard 五关定型：黑名单→范围→留票→参数化→脱敏，拒绝本身留痕</li>
+<li>四层执法：账本级/命令边界/宿主拦截/出网代理（Tier 0-3 贯穿全程不可关）</li>
+<li>知识飞轮与全量重建：一切账本可从 timeline+提交文件重算</li>
+</ul>
+<p class="why">为何演进：工程密度太高（811→1360 视高的大图），用户汇报场景读不动——需要一版「从哲学到账本」的汇报模式长卷。</p>
+</section>
+<section class="card cbar blue">
+<h3>v2 · 运行长卷定型 <span class="bdg blue">772KB · 09-23</span></h3>
+<p class="era">按 SPEC v1 单生成器从零重绘（汇报模式+工程模式双形态）</p>
+<p class="idea">核心思想：<b>从哲学到 13 本账的运行长卷</b>——先讲「系统为什么长这样」（六不变式），再讲「一次真实测试的完整过程」（⓿→⑪ 分节带），统一视觉语法、生成时碰撞断言。</p>
+<ul>
+<li>⓿ 设计哲学六不变式：推理=图上走/账本=唯一事实/追加不删/验收通过才可写入/纵深不信任/人握方向盘</li>
+<li>⓿.5 三个 AI 与手铐：总控/子代理/引擎三件，角色徽章金=人·蓝=总控·紫=子代理·绿=系统</li>
+<li>④ 作战循环心脏：八器官流水线转圈，转一圈=一轮，submissions/ 交作业区+evidence/ 双指纹外置库</li>
+<li>⑨⑩⑪ 13 本账与生命周期+引擎层三专业引擎（判定/生成/测绘）</li>
+</ul>
+<p class="why">为何演进：v2 是宪法原图，但「画了≠建了」——工地实况与图纸差距无处对账，需要一版诚实呈现差距的图。</p>
+</section>
+<section class="card cbar green">
+<h3>v3 · 思想源头旗舰 <span class="bdg green">796KB · 10-16</span></h3>
+<p class="era">v2 结构与内容全量保留 ＋ 建造实况（用户原话「这种还不错」即指此版）</p>
+<p class="idea">核心思想：<b>宫殿图 vs 工地实况双带并置</b>——⑫建造实况带记 v2 落笔之后工地上真发生了什么；⑬对账带逐项对账「画了什么 vs 建了什么」，不装完成。</p>
+<ul>
+<li>⑫ 建造实况：观察面九页 v0.9a→d（8900 伺服）+执法升权五件 S1-S5+六专家评审零否决·三票制</li>
+<li>⑬ 对账三差距：作战循环「常驻」形态（战内版已实证 b24/b27）→排 v1.0b；引擎三件实战挂载→v0.5；13 本账 13/13 已在盘</li>
+<li>总账一句：设计全量在册，执法面+观察面+账本纪律已到 1479/1491 测，差距全部排入门票序列在册不蒸发</li>
+</ul>
+<p class="why">为何演进：v3 之后产品定名 GraphLed、进入 W1-W8 波次施工——进度需要一页页「建到哪了」的对账集，即本九页（演进自 v3，差异见页脚侧注）。</p>
+</section>
+</div>
+
+<div class="band"><h2>数据流向（一图）：当前六大件怎么咬合</h2><p class="bsub">实线框=六大件本体；虚线框=旁挂/卫星件；每一步都向 ① 账本写 timeline 行（行行哈希相扣）</p></div>
 <div class="card">
 <div class="flow">
-  <div class="fbox"><b>操作员</b>（浏览器 8900 界面）填授权八问建任务<span class="s">界面件见「界面地图」页；八问=授权件/窗口期/范围/紧急联系人/预算/凭据来源/强度档/法律条款</span></div>
-  <div class="farrow"></div>
-  <div class="frow">
-    <div class="fbox"><b>① 哈希链账本（13 表）</b>一切事实先落账<span class="s">goals/scope/creds/intents/facts/findings/timeline…</span></div>
-    <div class="fbox fside"><b>② 守卫执法（五门）</b>旁挂全程<span class="s">每条工具命令过门链，拒绝也落账</span></div>
-  </div>
-  <div class="farrow"></div>
-  <div class="fbox"><b>意图与租约</b>：任务拆成一条条意图（intents.tsv），战士领取打租约，超时自动回收<span class="s">无可用引擎=blocked 留因，不静默丢</span></div>
-  <div class="farrow"></div>
-  <div class="frow">
-    <div class="fbox"><b>③ 战士运行时</b>（R1-R5+自纠+知识注入）<span class="s">领意图→组上下文（含 50 张技法卡按意图检索注入）→选模型道→发 JSON 指令→工具执行→写账</span></div>
-    <div class="fbox fside"><b>模型道 llmpool</b><span class="s">错误分类+分道冷却；channels.json 已备，生产道未点（blueprint.json）</span></div>
-  </div>
-  <div class="farrow"></div>
-  <div class="fbox"><b>④ 工具引擎（25 卡）</b>卡层门链（未注册拒→黑名单→ECDSA 验签→限速→L3 审批）→ 授权范围内的目标<span class="s">engines/ 七个引擎插槽：nuclei / vuln-agent / vulnclaw / web-blackbox / session-viz / sqlmap / deepex</span></div>
-  <div class="farrow"></div>
-  <div class="fbox"><b>机械重放验证（P4 门）</b>：每个发现由独立进程原样重放，重放不过=不算漏洞<span class="s">REPLAY_CAP=3；未验证不入卷（SARIF 只收已验证）</span></div>
-  <div class="farrow"></div>
-  <div class="frow">
-    <div class="fbox"><b>复测 → 报告签发</b>复测页排队 REPAIRED 候选；报告带版本链与双签位<span class="s">战毕过清理门（P6）清痕，沉淀归档</span></div>
-    <div class="fbox fside"><b>⑤ 评测飞轮</b>（在建）<span class="s">考卷判据反哺知识库与打法；"越打越强"要能拿出数学证明</span></div>
-  </div>
+<div class="fbox"><b>操作员</b>（浏览器 8900 界面）填授权八问建任务<span class="s">界面件见「界面地图」页；八问=授权件/窗口期/范围/紧急联系人/预算/凭据来源/强度档/法律条款</span></div>
+<div class="farrow"></div>
+<div class="frow">
+<div class="fbox"><b>① 哈希链账本（13 表）</b>一切事实先落账<span class="s">goals/scope/intents/facts/findings/timeline…</span></div>
+<div class="fbox fside"><b>② 守卫执法（五门）</b>旁挂全程<span class="s">每条工具命令过门链，拒绝也落账</span></div>
 </div>
-<p class="quote">读法：实线框=六大件本体；虚线框=旁挂/卫星件。每一步都向 ① 账本写 timeline 行（行行哈希相扣），所以任意历史时刻可回放、可第三方验真。</p>
+<div class="farrow"></div>
+<div class="fbox"><b>意图与租约</b>：任务拆成一条条意图（intents.tsv），战士领取打租约，超时自动回收<span class="s">无可用引擎=blocked 留因，不静默丢</span></div>
+<div class="farrow"></div>
+<div class="frow">
+<div class="fbox"><b>③ 战士运行时</b>（R1-R5+自纠+知识注入）<span class="s">领意图→组上下文（含 50 张技法卡按意图检索注入）→选模型道→发 JSON 指令→工具执行→写账</span></div>
+<div class="fbox fside"><b>模型道 llmpool</b><span class="s">错误分类+分道冷却；channels.json 已备，生产道未点（blueprint.json）</span></div>
+</div>
+<div class="farrow"></div>
+<div class="fbox"><b>④ 工具引擎（25 卡）</b>卡层门链（未注册拒→黑名单→ECDSA 验签→限速→L3 审批）→ 授权范围内的目标<span class="s">engines/ 七个引擎插槽：nuclei / vuln-agent / vulnclaw / web-blackbox / session-viz / sqlmap / deepex</span></div>
+<div class="farrow"></div>
+<div class="fbox"><b>机械重放验证（P4 门）</b>：每个发现由独立进程原样重放，重放不过=不算漏洞<span class="s">REPLAY_CAP=3；未验证不入卷（SARIF 只收已验证）</span></div>
+<div class="farrow"></div>
+<div class="frow">
+<div class="fbox"><b>复测 → 报告签发</b>复测页排队 REPAIRED 候选；报告带版本链与双签位<span class="s">战毕过清理门（P6）清痕，沉淀归档</span></div>
+<div class="fbox fside"><b>⑤ 评测飞轮</b>（棘轮已落成）<span class="s">能力件变更过 GT 增量门+能力曲线 API；「越打越强」要能拿出数学证明</span></div>
+</div>
+</div>
+<p class="quote">读法：任意历史时刻可回放、可第三方验真（verify-chain）——这是 v1/v2/v3 三代图一脉相承的「账本=唯一事实」不变式的现状形态。</p>
 </div>
 
-<h2>六大件逐件档案（行数+测试数+状态）</h2>
+<div class="band green"><h2>六大件逐件档案（行数+测试数+状态）</h2><p class="bsub">行数/测试数为仓内文件实勘（快照 2026-10-18 10:16，git f844987；仓在航，数字会继续长）</p></div>
 <div class="grid6">
 
-<section class="card">
-<div class="comhead"><h3>① 哈希链账本（13 表）</h3><span class="st ok">✅ 在役</span></div>
+<section class="card cbar green">
+<div class="comhead"><h3>① 哈希链账本（13 表）</h3><span class="bdg green">✅ 在役</span></div>
 <p class="nums">13,535 行 · 52 个模块 <span class="src">（wc -l cli/ledger/*.py）</span></p>
 <p class="nums">测试：账本+执法族 174 个测试文件 / 1,417 个测试函数 <span class="src">（归桶口径见页脚）</span></p>
 <p class="kv">13 表=schemas.json 实读：goals/scope/intents/facts/findings/assets/edges/approvals/E-index/matrix/timeline/budget/creds。</p>
@@ -95,16 +197,16 @@ a{color:#58a6ff}
 <p class="src">来源：cli/ledger/schemas.json、docs/HANDOFF.md W2 timeline 舰节、panorama/blueprint.json 柱三。</p>
 </section>
 
-<section class="card">
-<div class="comhead"><h3>② 守卫执法（五门）</h3><span class="st ok">✅ 在役</span></div>
+<section class="card cbar red">
+<div class="comhead"><h3>② 守卫执法（五门）</h3><span class="bdg green">✅ 在役</span></div>
 <p class="nums">执法单源 enforce.py 513 行 · 门链 tanyin-guard:133-218 <span class="src">（wc -l / grep 实勘）</span></p>
 <p class="kv">门链 REJECT 族（逐条可拒）：deny-list 黑名单 → nuclei 限速固化 → 执法面只读 → 范围界外 → account-grant 覆盖面 → 时间窗 → 速率滑窗；拒绝行也入账。</p>
 <p class="kv">四层拦截：L1 账本 / L2 执行通道 / L3 宿主 hook / L4 出口代理（A/B 对齐档口径）；资源三帽 CPU 600s·进程 256·内存 4G，fail-closed（git c02c72d）。</p>
 <p class="src">来源：cli/tanyin-guard、cli/ledger/enforce.py、docs/reviews/2026-10-18-realign/{A,B}-*、git log c02c72d。</p>
 </section>
 
-<section class="card">
-<div class="comhead"><h3>③ 战士运行时（R1-R5+自纠+知识注入）</h3><span class="st ok">✅ 在役</span></div>
+<section class="card cbar blue">
+<div class="comhead"><h3>③ 战士运行时（R1-R5+自纠+知识注入）</h3><span class="bdg green">✅ 在役</span></div>
 <p class="nums">2,350 行 · 13 个模块 <span class="src">（wc -l cli/warrior/*.py；E 档同数实测）</span></p>
 <p class="nums">测试：123 个测试函数 <span class="src">（tests/ 13 个 warrior 测试文件实数；git b8825ef 同数）</span></p>
 <p class="kv">R1 一意图一脑（全新上下文血缘走账）/ R2 串行链 / R3 冷折叠控 token / R4 transcript 独立留痕 / R5 steer 转向+停止；心跳、停滞自杀重生、断点续跑、预算触帽优雅停。</p>
@@ -113,8 +215,8 @@ a{color:#58a6ff}
 <p class="src">来源：cli/warrior/、knowledge/concepts/、git aafb551/881ca96/b8825ef、panorama/blueprint.json。</p>
 </section>
 
-<section class="card">
-<div class="comhead"><h3>④ 工具引擎（25 卡）</h3><span class="st ok">✅ 在役</span></div>
+<section class="card cbar amber">
+<div class="comhead"><h3>④ 工具引擎（25 卡）</h3><span class="bdg green">✅ 在役</span></div>
 <p class="nums">25 张工具卡 · 7 个引擎插槽 <span class="src">（cards.py all_cards 实跑枚举；engines/ 目录实勘）</span></p>
 <p class="nums">测试：工具+引擎族 8 个测试文件 / 169 个测试函数 <span class="src">（git 记工具卡舰新增 73 测）</span></p>
 <p class="kv">卡=七纪律字段（名称/档位/限速/黑名单覆盖/回滚义务/示例命令/风险级）；tools.lock=版本+纪律 sha256+ECDSA 验签（供应链锁定）。</p>
@@ -122,41 +224,41 @@ a{color:#58a6ff}
 <p class="src">来源：cli/tools/cards.py、cli/tools/tools.lock、engines/、git b2f8d2d..85e8499。</p>
 </section>
 
-<section class="card">
-<div class="comhead"><h3>⑤ 评测飞轮</h3><span class="st fly">✈️ 在建</span></div>
-<p class="nums">evals_* 4 件 488 行 <span class="src">（wc -l cli/ledger/evals_*.py）</span></p>
-<p class="nums">测试：评测族 7 个测试文件 / 51 个测试函数</p>
-<p class="kv">已落：双锚度量、退出码 4 态（rc3=仅未验证候选，CI 黄灯不静默绿）、D2 三臂同考。</p>
-<p class="kv">在建：评测棘轮（能力件变更须过 GT 增量门）+GT 集加厚舰在飞（blueprint.json 下一步第 5 条）；演进飞轮 v1=六齿+棘轮（裁定案 #16，待追认）。</p>
-<p class="src">来源：cli/ledger/evals_*.py、cli/tanyin-evals、docs/RATIFICATIONS.md #16、panorama/blueprint.json。</p>
+<section class="card cbar purple">
+<div class="comhead"><h3>⑤ 评测飞轮（棘轮已落成）</h3><span class="bdg purple">✈️→🔧 棘轮落成·曲线待接线</span></div>
+<p class="nums">evals_* 4 件 488 行 + capability_gate/能力曲线/避坑卡三件（git 6844f87/8721d0a）<span class="src">（wc -l 实勘 + git 实读）</span></p>
+<p class="kv">已落：双锚度量、退出码 4 态（rc3=仅未验证候选，CI 黄灯不静默绿）、D2 三臂同考；<b>评测棘轮</b>=能力件变更（技法卡/提示词/工具卡三面 pathspec）合并前自动跑评测对比，回退超阈=拒合并，baseline 只紧不松——真数据冒烟：20 真战全量复跑 recall 0.5673 / fp_rate 0.0044。</p>
+<p class="kv">能力曲线 API（/api/v2/capability.json）已落成，页面待接线即亮（界面地图「能力曲线」项 🔧）；避坑卡 schema knowledge/negative 已入册。</p>
+<p class="src">来源：cli/ledger/evals_*.py、scripts/capability_gate.py、git 6844f87/8721d0a/1f036de、docs/RATIFICATIONS.md #16。</p>
 </section>
 
-<section class="card">
-<div class="comhead"><h3>⑥ 界面（控制台）</h3><span class="st mount">🔧 挂载中</span></div>
+<section class="card cbar cyan">
+<div class="comhead"><h3>⑥ 界面（控制台）</h3><span class="bdg amber">🔧 挂载中</span></div>
 <p class="nums">cli/webui 21 个 py 6,640 行 · static/ 28 个 HTML <span class="src">（wc -l / 目录实勘）</span></p>
 <p class="nums">测试：webui 族 31 个测试文件 / 724 个测试函数</p>
-<p class="kv">生产口 8900 在役：五控制台页（总览/实时动态/攻击链路/发现/审批）+旧九页路由；pages/ 另有 14 页建成待挂载（任务/新建任务/漏洞详情/播报/复测/资产/资产覆盖/审批中心/报告中心/技法/设置/工作区/资产库/审批）。</p>
-<p class="kv">对照口径（blueprint.json 柱四判词原文）：「对照ARTEX 22项: 4可点/9接电/7在建/3空白」——逐项明细见「界面地图」页。</p>
+<p class="kv">生产口 8900 在役：五控制台页+pages/ 全族界面。总装通电批（git d211fdc）后界面 26 项中 19 项可点（含任务/新建任务/漏洞详情/播报/复测/资产/资产覆盖/审批中心/报告中心/技法/工作区/LLM 录制/对话/设置/资产库/评测对比/能力曲线）。</p>
+<p class="kv">对照口径（blueprint.json 柱四判词原文，2026-10-19 总装通电批）：「总装通电: 界面26项中 15可点/7在建/1设计/3空白」——ui 数组机器实算 26 项：可点 19/在建 3/设计 1/空白 3（判词 15/7 为通电时点数，数组随后又升四项；两口径如实并示），逐项明细见「界面地图」页。</p>
 <p class="src">来源：cli/webui/server.py:81-94、449-453、cli/webui/static/pages/、panorama/blueprint.json。</p>
 </section>
 </div>
 
-<h2>卫星件：远控面（C2/WebShell）</h2>
-<div class="card">
+<div class="band red"><h2>卫星件：远控面（C2/WebShell）</h2><p class="bsub">用户批做（CHARTER #39），账本化全门链设计</p></div>
+<div class="card cbar red">
 <p class="nums">cli/c2 880 行 + 测试 566 行 = 1,446 行 · C2 族 53 个测试函数 <span class="src">（wc -l 实勘；blueprint.json 记 47 测为落成时点数）</span></p>
 <p class="kv">灯塔管理/指令队列/回显证据化/WebShell 受控档，全走账本门链（beacons/cmds/pulls/echoes/webshells 五账面）；副作用必登记回滚义务，义务未清不得关档；URL 门禁碰 8900/3000/8787/8443 即停。来源：git acc2744、cli/c2/。</p>
 </div>
 
-<h2>演进侧注（宪法 #50 设计资产保全律）</h2>
-<div class="card">
-<p class="kv">本图演进自 <a href="tanyin-architecture.html">tanyin-architecture v1</a> → <a href="tanyin-architecture-v2.html">v2</a> → <a href="tanyin-architecture-v3.html">v3</a>（旧图零删改，全部可从<a href="index.html">首页·历史档案</a>进入）。与 v3 的差异点：①账本从 12 表长到 13 表；②引擎层从「三个专业引擎」的构想长成插槽制 7 引擎；③战士从纸面构想长成 2,350 行 123 测的活物；④产品名从探隐 TanYin 改为 GraphLed（2026-10-17 用户拍板，裁定案 D-b）；⑤v3 时代「建造实况带」的差距清单，大半已在本图变为 ✅。</p>
+<div class="band amber"><h2>演进侧注（宪法 #50 设计资产保全律）</h2><p class="bsub">本图演进自 v1→v2→v3 三代（旧图零删改，全部可从首页历史档案进入）</p></div>
+<div class="card cbar amber">
+<p class="kv">与 v3 的差异点：①账本从 12 表长到 13 表；②引擎层从「三个专业引擎」的构想长成插槽制 7 引擎；③战士从纸面构想长成 2,350 行 123 测的活物；④产品名从探隐 TanYin 改为 GraphLed（2026-10-17/18 用户拍板，裁定案 1/#6）；⑤v3 时代「建造实况带」的差距清单，大半已在本图变为 ✅（评测棘轮甚至超出了 v3 的排期——已落成待接线）。</p>
+<p class="kv">样式血缘：本页分节大标题带/彩色徽章/高密度卡组提炼自 v3 旗舰视觉语言（用户裁定「要旧页的样式质感」，2026-10-19 全景大合并 v2）。</p>
 </div>
 
 <p class="meta">
 数字快照=2026-10-18 10:16 · git f844987（仓在航，行数/测试数会持续增长）·
 测试归桶口径：按 tests/ 文件名归六桶（webui/warrior/工具+引擎/C2/评测/账本+执法余量），桶内数 def test_ 函数；全仓 test_*.py 共 238 个文件、2,537 个测试函数；blueprint.json 记「全仓 2250+ 测 · CI 八作业 · coverage 89%」·
-数据真源：panorama/blueprint.json（界面状态）+ 仓内文件实勘（行数/测试数）·
-姊妹页：<a href="graphled-blueprint.html">进度总图</a>（按支柱看进度）· <a href="graphled-ui-map.html">界面地图</a>（逐页看界面）。
+数据真源：panorama/blueprint.json（界面状态）+ 仓内文件实勘（行数/测试数）+ tanyin-architecture v1/v2/v3 三档实读（演进史）·
+姊妹页：<a href="graphled-blueprint.html">进度总图</a>（按支柱看进度）· <a href="graphled-ui-map.html">界面地图</a>（逐页看界面）· <a href="graphled-history.html">演进总析</a>（决策时间线）。
 </p>
 </div>
 </body>

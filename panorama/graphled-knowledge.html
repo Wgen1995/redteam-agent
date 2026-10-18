@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generated" content="2026-10-19 全景大合并 v2">
+<meta name="generator" content="panorama 手写页（techstack.html+toolchain.html+ai-pentest.html 三页精华吸收，2026-09-21 原档全文实读）">
+<title>知识全景 · GraphLed 蓝图</title><style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:linear-gradient(180deg,#10161f,#0d1117);border:1px solid #30363d;border-radius:12px;padding:9px 13px;margin-bottom:22px;position:sticky;top:0;z-index:5;box-shadow:0 6px 22px rgba(1,4,9,.6)}
+.nav .brand{font-weight:700;margin-right:8px;font-size:14px;background:linear-gradient(90deg,#ffe9b0,#7fd49a 60%,#a5c8ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:2px}
+.nav a{color:#a5c8ff;text-decoration:none;font-size:12.5px;padding:3px 10px;border-radius:8px;border:1px solid transparent}
+.nav a:hover{border-color:#58a6ff66;color:#dbe7ff}
+.nav a.on{background:#0d2246;border-color:#58a6ff;color:#a5c8ff;box-shadow:0 0 12px rgba(88,166,255,.35)}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#0d2246 46%,#0f2e1b 100%);border:1px solid #30363d;border-radius:14px;padding:24px 26px 20px;margin-bottom:8px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#e3b341,#58a6ff,#3fb950,#bc8cff)}
+h1{color:#f0f6fc;font-size:28px;margin:2px 0 6px}
+.sub{color:#8b949e;font-size:13px}
+.hero .def{font-size:15px;color:#e2e8f0;margin:10px 0 4px}
+.hero .def b{color:#7fd49a}
+.mile{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.mile .m{background:rgba(22,27,34,.85);border:1px solid #30363d;border-radius:10px;padding:8px 14px;font-size:12.5px;color:#c9d1d9}
+.mile .m b{display:block;color:#ffe9b0;font-size:13px}
+.band{margin:36px 0 14px;padding:13px 18px 11px;border-radius:12px;background:linear-gradient(90deg,#12203a 0%,#10161f 55%,#0d1117 100%);border:1px solid #26344b;position:relative}
+.band::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:5px;border-radius:3px;background:linear-gradient(180deg,#58a6ff,#6fc3d0)}
+.band h2{margin:0;font-size:20px;color:#e2e8f0}
+.band .bsub{margin:3px 0 0;font-size:12.5px;color:#6fc3d0}
+.band.amber::before{background:linear-gradient(180deg,#e3b341,#f85149)}
+.band.green::before{background:linear-gradient(180deg,#3fb950,#39c5cf)}
+.band.purple::before{background:linear-gradient(180deg,#bc8cff,#58a6ff)}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px;transition:border-color .15s,box-shadow .15s}
+.card:hover{border-color:#3d4f66;box-shadow:0 8px 24px rgba(1,4,9,.5)}
+.cbar{border-left:4px solid #58a6ff;background:linear-gradient(90deg,#101826,#161b22 70%)}
+.cbar.amber{border-left-color:#e3b341}.cbar.green{border-left-color:#3fb950}.cbar.purple{border-left-color:#bc8cff}.cbar.red{border-left-color:#f85149}.cbar.cyan{border-left-color:#39c5cf}
+.bdg{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:9px;border:1px solid;white-space:nowrap}
+.bdg.amber{background:#3a2c0e;border-color:#e3b341;color:#ffe9b0}
+.bdg.blue{background:#0d2246;border-color:#58a6ff;color:#a5c8ff}
+.bdg.green{background:#0f2e1b;border-color:#3fb950;color:#7fd49a}
+.bdg.purple{background:#241b38;border-color:#bc8cff;color:#d9c2ff}
+.bdg.red{background:#3d1418;border-color:#f85149;color:#ffd7d5}
+.bdg.cyan{background:#0b2b31;border-color:#39c5cf;color:#a8e6ee}
+.bdg.grey{background:#161b22;border-color:#30363d;color:#8b949e}
+.pages{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:960px){.pages{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.pages{grid-template-columns:1fr}}
+a.tile{display:block;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden}
+a.tile::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#58a6ff,#39c5cf)}
+a.tile.t2::before{background:linear-gradient(90deg,#e3b341,#f85149)}
+a.tile.t3::before{background:linear-gradient(90deg,#3fb950,#39c5cf)}
+a.tile.t4::before{background:linear-gradient(90deg,#bc8cff,#58a6ff)}
+a.tile.t5::before{background:linear-gradient(90deg,#e3b341,#3fb950)}
+a.tile:hover{border-color:#58a6ff;box-shadow:0 0 16px rgba(88,166,255,.25);transform:translateY(-2px)}
+a.tile h3{margin:0 0 4px;font-size:15px;color:#dbe7ff}
+a.tile p{margin:0;font-size:12.5px;color:#8b949e}
+a.tile .st{font-size:11px;margin-left:6px;color:#d29922}
+.archgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.archgrid{grid-template-columns:1fr}}
+.arch h3{margin:0 0 6px;font-size:15px;color:#f0f6fc;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.arch .val{font-size:12px;color:#6fc3d0;margin:2px 0 8px}
+.arch ul{margin:6px 0 0;padding-left:0;list-style:none}
+.arch ul li{font-size:12.5px;color:#c9d1d9;padding:3px 0 3px 16px;position:relative}
+.arch ul li::before{content:"▸";position:absolute;left:1px;color:#e3b341}
+.arch ul li b{color:#ffe9b0}
+.arch .path{font-size:11px;color:#6e7681;margin-top:8px;word-break:break-all}
+.arch .path a{color:#58a6ff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:#a5c8ff;text-align:left;font-weight:600;background:#12203a;padding:7px 10px;border-bottom:1px solid #30363d}
+td{padding:7px 10px;border-bottom:1px solid #21262d;vertical-align:top}
+tr:hover td{background:#10161f}
+td a{color:#58a6ff}td.v{color:#8b949e}
+a{color:#58a6ff}
+.quote{border-left:3px solid #e3b341;background:#171310;border-radius:0 8px 8px 0;padding:6px 12px;color:#cdb896;font-size:12.5px;margin:10px 0}
+.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
+.kv{font-size:13px;margin:4px 0}.kv b{color:#f0f6fc}</style>
+<style>
+.lay{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.lay{grid-template-columns:1fr}}
+.lay .card h3{margin:0 0 4px;font-size:15.5px;color:#f0f6fc;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lay .idea{font-size:12px;color:#6fc3d0;margin:2px 0 8px}
+.lay ul{margin:6px 0 0;padding-left:0;list-style:none}
+.lay ul li{font-size:12.2px;color:#c9d1d9;padding:2.5px 0 2.5px 15px;position:relative}
+.lay ul li::before{content:"▸";position:absolute;left:1px;color:#58a6ff}
+.lay ul li b{color:#ffe9b0}
+.lay .std{margin-top:8px;border-top:1px dashed #30363d;font-size:12px;color:#7fd49a;background:rgba(15,46,27,.25);border-radius:0 0 10px 10px;padding:6px 10px}
+.lno{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:24px;border-radius:7px;font-weight:700;font-size:12.5px;border:1.5px solid}
+.lno.g1{background:#0d2246;border-color:#1f6feb;color:#a5c8ff}.lno.g2{background:#0b2b31;border-color:#39c5cf;color:#a8e6ee}
+.lno.g3{background:#0f2e1b;border-color:#238636;color:#7fd950}.lno.g4{background:#3a2c0e;border-color:#b08800;color:#ffe9b0}
+.lno.g5{background:#241b38;border-color:#8957e5;color:#d9c2ff}.lno.g6{background:#3d1418;border-color:#f85149;color:#ffd7d5}
+.track{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.track{grid-template-columns:1fr}}
+.track .card h3{margin:0 0 4px;font-size:14.5px;color:#f0f6fc}
+.track .val{font-size:12px;color:#6fc3d0;margin:2px 0 6px}
+.track .gain{font-size:12.2px;color:#c9d1d9}
+.track .gap{font-size:11.8px;color:#ffd7d5;border-top:1px dashed #30363d;margin-top:6px;padding-top:5px}
+.patterns{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(max-width:800px){.patterns{grid-template-columns:1fr}}
+.pcard{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:10px 14px;border-left:4px solid #bc8cff}
+.pcard h4{margin:0 0 3px;font-size:13.5px;color:#d9c2ff}
+.pcard p{margin:2px 0;font-size:12px;color:#c9d1d9}
+.dec{border-left:3px solid #39c5cf;background:#0b2b31;border-radius:0 8px 8px 0;padding:6px 12px;color:#a8e6ee;font-size:12.5px;margin:8px 0}
+.warn{border-left:3px solid #f85149;background:#3d1418;border-radius:0 8px 8px 0;padding:6px 12px;color:#ffd7d5;font-size:12.5px;margin:8px 0}
+.kv{font-size:13px;margin:4px 0}.kv b{color:#f0f6fc}
+.src{color:#8b949e;font-size:11.5px}
+</style></head>
+<body>
+<div class="wrap">
+<nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="index.html">首页</a>
+<a href="graphled-blueprint.html">进度总图</a>
+<a href="graphled-architecture.html">全景架构</a>
+<a href="graphled-ui-map.html">界面地图</a>
+<a href="graphled-enemies.html">六产品对齐</a>
+<a href="graphled-roadmap.html">能力阶梯</a>
+<a href="graphled-methodology.html">交战思维</a>
+<a href="graphled-knowledge.html" class="on">知识全景</a>
+<a href="graphled-history.html">演进总析</a></nav>
+
+<div class="hero">
+<h1>知识全景 · 技术栈 × 工具链 × AI 渗透</h1>
+<p class="sub">第八页（新增）：把旧知识三页——techstack.html（技术栈六层地图）/toolchain.html（工具链五组矩阵）/ai-pentest.html（AI 渗透六赛道+13 项目+十大模式）——的精华合并上屏，供操作员与战士舰随时取用。三页原档零删改留档；内容提炼自手册十二卷（VOL-01~VOL-08）与 VOL-09 三部曲。</p>
+</div>
+
+<div class="band"><h2>壹 · 技术栈六层知识地图（techstack.html 精华）</h2><p class="bsub">六层不是并列课程表，而是一条攻击链上的上下游：上层产出是下层的输入；优先级三级=核心（必学地基）/重点（拉开差距）/进阶（按需深入）；掌握标准=可验收动作</p></div>
+<div class="card" style="margin-bottom:12px">
+<table>
+<tr><th>层级</th><th>输入（依赖谁）</th><th>输出（产出什么）</th><th>支撑下层/反哺</th></tr>
+<tr><td>① 外部侦察层</td><td class="v">授权域名/IP 范围</td><td>存活资产表+入口点清单（URL+方法+参数+认证要求）</td><td class="v">② 的底账</td></tr>
+<tr><td>② Web 应用层</td><td class="v">入口点清单</td><td>webshell/低权限 shell；SSRF=外网进内网第一跳</td><td class="v">③ 提供立足点</td></tr>
+<tr><td>③ 内网与域层</td><td class="v">立足点 shell</td><td>域内凭据/DA 权限/攻击路径图+事件 ID 对照</td><td class="v">⑥ 路径图直接进报告</td></tr>
+<tr><td>④ 源码联动层</td><td class="v">源码、发行包、前端 JS</td><td>白盒假设→黑盒验证→findings 归档</td><td class="v">横切①②：指纹命中切「版本→CVE→PoC」快通道</td></tr>
+<tr><td>⑤ 客户端层</td><td class="v">EXE/APK 安装包</td><td>服务端地址、硬编码凭据、加密密钥、协议帧结构</td><td class="v">反哺①②③：资产补充/老接口/内网直通车</td></tr>
+<tr><td>⑥ 交付层</td><td class="v">全部 findings+证据</td><td>报告六节/POC 卡/CVSS 评级/复测四态</td><td class="v">收口所有层：发现不落卡=白干</td></tr>
+</table>
+</div>
+<div class="lay">
+
+<section class="card">
+<h3><span class="lno g1">①</span>外部侦察层 · 从域名到入口点清单</h3>
+<p class="idea">信息收集不是「扫完就完」，而是收敛为一张入口点底账；链路固定：资产→端口→入口→指纹→版本→CVE→验证</p>
+<ul>
+<li><b>子域收集</b>：四来源（CT 证书透明/被动 DNS/暴力枚举/智能置换）+OneForAll/Amass；剔除泛解析噪声、看穿 CNAME 指向 CDN【核心】</li>
+<li><b>端口与服务指纹</b>：懂 -sS SYN 半开与 -sT 差异、-sV 探针库机制；httpx 批量取 title/状态码/技术栈；filtered≠无服务【核心】</li>
+<li><b>目录爆破</b>：判据链（状态码→长度→行数）；ffuf -ac 治「全 200」；高价值路径先手测（.git/.env/actuator/swagger）【核心】</li>
+<li><b>JS 信息提取</b>：gau 归档+LinkFinder 抽端点；grep AK/SK、内网测试接口、隐藏功能开关；source map 还原源码【重点】</li>
+<li><b>攻击面收敛+指纹→CVE</b>：入口|参数|指纹|候选 CVE|验证状态一张表；Arjun 探隐藏参数；指纹≠版本≠可利用，逐条核对利用条件（如 Spring4Shell 需 JDK9+）【核心】</li>
+</ul>
+<p class="std">掌握标准：对任一授权目标跑完「子域→nmap→httpx→ffuf→JS 提取」产出入口点清单；复现「指纹→CVE→验证」闭环；爆破结果必人工复核——爆破器必误报，人工确认是纪律。</p>
+</section>
+
+<section class="card">
+<h3><span class="lno g2">②</span>Web 应用层 · 进得去、进得深、拿得稳</h3>
+<p class="idea">上册解决「进得去」（认证+注入），下册解决「进得深、拿得稳」（越权+逻辑+上传+反序列化）——越权与逻辑是审计经验迁移率最高的板块</p>
+<ul>
+<li><b>会话/JWT/OAuth</b>：登出改密后旧 session 重放；JWT 缺陷五连（不验签名/alg=none/HS256 弱密钥/RS256→HS256 混淆/kid 注入）；授权码三依赖（redirect_uri 白名单/code 一次性/state 防 CSRF）【核心/进阶】</li>
+<li><b>SQL 注入五通道</b>（UNION/报错/布尔盲/时间盲/堆叠）+三库差异；手工五步定位回显位；sqlmap 指定通道+tamper 绕 WAF【核心】</li>
+<li><b>命令注入/XSS/SSTI/SSRF</b>：分隔符语义与 OOB 带外验证；source→sink 分析；{{7*7}} 检测法；SSRF 协议进阶（gopher 打 Redis/dict 探端口）——外网打点进内网的第一跳【核心/重点】</li>
+<li><b>越权（水平/垂直/未授权）</b>：IDOR 双账号对照+Intruder 批量；未授权四类（actuator/Swagger/管理后台弱口令/内存马视角）按「攻击者获得免鉴权高价值能力」定级【核心】</li>
+<li><b>URL 鉴权绕过/逻辑漏洞/文件上传/反序列化</b>：三层规范化差异生绕过（Shiro CVE-2020-1957）；支付状态机/验证码找回/竞态+HTTP/2 单包；五层校验绕过谱系；Fastjson @type 与 Shiro rememberMe【重点】</li>
+</ul>
+<p class="std">掌握标准：对任一 Web 目标按「认证→注入→越权→逻辑→上传」打出完整链，产出可复现 finding 卡（与⑥的 POC 卡规范衔接）。</p>
+</section>
+
+<section class="card">
+<h3><span class="lno g3">③</span>内网与域层 · 立足→隧道→凭据→提权→横向→域控</h3>
+<p class="idea">Web 打点给你一只 webshell，本层解决「之后怎么办」——主线六步固定，最后合规收尾</p>
+<ul>
+<li><b>域判断与本机收集</b>：域成员三特征（机器账户/DNS 指向 DC/时间同步 ≤5min）纯命令验证；Windows 四问产出「本机档案」【核心】</li>
+<li><b>隧道与代理选型只看出网能力</b>：TCP 自由→反向 SOCKS5（frp）；仅 HTTP→Neo-reGeOrg；不出网→netsh portproxy 逐层跳；nmap 必须 -sT -Pn -n【核心】</li>
+<li><b>凭据获取</b>：SAM reg save+secretsdump；lsass minidump（转储前与客户书面约定）；DPAPI 连锁解密浏览器/RDP 凭据【核心】</li>
+<li><b>提权四主干</b>：未加引号服务路径/UAC 绕过/令牌滥用（SeImpersonate→Potato 家族）/内核漏洞；Linux 先低噪声配置类后内核，对照 GTFOBins【核心】</li>
+<li><b>Kerberos 与域控矩阵</b>：认证四步一页讲透，所有域攻击都是对某一环打折；按「你有什么资本」选打法（普通域用户→Kerberoast/BloodHound；DA→DCSync）；痕迹处理只清自己新增的构件，删客户日志=销毁证据【重点/进阶】</li>
+</ul>
+<p class="std">掌握标准：打点后快速产出「本机档案」；GOAD 结业：独立画出完整路径图（打点机→凭据→横向→DA→DC）并逐节点标注事件 ID（4624/4768/4769/4104）。</p>
+</section>
+
+<section class="card">
+<h3><span class="lno g4">④</span>源码联动层 · 审计员优势的降维打法</h3>
+<p class="idea">核心心法：审计员最强的不是找洞，而是知道「这个洞对应的那个请求长什么样」——先构造假设，再验证</p>
+<ul>
+<li><b>入口点优先审计</b>：先回答「哪些入口没被中间件挡住」再 grep sink；「路由清单×鉴权配置」表；认证≠授权，对象属主判断缺失即越权面【核心】</li>
+<li><b>代码→PoC 翻译三步</b>：定位参数来源→按绑定规则构造请求→针对净化逻辑变形；判定信号按侵入度排序：响应异常→OOB→延时→回显，永远先低风险【核心】</li>
+<li><b>五个重点审计面</b>：鉴权/越权、序列化、文件操作、SQL 拼接（MyBatis 美元大括号与 order by 位）、SOAP-RPC——看到特征就知道发什么请求【核心】</li>
+<li><b>半黑盒：发行包</b>：「无源码」常是伪命题——官网历史安装包就是服务端真相快照；解包三必看（配置/依赖清单/凭据 grep）【重点】</li>
+<li><b>联动闭环「假设卡」</b>：白盒假设→黑盒验证→证据留存三段缺一只是线索不是发现；仅代码推断未黑盒复现的永远标 probable【核心】</li>
+</ul>
+<p class="std">掌握标准：有源码时产出「路由×鉴权」表；看到 sink 能翻译成一条可复现请求；findings 目录换台机器隔一天 10 分钟内能复现——证据链合格线。</p>
+</section>
+
+<section class="card">
+<h3><span class="lno g5">⑤</span>客户端层 · EXE/APK 与协议</h3>
+<p class="idea">客户端是反哺三层的直通车：资产补充、老接口打点、内网横向线索</p>
+<ul>
+<li><b>前 30 分钟速查清单</b>：识别→解包/脱壳→双编码 strings→分桶 grep→反编译只啃加密与网络两块→产出三件套（资产补充/疑似凭据/协议疑点）</li>
+<li><b>抓包与证书锁定绕过分三层</b>：系统层（Android 7+ 只信系统 CA）→应用层 pinning（Frida hook 恒真）→双向 mTLS（.p12 常打包在 app 内）；分层排障别乱换脚本</li>
+<li><b>通信协议分析情报闭环</b>：地址→抓包→帧结构（魔数+版本+长度+载荷）→回反编译源码对号→重放验证；Protobuf 用 protoc --decode_raw</li>
+<li><b>硬编码 finding 卡五要素</b>：对象（组件+版本）/位置/值（脱敏+SHA-256）/验证/影响——缺一项评审会就被打回</li>
+</ul>
+<p class="std">掌握标准：任意 EXE/APK 跑完速查清单产出三件套；协议分析产出帧结构表，手工构造一条合法心跳帧收到预期响应即逆向闭环。</p>
+</section>
+
+<section class="card">
+<h3><span class="lno g6">⑥</span>交付层 · 报告、POC 卡、CVSS 与等保</h3>
+<p class="idea">报告是唯一交付物，客户「修不修、先修谁」只依赖它</p>
+<ul>
+<li><b>报告六节结构</b>：概述（结论先行）→范围与方法→风险矩阵→漏洞明细（一洞一卡降序）→修复建议（P0-P3+责任方）→复测说明；交叉三查：概述数字=矩阵合计=明细条数【核心】</li>
+<li><b>POC 卡片规范一条</b>：拿到卡的工程师不咨询你、10 分钟内复现【核心】</li>
+<li><b>CVSS 3.1</b>：先影响（C/I/A）后可达性；躲开五个误评级（S:C 滥用/「注册就能打」是 PR:L/越权该 C:H/仅内网 AV:A/弱口令按凭据全夺评）【核心】</li>
+<li><b>证据留存与脱敏</b>：成对留请求响应+SHA256SUMS；凭据不进报告；泄露类取样例前 5 条+总行数，禁止整表拖库进附件【核心】</li>
+<li><b>复测与回归</b>：复测向后看旧漏洞、回归向前看改动面；四态判定（已修复/部分/未修复/风险接受——后者须客户书面确认）【重点】</li>
+</ul>
+<p class="std">掌握标准：一洞一卡，同事盲测 10-15 分钟复现成功且定级一致；交付前全文检索密码/Bearer/token/手机号正则无命中。</p>
+</section>
+</div>
+
+<div class="band green"><h2>贰 · 工具链五组矩阵（toolchain.html 精华）</h2><p class="bsub">每个工具四问：做什么/一句话原理/陷阱；所有命令仅用于已签授权书（RoE）范围内的目标</p></div>
+<div class="lay">
+<section class="card">
+<h3>侦察组 —— 黑盒第一步：攻击面在哪、门后是什么</h3>
+<ul>
+<li><b>nmap</b>：SYN 半开扫描（只发握手前两步）；-sV 探针签名出版本。陷阱：只扫 TCP 漏 UDP（SNMP/NTP 在那）；无 sudo 时 -sS 静默降级更吵；客户环境 -T2~T3 --max-rate</li>
+<li><b>httpx</b>：大列表「谁活着/什么站/什么栈」快速过滤。陷阱：通配符 DNS 全解析同 IP 先 -ip 聚类；内网必须 -ports；大列表不配 -rate-limit 会打爆 WAF 留 429 污染客户日志</li>
+<li><b>ffuf</b>：FUZZ 占位替换+校准（先测软 404 基线，-ac 自动过滤）。陷阱：忘 -ac 满屏软 404 是新手第一大坑；递归指数级流量先 medium 后 large；定制字典＞通用</li>
+<li><b>OneForAll+subfinder</b>：多源聚合 vs 纯被动零发包——先被动后主动，被动零告警。陷阱：不配 API key 结果偏少；爆破类收集确认授权范围覆盖 DNS</li>
+</ul>
+</section>
+<section class="card">
+<h3>Web 代理组 —— 看包改包重放的主战场</h3>
+<ul>
+<li><b>Burp Suite</b>：127.0.0.1:8080 代理+动态 CA 证书 MITM 解密；Repeater 手工重放（80% 时间在这）。陷阱：系统全局代理劫持其他工具（FoxyProxy 分模式）；不设 Target scope 就开 Scanner 会扫到第三方（越界+浪费）；Intruder 忘 URL 编码选项破坏请求</li>
+<li><b>mitmproxy</b>：插件（addon）+事件钩子 request(flow)/response(flow) 批量改包；App/小程序抓包（mitm.it 装证书）。陷阱：Android 7+ 默认不信任用户证书需系统级（root）；脚本异常静默丢流量，前台跑盯 stderr</li>
+</ul>
+</section>
+<section class="card">
+<h3>验证利用组 —— 疑点变可复现证据</h3>
+<ul>
+<li><b>sqlmap</b>：五类判定通道按方言构造提数。陷阱：时间盲 SLEEP 拖垮小站连接池，生产必配 --delay 2 --threads 1 约时间窗；--dump 仅授权允许时用，合规做法 --schema/--count 级取证；不是发现器，先 Repeater 手工确认再交给它</li>
+<li><b>nuclei</b>：引擎与 YAML 模板分离，模板即代码可版本化。陷阱：matcher 只配 200 必误报至少双条件；模板库滞后新 CVE 自己写；主动/破坏类模板显式排除；结论措辞「覆盖范围内未发现」而非「安全」</li>
+<li><b>fscan/vulmap</b>：内网立足后第一轮广度扫描。铁律：授权书明确允许+约定时间窗+-nobr 起步（防锁域账号触发 SIEM 应急）；命中必须手工复核才进报告；边界外网段=越界红线</li>
+</ul>
+</section>
+<section class="card">
+<h3>后渗透组 + 辅助组 —— 立足之后与交付的另一半</h3>
+<ul>
+<li><b>Metasploit</b>：六类模块各有前置条件——先侦察后利用；NAT 后拿错 LHOST 回连必败（用 tun0/VPS）；EDR 常拦 meterpreter 降级普通 shell；横向移动要单独确认授权</li>
+<li><b>CobaltStrike（只建概念与合规边界）</b>：正版授权+客户书面授权（RoE 列明时间窗/目标/C2 域名）缺一即违法；网上「破解版」是供应链投毒重灾区（刑法 285/286 红线）；一人红队前期 MSF+frp 覆盖绝大多数场景</li>
+<li><b>frp</b>：反向隧道（frpc 主动连公网 frps）。陷阱：公网裸 frps 是扫描器重点（强 token+非默认端口+始终最新版防历史 RCE）；nmap 走 socks 只支持 -sT -Pn 别误判端口全关</li>
+<li><b>辅助三件</b>：CyberChef（纯前端离线，敏感数据不出本机）；代码环境（venv 隔离+PoC 模板三件套：Session 复用/显式关闭校验注明原因/断言产出证据）；笔记与截图规范五条（全屏含地址栏/Burp 成对 Raw 视图/含完整命令/画面留系统时间/命名互引）</li>
+</ul>
+</section>
+</div>
+<div class="card cbar cyan" style="margin-top:12px">
+<h3 style="margin:0 0 6px;font-size:15px;color:#f0f6fc">工具组合战术矩阵（七链路）+ 三决策要点</h3>
+<table>
+<tr><th>场景</th><th>工具链</th><th>输出物</th></tr>
+<tr><td>外网资产测绘</td><td class="v">subfinder/OneForAll → httpx 存活指纹 → nmap -sV（真实 IP）</td><td>存活资产表（url/title/技术栈/IP/端口）</td></tr>
+<tr><td>Web 打点</td><td class="v">ffuf 目录+参数 → Burp Repeater 手工验证 → sqlmap -r 提数</td><td>finding 卡+请求响应证据对</td></tr>
+<tr><td>已知漏洞批量验证</td><td class="v">httpx → nuclei（高危过滤）→ 命中项手工复核</td><td>高危漏洞清单（附模板依据）</td></tr>
+<tr><td>App/客户端攻击面</td><td class="v">逆向提取服务端 → mitmproxy 抓包</td><td>API 接口清单+通信结构</td></tr>
+<tr><td>内网首探</td><td class="v">fscan -ao 摸底 → fscan -nobr 定向 → nmap 精扫</td><td>去噪后的内网服务清单</td></tr>
+<tr><td>横向与跳板</td><td class="v">msf autoroute+socks_proxy 或 frp socks5 → proxychains</td><td>可达性验证记录+隧道拓扑</td></tr>
+<tr><td>证据整理</td><td class="v">CyberChef/jq 清洗 → 笔记卡+截图规范</td><td>报告附录证据包</td></tr>
+</table>
+<div class="dec"><b>三决策要点：</b>①噪音控制——侦察信息增量&gt;扫描流量增量，fscan 快全吵必 -nobr 起步，nuclei 显式排除 dos 类；②速率与时间窗——慢即是稳，生产一切速率参数显式声明，IPS 告警阈值写进 RoE；③授权边界——授权范围=工具能碰的最大边界，sqlmap 只对授权数据，C2 与 VPS IP 列入授权附录。</div>
+<p class="kv" style="margin-bottom:0"><b>心法：</b>每条链路的最后一站永远是「证据落盘」；先手工确认，再自动化放大；定制字典＞通用字典——工具只是把发现变成可交付输出的管道。</p>
+</div>
+
+<div class="band purple"><h2>叁 · AI 渗透全景（ai-pentest.html 精华）</h2><p class="bsub">六大赛道+13 项目档案+十大架构模式——全部结论可回溯到源码级调研（星数与活跃度为 2026-09 核实值）</p></div>
+<div class="card cbar purple">
+<h3 style="margin:0 0 6px;font-size:15px;color:#f0f6fc">调研三结论（本节一切的出发点）</h3>
+<p class="kv">① <b>没有可以直接采用的完整体</b>——13 个深度分析对象仅 nuclei 拿到 adopt-as-dependency（作依赖引入），其余 12 个全部 copy-pattern（抄模式不抄码），包括 64k★ 的 Strix 与 24.7k★ 的 PentAGI（平台形态深耦合，抽循环≈重写）。</p>
+<p class="kv">② <b>赛道空白恰是机会</b>——交战全生命周期状态契约、程序化 scope 执法、凭据占位符治理、认证后身份矩阵测试、中文合规报告、skill 评测体系，全行业（含商业 XBOW）缺位。</p>
+<p class="kv">③ <b>供应链红线</b>——国内工具（ARL/水泽/ENScan_GO）原仓库已删只剩来路不一的镜像；nuclei-templates 必须钉 commit+验签：持授权凭据的攻击路径上，任何依赖中毒=整场交战失陷。</p>
+</div>
+
+<div class="track">
+<section class="card">
+<h3>赛道一 · AI 渗透测试 agent</h3>
+<p class="val">三年三代：PentestGPT 奠基人机混合 → 学术/平台分化 → Strix 64k★、XBOW 登顶 HackerOne</p>
+<p class="gain">价值：agent 循环形态谱系、上下文管理、findings 模式库。共同形状=自主循环+multi-agent 分工+容器化工具箱。</p>
+<p class="gap">空白：无交战目录契约、scope 全靠 prompt、无工具输出 schema。</p>
+</section>
+<section class="card">
+<h3>赛道二 · coding-agent skill 生态</h3>
+<p class="val">安全能力以 SKILL.md/插件长在 coding agent 里——与我们的目标形态同源</p>
+<p class="gain">价值：阶段流程、scope 文件、知识束模板；Threatswarm/CEP/BugHunter/open-sploit 四个「同行」档案。</p>
+<p class="gap">空白：无断点续跑、无结构化 findings、中文空白、生态脆弱（单人 3-6 个月停更常见）。</p>
+</section>
+<section class="card">
+<h3>赛道三 · 非 AI 自动化引擎</h3>
+<p class="val">比 AI 渗透早十年、工程上最扎实：编排（DAG）、状态（工件缓存）、目录契约、资产图全在这里成熟</p>
+<p class="gain">价值：交战目录契约的全部先例（Osmedeus workspace 契约、AutoRecon per-host 目录树、ARL 资产实体模型）。</p>
+<p class="gap">空白：止步于「发现」，无利用链编排、无凭据建模；断供与投毒风险。</p>
+</section>
+<section class="card">
+<h3>赛道四 · 对抗模拟框架</h3>
+<p class="val">给防御方验证检测覆盖——但十年前就解决了计划-执行-事实（fact 解析回填→变量消费）的状态机</p>
+<p class="gain">价值：Caldera fact 闭环与 autonomous 门禁、Atomic 能力卡、Stratus 可逆动作生命周期。</p>
+<p class="gap">空白：报告面向检测工程而非渗透取证；授权范围全靠人工勾选、无动态重规划。</p>
+</section>
+<section class="card">
+<h3>赛道五 · 商业 SOTA 与评测基准</h3>
+<p class="val">XBOW 2025-05 成为首个登顶 HackerOne 公开赏金榜的 AI agent；开源基准演进线 InterCode-CTF→NYU CTF→Cybench→CyberGym→inspect_evals</p>
+<p class="gain">价值：评测设计参照——怎么证明「这个 skill 有用、没变差」；指标走向成本感知（token/时长/成功率 Pareto）。</p>
+<p class="gap">空白：只测单题 solve rate，无交战生命周期/复现性/护栏评测，CTF 成绩≠真实交战能力。</p>
+</section>
+<section class="card">
+<h3>赛道六 · 漏洞数据格式与报告标准</h3>
+<p class="val">SARIF（ISO/IEC 20153:2025）/CycloneDX VEX/DefectDojo/nuclei-templates/CVSS——全部为主机与供应链生态设计</p>
+<p class="gain">价值：POC 卡=matcher/extractor 分离；rules/results 分离+指纹去重；findings 行 schema 参照。</p>
+<p class="gap">空白：红队语义真空——无攻击链/凭据/授权绑定字段；等保报告只有 Word 模板无 schema。</p>
+</section>
+</div>
+
+<div class="card" style="margin-top:12px">
+<h3 style="margin:0 0 6px;font-size:15px;color:#f0f6fc">13 项目速览：每个项目最值得学的一件事（裁决四档：adopt/copy-pattern/reference/skip）</h3>
+<table>
+<tr><th>#</th><th>项目</th><th>定位（裁决）</th><th>一句话最值得学</th><th>许可</th></tr>
+<tr><td>2.1</td><td>nuclei</td><td>唯一 adopt · POC 即模板的行业事实标准</td><td>单一 ResultEvent 事件 schema+dialer 层集中网络策略 deny-by-default——执法集中一处，模板再花也绕不过</td><td class="v">MIT</td></tr>
+<tr><td>2.2</td><td>Strix</td><td>copy · 64k★ 工程成熟度最高</td><td>覆盖台账（负空间四态）+findings 强 schema（反证+服务端 CVSS+语义去重）+全状态断点续跑</td><td class="v">Apache-2.0</td></tr>
+<tr><td>2.3</td><td>PentAGI</td><td>copy · 24.7k★ Go 全栈自治</td><td>多引擎有序搜索降级链+execution context 状态注入（OOB IP 显式保留）</td><td class="v">MIT</td></tr>
+<tr><td>2.4</td><td>PentestGPT</td><td>copy · 赛道奠基，门禁形态最正确</td><td>确定性范围校验器（4 轮 percent-decode 防编码绕过）+证据收据制——「LLM 提议、代码裁决」的教科书写法</td><td class="v">MIT</td></tr>
+<tr><td>2.5</td><td>HackingBuddyGPT</td><td>copy · 学术极简 50 行核心循环</td><td>task_solved 事实核查（成功声明必须机器复核）+Limits 四维预算树+append-only 单一事实源</td><td class="v">MIT</td></tr>
+<tr><td>2.6</td><td>Caldera</td><td>copy · 对抗模拟平台，状态机原产地</td><td>fact 管道+trim_links（「变量未填不动作」的数据层刹车）+人工门禁=状态位+审批队列</td><td class="v">Apache-2.0</td></tr>
+<tr><td>2.7</td><td>Osmedeus</td><td>copy · 侦察工作流引擎</td><td>工件即缓存断点续跑（产物存在即跳过）+workspace 固定契约文件族</td><td class="v">MIT</td></tr>
+<tr><td>2.8</td><td>DarkMoon</td><td>copy · 三容器 51 技术栈子代理</td><td>全行业唯一凭据占位符治理：可逆脱敏三件套+报告从 findings 存储确定性重建——GPL 传染只抄模式</td><td class="v">GPL-3.0</td></tr>
+<tr><td>2.9</td><td>Threatswarm</td><td>copy · Claude Code 插件 27 agent</td><td>PreToolUse 确定性 scope hook（循环外 exit-2 硬阻断）——连同它的 fail-open 与变量绕过裂缝一起学</td><td class="v">MIT</td></tr>
+<tr><td>2.10</td><td>Claude-ExternalPentest</td><td>copy · 0★ 内容远超星数</td><td>scope 双清单默认拒绝+漂移重查+检测/利用分界+ROE amendments 只追加审计</td><td class="v">MIT</td></tr>
+<tr><td>2.11</td><td>Claude-BugHunter</td><td>语料级复用 · 51 skill 知识束</td><td>574+ 真实披露报告提炼 24 类漏洞模式：hunt-* 统一模板+7 问验证门——它是语料不是软件</td><td class="v">MIT</td></tr>
+<tr><td>2.12</td><td>open-sploit</td><td>copy · 护栏反面教材之王</td><td>PoC 三态对抗验证门（好契约+没有执行器=没有门的教训）；安装即全 allow 必须先拆</td><td class="v">MIT</td></tr>
+<tr><td>2.13</td><td>ARL 灯塔</td><td>copy · 中文资产测绘标杆，断供警示</td><td>scope+黑名单双层校验（显式禁特殊域）+数据源插件注册表——原仓库因 RCE 下架，绝不可作在线依赖</td><td class="v">MIT（镜像）</td></tr>
+</table>
+<p class="src">横向对比结论：13 项目×6 维度没有任何一行全绿——能力分布与项目形态强相关、与星数基本无关（64k★ 的 Strix 在 scope 执法上不如 0★ 的 CEP）；scope 执法标杆没有一个是纯 AI skill 形态。</p>
+</div>
+
+<div class="card" style="margin-top:12px">
+<h3 style="margin:0 0 8px;font-size:15px;color:#f0f6fc">十大架构模式 P1-P10（入选标准=趋同演化：互不相关项目独立出现 ≥3 次）</h3>
+<div class="patterns">
+<div class="pcard"><h4>P1 交战目录即状态契约</h4><p>目录布局+固定契约文件是跨会话续跑的唯一载体。人工版：开工先建目录骨架，每条命令 tee 进 commands.log；死胡同也落盘。</p></div>
+<div class="pcard"><h4>P2 资产/事实中间层</h4><p>recon 产物结构化为实体，「变量未填不动作」。人工版：一张 assets.csv 比十个原始输出文件值钱。</p></div>
+<div class="pcard"><h4>P3 确定性门禁在循环外</h4><p>LLM 提议、代码裁决——依赖「模型这次会听话」的防线，安全水位等于最差的一次采样。人工版：范围校验做规范化后比对，双清单默认拒绝。</p></div>
+<div class="pcard"><h4>P4 验证后才算发现（证据收据制）</h4><p>发现=声明+可复核证据收据；无收据最高只能算 lead。13 项目里 6 个独立演化出出卡质量门——趋同最强的一条。</p></div>
+<div class="pcard"><h4>P5 POC 即数据</h4><p>声明式卡片与执行器分离。人工版：每个 POC 改写成「请求原文+预期判定」两段式，可复现可进复测清单。</p></div>
+<div class="pcard"><h4>P6 报告从结构化存储确定性重建</h4><p>存储是唯一真相，报告是纯函数投影。人工版：报告素材从交战第一天结构化积累——报告期是聚合排版，3 天缩到 3 小时。</p></div>
+<div class="pcard"><h4>P7 工件即缓存幂等续跑</h4><p>产物存在性=完成断言；「进度」和「产出」是两回事。人工版：长扫描都带 -oA 落盘，重跑前先 ls。</p></div>
+<div class="pcard"><h4>P8 预算限流树（展望）</h4><p>token/请求/费用分级预算与速率硬帽。人工版：给每天定「请求预算」，超了就收工复盘。</p></div>
+<div class="pcard"><h4>P9 覆盖负空间台账（展望）</h4><p>记录「该测未测」的负空间。人工版：一张「没测什么+为什么」表进报告，防覆盖幻觉。</p></div>
+<div class="pcard"><h4>P10 凭据占位符网关（展望）</h4><p>凭据真值只在注入瞬间出现。人工版：报告中一律用已脱敏占位，原件加密另交。</p></div>
+</div>
+<p class="src">配套 8 条反模式（每条有实测出处）：提示词级 scope 必被绕过/fail-open 默认放行/凭据明文进 prompt 日志/全内存状态非优雅退出即丢/安装即 YOLO 全 allow/README 宣称与实现不符/护栏只堵单出口/resume 只记进度不记产出。</p>
+</div>
+
+<div class="card cbar red" style="margin-top:12px">
+<h3 style="margin:0 0 6px;font-size:15px;color:#f0f6fc">协作位与四防陷阱</h3>
+<p class="kv"><b>AI 的定位：</b>知识渊博、反应极快、但会自信编造且不能替你担责的<b>远程同事</b>——AI 消灭的是杂活（chores），不是能力（competence），更不是责任。判据一句话：「把这件事交给 AI 三个月，你的验收标准还能过吗」。</p>
+<div class="warn"><b>四防陷阱：</b>①幻觉战果（AI 说打下来了——查证据收据，没有就不算）；②越界风险（AI 不理解法律边界——scope 机器执法，不靠自觉）；③凭据泄漏（prompt/日志是泄漏高发面——占位符+终检）；④供应链投毒（依赖中毒=整场交战失陷——钉 commit+验签）。每类都有实测样本与架构级反制。</div>
+</div>
+
+<p class="meta">
+本页真源=panorama/techstack.html+toolchain.html+ai-pentest.html 三页全文实读吸收（2026-09-21 定稿，内容提炼自手册 VOL-01~VOL-09；原档零删改留档）· 深读走 docs/learning/html/ 十二卷手册与 VOL-09 三部曲 ·
+姊妹页：<a href="graphled-methodology.html">交战思维</a>（方法论原典——六层地图的「怎么想」）· <a href="graphled-roadmap.html">能力阶梯</a>（L0-L5 怎么练）· <a href="graphled-enemies.html">六产品对齐</a>（知识地图的对手实勘版）。
+</p>
+</div>
+</body>
+</html>

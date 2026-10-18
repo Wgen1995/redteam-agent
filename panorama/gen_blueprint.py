@@ -41,6 +41,8 @@ NAV = [
     ("graphled-enemies.html", "六产品对齐", False),
     ("graphled-roadmap.html", "能力阶梯", False),
     ("graphled-methodology.html", "交战思维", False),
+    ("graphled-knowledge.html", "知识全景", False),
+    ("graphled-history.html", "演进总析", False),
     ("index.html", "首页", False),
 ]
 
@@ -67,26 +69,47 @@ def nav_html():
 
 
 def css():
+    # 旗舰视觉语言（2026-10-19 全景大合并 v2）：血缘=tanyin-architecture-v3
+    # （暗底 #0d1117 + 富色彩徽章 + 分节大标题带 + 渐变点缀），禁寡灰。
     return """
 *{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;
 font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
-.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;
-border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
-.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
-.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
-.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
-.nav a:hover{border-color:#30363d}
-h1{color:#f0f6fc;font-size:26px;margin:2px 0 6px}
+.wrap{max-width:1280px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:linear-gradient(180deg,#10161f,#0d1117);
+border:1px solid #30363d;border-radius:12px;padding:9px 13px;margin-bottom:22px;position:sticky;top:0;z-index:5;
+box-shadow:0 6px 22px rgba(1,4,9,.6)}
+.nav .brand{font-weight:700;margin-right:8px;font-size:14px;
+background:linear-gradient(90deg,#ffe9b0,#7fd49a 60%,#a5c8ff);-webkit-background-clip:text;background-clip:text;
+-webkit-text-fill-color:transparent;padding-right:2px}
+.nav a{color:#a5c8ff;text-decoration:none;font-size:12.5px;padding:3px 10px;border-radius:8px;border:1px solid transparent}
+.nav a:hover{border-color:#58a6ff66;color:#dbe7ff}
+.nav a.on{background:#0d2246;border-color:#58a6ff;color:#a5c8ff;box-shadow:0 0 12px rgba(88,166,255,.35)}
+h1{color:#f0f6fc;font-size:28px;margin:2px 0 6px}
 .sub{color:#8b949e;font-size:13px}
-h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
-.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#0d2246 46%,#0f2e1b 100%);border:1px solid #30363d;
+border-radius:14px;padding:20px 24px 16px;margin-bottom:6px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;
+background:linear-gradient(90deg,#e3b341,#58a6ff,#3fb950,#bc8cff)}
+h2.sec{margin:34px 0 12px;padding:12px 16px 10px;border-radius:12px;position:relative;color:#e2e8f0;font-size:19px;
+background:linear-gradient(90deg,#12203a 0%,#10161f 55%,#0d1117 100%);border:1px solid #26344b}
+h2.sec::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:5px;border-radius:3px;
+background:linear-gradient(180deg,#58a6ff,#6fc3d0)}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px;
+transition:border-color .15s,box-shadow .15s}
+.card:hover{border-color:#3d4f66;box-shadow:0 8px 24px rgba(1,4,9,.5)}
+.card h2{margin-top:0}
 .pillars{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:900px){.pillars{grid-template-columns:1fr}}
-.verdict{color:#d29922;font-size:13px;margin:2px 0 10px}
+.pillars .card{border-left:4px solid #58a6ff;background:linear-gradient(90deg,#101826,#161b22 70%)}
+.pillars .card:nth-child(2){border-left-color:#e3b341}
+.pillars .card:nth-child(3){border-left-color:#3fb950}
+.pillars .card:nth-child(4){border-left-color:#bc8cff}
+.verdict{display:inline-block;background:#3a2c0e;border:1px solid #e3b341;color:#ffe9b0;
+font-size:12px;font-weight:600;border-radius:9px;padding:2px 10px;margin:2px 0 10px}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{color:#8b949e;text-align:left;font-weight:600;background:#161b22;padding:6px 8px;border-bottom:1px solid #30363d}
+th{color:#a5c8ff;text-align:left;font-weight:600;background:#12203a;padding:6px 8px;border-bottom:1px solid #30363d}
 td{padding:6px 8px;border-bottom:1px solid #21262d;vertical-align:top}
+tr:hover td{background:#10161f}
 td.st{width:34px;text-align:center;font-size:15px}
 td.note{color:#8b949e;width:46%}
 .chip{display:inline-flex;align-items:center;gap:6px;margin:3px;padding:4px 12px;
@@ -104,7 +127,8 @@ border:1px solid #30363d;border-radius:14px;font-size:12.5px;background:#161b22;
 .counts{font-size:12.5px;color:#8b949e}
 ol{font-size:13.5px;line-height:2;padding-left:22px}
 .meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
-.quote{border-left:3px solid #30363d;padding:2px 12px;color:#8b949e;font-size:12.5px;margin:8px 0}
+.quote{border-left:3px solid #e3b341;background:#171310;border-radius:0 8px 8px 0;
+padding:6px 12px;color:#cdb896;font-size:12.5px;margin:8px 0}
 a{color:#58a6ff}
 """
 
@@ -158,13 +182,15 @@ def render(d, generated):
 <body>
 <div class="wrap">
 __NAV__
+<div class="hero">
 <h1>进度总图 · 一页看懂建到哪了</h1>
-<p class="sub">四支柱逐项对账 + 界面芯片 + 里程碑。人话口径（宪法 #41）：账本=13 张表加哈希链，是系统的唯一事实记录；挂载=页面已造好、往生产口接线的过程。</p>
+<p class="sub">四支柱逐项对账 + 界面芯片 + 里程碑。人话口径（宪法 #41）：账本=13 张表加哈希链，是系统的唯一事实记录；挂载=页面已造好、往生产口接线的过程。数据真源=panorama/blueprint.json，零虚构。</p>
+</div>
 
-<h2>四支柱逐项状态</h2>
+<h2 class="sec">四支柱逐项状态</h2>
 <div class="pillars">__PILLARS__</div>
 
-<h2>界面芯片（__TOTAL__ 项，按 blueprint.json ui 数组实算）</h2>
+<h2 class="sec">界面芯片（__TOTAL__ 项，按 blueprint.json ui 数组实算）</h2>
 <div class="card">
   <div class="bar">__BAR__</div>
   <div class="counts">共 __TOTAL__ 项：__COUNTS__</div>
@@ -173,10 +199,10 @@ __NAV__
   <div style="margin-top:10px">__LEGEND__</div>
 </div>
 
-<h2>下一步（按序）</h2>
+<h2 class="sec">下一步（按序）</h2>
 <div class="card"><ol>__NEXT__</ol></div>
 
-<h2>全仓家底一句</h2>
+<h2 class="sec">全仓家底一句</h2>
 <div class="card"><p style="margin:0;font-size:13.5px">__TESTS__</p></div>
 
 <p class="meta">

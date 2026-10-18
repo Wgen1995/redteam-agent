@@ -3,120 +3,259 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generated" content="2026-10-18 10:16">
-<meta name="generator" content="panorama 手写页（执法件=cli/ 与 contracts/ 实读）">
-<title>交战思维 · GraphLed 蓝图</title>
-<style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
-.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
-.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
-.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
-.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
-.nav a:hover{border-color:#30363d}
-h1{color:#f0f6fc;font-size:26px;margin:2px 0 6px}.sub{color:#8b949e;font-size:13px}
-h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
-.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
+<meta name="generated" content="2026-10-19 全景大合并 v2">
+<meta name="generator" content="panorama 手写页（原典=methodology.html 全文实读吸收；执法件=cli/ 与 contracts/ 实读）">
+<title>交战思维 · GraphLed 蓝图</title><style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:linear-gradient(180deg,#10161f,#0d1117);border:1px solid #30363d;border-radius:12px;padding:9px 13px;margin-bottom:22px;position:sticky;top:0;z-index:5;box-shadow:0 6px 22px rgba(1,4,9,.6)}
+.nav .brand{font-weight:700;margin-right:8px;font-size:14px;background:linear-gradient(90deg,#ffe9b0,#7fd49a 60%,#a5c8ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:2px}
+.nav a{color:#a5c8ff;text-decoration:none;font-size:12.5px;padding:3px 10px;border-radius:8px;border:1px solid transparent}
+.nav a:hover{border-color:#58a6ff66;color:#dbe7ff}
+.nav a.on{background:#0d2246;border-color:#58a6ff;color:#a5c8ff;box-shadow:0 0 12px rgba(88,166,255,.35)}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#0d2246 46%,#0f2e1b 100%);border:1px solid #30363d;border-radius:14px;padding:24px 26px 20px;margin-bottom:8px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#e3b341,#58a6ff,#3fb950,#bc8cff)}
+h1{color:#f0f6fc;font-size:28px;margin:2px 0 6px}
+.sub{color:#8b949e;font-size:13px}
+.hero .def{font-size:15px;color:#e2e8f0;margin:10px 0 4px}
+.hero .def b{color:#7fd49a}
+.mile{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.mile .m{background:rgba(22,27,34,.85);border:1px solid #30363d;border-radius:10px;padding:8px 14px;font-size:12.5px;color:#c9d1d9}
+.mile .m b{display:block;color:#ffe9b0;font-size:13px}
+.band{margin:36px 0 14px;padding:13px 18px 11px;border-radius:12px;background:linear-gradient(90deg,#12203a 0%,#10161f 55%,#0d1117 100%);border:1px solid #26344b;position:relative}
+.band::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:5px;border-radius:3px;background:linear-gradient(180deg,#58a6ff,#6fc3d0)}
+.band h2{margin:0;font-size:20px;color:#e2e8f0}
+.band .bsub{margin:3px 0 0;font-size:12.5px;color:#6fc3d0}
+.band.amber::before{background:linear-gradient(180deg,#e3b341,#f85149)}
+.band.green::before{background:linear-gradient(180deg,#3fb950,#39c5cf)}
+.band.purple::before{background:linear-gradient(180deg,#bc8cff,#58a6ff)}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px;transition:border-color .15s,box-shadow .15s}
+.card:hover{border-color:#3d4f66;box-shadow:0 8px 24px rgba(1,4,9,.5)}
+.cbar{border-left:4px solid #58a6ff;background:linear-gradient(90deg,#101826,#161b22 70%)}
+.cbar.amber{border-left-color:#e3b341}.cbar.green{border-left-color:#3fb950}.cbar.purple{border-left-color:#bc8cff}.cbar.red{border-left-color:#f85149}.cbar.cyan{border-left-color:#39c5cf}
+.bdg{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:9px;border:1px solid;white-space:nowrap}
+.bdg.amber{background:#3a2c0e;border-color:#e3b341;color:#ffe9b0}
+.bdg.blue{background:#0d2246;border-color:#58a6ff;color:#a5c8ff}
+.bdg.green{background:#0f2e1b;border-color:#3fb950;color:#7fd49a}
+.bdg.purple{background:#241b38;border-color:#bc8cff;color:#d9c2ff}
+.bdg.red{background:#3d1418;border-color:#f85149;color:#ffd7d5}
+.bdg.cyan{background:#0b2b31;border-color:#39c5cf;color:#a8e6ee}
+.bdg.grey{background:#161b22;border-color:#30363d;color:#8b949e}
+.pages{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:960px){.pages{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.pages{grid-template-columns:1fr}}
+a.tile{display:block;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden}
+a.tile::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#58a6ff,#39c5cf)}
+a.tile.t2::before{background:linear-gradient(90deg,#e3b341,#f85149)}
+a.tile.t3::before{background:linear-gradient(90deg,#3fb950,#39c5cf)}
+a.tile.t4::before{background:linear-gradient(90deg,#bc8cff,#58a6ff)}
+a.tile.t5::before{background:linear-gradient(90deg,#e3b341,#3fb950)}
+a.tile:hover{border-color:#58a6ff;box-shadow:0 0 16px rgba(88,166,255,.25);transform:translateY(-2px)}
+a.tile h3{margin:0 0 4px;font-size:15px;color:#dbe7ff}
+a.tile p{margin:0;font-size:12.5px;color:#8b949e}
+a.tile .st{font-size:11px;margin-left:6px;color:#d29922}
+.archgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.archgrid{grid-template-columns:1fr}}
+.arch h3{margin:0 0 6px;font-size:15px;color:#f0f6fc;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.arch .val{font-size:12px;color:#6fc3d0;margin:2px 0 8px}
+.arch ul{margin:6px 0 0;padding-left:0;list-style:none}
+.arch ul li{font-size:12.5px;color:#c9d1d9;padding:3px 0 3px 16px;position:relative}
+.arch ul li::before{content:"▸";position:absolute;left:1px;color:#e3b341}
+.arch ul li b{color:#ffe9b0}
+.arch .path{font-size:11px;color:#6e7681;margin-top:8px;word-break:break-all}
+.arch .path a{color:#58a6ff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:#a5c8ff;text-align:left;font-weight:600;background:#12203a;padding:7px 10px;border-bottom:1px solid #30363d}
+td{padding:7px 10px;border-bottom:1px solid #21262d;vertical-align:top}
+tr:hover td{background:#10161f}
+td a{color:#58a6ff}td.v{color:#8b949e}
+a{color:#58a6ff}
+.quote{border-left:3px solid #e3b341;background:#171310;border-radius:0 8px 8px 0;padding:6px 12px;color:#cdb896;font-size:12.5px;margin:10px 0}
+.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
+.kv{font-size:13px;margin:4px 0}.kv b{color:#f0f6fc}</style>
+<style>
 .flowrow{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px}
-.step{min-width:172px;flex:1;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:12px 14px}
+.step{min-width:172px;flex:1;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:12px 14px;transition:border-color .15s}
+.step:hover{border-color:#58a6ff66}
 .step h3{margin:0 0 2px;font-size:14.5px;color:#f0f6fc}
-.step .gate{font-size:11px;color:#d29922;margin-bottom:6px;display:block}
+.step .gate{font-size:11px;color:#ffe9b0;background:#3a2c0e;border:1px solid #e3b341;border-radius:7px;display:inline-block;padding:0 8px;margin-bottom:6px}
 .step p{font-size:12px;color:#c9d1d9;margin:4px 0}
 .step .law{font-size:11px;color:#8b949e;border-top:1px dashed #30363d;margin-top:8px;padding-top:6px}
-.step .law b{color:#bc8cff;font-weight:600}
-.arr{align-self:center;color:#30363d;font-size:22px;padding:0 6px;flex:0 0 auto}
+.step .law b{color:#d9c2ff;font-weight:600}
+.arr{align-self:center;color:#e3b341;font-size:22px;padding:0 6px;flex:0 0 auto}
 .gatesbar{display:flex;flex-wrap:wrap;gap:6px}
-.gp{font-size:11.5px;border:1px solid #30363d;border-radius:8px;padding:2px 8px;color:#8b949e}
-.gp b{color:#c9d1d9}
+.gp{font-size:11.5px;border:1px solid #30363d;border-radius:8px;padding:2px 8px;color:#8b949e;background:#10161f}
+.gp b{color:#a5c8ff}
 .kv{font-size:13px;margin:4px 0}
 .kv b{color:#f0f6fc}
 .src{color:#8b949e;font-size:11.5px}
-a{color:#58a6ff}
-.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
-ol{font-size:13px;line-height:2;padding-left:22px}</style>
-</head>
+ol{font-size:13px;line-height:2;padding-left:22px}
+ol li b{color:#ffe9b0}
+.steps8 td:first-child{white-space:nowrap;color:#ffe9b0;font-weight:700;width:120px}
+.dec{border-left:3px solid #39c5cf;background:#0b2b31;border-radius:0 8px 8px 0;padding:6px 12px;color:#a8e6ee;font-size:12.5px;margin:8px 0}
+.warn{border-left:3px solid #f85149;background:#3d1418;border-radius:0 8px 8px 0;padding:6px 12px;color:#ffd7d5;font-size:12.5px;margin:8px 0}
+.pillar-note{font-size:11px;color:#8b949e}
+</style></head>
 <body>
 <div class="wrap">
 <nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="index.html">首页</a>
 <a href="graphled-blueprint.html">进度总图</a>
 <a href="graphled-architecture.html">全景架构</a>
 <a href="graphled-ui-map.html">界面地图</a>
 <a href="graphled-enemies.html">六产品对齐</a>
 <a href="graphled-roadmap.html">能力阶梯</a>
 <a href="graphled-methodology.html" class="on">交战思维</a>
-<a href="index.html">首页</a></nav>
+<a href="graphled-knowledge.html">知识全景</a>
+<a href="graphled-history.html">演进总析</a></nav>
 
-<h1>交战思维 · 一仗怎么打（横向流程）</h1>
-<p class="sub">从授权到报告的六步，每步都标了「执法件」——就是那一步管住它不许乱来的机器（宪法 #41 人话：执法件=不用人盯、违规自动拒的关卡）。九道门全程护航，门序单源自代码 core.GATE_ORDER，界面词表一字不差。</p>
+<div class="hero">
+<h1>交战思维 · 方法论原典 × 系统执法</h1>
+<p class="sub">本页两层：上半=交战思维原典（methodology.html，2026-09-21 定稿，面向人手的渗透方法论——<b>方法论源头，全部精华逐条吸收，一字不丢</b>）；下半=同一套思想的系统执法版（从授权到报告的六步，每步标注「执法件」=不用人盯、违规自动拒的关卡）。原典教人怎么想，执法版把想法焊进机器——两层的对应关系贯穿全页。</p>
+</div>
 
-<h2>六步横向流程</h2>
+<div class="band amber"><h2>原典 · 一、交战生命周期：从授权到报告的八步</h2><p class="bsub">一人红队的项目骨架沿 PTES 全流程展开——每一步先问「这一步的事实够不够支撑下一步」</p></div>
+<div class="card">
+<table class="steps8">
+<tr><th>步骤</th><th>做什么</th><th>决策点（原典原文）</th></tr>
+<tr><td>① 授权与范围</td><td>依据合同/授权书确认资产清单、测试时间窗与排除项（DoS、社会工程学、物理）</td><td>没写进范围的等于没测；IPS 告警阈值与静默要求写进 RoE</td></tr>
+<tr><td>② 侦察</td><td>子域收集、端口与服务扫描、Web 指纹、目录爆破与 JS 提取，被动信息源先行</td><td>小步快跑，不上来全端口轰炸——慢、吵、触发防护</td></tr>
+<tr><td>③ 攻击面分析</td><td>建入口点清单、参数枚举、指纹→CVE 比对，按信任边界给资产分组</td><td>先回答「哪些入口没被中间件挡住」，鉴权缺失面优先</td></tr>
+<tr><td>④ 打点</td><td>用注入、越权、未授权访问、反序列化、文件上传等拿 webshell 或低权限 shell</td><td>凭据是事实不是终点——先枚举它能碰的资产</td></tr>
+<tr><td>⑤ 提权</td><td>本机收集四问（我是谁/在哪/周围有谁/谁管我），Windows 四条主干与 Linux SUID/sudo 判断流程</td><td>先摸清杀软/EDR 清单再选提权路径</td></tr>
+<tr><td>⑥ 横向</td><td>隧道与代理链、凭据获取（SAM/LSASS/DPAPI），非域与域环境 Kerberos 横向，指向域控</td><td>域判断先于一切——机器账户/DNS/时间同步三特征确认是否域内</td></tr>
+<tr><td>⑦ 收尾</td><td>痕迹处理与合规收尾：清环境、清残留数据，全程不出授权范围</td><td>清理动作同样受 RoE 约束，证据先按 VULN-xxx 目录归档</td></tr>
+<tr><td>⑧ 报告</td><td>六节结构组装 + POC 卡片 + CVSS 3.1 评级 + 证据脱敏，附复测四态口径</td><td>结论先行；交叉三查——概述数字＝矩阵合计＝明细条数</td></tr>
+</table>
+<p class="src">深读指引（原典）：VOL-07-08 方法论·报告交付（PTES 流程与 PART B 六件交付物）· VOL-01 Web 渗透·上（侦察与攻击面）· VOL-03 内网渗透（提权/横向/收尾）· VOL-06 工具链（工具输出怎么读、RoE）。</p>
+<p class="dec">系统执法版对应：八步的骨架就是九道门（P0 授权→P1 范围→P2-P3 执行→P4 验证→P5 报告→P5.5 签发→P6 清理→P6.0 沉淀）——原典的「每一步先问事实够不够」，机器版=intents 不蒸发律+发现必附证据边。</p>
+</div>
+
+<div class="band"><h2>原典 · 二、四大方法论框架对照</h2><p class="bsub">四个框架各管一段：流程、覆盖度、行为对照、叙事——四者不互斥，完整交付里都会出现</p></div>
+<div class="card">
+<div class="dec">选型口诀（原典原文）：项目管流程用 PTES，Web 覆盖度用 WSTG，内网阶段用 ATT&CK 自查，报告叙事用 Kill Chain。</div>
+<table>
+<tr><th>框架</th><th>是什么</th><th>何时用</th><th>局限（分工之外）</th></tr>
+<tr><td>Kill Chain</td><td>网络杀链（Lockheed Martin 七阶段：侦察→武器化→交付→利用→安装→命令与控制 C2→目标行动），攻击者视角的攻击链叙事模型</td><td>报告「攻击路径」章节：把打点→立足→横移→落地写成故事线</td><td class="v">只回答「路径怎么讲」，不提供测试用例与覆盖度兜底</td></tr>
+<tr><td>PTES</td><td>渗透测试执行标准，七阶段：前期交互→情报收集→威胁建模→漏洞分析→渗透利用→后渗透→报告</td><td>立项与范围（Scope）谈判、交付物定义；一人红队的项目骨架</td><td class="v">管流程骨架，不含 Web 用例与内网 TTP 对照</td></tr>
+<tr><td>OWASP WSTG</td><td>Web 安全测试指南（稳定版 v4.2），按信息收集/配置部署/身份认证/授权/会话管理/输入校验/错误处理/加密/业务逻辑/客户端等大类组织数十个用例</td><td>Web 系统性覆盖度兜底「该测的都测了」；报告「测试方法」章节的引用来源</td><td class="v">只覆盖 Web 系统性测试，项目流程与内网行为不在分工内</td></tr>
+<tr><td>MITRE ATT&CK</td><td>对抗战术/技术/常识知识库：真实攻击组织 TTP，企业版矩阵按战术列技术</td><td>内网行为对照：把内网每个动作映射到技术编号，度量红队覆盖面与蓝队检测盲区</td><td class="v">是行为知识库不是执行标准，不提供立项流程与 Web 用例级指导</td></tr>
+</table>
+<p class="dec">系统执法版对应：WSTG v4.2 是 matrix.tsv 攻击面×漏洞类矩阵的列词表（P1 出口断言列从词表钉死、全覆盖才放行）；ATT&CK 映射=L3 自测项「能用编号映射自己用到的技术」。</p>
+</div>
+
+<div class="band green"><h2>原典 · 三、黑盒信息渐进决策模型：缺口→下一动作</h2><p class="bsub">黑盒卡住的实质是<b>事实缺口</b>——不知道某类信息，所以不知道下一步做什么（人工版照抄 MITRE Caldera 的 facts 机制）</p></div>
+<div class="card">
+<p class="kv">维护 facts 表（列：事实/值/来源/时间），每个缺口对应一类收集动作，动作产出新事实，直到事实组合满足某条利用路径的前置条件。</p>
+<table>
+<tr><th>信息缺口</th><th>下一动作（示例可直接复制）</th><th>要点</th></tr>
+<tr><td>不知道资产面（子域）</td><td><code>subfinder -d example.com</code></td><td class="v">被动源互不相同，多工具结果合并去重；参数以官方文档为准</td></tr>
+<tr><td>不知道端口与服务</td><td><code>nmap -sV -sC -p- &lt;目标IP&gt; -oA evidence/nmap_full</code></td><td class="v">-sV 服务版本、-sC 默认脚本、-p- 全端口、-oA 三格式输出存证</td></tr>
+<tr><td>不知道 Web 指纹</td><td><code>whatweb http://&lt;目标&gt;</code></td><td class="v">指纹是「指纹→版本→已知 CVE 比对」快通道的输入</td></tr>
+<tr><td>不知道目录结构</td><td><code>ffuf -w /opt/SecLists/Discovery/Web-Content/common.txt -u http://&lt;目标&gt;/FUZZ -mc 200,301,302,403</code></td><td class="v">字典决定上限；先小字典，再递归+扩展名</td></tr>
+<tr><td>拿到一个有效凭据</td><td>先枚举它能碰的资产，再评估提权</td><td class="v">凭据是事实，不是终点</td></tr>
+</table>
+<div class="dec"><b>落表：</b>每完成一步立即把「结论」写入 facts 表——写结论，不贴原始输出。<br><b>验证：</b>任一时刻你说得清「下一步动作由表中哪条缺口驱动」，说不清的动作不做；当某条利用路径的前置条件（如可达端口＋存在组件＋可用凭据）全部闭合时，能明确写出「已满足」。</div>
+<div class="warn"><b>陷阱三则（原典原文）：</b>①上来全端口轰炸——慢、吵、触发防护，应小步快跑；②收集不落表，碰到同目标全部重来；③把「扫完了」当「收集完了」——原始输出不是事实，提炼出的结论才是。</div>
+<p class="dec">系统执法版对应：facts.tsv=「一行一事实碎片，只记观察到的不记结论」；未消费 fact=下一个假设的燃料（derived_from 反哺新意图——探索循环的引擎）；authz-diff 前置硬门=引用 CRED 必须 active。</p>
+</div>
+
+<div class="band purple"><h2>原典 · 四、审计员 → 渗透者：思维转换表</h2><p class="bsub">5 年源码审计的直觉不能直接搬进黑盒战场——真相来源、完备性标准、边界单位、验证方式、影响评估、时间模型全部要换轨</p></div>
+<div class="card">
+<table>
+<tr><th>维度</th><th>源码审计（旧我）</th><th>渗透测试（新我）</th></tr>
+<tr><td>真相来源</td><td class="v">代码即真相</td><td><b>响应即真相 ＋ 证据链</b></td></tr>
+<tr><td>完备性</td><td class="v">覆盖所有调用点与污点汇聚点（sink）</td><td>覆盖率让位于「路径打通」：打通一条链比列十条可疑更有价值</td></tr>
+<tr><td>边界单位</td><td class="v">函数 / 模块 / 数据流</td><td>资产 / 信任边界 / 网络分区</td></tr>
+<tr><td>验证方式</td><td class="v">写 PoC 代码、读单测</td><td>可复现 POC 卡片 ＋ 成对请求响应留档</td></tr>
+<tr><td>影响评估</td><td class="v">漏洞原理层面</td><td>打通后的影响放大：提权、横向移动、核心数据</td></tr>
+<tr><td>时间模型</td><td class="v">基本不受限</td><td>授权窗口（测试时间窗）硬约束，动作要排优先级</td></tr>
+</table>
+<p class="src">审计优势仍可迁移：白盒技能折算成黑盒打法——先构造假设再验证，知道「这个洞对应的那个请求长什么样」（VOL-04 源码审计→黑盒联动：审计员优势的降维打法）。</p>
+<p class="dec">系统执法版对应：W4 白盒双车道=「代码发现→渗透意图 / 黑盒异常→代码复核」双向派生（deepex 型）——这张转换表是白盒车道的产品化。</p>
+</div>
+
+<div class="band cyan"><h2>原典 · 五、「响应即真相」工作流 与 验证口径</h2><p class="bsub">黑盒下唯一可信的输入是服务端返回：状态码、响应头/体、时序、带外（OOB）回连</p></div>
+<div class="vsgrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<section class="card cbar cyan">
+<h3 style="margin:0 0 6px;font-size:15px">🔗「响应即真相」工作流（四步）</h3>
+<p class="kv">①全流量过代理：浏览器挂 Burp Suite Proxy，测试期间禁止直连；②每个测试点先发一次基线（Baseline）请求再发 payload，两条都留档；③判定信号写进用例：回显差异（响应体/长度变化）、时延差异（与基线对比）、带外信号（DNSLog/自建监听）；④结论一律引用 Burp History 条目号或导出文件名——任何结论可被第三人回放。</p>
+<p class="dec">证据链＝请求响应成对留存＋时间戳＋判定标准。</p>
+</section>
+<section class="card cbar red">
+<h3 style="margin:0 0 6px;font-size:15px">⚖️ 验证口径与降级规则</h3>
+<p class="kv">任取一条结论，在 Burp Repeater 重放所引请求，应得到与记录一致的响应；<b>做不到的降级为「疑似」，不得写入报告</b>。</p>
+<div class="warn"><b>三个断链陷阱（原典原文）：</b>只看页面渲染不看原始响应，漏掉注释、隐藏字段、状态码差异；在浏览器 DevTools 里改参数导致代理没记录；截图只截「结果」不截「请求」。</div>
+<p class="dec">Repeater 重放一致 → 写报告；不一致 → 降级「疑似。</p>
+</section>
+</div>
+
+<div class="band"><h2>系统执法版 · 六步横向流程（从授权到报告）</h2><p class="bsub">九道门全程护航，门序单源自代码 core.GATE_ORDER，界面词表一字不差</p></div>
 <div class="card">
 <div class="flowrow">
-  <div class="step">
-    <h3>① 八问授权</h3><span class="gate">门 P0 授权确认</span>
-    <p>建任务先答八问：授权件（原件+sha256+签署方）/窗口期/范围白名单/紧急联系人/预算/凭据来源/强度档/法律条款。</p>
-    <p class="law"><b>执法件：</b>缺一=422 整单拒（server.py:316 八问校验）；授权四件落 goals.tsv；范围落 scope.tsv；凭据真值永不进账本（vault 占位符）。</p>
-  </div>
-  <div class="arr">➜</div>
-  <div class="step">
-    <h3>② 意图链</h3><span class="gate">门 P1 范围检查 · P2 预算</span>
-    <p>任务拆成一条条意图（intents.tsv），战士领取打租约（时限标记），超时自动回收重授；无可用引擎=blocked 留因，不静默丢。</p>
-    <p class="law"><b>执法件：</b>双抢互斥 REJECT；租约超时先落 blocked[lease-expired] 回收行再重授（W2 租约舰）；预算三维（token/请求/时长[$]）触帽=优雅停+收尾令。</p>
-  </div>
-  <div class="arr">➜</div>
-  <div class="step">
-    <h3>③ 战士执行</h3><span class="gate">门 P3 执行</span>
-    <p>自研 AI 大脑循环：领意图→组上下文（50 张技法卡按意图检索注入+上轮自纠信号）→选模型道→发 JSON 指令→调工具→写账。</p>
-    <p class="law"><b>执法件：</b>每条工具命令过守卫门链（黑名单/范围界外/限速/审批档）；资源三帽（CPU/进程/内存）；心跳+停滞自杀重生交租约；断点续跑按 timeline 末行重建。</p>
-  </div>
-  <div class="arr">➜</div>
-  <div class="step">
-    <h3>④ 机械重放验证</h3><span class="gate">门 P4（发现入卷硬门）</span>
-    <p>每个发现由独立进程原样重放（tanyin-replay，上限 3 次）；重放不过=不算漏洞。</p>
-    <p class="law"><b>执法件：</b>未验证不入卷——SARIF 只收已验证（report_artifacts.py）；验证状态三态=已验证/待验证/已失效（事件溯源最新）；误报防线核心=机器复算，非人肉双签（#17 修订 C 用户裁定）。</p>
-  </div>
-  <div class="arr">➜</div>
-  <div class="step">
-    <h3>⑤ 复测</h3><span class="gate">门 P5 复测</span>
-    <p>对「已修复」候选自动排队复测；复测页已建成待挂载。</p>
-    <p class="law"><b>执法件：</b>复测走 rerun 门（gate reset 重走门序）；账本 supersede 墓碑——翻案留全史，后代行胜。</p>
-  </div>
-  <div class="arr">➜</div>
-  <div class="step">
-    <h3>⑥ 报告签发</h3><span class="gate">门 P5.5 报告→签发 · P6 清理 · P6.0 沉淀</span>
-    <p>报告中心：六节预览、渲染输入哈希钉（同输入同输出）、版本链、签发位（草稿→待签发→已签发锁定）。</p>
-    <p class="law"><b>执法件：</b>渲染纯函数两跑哈希比对；pass.json 绑定逐件复检，篡改=红条不回退；战毕过清理门（P6）清痕——仓净 0 行/容器 0 残留为验收。</p>
-  </div>
+<div class="step">
+<h3>① 八问授权</h3><span class="gate">门 P0 授权确认</span>
+<p>建任务先答八问：授权件（原件+sha256+签署方）/窗口期/范围白名单/紧急联系人/预算/凭据来源/强度档/法律条款。</p>
+<p class="law"><b>执法件：</b>缺一=422 整单拒（server.py:316 八问校验）；授权四件落 goals.tsv；范围落 scope.tsv；凭据真值永不进账本（vault 占位符）。</p>
+</div>
+<div class="arr">➜</div>
+<div class="step">
+<h3>② 意图链</h3><span class="gate">门 P1 范围检查 · P2 预算</span>
+<p>任务拆成一条条意图（intents.tsv），战士领取打租约（时限标记），超时自动回收重授；无可用引擎=blocked 留因，不静默丢。</p>
+<p class="law"><b>执法件：</b>双抢互斥 REJECT；租约超时先落 blocked[lease-expired] 回收行再重授；预算三维（token/请求/时长[$]）触帽=优雅停+收尾令。</p>
+</div>
+<div class="arr">➜</div>
+<div class="step">
+<h3>③ 战士执行</h3><span class="gate">门 P3 执行</span>
+<p>自研 AI 大脑循环：领意图→组上下文（50 张技法卡按意图检索注入+上轮自纠信号）→选模型道→发 JSON 指令→调工具→写账。</p>
+<p class="law"><b>执法件：</b>每条工具命令过守卫门链（黑名单/范围界外/限速/审批档）；资源三帽（CPU/进程/内存）；心跳+停滞自杀重生交租约；断点续跑按 timeline 末行重建。</p>
+</div>
+<div class="arr">➜</div>
+<div class="step">
+<h3>④ 机械重放验证</h3><span class="gate">门 P4（发现入卷硬门）</span>
+<p>每个发现由独立进程原样重放（tanyin-replay，上限 3 次）；重放不过=不算漏洞。</p>
+<p class="law"><b>执法件：</b>未验证不入卷——SARIF 只收已验证（report_artifacts.py）；验证状态三态=已验证/待验证/已失效；误报防线核心=机器复算，非人肉双签（#17 修订 C 用户裁定）。</p>
+</div>
+<div class="arr">➜</div>
+<div class="step">
+<h3>⑤ 复测</h3><span class="gate">门 P5 复测</span>
+<p>对「已修复」候选自动排队复测；复测页已建成待挂载。</p>
+<p class="law"><b>执法件：</b>复测走 rerun 门（gate reset 重走门序）；账本 supersede 墓碑——翻案留全史，后代行胜。</p>
+</div>
+<div class="arr">➜</div>
+<div class="step">
+<h3>⑥ 报告签发</h3><span class="gate">门 P5.5 报告→签发 · P6 清理 · P6.0 沉淀</span>
+<p>报告中心：六节预览、渲染输入哈希钉（同输入同输出）、版本链、签发位（草稿→待签发→已签发锁定）。</p>
+<p class="law"><b>执法件：</b>渲染纯函数两跑哈希比对；pass.json 绑定逐件复检，篡改=红条不回退；战毕过清理门（P6）清痕——仓净 0 行/容器 0 残留为验收。</p>
+</div>
 </div>
 </div>
 
-<h2>九道门（门序单源=core.GATE_ORDER，界面词表同款）</h2>
+<div class="band green"><h2>九道门（门序单源=core.GATE_ORDER，界面词表同款）</h2><p class="bsub">界面叫「阶段」，代码里叫「门」，一回事</p></div>
 <div class="card gatesbar">
 <span class="gp"><b>P0</b> 授权确认</span><span class="gp"><b>P1</b> 范围检查</span><span class="gp"><b>P2</b> 预算</span><span class="gp"><b>P3</b> 执行</span><span class="gp"><b>P4</b> 复测前的发现验证</span><span class="gp"><b>P5</b> 复测</span><span class="gp"><b>P5.5</b> 报告</span><span class="gp"><b>P6</b> 签发</span><span class="gp"><b>P6.0</b> 清理→沉淀</span>
 </div>
-<p class="src" style="margin-top:8px">词表实读自 cli/webui/console.py（_PHASE_LABELS 与 core.GATE_ORDER 强校验，失配即崩——防两份词表漂移）；门文件=phases/P0.md..P6.0.md。界面叫「阶段」，代码里叫「门」，一回事。</p>
+<p class="src" style="margin-top:8px">词表实读自 cli/webui/console.py（_PHASE_LABELS 与 core.GATE_ORDER 强校验，失配即崩——防两份词表漂移）；门文件=phases/P0.md..P6.0.md。</p>
 
-<h2>三条全程律（哪一步都在管）</h2>
+<div class="band red"><h2>三条全程律（哪一步都在管）</h2><p class="bsub">范围·预算·留痕——原典的 RoE/时间窗/证据链三决策，机器版的形态</p></div>
 <div class="card">
-<p class="kv"><b>范围执法：</b>四层拦截（账本/执行通道/宿主 hook/出口代理）+scope 四 kind 匹配+deny-list 黑名单单源；范围外发现走分域异步扩展审批（宪法 #45：门按域分不整体停），全停仅限法务红线（窗口到期/急停/预算硬顶）。</p>
-<p class="kv"><b>预算执法：</b>token/请求/时长（美元）三维预算树；超限=BUDGET-ENFORCE 收尾令重启（HANDOFF F3）；预算触帽时间窗优雅停。</p>
-<p class="kv"><b>留痕执法：</b>每一步（含拒绝本身）写 timeline.tsv 哈希链行——任意历史时刻可回放（演变回放条：帧号=记录行号）、可第三方验真（verify-chain）。</p>
+<p class="kv"><b>范围执法：</b>四层拦截（账本/执行通道/宿主 hook/出口代理）+scope 四 kind 匹配+deny-list 黑名单单源；范围外发现走分域异步扩展审批（宪法 #45：门按域分不整体停），全停仅限法务红线（窗口到期/急停/预算硬顶）。<span class="pillar-note">原典对应：①授权与范围「没写进范围的等于没测」。</span></p>
+<p class="kv"><b>预算执法：</b>token/请求/时长（美元）三维预算树；超限=BUDGET-ENFORCE 收尾令重启（HANDOFF F3）；预算触帽时间窗优雅停。<span class="pillar-note">原典对应：时间模型「授权窗口硬约束，动作要排优先级」。</span></p>
+<p class="kv"><b>留痕执法：</b>每一步（含拒绝本身）写 timeline.tsv 哈希链行——任意历史时刻可回放（演变回放条：帧号=记录行号）、可第三方验真（verify-chain）。<span class="pillar-note">原典对应：证据链「请求响应成对留存＋时间戳＋判定标准」。</span></p>
 </div>
 
-<h2>为什么这样设计（三句）</h2>
+<div class="band purple"><h2>为什么这样设计（三句）</h2><p class="bsub">原典的「响应即真相」→系统的「机械重放」——一条思想线</p></div>
 <div class="card">
 <ol>
-<li><b>误报是生死线</b>（宪法 #43）：所以验证不是「模型说算」而是机械重放——机器复算才算数。</li>
-<li><b>授权是地基</b>：八问缺一不开仗，凭据真值永不进账本——安全产品自己先不能成为泄露源。</li>
-<li><b>越打越强要能证明</b>：打法沉淀成 50 张技法卡按意图注入，评测棘轮管能力回归——这套循环的目标是把「经验」变成「资产」。</li>
+<li><b>误报是生死线</b>（宪法 #43）：所以验证不是「模型说算」而是机械重放——机器复算才算数；原典同款：Repeater 重放不一致=降级「疑似」不得入卷。</li>
+<li><b>授权是地基</b>：八问缺一不开仗，凭据真值永不进账本——安全产品自己先不能成为泄露源；原典同款：没写进范围的等于没测。</li>
+<li><b>越打越强要能证明</b>：打法沉淀成 50 张技法卡按意图注入，评测棘轮管能力回归——这套循环的目标是把「经验」变成「资产」；原典同款：知识飞轮（四门槛入库，开局指纹召回）。</li>
 </ol>
 <p class="src">依据：docs/USER-CHARTER.md 宪法 #43/#45、docs/RATIFICATIONS.md #17 修订 C、cli/warrior/loop.py、phases/PROTOCOL.md。</p>
 </div>
 
 <p class="meta">
-执法件出处=cli/webui/server.py:316、cli/tanyin-guard、cli/ledger/enforce.py、cli/tanyin-replay、phases/、contracts/01-05 实读 ·
-快照 2026-10-18 10:16 · git f844987 ·
-姊妹页：<a href="graphled-architecture.html">全景架构</a>（这些执法件长在哪）· <a href="graphled-roadmap.html">能力阶梯</a>（下一步补什么）·
-旧版交战思维原典（面向人手的八步教程）：<a href="methodology.html">methodology.html</a>，零删改可读。
+原典出处=panorama/methodology.html 全文实读吸收（2026-09-21 定稿·VOL-07-08 方法论·报告交付卷的图谱版；原档零删改留档可溯）· 执法件出处=cli/webui/server.py:316、cli/tanyin-guard、cli/ledger/enforce.py、cli/tanyin-replay、phases/、contracts/01-05 实读 ·
+姊妹页：<a href="graphled-architecture.html">全景架构</a>（执法件长在哪）· <a href="graphled-roadmap.html">能力阶梯</a>（下一步补什么·L0-L5 原典）· <a href="graphled-knowledge.html">知识全景</a>（原典的知识底座三页合一）。
 </p>
 </div>
 </body>
