@@ -1,898 +1,329 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GraphLed 观察面 · 总览</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>驾驶舱 · GraphLed</title>
+<!-- 驾驶舱首页（功能27）·设计唯一正文 docs/design/2026-10-20-cockpit-ui-blueprint.md
+     五秒三问（宪法63律——这页五秒能答的三问）：
+       ① 打出什么漏洞了？→ 问一「验真漏洞榜」（只有机器复放验真+在册的才上榜，
+         每枚带 多严重/在哪/几件证据/详情链接）；
+       ② 正在打什么、有没有事等我？→ 问二「活池」（在途任务+最近动态）+
+         问三「等我拍板」（待审批+求助，按等久了排，同类聚合一票）；
+       ③ 花了多少钱、还剩多少？→ 问四「消费」（token/请求/小时 三条余量条，
+         对 goals 帽三段，80% 预警线）。
+     词表律（宪法62）：屏上只说人话——漏洞/任务/士兵/钥匙/目标/证据。
+     数据单源 /api/v2/cockpit.json（api_v2_cockpit 只读投影，账本真件，
+     零假数；空状态按蓝图说人话，不放空表）。视觉基准 12 级灰阶+单强调色。 -->
 <style>
-  /* ── craft-v09d 皮肤单源（七页同文）：色值只落令牌区，规则区一律 var() ──
-     灰阶 12 级单坡双主题镜像：浅 g1 最浅→g12 最深，深主题同名反向；
-     品牌蓝 #2563EB；语义三元深主题 color-mix 混白提亮（warn 用亮琥珀字面量）；
-     正文=系统无衬线栈（含 PingFang SC），等宽只给数据块（--font-mono）；
-     阴影三档 --shadow-1 卡 / --shadow-2 浮层 / --shadow-3 弹窗；
-     间距 4px 网格（4/8/12/16/20/24/32/48）；字号五档 12/13/15/20/24。 */
-  :root { --g1:#ffffff; --g2:#f6f8fb; --g3:#eef2f7; --g4:#e3e9f2;
-          --g5:#d9e1ec; --g6:#c6d0df; --g7:#a5b1c4; --g8:#8593a8;
-          --g9:#5c6b80; --g10:#46536a; --g11:#2e3949; --g12:#182230;
-          --radius:8px;
-          --font-sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-          --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-          --shadow-1:0 1px 2px color-mix(in srgb, var(--g12) 6%, transparent);
-          --shadow-2:0 4px 12px color-mix(in srgb, var(--g12) 12%, transparent);
-          --shadow-3:0 12px 32px color-mix(in srgb, var(--g12) 20%, transparent);
-          --bg:var(--g2); --card:var(--g1); --ink:var(--g12); --dim:var(--g9);
-          --line:var(--g5); --accent:#2563EB; --accent-ink:var(--g1);
-          --soft:color-mix(in srgb, var(--accent) 8%, var(--card));
-          --ok:#157347; --bad:#d92d20; --warn:#b54708;
-          --idle:var(--g8); --skeleton:var(--g4); }
-  html[data-theme="dark"] { --g1:#182230; --g2:#2e3949; --g3:#46536a;
-          --g4:#5c6b80; --g5:#8593a8; --g6:#a5b1c4; --g7:#c6d0df;
-          --g8:#d9e1ec; --g9:#e3e9f2; --g10:#eef2f7; --g11:#f6f8fb;
-          --g12:#ffffff;
-          --radius:8px;
-          --font-sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-          --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-          --shadow-1:0 1px 2px color-mix(in srgb, var(--g1) 45%, transparent);
-          --shadow-2:0 4px 12px color-mix(in srgb, var(--g1) 55%, transparent);
-          --shadow-3:0 12px 32px color-mix(in srgb, var(--g1) 65%, transparent);
-          --bg:var(--g1); --card:var(--g2); --ink:var(--g12); --dim:var(--g6);
-          --line:var(--g4); --accent:color-mix(in srgb, #2563EB 55%, var(--g12));
-          --accent-ink:var(--g1);
-          --soft:color-mix(in srgb, var(--accent) 12%, var(--card));
-          --ok:color-mix(in srgb, #157347 55%, var(--g12));
-          --bad:#ff7a70;
-          --warn:#f0b429;
-          --idle:var(--g5); --skeleton:var(--g4); }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink);
-         font-family:var(--font-sans); font-size:15px; line-height:1.6;
-         font-variant-numeric:tabular-nums; }
-  a { color:var(--accent); }
-  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-  /* 侧栏骨架（ui-design-v1 冻结）：左三分组 看战况/看战果/管战场
-     + 顶栏（任务切换/主题）+ 窄屏 checkbox 折叠（纯 display 切换，零动效） */
-  .side-check { display:none; }
-  #shell { display:grid; grid-template-columns:190px 1fr; min-height:100vh; }
-  #side { padding:16px 8px; border-right:1px solid var(--line);
-          background:var(--card); }
-  #side .brand { font-size:15px; font-weight:600; letter-spacing:2px;
-                 padding:4px 12px 12px; }
-  .nav-group { margin-bottom:16px; }
-  .nav-group h3 { font-size:12px; color:var(--dim); font-weight:600;
-                  letter-spacing:2px; margin:0 0 4px; padding:0 12px; }
-  #side nav a { display:block; padding:8px 12px; font-size:13px;
-                color:var(--dim); text-decoration:none; white-space:nowrap;
-                border-radius:var(--radius); }
-  #side nav a:hover { color:var(--accent); background:var(--soft); }
-  #side nav a.here { color:var(--accent); background:var(--soft);
-                     font-weight:600; }
-  #topbar { position:sticky; top:0; z-index:20; display:flex;
-            align-items:baseline; flex-wrap:wrap; gap:8px 16px;
-            padding:12px 24px; border-bottom:1px solid var(--line);
-            background:var(--card); box-shadow:var(--shadow-2); }
-  #topbar h1 { font-size:24px; font-weight:700; margin:0; letter-spacing:1px; }
-  .page-sub { flex-basis:100%; margin:0; color:var(--dim); font-size:12px; }
-  #battle-switch, #side-toggle, #theme-toggle { font:inherit; font-size:12px; }
-  #battle-switch { margin-left:auto; padding:4px 8px;
-                   border:1px solid var(--line); border-radius:var(--radius);
-                   background:var(--card); color:var(--ink); }
-  /* v0.9.8 方向盘：顶栏开战钮（品牌实底；零动效预算内——无过渡无动画） */
-  #start-btn { display:inline-flex; align-items:center; gap:8px;
-               padding:4px 16px; border:none; border-radius:var(--radius);
-               background:var(--accent); color:var(--accent-ink);
-               font-size:12px; font-weight:600; text-decoration:none;
-               letter-spacing:1px; }
-  #start-btn svg { flex:none; }
-  #start-btn:hover { background:color-mix(in srgb, var(--accent) 85%, var(--g12)); }
-  /* 待审卡：红点=有待审；列表行=标题+来源行+清理命令（等宽数据块）+批准/拒两钮 */
-  #approval-card .adot { display:inline-block; width:8px; height:8px;
-                         border-radius:50%; background:var(--bad);
-                         margin-left:4px; vertical-align:baseline; }
-  #approval-list { list-style:none; margin:0; padding:0; }
-  #approval-list li { display:flex; align-items:center; gap:12px;
-                      padding:8px 4px;
-                      border-bottom:1px dashed var(--line); }
-  #approval-list li:last-child { border-bottom:none; }
-  .ap-main { flex:1; min-width:0; }
-  .ap-ev { display:block; font-size:13px; font-weight:600; word-break:break-all; }
-  .ap-src { display:block; font-size:12px; color:var(--dim); }
-  .ap-cmd { display:block; font-family:var(--font-mono); font-size:12px;
-            color:var(--dim); word-break:break-all;
-            margin-top:4px; padding:4px 8px;
-            background:var(--g2); border-radius:var(--radius); }
-  .ap-acts { display:flex; gap:8px; flex:none; }
-  #approval-list button { display:inline-flex; align-items:center; gap:4px;
-                          font:inherit; font-size:12px; padding:4px 12px;
-                          border:1px solid var(--line); border-radius:var(--radius);
-                          background:var(--card); color:var(--ink); cursor:pointer; }
-  #approval-list button:hover { border-color:var(--accent); color:var(--accent); }
-  #approval-list button.ap-ok { color:var(--accent-ink);
-                                background:var(--ok); border-color:var(--ok); }
-  #approval-list button.ap-ok:hover { color:var(--accent-ink);
-                                      background:color-mix(in srgb, var(--ok) 85%, var(--g12)); }
-  #approval-list button.ap-no { color:var(--bad); border-color:var(--bad); }
-  #approval-list button.ap-no:hover { background:color-mix(in srgb, var(--bad) 8%, var(--card)); }
-  #approval-list li.done { color:var(--dim); font-size:13px; }
-  /* 空态：插画级（手绘内联 SVG + 两行文案，multica 空列表密度） */
-  .ap-empty { display:flex; flex-direction:column; align-items:center;
-              gap:4px; padding:20px 0 8px; text-align:center; }
-  .ap-empty svg { color:var(--dim); margin-bottom:4px; }
-  .ap-empty-t { font-size:13px; font-weight:600; color:var(--ink); margin:0; }
-  .ap-empty-s { font-size:12px; color:var(--dim); margin:0; }
-  #approval-card .ap-login { font-size:12px; color:var(--dim); }
-  #side-toggle { display:none; padding:4px 12px; cursor:pointer;
-                 border:1px solid var(--line); border-radius:var(--radius);
-                 background:var(--card); color:var(--ink); }
-  #theme-toggle { padding:4px 12px; cursor:pointer;
-                  border:1px solid var(--line); border-radius:var(--radius);
-                  background:var(--card); color:var(--ink); }
-  #theme-toggle:hover { border-color:var(--accent); color:var(--accent); }
-  @media (max-width:920px) {
-    #shell { grid-template-columns:1fr; }
-    #side { display:none; }
-    #side-toggle { display:inline-block; }
-    .side-check:checked ~ #shell #side { display:block; border-right:none;
-                                         border-bottom:1px solid var(--line); }
-  }
-  main { padding:20px 24px; max-width:1200px; }
-  section { background:var(--card); border:1px solid var(--line);
-            border-radius:var(--radius); padding:16px; margin-bottom:16px;
-            box-shadow:var(--shadow-1); }
-  section h2 { font-size:13px; margin:0 0 12px; color:var(--dim);
-               font-weight:600; letter-spacing:1px; }
-  footer { color:var(--dim); font-size:12px; padding:8px 24px 16px; }
-  /* 四态纪律：骨架/加载/空/错误（骨架=静默灰条占位，零动效） */
-  .statebox { min-height:24px; }
-  .state-msg { display:none; margin:4px 0; font-size:12px; color:var(--dim); }
-  .statebox[data-state="loading"] .state-msg { display:block; }
-  .statebox[data-state="empty"] .state-msg { display:block; }
-  .statebox[data-state="error"] .state-msg { display:block; color:var(--bad); }
-  .skeleton { display:none; height:12px; border-radius:calc(var(--radius)/2);
-              background:var(--skeleton); margin:8px 0; }
-  .statebox[data-state="loading"] .skeleton { display:block; }
-  .skeleton.sk-a { width:55%; }
-  .skeleton.sk-b { width:85%; }
-  .skeleton.sk-c { width:40%; }
-  .statebox > .content { display:none; }
-  .statebox[data-state="ready"] > .content { display:block; }
-  /* 状态语义 tone（status.js 单源 tone → 色变量）；徽章=淡彩底+实色字 */
-  .t-ok { color:var(--ok); } .t-bad { color:var(--bad); }
-  .t-warn { color:var(--warn); } .t-idle { color:var(--dim); }
-  .badge { font-size:12px; padding:4px 8px; white-space:nowrap;
-           border-radius:calc(var(--radius)/2);
-           background:color-mix(in srgb, currentColor 12%, var(--card)); }
-  #sse-state { font-size:12px; color:var(--dim); }
-  #sse-state.open { color:var(--ok); }
-  /* 战斗大卡 */
-  main { display:grid; gap:16px; grid-template-columns:2fr 1fr; }
-  #battle-card, #kpi-card, #phases-card, #feed-card { grid-column:1 / -1; }
-  .battle-grid { display:flex; flex-wrap:wrap; gap:12px 32px; }
-  .b-item { display:flex; flex-direction:column; min-width:150px; }
-  .b-k { font-size:12px; color:var(--dim); letter-spacing:1px; }
-  .b-v { font-size:15px; font-weight:600; }
-  /* KPI 可点过滤（悬停=品牌蓝描边环） */
-  #kpi-row { display:flex; flex-wrap:wrap; gap:12px; }
-  .statebox[data-state="loading"] > a.kpi { display:none; }
-  a.kpi { display:flex; flex-direction:column; min-width:110px;
-          padding:8px 16px; border:1px solid var(--line);
-          border-radius:var(--radius); text-decoration:none;
-          box-shadow:var(--shadow-1); transition:box-shadow .15s; }
-  a.kpi:hover { box-shadow:0 0 0 2px var(--accent); }
-  .kpi .kpi-v { font-size:20px; font-weight:600; color:var(--accent); }
-  .kpi .kpi-t { font-size:12px; color:var(--dim); }
-  /* 用户实逛反馈批（2026-10-19）：快入口大按钮+今日战况大数字 */
-  #quick-card, #stats-card { grid-column:1 / -1; }
-  .quick-row { display:flex; flex-wrap:wrap; gap:12px; }
-  a.qbtn { display:flex; flex-direction:column; min-width:132px; padding:12px 20px;
-           border:1px solid var(--line); border-radius:var(--radius);
-           text-decoration:none; box-shadow:var(--shadow-1); }
-  a.qbtn:hover { border-color:var(--accent); }
-  .qbtn .qt { font-size:15px; font-weight:600; color:var(--ink); }
-  .qbtn .qs { font-size:12px; color:var(--dim); }
-  a.qbtn.q-new { background:var(--accent); border-color:var(--accent); }
-  a.qbtn.q-new .qt, a.qbtn.q-new .qs { color:var(--accent-ink); }
-  .statebox[data-state="loading"] > a.stat { display:none; }
-  .stat-row { display:flex; flex-wrap:wrap; gap:12px; }
-  a.stat { display:flex; flex-direction:column; min-width:150px; padding:12px 20px;
-           border:1px solid var(--line); border-radius:var(--radius);
-           text-decoration:none; box-shadow:var(--shadow-1); }
-  a.stat:hover { border-color:var(--accent); }
-  .stat .sv { font-size:24px; font-weight:700; color:var(--accent); }
-  .stat .sl { font-size:12px; color:var(--dim); }
-  /* 阶段进度条（当前步骤呼吸高亮——全站三处动效之一） */
-  #phases { display:grid; grid-template-columns:repeat(3, 1fr);
-            gap:8px 16px; list-style:none; margin:0; padding:0; }
-  #phases li { display:grid; grid-template-columns:12px 1fr auto;
-               align-items:center; column-gap:8px; padding:8px;
-               border-radius:var(--radius); background:var(--bg);
-               border:1px solid var(--line); }
-  #phases .lamp { grid-row:span 2; width:12px; height:12px; border-radius:50%;
-                  background:var(--idle); }
-  #phases li.pass .lamp { background:var(--ok); }
-  #phases li.fail .lamp { background:var(--bad); }
-  #phases li.active .lamp { background:var(--accent);
-                            animation:gate-pulse 1.6s ease-in-out infinite; }
-  #phases .pname { font-size:12px; font-weight:600; }
-  #phases .pstate { font-size:12px; }
-  #phases .gate-track { grid-column:1 / -1; height:8px;
-                        border-radius:calc(var(--radius)/2);
-                        background:var(--soft); overflow:hidden; }
-  #phases .gate-fill { height:100%; width:0; background:var(--accent); }
-  #phases li.fail .gate-fill { background:var(--bad); }
-  .gate-total { height:8px; border-radius:calc(var(--radius)/2);
-                margin-top:12px; }
-  .gate-total .gate-fill { background:var(--ok); }
-  .gate-total-text { margin:8px 0 0; font-size:12px; color:var(--dim); }
-  /* 预算余量（≥80% 预警：条与数值同着 --bad） */
-  .bar-row { margin-bottom:12px; }
-  .bar-row .bar-top { display:flex; justify-content:space-between;
-                      font-size:12px; margin-bottom:4px; }
-  .bar-row .bar-top .left-val { color:var(--accent); }
-  .bar-row .bar-top .left-val.hot { color:var(--bad); font-weight:600; }
-  .bar-track { height:8px; border-radius:calc(var(--radius)/2);
-               background:var(--soft); overflow:hidden; }
-  .bar-fill { height:100%; width:0; background:var(--accent);
-              transition:width .4s; }
-  .bar-fill.hot { background:var(--bad); }
-  /* 最新发现（发现记录流：高危置顶，编号/资产=数据块走等宽） */
-  #latest-list { list-style:none; margin:0; padding:0; }
-  #latest-list li { padding:0; border-bottom:1px dashed var(--line); }
-  #latest-list li:last-child { border-bottom:none; }
-  .lf-link { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:baseline;
-             padding:8px 4px; color:inherit; text-decoration:none;
-             font-size:12px; }
-  .lf-link:hover .lf-title { color:var(--accent); }
-  .lf-id { color:var(--accent); font-family:var(--font-mono); }
-  .lf-title { font-weight:600; }
-  .lf-asset { color:var(--dim); font-family:var(--font-mono); }
-  .lf-st { color:var(--dim); font-size:12px; }
-  .lf-st.n-bad { color:var(--bad); }   /* 非法时间戳⚠标警（热修钉语义） */
-  /* 活动流（账本时间线数据块——等宽留给数据） */
-  #feed { list-style:none; margin:0; padding:0; max-height:440px;
-          overflow-y:auto; font-family:var(--font-mono); font-size:12px;
-          line-height:1.7; }
-  #feed li { padding:4px 8px; border-bottom:1px dashed var(--line);
-             white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #feed .ts { color:var(--dim); }
-  #feed .ts-bad { color:var(--bad); }
-  #feed .actor { color:var(--accent); }
-  #feed .sha8 { color:var(--dim); }
-  @keyframes gate-pulse {
-    0%, 100% { box-shadow:0 0 0 0 var(--card); }
-    50% { box-shadow:0 0 6px 2px var(--accent); }
-  }
-  </style>
-<script src="/status.js"></script>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;position:sticky;top:0;z-index:5}
+#top .brand{color:var(--gc);font-size:14px;font-weight:600;letter-spacing:.5px}
+#top .brand i{font-style:normal;color:var(--acc)}
+#top .bt{color:var(--g8);font-size:12px}
+#top .sp{flex:1}
+#top .lnk{color:var(--g9);font-size:12px}
+.state{display:none}
+.state.on{display:block}
+#st-error .wrap{max-width:640px;margin:10vh auto 0;text-align:center}
+#st-error .box{background:var(--g2);border:1px solid rgba(232,99,90,.45);
+border-radius:8px;padding:30px}
+#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
+#st-error p{color:var(--g8);font-size:12.5px}
+.sk{max-width:1000px;margin:16px auto;padding:0 20px}
+.sk .ln{height:52px;border-radius:8px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+#main{max-width:1080px;margin:0 auto;padding:18px 20px 70px}
+.qhead{display:flex;align-items:baseline;gap:10px;margin:22px 0 10px;flex-wrap:wrap}
+.qhead h2{font-size:16px;color:var(--gc);font-weight:600}
+.qhead h2 b{color:var(--acc);font-weight:600;font-size:13px}
+.qhead .sub{color:var(--g8);font-size:12px}
+.qhead .sp{flex:1}
+.qhead .more{font-size:12px}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:14px 16px}
+.empty{color:var(--g8);font-size:13px;line-height:1.9;padding:8px 2px}
+.empty a{color:var(--info)}
+/* 问一 榜 */
+.vrow{display:flex;align-items:center}
+.vrow:last-child{border-bottom:none}
+.vrow a.whole{color:inherit;display:flex;gap:10px;align-items:center;
+width:100%;text-decoration:none;padding:9px 4px;border-bottom:1px solid var(--g3)}
+.vrow:last-child a.whole{border-bottom:none}
+.vrow a.whole:hover .ti{color:var(--acc)}
+.sev{flex-shrink:0;width:30px;text-align:center;border-radius:4px;
+font-size:12px;font-weight:600;padding:2px 0}
+.sev.h{background:rgba(232,99,90,.16);color:var(--dang)}
+.sev.m{background:rgba(232,179,75,.16);color:var(--warn)}
+.sev.l{background:rgba(90,169,230,.14);color:var(--info)}
+.vrow .t{flex:1;min-width:0}
+.vrow .t .ti{color:var(--gc);font-size:13px;overflow:hidden;
+text-overflow:ellipsis;white-space:nowrap}
+.vrow .t .wh{color:var(--g8);font-size:11.5px;font-family:var(--mono);
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vrow .ev{flex-shrink:0;color:var(--g9);font-size:11px;
+border:1px solid var(--g5);border-radius:3px;padding:1px 6px}
+.vrow .go{flex-shrink:0;color:var(--g7);font-size:13px}
+/* 问二 活池 */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:860px){.cols{grid-template-columns:1fr}}
+.irow{display:flex;gap:8px;align-items:center;padding:7px 4px;
+border-bottom:1px solid var(--g3);font-size:12.5px}
+.irow:last-child{border-bottom:none}
+.irow .st{flex-shrink:0;font-size:11px;border-radius:3px;padding:1px 7px;
+background:var(--g4);color:var(--g9)}
+.irow .tt{flex:1;color:var(--gb);overflow:hidden;text-overflow:ellipsis;
+white-space:nowrap}
+.tl .r{display:flex;gap:10px;padding:6px 4px;border-bottom:1px solid var(--g3)}
+.tl .r:last-child{border-bottom:none}
+.tl .ts{flex-shrink:0;color:var(--g8);font-family:var(--mono);font-size:11px;
+width:146px}
+.tl .tx{color:var(--gb);font-size:12px}
+/* 问三 等我 */
+.wrow{display:flex;gap:10px;align-items:center;padding:9px 4px;
+border-bottom:1px solid var(--g3);font-size:12.5px}
+.wrow:last-child{border-bottom:none}
+.wrow .kind{flex-shrink:0;width:52px;text-align:center;font-size:11px;
+border-radius:3px;padding:2px 0}
+.wrow .kind.ap{background:rgba(232,179,75,.16);color:var(--warn)}
+.wrow .kind.ask{background:rgba(90,169,230,.16);color:var(--info)}
+.wrow .bd{flex:1;min-width:0;color:var(--gc);overflow:hidden;
+text-overflow:ellipsis;white-space:nowrap}
+.wrow .bd small{color:var(--g8);font-family:var(--mono);font-size:11px}
+/* 问四 消费 */
+.brow{padding:10px 4px;border-bottom:1px solid var(--g3)}
+.brow:last-child{border-bottom:none}
+.brow .cap{display:flex;justify-content:space-between;font-size:12px;
+margin-bottom:6px}
+.brow .cap .n{color:var(--gb)}
+.brow .cap .v{color:var(--g8);font-family:var(--mono);font-size:11.5px}
+.bar{position:relative;height:10px;background:var(--g3);border-radius:5px;overflow:hidden}
+.bar .fill{height:100%;background:var(--acc);border-radius:5px}
+.bar .fill.warn{background:var(--warn)}
+.bar .fill.over{background:var(--dang)}
+.bar .line{position:absolute;top:-2px;bottom:-2px;width:2px;
+background:var(--warn);opacity:.8}
+.brow .pct{color:var(--g8);font-size:11px;margin-top:5px;font-family:var(--mono)}
+#foot{max-width:1080px;margin:8px auto 40px;padding:0 20px;color:var(--g8);
+font-size:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+#foot a{color:var(--g9)}
+</style>
 </head>
-<body id="dashboard">
-<input type="checkbox" id="side-check" class="side-check" aria-hidden="true">
-<div id="shell">
-  <aside id="side">
-    <div class="brand">GraphLed</div>
-    <nav>
-      <div class="nav-group">
-        <h3>主入口</h3>
-        <a class="here" href="/">总览</a><a href="/evidence">发现</a><a href="/p/tasks">任务列表</a><a href="/p/new-task">新建任务</a><a href="/p/techniques">知识库</a><a href="/p/broadcast">播报</a><a href="/p/report-center">报告</a>
-      </div>
-      <div class="nav-group">
-        <h3>页面总目</h3>
-        <a href="/activity">动态</a><a href="/session">对话</a><a href="/graph">攻击路线</a><a href="/metrics">战报</a><a href="/coverage">测试覆盖</a><a href="/p/retest">复测</a><a href="/p/approval-center">审批中心</a><a href="/p/asset-registry">资产库</a><a href="/p/assets">测试资产</a><a href="/p/coverage">资产覆盖</a><a href="/p/capability">能力曲线</a><a href="/console">控制台</a><a href="/p/settings">设置</a>
-      </div>
-    </nav>
-  </aside>
-  <div id="main-col">
-    <header id="topbar">
-      <label for="side-check" id="side-toggle">☰ 目录</label>
-      <h1>总览</h1>
-      <p class="page-sub">你在看什么：本次授权渗透测试的整体进展——当前所处阶段、预算余量、最新发现。本页只读，不可修改。</p>
-      <span id="sse-state">实时连接中…</span>
-      <a href="/new" id="start-btn">
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"
-             stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-          <circle cx="8" cy="8" r="5.5"></circle>
-          <path d="M8 .8v3M8 12.2v3M.8 8h3M12.2 8h3"></path>
-          <circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"></circle>
-        </svg>
-        开战</a>
-      <select id="battle-switch" aria-label="切换测试任务（跳到对话页）">
-        <option value="">切换任务…</option>
-      </select>
-      <button id="theme-toggle" type="button">深色</button>
-    </header>
-<main>
-  <section id="quick-card">
-    <h2>快入口 · 你最常去的地方（大按钮直达）</h2>
-    <div class="quick-row">
-      <a class="qbtn q-new" href="/new"><span class="qt">新建任务</span><span class="qs">授权八问，开一场新测试</span></a>
-      <a class="qbtn" href="/p/tasks"><span class="qt">任务列表</span><span class="qs">全部测试任务与进展</span></a>
-      <a class="qbtn" href="/evidence"><span class="qt">发现（漏洞在哪）</span><span class="qs">漏洞清单与证据</span></a>
-      <a class="qbtn" href="/p/techniques"><span class="qt">知识库</span><span class="qs">技法卡打法沉淀</span></a>
-      <a class="qbtn" href="/p/broadcast"><span class="qt">播报</span><span class="qs">执行过程直播与介入</span></a>
-      <a class="qbtn" href="/p/report-center"><span class="qt">报告</span><span class="qs">交付报告中心</span></a>
-    </div>
-  </section>
-  <section id="stats-card">
-    <h2>今日战况 · 大数字（真数实时取，点击跳转）</h2>
-    <div id="stats-box" class="statebox" data-state="loading">
-      <div class="skeleton sk-a"></div>
-      <div class="skeleton sk-b"></div>
-      <p class="state-msg">载入中…</p>
-      <a class="stat" href="/evidence"><span class="sv" id="stat-verified">—</span><span class="sl">已验证发现（真漏洞）</span></a>
-      <a class="stat" href="/p/tasks"><span class="sv" id="stat-tasks">—</span><span class="sl">测试任务</span></a>
-      <a class="stat" href="/p/techniques"><span class="sv" id="stat-kb">—</span><span class="sl">知识库技法卡</span></a>
-      <a class="stat" href="/p/approval-center"><span class="sv" id="stat-approval">—</span><span class="sl">待审批</span></a>
-    </div>
-  </section>
-  <section id="battle-card">
-    <h2>当前任务</h2>
-    <div id="battle" class="statebox" data-state="loading">
-      <div class="skeleton sk-a"></div>
-      <div class="skeleton sk-b"></div>
-      <div class="skeleton sk-c"></div>
-      <p class="state-msg">载入中…</p>
-      <div class="content">
-        <div class="battle-grid">
-          <div class="b-item"><span class="b-k">目标</span><span class="b-v" id="battle-target">—</span></div>
-          <div class="b-item"><span class="b-k">目的</span><span class="b-v" id="battle-objective">—</span></div>
-          <div class="b-item"><span class="b-k">当前阶段</span><span class="b-v" id="battle-phase">—</span></div>
-          <div class="b-item"><span class="b-k">时长</span><span class="b-v" id="battle-duration">—</span></div>
-          <div class="b-item"><span class="b-k">发现</span><span class="b-v" id="battle-findings">—</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section id="kpi-card">
-    <h2>关键指标 · 点击数字跳转对应页面</h2>
-    <div id="kpi-row" class="statebox" data-state="loading">
-      <div class="skeleton sk-a"></div>
-      <div class="skeleton sk-b"></div>
-      <p class="state-msg">载入中…</p>
-      <a class="kpi" href="/coverage#f=empty"><span class="kpi-v" id="kpi-empty">—</span><span class="kpi-t">未测项（查看测试覆盖）</span></a>
-      <a class="kpi" href="/evidence"><span class="kpi-v" id="kpi-cards">—</span><span class="kpi-t">证据总数</span></a>
-      <a class="kpi" href="/evidence#f=reproduced"><span class="kpi-v" id="kpi-reproduced">—</span><span class="kpi-t">已复现（点击筛选）</span></a>
-      <a class="kpi" href="/evidence#f=not-reproduced"><span class="kpi-v" id="kpi-nr">—</span><span class="kpi-t">未复现（点击筛选）</span></a>
-      <a class="kpi" href="/metrics"><span class="kpi-v" id="kpi-battles">—</span><span class="kpi-t">已完成的测试</span></a>
-    </div>
-  </section>
-  <section id="phases-card">
-    <h2>阶段进度（九步） · 当前步骤高亮闪烁</h2>
-    <div id="phases-box" class="statebox" data-state="loading">
-      <div class="skeleton sk-a"></div>
-      <div class="skeleton sk-b"></div>
-      <p class="state-msg">载入中…</p>
-      <div class="content">
-        <ol id="phases"></ol>
-        <div class="gate-track gate-total"><div class="gate-fill" id="gate-total-fill"></div></div>
-        <p class="gate-total-text" id="gate-total-text">整体进度 —/9 步已完成</p>
-      </div>
-    </div>
-  </section>
-  <section id="budget-card">
-    <h2>预算余量 · 用量超 80% 红色预警</h2>
-    <div id="budget-box" class="statebox" data-state="loading">
-      <div class="skeleton sk-a"></div>
-      <div class="skeleton sk-b"></div>
-      <p class="state-msg">载入中…</p>
-      <div class="content"><div id="budget"></div></div>
-    </div>
-  </section>
-  <section id="latest-card">
-    <h2>最新发现 · 按危险等级降序排列 · 点击条目查看对应证据</h2>
-    <div id="latest-findings" class="statebox" data-state="loading">
-      <div class="skeleton sk-a"></div>
-      <div class="skeleton sk-b"></div>
-      <p class="state-msg">载入中…</p>
-      <div class="content"><ul id="latest-list"></ul></div>
-    </div>
-  </section>
-  <section id="approval-card">
-    <h2>待审事项 · 外部操作清理核销<span id="approval-dot" class="adot" hidden></span></h2>
-    <div id="approval-box" class="statebox" data-state="loading">
-      <div class="skeleton sk-a"></div>
-      <p class="state-msg">载入中…</p>
-      <div class="content">
-        <ul id="approval-list"></ul>
-        <div class="ap-empty" id="ap-empty" hidden>
-          <svg width="32" height="32" viewBox="0 0 16 16" fill="none"
-               stroke="currentColor" stroke-width="1" aria-hidden="true">
-            <path d="M2 9.5 8 13l6-3.5"></path>
-            <path d="M2 6.5 8 10l6-3.5L8 3 2 6.5Z"></path>
-          </svg>
-          <p class="ap-empty-t">暂无待审</p>
-          <p class="ap-empty-s">外部操作的清理与核销都已收口——保持这个状态。</p>
-        </div>
-        <p class="ap-login" id="ap-login" hidden>登录后可在此审批：<a href="/login">操作员登录</a></p>
-      </div>
-    </div>
-  </section>
-  <section id="settings">
-    <h2>设置 · 占位（v1.0b 落地）</h2>
-    <p>设置面板属「新建项目」批次（v1.0b）范围，本卡为占位——侧栏「设置」链即锚到此卡。当前观察面全部只读，页面上无可修改的配置。</p>
-  </section>
-  <section id="feed-card">
-    <h2>最新动态 · 实时滚动（最新在前）</h2>
-    <div id="feed-box" class="statebox" data-state="loading">
-      <div class="skeleton sk-a"></div>
-      <div class="skeleton sk-b"></div>
-      <p class="state-msg">载入中…</p>
-      <div class="content"><ul id="feed"></ul></div>
-    </div>
-  </section>
-</main>
-<footer>GraphLed v0.9d · 本页数据全部来自战斗记录，只能看不能改</footer>
-  </div><!-- /main-col -->
-</div><!-- /shell -->
+<body>
+<div id="top">
+  <span class="brand">Graph<i>Led</i> 驾驶舱</span>
+  <span class="bt mono" id="bt-name"></span>
+  <span class="sp"></span>
+  <a class="lnk" href="/p/mission">任务页</a>
+  <a class="lnk" href="/p/inbox">收件箱</a>
+</div>
+<div id="st-loading" class="state on"><div class="sk">
+  <div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div>
+</div></div>
+<div id="st-error" class="state"><div class="wrap"><div class="box">
+  <h3>驾驶舱数据没取到</h3><p id="err-detail" class="mono"></p>
+  <p><a href="/">刷新重试</a> · 数据来自账本真件，不造假数。</p>
+</div></div></div>
+<div id="st-normal" class="state"><div id="main">
+
+  <div class="qhead" id="q1"><h2>① 打出什么漏洞了？ <b id="q1-n"></b></h2>
+    <span class="sub">只有机器复放验真、仍在册的才上榜</span>
+    <span class="sp"></span><a class="more" href="/p/findings">全部漏洞 →</a></div>
+  <div class="pane" id="q1-body"></div>
+
+  <div class="qhead" id="q2"><h2>② 正在打什么？</h2>
+    <span class="sub">在途任务与最近动态</span>
+    <span class="sp"></span><a class="more" href="/p/mission">任务页 →</a></div>
+  <div class="cols">
+    <div class="pane" id="q2-intents"></div>
+    <div class="pane tl" id="q2-recent"></div>
+  </div>
+
+  <div class="qhead" id="q3"><h2>③ 什么在等我？ <b id="q3-n"></b></h2>
+    <span class="sub">待审批 · 求助 · 按等久了排</span>
+    <span class="sp"></span><a class="more" href="/p/inbox">收件箱 →</a></div>
+  <div class="pane" id="q3-body"></div>
+
+  <div class="qhead" id="q4"><h2>④ 花多少钱？</h2>
+    <span class="sub">本仗消耗对预算帽的余量（预警线 80%）</span>
+    <span class="sp"></span><a class="more" href="/p/settings">预算与范围 →</a></div>
+  <div class="pane" id="q4-body"></div>
+
+</div>
+<footer id="foot"><!-- GraphLed 驾驶舱深页目录（旧 22 页不删，收进导航「更多」） -->
+  <span>GraphLed · 深页目录：</span><a href="/p/tasks">任务列表</a><a href="/p/new-task">新建任务</a>
+  <a href="/p/findings">漏洞</a><a href="/p/knowledge">知识库</a>
+  <a href="/p/approval-center">审批中心</a><a href="/p/report-center">报告中心</a>
+  <a href="/metrics">度量</a><a href="/activity">日志</a>
+</footer>
+</div>
+<script src="/static/app.js"></script>
 <script>
 "use strict";
-/* 数据面：/api/state.json（账本快照）+ /api/matrix.json + /api/evidence.json
-   + /api/metrics.json（KPI/战斗卡装配）+ /api/stream（SSE 追尾）；
-   渲染面：纯 DOM + 状态语义走 status.js 单源（TY.*），零框架零 CDN。 */
-
-var FEED_CAP = 200;
-
-function el(tag, cls) {
-  var n = document.createElement(tag);
-  if (cls) { n.className = cls; }
-  return n;
-}
-/* 文本一律 textContent 落节点——账本文本不当 HTML 解析（防注入） */
-
-function setBox(box, stateName, msgText) {
-  TY.setState(box, stateName);
-  var m = box.querySelector(".state-msg");
-  if (m && msgText) { m.textContent = msgText; }
-}
-
-/* —— 主题切换钮（单源逻辑在 status.js） —— */
-/* —— 顶栏任务切换（选项来自 /api/session.json；选中跳对话页） —— */
-var battleSwitch = document.getElementById("battle-switch");
-if (battleSwitch) {
-  fetch("/api/session.json").then(function (r) { return r.json(); })
-    .then(function (doc) {
-      (doc.battles || []).forEach(function (b) {
-        var o = document.createElement("option");
-        o.value = String(b.n);
-        o.textContent = b.id;
-        battleSwitch.appendChild(o);
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s === null || s === undefined ? "" : s)
+      .replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;",
+                 '"': "&quot;", "'": "&#39;" }[c];
       });
-      if (doc.battle && doc.battle.n) { battleSwitch.value = String(doc.battle.n); }
-    }).catch(function () { /* 战例表拉不到：切换器保持占位项 */ });
-  battleSwitch.addEventListener("change", function () {
-    if (this.value) { window.location.href = "/session?battle=" + this.value; }
-  });
-}
-
-var themeBtn = document.getElementById("theme-toggle");
-TY.syncThemeButton(themeBtn);
-themeBtn.addEventListener("click", function () {
-  TY.toggleTheme();
-  TY.syncThemeButton(themeBtn);
-});
-
-/* —— 今日战况大数字（用户实逛反馈批：overview+技法库+待审三源真数） —— */
-(function () {
-  var box = document.getElementById("stats-box");
-  if (!box) { return; }
-  function num(id, v) {
-    var n = document.getElementById(id);
-    if (n) { n.textContent = String(v); }
   }
-  Promise.all([
-    fetch("/api/console/overview.json").then(function (r) { return r.json(); }),
-    fetch("/api/v2/techniques.json").then(function (r) { return r.json(); }),
-    fetch("/api/approval").then(function (r) {
-      return r.ok ? r.json() : { pending: [] };
-    })
-  ]).then(function (xs) {
-    var ov = xs[0] || {}, tech = xs[1] || {}, ap = xs[2] || {};
-    var cards = ov.cards || {};
-    num("stat-verified", cards.verified_findings != null ? cards.verified_findings : 0);
-    num("stat-tasks", (ov.battles || []).length);
-    num("stat-kb", tech.counts ? tech.counts.total : 0);
-    num("stat-approval", (ap.pending || []).length);
-    TY.setState(box, "ready");
-  }).catch(function (err) {
-    TY.setState(box, "error", TY.failText(err));
-  });
-}());
-
-/* —— 战斗大卡 —— */
-function renderBattle(s, ev) {
-  var g = s.goal;
-  var t = document.getElementById("battle-target");
-  var ob = document.getElementById("battle-objective");
-  t.textContent = g ? g.id + " · " + g.target : "（目标信息缺失）";
-  ob.textContent = g ? g.objective : "—";
-  /* 当前阶段：九步里第一步未过的（全过=测试全部完成） */
-  var states = s.phases || {};
-  var cur = null, passed = 0;
-  for (var i = 0; i < TY.NINE_GATES.length; i++) {
-    var gate = TY.NINE_GATES[i];
-    var st = states[gate.id] || "PENDING";
-    if (st === "PASS") { passed += 1; }
-    else if (!cur) { cur = { gate: gate, st: st, at: i }; }
-  }
-  var ph = document.getElementById("battle-phase");
-  if (!cur) {
-    ph.textContent = "九步全部完成（测试已结束）";
-  } else {
-    ph.textContent = (cur.st === "FAIL" ? "受阻于 " : "进行到 ") + cur.gate.id + " " +
-      cur.gate.name + "（第 " + (cur.at + 1) + "/" + TY.NINE_GATES.length + " 步）";
-  }
-  /* 时长=证据观测窗（首证→最新证） */
-  var cards = ev && ev.cards ? ev.cards : [];
-  var ts = [];
-  cards.forEach(function (c) {
-    if (c.observed_at) { ts.push(c.observed_at); }
-  });
-  ts.sort();
-  var du = document.getElementById("battle-duration");
-  if (ts.length >= 2) {
-    var hours = (Date.parse(ts[ts.length - 1]) - Date.parse(ts[0])) / 3600000;
-    du.textContent = (hours < 1 ? Math.round(hours * 60) + " 分钟"
-                                  : Math.round(hours * 10) / 10 + " 小时") +
-                     "（首条证据至最新证据）";
-  } else {
-    du.textContent = "—（证据少于两条）";
-  }
-  /* 发现=挂接证据的去重发现数 */
-  var seen = {};
-  var findings = 0;
-  cards.forEach(function (c) {
-    if (c.linked_finding && !seen[c.linked_finding]) {
-      seen[c.linked_finding] = true;
-      findings += 1;
-    }
-  });
-  document.getElementById("battle-findings").textContent =
-    findings + " 个发现 · " + cards.length + " 条证据";
-  setBox(document.getElementById("battle"), "ready");
-}
-
-/* —— KPI（可点过滤跳转：点数字带 #f= 过滤参跳对应页） —— */
-var KPI_DEFS = [
-  { id: "kpi-empty", href: "/coverage#f=empty", t: "未测项（查看测试覆盖）", v: "—" },
-  { id: "kpi-cards", href: "/evidence", t: "证据总数", v: "—" },
-  { id: "kpi-reproduced", href: "/evidence#f=reproduced", t: "已复现（点击筛选）", v: "—" },
-  { id: "kpi-nr", href: "/evidence#f=not-reproduced", t: "未复现（点击筛选）", v: "—" },
-  { id: "kpi-battles", href: "/metrics", t: "已完成的测试", v: "—" }
-];
-
-function renderKpi(matrix, evidence, metrics) {
-  var row = document.getElementById("kpi-row");
-  var st = matrix && matrix.stats ? matrix.stats : null;
-  var evs = evidence && evidence.stats ? evidence.stats : null;
-  var vals = {
-    "kpi-empty": st ? String(st.empty) : "—",
-    "kpi-cards": evs ? String(evs.cards) : "—",
-    "kpi-reproduced": evs ? String(evs.reproduced) : "—",
-    "kpi-nr": evs ? String(evs.not_reproduced) : "—",
-    "kpi-battles": metrics && metrics.battles ? String(metrics.battles.length) : "—"
-  };
-  row.textContent = "";
-  KPI_DEFS.forEach(function (d) {
-    var a = el("a", "kpi");
-    a.href = d.href;
-    var v = el("span", "kpi-v"); v.textContent = vals[d.id];
-    var t = el("span", "kpi-t"); t.textContent = d.t;
-    a.appendChild(v); a.appendChild(t);
-    row.appendChild(a);
-  });
-  setBox(row, "ready");
-}
-
-/* —— 阶段进度条（九步，状态语义走 TY.GATE_STATE 单源） —— */
-function renderGates(states) {
-  var ol = document.getElementById("phases");
-  ol.textContent = "";
-  var passed = 0, activeAt = -1;
-  TY.NINE_GATES.forEach(function (gate, i) {
-    var st = states[gate.id] || "PENDING";
-    var sem = TY.GATE_STATE[st] || TY.GATE_STATE.PENDING;
-    if (st === "PASS") { passed += 1; }
-    if (activeAt < 0 && st !== "PASS") { activeAt = i; }
-    var li = el("li", st === "PASS" ? "pass" : st === "FAIL" ? "fail" : "pending");
-    if (i === activeAt) { li.className += " active"; }
-    var lamp = el("span", "lamp");
-    var name = el("span", "pname"); name.textContent = gate.id + " " + gate.name;
-    var state = el("span", "pstate t-" + sem.tone); state.textContent = sem.label;
-    var track = el("div", "gate-track");
-    var fill = el("div", "gate-fill" + (st === "FAIL" ? " hot" : ""));
-    fill.style.width = st === "PENDING" ? "2%" : "100%";
-    track.appendChild(fill);
-    li.appendChild(lamp); li.appendChild(name);
-    li.appendChild(state); li.appendChild(track);
-    ol.appendChild(li);
-  });
-  document.getElementById("gate-total-fill").style.width =
-    (passed / TY.NINE_GATES.length * 100).toFixed(1) + "%";
-  document.getElementById("gate-total-text").textContent =
-    "整体进度 " + passed + "/" + TY.NINE_GATES.length + " 步已完成";
-  setBox(document.getElementById("phases-box"), "ready");
-}
-
-/* —— 预算余量（≥80% 预警：条与数值同着 --bad） —— */
-function renderBudget(budget) {
-  var box = document.getElementById("budget");
-  box.textContent = "";
-  var keys = Object.keys(budget);
-  if (!keys.length) {
-    setBox(document.getElementById("budget-box"), "empty",
-           "暂无预算数据（目标信息未包含预算）");
-    return;
-  }
-  keys.forEach(function (k) {
-    var d = budget[k];
-    var row = el("div", "bar-row");
-    var top = el("div", "bar-top");
-    var label = el("span"); label.textContent = k;
-    var val = el("span", "left-val");
-    val.textContent = "余 " + Math.round(d.left * 100) / 100 +
-                      " / " + Math.round(d.limit * 100) / 100;
-    top.appendChild(label); top.appendChild(val);
-    var track = el("div", "bar-track");
-    var fill = el("div", "bar-fill");
-    var pct = d.limit > 0 ? Math.min(100, d.used / d.limit * 100) : 0;
-    fill.style.width = pct.toFixed(1) + "%";
-    if (pct >= 80) { fill.className = "bar-fill hot"; val.className = "left-val hot"; }
-    track.appendChild(fill);
-    row.appendChild(top); row.appendChild(track);
-    box.appendChild(row);
-  });
-  setBox(document.getElementById("budget-box"), "ready");
-}
-
-/* —— 最新发现（finding-stream-priority 规格：发现条目聚合 + severity 徽章
-   + 高危置顶 + 可点跳证据卡 /evidence#f=<发现号> 锚定） —— */
-var SEV_ORDER = { "高": 0, "中": 1, "低": 2 };   /* 高危置顶；未评severity沉底 */
-var SEV_TONE = { "高": "bad", "中": "warn", "低": "idle" };
-
-function severityBadge(impact) {
-  var tone = SEV_TONE[impact];
-  var b = el("span", "badge" + (tone ? " t-" + tone : ""));
-  b.textContent = impact === "高" ? "高危" : impact === "中" ? "中危"
-    : impact === "低" ? "低危" : "未评级";
-  return b;
-}
-
-function renderLatest(ev) {
-  var box = document.getElementById("latest-findings");
-  var list = document.getElementById("latest-list");
-  list.textContent = "";
-  var byFinding = {};
-  (ev && ev.cards ? ev.cards : []).forEach(function (c) {
-    if (!c.linked_finding) { return; }           /* 未挂发现的证据不进发现流 */
-    var f = byFinding[c.linked_finding] ||
-      (byFinding[c.linked_finding] = { fid: c.linked_finding, title: "",
-                                       impact: "", status: "", asset: "",
-                                       at: "", n: 0 });
-    if (!f.title && c.finding_title) { f.title = c.finding_title; }
-    if (!f.impact && c.finding_impact) { f.impact = c.finding_impact; }
-    if (!f.status && c.finding_status) { f.status = c.finding_status; }
-    if (!f.asset && c.finding_asset) { f.asset = c.finding_asset; }
-    if (c.observed_at && (!f.at || c.observed_at > f.at)) { f.at = c.observed_at; }
-    f.n += 1;
-  });
-  var items = Object.keys(byFinding).map(function (k) { return byFinding[k]; });
-  items.sort(function (a, b) {                    /* 高危置顶，同级新在前 */
-    var sa = SEV_ORDER[a.impact], sb = SEV_ORDER[b.impact];
-    if (sa === undefined) { sa = 9; }
-    if (sb === undefined) { sb = 9; }
-    if (sa !== sb) { return sa - sb; }
-    return a.at < b.at ? 1 : (a.at > b.at ? -1 : 0);
-  });
-  if (!items.length) {
-    setBox(box, "empty", "暂无发现——产生新发现后按危险等级降序排列");
-    return;
-  }
-  items.slice(0, 8).forEach(function (f) {
-    var li = el("li");
-    var a = el("a", "lf-link");
-    a.href = "/evidence#f=" + f.fid;
-    a.appendChild(severityBadge(f.impact));
-    var id = el("span", "lf-id");
-    id.textContent = "发现 #" + String(f.fid).replace(/^FD-/, "");
-    a.appendChild(id);
-    var t = el("span", "lf-title"); t.textContent = f.title || "（无标题）";
-    a.appendChild(t);
-    if (f.asset) {
-      var asp = el("span", "lf-asset"); asp.textContent = f.asset;
-      a.appendChild(asp);
-    }
-    var st = el("span", "lf-st");
-    /* 热修(2026-10-16): 账本存在非法时间戳实据(timeline:427 14:89——E2-S3 自报时钟能绕格式),
-       页面诚实标警不裸出;投影律: 不篡改不隐藏,⚠+原文 */
-    var atTxt = f.at || "";
-    var atBad = atTxt && !/^\d{4}-\d{2}-\d{2}T(\d{2}):([0-5]\d)(:[0-5]\d)?/.test(atTxt);
-    if (atBad) { st.className = "lf-st n-bad"; atTxt = "⚠时间戳非法:" + atTxt + " "; }
-    st.textContent = atTxt + (f.status ? " · " + f.status : "") + " · " + f.n + " 条证据";
-    a.appendChild(st);
-    li.appendChild(a);
-    list.appendChild(li);
-  });
-  setBox(box, "ready");
-}
-
-/* —— 拉取装配 —— */
-var lastState = null, lastEvidence = null;
-
-function refreshState() {
-  fetch("/api/state.json").then(function (r) { return r.json(); })
-    .then(function (s) {
-      lastState = s;
-      renderGates(s.phases || {});
-      renderBudget(s.budget || {});
-      if (lastEvidence) { renderBattle(s, lastEvidence); }
-      var feedBox = document.getElementById("feed-box");
-      if (s.events && s.events.length &&
-          !document.getElementById("feed").children.length) {
-        s.events.slice().reverse().forEach(function (ev) {
-          document.getElementById("feed").insertBefore(feedRow(ev),
-            document.getElementById("feed").firstChild);
-        });
-        setBox(feedBox, "ready");
-      } else if (!s.events || !s.events.length) {
-        if (!document.getElementById("feed").children.length) {
-          setBox(feedBox, "empty", "暂无动态（无记录）");
-        }
-      }
-    })
-    .catch(function (e) {
-      setBox(document.getElementById("phases-box"), "error", TY.failText(e));
-      setBox(document.getElementById("budget-box"), "error", TY.failText(e));
+  function show(id) {
+    ["st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === id);
     });
-}
+  }
+  function sevCls(imp) { return imp === "高" ? "h" : imp === "中" ? "m" : "l"; }
+  function fmtN(n) {                                   // 335000 → 33.5万
+    n = Number(n) || 0;
+    if (n >= 1e8) { return (n / 1e8).toFixed(2) + "亿"; }
+    if (n >= 1e4) { return (n / 1e4).toFixed(1) + "万"; }
+    return String(Math.round(n * 100) / 100);
+  }
+  function qs() { return new URLSearchParams(window.location.search); }
+  function battleQS() {
+    var b = qs().get("battle");
+    return b ? "&battle=" + encodeURIComponent(b) : "";
+  }
 
-function refreshKpi() {
-  Promise.all([
-    fetch("/api/matrix.json").then(function (r) { return r.json(); }),
-    fetch("/api/evidence.json").then(function (r) { return r.json(); }),
-    fetch("/api/metrics.json").then(function (r) { return r.json(); })
-      .catch(function () { return null; })       /* 战例可有可无——缺了 KPI 显 — */
-  ]).then(function (xs) {
-    lastEvidence = xs[1];
-    renderKpi(xs[0], xs[1], xs[2]);
-    renderLatest(xs[1]);
-    if (lastState) { renderBattle(lastState, xs[1]); }
-  }).catch(function (e) {
-    TY.setState(document.getElementById("kpi-row"), "error", TY.failText(e));
-    setBox(document.getElementById("latest-findings"), "error", TY.failText(e));
-  });
-}
-
-/* —— 活动流（SSE 追尾 + 非法时间戳防御） —— */
-function tsValid(s) {
-  /* 严格 ISO-8601 UTC 校验：形状正则 + Date 可解析 + 分量回程比对
-     （时间线数据侧坏行——如 14:89:00Z——渲染侧降级，账本冻结不动）。 */
-  if (typeof s !== "string") { return false; }
-  var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?Z$/.exec(s);
-  if (!m) { return false; }
-  var d = new Date(s);
-  if (isNaN(d.getTime())) { return false; }
-  return d.getUTCFullYear() === +m[1] && (d.getUTCMonth() + 1) === +m[2] &&
-         d.getUTCDate() === +m[3] && d.getUTCHours() === +m[4] &&
-         d.getUTCMinutes() === +m[5] && d.getUTCSeconds() === +m[6];
-}
-
-function feedRow(ev) {
-  var li = el("li");
-  var bad = !tsValid(ev.ts);
-  var ts = el("span", bad ? "ts ts-bad" : "ts");
-  ts.textContent = ev.ts + (bad ? " ⚠ " : " ");
-  var actor = el("span", "actor"); actor.textContent = ev.actor + " ";
-  var body = el("span");
-  body.textContent = "[" + (ev.phase || "-") + "] " + ev.event + " ";
-  var sha = el("span", "sha8"); sha.textContent = ev.sha8 ? "#" + ev.sha8 : "";
-  li.appendChild(ts); li.appendChild(actor);
-  li.appendChild(body); li.appendChild(sha);
-  return li;
-}
-
-var feed = document.getElementById("feed");
-var es = new EventSource('/api/stream');
-var badge = document.getElementById("sse-state");
-es.onopen = function () { badge.textContent = "实时连接正常"; badge.className = "open"; };
-es.onerror = function () { badge.textContent = "实时连接断开，自动重连中…"; badge.className = ""; };
-es.onmessage = function (e) {
-  var ev;
-  try { ev = JSON.parse(e.data); } catch (err) { return; }
-  feed.insertBefore(feedRow(ev), feed.firstChild);
-  while (feed.children.length > FEED_CAP) { feed.removeChild(feed.lastChild); }
-  setBox(document.getElementById("feed-box"), "ready");
-};
-
-refreshState();
-refreshKpi();
-setInterval(refreshState, 5000);
-setInterval(refreshKpi, 10000);
-
-/* —— v0.9.8 方向盘：待审卡（读 /api/approval 须会话；未登录收敛为登录提示，
-   不打扰只读浏览）。条目=尚未核销也未豁免的外部操作；决定须持钥签名回传。 —— */
-(function () {
-  var box = document.getElementById("approval-box");
-  var list = document.getElementById("approval-list");
-  var dot = document.getElementById("approval-dot");
-  var loginHint = document.getElementById("ap-login");
-  if (!box) { return; }
-  function st(s, msg) { TY.setState(box, s, msg); }
-  fetch("/api/approval").then(function (r) {
-    if (r.status === 401) {
-      dot.hidden = true;
-      loginHint.hidden = false;
-      st("empty", "审批须操作员登录（只读浏览不受影响）");
-      return null;
-    }
-    return r.json();
-  }).then(function (doc) {
-    if (!doc) { return; }
-    var pend = doc.pending || [];
-    var emptyBox = document.getElementById("ap-empty");
-    if (!pend.length) {
-      dot.hidden = true;
-      if (doc.key_configured) {
-        st("ready");
-        emptyBox.hidden = false;              /* 插画级空态 */
-      } else {
-        st("empty", "暂无待审事项（审批密钥未配置，无法提交决定）");
-      }
+  function renderQ1(p) {
+    var q1 = p.q1_vulns;
+    $("q1-n").textContent = q1.total ? "（" + q1.total + " 枚验真在册）" : "";
+    if (!q1.total) {
+      $("q1-body").innerHTML = '<div class="empty">还没有验真在册的漏洞——' +
+        "士兵报上来的每一枚都要机器复放验真才上榜。" +
+        '<a href="/p/mission">看正在打什么</a></div>';
       return;
     }
-    dot.hidden = false;
-    pend.forEach(function (p) {
-      var li = document.createElement("li");
-      var main = document.createElement("div");
-      main.className = "ap-main";
-      var ev = document.createElement("span");          /* 标题 */
-      ev.className = "ap-ev";
-      ev.textContent = p.event || "";
-      var src = document.createElement("span");         /* 来源+时间 */
-      src.className = "ap-src";
-      src.textContent = "来源 时间线行 " + p.row + " · " + (p.ts || "时间未记");
-      main.appendChild(ev);
-      main.appendChild(src);
-      if (p.revert_cmd) {
-        var cmd = document.createElement("code");       /* 清理命令=等宽数据块 */
-        cmd.className = "ap-cmd";
-        cmd.textContent = p.revert_cmd;
-        main.appendChild(cmd);
-      }
-      var acts = document.createElement("div");
-      acts.className = "ap-acts";
-      var bOk = document.createElement("button");
-      bOk.type = "button"; bOk.className = "ap-ok"; bOk.textContent = "批准";
-      var bRj = document.createElement("button");
-      bRj.type = "button"; bRj.className = "ap-no"; bRj.textContent = "拒绝";
-      function decide(d, btn) {
-        bOk.disabled = bRj.disabled = true;
-        fetch("/api/approval", {
-          method: "POST",
-          headers: { "Content-Type": "application/json",
-                    "X-Requested-With": "XMLHttpRequest" },
-          body: JSON.stringify({ row: p.row, decision: d,
-                                 _approval_sig: p._approval_sig })
-        }).then(function (r) {
-          if (r.status === 401) { window.location.href = "/login"; return null; }
-          return r.json();
-        }).then(function (j) {
-          if (j && j.ok) {
-            li.className = "done";
-            li.textContent = "已" + (d === "approved" ? "批准" : "拒绝") +
-              "（留痕行 " + j.timeline_row + "）";
-          } else {
-            bOk.disabled = bRj.disabled = false;
-            alert((j && j.error) || "提交被拒");
-          }
-        }).catch(function (e) { alert("网络错误：" + String(e)); });
-      }
-      bOk.addEventListener("click", function () { decide("approved", bOk); });
-      bRj.addEventListener("click", function () { decide("rejected", bRj); });
-      li.appendChild(main);
-      acts.appendChild(bOk); acts.appendChild(bRj);
-      li.appendChild(acts);
-      list.appendChild(li);
+    var h = q1.top.map(function (v) {
+      return '<div class="vrow"><a class="whole" href="' + esc(v.detail_url) +
+        battleQS() + '"><span class="sev ' + sevCls(v.impact) + '">' +
+        esc(v.impact) + "</span>" +
+        '<span class="t"><span class="ti">' + esc(v.title) + "</span>" +
+        '<span class="wh">' + esc(v.where) + "</span></span>" +
+        '<span class="ev">证据 ' + v.evidence.length + " 件</span>" +
+        '<span class="go">›</span></a></div>';
+    }).join("");
+    if (q1.total > q1.top.length) {
+      h += '<div class="empty" style="text-align:center">还有 ' +
+        (q1.total - q1.top.length) + ' 枚——<a href="/p/findings">看全部</a></div>';
+    }
+    $("q1-body").innerHTML = h;
+  }
+
+  function renderQ2(p) {
+    var q2 = p.q2_live;
+    if (!q2.intents.length) {
+      $("q2-intents").innerHTML = '<div class="empty">活池是空的——还没派活。' +
+        '<a href="/p/new-task">说「打 xxx」开第一仗</a></div>';
+    } else {
+      $("q2-intents").innerHTML = q2.intents.map(function (it) {
+        return '<div class="irow"><span class="st">' + esc(it.status_zh) +
+          '</span><span class="tt" title="' + esc(it.id + " " + it.title) +
+          '">' + esc(it.title) + "</span></div>";
+      }).join("");
+    }
+    if (!q2.recent.length) {
+      $("q2-recent").innerHTML = '<div class="empty">还没有动态——开仗后每一步都进战账。</div>';
+    } else {
+      $("q2-recent").innerHTML = q2.recent.map(function (r) {
+        return '<div class="r"><span class="ts">' + esc(r.ts) + "</span>" +
+          '<span class="tx">' + esc(r.text) + "</span></div>";
+      }).join("");
+    }
+  }
+
+  function renderQ3(p) {
+    var q3 = p.q3_waiting, rows = [];
+    $("q3-n").textContent = (q3.counts.pending_approvals + q3.counts.asks)
+      ? "（" + q3.counts.pending_approvals + " 待审批 · " +
+        q3.counts.asks + " 求助）" : "";
+    q3.pending_approvals.forEach(function (a) {
+      rows.push('<div class="wrow"><span class="kind ap">待审批</span>' +
+        '<span class="bd">' + esc(a.event) + " <small>" + esc(a.battle) +
+        " 第" + a.row + "行 · " + esc(a.ts) + "</small></span>" +
+        '<a href="/p/inbox">去审 →</a></div>');
     });
-    st("ready");
-  }).catch(function (e) { st("error", TY.failText(e)); });
+    q3.asks.forEach(function (a) {
+      rows.push('<div class="wrow"><span class="kind ask">求助</span>' +
+        '<span class="bd">' + esc(a.question) + " <small>" + esc(a.battle) +
+        '</small></span><a href="/p/inbox">去看 →</a></div>');
+    });
+    if (!rows.length) {
+      $("q3-body").innerHTML =
+        '<div class="empty">没有等你拍板的事——士兵各就各位，有事会来敲收件箱。</div>';
+      return;
+    }
+    $("q3-body").innerHTML = rows.join("");
+  }
+
+  function renderQ4(p) {
+    var q4 = p.q4_budget, g = q4.goal;
+    var names = { tokens: "token", requests: "请求次数", hours: "时长（小时）" };
+    var hasCap = q4.cap.tokens > 0 || q4.cap.requests > 0 || q4.cap.hours > 0;
+    var h = "";
+    if (g.target) {
+      h += '<div class="empty" style="padding-top:2px">本仗：<b style="color:var(--gc)">' +
+        esc(g.target) + "</b> · " + esc(g.objective || "") +
+        (q4.rows_n ? " · 已记 " + q4.rows_n + " 笔消耗" : "") + "</div>";
+    }
+    if (!q4.rows_n && !hasCap) {
+      h += '<div class="empty">还没花过钱——开仗后这里按笔记账，对着预算帽给余量条。</div>';
+      $("q4-body").innerHTML = h;
+      return;
+    }
+    ["tokens", "requests", "hours"].forEach(function (k) {
+      var cap = q4.cap[k], used = q4.used[k], pct = q4.pct[k];
+      var fill = Math.min(100, pct || 0);
+      var cls = q4.over[k] ? "over" : (pct >= q4.warn_pct ? "warn" : "");
+      h += '<div class="brow"><div class="cap"><span class="n">' + names[k] +
+        '</span><span class="v">' + fmtN(used) + " / " +
+        (cap > 0 ? fmtN(cap) : "未设帽") + "</span></div>" +
+        '<div class="bar">' + (cap > 0
+          ? '<div class="fill ' + cls + '" style="width:' + fill + '%"></div>' +
+            '<div class="line" style="left:' + q4.warn_pct + '%"></div>'
+          : "") + "</div>" +
+        '<div class="pct">' + (cap > 0
+          ? "已用 " + pct + "% · 余 " + Math.max(0, 100 - pct) + "%" +
+            (q4.over[k] ? " · 已超帽！" : "")
+          : "未设帽（按授权窗口自律）") + "</div></div>";
+    });
+    if (q4.used.usd) {
+      h += '<div class="pct" style="padding:6px 4px">折合美元 ' +
+        q4.used.usd + " 元</div>";
+    }
+    $("q4-body").innerHTML = h;
+  }
+
+  function render(p) {
+    $("bt-name").textContent = (p.battle && p.battle.id) ? p.battle.id : "";
+    renderQ1(p); renderQ2(p); renderQ3(p); renderQ4(p);
+    show("st-normal");
+  }
+
+  var b = qs().get("battle");
+  fetch("/api/v2/cockpit.json" + (b ? "?battle=" + encodeURIComponent(b) : ""),
+        { headers: { "X-Requested-With": "cockpit" } })
+    .then(function (r) {
+      if (!r.ok) { throw new Error("HTTP " + r.status); }
+      return r.json();
+    })
+    .then(render)
+    .catch(function (e) {
+      $("err-detail").textContent = String(e && e.message ? e.message : e);
+      show("st-error");
+    });
 })();
 </script>
 </body>

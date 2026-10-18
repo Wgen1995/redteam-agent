@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>收件箱 · GraphLed</title>
+<!-- 驾驶舱·收件箱（功能27）·正文 docs/design/2026-10-20-cockpit-ui-blueprint.md
+     五秒三问（宪法63律——这页五秒能答的三问）：
+       ① 几件事在等我？→ 顶部计数：待审批 N · 求助 N（跨仗扫，按等久了排）；
+       ② 每件是什么、多急？→ 待审批卡（事件/命令/仗名/账本行号）与求助卡
+         （士兵的问题原话），最久的排最上；
+       ③ 同类能不能一票处理？→ 批量同类聚合组：同工具的待审聚成一票，
+         展开看明细，去审批中心逐笔批（本页只读，动作在审批面）。
+     词表律（宪法62）：屏上只说人话。数据单源 /api/v2/cockpit-inbox.json
+     （账本真件推导，零假数）。零框架零 CDN。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;position:sticky;top:0;z-index:5}
+#top .brand{color:var(--gc);font-size:14px;font-weight:600}
+#top .sp{flex:1}
+#top .lnk{color:var(--g9);font-size:12px}
+.state{display:none}.state.on{display:block}
+.sk{max-width:1000px;margin:16px auto;padding:0 20px}
+.sk .ln{height:52px;border-radius:8px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+#st-error .wrap{max-width:640px;margin:10vh auto 0;text-align:center}
+#st-error .box{background:var(--g2);border:1px solid rgba(232,99,90,.45);
+border-radius:8px;padding:30px}
+#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
+#st-error p{color:var(--g8);font-size:12.5px}
+#main{max-width:1080px;margin:0 auto;padding:16px 20px 70px}
+.ccards{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.cc{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:10px 14px;min-width:110px}
+.cc .v{font-family:var(--mono);font-size:22px;color:var(--gc)}
+.cc .v.warn{color:var(--warn)}.cc .v.acc{color:var(--acc)}
+.cc .k{color:var(--g8);font-size:11px;margin-top:2px}
+h2.qh{font-size:15px;color:var(--gc);margin:20px 0 8px;font-weight:600}
+h2.qh small{color:var(--g8);font-size:12px;font-weight:400;margin-left:8px}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:12px 14px}
+.gcard{background:var(--g2);border:1px solid var(--g4);border-radius:8px;
+margin-bottom:10px;overflow:hidden}
+.gcard .hd{display:flex;gap:10px;align-items:center;padding:11px 14px;cursor:pointer}
+.gcard .hd:hover{background:var(--g3)}
+.gcard .lb{flex:1;color:var(--gc);font-size:13px;font-family:var(--mono)}
+.gcard .n{flex-shrink:0;color:var(--warn);font-size:12px;
+border:1px solid var(--g6);border-radius:3px;padding:1px 8px}
+.gcard .go{flex-shrink:0;color:var(--g7)}
+.gcard .bd{display:none;border-top:1px solid var(--g3);background:var(--g1)}
+.gcard.open .bd{display:block}
+.arow{display:flex;gap:10px;align-items:flex-start;padding:9px 14px;
+border-bottom:1px solid var(--g3);font-size:12.5px}
+.arow:last-child{border-bottom:none}
+.arow .ev{flex:1;min-width:0}
+.arow .ev .e1{color:var(--gc)}
+.arow .ev .e2{color:var(--g8);font-family:var(--mono);font-size:11px;
+word-break:break-all;margin-top:2px}
+.arow .bt{flex-shrink:0;color:var(--g8);font-size:11px;text-align:right}
+.arow .bt b{display:block;color:var(--warn);font-weight:500}
+.askrow{display:flex;gap:10px;align-items:center;padding:11px 14px;
+border-bottom:1px solid var(--g3);font-size:13px}
+.askrow:last-child{border-bottom:none}
+.askrow .kind{flex-shrink:0;width:48px;text-align:center;font-size:11px;
+border-radius:3px;padding:2px 0;background:rgba(90,169,230,.16);color:var(--info)}
+.askrow .q{flex:1;color:var(--gc)}
+.askrow .q small{display:block;color:var(--g8);font-size:11px;
+font-family:var(--mono);margin-top:2px}
+.empty{color:var(--g8);font-size:13px;line-height:1.9;padding:8px 2px}
+.empty a{color:var(--info)}
+.ops{padding:10px 14px;font-size:12px;border-top:1px solid var(--g3)}
+</style>
+</head>
+<body>
+<div id="top">
+  <span class="brand">收件箱</span>
+  <span class="sp"></span>
+  <a class="lnk" href="/p/approval-center">审批中心（动作面）</a>
+  <a class="lnk" href="/">← 驾驶舱</a>
+</div>
+<div id="st-loading" class="state on"><div class="sk">
+  <div class="ln"></div><div class="ln"></div><div class="ln"></div>
+</div></div>
+<div id="st-error" class="state"><div class="wrap"><div class="box">
+  <h3>收件箱数据没取到</h3><p id="err-detail" class="mono"></p>
+  <p><a href="/p/inbox">刷新重试</a></p>
+</div></div></div>
+<div id="st-normal" class="state"><div id="main">
+
+  <div class="ccards" id="cnt"></div>
+
+  <h2 class="qh">批量同类聚合 <small>同工具的待审一票看全——逐笔批去审批中心</small></h2>
+  <div id="groups"></div>
+
+  <h2 class="qh">待审批明细 <small id="ap-sub"></small></h2>
+  <div class="pane" id="approvals"></div>
+
+  <h2 class="qh">求助 <small id="ask-sub"></small></h2>
+  <div class="pane" id="asks"></div>
+
+</div></div>
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s === null || s === undefined ? "" : s)
+      .replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;",
+                 '"': "&quot;", "'": "&#39;" }[c];
+      });
+  }
+  function show(id) {
+    ["st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === id);
+    });
+  }
+
+  function groupCard(g, pendings) {
+    var members = pendings.filter(function (a) {
+      return a.group_label === g.label;
+    });
+    var rows = members.map(function (a) {
+      return '<div class="arow"><div class="ev">' +
+        '<div class="e1">' + esc(a.event) + "</div>" +
+        '<div class="e2">' + esc(a.command) + "</div></div>" +
+        '<div class="bt">' + esc(a.battle) + "<b>第 " + a.row + " 行</b>" +
+        esc((a.ts || "").slice(0, 16)) + "</div></div>";
+    }).join("");
+    return '<div class="gcard"><div class="hd">' +
+      '<span class="lb">' + esc(g.label) + "</span>" +
+      '<span class="n">' + g.count + " 笔同类</span>" +
+      '<span class="go">▸</span></div>' +
+      '<div class="bd">' + rows +
+      '<div class="ops">去<a href="/p/approval-center">审批中心</a>逐笔批——' +
+      "批准/拒绝都会进战账留痕。</div></div></div>";
+  }
+
+  function render(p) {
+    var c = p.counts;
+    $("cnt").innerHTML =
+      ch(c.pending_approvals, "待审批", c.pending_approvals ? "warn" : "") +
+      ch(c.asks, "求助", c.asks ? "warn" : "") +
+      ch(c.groups, "同类聚合组", "");
+
+    $("groups").innerHTML = (p.groups || []).length
+      ? p.groups.map(function (g) { return groupCard(g, p.pending_approvals); })
+        .join("")
+      : (c.pending_approvals
+        ? "" : '<div class="empty">没有可聚合的待审——每笔都独一无二。</div>');
+
+    $("ap-sub").textContent = c.pending_approvals
+      ? "共 " + c.pending_approvals + " 笔 · 按等久了排" : "";
+    $("approvals").innerHTML = c.pending_approvals
+      ? p.pending_approvals.map(function (a) {
+          return '<div class="arow"><div class="ev">' +
+            '<div class="e1">' + esc(a.event) + "</div>" +
+            '<div class="e2">' + esc(a.command) + "</div></div>" +
+            '<div class="bt">' + esc(a.battle) + "<b>第 " + a.row + " 行</b>" +
+            esc((a.ts || "").slice(0, 16)) + "</div></div>";
+        }).join("") + '<div class="ops" style="border:none;padding:10px 2px 0">' +
+        '审批动作在<a href="/p/approval-center">审批中心</a>（本页只读不改账）。</div>'
+      : '<div class="empty">没有待审批——该拦的都拦着，该放的都放着。</div>';
+
+    $("ask-sub").textContent = c.asks ? "士兵等人回话" : "";
+    $("asks").innerHTML = c.asks
+      ? p.asks.map(function (a) {
+          return '<div class="askrow"><span class="kind">求助</span>' +
+            '<span class="q">' + esc(a.question) + "<small>" + esc(a.battle) +
+            "</small></span>" +
+            '<a href="/p/broadcast">去答复（播报/介入）→</a></div>';
+        }).join("")
+      : '<div class="empty">没有求助——士兵没卡住，卡住会写求助件到这里。</div>';
+  }
+  function ch(v, k, cls) {
+    return '<div class="cc"><div class="v ' + (cls || "") + '">' + esc(v) +
+      '</div><div class="k">' + esc(k) + "</div></div>";
+  }
+
+  fetch("/api/v2/cockpit-inbox.json",
+        { headers: { "X-Requested-With": "cockpit" } })
+    .then(function (r) {
+      if (!r.ok) { throw new Error("HTTP " + r.status); }
+      return r.json();
+    })
+    .then(function (p) {
+      render(p);
+      show("st-normal");
+      Array.prototype.forEach.call(
+        document.querySelectorAll(".gcard .hd"), function (hd) {
+          hd.onclick = function () { hd.parentElement.classList.toggle("open"); };
+        });
+    })
+    .catch(function (e) {
+      $("err-detail").textContent = String(e && e.message ? e.message : e);
+      show("st-error");
+    });
+
+  try { nav.push({ id: "inbox", label: "收件箱", group: "收件箱" }); } catch (e) {}
+})();
+</script>
+</body>
+</html>

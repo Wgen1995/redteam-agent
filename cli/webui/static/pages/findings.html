@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漏洞 · GraphLed</title>
+<!-- 驾驶舱·漏洞页（功能27）·正文 docs/design/2026-10-20-cockpit-ui-blueprint.md
+     五秒三问（宪法63律——这页五秒能答的三问）：
+       ① 哪些漏洞验真在册、多严重？→ 榜首三色严重度+计数签（同 id 后代胜，
+         被翻案的不冒充在册）；
+       ② 每个漏洞的证据是什么、多久没复验了？→ 展开证据袋：证据卡引用+
+         角色（证实/对照）+版本（同组多次捕获 v1/v2/v3）+「上次验真 X 天前」；
+       ③ 哪些排着队待复验？→ 每枚带待复验队列位（复验队列单源队序），
+         一键去复测页。
+     词表律（宪法62）：屏上只说人话——证据不说黑话缩写。数据单源
+     /api/v2/cockpit-findings.json（账本真件投影，零假数）。零框架零 CDN。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;position:sticky;top:0;z-index:5}
+#top .brand{color:var(--gc);font-size:14px;font-weight:600}
+#top .sp{flex:1}
+#top .lnk{color:var(--g9);font-size:12px}
+#top input{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:5px 10px;border-radius:4px;font-size:12px;width:200px}
+.state{display:none}.state.on{display:block}
+.sk{max-width:1000px;margin:16px auto;padding:0 20px}
+.sk .ln{height:52px;border-radius:8px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+#st-error .wrap{max-width:640px;margin:10vh auto 0;text-align:center}
+#st-error .box{background:var(--g2);border:1px solid rgba(232,99,90,.45);
+border-radius:8px;padding:30px}
+#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
+#st-error p{color:var(--g8);font-size:12.5px}
+#main{max-width:1080px;margin:0 auto;padding:16px 20px 70px}
+.ccards{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.cc{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:10px 14px;min-width:110px}
+.cc .v{font-family:var(--mono);font-size:22px;color:var(--gc)}
+.cc .v.acc{color:var(--acc)}.cc .v.warn{color:var(--warn)}
+.cc .k{color:var(--g8);font-size:11px;margin-top:2px}
+#filters{display:flex;gap:6px;margin:6px 0 12px;flex-wrap:wrap}
+#filters button{background:var(--g2);border:1px solid var(--g4);color:var(--g9);
+padding:5px 14px;border-radius:4px;cursor:pointer;font-size:12.5px}
+#filters button.on{background:var(--g3);color:var(--acc);border-color:var(--acc2)}
+.fcard{background:var(--g2);border:1px solid var(--g4);border-radius:8px;
+margin-bottom:10px;overflow:hidden}
+.fcard .hd{display:flex;gap:10px;align-items:center;padding:11px 14px;cursor:pointer}
+.fcard .hd:hover{background:var(--g3)}
+.sev{flex-shrink:0;width:30px;text-align:center;border-radius:4px;font-size:12px;
+font-weight:600;padding:2px 0}
+.sev.h{background:rgba(232,99,90,.16);color:var(--dang)}
+.sev.m{background:rgba(232,179,75,.16);color:var(--warn)}
+.sev.l{background:rgba(90,169,230,.14);color:var(--info)}
+.fcard .ti{flex:1;min-width:0;color:var(--gc);font-size:13px;overflow:hidden;
+text-overflow:ellipsis;white-space:nowrap}
+.tag{flex-shrink:0;display:inline-block;padding:1px 8px;border-radius:3px;
+font-size:11px}
+.t-ok{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-may{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-no{background:var(--g4);color:var(--g9)}
+.t-out{background:rgba(232,99,90,.12);color:var(--dang)}
+.fcard .last{flex-shrink:0;color:var(--g8);font-size:11.5px}
+.fcard .qpos{flex-shrink:0;color:var(--warn);font-size:11px;
+border:1px solid var(--g6);border-radius:3px;padding:1px 7px}
+.fcard .evn{flex-shrink:0;color:var(--g9);font-size:11px;font-family:var(--mono)}
+.fcard .bd{display:none;border-top:1px solid var(--g3);padding:12px 14px;
+background:var(--g1)}
+.fcard.open .bd{display:block}
+.kv{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;font-size:12px;color:var(--g8)}
+.kv b{color:var(--ga);font-weight:500}
+/* 证据袋 */
+.bag{display:grid;gap:8px}
+.evcard{background:var(--g2);border:1px solid var(--g4);border-radius:6px;padding:10px 12px}
+.evcard .h{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.evcard .role{font-size:11px;border-radius:3px;padding:1px 8px}
+.role.main{background:rgba(61,220,151,.14);color:var(--acc)}
+.role.ctrl{background:rgba(90,169,230,.16);color:var(--info)}
+.evcard .id{font-family:var(--mono);font-size:11.5px;color:var(--ga)}
+.evcard .ti{color:var(--gc);font-size:12.5px;flex:1;min-width:120px}
+.vers{display:flex;gap:8px;flex-wrap:wrap}
+.ver{background:var(--g3);border:1px solid var(--g5);border-radius:4px;
+padding:4px 9px;font-size:11px;color:var(--g9)}
+.ver b{color:var(--gb);font-family:var(--mono);font-weight:500;margin-right:6px}
+.ops{display:flex;gap:10px;margin-top:10px;font-size:12px}
+.empty{color:var(--g8);font-size:13px;line-height:1.9;padding:8px 2px}
+.empty a{color:var(--info)}
+</style>
+</head>
+<body>
+<div id="top">
+  <span class="brand">漏洞</span>
+  <span class="sp"></span>
+  <input id="f-search" type="search" placeholder="搜漏洞名 / 编号 / 目标位置">
+  <a class="lnk" href="/">← 驾驶舱</a>
+</div>
+<div id="st-loading" class="state on"><div class="sk">
+  <div class="ln"></div><div class="ln"></div><div class="ln"></div>
+</div></div>
+<div id="st-error" class="state"><div class="wrap"><div class="box">
+  <h3>漏洞数据没取到</h3><p id="err-detail" class="mono"></p>
+  <p><a href="/p/findings">刷新重试</a></p>
+</div></div></div>
+<div id="st-normal" class="state"><div id="main">
+  <div class="ccards" id="cnt"></div>
+  <div id="filters">
+    <button data-f="all" class="on">全部在册</button>
+    <button data-f="verified">验真在册</button>
+    <button data-f="queue">待复验队列</button>
+    <button data-f="suspect">未验真/疑似</button>
+  </div>
+  <div id="list"></div>
+</div></div>
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s === null || s === undefined ? "" : s)
+      .replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;",
+                 '"': "&quot;", "'": "&#39;" }[c];
+      });
+  }
+  function show(id) {
+    ["st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === id);
+    });
+  }
+  function sevCls(i) { return i === "高" ? "h" : i === "中" ? "m" : "l"; }
+  var ITEMS = [], FILTER = "all", QUERY = "";
+
+  var STATUS_ZH = { verified: ["已验真", "t-ok"], suspected: ["疑似", "t-may"],
+                    ruled_out: ["已排除", "t-no"],
+                    superseded: ["已被翻案", "t-out"], active: ["在册", "t-ok"] };
+
+  function statusTags(f) {
+    var out = [];
+    var e = STATUS_ZH[f.exploitation_status];
+    if (e) { out.push('<span class="tag ' + e[1] + '">' + e[0] + "</span>"); }
+    else { out.push('<span class="tag t-no">' + esc(f.exploitation_status || "—") + "</span>"); }
+    if (f.status === "superseded") {
+      out.push('<span class="tag t-out">已被翻案</span>');
+    }
+    return out.join("");
+  }
+
+  function card(f) {
+    var bag = f.evidence_bag.map(function (ev) {
+      var vers = (ev.versions || []).map(function (v) {
+        return '<span class="ver"><b>v' + v.ver + "</b>" + esc(v.artifact || "无工件") +
+          " · " + esc((v.observed_at || "").slice(0, 16)) + "</span>";
+      }).join("");
+      return '<div class="evcard"><div class="h">' +
+        '<span class="role ' + (ev.role === "对照" ? "ctrl" : "main") + '">' +
+        esc(ev.role) + '</span><span class="id">' + esc(ev.ev_id) + "</span>" +
+        '<span class="ti">' + esc(ev.title || "") + "</span></div>" +
+        '<div class="vers">' + (vers || '<span class="ver">未登记版本</span>') +
+        "</div></div>";
+    }).join("");
+    return '<div class="fcard" data-id="' + esc(f.id) + '">' +
+      '<div class="hd"><span class="sev ' + sevCls(f.impact) + '">' + esc(f.impact) +
+      '</span><span class="ti">' + esc(f.title) + "</span>" +
+      statusTags(f) +
+      (f.queue_pos ? '<span class="qpos" title="待复验队列位">复验位 #' +
+        f.queue_pos + "</span>" : "") +
+      '<span class="last">上次验真 ' + esc(f.since_last_text) + "</span>" +
+      '<span class="evn">证据 ' + f.evidence_bag.length + " 件</span></div>" +
+      '<div class="bd">' +
+      '<div class="kv"><span>编号 <b class="mono">' + esc(f.id) + "</b></span>" +
+      "<span>发现于 <b>" + esc((f.created || "").slice(0, 16)) + "</b></span>" +
+      "<span>置信 <b>" + esc(f.confidence || "—") + "</b></span>" +
+      (f.last_verified_at
+        ? "<span>上次验真于 <b>" + esc(f.last_verified_at.slice(0, 16)) + "</b></span>"
+        : "<span>从未复验</span>") + "</div>" +
+      '<div style="font-size:12px;color:var(--g8);margin-bottom:8px">证据袋' +
+      "（每件证据：角色 + 捕获版本；点详情看原始报文）</div>" +
+      '<div class="bag">' + (bag ||
+        '<div class="empty">这枚还没挂证据——没有证据不算数。</div>') + "</div>" +
+      '<div class="ops"><a href="' + esc(f.detail_url) + '">详情与重放史 →</a>' +
+      '<a href="' + esc(f.retest_url) + '">复测队列 →</a></div>' +
+      "</div></div>";
+  }
+
+  function visible(f) {
+    if (QUERY) {
+      var hay = (f.id + " " + f.title + " " +
+                 f.evidence_bag.map(function (e) { return e.ev_id; }).join(" "))
+        .toLowerCase();
+      if (hay.indexOf(QUERY) < 0) { return false; }
+    }
+    var verified = f.exploitation_status === "verified" && f.status === "active";
+    if (FILTER === "verified") { return verified; }
+    if (FILTER === "queue") { return f.queue_pos > 0; }
+    if (FILTER === "suspect") { return !verified && f.status === "active"; }
+    return f.status === "active";                    // 全部在册（默认）
+  }
+
+  function render() {
+    var c = COUNTS;
+    $("cnt").innerHTML =
+      ch(c.total, "在册漏洞（同 id 终态）", "") +
+      ch(c.verified_active, "验真在册", "acc") +
+      ch(c.raw_rows, "战账原始行（含翻案史）", "") +
+      ch(ITEMS.filter(function (f) { return f.queue_pos > 0; }).length,
+         "可复验（挂证据）", "warn");
+    var rows = ITEMS.filter(visible);
+    $("list").innerHTML = rows.length
+      ? rows.slice(0, 60).map(card).join("") +
+        (rows.length > 60 ? '<div class="empty" style="text-align:center">先示 60 枚，共 ' +
+          rows.length + " 枚——用搜索收窄。</div>" : "")
+      : '<div class="empty">这个口径下没有漏洞——换个筛选，或去' +
+        '<a href="/p/mission">任务页</a>看正在打什么。</div>';
+    Array.prototype.forEach.call(
+      document.querySelectorAll(".fcard .hd"), function (hd) {
+        hd.onclick = function () {
+          hd.parentElement.classList.toggle("open");
+        };
+      });
+  }
+  function ch(v, k, cls) {
+    return '<div class="cc"><div class="v ' + (cls || "") + '">' + esc(v) +
+      '</div><div class="k">' + esc(k) + "</div></div>";
+  }
+
+  Array.prototype.forEach.call(
+    document.querySelectorAll("#filters button"), function (btn) {
+      btn.onclick = function () {
+        Array.prototype.forEach.call(
+          document.querySelectorAll("#filters button"), function (b2) {
+            b2.classList.toggle("on", b2 === btn);
+          });
+        FILTER = btn.dataset.f;
+        render();
+      };
+    });
+  $("f-search").oninput = function () {
+    QUERY = this.value.trim().toLowerCase();
+    render();
+  };
+
+  var COUNTS = { total: 0, verified_active: 0, raw_rows: 0 };
+  var b = new URLSearchParams(window.location.search).get("battle");
+  fetch("/api/v2/cockpit-findings.json" +
+        (b ? "?battle=" + encodeURIComponent(b) : ""),
+        { headers: { "X-Requested-With": "cockpit" } })
+    .then(function (r) {
+      if (!r.ok) { throw new Error("HTTP " + r.status); }
+      return r.json();
+    })
+    .then(function (p) {
+      ITEMS = p.items || [];
+      COUNTS = p.counts || COUNTS;
+      render();
+      show("st-normal");
+    })
+    .catch(function (e) {
+      $("err-detail").textContent = String(e && e.message ? e.message : e);
+      show("st-error");
+    });
+
+  try { nav.push({ id: "findings", label: "漏洞", group: "漏洞" }); } catch (e) {}
+})();
+</script>
+</body>
+</html>

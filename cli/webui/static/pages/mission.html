@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>任务 · GraphLed</title>
+<!-- 驾驶舱·任务页（功能27）·正文 docs/design/2026-10-20-cockpit-ui-blueprint.md
+     五秒三问（宪法63律——这页五秒能答的三问）：
+       ① 这仗在打什么？→ 顶栏仗名+概况签（目标/授权/预算帽一句话）；
+       ② 打到哪了？→ 活池签（在途任务+最近动态）· 地图签（面覆盖概况）·
+         漏洞签（验真漏洞榜前枚+进全部）；
+       ③ 花了多少、谁说了什么？→ 消费签（余量条）· 日志签（战账动态）+
+         页首会话流（对话流=一等导航对象，可 @引用 跳转）。
+     词表律（宪法62）：屏上只说人话。数据单源 /api/v2/cockpit.json +
+     既有 /api/v2/tasks.json（仗切换）+ /api/v2/coverage.json（地图签，
+     取不到=诚实空不硬造）。零框架零 CDN。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;position:sticky;top:0;z-index:5}
+#top .brand{color:var(--gc);font-size:14px;font-weight:600}
+#top select{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+border-radius:4px;padding:4px 8px;font-size:12px}
+#top .sp{flex:1}
+#top .lnk{color:var(--g9);font-size:12px}
+.state{display:none}.state.on{display:block}
+.sk{max-width:1000px;margin:16px auto;padding:0 20px}
+.sk .ln{height:52px;border-radius:8px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+#st-error .wrap{max-width:640px;margin:10vh auto 0;text-align:center}
+#st-error .box{background:var(--g2);border:1px solid rgba(232,99,90,.45);
+border-radius:8px;padding:30px}
+#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
+#st-error p{color:var(--g8);font-size:12.5px}
+#main{max-width:1080px;margin:0 auto;padding:16px 20px 70px}
+h2.qh{font-size:15px;color:var(--gc);margin:18px 0 8px;font-weight:600}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:14px 16px}
+.empty{color:var(--g8);font-size:13px;line-height:1.9;padding:6px 2px}
+.empty a{color:var(--info)}
+/* 会话流：双气泡（士兵叙述左/操作员右） */
+#flow{display:flex;flex-direction:column;gap:8px;max-height:340px;overflow-y:auto}
+.bub{max-width:78%;border-radius:8px;padding:8px 12px;font-size:12.5px;line-height:1.6}
+.bub.agent{align-self:flex-start;background:var(--g3);border:1px solid var(--g5);
+color:var(--gb)}
+.bub.operator{align-self:flex-end;background:rgba(61,220,151,.10);
+border:1px solid rgba(61,220,151,.35);color:var(--gc)}
+.bub .meta{display:block;color:var(--g8);font-size:10.5px;font-family:var(--mono);
+margin-bottom:3px}
+/* 签栏 */
+#tabs{display:flex;gap:6px;margin:16px 0 12px;flex-wrap:wrap}
+#tabs button{background:var(--g2);border:1px solid var(--g4);color:var(--g9);
+padding:6px 16px;border-radius:4px;cursor:pointer;font-size:13px}
+#tabs button.on{background:var(--g3);color:var(--acc);border-color:var(--acc2)}
+.tabpane{display:none}.tabpane.on{display:block}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:8px 12px;font-size:13px}
+.kv .k{color:var(--g8)}.kv .v{color:var(--gc)}
+.kv .v.mono{font-size:12px}
+.ccards{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.cc{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:10px 14px;min-width:110px}
+.cc .v{font-family:var(--mono);font-size:22px;color:var(--gc)}
+.cc .v.acc{color:var(--acc)}.cc .v.warn{color:var(--warn)}.cc .v.dang{color:var(--dang)}
+.cc .k{color:var(--g8);font-size:11px;margin-top:2px}
+.irow{display:flex;gap:8px;align-items:center;padding:7px 4px;
+border-bottom:1px solid var(--g3);font-size:12.5px}
+.irow:last-child{border-bottom:none}
+.irow .st{flex-shrink:0;font-size:11px;border-radius:3px;padding:1px 7px;
+background:var(--g4);color:var(--g9)}
+.irow .tt{flex:1;color:var(--gb);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl .r{display:flex;gap:10px;padding:6px 4px;border-bottom:1px solid var(--g3)}
+.tl .r:last-child{border-bottom:none}
+.tl .ts{flex-shrink:0;color:var(--g8);font-family:var(--mono);font-size:11px;width:146px}
+.tl .tx{color:var(--gb);font-size:12px}
+.vrow a.whole{color:inherit;display:flex;gap:10px;align-items:center;
+width:100%;text-decoration:none;padding:9px 4px;border-bottom:1px solid var(--g3)}
+.vrow:last-child a.whole{border-bottom:none}
+.vrow a.whole:hover .ti{color:var(--acc)}
+.sev{flex-shrink:0;width:30px;text-align:center;border-radius:4px;font-size:12px;
+font-weight:600;padding:2px 0}
+.sev.h{background:rgba(232,99,90,.16);color:var(--dang)}
+.sev.m{background:rgba(232,179,75,.16);color:var(--warn)}
+.sev.l{background:rgba(90,169,230,.14);color:var(--info)}
+.vrow .t{flex:1;min-width:0}
+.vrow .t .ti{color:var(--gc);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vrow .t .wh{color:var(--g8);font-size:11.5px;font-family:var(--mono)}
+.brow{padding:10px 4px;border-bottom:1px solid var(--g3)}
+.brow:last-child{border-bottom:none}
+.brow .cap{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.brow .cap .n{color:var(--gb)}
+.brow .cap .v{color:var(--g8);font-family:var(--mono);font-size:11.5px}
+.bar{position:relative;height:10px;background:var(--g3);border-radius:5px;overflow:hidden}
+.bar .fill{height:100%;background:var(--acc);border-radius:5px}
+.bar .fill.warn{background:var(--warn)}
+.bar .fill.over{background:var(--dang)}
+.bar .line{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--warn);opacity:.8}
+.brow .pct{color:var(--g8);font-size:11px;margin-top:5px;font-family:var(--mono)}
+.mapcell{display:flex;gap:10px;flex-wrap:wrap}
+.mcell{background:var(--g3);border:1px solid var(--g5);border-radius:6px;
+padding:8px 12px;min-width:96px}
+.mcell .v{font-family:var(--mono);font-size:18px;color:var(--gc)}
+.mcell .v.ok{color:var(--acc)}.mcell .v.warn{color:var(--warn)}
+.mcell .k{color:var(--g8);font-size:11px}
+</style>
+</head>
+<body>
+<div id="top">
+  <span class="brand">任务</span>
+  <select id="battle-sel" title="选择要看的仗"></select>
+  <span class="sp"></span>
+  <a class="lnk" href="/">← 驾驶舱</a>
+  <a class="lnk" href="/p/broadcast">播报/介入</a>
+</div>
+<div id="st-loading" class="state on"><div class="sk">
+  <div class="ln"></div><div class="ln"></div><div class="ln"></div>
+</div></div>
+<div id="st-error" class="state"><div class="wrap"><div class="box">
+  <h3>任务数据没取到</h3><p id="err-detail" class="mono"></p>
+  <p><a href="/p/mission">刷新重试</a></p>
+</div></div></div>
+<div id="st-normal" class="state"><div id="main">
+
+  <h2 class="qh">会话流 <span style="color:var(--g8);font-size:12px;font-weight:400">
+    士兵叙述与操作员指令同流——<a href="/session">全程回放</a> ·
+    <a href="/p/anchored-chat">挂锚对话</a></span></h2>
+  <div class="pane" id="flow"></div>
+
+  <div id="tabs">
+    <button data-t="overview" class="on">概况</button>
+    <button data-t="map">地图</button>
+    <button data-t="live">活池</button>
+    <button data-t="vuln">漏洞</button>
+    <button data-t="cost">消费</button>
+    <button data-t="log">日志</button>
+  </div>
+
+  <div class="tabpane on" id="tp-overview">
+    <div class="ccards" id="ov-cards"></div>
+    <div class="pane"><div class="kv" id="ov-kv"></div></div>
+  </div>
+  <div class="tabpane" id="tp-map">
+    <div class="pane" id="map-body"></div>
+  </div>
+  <div class="tabpane" id="tp-live">
+    <div class="pane" id="live-intents" style="margin-bottom:12px"></div>
+    <div class="pane tl" id="live-recent"></div>
+  </div>
+  <div class="tabpane" id="tp-vuln"><div class="pane" id="vuln-body"></div></div>
+  <div class="tabpane" id="tp-cost"><div class="pane" id="cost-body"></div></div>
+  <div class="tabpane" id="tp-log"><div class="pane tl" id="log-body"></div></div>
+
+</div></div>
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s === null || s === undefined ? "" : s)
+      .replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;",
+                 '"': "&quot;", "'": "&#39;" }[c];
+      });
+  }
+  function show(id) {
+    ["st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === id);
+    });
+  }
+  function sevCls(i) { return i === "高" ? "h" : i === "中" ? "m" : "l"; }
+  function fmtN(n) {
+    n = Number(n) || 0;
+    if (n >= 1e8) { return (n / 1e8).toFixed(2) + "亿"; }
+    if (n >= 1e4) { return (n / 1e4).toFixed(1) + "万"; }
+    return String(Math.round(n * 100) / 100);
+  }
+  function qs() { return new URLSearchParams(window.location.search); }
+  var P = null;
+
+  /* 会话流：最近动态=双气泡（CLI 叙述=士兵，battle-say=操作员） */
+  function renderFlow(p) {
+    var q2 = p.q2_live;
+    if (!q2.recent.length) {
+      $("flow").innerHTML = '<div class="empty">还没有会话——开仗后士兵每一步叙述都在这里，' +
+        '<a href="/p/new-task">说「打 xxx」开第一仗</a>。</div>';
+      return;
+    }
+    $("flow").innerHTML = q2.recent.map(function (r) {
+      var op = /battle-say/.test(r.event || "");
+      return '<div class="bub ' + (op ? "operator" : "agent") + '">' +
+        '<span class="meta">' + esc(r.ts) + " · " + esc(r.actor) + "</span>" +
+        esc(r.text) + "</div>";
+    }).join("");
+  }
+
+  function renderOverview(p) {
+    var q4 = p.q4_budget, g = q4.goal, q1 = p.q1_vulns;
+    $("ov-cards").innerHTML =
+      cc(q1.total, "验真漏洞（在册）", "acc") +
+      cc(p.q2_live.inflight_count, "在途任务", "") +
+      cc(p.q3_waiting.counts.pending_approvals, "待我审批",
+         p.q3_waiting.counts.pending_approvals ? "warn" : "") +
+      cc(p.q3_waiting.counts.asks, "求助",
+         p.q3_waiting.counts.asks ? "warn" : "") +
+      cc(q4.pct.tokens + "%", "token 已用",
+         q4.over.tokens ? "dang" : (q4.pct.tokens >= 80 ? "warn" : ""));
+    $("ov-kv").innerHTML =
+      kv("目标", g.target || "—") +
+      kv("任务说明", g.objective || "—") +
+      kv("预算帽（token;请求;小时）", g.budget_raw || "未设") +
+      kv("记账笔数", q4.rows_n) +
+      kv("仗", (p.battle && p.battle.id) || "—");
+  }
+  function cc(v, k, cls) {
+    return '<div class="cc"><div class="v ' + (cls || "") + '">' + esc(v) +
+      '</div><div class="k">' + esc(k) + "</div></div>";
+  }
+  function kv(k, v) {
+    return '<div class="k">' + esc(k) + '</div><div class="v">' + esc(v) + "</div>";
+  }
+
+  function renderMap() {
+    var b = qs().get("battle");
+    fetch("/api/v2/coverage.json" + (b ? "?battle=" + encodeURIComponent(b) : ""),
+          { headers: { "X-Requested-With": "cockpit" } })
+      .then(function (r) { if (!r.ok) { throw new Error("HTTP " + r.status); }
+                           return r.json(); })
+      .then(function (c) {
+        var st = (c && c.counts) || null;
+        if (!st) {
+          $("map-body").innerHTML = '<div class="empty">地图数据还没铺开——' +
+            '资产面显形后这里给覆盖概况。<a href="/p/coverage">资产覆盖</a> · ' +
+            '<a href="/console/graph">攻击链路</a></div>';
+          return;
+        }
+        var tested = st.tested || 0, untested = st.untested || 0;
+        var total = tested + untested;
+        $("map-body").innerHTML =
+          '<div class="mapcell">' +
+          mcell(tested, "已覆盖面", "ok") +
+          mcell(untested, "未测面", untested ? "warn" : "") +
+          mcell(total ? Math.round(tested * 100 / total) + "%" : "—", "覆盖率", "") +
+          "</div>" +
+          '<div class="empty" style="margin-top:10px">格阵与原因归档见' +
+          '<a href="/p/coverage">资产覆盖页</a>；链路图见<a href="/console/graph">攻击链路</a>。</div>';
+      })
+      .catch(function () {
+        $("map-body").innerHTML = '<div class="empty">地图投影暂时取不到——' +
+          '不硬造。<a href="/p/coverage">去资产覆盖页看</a>。</div>';
+      });
+  }
+  function mcell(v, k, cls) {
+    return '<div class="mcell"><div class="v ' + (cls || "") + '">' + esc(v) +
+      '</div><div class="k">' + esc(k) + "</div></div>";
+  }
+
+  function renderLive(p) {
+    var q2 = p.q2_live;
+    if (!q2.intents.length) {
+      $("live-intents").innerHTML = '<div class="empty">活池空——没有在途任务。</div>';
+    } else {
+      $("live-intents").innerHTML = q2.intents.map(function (it) {
+        return '<div class="irow"><span class="st">' + esc(it.status_zh) +
+          '</span><span class="tt" title="' + esc(it.id + " " + it.title) +
+          '">' + esc(it.title) + "</span></div>";
+      }).join("");
+    }
+    $("live-recent").innerHTML = tlRows(q2.recent) ||
+      '<div class="empty">还没有动态。</div>';
+  }
+
+  function tlRows(rows) {
+    return rows.map(function (r) {
+      return '<div class="r"><span class="ts">' + esc(r.ts) + "</span>" +
+        '<span class="tx">' + esc(r.text) + "</span></div>";
+    }).join("");
+  }
+
+  function renderVuln(p) {
+    var q1 = p.q1_vulns;
+    if (!q1.total) {
+      $("vuln-body").innerHTML = '<div class="empty">还没有验真在册的漏洞。' +
+        '<a href="/p/findings">漏洞页</a>会给出全部与证据袋。</div>';
+      return;
+    }
+    $("vuln-body").innerHTML =
+      q1.top.map(function (v) {
+        return '<div class="vrow"><a class="whole" href="' + esc(v.detail_url) +
+          '"><span class="sev ' + sevCls(v.impact) + '">' + esc(v.impact) +
+          '</span><span class="t"><span class="ti">' + esc(v.title) +
+          '</span><span class="wh">' + esc(v.where) + "</span></span>" +
+          '<span class="go">›</span></a></div>';
+      }).join("") +
+      '<div class="empty" style="text-align:center">共 ' + q1.total +
+      ' 枚验真在册——<a href="/p/findings">全部与证据袋 →</a></div>';
+  }
+
+  function renderCost(p) {
+    var q4 = p.q4_budget;
+    var names = { tokens: "token", requests: "请求次数", hours: "时长（小时）" };
+    var hasCap = q4.cap.tokens > 0 || q4.cap.requests > 0 || q4.cap.hours > 0;
+    if (!q4.rows_n && !hasCap) {
+      $("cost-body").innerHTML = '<div class="empty">还没花过钱——按笔记账，对预算帽给余量条。</div>';
+      return;
+    }
+    var h = "";
+    ["tokens", "requests", "hours"].forEach(function (k) {
+      var cap = q4.cap[k], used = q4.used[k], pct = q4.pct[k];
+      var cls = q4.over[k] ? "over" : (pct >= q4.warn_pct ? "warn" : "");
+      h += '<div class="brow"><div class="cap"><span class="n">' + names[k] +
+        '</span><span class="v">' + fmtN(used) + " / " +
+        (cap > 0 ? fmtN(cap) : "未设帽") + "</span></div>" +
+        '<div class="bar">' + (cap > 0
+          ? '<div class="fill ' + cls + '" style="width:' + Math.min(100, pct) +
+            '%"></div><div class="line" style="left:' + q4.warn_pct + '%"></div>'
+          : "") + '</div><div class="pct">' + (cap > 0
+          ? "已用 " + pct + "% · 余 " + Math.max(0, 100 - pct) + "%"
+          : "未设帽") + "</div></div>";
+    });
+    $("cost-body").innerHTML = h;
+  }
+
+  function renderLog(p) {
+    $("log-body").innerHTML = tlRows(p.q2_live.recent) ||
+      '<div class="empty">还没有日志——每一步都会进战账，防篡改可回放。' +
+      '<a href="/activity">实时日志</a></div>';
+  }
+
+  /* 仗切换：tasks.json 供仗单（缺=只显示当前仗名） */
+  function wireSwitcher(p) {
+    fetch("/api/v2/tasks.json", { headers: { "X-Requested-With": "cockpit" } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (t) {
+        var sel = $("battle-sel");
+        var list = (t && t.battles) || [];
+        if (!list.length) {
+          sel.innerHTML = "<option>" +
+            esc((p.battle && p.battle.id) || "当前账本") + "</option>";
+          return;
+        }
+        var cur = qs().get("battle") || String((p.battle && p.battle.n) || "");
+        sel.innerHTML = list.map(function (b) {
+          return '<option value="' + b.n + '"' +
+            (String(b.n) === cur ? " selected" : "") + ">" + esc(b.id) +
+            "</option>";
+        }).join("");
+        sel.onchange = function () {
+          window.location.search = "?battle=" + sel.value;
+        };
+      })
+      .catch(function () {});
+  }
+
+  function render(p) {
+    P = p;
+    renderFlow(p); renderOverview(p); renderLive(p); renderVuln(p);
+    renderCost(p); renderLog(p); renderMap(); wireSwitcher(p);
+    show("st-normal");
+  }
+
+  Array.prototype.forEach.call(
+    document.querySelectorAll("#tabs button"), function (btn) {
+      btn.onclick = function () {
+        Array.prototype.forEach.call(
+          document.querySelectorAll("#tabs button"), function (b2) {
+            b2.classList.toggle("on", b2 === btn);
+          });
+        Array.prototype.forEach.call(
+          document.querySelectorAll(".tabpane"), function (tp) {
+            tp.classList.toggle("on", tp.id === "tp-" + btn.dataset.t);
+          });
+      };
+    });
+
+  var b = qs().get("battle");
+  fetch("/api/v2/cockpit.json" + (b ? "?battle=" + encodeURIComponent(b) : ""),
+        { headers: { "X-Requested-With": "cockpit" } })
+    .then(function (r) {
+      if (!r.ok) { throw new Error("HTTP " + r.status); }
+      return r.json();
+    })
+    .then(render)
+    .catch(function (e) {
+      $("err-detail").textContent = String(e && e.message ? e.message : e);
+      show("st-error");
+    });
+
+  try { nav.push({ id: "mission", label: "任务", group: "任务" }); } catch (e) {}
+})();
+</script>
+</body>
+</html>

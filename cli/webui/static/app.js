@@ -12,36 +12,42 @@
 "use strict";
 var nav = (function () {
   var ACCENT = "#3ddc97";
-  // 全站页网：[组, 名称, 路径]——/p/* 新页 + 既有观察面/控制台页，一张网。
-  // 组名守 ui-copy-standard-v1 宪法#41（任务/管控/度量/资产/系统——禁词不上屏；
-  // 网形=panorama/graphled-console-prototype.html 终态六组同构）。
+  // 全站页网：[组, 名称, 路径]——驾驶舱六面（功能27 蓝图 25页砍到6面）顶置：
+  // 首页/任务/漏洞/知识库/收件箱/设置；旧 22 页收进「更多」组不删
+  // （组名守 ui-copy-standard-v1 宪法#41 + 蓝图词表62——禁词不上屏）。
   var NAV = [
-    ["任务", "总览", "/console"],
-    ["任务", "任务列表", "/p/tasks"],
-    ["任务", "新建任务", "/p/new-task"],
-    ["任务", "任务详情", "/session"],
-    ["任务", "实时动态", "/console/live"],
-    ["任务", "攻击链路", "/console/graph"],
-    ["任务", "发现", "/console/findings"],
-    ["任务", "播报/介入", "/p/broadcast"],
-    ["任务", "复测", "/p/retest"],
-    ["管控", "审批中心", "/p/approval-center"],
-    ["管控", "拦截审批", "/p/approval"],
-    ["管控", "证据", "/evidence"],
-    ["度量", "度量与考卷", "/metrics"],
-    ["度量", "报告中心", "/p/report-center"],
-    ["度量", "能力曲线", "/p/capability"],
-    ["资产", "资产库", "/p/asset-registry"],
-    ["资产", "测试资产", "/p/assets"],
-    ["资产", "资产覆盖", "/p/coverage"],
-    ["系统", "技法库", "/p/techniques"],
-    ["系统", "实时日志", "/activity"],
-    ["系统", "设置", "/p/settings"]
+    ["首页", "首页", "/"],
+    ["任务", "任务", "/p/mission"],
+    ["漏洞", "漏洞", "/p/findings"],
+    ["知识库", "知识库", "/p/knowledge"],
+    ["收件箱", "收件箱", "/p/inbox"],
+    ["设置", "设置", "/p/settings"],
+    ["更多", "任务列表", "/p/tasks"],
+    ["更多", "新建任务", "/p/new-task"],
+    ["更多", "任务回放", "/session"],
+    ["更多", "总览", "/console"],
+    ["更多", "实时动态", "/console/live"],
+    ["更多", "攻击链路", "/console/graph"],
+    ["更多", "发现", "/console/findings"],
+    ["更多", "播报/介入", "/p/broadcast"],
+    ["更多", "复测", "/p/retest"],
+    ["更多", "审批中心", "/p/approval-center"],
+    ["更多", "拦截审批", "/p/approval"],
+    ["更多", "证据", "/evidence"],
+    ["更多", "度量与考卷", "/metrics"],
+    ["更多", "报告中心", "/p/report-center"],
+    ["更多", "能力曲线", "/p/capability"],
+    ["更多", "资产库", "/p/asset-registry"],
+    ["更多", "测试资产", "/p/assets"],
+    ["更多", "资产覆盖", "/p/coverage"],
+    ["更多", "技法库", "/p/techniques"],
+    ["更多", "实时日志", "/activity"]
   ];
   var entries = NAV.map(function (it) {
     return { id: slugOf(it[2]), group: it[0], label: it[1], href: it[2] };
   });
   var current = (function () {
+    if (window.location.pathname === "/") { return ""; }   // 首页=空 id 自认
     var m = window.location.pathname.match(/^\/p\/([a-z0-9-]+)/);
     return m ? m[1] : "";
   })();

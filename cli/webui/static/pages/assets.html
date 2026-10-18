@@ -106,14 +106,14 @@ tr:hover td{background:var(--g2)}
     <div id="dsl-row">
       <input id="dsl-input" class="mono" spellcheck="false"
         placeholder="type:service AND value:svc-* NOT scope:out"
-        title="type:value 可用字段 type/value/scope/tested/findings/id；裸词=子串匹配">
+        title="type:value 可用字段 type/value/scope/tested/漏洞关联/id；裸词=子串匹配">
       <button id="dsl-go" class="btn sm">搜索</button>
       <span id="dsl-hits"></span>
     </div>
     <div id="dsl-help">
       字段：<code>type:</code>资产类型 · <code>value:</code>资产值（<code>*</code> 通配） ·
       <code>scope:in</code>授权内 / <code>scope:out</code>范围外 ·
-      <code>tested:true</code>已测有请求 · <code>findings:true</code>有关联发现 ·
+      <code>tested:true</code>已测有请求 · 有关联漏洞 ·
       <code>id:</code>资产号。组合：<code>AND</code> 且 · <code>OR</code> 或 · <code>NOT</code> 非（空=全量）。
     </div>
   </div>

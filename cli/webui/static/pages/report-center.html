@@ -248,7 +248,7 @@ color:var(--gb);display:none;z-index:99;word-break:break-all}
     <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
     <div class="ln w2"></div><div class="ln w1"></div>
   </div>
-  <div class="tip" id="loading-tip">正在装载报告列表（reports / findings / matrix / timeline 投影）…</div>
+  <div class="tip" id="loading-tip">正在装载报告列表（报告/漏洞/矩阵/时间线 投影）…</div>
 </div>
 
 <!-- 四态之三：错误（有重试） -->
@@ -509,7 +509,7 @@ function stBadge(st, locked) {
 /* ================= 视图 A：报告列表 ================= */
 function loadList() {
   showState('st-loading');
-  $('loading-tip').textContent = '正在装载报告列表（reports / findings / matrix / timeline 投影）…';
+  $('loading-tip').textContent = '正在装载报告列表（报告/漏洞/矩阵/时间线 投影）…';
   fetch(API_LIST, { credentials: 'same-origin' }).then(function (r) {
     if (!r.ok) { throw new Error('HTTP ' + r.status); }
     return r.json();

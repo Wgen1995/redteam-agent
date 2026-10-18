@@ -508,11 +508,14 @@ class TestNavNet(MountBase):
             self.assertIn("/p/" + slug, js, slug)
 
     def test_index_home_directory(self):
+        """驾驶舱首页（功能27 蓝图：25页砍到6面，首页=四问直答）。"""
         resp, body = self._get("/")
         self.assertEqual(resp.status, 200)
         html = body.decode("utf-8")
-        self.assertIn("页面总目", html)
-        self.assertIn("/p/tasks", html)
+        self.assertIn("id=\"q1\"", html)          # 四问锚在（问一..问四）
+        self.assertIn("id=\"q4\"", html)
+        self.assertIn("五秒三问", html)             # 63律注释在
+        self.assertIn("/p/tasks", html)             # 深页目录不断链
 
 
 # ═══════════════════════════ ④ 只读铁律 ═══════════════════════════════════════

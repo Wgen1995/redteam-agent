@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识库 · GraphLed</title>
+<!-- 驾驶舱·知识库页（功能27）·正文 docs/design/2026-10-20-cockpit-ui-blueprint.md
+     五秒三问（宪法63律——这页五秒能答的三问）：
+       ① 部队现在揣着多少经验？→ 打法卡 N 张（入册状态一眼数）+ 哨兵规则
+         N 条（误报前置门）；
+       ② 哪条规则在拦什么？→ 哨兵规则表：信号→处置（降级/拒收/标可疑），
+         全部来自 knowledge/ 真文件；
+       ③ 有没有经验草稿等人审？→ 蒸馏草稿人审入口：在审行+待入册存量
+         （蒸馏管线落行即显，本页零写入）。
+     词表律（宪法62）：屏上只说人话。数据单源 /api/v2/cockpit-knowledge.json
+     （knowledge/ 真文件只读消费——蒸馏舰在飞，行落即显）。零框架零 CDN。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;position:sticky;top:0;z-index:5}
+#top .brand{color:var(--gc);font-size:14px;font-weight:600}
+#top .sp{flex:1}
+#top input{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:5px 10px;border-radius:4px;font-size:12px;width:200px}
+#top .lnk{color:var(--g9);font-size:12px}
+.state{display:none}.state.on{display:block}
+.sk{max-width:1000px;margin:16px auto;padding:0 20px}
+.sk .ln{height:52px;border-radius:8px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+#st-error .wrap{max-width:640px;margin:10vh auto 0;text-align:center}
+#st-error .box{background:var(--g2);border:1px solid rgba(232,99,90,.45);
+border-radius:8px;padding:30px}
+#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
+#st-error p{color:var(--g8);font-size:12.5px}
+#main{max-width:1080px;margin:0 auto;padding:16px 20px 70px}
+h2.qh{font-size:15px;color:var(--gc);margin:20px 0 8px;font-weight:600}
+h2.qh small{color:var(--g8);font-size:12px;font-weight:400;margin-left:8px}
+h2.qh .sp{float:right}
+.ccards{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.cc{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:10px 14px;min-width:110px}
+.cc .v{font-family:var(--mono);font-size:22px;color:var(--gc)}
+.cc .v.acc{color:var(--acc)}.cc .v.warn{color:var(--warn)}
+.cc .k{color:var(--g8);font-size:11px;margin-top:2px}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:8px;
+padding:12px 14px}
+.prow{display:flex;gap:10px;align-items:center;padding:8px 4px;
+border-bottom:1px solid var(--g3);font-size:12.5px}
+.prow:last-child{border-bottom:none}
+.prow .id{flex-shrink:0;color:var(--g8);font-family:var(--mono);font-size:11px;width:74px}
+.prow .tt{flex:1;color:var(--gb);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{flex-shrink:0;display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px}
+.t-ok{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-no{background:var(--g4);color:var(--g9)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);text-align:left;font-weight:500;font-size:11.5px;
+padding:7px 8px;border-bottom:1px solid var(--g4)}
+td{padding:7px 8px;border-bottom:1px solid var(--g3);color:var(--gb);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.mono{font-family:var(--mono);font-size:11.5px;color:var(--ga)}
+.act{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px}
+.a-down{background:rgba(232,179,75,.14);color:var(--warn)}
+.a-reject{background:rgba(232,99,90,.14);color:var(--dang)}
+.a-susp{background:rgba(90,169,230,.14);color:var(--info)}
+.empty{color:var(--g8);font-size:13px;line-height:1.9;padding:8px 2px}
+.empty a{color:var(--info)}
+.more{color:var(--g8);font-size:12px;text-align:center;padding:8px 0}
+</style>
+</head>
+<body>
+<div id="top">
+  <span class="brand">知识库</span>
+  <span class="sp"></span>
+  <input id="k-search" type="search" placeholder="搜打法卡 / 哨兵信号">
+  <a class="lnk" href="/">← 驾驶舱</a>
+</div>
+<div id="st-loading" class="state on"><div class="sk">
+  <div class="ln"></div><div class="ln"></div><div class="ln"></div>
+</div></div>
+<div id="st-error" class="state"><div class="wrap"><div class="box">
+  <h3>知识库数据没取到</h3><p id="err-detail" class="mono"></p>
+  <p><a href="/p/knowledge">刷新重试</a></p>
+</div></div></div>
+<div id="st-normal" class="state"><div id="main">
+
+  <div class="ccards" id="cnt"></div>
+
+  <h2 class="qh">打法卡 <small id="pat-sub"></small><span class="sp">
+    <a href="/p/techniques" style="font-size:12px">技法库（六节全文）→</a></span></h2>
+  <div class="pane" id="patterns"></div>
+
+  <h2 class="qh">哨兵规则 <small id="sen-sub"></small><span class="sp"></span></h2>
+  <div class="pane" id="sentinels"></div>
+
+  <h2 class="qh">蒸馏草稿 · 人审入口 <small id="stg-sub"></small><span class="sp"></span></h2>
+  <div class="pane" id="staging"></div>
+
+</div></div>
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s === null || s === undefined ? "" : s)
+      .replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;",
+                 '"': "&quot;", "'": "&#39;" }[c];
+      });
+  }
+  function show(id) {
+    ["st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === id);
+    });
+  }
+  var DATA = null, QUERY = "";
+  var ACT_ZH = { "downgrade-to-fact": ["降级为事实", "a-down"],
+                 "reject": ["拒收", "a-reject"],
+                 "mark-suspicious": ["标可疑", "a-susp"] };
+
+  function render() {
+    var p = DATA;
+    $("cnt").innerHTML =
+      ch(p.patterns.length, "打法卡（入册）", "acc") +
+      ch(p.sentinels.length, "哨兵规则", "warn") +
+      ch(p.staging.pending_count, "草稿待人审",
+         p.staging.pending_count ? "warn" : "") +
+      ch(p.staging.intake_files, "待入册存量文件", "");
+
+    var pats = p.patterns.filter(function (x) {
+      return !QUERY || (x.id + x.title).toLowerCase().indexOf(QUERY) >= 0;
+    });
+    $("pat-sub").textContent = "场景→步骤→工具→纪律→证据→边界（" +
+      pats.length + "/" + p.patterns.length + "）";
+    $("patterns").innerHTML = pats.length
+      ? pats.slice(0, 50).map(function (x) {
+          return '<div class="prow"><span class="id">' + esc(x.id) + "</span>" +
+            '<span class="tt" title="' + esc(x.title) + '">' + esc(x.title) +
+            '</span><span class="tag ' + (x.status === "learned" ? "t-ok" : "t-no") +
+            '">' + esc(x.status === "learned" ? "已学" : x.status || "—") +
+            "</span></div>";
+        }).join("") + (pats.length > 50
+          ? '<div class="more">先示 50 张——用搜索收窄。</div>' : "")
+      : '<div class="empty">没有命中的打法卡。</div>';
+
+    var sens = p.sentinels.filter(function (x) {
+      return !QUERY || (x.id + x.signal + x.note).toLowerCase().indexOf(QUERY) >= 0;
+    });
+    $("sen-sub").textContent = "发现入库前置门：命中信号→按处置（" +
+      sens.length + "/" + p.sentinels.length + "）";
+    $("sentinels").innerHTML = sens.length
+      ? '<table><tr><th style="width:70px">编号</th><th>信号</th>' +
+        '<th style="width:96px">处置</th><th style="width:30%">依据</th></tr>' +
+        sens.map(function (x) {
+          var a = ACT_ZH[x.action] || [x.action, "t-no"];
+          return "<tr><td class=\"mono\">" + esc(x.id) + "</td><td>" +
+            esc(x.signal) + '</td><td><span class="act ' + a[1] + '">' + a[0] +
+            "</span></td><td style=\"color:var(--g8)\">" + esc(x.note) +
+            "</td></tr>";
+        }).join("") + "</table>"
+      : '<div class="empty">没有命中的哨兵规则。</div>';
+
+    var rows = p.staging.rows || [];
+    $("stg-sub").textContent = rows.length
+      ? "在审 " + rows.length + " 行" : "暂无在审行";
+    var stgHtml = rows.length
+      ? '<table><tr><th style="width:110px">草稿号</th><th>类别</th><th>标题</th>' +
+        '<th style="width:80px">状态</th></tr>' + rows.map(function (r) {
+          return '<tr><td class="mono">' + esc(r.staging_id) + "</td><td>" +
+            esc(r["class"]) + "</td><td>" + esc(r.title) + '</td><td><span class="tag ' +
+            (r.status === "approved" ? "t-ok" : "t-no") + '">' +
+            esc(r.status || "—") + "</span></td></tr>";
+        }).join("") + "</table>"
+      : '<div class="empty">人审队列暂时是空的——蒸馏管线打完一仗会把候选行落在这里，' +
+        "审过才入册。</div>";
+    if (p.staging.intake_files) {
+      stgHtml += '<div class="more">蒸馏舱待入册存量：' + p.staging.intake_files +
+        " 个文件（<a href='/p/knowledge'>本页只读</a>，入册由蒸馏管线负责）。</div>";
+    }
+    $("staging").innerHTML = stgHtml;
+  }
+  function ch(v, k, cls) {
+    return '<div class="cc"><div class="v ' + (cls || "") + '">' + esc(v) +
+      '</div><div class="k">' + esc(k) + "</div></div>";
+  }
+
+  $("k-search").oninput = function () {
+    QUERY = this.value.trim().toLowerCase();
+    if (DATA) { render(); }
+  };
+
+  fetch("/api/v2/cockpit-knowledge.json",
+        { headers: { "X-Requested-With": "cockpit" } })
+    .then(function (r) {
+      if (!r.ok) { throw new Error("HTTP " + r.status); }
+      return r.json();
+    })
+    .then(function (p) { DATA = p; render(); show("st-normal"); })
+    .catch(function (e) {
+      $("err-detail").textContent = String(e && e.message ? e.message : e);
+      show("st-error");
+    });
+
+  try { nav.push({ id: "knowledge", label: "知识库", group: "知识库" }); } catch (e) {}
+})();
+</script>
+</body>
+</html>
