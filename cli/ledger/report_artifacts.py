@@ -29,7 +29,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from ledger import report_agg, report_render  # noqa: E402
+from ledger import report_agg, report_evidence, report_render  # noqa: E402
 from ledger.core import Session  # noqa: E402
 from ledger.schemas import TABLES  # noqa: E402
 
@@ -120,6 +120,10 @@ def findings_json(goal_dir):
             "replay_state": tri,
             "lifecycle": life,
             "evidence_ids": ev_ids,
+            # 功能26①证据袋：绑定带角色（proof/baseline/verification/supporting）与
+            # 顺序 + 证据集版本号（绑定增删改=+1，report_evidence 单源）。
+            "evidence": report_evidence.bindings(goal_dir, fid),
+            "evidence_version": report_evidence.evidence_version(goal_dir, fid),
             "asset": assets.get(aid, ""),
             "verified": included,
         })
@@ -173,6 +177,7 @@ def findings_sarif(goal_dir):
                 "replay_state": _replay_tri(replay, fd_row, fid),
                 "tech_sev": _cell("findings.tsv", fd_row, "confidence"),
                 "biz_impact": impact,
+                "evidence_version": report_evidence.evidence_version(goal_dir, fid),
             },
         })
     return {
@@ -245,8 +250,12 @@ def _six_sections(agg, fj):
             ("## 整改优先级与复测建议", s5), ("## 等保占位段", _DJBJ_PLACEHOLDER)]
 
 
-def _final_report(goal_dir, ts, fj, sar):
-    """终稿 md=聚合投影+FD 九段渲染+合规六要素+执行摘要（经 narrative_filter）。"""
+def _final_report(goal_dir, ts, fj, sar, versions=None):
+    """终稿 md=聚合投影+FD 九段渲染+合规六要素+执行摘要（经 narrative_filter）。
+
+    功能26②③：versions=write_all 读盘时的 evidence_version 快照——渲染携带
+    （render_fd 过期拒写）；draft 缓存在场时同样核版本，不嵌旧证据产物。
+    """
     agg = report_agg.aggregate(goal_dir, ts)
     summary = ("目标 %s：共 %d 项 finding（active=%d rejected=%d repair-candidate=%d），"
                "其中 verified=%d 项入 SARIF 双工件；预算终态=%s；守门档位=%s。"
@@ -263,10 +272,18 @@ def _final_report(goal_dir, ts, fj, sar):
     for fid in report_render.active_fd_ids(Session(goal_dir)):
         p = os.path.join(draft_dir, fid + ".md")
         if os.path.isfile(p):
+            if versions is not None:
+                cur = report_evidence.evidence_version(goal_dir, fid)
+                if versions.get(fid) != cur:
+                    raise report_evidence.StaleEvidenceError([{
+                        "finding": fid, "manifest_version": versions.get(fid),
+                        "current_version": cur}])
             with open(p, encoding="utf-8") as f:
                 md = f.read()
         else:
-            rc, md = report_render.render_fd(goal_dir, fid)
+            rc, md = report_render.render_fd(
+                goal_dir, fid,
+                evidence_version=versions.get(fid) if versions is not None else None)
             if rc != 0:
                 raise ValueError("终稿渲染 FAIL: " + md)
         parts.append(md)
@@ -275,9 +292,18 @@ def _final_report(goal_dir, ts, fj, sar):
 
 
 def write_all(goal_dir, ts):
-    """sign 落盘三工件；返回工件路径表（findings.json/findings.sarif/report-<ts>.md）。"""
+    """sign 落盘三工件+manifest 快照；返回工件路径表（四件）。
+
+    功能26④manifest 过期检测：渲染前比对上次快照——evidence_version 漂移=
+    StaleEvidenceError（待重写清单），不渲染半新半旧报告；恢复走
+    report_evidence.rewrite_evidence（重渲染+manifest 刷新）。
+    """
+    drift, _manifest = report_evidence.manifest_drift(goal_dir)
+    if drift:
+        raise report_evidence.StaleEvidenceError(drift)
     fj = findings_json(goal_dir)
     sar = findings_sarif(goal_dir)
+    versions = report_evidence.active_version_map(goal_dir)   # ③render 携带版本
     report_dir = os.path.join(goal_dir, "report")
     os.makedirs(report_dir, exist_ok=True)
     paths = []
@@ -290,6 +316,8 @@ def write_all(goal_dir, ts):
     os.makedirs(signed, exist_ok=True)
     p = os.path.join(signed, "report-%s.md" % ts.replace(":", ""))   # R-T15-2
     with open(p, "w", encoding="utf-8", newline="\n") as f:
-        f.write(_final_report(goal_dir, ts, fj, sar))
+        f.write(_final_report(goal_dir, ts, fj, sar, versions))
     paths.append(p)
+    report_evidence.write_manifest(goal_dir, ts)   # ④快照（各 active FD 版本）
+    paths.append(os.path.join(report_dir, report_evidence.MANIFEST_NAME))
     return paths

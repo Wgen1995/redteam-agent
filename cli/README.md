@@ -190,7 +190,7 @@ python3 tests/eval_knowledge_spotcheck.py --knowledge-dir knowledge --origin cnp
 | tanyin-evals | `run --suite=static\\|dynamic\\|all --goal-dir D [--metrics=…] [--out=…] \| list` | evals 运行器：12 指标 M01-M12（契约 15 机读 schema）+退出码裁决 0=全 PASS/1=硬门 FAIL/2=ENV-SKIP（裁决 A）；runner 注册表单源（cli/ledger/evals_metrics.py） |
 | tanyin-install | `--home <dir> [--host=dsh] [--install-root=…] [--repo-root=…] --timestamp=T`（+`refresh-cve --from <url>`；+`--release --pubkey <生产 release.pub>` 信任锚替换通道〔评审收尾 I-2；交互确认 REPLACE，缺确认=exit 2〕） | 六步安装器：lock 验签→权威目录→symlink→hook→HOME 初始化→selfcheck（幂等断言内建）；五宿主矩阵 `--list-hosts` |
 | tanyin-selfcheck | `--static` / `--host <name> --guided` | 六项静态验证（cmd-index/encoding/phases-schema/layout/lock-verify/golden）/宿主手测引导一页 |
-| tanyin-report | `aggregate\\|render\\|lint\\|sign --goal-dir D --timestamp T` | 报告流水线：13 表聚合→FD 九段渲染→G-25 签发门（lint 同判定不落凭证；sign 落凭证+findings.json+SARIF 双工件+budget-exhausted 中期报告 interim-report.md） |
+| tanyin-report | `aggregate\\|render\\|lint\\|sign --goal-dir D --timestamp T`；功能26 `bind-evidence --finding FD --evidence EV --role proof\\|baseline\\|verification\\|supporting [--order N] [--action bind\\|unbind]`/`evidence-version`/`rewrite-evidence` | 报告流水线：13 表聚合→FD 九段渲染→G-25 签发门（lint 同判定不落凭证；sign 落凭证+findings.json+SARIF 双工件+budget-exhausted 中期报告 interim-report.md）；功能26 证据袋：绑定带角色+顺序、evidence_version（增删改=+1）、manifest 过期拒签（证据已变化,待重写→rewrite-evidence 恢复） |
 
 配套增面：`tanyin-egress serve`（Tier3 代理本体：HTTP/CONNECT+DNS pin+OOB/canary 告警——egress-log.jsonl 唯一运行时工件）、`tanyin-canary probe --egress-log=<path>`（流量级证据源）、契约 13 终态 B（budget-exhausted=合法签发终态+中期披露四件套）、锁 v2 探活（G-5）、tools.lock 全量 8 键+KEY-MANAGEMENT 生产钥流程（G-22）、refresh-cve 双通道（G-32）、双锚互证 M12 硬门（G-33）、授权靶场种 20+scorer（tests/range/，基线 v1=1.00）+全流程演练剧本（tests/range/RUNBOOK.md）。
 

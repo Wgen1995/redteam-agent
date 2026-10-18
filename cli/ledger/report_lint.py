@@ -12,9 +12,11 @@
 
 sign_gate 聚合门（出口清单 #10）：全部 active FD 渲染 rc==0+九段齐+burp lint PASS+双指纹
 +时间链（issued_at=ts）+redact-scan 零泄漏（子进程）+cleanup-checklist rc==0（子进程——
-P6 清理门接线，命令零改动）+tier 披露在+合规六要素齐+禁空话句式；任一不过=rc 1 且 FAIL
-明细落报告；全过=rc 0 且落 report/signed/pass.json（签发凭证：goal+ts+各门结果）。
-lint=同门不落凭证；sign=lint+凭证+双工件写盘（T15 report_artifacts.write_all 接线）。
+P6 清理门接线，命令零改动）+tier 披露在+合规六要素齐+禁空话句式+证据新鲜度（功能26②：
+manifest 快照 evidence_version 与账本不符=「证据已变化,待重写」FAIL）；任一不过=rc 1 且
+FAIL 明细落报告；全过=rc 0 且落 report/signed/pass.json（签发凭证：goal+ts+各门结果）。
+lint=同门不落凭证；sign=lint+凭证+双工件写盘（T15 report_artifacts.write_all 接线；
+manifest 过期=write_all 拒写 rc 1 待重写清单上屏）。
 退出码 0/1/2（ENV=缺表等环境问题）。
 """
 import hashlib
@@ -25,7 +27,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from ledger import report_agg, report_render  # noqa: E402
+from ledger import report_agg, report_evidence, report_render  # noqa: E402
 from ledger.core import Session  # noqa: E402
 from ledger.norm import artifact_hashes  # noqa: E402  双指纹单源（批次 4 评审 C-1）
 from ledger.schemas import TABLES  # noqa: E402
@@ -307,8 +309,8 @@ def sign_gate(goal_dir, ts, write_credential=True):
     gates = {k: {"status": "PASS", "detail": ""}
              for k in ("render", "nine_segments", "burp_pasteable", "dual_fingerprint",
                        "time_chain", "authorization", "draft_byte_equal", "artifact_binding",
-                       "redact_scan", "cleanup_checklist", "tier_disclosure",
-                       "compliance_six", "empty_rhetoric", "aggregate",
+                       "evidence_freshness", "redact_scan", "cleanup_checklist",
+                       "tier_disclosure", "compliance_six", "empty_rhetoric", "aggregate",
                        "terminal_b_disclosure")}
     try:
         data = report_agg.aggregate(goal_dir, ts or "2026-09-24T00:00:00Z")
@@ -319,6 +321,17 @@ def sign_gate(goal_dir, ts, write_credential=True):
     ok_all = True
     # 授权完整性门（批次 7 T8，C5 反例三）：sha256+窗口+approvals verify-signoff
     if not _authorization_gate(goal_dir, s, ts, gates):
+        ok_all = False
+    # 证据新鲜度门（功能26②）：report-manifest 快照的 evidence_version 与账本当前
+    # 不符=FAIL（why=「证据已变化,待重写」）——证据变了报告必须重读重写，机械门
+    # 不靠自觉；明细载漂移清单（哪几个 finding 的证据动了）。
+    drift, _manifest = report_evidence.manifest_drift(goal_dir)
+    if drift:
+        gates["evidence_freshness"].update(
+            status="FAIL",
+            detail=report_evidence.STALE_WHY + ": " + "；".join(
+                "%s v%s→v%s" % (d["finding"], d["manifest_version"],
+                                d["current_version"]) for d in drift))
         ok_all = False
     fds = report_render.active_fd_ids(s)
     for fd_id in fds:
@@ -462,7 +475,17 @@ def cmd_sign(goal_dir, ts):
         sys.stderr.write("用法: sign --goal-dir D --timestamp T（issued_at 显式，禁墙钟）\n")
         return 2
     from ledger import report_artifacts  # 批次 8 T9（G-44）：先落盘后签发——工件入绑定+门内复扫
-    written = list(report_artifacts.write_all(goal_dir, ts))
+    try:
+        written = list(report_artifacts.write_all(goal_dir, ts))
+    except report_evidence.StaleEvidenceError as e:
+        # 功能26④：manifest 过期=拒签（rc 1），待重写清单上屏——不产半新半旧报告；
+        # 恢复=tanyin-report rewrite-evidence（重渲染+manifest 刷新）后复签。
+        print(json.dumps({"goal": os.path.basename(os.path.normpath(goal_dir)),
+                          "ts": ts, "stale_evidence": e.drift},
+                         ensure_ascii=False, sort_keys=True, indent=1))
+        sys.stderr.write("FAIL\t" + report_evidence.STALE_WHY + "\t"
+                         + ",".join(e.stale_ids()) + "\n")
+        return 1
     rc, rep = sign_gate(goal_dir, ts, write_credential=True)
     print(json.dumps(rep, ensure_ascii=False, sort_keys=True, indent=1))
     if rc == 0:

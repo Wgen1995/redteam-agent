@@ -340,13 +340,25 @@ def _require_render_tables(goal_dir):
         raise EnvironmentError("缺表（渲染前置）: " + ", ".join(missing))
 
 
-def render_fd(goal_dir, fd_id):
-    """渲染一张 FD 九段 markdown。返回 (rc, md)：rc=0 且 md=九段全文；rc=1 时 md=缺段/词表 FAIL 明细。"""
+def render_fd(goal_dir, fd_id, evidence_version=None):
+    """渲染一张 FD 九段 markdown。返回 (rc, md)：rc=0 且 md=九段全文；rc=1 时 md=缺段/词表 FAIL 明细。
+
+    功能26②过期拒写门：evidence_version 显式携带时与账本当前不符=rc 1 FAIL
+    （why=「证据已变化,待重写」——证据变了报告必须重读重写，机械门不靠自觉）；
+    不携带（None）=既有口径不破（29 测兼容面）。
+    """
     _require_render_tables(goal_dir)
     s = Session(goal_dir)
     fd_row = _fd_row(s, fd_id)
     if fd_row is None:
         return 1, "渲染 FAIL: findings 无此 id: %s" % fd_id
+    if evidence_version is not None:
+        from ledger import report_evidence   # 惰性导入防环（report_evidence 零模块级反向依赖）
+        cur = report_evidence.evidence_version(goal_dir, fd_id)
+        if cur != evidence_version:
+            return 1, ("渲染 FAIL: %s: %s（携带 v%s≠账本 v%s）"
+                       % (report_evidence.STALE_WHY, fd_id,
+                          evidence_version, cur))
     sections, missing, fatal = _segment_text(goal_dir, s, fd_row)
     if missing or fatal:
         msgs = (["缺段: " + "; ".join(missing)] if missing else []) + fatal

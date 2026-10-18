@@ -199,10 +199,47 @@ def main(argv):
     ap.add_argument("--out", default=None)
     ap.add_argument("--fd", default="")
     ap.add_argument("--all", action="store_true")
+    ap.add_argument("--finding", default="")      # 功能26：bind-evidence 目标 FD
+    ap.add_argument("--evidence", default="")     # 功能26：bind-evidence 目标 EV
+    ap.add_argument("--role", default="")         # 功能26：proof/baseline/verification/supporting
+    ap.add_argument("--order", default="")        # 功能26：绑定顺序（≥1）
+    ap.add_argument("--action", default="bind")   # 功能26：bind|unbind
     a = ap.parse_args(argv)
     if a.cmd == "render":   # 批次 6 T13：FD 九段渲染（--fd <id> | --all）
         from ledger import report_render
         return report_render.cli_render(a.goal_dir, a.fd, a.all, a.out)
+    if a.cmd == "bind-evidence":   # 功能26①：证据绑定带角色/顺序，动作=版本+1
+        from ledger import report_evidence
+        if not (a.finding and a.evidence and a.timestamp):
+            sys.stderr.write("用法: bind-evidence --goal-dir D --finding FD-x "
+                             "--evidence EV-x [--role proof --order 1 "
+                             "--action bind|unbind] --timestamp T（issued_at 显式，禁墙钟）\n")
+            return 2
+        try:
+            v = report_evidence.append_binding(
+                a.goal_dir, a.finding, a.evidence, a.role, int(a.order) or None,
+                a.action, a.timestamp)
+        except ValueError as e:
+            sys.stderr.write("REJECT\t%s\n" % e)
+            return 1
+        print("OK\t%s\t%s\tevidence_version=%d" % (a.finding, a.evidence, v))
+        return 0
+    if a.cmd == "evidence-version":   # 功能26①：证据袋+版本查询（报告员只读面）
+        from ledger import report_evidence
+        ev_report = {}
+        for fid, v in sorted(report_evidence.active_version_map(a.goal_dir).items()):
+            ev_report[fid] = {"evidence_version": v,
+                              "evidence": report_evidence.bindings(a.goal_dir, fid)}
+        print(json.dumps(ev_report, ensure_ascii=False, sort_keys=True, indent=1))
+        return 0
+    if a.cmd == "rewrite-evidence":   # 功能26④：待重写清单恢复路径（重渲染+manifest 刷新）
+        from ledger import report_evidence
+        rc, detail = report_evidence.rewrite_evidence(a.goal_dir, a.timestamp or "")
+        if rc == 0:
+            print("OK\t重写完成+manifest 刷新\t%s" % ",".join(detail))
+        else:
+            sys.stderr.write("FAIL\t%s\n" % detail)
+        return rc
     if a.cmd == "lint":   # 批次 6 T14：签发门同判定不落凭证
         from ledger import report_lint
         return report_lint.cmd_lint(a.goal_dir, a.timestamp)
