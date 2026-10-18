@@ -1,0 +1,270 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>施工驾驶舱</title>
+<style>body{font-family:-apple-system,"PingFang SC";margin:0;background:#0d1117;color:#e6edf3}header{padding:20px 28px;border-bottom:1px solid #21262d}h1{font-size:20px;margin:0}h2{font-size:15px;color:#79c0ff;margin:24px 0 8px}.q{color:#8b949e;font-size:13px}main{padding:0 28px 40px;max-width:1100px}.card{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:14px 16px;margin-bottom:10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ok{color:#3fb950}.fly{color:#d29922}table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:6px 8px;border-bottom:1px solid #21262d;text-align:left}a{color:#58a6ff;text-decoration:none}code{background:#21262d;padding:1px 5px;border-radius:4px;font-size:12px}pre{font-size:11px;white-space:pre-wrap;margin:0}</style></head><body>
+<header><h1>施工驾驶舱</h1><div class="q">真数据,每次刷新重算 <code>python3 scripts/build_dashboard.py > docs/build-status.html</code> · 生成于 2026-10-18 18:58:39</div></header><main>
+<h2>① 在做什么——你的产品定义 → 27 件功能</h2>
+<div class="card"><table><tr><th>你的原话</th><th>对应功能</th><th>状态</th></tr>
+<tr><td>「误报漏报都好」</td><td>哨兵14规则 · 定时复验 · 考卷棘轮 · 验证官复放</td><td><span class="ok">哨兵✅</span> <span class="fly">复验在建</span> <span class="ok">其余底子在</span></td></tr>
+<tr><td>「自动化挖掘」</td><td>排序+自动派活 · 业务逻辑差分 · 白盒 · 30工具卡</td><td><span class="ok">排序/派活✅</span> <span class="ok">业务逻辑✅</span> <span class="fly">白盒/工具卡在建</span></td></tr>
+<tr><td>「可控制」</td><td>范围锁 · 审批降噪 · 预算帽 · 紧急停</td><td><span class="fly">指挥审批在建</span> <span class="ok">其余底子在</span></td></tr>
+<tr><td>「知道产品样子」</td><td>产品驾驶舱六面 · 本页</td><td><span class="fly">队首待槽</span> <span class="ok">本页即是</span></td></tr></table></div>
+<h2>② 做得怎么样——24小时真数据</h2>
+<div class="grid"><div class="card"><b>近24h建设提交</b><div style="font-size:30px;color:#3fb950">250 笔</div></div>
+<div class="card"><b>底子测试</b><div style="font-size:30px">2880 用例</div><div class="q">已入库基线全绿</div></div></div>
+<h2>③ 舰队</h2>
+<div class="card"><table><tr><th>舰</th><th>干什么</th><th>状态</th></tr>
+<tr><td>白盒A</td><td>源码解析器+锚边</td><td class="fly">在建</td></tr><tr><td>报告</td><td>证据袋+版本+报告员</td><td class="fly">在建</td></tr>
+<tr><td>复验</td><td>过期漏洞自动重测</td><td class="fly">在建</td></tr><tr><td>指挥审批</td><td>聊天框开仗+审批降噪</td><td class="fly">在建</td></tr>
+<tr><td>F22韧性</td><td>执行器不丢结果+30工具卡</td><td class="fly">在建</td></tr><tr><td>蒸馏入册</td><td>283张经验卡入库</td><td class="fly">在建</td></tr>
+<tr><td>评审舰</td><td>独立审已建代码</td><td class="fly">在审</td></tr></table></div>
+<h2>近24h提交流水(真git)</h2><div class="card"><pre>269b2b7 用户令: 驾驶舱舰提前队首,真数据功能前端先行
+2fe79f0 蓝图全景: 一页看全(是什么/架构五层/八步机制/27件进度/演进三段/第一性逻辑/到首仗差什么)
+01fc1bf 功能6 补漏: README 缺口表补 bizflow 种子注记(基线对照时被 checkout 回滚,补提)
+f60adf9 落舱记R23: 业务逻辑舰落,评审制生效
+bcc20a6 功能6 业务逻辑层: 差分探测器+身份矩阵装配+作弊假设卡模板+bizflow考卷种子
+b806f4d 宪法69: 落笔验仓律(误落烛龙仓教训+遗留处置)
+782fad7 落舱记R22: Multica清点三验落账,F24解锁待槽
+d597d6c 宪法68: 舰队交付验证律(幽灵交付教训)
+5ef9d7c research: Multica full capability inventory (source-level, HEAD 18fa9f7) — routes/daemon/protocol/dsh integration
+cc0b355 落舱记R21: 规划者舰收,功能5/8建成
+b3beebf 优先级引擎+常驻规划者+重派四分类(功能5/8): 五因子排序(0.40可达+0.20凭据+0.15线索+0.15饥渴+0.10收益,权重可配planner.json,金样钉死同输入同序)/常驻规划者(epoch轮询令牌+800ms防抖合并+可达空格派活走既有add-intent通道+惰性降级lazy_trigger)/终态四分类器(纯故障重派=机械审批+原卡重入池,接续收口=续接卡带已得结论,边界固化=收口事实,完成;幂等),TDD 35测(红先行),写全经registry.lookup不碰write_cmds
+0b52f5f 落舱记R20: 哨兵舰收+复验舰待槽
+5e9c318 功能11补件一·误报哨兵: 14规则版本化TSV+findings入库前置门(降级fact/拒/标记可疑/全清)+K6回流草稿钩子(TDD,16钉测+邻域回归全绿)
+bbadf10 词表过滤脚本(62律机检面): 可见文本黑话扫描+5测——驾驶舱验收件之一,首扫抓4处待驾驶舱舰修
+628baf6 首仗战书预填+真钥重填前置项(重启清失发现)
+a593065 总账勘误: 披露功能6/8在飞件09:16Z落盘,判定按快照作出
+d4d19d0 能力对照折账: F22韧性舰插队第一+F4/F9兵种包舰入列;第一性排序采纳
+4448662 能力对照总账: 27件逐件对账ARTEX/CSAI(已优8/对等10/落后6/缺失3+第一性补齐序)
+a427a66 家底对账折账: 目标①完成;新增多任务治理舰+蒸馏入册舰;兵种模板零代码记账
+cdf6e79 家底对账: 11件已建功能资产盘点审计(文件:行出处+实测测试数+名不副实清单)
+c6a5ce1 首仗点火清单: 硬前置9项+点火序列+战后必做+分数纪律
+56e70ce 补交: 2026-10-19能力并集审计档(被引用但从未入库)
+998007f 二次勘误: Multica源码在.research/repos/multica,清点升回源码级
+126c19a GenSift规则源入库: 59 pattern+27类文档+fixtures全量拷贝+指纹清单(白盒地基舰车道A翻译原料,#15-3/4裁决兑现)
+f185b8e 人话驾驶舱蓝图: 首页四问/25砍6面/词表强制CI/五秒三问三层验收
+b520b90 勘误: Multica无源码树,清点降为非源码证据口径(四类戳)
+cf203df 施工裁决R1: Wave1即刻开工,1a双舰(哨兵+报告)先行,1b复验接力防index竞速
+3f33ac5 施工总计划: 四波建舰序列/领地互斥/完成判据/首仗判据
+3c8c7e8 功能11/13哨兵+复验定稿: 14哨兵数据文件+入库前置降级+K6回流+定时复验三态
+dd377e3 功能5/8优先级+规划者定稿: 纯机械五因子公式+常驻规划者三消费者+重派四分类
+eb48b41 功能17/19指挥审批补件定稿: 对话建任务卡+@引用+回复四分类+预授权降噪+超时保守
+4905dc3 功能26报告补件定稿: 证据角色版本拒写+报告员兵种(机器把关)+过期检测——ARTEX三件吸收
+0ab0343 功能6业务逻辑层定稿: 身份矩阵+差分探测器+作弊假设卡+三族强制+可逆纪律(复盘卡 grounding)
+a167cf0 白盒定稿决议: source-audit-v1批准+三参考折入+六家对比表+开工序W4→SA-1..4(悬案零)
+d5b91f0 自裁入册: 委托令+67律+#15四裁+白盒10问(重启后恢复批)
+ad5d00e 白盒回归source-audit-v1为底+现状机制实录(领活/租约/断点续跑)
+d1f5180 过堂流程修正: 27件三分法——已建对账/缺口补过/真未设计才整过
+ae0d253 裁决修正: 知识库用法回归老TanYin注入式参考(实证kb_context.py:159),照着做作废
+6c975be 宪法66答所问律+知识库三用法裁决(照着做/参考/写回)
+5e0e029 research: CyberStrikeAI全量能力清点(289路由全列/42包全看/14角色全读/会话任务状态机深挖/51内置+90外部工具面)
+a2a8557 宪法65问题分级律+功能2完事+功能3过堂中
+c19ea7b 过堂排序裁决: 只锁白盒,26件立过,四舰落地折点名增量
+f5076f9 research: 白盒三参考综合分析(VulnClaw源码找洞面/GenSift逐目录实读/Codex Security装机实测)+三路线对照+可吸收件+开放问题10条
+a24a2c1 过堂记录: 架构批准+功能1枚举流水入册(默认全扫)
+76c05a7 宪法64功能过堂律+§22功能地图27件——首件枚举流水初稿
+d6da6a4 宪法62-63: 界面说人话律+五秒三问律——三骂界面之病灶立法
+0458594 E舰吸收件①: 两段判定+重复拒绝退避进战士运行时(cyber-harness guardrail 吸收,对齐档 C18/C19/N3/N7)
+b2100f7 宪法61: 竞品覆盖分级律——未达全量源码不得下相对结论
+a5f2c86 宪法58-60: 采样标注/深度先问/预期复诵——沟通复盘三律
+51ed351 ARTEX全量能力清点: 证据中心工程/一切可编辑/运维成熟度/agent内部件——补三大设计冲击
+d6b873c 裁决书§21: ARTEX活体解剖八件吸收(含/btw旁路提问新件)
+dad1de8 M1注记定稿: 只留尸检已证数字,标注空目录复算陷阱
+91d7f1f M1注记: 三战真跑数字落定
+f9fe0ba M1注记以真数重写(旧估算撤回,诚实数据律)
+67dd44f M1尺子修正: gt_eval活集=同FD-ID末值行胜(与capability_gate同口径)——b40尸检30僵尸行归零,3钉测+31回归绿
+25453cf 裁决书§20: 三家会话/多任务源码级实勘——四抄两强
+6dc4629 GT L3 链式扩容(GT舰遗留②): 多步链考卷落成——单点卷之外增「整链全对才满分」的连环卷
+ae83775 清单更新: 全量吸收+仪表盘修复落地(关两未决)
+2491271 HANDOFF: 全景舰v2两批(全景大合并+用户实逛反馈批)一行记账
+b5bf442 全对话结论清单(33问答对账)+§19会话任务管理三层
+9308460 裁决书§18: 多任务10并发设计+DSH解剖结论补账
+b9144e0 宪法#57问答落账律+裁决书§17补账(harness零依赖/白盒未设计冻结/E3落地)
+c38430a 裁决书十六节: 看门狗三件(好停不重启/多源唤醒/活性入账)——不停机自动化
+048a71a 裁决书十五节: 人是一等成员——审批/通知/对话/预授权四合一(multica映射+超越)
+5b88dfe E舰吸收件③: 战士同轮工具并行——executor 三律+依赖律落地(cyber-harness loop.go:498 语义对齐,对齐档 E3/N2 有引)
+d1b8645 裁决书十四节: 会话即对象范式(用户DSH洞察)——统一五层,界面骨架定调
+cafac13 分析舰·b40过度报告病例复盘: 31FP逐个解剖——30=僵尸行(supersede原始行被gt_eval行级计数双计,活集实36/precision 0.972)+1=通道面(svc-admin弱口令=RUNBOOK明示认证态通道非靶,GT未植);机修M1 gt_eval活集口径首荐进W2+M2 GT通道面neg入册+M3技能纪律+M4证伪状态联动;避坑卡草案4张(ledger_ref带行号);Ran 16 tests OK(test_gt_registry);零代码
+17f425a 裁决书十三节: v3老架构吸收清单(三引擎/四门槛/先炸驱动/写入纪律——零削弱绑定)
+42cd452 预期对齐记录落账: 产品预期5条+AI预期6条(用户令防忘)
+1e8f85e 裁决书十二节: 产品定义定稿(用户终裁一句话)+三机制正名为内部纪律件
+d103e60 裁决书十一节: 执行器抽象harness即后端(multica模式吸收+审计加强)
+9f7ac35 裁决书: @对象引用设计+病因诊断+宪法#56驾驶座判定律
+7e883db 裁决书补第八节: 对话指挥层(对话建任务/调度/指挥)
+96088f6 总裁决书v2定稿: 核心竞争力=飞轮+挖掘九件,信任机器降级(用户裁定)
+71ce1c4 总裁决书: 生态自立/分层重写判/超越路径/五阶段开展
+964dd50 全景大合并v2: 蓝图全景集九页旗舰换装——旧16档精华全上屏+新增知识全景/演进总析两页
+d211fdc 蓝图: 总装通电——15页可点
+bbf888f 对账速修: 追认案状态同步(#16已建/#17修订C)+蓝图口径统一
+a984658 UI-1 总装: 已建成未挂载界面全部接进生产——用户开 8900 全页可点 ①server.py 最小 diff(+54 行): /p/&lt;slug&gt;[.html] 统一页路由(登录门 302 同款)+/static/app.js 壳资产+/static/pages/*.js 页级资产放行(命令面板 _palette 形,防穿越/拒 .html)+/api/v2/* GET 统一分发(会话门→查表→dispatch)+POST 写入口(会话→CSRF 双检→dispatch_post, T7 settings 契约同形);既有路由零触碰 ②cli/webui/api_pages.py(include 机制本体): 14 稳定件(十舰+技法/复测+父舰收编 tools/llm_status/system)+在飞舰 guarded import(settings/workspace/evals/ask/llm/capability,缺席/半成品不拖垮整机,落成即并网);dispatch 形参差异 inspect 适配;单舰异常=500 JSON 带舰名不炸连接层 ③static/app.js 共享壳: 全站页网 20 项(组名守宪法#41 禁词)+nav.push 自注册(label/title 两拼写都收)+☰ 抽屉+Ctrl+K(裸⌘K 让位 __plkCtl.open()——96e10b93 裁,面板缺席回落抽屉)+?battle= 跳转携带;零框架零 CDN 内联自足 ④导航网: console.js 23 项结构不动占位接真页(对话/报告/技法库/设置→/p/*,资产覆盖→P5.7 新页,新建任务→P4 表单页;test_console_ui 23 项钉不破);index.html 首页加页面总目组 ⑤tests/test_webui_mount_all.py 生产 Handler 直测(零子类,动态口禁碰 8900): 13 稳定页 200+DOM 钉+盘上全页动态 200+相对别名同字节+404/坏 slug+302/401 门+十件全挂+15 API 真数据(tasks/broadcast/guard/approval-center 跨任务/assets/coverage/registry/retest/reports/meta/techniques/finding-detail CVSS 9.1/evidence-raw is_http)+settings POST 守卫序(401→403)+导航网三文件互检+只读铁律全扫前后逐字节一致——Ran 33 tests OK;全套件 Ran 582 tests OK(技术栈/页面/控制台零回归) ⑥README 方式5: 启动命令/8900 地址/口令/☰ 导航分组能看什么(人话)——Ran 33 OK
+e9f8f0d ⌘K 命令面板组件: pages/_palette.js 可挂载组件+techniques 页单页冒烟——①命令源=页面导航(壳 nav.entries 单源优先,壳缺席退回内置 25 页清单含观察面/控制台绝对路由)+高频动作(新建任务/打开最新任务[按最近更新]/跳到最新发现/打开报告中心)+行址直达(FD- 发现[可 @G- 代域带所属任务]/G- 任务[代域·行id·任务号·前缀兜底]/EV- 证据[播报网 EV→挂接发现,跨任务最多查 8 个,查不到=人话留面板不瞎跳]);②键位协调: 总装壳已绑裸 ⌘K 开导航抽屉——壳在场本面板让位裸键改绑 ⌘⇧K/Ctrl-Shift-K(capture 拦截不误触壳),壳缺席独占裸 ⌘K,壳交出键位后改调 window.__plkCtl.open() 即回独占零改动;③模糊匹配(子串&gt;连续/词首子序列,CJK 每字词首,确定性零随机)+固定分组(最近使用/查找/动作/页面,组内匹配序,最近使用不重复)+最近使用 localStorage(tanyin.palette.recent.v1,置顶去重截 8)+键盘全链(↑↓ 回环/回车执行/esc 关闭/背景点击关闭,开即聚焦失焦还原);④ARTEX 质感: 12 级灰阶+单强调色(选中行左侧强调条)+mono 行址+入场上行动画+backdrop 毛玻璃+页脚键位提示动态(壳在场示 ⌘⇧K)+无匹配人话空态;⑤挂载不破钉: techniques.html 守卫式 createElement 动态注入(候选=同目录相对名后 /static 前缀)——仍只一外链(tests/test_webui_pagespec_techniques.py 单外链钉),失败静默不破页;文案宪法#41 全程(任务不说战/未找到给核对去处/载入失败人话);红转绿 31 例(纯逻辑 node 直跑 19:匹配/行址/索引/分组/最近使用/解析器+结构钉 4+活体冒烟 8[playwright 真 Chromium 真键程:开合/上下导航/回车跳转+最近使用落盘重开置顶/G-·FD-@G-·EV- 三行址真跳/壳让位键位+壳导航网消费/无匹配空态]),回归 107 例绿(techniques 17+tasks 28+总装 mount_all 31+面板 31);HANDOFF: 组件已与总装舰协调两点待收口——①server.py 现只放行 /static/app.js,需一条 /static/pages/*.js 放行(或壳统一注入)面板才能上生产页(缺席=静默不破页);②⌘K 归属建议总装舰裁:壳抽屉让位或调 __plkCtl.open(),组件零改动跟从
+8721d0a 蓝图: 评测棘轮落成(棘轮门+能力曲线+避坑卡)
+6844f87 演进飞轮三件落地(设计=evolution-flywheel-v1,宪法#43核心件——误报漏报率机器): ①评测棘轮 scripts/capability_gate.py——能力件变更(技法卡 cp-index±行+concepts+negative 避坑卡/提示词 phases+SKILL.md/工具卡 tools.lock 三面 pathspec)合并前自动跑评测对比: 复用既有 GT-scorecard 件(D2 判分核=tests/eval_range_recall.py subprocess 实跑,battle.py cmd_settle 同法,评分器取 gate 自仓单源防被审方替换),逐 battle 家目录(&lt;suite&gt;battle-N/G-gen 会话+&lt;gt-dir&gt;gt 同源布局)产召回(微平均 Σ命中/ΣGT)+误报(活发现集内重放证伪=FD REJECTED/EV not-reproduced,G-52 事件溯源末值口径)→delta JSON(召回/误报前后对比);回退&gt;阈值=rc1 拒合并(默认 0=棘轮不退,阈值可调),无变更=rc0 秒过不触碰套件,零可评分战=rc2 fail-closed;baseline 棘轮只紧不松(collect-first 首跑入册=M01 同先例,--update-baseline 拒降);CLI 显式+--hook 单行 terse 两形态(hook 挂载示例在档尾);②能力曲线 cli/webui/api_v2_capability.py——/api/v2/capability.json 每仗评测聚合只读投影(仗序号×召回/误报/每美元发现(hits/Σdollars,零计量=None 诚实)/覆盖率(matrix 终态 x 占比,同格后代行胜),时间序=仗编号;臂标 directive 同源;未结算不入线只入计数),曲线下降段=告警旗(召回/覆盖/每美元回落+误报率上升相邻对逐段旗,宪法#41 人话 metric_zh);knowledge 存量块(技法卡50/避坑卡计数);零写入零取钟同输入两跑逐字节一致;ROUTES 单源表+dispatch 与 api_v2_techniques 舰间契约同形,挂载钉 _V2MountHandler(会话门401+登录200 真服 127.0.0.1:0 禁碰口);③避坑卡 schema knowledge/negative——卡型扩 negative(失败路径/条件/出处=账本行号 battle-N/表.tsv:行号 形),cp-index 家族兼容扩列(ng-index 前六列与 cp-index.tsv 逐名同序同义+扩列 kind/failure_path/conditions/ledger_ref 可选,经典六列读方零破;cp-index.tsv 本体 50 行六列冻结零触碰=W3 舰钉),CP-NNNN 编号空间跨索引连续分配,读写面 validate/write/read 住 gate 件(种子库 R7 拒写),蒸馏管线本体留 W5 知识环舰(SCHEMA.md 接口锚);真数据冒烟: gate 对 20 真战全量复跑 413/728=recall 0.5673 fp_rate 0.0044 collect-first 入册,曲线投影 13 结算战 12 下降段旗(如 仗27→28 召回 0.6964→0.4643);红转绿 51 例(避坑卡 9/变更检测 6/评测误报 7/delta 判决 5/e2e rc 契约 9/曲线投影 15),回归 Ran 152 tests OK(w3+techniques 25+knowledge 54+eval 22+新增 51,全本地夹具零外联,无表头冻结列序+主代优先两真实形态钉+列位漂移钉);HANDOFF: 飞轮三件已入册——gate(baseline=$TANYIN_HOME/capability-baseline.json 已冒烟首建)/曲线 API(挂载=UI-1 舰 api_pages.py include 机制后续接线即亮)/避坑卡 schema(W5 蒸馏舰 write_negative_card 一函落卡);注: 本提交自身含 knowledge/negative 新面=能力件变更,合并后首跑即 collect-first 立基线,此后棘轮生效
+944b6b2 蓝图: LLM录制+锚定对话落成(待挂载)
+7a27336 锚定对话MVP(anchored-chat-v1只读裁剪): POST /api/v2/ask——锚=账本行址(表+行号+行内容指纹sha256前12),发现锚富化本行+证据行(linked反指∪evidence_ids)+所属意图行零手工粘贴;channels同warrior model_client(env TANYIN_ASK_CHANNELS,llmpool_wire钉根goal选道+故障转移),假模型服务动态口测;答案引用[table#N]逐个对回真实行(不存在=未命中,不信自报);只读律=账本表零写入(成功路径唯一新文件llmpool_state.json运行态);POST过会话门+CSRF双检;对象卡+问答面+引用区页+只读徽标,人话#41——红转绿21例
+ca8f418 LLM录制页(模型对话记录): 战士R4留痕只读投影——列表(意图/标题反查intents/模型道去重/token耗/坏行披露)+详情(请求响应原文对mono保真,usage缺=None不虚构)+id路径监狱(非安全名拒400)+goal同辈解析;ROUTES单源表dispatch等总装;四态页+nav.push守卫+零CDN,人话文案#41(战士→智能体)——红转绿19例
+205c409 界面三页收编: 工具执行(25卡只读+复制调用)+LLM状态(道池健康熔断,密钥永不上屏)+系统配置(读面+写面留位W7)——63测,总装舰待挂载三路由
+64ebf80 蓝图: GT评测集加厚落成(6战场+基线表)
+1f036de GT评测集加厚: evals/gt版本化入库(宪法#43测量地基)——①盘点range-56/golden54/metrics-v1/G夹具24件+缺口表(类x深度四层) ②ZhuLong靶场(只读)2新source-gt战场:10真行+4修复回归锚+5诱饵负对,verify_cmd只读锚 live 15/15+快照 15/15 ③三场基线 0.62/0.62/0.70(FP=31/3/1, precision 0.53/0.92/0.975) vs 0.71参考 ④gt-index.tsv 6战场行+capability_gate消费契约+G-r25/26/27升格replay-fixture; Ran 16 tests OK
+c6ffff9 蓝图重生成: 灌入长尾五页最新状态
+20cc8c2 HANDOFF一行: 全景舰蓝图全景集七页已入册push(353d9d9)——进度看panorama/index.html,进度总图由gen_blueprint.py从blueprint.json再生成
+353d9d9 全景舰·GraphLed蓝图全景集七页全新建(用户令「后续我看蓝图就知道进度了」): panorama/新增六新页+index重写入口枢纽——①graphled-blueprint.html进度总图(核心页,由修好的gen_blueprint.py从blueprint.json生成: 修坏稿CHIP表⬜=U+2B1C旧稿误U+25A1生成即KeyError+补七页导航互链/生成meta/计数条按ui数组实算)②graphled-architecture.html六大件数据流向(CSS画框+箭头零图片: 账本13表/守卫五门/战士R1-R5+自纠+知识注入/工具引擎25卡/评测飞轮/界面,每件行数+测试数+状态+来源)③graphled-ui-map.html界面23项网格(状态色+一句话能力+对应路由,头部计数条)④graphled-enemies.html六产品306件判词(A96/B68/C15/D60/E67)+E档三空洞=我三山峰+即刻吸收三件表⑤graphled-roadmap.html能力阶梯五道门(无时间预算,宪法#42: 首仗判卷→评测棘轮→挂载收口→W7→远期,每门进入条件+当前卡点)+W1-W8行数总账(时间量纲剥离)⑥graphled-methodology.html交战思维六步横向流程(八问授权→意图链→战士执行→机械重放→复测→报告签发,每步标注执法件+九门词表)⑦index.html重写(七页导航+产品一句话[USER-CHARTER#4定稿]+当前里程碑+历史档案专区16条——旧页tanyin-*v1/v2/v3及副本/atlas/vs-artex/design/roadmap/methodology/techstack/toolchain/ai-pentest/artex-analysis/console-prototype/notes零删改一字不动,新图侧注演进自v3差异点,宪法#50);铁律兑现: 数字全带源(界面状态=blueprint.json;行数测试数=wc/grep实勘: ledger 52模块13535行·174文件1417测/warrior 13件2350行·123测·自纠694行/enforce 513行/tools 25卡·7引擎插槽/evals 488行/webui 6640行+28页HTML·724测/全仓238测试文件2537测试函数;界面计数双口径并列: ui数组实算23项2✅10🔧7✈️1📐3⬜与柱四判词原文22项4/9/7/3);每页meta注明生成时间;统一暗色#0d1117零CDN零框架零图片纯HTML/CSS;完航自检: 随机动态口http.server七页全200+doctype+generated-meta,24互链目标全通(notes/目录链接301→200),禁碰口8900/3000/8787/8443零占用,兄弟舰文件零触碰
+9a8913f 蓝图数据更新: 长尾五页落成(资产库/审批中心/设置/工作区/评测对比→建成待挂载)
+3ef562b T7·评测对比页: D2三臂同考读面——登记处行式解析单源复用metrics.parse_exp_tsv(保留battles_&lt;臂名&gt;全字段,登记序展示)+臂×结算行联表(均值只进已结算,未结算如实计数)+verdict/note逐字上屏+D2未登记诚实空态+预登记律提示——红转绿 13 例(真仓directive-n5过HTTP单源钉)
+f844987 T7·工作区页: 任务工件浏览+下载——有界漫游实勘(深度≤3条目≤800,截断如实披露)+类别确定性推导(报告/摘要/指令/结算/日志/账本表/证据/代目)+下载路径监狱(禁..与绝对路径,realpath双检)+2MB上限413+b64真字节往返(页端组blob落盘)——红转绿 17 例
+ae2a612 宪法#52对话全话律: 完整句子完整逻辑,术语首现即译,反电报体
+51e972d 宪法#51账先用律: 开干先翻你我账本;失效判据=同类错被重复纠正
+9d944b2 宪法#50设计资产保全律: 旧设计零删改+演进标注+git史零改写
+52284f1 T7·设置页: 账本参数读写面——读=goals档位/预算三元组/速率窗+scope修订链(被修订行标暗)+豁免+修订史+P0后旗标;写=amendment带因(note空=422,P0后须approval,窄门tanyin-ledger amend-scope真入链,GET/POST过会话门+CSRF双检)——红转绿 24 例(含真CLI集成1例)
+3ddee34 E舰·cyber-harness全件对齐(零代码): docs/reviews/2026-10-19-E-cyberharness-全件对齐.md 定稿——对手仓(.research/repos/cyber-harness, git 0d812fe, AGPL-3.0, Go 1045文件458测试, exts 31扩展)实读(docs 14档全文+代码10件按节引);底册校对7条(exts十五件→31件计数失真/--verify三层解析链+无模型硬错精髓/QuickConnect密钥拓扑=节点零钥Hub下发);逐件表67件七组(四入口7+QuickConnect回连5+exts全量31七族+verify分离6+agent循环8+三库6+配置运维4)——判词: 已超28/已排17/取舍16/真空白6;新增缺口N1-N9全给方案入波次(浏览器会话卡W3/同轮工具并行W5/两段判定档+重复拒绝退避W2 G3/密钥面卡W3/文件卡W3/依赖边界CI W2/finish指令W5/请求哈希复用W5,合计~1600-1900行不新开波);即刻吸收三件排序: ①两段判定+退避入W2 G3规格 ②浏览器会话卡W3(漏报直接相关) ③同轮工具并行W5;结构性对判: 它三空洞=我三山峰(无授权范围管控vs八问+scope四层/SQLite无防篡改vs哈希链/LLM语义验证vs机械重放);零代码零兄弟舰文件触碰(cli/warrior+webui在树10件不触);完航验证: Ran 147 tests OK(warrior_loop+steer+timeline_o1+timeline单源+tools_cards_w3+guard+replay_gate);HANDOFF一行: E舰全件对齐档已入册push——cyber-harness 67件判词+9缺口全有归宿,吸收三件已排进W2/W3/W5规格,底册exts计数勘误在档
+55ec139 T7·审批中心全局页: 跨任务待审队列(T3卡形态复用——风险徽章/工具/命令mono/AI预审仅供参考/三钮仅对齐任务可写,哈希去重留最新)+已决历史带所属任务+四层拦截流水计数(词表单源import api_v2_guard不造第二份)——红转绿 18 例
+12e3d4b 第一性排序: 找漏洞能力绝对首位,验证链降为放大器——用户裁定
+164bdfb GenSift入地图册: 本地参考件(9.2M逐字节核对一致)——机制参考不替代自研白盒设计
+c8728cb T7·资产库页: 跨任务资产登记读面——按资产值归并(同值=同一登记对象,跨代同id后代胜)+各任务复判/关联发现/已测请求分列(token边界口径同P5.6)+搜索(值/类型/编号)+跨任务计数卡——红转绿 15 例
+a93ec2d 宪法#49呈案亲验律: 决策点先亲验再呈
+5aa5d9e W6 控制台⑨·活体冒烟收口: 五页真 Chrome 旅程钉(playwright 过会话真 server——总览四卡/23 菜单/450,000 千分位+ffuf 活动流·九灯+收敛四条+烧速 polyline·图例 17/节点 7/回放帧=行号·发现三态筛选+CVSS 证据抽屉 curl 真转抄·审批浏览器批=真落 approvals.tsv 且队列移出,零页面错误)+渲染失败人话降级 pane(init 抛错→『渲染失败』pane,与『数据载入失败』fetch 失败轨分流,坏形状零半行假数据;宪法#41)+intercept 注入 battles(审批页顶栏任务选择器同源数据,battle 目录实勘 target)+修 graph 冒烟硬钉腐化(共享账本旅程中审批真落账追加 timeline 行,13 硬编码随旅程腐化→改三面同真动态钉:UI max==API replay.frames==磁盘 timeline 行数;单跑绿全类红=测试次序态非生产缺陷,生产行为诚实保留)——红转绿 3 例(graph 冒烟+降级钉+battles 钉;后两钉摘生产件复红实证,还原后 md5 一致);Ran 41 tests OK(浏览器缺席整类跳过不红);HANDOFF: 控制台域在航件全部收口提交,后续舰零欠账
+323786c 宪法#43重申: 优先级重排——核心三件上位,辅助件后拖;飞轮即刻开工
+39625e4 #17修订C: 双签只留报告位+两档角色——用户裁定,ARTEX对照;误报防线=重放非人签(自纠)
+b8825ef 战士知识库面: VulnClaw kb_context 移植·两件——①技法卡50张(knowledge/concepts CP-0001..0050)按意图关联确定性检索(拉丁token切分+CJK二元组,title×3/vuln_class×2/source_topic×2/applicability×1,平分卡id升序可重放;关联信号=意图title/detail+本意图facts行账本血缘)命中注入R1新节「## 技法卡」,零命中/库缺失=零注入静默降级绝不炸循环;②SKILL按门路由瘦身(执法其路由表自约:当前门→phases/&lt;门&gt;.md 单门单载)——协议节九门循环/P3演进循环让位+phases/&lt;门&gt;.md duty节(节级,###子节留原文按需再读)单门单载净瘦身,门取timeline末行phase列,门未知/文件缺/duty缺=原文回退;ContextBuilder增kb/kb_top_k/kb_dir参(默认关=字节级旧行为),loop默认kb=True可opt-out;R1律=一意图一检索零跨意图缓存(模块级仅卡片索引数据面缓存,目录指纹键控)——红转绿 20 例(累计123例全绿,既有81例零回归)
+6b69580 #17附注: 双签质询修订B案(收窄三类+单人延时门)待选
+881ca96 战士自纠层: VulnClaw correction_layer 移植·工具生命周期事件→自纠信号——调前软预检(重复/降级)+调后健康/进展/钉住事实提取(旗标/HTTP状态/表单/SQL/URL/路径/JS端点/解析器-过滤器边界/PHP POP 链/语义暗示)+批后暗示;三出口=[diagnostic]当轮指令结果注记+take_hints()次轮「上轮纠正信号」节+pinned_fact_lines()进 facts_extra(参R3冷折叠);API最小diff=build(corrections=)既有面零变更,R1一意图一层零跨意图继承;rc!=0即失败(guard 拒/环境不可用语义),边界常量同源(hint24/pinned80/慢阈15s/重复窗8·6)——红转绿 22 例(既有 81 例零回归)
+6a4d158 T5·P4 新建任务页(验尸续完): 前舰遗产三件收口——①b 元信息投影 api_v2_tasks(/api/v2/new-task-meta.json: battle-kit BRIEF *.md 只读 mission 形解析[目标/范围 include 行/预算三段,缺=诚实空]+枚举表+/api/battle/new 提交契约+八问清单单源;kit 缺=空模板诚实态,零墙钟确定性)+_battle_state 顺位律(执行在案事实[rc=0/发现/重放]压过 goals 表单域完备——boot 脚本立的仗不再误标待授权;完跑待复测补 CONVERGED→复测桶;纯立项缺件仍待授权门卫)+页 new-task.html 两列表单(左: 名称/目标说明/模板下拉空位带入不覆盖/①授权书拖拽 PDF|PNG+浏览器 crypto.subtle 实算 sha256 即显可复制+签署方/窗口起止转UTC/③法律确认条款/④范围白名单逐行+实时标签条绿红/⑤凭据来源/⑥预算三段 token;请求;时长/⑦执行档拦截档/⑧联系人;右: 八问完备性实时指示器逐项点灯 0/8→8/8+实时摘要卡+预估说明);八项齐+名称才亮「创建」(disabled=!ready);提交走既有 POST /api/battle/new(auth{filename,sha256,content_b64,signer,valid_from,valid_until}+scope 数组+legal_ack 真布尔,缺一=422 字段级拒因顶部横幅回显);四态=空/字段错行内红失焦校验/提交中按钮锁定/服务端拒横幅+成功卡(编号+查看任务/返回列表);宪法#41 文案收口: 屏上内部代号清零(battle-kit→既有任务简报/元信息枚举工程词→模板与选项/模板仓路径不回显/落盘→已存档)+悬空接线修复(fi-contact 容器补 id——联系人失焦行内红原 TypeError)+成功态右列摘要卡同隐;红转绿 3 例(fi-contact 接线/成功隐右列/代号不上屏)——Ran 21 tests OK(投影 7+挂载 2+页面 12);tasks 回归 Ran 28 tests OK(含兄弟舰在树顺位律 3 钉,无互破);HANDOFF 一行: P4 新建任务页三件套已入册——元信息投影+顺位律+整页表单八问门齐亮创建钮走既有 /api/battle/new,21+28 测绿已 push,UI-1 挂载舰后续接 ROUTES[ROUTE_NEW_META] 分发即点亮生产口
+493118e 设计舰·多用户与资产库v1(零代码): multiuser-assetlib-v1设计稿定稿——四角色本地账户(观察员/审计员/操作员/管理员,argon2id主格式+stdlib scrypt兜底双格式自描述+登录升档,错5锁60s沿用)+读写面15面×4角色矩阵(rbac SURFACE单源;authz_matrix=目标侧同名不同物澄清)+maker-checker双签多用户化(报告双签互异两卡先例推广: 高危类表六件+同人双签账本级REJECT+fail-closed挂起+提案人不得自签+CLI --counter-sign)+安装级资产库($TANYIN_HOME/assetlib events.tsv行哈希链+SQLite投影骑O7坏了删了重建,不进13战表不建第二图)+跨任务登记/授权复判(scope matcher+goals授权窗口同源三态in/oob/exclude,复判事件可回放,分母=battle scope不膨胀)/快照导入链头锚定(06-whitebox:50落地)/导入合并(同键后行胜全史保留+冲突转双签)/覆盖历史(7/30/90投影零新战表)+timeline actor扩展(词表冻结+human:&lt;名&gt;服务端盖戳+approvals approver改记用户名)+平台级审计链(platform/audit.tsv);并发模型三不变量=单仗单写者+人面写CLI窄门flock串行+独立锁域,新增面零绑口;W7三段~600/500/800行+验收钉(越权剧本/自保护三律/双签拒/重建逐字节/复判拒/文案#41);首启迁移OPERATOR_KEY一次性种子;四待裁位呈荐均荐a案;六项必读全实读(B舰CSAI/A舰ARTEX/ZhuLong平台仓只读/单操作员现状/battle_registry 228行/O7),零代码零兄弟舰文件触碰,裁定案#17已填推荐待追认;完航验证: Ran 25 tests OK(gen_counts6+battle_registry15+timeline单源4)+counts --check PASS
+acc2744 W3·C2-lite 账本化收口(验尸续完): 前舰遗骸 cli/c2 五件全数入账+补齐 echo/webshell 两断件——①beacon 管理(beacons.tsv 账本行+心跳投影 online/stale/offline 超时翻转零改行,意图/凭据引用闭合 fail-closed) ②指令队列(cmds.tsv append-only,行号=物理行序=游标域;pulls.tsv 游标行防重发防漏发,幂等重拉空集) ③回显证据化(echoes.tsv+sha256 字节锚+goal 锁内走 add-evidence 13 表单源写路径,大输出工件化账内只留 200 字符摘录) ④WebShell 受控档(webshells.tsv 会话行族 open→exec→close;命令过 enforce.deny_forms 单源副作用黑名单,shell 包装逃逸同检,拒执行也入账;副作用必登记 reverts.tsv revert 义务,义务未清不得关档;URL 门=禁碰口 8900/3000/8787/8443+bounds hosts 出界即停) ⑤L3 预授权审批族挂接(families.tsv 批一次放一族,bounds{hosts,max-cmds}+expire+revoke 投影即死;c2-beacon/c2-cmd/c2-echo/c2-webshell 四面过门,cmds 行 approval_ref 锚族行)——cli/c2 880 行+测试 566 行,红转绿 47/47(全本地回环 127.0.0.1 临时口,禁碰口零 bind;ledger core 回归 10/10)
+c846f46 T6·技法库页: 50卡列表+搜索(q=id/标题/漏洞类/适用面)+卡详情六节只读(场景/步骤/工具引用/纪律标注/证据标准/边界;早期8卡四节如实标shape不硬凑)+真实单源钉(knowledge/concepts CP-0001..0050 过HTTP)——红转绿 17 例
+1ce8883 T6·P1 登录页美化: 原型视觉(12灰阶+单强调+mono)+四态(空=启动日志提示/加载=按钮转圈/错误=红字+输入框红/正常=跳总览)+429 retry_after_s 锁定倒计时——红转绿 11 例(authform 39 例回归绿)
+2ad9da0 设计舰·源码审计v1(零代码): source-audit-v1设计稿定稿——源码账本谱图=三层(13表锚点层/谱图工件层codegraph/投影层)+密度律「文件入账·入口入账·符号入谱·污点入卡」;渗透联动=deepex型双向派生(代码发现→渗透意图/黑盒异常→代码复核)+事件源=账本行;执行形态=内嵌W4先行+独立audit-goal W7起+客户/项目安装级registry;cyber-audit逐件对照借四超八;W7+四波~3600-5300行;裁定案#15填推荐;HANDOFF一行入账
+d2f63fd 节奏闸: 动既定案必先呈案带荐——AI无权静默取消/降级已排工程
+918e981 W6 控制台⑧: SSE 流随 ?battle=N 换源(默认 ledger_dir 行为不漂移)——修跨任务错接真缺陷,红转绿 1 例(标记行双任务夹具)
+7eb6a9e T5·P3 任务列表: api_v2_tasks 投影+/api/v2/tasks.json——battles+goals+findings+budget+timeline 每仗一行聚合(状态徽章 task-lifecycle 12态→界面七态子集[草稿/待授权/执行中/复测/待签发/已签发/已归档]+异常终态诚实保留/预算已用vs帽进度条80%预算预警线/发现已验证·待验证双色/更新时间),多代自然序合并同id后代胜,registry 活性死尸回收,只读零写入禁墙钟;页 tasks.html=表+筛选(状态/时间)+搜索+列头排序+分页20/页+行点击进详情+新建任务主钮+四态;25测红→绿(投影14+活性2+挂载4+页面5)
+4724c4b 改名令修正: 大改名恢复照做(舰队收口后)+单源律并存管未来——前判裁权过界作废
+c3146f6 T3·P5.8④: 拦截审批页签——api_v2_guard(/api/v2/guard.json: 待审队列[revert 未核销未豁免,_replay_status 同判定; command_hash 去重留最新=审批绑哈希不绑行]+风险/工具/AI 预审确定性词表[恒标仅供参考,操作员终审]+四层拦截流水[L1 账本/L2 执行通道/L3 宿主 hook/L4 egress 代理]+扩展审批分支[范围外资产挂起+修订 matcher 接入判定+主战继续提示=分域异步门]+approval_aligned 同轴旗) + pages/approval.html(卡片三钮 批准/拒绝/改参 POST 既有 /api/approval——签名按 command_hash 从 GET /api/approval 连接; 改参=界面层参数编辑+放行,诚实标注; 四层流水表+扩展分支区+主战继续提示条); 20 测红→绿(投影 10+挂载 5+页面 5)
+3e9e643 里程碑入册: 自有战士运行时成活(81测,宿主正式降级插座)——终局架构兑现
+aafb551 HANDOFF: W5战士运行时MVP完工一行入册(cli/warrior 11件1373行: 核心循环领租约→R1一意图一脑→llmpool选道调模型→JSON指令协议→guard链工具+锁链账本→写账→释放; R1全新上下文血缘走账/R2串行链frontier逐个派发+后继恰提升/R3冷折叠cold-digest+token入budget.tsv/R4 transcript目录独立留痕/R5 steer定向+stop扩展; 429切道/心跳/停滞自杀重生交租约回收/断点续跑timeline末行重建/预算触帽时间窗优雅停/入口--dry-run零写零调; 新增81测Ran 81 OK全链E2E本地假模型零真调, 既有套件零回归, 账本执法链消费零改动, 已push)
+9d576f0 T4-P7 报告中心④页面: report-center.html 两视图(列表=每仗一行状态徽章/版本数/最后渲染时间/查看报告/下载报告; 详情=左侧渲染预览六节+章节锚导航+右侧元信息卡[渲染输入哈希/两次哈希比对钉/版本链/签发流程位草稿→待签发→双签两签名卡→已签发锁定+时间戳/pass.json绑定复检条])+重新渲染钮+MD走既有下载件+HTML就地生成+打印同渲染,四态齐备零CDN,宪法#41文案(报告/任务,禁旧军语),nav.push守卫自注册;7测红转绿(Ran 50 tests OK)
+19d00df 名字单源律: 大改名取消降级单源+别名——用户预告还会改名
+5849718 W6 控制台⑦·六页真身落地: 原型皮肤console.css(12级灰阶+单强调)直搬+导航壳console.js(23页菜单·建设中占位·任务选择器·Ctrl+K)+五页真数据HTML(总览/实时动态(SSE)/攻击链路(演变回放=帧号=记录行)/发现(验证状态三态+CVSS+证据原文抽屉)/审批(批/拒真提交+四层拦截表));壳资产路由+结构钉+文案规范禁词钉——红转绿 11 例
+1e637bb T3·P5.7③: 资产覆盖页签——api_v2_coverage(/api/v2/coverage.json: 资产×意图族热图[格状态五态 x已覆盖/?存疑/-不适用/!受阻/空未测+深度=request 行 log2(n+1) 对数色阶; 同格后代行胜=翻案律]+未测清单[资产/未测意图/原因归档 范围外&gt;预算止&gt;无凭据&gt;按态; 资产账面 out_of_scope 单源]+覆盖率口径=(已覆盖+不适用)/总格+矩阵冻结旗) + pages/coverage.html(热图对数色阶+未测斜纹 repeating-linear-gradient+空框未建格+图例+未测清单表; 覆盖诚实法条披露); 20 测红→绿(投影 12+挂载 4+页面 4)
+8259749 演进飞轮设计v1: 六齿+评测棘轮(知识也有CI,能力回归=工程回归)+能力曲线——越打越强成为架构性质;裁定案#16呈
+580711f T4-P7 报告中心③重新渲染路由+挂载契约: /api/v2/report-rerender.json 同输入同输出钉独立口(_pick_goal 公共定位 battle/goal),_V2MountHandler 钉 include 挂法(dispatch 同形+battles_dir 注入+缺会话401 JSON),HTTP 动态口全路由只读复验;13测红转绿(Ran 43 tests OK)
+883c607 W5战士⑨b: loop 净笔——去除未用变量,断点续跑注释入册(绿后重构零行为变化,Ran 12 tests OK)
+eaa5762 语言终审: 核心Python定案+Go定点收割(客户验真器单文件/扫描外挂)——负载判据表入册
+c02c72d HANDOFF: W2 CI护栏舰完工一行(ruff基线/mypy渐进/分片并行/coverage89%/B:G2 guard三帽fail-closed+验证证据)
+b6a9c36 T3·P5.6②: 测试资产页签——api_v2_assets(/api/v2/assets.json: 资产表[资产/类型/授权复判✓绿·范围外黄标/已测请求数=timeline request: token 边界口径/关联发现链接=affected_asset_id 反指]+scope 四态汇总+修订计数; 跨代同 id 后代胜=复判可翻案) + pages/assets.html(DSL 搜索框 AND/OR/NOT+字段 type/value/scope/tested/findings/id+*通配+命中计数; 页端过滤服务端全量); 19 测红→绿(投影 11+挂载 5+页面 3)
+f9e61ac T4-P7 报告中心②详情投影+同输入同输出钉: report_detail_view 六节(封面/授权摘要/发现表[等级/验证状态徽章]/证据附录/覆盖诚实=已测矩阵+未测清单+原因/方法论)+元信息卡(渲染输入哈希/版本链/签发状态/双人签发位/pass.json 绑定逐件复检,篡改=红条不回退),render_pin 渲染纯函数两跑哈希比对(输入动→双哈希动),bad参422/缺参400/不存在404;22测红转绿(Ran 30 tests OK)
+47d04ea W5战士⑩: 入口__main__——python3 -m cli.warrior(goal-dir/battle-name/max-intents必填+dry-run只组上下文零写零调/通道链JSON/停滞重生respawn-max退出码0-2-3-1);8测红转绿(含子进程E2E经假模型全链)
+40ea1c9 W5战士⑨: 核心循环loop——领租约→R1组上下文→llmpool调模型→协议解析→guard链工具/锁链账本→写账facts/timeline/transcript/budget→done释放→R2链后继恰提升一个;停序=让位→stop信号→预算帽→时间窗→心跳→停滞(自杀重生交租约回收);12测红转绿E2E
+cc73b68 T3·P5.5①: 复测页签投影 api_v2_retest——/api/v2/retest.json(复测队列[发现ID/上次结果人话徽章/距上次战场钟推算/客户反馈 FD 号锚定/可复测=有证据]+逐发现复测历史[时间/结果/差异=verdict 变化+状态码漂移/触发方式自动复测·手动/耗时 replay JSON 对齐]); 多代合并律 G-r2&lt;G-r10 自然序+同 id 后代胜+timeline 全局行号; 单账本回落; 只读零写入确定性; 23 测红→绿(投影 14+挂载 6+页面 3)
+ddbfc25 T4·P7 报告中心①列表投影: api_v2_reports.report_list_view 每仗一行(状态徽章草稿/待签发/已签发确定性文件分类+版本数+最后渲染时间+发现计数+可下载位),只读零写入禁墙钟,与 broadcast 同形 dispatch 挂载口;tests/test_webui_pagespec_report_center 夹具三战三态 8测红转绿(Ran 8 tests OK)
+7bce67a W5战士⑧R5: 定向转向钩子steer——say定向=warrior-steer事件行增量scan注入/kill=warrior-stop扩展(优雅停),事件词单源writer/reader同址;5测红转绿
+d80960f W5战士⑦: 心跳与停滞Heartbeat——interval节流timeline心跳行(P-lifecycle)+progress进展跟踪+StallDetected停滞检出(自杀重生信号),钟源注入;5测红转绿
+30c5b2b W5战士⑥: 预算计量BudgetMeter——usage入budget.tsv(scope=意图/goal),fail-open累计帽不可旁路,触帽执旗;5测红转绿
+13ce8eb W6 控制台⑥: 审批真提交 e2e(批/拒过 TANYIN_APPROVAL_KEY,已决项 decided 回链移出队列)+/api/console/intercept.json 四层拦截只读表(授权窗口/范围蜜签/副作用黑名单/资源护栏·真配置实勘)——红转绿 5 例
+7428f90 CI护栏⑤稳: [paths]别名归并(test_install_core拷仓到临时目录执行的cli/ledger+engines数据并回正身)+report ignore_errors(缺源临时路径跳过不死)——全套2039测管线实测TOTAL 89%(9477语句miss 1009)&gt;&gt;60%门槛
+626b7b6 W5战士⑤: 账本消费层ledger_io——写全经registry.lockup锁链零复制,租约/prereq单源引write_cmds,claimable=pending+prereq终态(R2串行链frontier)+priority排序,warrior timeline行经append_tl_locked;12测红转绿
+1e46b31 W5战士④llmpool接线: 模型客户端ModelClient——通道选择/错误分类/冷却/429切道全经llmpool判定核(首个真实消费者),openai信封stdlib直连,usage缺失估算兜底,attempts留痕;本地假模型服务fixture(动态口);8测红转绿
+ea71bef W6 控制台·门枚举单源律钉: console.py PHASE_NAMES/PHASE_ORDER 手抄第二份门枚举除役——改自 core.GATE_ORDER 派生(上屏中文词表按序 zip+长度失配 RuntimeError fail-fast 禁静默截断);tests/test_gen_counts 1 红转绿(Ran 6 tests OK);pathspec 外科一笔只含此 hunk——UI-1 舰在航件(console.py findings 段/server.py/test_console_ui.py 未提交红态)原样留场未入此笔
+4129b29 CI护栏⑤补: coverage作业带COVERAGE_FILE/PYTHONPATH/COVERAGE_PROCESS_START三env(子进程spawn CLI计量+数据文件绝对路径落仓根)+combine步归并parallel数据——本地同管线复现
+e52735c CI护栏⑤修: coveragerc source 行内逗号=目录名尾随坏解析(多行值换行分隔非逗号)+点形cli.ledger按模块名解析失败改目录形cli/ledger——单测夹具(test_write_cmds)write_cmds 0%-&gt;72%复现即证
+fb5033e W5战士③R1/R3: 上下文工程context(一意图一脑零跨态/血缘走账本行/cold-digest冷折叠/断点续跑timeline末行/纠正信号+定向指令节),9测红转绿
+733528b 第六参考双入库: cyber-harness(衍迹,1045Go文件,cyber-audit源码审计参照,QuickConnect节点分布)+GenCPT借鉴(统计栏/阶段chips/KG注入/adversary-verify)
+6c1f22c W5战士②R4: 原始对话存档transcript(一意图一jsonl,append-only,跨重启续写,账本零触碰,fail-open),5测红转绿
+fd2ca18 W6 控制台⑤: /api/console/findings.json(验证状态三态+CVSS向量在场实算·缺=未评定+证据原始请求/响应真转抄)——红转绿 4 例
+51ca90f W5战士①: 指令协议解析(protocol.py)——JSON指令块四op(tool/ledger/done/note)+围栏+容错律(坏块记错不炸/散文上浮/权面allowlist拒权威命令),12测红转绿
+bf08a1e 追认落地: 14案全按推荐✅(用户令「按推荐」)——试行态全部转正
+6a87f8b W6 控制台④: /api/console/graph.json(节点入场帧=timeline首现行号,回放帧数=真行数钉,图例=真7节点型+10边型)——红转绿 4 例
+abce1db 追认清单14案全附推荐(宪法#48即刻生效)
+feb9c72 T1·P6③补: 页 JS 严格模式卫生钉——浏览器实炮(Chrome headless 全链冒烟)抓出两断渲染雷后入护栏: for( 裸循环变量=strict ReferenceError 禁+svgEl 属性参缺省守卫须在; 冒烟同时验证 五区DOM全渲染/雷达点击出SVG/报文懒载出HTTP对/重放3行/生命线5节点/四态切换
+7d3e4a3 宪法#48提问带荐律
+9893910 W6 控制台③: /api/console/live.json(九阶段灯=执行阶段名真结果+预算烧速累计曲线+收敛四条件同源判定+事件流尾)——红转绿 4 例
+8b71791 T2·P5.3 播报页签②页面: pages/broadcast.html 487行——智能体直播气泡(时间+账本行号角标可复制行址+账本原文mono回显可展开)+操作员气泡右对齐+底部输入框(POST 既有 /api/battle/say,回执 timeline_row 即角标,正文页侧补显)+介入说明条+自动滚动可暂停吸附(上滚即暂停·回到底部/点钮续随)+hover「查看证据」跳 /evidence#f=&lt;发现号&gt; EV 卡+URL frame 历史视图(只显示该帧之前·黄横幅·回到最新·禁发送禁实时)+SSE 复用 /api/stream(对齐旗真连·未对齐 4s 轮询诚实披露)+四态齐备+nav.push 守卫自注册+BroadcastTab 宿主接入;宪法#41 零禁词;28 测红转绿(页面5测)
+47320c6 CI护栏⑤补: .gitignore 收 coverage 计量工件(.coverage/.coverage.*)——主进程+子进程数据文件不入库
+906c48c T1·P6②补: svgEl 空属性守卫(无属性元素 title 等同形合法)——舰间顺手件收编, 34 测仍绿
+cc631a0 W6 控制台②: /api/console/overview.json 只读投影(token经济学=usage真行+活动流尾+四卡真数+任务清单)——红转绿 2 例(?battle=N 选任务+404 钉)
+5ff60ed T1·P6②: 漏洞详情完航件二件——①「问AI」按钮位落锚(锚定对话contextual-chat-v1已入库: data-anchor-*=账本行址 findings.tsv+FD-id, 点击仅出占位说明, 零对话请求, 对话面板W6接壳即用) ②CVSS向量兜底第三源(UI-1实勘findings行无向量字段: 优先序=卡fm cvss_vector→卡正文regex[描述/复现]→证据原文regex[工件宽容读bytes/utf-8 replace+在册摘录], 二进制工件不炸; 向量在场才实算官方公式分, 缺=待评定+等级=真实impact高中低, 禁虚构) +形态类清理(full-only/drawer-only提为全局!important+render猴补丁除役改CURRENT内联); 34测红→绿(新增5: 证据工件向量/摘录向量/二进制容忍/卡向量优先/问AI锚点位), 邻面v09a_webui 27测OK+ruff净
+ed099a4 验收位分级律: 四类停等/其余自动收口不阻塞——用户令
+5de0e5c 节奏修正: AI主动驱动禁言等——源码审计设计舰排队,裁定案#15待呈
+46894fc T2·P5.3 播报页签①投影+挂载: api_v2_broadcast(broadcast_view+ROUTES/dispatch)——timeline 播报类行双气泡投影(智能体=CLI 写账行/操作员=battle-say 行,平台执法与验证环行不入流)+人话动词表+行号角标+EV 引用解析发现锚(/evidence#f=)+frame 帧过滤(行号&lt;frame)+tail 裁尾+stream_aligned(SSE 同轴判);挂载层钉 include 挂法(会话门 401/错误映射 404·422/未知域回落)+POST /api/battle/say 双落集成(指令文件+timeline 第9行留痕→播报收操作员气泡);23 测红转绿(重复舰半成品收编: 投影12测+挂载11测)
+436044a 补建文档三角缺角: 验收手册v1(A1-A8逐条亲手复现命令)+裁定案追认清单(14案待追认)——开发节奏v2三缺口今日补齐
+551197d 代码地图册(全源码位置入档不靠记忆)+开发节奏v2(采纳用户烛龙方法论:补每波人类验收位/裁定追认制/文档三角)
+2821e3e W6 控制台①: 五页路由+登录门(/console·live·graph·findings·approval 过会话,未登录 302/401)——TDD 红转绿 3 例(骨架页,真数据后批注入)
+d539510 战士运行时质量律v1: ARTEX planner/worker实读(角色铁律/TodoStore串行链/Compactor压缩/transcript/steer钩)+VulnClaw五件可移植——R1-R5空投在航舰,~1500行增量
+7950873 补正: 烛龙零特权同桌竞优——用户令专业进行
+3bb943c ZhuLong底盘提案裁决: 底盘否(双运行时+存储法冲突)/件狠搬是/前端Vue3分阶段/只读精确化——用户提案的专业异议
+44f559c 宪法#47零沉没成本律+五层重审表: 四层按质量存活/UI服务层W7换血排期——质量优先成法,重做选项永在桌上
+78645d6 T1·P6②: 漏洞详情页 pages/finding-detail.html(~900行)——五区全量(头区CVSS大字+向量点击八维雷达SVG+官方计算器链接+立即重放按钮[写入路由未挂=降级可复制命令]/描述区一句话+技术描述折叠+修复建议子卡三件可复制/证据区EV卡哈希截断复制+查看原始报文懒载请求响应对mono+仅头全文切换+链完整绿条断链红警/重放史五列表+未重放待评定/生命线横向五类节点)+四态(空引导/骨架/错误重试/正常)+抽屉全屏两形态+nav.push守卫自注册(壳未落不炸); 4 页结构钉红→绿(本文件累计29测OK,邻面120测OK)
+5973ef5 HANDOFF: W3工具卡舰完工一行入册(cli/tools 25卡+执行入口过执法层+CLI+tools.lock,新增73/相邻61 Ran 134 OK)
+2e5ea55 用户心智模型校准入册: 形对+两修正+第三项账本之核
+2ec166e 设计史审计问答入册: 借体三因/分期毕业非翻案/借体期账本反证/终局三风险+缓解——用户三连问的完整交代
+0b956be 终局架构封板: 自有战士运行时(否决DSH二开/multica形态当核心),宿主=可拔插座,过渡≤2周
+76a8d6a 决断W5提前: 自有战士运行时MVP插队(五家+业界共识=自家进程直连模型API;宿主降级可选渠道)——用户令直接选最佳
+f8403ee T1·P6①: 漏洞详情五区只读投影 api_v2_findings——/api/v2/finding-detail(头区CVSS向量官方公式分/验证态/复测态+修复建议子卡+证据卡哈希核验+重放史 timeline×replay JSON 对齐+生命线+链完整性绿红)与 /api/v2/evidence-raw(请求响应对 mono 仅头/全文); ROUTES 单源表挂法钉(会话门 401/只读/确定性); 25 测红→绿
+f82bee4 B:G2 tanyin-guard setrlimit 资源上限 fail-closed(W2·CI护栏舰附带): exec/inject 单源 _guard_spawn——preexec 施三帽 CPU600(=--timeout上限同律)/NPROC256(CSAI processguard同值)/AS4G(VA帽,缺省常开POSIX);参数=goal侧 guard-limits.json 侧车(13表列集冻结→sidecar承载,先例task-constraints.json,部分声明=覆盖非替换);施加失败=REJECT子进程绝不裸跑(fail-closed同律,注入OSError实测拒);平台边界实证: macOS内核不收有限AS值(8G..128G全拒,探针披露放行,CPU/NPROC仍帽)/Windows无resource=声明即拒未声明零漂移;TimeoutExpired与SubprocessError分流(墙钟超时≠施加失败);amendment报账行仅侧车路径(缺省路径时间线零新行=既有断言面不破);tests/test_guard_rlimits_b_g2.py 14测(缺省帽自报/侧车覆盖+审计/部分合并/CPU超限SIGXCPU/NPROC fork炸/AS超限MemoryError[linux]/坏json/未知键/越界x6/施加失败注入/platform-missing/inject同帽);验证: 新增14测OK+guard全家107测OK+golden全锁+ruff净
+85e8499 W3·工具卡08: 真guard集成测试——界外/exclude/deny-list经委托层生效,L3 E2E审批放行到执行位(缺binary锚),guard旗标形修正(goal-dir双token+timestamp等号形),6测绿
+87b0cc5 产品终极定义入指挥台: 八个不可替代+依赖三层真相+付费理由——用户三次追问的定稿答复
+d8fe58c 分域异步门澄清入档: 状态=行族投影非数据改写(三同构先例)
+70b8b81 HANDOFF: W2 枚举单源化+退出码分离完航一行记账(新增26测OK+相邻139测OK+金样54面零漂移;七步小提交在册)
+9b42343 宪法#45分域门律+#46交流落帐律+心智图定案入指挥台: 用户洞见(异步扩展审批主战不停)+产品三层心智图+路线终答(自己写壳抄结构核是账本)
+b2d1207 架构释疑入册: 战士与宿主关系(兵+枪+账分离/W5自有化路线)——用户多次追问的沟通欠账
+995b914 门的三速度设计v1(用户质询门vs火力): 疾速/预授权/严审三档+门拒改道提示+预算自动求增——判据=任何门不得增加漏报率;~400行
+46fced6 W3·工具卡07: tanyin-tools CLI(工具箱第13员)——list列卡/show详情/install装卡验签/uninstall除役/verify-lock全量验签/exec执行入口,--flag双形解析,12测绿
+8b8df8a W2 退出码分离(矩阵收口): CLI 面级退出码矩阵 4 例——rc0(validate/status)·rc1(P5 门禁 FAIL+evals vacuous T17)·rc2 六面缺 goal env 分型(b7/b8 先例全墙钉)·rc3 真跑子进程(tanyin-evals+finding-candidates 于 suspected/verified 双账本 3→0);全文件 15 例 OK
+3b5ef09 HANDOFF: W3-P1-1 利用深挖批三件落位一行记账(sqlmap 受控档+deepex 派生层, 91 测 OK)
+971bac5 HANDOFF: W2 租约多战帧化完航入册(舰面168测+邻面223测OK·六步小提交·探知项两件留档)
+85e9770 W2 退出码分离(rc3 数据源): finding-candidates runner——账本 active 发现但零 verified=仅未验证候选(findings.tsv 单源:live=非superseded/verified=exploitation_status 同 projections 口径;verified&gt;0 不报候选=「仅候选」态不成立,pending 义务归 M02 硬门;账本缺=EnvironmentError→ENV-SKIP 防 vacuous 绿 T17 同律);TDD 先红后绿 5 例(KeyError 红→绿),含端到端 rc3→rc0;矩阵+schema 22 例 OK
+7ef9048 goals岗深读吸收: ARTEX提示词三律(约束先行/自包含/保守默认)进W5规格+超越判(硬法三加固:八问结构化/机器执法/提案行确认)——其余7岗排期专项拆解
+612b60e 智能体编制设计v1: ARTEX八岗实弹逐岗对照——认领制同宗,已超4岗(复测/报告/人机接口/独立渗透——机械重放vs LLM复测/确定性vs LLM报告/锚定对话/结算门),缺编制页+规划者+运营助手(已排W5/W6)
+bb9c0f6 W3-P1-1①F: guard 通道路径深度坑修复(dirname×3 锚定仓根/cli/tanyin-guard)+GUARD 常量单源+可解析性测试 1 测红→绿(累计36)
+acb6e4a CI护栏③测试分片并行(W2·e7a6d5f1): scripts/shard_tests.py 确定性分片器——基元=test模块(单模块不跨片)/排序轮转派片(同仓状态片集恒等可重跑)/片差≤1/空片rc0直通(防unittest无参回落全量)/非法片号exit2;--list|--run(透传rc)+--only自检面;tests/test_shard_tests.py 10测(划分不丢不重/原子性/夹具排除/确定性/均衡/用法错/空片/rc透传);验证: 10测OK+真实面4片55/54/54/54均衡
+e36be50 W3·工具卡06: execute执行入口——卡层门过才委托tanyin-guard exec(四层scope/全局黑名单零复制),tools-reject/tool-card-exec落账,revert义务核销命令入timeline列,只读none(只读*)家族免记,6测绿
+2640d6a 全域锚定对话设计v1: 五家调研(CSAI/multica聊天优先,ARTEX任务级留言,ZhuLong/VulnClaw无)→实体锚定=业界空白;锚=账本行址+对话派活必过门+对话入timeline可审计——~600行并入W6
+85a1a87 实时三件设计v1: 图谱实时演进(实时=回放特例,epoch增量推送)/行级重跑(一切皆账本行,血缘派生超越issue重开)/覆盖矩阵活投影+冻结双轨——~900行并入W6
+fb3a0c8 W2·01P0-4 多战执法面接线重做(前任server.py被还原件·serve舰HANDOFF记档本领地重做): webui launch↔battle_registry.admit(请求体budget_usd申报+TANYIN_BATTLE_BUDGET_CAP_USD帽·拒绝判决数学披露入体)+spawn后set_pid+stop出册释放·BATTLE_FORBID_PORTS=8900/3000/8787/8443平台保留口冻结——TDD 6例红转绿(活pid钉册行·死pid自愈为既有纪律),邻面 authform 39+v09a/serve 48 全绿
+56c2b26 任务生命周期状态机v1: 12态+迁移门卫表(每迁移=账本事件/结算挂链完整/归档manifest)+五家长短对照——补上正式设计缺口
+eda7ee0 W2 退出码分离(rc3 态): evals 裁决引擎加第 4 态 rc3=仅未验证候选(D 舰 G4——硬门全过+有 PASS+candidates&gt;0=CI 黄灯不静默绿;优先级=硬门 FAIL&gt;全 ENV-SKIP&gt;候选黄灯&gt;干净绿,warn 门口径不变)+契约行(docstring)同步 0/1/2/3;TDD 先红后绿 6 例矩阵(test_exit_code_matrix),evals 邻面 schema/ci/dynamic/static 30 例 OK
+afb4de1 W3 技法入库②: HANDOFF 收口一行(50专题实测/42卡/索引/8测+79邻测+金样零漂移)
+2927745 并发压测票: 8仗并行浸泡测试(用户质询并发能力——隔离有单测无浸泡,补齐)
+233e617 W3-P1-1: sqlmap/deepex 两引擎 MANIFEST（契约 08 十二字段）——受控档墙五件+L3 审批锚+三运行面; 派生层不外发/密值脱敏/取证三连纪律
+0d0a55f W3·工具卡05: 执行入口卡层门链——未注册拒/卡黑名单覆盖/供应链现场复验/限速旗标固化/L3审批挂卡(approvals.tsv command_hash 逐字对照,经tanyin-ledger approve人审通道),16测绿
+f4ac901 W3-P1-1③E: RCE 取证模板——命令执行类发现触发取证包(whoami/id/hostname 非破坏三连固定禁增删+一命令一证据卡 vault-tokenize); 三连逐条过 guard deny 机械(原形/归一形/sh 包装形); 破坏载荷 deny-list 单源剥离不回带; 10 测红→绿(累计22)
+bcbbf62 O7决断: SQLite投影层升格必做(性能质疑的数字回答:3400行/s实测+单仗单写者横向摊开+天花板诚实条款)
+ba79bff W2 枚举单源化④: selfcheck KNOWN_COMMANDS[&#x27;ledger&#x27;]=registry.dispatch_face() 单源派生(68 名手抄冻结清单删,P0-2④;新命令落 registry 即自动入白名单)+registry 尾注 41 陈旧计数顺手清;TDD 先红后绿(AttributeError dispatch_face→3 例绿),selfcheck 全套 12 例 OK
+a975c2e W3 技法入库①: VulnClaw 47专题实测50余42全量蒸馏 CP-0009..CP-0050(场景/步骤/工具引用/逐步骤纪律标注L3/外发/回滚+法律敏感律legal=methodology-only零武器) + cp-index.tsv 索引50行(编号/主题/来源/状态,确定性重生成) + 一致性测试8例(覆盖/连续/字段/纪律/法律/互证/副本lint PASS n=81); 入库走 staging→lint→approve→commit 真管线单写者纪律
+a203294 W3-P1-1②D: 文件读取→凭据闭环第一段——读取类发现(备份/配置/密钥)自动派生凭据检查意图卡(kind=deep-dive/origin=precedent); 不外发=constraints.egress=forbidden+本地三查; 密值全域脱敏(赋值形/字面形); CJK 全角括号 \b 坑前瞻修正; artifacts/ 契约07布局 12 测红→绿
+8810bf3 W3·工具卡04: 装卡验签+在役册——三重核(注册表/lock验签/摘要)后入役,sha鲜度判漂移,幂等重装+除役,8测绿
+ec29cfe 宪法#44专业异议律
+af0492f W3-P1-1①C: sqlmap 结果解析进 findings 队列——控制台 log 双源解析(运行期行+收尾汇总块)→契约07九字段提交(done/no-findings); 负面结果入 facts 不静默; --run 面墙序=计划→审批→环境→执行, 缺二进制=blocked exit0; 8 测红→绿(累计35)
+3428293 宪法#43核心优先律: 误报漏报=生死指标,AI自动化第二,其余皆仆从
+2def83c 宪法#42量纲律: 废时间预算只报代码量+测试数;界面线9任务全部标注行数(全线~7750行)
+796b4d7 界面线施工计划(writing-plans成文): 9任务分解/每任务验收钉/收一放一节奏——呈批
+9de4668 W3-P1-1①B: L3 审批挂接——approvals.tsv 只读核验(同id最新行胜/decision=approved+command_hash 逐条锚/缺文件·畸形行·行缺·hash不符=缺省拒 fail-closed) 8 测红→绿(累计27)
+4b73bfc W3·工具卡03: tools.lock 供应链锁定——25卡版本+纪律内容sha256+ECDSA验签(单源复用ledger.supply_chain,测试钥锚批次4先例),内容漂移/篡改/缺条目全拒,10测绿
+227b091 界面设计全档v1: 18页逐页设计(ZhuLong级详细度——布局分区/字段表/交互/四态/数据源;P6漏洞详情五区/P7报告渲染/P5九页签作战室全展开)——界面线的唯一权威,施工前逐页过评
+d7e7430 W2 枚举单源化③: docs/gen_counts.py 计数单源生成器+docs/counts.json(命令50/门9/字段149/金样面54,HEAD 物化探针派生——在航脏树零污染,新命令落 commit 即红=计数同步义务入门槛)+单源快照测试 6 例(check 门禁 rc0/1/2+双算复核+活文档口径机检+cli 禁第二份门枚举);清过时口径: cli/README 三处 44→50/147→149+金样面数去手抄+181 单测去数字,USAGE 44→50
+94819a4 界面文案规范v1+宪法#41界面人话律: 导航重命名表(看战况等儿歌全废)+黑话翻译表(战士→智能体/八问→新建任务/九门→执行阶段)
+717b1b4 CI护栏①ruff零错误基线(W2·e7a6d5f1): 真错误类91处清零——F401死import/F841死变量/build_handbook不可达死块(F821×5)/W605转义序列r化(字节等价,金样+golden绿);session_view _ANSI正则双反斜杠钉(index-only,工作面在航舰零干扰);风格类E401/E702/E741/E402=仓风既有不进基线(渐进收紧后续修订,同mypy渐进律);ruff.toml target=py39+tests/fixtures金样排除+docs/design/imported外工件排除;验证: 触碰面36模块288测OK+golden全锁+selfcheck 6/6
+6939a15 W3-P1-1①A: sqlmap 受控档参数墙五件——delay 强制[0.5,60]/禁碰端口/level≤3·risk≤2/库表白名单 fail-closed/数据面旗标结构性不可达+终检纵深; --plan 预检面 19 测全绿(红→绿)
+01ab82b 作战室设计v1定稿: 九页签轴心页(ARTEX task detail为基线,逐签超越点+账本数据源全映射)——UI-2施工图
+33a79bb W3·工具卡02: 纪律字段完整性执法——deny_extra None=未声明入错(构造器抹除 distinctions 红洞修),L3面=sqlmap+impacket 钉死,9测绿
+3bb2244 宪法#40沟通节奏律+永久指挥台: 用户六连批的制度性修复(状态永续可见/波前brainstorm/结构化作答/专业节奏律)
+b2f8d2d W3·工具卡01: 25卡注册表落地(cli/tools/cards.py)——七纪律字段数据结构+重名/不备卡拒注册,6测红转绿
+368a253 serve收口HANDOFF: 追加一行战果入册(21测OK+邻面180测OK)
+702e0db W2 枚举单源化②: zhulong_export 归 registry._MODULES 在册,删 tanyin-ledger 入口组装期 patch(跨模块改私有属性,02 评审 P0-2②);顺手清 all_commands/入口 docstring 陈旧计数(41→指向 docs/gen_counts 单源);TDD 先红后绿 2 例(全新解释器探针+入口禁 patch 断言);邻面 3 旧红在案(49 面数钉×2+SKILL 索引缺 intent-lease=前任在航件)+金样零漂移
+cd9f2b8 W2·01P0-4 registry申报执法: budget_usd负数/NaN/inf=ValueError fail-closed(负数压低budget_used·NaN恒假比较穿帽——两洞同钉)——红绿实证
+5680ba1 W2·C:G2 frames配对修: call_id会话全局配对不随轮重置(迟到tool_result跨轮界回填原轮原卡·不再伪造新轮孤儿卡+旧卡永open)——红绿实证
+36e4742 W2 枚举单源化①: cmd_status 门序自 core.GATE_ORDER 单源派生——手抄 seq 缺 P6.0=活 bug(清理门灯恒 PENDING,05 评审 F1)根治;TDD 先红后绿 3 例(test_v05_gate_status TestGateOrderSingleSource),11 绿+webui/phases_yaml 邻面 1 旧红在案(前任 intent-lease 面数 50≠49)+金样 54 面零漂移
+1906fc4 W2·C:G2 runner事件帧化+call_id: frames.py NDJSON契约(schema_version锚+seq·kind枚举)·tool_use↔tool_result按call_id精确配对(乱序/未配对开卡/孤儿旗标)·session_view帧优先投影(无战士帧回落标记法兼容律)·runner log_event双写帧镜像(先写帧后杀的审计底座)——12测
+c619003 W2·01P0-4 多战执法面仲裁核: battle_registry(flock互斥admit/release/claim_ports·预算帽仲裁带数学披露·端口冲突+保留口8900/3000/8787/8443·死pid自愈回收·fail-closed损坏册)——13测钉预算仲裁/端口互斥/双点火/回收纪律
+83a7320 W2·01P0-2 intents租约: 领取执法(owner/lease-min·双抢互斥REJECT·超时回收先落blocked[lease-expired]再重授·该因自动免审批复活)+intent-lease只读审计面(held/expired盘点·expired退出码1)+selfcheck KNOWN_COMMANDS补登记(红→绿实证)
+dfce410 HANDOFF: W2 timeline舰完工一行入册(O(1)尾追加+epoch撕裂封口,新增18/相邻44/金样系84全绿)
+c523583 serve收口C3: start/status/stop 全活——后台-m webui.server点火+日志落位serve.log+serve.json单实例+缺省ledger=最新战; 修前任测试助手二次getresponse必炸bug
+d19dc7d 用户批复: 四决断+架构v1生效,W3开工
+a9d9e5d timeline O(1)尾读边界测试补齐⑥: 超窗回退/空行文件/冷账本GENESIS/缺失读[]/epoch损坏宽容/多字节撕裂尾——6测全绿(分支既有实装之钉,无实装改动)
+dfedb94 serve收口C2: tanyin-serve 骨架——用法/未知子命令/未知旗标 rc2 stderr 中文指路 + --json 错误也纯 JSON + gate-error 兜底 harness
+207bf97 W2 01P0-1+02P0: timeline O(1)尾追加+epoch撕裂读封口(接盘验活:12测全绿/金样PASS/相邻44绿)
+623bc11 serve收口C1: test_serve_cli 规格测试入册(前任遗作)+KNOWN_COMMANDS 登记 serve/start,status,stop 面
+27669a8 原型v2满数据版: 23页全重写(21发现/22证据/28资产/39技法/120命令审计/46节点图谱回放/对赌记分牌/验真演示/终端watch/K全局搜索)——语法+渲染双验过
+190391e 视觉伴侣: GraphLed最终态控制台可点原型(23页全功能:八问/图谱回放/发现三态/审批/度量记分牌/报告验真/终端watch/RBAC/工具卡25/技法库)
+6f95706 W7增单文件分发批(用户问Go单文件优势): PyInstaller四平台/核20MB/引擎按需下载/杀软话术
+fb59392 GraphLed 四项设计决断+架构文档v1: 双模模型接入/单机先深/宿主skill+常驻MVP(Python核永不换,热件触发Go/Rust)/C2全套账本化——呈批
+feb2e41 MCP翻面(用户质询): 可选→W7必做双向MCP(client接生态+server暴露账本执法图谱,五家只做消费者我们兼做生产者);取舍项重审只剩2件真取舍(RBAC数量/看板形态),远程runner升级G9</pre></div>
+<h2>全貌</h2><div class="card"><a href="design/BLUEPRINT-PANORAMA.md">蓝图全景</a> · <a href="design/2026-10-20-capability-comparison-ledger.md">27件对照账</a> · <a href="design/2026-10-20-build-master-plan.md">施工总计划</a></div>
+</main></body></html>
