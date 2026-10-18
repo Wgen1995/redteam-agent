@@ -187,5 +187,54 @@ class TestRunSurvivesRoundCrash(Base):
                         "事件须带异常原因（排障面）")
 
 
+# ============================================================ I-2 持钥重派 ==
+
+class TestKeyedFaultRedispatch(Base):
+    """I-2：TANYIN_APPROVAL_KEY 在场（生产姿态，HANDOFF B2）时 approve
+    强制 --sig=HMAC-SHA256(sha256(key), command_hash)——重派臂恰在加固
+    部署里崩。修法=机械审批走同一持钥签名通道（密钥来源=环境，同律；
+    HMAC 式复用 write_cmds 单源，不自铸第二份）。"""
+
+    def _fault_card(self):
+        run(self.gd, "add-intent", "--title=断线卡", "--detail=剩余: 逐项",
+            "--engine=web-blackbox", "--kind=recon", "--origin=recon-event",
+            "--budget-share=1;1;1", "--timestamp=" + TS)
+        iid = [r[0] for r in self.rows("intents.tsv")
+               if r[_IT] == "断线卡"][-1]
+        run(self.gd, "set-intent-status", "--id=" + iid, "--status=active",
+            "--timestamp=" + TS)
+        run(self.gd, "set-intent-status", "--id=" + iid, "--status=blocked",
+            "--reason=transport-fault: egress 断连", "--timestamp=" + TS)
+        return iid
+
+    def test_sweep_fault_redispatch_under_approval_key(self):
+        import hashlib
+        from ledger.write_cmds import Ctx, _row_sig_ok
+        iid = self._fault_card()
+        key = "unit-approval-key"
+        with mock.patch.dict(os.environ, {"TANYIN_APPROVAL_KEY": key}):
+            out = RP.sweep(self.gd, TS)             # 不得 raise（I-2）
+        self.assertEqual([v["verdict"] for v in out if v["intent_id"] == iid],
+                         ["fault-redispatch"])
+        self.assertEqual([r for r in self.rows("intents.tsv")
+                          if r[0] == iid][-1][_IS], "active",
+                         "持钥部署下纯故障重派照常重入池")
+        chash = hashlib.sha256(
+            ("set-intent-status --id=%s --status=active" % iid)
+            .encode("utf-8")).hexdigest()
+        aps = [r for r in self.rows("approvals.tsv")
+               if r[TABLES["approvals.tsv"].index("command_hash")] == chash]
+        self.assertEqual(len(aps), 1, "机械审批恰一行（全审计）")
+        self.assertTrue(_row_sig_ok(Ctx(self.gd), aps[0], key.encode("utf-8")),
+                        "审批行 sig 须可被持钥方复算验证"
+                        "（HMAC-SHA256(sha256(key), command_hash)）")
+        # 幂等：active 非终态，二扫不再铸审批
+        with mock.patch.dict(os.environ, {"TANYIN_APPROVAL_KEY": key}):
+            RP.sweep(self.gd, TS)
+        aps2 = [r for r in self.rows("approvals.tsv")
+                if r[TABLES["approvals.tsv"].index("command_hash")] == chash]
+        self.assertEqual(len(aps2), 1)
+
+
 if __name__ == "__main__":
     unittest.main()

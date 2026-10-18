@@ -38,7 +38,8 @@ import io
 from . import core, registry
 from .query_cmds import _cell
 from .write_cmds import (LEASE_EXPIRED_REASON, _INTENT_KINDS, INTENT_ORIGINS,
-                         _OWNER_MARK_RE, _seg_num)
+                          _OWNER_MARK_RE, _approval_key, _approval_sig,
+                          _seg_num)
 
 TRANSPORT_MARKER = "transport-fault"
 OWNER = "planner:replacer"
@@ -127,14 +128,25 @@ def _run(gd, cmd, args):
 
 
 def _redispatch(gd, iid, ts):
-    """纯故障重派（R-REP-2）：机械审批→原卡 blocked→active 重入在途集。"""
+    """纯故障重派（R-REP-2）：机械审批→原卡 blocked→active 重入在途集。
+
+    持钥通道（评审 I-2）：TANYIN_APPROVAL_KEY 在场（生产姿态，HANDOFF
+    B2「AI 写者再不能自铸 approvals 行」）时 approve 强制
+    --sig=HMAC-SHA256(sha256(key), command_hash)——机械审批与人工同律
+    走签名通道：密钥来源=环境（部署面注入，同律），HMAC 式复用既有单源
+    write_cmds._approval_sig（不自铸第二份签名式）。
+    """
     chash = hashlib.sha256(
         ("set-intent-status --id=%s --status=active" % iid).encode("utf-8")
     ).hexdigest()
-    rc, out = _run(gd, "approve", [
+    ap_args = [
         "--command-hash=" + chash, "--decision=approved", "--approver=" + OWNER,
         "--note=R-REP-2 replacer 纯故障重派预授权（transport-fault，零执行零产出）",
-        "--timestamp=" + ts])
+        "--timestamp=" + ts]
+    akey = _approval_key()
+    if akey:
+        ap_args.append("--sig=" + _approval_sig(chash, akey))
+    rc, out = _run(gd, "approve", ap_args)
     if rc != 0:
         raise RuntimeError("重派预授权被拒: " + out)
     s = core.Session(gd)
