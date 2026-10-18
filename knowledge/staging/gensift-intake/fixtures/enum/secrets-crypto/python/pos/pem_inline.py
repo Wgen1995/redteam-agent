@@ -1,0 +1,4 @@
+# 出处:人工构造(依据 CWE-798 私钥内嵌)
+SIGNING_KEY = """-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA1xWf8aZ0
+-----END RSA PRIVATE KEY-----"""

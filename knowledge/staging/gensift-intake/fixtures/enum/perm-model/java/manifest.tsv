@@ -1,0 +1,11 @@
+file	kind	expected_patterns	provenance	framework
+pos/default-admin-endpoint.java	pos		默认安装管理端点+默认凭据分支	
+pos/request-bound-role.java	pos		判定输入请求可写——body 带 role 直入角色判定	
+pos/role-inheritance-cycle.java	pos		RBAC 继承环——低角色累积出 admin	
+pos/wildcard-permission.java	pos		CWE-272 通配权限累积提权形态（S1 判据类起步集）	
+neg/audited-admin-session.java	neg		阴性边界——平台运营侧全租户管理走独立 admin 会话+审计	
+neg/closed-role-registry.java	neg		合规形态——封闭角色集、无继承	
+neg/deny-by-default.java	neg		合规形态——缺省拒绝	
+neg/explicit-permission-check.java	neg		合规形态——显式权限判定（上下文会话取主体）	
+noise/cached-permission.java	noise		noise——缓存加速权限判定（判定语义不变）	
+noise/feature-flag-gate.java	noise		noise——特性开关与权限判定解耦	

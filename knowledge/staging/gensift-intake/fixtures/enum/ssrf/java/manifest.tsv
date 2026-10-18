@@ -1,0 +1,44 @@
+file	kind	expected_patterns	provenance	framework
+pos/apache-httpclient-execute.java	pos	SS-J11、SS-J13	人工构造(依据 CWE-918 Apache HttpClient 形态)	apache
+pos/avatar-openstream.java	pos	SS-J02	人工构造(依据 CWE-918 URL.openStream 图片代理形态)	
+pos/httpclient-bean-xml.xml	pos	SS-J11	人工构造(依据 CWE-918 Spring XML 载体形态:HTTP 客户端 bean 装配,次级载体) -->	spring
+pos/java11-httpclient-send.java	pos	SS-J11、SS-J12	人工构造(依据 CWE-918 java.net.http.HttpClient 形态)	
+pos/jsoup-connect-proxy.java	pos	SS-J14	人工构造(依据 CWE-918 Jsoup 抓取形态)	
+pos/okhttp-followredirects.java	pos	SS-J04、SS-J05、SS-J11、SS-J13	人工构造(依据 CWE-918 OkHttp followRedirects 形态)	okhttp
+pos/okhttp-newcall.java	pos	SS-J04、SS-J11、SS-J13	人工构造(依据 CWE-918 OkHttp 形态)	okhttp
+pos/redirect-follow-loop.java	pos	SS-J01、SS-J03	人工构造(依据 CWE-918 手工跟随重定向循环形态)	
+pos/restcontroller-callback.java	pos	SS-J09	人工构造(依据 CWE-918 注解声明式入口形态)	
+pos/resttemplate-exchange-headers.java	pos	SS-J10	人工构造(依据 CWE-918 RestTemplate exchange 形态)	
+pos/resttemplate-getforentity.java	pos	SS-J07	人工构造(依据 CWE-918 RestTemplate 形态)	
+pos/resttemplate-getforobject.java	pos	SS-J06	人工构造(依据 CWE-918 RestTemplate 形态)	
+pos/resttemplate-postforobject.java	pos	SS-J08	人工构造(依据 CWE-918 RestTemplate webhook 形态)	
+pos/urlfetch-wrapper.java	pos	SS-J01、SS-J03	人工构造(依据 CWE-918 工具类封装形态)	
+pos/urlparam-openconnection.java	pos	SS-J01、SS-J03	人工构造(依据 CWE-918 HttpURLConnection 形态)	
+pos/webclient-retrieve.java	pos	SS-J15	人工构造(依据 CWE-918 WebClient 形态)	
+neg/cors-fixed-origins.java	neg		人工构造(硬负例:CORS 固定来源配置,无外发)	
+neg/email-mime-build.java	neg		人工构造(硬负例:仅构造邮件体,无传输调用)	
+neg/file-local-read.java	neg		人工构造(硬负例:本地文件读取,非 URL 外发)	
+neg/jdbc-constant-url.java	neg		人工构造(硬负例:DB 连接串为常量,非 HTTP 外发)	jdbc
+neg/json-parse-body.java	neg		人工构造(硬负例:解析响应体字符串,消费侧)	
+neg/ldap-constant-url.java	neg		人工构造(硬负例:LDAP 常量地址,目录访问非 HTTP)	
+neg/md5-url-hash.java	neg		人工构造(硬负例:URL 仅用于哈希建缓存键)	
+neg/paths-normalize.java	neg		人工构造(硬负例:路径规范化,无网络)	
+neg/redirect-view-internal.java	neg		人工构造(硬负例:Spring 视图重定向到固定内部路径)	spring
+neg/regex-url-match.java	neg		人工构造(硬负例:正则校验 URL 形态,无外发)	
+neg/response-entity-location-fixed.java	neg		人工构造(硬负例:业务 302,Location 为常量相对路径)	
+neg/serversocket-listen.java	neg		人工构造(硬负例:入站监听,非出站请求)	
+neg/servlet-forward-internal.java	neg		人工构造(硬负例:服务端转发到固定内部 JSP)	
+neg/servlet-include-fragment.java	neg		人工构造(硬负例:include 固定内部片段)	
+neg/sitemap-constant-list.java	neg		人工构造(硬负例:固定 URL 常量表用于生成 sitemap,无外发)	
+neg/string-builder-display-link.java	neg		人工构造(硬负例:拼 URL 仅用于页面展示)	
+neg/uri-components-response-link.java	neg		人工构造(硬负例:构造响应里的固定链接,非服务端外发)	
+neg/url-equals-compare.java	neg		人工构造(硬负例:new URL 仅用于 equals 比较,不打外发)	
+neg/url-parse-host-log.java	neg		人工构造(硬负例:URL 仅解析取 host 做日志)	
+neg/url-scheme-prefix-check.java	neg		人工构造(硬负例:仅校验 scheme 前缀,无外发)	
+neg/websocket-server-endpoint.java	neg		人工构造(硬负例:入站 WebSocket 端点)	
+noise/constant-health-check.java	noise	SS-J01、SS-J03	人工构造(噪音:固定常量 URL 的外发——host 编译期不可控,FP-1 参考)	
+noise/exchange-constant-token.java	noise	SS-J10	人工构造(噪音:同 API 安全用法——常量 token 端点,允许命中)	
+noise/followredirects-false.java	noise	SS-J04、SS-J05、SS-J11、SS-J13	人工构造(噪音:同 API + followRedirects(false) 缓解形态——允许命中,C4 参考)	okhttp
+noise/jsoup-constant-robots.java	noise	SS-J14	人工构造(噪音:同 API 安全用法——常量 URL,允许命中)	
+noise/okhttp-allowlist-only.java	noise	SS-J04、SS-J11、SS-J13	人工构造(噪音:同 API + host 白名单形态——允许命中,Verifier 判据 C3 参考)	okhttp
+noise/resttemplate-constant-catalog.java	noise	SS-J06	人工构造(噪音:同 API 安全用法——常量 URL,允许命中,由五步判别)	

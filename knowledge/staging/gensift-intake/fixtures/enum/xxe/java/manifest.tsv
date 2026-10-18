@@ -1,0 +1,44 @@
+file	kind	expected_patterns	provenance	framework
+pos/dom-default-parse.java	pos	X-J01、X-J02	人工构造(依据 CWE-611 + OWASP XXE Cheatsheet DOM 默认工厂形态)	JAXP-DOM
+pos/sax-handler-parse.java	pos	X-J03、X-J04	人工构造(依据 CWE-611 + OWASP XXE Cheatsheet SAX 形态)	JAXP-SAX
+pos/stax-streamreader.java	pos	X-J05、X-J06	人工构造(依据 CWE-611 + OWASP XXE Cheatsheet StAX 形态)	JDK-StAX
+pos/jaxb-unmarshal-body.java	pos	X-J07、X-J08	人工构造(依据 CWE-611 JAXB 未硬化 unmarshal 形态)	JAXB
+pos/dom4j-saxreader.java	pos	X-J09	人工构造(依据 CWE-611 + CVE-2020-10683 dom4j parseText/read 家族形态)	dom4j
+pos/jdom-saxbuilder.java	pos	X-J10	人工构造(依据 CWE-611 JDOM SAXBuilder 默认形态)	JDOM
+pos/sax-xmlreaderfactory.java	pos	X-J11	人工构造(依据 CWE-611 SAX XMLReader 直构形态)	JAXP-SAX
+pos/jackson-xmlmapper.java	pos	X-J12	人工构造(依据 CWE-611 Jackson XmlMapper/Woodstox 未配置形态)	Jackson-XML
+pos/util-wrapper-parse.java	pos	X-J01、X-J02	人工构造(依据 CWE-611 工具类封装形态——读点离入口三层)	JAXP-DOM
+pos/soap-attachment-parse.java	pos	X-J01、X-J02	人工构造(依据 CWE-611 SOAP 附件流再解析形态)	JAXP-DOM
+pos/second-order-db-xml.java	pos	X-J01、X-J02	人工构造(依据 CWE-611 二阶——XML 字段入库回读再解析/persisted_read)	JAXP-DOM
+pos/fluent-builder-chain.java	pos	X-J01、X-J02	人工构造(依据 CWE-611 单行 fluent 链——零配置直达读点)	JAXP-DOM
+pos/saml-assertion-stax.java	pos	X-J05、X-J06	人工构造(依据 CWE-611 SAML assertion 解析形态——IdP 来源不可信)	JDK-StAX
+neg/json-simple-parse.java	neg		人工构造(硬负例:JSON 解析非 XML)	
+neg/jackson-json-objectmapper.java	neg		人工构造(硬负例:Jackson JSON 而非 XmlMapper)	
+neg/gson-json.java	neg		人工构造(硬负例:GSON 解析)	
+neg/xpath-constant-doc.java	neg		人工构造(硬负例:XPath 求值于既有 doc,非本类解析点)	
+neg/xpathfactory-new.java	neg		人工构造(硬负例:XPathFactory 获取)	
+neg/xml-transform-output.java	neg		人工构造(硬负例:XML 输出方向——transform 写文件)	
+neg/jaxb-marshal-output.java	neg		人工构造(硬负例:marshal 输出——与 unmarshal 形态易混)	
+neg/mybatis-xmlmapperbuilder.java	neg		人工构造(硬负例:MyBatis XMLMapperBuilder 大写 XML 前缀,非 Jackson XmlMapper)	mybatis
+neg/spel-parse-expression.java	neg		人工构造(硬负例:SpEL 表达式求值)	express
+neg/csv-split-parse.java	neg		人工构造(硬负例:CSV 解析)	apache
+neg/properties-load.java	neg		人工构造(硬负例:Properties 加载)	
+neg/snakeyaml-load.java	neg		人工构造(硬负例:YAML 加载——deser 类目标)	
+neg/document-navigation.java	neg		人工构造(硬负例:已解析 doc 的导航,非解析点)	
+neg/saxsource-constant.java	neg		人工构造(硬负例:SAXSource 构造常量载荷,无 parse 调用)	
+neg/soap-message-create.java	neg		人工构造(硬负例:SOAP 消息构造方向)	
+neg/xmlunit-compare.java	neg		人工构造(硬负例:XMLUnit 比较两份常量)	
+neg/stringtemplate-render.java	neg		人工构造(硬负例:模板渲染输出)	
+neg/scanner-tokenize.java	neg		人工构造(硬负例:Scanner 分词)	
+neg/dateformat-parse.java	neg		人工构造(硬负例:日期解析)	
+neg/regex-matcher.java	neg		人工构造(硬负例:正则匹配)	
+neg/xml-escape-output.java	neg		人工构造(硬负例:XML 转义输出)	apache
+neg/stream-collect-grouping.java	neg		人工构造(硬负例:流式集合处理)	
+neg/dom-newdocument-build.java	neg		人工构造(硬负例:DOM 构建方向——builder.newDocument() 非 newDocumentBuilder())	
+neg/constraint-validator-anno.java	neg		人工构造(硬负例:注解校验器声明)	
+noise/dom-disallow-doctype.java	noise	JAXP-DOM	人工构造(噪音:同 API 安全用法——disallow-doctype-decl 全禁,允许命中由五步判别)	apache
+noise/stax-dtd-entities-off.java	noise	JDK-StAX	人工构造(噪音:同 API 安全用法——SUPPORT_DTD 与外部实体双关)	
+noise/sax-fsp-and-features.java	noise	JAXP-SAX	人工构造(噪音:同 API 安全用法——FSP+双 external-entities 关,逐版本判值见类页 ⑤)	
+noise/jaxb-secured-saxsource.java	noise	JAXB	人工构造(噪音:同 API 安全用法——硬化 SAXSource 注入 unmarshal)	apache
+noise/dom4j-disallow-doctype.java	noise	dom4j	人工构造(噪音:同 API 安全用法——dom4j SAXReader 关 doctype)	apache
+noise/internal-constant-xml.java	noise	JAXP-DOM	人工构造(噪音:FP 卡形态——只解析服务端常量,需来源证据;命中登记)	

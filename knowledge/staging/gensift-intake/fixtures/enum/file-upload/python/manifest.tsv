@@ -1,0 +1,28 @@
+file	kind	expected_patterns	provenance	framework
+pos/django-files-chunks.py	pos	FU-P01、FU-P05	人工构造(依据 CWE-434 + OWASP File Upload Cheatsheet Django 原名落盘)	django
+pos/django-files-get.py	pos	FU-P02	人工构造(依据 CWE-434 request.FILES.get 取文件原名落盘)	django
+pos/flask-files-save.py	pos	FU-P03	人工构造(依据 CWE-434 Flask request.files 原名保存)	flask
+pos/flask-files-get.py	pos	FU-P04	人工构造(依据 CWE-434 request.files.get + 客户端名拼接)	flask
+pos/django-default-storage.py	pos	FU-P01、FU-P07	人工构造(依据 CWE-434 default_storage.save 保留客户端名)	django
+pos/fastapi-uploadfile.py	pos	FU-P08	人工构造(依据 CWE-434 FastAPI UploadFile 原名直写)	fastapi
+pos/second-order-db-name.py	pos	FU-P01、FU-P06	人工构造(依据 CWE-434 二阶——入库文件名回读再落盘/persisted_read)	django
+pos/wrapper-handle-upload.py	pos	FU-P01、FU-P05	人工构造(依据 CWE-434 工具类封装形态)	django
+pos/fastapi-uploadfile-list.py	pos	FU-P08	人工构造(依据 CWE-434 FastAPI 批量 UploadFile 列表)	fastapi
+neg/json-loads-body.py	neg		人工构造(硬负例:JSON 请求体)	
+neg/django-form-cleaned.py	neg		人工构造(硬负例:表单清洗数据)	
+neg/django-request-get-list.py	neg		人工构造(硬负例:GET 参数列表)	
+neg/open-constant.py	neg		人工构造(硬负例:常量路径打开)	
+neg/shutil-copy-constant.py	neg		人工构造(硬负例:常量拷贝——shutil.copy 非 copyfileobj)	
+neg/os-listdir-render.py	neg		人工构造(硬负例:目录列表渲染)	
+neg/pil-thumb-constant.py	neg		人工构造(硬负例:固定输入图片缩略)	
+neg/requests-download-stream.py	neg		人工构造(硬负例:外发拉取)	
+neg/celery-task.py	neg		人工构造(硬负例:异步任务无文件面)	
+neg/csv-export.py	neg		人工构造(硬负例:CSV 导出)	
+neg/base64-response.py	neg		人工构造(硬负例:base64 回吐常量)	
+neg/model-save-orm.py	neg		人工构造(硬负例:ORM save——模型语义非文件)	
+neg/httpheader-read.py	neg		人工构造(硬负例:请求头读取)	
+noise/django-uuid-rename.py	noise	django	人工构造(噪音:FP 卡形态——UUID 重命名+扩展白名单+非 web 目录;允许命中)	
+noise/flask-secure-filename.py	noise	flask	人工构造(噪音:同 API 安全用法——secure_filename 净化;允许命中)	
+noise/django-files-validated.py	noise	django	人工构造(噪音:同 API 安全用法——表单校验+服务端名;允许命中)	
+noise/default-storage-server-name.py	noise	django	人工构造(噪音:同 API 安全用法——服务端生成存储名;允许命中)	django
+noise/fastapi-uploadfile-limits.py	noise	fastapi	人工构造(噪音:同 API 安全用法——类型/大小校验后转私有桶;允许命中)	

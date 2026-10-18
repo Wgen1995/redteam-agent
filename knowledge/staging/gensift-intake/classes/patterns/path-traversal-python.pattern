@@ -1,0 +1,18 @@
+# class: path-traversal
+# lang: python
+# role: sink
+# band: 1
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+PT-P01	open\(.*\+	拼接打开（'a+' 模式串形态撞车进 noise）
+PT-P02	open\(f["']	f-string 即拼接（双/单引号两种形态，次级载体）
+PT-P03	open\(.*os\.path\.join\(
+PT-P04	os\.path\.join\(.*\+
+PT-P05	shutil\.copy\(.*\+
+PT-P06	shutil\.copy\(.*os\.path\.join\(
+PT-P07	send_file\(.*\+	Flask/Django 发送
+PT-P08	send_file\(.*os\.path\.join\(
+PT-P09	\.joinpath\(	pathlib 拼接点
+PT-P10	os\.path\.join\(.*request\.	join 与请求源同行共现

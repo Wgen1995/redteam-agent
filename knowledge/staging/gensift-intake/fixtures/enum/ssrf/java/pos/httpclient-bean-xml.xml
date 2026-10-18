@@ -1,0 +1,7 @@
+<!-- 出处:人工构造(依据 CWE-918 Spring XML 载体形态:HTTP 客户端 bean 装配,次级载体) -->
+<beans>
+  <bean id="httpClient" class="org.apache.http.impl.client.CloseableHttpClient" factory-method="createDefault"/>
+  <bean id="proxyController" class="com.example.FetchController">
+    <property name="target" value="${fetch.target.url}"/>
+  </bean>
+</beans>

@@ -1,0 +1,17 @@
+file	kind	expected_patterns	framework	provenance
+pos/applycoupon-concurrent-stack.java	pos	PL-J05	spring-web	人工构造(依据 CWE-840 叠加裁决分叉,违反 INV-013/INV-002)
+pos/applypromotion-race-window.java	pos	PL-J04、PL-J11	spring-web	人工构造(依据 CVE-2025-69871 同族竞态,违反 INV-013/INV-002)
+pos/client-total-massbinding.java	pos	PL-J03、PL-J06	spring-web	人工构造(依据 CWE-840 信任边界,违反 INV-001/INV-004:客户端金额直达落库)
+pos/redeem-check-then-write.java	pos	PL-J01、PL-J02、PL-J10	spring-data-jpa	人工构造(依据 CVE-2025-69871 机制+CWE-362 检查-提交窗口,违反 INV-002)
+pos/redemptioncount-check-submit.java	pos	PL-J09、PL-J11	spring-data-jpa	人工构造(依据 CWE-362 检查-提交分离,违反 INV-002/INV-014)
+pos/registerusage-nolock.java	pos	PL-J07、PL-J11	spring-data-jpa	CVE-2025-69871(MedusaJS v2.12.2 registerUsage 检查-自增非原子,并发 checkout 绕过促销用量上限,违反 I
+pos/usagecount-read-modify-write.java	pos	PL-J08	spring-data-jpa	人工构造(依据 CWE-362 读-改-写三段分离,违反 INV-001/INV-014)
+neg/audit-log.java	neg		jdk	人工构造(硬负例:审计写入,无促销语义)
+neg/crypto-hash.java	neg		jdk	人工构造(硬负例:凭据散列)
+neg/date-format.java	neg		jdk	人工构造(硬负例:日期格式化)
+neg/json-parse.java	neg		jackson	人工构造(硬负例:固定类型 JSON 解析)
+neg/scheduled-job.java	neg		spring-context	人工构造(硬负例:定时任务清理)
+neg/stream-collect.java	neg		jdk	人工构造(硬负例:集合流处理)
+noise/discount-server-computed-display.java	noise	PL-J03	spring-web	人工构造(噪音:服务端算好的 discount 仅用于展示——弱锚命中,安全由 ⑥ 判别)
+noise/redeem-unique-constraint.java	noise	PL-J01、PL-J02、PL-J10	spring-data-jpa	人工构造(噪音:redeem 有唯一约束兜底——锚在,由五步判别,见 classes/fixture-spec.md §2,符合 INV-002)
+noise/registerusage-pessimistic-lock.java	noise	PL-J07、PL-J11	jpa	人工构造(噪音:registerUsage 悲观锁兜底——锚在,符合 INV-001)

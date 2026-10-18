@@ -1,0 +1,22 @@
+# class: path-traversal
+# lang: java
+# role: sink
+# band: 1
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+PT-J01	new File\(.*\+	拼接构造（含 Zip Slip：entry.getName 直接拼 destDir）
+PT-J02	Paths\.get\(.*\+
+PT-J03	new FileInputStream\(.*\+
+PT-J04	Files\.newInputStream\(.*\+
+PT-J05	new RandomAccessFile\(.*\+
+PT-J06	\.getResourceAsStream\(.*\+	类路径资源读取
+PT-J07	\.transferTo\(.*\+	Spring MultipartFile 上传保存
+PT-J08	new FileOutputStream\(.*\+	写侧
+PT-J09	Files\.newOutputStream\(.*\+	nio 写侧
+PT-J10	Files\.newBufferedReader\(.*\+	nio 读侧
+PT-J11	Files\.readAllBytes\(.*\+	nio 整读
+PT-J12	new ZipInputStream\(	Zip Slip 家族标记（bw 卡从创建点追 getName→new File）
+PT-J13	Paths\.get\(.*\)\.resolve\(	resolve 链（常量子路径形态进 noise）
+PT-J14	Files\.write\(.*\+	nio 写文件

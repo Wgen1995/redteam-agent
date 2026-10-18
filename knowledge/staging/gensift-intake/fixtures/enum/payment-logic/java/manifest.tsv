@@ -1,0 +1,11 @@
+file	kind	expected_patterns	provenance	framework
+pos/check-then-act-coupon.java	pos		INV-002 核销 TOCTOU（检查与翻转两条独立语句）	
+pos/client-total-bind.java	pos		INV-004 mass assignment 金额直绑形态（S1 判据类起步集）	
+pos/negative-balance-window.java	pos		INV-003 读-判-写三段分离（并发兑换可致负余额）	
+pos/promo-usage-nonatomic.java	pos		INV-001 用量检查与登记非原子（无唯一约束/锁兜底）	
+neg/balance-check-update.java	neg		INV-003 合规形态——balance>=delta 条件更新	jdbc
+neg/server-recompute.java	neg		INV-004 合规形态——服务端价格源重算，客户端金额仅对账	
+neg/signed-quote.java	neg		INV-004 阴性边界——签名报价单授权价格	
+neg/single-statement-check.java	neg		INV-002 合规形态——条件更新一条语句+唯一索引兜底	jdbc
+noise/draft-preview.java	noise		INV-004 预估接口回显（noise——以服务端结算为准的比对形态）	
+noise/refund-rollback.java	noise		INV-002 阴性边界邻接——退款按业务规则显式回滚核销（有审计）	

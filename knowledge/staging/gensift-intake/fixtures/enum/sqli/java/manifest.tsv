@@ -1,0 +1,29 @@
+file	kind	expected_patterns	provenance	framework
+pos/concat-query.java	pos	S-J04	人工构造(依据 CWE-89 JDBC 形态)	jdbc
+pos/executeupdate-concat.java	pos	S-J05	人工构造(CWE-89 executeUpdate 拼接)	
+pos/hibernate-sqlquery.java	pos	S-J08	人工构造(Hibernate)	hibernate
+pos/jdbc-statement.java	pos	S-J06	人工构造(CWE-89 原生 Statement：创建点+执行点)	
+pos/mybatis-anno.java	pos	S-J10、S-J15	人工构造(MyBatis 注解 ${})	mybatis
+pos/mybatis-delete-anno.java	pos	S-J12、S-J15	人工构造(CWE-89 MyBatis @Delete ${} 表名插值)	mybatis
+pos/mybatis-update-anno.java	pos	S-J11、S-J15	人工构造(CWE-89 MyBatis @Update ${})	mybatis
+pos/native-query.java	pos	S-J07	人工构造(JPA native)	
+pos/prepare-concat.java	pos	S-J09	人工构造(prepareStatement 即拼接)	
+pos/queryforlist-orderby.java	pos	S-J02	人工构造(ORDER BY 位置)	jdbc
+pos/queryforobject-concat.java	pos	S-J01	人工构造(Spring JdbcTemplate 拼接)	spring
+pos/queryforrowset-concat.java	pos	S-J03	人工构造(CWE-89 queryForRowSet 拼接)	jdbc
+neg/criteria-api.java	neg		人工构造(硬负例:JPA Criteria 结构化)	
+neg/dom-queryselector.java	neg		人工构造(硬负例:前端 DOM 查询非 SQL)	
+neg/elasticsearch.java	neg		人工构造(硬负例:ES 查询构建器非 SQL 文本)	
+neg/ldap-filter.java	neg		人工构造(硬负例:LDAP 过滤器构建)	
+neg/log-format.java	neg		人工构造(硬负例:日志格式化)	
+neg/regex-pattern.java	neg		人工构造(硬负例:正则编译)	
+neg/string-builder-plain.java	neg		人工构造(硬负例:普通字符串构造无 DB)	
+neg/test-assert.java	neg		人工构造(硬负例:测试断言文本)	
+neg/xml-parse.java	neg		人工构造(硬负例:XPath/XQuery 非 SQL)	
+noise/executemany-safe.java	noise		人工构造(噪音:executemany 参数化)	
+noise/named-param.java	noise		人工构造(噪音:MyBatis #{} 安全用法)	mybatis
+noise/parametrized.java	noise		人工构造(噪音:同 API 安全用法——允许命中,由五步判别)	jdbc
+noise/ps-set.java	noise		人工构造(噪音:prepareStatement 安全用法)	
+pos/mapper-params-EL.java	pos	S-J13	人工构造(MyBatis mapper ${params.} 绑定形态——XML mapper 语义在扫描后缀内的 Java 侧等价转录)	mybatis
+pos/mapper-dollar-sql.java	pos	S-J10、S-J14、S-J15	人工构造(MyBatis ${sql} 动态片段插值)	mybatis
+pos/pagehelper-orderby.java	pos	S-J16	人工构造(PageHelper startPage orderBy 注入——外部库 sink)	pagehelper

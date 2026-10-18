@@ -1,0 +1,26 @@
+file	kind	expected_patterns	provenance	framework
+pos/et-import-fromstring.py	pos	X-P02、X-P07	人工构造(依据 CWE-611 stdlib ET.fromstring 解析请求体)	stdlib-xml
+pos/from-import-elementtree.py	pos	X-P01、X-P05	人工构造(依据 CWE-611 from xml.etree import ElementTree 全名形态)	stdlib-xml
+pos/elementtree-parse-upload.py	pos	X-P02、X-P06	人工构造(依据 CWE-611 上传工件回读 ElementTree.parse)	stdlib-xml
+pos/from-import-et-alias.py	pos	X-P01、X-P08	人工构造(依据 CWE-611 ET 别名 + ET.parse 流式读取)	stdlib-xml
+pos/lxml-fromstring.py	pos	X-P03	人工构造(依据 CWE-611 lxml 默认 resolve_entities=True 形态)	lxml
+pos/lxml-parse.py	pos	X-P04	人工构造(依据 CWE-611 lxml etree.parse 默认解析器)	lxml
+pos/minidom-parsestring.py	pos	X-P09	人工构造(依据 CWE-611 minidom.parseString 解析 SOAP)	stdlib-xml
+pos/minidom-parse-file.py	pos	X-P10	人工构造(依据 CWE-611 minidom.parse 解析上传 SVG)	stdlib-xml
+pos/util-wrapper-parse.py	pos	X-P03	人工构造(依据 CWE-611 工具类封装形态)	lxml
+neg/json-loads.py	neg		人工构造(硬负例:JSON 解析)	
+neg/json-load-file.py	neg		人工构造(硬负例:JSON 文件加载)	
+neg/dateutil-parse.py	neg		人工构造(硬负例:dateutil 日期解析)	
+neg/re-match.py	neg		人工构造(硬负例:正则匹配)	
+neg/yaml-safe-load.py	neg		人工构造(硬负例:PyYAML 安全加载)	
+neg/toml-load.py	neg		人工构造(硬负例:TOML 加载)	
+neg/pickle-loads.py	neg		人工构造(硬负例:pickle——deser 类目标非本类)	
+neg/csv-reader.py	neg		人工构造(硬负例:CSV 读取)	
+neg/np-fromstring.py	neg		人工构造(硬负例:numpy fromstring——与 etree.fromstring 形态易混)	
+neg/email-message-from-string.py	neg		人工构造(硬负例:email 解析)	
+neg/parse-xml-named-json.py	neg		人工构造(硬负例:名为 parse_xml 实为 JSON 的封装)	
+neg/env-var-render.py	neg		人工构造(硬负例:环境变量模板渲染)	
+noise/lxml-resolve-entities-off.py	noise	lxml	人工构造(噪音:同 API 安全用法——XMLParser(resolve_entities=False);允许命中由五步判别)	
+noise/et-internal-const.py	noise	stdlib-xml	人工构造(噪音:FP 卡形态——只解析服务端常量,需来源证据;命中登记)	
+noise/minidom-sitemap-const.py	noise	stdlib-xml	人工构造(噪音:同 API 安全用法——解析服务端常量模板)	
+noise/etree-parse-secured.py	noise	lxml	人工构造(噪音:同 API 安全用法——硬化解析器注入 etree.parse)	

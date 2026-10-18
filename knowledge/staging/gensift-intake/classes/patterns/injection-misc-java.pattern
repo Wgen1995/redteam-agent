@@ -1,0 +1,18 @@
+# class: injection-misc
+# lang: java
+# role: sink
+# band: 0
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+IM-J01	SearchControls\(	JNDI-LDAP 搜索配置（家族标记，bw 卡从 sc 追 ctx.search）
+IM-J02	\.search\(	LDAP ctx.search（CWE-90 查询 sink）
+IM-J03	InitialDirContext	JNDI-LDAP 家族标记（env 拼接点同文件共现）
+IM-J04	XPathExpression	XPath 编译表达式持有（CWE-643）
+IM-J05	\.evaluate\(	XPath evaluate sink（CWE-643）
+IM-J06	XPathFactory\.newInstance\(	XPath 家族标记（CWE-643）
+IM-J07	Filters\.where\(	MongoDB $where（允许 JS 体，CWE-943）
+IM-J08	BasicDBObject\(	legacy Mongo 查询构建（家族标记，$where/$regex 键内嵌）
+IM-J09	\.append\(.*"[$]where	BasicDBObject.append("$where"（CWE-943）
+IM-J10	\.append\(.*"[$]regex	BasicDBObject.append("$regex"（操作符注入，CWE-943）

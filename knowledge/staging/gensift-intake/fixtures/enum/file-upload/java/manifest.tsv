@@ -1,0 +1,41 @@
+file	kind	expected_patterns	provenance	framework
+pos/spring-upload-transferto.java	pos	FU-J01、FU-J03、FU-J04	人工构造(依据 CWE-434 + OWASP File Upload Cheatsheet 原名直落盘形态)	Spring-MVC
+pos/spring-requestpart-inbox.java	pos	FU-J01、FU-J02、FU-J04	人工构造(依据 CWE-434 @RequestPart 声明式绑定 + 客户端名落盘)	Spring-MVC
+pos/servlet-part-write.java	pos	FU-J05、FU-J07	人工构造(依据 CWE-434 + OWASP File Upload Cheatsheet 原生 Part 形态)	javax-servlet
+pos/jakarta-part-upload.java	pos	FU-J06、FU-J07	人工构造(依据 CWE-434 jakarta 命名空间 Part 形态)	jakarta-servlet
+pos/multipartconfig-servlet.java	pos	FU-J05、FU-J07、FU-J10	人工构造(依据 CWE-434 @MultipartConfig 声明式入口——无层校验)	javax-servlet
+pos/commons-fileupload-items.java	pos	FU-J08、FU-J09	人工构造(依据 CWE-434 commons-fileupload parseRequest 形态)	commons-fileupload
+pos/commons-iterator-upload.java	pos	FU-J08	人工构造(依据 CWE-434 commons-fileupload FileItemIterator 流式形态)	commons-fileupload
+pos/storageservice-savefile.java	pos	FU-J01、FU-J03、FU-J04、FU-J11	人工构造(依据 CWE-434 服务层封装 saveFile 形态——校验责任分离丢失)	Spring-MVC
+pos/avatar-unchecked-copy.java	pos	FU-J01、FU-J04	人工构造(依据 CWE-434 nio copy + 客户端名拼接形态)	Spring-MVC
+pos/second-order-filename.java	pos	FU-J05	人工构造(依据 CWE-434 二阶——入库文件名回读再落盘/persisted_read)	javax-servlet
+pos/profile-multi-files.java	pos	FU-J01、FU-J03、FU-J04	人工构造(依据 CWE-434 MultipartFile[] 批量循环落盘)	Spring-MVC
+pos/chunk-upload-assembly.java	pos	FU-J01、FU-J11	人工构造(依据 CWE-434 分片上传拼装形态——目标名可预测即竞态面)	Spring-MVC
+neg/json-requestbody.java	neg		人工构造(硬负例:JSON 体非 multipart)	
+neg/form-params.java	neg		人工构造(硬负例:普通表单字段)	
+neg/download-response.java	neg		人工构造(硬负例:下载方向——读文件回吐)	apache
+neg/files-write-constant.java	neg		人工构造(硬负例:常量路径写)	
+neg/image-resize-constant.java	neg		人工构造(硬负例:固定输入图片处理)	
+neg/multipart-resolver-config.java	neg		人工构造(硬负例:multipart 解析器配置——MultipartResolver 无文件落盘)	spring
+neg/okhttp-multipart-client.java	neg		人工构造(硬负例:客户端发起 multipart——非接收上传)	okhttp
+neg/javamail-bodypart.java	neg		人工构造(硬负例:邮件 MimeBodyPart——Multipart 语义非文件上传)	
+neg/csv-export.java	neg		人工构造(硬负例:CSV 导出)	
+neg/static-resource-handler.java	neg		人工构造(硬负例:静态资源映射只读面)	spring
+neg/db-blob-read.java	neg		人工构造(硬负例:DB blob 读)	
+neg/uuid-temp-file.java	neg		人工构造(硬负例:临时文件无上传面)	
+neg/zip-read-entries.java	neg		人工构造(硬负例:读取常量归档)	
+neg/excel-export-poi.java	neg		人工构造(硬负例:POI 导出——输出方向)	apache
+neg/webclient-post-json.java	neg		人工构造(硬负例:WebClient JSON 外发)	
+neg/kafka-message-consume.java	neg		人工构造(硬负例:消息消费无文件面)	spring
+neg/base64-download.java	neg		人工构造(硬负例:常量文件 base64 回吐)	
+neg/file-cleanup-cron.java	neg		人工构造(硬负例:定时清理)	spring
+neg/requestparam-paging.java	neg		人工构造(硬负例:分页参数)	
+neg/servlet-reader-json.java	neg		人工构造(硬负例:原生 reader 读 JSON)	
+neg/path-canonical-read.java	neg		人工构造(硬负例:归一化后白名单内读——path-traversal 类目标)	
+neg/ocr-constant-image.java	neg		人工构造(硬负例:OCR 固定样本)	
+noise/uuid-rename-transferto.java	noise	Spring-MVC	人工构造(噪音:FP 卡形态——UUID 重命名+非 web 目录,originalFilename 只进元数据;允许命中)	spring
+noise/extension-whitelist-rename.java	noise	Spring-MVC	人工构造(噪音:同 API 安全用法——三层校验+服务端生成名;允许命中由五步判别)	spring
+noise/part-write-servername.java	noise	javax-servlet	人工构造(噪音:同 API 安全用法——Part.write 服务端生成名;允许命中)	servlet
+noise/stream-transferto-download.java	noise	JDK-nio	人工构造(噪音:形态撞车登记——InputStream.transferTo 为下载方向,非 MultipartFile)	
+noise/multipart-size-limit-validator.java	noise	Spring-MVC	人工构造(噪音:同 API 安全用法——大小/类型配额校验后丢弃;允许命中)	spring
+noise/commons-size-limits.java	noise	commons-fileupload	人工构造(噪音:同 API 安全用法——commons 配额 + 服务端名;允许命中)	servlet

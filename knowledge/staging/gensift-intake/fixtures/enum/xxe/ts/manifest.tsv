@@ -1,0 +1,25 @@
+file	kind	expected_patterns	provenance	framework
+pos/domparser-request-body.ts	pos	X-T01、X-T02	人工构造(依据 CWE-611 DOMParser 解析请求体形态)	DOM-API
+pos/soap-response-dom.ts	pos	X-T01、X-T02	人工构造(依据 CWE-611 SOAP 响应 text/xml 解析形态)	DOM-API
+pos/xml2js-parsestring.ts	pos	X-T03、X-T05	人工构造(依据 CWE-611 xml2js parseString 回调形态)	xml2js
+pos/xml2js-promise-import.ts	pos	X-T04、X-T06	人工构造(依据 CWE-611 xml2js parseStringPromise + import 形态)	xml2js
+pos/fast-xml-parser.ts	pos	X-T07	人工构造(依据 CWE-611 fast-xml-parser 服务端解析形态)	fast-xml-parser
+pos/saml-assertion-xml2js.ts	pos	X-T03、X-T05	人工构造(依据 CWE-611 SAML assertion 解码后 xml2js 解析——IdP 来源不可信)	xml2js
+pos/util-wrapper-parsexml.ts	pos	X-T01、X-T02	人工构造(依据 CWE-611 工具类封装形态)	DOM-API
+pos/rss-ingest-fetch.ts	pos	X-T04、X-T06	人工构造(依据 CWE-611 外源 RSS 拉取解析——Ingress 侧不可信来源)	xml2js
+neg/json-parse.ts	neg		人工构造(硬负例:JSON 解析)	
+neg/query-selector.ts	neg		人工构造(硬负例:DOM 查询)	
+neg/date-parse.ts	neg		人工构造(硬负例:日期解析)	
+neg/url-parse.ts	neg		人工构造(硬负例:URL 解析)	
+neg/csv-papaparse.ts	neg		人工构造(硬负例:CSV 解析——Papa.parse 非 XML)	
+neg/jwt-decode.ts	neg		人工构造(硬负例:JWT 解码)	
+neg/regex-exec.ts	neg		人工构造(硬负例:正则)	
+neg/body-parser-json.ts	neg		人工构造(硬负例:body-parser json 中间件)	express
+neg/graphql-parse.ts	neg		人工构造(硬负例:graphql parse 查询)	
+neg/yaml-load.ts	neg		人工构造(硬负例:js-yaml 安全加载)	
+neg/dompurify-sanitize.ts	neg		人工构造(硬负例:DOMPurify 净化——与 DOMParser 形态易混)	
+neg/template-render.ts	neg		人工构造(硬负例:模板渲染输出)	
+noise/domparser-internal-config.ts	noise	DOM-API	人工构造(噪音:FP 卡形态——只解析服务端常量,需来源证据;命中登记)	
+noise/xml2js-internal-const.ts	noise	xml2js	人工构造(噪音:同 API 安全用法——解析服务端常量;允许命中由五步判别)	
+noise/xmlparser-no-entities.ts	noise	fast-xml-parser	人工构造(噪音:同 API 安全用法——processEntities 关闭)	
+noise/parsefromstring-html-mime.ts	noise	DOM-API	人工构造(噪音:同 API 非 XML 目标——text/html mime 只命中 DOMParser 形态;登记)	

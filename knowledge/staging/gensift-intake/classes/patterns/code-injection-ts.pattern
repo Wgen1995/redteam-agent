@@ -1,0 +1,15 @@
+# class: code-injection
+# lang: ts
+# role: sink
+# band: 0
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+CE-T01	(^|[[:space:](=,])eval\(	bare eval（点前缀 x.eval 业务方法形态排除）
+CE-T02	(^|[[:space:]])Function\(	Function 构造（new Function 与裸 Function 同形；小写 function 声明不命中）
+CE-T03	\.render\(	ejs/nunjucks/自研渲染器家族标记（业务 render 误报，五步判别）
+CE-T04	\.renderString\(	nunjucks renderString（字符串模板直渲）
+CE-T05	vm\.runInContext\(	Node vm 执行（vm 非安全边界）
+CE-T06	vm\.runInNewContext\(	Node vm 执行（新上下文形）
+CE-T07	vm\.runInThisContext\(

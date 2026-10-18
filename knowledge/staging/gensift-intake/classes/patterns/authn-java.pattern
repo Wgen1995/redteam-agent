@@ -1,0 +1,21 @@
+# class: authn
+# lang: java
+# role: sink
+# band: 0
+# version: 1
+# append-only: 变更须经 CALIBRATION 人工批准（B-115）——批准行只增不删
+#---
+pattern_id	ere	note
+AN-J01	resetPassword\(	重置入口(令牌消费点,一次性/毒化由五步判)
+AN-J02	passwordReset	重置族标记(DTO/服务/URL 段)
+AN-J03	resetToken	令牌字段/参数形态(熵源证据在生成行)
+AN-J04	setPassword\(	口令写入点(改密/初始化)
+AN-J05	[Vv]erifyCode	验证码校验形态(限次/回显/一次性由五步判)
+AN-J06	Jwts\.builder	JWT 签发点(jjwt;exp/claim 证据由 C3 判)
+AN-J07	\.verify\(	验签点(java-jwt/自研;alg 未钉/弱密钥是 B6 变体)
+AN-J08	sessionFixation	Spring Security session 固定防护配置(none 即高危)
+AN-J09	jsessionid	URL 重写会话标识形态(固定向量注入链)
+AN-J10	rememberMe	remember-me 配置/字段(弱随机令牌由 C2 判)
+AN-J11	new Random\(	弱熵源锚(java.util.Random 生成令牌即 C2 反向证据)
+AN-J12	setExpiration\(	令牌有效期证据锚(缺席即 C3 证据缺口)
+AN-J13	getHeader\(["']Host	Host 取值点(重置毒化注入链锚)
