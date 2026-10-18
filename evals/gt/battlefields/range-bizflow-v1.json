@@ -1,0 +1,125 @@
+{
+ "format_version": 1,
+ "battlefield": "range-bizflow-v1",
+ "kind": "chain-gt",
+ "status": "seed",
+ "session_gt": "tests/range/ground-truth.json",
+ "verify_root": "",
+ "live_anchor": false,
+ "entered_at": "2026-10-20T00:00:00Z",
+ "activates_when": "range 考卷下一版三步齐后注册 gt-index: ①session-GT 植入 pending_gt 三条目(bizflow-price-01/bizflow-coupon-01/bizflow-shipcancel-01) ②未来夹具账本 G-bf1 链在案全过(verify_cmd 全绿) ③gt-index.tsv 落 chain-gt 行(true_findings=3/decoys=0/chains=3/steps=6);三步缺一=保持种子惰性不注册",
+ "pending_gt": [
+  "bizflow-price-01",
+  "bizflow-coupon-01",
+  "bizflow-shipcancel-01"
+ ],
+ "caliber": "业务流作弊链(种子态): 步=gt_ref 指向 session-GT 在册(或 pending_gt 待植)条目,步命中=单源 scorer 判命中(keying v7);链级两档判分沿用 gt_eval.py CHAIN_TIERS(整链全对=1.0/部分对=0.5/零=0);利用环裁决=判真标准先行(订单对账/状态核验),不靠状态码差分——业务流作弊响应常与正常同形,判据先行是本卷考点本身",
+ "provenance": "种子非在案: 24 真战夹具无业务流作弊链(README 覆盖面缺口表「业务逻辑」行=❌)——本种子=下一版出题蓝本(docs/design/2026-10-20-bizlogic-layer-design.md §考卷: 改价/优惠券重用/取消后发货);共享凭据环(weakpass-01)复用 range-chain-v1 在册语义",
+ "chains": [
+  {
+   "id": "bizflow-chain-01",
+   "battlefield": "range-bizflow-v1",
+   "polarity": "pos",
+   "status": "open",
+   "class": "bizflow-price",
+   "cwe": "CWE-840",
+   "severity": "High",
+   "title": "凭据→业务流作弊链: 弱口令落会话→下单改价(客户端金额篡改)",
+   "impact": "两环链: 凭据环(weakpass-01 共享环)+利用环(下单金额参数改写)。考「拿到钥匙后懂业务地作弊」: 改价响应与正常下单同形(200+订单号),状态码差分零信息——判真标准=订单详情接口对账金额=改写值(判据先行是考点本身)。缺凭据环=无会话可下单(部分对半分);缺对账环=改价成功也算不出(考判真纪律)。",
+   "steps": [
+    {
+     "order": 1,
+     "id": "bizflow-chain-01-s1",
+     "gt_ref": "weakpass-01",
+     "title": "凭据环: 弱口令落会话",
+     "location": "svc-login/login",
+     "finding": "弱口令面(GTWEAKPASS-01)落静态凭据→会话凭据(creds.tsv static-cred→session 链)——认证前 stepping stone,同 range-chain-01-s2 共享环语义。",
+     "verify_cmd": "grep -q 'GTWEAKPASS-01' tests/fixtures/G-bf1/E-index.tsv && grep -q 'static-cred' tests/fixtures/G-bf1/creds.tsv && grep -q 'session' tests/fixtures/G-bf1/creds.tsv",
+     "provenance": "种子: 共享环复用 range-chain-01-s2 在册语义(G-r24/G-r26 全链先例);激活时锚=未来夹具 G-bf1"
+    },
+    {
+     "order": 2,
+     "id": "bizflow-chain-01-s2",
+     "gt_ref": "bizflow-price-01",
+     "title": "利用环: 下单参数改价",
+     "location": "shop/order",
+     "finding": "下单面金额参数可被客户端改写(GTBIZFLOW-PRICE-01)——订单以改写价成交;判真标准=订单详情接口对账金额=改写值,未改价对照单金额=原价。",
+     "verify_cmd": "grep -q 'GTBIZFLOW-PRICE-01' tests/fixtures/G-bf1/E-index.tsv",
+     "provenance": "种子: 待 range 下一版植入 GT(bizflow-price-01)+夹具(设计 2026-10-20-bizlogic-layer-design §考卷)"
+    }
+   ],
+   "provenance": "种子(未激活): 业务流作弊三类之一(改价);激活条件见 activates_when 三步",
+   "entered_at": "2026-10-20T00:00:00Z"
+  },
+  {
+   "id": "bizflow-chain-02",
+   "battlefield": "range-bizflow-v1",
+   "polarity": "pos",
+   "status": "open",
+   "class": "bizflow-coupon",
+   "cwe": "CWE-840",
+   "severity": "High",
+   "title": "凭据→业务流作弊链: 弱口令落会话→单次优惠券重用(重放抵扣)",
+   "impact": "两环链: 凭据环(weakpass-01 共享环)+利用环(单次券码二次抵扣)。考「状态面重放」: 二次抵扣响应与首次同形(成功+再减同额)——判真标准=同券码两单均成交且各减同额,累计抵扣>券面值即真。区分「会找券」与「会用券作弊」。",
+   "steps": [
+    {
+     "order": 1,
+     "id": "bizflow-chain-02-s1",
+     "gt_ref": "weakpass-01",
+     "title": "凭据环: 弱口令落会话",
+     "location": "svc-login/login",
+     "finding": "同 bizflow-chain-01-s1(凭据共享环——三类作弊同源不同终点)。",
+     "verify_cmd": "grep -q 'GTWEAKPASS-01' tests/fixtures/G-bf1/E-index.tsv && grep -q 'static-cred' tests/fixtures/G-bf1/creds.tsv && grep -q 'session' tests/fixtures/G-bf1/creds.tsv",
+     "provenance": "种子: 共享环复用在册语义;激活时锚=未来夹具 G-bf1"
+    },
+    {
+     "order": 2,
+     "id": "bizflow-chain-02-s2",
+     "gt_ref": "bizflow-coupon-01",
+     "title": "利用环: 单次优惠券重用",
+     "location": "shop/coupon",
+     "finding": "单次券码可重用(GTBIZFLOW-COUPON-01)——同券码二次抵扣成功且订单再减同额;判真标准=两单均成交、各减同额、累计抵扣>券面值。",
+     "verify_cmd": "grep -q 'GTBIZFLOW-COUPON-01' tests/fixtures/G-bf1/E-index.tsv",
+     "provenance": "种子: 待 range 下一版植入 GT(bizflow-coupon-01)+夹具(设计 2026-10-20-bizlogic-layer-design §考卷)"
+    }
+   ],
+   "provenance": "种子(未激活): 业务流作弊三类之二(优惠券重用);激活条件见 activates_when 三步",
+   "entered_at": "2026-10-20T00:00:00Z"
+  },
+  {
+   "id": "bizflow-chain-03",
+   "battlefield": "range-bizflow-v1",
+   "polarity": "pos",
+   "status": "open",
+   "class": "bizflow-shipcancel",
+   "cwe": "CWE-840",
+   "severity": "Medium",
+   "title": "凭据→业务流作弊链: 弱口令落会话→取消后发货(状态机违例)",
+   "impact": "两环链: 凭据环(weakpass-01 共享环)+利用环(已取消订单触发发货)。考「状态面漏洞」: 取消态发货响应与正常发货同形——判真标准=取消态下单触发发货请求成功且订单状态转已发货(状态机违例坐实)。响应同形≠无洞,状态核验才是判真面。",
+   "steps": [
+    {
+     "order": 1,
+     "id": "bizflow-chain-03-s1",
+     "gt_ref": "weakpass-01",
+     "title": "凭据环: 弱口令落会话",
+     "location": "svc-login/login",
+     "finding": "同 bizflow-chain-01-s1(凭据共享环)。",
+     "verify_cmd": "grep -q 'GTWEAKPASS-01' tests/fixtures/G-bf1/E-index.tsv && grep -q 'static-cred' tests/fixtures/G-bf1/creds.tsv && grep -q 'session' tests/fixtures/G-bf1/creds.tsv",
+     "provenance": "种子: 共享环复用在册语义;激活时锚=未来夹具 G-bf1"
+    },
+    {
+     "order": 2,
+     "id": "bizflow-chain-03-s2",
+     "gt_ref": "bizflow-shipcancel-01",
+     "title": "利用环: 取消后发货",
+     "location": "shop/ship",
+     "finding": "已取消订单仍可触发发货(GTBIZFLOW-SHIPCANCEL-01)——取消态发货请求成功;判真标准=订单状态先取消、触发发货后转已发货(状态机违例)。",
+     "verify_cmd": "grep -q 'GTBIZFLOW-SHIPCANCEL-01' tests/fixtures/G-bf1/E-index.tsv",
+     "provenance": "种子: 待 range 下一版植入 GT(bizflow-shipcancel-01)+夹具(设计 2026-10-20-bizlogic-layer-design §考卷)"
+    }
+   ],
+   "provenance": "种子(未激活): 业务流作弊三类之三(取消后发货);激活条件见 activates_when 三步",
+   "entered_at": "2026-10-20T00:00:00Z"
+  }
+ ]
+}

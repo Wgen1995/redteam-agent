@@ -1,0 +1,2 @@
+FD-bizlogic-keys-0001	INT-bizlogic-keys-0002	user 会话可读他人订单(IDOR)	C2	高	suspected	CRED-bizlogic-keys-0004	shop.example/orders+idor		in_scope	差分正对	GET /orders?user=alice->200\; anon->403	AST-bizlogic-keys-0001	EV-bizlogic-keys-0001		findings-cards/FD-bizlogic-keys-0001.md	active	2	2026-10-20T11:00:00Z
+FD-bizlogic-keys-0002	INT-bizlogic-keys-0003	admin 会话可读订单	C3	低	suspected		shop.example/orders+authz		in_scope	链断反例	GET /orders->200	AST-bizlogic-keys-0001	EV-bizlogic-keys-0002		findings-cards/FD-bizlogic-keys-0002.md	active	2	2026-10-20T11:01:00Z

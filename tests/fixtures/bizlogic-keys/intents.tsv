@@ -1,0 +1,3 @@
+INT-bizlogic-keys-0001	alice 弱口令落会话	login 面 static-cred 换 session	done	web-blackbox	deep-dive	llm	0.7		shop.example+login	1k\;20\;0.2					2	2026-10-20T09:30:00Z
+INT-bizlogic-keys-0002	orders 面×user 差分对	(shop.example/orders, user) 差分对\;对照=anonymous	pending	web-blackbox	authz-diff	entity			-+authz-diff+shop.example/orders×user	10k\;50\;0.5				CRED-bizlogic-keys-0004	2	2026-10-20T10:30:00Z
+INT-bizlogic-keys-0003	orders 面×admin 差分对	(shop.example/orders, admin) 差分对	pending	web-blackbox	authz-diff	entity			-+authz-diff+shop.example/orders×admin	10k\;50\;0.5				CRED-bizlogic-keys-0003	2	2026-10-20T10:31:00Z

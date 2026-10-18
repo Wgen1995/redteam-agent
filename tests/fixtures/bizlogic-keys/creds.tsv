@@ -1,0 +1,7 @@
+CRED-bizlogic-keys-0001	static-cred	user	alice	{{vault:cred-1}}	AST-bizlogic-keys-0001					active	read\;probe		2	2026-10-20T09:00:00Z	
+CRED-bizlogic-keys-0002	static-cred	user	bob	{{vault:cred-2}}	AST-bizlogic-keys-0001					active	read		2	2026-10-20T09:00:00Z	
+CRED-bizlogic-keys-0003	static-cred	admin	carol	{{vault:cred-3}}	AST-bizlogic-keys-0002					active	read\;probe\;write		2	2026-10-20T09:00:00Z	
+CRED-bizlogic-keys-0004	session	user	alice	{{vault:cred-4}}	AST-bizlogic-keys-0001	INT-bizlogic-keys-0001	CRED-bizlogic-keys-0001			active	read	登录态(活链)	2	2026-10-20T10:00:00Z	
+CRED-bizlogic-keys-0005	session	admin	carol	{{vault:cred-5}}	AST-bizlogic-keys-0002	INT-bizlogic-keys-0001	CRED-bizlogic-keys-0003			revoked	read	已吊销会话	2	2026-10-20T10:05:00Z	
+CRED-bizlogic-keys-0006	static-cred	user	dave	{{vault:cred-6}}	AST-bizlogic-keys-0001				2026-10-19T00:00:00Z	expired	read	过期钥匙	2	2026-10-18T09:00:00Z	
+CRED-bizlogic-keys-0007	session	user	bob	{{vault:cred-7}}	AST-bizlogic-keys-0001	INT-bizlogic-keys-0001	CRED-bizlogic-keys-0006			active	read	父链过期=断链	2	2026-10-20T10:10:00Z	
