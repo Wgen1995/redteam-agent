@@ -30,3 +30,5 @@ GraphLed webui 8900(口令在启动日志/TANYIN_OPERATOR_KEY)·ARTEX 8787(ARTEX
 | cyber-harness(=衍迹进化体,原aiscan) | .research/repos/cyber-harness | 18M/1045 Go文件/AGPL;四入口=aiscan(agent扫+代理+IOA)/**cyber-audit(模型主导源码/二进制审计——用户源码审计方向的直接参照)**/cyber-web(会话事件工件Hub)/agent(最小本地agent);**Quick Connect一行命令节点回连分布**;--verify=off 确定性扫与AI验证分离;exts十五件(proxy录音/pty/mcp/otel/ioa) |
 | GenCPT | /Users/wgen/Sectest/GenCPT(本机) | 188文件17子技能;chain-builder/chain-verify/adversary-verify/attack-reasoning/cross-ref/evolve;graph-viz=统计栏+Pipeline时间轴chips;49攻击模式/226合规规则 |
 | 排期: cyber-harness 逐件对齐舰(E舰)=下一空槽或T6后; 源码审计设计舰消费 cyber-audit 入口 |
+| GenSift(白盒审计技能,用户私有资产\u2026用户已放行) | .research/repos/gensift | 12段状态机+五步证伪+账本外骨骼+找全第一(覆盖不可谈判);定位=只读参考,SA舰造自研白盒时抄机制,不接入系统运行 |
+| GenSift(白盒审计技能,用户私有资产,用户已放行) | .research/repos/gensift(本地参考区) | 12段状态机+五步证伪+账本外骨骼+找全第一;定位=只读机制参考,SA舰造自研白盒时借鉴,不接入系统运行,不替代source-audit-v1设计 |
