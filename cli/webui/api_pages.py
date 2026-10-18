@@ -41,7 +41,9 @@ _OPTIONAL_MODULES = ("api_v2_settings", "api_v2_workspace", "api_v2_evals",
                      "api_v2_ask", "api_v2_command", "api_v2_llm",
                      "api_v2_llm_status", "api_v2_system", "api_v2_tools",
                      "api_v2_capability",
-                     "api_v2_fleet")     # 多任务治理舰（功能25补件）：总控数据面
+                     "api_v2_cockpit",   # 驾驶舱舰（功能27）：四路聚合投影
+                     "api_v2_fleet",     # 多任务治理舰（功能25补件）：总控数据面
+                     "api_v2_chat")      # 壳重排舰（IA v2）：对话面只读投影
 
 PAGES_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                           "static", "pages")
