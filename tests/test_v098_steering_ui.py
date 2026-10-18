@@ -197,35 +197,45 @@ class TestLoginPageCraft(unittest.TestCase):
 # ===========================================================================
 
 class TestIndexUpgrades(unittest.TestCase):
+    """R64 对齐（①新现实）：index.html=GL-DS v1 四问仪表盘+IA v2 七面侧栏。
+    旧开战钮(start-btn)/审批卡(approval-card 内联批拒钮)/旧 20 词菜单
+    已随首页重做退役（R64: 随49b1619 IA v2移除）——开仗入口改 /p/new-task、
+    审批入口改问三「去审→/p/inbox」（批拒钮在收件箱页）。"""
 
     def test_start_button_icon(self):
         src = _src("index.html")
-        btn = re.search(r'<a href="/new" id="start-btn">.*?</a>', src, re.S)
-        self.assertIsNotNone(btn, "开战钮须保留 href=/new")
-        self.assertIn("<svg", btn.group(0), "开战钮须带图标")
+        # R64: 随49b1619 IA v2移除 旧 start-btn（/new 向导入口）——
+        # 新现实=空态/深页组挂 /p/new-task 开仗入口
+        self.assertIn('href="/p/new-task"', src, "开仗入口须挂 /p/new-task")
+        self.assertIn("开第一仗", src, "空态开仗引导文案缺席")
 
     def test_approval_rows_approve_reject_buttons(self):
         src = _src("index.html")
-        self.assertIn('id="approval-card"', src)
-        self.assertIn('id="approval-list"', src)
-        self.assertIn("批准", src, "审批行须有批准钮")
-        self.assertIn("拒绝", src, "审批行须有拒绝钮")
-        self.assertIn("ap-ok", src)
-        self.assertIn("ap-src", src, "行内须有来源位")
+        # R64: 随49b1619 IA v2移除 approval-card 内联批拒钮——
+        # 新现实=问三待审批行带「待审批」徽章+去审/去看跳收件箱
+        self.assertIn("待审批", src, "问三须有待审批徽章行")
+        self.assertIn('href="/p/inbox"', src, "审批行须可跳收件箱页")
+        inbox = _src("pages/inbox.html")
+        self.assertIn("批准", inbox, "收件箱页须有批准钮")
+        self.assertIn("拒绝", inbox, "收件箱页须有拒绝钮")
 
     def test_approval_empty_state(self):
         src = _src("index.html")
-        self.assertIn("暂无待审", src, "空态文案「暂无待审」")
-        self.assertIn("ap-empty", src, "空态插画件")
+        # R64: 随49b1619 IA v2移除「暂无待审」空态——新现实=「没有等你拍板的事」
+        self.assertIn("没有等你拍板的事", src, "问三空态人话文案")
+        self.assertIn("emptyBox", src, "空态组件在场")
 
     def test_menu_unchanged(self):
         src = _src("index.html")
-        # 用户实逛反馈批（2026-10-19）：导航拍平=主入口 7 链+页面总目 13 链
-        for item in ("总览", "发现", "任务列表", "新建任务", "知识库", "播报",
-                     "报告", "动态", "对话", "攻击路线", "战报", "测试覆盖",
-                     "复测", "审批中心", "资产库", "测试资产", "资产覆盖",
-                     "能力曲线", "控制台", "设置"):
-            self.assertIn(item, src, "菜单项不得变: " + item)
+        # R64: 随49b1619 IA v2移除 旧 20 词菜单——
+        # 新现实=IA v2 七面侧栏（对话第一公民）+深页组（旧 22 页保位）
+        nav = re.search(r"<nav[^>]*>(.*?)</nav>", src, re.S)
+        self.assertIsNotNone(nav, "缺侧栏 nav")
+        for item in ("对话", "仪表盘", "任务", "漏洞", "知识库", "收件箱", "设置"):
+            self.assertIn(item, nav.group(1), "七面菜单项不得变: " + item)
+        for item in ("任务列表", "新建任务", "复测", "审批中心", "报告中心",
+                     "技法库", "资产覆盖", "度量与考卷", "实时日志"):
+            self.assertIn(item, src, "深页组菜单项不得变: " + item)
 
 
 # ===========================================================================
@@ -335,6 +345,15 @@ class TestPlaywrightWizardSmoke(unittest.TestCase):
             from playwright.sync_api import sync_playwright
         except ImportError:
             self.skipTest("playwright 缺席 ENV-SKIP")
+        # R64 环境守卫（③）：整套件跑在同进程 asyncio loop 下时
+        # Playwright Sync API 直接抛错——浏览器不可用即环境性跳过，不裸红
+        import asyncio
+        try:
+            _loop = asyncio.get_event_loop()
+        except RuntimeError:
+            _loop = None
+        if _loop is not None and _loop.is_running():
+            self.skipTest("asyncio loop 在跑: Playwright Sync API 不可用 ENV-SKIP")
         from tests.test_v098_steering import (OP_KEY, SteeringBase,
                                               AUTH_DOC, AUTH_SHA)
         import os

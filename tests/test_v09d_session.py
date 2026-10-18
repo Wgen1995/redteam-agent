@@ -513,12 +513,14 @@ class TestActivityPageSourceV09d(unittest.TestCase):
 
 
 class TestFivePageVersionBump(unittest.TestCase):
-    """五页版本串行级随 server bump（title/footer 行内 0.9c→0.9d；v09a 单源钉同验）。"""
+    """旧皮肤四页版本串行级随 server bump（title/footer 行内 0.9c→0.9d；v09a 单源钉同验）。
+    R64: 随49b1619 IA v2移除 index.html 出版本对齐（GL-DS v1 新面 title/footer
+    不带版本号，版本唯一单源=server banner）。"""
 
     def test_five_pages_match_server_banner(self):
         banner = srv_mod.Handler.server_version
         want = "v" + banner.split("/", 1)[1]
-        for name in ("index.html", "coverage.html", "graph.html",
+        for name in ("coverage.html", "graph.html",
                      "evidence.html", "metrics.html"):
             with open(os.path.join(STATIC, name), encoding="utf-8") as f:
                 src = f.read()

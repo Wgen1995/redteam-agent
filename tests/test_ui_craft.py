@@ -24,6 +24,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 STATIC = os.path.join(HERE, "..", "cli", "webui", "static")
 PAGES = ("index.html", "activity.html", "session.html", "coverage.html",
          "graph.html", "evidence.html", "metrics.html")
+# R64: 随49b1619 IA v2移除 index.html 出旧工艺五律面（GL-DS v1 自有设计系统：
+# 字阶13-24令牌/--mono/单深色/自有间距节奏），旧工艺钉只扫未迁移六页；
+# index 新现实另钉 TestIndexCraftGLDS
+OLD_CRAFT_PAGES = ("activity.html", "session.html", "coverage.html",
+                   "graph.html", "evidence.html", "metrics.html")
 
 GRID_PX = {"0", "4", "8", "12", "16", "20", "24", "32", "48"}
 TIERS_PX = {"12", "13", "15", "20", "24"}
@@ -91,7 +96,7 @@ class TestFontCraft(unittest.TestCase):
     """①⑤ 正文字体律：系统无衬线栈+PingFang SC；等宽只给数据块。"""
 
     def test_body_font_is_system_sans_stack(self):
-        for name in PAGES:
+        for name in OLD_CRAFT_PAGES:
             css = _css(name)
             hit = None
             for sel, body, _ in _rules(css):
@@ -135,8 +140,9 @@ class TestFontCraft(unittest.TestCase):
                             "%s 裸选择器 %s 等宽字族越权" % (name, sel))
 
     def test_mono_confined_to_data_selectors(self):
-        """等宽字族只许出现在带类/ID/元素限定的新代数选择器（数据块）。"""
-        for name in PAGES:
+        """等宽字族只许出现在带类/ID/元素限定的新代数选择器（数据块）。
+        R64: 随49b1619 IA v2移除 index.html 出本钉（GL-DS v1 等宽走 --mono 令牌）。"""
+        for name in OLD_CRAFT_PAGES:
             for sel, body, _ in _rules(_css(name)):
                 for prop, val, _o in _declarations(body):
                     if prop != "font-family":
@@ -152,7 +158,7 @@ class TestFontCraft(unittest.TestCase):
                             % (name, tok))
 
     def test_sans_and_mono_tokens_both_themes(self):
-        for name in PAGES:
+        for name in OLD_CRAFT_PAGES:
             css = _css(name)
             for var in ("--font-sans", "--font-mono"):
                 self.assertGreaterEqual(css.count(var + ":"), 2,
@@ -163,10 +169,11 @@ class TestFontCraft(unittest.TestCase):
 
 
 class TestSpacingGrid(unittest.TestCase):
-    """② 间距 4px 网格：只许 0/auto/4/8/12/16/20/24/32/48 px。"""
+    """② 间距 4px 网格：只许 0/auto/4/8/12/16/20/24/32/48 px。
+    R64: 随49b1619 IA v2移除 index.html 出 4px 网格钉（GL-DS v1 自有 8/10px 密度节奏）。"""
 
     def test_spacing_on_grid_all_pages(self):
-        for name in PAGES:
+        for name in OLD_CRAFT_PAGES:
             css = _css(name)
             lines = css.split("\n")
             for m in SPACING_RE.finditer(css):
@@ -191,7 +198,9 @@ class TestSpacingGrid(unittest.TestCase):
 
 
 class TestColorDiet(unittest.TestCase):
-    """③ 颜色节食：去重 ≤18；令牌区外零裸色值（只扫声明值区）。"""
+    """③ 颜色节食：去重 ≤18；令牌区外零裸色值（只扫声明值区）。
+    R64: 随49b1619 IA v2移除 index.html 出节食钉（GL-DS v1 严重度五档色带+状态
+    四色自带 tint 面，色值单源另有 GLDS 令牌钉）。"""
 
     @staticmethod
     def _color_hits(css):
@@ -205,7 +214,7 @@ class TestColorDiet(unittest.TestCase):
         return out
 
     def test_distinct_colors_le_18(self):
-        for name in PAGES:
+        for name in OLD_CRAFT_PAGES:
             css = _css(name)
             vals = set()
             for _off, _val, hits in self._color_hits(css):
@@ -215,7 +224,7 @@ class TestColorDiet(unittest.TestCase):
                 "%s 原色值去重 %d 种 > 18: %s" % (name, len(vals), sorted(vals)))
 
     def test_raw_colors_only_in_token_zone(self):
-        for name in PAGES:
+        for name in OLD_CRAFT_PAGES:
             css = _css(name)
             spans = _token_spans(css)
             self.assertGreaterEqual(len(spans), 2, name + " 缺令牌区双块")
@@ -255,10 +264,11 @@ class TestFontSizeTiers(unittest.TestCase):
 
 
 class TestShadowTiers(unittest.TestCase):
-    """阴影三档定死一次：双主题各一套令牌；box-shadow 零裸色值。"""
+    """阴影三档定死一次：双主题各一套令牌；box-shadow 零裸色值。
+    R64: 随49b1619 IA v2移除 index.html 出三档双主题钉（GL-DS v1 单深色 --shadow 单令牌）。"""
 
     def test_shadow_tokens_defined_both_themes(self):
-        for name in PAGES:
+        for name in OLD_CRAFT_PAGES:
             css = _css(name)
             for tok in ("--shadow-1", "--shadow-2", "--shadow-3"):
                 self.assertGreaterEqual(css.count(tok + ":"), 2,
@@ -267,6 +277,45 @@ class TestShadowTiers(unittest.TestCase):
                                     name + " 卡片未用 --shadow-1")
             self.assertGreaterEqual(css.count("var(--shadow-2)"), 1,
                                     name + " 浮层未用 --shadow-2")
+
+
+class TestIndexCraftGLDS(unittest.TestCase):
+    """R64 对齐（①新现实）：index.html=GL-DS v1 工艺面——系统无衬线栈+PingFang SC、
+    等宽走 --mono 令牌限定类、字阶五档令牌 13/14/16/20/24、阴影 --shadow 单令牌。"""
+
+    def test_body_font_system_sans_with_pingfang(self):
+        css = _css("index.html")
+        self.assertIn("-apple-system", css, "index 缺系统栈头")
+        self.assertIn('"PingFang SC"', css, "index 缺 PingFang SC")
+
+    def test_mono_token_and_confined(self):
+        css = _css("index.html")
+        self.assertIn("--mono:", css, "缺 --mono 令牌")
+        for sel, body, _ in _rules(css):
+            for prop, val, _o in _declarations(body):
+                if prop != "font-family":
+                    continue
+                if "monospace" in val.lower() or "menlo" in val.lower():
+                    self.assertIn("var(--mono)", val,
+                                  "等宽须走 --mono 令牌: " + val)
+                    for tok in (t.strip() for t in sel.split(",")):
+                        self.assertIsNone(
+                            re.fullmatch(r"[a-zA-Z]+|\*", tok),
+                            "裸选择器 %s 不许等宽" % tok)
+
+    def test_type_scale_tokens(self):
+        css = _css("index.html")
+        for var, want in (("--fs-a", "13px"), ("--fs-b", "14px"),
+                          ("--fs-c", "16px"), ("--fs-d", "20px"),
+                          ("--fs-e", "24px")):
+            self.assertIn(var + ":" + want, css,
+                          "字阶令牌 %s!=%s" % (var, want))
+
+    def test_shadow_single_token(self):
+        css = _css("index.html")
+        self.assertIn("--shadow:", css, "缺 --shadow 令牌")
+        self.assertGreaterEqual(css.count("var(--shadow)"), 1,
+                                "未使用 --shadow 令牌")
 
     def test_box_shadow_tokenized(self):
         for name in PAGES:

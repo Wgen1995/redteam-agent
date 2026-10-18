@@ -548,11 +548,13 @@ class TestGraphLedNaming(unittest.TestCase):
     def test_page_footers_and_brand_renamed(self):
         for name in PAGES:
             src = self._page(name)
-            footers = [ln for ln in src.splitlines() if "<footer" in ln]
-            self.assertTrue(footers, name + " 无页脚")
-            for ln in footers:
-                self.assertIn("GraphLed", ln, name + " 页脚未定名")
-                self.assertNotIn("探隐", ln, name + " 页脚残留旧名")
+            # R64 对齐：GL-DS v1 index.html 页脚跨多行（深页目录），GraphLed
+            # 在页脚块内不在 <footer 起始行——按块整查，旧单行页脚同过
+            blocks = re.findall(r"<footer.*?</footer>", src, re.S)
+            self.assertTrue(blocks, name + " 无页脚")
+            for blk in blocks:
+                self.assertIn("GraphLed", blk, name + " 页脚未定名")
+                self.assertNotIn("探隐", blk, name + " 页脚残留旧名")
             self.assertNotIn('class="brand">探隐', src, name + " 品牌位残留")
         self.assertIn("<h1>GraphLed</h1>", self._page("login.html"),
                       "登录页品牌标题须 GraphLed")

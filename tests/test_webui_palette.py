@@ -184,7 +184,7 @@ class TestGroupAndRecent(unittest.TestCase):
             "P.matchCommands('', P.buildCommands(P.DEFAULT_PAGES))))")
 
     def test_group_fixed_order_and_recent_dedupe(self):
-        matched = self._all()
+        self._all()
         r = _node_eval(
             "var P=require(%s);" % json.dumps(PALETTE) +
             "var m=P.matchCommands('',P.buildCommands(P.DEFAULT_PAGES));"
@@ -335,6 +335,16 @@ class TestLivePaletteSmoke(unittest.TestCase):
             from playwright.sync_api import sync_playwright
         except Exception as e:                       # noqa: BLE001
             raise unittest.SkipTest("playwright 不可用: %s" % e)
+        # R64 环境守卫（③）：同进程 asyncio loop 在跑时 Playwright Sync API
+        # 不可用——浏览器不可用即环境性跳过（不许假绿不许裸红）
+        import asyncio
+        try:
+            _loop = asyncio.get_event_loop()
+        except RuntimeError:
+            _loop = None
+        if _loop is not None and _loop.is_running():
+            raise unittest.SkipTest(
+                "asyncio loop 在跑: Playwright Sync API 不可用 ENV-SKIP")
         cls.pw = sync_playwright().start()
         try:
             try:

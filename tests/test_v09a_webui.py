@@ -209,7 +209,11 @@ class TestServerV09a(ServerBase):
         self.assertEqual(resp.status, 200)
         self.assertTrue(resp.getheader("Content-Type").startswith("text/html"))
         body = resp.read().decode("utf-8")
-        self.assertIn('id="dashboard"', body)
+        # R64 对齐：id="dashboard" 旧容器已随 GL-DS v1 重写退役——
+        # 新现实=IA v2 壳（#side 七面侧栏+#main 四问直答）
+        self.assertIn('id="side"', body)
+        self.assertIn('id="main"', body)
+        self.assertIn("四问直答", body)
         conn.close()
 
     def test_state_json_keys(self):
@@ -259,21 +263,23 @@ INDEX_HTML = os.path.join(CLI, "webui", "static", "index.html")
 
 
 class TestDashboardV09a(Base):
-    """T4：手写仪表盘——战局灯/budget 条/活动流容器 + EventSource 直连 SSE。"""
+    """T4（R64 对齐）：GL-DS v1 手写仪表盘——四问容器 + 单源 cockpit API。
+    旧 id="dashboard"/phases/budget/feed 容器与 EventSource SSE 直连
+    已随首页重写退役（R64: 随49b1619 IA v2移除——新面单拉 cockpit.json 渲染）。"""
 
     def test_has_containers_and_eventsource(self):
         src = open(INDEX_HTML, encoding="utf-8").read()
-        self.assertIn('id="dashboard"', src)
-        self.assertIn("EventSource('/api/stream')", src)
-        for cid in ('id="phases"', 'id="budget"', 'id="feed"'):
-            self.assertIn(cid, src, "缺容器 " + cid)
+        for cid in ('id="q1-body"', 'id="q2-intents"', 'id="q2-recent"',
+                    'id="q3-body"', 'id="q4-body"'):
+            self.assertIn(cid, src, "缺四问容器 " + cid)
+        self.assertIn("/api/v2/cockpit.json", src, "缺单源 cockpit 数据面")
 
     def test_zero_framework_zero_cdn(self):
         """语言律：零框架零构建零 CDN（离线可用）。"""
         src = open(INDEX_HTML, encoding="utf-8").read()
-        # v0.9d 收口批（E3 评审 F2）：唯一外链=/status.js（server 字节级伺服）
-        self.assertEqual(src.count('<script src="/status.js"></script>'), 1)
-        self.assertEqual(src.count("<script src="), 1, "只许 status.js 一支外链")
+        # R64 对齐：唯一外链=共享壳 /static/app.js（IA v2 壳契约，server 同源伺服）
+        self.assertEqual(src.count('<script src="/static/app.js"></script>'), 1)
+        self.assertEqual(src.count("<script src="), 1, "只许共享壳一支外链")
         self.assertNotIn("https://", src)            # 无 CDN/外域引用
         self.assertNotIn("http://", src)
 
@@ -340,6 +346,9 @@ PHASES_YAML = os.path.join(HERE, "..", "phases", "phases.yaml")
 STATUS_JS = os.path.join(CLI, "webui", "static", "status.js")
 STATIC_PAGES = ("index.html", "coverage.html", "graph.html",
                 "evidence.html", "metrics.html")
+# R64: 随49b1619 IA v2移除 index.html 旧皮肤面（GL-DS v1 重写），
+# 旧皮肤页钉只扫未迁移四深页；index 新现实=GL-DS v1/IA v2 另钉
+OLD_STATIC_PAGES = ("coverage.html", "graph.html", "evidence.html", "metrics.html")
 # v0.9d 八视图 nav（战局总览/活动流/会话/热图/十边图/证据卡/度量/实验）
 # —— /activity /session /experiments 由后续舰落页，此处只钉全站同构。
 NAV_WANT = {"/", "/evidence", "/p/tasks", "/p/new-task", "/p/techniques",
@@ -378,12 +387,14 @@ class TestPhasesLampNineGates(unittest.TestCase):
 
 
 class TestVersionSingleSource(unittest.TestCase):
-    """热修2：五页版本号对齐 server banner——server_version 单源防漂移。"""
+    """热修2：旧皮肤四页版本号对齐 server banner——server_version 单源防漂移。
+    R64: 随49b1619 IA v2移除 index.html 出版本对齐钉（GL-DS v1 新面 title/footer
+    不再携带版本号，版本唯一单源=server banner）。"""
 
     def test_all_page_versions_match_server_banner(self):
         banner = srv_mod.Handler.server_version          # "tanyin-web/0.9c"
         want = "v" + banner.split("/", 1)[1]
-        for name in STATIC_PAGES:
+        for name in OLD_STATIC_PAGES:
             src = _page_src(name)
             # 只对 title/footer 行的版本声明做单源断言（用户可见版本面；
             # JS 注释里的功能代号——如 metrics 页 v0.9d 小节标记——不算版本声明）
@@ -399,10 +410,12 @@ class TestVersionSingleSource(unittest.TestCase):
 
 
 class TestNavConsistency(unittest.TestCase):
-    """热修3：五页导航同构——总览/覆盖热图/十边图/证据卡/度量 全站同集。"""
+    """热修3：旧皮肤四页导航同构——热图/十边图/证据卡/度量 同集。
+    R64: 随49b1619 IA v2移除 index.html 出 NAV_WANT 集（七面侧栏另钉
+    tests/test_v09d_skin.py TestIndexNavIA2）。"""
 
     def test_all_pages_share_nav_set(self):
-        for name in STATIC_PAGES:
+        for name in OLD_STATIC_PAGES:
             src = _page_src(name)
             m = re.search(r"<nav[^>]*>(.*?)</nav>", src, re.S)
             self.assertIsNotNone(m, name + " 缺 nav 块")
@@ -430,11 +443,12 @@ class TestFaviconNo404(ServerBase):
 
 
 class TestCssVarParity(unittest.TestCase):
-    """热修4（v0.9d 随新结构更新）：五页视觉单源变量表镜像齐——浅色 :root 与
-    深色 html[data-theme=dark] 同名成对，--idle 在两主题都不缺。"""
+    """热修4（v0.9d 随新结构更新）：旧皮肤四页视觉单源变量表镜像齐——浅色 :root 与
+    深色 html[data-theme=dark] 同名成对，--idle 在两主题都不缺。
+    R64: 随49b1619 IA v2移除 index.html 双主题镜像（GL-DS v1 单深色）。"""
 
     def test_idle_var_on_all_pages_both_themes(self):
-        for name in STATIC_PAGES:
+        for name in OLD_STATIC_PAGES:
             src = _page_src(name)
             self.assertGreaterEqual(src.count("--idle:"), 2,
                                     name + " 浅/深主题 --idle 未成对")
@@ -443,25 +457,33 @@ class TestCssVarParity(unittest.TestCase):
 
 
 class TestBudgetWarnThreshold(unittest.TestCase):
-    """热修5a：预算用量 ≥80% 预警——含 80.0 边界，条与数值同着 --bad。"""
+    """热修5a（R64 对齐）：问四预算预警——阈值单源 API warn_pct（蓝图=80），
+    ≥warn_pct 条着 .warn（--warn），超帽 .over（--dang）。
+    旧 pct >= 80 硬阈值/.bar-top .left-val.hot 已随首页重写退役
+    （R64: 随49b1619 IA v2移除）。"""
 
     def test_threshold_ge_80_and_bad_color(self):
         src = _page_src("index.html")
-        self.assertIn("pct >= 80", src, "阈值须为 ≥80（含边界）")
-        self.assertIn(".bar-top .left-val.hot", src, "数值预警样式缺席")
-        rule = src.split(".bar-top .left-val.hot")[1].split("}")[0]
-        self.assertIn("color:var(--bad)", rule, "预警色未用 --bad")
+        self.assertIn("pct >= q4.warn_pct", src, "阈值须吃 API 单源 warn_pct")
+        self.assertIn("预警线 80%", src, "80% 预警线人话提示缺席")
+        self.assertIn(".bar .fill.warn", src, "预警样式缺席")
+        warn_rule = src.split(".bar .fill.warn")[1].split("}")[0]
+        self.assertIn("var(--warn)", warn_rule, "预警色未用 --warn")
+        self.assertIn(".bar .fill.over", src, "超帽样式缺席")
+        over_rule = src.split(".bar .fill.over")[1].split("}")[0]
+        self.assertIn("var(--dang)", over_rule, "超帽色未用 --dang")
 
 
 class TestFeedTsDefense(unittest.TestCase):
-    """热修5b：活动流时间戳防御——非法 ts 降级原文本+⚠着色，渲染零异常。"""
+    """热修5b（R64 对齐）：时间线时间戳防御——relTime 内 Date.parse 失败
+    （isNaN）降级原文截断，渲染零异常。旧 tsValid/⚠/ts-bad 标记式
+    已随首页重写退役（R64: 随49b1619 IA v2移除）。"""
 
     def test_bad_ts_marked_and_guarded(self):
         src = _page_src("index.html")
-        self.assertIn("function tsValid(", src, "缺时间戳校验函数")
+        self.assertIn("Date.parse(", src, "缺时间戳解析")
         self.assertIn("isNaN(", src, "缺 Date 解析失败检测")
-        self.assertIn("\u26a0", src, "缺 ⚠ 非法标记")
-        self.assertIn("ts-bad", src, "非法时间戳未着预警 class")
+        self.assertIn("slice(0, 16)", src, "非法 ts 未降级原文截断")
 
 
 if __name__ == "__main__":

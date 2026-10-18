@@ -233,7 +233,21 @@ class TestPortConflict(ServeBase):
 
     def test_port_busy_auto_bumps_to_next_free(self):
         self.addCleanup(self.force_cleanup)
-        want = free_port()
+        # R64 环境对齐：整套件并行跑多 server 时紧邻口可能恰被占——
+        # 选基口时连「下一口」一起探空闲，保证「紧邻下一空闲口」可判
+        want = 0
+        for _ in range(64):
+            p = free_port()
+            probe = socket.socket()
+            try:
+                probe.bind(("127.0.0.1", p + 1))
+            except OSError:
+                probe.close()
+                continue                    # 紧邻口被兄弟测试占——换基口
+            probe.close()
+            want = p
+            break
+        self.assertNotEqual(want, 0, "找不到相邻双空口（环境域）")
         holder = socket.socket()
         holder.bind(("127.0.0.1", want))
         holder.listen(1)

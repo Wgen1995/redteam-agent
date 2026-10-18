@@ -23,6 +23,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 STATIC = os.path.join(HERE, "..", "cli", "webui", "static")
 PAGES = ("index.html", "activity.html", "session.html", "coverage.html",
          "graph.html", "evidence.html", "metrics.html")
+# R64: 随49b1619 IA v2移除 index.html 旧菜单/页脚钉（GL-DS v1 重写，
+# 侧栏=七面+深页组、footer=深页目录），旧词典钉只扫未迁移六页
+OLD_COPY_PAGES = ("activity.html", "session.html", "coverage.html",
+                  "graph.html", "evidence.html", "metrics.html")
 ALL_FILES = PAGES + ("status.js",)
 
 BANNED = re.compile(r"九门|十边|账本|验链|投影|EV-|FD-|G-r\d|opencode-run")
@@ -33,10 +37,14 @@ NAV_WORDS = {"总览", "发现", "任务列表", "新建任务", "知识库", "�
              "动态", "对话", "攻击路线", "战报", "测试覆盖", "复测", "审批中心",
              "资产库", "测试资产", "资产覆盖", "能力曲线", "控制台", "设置"}
 
-H1_WORDS = {"index.html": "总览", "activity.html": "动态",
+H1_WORDS = {"index.html": "四问直答", "activity.html": "动态",
             "session.html": "对话", "coverage.html": "测试覆盖",
             "graph.html": "攻击路线", "evidence.html": "发现",
             "metrics.html": "战报"}
+# R64 对齐（①新现实）：index.html=IA v2 四问仪表盘（原「总览」随 49b1619 改名）
+IA2_NAV_WORDS = {"对话", "仪表盘", "任务", "漏洞", "知识库", "收件箱", "设置",
+                 "任务列表", "新建任务", "复测", "审批中心", "报告中心",
+                 "技法库", "资产覆盖", "度量与考卷", "实时日志"}
 
 FOOTER_WANT = "GraphLed v0.9d · 本页数据全部来自战斗记录，只能看不能改"   # W1-T7 定名
 
@@ -102,6 +110,8 @@ class TestMenuDictionary(unittest.TestCase):
     """菜单词典钉: 七页侧栏链接文字全站同集=钦定菜单词。"""
 
     def test_nav_words_all_pages(self):
+        """R64: 随49b1619 IA v2移除 index.html 出旧词典集——旧皮肤六页钉旧词典，
+        index.html 钉 IA v2 七面+深页组新词典。"""
         for name in PAGES:
             with self.subTest(page=name):
                 src = _src(name)
@@ -109,8 +119,9 @@ class TestMenuDictionary(unittest.TestCase):
                 self.assertIsNotNone(m, name + " 缺 nav 块")
                 words = {w.strip() for w in
                          re.findall(r">([^<>]+)</a>", m.group(1))}
-                self.assertEqual(words, NAV_WORDS,
-                                 "%s 菜单漂移: %s" % (name, words ^ NAV_WORDS))
+                want = IA2_NAV_WORDS if name == "index.html" else NAV_WORDS
+                self.assertEqual(words, want,
+                                 "%s 菜单漂移: %s" % (name, words ^ want))
 
     def test_h1_words(self):
         for name, want in H1_WORDS.items():
@@ -121,12 +132,21 @@ class TestMenuDictionary(unittest.TestCase):
                                  "%s H1 应为「%s」" % (name, want))
 
     def test_footer_canonical_all_pages(self):
-        for name in PAGES:
+        # R64: 随49b1619 IA v2移除 index.html 钦定 footer 钉
+        #（GL-DS v1 footer=「GraphLed · 深页目录：…」——旧 22 页不删的目录面）
+        for name in OLD_COPY_PAGES:
             with self.subTest(page=name):
                 m = re.search(r"<footer>(.*?)</footer>", _src(name), re.S)
                 self.assertIsNotNone(m, name + " 缺 footer")
                 self.assertEqual(m.group(1).strip(), FOOTER_WANT,
                                  name + " footer 须为钦定文案")
+
+    def test_index_footer_deep_catalog(self):
+        m = re.search(r'<footer id="foot">(.*?)</footer>',
+                      _src("index.html"), re.S)
+        self.assertIsNotNone(m, "index.html 缺 footer")
+        self.assertIn("GraphLed", m.group(1), "缺品牌名")
+        self.assertIn("深页目录", m.group(1), "缺深页目录说明")
 
 
 class TestStatusJsPlainLabels(unittest.TestCase):

@@ -33,6 +33,15 @@ STATIC = os.path.join(CLI, "webui", "static")
 STATUS_JS = os.path.join(STATIC, "status.js")
 PAGES = ("index.html", "activity.html", "session.html", "coverage.html",
          "graph.html", "evidence.html", "metrics.html")
+# R64: 随49b1619 IA v2移除 index.html 旧壳面（GL-DS v1 重写为四问仪表盘），
+# 旧壳钉只扫未迁移六页；index 新现实由 TestIndexShellIA2 钉
+OLD_SHELL_PAGES = ("activity.html", "session.html", "coverage.html",
+                   "graph.html", "evidence.html", "metrics.html")
+# IA v2 index 侧栏路径集（七面+深页组）
+IA2_SIDEBAR = {"/p/chat", "/", "/p/mission", "/p/findings", "/p/knowledge",
+               "/p/inbox", "/p/settings", "/p/tasks", "/p/new-task",
+               "/p/retest", "/p/approval-center", "/p/report-center",
+               "/p/techniques", "/p/coverage", "/metrics", "/activity"}
 NAV8 = {"/", "/evidence", "/p/tasks", "/p/new-task", "/p/techniques",
         "/p/broadcast", "/p/report-center", "/activity", "/session", "/graph",
         "/metrics", "/coverage", "/p/retest", "/p/approval-center",
@@ -98,20 +107,29 @@ class TestStatusJsBootTheme(unittest.TestCase):
 
 
 class TestExternalStatusJs(unittest.TestCase):
-    """E3 F2 裁决：六页删内嵌副本改外链；七页统一「引用存在+引用唯一」。"""
+    """E3 F2 裁决：六页删内嵌副本改外链；统一「引用存在+引用唯一」。
+    R64: 随49b1619 IA v2移除 index.html 的 status.js 外链（GL-DS v1 改共享壳
+    /static/app.js，status.js 只服务未迁移旧页）。"""
 
     def test_every_page_references_external_status_js(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             src = _src(name)
             self.assertEqual(src.count('<script src="/status.js"></script>'), 1,
                              name + " 须外链 /status.js 恰一次")
 
     def test_reference_in_head(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             src = _src(name)
             head = src.split("</head>")[0]
             self.assertIn('<script src="/status.js"></script>', head,
                           name + " 外链须在 <head>（早于正文绘制）")
+
+    def test_index_references_shared_shell_only(self):
+        src = _src("index.html")
+        self.assertNotIn('/status.js', src,
+                         "index.html 不再引 status.js（GL-DS v1 壳=app.js）")
+        self.assertEqual(src.count('<script src="/static/app.js"></script>'), 1,
+                         "index.html 须外链共享壳 /static/app.js 恰一次")
 
     def test_no_embedded_copy_left(self):
         for name in PAGES:
@@ -149,7 +167,9 @@ class TestSharedJsInlineTrigger(unittest.TestCase):
 
 class TestSidebarSkeleton(unittest.TestCase):
     """ui-design-v1：左三分组 看战况[总览/活动/会话/热图/十边/证据]
-    看战果[度量/实验] 管战场[设置占位]；顶栏战局切换+主题；窄屏可折叠。"""
+    看战果[度量/实验] 管战场[设置占位]；顶栏战局切换+主题；窄屏可折叠。
+    R64: 随49b1619 IA v2移除 index.html 的旧侧栏骨架/顶栏战局切换+主题/checkbox
+    折叠（GL-DS v1 改 #side 七面侧栏+面包屑顶栏+1024px 断点横排），旧钉只扫未迁移六页。"""
 
     @staticmethod
     def _groups(src):
@@ -158,7 +178,7 @@ class TestSidebarSkeleton(unittest.TestCase):
             src, re.S)}
 
     def test_sidebar_three_groups_all_pages(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             src = _src(name)
             self.assertIn('<aside id="side">', src, name + " 缺左侧栏")
             by_title = self._groups(src)
@@ -166,7 +186,7 @@ class TestSidebarSkeleton(unittest.TestCase):
                 self.assertIn(g, by_title, name + " 缺侧栏分组 " + g)
 
     def test_group_links(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             by_title = self._groups(_src(name))
             main = set(re.findall(r'href="(/[^"#?]*)"',
                                  by_title.get("主入口", "")))
@@ -189,15 +209,16 @@ class TestSidebarSkeleton(unittest.TestCase):
                              name + " 须恰一个 nav 块（侧栏导航）")
 
     def test_nav_extract_still_nav8(self):
-        """旧 NAV8 钉兼容：#settings 带 # 不入路径集合——抽取集恰为八链。"""
-        for name in PAGES:
+        """旧 NAV8 钉兼容：#settings 带 # 不入路径集合——抽取集恰为八链。
+        R64: 随49b1619 IA v2移除 index.html 出 NAV8 集（七面侧栏另钉）。"""
+        for name in OLD_SHELL_PAGES:
             m = re.search(r"<nav[^>]*>(.*?)</nav>", _src(name), re.S)
             self.assertIsNotNone(m, name)
             got = set(re.findall(r'href="(/[^"#?]*)"', m.group(1)))
             self.assertEqual(got, NAV8, name + " 导航漂移: %s" % (got ^ NAV8))
 
     def test_topbar_battle_switch_and_theme(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             src = _src(name)
             self.assertIn('id="topbar"', src, name + " 缺顶栏")
             top = src.split('id="topbar"', 1)[1].split("</header>", 1)[0]
@@ -207,7 +228,7 @@ class TestSidebarSkeleton(unittest.TestCase):
             self.assertIn("你在看什么：", top, name + " 顶栏缺人话律副题")
 
     def test_battle_switch_wired_to_session_api(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             src = _src(name)
             self.assertIn("/api/session.json", src,
                           name + " 战局切换未拉会话 API")
@@ -215,7 +236,7 @@ class TestSidebarSkeleton(unittest.TestCase):
                           name + " 战局切换未跳 /session?battle=N")
 
     def test_responsive_collapse(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             src = _src(name)
             self.assertIn('id="side-check"', src, name + " 缺折叠 checkbox")
             self.assertIn('id="side-toggle"', src, name + " 缺折叠开关钮")
@@ -241,7 +262,9 @@ class TestSidebarSkeleton(unittest.TestCase):
 
 class TestGrayTokens(unittest.TestCase):
     """--g1..--g12 浅深双主题镜像：浅 g1 最浅→g12 最深；深主题反向（镜像）。
-    灰系核心变量挂灰阶；--radius:8px；零裸 px 圆角。"""
+    灰系核心变量挂灰阶；--radius:8px；零裸 px 圆角。
+    R64: 随49b1619 IA v2移除 index.html 双主题灰阶/圆角钉
+    （GL-DS v1 单深色 GL-DS 令牌面，另钉 TestIndexTokensGLDS）。"""
 
     @staticmethod
     def _theme_vars(src, dark):
@@ -252,7 +275,7 @@ class TestGrayTokens(unittest.TestCase):
         return _vars(m.group(1)) if m else None
 
     def test_gray_tokens_both_themes_all_pages(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             for dark in (False, True):
                 v = self._theme_vars(_src(name), dark)
                 self.assertIsNotNone(v, name + (" 缺深色块" if dark else " 缺 :root"))
@@ -262,7 +285,7 @@ class TestGrayTokens(unittest.TestCase):
                                  name + " 灰阶 12 值须两两不同")
 
     def test_light_ramp_and_dark_mirror(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             light = self._theme_vars(_src(name), False)
             dark = self._theme_vars(_src(name), True)
             ll = [_lum(light[g]) for g in GRAY]
@@ -276,7 +299,7 @@ class TestGrayTokens(unittest.TestCase):
                                name + " 浅 g1 须亮于深 g1（镜像律）")
 
     def test_core_vars_mounted_on_gray(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             for dark in (False, True):
                 v = self._theme_vars(_src(name), dark)
                 for cv in CORE_ON_GRAY:
@@ -284,7 +307,7 @@ class TestGrayTokens(unittest.TestCase):
                                      "%s %s %s 未挂灰阶" % (name, "深" if dark else "浅", cv))
 
     def test_radius_token_and_no_raw_px_radius(self):
-        for name in PAGES:
+        for name in OLD_SHELL_PAGES:
             src = _src(name)
             css = src.split("<style>")[1].split("</style>")[0]
             self.assertEqual(css.count("--radius:8px"), 2,
@@ -293,6 +316,31 @@ class TestGrayTokens(unittest.TestCase):
             self.assertEqual(raw, [], name + " 残留裸 px 圆角: %s" % raw)
             self.assertGreaterEqual(css.count("var(--radius)"), 1,
                                     name + " 未使用 --radius 令牌")
+
+
+class TestIndexTokensGLDS(unittest.TestCase):
+    """R64 对齐（①新现实）：index.html=GL-DS v1 令牌面——文字五档 --tx1..--tx5、
+    字阶五档 --fs-a..--fs-e、圆角令牌 --rad/--rad-s、单深色（无主题切换）。"""
+
+    def test_text_tiers_and_type_scale(self):
+        src = _src("index.html")
+        root = re.search(r":root\s*\{(.*?)\}", src, re.S).group(1)
+        for var in ("--tx1", "--tx2", "--tx3", "--tx4", "--tx5",
+                    "--fs-a", "--fs-b", "--fs-c", "--fs-d", "--fs-e"):
+            self.assertIn(var + ":", root, "GL-DS 令牌缺 " + var)
+
+    def test_radius_tokens(self):
+        src = _src("index.html")
+        root = re.search(r":root\s*\{(.*?)\}", src, re.S).group(1)
+        for var in ("--rad:", "--rad-s:"):
+            self.assertIn(var, root, "圆角令牌缺 " + var)
+        self.assertIn("var(--rad)", src, "未使用 --rad 令牌")
+
+    def test_single_dark_theme(self):
+        src = _src("index.html")
+        self.assertNotIn('data-theme="dark"', src,
+                         "GL-DS v1 单深色，无主题镜像块")
+        self.assertNotIn("theme-toggle", src, "GL-DS v1 无主题切换钮")
 
 
 # ---------------------------------------------------------------------------
@@ -362,18 +410,19 @@ class TestNavNineLinksReachable(_ServerBase):
         self.assertEqual(resp.status, 200)
         body = resp.read().decode("utf-8")
         conn.close()
-        self.assertIn('id="settings"', body, "index 缺设置占位卡")
+        # R64: 随49b1619 IA v2移除 index 设置占位卡（id="settings"）——设置已升七面真页
         self.assertIn('href="/p/settings"', body, "侧栏设置链未挂真页 /p/settings")
 
     def test_nav_links_marked_reachable_all(self):
-        """九链可达（含设置占位链）：从页面 nav 抽链接，逐链打真 server。"""
+        """IA v2 侧栏每链可达：从 index nav 抽链接（七面+深页组），逐链打真 server。
+        R64: 随49b1619 IA v2移除 旧 NAV8 二十链抽取集（新集=IA2_SIDEBAR）。"""
         conn, resp = self._get("/")
         body = resp.read().decode("utf-8")
         conn.close()
         m = re.search(r"<nav[^>]*>(.*?)</nav>", body, re.S)
         self.assertIsNotNone(m)
         paths = set(re.findall(r'href="(/[^"#?]*)"', m.group(1)))
-        self.assertEqual(paths, NAV8, "导航路径链漂移: %s" % sorted(paths))
+        self.assertEqual(paths, IA2_SIDEBAR, "导航路径链漂移: %s" % sorted(paths))
         for p in sorted(paths):
             conn, resp = self._get(p)
             self.assertIn(resp.status, (200, 302), p)
@@ -464,18 +513,22 @@ class TestEvidenceViewFindingFields(unittest.TestCase):
 
 
 class TestFindingStreamPriority(unittest.TestCase):
-    """总览最新发现：severity 徽章+高危置顶+可点跳证据卡（/evidence#f=<发现号>）。"""
+    """R64 对齐（①新现实）：首页问一=验真漏洞榜——严重度五档徽章 sevCls
+    （危急/高/中/低/未知，GL-DS v1 全站单源）+整行可点跳漏洞详情页
+    （v.detail_url，同心圆导航）。旧 SEV_ORDER/severityBadge/证据卡锚跳
+    已随首页重做退役（R64: 随49b1619 IA v2移除）。"""
 
     def test_severity_order_and_badge(self):
         src = _src("index.html")
-        self.assertIn("SEV_ORDER", src, "缺 severity 排序表（高危置顶）")
-        self.assertIn("severityBadge", src, "缺 severity 徽章渲染")
-        self.assertIn("finding_impact", src, "发现流未用 severity 数据面")
+        self.assertIn("sevCls", src, "缺严重度五档映射（sev-c/h/m/l/i）")
+        for cls in ("sev-c", "sev-h", "sev-m", "sev-l", "sev-i"):
+            self.assertIn(cls, src, "缺严重度档 " + cls)
+        self.assertIn("q1_vulns", src, "问一未用验真漏洞数据面")
 
     def test_entries_clickable_to_evidence_anchor(self):
         src = _src("index.html")
-        self.assertIn('"/evidence#f=" + ', src,
-                      "发现条目未按 /evidence#f=<发现号> 锚定跳转")
+        self.assertIn("detail_url", src,
+                      "漏洞条目未按 detail_url 跳漏洞详情页")
 
     def test_evidence_page_anchors_findings(self):
         src = _src("evidence.html")
