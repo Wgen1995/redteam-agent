@@ -1,0 +1,5 @@
+# evals/gt/baselines — 会话 GT 评测基线（追加式；列见首行）
+label	session	gt	gt_total	hits	recall	active_findings	fp	precision	keying	ran_at
+b40-G-r41	/Users/wgen/.tanyin/battles/battle-40/G-r41	tests/range/ground-truth.json	56	35	0.625	66	31	0.5303	7	2026-10-19T00:00:00Z
+b41-G-r42	/Users/wgen/.tanyin/battles/battle-41/G-r42	tests/range/ground-truth.json	56	35	0.625	38	3	0.9211	7	2026-10-19T00:00:00Z
+b42-G-r43	/Users/wgen/.tanyin/battles/battle-42/G-r43	tests/range/ground-truth.json	56	39	0.6964285714285714	40	1	0.975	7	2026-10-19T00:00:00Z

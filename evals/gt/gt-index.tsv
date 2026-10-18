@@ -1,0 +1,8 @@
+# evals/gt/gt-index.tsv — GT 战场注册表（单源；消费方=capability_gate/评测棘轮；注释行以 # 开头）
+# 列：battlefield | kind | gt_file | true_findings | decoys | caliber | status | entered_at | note
+range-56-v5	session-gt	tests/range/ground-truth.json	56	0	黑盒会话召回：命中=活 finding 资产键==GT 端点键+EV 词证 marker（键=host+path；query 剥离/尾段数字归一/alt_forms 孪生键/host_aliases 显式；keying v7）；post_auth 16 面另须 CRED/authz-diff 链；FP 口径=活跃发现数−GT 命中数（合成靶场全真值=GT）	active	2026-10-19T00:00:00Z	批次 6 T16 起；20→50（批次9 八新类）→56（battle-6 认证加权+6）；battle-8 GT v5 alt_forms
+zl-webface-v1	source-gt	evals/gt/battlefields/zl-webface-v1.json	6	3	白盒源码锚：verify_cmd 以锚根（缺省 evals/gt/snapshots/zl-repo，活靶=ZhuLong 仓根，只读）实跑；open=真发现 4/fixed-anchor=回归锚 2/neg=FP 诱饵 3；FP 口径=报告 neg 行或无行发现	active	2026-10-19T00:00:00Z	ZhuLong Web 面伤疤：ARTEX #7/#21/#25/#41/#50（Z:206-208 在册互证）
+zl-supplychain-v1	source-gt	evals/gt/battlefields/zl-supplychain-v1.json	4	2	同 zl-webface-v1（白盒源码锚）：open=真发现 2/fixed-anchor=回归锚 2/neg=FP 诱饵 2	active	2026-10-19T00:00:00Z	ZhuLong 算力/供给面伤疤：Z:208 假机群+ARTEX #15/#20+BO9 回执
+replay-G-r25	replay-fixture	tests/fixtures/G-r25	35	0	金样会话回放锚：scorer 对夹具会话产出恒定 recall（防尺子漂移）；true_findings=该会话 GT 命中数（分母=range-56-v5）	active	2026-10-19T00:00:00Z	battle-24 会话；recorded recall=0.62（keying v7）；test_gold_g_r25_b24 在册
+replay-G-r26	replay-fixture	tests/fixtures/G-r26	32	0	同 replay-G-r25	active	2026-10-19T00:00:00Z	battle-25 裸战士会话；recorded recall=0.57；test_gold_g_r26_b25 在册
+replay-G-r27	replay-fixture	tests/fixtures/G-r27	23	0	同 replay-G-r25	active	2026-10-19T00:00:00Z	battle-26 gateloop 臂B 负结果会话；recorded recall=0.41；test_gold_g_r27_b26 在册
