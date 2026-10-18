@@ -5,7 +5,9 @@ ARTEX 角色铁律移植：领一意图→真工具执行→写事实→停（�
 链路：领意图（intents 租约既有执法，--owner=warrior:<id>）→ 组上下文
 （R1 一意图一脑：SKILL.md 协议原样+意图行+相关 facts+断点续跑末行+纠正
 信号+定向指令）→ llmpool 选道调模型（通道选择/错误分类/冷却/429 切道）
-→ 解析 JSON 指令块 → tool 经 tools.gate.execute（卡层门链+guard 委托，
+→ 解析 JSON 指令块 → executor 同轮批执行（E舰③：无依赖 tool 并行
+≤16+同卡同目标串行+账写原序屏障+结果按调用 id 归位，见 executor.py）→
+tool 经 tools.gate.execute（卡层门链+guard 委托，
 零复制）/ ledger 经 registry.lookup（goal 锁既有执法链，权面 allowlist）
 → 结果写账（facts=模型指令/timeline=进展行/transcript=R4 留痕/budget=
 token 计量）→ done 释放 → 下一意图。
@@ -21,15 +23,14 @@ import os
 import time
 
 from . import protocol, steer
-from .corrections import CorrectionLayer, correction_note
+from .corrections import CorrectionLayer
 from .budget import BudgetMeter
 from .context import ContextBuilder
+from .executor import MAX_PARALLEL_TOOLS, ToolBatchExecutor, flat as _flat
 from .heartbeat import Heartbeat, StallDetected, iso_of
 from .ledger_io import LedgerIO
 from .model_client import ModelClient
 from .transcript import Transcript
-
-_TOOL_OUT_MAX = 1500
 
 
 class RunReport(object):
@@ -49,10 +50,6 @@ class RunReport(object):
         self.turns = 0
 
 
-def _flat(s, n=_TOOL_OUT_MAX):
-    return " ".join(str(s).split())[:n]
-
-
 class WarriorLoop(object):
     """一进程一循环；run() 同步执至停条件；dry_run() 零写零调。"""
 
@@ -61,7 +58,8 @@ class WarriorLoop(object):
                  lease_min=30, token_cap=100000, time_window_min=None,
                  heartbeat_min=5.0, stall_min=15.0, ctx_tokens=24000,
                  skill_path=None, clock=None, tool_spawn=None,
-                 tool_state_path=None, kb=True):
+                 tool_state_path=None, kb=True,
+                 max_parallel_tools=MAX_PARALLEL_TOOLS):
         self.battle = battle_name
         self.io = LedgerIO(goal_dir, warrior_id)
         self.warrior_id = warrior_id
@@ -79,6 +77,10 @@ class WarriorLoop(object):
                              warrior=warrior_id)
         self.tool_spawn = tool_spawn
         self.tool_state_path = tool_state_path
+        self.executor = ToolBatchExecutor(      # E舰③：同轮工具并行执行面
+            tool_exec=self._tool_exec, ledger_write=self.io.write,
+            now=self.clock, ts=self._ts, add_tl=self.io.add_tl,
+            warrior_id=warrior_id, max_parallel=max_parallel_tools)
         self._steer_idx = 0
         self._pending_steers = []
         self._deadline = None
@@ -143,53 +145,6 @@ class WarriorLoop(object):
         self.hb.check_stall(intent=iid)
         return "cont", None
 
-    def _exec_instruction(self, ins, iid, turn, corr=None):
-        """执行单条指令 → (ok, outcome_text, correction_signal|None)。
-        tool 经 guard 链；ledger 经 registry 锁链（intent-id 覆写为持有
-        意图、ts 战士铸造）。tool 事件经自纠层（corrections.CorrectionLayer：
-        调前软预检+调后信号——[diagnostic] 注记上浮当轮指令结果面）。"""
-        op = ins["op"]
-        if op == "tool":
-            pre = (corr.before_tool_call(ins["card"], ins["args"])
-                   if corr is not None else "")
-            t0 = self.clock()
-            rc, out, err = self._tool_exec(ins["card"], ins["args"])
-            duration_ms = int((self.clock() - t0) * 1000)
-            signal = None
-            if corr is not None:
-                raw = out if not err else "%s\n%s" % (out, err)
-                signal = corr.after_tool_call(
-                    ins["card"], ins["args"], raw,
-                    duration_ms=duration_ms, rc=rc,
-                    error=(err.strip() or None) if rc != 0 else None)
-            self.io.add_tl(
-                "warrior-progress warrior=%s intent=%s turn=%d op=tool "
-                "card=%s rc=%d" % (self.warrior_id, iid, turn,
-                                   ins["card"], rc), self._ts())
-            summary = "tool %s rc=%d out=%s err=%s" % (
-                ins["card"], rc, _flat(out), _flat(err))
-            note = correction_note(
-                pre, signal.model_hint() if signal is not None else "")
-            if note:
-                summary += "\n" + note
-            return rc == 0, summary, signal
-        if op == "ledger":
-            args = dict(ins["args"])
-            args.pop("timestamp", None)
-            if ins["cmd"] in ("add-fact", "add-finding"):
-                args["intent-id"] = iid      # 只为本意图落账（防跨写）
-            args["timestamp"] = self._ts()
-            rc, out = self.io.write(ins["cmd"], args)
-            self.io.add_tl(
-                "warrior-progress warrior=%s intent=%s turn=%d op=ledger "
-                "cmd=%s rc=%d" % (self.warrior_id, iid, turn,
-                                  ins["cmd"], rc), self._ts())
-            return rc == 0, "ledger %s rc=%d %s" % (ins["cmd"], rc,
-                                                    _flat(out, 300)), None
-        if op == "note":
-            return True, "note: " + _flat(ins.get("text", ""), 200), None
-        return False, "unknown op", None
-
     def process_intent(self, intent, steers_pending):
         """一意图回合机：返回 ('done'|'yielded'|'blocked'|status, detail)。
         R1：conversation 仅本意图内累积，意图间零继承。"""
@@ -250,18 +205,14 @@ class WarriorLoop(object):
                                                 "（%d 畸形）。请按协议输出。"
                                                 % len(parsed.errors)})
                 continue
-            outcomes, done_reason, saw_done = [], "", False
-            signals = []
-            for ins in parsed.instructions:
-                if ins["op"] == "done":
-                    saw_done = True
-                    done_reason = ins.get("reason", "")
-                    break
-                ok, summary, signal = self._exec_instruction(
-                    ins, iid, turn, corr=corr)
-                outcomes.append(summary)
-                if signal is not None:
-                    signals.append(signal)
+            # E舰③：同轮指令批经并行执行器（三律+依赖律——见 executor.py；
+            # 单 tool 回合行为与串行先例逐字节兼容）
+            batch = self.executor.execute(parsed.instructions, iid, turn,
+                                          corr=corr)
+            outcomes = batch.outcomes
+            signals = batch.signals
+            saw_done = batch.saw_done
+            done_reason = batch.done_reason
             if outcomes:
                 conversation.append({"role": "user",
                                      "content": "指令结果：\n" +

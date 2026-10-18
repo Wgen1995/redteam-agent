@@ -7,7 +7,7 @@
       [--lease-min 30] [--token-cap N] [--time-window-min N]
       [--heartbeat-min 5] [--stall-min 15] [--ctx-tokens 24000]
       [--max-turns 6] [--respawn-max 2] [--skill PATH]
-      [--tools-state PATH]
+      [--tools-state PATH] [--max-parallel-tools 16]
 
 --channels=有序通道链 JSON（[{"name","model","base_url","api_key"}…]，
 llmpool 按序健康选道）；--dry-run=只组上下文打印，不领/不写/不调模型。
@@ -30,7 +30,7 @@ USAGE = ("用法: python3 -m cli.warrior --goal-dir D --battle-name X "
          "[--warrior-id W-1] [--lease-min 30] [--token-cap N] "
          "[--time-window-min N] [--heartbeat-min 5] [--stall-min 15] "
          "[--ctx-tokens 24000] [--max-turns 6] [--respawn-max 2] "
-         "[--skill PATH] [--tools-state PATH]")
+         "[--skill PATH] [--tools-state PATH] [--max-parallel-tools 16]")
 
 _KNOWN = {
     "--goal-dir": "goal_dir", "--battle-name": "battle_name",
@@ -41,6 +41,7 @@ _KNOWN = {
     "--ctx-tokens": "ctx_tokens", "--max-turns": "max_turns",
     "--respawn-max": "respawn_max", "--skill": "skill_path",
     "--tools-state": "tools_state",
+    "--max-parallel-tools": "max_parallel_tools",
 }
 
 
@@ -49,7 +50,8 @@ def parse_args(argv):
            "token_cap": 100000, "time_window_min": None,
            "heartbeat_min": 5.0, "stall_min": 15.0, "ctx_tokens": 24000,
            "max_turns": 6, "respawn_max": 2, "skill_path": None,
-           "tools_state": None, "channels_path": None, "dry_run": False}
+           "tools_state": None, "channels_path": None, "dry_run": False,
+           "max_parallel_tools": 16}
     i = 0
     while i < len(argv):
         tok = argv[i]
@@ -66,7 +68,7 @@ def parse_args(argv):
         key = _KNOWN[tok]
         val = argv[i + 1]
         if key in ("max_intents", "lease_min", "token_cap", "max_turns",
-                   "respawn_max"):
+                   "respawn_max", "max_parallel_tools"):
             out[key] = int(val)
         elif key in ("heartbeat_min", "stall_min", "ctx_tokens"):
             out[key] = float(val)
@@ -120,7 +122,8 @@ def build_loop(args, clock=None, tool_spawn=None):
         heartbeat_min=args["heartbeat_min"], stall_min=args["stall_min"],
         ctx_tokens=int(args["ctx_tokens"]), skill_path=args["skill_path"],
         clock=clock, tool_spawn=tool_spawn,
-        tool_state_path=args["tools_state"])
+        tool_state_path=args["tools_state"],
+        max_parallel_tools=int(args["max_parallel_tools"]))
 
 
 def run_with_respawn(loop_factory, respawn_max):
