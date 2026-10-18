@@ -250,6 +250,7 @@ class WarriorLoop(object):
                         % (self.warrior_id, iid, turn,
                            _flat(done_reason, 120)), self._ts())
                     self._promote_chain_successor(iid)
+                    self._planner_lazy_trigger()   # I-3①：收卡终态→规划者惰性触发
                     return "done", done_reason
                 corrections.append("complete-fail %s" % why)
         return ("blocked",
@@ -269,6 +270,20 @@ class WarriorLoop(object):
                               {"id": i["id"], "status": "pending",
                                "timestamp": self._ts()})
                 return
+
+    def _planner_lazy_trigger(self):
+        """I-3① 接线（评审 I-3）：收卡终态→planner_loop.lazy_trigger。
+
+        R-PLN-5 降级模式：规划者缺席合法，收卡方调即得与常驻轮同效的一轮
+        （重派扫面+研判派活）；触发失败不阻战士（记 timeline 留痕即返）。
+        """
+        from ledger import planner_loop
+        try:
+            planner_loop.lazy_trigger(self.io.goal_dir, self._ts())
+        except Exception as e:                    # noqa: BLE001
+            self.io.add_tl("planner-lazy-fail warrior=%s %s"
+                           % (self.warrior_id, _flat(e, 160)), self._ts(),
+                           phase="P-lifecycle")
 
     # ---- 主入口 ----
 

@@ -77,8 +77,8 @@ class TestParse(unittest.TestCase):
         self.assertEqual(doc['k2'], 'v')
 
 class TestValidate(unittest.TestCase):
-    def test_all_commands_face_53(self):
-        """Interfaces 承诺单源=53 基名（裁决：四个原生带 ledger- 前缀的校验命令计入
+    def test_all_commands_face_55(self):
+        """Interfaces 承诺单源=55 基名（裁决：四个原生带 ledger- 前缀的校验命令计入
         基名——无无前缀孪生；双前缀别名不进基名集；41→44=批次 4 图谱驱动增补
         71d3b7c：graph-neighbors/graph-paths/graph-horizon 三只读图查询，微版本勘误；
         44→45=2026-10-10 P0 加固批 E3：anchor 链头锚定；
@@ -87,9 +87,12 @@ class TestValidate(unittest.TestCase):
         （cli/tanyin-ledger 组装期进 registry._MODULES，白名单边界内唯一接线点）；
         49→50=W2·01P0-2：intent-lease 租约审计面（只读查询，expired=退出码 1）；
         50→53=功能13补件二 定时复验器：retest-pending/retest-scan/retest-settle
-        （过期清单查+复验卡铸制+三态回写，registry._MODULES 一行挂接）。"""
+        （过期清单查+复验卡铸制+三态回写，registry._MODULES 一行挂接）；
+        53→55=功能5/8 评审 I-3 接线：planner-loop-start/planner-loop-trigger
+        （常驻规划者启动器+降级单发轮，special.py HANDLERS 挂接，写面全经
+        registry 写命令）。"""
         face = registry.all_commands() | ENTRY_MOUNTED
-        self.assertEqual(len(face), 53)
+        self.assertEqual(len(face), 55)
         self.assertIn("zhulong-export", face)
         for c in ("chain-create", "chain-advance", "chain-ls"):
             self.assertIn(c, face)
@@ -98,6 +101,8 @@ class TestValidate(unittest.TestCase):
             self.assertIn(g, face)
         for rt in ("retest-pending", "retest-scan", "retest-settle"):
             self.assertIn(rt, face)
+        for pl in ("planner-loop-start", "planner-loop-trigger"):
+            self.assertIn(pl, face)
         for native in ("ledger-scope-coverage", "ledger-tree-check",
                        "ledger-replay-summary", "ledger-terminal-gate"):
             self.assertIn(native, face)

@@ -200,6 +200,81 @@ def h_reverse_verify(goal_dir, rest):
 
 
 HANDLERS = {"redact-scan": usage_guard(h_redact_scan)}
+
+
+# ------------------------------------------------ planner-loop 两入口（功能5/8·I-3 接线②）
+
+def _pos_int(v, name):
+    try:
+        n = int(v)
+    except (TypeError, ValueError):
+        raise UsageError("--%s 须正整数: %r" % (name, v))
+    if n < 1:
+        raise UsageError("--%s 须≥1: %r" % (name, v))
+    return n
+
+
+def h_planner_loop_start(goal_dir, rest):
+    """I-3②（评审 docs/reviews/2026-10-20-review-sentinel-planner.md §二）：
+    常驻规划者启动入口——事件驱动派活闭环的启动器。
+
+    tanyin-ledger planner-loop-start --goal-dir <D> [--max-rounds=N]
+    [--debounce-ms=N] [--max-adds=N]：PlannerLoop 常驻轮（--max-rounds 限轮
+    =测试/演练面，缺省常驻）。启动先经 append-timeline 记 planner-loop-start
+    事件再进 run()——事件落在基线令牌之后=首轮必武装，且启动可审计。
+    调度类入口：自身不直写账本，写面全经 registry 写命令（goal 锁各别执法）。
+    """
+    args, pos = parse_kv(rest)
+    if pos or set(args) - {"max-rounds", "debounce-ms", "max-adds"}:
+        raise UsageError("planner-loop-start 需 [--max-rounds=N] "
+                         "[--debounce-ms=N] [--max-adds=N]")
+    from . import planner_loop
+    from .wallclock import _now_iso
+    kw = {}
+    if "debounce-ms" in args:
+        kw["debounce_ms"] = _pos_int(args["debounce-ms"], "debounce-ms")
+    if "max-adds" in args:
+        kw["max_adds"] = _pos_int(args["max-adds"], "max-adds")
+    max_rounds = None
+    if "max-rounds" in args:
+        max_rounds = _pos_int(args["max-rounds"], "max-rounds")
+    loop = planner_loop.PlannerLoop(goal_dir, ts_fn=_now_iso, **kw)
+    ev = "planner-loop-start pid=%d" % os.getpid()
+    rc, out = planner_loop._run(goal_dir, "append-timeline", [
+        "--actor=CLI", "--phase=P3", "--event=" + ev,
+        "--timestamp=" + _now_iso()])
+    if rc != 0:
+        print("FAIL 启动事件写失败: " + out)
+        return 1
+    n = loop.run(max_rounds=max_rounds)
+    print("#rounds=%d" % n)
+    return 0
+
+
+def h_planner_loop_trigger(goal_dir, rest):
+    """I-3②：降级模式单发轮入口（收卡方等价物/手动补偿轮，R-PLN-5）。
+
+    tanyin-ledger planner-loop-trigger --goal-dir <D> [--timestamp=ISO8601]：
+    lazy_trigger 单轮（重派扫面+研判派活），与常驻轮同效；输出 #added=N
+    + 逐卡 priority/title。
+    """
+    args, pos = parse_kv(rest)
+    if pos or set(args) - {"timestamp"}:
+        raise UsageError("planner-loop-trigger 需 [--timestamp=ISO8601]")
+    from . import planner_loop
+    from .wallclock import _now_iso
+    ts = args.get("timestamp") or _now_iso()
+    added = planner_loop.lazy_trigger(goal_dir, ts)
+    print("#added=%d" % len(added))
+    for a in added:
+        print("%s\t%s" % (a.get("priority", ""), a.get("title", "")))
+    return 0
+
+
+HANDLERS.update({
+    "planner-loop-start": usage_guard(h_planner_loop_start),
+    "planner-loop-trigger": usage_guard(h_planner_loop_trigger),
+})
 # 批次 5 T15（R-T15-2）：reverse-verify 不经 HANDLERS 注册——registry.all_commands()
 # 以 HANDLERS 键集为 44 命令面基名单源（「账本命令零新增」冻结），reverse-verify 是
 # tanyin-redact 旗标（phases.yaml 断言文本 `tanyin-redact --reverse-verify`，R13），

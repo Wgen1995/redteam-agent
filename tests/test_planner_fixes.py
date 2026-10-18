@@ -342,5 +342,130 @@ class TestSweepLinear(unittest.TestCase):
                          "逐意图重开 Session=全量重读盘）" % n)
 
 
+# ============================================================ I-3 接线 ==
+
+from tests.test_warrior_fake_model import FakeClock as WClock  # noqa: E402
+from tests.test_warrior_fake_model import FakeModelServer       # noqa: E402
+from tests.test_warrior_loop import DONE, RecSpawn              # noqa: E402
+from tools import install as tool_install                       # noqa: E402
+from warrior import loop as wloop                               # noqa: E402
+from ledger import llmpool_wire                                 # noqa: E402
+
+
+class TestCardDoneLazyTrigger(unittest.TestCase):
+    """I-3①：收卡终态（战士 done 收卡）→ planner_loop.lazy_trigger 惰性
+    触发（R-PLN-5 降级模式：规划者缺席合法，收卡方调即得与常驻轮同效
+    一轮）——评审：消费者已建、生产者接线双缺=全睡。战具=假模型服务+
+    记录型 spawn（test_warrior_loop 同款，不触网）。"""
+
+    def setUp(self):
+        self.gd = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.gd, ignore_errors=True)
+        for f in os.listdir(FIX):
+            shutil.copy(os.path.join(FIX, f), self.gd)
+        self.state = os.path.join(self.gd, "..",
+                                  os.path.basename(self.gd) + "-cards.tsv")
+        for n in ("curl", "dig"):
+            ok, why = tool_install.install(n, TS, state_path=self.state)
+            self.assertTrue(ok, why)
+        self.srv = FakeModelServer()
+        self.addCleanup(self.srv.stop)
+        self.clock = WClock(start=1770000000.0)
+        self.spawn = RecSpawn()
+
+    def _loop(self, scripts, **kw):
+        self.srv.set_scripts(scripts)
+        channels = [{"name": "m1", "model": "m1",
+                     "base_url": self.srv.base, "api_key": "k"}]
+        pool = llmpool_wire.attach(self.gd, env={})
+        args = dict(goal_dir=self.gd, battle_name="B-x", channels=channels,
+                    pool=pool, warrior_id="warrior:W-1", max_intents=3,
+                    max_turns=6, lease_min=30, token_cap=100000,
+                    clock=self.clock, tool_spawn=self.spawn,
+                    tool_state_path=self.state, ctx_tokens=8000,
+                    heartbeat_min=5, stall_min=15)
+        args.update(kw)
+        return wloop.WarriorLoop(**args)
+
+    def _latest(self, iid):
+        rows = [r for r in Session(self.gd).rows("intents.tsv")
+                if r[0] == iid]
+        return rows[-1] if rows else None
+
+    def _events(self):
+        return [r[_EV] for r in Session(self.gd).rows("timeline.tsv")]
+
+    def test_done_fires_lazy_trigger_with_goal_dir(self):
+        import ledger.planner_loop as PLM
+        calls = []
+        orig = PLM.lazy_trigger
+
+        def spy(gd, ts):
+            calls.append((gd, ts))
+            return orig(gd, ts)
+
+        with mock.patch.object(PLM, "lazy_trigger", new=spy):
+            lp = self._loop({"m1": [{"content": DONE}]})
+            rep = lp.run()
+        self.assertEqual(rep.status, "no-intents")
+        self.assertEqual(self._latest("INT-g1-0002")[3], "done")
+        self.assertEqual(len(calls), 1,
+                         "收卡终态须恰一次惰性触发规划者（I-3①）")
+        self.assertEqual(calls[0][0], self.gd, "触发目标=本 goal 目录")
+        self.assertTrue(calls[0][1], "触发时间戳非空（入账可回放）")
+
+    def test_planner_failure_does_not_kill_warrior(self):
+        import ledger.planner_loop as PLM
+
+        def boom(gd, ts):
+            raise RuntimeError("规划者炸（探针）")
+
+        with mock.patch.object(PLM, "lazy_trigger", new=boom):
+            lp = self._loop({"m1": [{"content": DONE}]})
+            rep = lp.run()
+        self.assertEqual(rep.status, "no-intents", "规划者失败不阻战士收卡")
+        self.assertEqual(self._latest("INT-g1-0002")[3], "done")
+        self.assertTrue(any("planner-lazy-fail" in e for e in self._events()),
+                        "失败须留痕 timeline（排障面）")
+
+
+class TestPlannerCliEntries(Base):
+    """I-3②：tanyin-ledger 注册 planner-loop start/trigger 两入口——
+    常驻循环启动器+降级单发轮（评审：启动器缺=常驻规划者无门可入）。"""
+
+    def test_registry_exposes_both_entries(self):
+        for c in ("planner-loop-start", "planner-loop-trigger"):
+            self.assertIn(c, registry.all_commands(),
+                          "%s 须入命令面（基名）" % c)
+            self.assertIsNotNone(registry.lookup(c),
+                                 "%s 须可派发" % c)
+
+    def test_trigger_entry_runs_one_round(self):
+        h = registry.lookup("planner-loop-trigger")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = h(self.gd, ["--timestamp=" + TS])
+        self.assertEqual(rc, 0, buf.getvalue())
+        titles = sorted(r[_IT] for r in self.rows("intents.tsv")
+                        if r[_IT].startswith("planner: "))
+        self.assertEqual(len(titles), 2, "单发轮派可达空格（夹具 2 格）")
+        self.assertIn("#added=2", buf.getvalue())
+
+    def test_start_entry_runs_resident_loop(self):
+        h = registry.lookup("planner-loop-start")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = h(self.gd, ["--max-rounds=1", "--debounce-ms=50"])
+        self.assertEqual(rc, 0, buf.getvalue())
+        self.assertIn("#rounds=1", buf.getvalue())
+        titles = sorted(r[_IT] for r in self.rows("intents.tsv")
+                        if r[_IT].startswith("planner: "))
+        self.assertEqual(len(titles), 2,
+                         "常驻轮经 CLI 入口可启动（事件→防抖→研判闭环）")
+        evs = [r[_EV] for r in self.rows("timeline.tsv")]
+        self.assertTrue(any(e.startswith("planner-loop-start") for e in evs),
+                        "启动须记事件入账本（可审计+首轮必武装）")
+
+
 if __name__ == "__main__":
     unittest.main()
