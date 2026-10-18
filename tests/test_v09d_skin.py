@@ -18,8 +18,11 @@ STATUS_JS = os.path.join(STATIC, "status.js")
 PAGES = ("index.html", "coverage.html", "graph.html", "evidence.html", "metrics.html")
 PHASES_YAML = os.path.join(HERE, "..", "phases", "phases.yaml")
 
-NAV8 = {"/", "/activity", "/session", "/coverage", "/graph",
-        "/evidence", "/metrics", "/experiments"}
+NAV8 = {"/", "/evidence", "/p/tasks", "/p/new-task", "/p/techniques",
+        "/p/broadcast", "/p/report-center", "/activity", "/session", "/graph",
+        "/metrics", "/coverage", "/p/retest", "/p/approval-center",
+        "/p/asset-registry", "/p/assets", "/p/coverage", "/p/capability",
+        "/console", "/p/settings"}
 
 # 内嵌副本字节钉标记（五页 <script> 内，段==文件全文字节）
 BEGIN_MARK = "/* STATUS-JS:BEGIN */"
@@ -169,7 +172,7 @@ class TestZhulongFireSkin(unittest.TestCase):
 
 
 class TestNavEightLinks(unittest.TestCase):
-    """nav 八链：八视图全站同构（含 /session——只断言存在不断言通）。"""
+    """导航一张网：主入口+页面总目 20 链全站同构（含 /session——只断言存在不断言通）。"""
 
     def test_all_pages_share_eight_links(self):
         for name in PAGES:

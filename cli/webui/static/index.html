@@ -180,6 +180,25 @@
   a.kpi:hover { box-shadow:0 0 0 2px var(--accent); }
   .kpi .kpi-v { font-size:20px; font-weight:600; color:var(--accent); }
   .kpi .kpi-t { font-size:12px; color:var(--dim); }
+  /* 用户实逛反馈批（2026-10-19）：快入口大按钮+今日战况大数字 */
+  #quick-card, #stats-card { grid-column:1 / -1; }
+  .quick-row { display:flex; flex-wrap:wrap; gap:12px; }
+  a.qbtn { display:flex; flex-direction:column; min-width:132px; padding:12px 20px;
+           border:1px solid var(--line); border-radius:var(--radius);
+           text-decoration:none; box-shadow:var(--shadow-1); }
+  a.qbtn:hover { border-color:var(--accent); }
+  .qbtn .qt { font-size:15px; font-weight:600; color:var(--ink); }
+  .qbtn .qs { font-size:12px; color:var(--dim); }
+  a.qbtn.q-new { background:var(--accent); border-color:var(--accent); }
+  a.qbtn.q-new .qt, a.qbtn.q-new .qs { color:var(--accent-ink); }
+  .statebox[data-state="loading"] > a.stat { display:none; }
+  .stat-row { display:flex; flex-wrap:wrap; gap:12px; }
+  a.stat { display:flex; flex-direction:column; min-width:150px; padding:12px 20px;
+           border:1px solid var(--line); border-radius:var(--radius);
+           text-decoration:none; box-shadow:var(--shadow-1); }
+  a.stat:hover { border-color:var(--accent); }
+  .stat .sv { font-size:24px; font-weight:700; color:var(--accent); }
+  .stat .sl { font-size:12px; color:var(--dim); }
   /* 阶段进度条（当前步骤呼吸高亮——全站三处动效之一） */
   #phases { display:grid; grid-template-columns:repeat(3, 1fr);
             gap:8px 16px; list-style:none; margin:0; padding:0; }
@@ -252,20 +271,12 @@
     <div class="brand">GraphLed</div>
     <nav>
       <div class="nav-group">
-        <h3>看战况</h3>
-        <a class="here" href="/">总览</a><a href="/activity">动态</a><a href="/session">对话</a><a href="/coverage">测试覆盖</a><a href="/graph">攻击路线</a><a href="/evidence">发现</a>
+        <h3>主入口</h3>
+        <a class="here" href="/">总览</a><a href="/evidence">发现</a><a href="/p/tasks">任务列表</a><a href="/p/new-task">新建任务</a><a href="/p/techniques">知识库</a><a href="/p/broadcast">播报</a><a href="/p/report-center">报告</a>
       </div>
       <div class="nav-group">
-        <h3>看战果</h3>
-        <a href="/metrics">战报</a><a href="/experiments">实验</a>
-      </div>
-      <div class="nav-group">
-        <h3>页面总目（新）</h3>
-        <a href="/console">控制台</a><a href="/p/tasks">任务列表</a><a href="/p/new-task">新建任务</a><a href="/p/broadcast">播报/介入</a><a href="/p/retest">复测</a><a href="/p/approval-center">审批中心</a><a href="/p/report-center">报告中心</a><a href="/p/asset-registry">资产库</a><a href="/p/assets">测试资产</a><a href="/p/coverage">资产覆盖</a><a href="/p/techniques">技法库</a><a href="/p/settings">设置</a>
-      </div>
-      <div class="nav-group">
-        <h3>管战场</h3>
-        <a href="/#settings">设置（占位）</a>
+        <h3>页面总目</h3>
+        <a href="/activity">动态</a><a href="/session">对话</a><a href="/graph">攻击路线</a><a href="/metrics">战报</a><a href="/coverage">测试覆盖</a><a href="/p/retest">复测</a><a href="/p/approval-center">审批中心</a><a href="/p/asset-registry">资产库</a><a href="/p/assets">测试资产</a><a href="/p/coverage">资产覆盖</a><a href="/p/capability">能力曲线</a><a href="/console">控制台</a><a href="/p/settings">设置</a>
       </div>
     </nav>
   </aside>
@@ -289,6 +300,29 @@
       <button id="theme-toggle" type="button">深色</button>
     </header>
 <main>
+  <section id="quick-card">
+    <h2>快入口 · 你最常去的地方（大按钮直达）</h2>
+    <div class="quick-row">
+      <a class="qbtn q-new" href="/new"><span class="qt">新建任务</span><span class="qs">授权八问，开一场新测试</span></a>
+      <a class="qbtn" href="/p/tasks"><span class="qt">任务列表</span><span class="qs">全部测试任务与进展</span></a>
+      <a class="qbtn" href="/evidence"><span class="qt">发现（漏洞在哪）</span><span class="qs">漏洞清单与证据</span></a>
+      <a class="qbtn" href="/p/techniques"><span class="qt">知识库</span><span class="qs">技法卡打法沉淀</span></a>
+      <a class="qbtn" href="/p/broadcast"><span class="qt">播报</span><span class="qs">执行过程直播与介入</span></a>
+      <a class="qbtn" href="/p/report-center"><span class="qt">报告</span><span class="qs">交付报告中心</span></a>
+    </div>
+  </section>
+  <section id="stats-card">
+    <h2>今日战况 · 大数字（真数实时取，点击跳转）</h2>
+    <div id="stats-box" class="statebox" data-state="loading">
+      <div class="skeleton sk-a"></div>
+      <div class="skeleton sk-b"></div>
+      <p class="state-msg">载入中…</p>
+      <a class="stat" href="/evidence"><span class="sv" id="stat-verified">—</span><span class="sl">已验证发现（真漏洞）</span></a>
+      <a class="stat" href="/p/tasks"><span class="sv" id="stat-tasks">—</span><span class="sl">测试任务</span></a>
+      <a class="stat" href="/p/techniques"><span class="sv" id="stat-kb">—</span><span class="sl">知识库技法卡</span></a>
+      <a class="stat" href="/p/approval-center"><span class="sv" id="stat-approval">—</span><span class="sl">待审批</span></a>
+    </div>
+  </section>
   <section id="battle-card">
     <h2>当前任务</h2>
     <div id="battle" class="statebox" data-state="loading">
@@ -434,6 +468,33 @@ themeBtn.addEventListener("click", function () {
   TY.toggleTheme();
   TY.syncThemeButton(themeBtn);
 });
+
+/* —— 今日战况大数字（用户实逛反馈批：overview+技法库+待审三源真数） —— */
+(function () {
+  var box = document.getElementById("stats-box");
+  if (!box) { return; }
+  function num(id, v) {
+    var n = document.getElementById(id);
+    if (n) { n.textContent = String(v); }
+  }
+  Promise.all([
+    fetch("/api/console/overview.json").then(function (r) { return r.json(); }),
+    fetch("/api/v2/techniques.json").then(function (r) { return r.json(); }),
+    fetch("/api/approval").then(function (r) {
+      return r.ok ? r.json() : { pending: [] };
+    })
+  ]).then(function (xs) {
+    var ov = xs[0] || {}, tech = xs[1] || {}, ap = xs[2] || {};
+    var cards = ov.cards || {};
+    num("stat-verified", cards.verified_findings != null ? cards.verified_findings : 0);
+    num("stat-tasks", (ov.battles || []).length);
+    num("stat-kb", tech.counts ? tech.counts.total : 0);
+    num("stat-approval", (ap.pending || []).length);
+    TY.setState(box, "ready");
+  }).catch(function (err) {
+    TY.setState(box, "error", TY.failText(err));
+  });
+}());
 
 /* —— 战斗大卡 —— */
 function renderBattle(s, ev) {

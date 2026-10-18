@@ -220,8 +220,11 @@ class TestIndexUpgrades(unittest.TestCase):
 
     def test_menu_unchanged(self):
         src = _src("index.html")
-        for item in ("总览", "动态", "对话", "测试覆盖", "攻击路线", "发现",
-                     "战报", "实验"):
+        # 用户实逛反馈批（2026-10-19）：导航拍平=主入口 7 链+页面总目 13 链
+        for item in ("总览", "发现", "任务列表", "新建任务", "知识库", "播报",
+                     "报告", "动态", "对话", "攻击路线", "战报", "测试覆盖",
+                     "复测", "审批中心", "资产库", "测试资产", "资产覆盖",
+                     "能力曲线", "控制台", "设置"):
             self.assertIn(item, src, "菜单项不得变: " + item)
 
 
@@ -364,7 +367,8 @@ class TestPlaywrightWizardSmoke(unittest.TestCase):
                 page.goto("http://127.0.0.1:%d/login" % base.port)
                 page.fill("#op-password", OP_KEY)
                 page.click("#op-login")
-                page.wait_for_url("**/new", timeout=8000)
+                page.wait_for_url("**/console", timeout=8000)  # 登录常态=总览
+                page.goto("http://127.0.0.1:%d/new" % base.port)  # 冒烟目标=八问向导
                 # 步1: 基本信息 + ①授权件上传 + ②窗口
                 page.fill("#f-name", "冒烟向导战")
                 page.fill("#f-note", "四步向导冒烟")

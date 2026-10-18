@@ -30,6 +30,7 @@ var nav = (function () {
     ["管控", "证据", "/evidence"],
     ["度量", "度量与考卷", "/metrics"],
     ["度量", "报告中心", "/p/report-center"],
+    ["度量", "能力曲线", "/p/capability"],
     ["资产", "资产库", "/p/asset-registry"],
     ["资产", "测试资产", "/p/assets"],
     ["资产", "资产覆盖", "/p/coverage"],

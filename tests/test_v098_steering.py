@@ -613,7 +613,8 @@ class TestPlaywrightSmoke(SteeringBase):
             page.goto(base + "/login")
             page.fill("#op-password", OP_KEY)
             page.click("#op-login")
-            page.wait_for_url("**/new", timeout=5000)
+            page.wait_for_url("**/console", timeout=5000)  # 登录常态=总览
+            page.goto(base + "/new")                       # 冒烟目标=八问向导
             # W1 授权八问向导：基本信息+①授权件+②窗口 → 范围+④联系人
             # → 预算+⑥凭据+⑦强度 → ⑧法律勾选+提交（③⑤在二/三步内）
             page.fill("#f-name", "冒烟战")

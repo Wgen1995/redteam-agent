@@ -463,8 +463,12 @@ class TestActivityPageSourceV09d(unittest.TestCase):
             self.assertIn(mark, src, mark)
 
     def test_nav_eight_links(self):
-        want_nav = {"/", "/activity", "/session", "/coverage",
-                    "/graph", "/evidence", "/metrics", "/experiments"}
+        # 用户实逛反馈批（2026-10-19）：导航拍平=主入口 7 链+页面总目 13 链
+        want_nav = {"/", "/evidence", "/p/tasks", "/p/new-task", "/p/techniques",
+                    "/p/broadcast", "/p/report-center", "/activity", "/session",
+                    "/graph", "/metrics", "/coverage", "/p/retest",
+                    "/p/approval-center", "/p/asset-registry", "/p/assets",
+                    "/p/coverage", "/p/capability", "/console", "/p/settings"}
         for name in ("session.html", "activity.html"):
             with open(os.path.join(STATIC, name), encoding="utf-8") as f:
                 src = f.read()

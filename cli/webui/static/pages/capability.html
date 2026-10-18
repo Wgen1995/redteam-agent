@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能力曲线 · GraphLed</title>
+<!-- 演进飞轮②读面：/api/v2/capability.json 只读投影——每仗评测聚合画线，
+     曲线下降段=告警旗。视觉基准同 pages/ 众页（12级灰阶+单强调色+mono数字）。
+     文案宪法#41（界面人话律）：召回率=该找到的里找到了多少；误报率=报的里多少是假的。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;--purple:#a78bfa;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+#cap-sub{color:var(--g8);font-size:12px}
+/* 四态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+.btn{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:8px 18px;border-radius:4px;font-size:13px;cursor:pointer;margin-top:12px}
+.btn:hover{border-color:var(--acc2);color:var(--acc)}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 正常态 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1280px;margin:0 auto;padding:18px 24px 60px}
+h2.sec{font-size:13px;color:var(--g8);letter-spacing:1px;margin:22px 0 10px}
+h2.sec b{color:var(--ga);font-weight:500}
+/* 计数带 */
+#cap-counts{display:flex;flex-wrap:wrap;gap:12px}
+.ccard{background:var(--g2);border:1px solid var(--g4);border-radius:8px;
+padding:12px 20px;min-width:150px}
+.ccard .v{font-family:var(--mono);font-size:22px;color:var(--acc)}
+.ccard .t{font-size:12px;color:var(--g8);margin-top:2px}
+.ccard.warn .v{color:var(--warn)}
+/* 告警旗 */
+#warn-list{list-style:none}
+#warn-list li{background:rgba(232,179,75,.07);border:1px solid rgba(232,179,75,.35);
+border-radius:6px;padding:8px 14px;margin-bottom:8px;font-size:12.5px;color:var(--warn)}
+#warn-list li .mono{color:var(--gc)}
+#warn-none{color:var(--g8);font-size:12.5px}
+/* 图卡网格 */
+#charts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:980px){#charts{grid-template-columns:1fr}}
+.chart{background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:14px 16px}
+.chart h3{font-size:13px;color:var(--ga);font-weight:500}
+.chart .hint{font-size:11.5px;color:var(--g8);margin:2px 0 8px}
+.chart svg{width:100%;height:auto;display:block}
+.chart .last{font-family:var(--mono);font-size:12px;color:var(--acc);margin-top:6px}
+.chart .last.bad{color:var(--dang)}
+/* 数据表 */
+#cap-table{width:100%;border-collapse:collapse;font-size:12.5px}
+#cap-table th{color:var(--g8);text-align:left;font-weight:500;
+border-bottom:1px solid var(--g4);padding:6px 10px;white-space:nowrap}
+#cap-table td{border-bottom:1px solid var(--g3);padding:6px 10px;
+font-family:var(--mono);color:var(--gb);white-space:nowrap}
+#cap-table td.arm{font-family:inherit}
+#cap-table tr:hover td{background:var(--g1)}
+#cap-table .none{color:var(--g6)}
+footer{color:var(--g6);font-size:11.5px;padding:14px 24px;text-align:center}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">度量 · <b>能力曲线</b></span>
+  <span class="sp"></span>
+  <span id="cap-sub">越打越强要有图证明 · 数据只读</span>
+</header>
+
+<div id="st-empty" class="state"><div class="box">
+  <h3>还没有打过结算仗</h3>
+  <p>能力曲线按「已结算的测试仗」画线：每仗结算后自动多一个点
+  （召回率/误报率/每美元发现/覆盖率）。打过并结算第一仗后此处自动出图。</p>
+</div></div>
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在读取能力曲线…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>能力曲线读取失败</h3>
+  <p id="err-detail"><code></code></p>
+  <button id="btn-retry" class="btn" type="button">重试</button>
+</div></div>
+
+<div id="st-normal" class="state">
+  <div id="wrap">
+    <h2 class="sec">一眼看全 · <b>仗数与知识存量</b></h2>
+    <div id="cap-counts"></div>
+
+    <h2 class="sec">告警旗 · <b>曲线下降段（不是等客户骂）</b></h2>
+    <ul id="warn-list"></ul>
+    <p id="warn-none" hidden>没有下降段——召回/覆盖/每美元未回落、误报率未上升（未计量的段不判）。</p>
+
+    <h2 class="sec">四条曲线 · <b>按仗编号画线（相邻点直线，缺口=该仗未计量）</b></h2>
+    <div id="charts"></div>
+
+    <h2 class="sec">逐仗明细 · <b>数值表（点图可对回）</b></h2>
+    <table id="cap-table">
+      <thead><tr>
+        <th>仗</th><th>臂标</th><th>召回率</th><th>命中/应找</th><th>误报率</th>
+        <th>活发现</th><th>每美元发现</th><th>覆盖率</th>
+      </tr></thead>
+      <tbody id="cap-rows"></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>GraphLed 能力曲线 · 本页数据全部来自已结算的测试仗，只能看不能改</footer>
+
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+/* 演进飞轮②能力曲线页：fetch /api/v2/capability.json → SVG 折线+告警旗+
+   逐仗表。四态=空/加载/错误/正常；宿主壳存在则 nav.push 自注册（守卫式）。 */
+(function () {
+  var API = "/api/v2/capability.json";
+  var METRICS = [
+    { key: "recall", zh: "召回率", hint: "该找到的漏洞里找到了多少（对照标准答案）——越高越好",
+      good: "up", fmt: pct },
+    { key: "fp_rate", zh: "误报率", hint: "报告的发现里多少是假的——越低越好", good: "down", fmt: pct },
+    { key: "per_dollar", zh: "每美元发现", hint: "每花一美元找到几个真漏洞——越高越好（未计量=缺口）",
+      good: "up", fmt: raw },
+    { key: "coverage", zh: "覆盖率", hint: "测试矩阵里已测格子占比——越高越好（无矩阵=缺口）",
+      good: "up", fmt: pct }
+  ];
+
+  function $(id) { return document.getElementById(id); }
+  function show(name) {
+    ["st-empty", "st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === name);
+    });
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function pct(v) { return v == null ? "—" : (Math.round(v * 10000) / 100) + "%"; }
+  function raw(v) { return v == null ? "—" : String(v); }
+
+  function render(doc) {
+    var series = doc.series || [];
+    var counts = doc.counts || {};
+    var know = doc.knowledge || {};
+
+    /* 计数带 */
+    var cc = [
+      [counts.battles_settled, "已结算仗（画进曲线）"],
+      [counts.battles_seen, "见过仗（含未结算）"],
+      [counts.warnings, "下降段告警旗"],
+      [(know.technique_cards || 0) + " 卡", "知识库技法卡"],
+      [(know.negative_cards || 0) + " 卡", "避坑卡（失败教训）"]
+    ];
+    $("cap-counts").innerHTML = cc.map(function (c) {
+      return '<div class="ccard' + (c[0] === 0 && c[1].indexOf("告警") < 0 ? "" :
+        (c[1].indexOf("告警") >= 0 && c[0] > 0 ? " warn" : "")) +
+        '"><div class="v">' + esc(c[0]) + '</div><div class="t">' + esc(c[1]) + "</div></div>";
+    }).join("");
+
+    /* 告警旗 */
+    var warns = doc.warnings || [];
+    $("warn-list").innerHTML = warns.map(function (w) {
+      return '<li>&#9873; <span class="mono">' + esc(w.note) + "</span></li>";
+    }).join("");
+    $("warn-none").hidden = warns.length > 0;
+
+    /* 四条曲线（每指标独立归一化；None=缺口断线） */
+    $("charts").innerHTML = METRICS.map(function (m) {
+      return chart(m, series);
+    }).join("");
+
+    /* 逐仗表 */
+    $("cap-rows").innerHTML = series.map(function (b) {
+      return "<tr><td>仗" + b.n + "</td>" +
+        '<td class="arm">' + esc(b.arm || "—") + "</td>" +
+        "<td>" + pct(b.recall) + "</td>" +
+        "<td>" + b.hits + "/" + b.total + "</td>" +
+        "<td>" + pct(b.fp_rate) + "</td>" +
+        "<td>" + b.active + "</td>" +
+        "<td>" + raw(b.per_dollar) + "</td>" +
+        "<td>" + pct(b.coverage) + "</td></tr>";
+    }).join("");
+
+    show("st-normal");
+  }
+
+  function chart(m, series) {
+    var W = 300, H = 84, L = 34, R = 10, T = 8, B = 16;
+    var pts = [];                       /* [{x,y,v,n}] 按仗序，null=缺口 */
+    var vals = series.map(function (b) { return b[m.key]; })
+      .filter(function (v) { return v != null; });
+    var lo = vals.length ? Math.min.apply(null, vals) : 0;
+    var hi = vals.length ? Math.max.apply(null, vals) : 1;
+    if (hi === lo) { hi = lo + 1; }
+    var pad = (hi - lo) * 0.15;
+    lo -= pad; hi += pad;
+    var n = series.length;
+    series.forEach(function (b, i) {
+      var v = b[m.key];
+      if (v == null) { pts.push(null); return; }
+      var x = n <= 1 ? (L + W) / 2 : L + (W - L - R) * i / (n - 1);
+      var y = T + (B + H - T) * (1 - (v - lo) / (hi - lo));
+      pts.push({ x: x, y: y, v: v, n: b.n });
+    });
+    var segs = [], cur = [];
+    pts.forEach(function (p) {
+      if (p) { cur.push(p); } else if (cur.length) { segs.push(cur); cur = []; }
+    });
+    if (cur.length) { segs.push(cur); }
+    var d = "";
+    segs.forEach(function (seg) {
+      d += "M" + seg.map(function (p) { return p.x.toFixed(1) + " " + p.y.toFixed(1); })
+        .join("L") + " ";
+    });
+    var dots = "";
+    pts.forEach(function (p) {
+      if (!p) { return; }
+      dots += '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) +
+        '" r="2.6" fill="' + "#3ddc97" + '"><title>仗' + p.n + "：" +
+        esc(m.fmt(p.v)) + "</title></circle>";
+    });
+    var last = null;
+    for (var i = pts.length - 1; i >= 0; i--) { if (pts[i]) { last = pts[i]; break; } }
+    var lastTxt = last ? ("最近（仗" + last.n + "）：" + m.fmt(last.v)) : "无数据";
+    var loTxt = vals.length ? m.fmt(Math.min.apply(null, vals)) : "—";
+    var hiTxt = vals.length ? m.fmt(Math.max.apply(null, vals)) : "—";
+    return '<div class="chart"><h3>' + esc(m.zh) + '</h3>' +
+      '<div class="hint">' + esc(m.hint) + "</div>" +
+      '<svg viewBox="0 0 300 84" role="img" aria-label="' + esc(m.zh) + '折线">' +
+      '<line x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (H - B) +
+      '" stroke="#252930" stroke-width="1"/>' +
+      '<text x="2" y="' + (T + 4) + '" fill="#6b7480" font-size="8" font-family="Menlo,monospace">' + esc(hiTxt) + "</text>" +
+      '<text x="2" y="' + (H - B) + '" fill="#6b7480" font-size="8" font-family="Menlo,monospace">' + esc(loTxt) + "</text>" +
+      (d ? '<path d="' + d + '" fill="none" stroke="#3ddc97" stroke-width="1.6"/>' : "") +
+      dots + "</svg>" +
+      '<div class="last">' + esc(lastTxt) + "</div></div>";
+  }
+
+  function load() {
+    show("st-loading");
+    fetch(API).then(function (r) {
+      if (!r.ok) { throw new Error("HTTP " + r.status); }
+      return r.json();
+    }).then(function (doc) {
+      var series = doc.series || [];
+      if (!series.length && !(doc.counts || {}).battles_seen) {
+        show("st-empty");
+        return;
+      }
+      render(doc);
+    }).catch(function (err) {
+      $("err-detail").firstElementChild.textContent = String(err);
+      show("st-error");
+    });
+  }
+
+  $("btn-retry").addEventListener("click", load);
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: "capability", label: "能力曲线", group: "度量" });
+  }
+  load();
+})();
+</script>
+</body>
+</html>

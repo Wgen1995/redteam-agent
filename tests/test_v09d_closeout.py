@@ -33,8 +33,11 @@ STATIC = os.path.join(CLI, "webui", "static")
 STATUS_JS = os.path.join(STATIC, "status.js")
 PAGES = ("index.html", "activity.html", "session.html", "coverage.html",
          "graph.html", "evidence.html", "metrics.html")
-NAV8 = {"/", "/activity", "/session", "/coverage", "/graph",
-        "/evidence", "/metrics", "/experiments"}
+NAV8 = {"/", "/evidence", "/p/tasks", "/p/new-task", "/p/techniques",
+        "/p/broadcast", "/p/report-center", "/activity", "/session", "/graph",
+        "/metrics", "/coverage", "/p/retest", "/p/approval-center",
+        "/p/asset-registry", "/p/assets", "/p/coverage", "/p/capability",
+        "/console", "/p/settings"}
 GRAY = ["--g%d" % i for i in range(1, 13)]
 CORE_ON_GRAY = ("--bg", "--card", "--ink", "--dim", "--line",
                 "--skeleton", "--idle")
@@ -159,23 +162,26 @@ class TestSidebarSkeleton(unittest.TestCase):
             src = _src(name)
             self.assertIn('<aside id="side">', src, name + " 缺左侧栏")
             by_title = self._groups(src)
-            for g in ("看战况", "看战果", "管战场"):
+            for g in ("主入口", "页面总目"):
                 self.assertIn(g, by_title, name + " 缺侧栏分组 " + g)
 
     def test_group_links(self):
         for name in PAGES:
             by_title = self._groups(_src(name))
-            war = set(re.findall(r'href="(/[^"#?]*)"',
-                                 by_title.get("看战况", "")))
-            fruit = set(re.findall(r'href="(/[^"#?]*)"',
-                                   by_title.get("看战果", "")))
-            self.assertEqual(war, {"/", "/activity", "/session", "/coverage",
-                                   "/graph", "/evidence"},
-                             name + " 看战况组六链漂移: %s" % war)
-            self.assertEqual(fruit, {"/metrics", "/experiments"},
-                             name + " 看战果组两链漂移: %s" % fruit)
-            self.assertIn('href="/#settings"', by_title.get("管战场", ""),
-                          name + " 管战场组缺设置占位链 /#settings")
+            main = set(re.findall(r'href="(/[^"#?]*)"',
+                                 by_title.get("主入口", "")))
+            more = set(re.findall(r'href="(/[^"#?]*)"',
+                                  by_title.get("页面总目", "")))
+            self.assertEqual(main, {"/", "/evidence", "/p/tasks",
+                                   "/p/new-task", "/p/techniques",
+                                   "/p/broadcast", "/p/report-center"},
+                             name + " 主入口组七链漂移: %s" % main)
+            self.assertEqual(more, {"/activity", "/session", "/graph",
+                                   "/metrics", "/coverage", "/p/retest",
+                                   "/p/approval-center", "/p/asset-registry",
+                                   "/p/assets", "/p/coverage", "/p/capability",
+                                   "/console", "/p/settings"},
+                             name + " 页面总目组十三链漂移: %s" % more)
 
     def test_single_nav_block(self):
         for name in PAGES:
@@ -357,9 +363,7 @@ class TestNavNineLinksReachable(_ServerBase):
         body = resp.read().decode("utf-8")
         conn.close()
         self.assertIn('id="settings"', body, "index 缺设置占位卡")
-        self.assertIn('href="/#settings"', body, "侧栏设置链未挂 /#settings")
-        self.assertRegex(body, r'id="settings"[\s\S]{0,400}占位',
-                         "设置卡须明示占位语义")
+        self.assertIn('href="/p/settings"', body, "侧栏设置链未挂真页 /p/settings")
 
     def test_nav_links_marked_reachable_all(self):
         """九链可达（含设置占位链）：从页面 nav 抽链接，逐链打真 server。"""
@@ -368,11 +372,8 @@ class TestNavNineLinksReachable(_ServerBase):
         conn.close()
         m = re.search(r"<nav[^>]*>(.*?)</nav>", body, re.S)
         self.assertIsNotNone(m)
-        self.assertIn('href="/#settings"', m.group(1),
-                      "第九链（设置占位 /#settings）缺席")
         paths = set(re.findall(r'href="(/[^"#?]*)"', m.group(1)))
-        self.assertEqual(paths, NAV8, "八路径链漂移: %s" % sorted(paths))
-        paths.add("/")                       # /#settings 占位链的可达面=/
+        self.assertEqual(paths, NAV8, "导航路径链漂移: %s" % sorted(paths))
         for p in sorted(paths):
             conn, resp = self._get(p)
             self.assertIn(resp.status, (200, 302), p)

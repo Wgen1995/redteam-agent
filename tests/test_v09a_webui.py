@@ -342,8 +342,11 @@ STATIC_PAGES = ("index.html", "coverage.html", "graph.html",
                 "evidence.html", "metrics.html")
 # v0.9d 八视图 nav（战局总览/活动流/会话/热图/十边图/证据卡/度量/实验）
 # —— /activity /session /experiments 由后续舰落页，此处只钉全站同构。
-NAV_WANT = {"/", "/activity", "/session", "/coverage", "/graph",
-            "/evidence", "/metrics", "/experiments"}
+NAV_WANT = {"/", "/evidence", "/p/tasks", "/p/new-task", "/p/techniques",
+            "/p/broadcast", "/p/report-center", "/activity", "/session",
+            "/graph", "/metrics", "/coverage", "/p/retest",
+            "/p/approval-center", "/p/asset-registry", "/p/assets",
+            "/p/coverage", "/p/capability", "/console", "/p/settings"}
 
 
 def _page_src(name):

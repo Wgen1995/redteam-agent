@@ -29,8 +29,9 @@ BANNED = re.compile(r"九门|十边|账本|验链|投影|EV-|FD-|G-r\d|opencode-
 
 SKIP_TAGS = ("script", "style", "pre", "code", "textarea", "template")
 
-NAV_WORDS = {"总览", "动态", "对话", "测试覆盖", "攻击路线", "发现",
-             "战报", "实验", "设置（占位）"}
+NAV_WORDS = {"总览", "发现", "任务列表", "新建任务", "知识库", "播报", "报告",
+             "动态", "对话", "攻击路线", "战报", "测试覆盖", "复测", "审批中心",
+             "资产库", "测试资产", "资产覆盖", "能力曲线", "控制台", "设置"}
 
 H1_WORDS = {"index.html": "总览", "activity.html": "动态",
             "session.html": "对话", "coverage.html": "测试覆盖",
