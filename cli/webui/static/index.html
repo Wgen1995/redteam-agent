@@ -14,158 +14,275 @@
          对 goals 帽三段，80% 预警线）。
      词表律（宪法62）：屏上只说人话——漏洞/任务/士兵/钥匙/目标/证据。
      数据单源 /api/v2/cockpit.json（api_v2_cockpit 只读投影，账本真件，
-     零假数；空状态按蓝图说人话，不放空表）。视觉基准 12 级灰阶+单强调色。 -->
+     零假数；空状态按蓝图说人话，不放空表）。
+     视觉=GL-DS v1 设计系统（docs/design/2026-10-20-cockpit-artex-gap-list.md
+     十件打磨：文字五档/字阶13-24/严重度五档/六组件/骨架屏/左栏+面包屑导航）。 -->
 <style>
-:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
---g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
---acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
---mono:"SF Mono",Menlo,Consolas,monospace}
+/* ===== GL-DS v1（六面同源复制，改必六处同改）=====
+   ①层级: --tx1 页面标题/--tx2 区块标题/--tx3 正文/--tx4 辅助/--tx5 弱化
+   ①字阶: 13/14/16/20/24 · 行高 1.6   ③色彩: 状态四色+严重度五档单源
+   ④组件: 卡片/表格/徽章/进度条/空态/骨架屏 六件全站同形 */
+:root{
+--bg:#0a0b0d;--bg-side:#0f1114;--bg-card:#14171c;--bg-raise:#1c2026;--bg-hover:#22262e;
+--line:#232730;--line-2:#343a44;
+--tx1:#edf1f6;--tx2:#c7cfda;--tx3:#a6afbb;--tx4:#8791a0;--tx5:#5f6873;
+--ok:#3ddc97;--ok-dim:rgba(61,220,151,.13);--warn:#e8b34b;--warn-dim:rgba(232,179,75,.13);
+--dang:#ff6f61;--dang-dim:rgba(255,111,97,.13);--info:#5aa9e6;--info-dim:rgba(90,169,230,.13);
+--sev-c:#ff5c50;--sev-h:#f0864a;--sev-m:#e8b34b;--sev-l:#5aa9e6;--sev-i:#8791a0;
+--acc:#3ddc97;--acc2:#2fae78;--acc-dim:rgba(61,220,151,.12);
+--mono:"SF Mono",Menlo,Consolas,"Courier New",monospace;
+--fs-a:13px;--fs-b:14px;--fs-c:16px;--fs-d:20px;--fs-e:24px;
+--rad:10px;--rad-s:6px;--shadow:0 6px 24px rgba(0,0,0,.35);
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--g0);color:var(--gb);
-font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+body{background:var(--bg);color:var(--tx3);
+font:var(--fs-b)/1.6 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
 min-height:100vh}
-a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
-.mono{font-family:var(--mono)}
-#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
-display:flex;align-items:center;gap:10px;padding:0 16px;position:sticky;top:0;z-index:5}
-#top .brand{color:var(--gc);font-size:14px;font-weight:600;letter-spacing:.5px}
-#top .brand i{font-style:normal;color:var(--acc)}
-#top .bt{color:var(--g8);font-size:12px}
-#top .sp{flex:1}
-#top .lnk{color:var(--g9);font-size:12px}
-.state{display:none}
-.state.on{display:block}
-#st-error .wrap{max-width:640px;margin:10vh auto 0;text-align:center}
-#st-error .box{background:var(--g2);border:1px solid rgba(232,99,90,.45);
-border-radius:8px;padding:30px}
-#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
-#st-error p{color:var(--g8);font-size:12.5px}
-.sk{max-width:1000px;margin:16px auto;padding:0 20px}
-.sk .ln{height:52px;border-radius:8px;background:var(--g3);margin-bottom:12px;
-animation:sh 1.2s ease-in-out infinite}
-@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
-#main{max-width:1080px;margin:0 auto;padding:18px 20px 70px}
-.qhead{display:flex;align-items:baseline;gap:10px;margin:22px 0 10px;flex-wrap:wrap}
-.qhead h2{font-size:16px;color:var(--gc);font-weight:600}
-.qhead h2 b{color:var(--acc);font-weight:600;font-size:13px}
-.qhead .sub{color:var(--g8);font-size:12px}
-.qhead .sp{flex:1}
-.qhead .more{font-size:12px}
-.pane{background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:14px 16px}
-.empty{color:var(--g8);font-size:13px;line-height:1.9;padding:8px 2px}
-.empty a{color:var(--info)}
-/* 问一 榜 */
-.vrow{display:flex;align-items:center}
-.vrow:last-child{border-bottom:none}
-.vrow a.whole{color:inherit;display:flex;gap:10px;align-items:center;
-width:100%;text-decoration:none;padding:9px 4px;border-bottom:1px solid var(--g3)}
-.vrow:last-child a.whole{border-bottom:none}
-.vrow a.whole:hover .ti{color:var(--acc)}
-.sev{flex-shrink:0;width:30px;text-align:center;border-radius:4px;
-font-size:12px;font-weight:600;padding:2px 0}
-.sev.h{background:rgba(232,99,90,.16);color:var(--dang)}
-.sev.m{background:rgba(232,179,75,.16);color:var(--warn)}
-.sev.l{background:rgba(90,169,230,.14);color:var(--info)}
-.vrow .t{flex:1;min-width:0}
-.vrow .t .ti{color:var(--gc);font-size:13px;overflow:hidden;
+a{color:var(--info);text-decoration:none}a:hover{color:var(--acc)}
+::selection{background:var(--acc-dim)}
+.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* ⑧布局：左侧固定栏 + 内容列（ARTEX 式侧栏节奏，IA=我方六面+深页两组） */
+#layout{display:grid;grid-template-columns:216px minmax(0,1fr);min-height:100vh}
+#side{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+background:var(--bg-side);border-right:1px solid var(--line);overflow-y:auto}
+#side .logo{display:flex;align-items:center;gap:9px;padding:16px 16px 12px}
+#side .logo .mark{width:27px;height:27px;border-radius:8px;background:var(--acc-dim);
+border:1px solid var(--acc2);display:flex;align-items:center;justify-content:center;
+color:var(--acc);flex-shrink:0}
+#side .logo b{color:var(--tx1);font-size:15px;letter-spacing:.3px}
+#side .logo b i{font-style:normal;color:var(--acc)}
+.nav-g{padding:16px 18px 6px;font-size:var(--fs-a);color:var(--tx5);letter-spacing:2px}
+.nav-i{display:flex;align-items:center;gap:10px;height:34px;margin:1px 10px;
+padding:0 10px;border-radius:7px;color:var(--tx4);font-size:var(--fs-b);
+border-left:2px solid transparent;white-space:nowrap}
+.nav-i svg{flex-shrink:0;opacity:.8}
+.nav-i:hover{background:var(--bg-card);color:var(--tx2)}
+.nav-i.on{background:var(--acc-dim);color:var(--acc);border-left-color:var(--acc);font-weight:500}
+#side .ft{margin-top:auto;padding:14px 18px;border-top:1px solid var(--line);
+font-size:var(--fs-a);color:var(--tx5);line-height:1.8}
+#side .ft b{color:var(--tx4);font-weight:500}
+/* 顶栏+面包屑（⑧） */
+#topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;
+min-height:52px;padding:8px 26px;background:rgba(10,11,13,.9);backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line)}
+#topbar .crumb{font-size:var(--fs-a);color:var(--tx5);white-space:nowrap;
+overflow:hidden;text-overflow:ellipsis}
+#topbar .crumb b{color:var(--tx2);font-weight:600}
+#topbar .sp{flex:1}
+#topbar .lnk{color:var(--tx4);font-size:var(--fs-a)}
+#topbar .lnk:hover{color:var(--acc)}
+#topbar .bchip{display:none;font-size:var(--fs-a);color:var(--tx4);
+background:var(--bg-raise);border:1px solid var(--line-2);border-radius:5px;
+padding:2px 9px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#topbar .bchip.on{display:inline-block}
+#content{min-width:0}
+/* ⑨响应：1280/1440/1920 三档不破版 */
+#main{max-width:1240px;margin:0 auto;padding:26px 28px 90px}
+@media(min-width:1680px){#main{max-width:1400px}}
+@media(max-width:1279px){#main{padding:22px 18px 80px}#topbar{padding:8px 18px}}
+@media(max-width:1024px){
+#layout{grid-template-columns:1fr}
+#side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;
+border-right:none;border-bottom:1px solid var(--line)}
+#side .logo{padding:10px 14px}
+.nav-g{display:none}
+.nav-i{margin:4px;height:30px}
+#side .ft{display:none}
+}
+/* ①页面头 */
+.phead{display:flex;align-items:baseline;gap:12px;margin:4px 0 2px;flex-wrap:wrap}
+.phead h1{font-size:var(--fs-d);color:var(--tx1);font-weight:600;letter-spacing:.2px}
+.phead .sub{font-size:var(--fs-a);color:var(--tx5)}
+/* 状态三态+⑥骨架屏（shimmer 六面同款） */
+.state{display:none}.state.on{display:block}
+.skl{max-width:1000px;margin:22px auto;padding:0 20px}
+.skl .t{height:16px;width:220px;border-radius:6px;margin-bottom:18px}
+.skl .ln{height:12px;border-radius:6px;margin-bottom:11px}
+.skl .t,.skl .ln{background:linear-gradient(100deg,var(--bg-raise) 30%,var(--bg-hover) 50%,var(--bg-raise) 70%);
+background-size:200% 100%;animation:glm-sweep 1.3s linear infinite}
+@keyframes glm-sweep{from{background-position:180% 0}to{background-position:-80% 0}}
+#st-error .box{max-width:560px;margin:9vh auto 0;text-align:center;background:var(--bg-card);
+border:1px solid rgba(255,111,97,.4);border-radius:var(--rad);padding:34px 28px;box-shadow:var(--shadow)}
+#st-error h3{color:var(--dang);font-size:var(--fs-c);margin-bottom:8px}
+#st-error p{color:var(--tx4);font-size:var(--fs-a)}
+/* ④区块题头 */
+.sec{display:flex;align-items:baseline;gap:10px;margin:28px 0 10px;flex-wrap:wrap}
+.sec h2{font-size:var(--fs-c);color:var(--tx2);font-weight:600}
+.sec h2 b{color:var(--acc);font-weight:500;font-size:var(--fs-a);margin-left:4px}
+.sec .sub{font-size:var(--fs-a);color:var(--tx5)}
+.sec .sp{flex:1}
+.sec a{font-size:var(--fs-a)}
+/* ④卡片 */
+.pane{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--rad);
+padding:12px 18px}
+/* ④行组件（⑦hover+整行点击） */
+.rows .row{display:flex;align-items:center;gap:12px;padding:9px 4px;
+border-bottom:1px solid var(--line);font-size:var(--fs-b)}
+.rows .row:last-child{border-bottom:none}
+.row.click{cursor:pointer;color:inherit}
+.row.click:hover{background:var(--bg-hover)}
+.row .rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.row .rt .ti{color:var(--tx2);font-size:var(--fs-b);overflow:hidden;
 text-overflow:ellipsis;white-space:nowrap}
-.vrow .t .wh{color:var(--g8);font-size:11.5px;font-family:var(--mono);
+.row.click:hover .rt .ti{color:var(--tx1)}
+.row .rt .wh{color:var(--tx5);font-size:var(--fs-a);font-family:var(--mono);
 overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vrow .ev{flex-shrink:0;color:var(--g9);font-size:11px;
-border:1px solid var(--g5);border-radius:3px;padding:1px 6px}
-.vrow .go{flex-shrink:0;color:var(--g7);font-size:13px}
-/* 问二 活池 */
+.row .go{color:var(--tx5);flex-shrink:0}
+.row.click:hover .go{color:var(--acc)}
+/* ③严重度五档徽章+④状态徽章 */
+.sev{display:inline-flex;align-items:center;justify-content:center;width:36px;height:22px;
+border-radius:5px;font-size:var(--fs-a);font-weight:600;flex-shrink:0}
+.sev-c{background:rgba(255,92,80,.16);color:var(--sev-c)}
+.sev-h{background:rgba(240,134,74,.15);color:var(--sev-h)}
+.sev-m{background:rgba(232,179,75,.14);color:var(--sev-m)}
+.sev-l{background:rgba(90,169,230,.13);color:var(--sev-l)}
+.sev-i{background:var(--bg-raise);color:var(--sev-i)}
+.bdg{display:inline-flex;align-items:center;gap:5px;height:21px;padding:0 8px;
+border-radius:5px;font-size:var(--fs-a);font-weight:500;line-height:1;white-space:nowrap;flex-shrink:0}
+.bdg-ok{background:var(--ok-dim);color:var(--ok)}
+.bdg-warn{background:var(--warn-dim);color:var(--warn)}
+.bdg-dang{background:var(--dang-dim);color:var(--dang)}
+.bdg-info{background:var(--info-dim);color:var(--info)}
+.bdg-mut{background:var(--bg-raise);color:var(--tx4)}
+/* 双列 */
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:860px){.cols{grid-template-columns:1fr}}
-.irow{display:flex;gap:8px;align-items:center;padding:7px 4px;
-border-bottom:1px solid var(--g3);font-size:12.5px}
-.irow:last-child{border-bottom:none}
-.irow .st{flex-shrink:0;font-size:11px;border-radius:3px;padding:1px 7px;
-background:var(--g4);color:var(--g9)}
-.irow .tt{flex:1;color:var(--gb);overflow:hidden;text-overflow:ellipsis;
-white-space:nowrap}
-.tl .r{display:flex;gap:10px;padding:6px 4px;border-bottom:1px solid var(--g3)}
+@media(max-width:960px){.cols{grid-template-columns:1fr}}
+/* ④时间线 */
+.tl .r{display:flex;gap:12px;padding:8px 6px;border-bottom:1px solid var(--line)}
 .tl .r:last-child{border-bottom:none}
-.tl .ts{flex-shrink:0;color:var(--g8);font-family:var(--mono);font-size:11px;
-width:146px}
-.tl .tx{color:var(--gb);font-size:12px}
-/* 问三 等我 */
-.wrow{display:flex;gap:10px;align-items:center;padding:9px 4px;
-border-bottom:1px solid var(--g3);font-size:12.5px}
-.wrow:last-child{border-bottom:none}
-.wrow .kind{flex-shrink:0;width:52px;text-align:center;font-size:11px;
-border-radius:3px;padding:2px 0}
-.wrow .kind.ap{background:rgba(232,179,75,.16);color:var(--warn)}
-.wrow .kind.ask{background:rgba(90,169,230,.16);color:var(--info)}
-.wrow .bd{flex:1;min-width:0;color:var(--gc);overflow:hidden;
-text-overflow:ellipsis;white-space:nowrap}
-.wrow .bd small{color:var(--g8);font-family:var(--mono);font-size:11px}
-/* 问四 消费 */
-.brow{padding:10px 4px;border-bottom:1px solid var(--g3)}
+.tl .r:hover{background:var(--bg-hover)}
+.tl .ts{flex-shrink:0;color:var(--tx5);font-family:var(--mono);
+font-variant-numeric:tabular-nums;font-size:var(--fs-a);width:92px}
+.tl .tx{color:var(--tx3);font-size:var(--fs-a);min-width:0}
+/* ④进度条（③状态色单源） */
+.brow{padding:11px 4px;border-bottom:1px solid var(--line)}
 .brow:last-child{border-bottom:none}
-.brow .cap{display:flex;justify-content:space-between;font-size:12px;
-margin-bottom:6px}
-.brow .cap .n{color:var(--gb)}
-.brow .cap .v{color:var(--g8);font-family:var(--mono);font-size:11.5px}
-.bar{position:relative;height:10px;background:var(--g3);border-radius:5px;overflow:hidden}
-.bar .fill{height:100%;background:var(--acc);border-radius:5px}
+.brow .cap{display:flex;justify-content:space-between;align-items:baseline;
+font-size:var(--fs-b);margin-bottom:7px}
+.brow .cap .n{color:var(--tx2)}
+.brow .cap .v{color:var(--tx4);font-family:var(--mono);
+font-variant-numeric:tabular-nums;font-size:var(--fs-a)}
+.bar{position:relative;height:8px;border-radius:4px;background:var(--bg-raise);overflow:hidden}
+.bar .fill{height:100%;border-radius:4px;background:var(--ok);transition:width .35s ease}
 .bar .fill.warn{background:var(--warn)}
 .bar .fill.over{background:var(--dang)}
-.bar .line{position:absolute;top:-2px;bottom:-2px;width:2px;
-background:var(--warn);opacity:.8}
-.brow .pct{color:var(--g8);font-size:11px;margin-top:5px;font-family:var(--mono)}
-#foot{max-width:1080px;margin:8px auto 40px;padding:0 20px;color:var(--g8);
-font-size:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-#foot a{color:var(--g9)}
+.bar .line{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--warn);opacity:.75}
+.brow .pct{color:var(--tx5);font-size:var(--fs-a);margin-top:6px;
+font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* ⑤空态组件（为什么空+下一步） */
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;
+gap:4px;padding:34px 18px}
+.empty svg{color:var(--tx5);opacity:.75;margin-bottom:6px}
+.empty .t{font-size:var(--fs-b);color:var(--tx2)}
+.empty .d{font-size:var(--fs-a);color:var(--tx4);line-height:1.75;max-width:480px}
+.empty .d a{color:var(--info)}
+#foot{max-width:1240px;margin:6px auto 40px;padding:0 28px;color:var(--tx5);
+font-size:var(--fs-a);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+#foot a{color:var(--tx4)}#foot a:hover{color:var(--acc)}
+@media(max-width:1279px){#foot{padding:0 18px}}
 </style>
 </head>
 <body>
-<div id="top">
-  <span class="brand">Graph<i>Led</i> 驾驶舱</span>
-  <span class="bt mono" id="bt-name"></span>
+<div id="layout">
+<nav id="side" aria-label="全站导航">
+  <div class="logo"><span class="mark"><svg width="14" height="14" viewBox="0 0 16 16"
+    fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+    <path d="M8 1.6 14.4 8 8 14.4 1.6 8Z"/></svg></span><b>Graph<i>Led</i></b></div>
+  <div class="nav-g">驾驶舱</div>
+  <a class="nav-i on" data-nav="home" href="/"><svg width="16" height="16" viewBox="0 0 16 16"
+    fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M2.5 7 8 2.4 13.5 7v6.1h-3.4V9.6H5.9v3.5H2.5Z"/></svg>首页</a>
+  <a class="nav-i" data-nav="mission" href="/p/mission"><svg width="16" height="16"
+    viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="8" cy="8" r="5.6"/><circle cx="8" cy="8" r="2.2"/>
+    <path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6"/></svg>任务</a>
+  <a class="nav-i" data-nav="findings" href="/p/findings"><svg width="16" height="16"
+    viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
+    stroke-linejoin="round"><path d="M8 1.8 13 3.7v3.8c0 3.4-2.1 5.8-5 6.7-2.9-.9-5-3.3-5-6.7V3.7Z"/>
+    <path d="M8 5.2v2.6M8 9.6v.2"/></svg>漏洞</a>
+  <a class="nav-i" data-nav="knowledge" href="/p/knowledge"><svg width="16" height="16"
+    viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
+    stroke-linejoin="round"><path d="M3 3.1c2-.8 3.8-.6 5 .3 1.2-.9 3-1.1 5-.3v9c-2-.8-3.8-.6-5 .3-1.2-.9-3-1.1-5-.3Z"/>
+    <path d="M8 3.4v8.9"/></svg>知识库</a>
+  <a class="nav-i" data-nav="inbox" href="/p/inbox"><svg width="16" height="16"
+    viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
+    stroke-linejoin="round"><path d="M2 9 3.5 4h9L14 9v3.4H2Z"/>
+    <path d="M2 9h3.4l1.2 1.6h2.8L10.6 9H14"/></svg>收件箱</a>
+  <a class="nav-i" data-nav="settings" href="/p/settings"><svg width="16" height="16"
+    viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="8" cy="8" r="2.3"/>
+    <path d="M8 1.4v2M8 12.6v2M1.4 8h2M12.6 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4"/></svg>设置</a>
+  <div class="nav-g">深页</div>
+  <a class="nav-i" href="/p/tasks">任务列表</a>
+  <a class="nav-i" href="/p/new-task">新建任务</a>
+  <a class="nav-i" href="/p/retest">复测</a>
+  <a class="nav-i" href="/p/approval-center">审批中心</a>
+  <a class="nav-i" href="/p/report-center">报告中心</a>
+  <a class="nav-i" href="/p/techniques">技法库</a>
+  <a class="nav-i" href="/p/coverage">资产覆盖</a>
+  <a class="nav-i" href="/metrics">度量与考卷</a>
+  <a class="nav-i" href="/activity">实时日志</a>
+  <div class="ft">Ctrl+K 全站跳转<br>数据=战账真件 · <b>零假数</b></div>
+</nav>
+<div id="content">
+<header id="topbar">
+  <span class="crumb">GraphLed / <b>首页</b></span>
+  <span class="bchip mono" id="bt-chip"></span>
   <span class="sp"></span>
   <a class="lnk" href="/p/mission">任务页</a>
   <a class="lnk" href="/p/inbox">收件箱</a>
-</div>
-<div id="st-loading" class="state on"><div class="sk">
-  <div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div>
+</header>
+
+<div id="st-loading" class="state on"><div class="skl">
+  <div class="t"></div>
+  <div class="ln" style="width:94%"></div><div class="ln" style="width:88%"></div>
+  <div class="ln" style="width:91%"></div>
+  <div class="t" style="width:150px;margin-top:26px"></div>
+  <div class="ln" style="width:60%"></div><div class="ln" style="width:55%"></div>
+  <div class="t" style="width:170px;margin-top:26px"></div>
+  <div class="ln" style="width:92%"></div>
 </div></div>
-<div id="st-error" class="state"><div class="wrap"><div class="box">
+<div id="st-error" class="state"><div class="box">
   <h3>驾驶舱数据没取到</h3><p id="err-detail" class="mono"></p>
   <p><a href="/">刷新重试</a> · 数据来自账本真件，不造假数。</p>
-</div></div></div>
-<div id="st-normal" class="state"><div id="main">
+</div></div>
 
-  <div class="qhead" id="q1"><h2>① 打出什么漏洞了？ <b id="q1-n"></b></h2>
+<div id="st-normal" class="state"><div id="main">
+  <div class="phead"><h1>四问直答</h1>
+    <span class="sub">五秒看清这一仗：漏洞 / 进展 / 待办 / 花费</span></div>
+
+  <div class="sec" id="q1"><h2>① 打出什么漏洞了？<b id="q1-n"></b></h2>
     <span class="sub">只有机器复放验真、仍在册的才上榜</span>
-    <span class="sp"></span><a class="more" href="/p/findings">全部漏洞 →</a></div>
+    <span class="sp"></span><a href="/p/findings">全部漏洞 →</a></div>
   <div class="pane" id="q1-body"></div>
 
-  <div class="qhead" id="q2"><h2>② 正在打什么？</h2>
+  <div class="sec" id="q2"><h2>② 正在打什么？</h2>
     <span class="sub">在途任务与最近动态</span>
-    <span class="sp"></span><a class="more" href="/p/mission">任务页 →</a></div>
+    <span class="sp"></span><a href="/p/mission">任务页 →</a></div>
   <div class="cols">
     <div class="pane" id="q2-intents"></div>
     <div class="pane tl" id="q2-recent"></div>
   </div>
 
-  <div class="qhead" id="q3"><h2>③ 什么在等我？ <b id="q3-n"></b></h2>
+  <div class="sec" id="q3"><h2>③ 什么在等我？<b id="q3-n"></b></h2>
     <span class="sub">待审批 · 求助 · 按等久了排</span>
-    <span class="sp"></span><a class="more" href="/p/inbox">收件箱 →</a></div>
+    <span class="sp"></span><a href="/p/inbox">收件箱 →</a></div>
   <div class="pane" id="q3-body"></div>
 
-  <div class="qhead" id="q4"><h2>④ 花多少钱？</h2>
+  <div class="sec" id="q4"><h2>④ 花多少钱？</h2>
     <span class="sub">本仗消耗对预算帽的余量（预警线 80%）</span>
-    <span class="sp"></span><a class="more" href="/p/settings">预算与范围 →</a></div>
+    <span class="sp"></span><a href="/p/settings">预算与范围 →</a></div>
   <div class="pane" id="q4-body"></div>
 
-</div>
-<footer id="foot"><!-- GraphLed 驾驶舱深页目录（旧 22 页不删，收进导航「更多」） -->
+</div></div>
+
+<footer id="foot"><!-- 深页目录（旧 22 页不删；侧栏「深页」组+Ctrl+K 也可达） -->
   <span>GraphLed · 深页目录：</span><a href="/p/tasks">任务列表</a><a href="/p/new-task">新建任务</a>
   <a href="/p/findings">漏洞</a><a href="/p/knowledge">知识库</a>
   <a href="/p/approval-center">审批中心</a><a href="/p/report-center">报告中心</a>
   <a href="/metrics">度量</a><a href="/activity">日志</a>
 </footer>
+</div>
 </div>
 <script src="/static/app.js"></script>
 <script>
@@ -184,40 +301,72 @@ font-size:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
       $(s).classList.toggle("on", s === id);
     });
   }
-  function sevCls(imp) { return imp === "高" ? "h" : imp === "中" ? "m" : "l"; }
-  function fmtN(n) {                                   // 335000 → 33.5万
+  /* ③严重度五档（危急/高/中/低/未知——账本口径高/中/低，五档色带全站单源） */
+  function sevCls(imp) {
+    return imp === "危急" ? "sev-c" : imp === "高" ? "sev-h" :
+           imp === "中" ? "sev-m" : imp === "低" ? "sev-l" : "sev-i";
+  }
+  /* ⑩数字：mono+千分位/万简称，金额千分位 */
+  function fmtN(n) {
     n = Number(n) || 0;
     if (n >= 1e8) { return (n / 1e8).toFixed(2) + "亿"; }
     if (n >= 1e4) { return (n / 1e4).toFixed(1) + "万"; }
     return String(Math.round(n * 100) / 100);
+  }
+  function fmtUsd(n) {
+    n = Number(n) || 0;
+    return "$" + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  /* ⑩时间相对化（title 悬停留全量） */
+  function relTime(ts) {
+    if (!ts) { return "—"; }
+    var t = Date.parse(String(ts).replace(" ", "T"));
+    if (isNaN(t)) { return String(ts).slice(0, 16); }
+    var s = Math.max(0, (Date.now() - t) / 1000);
+    if (s < 60) { return Math.floor(s) + " 秒前"; }
+    if (s < 3600) { return Math.floor(s / 60) + " 分钟前"; }
+    if (s < 86400) { return Math.floor(s / 3600) + " 小时前"; }
+    return Math.floor(s / 86400) + " 天前";
+  }
+  function spanRel(ts) {
+    return '<span class="mono" title="' + esc(ts) + '">' + esc(relTime(ts)) + "</span>";
   }
   function qs() { return new URLSearchParams(window.location.search); }
   function battleQS() {
     var b = qs().get("battle");
     return b ? "&battle=" + encodeURIComponent(b) : "";
   }
+  /* ⑤空态组件（图标+为什么空+下一步） */
+  var EICON = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" ' +
+    'stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">' +
+    '<path d="M4 7.5a15.5 4.5 0 0 1 16 0v9a15.5 4.5 0 0 1-16 0Z"/>' +
+    '<path d="M4 12h4.5l1.8 2.5h3.4l1.8-2.5H20"/></svg>';
+  function emptyBox(title, why) {
+    return '<div class="empty">' + EICON + '<div class="t">' + title +
+      "</div>" + '<div class="d">' + why + "</div></div>";
+  }
 
   function renderQ1(p) {
     var q1 = p.q1_vulns;
-    $("q1-n").textContent = q1.total ? "（" + q1.total + " 枚验真在册）" : "";
+    $("q1-n").textContent = q1.total ? q1.total + " 枚验真在册" : "";
     if (!q1.total) {
-      $("q1-body").innerHTML = '<div class="empty">还没有验真在册的漏洞——' +
-        "士兵报上来的每一枚都要机器复放验真才上榜。" +
-        '<a href="/p/mission">看正在打什么</a></div>';
+      $("q1-body").innerHTML = emptyBox(
+        "还没有验真在册的漏洞",
+        "士兵报上来的每一枚都要机器复放验真才上榜——上榜即有证据袋。" +
+        '<a href="/p/mission">看正在打什么</a>');
       return;
     }
-    var h = q1.top.map(function (v) {
-      return '<div class="vrow"><a class="whole" href="' + esc(v.detail_url) +
-        battleQS() + '"><span class="sev ' + sevCls(v.impact) + '">' +
-        esc(v.impact) + "</span>" +
-        '<span class="t"><span class="ti">' + esc(v.title) + "</span>" +
+    var h = '<div class="rows">' + q1.top.map(function (v) {
+      return '<a class="row click" href="' + esc(v.detail_url) + battleQS() + '">' +
+        '<span class="sev ' + sevCls(v.impact) + '">' + esc(v.impact) + "</span>" +
+        '<span class="rt"><span class="ti">' + esc(v.title) + "</span>" +
         '<span class="wh">' + esc(v.where) + "</span></span>" +
-        '<span class="ev">证据 ' + v.evidence.length + " 件</span>" +
-        '<span class="go">›</span></a></div>';
-    }).join("");
+        '<span class="bdg bdg-mut">证据 ' + v.evidence.length + " 件</span>" +
+        '<span class="go">›</span></a>';
+    }).join("") + "</div>";
     if (q1.total > q1.top.length) {
-      h += '<div class="empty" style="text-align:center">还有 ' +
-        (q1.total - q1.top.length) + ' 枚——<a href="/p/findings">看全部</a></div>';
+      h += '<div class="empty" style="padding:12px 6px"><div class="d">还有 ' +
+        (q1.total - q1.top.length) + ' 枚——<a href="/p/findings">看全部</a></div></div>';
     }
     $("q1-body").innerHTML = h;
   }
@@ -225,20 +374,26 @@ font-size:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
   function renderQ2(p) {
     var q2 = p.q2_live;
     if (!q2.intents.length) {
-      $("q2-intents").innerHTML = '<div class="empty">活池是空的——还没派活。' +
-        '<a href="/p/new-task">说「打 xxx」开第一仗</a></div>';
+      $("q2-intents").innerHTML = emptyBox("活池是空的",
+        '还没派活。<a href="/p/new-task">说「打 xxx」开第一仗</a>，派出后这里实时滚动。');
     } else {
-      $("q2-intents").innerHTML = q2.intents.map(function (it) {
-        return '<div class="irow"><span class="st">' + esc(it.status_zh) +
-          '</span><span class="tt" title="' + esc(it.id + " " + it.title) +
-          '">' + esc(it.title) + "</span></div>";
-      }).join("");
+      $("q2-intents").innerHTML = '<div class="rows">' +
+        q2.intents.map(function (it) {
+          var b = it.status === "running" ? "bdg-ok" :
+                  it.status === "blocked" ? "bdg-warn" :
+                  it.status === "failed" ? "bdg-dang" : "bdg-mut";
+          return '<div class="row" title="' + esc(it.id + " " + it.title) + '">' +
+            '<span class="bdg ' + b + '">' + esc(it.status_zh) + "</span>" +
+            '<span class="rt"><span class="ti">' + esc(it.title) + "</span></span></div>";
+        }).join("") + "</div>";
     }
     if (!q2.recent.length) {
-      $("q2-recent").innerHTML = '<div class="empty">还没有动态——开仗后每一步都进战账。</div>';
+      $("q2-recent").innerHTML = emptyBox("还没有动态",
+        "开仗后每一步都进战账，防篡改可回放。");
     } else {
       $("q2-recent").innerHTML = q2.recent.map(function (r) {
-        return '<div class="r"><span class="ts">' + esc(r.ts) + "</span>" +
+        return '<div class="r"><span class="ts" title="' + esc(r.ts) + '">' +
+          esc(relTime(r.ts)) + "</span>" +
           '<span class="tx">' + esc(r.text) + "</span></div>";
       }).join("");
     }
@@ -247,25 +402,26 @@ font-size:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
   function renderQ3(p) {
     var q3 = p.q3_waiting, rows = [];
     $("q3-n").textContent = (q3.counts.pending_approvals + q3.counts.asks)
-      ? "（" + q3.counts.pending_approvals + " 待审批 · " +
-        q3.counts.asks + " 求助）" : "";
+      ? q3.counts.pending_approvals + " 待审批 · " + q3.counts.asks + " 求助" : "";
     q3.pending_approvals.forEach(function (a) {
-      rows.push('<div class="wrow"><span class="kind ap">待审批</span>' +
-        '<span class="bd">' + esc(a.event) + " <small>" + esc(a.battle) +
-        " 第" + a.row + "行 · " + esc(a.ts) + "</small></span>" +
+      rows.push('<div class="row"><span class="bdg bdg-warn">待审批</span>' +
+        '<span class="rt"><span class="ti">' + esc(a.event) + "</span>" +
+        '<span class="wh">' + esc(a.battle) + " 第 " + a.row + " 行 · 等了 " +
+        esc(relTime(a.ts)) + "</span></span>" +
         '<a href="/p/inbox">去审 →</a></div>');
     });
     q3.asks.forEach(function (a) {
-      rows.push('<div class="wrow"><span class="kind ask">求助</span>' +
-        '<span class="bd">' + esc(a.question) + " <small>" + esc(a.battle) +
-        '</small></span><a href="/p/inbox">去看 →</a></div>');
+      rows.push('<div class="row"><span class="bdg bdg-info">求助</span>' +
+        '<span class="rt"><span class="ti">' + esc(a.question) + "</span>" +
+        '<span class="wh">' + esc(a.battle) + "</span></span>" +
+        '<a href="/p/inbox">去看 →</a></div>');
     });
     if (!rows.length) {
-      $("q3-body").innerHTML =
-        '<div class="empty">没有等你拍板的事——士兵各就各位，有事会来敲收件箱。</div>';
+      $("q3-body").innerHTML = emptyBox("没有等你拍板的事",
+        '士兵各就各位，有事会来敲<a href="/p/inbox">收件箱</a>。');
       return;
     }
-    $("q3-body").innerHTML = rows.join("");
+    $("q3-body").innerHTML = '<div class="rows">' + rows.join("") + "</div>";
   }
 
   function renderQ4(p) {
@@ -274,12 +430,15 @@ font-size:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
     var hasCap = q4.cap.tokens > 0 || q4.cap.requests > 0 || q4.cap.hours > 0;
     var h = "";
     if (g.target) {
-      h += '<div class="empty" style="padding-top:2px">本仗：<b style="color:var(--gc)">' +
-        esc(g.target) + "</b> · " + esc(g.objective || "") +
-        (q4.rows_n ? " · 已记 " + q4.rows_n + " 笔消耗" : "") + "</div>";
+      h += '<div style="font-size:var(--fs-b);color:var(--tx4);padding:2px 4px 10px">本仗：' +
+        '<b style="color:var(--tx2)">' + esc(g.target) + "</b>" +
+        (g.objective ? " · " + esc(g.objective) : "") +
+        (q4.rows_n ? " · 已记 <span class=\"num\">" + q4.rows_n + "</span> 笔消耗" : "") +
+        "</div>";
     }
     if (!q4.rows_n && !hasCap) {
-      h += '<div class="empty">还没花过钱——开仗后这里按笔记账，对着预算帽给余量条。</div>';
+      h += emptyBox("还没花过钱",
+        "开仗后这里按笔记账，对着预算帽给余量条——80% 预警、超帽标红。");
       $("q4-body").innerHTML = h;
       return;
     }
@@ -300,20 +459,32 @@ font-size:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
           : "未设帽（按授权窗口自律）") + "</div></div>";
     });
     if (q4.used.usd) {
-      h += '<div class="pct" style="padding:6px 4px">折合美元 ' +
-        q4.used.usd + " 元</div>";
+      h += '<div class="pct" style="padding:8px 4px 4px">折合 <b class="num">' +
+        fmtUsd(q4.used.usd) + "</b></div>";
     }
     $("q4-body").innerHTML = h;
   }
 
   function render(p) {
-    $("bt-name").textContent = (p.battle && p.battle.id) ? p.battle.id : "";
+    var bid = (p.battle && p.battle.id) ? p.battle.id : "";
+    var chip = $("bt-chip");
+    if (bid) { chip.textContent = bid; chip.classList.add("on"); }
     renderQ1(p); renderQ2(p); renderQ3(p); renderQ4(p);
     show("st-normal");
   }
 
-  var b = qs().get("battle");
-  fetch("/api/v2/cockpit.json" + (b ? "?battle=" + encodeURIComponent(b) : ""),
+  /* 侧栏/页脚链接自动携带当前仗（任务上下文不断链） */
+  var bq = qs().get("battle");
+  if (bq) {
+    Array.prototype.forEach.call(
+      document.querySelectorAll('#side a[href^="/"], #foot a[href^="/"]'),
+      function (a) {
+        a.href = a.href + (a.href.indexOf("?") < 0 ? "?" : "&") +
+                 "battle=" + encodeURIComponent(bq);
+      });
+  }
+
+  fetch("/api/v2/cockpit.json" + (bq ? "?battle=" + encodeURIComponent(bq) : ""),
         { headers: { "X-Requested-With": "cockpit" } })
     .then(function (r) {
       if (!r.ok) { throw new Error("HTTP " + r.status); }
