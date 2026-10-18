@@ -81,3 +81,8 @@ DSH解剖结论: 调度=主循环+子代理派生(独立会话/可续派/可中�
 
 ## 十九、会话与任务管理三层(2026-10-20 用户纠正「只做目录吗」)
 任务注册表(全局索引+活态+rollup)/会话对象=意图(轮次可寻址可续派)/管理操作符全套(列表切换续话中断复活翻尸)+会话树。比DSH多执法(守卫),比ARTEX多活会话。依据: DSH一手实勘+ARTEX 96件档。
+## 二十、三家会话/多任务管理实勘与吸收(2026-10-20 用户二次点名,源码级)
+ARTEX(server/*.go实勘): Task绑探索图(ExpID)+Paused/Queued;并发上限+排队+reconcile补位(:1106,3376);Session=工具注册表+上下文压缩器(compactor)+转录持久化(transcript Store/Writer),每任务主转录带锁(exp<id>-main);会话/子代理独立ID工厂;PTY持久交互shell会话。
+CSAI(internal/handler实勘): conversation绑YAML角色包(roles/*.yaml: API安全/CTF/Web扫描/二进制,角色带RoleTools);对话种任务(conversation_plantask)+批量任务管理器(batch_task_manager);会话过程可查。
+吸收四件: ①排队+补位入§18 ②兵种六维配置定格YAML角色包 ③对话指挥层加上下文压缩器(战士意图仍账本重建,不压缩——我们的优势) ④PTY持久交互会话给人工接管。
+已强两件: 每任务主转录带锁=账本flock单写者;会话ID工厂=行寻址。
