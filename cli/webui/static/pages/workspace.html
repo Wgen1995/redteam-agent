@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作区 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md
+     §P8-P18（工作区=任务工件浏览+下载）。共享壳 /static/app.js 由 UI-1 舰独写；
+     本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+select,input[type=search]{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:6px 10px;border-radius:4px;font-size:12.5px}
+#ws-search{width:240px}
+#ws-search:focus,#ws-battle:focus,#ws-kind:focus{outline:none;border-color:var(--acc2)}
+#ws-counts{color:var(--g8);font-size:12px;font-family:var(--mono)}
+/* 四态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1180px;margin:0 auto;padding:18px 24px 60px}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);font-weight:500;text-align:left;padding:6px 8px;
+border-bottom:1px solid var(--g4);font-size:11.5px;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid var(--g3);vertical-align:top}
+tr:hover td{background:var(--g3)}
+td .p{font-family:var(--mono);color:var(--gc);word-break:break-all}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-n{background:var(--g4);color:var(--g9)}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-y{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-i{background:rgba(90,169,230,.14);color:var(--info)}
+.t-p{background:rgba(167,139,250,.14);color:#a78bfa}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:4px 12px;
+border-radius:4px;cursor:pointer;font-size:11.5px}
+.btn:hover{background:var(--g5);color:var(--gc)}
+.none{color:var(--g8);font-size:12.5px;padding:14px 0;text-align:center}
+.note{color:var(--g8);font-size:11.5px;line-height:1.8;margin-top:10px}
+.warnbar{background:rgba(232,179,75,.08);border:1px solid rgba(232,179,75,.4);
+color:var(--warn);font-size:11.5px;padding:6px 10px;border-radius:4px;
+margin-bottom:10px;display:none}
+.warnbar.on{display:block}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">系统 · <b>工作区</b></span>
+  <span class="sp"></span>
+  <select id="ws-battle" title="选择任务"></select>
+  <select id="ws-kind" title="类别过滤"><option value="">全部类别</option></select>
+  <input id="ws-search" type="search" placeholder="搜路径">
+  <span id="ws-counts"></span>
+</header>
+
+<div id="st-empty" class="state"><div class="box">
+  <h3>还没有任务工作区</h3>
+  <p>每个任务都有自己的工作区：报告、证据原件、账本表与执行日志都存放在
+  其中。任务创建后此处即可浏览与下载工件。</p>
+</div></div>
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在扫描任务工作区…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>工作区读取失败</h3>
+  <p id="err-detail"><code></code></p>
+  <button id="btn-retry" class="btn" type="button">重试</button>
+</div></div>
+
+<div id="st-normal" class="state">
+  <div id="wrap">
+    <div class="pane">
+      <h3>工件 <span class="sub" id="ws-sub"></span></h3>
+      <div class="warnbar" id="ws-trunc">清单已按浏览上限截断（深度≤3、条目≤800）——
+      完整内容请到任务目录查看</div>
+      <div style="overflow-x:auto">
+        <table id="ws-table">
+          <thead><tr><th>路径</th><th>类别</th><th>大小</th><th>操作</th></tr></thead>
+          <tbody id="ws-body"></tbody>
+        </table>
+      </div>
+      <div class="none" id="ws-none" style="display:none">没有匹配的工件</div>
+      <div class="note" id="ws-note"></div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+/* T7·工作区页：任务工件浏览+下载。四态=空/加载/错误/正常。清单=有界漫游
+   实勘（truncated 如实披露）；下载=同路由 path 参数取 b64 → 页端组 blob
+   落盘（≤2MB，超出服务端 413 如实拒）。 */
+(function () {
+  var state = { entries: [], counts: {}, battle: null, truncated: false,
+                kind: "", q: "", note: "" };
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    ["st-empty", "st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === name);
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function fmtSize(n) {
+    if (!n) { return "—"; }
+    if (n < 1024) { return n + " B"; }
+    if (n < 1048576) { return (n / 1024).toFixed(1) + " KB"; }
+    return (n / 1048576).toFixed(1) + " MB";
+  }
+
+  function kindCls(k) {
+    return { "报告": "t-g", "摘要": "t-i", "指令": "t-n", "结算": "t-y",
+             "日志": "t-n", "账本表": "t-p", "证据": "t-g", "代目": "t-n",
+             "目录": "t-n", "文件": "t-n" }[k] || "t-n";
+  }
+
+  function render() {
+    var needle = state.q.trim().toLowerCase();
+    var shown = state.entries.filter(function (e) {
+      if (state.kind && e.kind !== state.kind) { return false; }
+      if (needle && e.path.toLowerCase().indexOf(needle) < 0) { return false; }
+      return true;
+    });
+    $("ws-body").innerHTML = shown.map(function (e) {
+      return "<tr><td><span class='p'>" + esc(e.path) + (e.dir ? "/" : "") +
+        "</span></td>" +
+        '<td><span class="tag ' + kindCls(e.kind) + '">' + esc(e.kind) + "</span></td>" +
+        '<td class="mono">' + (e.dir ? "—" : fmtSize(e.size)) + "</td>" +
+        "<td>" + (e.dir ? "—"
+          : '<button class="btn" data-p="' + esc(e.path) + '">下载</button>') +
+        "</td></tr>";
+    }).join("");
+    $("ws-none").style.display = shown.length ? "none" : "block";
+    $("ws-counts").textContent = shown.length + " / " + state.entries.length + " 件";
+    $("ws-sub").textContent = state.battle ? state.battle.id + " · 实勘清单" : "";
+    $("ws-trunc").classList.toggle("on", !!state.truncated);
+    $("ws-note").textContent = state.note;
+    Array.prototype.forEach.call($("ws-body").querySelectorAll(".btn"), function (b) {
+      b.addEventListener("click", function () { download(b.getAttribute("data-p")); });
+    });
+  }
+
+  function download(rel) {
+    var url = '/api/v2/workspace.json?battle=' + state.battle.n +
+      "&path=" + encodeURIComponent(rel);
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p.error) { alert(p.error); return; }
+        var bin = atob(p.b64);
+        var bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) { bytes[i] = bin.charCodeAt(i); }
+        var blob = new Blob([bytes], { type: p.mime });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = p.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(a.href);
+      })
+      .catch(function (e) { alert("下载失败：" + e); });
+  }
+
+  function fillPickers() {
+    var sel = $("ws-battle");
+    sel.innerHTML = (state.battles || []).map(function (b) {
+      return '<option value="' + b.n + '">' + esc(b.id) + "</option>";
+    }).join("");
+    if (state.battle) { sel.value = String(state.battle.n); }
+    sel.onchange = function () { load(parseInt(sel.value, 10)); };
+    var kinds = Object.keys(state.counts).sort();
+    $("ws-kind").innerHTML = '<option value="">全部类别</option>' +
+      kinds.map(function (k) {
+        return '<option value="' + esc(k) + '">' + esc(k) + "（" +
+          state.counts[k] + "）</option>";
+      }).join("");
+    $("ws-kind").value = state.kind;
+  }
+
+  function load(battle) {
+    show("st-loading");
+    state.battle = battle != null ? { n: battle } : null;
+    var url = '/api/v2/workspace.json';
+    if (battle != null) { url += '?battle=' + encodeURIComponent(battle); }
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p && p.error && !p.battles) { throw p.error; }
+        if (p.error) { throw p.error; }
+        state.entries = p.entries || [];
+        state.counts = p.counts || {};
+        state.battles = p.battles || [];
+        state.battle = p.battle || null;
+        state.truncated = !!p.truncated;
+        state.note = p.note || "";
+        if (!state.entries.length) { show("st-empty"); return; }
+        fillPickers();
+        render();
+        show("st-normal");
+      })
+      .catch(function (e) {
+        $("err-detail").innerHTML = "<code>" + esc(e) + "</code>";
+        show("st-error");
+      });
+  }
+
+  $("ws-search").addEventListener("input", function () {
+    state.q = this.value;
+    render();
+  });
+  $("ws-kind").addEventListener("change", function () {
+    state.kind = this.value;
+    render();
+  });
+  $("btn-retry").addEventListener("click", function () {
+    load(state.battle ? state.battle.n : null);
+  });
+
+  /* 宿主壳自注册（共享壳缺席时本页独立可用——守卫式消费 UI-1 舰契约） */
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: 'workspace', title: '工作区', group: '系统' });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
