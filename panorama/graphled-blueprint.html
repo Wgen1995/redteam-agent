@@ -3,29 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generated" content="2026-10-18 11:46">
+<meta name="generated" content="2026-10-18 12:12">
 <meta name="generator" content="panorama/gen_blueprint.py（数据真源=panorama/blueprint.json）">
 <title>进度总图 · GraphLed 蓝图</title>
 <style>
 *{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;
 font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
-.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;
-border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
-.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
-.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
-.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
-.nav a:hover{border-color:#30363d}
-h1{color:#f0f6fc;font-size:26px;margin:2px 0 6px}
+.wrap{max-width:1280px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:linear-gradient(180deg,#10161f,#0d1117);
+border:1px solid #30363d;border-radius:12px;padding:9px 13px;margin-bottom:22px;position:sticky;top:0;z-index:5;
+box-shadow:0 6px 22px rgba(1,4,9,.6)}
+.nav .brand{font-weight:700;margin-right:8px;font-size:14px;
+background:linear-gradient(90deg,#ffe9b0,#7fd49a 60%,#a5c8ff);-webkit-background-clip:text;background-clip:text;
+-webkit-text-fill-color:transparent;padding-right:2px}
+.nav a{color:#a5c8ff;text-decoration:none;font-size:12.5px;padding:3px 10px;border-radius:8px;border:1px solid transparent}
+.nav a:hover{border-color:#58a6ff66;color:#dbe7ff}
+.nav a.on{background:#0d2246;border-color:#58a6ff;color:#a5c8ff;box-shadow:0 0 12px rgba(88,166,255,.35)}
+h1{color:#f0f6fc;font-size:28px;margin:2px 0 6px}
 .sub{color:#8b949e;font-size:13px}
-h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
-.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#0d2246 46%,#0f2e1b 100%);border:1px solid #30363d;
+border-radius:14px;padding:20px 24px 16px;margin-bottom:6px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;
+background:linear-gradient(90deg,#e3b341,#58a6ff,#3fb950,#bc8cff)}
+h2.sec{margin:34px 0 12px;padding:12px 16px 10px;border-radius:12px;position:relative;color:#e2e8f0;font-size:19px;
+background:linear-gradient(90deg,#12203a 0%,#10161f 55%,#0d1117 100%);border:1px solid #26344b}
+h2.sec::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:5px;border-radius:3px;
+background:linear-gradient(180deg,#58a6ff,#6fc3d0)}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px;
+transition:border-color .15s,box-shadow .15s}
+.card:hover{border-color:#3d4f66;box-shadow:0 8px 24px rgba(1,4,9,.5)}
+.card h2{margin-top:0}
 .pillars{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:900px){.pillars{grid-template-columns:1fr}}
-.verdict{color:#d29922;font-size:13px;margin:2px 0 10px}
+.pillars .card{border-left:4px solid #58a6ff;background:linear-gradient(90deg,#101826,#161b22 70%)}
+.pillars .card:nth-child(2){border-left-color:#e3b341}
+.pillars .card:nth-child(3){border-left-color:#3fb950}
+.pillars .card:nth-child(4){border-left-color:#bc8cff}
+.verdict{display:inline-block;background:#3a2c0e;border:1px solid #e3b341;color:#ffe9b0;
+font-size:12px;font-weight:600;border-radius:9px;padding:2px 10px;margin:2px 0 10px}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{color:#8b949e;text-align:left;font-weight:600;background:#161b22;padding:6px 8px;border-bottom:1px solid #30363d}
+th{color:#a5c8ff;text-align:left;font-weight:600;background:#12203a;padding:6px 8px;border-bottom:1px solid #30363d}
 td{padding:6px 8px;border-bottom:1px solid #21262d;vertical-align:top}
+tr:hover td{background:#10161f}
 td.st{width:34px;text-align:center;font-size:15px}
 td.note{color:#8b949e;width:46%}
 .chip{display:inline-flex;align-items:center;gap:6px;margin:3px;padding:4px 12px;
@@ -43,37 +62,40 @@ border:1px solid #30363d;border-radius:14px;font-size:12.5px;background:#161b22;
 .counts{font-size:12.5px;color:#8b949e}
 ol{font-size:13.5px;line-height:2;padding-left:22px}
 .meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
-.quote{border-left:3px solid #30363d;padding:2px 12px;color:#8b949e;font-size:12.5px;margin:8px 0}
+.quote{border-left:3px solid #e3b341;background:#171310;border-radius:0 8px 8px 0;
+padding:6px 12px;color:#cdb896;font-size:12.5px;margin:8px 0}
 a{color:#58a6ff}
 </style>
 </head>
 <body>
 <div class="wrap">
-<nav class="nav"><span class="brand">GraphLed 蓝图</span><a href="graphled-blueprint.html" class="on">进度总图</a><a href="graphled-architecture.html">全景架构</a><a href="graphled-ui-map.html">界面地图</a><a href="graphled-enemies.html">六产品对齐</a><a href="graphled-roadmap.html">能力阶梯</a><a href="graphled-methodology.html">交战思维</a><a href="index.html">首页</a></nav>
+<nav class="nav"><span class="brand">GraphLed 蓝图</span><a href="graphled-blueprint.html" class="on">进度总图</a><a href="graphled-architecture.html">全景架构</a><a href="graphled-ui-map.html">界面地图</a><a href="graphled-enemies.html">六产品对齐</a><a href="graphled-roadmap.html">能力阶梯</a><a href="graphled-methodology.html">交战思维</a><a href="graphled-knowledge.html">知识全景</a><a href="graphled-history.html">演进总析</a><a href="index.html">首页</a></nav>
+<div class="hero">
 <h1>进度总图 · 一页看懂建到哪了</h1>
-<p class="sub">四支柱逐项对账 + 界面芯片 + 里程碑。人话口径（宪法 #41）：账本=13 张表加哈希链，是系统的唯一事实记录；挂载=页面已造好、往生产口接线的过程。</p>
+<p class="sub">四支柱逐项对账 + 界面芯片 + 里程碑。人话口径（宪法 #41）：账本=13 张表加哈希链，是系统的唯一事实记录；挂载=页面已造好、往生产口接线的过程。数据真源=panorama/blueprint.json，零虚构。</p>
+</div>
 
-<h2>四支柱逐项状态</h2>
-<div class="pillars"><section class='card'><h2 style='margin-top:0'>① 找到漏洞(第一性)</h2><p class='verdict'>判词：大脑已成,未上过战场</p><table><tr><td>战士运行时(自研AI大脑)</td><td class='st'>✅</td><td class='note'>1373行+123测,自纠+知识注入</td></tr><tr><td>意图规划/调度</td><td class='st'>✅</td><td class='note'>ARTEX型 planner+租约</td></tr><tr><td>工具引擎(sqlmap等)</td><td class='st'>✅</td><td class='note'>25工具卡+受控档</td></tr><tr><td>知识库50技法卡</td><td class='st'>✅</td><td class='note'>意图关联注入已接</td></tr><tr><td>真模型接线</td><td class='st'>🔧</td><td class='note'>channels.json已备,生产道未点</td></tr><tr><td>第一场真仗</td><td class='st'>⬜</td><td class='note'>零场——靶场死,待复活</td></tr><tr><td>评测飞轮(越打越强)</td><td class='st'>✅</td><td class='note'>棘轮门51测+能力曲线API+避坑卡schema;蒸馏本体留W5</td></tr><tr><td>浏览器会话卡(SPA/登录态)</td><td class='st'>📐</td><td class='note'>E舰判P0,待裁排W3</td></tr></table></section><section class='card'><h2 style='margin-top:0'>② AI自动化</h2><p class='verdict'>判词：单仗全自动就绪</p><table><tr><td>自动循环 领任务→打→写账</td><td class='st'>✅</td><td class='note'>断点续跑/心跳/预算执法</td></tr><tr><td>自纠信号</td><td class='st'>✅</td><td class='note'>VulnClaw移植694行</td></tr><tr><td>C2/远控面</td><td class='st'>✅</td><td class='note'>1446行47测,预授权族</td></tr><tr><td>源码审计(黑白互证)</td><td class='st'>📐</td><td class='note'>设计v1定稿,SA-1排W7</td></tr></table></section><section class='card'><h2 style='margin-top:0'>③ 验证与账本(放大器)</h2><p class='verdict'>判词：行业最深:六产品对齐完毕,唯一全链重放</p><table><tr><td>哈希链账本13表</td><td class='st'>✅</td><td class='note'>3400行/秒</td></tr><tr><td>机械重放验证</td><td class='st'>✅</td><td class='note'>误报防线核心</td></tr><tr><td>自动复测</td><td class='st'>✅</td><td class='note'>复测页已建</td></tr><tr><td>评测GT集</td><td class='st'>✅</td><td class='note'>6战场(56面+源码GT 10行+FP诱饵5)+三战基线+校验器16测</td></tr></table></section><section class='card'><h2 style='margin-top:0'>④ 界面与治理(外围)</h2><p class='verdict'>判词：对照ARTEX 22项: 4可看/9接电/7在建/3空白</p><table><tr><td>控制台五页</td><td class='st'>✅</td><td class='note'>8900可看</td></tr><tr><td>9页建成待挂载</td><td class='st'>🔧</td><td class='note'>总装舰接电中</td></tr><tr><td>LLM录制/对话/工具/配置/Palette</td><td class='st'>✈️</td><td class='note'>三舰在建</td></tr><tr><td>多人使用(两档)</td><td class='st'>📐</td><td class='note'>W7</td></tr></table></section></div>
+<h2 class="sec">四支柱逐项状态</h2>
+<div class="pillars"><section class='card'><h2 style='margin-top:0'>① 找到漏洞(第一性)</h2><p class='verdict'>判词：大脑已成,未上过战场</p><table><tr><td>战士运行时(自研AI大脑)</td><td class='st'>✅</td><td class='note'>1373行+123测,自纠+知识注入</td></tr><tr><td>意图规划/调度</td><td class='st'>✅</td><td class='note'>ARTEX型 planner+租约</td></tr><tr><td>工具引擎(sqlmap等)</td><td class='st'>✅</td><td class='note'>25工具卡+受控档</td></tr><tr><td>知识库50技法卡</td><td class='st'>✅</td><td class='note'>意图关联注入已接</td></tr><tr><td>真模型接线</td><td class='st'>🔧</td><td class='note'>channels.json已备,生产道未点</td></tr><tr><td>第一场真仗</td><td class='st'>⬜</td><td class='note'>零场——靶场死,待复活</td></tr><tr><td>评测飞轮(越打越强)</td><td class='st'>✅</td><td class='note'>棘轮门51测+能力曲线API+避坑卡schema;蒸馏本体留W5</td></tr><tr><td>浏览器会话卡(SPA/登录态)</td><td class='st'>📐</td><td class='note'>E舰判P0,待裁排W3</td></tr></table></section><section class='card'><h2 style='margin-top:0'>② AI自动化</h2><p class='verdict'>判词：单仗全自动就绪</p><table><tr><td>自动循环 领任务→打→写账</td><td class='st'>✅</td><td class='note'>断点续跑/心跳/预算执法</td></tr><tr><td>自纠信号</td><td class='st'>✅</td><td class='note'>VulnClaw移植694行</td></tr><tr><td>C2/远控面</td><td class='st'>✅</td><td class='note'>1446行47测,预授权族</td></tr><tr><td>源码审计(黑白互证)</td><td class='st'>📐</td><td class='note'>设计v1定稿,SA-1排W7</td></tr></table></section><section class='card'><h2 style='margin-top:0'>③ 验证与账本(放大器)</h2><p class='verdict'>判词：行业最深:六产品对齐完毕,唯一全链重放</p><table><tr><td>哈希链账本13表</td><td class='st'>✅</td><td class='note'>3400行/秒</td></tr><tr><td>机械重放验证</td><td class='st'>✅</td><td class='note'>误报防线核心</td></tr><tr><td>自动复测</td><td class='st'>✅</td><td class='note'>复测页已建</td></tr><tr><td>评测GT集</td><td class='st'>✅</td><td class='note'>6战场(56面+源码GT 10行+FP诱饵5)+三战基线+校验器16测</td></tr></table></section><section class='card'><h2 style='margin-top:0'>④ 界面与治理(外围)</h2><p class='verdict'>判词：界面26项: 2可点/13建成待通电(总装舰)/7在建/1设计/3空白</p><table><tr><td>控制台五页</td><td class='st'>✅</td><td class='note'>8900可看</td></tr><tr><td>9页建成待挂载</td><td class='st'>🔧</td><td class='note'>总装舰接电中</td></tr><tr><td>LLM录制/对话/工具/配置/Palette</td><td class='st'>✈️</td><td class='note'>三舰在建</td></tr><tr><td>多人使用(两档)</td><td class='st'>📐</td><td class='note'>W7</td></tr></table></section></div>
 
-<h2>界面芯片（26 项，按 blueprint.json ui 数组实算）</h2>
+<h2 class="sec">界面芯片（26 项，按 blueprint.json ui 数组实算）</h2>
 <div class="card">
   <div class="bar"><span class="ok" style="width:7.69%" title="可点可用 2 项"></span><span class="mount" style="width:65.38%" title="已建成·挂载中 17 项"></span><span class="fly" style="width:11.54%" title="在建舰队 3 项"></span><span class="design" style="width:3.85%" title="设计定稿待排 1 项"></span><span class="empty" style="width:11.54%" title="空白 3 项"></span></div>
   <div class="counts">共 26 项：可点可用 2 · 已建成·挂载中 17 · 在建舰队 3 · 设计定稿待排 1 · 空白 3</div>
-  <div class="quote">柱四判词原文（blueprint.json）：「对照ARTEX 22项: 4可看/9接电/7在建/3空白」——口径与 ui 数组不同（22 项 vs 23 项、可点 4 vs 2），两行都如实上屏，以 ui 数组为机器可算口径。</div>
+  <div class="quote">柱四判词原文（blueprint.json）：「界面26项: 2可点/13建成待通电(总装舰)/7在建/1设计/3空白」——口径与 ui 数组不同（22 项 vs 23 项、可点 4 vs 2），两行都如实上屏，以 ui 数组为机器可算口径。</div>
   <div><span class="chip ok"><i>✅</i>仪表盘</span><span class="chip mount"><i>🔧</i>任务</span><span class="chip mount"><i>🔧</i>新建任务</span><span class="chip ok"><i>✅</i>发现</span><span class="chip mount"><i>🔧</i>漏洞详情</span><span class="chip mount"><i>🔧</i>播报(日志)</span><span class="chip mount"><i>🔧</i>复测</span><span class="chip mount"><i>🔧</i>资产</span><span class="chip mount"><i>🔧</i>资产覆盖</span><span class="chip mount"><i>🔧</i>拦截审批</span><span class="chip mount"><i>🔧</i>报告中心</span><span class="chip mount"><i>🔧</i>技法(Skill)</span><span class="chip mount"><i>🔧</i>工作空间</span><span class="chip mount"><i>🔧</i>LLM录制</span><span class="chip mount"><i>🔧</i>对话(只读问答)</span><span class="chip fly"><i>✈️</i>工具执行</span><span class="chip fly"><i>✈️</i>LLM状态</span><span class="chip mount"><i>🔧</i>系统配置</span><span class="chip fly"><i>✈️</i>CommandPalette</span><span class="chip design"><i>📐</i>资产同步</span><span class="chip empty"><i>⬜</i>流量</span><span class="chip empty"><i>⬜</i>MCP</span><span class="chip empty"><i>⬜</i>通知推送</span><span class="chip mount"><i>🔧</i>资产库(跨任务)</span><span class="chip mount"><i>🔧</i>评测对比</span><span class="chip mount"><i>🔧</i>能力曲线</span></div>
   <div style="margin-top:10px"><span class='lg'><i>✅</i>可点可用</span><span class='lg'><i>🔧</i>已建成,挂载中</span><span class='lg'><i>✈️</i>在建舰队</span><span class='lg'><i>📐</i>设计定稿待排</span><span class='lg'><i>⬜</i>空白</span></div>
 </div>
 
-<h2>下一步（按序）</h2>
+<h2 class="sec">下一步（按序）</h2>
 <div class="card"><ol><li>总装挂载(在飞)</li><li>演示战役注入(G-r18,111发现)</li><li>复活靶场+点真模型道</li><li>第一场真仗判卷(ZhuLong伤疤)</li><li>评测棘轮+GT加厚收口</li><li>E舰吸收三件(两段判定/浏览器卡/工具并行)</li></ol></div>
 
-<h2>全仓家底一句</h2>
+<h2 class="sec">全仓家底一句</h2>
 <div class="card"><p style="margin:0;font-size:13.5px">全仓 2250+ 测 · CI 八作业 · coverage 89% · 六产品对齐档 A-F 齐全</p></div>
 
 <p class="meta">
 数据真源=panorama/blueprint.json（舰队落地即更新该文件后重生成）·
-本页由 panorama/gen_blueprint.py 生成于 2026-10-18 11:46 ·
+本页由 panorama/gen_blueprint.py 生成于 2026-10-18 12:12 ·
 行数/测试数等实况数字另见 <a href="graphled-architecture.html">全景架构</a> 页（按仓内文件实勘）·
 旧版设计图（tanyin 架构三版等）见 <a href="index.html">首页·历史档案</a>。
 </p>
