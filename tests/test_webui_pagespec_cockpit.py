@@ -160,6 +160,12 @@ class TestCockpitFindingsDEMO1(unittest.TestCase):
         self.assertEqual(c["total"], 76)
         self.assertEqual(c["verified_active"], 35)   # 同 id 后代胜终态
 
+    def test_items_have_where(self):
+        """每枚漏洞带 where（目标位置）：资产值→资产id→目标→未登记。"""
+        for it in self.payload["items"]:
+            self.assertIn("where", it)
+            self.assertTrue(it["where"])
+
     def test_evidence_bag_role_and_versions(self):
         """证据袋：每枚漏洞挂 EV 卡引用+角色（证实/对照）+版本（同组多捕）。"""
         items = {f["id"]: f for f in self.payload["items"]}

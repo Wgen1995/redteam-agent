@@ -405,6 +405,8 @@ def findings_view(ledger_dir=None, battles_dir=None, battle=None):
     frows = _merge_by_id(battle_dir, gens, "findings.tsv")
     erows = _merge_by_id(battle_dir, gens, "E-index.tsv")
     evmap = {k: r for k, r in erows}
+    assets = {k: r for k, r in _merge_by_id(battle_dir, gens, "assets.tsv")}
+    goal = _goal_of(battle_dir, gens)
     tl = _merged_timeline(battle_dir, gens)
 
     # 版本组：pair_group → 同组 EV（按 observed_at,id 排=v1/v2/v3）
@@ -479,9 +481,19 @@ def findings_view(ledger_dir=None, battles_dir=None, battle=None):
             ls = _epoch(last_at)
             if ls is not None:
                 since_days = max(0, int((now_s - ls) // 86400))
+        ast_id = _cell("findings.tsv", r, "affected_asset_id")
+        if ast_id and ast_id in assets:
+            where = _cell("assets.tsv", assets[ast_id], "value") or ast_id
+        elif ast_id:
+            where = ast_id
+        elif goal.get("target"):
+            where = goal["target"]
+        else:
+            where = "（未登记位置）"
         items.append({
             "id": fid, "title": _cell("findings.tsv", r, "title"),
             "impact": _cell("findings.tsv", r, "impact") or "低",
+            "where": where,
             "confidence": _cell("findings.tsv", r, "confidence"),
             "status": status, "exploitation_status": expl,
             "created": _cell("findings.tsv", r, "created"),
