@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设置 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md
+     §P8-P18（设置页=账本参数读写面，amendment 语义改动=行+因）。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+select{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:6px 10px;border-radius:4px;font-size:12.5px}
+/* 状态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1080px;margin:0 auto;padding:18px 24px 60px;
+display:grid;grid-template-columns:7fr 5fr;gap:14px;align-items:start}
+@media(max-width:980px){#wrap{grid-template-columns:1fr}}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;font-size:12.5px}
+.kv .k{color:var(--g8)}
+.kv .v{color:var(--gc);font-family:var(--mono);word-break:break-all}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-n{background:var(--g4);color:var(--g9)}
+.t-w{background:rgba(232,179,75,.14);color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);font-weight:500;text-align:left;padding:6px 8px;
+border-bottom:1px solid var(--g4);font-size:11.5px;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid var(--g3);vertical-align:top}
+tr:hover td{background:var(--g3)}
+.dim td{opacity:.55}
+/* 表单 */
+.frm{display:grid;gap:10px;font-size:12.5px}
+.frm label{color:var(--g8);font-size:11.5px;display:block;margin-bottom:3px}
+.frm input,.frm select,.frm textarea{width:100%;background:var(--g3);
+border:1px solid var(--g5);color:var(--gc);padding:7px 10px;border-radius:4px;
+font-size:12.5px;font-family:inherit}
+.frm textarea{font-family:var(--mono);min-height:64px;resize:vertical}
+.frm input:focus,.frm select:focus,.frm textarea:focus{outline:none;border-color:var(--acc2)}
+.frm .err{color:var(--dang);font-size:11.5px;display:none}
+.frm .err.on{display:block}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:7px 16px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover:not(:disabled){background:var(--g5);color:var(--gc)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-go{background:rgba(61,220,151,.12);border-color:var(--acc2);color:var(--acc)}
+.okmsg{color:var(--acc);font-size:11.5px;display:none;margin-top:6px}
+.okmsg.on{display:block}
+.note{color:var(--g8);font-size:11.5px;line-height:1.8}
+.none{color:var(--g8);font-size:12.5px;padding:10px 0;text-align:center}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">系统 · <b>设置</b></span>
+  <span class="sp"></span>
+  <select id="battle-pick" title="选择任务"></select>
+</header>
+
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在读取账本参数…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>设置读取失败</h3>
+  <p><code id="err-detail"></code></p>
+  <button id="btn-retry" class="btn" type="button">重试</button>
+</div></div>
+
+<div id="st-normal" class="state">
+  <div id="wrap">
+    <div>
+      <div class="pane" id="st-params">
+        <h3>任务参数 <span class="sub">随任务声明入账 · 只读</span></h3>
+        <div class="kv" id="params-kv"></div>
+        <div class="note" id="params-note" style="margin-top:10px"></div>
+      </div>
+      <div class="pane" id="st-scope">
+        <h3>范围参数与修订链 <span class="sub" id="scope-sub"></span></h3>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>行</th><th>类型</th><th>匹配</th><th>修订自</th><th>因</th><th>状态</th></tr></thead>
+            <tbody id="scope-body"></tbody>
+          </table>
+        </div>
+        <div class="none" id="scope-none" style="display:none">尚无范围行</div>
+      </div>
+      <div class="pane" id="st-history">
+        <h3>修订史 <span class="sub">amend-scope 事件 · 入链可审计</span></h3>
+        <div id="history-list" style="font-size:12px;color:var(--ga);
+        font-family:var(--mono);line-height:1.9;word-break:break-all"></div>
+        <div class="none" id="history-none" style="display:none">尚无修订记录</div>
+      </div>
+    </div>
+    <div>
+      <div class="pane" id="st-form">
+        <h3>修订范围参数 <span class="sub">amendment 带因 · 入链</span></h3>
+        <div class="frm">
+          <div><label for="f-amendment-of">被修订行（amendment_of）</label>
+            <select id="f-amendment-of"></select></div>
+          <div><label for="f-kind">类型</label>
+            <select id="f-kind">
+              <option value="include">include（纳入）</option>
+              <option value="exclude">exclude（移出）</option>
+              <option value="oob">oob（范围外）</option>
+              <option value="account-grant">account-grant（账号授权）</option>
+            </select></div>
+          <div><label for="f-matcher">匹配（CIDR 网段 / 域名后缀 / 通配）</label>
+            <input id="f-matcher" type="text" placeholder="*.example.com"></div>
+          <div><label for="f-note">修订因（必填——空=拒）</label>
+            <textarea id="f-note" placeholder="写明理由与批准人，例如：客户 10-05 邮件扩域，批准人=张三"></textarea></div>
+          <div id="f-approval-row" style="display:none">
+            <label for="f-approval">审批行（P0 后修订必填）</label>
+            <input id="f-approval" type="text" placeholder="AP-2（approvals 已批准行）">
+          </div>
+          <div class="err" id="f-err"></div>
+          <div><button class="btn btn-go" id="f-submit" type="button">提交修订</button></div>
+          <div class="okmsg" id="f-ok"></div>
+        </div>
+        <div class="note" style="margin-top:10px">修订必须带因：note 空=拒；P0 后修订另须
+        approval 指向已批准行（账本级 REJECT 同律）。修订=追加新行覆盖旧行，
+        不删历史——每一笔改动入链可审计。</div>
+      </div>
+      <div class="pane" id="st-exempt">
+        <h3>豁免清单 <span class="sub">approvals decision=exempted</span></h3>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>编号</th><th>批准人</th><th>时刻</th><th>说明</th></tr></thead>
+            <tbody id="exempt-body"></tbody>
+          </table>
+        </div>
+        <div class="none" id="exempt-none" style="display:none">尚无豁免记录</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+/* T7·设置页：账本参数读写面。读=goals 档位/预算三元组/速率窗/语言+范围修订链
+   +豁免+修订史；写=amendment 带因（note 空=拒；P0 后须 approval）——窄门
+   POST /api/v2/settings.json → tanyin-ledger amend-scope（本页不造第二配置真源）。 */
+(function () {
+  var state = { view: null, battle: null };
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    ["st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === name);
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function fillBattlePicker() {
+    var sel = $("battle-pick");
+    sel.innerHTML = (state.view.battles || []).map(function (b) {
+      return '<option value="' + b.n + '">' + esc(b.id) + "</option>";
+    }).join("");
+    if (state.view.battle) { sel.value = String(state.view.battle.n); }
+    sel.onchange = function () { load(parseInt(sel.value, 10)); };
+  }
+
+  function renderParams() {
+    var p = state.view.params || {};
+    var used = (state.view.budget || {}).used || {};
+    var rows = [
+      ["目标", p.target], ["档位", (p.model_tier_zh || "未申报") +
+        "（" + (p.model_tier || "—") + "）"],
+      ["护栏档", p.guard_tier || "—"],
+      ["预算上限", (p.budget || "—") + "（token;请求;小时）"],
+      ["已用", (used.tokens || 0) + " token · " + (used.requests || 0) + " 请求 · " +
+        (used.hours || 0) + " 小时"],
+      ["速率窗", p.rate_limit || "—"],
+      ["作业时间", p.window || "—"], ["语言", p.language || "—"],
+      ["授权窗口", (p.valid_from || "—") + " ~ " + (p.valid_until || "—")]
+    ];
+    $("params-kv").innerHTML = rows.map(function (r) {
+      return '<div class="k">' + r[0] + '</div><div class="v">' + esc(r[1]) + "</div>";
+    }).join("");
+    $("params-note").textContent = (state.view.writable || {}).readonly_note || "";
+  }
+
+  function renderScope() {
+    var rows = state.view.scope || [];
+    $("scope-body").innerHTML = rows.map(function (r) {
+      return '<tr' + (r.superseded ? ' class="dim"' : "") + ">" +
+        '<td class="mono">' + esc(r.id) + "</td><td>" + esc(r.kind) + "</td>" +
+        '<td class="mono">' + esc(r.matcher) + "</td>" +
+        '<td class="mono">' + esc(r.amendment_of || "—") + "</td>" +
+        "<td>" + esc(r.note || "—") + "</td>" +
+        "<td>" + (r.superseded
+          ? '<span class="tag t-n">已被修订</span>'
+          : '<span class="tag t-g">生效中</span>') + "</td></tr>";
+    }).join("");
+    $("scope-none").style.display = rows.length ? "none" : "block";
+    var c = state.view.counts || {};
+    $("scope-sub").textContent = (c.scope_heads || 0) + " 行生效 · " +
+      (c.amendments || 0) + " 笔修订";
+    var pick = $("f-amendment-of");
+    pick.innerHTML = rows.map(function (r) {
+      return '<option value="' + esc(r.id) + '">' + esc(r.id) + " · " +
+        esc(r.kind) + " " + esc(r.matcher) + "</option>";
+    }).join("");
+  }
+
+  function renderHistory() {
+    var rows = (state.view.amendment_history || []).slice().reverse();
+    $("history-list").innerHTML = rows.map(function (h) {
+      return '<div>' + esc(h.ts) + " · 行" + h.row + " · " + esc(h.event) + "</div>";
+    }).join("");
+    $("history-none").style.display = rows.length ? "none" : "block";
+  }
+
+  function renderExempt() {
+    var rows = state.view.exemptions || [];
+    $("exempt-body").innerHTML = rows.map(function (e) {
+      return "<tr><td class="mono">" + esc(e.id) + "</td><td>" +
+        esc(e.approver || "—") + '</td><td class="mono">' + esc(e.timestamp) +
+        "</td><td>" + esc(e.note || "—") + "</td></tr>";
+    }).join("");
+    $("exempt-none").style.display = rows.length ? "none" : "block";
+  }
+
+  function renderFormGate() {
+    var needs = ((state.view.writable || {}).requires) || [];
+    $("f-approval-row").style.display =
+      needs.indexOf("approval") >= 0 ? "block" : "none";
+  }
+
+  function submit() {
+    var err = $("f-err");
+    var ok = $("f-ok");
+    err.classList.remove("on");
+    ok.classList.remove("on");
+    var body = {
+      action: "amend-scope",
+      amendment_of: $("f-amendment-of").value,
+      kind: $("f-kind").value,
+      matcher: $("f-matcher").value.trim(),
+      note: $("f-note").value.trim()
+    };
+    if (!body.matcher) {
+      err.textContent = "匹配不可为空"; err.classList.add("on"); return;
+    }
+    if (!body.note) {
+      err.textContent = "修订必须带因——写明理由与批准人"; err.classList.add("on"); return;
+    }
+    if ($("f-approval-row").style.display === "block") {
+      body.approval = $("f-approval").value.trim();
+      if (!body.approval) {
+        err.textContent = "P0 后修订须填审批行（approvals 已批准行）";
+        err.classList.add("on"); return;
+      }
+    }
+    $("f-submit").disabled = true;
+    fetch('/api/v2/settings.json', {
+      method: "POST", credentials: "same-origin",
+      headers: { "Content-Type": "application/json",
+                 "X-Requested-With": "XMLHttpRequest" },
+      body: JSON.stringify(body)
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        $("f-submit").disabled = false;
+        if (!p.ok) {
+          err.textContent = p.error || "修订被拒"; err.classList.add("on"); return;
+        }
+        ok.textContent = "已入链：修订行 " + (p.receipt && p.receipt.id) + "（审计可查）";
+        ok.classList.add("on");
+        $("f-note").value = "";
+        load(state.battle);
+      })
+      .catch(function (e) {
+        $("f-submit").disabled = false;
+        err.textContent = "请求失败：" + e; err.classList.add("on");
+      });
+  }
+
+  function load(battle) {
+    show("st-loading");
+    state.battle = battle || null;
+    var url = '/api/v2/settings.json';
+    if (battle != null) { url += '?battle=' + encodeURIComponent(battle); }
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p && p.error) { throw p.error; }
+        state.view = p;
+        fillBattlePicker();
+        renderParams();
+        renderScope();
+        renderHistory();
+        renderExempt();
+        renderFormGate();
+        show("st-normal");
+      })
+      .catch(function (e) {
+        $("err-detail").textContent = e;
+        show("st-error");
+      });
+  }
+
+  $("f-submit").addEventListener("click", submit);
+  $("btn-retry").addEventListener("click", function () { load(state.battle); });
+
+  /* 宿主壳自注册（共享壳缺席时本页独立可用——守卫式消费 UI-1 舰契约） */
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: 'settings', title: '设置', group: '系统' });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
