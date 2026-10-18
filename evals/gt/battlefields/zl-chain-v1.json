@@ -1,0 +1,111 @@
+{
+ "format_version": 1,
+ "battlefield": "zl-chain-v1",
+ "kind": "chain-gt",
+ "target_repo": "ai-assisted-security-verification-platform（ZhuLong 平台仓·只读靶场）",
+ "anchor_root_default": "evals/gt/snapshots/zl-repo",
+ "verify_root": "evals/gt/snapshots/zl-repo",
+ "live_anchor": true,
+ "entered_at": "2026-10-19T00:00:00Z",
+ "caliber": "白盒源码链口径：链=有序步骤组（steps[].order 1..N 连续），环环 verify_cmd 以锚根为 cwd 只读实跑（--live=ZhuLong 靶场仓根只读）；polarity/status 语义同 source-gt；链级判分见 gt_eval.py CHAIN_TIERS（源码链以 gt_verify 锚定，会话链以 gt_eval 判分）",
+ "provenance": "伤疤在册互证：Z:208 假机群（i41-masterkey-verify/i41-verify-2/i56/i96-audit-runner-01 注册+接走任务）+ ARTEX #15（master.key 路径穿越读到）+ ARTEX #21（imports 任意目录读）——链各环皆有单点行（zl-sup-01/zl-web-02/zl-sup-02）或快照锚在册",
+ "chains": [
+  {
+   "id": "zl-chain-01",
+   "battlefield": "zl-chain-v1",
+   "polarity": "pos",
+   "status": "open",
+   "class": "broken-access-control",
+   "cwe": "CWE-306",
+   "severity": "Critical",
+   "title": "假机群全链：供给令牌（零授权绑定）→注册执行机→领取任务→master.key 回采面",
+   "impact": "攻击者持开放令牌面即可走完 接入→算力→凭据面 全链：注册假执行机进算力池、接走真实任务、并以同进程文件系统读面回采凭据主钥（Z:208 四假机在册实测）。",
+   "steps": [
+    {
+     "order": 1,
+     "id": "zl-chain-01-s1",
+     "title": "令牌环：接入令牌零授权绑定（无 scope/目标清单）",
+     "location": "apps/server/src/services/provision.ts::createProvisionToken",
+     "finding": "一次性/24h/可吊销纪律俱全，但令牌与授权范围零绑定——持有者=任意可触达注册面的主体（同 zl-sup-01 单点行，链首环）。",
+     "verify_cmd": "grep -q 'createProvisionToken' apps/server/src/services/provision.ts && ! grep -q 'scope' apps/server/src/services/provision.ts",
+     "provenance": "Z:208；zl-sup-01 在册互证",
+     "gt_ref": "zl-sup-01"
+    },
+    {
+     "order": 2,
+     "id": "zl-chain-01-s2",
+     "title": "注册环：持令牌注册执行机进算力池",
+     "location": "apps/server/src/routes/runner.ts::POST /api/runner/register",
+     "finding": "注册面消费一次性 provision 令牌（首用即焚）直接建资源行+发资源令牌——机器身份无准入判据，注册成功即入池（Z:208 假机群 i41-verify-2/i96-audit-runner-01 实测路径）。",
+     "verify_cmd": "grep -q \"route.post('/api/runner/register'\" apps/server/src/routes/runner.ts && grep -q 'registerResource' apps/server/src/routes/runner.ts",
+     "provenance": "Z:208 假机群；端点50（BO3a 任务7）"
+    },
+    {
+     "order": 3,
+     "id": "zl-chain-01-s3",
+     "title": "领取环：资源令牌认证后接走任务",
+     "location": "apps/server/src/routes/runner.ts::POST /api/runner/claim",
+     "finding": "claim 面仅资源令牌哈希认证（authenticateResource）+停用检查——假机凭注册所得令牌即可 15s 轮询领走真实任务（Z:208「接走任务」实测）。",
+     "verify_cmd": "grep -q \"route.post('/api/runner/claim'\" apps/server/src/routes/runner.ts && grep -q 'claimTask' apps/server/src/routes/runner.ts",
+     "provenance": "Z:208；端点52（BO3a 任务9）"
+    },
+    {
+     "order": 4,
+     "id": "zl-chain-01-s4",
+     "title": "回采环：master.key 落盘面+imports 任意目录读直达",
+     "location": "apps/server/src/services/runner-auth.ts::masterKeyFile（:67）× import-service.ts::runImport",
+     "finding": "凭据主钥落盘 dataDir/credentials/master.key，NaCl sealed box 封密的全部 runner 凭据以此钥可解；imports sourceDir 任意目录读（ARTEX #21）同进程直达=整库凭据封密被回采（ARTEX #15 i41-masterkey-verify 互证）。",
+     "verify_cmd": "grep -q \"'master.key'\" apps/server/src/services/runner-auth.ts && grep -q 'readdirSync(body.sourceDir)' apps/server/src/services/import-service.ts",
+     "provenance": "ARTEX #15/#21；zl-sup-02/zl-web-02 在册互证",
+     "gt_ref": "zl-sup-02"
+    }
+   ],
+   "provenance": "Z:208 假机群四机在册（i41-masterkey-verify/i41-verify-2/i56/i96-audit-runner-01）+ ARTEX #15 master.key 回测——全链各环皆实测",
+   "entered_at": "2026-10-19T00:00:00Z"
+  },
+  {
+   "id": "zl-chain-02",
+   "battlefield": "zl-chain-v1",
+   "polarity": "pos",
+   "status": "open",
+   "class": "infoleak",
+   "cwe": "CWE-538",
+   "severity": "Critical",
+   "title": "凭据外带链：imports 目录读（无 allowlist）→主钥落盘→整库 runner 凭据同钥可解",
+   "impact": "服务进程可读的任意目录皆可经 imports 入库展示；凭据主钥与被攻面同进程同文件系统，读到 master.key=解封整库 runner 凭据（纵深缺位）。",
+   "steps": [
+    {
+     "order": 1,
+     "id": "zl-chain-02-s1",
+     "title": "读入环：imports sourceDir 自由文本无根约束",
+     "location": "apps/server/src/services/import-service.ts::runImport",
+     "finding": "sourceDir 自由文本目录，existsSync 后直接 readdirSync/readFileSync——无前缀 allowlist/根约束（同 zl-web-02 单点行，链首环）。",
+     "verify_cmd": "grep -q 'readdirSync(body.sourceDir)' apps/server/src/services/import-service.ts && ! grep -q 'ALLOWED_SOURCE' apps/server/src/services/import-service.ts",
+     "provenance": "ARTEX #21；zl-web-02 在册互证",
+     "gt_ref": "zl-web-02"
+    },
+    {
+     "order": 2,
+     "id": "zl-chain-02-s2",
+     "title": "主钥环：凭据主钥落盘 dataDir/credentials/master.key",
+     "location": "apps/server/src/services/runner-auth.ts::masterKeyFile（:67）",
+     "finding": "主钥 0600·首启自动生成——文件权限不防服务进程读面（同 zl-sup-02 单点行）。",
+     "verify_cmd": "grep -q \"'master.key'\" apps/server/src/services/runner-auth.ts && grep -q 'credentials' apps/server/src/services/runner-auth.ts",
+     "provenance": "ARTEX #15；zl-sup-02 在册互证",
+     "gt_ref": "zl-sup-02"
+    },
+    {
+     "order": 3,
+     "id": "zl-chain-02-s3",
+     "title": "解封环：整库 runner 凭据 NaCl sealed box 同钥封密",
+     "location": "apps/server/src/services/runner-auth.ts::sealBytes/finish",
+     "finding": "注册响应 sealedMasterKey=sealBytes(masterKey, pk)（libsodium crypto_box_seal）——持主钥者可解封全部 runner 凭据（回采面终点）。",
+     "verify_cmd": "grep -q 'sealedMasterKey' apps/server/src/services/runner-auth.ts && grep -q 'crypto_box_seal' apps/server/src/services/runner-auth.ts",
+     "provenance": "runner-auth.ts:47/:76/:105（快照扩摘在案）"
+    }
+   ],
+   "provenance": "ARTEX #15「路径穿越读到 ZhuLong master.key」+ #21 imports 面——README 缺口表 L3 行（imports→master.key 链）升格成链",
+   "entered_at": "2026-10-19T00:00:00Z"
+  }
+ ]
+}

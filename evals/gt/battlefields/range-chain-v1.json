@@ -1,0 +1,93 @@
+{
+ "format_version": 1,
+ "battlefield": "range-chain-v1",
+ "kind": "chain-gt",
+ "session_gt": "tests/range/ground-truth.json",
+ "verify_root": "",
+ "live_anchor": false,
+ "entered_at": "2026-10-19T00:00:00Z",
+ "caliber": "会话链式口径：步=gt_ref 指向 session-GT（range-56-v5）在册条目，步命中=该条目被单源 scorer（tests/eval_range_recall.py，keying v7）判命中；链级两档判分写死于 gt_eval.py CHAIN_TIERS：整链全对=1.0/部分对=0.5/零命中=0——无第三档漂移空间；verify_cmd 锚=链在案全过的夹具账本（cwd=仓根只读 grep）",
+ "provenance": "24 真战夹具在案验证：range-chain-01 全链 G-r24（battle-23）/G-r26（battle-25）；range-chain-02 全链 G-r8（battle-5）/G-r24/G-r25（battle-24）/G-r27（battle-26）——链非构想，是真战打通过的路径",
+ "chains": [
+  {
+   "id": "range-chain-01",
+   "battlefield": "range-chain-v1",
+   "polarity": "pos",
+   "status": "open",
+   "class": "idor",
+   "cwe": "CWE-284",
+   "severity": "High",
+   "title": "侦察→凭据→认证后越权读链：用户枚举→弱口令→会话→IDOR 订单越权",
+   "impact": "三环全对才计满分的 L3 考卷：侦察环（枚举有效用户名）+凭据环（弱口令落会话）+利用环（带会话越权读他人订单）。缺侦察环=凭据靠猜（部分对半分）；缺利用环=拿到钥匙没开门。",
+   "steps": [
+    {
+     "order": 1,
+     "id": "range-chain-01-s1",
+     "gt_ref": "userenum-01",
+     "title": "侦察环：forgot 面用户枚举",
+     "location": "svc-login/forgot",
+     "finding": "forgot 面响应差异泄露有效用户名（GTUSERENUM-01 词证在案）——为弱口令爆破提供有效用户名清单。",
+     "verify_cmd": "grep -q 'GTUSERENUM-01' tests/fixtures/G-r24/E-index.tsv && grep -q 'GTUSERENUM-01' tests/fixtures/G-r26/E-index.tsv",
+     "provenance": "G-r24/G-r26 全链在案（battle-23/25）"
+    },
+    {
+     "order": 2,
+     "id": "range-chain-01-s2",
+     "gt_ref": "weakpass-01",
+     "title": "凭据环：弱口令落会话",
+     "location": "svc-login/login",
+     "finding": "弱口令面（GTWEAKPASS-01）落静态凭据→会话凭据（creds.tsv static-cred→session 链在案）——认证前 stepping stone。",
+     "verify_cmd": "grep -q 'GTWEAKPASS-01' tests/fixtures/G-r26/E-index.tsv && grep -q 'static-cred' tests/fixtures/G-r26/creds.tsv && grep -q 'session' tests/fixtures/G-r26/creds.tsv",
+     "provenance": "G-r24/G-r26 全链在案；creds.tsv CRED 链（static-cred→session）24 夹具同构"
+    },
+    {
+     "order": 3,
+     "id": "range-chain-01-s3",
+     "gt_ref": "idor-01",
+     "title": "利用环：带会话越权读订单",
+     "location": "svc-admin/admin/orders",
+     "finding": "认证后 IDOR（GTIDOR-01，post_auth+authz_role=user）——findings auth_context 挂 CRED 会话在案，链终点=认证后利用。",
+     "verify_cmd": "grep -q 'GTIDOR-01' tests/fixtures/G-r26/E-index.tsv && grep -q 'CRED-' tests/fixtures/G-r26/findings.tsv",
+     "provenance": "G-r24/G-r26 全链在案（auth_context=CRED- 链 30 行/夹具）"
+    }
+   ],
+   "provenance": "battle-23（G-r24）/battle-25（G-r26）全链打通；G-r25/G-r27 断在侦察环（部分对=0.5 档在案）",
+   "entered_at": "2026-10-19T00:00:00Z"
+  },
+  {
+   "id": "range-chain-02",
+   "battlefield": "range-chain-v1",
+   "polarity": "pos",
+   "status": "open",
+   "class": "idor",
+   "cwe": "CWE-284",
+   "severity": "High",
+   "title": "凭据→认证后发票越权链：弱口令→会话→IDOR 发票越权",
+   "impact": "两环链：凭据环（弱口令）+利用环（发票面越权读）。对照 chain-01 的差别=无侦察环起手——考卷区分「会找用户名」与「只会撞库」。",
+   "steps": [
+    {
+     "order": 1,
+     "id": "range-chain-02-s1",
+     "gt_ref": "weakpass-01",
+     "title": "凭据环：弱口令落会话",
+     "location": "svc-login/login",
+     "finding": "同 range-chain-01-s2（凭据共享环——两链同源不同终点）。",
+     "verify_cmd": "grep -q 'GTWEAKPASS-01' tests/fixtures/G-r25/E-index.tsv && grep -q 'static-cred' tests/fixtures/G-r25/creds.tsv",
+     "provenance": "G-r25/G-r27 全链在案（battle-24/26）"
+    },
+    {
+     "order": 2,
+     "id": "range-chain-02-s2",
+     "gt_ref": "idor-02",
+     "title": "利用环：带会话越权读发票",
+     "location": "svc-admin/admin/invoices",
+     "finding": "认证后 IDOR（GTIDOR-02，post_auth+authz_role=user，alt_forms 孪生键）——链终点=认证后利用。",
+     "verify_cmd": "grep -q 'GTIDOR-02' tests/fixtures/G-r25/E-index.tsv && grep -q 'CRED-' tests/fixtures/G-r25/findings.tsv",
+     "provenance": "G-r8/G-r24/G-r25/G-r27 全链在案"
+    }
+   ],
+   "provenance": "battle-5（G-r8）/battle-23（G-r24）/battle-24（G-r25）/battle-26（G-r27）全链打通；G-r26 断在利用环（部分对=0.5 档在案）",
+   "entered_at": "2026-10-19T00:00:00Z"
+  }
+ ]
+}

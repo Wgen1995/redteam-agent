@@ -20,22 +20,39 @@ battle-42 口径 39/56=0.696≈0.70，40/56 形=0.714——0.71 即此带；三�
 ## 二、覆盖面缺口表（漏洞类×深度）
 
 深度轴：L1 单请求 beacon（合成 range 已覆盖）→ L2 源码级白盒（本批 zl-* 开垦 7 类）
-→ L3 链式/多步（imports→master.key 链入册 zl-sup-02）→ L4 基础设施/容器（空白）。
+→ L3 链式/多步（**本批落成**：zl-chain-v1 源码链 2 条 + range-chain-v1 会话链 2 条）
+→ L4 基础设施/容器（空白）。
 
 | 漏洞类 | L1 合成会话 | L2 源码白盒 | L3 链式 | L4 基建 |
 |---|---|---|---|---|
-| sqli/xss/ssti/cmdi/cors/jwt/xxe/rfi/lfi/graphql/ratelimit/userenum/weakpass/upload/deser/redir/infoleak/traversal/idor/hauth/role/broken-access-control/ssrf | ✅ range-56（23 类） | ssrf✅ xss✅ traversal✅ broken-access-control✅ csrf✅ file-read✅（zl-*） | imports→master.key✅ | ❌ |
-| 任意目录读（CWE-552） | ❌ | ✅ zl-web-02 | ✅ 链 zl-sup-02 | ❌ |
+| sqli/xss/ssti/cmdi/cors/jwt/xxe/rfi/lfi/graphql/ratelimit/userenum/weakpass/upload/deser/redir/infoleak/traversal/idor/hauth/role/broken-access-control/ssrf | ✅ range-56（23 类） | ssrf✅ xss✅ traversal✅ broken-access-control✅ csrf✅ file-read✅（zl-*） | userenum→weakpass→idor✅（range-chain-01）weakpass→idor✅（range-chain-02） | ❌ |
+| 任意目录读（CWE-552） | ❌ | ✅ zl-web-02 | ✅ zl-chain-02 首环 | ❌ |
 | CSRF/DNS-rebinding（CWE-353） | ❌（合成 csrf 归 broken-access-control） | ✅ zl-web-03 | ❌ | ❌ |
-| 凭据文件暴露（CWE-538） | ❌ | ✅ zl-sup-02 | ✅ | ❌ |
-| 供给链/令牌准入（CWE-306） | ❌ | ✅ zl-sup-01 | ❌ | ❌ |
+| 凭据文件暴露（CWE-538） | ❌ | ✅ zl-sup-02 | ✅ zl-chain-02（读入→主钥→解封） | ❌ |
+| 供给链/令牌准入（CWE-306） | ❌ | ✅ zl-sup-01 | ✅ zl-chain-01（令牌→注册→claim→回采 4 环） | ❌ |
 | 可用性 DoS（CWE-248） | ❌ | ✅（修复锚 zl-sup-03） | ❌ | ❌ |
-| 弱口令爆破/锁定 | weakpass✅ | 诱饵面✅（d03） | ❌ | ❌ |
+| 弱口令爆破/锁定 | weakpass✅ | 诱饵面✅（d03） | ✅（两链凭据环） | ❌ |
 | 容器逃逸/orchestrator/云元数据实弹 | ❌ | ❌ | ❌ | ❌（最大空白） |
 | 业务逻辑/竞态/反序列化真库 | ❌ | ❌ | ❌ | ❌ |
 
-优先补法建议（下批）：①L4 容器/编排面（BO9 sandbox 族伤疤扩容）②L3 链式扩容
-（token→注册→claim→回采全链 GT 行）③held-out 冻结集（出题器 v1=P1-6 后训练/考试分家）。
+优先补法建议（下批）：①L4 容器/编排面（BO9 sandbox 族伤疤扩容）②L3 链式再扩
+（CSRF/rebinding 面+DoS 面成链）③held-out 冻结集（出题器 v1=P1-6 后训练/考试分家）。
+
+## 二·五、chain-gt 战场口径（L3 链式——本批）
+
+- **链=有序步骤组**：battlefield JSON `chains[].steps[]`，环序 `order` 1..N 连续，
+  环环 verify_cmd（守卫同 source-gt：grep/test 段式只读，黑名单硬拒）；链/环 id 全局
+  唯一（与 source-gt 行号同空间）。
+- 两类锚：**源码链**（zl-chain-v1——锚根=verify_root 字段，缺省 snapshots/zl-repo，
+  `--live` 时 live_anchor 战场切 ZhuLong 仓根只读）与**会话链**（range-chain-v1——
+  步=`gt_ref` 指向 session-GT 条目，verify_cmd 锚=链在案全过的夹具账本，cwd=仓根）。
+- **链级两档判分（写死不漂）**：gt_eval.py `CHAIN_TIERS = {full: 1.0, partial: 0.5,
+  zero: 0.0}`——整链全对=1.0/部分对（≥1 环非全环）=0.5/零=0；断环位置不加分不扣分。
+  chain_recall=Σ链分/链数；同场输出 step_recall（环级平铺）与 flat_recall（全场平铺）
+  作对照。测试钉死常量与判分（test_gt_chains.py）。
+- 消费面：`gt_verify.py` 收链校验（环序/环号/守卫/锚跑/会话链 gt_ref 落册）；
+  `gt_eval.py --chain <json> [--write-chain <tsv>]` 出链式召回（三既有战对照=
+  baselines/gt-chain-baseline-v1.tsv + 注记）。
 
 ## 三、source-gt 战场口径（zl-*）
 
@@ -58,10 +75,12 @@ snapshots/zl-repo/ 下文件=锚承载摘录（非可构建源码）：首行 `G
 
 ## 五、capability_gate 消费契约
 
-1. 读 `gt-index.tsv`（TSV；# 注释行跳过；9 列见文件头注释）；
+1. 读 `gt-index.tsv`（TSV；# 注释行跳过；**11 列**见文件头注释——chains/steps=链式
+   步骤组字段，非链行为 0；链行 chains/steps 与战场 JSON 逐数对账由 gt_verify 钉）；
 2. source-gt 战场：逐 JSON 行消费（字段见 §三）；变更影响面=open 行数 ±、
    fixed-anchor 锚 rc、neg 诱饵命中数（FP 计数）；
 3. 会话评测：`python3 evals/gt/gt_eval.py --session <dir> --label <名> --write <tsv>`
    （复用 tests/eval_range_recall 单源 scorer；keying 随其常量）；
-4. 门禁建议：召回≥基线−容差 且 FP≤基线+容差 且 fixed-anchor 全过（棘轮律：
-   回退=拒合并）；基线数值以 baselines/ 追加行为准（不覆写历史）。
+4. 门禁建议：召回≥基线−容差 且 FP≤基线+容差 且 fixed-anchor 全过 且链环锚全过
+   （棘轮律：回退=拒合并）；基线数值以 baselines/ 追加行为准（不覆写历史）；
+   链式面基线=gt-chain-baseline-v1.tsv（两档判分写死，漂移=尺子坏）。

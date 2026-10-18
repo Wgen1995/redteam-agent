@@ -1,0 +1,8 @@
+# evals/gt/baselines — 链式召回基线（追加式；两档判分=CHAIN_TIERS 写死；列见首行）
+label	session	chain_battlefield	chains	full	partial	zero	chain_recall	step_recall	flat_recall	missed_steps	keying	ran_at
+b24-G-r25	tests/fixtures/G-r25	range-chain-v1	2	1	1	0	0.75	0.80	0.62	userenum-01	7	2026-10-19T00:00:00Z
+b25-G-r26	tests/fixtures/G-r26	range-chain-v1	2	1	1	0	0.75	0.80	0.57	idor-02	7	2026-10-19T00:00:00Z
+b26-G-r27	tests/fixtures/G-r27	range-chain-v1	2	1	1	0	0.75	0.80	0.41	userenum-01	7	2026-10-19T00:00:00Z
+b40-G-r41	/Users/wgen/.tanyin/battles/battle-40/G-r41	range-chain-v1	2	0	2	0	0.50	0.60	0.62	userenum-01,idor-02	7	2026-10-19T00:00:00Z
+b41-G-r42	/Users/wgen/.tanyin/battles/battle-41/G-r42	range-chain-v1	2	0	1	1	0.25	0.20	0.62	userenum-01,weakpass-01,idor-02	7	2026-10-19T00:00:00Z
+b42-G-r43	/Users/wgen/.tanyin/battles/battle-42/G-r43	range-chain-v1	2	1	1	0	0.75	0.80	0.70	userenum-01	7	2026-10-19T00:00:00Z

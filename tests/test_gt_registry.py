@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """evals/gt 数据件校验测（宪法#43 评测棘轮地基；≥10 测：GT 行完整性/索引一致/评测可跑）。
 
-被测件：evals/gt/gt-index.tsv + battlefields/*.json + snapshots/zl-repo/**
-+ gt_verify.py（CLI 面）+ gt_eval.py（会话评测面）+ baselines/gt-baseline-v1.tsv。
+被测件：evals/gt/gt-index.tsv（11 列——链式 chains/steps 步骤组字段在册）
++ battlefields/*.json + snapshots/zl-repo/** + gt_verify.py（CLI 面）
++ gt_eval.py（会话评测面）+ baselines/gt-baseline-v1.tsv。
+链式面（chain-gt 战场/链级两档判分/链式基线）另见 tests/test_gt_chains.py。
 靶场仓只读律：测试只读 ZhuLong 仓（--live 例 env-skip rc=2 容错）。
 """
 import json
@@ -45,10 +47,17 @@ class TestGtIndex(unittest.TestCase):
         self.assertIn("session-gt", kinds)
         self.assertIn("source-gt", kinds)
         self.assertIn("replay-fixture", kinds)
-        for r in rows:
+        for r in rows:   # 11 列（L3 链式扩容 +chains/steps 步骤组字段）
             self.assertEqual(len([c for c in [r["battlefield"], r["kind"], r["gt_file"],
-                                              r["true_findings"], r["decoys"], r["caliber"],
-                                              r["status"], r["entered_at"], r["note"]] if c]), 9)
+                                              r["true_findings"], r["decoys"], r["chains"],
+                                              r["steps"], r["caliber"], r["status"],
+                                              r["entered_at"], r["note"]] if c]), 11)
+            if r["kind"] == "chain-gt":
+                self.assertGreaterEqual(int(r["chains"]), 1, r["battlefield"])
+                self.assertGreaterEqual(int(r["steps"]), int(r["chains"]), r["battlefield"])
+            else:
+                self.assertEqual(int(r["chains"]), 0, r["battlefield"])
+                self.assertEqual(int(r["steps"]), 0, r["battlefield"])
 
     def test_index_files_exist(self):
         for r in _index_rows():
