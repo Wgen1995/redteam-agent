@@ -27,6 +27,7 @@ from .corrections import CorrectionLayer
 from .budget import BudgetMeter
 from .context import ContextBuilder
 from .executor import MAX_PARALLEL_TOOLS, ToolBatchExecutor, flat as _flat
+from .guardrail import default_guardrail
 from .heartbeat import Heartbeat, StallDetected, iso_of
 from .ledger_io import LedgerIO
 from .model_client import ModelClient
@@ -59,7 +60,8 @@ class WarriorLoop(object):
                  heartbeat_min=5.0, stall_min=15.0, ctx_tokens=24000,
                  skill_path=None, clock=None, tool_spawn=None,
                  tool_state_path=None, kb=True,
-                 max_parallel_tools=MAX_PARALLEL_TOOLS):
+                 max_parallel_tools=MAX_PARALLEL_TOOLS,
+                 guardrail=None):
         self.battle = battle_name
         self.io = LedgerIO(goal_dir, warrior_id)
         self.warrior_id = warrior_id
@@ -77,8 +79,11 @@ class WarriorLoop(object):
                              warrior=warrior_id)
         self.tool_spawn = tool_spawn
         self.tool_state_path = tool_state_path
+        self.guardrail = (guardrail if guardrail is not None else   # 件①
+                          default_guardrail(self.io))
+        self._gr_scope = ("", 0)               # 件①：本回合判定执法域
         self.executor = ToolBatchExecutor(      # E舰③：同轮工具并行执行面
-            tool_exec=self._tool_exec, ledger_write=self.io.write,
+            tool_exec=self._guarded_tool_exec, ledger_write=self.io.write,
             now=self.clock, ts=self._ts, add_tl=self.io.add_tl,
             warrior_id=warrior_id, max_parallel=max_parallel_tools)
         self._steer_idx = 0
@@ -90,6 +95,18 @@ class WarriorLoop(object):
 
     def _ts(self):
         return iso_of(self.clock())
+
+    def _guarded_tool_exec(self, card, args):
+        """件① seam：tool 执行前过两段判定+重复退避（E 吸收件①）。
+
+        拒=rc1+人话理由（经 err 面回模型，gate-reject 同形）；放行才落
+        既有卡层门链。_gr_scope 由 process_intent 每回合先钉（并行批
+        worker 读固定值）。"""
+        iid, turn = self._gr_scope
+        adm = self.guardrail.admit(card, args, iid, turn, self._ts())
+        if not adm.allowed:
+            return 1, "", "未执行（判定拦截: %s）" % adm.reason
+        return self._tool_exec(card, args)
 
     def _tool_exec(self, card, args):
         from tools import gate as tool_gate
@@ -207,6 +224,7 @@ class WarriorLoop(object):
                 continue
             # E舰③：同轮指令批经并行执行器（三律+依赖律——见 executor.py；
             # 单 tool 回合行为与串行先例逐字节兼容）
+            self._gr_scope = (iid, turn)   # 件①：判定执法域=本意图本回合
             batch = self.executor.execute(parsed.instructions, iid, turn,
                                           corr=corr)
             outcomes = batch.outcomes

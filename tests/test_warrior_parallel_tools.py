@@ -41,7 +41,7 @@ def tool(card, *args):
 
 def fact(detail):
     return {"op": "ledger", "cmd": "add-fact",
-            "args": {"kind": "info", "target": "shop.example",
+            "args": {"kind": "info", "target": "shop.shop.example",
                      "detail": detail, "confidence": "0.7"}}
 
 
@@ -170,13 +170,13 @@ class ParallelCase(unittest.TestCase):
     def test_distinct_tools_overlap_in_same_turn(self):
         # 双向会合证并行：两刀各自「起跑即发栅栏+等对方栅栏」——串行必超时
         ea, eb = threading.Event(), threading.Event()
-        self.probe.rules["t1.example"] = {"set_on_start": [ea],
+        self.probe.rules["t1.shop.example"] = {"set_on_start": [ea],
                                           "wait_for": eb}
-        self.probe.rules["t2.example"] = {"set_on_start": [eb],
+        self.probe.rules["t2.shop.example"] = {"set_on_start": [eb],
                                           "wait_for": ea}
         lp = self._loop({"m1": [
-            {"content": fence(tool("dig", "+short", "A", "t1.example"),
-                              tool("curl", "-sS", "https://t2.example/"))},
+            {"content": fence(tool("dig", "+short", "A", "t1.shop.example"),
+                              tool("curl", "-sS", "https://t2.shop.example/"))},
             {"content": DONE}]})
         rep = lp.run()
         self.assertEqual(rep.status, "no-intents")
@@ -186,13 +186,13 @@ class ParallelCase(unittest.TestCase):
 
     def test_same_tool_distinct_targets_overlap(self):
         ea, eb = threading.Event(), threading.Event()
-        self.probe.rules["a.example"] = {"set_on_start": [ea],
+        self.probe.rules["a.shop.example"] = {"set_on_start": [ea],
                                          "wait_for": eb}
-        self.probe.rules["b.example"] = {"set_on_start": [eb],
+        self.probe.rules["b.shop.example"] = {"set_on_start": [eb],
                                          "wait_for": ea}
         lp = self._loop({"m1": [
-            {"content": fence(tool("dig", "+short", "A", "a.example"),
-                              tool("dig", "+short", "A", "b.example"))},
+            {"content": fence(tool("dig", "+short", "A", "a.shop.example"),
+                              tool("dig", "+short", "A", "b.shop.example"))},
             {"content": DONE}]})
         rep = lp.run()
         self.assertEqual(rep.status, "no-intents")
@@ -202,7 +202,7 @@ class ParallelCase(unittest.TestCase):
 
     def test_semaphore_caps_at_sixteen(self):
         self.probe.rules["example"] = {"sleep": 0.2}
-        calls = [tool("dig", "+short", "A", "t%02d.example" % i)
+        calls = [tool("dig", "+short", "A", "t%02d.shop.example" % i)
                  for i in range(20)]
         lp = self._loop({"m1": [{"content": fence(*calls)},
                                 {"content": DONE}]})
@@ -215,7 +215,7 @@ class ParallelCase(unittest.TestCase):
 
     def test_max_parallel_tools_configurable(self):
         self.probe.rules["example"] = {"sleep": 0.08}
-        calls = [tool("dig", "+short", "A", "t%02d.example" % i)
+        calls = [tool("dig", "+short", "A", "t%02d.shop.example" % i)
                  for i in range(6)]
         lp = self._loop({"m1": [{"content": fence(*calls)},
                                 {"content": DONE}]},
@@ -227,13 +227,13 @@ class ParallelCase(unittest.TestCase):
                          % self.probe.max_active)
 
     def test_parallel_batch_wall_time_beats_serial(self):
-        self.probe.rules["t1.example"] = {"sleep": 0.25}
-        self.probe.rules["t2.example"] = {"sleep": 0.25}
-        self.probe.rules["t3.example"] = {"sleep": 0.25}
+        self.probe.rules["t1.shop.example"] = {"sleep": 0.25}
+        self.probe.rules["t2.shop.example"] = {"sleep": 0.25}
+        self.probe.rules["t3.shop.example"] = {"sleep": 0.25}
         lp = self._loop({"m1": [
-            {"content": fence(tool("dig", "+short", "A", "t1.example"),
-                              tool("curl", "-sS", "https://t2.example/"),
-                              tool("dig", "+short", "MX", "t3.example"))},
+            {"content": fence(tool("dig", "+short", "A", "t1.shop.example"),
+                              tool("curl", "-sS", "https://t2.shop.example/"),
+                              tool("dig", "+short", "MX", "t3.shop.example"))},
             {"content": DONE}]})
         rep = lp.run()
         self.assertEqual(rep.status, "no-intents")
@@ -246,21 +246,21 @@ class ParallelCase(unittest.TestCase):
     # --- 律③：完成序解耦，结果按调用 id 归位 ------------------------------
 
     def test_results_in_dispatch_order_despite_reversed_completion(self):
-        self.probe.rules["t1.example"] = {"sleep": 0.30, "out": "out-t1"}
-        self.probe.rules["t2.example"] = {"sleep": 0.02, "out": "out-t2"}
-        self.probe.rules["t3.example"] = {"sleep": 0.12, "out": "out-t3"}
+        self.probe.rules["t1.shop.example"] = {"sleep": 0.30, "out": "out-t1"}
+        self.probe.rules["t2.shop.example"] = {"sleep": 0.02, "out": "out-t2"}
+        self.probe.rules["t3.shop.example"] = {"sleep": 0.12, "out": "out-t3"}
         lp = self._loop({"m1": [
-            {"content": fence(tool("dig", "+short", "A", "t1.example"),
-                              tool("curl", "-sS", "https://t2.example/"),
-                              tool("dig", "+short", "MX", "t3.example"))},
+            {"content": fence(tool("dig", "+short", "A", "t1.shop.example"),
+                              tool("curl", "-sS", "https://t2.shop.example/"),
+                              tool("dig", "+short", "MX", "t3.shop.example"))},
             {"content": DONE}]})
         rep = lp.run()
         self.assertEqual(rep.status, "no-intents")
         # 完成序确已倒置：t2 → t3 → t1
-        self.assertLess(self.probe.finished_idx("t2.example"),
-                        self.probe.finished_idx("t3.example"))
-        self.assertLess(self.probe.finished_idx("t3.example"),
-                        self.probe.finished_idx("t1.example"))
+        self.assertLess(self.probe.finished_idx("t2.shop.example"),
+                        self.probe.finished_idx("t3.shop.example"))
+        self.assertLess(self.probe.finished_idx("t3.shop.example"),
+                        self.probe.finished_idx("t1.shop.example"))
         # 模型收到的指令结果面=派发序 t1 → t2 → t3
         msg = self._results_msg()
         self.assertLess(msg.index("out-t1"), msg.index("out-t2"))
@@ -271,12 +271,12 @@ class ParallelCase(unittest.TestCase):
     # --- 律②：并行执行、串行入账（原序+哈希链） ---------------------------
 
     def test_ledger_writes_original_order_and_chain_intact(self):
-        self.probe.rules["t1.example"] = {"sleep": 0.15}
-        self.probe.rules["t2.example"] = {"sleep": 0.15}
+        self.probe.rules["t1.shop.example"] = {"sleep": 0.15}
+        self.probe.rules["t2.shop.example"] = {"sleep": 0.15}
         lp = self._loop({"m1": [
-            {"content": fence(tool("dig", "+short", "A", "t1.example"),
+            {"content": fence(tool("dig", "+short", "A", "t1.shop.example"),
                               fact("并行事实一"),
-                              tool("curl", "-sS", "https://t2.example/"),
+                              tool("curl", "-sS", "https://t2.shop.example/"),
                               fact("并行事实二"))},
             {"content": DONE}]})
         rep = lp.run()
@@ -302,10 +302,10 @@ class ParallelCase(unittest.TestCase):
     # --- 律④：同卡同目标串行 ----------------------------------------------
 
     def test_same_tool_same_target_never_overlaps(self):
-        self.probe.rules["t1.example"] = {"sleep": 0.25}
+        self.probe.rules["t1.shop.example"] = {"sleep": 0.25}
         lp = self._loop({"m1": [
-            {"content": fence(tool("dig", "+short", "A", "t1.example"),
-                              tool("dig", "+short", "MX", "t1.example"))},
+            {"content": fence(tool("dig", "+short", "A", "t1.shop.example"),
+                              tool("dig", "+short", "MX", "t1.shop.example"))},
             {"content": DONE}]})
         rep = lp.run()
         self.assertEqual(rep.status, "no-intents")
@@ -318,13 +318,13 @@ class ParallelCase(unittest.TestCase):
 
     def test_single_tool_turn_semantics_unchanged(self):
         lp = self._loop({"m1": [
-            {"content": fence(tool("dig", "+short", "A", "shop.example"))},
+            {"content": fence(tool("dig", "+short", "A", "shop.shop.example"))},
             {"content": DONE}]})
         rep = lp.run()
         self.assertEqual(rep.status, "no-intents")
         self.assertEqual(len(self.probe.calls), 1)
         self.assertEqual(self.probe.calls[0][-4:],
-                         ["dig", "+short", "A", "shop.example"])
+                         ["dig", "+short", "A", "shop.shop.example"])
         self.assertIn("tool dig rc=0 out=ok-out err=",
                       self._results_msg(), "单刀回合 summary 面不变")
         self.assertTrue(any("op=tool" in e and "card=dig" in e
@@ -334,9 +334,9 @@ class ParallelCase(unittest.TestCase):
     def test_done_terminates_rest_of_batch(self):
         self.probe.rules["example"] = {"sleep": 0.05}
         lp = self._loop({"m1": [
-            {"content": fence(tool("dig", "+short", "A", "t1.example"),
+            {"content": fence(tool("dig", "+short", "A", "t1.shop.example"),
                               {"op": "done", "reason": "中途收官"},
-                              tool("curl", "-sS", "https://t2.example/"))},
+                              tool("curl", "-sS", "https://t2.shop.example/"))},
             {"content": DONE}]})
         rep = lp.run()
         self.assertEqual(rep.status, "no-intents")
@@ -350,7 +350,7 @@ class ParallelCase(unittest.TestCase):
             "choices": [{"message": {"role": "assistant",
                                      "content": fence(
                                          tool("dig", "+short", "A",
-                                              "t1.example"))},
+                                              "t1.shop.example"))},
                          "finish_reason": "length"}],
             "usage": {"prompt_tokens": 100, "completion_tokens": 20}},
             ensure_ascii=False).encode("utf-8")
@@ -361,16 +361,16 @@ class ParallelCase(unittest.TestCase):
                          "附则：截断响应不得执行工具")
 
     def test_outcomes_include_note_and_ledger_in_order(self):
-        self.probe.rules["t1.example"] = {"out": "mark-t1"}
-        self.probe.rules["t2.example"] = {"out": "mark-t2"}
-        self.probe.rules["t3.example"] = {"out": "mark-t3"}
+        self.probe.rules["t1.shop.example"] = {"out": "mark-t1"}
+        self.probe.rules["t2.shop.example"] = {"out": "mark-t2"}
+        self.probe.rules["t3.shop.example"] = {"out": "mark-t3"}
         lp = self._loop({"m1": [
             {"content": fence(
-                tool("dig", "+short", "A", "t1.example"),
+                tool("dig", "+short", "A", "t1.shop.example"),
                 {"op": "note", "text": "留个脚印"},
-                tool("curl", "-sS", "https://t2.example/"),
+                tool("curl", "-sS", "https://t2.shop.example/"),
                 fact("混合批事实"),
-                tool("dig", "+short", "MX", "t3.example"))},
+                tool("dig", "+short", "MX", "t3.shop.example"))},
             {"content": DONE}]})
         rep = lp.run()
         self.assertEqual(rep.status, "no-intents")
@@ -408,18 +408,18 @@ class ExecutorCase(unittest.TestCase):
     def test_dep_key_conservative_target_extraction(self):
         target_of, dep_key = self.wexec.target_of, self.wexec.dep_key
         # 同卡同目标不同旗标=同键（律④）
-        self.assertEqual(dep_key("dig", ["+short", "A", "shop.example"]),
-                         dep_key("dig", ["+short", "MX", "shop.example"]))
+        self.assertEqual(dep_key("dig", ["+short", "A", "shop.shop.example"]),
+                         dep_key("dig", ["+short", "MX", "shop.shop.example"]))
         # 异目标=异键（可并行）
-        self.assertNotEqual(dep_key("dig", ["+short", "A", "a.example"]),
-                            dep_key("dig", ["+short", "A", "b.example"]))
+        self.assertNotEqual(dep_key("dig", ["+short", "A", "a.shop.example"]),
+                            dep_key("dig", ["+short", "A", "b.shop.example"]))
         # 异卡同目标=异键（保守域=同卡）
-        self.assertNotEqual(dep_key("dig", ["A", "a.example"]),
-                            dep_key("curl", ["-sS", "a.example"]))
+        self.assertNotEqual(dep_key("dig", ["A", "a.shop.example"]),
+                            dep_key("curl", ["-sS", "a.shop.example"]))
         # 目标相=末位起首个含 ./： 的非旗标（httpx 形：旗标值在目标后）
-        self.assertEqual(target_of(["-u", "https://x.example", "-rate",
+        self.assertEqual(target_of(["-u", "https://x.shop.example", "-rate",
                                     "20", "-silent"]),
-                         "https://x.example")
+                         "https://x.shop.example")
         # 无目标相=同卡全串行（保守失败方向）
         self.assertEqual(dep_key("kubectl", ["--context", "eng", "get",
                                              "pods"]),
@@ -438,8 +438,8 @@ class ExecutorCase(unittest.TestCase):
                 gate.set()
             return 0, "r-" + card, ""
         ex = self._mk(fx)
-        res = ex.execute([tool("slowA", "x.example"),
-                          tool("fastB", "y.example")], "INT-x", 1)
+        res = ex.execute([tool("slowA", "x.shop.example"),
+                          tool("fastB", "y.shop.example")], "INT-x", 1)
         self.assertEqual(finished, ["fastB", "slowA"], "完成序确已倒置")
         self.assertTrue(res.outcomes[0].startswith("tool slowA rc=0"),
                         "律③：结果按调用 id 归位（0 号槽=slowA）")
@@ -456,7 +456,7 @@ class ExecutorCase(unittest.TestCase):
             marks.append(("tool-end", time.monotonic()))
             return 0, "o", ""
         ex = self._mk(fx)
-        ex.execute([tool("dig", "a.example"), fact("先"), fact("后")],
+        ex.execute([tool("dig", "a.shop.example"), fact("先"), fact("后")],
                    "INT-x", 1)
         tool_end = marks[0][1]
         self.assertGreaterEqual(self.ledger_marks[0][1], tool_end,
@@ -470,8 +470,8 @@ class ExecutorCase(unittest.TestCase):
                 raise RuntimeError("guard 通道炸了")
             return 0, "fine", ""
         ex = self._mk(fx)
-        res = ex.execute([tool("boom", "a.example"),
-                          tool("ok", "b.example")], "INT-x", 1)
+        res = ex.execute([tool("boom", "a.shop.example"),
+                          tool("ok", "b.shop.example")], "INT-x", 1)
         self.assertIn("rc=2", res.outcomes[0])
         self.assertIn("tool 通道异常", res.outcomes[0])
         self.assertIn("tool ok rc=0", res.outcomes[1], "同批邻刀不受牵连")
@@ -489,7 +489,7 @@ class ExecutorCase(unittest.TestCase):
                 st["active"] -= 1
             return 0, "", ""
         ex = self._mk(fx, max_parallel=3)
-        ex.execute([tool("c%d" % i, "t%d.example" % i) for i in range(10)],
+        ex.execute([tool("c%d" % i, "t%d.shop.example" % i) for i in range(10)],
                    "INT-x", 1)
         self.assertEqual(st["max"], 3, "信号量=可配上限执法")
 
@@ -501,9 +501,9 @@ class ExecutorCase(unittest.TestCase):
             return 0, "o", ""
         ex = self._mk(fx)
         res = ex.execute([{"op": "note", "text": "先留言"},
-                          tool("dig", "a.example"),
+                          tool("dig", "a.shop.example"),
                           {"op": "done", "reason": "够了"},
-                          tool("curl", "b.example")], "INT-x", 1)
+                          tool("curl", "b.shop.example")], "INT-x", 1)
         self.assertTrue(res.saw_done)
         self.assertEqual(res.done_reason, "够了")
         self.assertEqual(seen, ["dig"], "done 后余刀不执行")
