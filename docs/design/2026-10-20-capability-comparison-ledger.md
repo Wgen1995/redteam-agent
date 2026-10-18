@@ -12,7 +12,7 @@
 - 战士面测试实数: test_warrior_* 共 **171测**(guardrail 30/corrections 22/kb_context 20/parallel_tools 18/loop 12/ledger_io 12/protocol 12/context 9/main 8/model_client 8/budget 5/heartbeat 5/steer 5/transcript 5)。
 - 语料实数: knowledge/concepts/ **50张**(CP-0001..0050逐一点数);cp-index.tsv 50行冻结;cli/tools/tools.lock **25行**签名锁;knowledge/engineering/sentinels-v1.tsv **14条**规则(SEN-001..014,未入库)。
 - 评测实数(evals/gt/README.md:14-18): 三战实测召回 b40=0.62/b41=0.62/b42=0.70(均值0.645);误报 FP=31/3/1(FP口径=活跃发现数−GT命中数)。42仗实跑在册(裁决书§白盒主设计确认)。
-- 在飞件(本账判定须知情): 功能5五因子引擎(cli/ledger/planner_score.py,未入库)+功能11哨兵三件(sentinels-v1.tsv+judge_client.py+101行/write_cmds.py+33行+distill.py K6回流施工中)+功能27驾驶舱WIP红测——均为工作树未提交件。
+- 在飞件(本账判定须知情,均工作树未提交): 功能5五因子引擎(cli/ledger/planner_score.py)+功能11哨兵三件(sentinels-v1.tsv+judge_client.py+101行/write_cmds.py+33行+distill.py K6回流施工中)+功能8常驻规划者/重派器(cli/ledger/planner_loop.py+replacer.py,09:16Z新落)+功能6身份矩阵(cli/bizlogic/identity_matrix.py,09:16Z新落)+功能27驾驶舱WIP红测。功能6/8判定按设计档快照作出(§F6/F8),在飞件落库后应升档复核。
 
 ---
 
@@ -62,7 +62,7 @@
 - **我们现状**: 设计定稿未实现(docs/design/2026-10-20-bizlogic-layer-design.md)。家底: authz-diff 意图 kind 在(contracts/01 六kind之一,设计档:3);GT 已有 idor 链(range-chain-v1 两链,gt-index.tsv:12);复盘三族教训在册(RT-0006/RT-0016);GT 缺口表`业务逻辑/竞态/反序列化真库 ❌`(evals/gt/README.md:36)。
 - **ARTEX**: 无专门层(靠 worker 自由发挥,bizlogic设计档:24)。
 - **CSAI**: 无(API安全测试角色有 GraphQL/JWT/fuzzing 提示词,CSAI清点§3——提示词级非引擎)。
-- **判定: 缺失**(设计有,实现无;竞品同样空白=先发窗口)。
+- **判定: 缺失**(设计有,实现无——身份矩阵首件 cli/bizlogic/identity_matrix.py 已于09:16Z在飞落盘,余四件未见;竞品同样空白=先发窗口)。
 - **最优方案**: 按定稿五件建(~900-1200行,TDD,过棘轮): ①身份矩阵=账本 CRED 链取钥匙(普通甲/乙/管理员丙/未登录),每发现必挂 auth_context(RT-0016挂链血律);②差分探测器=同请求×身份×状态(前/后/取消后)全组合发,响应差对比,**零信息差不猜**(有差分=候选入账,无差分=诚实记`无信号`);③业务流还原+作弊假设(改价/优惠券重用/跳支付/取消后发货)→engine-hyp 卡进活池同调度,判真标准先行(GenSift律);④三族形态字典强制调用(头名/方法/参数族);⑤可逆纪律=不可逆且无测试账号=卡挂审批。考卷补业务流作弊种子入 range 下一版。
 
 ## F7 白盒联动(源码审计↔渗透)
