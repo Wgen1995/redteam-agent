@@ -260,10 +260,18 @@ def run_sentinels(corpus, path=None):
     action ∈ clear|reject|downgrade-to-fact|mark-suspicious；corpus=finding
     的 title+description_brief+reproducible_steps 拼接文本；命中多条时按
     SENTINEL_PRECEDENCE 从严归并，note=胜出动作各规则 note 以「 ; 」连接。
+
+    换行归一（评审 I-1）：corpus 的 \r?\n 归一为空格后再匹配——规则间隙
+    量符是 [^\n]{0,N}，字段内嵌裸换行（CLI argv/worker 多行标题自然形态）
+    会把信号词与漏洞词切在两行而结构性绕过全部 14 条规则；归一后单行匹配，
+    判据语义不变（间隙仍是「至多 N 个非换行字符」，空格占位同宽计入）。
+    固有极限记账（评审 I-1 附注，不强求）：全角数字改写（４０４）仍可绕过
+    SEN-001——关键词正则对 Unicode 变形的固有极限，K6 人工过目位兜底。
     """
     version, rules = load_sentinels(path)
+    flat = re.sub(r"\r?\n", " ", corpus or "")
     matched = [r for r in rules
-               if re.search(r["signal_pattern"], corpus or "", re.IGNORECASE)]
+               if re.search(r["signal_pattern"], flat, re.IGNORECASE)]
     action, winners = "clear", []
     for act in SENTINEL_PRECEDENCE:
         winners = [r for r in matched if r["action"] == act]

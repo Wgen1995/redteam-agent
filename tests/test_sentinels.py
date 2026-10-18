@@ -160,6 +160,43 @@ class TestSentinelVerdicts(unittest.TestCase):
         self.assertIn("SEN-001", v["rule_ids"])
 
 
+# ================================================================ 换行归一（评审 I-1） ==
+
+class TestNewlineNormalization(unittest.TestCase):
+    """评审 I-1：字段内嵌裸换行可结构性绕过全部 14 条规则（间隙量符
+    [^\n]{0,N} 把信号词与漏洞词切在两行）——corpus 归一 \r?\n→空格后必须仍命中。
+    附注（固有极限记账，不强求）：全角数字改写（４０４）仍可绕过 SEN-001，
+    关键词正则的固有极限，人工过目位兜底。"""
+
+    def test_bare_newline_404_false_positive_downgrades(self):
+        corpus = ("未授权访问: /api/v2/orders 返回404" + chr(10)
+                  + "页面即可访问 构成漏洞")
+        v = jc.run_sentinels(corpus)
+        self.assertEqual(v["action"], "downgrade-to-fact",
+                         "裸换行不得切开 SEN-001 的 404→漏洞词间隙")
+        self.assertEqual(v["rule_ids"], ["SEN-001"])
+
+    def test_crlf_newline_same_verdict_as_lf(self):
+        corpus = "接口返回404" + chr(13) + chr(10) + "页面即可访问,构成泄露风险"
+        v = jc.run_sentinels(corpus)
+        self.assertEqual(v["action"], "downgrade-to-fact",
+                         "CRLF 与 LF 同归一（worker 多行标题自然形态）")
+
+    def test_bare_newline_proxy_lowconf_rejected(self):
+        corpus = ("代理返回低置信" + chr(10)
+                  + "判断(可能存在漏洞),未实测记为已验证")
+        v = jc.run_sentinels(corpus)
+        self.assertEqual(v["action"], "reject",
+                         "裸换行不得切开 SEN-011 的 代理→低置信→实测 间隙")
+        self.assertIn("SEN-011", v["rule_ids"])
+
+    def test_fullwidth_digits_known_limit_documented(self):
+        """固有极限记账（评审 I-1 附注）：全角 ４０４ 不被 SEN-001 捕获——
+        关键词正则的固有极限，只记账不修；本测钉住该边界供人工过目位知悉。"""
+        v = jc.run_sentinels("未授权访问: /api/v2/orders 返回４０４页面即可访问")
+        self.assertEqual(v["action"], "clear")
+
+
 # ================================================================ 入库挂接 ==
 
 class TestIngestionHook(unittest.TestCase):
