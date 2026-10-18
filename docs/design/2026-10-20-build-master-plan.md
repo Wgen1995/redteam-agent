@@ -56,3 +56,4 @@
 - 落舱记(R53,修复舰): 哨兵+规划者评审打回六件全修(docs/reviews/2026-10-20-review-sentinel-planner.md: 哨兵I-1换行绕过归一/规划者I-1 stderr捕获+run兜底/I-2持钥重派HMAC签名/I-4 sweep一趟聚合线性/I-3收卡惰性触发+planner-loop两CLI入口接线/M-5图单建,七提交TDD红转绿)——R21「功能5/8建成」修正为「核心建成,接线本舰补齐」。
 - 落舱记(R53,68律三验: 三提交在main+45测报绿+三模块实存): 韧性采纳舰落(dsh P0×3: repair崩溃尾修复/compaction检查点压缩/resume_driver续跑驱动,1174行45测,纯函数接线位留注等修复舰后接loop)——首仗保命件齐: 崩溃不丢果/长链不漏/重生知道从哪续。
 - 落舱记(R54,68律三验: 0a96f5a在main+41测报绿+corps.py实存): F4运行时舰落(corps.py: load_corps零配置五兵种/resolve意图路由兵种位直读/authorize越权拒spawn前纯函数执法/corps.yaml只收不放)——兵种层闭环: 卡→运行时→首仗按兵种派兵。装配一行等修复舰后接。
+- 落舱记(R55,68律三验: 七提交在main+报绿): 修复舰落——评审六件全修(哨兵换行归一cbdb91b/规划者stderr捕获+循环兜底bc08a24/持钥HMAC重派0ef258d/sweep线性化114b8be/闭环接线fafa34c+26cf882/图单建1811c72)。规划者闭环激活: 收卡惰性触发+CLI两入口,命令面53→55。待复审收舱。
