@@ -734,6 +734,25 @@ blurChecks();
 checkEight();
 loadMeta();
 
+/* 对话任务卡确认跳转预填（IA v2 壳重排：对话页 propose 只产卡，确认跳本表单
+   带参 name/note/scope/budget 预填——授权八问仍归本表单人确认，不代办） */
+(function prefillFromChat() {
+  var q = new URLSearchParams(window.location.search);
+  function put(id, val) {
+    if (!val) { return; }
+    var el = document.getElementById(id);
+    if (el && !el.value) { el.value = val; }
+  }
+  put('f-name', q.get('name'));
+  put('f-note', q.get('note'));
+  put('f-scope', q.get('scope'));
+  var parts = (q.get('budget') || '').split(';');
+  put('f-budget-token', parts[0]);
+  put('f-budget-req', parts[1]);
+  put('f-budget-hours', parts[2]);
+  if (q.get('name')) { renderScopeTags(); checkEight(); }
+})();
+
 /* 共享壳自注册（UI-1 舰 /static/app.js；壳未挂载时静默跳过，本页独立可用） */
 try {
   if (window.nav && typeof nav.push === 'function') {

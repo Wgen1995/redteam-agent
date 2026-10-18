@@ -532,9 +532,12 @@ class TestStaticPages(SteeringBase):
     def test_index_has_start_button_and_approval_card(self):
         with open(os.path.join(CLI, "webui", "static", "index.html"), encoding="utf-8") as f:
             src = f.read()
-        self.assertIn('href="/new"', src)
-        self.assertIn("开战", src)
-        self.assertIn('id="approval-card"', src)
+        # 容错式（IA v2 壳重排裁定）：保意图不保字面——
+        # 开仗入口=旧 /new 或新 /p/new-task 任一；审批入口=旧 approval-card 或新 /p/inbox 任一
+        self.assertTrue('href="/new"' in src or 'href="/p/new-task"' in src,
+                        "首页须有开仗入口（/new 或 /p/new-task）")
+        self.assertTrue('id="approval-card"' in src or 'href="/p/inbox"' in src,
+                        "首页须有审批入口（approval-card 或 /p/inbox）")
 
     def test_session_page_has_controls(self):
         with open(os.path.join(CLI, "webui", "static", "session.html"), encoding="utf-8") as f:

@@ -7,12 +7,12 @@
 <!-- 驾驶舱·收件箱（功能27）·正文 docs/design/2026-10-20-cockpit-ui-blueprint.md
      五秒三问（宪法63律——这页五秒能答的三问）：
        ① 几件事在等我？→ 顶部计数：待审批 N · 求助 N（跨仗扫，按等久了排）；
-       ② 每件是什么、多急？→ 待审批卡（事件/命令/仗名/账本行号）与求助卡
+       ② 每件是什么、多急？→ 待审批卡（事件/命令/仗名/记录行号）与求助卡
          （士兵的问题原话），最久的排最上；
        ③ 同类能不能一票处理？→ 批量同类聚合组：同工具的待审聚成一票，
          展开看明细，去审批中心逐笔批（本页只读，动作在审批面）。
      词表律（宪法62）：屏上只说人话。数据单源 /api/v2/cockpit-inbox.json
-     （账本真件推导，零假数）。零框架零 CDN。
+     （记录真件推导，零假数）。零框架零 CDN。
      视觉=GL-DS v1（六面同源）+等待时长相对化（⑩）。 -->
 <style>
 /* ===== GL-DS v1（六面同源复制，改必六处同改）===== */
@@ -159,9 +159,12 @@ gap:4px;padding:34px 18px}
     fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
     <path d="M8 1.6 14.4 8 8 14.4 1.6 8Z"/></svg></span><b>Graph<i>Led</i></b></div>
   <div class="nav-g">驾驶舱</div>
+  <a class="nav-i" data-nav="chat" href="/p/chat"><svg width="16" height="16" viewBox="0 0 16 16"
+    fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M2.5 3.5h11v7h-6L4 13.5v-3H2.5Z"/></svg>对话</a>
   <a class="nav-i" data-nav="home" href="/"><svg width="16" height="16" viewBox="0 0 16 16"
     fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
-    <path d="M2.5 7 8 2.4 13.5 7v6.1h-3.4V9.6H5.9v3.5H2.5Z"/></svg>首页</a>
+    <path d="M2.5 7 8 2.4 13.5 7v6.1h-3.4V9.6H5.9v3.5H2.5Z"/></svg>仪表盘</a>
   <a class="nav-i" data-nav="mission" href="/p/mission"><svg width="16" height="16"
     viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
     <circle cx="8" cy="8" r="5.6"/><circle cx="8" cy="8" r="2.2"/>
@@ -192,7 +195,7 @@ gap:4px;padding:34px 18px}
   <a class="nav-i" href="/p/coverage">资产覆盖</a>
   <a class="nav-i" href="/metrics">度量与考卷</a>
   <a class="nav-i" href="/activity">实时日志</a>
-  <div class="ft">Ctrl+K 全站跳转<br>数据=战账真件 · <b>零假数</b></div>
+  <div class="ft">Ctrl+K 全站跳转<br>数据=记录真件 · <b>零假数</b></div>
 </nav>
 <div id="content">
 <header id="topbar">
@@ -283,7 +286,7 @@ gap:4px;padding:34px 18px}
       '<span class="chev">›</span></div>' +
       '<div class="bd">' + rows +
       '<div class="ops">去<a href="/p/approval-center">审批中心</a>逐笔批——' +
-      "批准/拒绝都会进战账留痕。</div></div></div>";
+      "批准/拒绝都会进记录留痕。</div></div></div>";
   }
 
   function render(p) {

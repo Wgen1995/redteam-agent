@@ -13,7 +13,7 @@
        ③ 哪些排着队待复验？→ 每枚带待复验队列位（复验队列单源队序），
          一键去复测页。
      词表律（宪法62）：屏上只说人话——证据不说黑话缩写。数据单源
-     /api/v2/cockpit-findings.json（账本真件投影，零假数）。零框架零 CDN。
+     /api/v2/cockpit-findings.json（记录真件投影，零假数）。零框架零 CDN。
      视觉=GL-DS v1（六面同源）+⑦筛选器（严重度/状态/表面）+分页（>50 行）。 -->
 <style>
 /* ===== GL-DS v1（六面同源复制，改必六处同改）===== */
@@ -196,9 +196,12 @@ border-radius:6px;padding:5px 14px;cursor:pointer;font-size:var(--fs-a);font-fam
     fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
     <path d="M8 1.6 14.4 8 8 14.4 1.6 8Z"/></svg></span><b>Graph<i>Led</i></b></div>
   <div class="nav-g">驾驶舱</div>
+  <a class="nav-i" data-nav="chat" href="/p/chat"><svg width="16" height="16" viewBox="0 0 16 16"
+    fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M2.5 3.5h11v7h-6L4 13.5v-3H2.5Z"/></svg>对话</a>
   <a class="nav-i" data-nav="home" href="/"><svg width="16" height="16" viewBox="0 0 16 16"
     fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
-    <path d="M2.5 7 8 2.4 13.5 7v6.1h-3.4V9.6H5.9v3.5H2.5Z"/></svg>首页</a>
+    <path d="M2.5 7 8 2.4 13.5 7v6.1h-3.4V9.6H5.9v3.5H2.5Z"/></svg>仪表盘</a>
   <a class="nav-i" data-nav="mission" href="/p/mission"><svg width="16" height="16"
     viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
     <circle cx="8" cy="8" r="5.6"/><circle cx="8" cy="8" r="2.2"/>
@@ -229,7 +232,7 @@ border-radius:6px;padding:5px 14px;cursor:pointer;font-size:var(--fs-a);font-fam
   <a class="nav-i" href="/p/coverage">资产覆盖</a>
   <a class="nav-i" href="/metrics">度量与考卷</a>
   <a class="nav-i" href="/activity">实时日志</a>
-  <div class="ft">Ctrl+K 全站跳转<br>数据=战账真件 · <b>零假数</b></div>
+  <div class="ft">Ctrl+K 全站跳转<br>数据=记录真件 · <b>零假数</b></div>
 </nav>
 <div id="content">
 <header id="topbar">
@@ -400,7 +403,7 @@ border-radius:6px;padding:5px 14px;cursor:pointer;font-size:var(--fs-a);font-fam
     $("cnt").innerHTML =
       ch(c.total, "在册漏洞（同 id 终态）", "") +
       ch(c.verified_active, "验真在册", "ok") +
-      ch(c.raw_rows, "战账原始行（含翻案史）", "") +
+      ch(c.raw_rows, "记录原始行（含翻案史）", "") +
       ch(ITEMS.filter(function (f) { return f.queue_pos > 0; }).length,
          "可复验（挂证据）", "warn");
     var rows = ITEMS.filter(visible);
@@ -412,7 +415,7 @@ border-radius:6px;padding:5px 14px;cursor:pointer;font-size:var(--fs-a);font-fam
       : (ITEMS.length
         ? emptyBox("这个口径下没有漏洞",
             "换个筛选或搜索词——或者去<a href='/p/mission'>任务页</a>看正在打什么。")
-        : emptyBox("账本里还没有漏洞",
+        : emptyBox("记录里还没有漏洞",
             "士兵报漏洞、机器复放验真后才会出现在这里。" +
             "<a href='/p/mission'>看正在打什么</a>"));
     var pager = $("pager");
