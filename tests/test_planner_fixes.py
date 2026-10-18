@@ -236,5 +236,111 @@ class TestKeyedFaultRedispatch(Base):
         self.assertEqual(len(aps2), 1)
 
 
+# ============================================================ I-4 线性扫面 ==
+
+_ITC = TABLES["intents.tsv"]
+_TLC = TABLES["timeline.tsv"]
+_FAC = TABLES["facts.tsv"]
+_MAC = TABLES["matrix.tsv"]
+
+
+def _bench_goal(tmp, n_int=1000, tl_per=30, fa_per=20):
+    """同构万格基准夹具（评审 I-4 口径：时间线 30k+facts 20k=评审 10k
+    基准的表规模；意图数 1/10=1k，全部 done 终态——sweep 纯扫面零写入，
+    量的是扫面本身）。"""
+    from ledger.core import write_tsv
+    gd = shutil.copytree(FIX, os.path.join(tmp, "G-bench"))
+    its, tls, fas, mts = [], [], [], []
+    ii, it = _ITC.index("id"), _ITC.index("title")
+    ist, ien, icr = (_ITC.index("status"), _ITC.index("engine"),
+                     _ITC.index("created"))
+    tev = _TLC.index("event")
+    tts = _TLC.index("timestamp")
+    fid, fint = _FAC.index("id"), _FAC.index("intent_id")
+    fkind, fcr = _FAC.index("kind"), _FAC.index("created")
+    mas, mvc, mint = (_MAC.index("attack_surface"), _MAC.index("vuln_class"),
+                      _MAC.index("intent_id"))
+    for i in range(1, n_int + 1):
+        iid = "INT-g1-%04d" % i
+        row = [""] * len(_ITC)
+        row[ii], row[it], row[ist] = iid, "意图 %04d" % i, "done"
+        row[ien], row[icr] = "web-blackbox", TS
+        its.append(row)
+        for k in range(tl_per):
+            t = [""] * len(_TLC)
+            t[tts] = TS
+            t[tev] = "add-intent %s turn=%d" % (iid, k)
+            tls.append(t)
+        for k in range(fa_per):
+            f = [""] * len(_FAC)
+            f[fid], f[fint], f[fkind], f[fcr] =                 "F-%04d-%03d" % (i, k), iid, "info", TS
+            fas.append(f)
+        m = [""] * len(_MAC)
+        m[mas], m[mvc], m[mint] = "web.x%04d" % i, "inj.sql", iid
+        mts.append(m)
+    write_tsv(os.path.join(gd, "intents.tsv"), its)
+    write_tsv(os.path.join(gd, "timeline.tsv"), tls)
+    write_tsv(os.path.join(gd, "facts.tsv"), fas)
+    write_tsv(os.path.join(gd, "matrix.tsv"), mts)
+    write_tsv(os.path.join(gd, "findings.tsv"), [])   # 夹具残留 finding 不掺产出计数
+    return gd
+
+
+class TestSweepLinear(unittest.TestCase):
+    """I-4：sweep O(I×N)（每意图三全表扫+逐动作重开 Session 全量重读盘）
+    ——评审实测万格 8.32s/轮。修法=头部一趟聚合+Session 全 sweep 复用。"""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+
+    def test_ten_k_scale_tables_sweep_under_1s(self):
+        gd = _bench_goal(self._tmp.name)     # tl 30k + facts 20k + 1k 意图
+        t0 = time.monotonic()
+        out = RP.sweep(gd, TS)
+        dt = time.monotonic() - t0
+        self.assertEqual(len(out), 1000)
+        self.assertEqual({v["verdict"] for v in out}, {"complete"})
+        self.assertEqual(sum(v["trace_lines"] for v in out),
+                         1000 * 30, "trace 聚合口径=每意图 30 行生命周期")
+        self.assertEqual(sum(v["outputs"] for v in out), 1000 * 20)
+        self.assertLess(dt, 1.0,
+                        "sweep 须一趟聚合线性：同构万格基准表规模（时间线"
+                        "30k+facts20k）在 1k 意图上 <1s（评审 I-4 实测旧路径 "
+                        "8.32s@10k，本机复刻 2.7s）")
+
+    def test_sweep_reuses_single_session(self):
+        gd = shutil.copytree(FIX, os.path.join(self._tmp.name, "G-t"))
+        n = 20
+        for i in range(n):
+            run(gd, "add-intent", "--title=死路卡%02d" % i,
+                "--detail=探过了", "--engine=web-blackbox", "--kind=recon",
+                "--origin=entity", "--budget-share=1;1;1",
+                "--timestamp=" + TS)
+            iid = [r[0] for r in Session(gd).rows("intents.tsv")
+                   if r[_IT] == "死路卡%02d" % i][-1]
+            run(gd, "set-intent-status", "--id=" + iid,
+                "--status=rejected", "--reason=此路不通", "--timestamp=" + TS)
+        n_facts_before = len(Session(gd).rows("facts.tsv"))
+        real_session = RP.core.Session
+        made = []
+
+        def counting(d):
+            made.append(d)
+            return real_session(d)
+
+        with mock.patch.object(RP.core, "Session", new=counting):
+            out = RP.sweep(gd, TS)
+        self.assertEqual(len([v for v in out
+                              if v["verdict"] == "boundary-solidify"]), n)
+        self.assertEqual(len(out), n + 1)   # +1=夹具 INT-g1-0001 done=complete
+        facts = Session(gd).rows("facts.tsv")
+        self.assertEqual(len(facts), n_facts_before + n, "每卡恰一条收口事实")
+        self.assertEqual(len(made), 1 + n,
+                         "Session 全 sweep 复用一只（1=sweep 头 + %d=每卡"
+                         "一笔 add-fact 写路径 Ctx 各自的 Session；评审 I-4："
+                         "逐意图重开 Session=全量重读盘）" % n)
+
+
 if __name__ == "__main__":
     unittest.main()

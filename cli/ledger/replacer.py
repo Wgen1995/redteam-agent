@@ -30,10 +30,16 @@ Ruling：
 
 写通道纪律：全部经 ledger.registry.lookup（goal 写锁包装的既有执法链），
 不直接改 write_cmds（哨兵舰在改），不私铸 TSV 行。
+
+评审修（docs/reviews/2026-10-20-review-sentinel-planner.md §二）：
+- I-2 持钥部署（TANYIN_APPROVAL_KEY 在场）机械审批走 --sig 签名通道。
+- I-4 线性扫面：sweep 头部一趟聚合 intent_id→机械信号映射，Session 全
+  sweep 复用一只（旧 O(I×N) 三全表扫×逐动作重读盘已除）。
 """
 import contextlib
 import hashlib
 import io
+import re
 
 from . import core, registry
 from .query_cmds import _cell
@@ -84,21 +90,33 @@ def matrix_marks(s, iid):
                and _cell(r, "matrix.tsv", "state").strip())
 
 
-def classify(s, iid):
+def classify(s, iid, agg=None):
     """意图终态四分类（纯机械：终态标记+产出计数+矩阵置格；不 LLM）。
 
     非终态（candidate/pending/active/deferred）与 lease-expired 回收行 → None
     （R-REP-5：自动复活律管辖）。返回含全部机械信号的裁决 dict（审计面）。
+    agg=sweep 头部 _aggregate 的预聚合映射（评审 I-4：免逐意图三全表扫，
+    同判同果）；缺省=逐意图现算（独立调用面行为不变）。
     """
-    row = _latest_intents(s).get(iid)
+    if agg is not None:
+        entry = agg.get(iid)
+        row = entry["latest"] if entry is not None else None
+    else:
+        row = _latest_intents(s).get(iid)
     if row is None:
         return None
     status = _cell(row, "intents.tsv", "status")
     reason = _cell(row, "intents.tsv", "reason").strip()
+    if agg is not None:
+        trace_n, outputs, marks = (entry["trace_lines"], entry["outputs"],
+                                   entry["matrix_marks"])
+    else:
+        trace_n = trace_lines(s, iid)
+        outputs = output_count(s, iid)
+        marks = matrix_marks(s, iid)
     base = {"intent_id": iid, "status": status, "reason": reason,
-            "trace_lines": trace_lines(s, iid),
-            "outputs": output_count(s, iid),
-            "matrix_marks": matrix_marks(s, iid)}
+            "trace_lines": trace_n, "outputs": outputs,
+            "matrix_marks": marks}
     if status == "done":
         return dict(base, verdict=VERDICT_COMPLETE)
     if status == "rejected":
@@ -111,6 +129,69 @@ def classify(s, iid):
             return dict(base, verdict=VERDICT_FAULT)
         return dict(base, verdict=VERDICT_CONTINUE)
     return None
+
+
+# ---------------------------------------------------------------- 一趟聚合（评审 I-4）
+
+_TRACE_SEP = frozenset(" \t\r\n,;:()[]{}\"'<>|")   # 事件文本 id 词元边界
+_INT_AT = re.compile("(?=INT-)")
+
+
+def _count_trace(ev, agg, lens, seen):
+    """单事件行 trace 计数：行内每个 INT- 起点取最大 id 形词元，已知 iid
+    （=词元前缀，逐前缀长度试）计数一次——与旧「iid 子串出现于该行」在
+    账本真实形态（write_cmds 事件以空白/标点分隔嵌 id）逐行等价；对抗性
+    把 id 嵌进更长非法 id 字面量的文本不计（trace_lines 是审计面非判据）。"""
+    n = len(ev)
+    for m in _INT_AT.finditer(ev):
+        j = m.start()
+        k = j
+        while k < n and ev[k] not in _TRACE_SEP:
+            k += 1
+        run = ev[j:k]
+        for ln in lens:
+            x = run[:ln]
+            hit = agg.get(x)
+            if hit is not None and x not in seen:
+                seen.add(x)
+                hit["trace_lines"] += 1
+
+
+def _aggregate(s):
+    """sweep 头部一趟聚合（评审 I-4）→ {iid: 机械信号}。
+
+    单趟扫 intents/timeline/facts/findings/matrix 建
+    {iid: {"latest","trace_lines","outputs","matrix_marks","concl"}}；
+    sweep 分类与动作读面（续接结论/收口幂等判重）全程复用——旧路径每意图
+    三全表扫 O(I×N)（万格实测 8.32s/轮）+逐动作重开 Session 全量重读盘，
+    均除。concl=facts.detail[:200]+findings.title[:200]（_conclusions 同序
+    同截）。"""
+    agg = {}
+    for iid, row in _latest_intents(s).items():
+        agg[iid] = {"latest": row, "trace_lines": 0, "outputs": 0,
+                    "matrix_marks": 0, "concl": []}
+    if not agg:
+        return agg
+    lens = sorted({len(iid) for iid in agg})
+    for r in s.rows("timeline.tsv"):
+        seen = set()                     # 每行每 iid 至多计一次（同旧口径）
+        _count_trace(r[_EV_IDX], agg, lens, seen)
+    for r in s.rows("facts.tsv"):
+        hit = agg.get(_cell(r, "facts.tsv", "intent_id"))
+        if hit is not None:
+            hit["outputs"] += 1
+            hit["concl"].append(_cell(r, "facts.tsv", "detail")[:200])
+    for r in s.rows("findings.tsv"):
+        hit = agg.get(_cell(r, "findings.tsv", "intent_id"))
+        if hit is not None:
+            hit["outputs"] += 1
+            hit["concl"].append(_cell(r, "findings.tsv", "title")[:200])
+    for r in s.rows("matrix.tsv"):
+        if _cell(r, "matrix.tsv", "state").strip():
+            hit = agg.get(_cell(r, "matrix.tsv", "intent_id"))
+            if hit is not None:
+                hit["matrix_marks"] += 1
+    return agg
 
 
 # ---------------------------------------------------------------- 既有写入通道
@@ -149,20 +230,34 @@ def _redispatch(gd, iid, ts):
     rc, out = _run(gd, "approve", ap_args)
     if rc != 0:
         raise RuntimeError("重派预授权被拒: " + out)
-    s = core.Session(gd)
-    ap = None
-    for r in s.rows("approvals.tsv"):
-        if (_cell(r, "approvals.tsv", "command_hash") == chash
-                and _cell(r, "approvals.tsv", "approver") == OWNER):
-            ap = r[0]
+    ap = _approval_id_of(out)
     if ap is None:
-        raise RuntimeError("重派预授权行铸后不可见（读己之写破）")
+        # OK 回执行不可解析 → 回退读己之写（新鲜 Session 扫描；评审 I-4 正常
+        # 路径零 Session——审批行 id 取自执法链自己的 OK 回执行）
+        s = core.Session(gd)
+        ap = None
+        for r in s.rows("approvals.tsv"):
+            if (_cell(r, "approvals.tsv", "command_hash") == chash
+                    and _cell(r, "approvals.tsv", "approver") == OWNER):
+                ap = r[0]
+        if ap is None:
+            raise RuntimeError("重派预授权行铸后不可见（读己之写破）")
     rc, out = _run(gd, "set-intent-status", [
         "--id=" + iid, "--status=active", "--approval=" + ap,
         "--reason=transport-fault 纯故障重派（R-REP-1 判据成立）",
         "--owner=" + OWNER, "--lease-min=1", "--timestamp=" + ts])
     if rc != 0:
         raise RuntimeError("原卡重入池被拒: " + out)
+
+
+def _approval_id_of(out):
+    """approve 的 OK 回执行首行=「OK<TAB>AP-xxx<TAB>approvals.tsv」（_ok_line
+    金样钉死面）——取新铸审批行 id，免重开 Session 全量重读盘（评审 I-4）。"""
+    first = out.splitlines()[0] if out else ""
+    parts = first.split(chr(9))
+    if len(parts) >= 2 and parts[0] == "OK" and parts[1].startswith("AP"):
+        return parts[1]
+    return None
 
 
 def _conclusions(s, iid):
@@ -176,9 +271,15 @@ def _conclusions(s, iid):
     return out
 
 
-def _continue_card(gd, iid, row, ts):
-    """接续收口（R-REP-3）：续接卡带已得结论+剩余步骤；dedup 判重=幂等。"""
-    s = core.Session(gd)
+def _continue_card(gd, iid, row, ts, s=None, agg=None):
+    """接续收口（R-REP-3）：续接卡带已得结论+剩余步骤；dedup 判重=幂等。
+
+    s/agg=sweep 传入的复用 Session 与头部聚合映射（评审 I-4；缺省=自开
+    Session 现算，独立调用面行为不变）。共享 Session 对本轮 sweep 内新铸
+    续接卡不可见——同轮同 dedup 撞卡由 add-intent 执法链 dedup_key 拒收
+    兜住（I-1 修后=合并不 raise），账面仍恰一张。"""
+    if s is None:
+        s = core.Session(gd)
     title = "续接: " + _cell(row, "intents.tsv", "title")
     kind = _cell(row, "intents.tsv", "kind")
     if kind not in _INTENT_KINDS:
@@ -201,7 +302,8 @@ def _continue_card(gd, iid, row, ts):
                  for r in s.rows("intents.tsv")}:
         return None                      # 幂等：续接卡已在池
     rest = _OWNER_MARK_RE.sub("", _cell(row, "intents.tsv", "detail")).strip()
-    concl = _conclusions(s, iid)
+    concl = (agg[iid]["concl"]
+             if agg is not None and iid in agg else _conclusions(s, iid))
     detail = "续接 %s；已得结论: %s；剩余步骤: %s" % (
         iid, "；".join(concl) if concl else "无", rest or "无")
     args = ["--title=" + title, "--detail=" + detail,
@@ -216,16 +318,24 @@ def _continue_card(gd, iid, row, ts):
     return title
 
 
-def _solidify(gd, iid, row, ts):
-    """边界固化（R-REP-4）：写收口事实，不重派；同 intent 判重=幂等。"""
-    s = core.Session(gd)
+def _solidify(gd, iid, row, ts, s=None, sig=None):
+    """边界固化（R-REP-4）：写收口事实，不重派；同 intent 判重=幂等。
+
+    s/sig=sweep 传入的复用 Session 与分类裁决机械信号（评审 I-4；缺省=
+    自开 Session 现算，独立调用面行为不变）。"""
+    if s is None:
+        s = core.Session(gd)
     for r in s.rows("facts.tsv"):
         if (_cell(r, "facts.tsv", "intent_id") == iid
                 and _cell(r, "facts.tsv", "detail").startswith(_CLOSEOUT_MARK)):
             return None                  # 幂等：收口事实已在账
+    if sig is not None:
+        trace_n, outputs = sig["trace_lines"], sig["outputs"]
+    else:
+        trace_n, outputs = trace_lines(s, iid), output_count(s, iid)
     detail = "%s 此路不通（rejected; reason=%s；trace=%d 行/产出=%d）" % (
         _CLOSEOUT_MARK, _cell(row, "intents.tsv", "reason").strip(),
-        trace_lines(s, iid), output_count(s, iid))
+        trace_n, outputs)
     rc, out = _run(gd, "add-fact", [
         "--intent-id=" + iid, "--kind=info",
         "--target=" + (_cell(row, "intents.tsv", "title") or iid)[:200],
@@ -242,21 +352,28 @@ def sweep(goal_dir, ts, only=None):
 
     返回裁决 dict 列表（含机械信号，审计/报告面）；非终态与 lease-expired
     跳过；动作幂等（dedup/收口判重），重复 sweep 零重复写入。
-    """
+
+    线性扫面（评审 I-4）：头部 _aggregate 一趟聚合 intent_id→(latest/trace/
+    产出/置格/结论) 映射，Session 全 sweep 复用一只——旧路径每意图三全表
+    扫+classify 重建 latest 映射+逐动作重开 Session 全量重读盘（O(I×N)，
+    评审实测万格 8.32s/轮）已除；写路径（registry→Ctx）自身的加载=既有
+    执法链成本，不在本面。"""
     out = []
     s = core.Session(goal_dir)
-    for iid, row in sorted(_latest_intents(s).items()):
+    agg = _aggregate(s)
+    for iid, entry in sorted(agg.items()):
         if only is not None and iid not in only:
             continue
-        v = classify(s, iid)
+        row = entry["latest"]
+        v = classify(s, iid, agg=agg)
         if v is None:
             continue
         if v["verdict"] == VERDICT_FAULT:
             _redispatch(goal_dir, iid, ts)
         elif v["verdict"] == VERDICT_CONTINUE:
-            _continue_card(goal_dir, iid, row, ts)
+            _continue_card(goal_dir, iid, row, ts, s=s, agg=agg)
         elif v["verdict"] == VERDICT_BOUNDARY:
-            _solidify(goal_dir, iid, row, ts)
+            _solidify(goal_dir, iid, row, ts, s=s, sig=v)
         # complete：零写入（R-REP-6）
         out.append(v)
     return out
