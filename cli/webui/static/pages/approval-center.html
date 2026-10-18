@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>审批中心 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md
+     §P8-P18（审批中心全局页）。卡片形态复用 T3 拦截审批页签；共享壳
+     /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+#ac-search{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:6px 10px;border-radius:4px;font-size:12.5px;width:280px}
+#ac-search:focus{outline:none;border-color:var(--acc2)}
+#ac-counts{color:var(--g8);font-size:12px;font-family:var(--mono)}
+/* 四态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1080px;margin:0 auto;padding:18px 24px 60px}
+.clist{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.cc{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:10px 14px;min-width:110px}
+.cc .v{font-family:var(--mono);font-size:22px;color:var(--gc)}
+.cc .v.dang{color:var(--dang)}.cc .v.warn{color:var(--warn)}
+.cc .k{color:var(--g8);font-size:11px;margin-top:2px}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+/* T3 审批卡形态（复用） */
+#ac-queue{display:grid;gap:10px}
+.pcard{background:var(--g2);border:1px solid var(--g4);border-radius:6px;padding:12px}
+.pcard .hd{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-r{background:rgba(232,99,90,.14);color:var(--dang)}
+.t-y{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-n{background:var(--g4);color:var(--g9)}
+.pcard .tool{font-family:var(--mono);font-size:11.5px;color:var(--ga)}
+.pcard .bid{font-size:11px;color:var(--info)}
+.pcard .meta{display:flex;gap:12px;color:var(--g8);font-size:11px;margin-bottom:6px;
+flex-wrap:wrap}
+.pcard pre{background:var(--g1);border:1px solid var(--g4);border-radius:6px;
+padding:10px;font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--gb);
+overflow-x:auto;white-space:pre-wrap;margin:0 0 8px}
+.pcard .ai{border-left:3px solid var(--g6);padding:6px 10px;color:var(--g8);
+font-size:11.5px;line-height:1.7;margin-bottom:10px;background:var(--g1);
+border-radius:0 4px 4px 0}
+.pcard .ops{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:6px 14px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover:not(:disabled){background:var(--g5);color:var(--gc)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-approve{background:rgba(61,220,151,.12);border-color:var(--acc2);color:var(--acc)}
+.btn-approve:hover:not(:disabled){background:rgba(61,220,151,.2)}
+.btn-reject{background:rgba(232,99,90,.10);border-color:rgba(232,99,90,.5);color:var(--dang)}
+.rohint{color:var(--g8);font-size:11px}
+/* 已决历史/流水 */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);font-weight:500;text-align:left;padding:6px 8px;
+border-bottom:1px solid var(--g4);font-size:11.5px;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid var(--g3)}
+tr:hover td{background:var(--g3)}
+.none{color:var(--g8);font-size:12.5px;padding:14px 0;text-align:center}
+.note{color:var(--g8);font-size:11.5px;line-height:1.8;margin-top:10px}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">系统 · <b>审批中心</b></span>
+  <span class="sp"></span>
+  <input id="ac-search" type="search" placeholder="搜待审：命令 / 事件 / 任务 / 工具">
+  <span id="ac-counts"></span>
+</header>
+
+<div id="st-empty" class="state"><div class="box">
+  <h3>没有待审项</h3>
+  <p>审批中心汇总所有任务的待审命令：被拦截需要人工放行的操作会在这里排队。
+  已批准、已拒绝、已豁免的记录可在下方历史中查阅。</p>
+</div></div>
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在汇总跨任务待审队列…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>审批中心读取失败</h3>
+  <p id="err-detail"><code></code></p>
+  <button id="btn-retry" class="btn" type="button">重试</button>
+</div></div>
+
+<div id="st-normal" class="state">
+  <div id="wrap">
+    <div class="clist" id="cards"></div>
+    <div class="pane">
+      <h3>待审队列 <span class="sub" id="ac-sub"></span></h3>
+      <div id="ac-queue"></div>
+    </div>
+    <div class="pane">
+      <h3>已决历史 <span class="sub">最近 12 条 · 决定入链可审计</span></h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>编号</th><th>决定</th><th>所属任务</th><th>决定人</th><th>时刻</th></tr></thead>
+          <tbody id="ac-recent"></tbody>
+        </table>
+      </div>
+      <div class="none" id="recent-none" style="display:none">尚无审批决定记录</div>
+    </div>
+    <div class="pane">
+      <h3>拦截流水 <span class="sub">四层拦截（账本级/执行通道/宿主/外发代理）行计数</span></h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>任务</th><th>拦截行数</th></tr></thead>
+          <tbody id="ac-flow"></tbody>
+        </table>
+      </div>
+      <div class="none" id="flow-none" style="display:none">尚无拦截流水记录</div>
+      <div class="note" id="ac-note"></div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+/* T7·审批中心页：跨任务待审队列（T3 卡形态：风险徽章/工具/命令全文 mono/
+   AI 预审「仅供参考」/批准·拒绝·改参三钮）。四态=空/加载/错误/正常。
+   三钮写入=POST 既有 /api/approval（decision/row/_approval_sig——行号与签名
+   从 GET /api/approval 按 command_hash 连接取得，与任务内审批页同法）；
+   仅「审批对齐任务」的卡可写，其余只读展示。 */
+(function () {
+  var state = { pending: [], counts: {}, recent: [], flow: [], aligned: "",
+                note: "", q: "", legacy: {} };
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    ["st-empty", "st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === name);
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  var RISK_CLS = { "高": "t-r", "中": "t-y", "低": "t-n" };
+  var DEC_ZH = { approved: "已批准", rejected: "已拒绝", exempted: "已豁免",
+                 "knowledge-approved": "知识批准" };
+
+  function fetchLegacy() {
+    /* GET /api/approval（既有读面）：command_hash → {row, sig} 连接表 */
+    return fetch('/api/approval', { credentials: "same-origin" })
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        state.legacy = {};
+        (p.pending || []).forEach(function (x) {
+          if (x.command_hash) {
+            state.legacy[x.command_hash] = { row: x.row, sig: x._approval_sig || "" };
+          }
+        });
+      })
+      .catch(function () { state.legacy = {}; });
+  }
+
+  function cardHtml(c) {
+    var join = state.legacy[c.command_hash];
+    var usable = !!(c.writable && join && join.sig);
+    var head = '<div class="hd">' +
+      '<span class="tag ' + (RISK_CLS[c.risk] || "t-n") + '">风险·' + esc(c.risk) + "</span>" +
+      '<span class="tool">' + esc(c.tool) + "</span>" +
+      '<span class="bid">所属任务 ' + esc(c.battle && c.battle.id) + "</span></div>";
+    var meta = '<div class="meta"><span>发起 ' + esc(c.actor || "—") + "</span>" +
+      "<span>时刻 " + esc(c.ts || "—") + "</span>" +
+      '<span class="mono">哈希 ' + esc(String(c.command_hash).slice(0, 12)) + "…</span></div>";
+    var cmd = "<pre>" + esc(c.command) + "</pre>";
+    var ai = '<div class="ai">' + esc(c.ai_note) + "</div>";
+    var ops = '<div class="ops">' +
+      '<button class="btn btn-approve" data-d="approved"' + (usable ? "" : " disabled") + ">批准执行</button>" +
+      '<button class="btn btn-reject" data-d="rejected"' + (usable ? "" : " disabled") + ">拒绝</button>" +
+      '<button class="btn" data-d="edited"' + (usable ? "" : " disabled") + ">改参</button>" +
+      (c.writable ? "" : '<span class="rohint">只读展示——切换到该任务后可在此审批</span>') +
+      "</div>";
+    return '<div class="pcard" data-hash="' + esc(c.command_hash) + '">' +
+      head + meta + cmd + ai + ops + "</div>";
+  }
+
+  function renderQueue() {
+    var needle = state.q.trim().toLowerCase();
+    var shown = state.pending.filter(function (c) {
+      if (!needle) { return true; }
+      return (c.command + " " + c.event + " " + (c.battle && c.battle.id) + " " + c.tool)
+        .toLowerCase().indexOf(needle) >= 0;
+    });
+    $("ac-queue").innerHTML = shown.map(cardHtml).join("") ||
+      '<div class="none">没有匹配「' + esc(state.q) + "」的待审项</div>";
+    var risk = state.counts.by_risk || {};
+    $("ac-sub").textContent = "高风险 " + (risk["高"] || 0) + " · 中风险 " +
+      (risk["中"] || 0) + " · 低风险 " + (risk["低"] || 0);
+    $("ac-counts").textContent = shown.length + " / " +
+      (state.counts.pending || 0) + " 项待审";
+    Array.prototype.forEach.call($("ac-queue").querySelectorAll(".btn"), function (b) {
+      b.addEventListener("click", function () { decide(b); });
+    });
+  }
+
+  function decide(btn) {
+    var card = btn.closest(".pcard");
+    var hash = card.getAttribute("data-hash");
+    var join = state.legacy[hash];
+    if (!join || !join.sig) { return; }
+    var decision = btn.getAttribute("data-d");
+    if (decision === "edited") {
+      /* 改参=界面层编辑后放行（账本记录批准，参数修改由操作员执行） */
+      var edited = prompt("改参放行：编辑参数后在操作台执行，账本记批准。确认批准？");
+      if (edited === null) { return; }
+      decision = "approved";
+    }
+    btn.disabled = true;
+    fetch('/api/approval', {
+      method: "POST", credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ decision: decision, row: join.row, _approval_sig: join.sig })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p.error) { alert("审批被拒：" + p.error); btn.disabled = false; return; }
+        card.style.opacity = ".45";
+        Array.prototype.forEach.call(card.querySelectorAll(".btn"), function (b) {
+          b.disabled = true;
+        });
+      })
+      .catch(function (e) { alert("审批请求失败：" + e); btn.disabled = false; });
+  }
+
+  function renderRecent() {
+    var rows = (state.recent || []).slice().reverse();
+    $("ac-recent").innerHTML = rows.map(function (d) {
+      return "<tr><td class="mono">" + esc(d.id) + "</td>" +
+        "<td>" + esc(DEC_ZH[d.decision] || d.decision) + "</td>" +
+        "<td>" + esc(d.battle) + "</td>" +
+        "<td>" + esc(d.approver || "—") + "</td>" +
+        "<td class="mono">" + esc(d.timestamp) + "</td></tr>";
+    }).join("");
+    $("recent-none").style.display = rows.length ? "none" : "block";
+  }
+
+  function renderFlow() {
+    var rows = state.flow || [];
+    $("ac-flow").innerHTML = rows.map(function (f) {
+      return "<tr><td>" + esc(f.id) + '</td><td class="mono">' + f.flow + "</td></tr>";
+    }).join("");
+    $("flow-none").style.display = rows.length ? "none" : "block";
+  }
+
+  function renderCards() {
+    var c = state.counts || {};
+    var risk = c.by_risk || {};
+    $("cards").innerHTML = [
+      card(c.pending, "待审", ""),
+      card(risk["高"] || 0, "高风险", "dang"),
+      card(risk["中"] || 0, "中风险", "warn"),
+      card(c.flow, "拦截流水行", "")
+    ].join("");
+    function card(v, k, cls) {
+      return '<div class="cc"><div class="v ' + cls + '">' +
+        (v == null ? "—" : v) + '</div><div class="k">' + k + "</div></div>";
+    }
+  }
+
+  function load() {
+    show("st-loading");
+    fetchLegacy().then(function () {
+      return fetch('/api/v2/approval-center.json');
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p && p.error) { throw p.error; }
+        state.pending = p.pending || [];
+        state.counts = p.counts || {};
+        state.recent = p.recent || [];
+        state.flow = p.flow || [];
+        state.aligned = p.approval_aligned_battle || "";
+        state.note = p.note || "";
+        renderCards();
+        renderQueue();
+        renderRecent();
+        renderFlow();
+        $("ac-note").textContent = state.note + (state.aligned
+          ? "（当前审批通道对齐 " + state.aligned + "）" : "（当前无对齐任务——三钮只读）");
+        if (!state.pending.length) { show("st-empty"); return; }
+        show("st-normal");
+      })
+      .catch(function (e) {
+        $("err-detail").innerHTML = "<code>" + esc(e) + "</code>";
+        show("st-error");
+      });
+  }
+
+  $("ac-search").addEventListener("input", function () {
+    state.q = this.value;
+    renderQueue();
+  });
+  $("btn-retry").addEventListener("click", load);
+
+  /* 宿主壳自注册（共享壳缺席时本页独立可用——守卫式消费 UI-1 舰契约） */
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: 'approval-center', title: '审批中心', group: '系统' });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
