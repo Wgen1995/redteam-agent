@@ -64,6 +64,7 @@ from . import projections as _proj  # noqa: E402  (v0.9b 三页只读装配)
 from . import metrics as _met  # noqa: E402  (v0.9c 度量页只读装配)
 from ledger import session_view as _sv  # noqa: E402  (v0.9d 会话页只读装配)
 from ledger import battle_registry as _breg  # noqa: E402  (W2·01P0-4 多战仲裁接线)
+from . import api_pages as _api_pages  # noqa: E402  (UI-1 总装: /p/* 页 + /api/v2/* 分发)
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 DEFAULT_HOST, DEFAULT_PORT, DEFAULT_TAIL = "127.0.0.1", 8900, 50
@@ -450,7 +451,8 @@ class Handler(BaseHTTPRequestHandler):
                  "/session", "/activity", "/new", "/experiments", "/status.js",
                  "/console", "/console/live", "/console/graph",          # W6 控制台
                  "/console/findings", "/console/approval",               # 五新页
-                 "/console.css", "/console.js")                          # 壳资产（status.js 同例）
+                 "/console.css", "/console.js",                          # 壳资产（status.js 同例）
+                 "/static/app.js")                                       # UI-1 共享壳同例
 
     def log_message(self, fmt, *args):           # 静默（长连接轮询会刷屏；env 开话痨）
         if os.environ.get("TANYIN_WEBUI_DEBUG"):
@@ -459,7 +461,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         u = urllib.parse.urlparse(self.path)
         if u.path not in self._OPEN_GET and not self._session_ok():
-            if u.path in self._PAGE_GET:            # 页路由：带去登录（回来自动回原页由 /login 承担）
+            if u.path in self._PAGE_GET or u.path.startswith("/p/"):   # UI-1: /p/* 页同门
+                # 页路由：带去登录（回来自动回原页由 /login 承担）
                 self.send_response(302)
                 self.send_header("Location", "/login")
                 self.send_header("Content-Length", "0")
@@ -489,6 +492,18 @@ class Handler(BaseHTTPRequestHandler):
             return self._serve_page(_CONSOLE_PAGES[u.path])
         if u.path in _CONSOLE_ASSETS:                           # 壳资产（content-type 分型）
             return self._serve_asset(_CONSOLE_ASSETS[u.path])
+        if u.path.startswith("/p/"):                            # UI-1 总装: pages/ 统一页路由
+            return self._serve_v2_page(u.path)
+        if u.path == "/static/app.js":                          # UI-1 共享壳（/console.css 同例）
+            return self._serve_asset(("app.js", "text/javascript; charset=utf-8"))
+        if u.path.startswith("/static/pages/") and u.path.endswith(".js"):
+            name, err = _api_pages.pages_asset_file(u.path)    # 页级 JS（命令面板等）
+            if err:
+                return self._send(404, "text/plain; charset=utf-8",
+                                  (err + chr(10)).encode("utf-8"))
+            return self._serve_asset((name, "text/javascript; charset=utf-8"))
+        if u.path.startswith("/api/v2/"):                       # UI-1 总装: api_v2 统一分发
+            return self._serve_api_v2(u)
         if u.path == "/api/approval":                            # v0.9.8 待审投影（须会话）
             return self._serve_approval_get(u)
         if u.path == "/experiments":                               # v0.9d 度量页锚 302（nav 八链）
@@ -527,6 +542,30 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(500, "text/plain; charset=utf-8",
                               name.encode("ascii", "ignore") + b" missing\n")
         self._send(200, ctype, body)
+
+    def _serve_v2_page(self, path):
+        """UI-1 总装: /p/<slug>[.html] → static/pages/<slug>.html（api_pages 单源判件）。"""
+        name, err = _api_pages.page_file(path)
+        if err:
+            return self._send(404, "text/plain; charset=utf-8",
+                              (err + chr(10)).encode("utf-8"))
+        return self._serve_page(name)
+
+    def _serve_api_v2(self, u):
+        """UI-1 总装: /api/v2/* → 十舰 dispatch 查表（会话门已在 do_GET 顶部过）。"""
+        q = {k: v[0] for k, v in urllib.parse.parse_qs(u.query).items()}
+        srv = self.server
+        res = _api_pages.api_v2_dispatch(
+            u.path, q, srv.ledger_dir,
+            battles_dir=srv.battles_dir or None,
+            kit_dir=getattr(srv, "kit_dir", None))
+        if res is None:
+            return self._send(404, "application/json",
+                              json.dumps({"error": "未知路由: " + u.path},
+                                         ensure_ascii=False).encode("utf-8"))
+        status, payload = res
+        return self._send(status, "application/json",
+                          json.dumps(payload, ensure_ascii=False).encode("utf-8"))
 
     def _serve_page(self, name):
         try:
@@ -635,6 +674,21 @@ class Handler(BaseHTTPRequestHandler):
                 return self._post_approval()
             if u.path == "/api/report/download":
                 return self._post_report_download()
+        if u.path.startswith("/api/v2/"):                 # UI-1 总装: api_v2 写入口
+            if not self._guard_write():                   # 会话→同源→自定义头（既有守卫）
+                return
+            body = self._read_json()
+            if body is None:
+                return self._fail(400, {"error": "请求体须 JSON"})
+            res = _api_pages.api_v2_post_dispatch(u.path, body,
+                                                  self.server.ledger_dir)
+            if res is None:
+                return self._send(404, "application/json",
+                                  json.dumps({"error": "未知路由: " + u.path},
+                                             ensure_ascii=False).encode("utf-8"))
+            status, payload = res
+            return self._send(status, "application/json",
+                              json.dumps(payload, ensure_ascii=False).encode("utf-8"))
         self._send(404, "application/json",
                    json.dumps({"error": "未知路由: " + u.path},
                               ensure_ascii=False).encode("utf-8"))
