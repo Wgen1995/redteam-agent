@@ -25,7 +25,7 @@
 | 4 | facts.tsv | 纯追加 | ledger-add-fact | kind +authz |
 | 5 | findings.tsv | 纯追加（tombstone） | ledger-add-finding / ledger-supersede-finding | +exploitation_status/auth_context/dedup_key/scope_check/card_path |
 | 6 | assets.tsv | 纯追加 | ledger-add-asset | type +pivot/foothold/cloud-storage/human-factor（批次 4·G-12 勘误） |
-| 7 | edges.tsv | 纯追加 | ledger-add-edge | 10 边口径钉死 |
+| 7 | edges.tsv | 纯追加 | ledger-add-edge | 10 边口径钉死+第 11 边 anchor（v2 勘误，见文末） |
 | 8 | approvals.tsv | 纯追加 | ledger-approve | 逐条审批+签发+知识审批+豁免全落此表 |
 | 9 | E-index.tsv | 纯追加（只增不覆盖） | ledger-add-evidence | +network_position/card_path；四要素进卡片 |
 | 10 | matrix.tsv | 事件溯源（长表） | ledger-matrix-set（matrix-init 生成） | authz 差分落标准格 |
@@ -168,14 +168,14 @@
 | schema_version | 整数 | =2（§4.1） | 定稿值 |
 | created | 时间戳 | — | 创建时间 |
 
-### 3.7 edges.tsv（§4.8；10 边词汇见 §4 本文）
+### 3.7 edges.tsv（§4.8；10 边+anchor=11 边词汇见 §4 本文）
 
 性质：纯追加 · 写入命令：ledger-add-edge。
 
 | 字段 | 类型 | 枚举/约束 | 说明 |
 |---|---|---|---|
 | id | 文本 | 前缀 E（§4.1） | 边唯一标识 |
-| kind | 枚举 | ∈10 边（见下节） | 边类型 |
+| kind | 枚举 | ∈11 边（见下节；anchor=v2 勘误新增，provenance 必填 file:line+工件 sha256） | 边类型 |
 | source_id | 文本（行 id 引用） | 引用闭合校验（§4.1） | 源节点 |
 | target_id | 文本（行 id 引用） | 引用闭合校验（§4.1） | 目标节点 |
 | provenance | 文本 | 来源（intent/引擎/人工） | 溯源 |
@@ -300,9 +300,9 @@
 - 材质约定（kind 二分不变）：NTLM hash／私钥／客户端证书等特殊材料仍记 static-cred，材质用 meta 位标注（如 material=ntlm-hash|ssh-key|x509）——批次 4 差分配对按 role×端点，不按材质。
 - CB-1（§4.2）：session=creds.tsv 的 kind=session 行；身份矩阵差分按 kind+role 分组重放（§6.6）。
 
-## 4 10 边词汇（接口②，§4.8+§2.5）
+## 4 边词汇（接口②，§4.8+§2.5；定稿 10 边+anchor 勘误=11）
 
-边种类官方口径 **10 边**（scope-rel 入列，§2.5）。词汇表小而稳，新增边类型须 bump schema_version（§4.8）。
+边种类官方口径 **10 边**（scope-rel 入列，§2.5）；**第 11 边 anchor 经 v2 微版本勘误入列（2026-10-20，见文末勘误补记——W4 在册裁决走既有 bump 先例通道）**。词汇表小而稳，新增边类型须 bump schema_version（§4.8）——anchor 例外口径与通道见勘误补记（微版本勘误=零存量数据期例外，G-12 先例同通道）。
 
 | # | kind | 方向（定稿原文） | 语义（定稿原文/出处） |
 |---|---|---|---|
@@ -316,6 +316,7 @@
 | 8 | evidences | finding→EV | EV=证据（E-index.tsv，§4.9） |
 | 9 | supersedes | finding→finding | finding 合并=supersedes 边+tombstone，不删行（§4.1/§4.7） |
 | 10 | scope-rel | asset→scope | §2.5：边种类官方口径 10 边（scope-rel 入列） |
+| 11 | anchor | {facts,intents,findings}→assets | 第 11 边型（v2 勘误 2026-10-20·W4 白盒，source-audit-v1 §1.2「锚」行+06-whitebox F1-2 裁决继承）：锚点即桥——过程域（fact/intent/finding）锚定真值域资产（source-code 等）；provenance 必填 `file:line+工件sha256`（谱图工件 codegraph.jsonl 的 sha256，digest 事实携带——引擎不写账本，总控验收后落边）；归 asset 类。覆盖度=scope 分母÷锚定分子（账本 join 实现，ARTEX covTargetCTE 语义） |
 | material | 枚举 | ntlm-hash|ssh-key|x509|空（终审补列，独立第16列） | 终审裁决补列 | 
 | frozen_at | 字符串 | 锚点行冻结时间戳，空=未冻结（终审补列） | 终审裁决补列 | 
 | schema_version | 字符串 | =2（终审补列） | 终审裁决补列 | 
@@ -353,3 +354,7 @@ intents.tsv 增 **priority** 字段（派发优先级分，intents.priority）�
 ## v2 勘误补记（2026-09-24·批次 5 施工期·T3/G-24+G-27 落列）
 
 intents.tsv **15→17 字段一次重铸**（G-24 priority 与 G-27 cred 合笔——只付一次夹具/金样重铸成本；插入位=reason 之后、schema_version 之前，尾约定 schema_version/created 不动）：①priority=派发优先级分物理列（§3.3 表新增行；批4 T14 冻结的公式与语义就此落列兑现，0-1 浮点可空=未算分；算分=tanyin-knowledge score 只读产出，落账=总控经 add-intent --priority 回填——Top-K 选择仍=总控决策不破铁律 7 边界 2）；②cred=凭据绑定物理列（§3.3 表新增行；add-intent --cred 值从 detail 携带改落列，任意 kind 非空即写前引用闭合校验，kind=authz-diff 必填硬门原样保留；trigger-audit 逐对配对消费此列——批5 T6）。微版本勘误通道（零存量数据期，G-12 十一值枚举先例同通道），schema_version 保持 =2 不递增。联动：schemas.json intents.tsv 数组 17 项（契约同步手改——本表「机械生成」流程以本文 §3.3 为源）；夹具（G-g1/diff-authz）与金样一次重铸（变更面逐一归因两新列，见 tests/golden 提交注记）；自验行「intents=15/15」为冻结时点基线保留可追溯（R-T1-2 先例），勘误后本文 §3.3=17 字段。索引见 contracts/README.md。
+## v2 勘误补记（2026-10-20·W4 施工期·白盒锚边 anchor）
+
+edges.tsv kind 枚举 **10→11 值**：新增 `anchor`（方向 **{facts,intents,findings}→assets**，归 asset 类）。语义=锚点即桥——过程域行（facts/intents/findings）锚定真值域资产行（assets，typical=source-code）：source-audit-v1 §1.2「锚」行在册裁决+06-whitebox F1-2 裁决继承（比 ARTEX 裸两列 anchor 桥表强——桥不带 provenance/时间语义，我们必带）。**provenance 必填 `file:line+工件sha256`**：锚边溯源双要素=源码位置（file:line）+谱图工件内容指纹（codegraph.jsonl 的 sha256，车道A digest 事实携带）——引擎不写账本，总控验收 digest 后落边（单写者不变）。勘误通道=微版本勘误（零存量数据期，G-12 十一值枚举/priority/cred 落列先例同通道），schema_version 保持 =2 不递增；§4 词汇表加第 11 行，§2 总表清单第 7 行要点、§3.7 枚举行、§4 节题与引言一并同步；自验行「10 边」为冻结时点基线保留可追溯（R-T1-2 先例），勘误后边词汇=11。命令面（write_cmds.py `EDGE_KINDS`/`_EDGE_DIR` 执法）由并行舰随锚边消费落（SA-2 deepex 双向派生+锚点消费），本勘误只钉契约。索引见 contracts/README.md。
+

@@ -1,0 +1,12 @@
+file	kind	expected_patterns	framework	provenance
+pos/sequelize-raw.ts	pos	S-T01		人工构造(CWE-89 sequelize raw 拼接)
+pos/knex-raw.ts	pos	S-T03		人工构造(CWE-89 knex)
+pos/mysql-execute.ts	pos	S-T02		人工构造(CWE-89 mysql2)
+pos/pg-query.ts	pos	S-T01		人工构造(CWE-89 pg)
+pos/orderByRaw.ts	pos	S-T05		人工构造(CWE-89 ORDER BY 位置)
+neg/array-find.ts	neg			人工构造(硬负例:数组)
+neg/es-search.ts	neg			人工构造(硬负例:ES 查询构建)
+neg/fetch-api.ts	neg			人工构造(硬负例:HTTP)
+neg/graphql.ts	neg			人工构造(硬负例:GraphQL resolver)
+noise/execute-params.ts	noise			人工构造(噪音:占位符)
+noise/param-query.ts	noise			人工构造(噪音:参数化)

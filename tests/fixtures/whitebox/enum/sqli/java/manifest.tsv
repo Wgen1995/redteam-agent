@@ -1,0 +1,14 @@
+file	kind	expected_patterns	provenance	framework
+pos/concat-query.java	pos	S-J04	人工构造(依据 CWE-89 JDBC 形态)	jdbc
+pos/executeupdate-concat.java	pos	S-J05	人工构造(CWE-89 executeUpdate 拼接)	
+pos/hibernate-sqlquery.java	pos	S-J08	人工构造(Hibernate)	hibernate
+pos/jdbc-statement.java	pos	S-J06	人工构造(CWE-89 原生 Statement：创建点+执行点)	
+pos/mybatis-anno.java	pos	S-J10、S-J15	人工构造(MyBatis 注解 ${})	mybatis
+pos/mybatis-delete-anno.java	pos	S-J12、S-J15	人工构造(CWE-89 MyBatis @Delete ${} 表名插值)	mybatis
+neg/criteria-api.java	neg		人工构造(硬负例:JPA Criteria 结构化)	
+neg/dom-queryselector.java	neg		人工构造(硬负例:前端 DOM 查询非 SQL)	
+neg/elasticsearch.java	neg		人工构造(硬负例:ES 查询构建器非 SQL 文本)	
+neg/ldap-filter.java	neg		人工构造(硬负例:LDAP 过滤器构建)	
+neg/log-format.java	neg		人工构造(硬负例:日志格式化)	
+noise/executemany-safe.java	noise		人工构造(噪音:executemany 参数化)	
+noise/named-param.java	noise		人工构造(噪音:MyBatis #{} 安全用法)	mybatis

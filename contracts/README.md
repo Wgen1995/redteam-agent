@@ -138,3 +138,7 @@
 ## 批次 8 勘误索引（2026-09-27，b8 T11）
 
 - 02a 批次 8 勘误块（九条命令面扩展+schema_version 维持 2 裁决）；04（G-4 RESTART 定标+triggers-v3）；09（14 子命令/uninstall/--chain 面）；11（G-43 Tier2 单源+env 分型）；13（G-44 write_all 门内化）；14（M10 名录+G-45 init 基线）。
+
+## v2 勘误补记（2026-10-20·W4 白盒施工期·锚边 anchor）
+
+- 契约①（01-ledger-schema.md）边词汇 10→**11**：增第 11 边型 anchor（方向 {facts,intents,findings}→assets，provenance 必填 file:line+工件 sha256；source-audit-v1 §1.2「锚」行+06-whitebox F1-2 裁决继承，W4 在册）。微版本勘误通道，schema_version 保持 =2 不递增（零存量数据期，G-12 十一值枚举先例同通道）——详见该文件文末勘误补记；write_cmds.py 执法面由并行舰随 SA-2 锚点消费落。

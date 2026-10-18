@@ -1,0 +1,9 @@
+{"class":"authn","file":"services/UserService.java","lang":"java","line":12,"pattern_id":"AN-J01"}
+{"class":"authn","file":"services/UserService.java","lang":"java","line":12,"pattern_id":"AN-J04"}
+{"class":"proto-pollution","file":"util.ts","lang":"ts","line":8,"pattern_id":"PP-T11"}
+{"class":"sqli","file":"services/UserService.java","lang":"java","line":24,"pattern_id":"S-J04"}
+{"class":"sqli","file":"app.py","lang":"python","line":17,"pattern_id":"S-P01"}
+{"class":"sqli","file":"util.ts","lang":"ts","line":12,"pattern_id":"S-T02"}
+{"class":"ssrf","file":"util.ts","lang":"ts","line":7,"pattern_id":"SS-T01"}
+{"class":"xxe","file":"services/UserService.java","lang":"java","line":18,"pattern_id":"X-J01"}
+{"class":"xxe","file":"services/UserService.java","lang":"java","line":18,"pattern_id":"X-J02"}

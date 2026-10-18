@@ -1,0 +1,13 @@
+file	kind	expected_patterns	provenance	framework
+pos/axios-get-userurl.ts	pos	SS-T02	人工构造(依据 CWE-918 axios GET 形态)	
+pos/axios-post-webhook.ts	pos	SS-T03	人工构造(依据 CWE-918 axios webhook 形态)	
+pos/fetch-avatar-param.ts	pos	SS-T01	人工构造(依据 CWE-918 fetch 形态)	
+pos/fetch-redirect-chain.ts	pos	SS-T01	人工构造(依据 CWE-918 模板串拼接 + redirect follow 形态)	
+pos/got-stream-url.ts	pos	SS-T06	人工构造(依据 CWE-918 got 形态)	
+neg/dns-lookup-internal.ts	neg		人工构造(硬负例:DNS 解析属独立侦察面,非本类 HTTP 外发 sink)	
+neg/express-redirect-fixed.ts	neg		人工构造(硬负例:业务 302 到固定内部路径)	
+neg/json-parse-response.ts	neg		人工构造(硬负例:解析缓存的响应文本,消费侧)	
+neg/new-url-parse.ts	neg		人工构造(硬负例:URL 仅解析,无外发)	
+neg/origin-allowlist-check.ts	neg		人工构造(硬负例:origin 白名单校验,无外发)	
+noise/axios-fixed-base-instance.ts	noise	SS-T02	人工构造(噪音:同 API 安全用法——固定 baseURL 实例,允许命中)	
+noise/fetch-constant-health.ts	noise	SS-T01	人工构造(噪音:同 API 安全用法——常量 URL,允许命中)	
