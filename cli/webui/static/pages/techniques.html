@@ -260,5 +260,33 @@ border-radius:4px;cursor:pointer;font-size:12.5px}
   load();
 })();
 </script>
+<script>
+/* ⌘K/Ctrl-K 全局命令面板——可挂载组件 pages/_palette.js 冒烟挂载（单页冒烟舰）。
+   总装舰壳 /static/app.js 已落地：页面清单单源改吃壳侧 nav.entries()，裸 ⌘K
+   让位壳导航抽屉、本面板绑 ⌘⇧K（壳交出键位后自动回独占——组件头契约）。
+   注入由总装舰收口后本段可退役；候选地址先同目录相对路径（兄弟页引用同律）
+   后 /static 前缀；createElement 动态注入——不新增 script 外链标签，保住
+   「只许共享壳一外链」钉（tests/test_webui_pagespec_techniques.py）。零框架零 CDN。 */
+(function () {
+  if (window.__paletteLoaded) { return; }
+  window.__paletteLoaded = true;
+  var base = location.pathname.replace(/[^\/]*$/, '');
+  var cands = base ? [base + '_palette.js', '/static/pages/_palette.js']
+                   : ['/static/pages/_palette.js'];
+  function tryNext(i) {
+    if (i >= cands.length) { return; }
+    var s = document.createElement('script');
+    s.src = cands[i];
+    s.onload = function () {
+      if (window.Palette && typeof window.Palette.mount === 'function') {
+        window.Palette.mount();
+      }
+    };
+    s.onerror = function () { tryNext(i + 1); };
+    document.head.appendChild(s);
+  }
+  tryNext(0);
+})();
+</script>
 </body>
 </html>
