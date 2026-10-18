@@ -38,8 +38,11 @@ from . import api_v2_techniques        # noqa: F401
 # 在飞舰可选件（未提交/半成品允许缺席——import 失败/形不合=静默跳过不并网；
 # 落成即自动并网，总装不逼等任何一舰）
 _OPTIONAL_MODULES = ("api_v2_settings", "api_v2_workspace", "api_v2_evals",
-                     "api_v2_ask", "api_v2_llm", "api_v2_llm_status",
-                     "api_v2_system", "api_v2_tools", "api_v2_capability")
+                     "api_v2_ask", "api_v2_command", "api_v2_llm",
+                     "api_v2_llm_status", "api_v2_system", "api_v2_tools",
+                     "api_v2_capability",
+                     "api_v2_cockpit",   # 驾驶舱舰（功能27）：四路聚合投影
+                     "api_v2_fleet")     # 多任务治理舰（功能25补件）：总控数据面
 
 PAGES_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                           "static", "pages")
