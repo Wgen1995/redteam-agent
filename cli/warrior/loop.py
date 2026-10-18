@@ -18,11 +18,22 @@ token 计量）→ done 释放 → 下一意图。
 
 R2 串行链：done 后若存在 [prereq:本意图] 的 candidate 后继 → 恰提升
 下一个后继进 pending（TodoStore 逐轮派发，不前置倾倒）。
+
+接线四件（修复舰落舱后总控接线；各纯函数模块头注接线位单源）：
+  ① repair        run() 落 warrior-start 行后 plan_repair 对账悬空执行
+                  （合成收尾事件入 timeline + 状态行池同律原子重写）；
+  ② compaction    process_intent 每 turn ctx.build 后 needs_compaction→                  build_compaction（summarizer=None 确定性抽取）产包替换
+                  被遮蔽素材——上下文超限从终态变可恢复态；
+  ③ resume_driver run() 重生入口 build_resume_directive：resume→prompt
+                  注入 steers 续跑；round-limit→_stop 判死不再重生；
+  ④ corps         __init__ 装配 load_corps + 领单后 resolve 出 skill_path
+                  进简报 + tool/ledger 指令前置 authorize 拒=rc1+reason。
+四线降级律：各模块缺席/无解/护栏拒=回退接线前行为（金样零漂移）。
 """
 import os
 import time
 
-from . import protocol, steer
+from . import compaction, corps, protocol, repair, resume_driver, steer
 from .corrections import CorrectionLayer
 from .budget import BudgetMeter
 from .context import ContextBuilder
@@ -51,6 +62,19 @@ class RunReport(object):
         self.turns = 0
 
 
+def _rewrite_executions(goal_dir, rows):
+    """接线①：按 AsyncExecPool._persist 同律原子重写 tool-executions.tsv
+    （tmp-pid 临时文件 + os.replace；executor.py:327 单源同形——树冻结期
+    由总控接线落此行，不复制池实现只复刻落盘律）。"""
+    path = os.path.join(goal_dir, repair.EXECUTIONS_NAME)
+    tmp = "%s.tmp-%d" % (path, os.getpid())
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+        for r in rows:
+            f.write("\t".join(str(r.get(k) or "")
+                               for k in repair.EXECUTION_FIELDS) + "\n")
+    os.replace(tmp, path)
+
+
 class WarriorLoop(object):
     """一进程一循环；run() 同步执至停条件；dry_run() 零写零调。"""
 
@@ -61,7 +85,7 @@ class WarriorLoop(object):
                  skill_path=None, clock=None, tool_spawn=None,
                  tool_state_path=None, kb=True,
                  max_parallel_tools=MAX_PARALLEL_TOOLS,
-                 guardrail=None):
+                 guardrail=None, max_goal_rounds=None):
         self.battle = battle_name
         self.io = LedgerIO(goal_dir, warrior_id)
         self.warrior_id = warrior_id
@@ -79,11 +103,24 @@ class WarriorLoop(object):
                              warrior=warrior_id)
         self.tool_spawn = tool_spawn
         self.tool_state_path = tool_state_path
+        # 接线③：轮计硬上限（dsh maxGoalRounds 同型构造参数；轮计单源=
+        # 盘上 timeline 自方 warrior-start 行数——重启不重置）
+        self.max_goal_rounds = max(
+            1, int(max_goal_rounds or resume_driver.DEFAULT_MAX_GOAL_ROUNDS))
+        # 接线④：兵种运行时装配（corps.py 装配位）——corps.yaml/卡面坏=
+        # 降级 corps_rt=None 走默认面（金样零漂移，不炸战士）
+        try:
+            self.corps_rt = corps.load_corps(goal_dir)
+        except Exception:                              # noqa: BLE001
+            self.corps_rt = None
+        self._default_skill_path = self.ctx.skill_path
+        self._intent_corps = None        # 接线④：当前意图兵种（指令前置执法域）
         self.guardrail = (guardrail if guardrail is not None else   # 件①
                           default_guardrail(self.io))
         self._gr_scope = ("", 0)               # 件①：本回合判定执法域
-        self.executor = ToolBatchExecutor(      # E舰③+F22韧性三件
-            tool_exec=self._guarded_tool_exec, ledger_write=self.io.write,
+        self.executor = ToolBatchExecutor(      # E舰③+F22韧性三件+接线④
+            tool_exec=self._guarded_tool_exec,
+            ledger_write=self._corps_ledger_write,
             now=self.clock, ts=self._ts, add_tl=self.io.add_tl,
             warrior_id=warrior_id, max_parallel=max_parallel_tools,
             goal_dir=goal_dir)  # F22：goal_dir 注入=断路器/异步/spill 三件齐装
@@ -98,16 +135,47 @@ class WarriorLoop(object):
         return iso_of(self.clock())
 
     def _guarded_tool_exec(self, card, args):
-        """件① seam：tool 执行前过两段判定+重复退避（E 吸收件①）。
+        """件① seam + 接线④兵种前置：tool 执行前兵种面 authorize→两段
+        判定+重复退避（E 吸收件①；R-CORPS-2 执行器前置同形）。
 
-        拒=rc1+人话理由（经 err 面回模型，gate-reject 同形）；放行才落
-        既有卡层门链。_gr_scope 由 process_intent 每回合先钉（并行批
+        拒=rc1+人话理由（经 err 面回模型，gate-reject 同形，「未执行」
+        打头=拦截类拒绝不计断路器败）；放行才落既有卡层门链。
+        _gr_scope/_intent_corps 由 process_intent 每回合先钉（并行批
         worker 读固定值）。"""
+        if self._intent_corps is not None:      # 接线④：兵种面越权前置
+            adm = corps.authorize(self._intent_corps, card)
+            if not adm.allowed:
+                return 1, "", "未执行（兵种面越权: %s）" % adm.reason
         iid, turn = self._gr_scope
         adm = self.guardrail.admit(card, args, iid, turn, self._ts())
         if not adm.allowed:
             return 1, "", "未执行（判定拦截: %s）" % adm.reason
         return self._tool_exec(card, args)
+
+    def _corps_ledger_write(self, cmd, args):
+        """接线④：账本指令兵种面前置（corps.py 装配位注释同形）。
+
+        拒=rc1+reason 回模型面（executor._exec_ledger 同律入账
+        warrior-progress rc=1）；放行=既有 registry 写命令面零复制。
+        战士自身管理写（claim/complete/block/promote）直走 io.write
+        不经此门——门只拦模型指令。"""
+        if self._intent_corps is not None:
+            adm = corps.authorize(self._intent_corps, cmd)
+            if not adm.allowed:
+                return 1, "未执行（兵种面越权: %s）" % adm.reason
+        return self.io.write(cmd, args)
+
+    def _resolve_corps(self, intent):
+        """接线④：领单后兵种解析（corps.resolve；[corps:X] 直读优先、
+        kind 缺省路由次之）。无解（kind 空+无兵种位/authz-diff 无缺省
+        路由/未知兵种位）或未装配=降级走默认面——R-CORPS-1 的 fail-loud
+        在 resolve 自身，loop 面降级保既有非兵种意图照跑（金样零漂移）。"""
+        if self.corps_rt is None:
+            return None
+        try:
+            return self.corps_rt.resolve(intent)
+        except corps.CorpsError:
+            return None
 
     def _tool_exec(self, card, args):
         from tools import gate as tool_gate
@@ -167,6 +235,12 @@ class WarriorLoop(object):
         """一意图回合机：返回 ('done'|'yielded'|'blocked'|status, detail)。
         R1：conversation 仅本意图内累积，意图间零继承。"""
         iid = intent["id"]
+        # 接线④：领单后兵种解析——卡面入简报（ContextBuilder 的
+        # skill_path 注入位：兵种卡=本意图协议节）+ 指令前置执法域
+        self._intent_corps = self._resolve_corps(intent)
+        self.ctx.skill_path = (
+            self._intent_corps.skill_path if self._intent_corps is not None
+            else self._default_skill_path)
         conversation = []
         corrections = []
         corr = CorrectionLayer()                   # 一意图一层（R1）
@@ -182,9 +256,31 @@ class WarriorLoop(object):
             ctx = self.ctx.build(intent, corrections=corrections,
                                  steers=steers,
                                  facts_extra=corr.pinned_fact_lines())
-            messages = ([{"role": "user", "content": ctx.text}]
+            # 接线②：检查点压缩（dsh P0 采纳②；compaction.py 头注接线
+            # 位）——ctx 超窗 → build_compaction 产包替换被遮蔽素材
+            # （summarizer=None 确定性抽取，LLM 道留注入位）；未超窗/
+            # 素材面未超（None）/护栏拒（CompactionRefused）=原文照发
+            # （零漂移不炸回合——上下文超限从终态变可恢复态）
+            brief = ctx.text
+            if compaction.needs_compaction(ctx.estimated_tokens,
+                                           self.ctx.ctx_tokens):
+                try:
+                    pkg = compaction.build_compaction(
+                        intent=ctx.sections["intent"],
+                        briefing=ctx.sections["resume"],
+                        facts=[ln for ln in
+                               ctx.sections["facts"].split("\n") if ln],
+                        timeline=[ln for ln in
+                                  ctx.sections["resume"].split("\n")
+                                  if ln],
+                        window_tokens=self.ctx.ctx_tokens)
+                except compaction.CompactionRefused:
+                    pkg = None          # 护栏拒=原文照发（降级）
+                if pkg is not None:     # 摘要+保留尾替换被遮蔽素材
+                    brief = pkg.text + "\n" + "\n".join(pkg.retained_tail)
+            messages = ([{"role": "user", "content": brief}]
                         + conversation)
-            self.tr.record(iid, "user", ctx.text, ts=self._ts(),
+            self.tr.record(iid, "user", brief, ts=self._ts(),
                            model=self._model_name(), turn=turn)
             reply = self.client.chat(messages)
             self.meter.charge(iid, reply.prompt_tokens,
@@ -288,15 +384,41 @@ class WarriorLoop(object):
     # ---- 主入口 ----
 
     def run(self):
+        # 接线③：续跑驱动（dsh P0 采纳③；resume_driver.py 头注接线位）——
+        # 重生入口（停滞重生/断电重启同口）先于本世 warrior-start 判续/
+        # 判死：轮计=盘上自方 warrior-start 行数（判死世不再落新 start=
+        # 轮计封顶不漂）；账本撕裂等异常=降级直跑（后续自然执法面拦截）
+        try:
+            directive = resume_driver.build_resume_directive(
+                self.io.goal_dir, self.warrior_id,
+                max_goal_rounds=self.max_goal_rounds, now_ts=self._ts())
+        except Exception:                              # noqa: BLE001
+            directive = None
+        steers_pending = []
+        if directive is not None and directive.resume:
+            steers_pending = [directive.prompt]   # prompt 注入 steers 续跑
+        elif (directive is not None
+                and directive.block_code == "round-limit"):
+            return self._stop("round-limit", directive.prompt)  # 判死
         self.io.add_tl("warrior-start battle=%s warrior=%s pid=%s "
                        "channels=%d cap=%d"
                        % (self.battle, self.warrior_id, os.getpid(),
                           len(self.client.channels),
                           self.meter.token_cap), self._ts(),
                        phase="P-lifecycle")
+        # 接线①：崩溃尾修复（dsh P0 采纳①；repair.py 头注接线位）——
+        # 本世 warrior-start 行后对账悬空执行（他世崩溃遗留的 running
+        # 行；池装载已对账的 orphaned 行不在修复面——单态源=盘上文件）：
+        # 合成收尾事件入 timeline（ts=最后真实事件时戳，不假完成）+
+        # 状态行升 orphaned-not-lost 按池同律原子重写；无悬空/已修过=
+        # plan None 零漂移
+        plan = repair.plan_repair(self.io.goal_dir)
+        if plan is not None:
+            self.io.add_tl(plan.timeline_event, plan.ts,
+                           phase="P-lifecycle")
+            _rewrite_executions(self.io.goal_dir, plan.repaired_rows)
         if self.time_window_min:
             self._deadline = self.clock() + float(self.time_window_min) * 60
-        steers_pending = []
         try:
             while self.report.processed < self.max_intents:
                 st = steer.scan(self.io.goal_dir, self.warrior_id,
@@ -336,6 +458,9 @@ class WarriorLoop(object):
                 self.report.processed += 1
                 status, detail = self.process_intent(intent,
                                                      steers_pending)
+                # 接线④：意图收口即还原默认面（R1：意图间零继承）
+                self._intent_corps = None
+                self.ctx.skill_path = self._default_skill_path
                 steers_pending = []
                 if status == "done":
                     continue
