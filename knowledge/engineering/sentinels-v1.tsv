@@ -1,0 +1,20 @@
+# version: 1
+# 误报哨兵规则库 v1（功能11补件一·K4 工程规则库）——findings 入库前置门单源
+# 列: id/signal_pattern/judge/action/note；处置枚举: downgrade-to-fact|reject|mark-suspicious
+# 来源: b40 尸检 4 张回避卡 + RT 复盘误报教训 + 竞品实勘（ARTEX replay-probe / VulnClaw 四道闸同类形态）
+# 纪律: 改本文件须 bump version；K6 回流草稿（distill/sentinel-staging/）不经人工确认不合入
+id	signal_pattern	judge	action	note
+SEN-001	(?:状态码|返回|响应|页面|page)?\s*404(?!\d)[^\n]{0,50}(?:漏洞|未授权|越权|可访问|敏感|泄露|注入)	证据本体=通用 404 页（无差异化响应）却被判为漏洞——404 是端点事实非缺陷	downgrade-to-fact	b40 尸检: 通用 404 页误判为未授权访问/泄露；观察降级 fact（端点存在性）
+SEN-002	(?:默认|default|welcome|欢迎|安装|installation)[^\n]{0,20}(?:页面|page|页)[^\n]{0,50}(?:漏洞|风险|泄露|暴露)	默认欢迎页/安装页在账=部署形态事实，不构成漏洞本体	downgrade-to-fact	b40 尸检: nginx/apache 默认欢迎页当信息泄露上报；降级 fact（指纹素材）
+SEN-003	(?:waf|web应用防火墙|应用防火墙|防火墙|cloudflare|安全狗|雷池|safeline|宝塔|云盾)[^\n]{0,50}(?:拦截|阻断|blocked|攻击行为|非法请求)	WAF 拦截页出现=防护在位的事实，非『绕过成功』的证据	downgrade-to-fact	RT 复盘: WAF 拦截页当『防火墙绕过漏洞』上报；降级 fact（防护面在位）
+SEN-004	(?:sleep\(|延迟|延时|耗时|响应时间)[^\n]{0,40}(?:增加|变长|变慢|变久|大于|超过|>=|>)[^\n]{0,30}(?:注入|盲注|sqli|成功|存在)	单次延迟无基线对照=网络/工具抖动不可分，须重放取基线差分再判	mark-suspicious	RT 复盘: 时间盲注假延迟（无基线差分）；标记待验证官重放对照
+SEN-005	(?:truncated|截断|省略|输出不完整|超出长度|max_tokens|max tokens|超出限制|\.\.\.|…)[^\n]{0,40}(?:存在|成功|证实|确认|漏洞)	结论落在被截断的输出段上=读到的不是完整证据，须取全量输出复核	mark-suspicious	b40 尸检: 工具输出截断误读（截断段『回显』当命令执行成功）；待验证官取全量
+SEN-006	(?:重复|再次)[^\n]{0,16}(?:发现|报告|出现|命中)	同形发现再次上报=dedup 逃逸嫌疑（title 变体绕 dedup_key），须并卡核验	mark-suspicious	b40 尸检: 重复发现未合并（34 findings 挤单一无绑定 intent 同型）；待验证官并卡
+SEN-007	(?:测试|test|fixture|示例|样例|example|demo|mock|单元测试|占位)[^\n]{0,30}(?:凭据|凭证|密码|口令|账号|credential|password|passwd)[^\n]{0,40}(?:有效|可用|真实|成功|登录|验证通过)	测试夹具/示例凭据≠在役真凭据；在库=事实，有效性须单独实测	downgrade-to-fact	RT 复盘: 测试夹具当真凭据上报（test/admin 判『真实有效』零登录证据）；降级 fact
+SEN-008	(?:状态码|status|返回|响应|http)[^\n]{0,8}[45]\d\d[^\n]{0,50}(?:成功|生效|利用|写入|执行|验证通过)	4xx/5xx 响应配『成功』结论=结论与响应码矛盾，须复核判定链	mark-suspicious	b40 尸检: 错误码当成功（500 响应体含 success 字样判写入成功）；待验证官复核
+SEN-009	(?:30[1278]|重定向|redirect|跳转)[^\n]{0,40}(?:登录|login|auth|认证|鉴权)[^\n]{0,40}(?:绕过|未授权|越权|漏洞|失效)	30x 跳登录页=鉴权在位正常行为，跳转本身非洞	downgrade-to-fact	RT 复盘: 重定向到登录页当『未授权访问/绕过』上报；降级 fact（鉴权在位）
+SEN-010	(?:报错|错误页|堆栈|stack ?trace|exception|traceback|调试页|debug ?页)[^\n]{0,40}(?:泄露|敏感|暴露|信息泄露)	报错页堆栈=常见低价值噪音，是否真敏感（内网路径/凭据形）须人工判读	mark-suspicious	b40 尸检: 报错页信息当敏感泄露（无凭据形/内网标的堆栈噪音）；待验证官判读
+SEN-011	(?:代理|proxy|大模型|llm|模型|扫描器|scanner|子代理)[^\n]{0,60}(?:低置信|疑似|可能|likely|probably|low[- ]confidence)[^\n]{0,60}(?:实测|已验证|确认|复现|verified)	低置信代理/模型返回被记为实测=无证据支撑的 fabrication，直接拒收	reject	RT 复盘: 低置信代理返回当实测上报（worker 未实测采纳推测）——铁律 4 证据纪律拒收
+SEN-012	(?:响应|返回|结果|回包)[^\n]{0,20}(?:相同|一致|无差异|无差别|identical|same)[^\n]{0,50}(?:漏洞|注入|存在|成功|可利用)	基线与 payload 响应无差分=漏洞主张无响应面支撑，须重放差分核验	mark-suspicious	RT 复盘: 重复响应无差分仍判布尔盲注成立；待验证官差分重放
+SEN-013	(?:超时|timeout|timed out|time out)[^\n]{0,40}(?:不可达|无法访问|不可访问|不存在|已关闭|未开放|未启动|filtered|unreachable|down)	工具超时=工具侧观测事实，不等于目标不可达（网络/限速同样超时）	downgrade-to-fact	b40 尸检: 工具超时当不可达上报（nmap 超时判端口关闭）；降级 fact（工具侧观测）
+SEN-014	(?:自签|self[- ]?signed|自签名)[^\n]{0,40}(?:弱加密|弱密码|弱tls|弱ssl|加密弱|弱协议|漏洞|风险)	自签证书=配置形态事实，与弱加密套件是两回事，不构成弱加密漏洞	downgrade-to-fact	RT 复盘: 自签证书当弱加密漏洞上报；降级 fact（证书形态素材）

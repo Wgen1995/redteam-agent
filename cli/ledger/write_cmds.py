@@ -19,6 +19,7 @@ import sys
 
 from .core import TABLES, SCHEMA_VERSION, GENESIS, GATE_ORDER, esc, next_id, row_hash, write_tsv, RESERVED_EVENT_PREFIXES, NO_CONSUME_MARK
 from . import lock_v2, state_md
+from . import judge_client  # 功能11补件一：哨兵前置门（判定引擎宿主，findings 入库路径调用）
 from .norm import artifact_hashes  # norm 轨单源（评审 C-1）：add-evidence 落账与 hash-recheck 同款
 
 TAB = chr(9)
@@ -777,6 +778,36 @@ def _add_finding(goal_dir, rest):
             raise Reject("supersede 目标须为同 dedup_key 的 active 行: " + sup)
     if dedup in active_keys and not sup:
         raise Reject("dedup_key=%s 与既有 active 行同键——--supersede=<FD-id> 铸新行合并，或改 vuln-ref/title" % dedup)
+    # ---- 功能11补件一·哨兵前置门（judge 层便宜规则先跑，贵的验证官 replay 后跑——成本序）。
+    # 挂接改动最小化：本块=纯新增调用行，既有校验/写行逻辑零改动。四态：
+    #   reject=写前拒收（REJECT 单行、13 表零字节变更）；downgrade-to-fact=降级走
+    #   facts 不入 findings（铁律 4 同源：无可复现支撑的观察是 fact）；
+    #   mark-suspicious=exploitation_status 降 suspected 待验证官（哨兵在验证官
+    #   之前——verified 不可带哨兵命中入账）；全清=放行正常入库。
+    #   规则版本/命中明细经 tanyin.sentinels 日志留痕（load_sentinels 记版本）。
+    _sv = judge_client.run_sentinels(
+        chr(10).join((args["title"], brief, args["reproducible-steps"])))
+    if _sv["action"] == "reject":
+        raise Reject("哨兵拒收（%s）: %s" % (",".join(_sv["rule_ids"]), _sv["note"]))
+    if _sv["action"] == "downgrade-to-fact":
+        rid = ctx.new_id("facts.tsv", "F")
+        _detail = _trunc(_clean("[哨兵降级] 命中 %s: %s｜原标题: %s｜简述: %s｜复现步骤: %s"
+                                % (",".join(_sv["rule_ids"]), _sv["note"],
+                                   args["title"], brief,
+                                   args["reproducible-steps"])), 2000)
+        _why = _redact_hit(_detail)
+        if _why:
+            raise Reject("哨兵降级 fact detail redact 校验检出真值模式（%s）——落盘前掩码 REJECT" % _why)
+        _frow = _row("facts.tsv", id=rid, intent_id=args["intent-id"], kind="info",
+                     target=_trunc(_clean(args["affected-asset-id"]), 2000),
+                     detail=_detail, confidence="0.5", created=args["timestamp"])
+        ctx.append("facts.tsv", _frow)
+        ctx.event(args["timestamp"], "add-fact " + rid, phase=args.get("phase", ""))
+        ctx.commit({"facts.tsv", "timeline.tsv"})
+        _ok_line(rid, "facts.tsv", [_frow])
+        return 0
+    if _sv["action"] == "mark-suspicious" and args["exploitation-status"] == "verified":
+        args["exploitation-status"] = "suspected"  # 标记待验证官
     rid = ctx.new_id("findings.tsv", "FD")
     card = "findings-cards/%s.md" % rid
     row = _row("findings.tsv", id=rid, intent_id=args["intent-id"], title=_clean(args["title"]),

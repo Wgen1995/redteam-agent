@@ -336,6 +336,59 @@ def negative_facts(bat):
     return kept
 
 
+def sentinel_rule_drafts(bat, date=None):
+    """K6 误报回流（功能11补件一）：重放证伪教训 → 哨兵规则草稿行。
+
+    确定性纯函数（零写入）：每条被重放证伪的活发现产一行草稿——
+    signal_pattern=标题首段（冒号/括号前）regex escape（同形误报的识别词），
+    action=mark-suspicious（保守默认，人工并入时可改），note=ledger_ref+
+    证伪信号+重放 note。草稿落 distill 产物区 sentinel-staging/ 待人工，
+    不自动合入 knowledge/engineering/sentinels-v1.tsv——合入须人工
+    bump version（规则文件版本化纪律，飞轮 K6 齿）。
+    """
+    rows = []
+    for f in falsified_findings(bat):
+        r = f["row"]
+        core = re.split(r"[：:（(]", (r["title"] or "").strip(), 1)[0].strip()
+        core = _clip(core, 24) or r["id"]
+        m = _CWE_RE.search(r["vuln_ref"] or "")
+        vref = m.group(0) if m else ((r["vuln_ref"] or "").strip() or "未知域")
+        note = ("；重放 note=%s" % _clip(f["note"], 60)) if f["note"] else ""
+        rows.append({
+            "id": "SEN-D-%03d" % (len(rows) + 1),
+            "signal_pattern": "(?i)" + re.escape(core),
+            "judge": "title 含『%s』且 vuln_ref=%s 的发现报 verified 前——先重放复验再报"
+                     % (core, vref),
+            "action": "mark-suspicious",
+            "note": "K6 回流草稿（distill/%s·%s）: findings.tsv:%d %s『%s』被重放证伪"
+                    "（%s%s）——人工确认可泛化后并入 knowledge/engineering/"
+                    "sentinels-v1.tsv 并 bump version 方生效"
+                    % (bat["name"], date or _date_anchor(bat), r["line"], r["id"],
+                       _clip(r["title"], 40), f["signal"], note),
+        })
+    return rows
+
+
+def _sentinel_draft_tsv(name, rows):
+    """哨兵草稿 TSV 文本（首行 version: draft=未生效标记；单元格去制表/换行）。"""
+    NL, TAB = chr(10), chr(9)
+    head = NL.join((
+        "# version: draft（K6 回流草稿——未生效，不合入 "
+        "knowledge/engineering/sentinels-v1.tsv 不算数）",
+        "# source: distill/%s（误报教训→哨兵规则草稿钩子·功能11补件一）" % name,
+        "# 人工确认位: 逐条核 signal_pattern 可泛化（非单靶巧合、非环境态偶发）"
+        "→手工并入规则文件并 bump version",
+    ))
+    cols = ("id", "signal_pattern", "judge", "action", "note")
+    lines = [head, TAB.join(cols)]
+    for row in rows:
+        lines.append(TAB.join(
+            str(row[k]).replace(TAB, " ").replace(chr(13), " ").replace(NL, " ")
+            for k in cols))
+    return NL.join(lines) + NL
+
+
+
 # ======================================================== 草案落盘 ==
 
 def _atomic_write(path, text):
@@ -543,6 +596,19 @@ def distill_battle(battle_dir, out=None, knowledge_dir=None, min_pattern=2,
                        "kind": "pitfall-fact", "id_preview": pid,
                        "title": fields["title"]})
 
+    # ④K6 误报回流（功能11补件一）：重放证伪教训 → 哨兵规则草稿。
+    # staging=distill 产物区 sentinel-staging/（knowledge 只读纪律不破）；
+    # 草稿零进 drafts 列表——既有计数断言面零漂移，独立 sentinel_drafts 面。
+    sen_rows = sentinel_rule_drafts(bat, date)
+    if sen_rows:
+        sdir = os.path.join(out, "sentinel-staging")
+        os.makedirs(sdir, exist_ok=True)
+        spath = os.path.join(sdir, "%s--sentinel-drafts.tsv" % _safe_name(name))
+        _atomic_write(spath, _sentinel_draft_tsv(name, sen_rows))
+        rep_sen = [{"file": os.path.relpath(spath, out), "rows": len(sen_rows)}]
+    else:
+        rep_sen = []
+
     # ⑤ 报告（确定性：无墙钟，日期锚自数据）
     rep = {
         "schema_version": 1, "generator": "distill-rules-v1", "battle": name,
@@ -559,8 +625,10 @@ def distill_battle(battle_dir, out=None, knowledge_dir=None, min_pattern=2,
             "pitfall_fp": len([d for d in drafts if d["kind"] == "pitfall-fp"]),
             "pitfall_miss": len([d for d in drafts if d["kind"] == "pitfall-miss"]),
             "pitfall_fact": len([d for d in drafts if d["kind"] == "pitfall-fact"]),
+            "sentinel_drafts": len(sen_rows),
         },
         "drafts": drafts, "skipped": skipped,
+        "sentinel_drafts": rep_sen,
     }
     # 落盘形去绝对路径（同输入异出目录两跑逐字节一致——确定性钉）；返回值保留
     # 绝对 path 供程序面直取。
