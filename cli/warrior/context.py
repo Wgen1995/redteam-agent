@@ -19,6 +19,7 @@ import math
 import os
 
 from . import kb_context
+from . import kb_inject
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__))))
@@ -52,7 +53,7 @@ class ContextBuilder(object):
 
     def __init__(self, goal_dir, skill_path=None, ctx_tokens=24000,
                  fold_keep=5, resume_lines=_RESUME_LINES, kb=False,
-                 kb_top_k=3, kb_dir=None):
+                 kb_top_k=3, kb_dir=None, kb_inject_root=None):
         self.goal_dir = goal_dir
         self.skill_path = skill_path or DEFAULT_SKILL
         self.ctx_tokens = max(1, int(ctx_tokens))
@@ -61,6 +62,9 @@ class ContextBuilder(object):
         self.kb = bool(kb)          # 技法卡注入+SKILL 按门路由瘦身（默认关）
         self.kb_top_k = max(1, int(kb_top_k))
         self.kb_dir = kb_dir
+        # W5 知识注入回路：运行时库（91 卡）按意图检索注入简报尾部（goal 配置
+        # kb-inject.json 开关默认开；None=缺省 $TANYIN_HOME/knowledge）
+        self.kb_inject_root = kb_inject_root
 
     # ---- 数据面（账本只读消费）----
 
@@ -128,6 +132,13 @@ class ContextBuilder(object):
             kb_sec = kb_context.build_kb_section(
                 intent, extra_text=self._kb_signal_text(iid),
                 top_k=self.kb_top_k, kb_dir=self.kb_dir)
+        # ③ W5 知识注入回路：运行时库 91 卡按意图（类/表面/引擎）+矩阵上下文
+        # 检索，简报尾部追加「相关打法/相关避坑」节（供参考；goal 配置开关
+        # 默认开；零命中零注入；活租约意图落 kb-injections.tsv 审计行）
+        inj_sec = ""
+        if self.kb:
+            inj_sec, _sel = kb_inject.inject_briefing(
+                self.goal_dir, intent, kb_root=self.kb_inject_root)
         intent_sec = "意图 %s | %s | %s | status=%s" % (
             iid, intent.get("title", ""), intent.get("detail", ""),
             intent.get("status", ""))
@@ -135,7 +146,8 @@ class ContextBuilder(object):
         if facts_extra:
             facts = facts + list(facts_extra)
         fixed = (estimate_tokens(protocol) + estimate_tokens(intent_sec)
-                 + (estimate_tokens(kb_sec) if kb_sec else 0))
+                 + (estimate_tokens(kb_sec) if kb_sec else 0)
+                 + (estimate_tokens(inj_sec) if inj_sec else 0))
         budget = max(1, int((self.ctx_tokens - fixed) * _FACTS_SHARE))
         lines, folded, digest = self._fold(facts, budget)
         facts_sec = ("\n".join(lines) if lines
@@ -161,10 +173,14 @@ class ContextBuilder(object):
             % (("按门路由瘦身" if self.kb else "原样"), protocol,
                intent_sec, kb_insert, facts_sec, resume_sec, corr_sec,
                steer_sec))
+        if inj_sec:      # 简报尾部追加知识注入节（任务节之后=情报附录）
+            text = text + "\n\n" + inj_sec
         sections = {"protocol": protocol, "intent": intent_sec,
                     "facts": facts_sec, "resume": resume_sec,
                     "corrections": corr_sec, "steers": steer_sec}
         if self.kb:
             sections["kb"] = kb_sec
+        if inj_sec:
+            sections["kb_inject"] = inj_sec
         return ContextResult(text, sections, estimate_tokens(text), folded,
                              digest)
