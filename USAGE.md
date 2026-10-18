@@ -135,4 +135,4 @@ python3 tests/eval_range_recall.py --session <会话> \
 
 ## 六、深入学习
 
-`SKILL.md`（总控路由器）｜`cli/README.md`（50 命令，计数单源=docs/counts.json）｜`contracts/`（15 合约）｜`docs/HANDOFF.md`（22 战全记录+飞轮）
+`SKILL.md`（总控路由器）｜`cli/README.md`（53 命令，计数单源=docs/counts.json）｜`contracts/`（15 合约）｜`docs/HANDOFF.md`（22 战全记录+飞轮）

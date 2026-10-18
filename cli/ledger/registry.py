@@ -7,7 +7,7 @@ import importlib
 # 在册——入口曾组装期 patch 本表（跨模块改私有属性，02 评审 P0-2②），已删；模块缺席
 # 自动跳过律同表内其他成员。
 _MODULES = ["write_cmds", "query_cmds", "check_cmds", "special", "matrix_init",
-            "graph_cmds", "zhulong_export"]
+            "graph_cmds", "zhulong_export", "retest"]   # retest=功能13补件二定时复验器（查1写2；写锁在 handler 内，set-replay-state 同型）
 
 # 写命令模块注册表单源（批次 7 T2，C1 并发半边；台账「写命令锁覆盖 18/19 缺失」并入）——
 # WRITE_COMMANDS 自写命令模块的 HANDLERS 键集派生，禁手抄名单：

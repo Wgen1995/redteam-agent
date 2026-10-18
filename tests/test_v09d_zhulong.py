@@ -392,11 +392,11 @@ class TestEntryWiring(unittest.TestCase):
                            capture_output=True, text=True, encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertTrue(os.path.isfile(os.path.join(out, "zhulong-import.json")))
-        # 命令面 48→49(Ship Z)→50(W2·01P0-2 intent-lease)：
+        # 命令面 48→49(Ship Z)→50(W2·01P0-2 intent-lease)→53(功能13补件二 retest 三命令)：
         # 入口挂载面=registry.all_commands()∪zhulong_export.HANDLERS
         from ledger import registry
         face = registry.all_commands() | set(zhulong_export.HANDLERS)
-        self.assertEqual(len(face), 50)
+        self.assertEqual(len(face), 53)
         self.assertIn("zhulong-export", face)
 
 

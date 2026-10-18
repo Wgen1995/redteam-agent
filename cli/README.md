@@ -1,6 +1,6 @@
 # tanyin-ledger · 账本命令箱（批次 1）
 
-探隐 TanYin 的 13 表 TSV 账本唯一写入口。契约基线 contracts-v2（50 命令 / 149 字段 / 九门 / 10 边；计数单源派生=docs/counts.json，docs/gen_counts.py 生成——禁手抄）。
+探隐 TanYin 的 13 表 TSV 账本唯一写入口。契约基线 contracts-v2（53 命令 / 149 字段 / 九门 / 10 边；计数单源派生=docs/counts.json，docs/gen_counts.py 生成——禁手抄）。
 
 ## 用法
 
@@ -29,15 +29,14 @@ py -3 hooks\simulate.py --goal-dir sessions\G-g1 --host dsh -- curl http://x/
 - 平台门控：guard exec 界外判定只扫参数（argv[0] 是程序路径，Windows 带空格路径会被误判为主机）；canary tier1 探测载体用 `py -c pass`（原 /usr/bin/true 仅 POSIX）
 - CI：`.github/workflows/ci.yml` 双平台矩阵（windows-latest + ubuntu-latest × Python 3.11/3.12）跑 `python -m unittest discover -s tests`（job 级 `PYTHONUTF8=1`，等价于 Windows 本地 `set PYTHONUTF8=1` 后再跑测试）
 
-## 命令面（44）
+## 命令面（53；内建 3 计入查/校验两行，24+16+11+2=53）
 
 | 类 | 条数 | 命令 |
 |---|---|---|
-| 内建 | 3 | validate / verify-chain / next-id |
-| 写 | 19 | add-goal add-scope add-intent add-fact add-finding add-asset add-cred add-edge add-evidence set-intent-status set-cred-status supersede-finding amend-scope matrix-set matrix-freeze append-timeline approve budget-log checkpoint |
-| 查询 | 14 | unconsumed-facts pending-intents matrix-gaps converge-check next-id intent-status matrix-get scope-check budget-check cleanup-checklist redact-scan graph-neighbors graph-paths graph-horizon（图谱驱动增补 71d3b7c：只读图运算——邻接/路径/可达地平线） |
-| 校验 | 10 | validate verify-chain hash-recheck matrix-audit state-rebuild set-replay-state ledger-scope-coverage ledger-tree-check ledger-replay-summary ledger-terminal-gate |
-| 特殊 | 1 | matrix-init（P1 门：词表 WSTG v4.2 钉死列、基线冻结） |
+| 写 | 24 | add-goal add-scope add-intent set-intent-status add-fact add-finding supersede-finding add-asset add-edge add-evidence add-cred set-cred-status amend-scope approve matrix-set matrix-freeze append-timeline budget-log checkpoint chain-create chain-advance chain-ls retest-scan retest-settle（功能13补件二 定时复验器：retest-pending 过期清单→scan 铸 nday-verify 复验卡走 add-intent 通道→settle 三态回写：仍真刷 last_verified/已修复对齐 repair-candidate/环境变更沿 supersedes 关旧开新） |
+| 查 | 16 | unconsumed-facts pending-intents matrix-gaps converge-check next-id intent-status intent-lease matrix-get scope-check budget-check cleanup-checklist redact-scan graph-neighbors graph-paths graph-horizon retest-pending（复验过期清单；窗口默认 7 天，<goal-dir>/retest.json 可配） |
+| 校验 | 11 | validate verify-chain hash-recheck matrix-audit state-rebuild set-replay-state ledger-scope-coverage ledger-tree-check ledger-replay-summary ledger-terminal-gate anchor |
+| 特殊 | 2 | matrix-init（P1 门：词表 WSTG v4.2 钉死列、基线冻结） zhulong-export |
 
 ## 测试与回归
 

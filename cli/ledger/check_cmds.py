@@ -257,8 +257,16 @@ def _set_replay_state_locked(goal_dir, args):
         if rid.startswith("EV-"):
             probe_ids = {rid}
         else:
+            # 功能13补件二：FD 探针面=linked_finding 挂接 ∪ finding 行自书 evidence_ids/
+            # control_evidence_ids——与 report_artifacts._replay_tri 同源（evidence-first
+            # 流水 EV 先落账 finding 后引，linked_finding 常空；复验 settle 同一证据集）。
             probe_ids = {r[0] for r in s.rows("E-index.tsv")
                          if (_cell(r, "E-index.tsv", "linked_finding") or "") == rid}
+            _fdrow = latest_by(s.rows("findings.tsv"), "findings.tsv", ["id"]).get((rid,))
+            if _fdrow is not None:
+                for _col in ("evidence_ids", "control_evidence_ids"):
+                    probe_ids |= {x for x in (_cell(_fdrow, "findings.tsv", _col) or "").split(";")
+                                  if x and x.startswith("EV-")}
         last_by_id = {}
         for r in s.rows("timeline.tsv"):
             m = pat.search(r[_idx("timeline.tsv", "event")])
