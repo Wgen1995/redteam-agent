@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模型对话记录 · GraphLed</title>
+<!-- LLM 录制（质量律 R4 原始对话存档）的只读浏览页：列表（意图/模型道/token 耗）
+     → 详情（请求/响应原文对，mono）。数据单源 /api/v2/llm-transcripts。
+     文案宪法#41（界面人话律）。共享壳 /static/app.js 由 UI-1 舰独写；
+     本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+#rec-counts{color:var(--g8);font-size:12px;font-family:var(--mono)}
+body.mode-tab #top{display:none}
+/* 四态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区：左列表+右详情 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1280px;margin:0 auto;padding:18px 24px 60px}
+.cols{display:grid;grid-template-columns:5fr 7fr;gap:14px;align-items:start}
+@media(max-width:980px){.cols{grid-template-columns:1fr}}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+#rec-list{display:grid;gap:8px;max-height:640px;overflow-y:auto;padding-right:4px}
+#rec-list::-webkit-scrollbar{width:5px}#rec-list::-webkit-scrollbar-thumb{background:var(--g4)}
+.rcard{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:10px 12px;cursor:pointer;transition:border-color .12s}
+.rcard:hover{border-color:var(--g5)}
+.rcard.sel{border-color:var(--acc2);background:var(--g3)}
+.rcard .hd{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rcard .cid{font-family:var(--mono);font-size:11px;color:var(--g8)}
+.rcard .ct{color:var(--gc);font-size:13px;flex:1;min-width:0;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-n{background:var(--g4);color:var(--g9)}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.rcard .meta{display:flex;gap:10px;margin-top:4px;color:var(--g8);font-size:11px;
+font-family:var(--mono);flex-wrap:wrap}
+/* 详情：逐行原文对 */
+#rec-detail .dhead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
+margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--g3)}
+#rec-detail .dhead .cid{font-family:var(--mono);font-size:12px;color:var(--g8)}
+#rec-detail .dhead .ct{color:var(--gc);font-size:14px;font-weight:500}
+#rec-detail .dmeta{color:var(--g8);font-size:11px;font-family:var(--mono);
+display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.badge-warn{background:rgba(232,179,75,.14);color:var(--warn)}
+.pair{border:1px solid var(--g4);border-radius:6px;margin-bottom:10px;overflow:hidden}
+.pair .ph{display:flex;gap:10px;align-items:center;padding:6px 10px;
+background:var(--g3);font-size:11px;color:var(--g8);flex-wrap:wrap}
+.pair .ph .who{font-weight:500;font-size:11.5px}
+.pair.req .ph .who{color:var(--info)}
+.pair.resp .ph .who{color:var(--acc)}
+.pair .ph .mono{font-size:11px}
+.pair .ph .sp{flex:1}
+.pair pre.raw{margin:0;padding:10px 12px;font-family:var(--mono);font-size:12px;
+line-height:1.6;color:var(--gb);white-space:pre-wrap;word-break:break-all;
+background:var(--g1);max-height:420px;overflow-y:auto}
+.pair pre.raw::-webkit-scrollbar{width:5px}
+.pair pre.raw::-webkit-scrollbar-thumb{background:var(--g4)}
+.dfoot{color:var(--g8);font-size:11px;text-align:center;padding:6px 0 2px}
+</style>
+</head>
+<body>
+<div id="top">
+  <span class="crumb"><b>模型对话记录</b><span id="crumb-goal"></span></span>
+  <span class="sp"></span>
+  <span id="rec-counts" class="mono"></span>
+</div>
+
+<div id="st-loading" class="state on"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+</div></div>
+
+<div id="st-empty" class="state"><div class="box">
+  <h3>还没有模型对话记录</h3>
+  <p>智能体执行任务时，与模型的每一轮对话原文会按意图自动留痕。<br>
+     这里展示的是原始记录：谁发的、发给哪个模型、说了什么、花了多少 token。</p>
+</div></div>
+
+<div id="st-error" class="state"><div class="box">
+  <h3>读取失败</h3>
+  <p id="err-detail"></p>
+  <p><button id="btn-retry" class="tag t-g" style="cursor:pointer;margin-top:10px;
+  padding:4px 14px">重试</button></p>
+</div></div>
+
+<div id="st-normal" class="state"><div id="wrap"><div class="cols">
+  <div class="pane">
+    <h3>录制列表<span class="sub">按意图分组 · 点击看原文</span></h3>
+    <div id="rec-list"></div>
+  </div>
+  <div class="pane">
+    <h3>对话原文<span class="sub">请求=发给模型的内容 · 响应=模型的回答</span></h3>
+    <div id="rec-detail"><p style="color:var(--g8);font-size:12.5px">
+      从左侧选一个意图，右侧展示该意图下每一轮对话的原文。</p></div>
+  </div>
+</div></div></div>
+
+<script src="/static/app.js"></script>
+<script>
+(function () {
+  "use strict";
+  var goal = new URLSearchParams(location.search).get("goal") || "";
+  var state = { items: [], sel: "" };
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;",
+               "'": "&#39;" }[c];
+    });
+  }
+  function show(id) {
+    var els = document.querySelectorAll(".state");
+    for (var i = 0; i < els.length; i++) { els[i].classList.remove("on"); }
+    $(id).classList.add("on");
+  }
+  function q() { return goal ? "?goal=" + encodeURIComponent(goal) : ""; }
+  function tok(n) { return (n || 0).toLocaleString ? (n || 0).toLocaleString() : String(n || 0); }
+
+  function renderCounts(p) {
+    var t = p.totals || {};
+    $("rec-counts").textContent =
+      t.intents + " 个意图 · " + tok(t.lines) + " 行 · " +
+      tok(t.prompt_tokens + t.completion_tokens) + " token";
+    $("crumb-goal").textContent = p.goal ? " · " + p.goal : "";
+  }
+
+  function renderList() {
+    var box = $("rec-list");
+    box.innerHTML = state.items.map(function (it) {
+      var models = (it.models || []).map(function (m) {
+        return '<span class="tag t-n mono">' + esc(m) + "</span>";
+      }).join(" ");
+      var title = it.title || "（意图表无此意图——仅有录制文件）";
+      return '<div class="rcard' + (state.sel === it.intent ? " sel" : "") +
+        '" data-iid="' + esc(it.intent) + '">' +
+        '<div class="hd"><span class="cid">' + esc(it.intent) + "</span>" +
+        '<span class="ct" title="' + esc(title) + '">' + esc(title) + "</span>" +
+        models + "</div>" +
+        '<div class="meta"><span>' + it.turns + " 轮</span>" +
+        "<span>" + it.lines + " 行</span>" +
+        "<span>" + tok(it.prompt_tokens + it.completion_tokens) + " token</span>" +
+        (it.warrior ? "<span>智能体 " + esc(it.warrior) + "</span>" : "") +
+        (it.bad_lines ? '<span class="tag badge-warn">' + it.bad_lines +
+         " 行无法解析</span>" : "") +
+        "</div></div>";
+    }).join("");
+    Array.prototype.forEach.call(box.querySelectorAll(".rcard"), function (el) {
+      el.addEventListener("click", function () { selectCard(el.getAttribute("data-iid")); });
+    });
+  }
+
+  function renderDetail(d) {
+    var box = $("rec-detail");
+    if (d && d.error) {
+      box.innerHTML = '<p style="color:var(--dang);font-size:12.5px">' +
+        esc(d.error) + "</p>";
+      return;
+    }
+    if (!d) {
+      box.innerHTML = '<p style="color:var(--g8);font-size:12.5px">' +
+        "从左侧选一个意图，右侧展示该意图下每一轮对话的原文。</p>";
+      return;
+    }
+    var html = '<div class="dhead"><span class="cid">' + esc(d.intent) +
+      "</span>" + '<span class="ct">' + esc(d.title || "（意图表无此意图）") +
+      "</span></div>" +
+      '<div class="dmeta"><span>共 ' + d.turns + " 轮</span>" +
+      "<span>输入 " + tok(d.prompt_tokens) + " token</span>" +
+      "<span>输出 " + tok(d.completion_tokens) + " token</span>" +
+      "<span>模型道 " + esc((d.models || []).join("、") || "—") + "</span>" +
+      (d.warrior ? "<span>智能体 " + esc(d.warrior) + "</span>" : "") + "</div>";
+    (d.lines || []).forEach(function (l) {
+      var isReq = l.role === "user";
+      var usage = l.usage
+        ? "输入 " + tok(l.usage.prompt_tokens) + " · 输出 " +
+          tok(l.usage.completion_tokens) + " token"
+        : "无用量记录";
+      html += '<div class="pair ' + (isReq ? "req" : "resp") + '">' +
+        '<div class="ph"><span class="who">' + (isReq ? "请求" : "响应") +
+        "</span>" + '<span>第 ' + l.turn + " 轮</span>" +
+        '<span class="mono">' + esc(l.model || "—") + "</span>" +
+        '<span class="mono">' + esc(l.ts || "") + "</span>" +
+        '<span class="sp"></span><span class="mono">' + esc(usage) + "</span></div>" +
+        '<pre class="raw">' + esc(l.content) + "</pre></div>";
+    });
+    if (d.bad_lines) {
+      html += '<p class="dfoot">另有 ' + d.bad_lines +
+        " 行无法解析（原样跳过，未计入上方统计——如实披露，不静默丢弃）</p>";
+    }
+    box.innerHTML = html;
+  }
+
+  function selectCard(iid) {
+    state.sel = iid;
+    renderList();
+    renderDetail({ error: "正在读取 " + iid + " …" });
+    fetch('/api/v2/llm-transcript-detail?id=' + encodeURIComponent(iid) +
+          (goal ? "&goal=" + encodeURIComponent(goal) : ""))
+      .then(function (r) { return r.json(); })
+      .then(function (p) { renderDetail(p.error ? p : p); })
+      .catch(function (e) { renderDetail({ error: "详情读取失败：" + e }); });
+  }
+
+  function load() {
+    show("st-loading");
+    fetch('/api/v2/llm-transcripts' + q())
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p.error) {
+          $("err-detail").innerHTML = "<code>" + esc(p.error) + "</code>";
+          show("st-error");
+          return;
+        }
+        state.items = p.items || [];
+        renderCounts(p);
+        if (!state.items.length) { show("st-empty"); return; }
+        renderList();
+        renderDetail(null);
+        show("st-normal");
+      })
+      .catch(function (e) {
+        $("err-detail").innerHTML = "<code>" + esc(e) + "</code>";
+        show("st-error");
+      });
+  }
+
+  $("btn-retry").addEventListener("click", load);
+
+  /* 宿主壳自注册（共享壳缺席时本页独立可用——守卫式消费 UI-1 舰契约） */
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: 'llm-recordings', title: '模型对话记录', group: '系统' });
+  }
+  if (window.__TAB_ID__ === "LlmRecordingsTab") { document.body.classList.add("mode-tab"); }
+
+  load();
+})();
+</script>
+</body>
+</html>
