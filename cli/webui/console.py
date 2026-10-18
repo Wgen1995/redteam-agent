@@ -350,4 +350,4 @@ def intercept_view(goal_dir, battles_dir):
          "rule": "子进程限额：内存 2G / 进程数 64 / CPU 300 秒",
          "detail": "进程级限额在执行侧生效，记录面无命中计数"},
     ]
-    return {"layers": layers}
+    return {"layers": layers, "battles": _battles_view(battles_dir)}

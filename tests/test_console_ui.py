@@ -510,6 +510,13 @@ class TestInterceptApi(ConsoleBase):
         for L in d['layers']:
             self.assertIn('rule', L, '每层须有人话规则句')
 
+    def test_battles_list_for_top_selector(self):
+        d = self.api('/api/console/intercept.json')
+        self.assertIn('battles', d, '审批页顶栏任务选择器同源数据')
+        self.assertEqual([b['id'] for b in d['battles']], ['battle-1'])
+        self.assertEqual(d['battles'][0]['target'], 'shop.example',
+                         'battle 目录实勘目标真值')
+
 
 
 # ===========================================================================
@@ -716,6 +723,182 @@ class TestStreamBattleSwitch(ConsoleBase):
         chunk2 = self._read_stream("/api/stream?tail=2", budget=1.5)
         self.assertNotIn("marker-battle-two-probe", chunk2,
                          "默认流仍取 ledger_dir（缺省行为不漂移）")
+
+
+
+
+# ===========================================================================
+# 九、活体 DOM 冒烟（playwright；浏览器缺席整类跳过不红）——零截屏零截图断言
+# ===========================================================================
+
+class TestConsolePagesSmoke(unittest.TestCase):
+    """真 server + 真 Chrome 过五页：壳渲染/真数据接线/审批真提交，零页面错误。"""
+
+    @classmethod
+    def setUpClass(cls):
+        try:
+            from playwright.sync_api import sync_playwright
+        except Exception as e:                       # noqa: BLE001
+            raise unittest.SkipTest('playwright 不可用: %s' % e)
+        from tests import webui_login
+        cls.td = tempfile.TemporaryDirectory()
+        cls.gd = build_console_goal(os.path.join(cls.td.name, 'battle-1', 'G-c1'))
+        cls.srv = srv_mod.make_server('127.0.0.1', 0, cls.gd,
+                                      battles_dir=os.path.join(cls.td.name, 'battles_root'),
+                                      tail=3, poll_s=0.05, keepalive_s=1.0,
+                                      operator_key=webui_login.OP_KEY,
+                                      approval_key=AP_KEY)
+        cls.port = cls.srv.server_address[1]
+        t = threading.Thread(target=cls.srv.serve_forever, daemon=True)
+        t.start()
+        cls.sid = webui_login.login(cls.port, webui_login.OP_KEY)
+        cls.pw = sync_playwright().start()
+        try:
+            try:
+                cls.browser = cls.pw.chromium.launch()
+            except Exception:                        # 缺内置二进制→系统 Chrome
+                cls.browser = cls.pw.chromium.launch(channel='chrome')
+        except Exception as e:                       # noqa: BLE001
+            raise unittest.SkipTest('Chrome 不可用: %s' % e)
+        cls.ctx = cls.browser.new_context()
+        cls.ctx.add_cookies([{'name': 'tanyin_sess', 'value': cls.sid,
+                              'url': 'http://127.0.0.1:%d' % cls.port}])
+        cls.page = cls.ctx.new_page()
+        cls.errors = []
+        cls.page.on('pageerror', lambda e: cls.errors.append(str(e)))
+        cls.page.on('console', lambda m: cls.errors.append(m.text)
+                    if m.type == 'error' else None)
+
+    @classmethod
+    def tearDownClass(cls):
+        for closer in ('ctx', 'browser', 'pw', 'srv'):
+            obj = getattr(cls, closer, None)
+            if obj is not None:
+                try:
+                    obj.close()
+                except Exception:                    # noqa: BLE001
+                    pass
+        cls.td.cleanup()
+
+    def _goto(self, path, sel):
+        self.page.goto('http://127.0.0.1:%d%s' % (self.port, path),
+                       wait_until='load')
+        self.page.wait_for_selector(sel, timeout=8000)
+
+    def _assert_no_errors(self):
+        self.assertEqual(self.errors, [], '页面 JS 错误: %r' % self.errors[:3])
+
+    def _api_get(self, path):
+        conn = http.client.HTTPConnection('127.0.0.1', self.port, timeout=20)
+        conn.request('GET', path,
+                     headers={'Cookie': 'tanyin_sess=' + self.sid})
+        r = conn.getresponse()
+        body = r.read()
+        conn.close()
+        self.assertEqual(r.status, 200, path + ' 须 200')
+        return body
+
+    def test_dash_renders_real_cards_and_nav23(self):
+        self._goto('/console', '#ov-cards .card')
+        self.assertEqual(self.page.eval_on_selector_all(
+            '.nav-item', 'els => els.length'), 23, '壳=23 项菜单')
+        self.assertEqual(self.page.eval_on_selector_all(
+            '#ov-cards .card', 'els => els.length'), 4, '四卡')
+        rows = self.page.eval_on_selector_all(
+            '#token-table tr', 'els => els.length')
+        self.assertGreaterEqual(rows, 2, 'token 表含真 usage 行')
+        self.assertIn('450,000', self.page.inner_text('#token-table'),
+                      'mono 千分位真数')
+        self.assertIn('ffuf', self.page.inner_text('#activity-feed'))
+        self._assert_no_errors()
+
+    def test_live_lamps_and_convergence(self):
+        self._goto('/console/live', '.lamp')
+        self.assertEqual(self.page.eval_on_selector_all(
+            '.lamp', 'els => els.length'), 9, '九阶段灯')
+        self.assertIn('授权确认', self.page.inner_text('.lamp'))
+        self.assertIn('通过', self.page.inner_text('.lamp'))
+        self.assertEqual(self.page.eval_on_selector_all(
+            '#converge-box .row', 'els => els.length') >= 4, True,
+            '收敛四条件')
+        self.page.wait_for_selector('#budget-burn polyline', timeout=8000)
+        self._assert_no_errors()
+
+    def test_render_failure_pane_on_shape_drift(self):
+        """投影形状漂移（findings 非列表）→ 人话降级 pane，零未捕获页面错误。"""
+        def drifted(route):
+            route.fulfill(status=200, content_type='application/json',
+                          body='{"findings": {}}')
+        self.page.route('**/api/console/findings.json', drifted)
+        try:
+            self._goto('/console/findings', '#view .pane .empty')
+            self.assertIn('渲染失败',
+                          self.page.inner_text('#view .pane .empty'),
+                          '渲染失败=人话降级 pane（宪法#41）')
+            self.assertEqual(self.page.eval_on_selector_all(
+                '#findings-table tr[data-state]', 'els => els.length'), 0,
+                '坏形状不落半行假数据')
+        finally:
+            self.page.unroute('**/api/console/findings.json')
+        self._assert_no_errors()
+
+    def test_graph_legend_and_replay_frames(self):
+        # 帧数=动态真值钉：本类共享一服一账本，审批冒烟（字母序在先）真落账
+        # 会追加 timeline 行——硬编码行号随旅程腐化。钉三面同真：
+        # UI max == API replay.frames == 磁盘 timeline 真行数。
+        n_rows = len(core.Session(self.gd).rows('timeline.tsv'))
+        g = json.loads(self._api_get('/api/console/graph.json'))
+        self.assertEqual(g['replay']['frames'], n_rows,
+                         'API 帧数=timeline 真行数')
+        self._goto('/console/graph', '#graph-legend span')
+        self.assertEqual(self.page.eval_on_selector_all(
+            '#graph-legend span', 'els => els.length'), 17,
+            '图例=真 7 节点型+10 边型')
+        self.assertEqual(self.page.eval_on_selector_all(
+            '.gnode', 'els => els.length'), 7, '节点=真数')
+        rng = self.page.query_selector('#replay-range')
+        self.assertEqual(rng.get_attribute('max'), str(n_rows),
+                         '帧数=记录行数')
+        self.assertIn('%d / %d' % (n_rows, n_rows),
+                      self.page.inner_text('#replay-pos'))
+        rng.fill('4')
+        rng.dispatch_event('input')
+        self.assertIn('4 / %d' % n_rows, self.page.inner_text('#replay-pos'))
+        self.page.wait_for_selector('.gnode', timeout=8000)
+        self._assert_no_errors()
+
+    def test_findings_filter_and_drawer(self):
+        self._goto('/console/findings', '#findings-table tr[data-state]')
+        self.assertEqual(self.page.eval_on_selector_all(
+            '#findings-table tr[data-state]', 'els => els.length'), 3)
+        self.page.click('#state-seg b[data-state="待验证"]')
+        vis = self.page.eval_on_selector_all(
+            '#findings-table tr[data-state]',
+            'els => els.filter(e => e.style.display !== "none").length')
+        self.assertEqual(vis, 1, '三态筛选只剩待验证')
+        self.page.click('#state-seg b[data-state="all"]')
+        self.page.click('#findings-table tr[data-i="0"]')
+        self.page.wait_for_selector('#drawer.on', timeout=8000)
+        body = self.page.inner_text('#drawer')
+        self.assertIn('CVSS', body)
+        self.assertIn('curl', self.page.inner_text('#drawer'),
+                      '抽屉=证据原始请求真转抄')
+        self._assert_no_errors()
+
+    def test_approval_real_submit_via_browser(self):
+        self._goto('/console/approval', '#intercept-table tr')
+        self.assertEqual(self.page.eval_on_selector_all(
+            '#intercept-table tr', 'els => els.length'), 5, '四层+表头')
+        self.page.wait_for_selector('#ap-queue tr[data-row]', timeout=8000)
+        self.assertEqual(self.page.eval_on_selector_all(
+            '#ap-queue tr[data-row]', 'els => els.length'), 2, '两条待审')
+        self.page.click('#ap-queue button[data-decision="approved"]')
+        self.page.wait_for_function(
+            'document.querySelectorAll("#ap-queue tr[data-row]").length === 1',
+            timeout=8000)
+        with open(os.path.join(self.gd, 'approvals.tsv'), encoding='utf-8') as f:
+            self.assertIn('approved', f.read(), '浏览器批=真落表')
+        self._assert_no_errors()
 
 
 if __name__ == '__main__':

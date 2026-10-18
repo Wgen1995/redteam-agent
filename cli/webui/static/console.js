@@ -178,7 +178,10 @@ var GL = (function () {
     renderChromeExtras();
     api(pageApi).then(function (data) {
       renderTop(data && data.battles);
-      init(data);
+      try { init(data); } catch (err) {
+        var v0 = document.getElementById("view");
+        if (v0) v0.insertAdjacentHTML("afterbegin", '<div class="pane"><div class="empty">渲染失败：' + esc(String(err.message || err)) + "</div></div>");
+      }
     }).catch(function (e) {
       var v = document.getElementById("view");
       if (v) v.insertAdjacentHTML("afterbegin", '<div class="pane"><div class="empty">数据载入失败：' + esc(String(e.message || e)) + "</div></div>");
