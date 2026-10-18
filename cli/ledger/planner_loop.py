@@ -34,6 +34,7 @@ Ruling：
 """
 import contextlib
 import io
+import logging
 import os
 import time
 
@@ -46,6 +47,8 @@ from .watchdog import next_tick
 DEFAULT_POLL_TICK = 10.0   # 静默期轮询间隔（秒）
 DEFAULT_POLL_FLOOR = 1.0   # 活跃期轮询间隔（秒）
 REACH_YES = 1.0
+
+_log = logging.getLogger("tanyin.planner")
 
 
 def change_token(gd):
@@ -77,9 +80,15 @@ def intent_title(surface, vclass):
 
 
 def _run(gd, cmd, args):
-    """CLI 级既有入口（registry.lookup=goal 写锁包装执法链），stdout 捕获。"""
+    """CLI 级既有入口（registry.lookup=goal 写锁包装执法链）。
+
+    stdout+stderr 合并捕获（评审 I-1）：write_cmds._wrap 把 REJECT/用法
+    错误写 stderr——只捕 stdout 则拒绝原因全空、且 "dedup_key" 竞速合并
+    分支成死代码（空文本永不含关键字）；合并文本既带回原因又供竞速判定
+    （warrior.ledger_io._run 同型）。
+    """
     buf = io.StringIO()
-    with contextlib.redirect_stdout(buf):
+    with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
         rc = registry.lookup(cmd)(gd, list(args))
     return rc, buf.getvalue()
 
@@ -197,7 +206,34 @@ class PlannerLoop(object):
         return "pending" if self.pending_since is not None else "idle"
 
     def run(self, max_rounds=None):
-        """常驻主循环（max_rounds=None=常驻；测试可限轮防死循环）。"""
+        """常驻主循环（max_rounds=None=常驻；测试可限轮防死循环）。
+
+        兜底（评审 I-1）：单轮异常不杀常驻循环——异常经 append-timeline
+        既有通道记事件入账本（可回放、带原因），失败轮也计轮（max_rounds
+        必有界推进）并清防抖表+按静默拍休眠（防持续失败热循环），下轮
+        重新武装照常服务。
+        """
         while max_rounds is None or self.rounds < max_rounds:
-            self.poll()
+            try:
+                self.poll()
+            except Exception as e:                  # noqa: BLE001
+                self._record_round_failure(e)
+                self.rounds += 1
+                self.pending_since = None
+                self.sleep(self.poll_tick)
         return self.rounds
+
+    def _record_round_failure(self, exc):
+        """单轮异常记事件（尽力而为：事件写失败只留日志，不杀循环）。"""
+        reason = " ".join(str(exc).split())[:160]
+        try:
+            rc, out = _run(self.goal_dir, "append-timeline", [
+                "--actor=子代理", "--phase=P3",
+                "--event=planner-round-fail rounds=%d err=%s"
+                % (self.rounds + 1, reason),
+                "--timestamp=" + self.ts_fn()])
+            if rc != 0:
+                _log.warning("planner-round-fail 事件写失败 rc=%d: %s",
+                             rc, out)
+        except Exception:                           # noqa: BLE001
+            _log.warning("planner-round-fail 事件写异常", exc_info=True)

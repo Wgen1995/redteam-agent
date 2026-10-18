@@ -115,9 +115,13 @@ def classify(s, iid):
 # ---------------------------------------------------------------- 既有写入通道
 
 def _run(gd, cmd, args):
-    """CLI 级既有入口（registry.lookup=goal 写锁包装执法链），stdout 捕获。"""
+    """CLI 级既有入口（registry.lookup=goal 写锁包装执法链）。
+
+    stdout+stderr 合并捕获（评审 I-1）：REJECT 走 stderr——合并文本带回
+    拒绝原因并供 "dedup_key" 竞速合并判定（planner_loop._run 同型修法）。
+    """
     buf = io.StringIO()
-    with contextlib.redirect_stdout(buf):
+    with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
         rc = registry.lookup(cmd)(gd, list(args))
     return rc, buf.getvalue()
 
