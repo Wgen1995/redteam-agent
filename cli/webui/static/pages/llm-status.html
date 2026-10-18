@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模型状态 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md
+     §P8-P18（模型状态页=多通道模型池只读面：通道配置/各道健康/熔断态/冷却剩时
+     +故障转移事件时间线；密钥只显示「是否已配」，原文永不上屏）。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+select{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:6px 10px;border-radius:4px;font-size:12.5px}
+/* 状态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1080px;margin:0 auto;padding:18px 24px 60px;
+display:grid;grid-template-columns:7fr 5fr;gap:14px;align-items:start}
+@media(max-width:980px){#wrap{grid-template-columns:1fr}}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);font-weight:500;text-align:left;padding:6px 8px;
+border-bottom:1px solid var(--g4);font-size:11.5px;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid var(--g3);vertical-align:top}
+tr:hover td{background:var(--g3)}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-n{background:var(--g4);color:var(--g9)}
+.t-w{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-d{background:rgba(232,99,90,.16);color:var(--dang)}
+.none{color:var(--g8);font-size:12.5px;padding:10px 0;text-align:center}
+.note{color:var(--g8);font-size:11.5px;line-height:1.8}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:6px 12px;font-size:12.5px}
+.kv .k{color:var(--g8)}
+.kv .v{color:var(--gc);font-family:var(--mono);word-break:break-all}
+#ev-list{font-size:12px;line-height:1.9;font-family:var(--mono);word-break:break-all}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">系统 · <b>模型状态</b></span>
+  <span class="sp"></span>
+  <select id="battle-pick" title="选择任务"></select>
+</header>
+
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在读取模型通道状态…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>模型状态读取失败</h3>
+  <p><code id="err-detail"></code></p>
+  <button id="btn-retry" class="btn" type="button">重试</button>
+</div></div>
+
+<div id="st-normal" class="state">
+  <div id="wrap">
+    <div>
+      <div class="pane" id="ls-channels">
+        <h3>模型通道 <span class="sub" id="ch-sub"></span></h3>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>通道</th><th>模型</th><th>服务地址</th><th>密钥</th>
+            <th>健康状态</th><th>冷却剩余</th></tr></thead>
+            <tbody id="ch-body"></tbody>
+          </table>
+        </div>
+        <div class="none" id="ch-none" style="display:none">无通道记录</div>
+        <div class="note" id="ch-note" style="margin-top:8px"></div>
+      </div>
+      <div class="pane" id="ls-events">
+        <h3>故障转移事件 <span class="sub" id="ev-sub"></span></h3>
+        <div id="ev-list"></div>
+        <div class="none" id="ev-none" style="display:none">尚无故障转移记录——通道未触发熔断或恢复</div>
+        <div class="note" id="ev-note" style="margin-top:8px"></div>
+      </div>
+    </div>
+    <div>
+      <div class="pane" id="ls-params">
+        <h3>判定参数 <span class="sub">代码常量 · 只读</span></h3>
+        <div class="kv" id="params-kv"></div>
+        <div class="note" style="margin-top:10px">含义：连续软失败达到阈值即熔断进入
+        冷却；「429 限流」走固定短档，「超时/服务端错误」按连熔次数走长档
+        （封顶 30 分钟，时长带 ±20% 抖动）；「硬熔断」=密钥或路径类错误，
+        一次即熔且不会自动恢复，只有该通道再次成功调用才恢复。冷却结束后
+        通道自动回到可用池。</div>
+      </div>
+      <div class="pane">
+        <h3>状态说明 <span class="sub">读法</span></h3>
+        <div class="kv">
+          <div class="k">健康</div><div class="v">可被选用</div>
+          <div class="k">冷却</div><div class="v">暂时停用 · 剩余秒数递减到 0 自动恢复</div>
+          <div class="k">熔断</div><div class="v">硬熔断 · 不会自动恢复，须该通道成功一次</div>
+          <div class="k">配置未见</div><div class="v">状态文件在册但任务目录无通道配置</div>
+        </div>
+        <div class="note" id="state-note" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+/* T7·模型状态页：多通道模型只读面。通道配置=任务目录 channels.json（密钥
+   脱敏）+代目录状态文件（健康/熔断/冷却剩时）；事件线=timeline llmpool 行；
+   判定参数=ledger.llmpool 常量单源。零 POST 面（只读）。 */
+(function () {
+  var state = { view: null, battle: null };
+
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    ["st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === name);
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function fillBattlePicker() {
+    var sel = $("battle-pick");
+    sel.innerHTML = (state.view.battles || []).map(function (b) {
+      return '<option value="' + b.n + '">' + esc(b.id) + "</option>";
+    }).join("");
+    if (state.view.battle) { sel.value = String(state.view.battle.n); }
+    sel.onchange = function () { load(parseInt(sel.value, 10)); };
+  }
+
+  function stateCell(c) {
+    if (c.state === "healthy") {
+      return '<span class="tag t-g">健康</span>';
+    }
+    if (c.state === "cooling") {
+      return '<span class="tag t-w" title="冷却中——剩余时间到点自动恢复">冷却</span>';
+    }
+    return '<span class="tag t-d" title="硬熔断——不会自动恢复，仅该通道成功调用可恢复">熔断</span>';
+  }
+
+  function renderChannels() {
+    var rows = state.view.channels || [];
+    $("ch-body").innerHTML = rows.map(function (c) {
+      return "<tr>" +
+        '<td class="mono">' + esc(c.name) +
+        (c.configured ? "" : ' <span class="tag t-n" title="状态文件在册，任务目录无通道配置">配置未见</span>') +
+        "</td>" +
+        '<td class="mono">' + esc(c.model || "—") + "</td>" +
+        '<td class="mono">' + esc(c.base_url || "—") + "</td>" +
+        "<td>" + (c.configured
+          ? '<span class="tag ' + (c.api_key_set ? "t-g" : "t-w") + '">' +
+            (c.api_key_set ? "已配置" : "未配置") + "</span>"
+          : '<span class="tag t-n">—</span>') + "</td>" +
+        "<td>" + stateCell(c) + "</td>" +
+        '<td class="mono">' + (c.state === "cooling"
+          ? esc(c.remaining_s) + " 秒"
+          : (c.state === "tripped" ? "不自动恢复" : "—")) + "</td></tr>";
+    }).join("");
+    $("ch-none").style.display = rows.length ? "none" : "block";
+    var n = state.view.counts || {};
+    $("ch-sub").textContent = "配置 " + (n.channels_configured || 0) + " 条 · " +
+      "健康 " + (n.healthy || 0) + " · 冷却 " + (n.cooling || 0) +
+      " · 熔断 " + (n.tripped || 0);
+    $("ch-note").textContent = ((state.view.notes || {}).channels || "");
+    $("state-note").textContent = ((state.view.notes || {}).state || "");
+  }
+
+  var EV_ZH = { trip: "熔断", recover: "恢复" };
+
+  function renderEvents() {
+    var rows = state.view.events || [];
+    $("ev-list").innerHTML = rows.map(function (e) {
+      var p = e.payload || {};
+      var head = '<span class="tag ' + (p.event === "trip" ? "t-d" : "t-g") + '">' +
+        esc(EV_ZH[p.event] || p.event || "?") + "</span> " + esc(e.ts);
+      var bits = ["通道 " + esc(p.model || "?")];
+      if (p.reason) { bits.push("原因 " + esc(p.reason)); }
+      if (p.lane) { bits.push(p.lane === "rate" ? "限流档" : "服务端档"); }
+      if (p.cooldown_s != null) { bits.push("冷却 " + esc(p.cooldown_s) + " 秒"); }
+      return "<div>" + head + " · " + bits.join(" · ") + "</div>";
+    }).join("");
+    $("ev-none").style.display = rows.length ? "none" : "block";
+    $("ev-sub").textContent = (state.view.counts || {}).events || 0;
+    $("ev-note").textContent = ((state.view.notes || {}).events || "");
+  }
+
+  function renderParams() {
+    var p = state.view.params || {};
+    var rows = [
+      ["连续软失败阈值", (p.soft_trip_threshold || "—") + " 次"],
+      ["限流短档（429）", (p.rate_cooldown_s || "—") + " 秒"],
+      ["服务端长档", (p.server_ladder_s || []).join(" / ") + " 秒"],
+      ["冷却抖动", "±" + Math.round((p.jitter || 0) * 100) + "%"],
+      ["硬熔断状态码", (p.hard_status || []).join(" / ")],
+    ];
+    $("params-kv").innerHTML = rows.map(function (r) {
+      return '<div class="k">' + r[0] + '</div><div class="v">' + esc(r[1]) + "</div>";
+    }).join("");
+  }
+
+  function load(battle) {
+    show("st-loading");
+    state.battle = battle || null;
+    var url = '/api/v2/llm-status.json';
+    if (battle != null) { url += '?battle=' + encodeURIComponent(battle); }
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p && p.error) { throw p.error; }
+        state.view = p;
+        fillBattlePicker();
+        renderChannels();
+        renderEvents();
+        renderParams();
+        show("st-normal");
+      })
+      .catch(function (e) {
+        $("err-detail").textContent = e;
+        show("st-error");
+      });
+  }
+
+  $("btn-retry").addEventListener("click", function () { load(state.battle); });
+
+  /* 宿主壳自注册（共享壳缺席时本页独立可用——守卫式消费 UI-1 舰契约） */
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: 'llm-status', title: '模型状态', group: '系统' });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系统配置 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md
+     §P8-P18（系统配置页=读面[门禁三速度/守卫档/预算默认/版本信息]+写面留位
+     [W7 权限门后开]）。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+/* 状态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1080px;margin:0 auto;padding:18px 24px 60px;
+display:grid;grid-template-columns:7fr 5fr;gap:14px;align-items:start}
+@media(max-width:980px){#wrap{grid-template-columns:1fr}}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);font-weight:500;text-align:left;padding:6px 8px;
+border-bottom:1px solid var(--g4);font-size:11.5px;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid var(--g3);vertical-align:top}
+tr:hover td{background:var(--g3)}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-n{background:var(--g4);color:var(--g9)}
+.t-w{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-d{background:rgba(232,99,90,.16);color:var(--dang)}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:12.5px}
+.kv .k{color:var(--g8)}
+.kv .v{color:var(--gc);font-family:var(--mono);word-break:break-all}
+.note{color:var(--g8);font-size:11.5px;line-height:1.8}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:7px 16px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.ph{border:1px dashed var(--g5);border-radius:6px;padding:18px 16px;
+color:var(--g8);font-size:12.5px;line-height:1.9;text-align:center}
+.ph b{color:var(--g9);font-weight:500}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">系统 · <b>系统配置</b></span>
+  <span class="sp"></span>
+</header>
+
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在读取系统配置…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>系统配置读取失败</h3>
+  <p><code id="err-detail"></code></p>
+  <button id="btn-retry" class="btn" type="button">重试</button>
+</div></div>
+
+<div id="st-normal" class="state">
+  <div id="wrap">
+    <div>
+      <div class="pane" id="sy-gates">
+        <h3>门禁三速度 <span class="sub">什么操作走哪道门 · 只读</span></h3>
+        <div class="note" style="margin-bottom:8px">三速度=疾速档（只读直跑）/
+        预授权档（批一次放一族）/严审档（永人工）——细则见下表。</div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>速度</th><th>适用操作</th><th>放行方式</th></tr></thead>
+            <tbody id="gates-body"></tbody>
+          </table>
+        </div>
+        <div class="note" id="gates-note" style="margin-top:8px"></div>
+      </div>
+      <div class="pane" id="sy-tiers">
+        <h3>强度档与守卫档 <span class="sub">枚举域 · 随任务声明</span></h3>
+        <div class="kv" id="tiers-kv"></div>
+        <div class="note" id="tiers-note" style="margin-top:8px"></div>
+      </div>
+      <div class="pane" id="sy-budget">
+        <h3>预算默认参数 <span class="sub">三元组 + 预警线 · 只读</span></h3>
+        <div class="kv" id="budget-kv"></div>
+        <div class="note" id="budget-note" style="margin-top:8px"></div>
+      </div>
+    </div>
+    <div>
+      <div class="pane" id="sy-version">
+        <h3>版本信息 <span class="sub">代码常量单源 · 只读</span></h3>
+        <div class="kv" id="version-kv"></div>
+        <div class="note" style="margin-top:8px">各版本号取自代码常量（服务端 /
+        账本结构 / 工具卡册 / 智能体运行时）——本页只转述，不另立版本源。</div>
+      </div>
+      <div class="pane" id="sy-write">
+        <h3>修改配置 <span class="sub">写面预留</span></h3>
+        <div class="ph">
+          <b>写面预留</b>——W7 权限门落地后开放。<br>
+          届时修改门禁速度/守卫档/预算默认参数须<b>带因入链</b>（与任务范围
+          修订同一审计面）；当前本页只读。
+          <div style="margin-top:12px">
+            <button class="btn" type="button" disabled>修改配置（未开放）</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+/* T7·系统配置页：全局配置读面（门禁三速度/守卫档/预算默认/版本）+写面留位
+  （W7 权限门后开——控件禁用，零 POST 面）。 */
+(function () {
+  var state = { view: null };
+
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    ["st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === name);
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  var GATE_CLS = { fast: "t-g", pre: "t-w", strict: "t-d" };
+
+  function renderGates() {
+    var rows = state.view.gates || [];
+    $("gates-body").innerHTML = rows.map(function (g) {
+      return "<tr>" +
+        '<td><span class="tag ' + (GATE_CLS[g.id] || "t-n") + '">' +
+        esc(g.name) + "</span></td>" +
+        "<td>" + esc(g.rule) + "</td>" +
+        "<td>" + esc(g.decision) + "</td></tr>";
+    }).join("");
+    $("gates-note").textContent = "单源=" + ((rows[0] || {}).source || "—") +
+      "：任何门不得增加漏报或延误——等待方式是问题，门本身不是；门拒绝时"
+      + "必附原因与改道建议。";
+  }
+
+  function renderTiers() {
+    var t = state.view.tiers || {};
+    var mt = t.model_tier || {};
+    var rows = [
+      ["执行档（model_tier）", (mt.enum || []).map(function (e) {
+        return e + "（" + ((mt.zh || {})[e] || "—") + "）";
+      }).join(" / ")],
+      ["守卫档（guard_tier）", (t.guard_tier || {}).enum.join(" / ")],
+    ];
+    $("tiers-kv").innerHTML = rows.map(function (r) {
+      return '<div class="k">' + r[0] + '</div><div class="v">' + esc(r[1]) + "</div>";
+    }).join("");
+    $("tiers-note").textContent = t.note || "";
+  }
+
+  function renderBudget() {
+    var b = state.view.budget_defaults || {};
+    var rows = [
+      ["三元组格式", b.triple_format || "—"],
+      ["合同示例", b.example || "—"],
+      ["美元第四维", b.dollar_dimension || "—"],
+      ["预算预警线", "用量达 " + (b.warn_line_pct || "—") + "% 提醒（非硬停）"],
+    ];
+    $("budget-kv").innerHTML = rows.map(function (r) {
+      return '<div class="k">' + r[0] + '</div><div class="v">' + esc(r[1]) + "</div>";
+    }).join("");
+    $("budget-note").textContent = "单源=" + (b.source || "—") +
+      "；触顶即停属任务级预算（在「设置」页按任务查看）。";
+  }
+
+  function renderVersion() {
+    var v = state.view.versions || {};
+    var rows = [
+      ["服务端", v.server || "—"],
+      ["账本结构版本", v.ledger_schema || "—"],
+      ["工具卡册", v.tool_cards || "—"],
+      ["智能体运行时", v.warrior || "—"],
+    ];
+    $("version-kv").innerHTML = rows.map(function (r) {
+      return '<div class="k">' + r[0] + '</div><div class="v">' + esc(r[1]) + "</div>";
+    }).join("");
+  }
+
+  function load() {
+    show("st-loading");
+    fetch('/api/v2/system.json')
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p && p.error) { throw p.error; }
+        state.view = p;
+        renderGates();
+        renderTiers();
+        renderBudget();
+        renderVersion();
+        show("st-normal");
+      })
+      .catch(function (e) {
+        $("err-detail").textContent = e;
+        show("st-error");
+      });
+  }
+
+  $("btn-retry").addEventListener("click", load);
+
+  /* 宿主壳自注册（共享壳缺席时本页独立可用——守卫式消费 UI-1 舰契约） */
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: 'system', title: '系统配置', group: '系统' });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>

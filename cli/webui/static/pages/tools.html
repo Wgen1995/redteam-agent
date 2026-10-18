@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工具 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律）。设计权威 docs/design/ui-spec-complete-v1.md
+     §P8-P18（工具执行页=25 张工具卡只读面：清单/执行历史/单卡详情六节；
+     只读+「复制调用命令」=页端剪贴板，零服务端写）。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+select{background:var(--g3);border:1px solid var(--g5);color:var(--gc);
+padding:6px 10px;border-radius:4px;font-size:12.5px}
+/* 状态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-error .box{max-width:560px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-error h3{color:var(--dang);font-size:15px;margin-bottom:8px}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1180px;margin:0 auto;padding:18px 24px 60px;
+display:grid;grid-template-columns:7fr 5fr;gap:14px;align-items:start}
+@media(max-width:980px){#wrap{grid-template-columns:1fr}}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);font-weight:500;text-align:left;padding:6px 8px;
+border-bottom:1px solid var(--g4);font-size:11.5px;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid var(--g3);vertical-align:top}
+tr.rowbtn{cursor:pointer}
+tr.rowbtn:hover td{background:var(--g3)}
+tr.sel td{background:var(--g4)}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-n{background:var(--g4);color:var(--g9)}
+.t-w{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-d{background:rgba(232,99,90,.16);color:var(--dang)}
+.risk-low{background:rgba(61,220,151,.14);color:var(--acc)}
+.risk-medium{background:var(--g4);color:var(--ga)}
+.risk-high{background:rgba(232,179,75,.14);color:var(--warn)}
+.risk-critical{background:rgba(232,99,90,.16);color:var(--dang)}
+.kd-exec{background:rgba(61,220,151,.14);color:var(--acc)}
+.kd-reject{background:rgba(232,99,90,.16);color:var(--dang)}
+.none{color:var(--g8);font-size:12.5px;padding:10px 0;text-align:center}
+.note{color:var(--g8);font-size:11.5px;line-height:1.8}
+/* 详情六节 */
+.sec{border-top:1px solid var(--g3);padding:10px 0 2px;margin-top:8px}
+.sec:first-child{border-top:0;margin-top:0;padding-top:0}
+.sec h4{font-size:12px;color:var(--ga);margin-bottom:6px}
+.sec .kv{display:grid;grid-template-columns:110px 1fr;gap:4px 10px;font-size:12px}
+.sec .kv .k{color:var(--g8)}
+.sec .kv .v{color:var(--gc);font-family:var(--mono);word-break:break-all}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:7px 16px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover:not(:disabled){background:var(--g5);color:var(--gc)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-go{background:rgba(61,220,151,.12);border-color:var(--acc2);color:var(--acc)}
+.cmdbox{background:var(--g1);border:1px solid var(--g4);border-radius:4px;
+padding:8px 10px;font-family:var(--mono);font-size:11.5px;color:var(--acc);
+word-break:break-all;margin-bottom:8px}
+.okmsg{color:var(--acc);font-size:11.5px;display:none;margin-left:8px}
+.okmsg.on{display:inline}
+#hist-list{font-size:12px;line-height:1.9;font-family:var(--mono);word-break:break-all}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">系统 · <b>工具</b></span>
+  <span class="sp"></span>
+  <select id="battle-pick" title="选择任务"></select>
+</header>
+
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在读取工具卡清单…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>工具信息读取失败</h3>
+  <p><code id="err-detail"></code></p>
+  <button id="btn-retry" class="btn" type="button">重试</button>
+</div></div>
+
+<div id="st-normal" class="state">
+  <div id="wrap">
+    <div>
+      <div class="pane" id="tl-cards">
+        <h3>工具卡清单 <span class="sub" id="cards-sub"></span></h3>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>名称</th><th>用途</th><th>风险级</th><th>档位</th>
+            <th>限速</th><th>revert 义务</th></tr></thead>
+            <tbody id="cards-body"></tbody>
+          </table>
+        </div>
+        <div class="note" id="cards-note" style="margin-top:8px"></div>
+      </div>
+      <div class="pane" id="tl-history">
+        <h3>执行历史 <span class="sub" id="hist-sub"></span></h3>
+        <div id="hist-list"></div>
+        <div class="none" id="hist-none" style="display:none">本任务尚无工具执行记录</div>
+        <div class="note" id="hist-note" style="margin-top:8px"></div>
+      </div>
+    </div>
+    <div>
+      <div class="pane" id="tl-detail">
+        <h3>工具卡详情 <span class="sub">六节 · 只读</span></h3>
+        <div class="none" id="detail-none">在左侧清单点一张卡查看详情</div>
+        <div id="detail-body" style="display:none">
+          <div id="detail-secs"></div>
+          <div style="margin-top:12px">
+            <button class="btn btn-go" id="btn-copy-cmd" type="button">复制调用命令</button>
+            <span class="okmsg" id="copy-ok">已复制到剪贴板</span>
+          </div>
+          <div class="note" style="margin-top:8px">复制的是示例命令（目标一律
+          target.example 占位——实际调用须在授权范围内替换，并遵守该卡的限速
+          与收尾义务）。本页只读，不能从这里发起执行。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+/* T7·工具执行页：25 张工具卡只读面。卡清单=cards.py 注册表单源；执行历史=
+   timeline 工具行（actor=tools）；详情六节；「复制调用命令」=页端剪贴板动作
+   （零服务端写——本页无 POST 面）。 */
+(function () {
+  var state = { view: null, battle: null, card: null };
+
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    ["st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === name);
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  var RISK_ZH = { low: "低", medium: "中", high: "高", critical: "严重" };
+  var TIER_TITLE = {
+    L0: "本地零流量", L1: "远程只读", L2: "主动高敏或可写（带收尾义务）",
+    L3: "破坏性 · 须逐次审批"
+  };
+
+  function fillBattlePicker() {
+    var sel = $("battle-pick");
+    sel.innerHTML = (state.view.battles || []).map(function (b) {
+      return '<option value="' + b.n + '">' + esc(b.id) + "</option>";
+    }).join("");
+    if (state.view.battle) { sel.value = String(state.view.battle.n); }
+    sel.onchange = function () { load(parseInt(sel.value, 10), state.card); };
+  }
+
+  function renderCards() {
+    var rows = state.view.cards || [];
+    $("cards-body").innerHTML = rows.map(function (c) {
+      return '<tr class="rowbtn" data-card="' + esc(c.name) + '">' +
+        '<td class="mono">' + esc(c.name) + "</td>" +
+        "<td>" + esc(c.purpose || "—") + "</td>" +
+        '<td><span class="tag risk-' + esc(c.risk) + '" title="风险级 ' +
+        esc(c.risk) + '">' + esc(RISK_ZH[c.risk] || c.risk) + "</span></td>" +
+        '<td><span class="tag ' + (c.tier === "L3" ? "t-d" : (c.tier === "L2" ? "t-w" : "t-n")) +
+        '" title="' + esc(TIER_TITLE[c.tier] || "") + '">' + esc(c.tier) +
+        (c.requires_approval ? " · 审批" : "") + "</span></td>" +
+        '<td class="mono">' + esc(c.rate) + "</td>" +
+        "<td>" + (c.revert_required
+          ? '<span class="tag t-w" title="' + esc(c.revert) + '">有</span>'
+          : '<span class="tag t-n">无（只读）</span>') + "</td></tr>";
+    }).join("");
+    Array.prototype.forEach.call(
+      document.querySelectorAll("#cards-body tr"), function (tr) {
+        tr.addEventListener("click", function () {
+          load(state.battle, tr.getAttribute("data-card"));
+        });
+      });
+    var c = state.view.counts || {};
+    $("cards-sub").textContent = (c.cards || 0) + " 张 · 须审批 " +
+      (c.approval_required || 0) + " · 带收尾义务 " + (c.revert_required || 0);
+    $("cards-note").textContent = (state.view.note || "") +
+      " 点击行查看六节详情。";
+  }
+
+  function renderHistory() {
+    var rows = state.view.history || [];
+    $("hist-list").innerHTML = rows.map(function (r) {
+      return '<div><span class="tag kd-' + (r.kind === "执行" ? "exec" : "reject") +
+        '">' + esc(r.kind) + "</span> " + esc(r.ts) + " · " + esc(r.card) +
+        (r.kind === "执行"
+          ? " · rc=" + esc(r.rc) + " · " + esc(r.tier) + " · " + esc(r.rate) +
+            (r.revert ? " · 收尾：" + esc(r.revert) : "")
+          : " · " + esc(r.detail)) + "</div>";
+    }).join("");
+    $("hist-none").style.display = rows.length ? "none" : "block";
+    var c = state.view.counts || {};
+    $("hist-sub").textContent = (c.exec || 0) + " 次执行 · " + (c.reject || 0) +
+      " 次拒绝";
+    $("hist-note").textContent = "来源=任务时间线工具行（新者在前" +
+      (state.view.history_truncated ? "；记录较长，仅显示最近 200 条" : "") +
+      "）。拒绝行含卡层门拒因。";
+  }
+
+  function markSel() {
+    Array.prototype.forEach.call(
+      document.querySelectorAll("#cards-body tr"), function (tr) {
+        tr.classList.toggle("sel", tr.getAttribute("data-card") === state.card);
+      });
+  }
+
+  function renderDetail() {
+    var d = state.view.detail;
+    if (!d) {
+      $("detail-body").style.display = "none";
+      $("detail-none").style.display = "block";
+      return;
+    }
+    $("detail-none").style.display = "none";
+    $("detail-body").style.display = "block";
+    $("detail-secs").innerHTML = (d.sections || []).map(function (s) {
+      var items = (s.items || []).map(function (it) {
+        var val = it[1];
+        if (Object.prototype.toString.call(val) === "[object Array]") {
+          val = val.join(" ");
+        }
+        return '<div class="k">' + esc(it[0]) + '</div><div class="v">' +
+          esc(val) + "</div>";
+      }).join("");
+      return '<div class="sec"><h4>' + esc(s.title) + "</h4>" +
+        '<div class="kv">' + items + "</div></div>";
+    }).join("");
+  }
+
+  function copyCommand() {
+    var d = state.view && state.view.detail;
+    if (!d) { return; }
+    var cmd = "";
+    (d.sections || []).forEach(function (s) {
+      if (s.key !== "example") { return; }
+      (s.items || []).forEach(function (it) {
+        if (it[0] === "调用命令（可复制）") { cmd = String(it[1]); }
+      });
+    });
+    if (!cmd) { return; }
+    var done = function () {
+      var ok = $("copy-ok");
+      ok.classList.add("on");
+      setTimeout(function () { ok.classList.remove("on"); }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(cmd).then(done, function () { fallback(cmd, done); });
+    } else {
+      fallback(cmd, done);
+    }
+  }
+
+  function fallback(text, done) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { /* 复制失败静默 */ }
+    document.body.removeChild(ta);
+  }
+
+  function load(battle, card) {
+    show("st-loading");
+    state.battle = battle || null;
+    state.card = card || null;
+    var url = '/api/v2/tools.json';
+    var q = [];
+    if (battle != null) { q.push("battle=" + encodeURIComponent(battle)); }
+    if (card) { q.push("card=" + encodeURIComponent(card)); }
+    if (q.length) { url += "?" + q.join("&"); }
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p && p.error) { throw p.error; }
+        state.view = p;
+        if (!card && p.detail) { state.card = p.detail.name; }
+        fillBattlePicker();
+        renderCards();
+        renderHistory();
+        renderDetail();
+        markSel();
+        show("st-normal");
+      })
+      .catch(function (e) {
+        $("err-detail").textContent = e;
+        show("st-error");
+      });
+  }
+
+  $("btn-copy-cmd").addEventListener("click", copyCommand);
+  $("btn-retry").addEventListener("click", function () { load(state.battle, state.card); });
+
+  /* 宿主壳自注册（共享壳缺席时本页独立可用——守卫式消费 UI-1 舰契约） */
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: 'tools', title: '工具', group: '系统' });
+  }
+
+  var m = /card=([^&]+)/.exec(location.search || "");
+  load(null, m ? decodeURIComponent(m[1]) : null);
+})();
+</script>
+</body>
+</html>
