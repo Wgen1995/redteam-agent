@@ -82,10 +82,11 @@ class WarriorLoop(object):
         self.guardrail = (guardrail if guardrail is not None else   # 件①
                           default_guardrail(self.io))
         self._gr_scope = ("", 0)               # 件①：本回合判定执法域
-        self.executor = ToolBatchExecutor(      # E舰③：同轮工具并行执行面
+        self.executor = ToolBatchExecutor(      # E舰③+F22韧性三件
             tool_exec=self._guarded_tool_exec, ledger_write=self.io.write,
             now=self.clock, ts=self._ts, add_tl=self.io.add_tl,
-            warrior_id=warrior_id, max_parallel=max_parallel_tools)
+            warrior_id=warrior_id, max_parallel=max_parallel_tools,
+            goal_dir=goal_dir)  # F22：goal_dir 注入=断路器/异步/spill 三件齐装
         self._steer_idx = 0
         self._pending_steers = []
         self._deadline = None

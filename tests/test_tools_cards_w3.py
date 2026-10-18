@@ -36,13 +36,35 @@ REQUIRED_25 = (
     "openssl",
 )
 
+# F22 广度补卡 30 张（能力对照总账 §F22 最优方案②：参照 CSAI 90 卡+
+# GT L4 容器/云空白；名称冻结清单——增删卡须改本表+tools.lock 重签。
+# 全部「不装二进制」：卡面带安装预检+版本钉死+失败模式标注，装不装点
+# 火时人定；qsx/mediate 两项清单外工具无公开可信发行面，剔除并记录在
+# F22 报账，不虚构卡面）
+REQUIRED_F22_30 = (
+    # 容器/云（GT L4 空白直补）
+    "trivy", "checkov", "kube-bench", "kube-hunter",
+    # 凭据攻击/横移（L3 面为主）
+    "hydra", "krbrelayx", "impacket-secretsdump", "impacket-getst",
+    "impacket-ticketer", "responder", "mitm6", "ettercap",
+    # 横移探测（L2 面，破坏性旗标黑名单）
+    "netexec", "crackmapexec", "dsquery",
+    # Web 深挖
+    "feroxbuster", "arjun", "jwt-tool", "dirsearch", "kiterunner",
+    # 测绘/侦察
+    "httprobe", "gau", "waybackurls", "masscan", "rustscan", "naabu",
+    "dnsx", "amass",
+    # vuln-scan 补件
+    "sslscan", "nuclei-templates",
+)
+
 
 class TestRegistry25Cards(unittest.TestCase):
     """①卡片注册表：25 张全注册、名称无重复、按名可查、未注册查 None。"""
 
-    def test_registry_has_exactly_25_cards(self):
-        self.assertEqual(len(tool_cards.all_cards()), 25,
-                         "注册表必须恰 25 张（蓝图 W3 工具卡 25 张口径）")
+    def test_registry_has_exactly_55_cards(self):
+        self.assertEqual(len(tool_cards.all_cards()), 55,
+                         "注册表必须恰 55 张（W3 25 张+F22 补卡 30 张口径）")
 
     def test_required_names_all_registered(self):
         missing = [n for n in REQUIRED_25 if tool_cards.get_card(n) is None]
@@ -107,10 +129,13 @@ class TestDisciplineCompleteness(unittest.TestCase):
         for c in tool_cards.all_cards():
             self.assertEqual(c.example[0], c.binary, c.name)
 
-    def test_l3_cards_exactly_sqlmap_and_impacket(self):
+    def test_l3_cards_exactly_approval_set(self):
         l3 = sorted(c.name for c in tool_cards.all_cards() if c.tier == "L3")
-        self.assertEqual(l3, ["impacket", "sqlmap"],
-                         "L3 档（审批门挂卡面）必须恰为 sqlmap+impacket")
+        self.assertEqual(l3, [
+            "ettercap", "hydra", "impacket", "impacket-getst",
+            "impacket-secretsdump", "impacket-ticketer", "krbrelayx",
+            "mitm6", "responder", "sqlmap"],
+            "L3 档（审批门挂卡面）=W3 双卡+F22 凭据攻击/横移/毒化八卡")
 
     def test_l3_cards_require_approval_flag(self):
         for c in tool_cards.all_cards():
@@ -140,10 +165,11 @@ class TestDisciplineCompleteness(unittest.TestCase):
 class TestToolsLock(unittest.TestCase):
     """④tools.lock 供应链锁定（版本+sha256+ECDSA 验签；测试钥锚=批次 4 先例）。"""
 
-    def test_lock_file_covers_all_25_cards(self):
+    def test_lock_file_covers_all_55_cards(self):
         entries = tool_lock.load(tool_lock.DEFAULT_LOCK_PATH)
-        self.assertEqual(sorted(entries), sorted(REQUIRED_25),
-                         "lock 键面=注册表 25 卡全量")
+        self.assertEqual(sorted(entries),
+                         sorted(REQUIRED_25 + REQUIRED_F22_30),
+                         "lock 键面=注册表 55 卡全量（F22 补卡全走签名纪律）")
 
     def test_lock_all_entries_signature_verifies(self):
         results = tool_lock.verify_all(tool_lock.DEFAULT_LOCK_PATH, TEST_PUB)
@@ -564,7 +590,7 @@ class TestToolsCli(unittest.TestCase):
         self.assertIn("tier", r.stdout.lower())
         self.assertIn("rate", r.stdout.lower())
         self.assertIn("risk", r.stdout.lower())
-        self.assertIn("25", r.stdout, "清单须报卡计数")
+        self.assertIn("cards=55", r.stdout, "清单须报卡计数")
 
     def test_list_marks_installed_cards(self):
         tool_install.install("curl", "2026-10-18T10:00:00Z",
@@ -605,7 +631,7 @@ class TestToolsCli(unittest.TestCase):
     def test_verify_lock_all_pass(self):
         r = tools_cli("verify-lock", env_extra=self.env)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-        self.assertIn("25", r.stdout)
+        self.assertIn("entries=55", r.stdout)
 
     def test_verify_lock_tampered_fails(self):
         entries = tool_lock.load(tool_lock.DEFAULT_LOCK_PATH)
@@ -721,6 +747,75 @@ class TestGuardIntegration(unittest.TestCase):
                       env_extra=env)
         self.assertEqual(r.returncode, 1)
         self.assertIn("界外目标", r.stdout + r.stderr)
+
+
+class TestF22Cards30(unittest.TestCase):
+    """F22 广度补卡 30 张（能力对照总账 §F22 最优方案②）——TDD 红转绿。
+
+    三纪律：①每卡七纪律字段全带+安装预检命令+版本钉死+失败模式标注
+    （卡面=数据，**不装二进制**——装不装点火时人定）；②全走 tools.lock
+    签名纪律（条目在场+验签+sha256 摘要锚）；③容器/云四卡补 GT L4 空白。
+    """
+
+    def test_f22_30_all_registered(self):
+        missing = [n for n in REQUIRED_F22_30
+                   if tool_cards.get_card(n) is None]
+        self.assertEqual(missing, [], "F22 补卡缺注册: %s" % missing)
+        self.assertEqual(len(REQUIRED_F22_30), 30, "恰 30 张冻结清单")
+
+    def test_f22_cards_discipline_all_pass(self):
+        for n in REQUIRED_F22_30:
+            errs = tool_cards.get_card(n).discipline_errors()
+            self.assertEqual(errs, [], "%s 纪律字段不备: %s" % (n, errs))
+
+    def test_f22_cards_carry_precheck_pin_and_fail_modes(self):
+        """安装预检+版本钉死+失败模式标注——三件卡面元数据逐卡齐备。"""
+        for n in REQUIRED_F22_30:
+            c = tool_cards.get_card(n)
+            self.assertTrue(c.install_check,
+                            "%s.install_check 缺（安装预检命令）" % n)
+            self.assertEqual(c.install_check[0], c.binary,
+                             "%s 预检命令须以本卡 binary 打头" % n)
+            self.assertTrue(c.pin_version and isinstance(c.pin_version, str),
+                            "%s.pin_version 缺（版本钉死）" % n)
+            self.assertTrue(c.fail_modes and all(
+                isinstance(m, str) and m.strip() for m in c.fail_modes),
+                "%s.fail_modes 缺（失败模式标注）" % n)
+
+    def test_f22_container_cloud_gap_covered(self):
+        """GT L4 容器/云空白直补：trivy/checkov/kube-bench/kube-hunter 在册。"""
+        cats = {tool_cards.get_card(n).category for n in REQUIRED_F22_30}
+        self.assertIn("container", cats, "容器/云类卡须成组在册")
+        for n in ("trivy", "checkov", "kube-bench", "kube-hunter"):
+            self.assertEqual(tool_cards.get_card(n).category, "container", n)
+
+    def test_f22_credential_attack_cards_are_l3(self):
+        """凭据攻击执行/横移毒化类=F22 L3 新面（未批即拒）。"""
+        l3_new = ("hydra", "krbrelayx", "impacket-secretsdump",
+                  "impacket-getst", "impacket-ticketer", "responder",
+                  "mitm6", "ettercap")
+        for n in l3_new:
+            c = tool_cards.get_card(n)
+            self.assertEqual(c.tier, "L3", n)
+            self.assertTrue(c.requires_approval, n)
+
+    def test_f22_lock_entries_verify(self):
+        """F22 30 卡全走 tools.lock 签名纪律：验签+sha256 摘要锚逐卡过。"""
+        for n in REQUIRED_F22_30:
+            ok, why = tool_lock.verify_card(tool_cards.get_card(n),
+                                            tool_lock.DEFAULT_LOCK_PATH,
+                                            TEST_PUB)
+            self.assertTrue(ok, "%s lock 验签失败: %s" % (n, why))
+
+    def test_f22_cards_not_auto_installed(self):
+        """不装二进制：未装卡执行入口 fail-closed（装不装点火时人定）。"""
+        from tools import gate as tool_gate
+        c = tool_cards.get_card("trivy")
+        args = c.example[1:]
+        ok, why = tool_gate.card_gate(FIXTURE, "trivy", args,
+                                      "2026-10-20T00:00:00Z")
+        self.assertFalse(ok, "未装卡必须拒执行（不自动装）")
+        self.assertIn("card-not-installed", why, why)
 
 
 if __name__ == "__main__":

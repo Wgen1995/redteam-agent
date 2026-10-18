@@ -111,8 +111,8 @@ class Base(unittest.TestCase):
 class TestToolsProjection(Base):
     def test_cards_count_is_25(self):
         p = self.view(battle=1)
-        self.assertEqual(len(p["cards"]), 25)                # W3 蓝图 25 卡
-        self.assertEqual(p["counts"]["cards"], 25)
+        self.assertEqual(len(p["cards"]), 55)   # W3 25+F22 补卡 30
+        self.assertEqual(p["counts"]["cards"], 55)
 
     def test_card_fields_present(self):
         p = self.view(battle=1)
@@ -288,7 +288,7 @@ class TestV2MountContract(unittest.TestCase):
         conn, resp = self._req("/api/v2/tools.json")
         self.assertEqual(resp.status, 200)
         p = json.loads(resp.read().decode("utf-8"))
-        self.assertEqual(len(p["cards"]), 25)
+        self.assertEqual(len(p["cards"]), 55)   # W3 25+F22 补卡 30
         self.assertEqual(p["history"][0]["card"], "nuclei")
         conn.close()
 

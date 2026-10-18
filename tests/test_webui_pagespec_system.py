@@ -93,7 +93,9 @@ class TestSystemProjection(unittest.TestCase):
         self.assertEqual(v["ledger_schema"], schemas_mod.SCHEMA_VERSION)
         self.assertEqual(v["warrior"], WARRIOR_VERSION)
         self.assertEqual(v["tool_cards"],
-                         sorted({c.version for c in tool_cards.all_cards()})[0])
+                         "/".join(sorted({c.version
+                                          for c in tool_cards.all_cards()})))
+        # 单源=投影从注册表派生（多批次卡版本并集，W3 f22 两批共存）
 
     def test_write_face_reserved(self):
         w = self.view()["write"]
