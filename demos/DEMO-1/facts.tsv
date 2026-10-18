@@ -1,0 +1,46 @@
+F-r18-0001	INT-r18-0001	port	svc-shop	TCP 8001 open (scan 8000-8010)\; GET / status=404 body~not found\; server=BaseHTTP Python/3.12.14	0.95	2	2026-10-14T09:15:00Z
+F-r18-0002	INT-r18-0001	port	svc-api-gw	TCP 8002 open (scan 8000-8010)\; GET / status=404 body~not found\; server=BaseHTTP Python/3.12.14	0.95	2	2026-10-14T09:16:00Z
+F-r18-0003	INT-r18-0001	port	svc-admin	TCP 8003 open (scan 8000-8010)\; GET / status=401 body~auth required\; server=BaseHTTP Python/3.12.14	0.95	2	2026-10-14T09:17:00Z
+F-r18-0004	INT-r18-0001	port	svc-login	TCP 8004 open (scan 8000-8010)\; GET / status=200 body~login form html\; server=BaseHTTP Python/3.12.14	0.95	2	2026-10-14T09:18:00Z
+F-r18-0005	INT-r18-0001	port	svc-billing	TCP 8005 open (scan 8000-8010)\; GET / status=401 body~auth required\; server=BaseHTTP Python/3.12.14	0.95	2	2026-10-14T09:19:00Z
+F-r18-0006	INT-r18-0001	port	svc-dashboard	TCP 8006 open (scan 8000-8010)\; GET / status=404 body~not found\; server=BaseHTTP Python/3.12.14	0.95	2	2026-10-14T09:20:00Z
+F-r18-0007	INT-r18-0001	port	svc-portal	TCP 8007 open (scan 8000-8010)\; GET / status=404 body~not found\; server=BaseHTTP Python/3.12.14	0.95	2	2026-10-14T09:21:00Z
+F-r18-0008	INT-r18-0001	port	svc-files	TCP 8008 open (scan 8000-8010)\; GET / status=404 body~not found\; server=BaseHTTP Python/3.12.14	0.95	2	2026-10-14T09:22:00Z
+F-r18-0009	INT-r18-0003	vuln-clue	svc-shop/logout?next=http://evil.example	302 with off-host Location on next= full-URL form\; to-url-goto variants stay on-host (self echo) - differential control attached	0.95	2	2026-10-14T10:36:15Z
+F-r18-0010	INT-r18-0003	vuln-clue	svc-shop/item?id=1	200 page carries synthetic SQL error near the id - id reflected into error\; quote/AND payloads same shape	0.95	2	2026-10-14T10:37:15Z
+F-r18-0011	INT-r18-0003	vuln-clue	svc-shop/order?id=1	200 order page GTSQLI-02 synthetic SQL syntax error\; /orders resource face same class	0.95	2	2026-10-14T10:38:15Z
+F-r18-0012	INT-r18-0003	vuln-clue	svc-shop/search?q=<script>alert(1)</script>	payload echoed UNENCODED in 200 body - same-form reflection	0.95	2	2026-10-14T10:39:15Z
+F-r18-0013	INT-r18-0003	vuln-clue	svc-shop/comment?text=<script>alert(1)</script>	payload echoed unencoded\; GTXSS-02 stored-xss-echo beacon	0.95	2	2026-10-14T10:40:00Z
+F-r18-0014	INT-r18-0003	vuln-clue	svc-shop/feedback?text=<script>alert(1)</script>	payload plus full URL echoed\; GTXSS-04	0.95	2	2026-10-14T10:40:45Z
+F-r18-0015	INT-r18-0005	authz	svc-shop/admin/reports	anon 401 wall\; with user-role bearer token 200 other-user reports - cross-service token trust	0.95	2	2026-10-14T10:41:30Z
+F-r18-0016	INT-r18-0003	vuln-clue	svc-api-gw/jump?u=http://evil.example	302 Location off-host for u= full URL\; url= variant stays on-host (control)	0.95	2	2026-10-14T10:42:30Z
+F-r18-0017	INT-r18-0003	vuln-clue	svc-api-gw/cors-debug	ACAO wildcard star on 200 (config defect class per dictionary erratum)	0.95	2	2026-10-14T10:43:30Z
+F-r18-0018	INT-r18-0003	vuln-clue	svc-api-gw/origin	Origin header reflected into ACAO with ACAC true - evil and null both reflected (CORS family second face)	0.95	2	2026-10-14T10:44:15Z
+F-r18-0019	INT-r18-0003	vuln-clue	svc-api-gw/graphql?query={__schema{types{name}}}	introspection query answered with schema beacon on GET	0.95	2	2026-10-14T10:45:15Z
+F-r18-0020	INT-r18-0003	vuln-clue	svc-api-gw/fetch?url=http://evil.example	200 with internal beacon GTSSRF-01 for external/internal/file URL forms alike - server-side fetch confirmed	0.95	2	2026-10-14T10:46:00Z
+F-r18-0021	INT-r18-0003	vuln-clue	svc-api-gw/proxy?url=http://evil.example	200 with internal beacon GTSSRF-03 for external/internal/file URL forms alike - server-side fetch confirmed	0.95	2	2026-10-14T10:46:45Z
+F-r18-0022	INT-r18-0003	vuln-clue	svc-api-gw/preview?url=http://evil.example	200 with internal beacon GTSSRF-02 for external/internal/file URL forms alike - server-side fetch confirmed	0.95	2	2026-10-14T10:47:30Z
+F-r18-0023	INT-r18-0005	authz	svc-api-gw/admin/keys	anon 401\; user-role token 200 key list - cross-service trust	0.95	2	2026-10-14T10:48:15Z
+F-r18-0024	INT-r18-0004	vuln-clue	svc-login/login	urlencoded admin pair accepted 200 welcome admin\; wrong pair 403 denied (control)\; X-Auth-Token issued in response header	0.95	2	2026-10-14T10:49:15Z
+F-r18-0025	INT-r18-0004	http	svc-login/login	41st consecutive failed attempt still processed with counter beacon no-rate-limit-after-N\; 12-burst all 403 no 429\; control svc-api-gw burst tripped 429 at request 24	0.95	2	2026-10-14T10:50:15Z
+F-r18-0026	INT-r18-0004	vuln-clue	svc-login/forgot?user=admin	existing user yields 200 reset-sent disclosure\; unknown user 404 - clean differential	0.95	2	2026-10-14T10:51:00Z
+F-r18-0027	INT-r18-0004	vuln-clue	svc-login/signin	same weak pair accepted on signin (issuance family further face)\; 200 welcome admin	0.95	2	2026-10-14T10:52:00Z
+F-r18-0028	INT-r18-0004	vuln-clue	svc-login/api/login	same weak pair accepted on api/login (issuance family further face)\; 200 welcome admin	0.95	2	2026-10-14T10:52:45Z
+F-r18-0029	INT-r18-0004	vuln-clue	svc-login/token	same weak pair accepted on token (issuance family further face)\; 200 welcome admin	0.95	2	2026-10-14T10:53:30Z
+F-r18-0030	INT-r18-0004	vuln-clue	svc-login/api/token	same weak pair accepted on api/token (issuance family further face)\; 200 welcome admin	0.95	2	2026-10-14T10:54:15Z
+F-r18-0031	INT-r18-0005	authz	svc-billing/invoice/1	anon 401 wall\; user-role token 200 invoice 88 of other user for ANY path id (1/2/88/0/100/999999)\; query form 404 - path-only face	0.95	2	2026-10-14T10:55:00Z
+F-r18-0032	INT-r18-0006	vuln-clue	svc-dashboard/render?template=${7*7}	template dollar-brace 7 star 7 rendered as 49 (evaluated) while plain text reflected verbatim - engine evaluates dollar-brace form\; q/text params hit same face	0.95	2	2026-10-14T10:56:00Z
+F-r18-0033	INT-r18-0005	authz	svc-dashboard/admin/config	anon 404\; user-role token 200 low-priv reachable config	0.95	2	2026-10-14T10:57:00Z
+F-r18-0034	INT-r18-0006	vuln-clue	svc-dashboard/ping?host=127.0.0.1	GET executes synthetic command output 64 bytes from 127.0.0.1\; host accepted raw	0.95	2	2026-10-14T10:58:00Z
+F-r18-0035	INT-r18-0006	vuln-clue	svc-dashboard/diag?ip=127.0.0.1	second face of cmdi family: diag ip executes uptime output	0.95	2	2026-10-14T10:58:45Z
+F-r18-0036	INT-r18-0003	vuln-clue	svc-portal/redirect?to=http://evil.example	302 off-host for to and goto\; next stays on-host (control)	0.95	2	2026-10-14T10:59:30Z
+F-r18-0037	INT-r18-0003	vuln-clue	svc-portal/debug/env	200 lists DB_PASS and AWS_KEY entries masked in body\; also via trailing-slash and double-slash normalizations	0.95	2	2026-10-14T11:00:30Z
+F-r18-0038	INT-r18-0005	authz	svc-portal/admin/clients	anon 404\; user-role token 200 low-priv client list (hauth)	0.95	2	2026-10-14T11:01:15Z
+F-r18-0039	INT-r18-0003	vuln-clue	svc-files/download?path=../../etc/passwd	200 passwd content for relative/absolute/naked forms (root uid 0)	0.95	2	2026-10-14T11:02:15Z
+F-r18-0040	INT-r18-0003	vuln-clue	svc-files/static?path=../../etc/passwd	shadow content beacon\; query and path forms both live	0.95	2	2026-10-14T11:03:30Z
+F-r18-0041	INT-r18-0003	vuln-clue	svc-files/unserialize?data=gASVtestpayload	GET with data accepted (object inflated beacon GTDESER-01)\; POST form 400 bad request - GET-only handler	0.95	2	2026-10-14T11:04:30Z
+F-r18-0042	INT-r18-0003	vuln-clue	svc-files/import?data=aced0005javastream	GET with data accepted (object inflated beacon GTDESER-02)\; POST form 400 bad request - GET-only handler	0.95	2	2026-10-14T11:05:30Z
+F-r18-0043	INT-r18-0003	vuln-clue	svc-files/decode?data=YTJiM2M0	GET with data accepted (object inflated beacon GTDESER-03)\; POST form 400 bad request - GET-only handler	0.95	2	2026-10-14T11:06:30Z
+F-r18-0044	INT-r18-0003	vuln-clue	svc-files/.env	200 SECRET_KEY entry masked in body	0.95	2	2026-10-14T11:07:30Z
+F-r18-0045	INT-r18-0005	authz	svc-files/admin/logs	anon 404\; user-role token 200 low-priv logs (role face)	0.95	2	2026-10-14T11:08:15Z
+F-r18-0046	INT-r18-0004	vuln-clue	svc-admin/login	GET /login 401 wall\; POST urlencoded weak pair accepted 200 issuing same user-role token	0.95	2	2026-10-14T11:09:15Z

@@ -1,0 +1,6 @@
+INT-r18-0001	port-scan-8000-8010		pending	manual	recon	recon-event			-+recon+port-scan-8000-8010	100000\;2000\;2					2	2026-10-14T09:06:00Z
+INT-r18-0002	drill-three-forms-mechanics		pending	manual	surface	recon-event			-+surface+drill-three-forms-mechanics	10000\;200\;1					2	2026-10-14T09:40:00Z
+INT-r18-0003	dict-wave-anonymous		pending	manual	matrix-test	recon-event			-+matrix-test+dict-wave-anonymous	200000\;8000\;6					2	2026-10-14T10:34:45Z
+INT-r18-0004	credential-issuance-wave		pending	manual	matrix-test	recon-event			-+matrix-test+credential-issuance-wave	200000\;8000\;6					2	2026-10-14T10:35:00Z
+INT-r18-0005	post-auth-rescan-checklist		pending	manual	matrix-test	recon-event			-+matrix-test+post-auth-rescan-checklist	200000\;8000\;6					2	2026-10-14T10:35:15Z
+INT-r18-0006	newclass-hunt		pending	manual	matrix-test	recon-event			-+matrix-test+newclass-hunt	200000\;8000\;6					2	2026-10-14T10:35:30Z

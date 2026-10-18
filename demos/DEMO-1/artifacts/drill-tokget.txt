@@ -1,0 +1,1 @@
+GET / HTTP/1.1 Host: svc-admin:8003 Authorization Bearer {{vault:cred-1}} placeholder => 401 auth required

@@ -1,0 +1,541 @@
+{
+"cors": {
+"origin_hdr_evil": {
+"s": 200,
+"loc": "",
+"acao": "http://evil.example",
+"acac": "true",
+"b": "<html>origin GTCORS-02 reflected http://evil.example allow-credentials true</html>"
+},
+"origin_hdr_null": {
+"s": 200,
+"loc": "",
+"acao": "null",
+"acac": "true",
+"b": "<html>origin GTCORS-02 reflected null allow-credentials true</html>"
+},
+"cors_hdr_evil": {
+"s": 404,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "not found"
+},
+"corsdebug_hdr_evil": {
+"s": 200,
+"loc": "",
+"acao": "*",
+"acac": "",
+"b": "<html>cors debug GTCORS-01 wildcard allow-origin</html>"
+},
+"origin_hdr_shop": {
+"s": 404,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "not found"
+}
+},
+"forgot": {
+"admin": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>reset sent GTUSERENUM-01 synthetic user exists disclosure</html>"
+},
+"zzzno": {
+"s": 404,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "not found"
+},
+"bare": {
+"s": 404,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "not found"
+},
+"admin_post": {
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied</html>"
+}
+},
+"ssti": {
+"math77": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>render GTSSTI-02 synthetic ssti render /render?template={{7*7}}</html>"
+},
+"dollar": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>render GTSSTI-02 synthetic ssti render /render?template=49</html>"
+},
+"plain": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>render GTSSTI-02 synthetic ssti render /render?template=hello</html>"
+},
+"script": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>render GTSSTI-02 synthetic ssti render /render?template=<script>alert(1)</script></html>"
+}
+},
+"sqli": {
+"item_q": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>"
+},
+"item_and": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>"
+},
+"item_2": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>"
+},
+"order_q": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+},
+"product_1": {
+"s": 404,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "not found"
+},
+"detail_1": {
+"s": 404,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "not found"
+},
+"item_path": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>product page GTSQLI-01 synthetic SQL error near ''1''</html>"
+},
+"orders_1": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+},
+"orders_id2": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>order page GTSQLI-02 synthetic SQL syntax error</html>"
+}
+},
+"deser": {
+"unser_post_empty": {
+"s": 400,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "bad request"
+},
+"unser_post_data": {
+"s": 400,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "bad request"
+},
+"unser_get_data": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>GTDESER-01 synthetic pickle object inflated</html>"
+},
+"import_post": {
+"s": 400,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "bad request"
+},
+"import_get_data": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>GTDESER-02 synthetic java serialized blob accepted</html>"
+},
+"decode_post": {
+"s": 400,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "bad request"
+},
+"decode_get_data": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>GTDESER-03 synthetic base64 payload object inflated</html>"
+}
+},
+"logoutfam": {
+"next_int": {
+"s": 302,
+"loc": "http://internal.host.local",
+"acao": "",
+"acac": "",
+"b": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+},
+"to_ext": {
+"s": 302,
+"loc": "/logout?to=http://evil.example",
+"acao": "",
+"acac": "",
+"b": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+},
+"url_ext": {
+"s": 302,
+"loc": "/logout?url=http://evil.example",
+"acao": "",
+"acac": "",
+"b": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+},
+"goto_ext": {
+"s": 302,
+"loc": "/logout?goto=http://evil.example",
+"acao": "",
+"acac": "",
+"b": "<html>GTREDIR-02 synthetic redirect to %s</html>"
+},
+"redirect_to_ext": {
+"s": 404,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "not found"
+}
+},
+"portalfam": {
+"to_int": {
+"s": 302,
+"loc": "http://127.0.0.1:8001/",
+"acao": "",
+"acac": "",
+"b": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+},
+"goto_int": {
+"s": 302,
+"loc": "http://127.0.0.1:8001/",
+"acao": "",
+"acac": "",
+"b": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+},
+"next_int": {
+"s": 302,
+"loc": "/redirect?next=http://127.0.0.1:8001/",
+"acao": "",
+"acac": "",
+"b": "<html>GTREDIR-01 synthetic redirect to %s</html>"
+}
+},
+"graphql": {
+"typename": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>"
+},
+"querytype": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>"
+},
+"mutation": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>GTGRAPHQL-01 synthetic introspection enabled: __schema types</html>"
+}
+},
+"login_baseline": [
+{
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied</html>"
+},
+{
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied</html>"
+},
+{
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied</html>"
+},
+{
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied</html>"
+},
+{
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied</html>"
+}
+],
+"login_keyname": {
+"user_pass_admin": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>"
+},
+"username_password": {
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied</html>"
+},
+"name_pwd": {
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied</html>"
+},
+"account_passwd": {
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 11 attempts</html>"
+},
+"email_password": {
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 12 attempts</html>"
+},
+"json_user_pass": {
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 13 attempts</html>"
+}
+},
+"login_get": {
+"get_creds": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>login form</html>"
+},
+"signin_post": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>"
+},
+"api_login_post": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>"
+}
+},
+"login_burst_12": [
+403,
+403,
+403,
+403,
+403,
+403,
+403,
+403,
+403,
+403,
+403,
+403
+],
+"gw_burst_35": [
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+200,
+429,
+429,
+429,
+429,
+429,
+429,
+429,
+429,
+429,
+429,
+429,
+429
+],
+"register": {
+"shop_register_post": {
+"s": 501,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n"
+},
+"login_register_post": {
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 28 attempts</html>"
+},
+"portal_register_post": {
+"s": 501,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n"
+},
+"files_register_post": {
+"s": 400,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "bad request"
+},
+"dash_register_post": {
+"s": 400,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "bad request"
+}
+},
+"token": {
+"login_token_post": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>"
+},
+"login_api_token": {
+"s": 200,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>welcome admin GTWEAKPASS-01 synthetic weak credential accepted</html>"
+},
+"login_oauth": {
+"s": 403,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<html>denied GTRATE-01 synthetic no rate limit after 31 attempts</html>"
+},
+"gw_token": {
+"s": 501,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n"
+},
+"shop_token": {
+"s": 501,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error response</title>\n    </head>\n    <body>\n        <h1>Error response</h1>\n        <p>Error code: 501</p>\n        <p>Message: Unsupported method ('POST').</p>\n        <p>Error code explanation: 501 - Server does not support this operation.</p>\n    </body>\n</html>\n"
+},
+"dash_token": {
+"s": 400,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "bad request"
+},
+"files_token": {
+"s": 400,
+"loc": "",
+"acao": "",
+"acac": "",
+"b": "bad request"
+}
+}
+}

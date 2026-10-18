@@ -1,0 +1,1 @@
+POST /login Host svc-login:8004 body user=admin pass=wrong => response recorded

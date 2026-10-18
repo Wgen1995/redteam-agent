@@ -1,0 +1,1 @@
+302 LOC=http://evil.example body GTREDIR-02 synthetic redirect

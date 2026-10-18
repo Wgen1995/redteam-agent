@@ -1,0 +1,19 @@
+[
+  {
+    "_readme": "真模型道样例(真钥已脱敏)。启用法: 整文件拷一份为 channels.json(放仓外或已 gitignore 处),把每个 api_key 的占位符整串换成你的真钥匙,再点火: python3 -m cli.warrior --goal-dir <战役目录> --battle-name <名> --max-intents 8 --channels channels.json。样例文件本身永远别填真钥、别提交真钥。详细五步见 docs/FIRST-BATTLE-RUNBOOK.md。",
+    "name": "glm-4.7",
+    "provider": "openai_compatible",
+    "model": "glm-4.7",
+    "base_url": "https://open.bigmodel.cn/api/coding/paas/v4",
+    "api_key": "YOUR_API_KEY_HERE_把这一整串换成你的真钥匙",
+    "priority": 1
+  },
+  {
+    "name": "glm-5.3",
+    "provider": "openai_compatible",
+    "model": "glm-5.3",
+    "base_url": "https://open.bigmodel.cn/api/coding/paas/v4",
+    "api_key": "YOUR_API_KEY_HERE_把这一整串换成你的真钥匙",
+    "priority": 2
+  }
+]

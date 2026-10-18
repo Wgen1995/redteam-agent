@@ -1,0 +1,122 @@
+{
+ "svc-shop": {
+  "open": [
+   8001
+  ],
+  "roots": {
+   "8001": {
+    "status": 404,
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "ctype": "text/html; charset=utf-8",
+    "location": "",
+    "allow": "",
+    "body_snip": "not found"
+   }
+  }
+ },
+ "svc-api-gw": {
+  "open": [
+   8002
+  ],
+  "roots": {
+   "8002": {
+    "status": 404,
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "ctype": "text/html; charset=utf-8",
+    "location": "",
+    "allow": "",
+    "body_snip": "not found"
+   }
+  }
+ },
+ "svc-admin": {
+  "open": [
+   8003
+  ],
+  "roots": {
+   "8003": {
+    "status": 401,
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "ctype": "text/html; charset=utf-8",
+    "location": "",
+    "allow": "",
+    "body_snip": "auth required"
+   }
+  }
+ },
+ "svc-login": {
+  "open": [
+   8004
+  ],
+  "roots": {
+   "8004": {
+    "status": 200,
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "ctype": "text/html; charset=utf-8",
+    "location": "",
+    "allow": "",
+    "body_snip": "<html>login form</html>"
+   }
+  }
+ },
+ "svc-billing": {
+  "open": [
+   8005
+  ],
+  "roots": {
+   "8005": {
+    "status": 401,
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "ctype": "text/html; charset=utf-8",
+    "location": "",
+    "allow": "",
+    "body_snip": "auth required"
+   }
+  }
+ },
+ "svc-dashboard": {
+  "open": [
+   8006
+  ],
+  "roots": {
+   "8006": {
+    "status": 404,
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "ctype": "text/html; charset=utf-8",
+    "location": "",
+    "allow": "",
+    "body_snip": "not found"
+   }
+  }
+ },
+ "svc-portal": {
+  "open": [
+   8007
+  ],
+  "roots": {
+   "8007": {
+    "status": 404,
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "ctype": "text/html; charset=utf-8",
+    "location": "",
+    "allow": "",
+    "body_snip": "not found"
+   }
+  }
+ },
+ "svc-files": {
+  "open": [
+   8008
+  ],
+  "roots": {
+   "8008": {
+    "status": 404,
+    "server": "BaseHTTP/0.6 Python/3.12.14",
+    "ctype": "text/html; charset=utf-8",
+    "location": "",
+    "allow": "",
+    "body_snip": "not found"
+   }
+  }
+ }
+}

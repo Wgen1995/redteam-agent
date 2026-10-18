@@ -1,0 +1,1 @@
+200 search results script tag echoed GTXSS-01 synthetic reflected xss
