@@ -51,3 +51,4 @@
 - 落舱记(R44,68律三验: 1008e29在main+105测报绿+抽查base.py帧协议): F24a外部后端舰落——Backend抽象(base/dsh/claude/local四adapter)+任务包最小披露+归一入账(先铸证据再finding,哨兵零豁免实测降级)+usage入budget;接口字段对Multica checklist逐项覆盖,独有=质量门归一+权限分级。③类五件全部落码(哨兵待复审收舱)。F24b(profile分发/MCP client/daemon化)留后。待发舰: 兵种包(等修复舰+复审)。
 - 落舱记(R46,68律三验过: 70fe934+e177694在main+60测报绿+preauth.py实存): 指挥审批舰落(功能17/19五件: 对话建任务只产卡/@引用账本四表/回复四分类路由既有HMAC面/预授权白名单零打扰/超时保守)——②类四件真空全部落码。Ruling#4=pathspec工作树态混线事故+e177694裁出先例(共享文件须git apply --cached)。通知案: 老tanyin-runner GIVEUP/预算超限osascript(cli/tanyin-runner:336-388),残留opencode进程已杀。
 - 落舱记(R47,68律三验: 297e2b0在main+24测报绿+五卡实存): 兵种包舰落(F4/F9卡层: 五兵种卡四权分立写面两两不相交,audit「验证官兵种零码」闭环)。F4运行时件(~300行--corps读包)另派舰。
+- 落舱记(R49,68律三验: 4587753在main+82测报绿+fleet.tsv模块实存): 多任务治理舰落(功能25: 全局并发帽/仗注册表五态/仗间五因子/全停阀幂等/断电恢复不双开/fleet.json四问端点)——审计「十并发纯设计」闭环。与planner_loop分界有测试钉死。
