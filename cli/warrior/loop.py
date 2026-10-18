@@ -21,6 +21,7 @@ import os
 import time
 
 from . import protocol, steer
+from .corrections import CorrectionLayer, correction_note
 from .budget import BudgetMeter
 from .context import ContextBuilder
 from .heartbeat import Heartbeat, StallDetected, iso_of
@@ -142,19 +143,36 @@ class WarriorLoop(object):
         self.hb.check_stall(intent=iid)
         return "cont", None
 
-    def _exec_instruction(self, ins, iid, turn):
-        """执行单条指令 → (ok, outcome_text)。tool 经 guard 链；
-        ledger 经 registry 锁链（intent-id 覆写为持有意图、ts 战士铸造）。"""
+    def _exec_instruction(self, ins, iid, turn, corr=None):
+        """执行单条指令 → (ok, outcome_text, correction_signal|None)。
+        tool 经 guard 链；ledger 经 registry 锁链（intent-id 覆写为持有
+        意图、ts 战士铸造）。tool 事件经自纠层（corrections.CorrectionLayer：
+        调前软预检+调后信号——[diagnostic] 注记上浮当轮指令结果面）。"""
         op = ins["op"]
         if op == "tool":
+            pre = (corr.before_tool_call(ins["card"], ins["args"])
+                   if corr is not None else "")
+            t0 = self.clock()
             rc, out, err = self._tool_exec(ins["card"], ins["args"])
+            duration_ms = int((self.clock() - t0) * 1000)
+            signal = None
+            if corr is not None:
+                raw = out if not err else "%s\n%s" % (out, err)
+                signal = corr.after_tool_call(
+                    ins["card"], ins["args"], raw,
+                    duration_ms=duration_ms, rc=rc,
+                    error=(err.strip() or None) if rc != 0 else None)
             self.io.add_tl(
                 "warrior-progress warrior=%s intent=%s turn=%d op=tool "
                 "card=%s rc=%d" % (self.warrior_id, iid, turn,
                                    ins["card"], rc), self._ts())
             summary = "tool %s rc=%d out=%s err=%s" % (
                 ins["card"], rc, _flat(out), _flat(err))
-            return rc == 0, summary
+            note = correction_note(
+                pre, signal.model_hint() if signal is not None else "")
+            if note:
+                summary += "\n" + note
+            return rc == 0, summary, signal
         if op == "ledger":
             args = dict(ins["args"])
             args.pop("timestamp", None)
@@ -167,10 +185,10 @@ class WarriorLoop(object):
                 "cmd=%s rc=%d" % (self.warrior_id, iid, turn,
                                   ins["cmd"], rc), self._ts())
             return rc == 0, "ledger %s rc=%d %s" % (ins["cmd"], rc,
-                                                    _flat(out, 300))
+                                                    _flat(out, 300)), None
         if op == "note":
-            return True, "note: " + _flat(ins.get("text", ""), 200)
-        return False, "unknown op"
+            return True, "note: " + _flat(ins.get("text", ""), 200), None
+        return False, "unknown op", None
 
     def process_intent(self, intent, steers_pending):
         """一意图回合机：返回 ('done'|'yielded'|'blocked'|status, detail)。
@@ -178,6 +196,7 @@ class WarriorLoop(object):
         iid = intent["id"]
         conversation = []
         corrections = []
+        corr = CorrectionLayer()                   # 一意图一层（R1）
         steers = list(steers_pending)
         steers_pending = []
         for turn in range(1, self.max_turns + 1):
@@ -188,7 +207,8 @@ class WarriorLoop(object):
                 steers = steers + self._pending_steers
                 self._pending_steers = []
             ctx = self.ctx.build(intent, corrections=corrections,
-                                 steers=steers)
+                                 steers=steers,
+                                 facts_extra=corr.pinned_fact_lines())
             messages = ([{"role": "user", "content": ctx.text}]
                         + conversation)
             self.tr.record(iid, "user", ctx.text, ts=self._ts(),
@@ -231,17 +251,24 @@ class WarriorLoop(object):
                                                 % len(parsed.errors)})
                 continue
             outcomes, done_reason, saw_done = [], "", False
+            signals = []
             for ins in parsed.instructions:
                 if ins["op"] == "done":
                     saw_done = True
                     done_reason = ins.get("reason", "")
                     break
-                ok, summary = self._exec_instruction(ins, iid, turn)
+                ok, summary, signal = self._exec_instruction(
+                    ins, iid, turn, corr=corr)
                 outcomes.append(summary)
+                if signal is not None:
+                    signals.append(signal)
             if outcomes:
                 conversation.append({"role": "user",
                                      "content": "指令结果：\n" +
                                      "\n".join(outcomes)})
+            if signals:
+                corr.after_tool_batch(signals)
+            corrections.extend(corr.take_hints())   # 次轮自纠信号
             if saw_done:
                 ok, why = self.io.complete(iid, self._ts(),
                                            reason=done_reason)
