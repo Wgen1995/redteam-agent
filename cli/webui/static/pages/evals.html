@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>评测对比 · GraphLed</title>
+<!-- 视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     文案宪法#41（界面人话律——旧黑话不上屏，界面词=基准评测/评测对比）。
+     设计权威 docs/design/ui-spec-complete-v1.md §P8-P18（评测对比=D2 三臂同考
+     读面）。共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;--purple:#a78bfa;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;flex-shrink:0}
+#top .crumb{color:var(--g8);font-size:12px}
+#top .crumb b{color:var(--ga);font-weight:500}
+#top .sp{flex:1}
+#ev-counts{color:var(--g8);font-size:12px;font-family:var(--mono)}
+/* 四态 */
+.state{display:none;padding:26px 24px}
+.state.on{display:block}
+#st-empty .box,#st-error .box{max-width:620px;margin:8vh auto 0;text-align:center;
+background:var(--g2);border:1px solid var(--g4);border-radius:8px;padding:34px 28px}
+#st-empty h3,#st-error h3{color:var(--gc);font-size:15px;margin-bottom:8px}
+#st-empty p,#st-error p{color:var(--g8);font-size:12.5px;line-height:1.8;text-align:left}
+#st-error .box{border-color:rgba(232,99,90,.45)}
+#st-error h3{color:var(--dang)}
+#st-error code{font-family:var(--mono);color:var(--warn);word-break:break-all}
+#st-loading .sk{max-width:880px;margin:18px auto}
+.sk .ln{height:14px;border-radius:4px;background:var(--g3);margin-bottom:12px;
+animation:sh 1.2s ease-in-out infinite}
+.sk .ln.w1{width:62%}.sk .ln.w2{width:88%}.sk .ln.w3{width:44%}.sk .ln.w4{width:75%}
+@keyframes sh{0%,100%{opacity:.45}50%{opacity:1}}
+/* 主区 */
+#st-normal{padding:0}
+#wrap{width:100%;max-width:1180px;margin:0 auto;padding:18px 24px 60px}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:6px;
+padding:14px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:10px}
+.pane h3 .sub{color:var(--g8);font-size:11px;font-weight:400;margin-left:8px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--g8);font-weight:500;text-align:left;padding:6px 8px;
+border-bottom:1px solid var(--g4);font-size:11.5px;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid var(--g3);vertical-align:top}
+tr:hover td{background:var(--g3)}
+.num{font-family:var(--mono)}
+.tag{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.t-g{background:rgba(61,220,151,.14);color:var(--acc)}
+.t-n{background:var(--g4);color:var(--g9)}
+.t-y{background:rgba(232,179,75,.14);color:var(--warn)}
+.t-i{background:rgba(90,169,230,.14);color:var(--info)}
+.t-p{background:rgba(167,139,250,.14);color:var(--purple)}
+.armrow td{border-bottom:1px solid var(--g4)}
+.armname{font-weight:500;color:var(--gc)}
+.verdict{color:var(--warn);font-size:11.5px}
+.none{color:var(--g8);font-size:12.5px;padding:14px 0;text-align:center}
+.note{color:var(--g8);font-size:11.5px;line-height:1.8;margin-top:10px}
+.q{color:var(--ga);font-size:12px;line-height:1.7}
+.hintbox{background:rgba(232,179,75,.06);border:1px dashed rgba(232,179,75,.4);
+border-radius:6px;padding:12px 14px;color:var(--g8);font-size:12px;line-height:1.9}
+.btn{background:var(--g4);border:1px solid var(--g6);color:var(--gb);padding:6px 14px;
+border-radius:4px;cursor:pointer;font-size:12.5px}
+.btn:hover{background:var(--g5);color:var(--gc)}
+.bar{height:5px;border-radius:3px;background:var(--g4);overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;background:var(--acc)}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb">系统 · <b>评测对比</b></span>
+  <span class="sp"></span>
+  <span id="ev-counts"></span>
+</header>
+
+<div id="st-empty" class="state"><div class="box">
+  <h3>实验登记处是空的</h3>
+  <p>评测对比页只认预登记的实验：开战前先在 experiments/ 落一份登记
+  （写明问题、两臂或三臂的任务清单、判决规则与登记时间），跑完后判决
+  回填——同一份登记在此逐字上屏，不可事后改口径。</p>
+</div></div>
+<div id="st-loading" class="state"><div class="sk">
+  <div class="ln w1"></div><div class="ln w2"></div><div class="ln w3"></div><div class="ln w4"></div>
+  <div class="tip" style="color:var(--g8);font-size:12px;text-align:center;margin-top:6px">正在读取实验登记与逐战结算…</div>
+</div></div>
+<div id="st-error" class="state"><div class="box">
+  <h3>评测对比读取失败</h3>
+  <p id="err-detail"><code></code></p>
+  <button id="btn-retry" class="btn" type="button">重试</button>
+</div></div>
+
+<div id="st-normal" class="state">
+  <div id="wrap">
+    <div class="pane" id="ev-d2">
+      <h3>三臂同考 <span class="sub">D2 基准评测 · 同基准集同口径</span></h3>
+      <div id="ev-d2-body"></div>
+    </div>
+    <div class="pane" id="ev-registry">
+      <h3>实验登记处 <span class="sub" id="ev-sub"></span></h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>实验</th><th>问题</th><th>臂</th><th>状态</th>
+          <th>判决</th><th>登记时间</th></tr></thead>
+          <tbody id="ev-rows"></tbody>
+        </table>
+      </div>
+      <div class="none" id="ev-none" style="display:none">尚无登记实验</div>
+      <div class="note" id="ev-note"></div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script>
+"use strict";
+/* T7·评测对比页：D2 三臂同考读面。四态=空/加载/错误/正常。臂=登记字段
+   battles_<臂名>（双臂/三臂同律）；均值=已结算战例 recall 算术平均，未结算
+   单独计数不进均值——诚实披露；判决/备注逐字上屏不润色。 */
+(function () {
+  var state = { experiments: [], d2: {}, counts: {}, note: "" };
+  function $(id) { return document.getElementById(id); }
+
+  function show(name) {
+    ["st-empty", "st-loading", "st-error", "st-normal"].forEach(function (s) {
+      $(s).classList.toggle("on", s === name);
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function pct(v) {
+    return v == null ? "—" : (v * 100).toFixed(1) + "%";
+  }
+
+  var ARM_CLS = ["t-g", "t-i", "t-p", "t-y", "t-n"];
+
+  function d2Html() {
+    var d2 = state.d2 || {};
+    if (!d2.registered) {
+      return '<div class="hintbox"><b style="color:var(--warn)">三臂同考尚未预登记</b><br>' +
+        esc(d2.hint || "") + "</div>";
+    }
+    return (d2.experiments || []).map(function (e) {
+      var html = '<div style="margin-bottom:14px">' +
+        '<div class="q"><b>' + esc(e.id) + "</b> — " + esc(e.question) + "</div>" +
+        '<div style="overflow-x:auto;margin-top:8px"><table id="ev-arms"><thead><tr>' +
+        "<th>臂</th><th>战例</th><th>已结算</th><th>未结算</th><th>均值</th>" +
+        "<th>区间</th><th>命中/总数</th></tr></thead><tbody>" +
+        (e.arms || []).map(function (a, i) {
+          var cls = ARM_CLS[i % ARM_CLS.length];
+          var mean = a.mean_recall;
+          return '<tr class="armrow"><td><span class="tag ' + cls + '">' +
+            esc(a.name) + '</span></td>' +
+            '<td class="num">' + esc((a.battles || []).join(" ")) + "</td>" +
+            '<td class="num">' + a.settled + "</td>" +
+            '<td class="num">' + (a.unsettled
+              ? '<span style="color:var(--warn)">' + a.unsettled + "</span>" : "0") + "</td>" +
+            '<td class="num">' + pct(mean) +
+            (mean != null
+              ? '<div class="bar"><i style="width:' + (mean * 100) + '%"></i></div>' : "") +
+            "</td>" +
+            '<td class="num">' + (a.min_recall != null
+              ? pct(a.min_recall) + " ~ " + pct(a.max_recall) : "—") + "</td>" +
+            '<td class="num">' + a.hits + " / " + a.total + "</td></tr>";
+        }).join("") + "</tbody></table></div>";
+      if (e.note) {
+        html += '<div class="note">' + esc(e.note) + "</div>";
+      }
+      html += "</div>";
+      return html;
+    }).join("");
+  }
+
+  function registryHtml() {
+    var rows = state.experiments || [];
+    $("ev-rows").innerHTML = rows.map(function (e) {
+      var arms = (e.arms || []).map(function (a) { return a.name; }).join(" / ");
+      return "<tr><td class="mono">" + esc(e.id) + "</td>" +
+        '<td class="q">' + esc(e.question || "—") + "</td>" +
+        "<td>" + esc(arms || "—") + ' <span class="mono" style="color:var(--g8)">' +
+        "(" + (e.arm_count || 0) + ")</span></td>" +
+        "<td>" + esc(e.status || "—") + "</td>" +
+        '<td class="verdict">' + esc(e.verdict || "未判决") + "</td>" +
+        '<td class="mono">' + esc(e.registered || "—") + "</td></tr>";
+    }).join("");
+    $("ev-none").style.display = rows.length ? "none" : "block";
+    $("ev-sub").textContent = rows.length + " 项在册 · 判决与备注逐字上屏";
+    $("ev-counts").textContent = rows.length + " 项实验 · " +
+      ((state.counts || {}).settled_battles || 0) + " 战已结算";
+    $("ev-note").textContent = state.note || "";
+  }
+
+  function load() {
+    show("st-loading");
+    fetch('/api/v2/evals.json')
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        if (p && p.error) { throw p.error; }
+        state.experiments = p.experiments || [];
+        state.d2 = p.d2 || {};
+        state.counts = p.counts || {};
+        state.note = p.note || "";
+        if (!state.experiments.length) { show("st-empty"); return; }
+        $("ev-d2-body").innerHTML = d2Html();
+        registryHtml();
+        show("st-normal");
+      })
+      .catch(function (e) {
+        $("err-detail").innerHTML = "<code>" + esc(e) + "</code>";
+        show("st-error");
+      });
+  }
+
+  $("btn-retry").addEventListener("click", load);
+
+  /* 宿主壳自注册（共享壳缺席时本页独立可用——守卫式消费 UI-1 舰契约） */
+  if (typeof nav !== "undefined" && typeof nav.push === "function") {
+    nav.push({ id: 'evals', title: '评测对比', group: '系统' });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
