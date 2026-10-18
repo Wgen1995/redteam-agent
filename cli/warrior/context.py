@@ -18,6 +18,8 @@ token 估算：estimate_tokens(text)=ceil(len/3)——CJK 偏保守（1 token≈
 import math
 import os
 
+from . import kb_context
+
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__))))
 DEFAULT_SKILL = os.path.join(REPO_ROOT, "SKILL.md")
@@ -49,12 +51,16 @@ class ContextBuilder(object):
     """一 goal_dir 一 builder；build() 每次全新（R1：零跨意图状态）。"""
 
     def __init__(self, goal_dir, skill_path=None, ctx_tokens=24000,
-                 fold_keep=5, resume_lines=_RESUME_LINES):
+                 fold_keep=5, resume_lines=_RESUME_LINES, kb=False,
+                 kb_top_k=3, kb_dir=None):
         self.goal_dir = goal_dir
         self.skill_path = skill_path or DEFAULT_SKILL
         self.ctx_tokens = max(1, int(ctx_tokens))
         self.fold_keep = max(1, int(fold_keep))
         self.resume_lines = max(0, int(resume_lines))
+        self.kb = bool(kb)          # 技法卡注入+SKILL 按门路由瘦身（默认关）
+        self.kb_top_k = max(1, int(kb_top_k))
+        self.kb_dir = kb_dir
 
     # ---- 数据面（账本只读消费）----
 
@@ -105,18 +111,31 @@ class ContextBuilder(object):
             out.pop(1)          # digest 保留，逐条收缩次新
         return out, True, digest
 
+    def _kb_signal_text(self, iid):
+        """意图关联检索的账本血缘信号（本意图 facts 行文本，末 6 行）。"""
+        return " ".join("%s %s %s" % (r[2], r[3], r[4])
+                        for r in self._facts_for(iid)[-6:])
+
     def build(self, intent, corrections=None, steers=None,
               facts_extra=None):
         """组装一意图的全新上下文（R1）。intent=dict(id/title/detail/status)。"""
         iid = intent.get("id", "")
         protocol = self._protocol_text()
+        kb_sec = ""
+        if self.kb:      # ② SKILL 按门路由瘦身+技法卡按意图关联注入
+            protocol = kb_context.slim_skill_by_gate(
+                protocol, kb_context.gate_of(self.goal_dir))
+            kb_sec = kb_context.build_kb_section(
+                intent, extra_text=self._kb_signal_text(iid),
+                top_k=self.kb_top_k, kb_dir=self.kb_dir)
         intent_sec = "意图 %s | %s | %s | status=%s" % (
             iid, intent.get("title", ""), intent.get("detail", ""),
             intent.get("status", ""))
         facts = [self._fact_line(r) for r in self._facts_for(iid)]
         if facts_extra:
             facts = facts + list(facts_extra)
-        fixed = estimate_tokens(protocol) + estimate_tokens(intent_sec)
+        fixed = (estimate_tokens(protocol) + estimate_tokens(intent_sec)
+                 + (estimate_tokens(kb_sec) if kb_sec else 0))
         budget = max(1, int((self.ctx_tokens - fixed) * _FACTS_SHARE))
         lines, folded, digest = self._fold(facts, budget)
         facts_sec = ("\n".join(lines) if lines
@@ -128,19 +147,24 @@ class ContextBuilder(object):
         corr_sec = ("\n".join(corr) if corr else "(无上轮纠正信号)")
         st = list(steers or [])
         steer_sec = ("\n".join(st) if st else "(无定向指令)")
+        kb_insert = (kb_sec + "\n\n") if kb_sec else ""
         text = (
-            "## 协议（SKILL.md 原样，禁改）\n%s\n\n"
+            "## 协议（SKILL.md %s，禁改）\n%s\n\n"
             "## 意图\n%s\n\n"
+            "%s"
             "## 相关事实（账本血缘行）\n%s\n\n"
             "## 断点续跑（timeline 末行摘要）\n%s\n\n"
             "## 上轮纠正信号\n%s\n\n"
             "## 定向指令\n%s\n\n"
             "## 任务\n执行上述意图：按协议输出 JSON 指令块"
             "（tool/ledger/done/note），完成后必报 done。"
-            % (protocol, intent_sec, facts_sec, resume_sec, corr_sec,
+            % (("按门路由瘦身" if self.kb else "原样"), protocol,
+               intent_sec, kb_insert, facts_sec, resume_sec, corr_sec,
                steer_sec))
         sections = {"protocol": protocol, "intent": intent_sec,
                     "facts": facts_sec, "resume": resume_sec,
                     "corrections": corr_sec, "steers": steer_sec}
+        if self.kb:
+            sections["kb"] = kb_sec
         return ContextResult(text, sections, estimate_tokens(text), folded,
                              digest)

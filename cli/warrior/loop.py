@@ -61,7 +61,7 @@ class WarriorLoop(object):
                  lease_min=30, token_cap=100000, time_window_min=None,
                  heartbeat_min=5.0, stall_min=15.0, ctx_tokens=24000,
                  skill_path=None, clock=None, tool_spawn=None,
-                 tool_state_path=None):
+                 tool_state_path=None, kb=True):
         self.battle = battle_name
         self.io = LedgerIO(goal_dir, warrior_id)
         self.warrior_id = warrior_id
@@ -74,7 +74,7 @@ class WarriorLoop(object):
         self.meter = BudgetMeter(self.io, token_cap)
         self.hb = Heartbeat(self.io, heartbeat_min, stall_min, self.clock)
         self.ctx = ContextBuilder(goal_dir, skill_path=skill_path,
-                                  ctx_tokens=ctx_tokens)
+                                  ctx_tokens=ctx_tokens, kb=kb)
         self.tr = Transcript(goal_dir, battle=battle_name,
                              warrior=warrior_id)
         self.tool_spawn = tool_spawn
