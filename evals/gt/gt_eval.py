@@ -97,13 +97,15 @@ def eval_session(session_dir, gt_path):
     rows, cards = load_session(session_dir)
     recall, missing = score(rows, cards, gt_doc)
     hits = round(recall * len(gt))
-    # 活跃发现数：status 列空或 active（与 scorer 同口径；列位=schemas TABLES 单源）
+    # 活跃发现数：同 FD-ID 末值行胜（事件溯源，与 capability_gate.fp_of_session 同口径）
+    # b40 尸检 M1：append-only 使被合并/翻案旧行 status=active 字样永存，逐行数会数出僵尸行
     si = TABLES["findings.tsv"].index("status")
-    statuses = {}
+    ii = TABLES["findings.tsv"].index("id")
+    latest = {}
     for r in rows["findings.tsv"]:
-        st = r[si] if len(r) > si else ""
-        statuses[st] = statuses.get(st, 0) + 1
-    active = statuses.get("", 0) + statuses.get("active", 0)
+        if len(r) > si:
+            latest[r[ii]] = r
+    active = sum(1 for r in latest.values() if r[si] in ("", "active"))
     fp = max(0, active - hits)
     prec = (hits / active) if active else 0.0
     return {"gt_total": len(gt), "hits": hits, "recall": recall, "active_findings": active,
