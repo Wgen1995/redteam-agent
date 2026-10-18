@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新建任务 · GraphLed</title>
+<!-- 设计权威 docs/design/ui-spec-complete-v1.md §P4（T5 施工）：两列表单——
+     左表单 / 右实时摘要卡+sha256 计算显示+预估说明。八问完备性实时指示器：
+     八项哪项已齐/缺啥，齐了才亮「创建」（宪法#41：八问→新建任务）。
+     视觉基准 panorama/graphled-console-prototype.html：12级灰阶+单强调色+mono数字。
+     共享壳 /static/app.js 由 UI-1 舰独写；本页仅消费 nav.push 自注册（守卫式）。
+     元信息单源：/api/v2/new-task-meta.json（模板下拉=battle-kit BRIEF 模板既有件+
+     枚举+提交契约+八问清单）；提交走既有 POST /api/battle/new（授权八问缺一=422
+     字段级拒因回显——四态：空/字段错[行内红]/提交中[按钮态]/服务端拒[顶部横幅]）。 -->
+<style>
+:root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
+--g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;--gc:#e8edf2;
+--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;--info:#5aa9e6;
+--mono:"SF Mono",Menlo,Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--g0);color:var(--gb);
+font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;overflow-y:auto}
+a{color:var(--info);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+/* ── 顶栏+服务端拒横幅 ─────────────────────────────── */
+#top{height:46px;background:var(--g1);border-bottom:1px solid var(--g3);
+display:flex;align-items:center;gap:10px;padding:0 16px;position:sticky;top:0;z-index:10}
+#top .crumb b{color:var(--gc);font-weight:500;font-size:13px}
+#top .sub{color:var(--g8);font-size:11.5px}
+#srv-banner{display:none;background:rgba(232,99,90,.08);border-bottom:1px solid rgba(232,99,90,.4);
+color:var(--dang);padding:8px 16px;font-size:12.5px;line-height:1.7}
+#srv-banner.on{display:block}
+#srv-banner b{font-weight:600}
+#srv-banner .mono{color:var(--warn);word-break:break-all}
+/* ── 两列布局 ─────────────────────────────────────── */
+#wrap{max-width:1080px;margin:0 auto;padding:18px 16px 60px;display:grid;
+grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+@media(max-width:900px){#wrap{grid-template-columns:1fr}}
+.pane{background:var(--g2);border:1px solid var(--g4);border-radius:8px;
+padding:16px;margin-bottom:14px}
+.pane h3{font-size:13px;color:var(--gc);margin-bottom:2px}
+.pane .ph{color:var(--g8);font-size:11.5px;margin-bottom:12px}
+/* ── 字段 ─────────────────────────────────────────── */
+.fi{margin-bottom:14px}
+.fi label{display:block;color:var(--g9);font-size:11.5px;margin-bottom:5px}
+.fi label .rq{color:var(--dang);margin-left:2px}
+.fi input,.fi select,.fi textarea{width:100%;background:var(--g1);
+border:1px solid var(--g5);border-radius:4px;color:var(--gc);padding:8px 10px;
+font-size:13px;font-family:inherit}
+.fi textarea{font-family:var(--mono);font-size:12.5px;min-height:88px;resize:vertical}
+.fi input:focus,.fi select:focus,.fi textarea:focus{outline:none;border-color:var(--acc2)}
+.fi.err input,.fi.err select,.fi.err textarea{border-color:var(--dang)}
+.fi .em{color:var(--dang);font-size:11px;margin-top:3px;display:none}
+.fi.err .em{display:block}
+.fi .hint{color:var(--g7);font-size:11px;margin-top:3px;line-height:1.6}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid-3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+/* ── 拖拽区（授权书原件） ──────────────────────────── */
+#drop-zone{border:1.5px dashed var(--g6);border-radius:8px;padding:22px 16px;
+text-align:center;color:var(--g8);font-size:12.5px;cursor:pointer;transition:border-color .15s}
+#drop-zone:hover,#drop-zone.over{border-color:var(--acc2);color:var(--ga)}
+#drop-zone .big{font-size:13px;color:var(--g9);margin-bottom:4px}
+#drop-zone.over{background:rgba(61,220,151,.04)}
+#auth-meta{margin-top:8px;font-size:11.5px;color:var(--g9);line-height:1.7}
+#auth-sha{font-family:var(--mono);font-size:11px;word-break:break-all;margin-top:4px;
+padding:6px 8px;background:var(--g1);border:1px solid var(--g3);border-radius:4px;
+color:var(--acc);cursor:pointer;display:none}
+#auth-sha.on{display:block}
+#auth-sha.wait{color:var(--g8)}
+#auth-sha.bad{color:var(--dang)}
+/* ── 范围标签条 ────────────────────────────────────── */
+#scope-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:30px}
+.stag{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:3px;
+border:1px solid var(--g5);color:var(--g9)}
+.stag.ok{color:var(--acc);border-color:rgba(61,220,151,.5)}
+.stag.bad{color:var(--dang);border-color:rgba(232,99,90,.5);text-decoration:line-through}
+/* ── 法律确认 ──────────────────────────────────────── */
+.legal-box{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;
+border:1px solid var(--g4);border-left:3px solid var(--info);border-radius:6px;
+background:rgba(90,169,230,.05);font-size:12px;line-height:1.7}
+.legal-box input{width:15px;height:15px;flex:none;margin-top:3px;accent-color:var(--acc2)}
+.legal-box a{margin-left:4px}
+details.fold{margin-top:6px;color:var(--g8);font-size:11.5px}
+details.fold summary{cursor:pointer;color:var(--g9)}
+details.fold div{padding:6px 0 0 2px;line-height:1.7}
+/* ── 右列：八问指示器+摘要卡 ───────────────────────── */
+#col-summary{position:sticky;top:62px}
+#eight-card .cnt{font-family:var(--mono);font-size:12px;color:var(--warn);float:right}
+#eight-list{list-style:none;margin-top:10px}
+#eight-list li{display:flex;align-items:flex-start;gap:8px;padding:6px 0;
+border-bottom:1px dashed var(--g3);font-size:12px}
+#eight-list li:last-child{border-bottom:none}
+#eight-list .no{font-family:var(--mono);color:var(--g7);flex:none;width:16px}
+#eight-list .mk{flex:none;width:16px;height:16px;border-radius:50%;
+border:1px solid var(--g6);color:var(--g7);font-size:10px;line-height:14px;
+text-align:center;margin-top:1px}
+#eight-list li.done .mk{background:var(--acc2);border-color:var(--acc2);color:#08130d}
+#eight-list li.done .lb{color:var(--gb)}
+#eight-list .lb{color:var(--g9)}
+#eight-list .miss{display:block;color:var(--warn);font-size:10.5px;margin-top:1px}
+#sum-card dl{margin:0;font-size:12px}
+#sum-card dt{color:var(--g8);font-size:11px;margin-top:8px}
+#sum-card dd{margin:2px 0 0;word-break:break-all;color:var(--gb);line-height:1.6}
+#sum-card dd.mono{font-size:11.5px}
+#estimate{color:var(--g8);font-size:11.5px;line-height:1.8}
+#estimate b{color:var(--g9);font-weight:500}
+/* ── 提交排 ────────────────────────────────────────── */
+#submit-row{display:flex;align-items:center;gap:12px;padding-top:4px}
+#btn-create{background:var(--acc2);border-color:var(--acc2);color:#08130d;font-weight:600;
+padding:9px 26px;font-size:13px}
+#btn-create:hover:not(:disabled){background:var(--acc)}
+#btn-create:disabled{opacity:.4;cursor:not-allowed}
+#submit-note{color:var(--g8);font-size:11.5px}
+/* ── 成功态卡 ──────────────────────────────────────── */
+#create-ok{display:none}
+#create-ok.on{display:block}
+#create-ok .box{text-align:center;padding:34px 24px}
+#create-ok h3{color:var(--acc);font-size:16px;margin-bottom:10px}
+#create-ok p{color:var(--g9);font-size:12.5px;line-height:1.9}
+#create-ok .row{margin-top:16px;display:flex;gap:10px;justify-content:center}
+#ok-battle{font-family:var(--mono);color:var(--warn)}
+</style>
+</head>
+<body>
+<header id="top">
+  <span class="crumb"><b>新建任务</b></span>
+  <span class="sub">授权即源头——八问齐备才能创建（缺一项，服务端整单拒收）</span>
+</header>
+<div id="srv-banner"><b>服务端拒收：</b><span id="srv-msg"></span></div>
+<div id="wrap">
+  <!-- ══ 左列：表单 ══ -->
+  <div id="col-form">
+    <section class="pane" id="pane-ok" hidden>
+      <div class="box" id="create-ok">
+        <h3>任务已创建</h3>
+        <p>任务编号 <span id="ok-battle"></span> 已立项并写入账本（授权原件已存档、
+        sha256 实测一致）。<br>下一步：到任务详情点火执行，或回到任务列表查看。</p>
+        <div class="row">
+          <button class="btn acc" id="ok-detail">查看任务</button>
+          <button class="btn" id="ok-list">返回任务列表</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-form">
+      <h3>基本信息</h3>
+      <p class="ph">先说清这一单测什么；模板可带入既有任务简报的默认值。</p>
+      <div class="fi" id="fi-name">
+        <label for="f-name">任务名称<span class="rq">*</span></label>
+        <input id="f-name" type="text" maxlength="120" placeholder="如：外网一期授权测试">
+        <p class="em">任务名称必填</p>
+        <p class="hint">一句话点出被测对象；创建后作为目标写进账本，可被检索。</p>
+      </div>
+      <div class="fi">
+        <label for="f-note">目标说明</label>
+        <textarea id="f-note" maxlength="500"
+                  placeholder="一句话说明本单目的与背景（写给人工审批与复盘）"></textarea>
+      </div>
+      <div class="fi">
+        <label for="f-template">从模板开始（可选——既有任务简报）</label>
+        <select id="f-template"><option value="">不使用模板</option></select>
+        <p class="hint" id="tpl-hint">选择模板可带入目标说明 / 范围白名单 / 预算三段的默认值（只填空位，不覆盖已填内容）。</p>
+      </div>
+    </section>
+
+    <section class="pane">
+      <h3>① 授权</h3>
+      <p class="ph">授权书原件、窗口期与法律确认——缺件不开测。</p>
+      <div class="fi" id="fi-auth">
+        <label>授权书原件（PDF / PNG，拖拽或点击选择）<span class="rq">*</span></label>
+        <div id="drop-zone" tabindex="0" role="button" aria-label="上传授权书原件">
+          <div class="big">把授权书原件拖到这里，或点击选择文件</div>
+          <div>仅收 PDF / PNG；选中后浏览器本地实算 sha256，原件字节随表单上送，
+          服务端按 sha 实测比对——不一致整单拒收。</div>
+        </div>
+        <input id="f-auth-file" type="file" accept=".pdf,.png" hidden>
+        <p class="em" id="auth-em"></p>
+        <div id="auth-meta">尚未选择文件。</div>
+        <div id="auth-sha" title="点击复制完整 sha256"></div>
+      </div>
+      <div class="fi" id="fi-signer">
+        <label for="f-signer">签署方（授权人 / 职务）<span class="rq">*</span></label>
+        <input id="f-signer" type="text" maxlength="80" placeholder="如：王安全（CISO）">
+        <p class="em">签署方必填</p>
+      </div>
+      <div class="grid-2">
+        <div class="fi" id="fi-from">
+          <label for="f-valid-from">窗口起（本地时刻，上送转 UTC）<span class="rq">*</span></label>
+          <input id="f-valid-from" type="datetime-local">
+          <p class="em">窗口起必填</p>
+        </div>
+        <div class="fi" id="fi-until">
+          <label for="f-valid-until">窗口止<span class="rq">*</span></label>
+          <input id="f-valid-until" type="datetime-local">
+          <p class="em">窗口止必填，且须晚于窗口起</p>
+        </div>
+      </div>
+      <div class="fi" id="fi-legal">
+        <div class="legal-box">
+          <input type="checkbox" id="f-legal">
+          <label for="f-legal" style="margin:0;color:var(--gb);font-size:12px">
+            我确认：本次测试依据真实授权书进行，范围与窗口以上述为准，
+            由此产生的所有行为可审计、可追责。<a href="#" id="legal-link">条款原文</a>
+          </label>
+        </div>
+        <details class="fold" id="legal-text">
+          <summary>展开条款摘要</summary>
+          <div>本系统仅用于已授权的安全测试。授权书须由资产所有方签署并在窗口期内有效；
+          范围白名单之外的资产一律不触碰；预算硬顶不可超限；全部操作写入账本留痕，
+          双人签发后方可出报告。伪造授权、越界测试或绕过审批门=整单拒收并留痕。</div>
+        </details>
+      </div>
+    </section>
+
+    <section class="pane">
+      <h3>④ 范围</h3>
+      <p class="ph">每行一条白名单：域名后缀（*.example.com）或网段（10.0.0.0/24）。
+      范围外的资产一律不碰——无范围不开测。</p>
+      <div class="fi" id="fi-scope">
+        <label for="f-scope">范围白名单（逐行）<span class="rq">*</span></label>
+        <textarea id="f-scope" placeholder="*.example.com&#10;10.0.0.0/24"></textarea>
+        <div id="scope-tags" aria-live="polite"></div>
+        <p class="em">至少一条有效范围行</p>
+      </div>
+      <div class="fi">
+        <label for="f-cred">⑤ 凭据来源<span class="rq">*</span></label>
+        <select id="f-cred"></select>
+      </div>
+    </section>
+
+    <section class="pane">
+      <h3>⑥ 资源</h3>
+      <p class="ph">预算硬顶三段（token / 请求次数 / 时长）与强度档。</p>
+      <div class="grid-3">
+        <div class="fi" id="fi-bt">
+          <label for="f-budget-token">token 硬顶<span class="rq">*</span></label>
+          <input id="f-budget-token" type="text" placeholder="如 2M 或 2000000">
+          <p class="em">token 硬顶必填（支持 500K / 2M 写法）</p>
+        </div>
+        <div class="fi" id="fi-br">
+          <label for="f-budget-req">请求次数硬顶<span class="rq">*</span></label>
+          <input id="f-budget-req" type="text" placeholder="如 50000">
+          <p class="em">请求次数硬顶必填</p>
+        </div>
+        <div class="fi" id="fi-bh">
+          <label for="f-budget-hours">时长硬顶（小时）<span class="rq">*</span></label>
+          <input id="f-budget-hours" type="text" placeholder="如 40">
+          <p class="em">时长硬顶必填</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="fi">
+          <label for="f-model-tier">⑦ 执行档<span class="rq">*</span></label>
+          <select id="f-model-tier">
+            <option value="">请选择</option>
+            <option value="strong">完整（深度探测与利用验证）</option>
+            <option value="weak">仅取证（只观察不利用）</option>
+          </select>
+        </div>
+        <div class="fi">
+          <label for="f-guard-tier">拦截档<span class="rq">*</span></label>
+          <select id="f-guard-tier">
+            <option value="">请选择</option>
+            <option value="T1">T1（基础拦截）</option>
+            <option value="T2">T2（标准拦截）</option>
+            <option value="T3">T3（严格拦截——高危操作逐条审批）</option>
+          </select>
+        </div>
+      </div>
+      <div class="fi" id="fi-contact">
+        <label for="f-contact">⑧ 紧急联系人（授权方 7×24 可达通道）<span class="rq">*</span></label>
+        <input id="f-contact" type="text" maxlength="120" placeholder="如：13800000000（王安全）">
+        <p class="em">紧急联系人必填</p>
+      </div>
+      <div id="submit-row">
+        <button class="btn" id="btn-create">创建</button>
+        <span id="submit-note">八问齐备后「创建」点亮；提交经登录校验并逐条留痕。</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══ 右列：实时摘要卡 ══ -->
+  <div id="col-summary">
+    <div class="pane" id="eight-card">
+      <h3>八问完备性<span class="cnt" id="eight-cnt">0/8</span></h3>
+      <p class="ph">哪项已齐 / 缺啥——齐了才亮「创建」。</p>
+      <ul id="eight-list"></ul>
+    </div>
+    <div class="pane" id="sum-card">
+      <h3>实时摘要</h3>
+      <dl>
+        <dt>任务名称</dt><dd id="s-name">—</dd>
+        <dt>授权书</dt><dd id="s-auth" class="mono">未上传</dd>
+        <dt>窗口期</dt><dd id="s-window">—</dd>
+        <dt>范围白名单</dt><dd id="s-scope">0 条</dd>
+        <dt>预算硬顶</dt><dd id="s-budget" class="mono">—</dd>
+        <dt>凭据来源</dt><dd id="s-cred">—</dd>
+        <dt>强度档</dt><dd id="s-tier">—</dd>
+        <dt>紧急联系人</dt><dd id="s-contact">—</dd>
+      </dl>
+    </div>
+    <div class="pane" id="estimate">
+      <h3>预估说明</h3>
+      <p><b>预算三段</b>＝token 硬顶;请求次数硬顶;时长硬顶（如 2M;50000;40）。
+      消耗按<b>网关侧计量</b>累加，不采信引擎自报；到达硬顶即停——不可超限。
+      任务列表页的预算进度条在 <b>80% 处立预算预警线</b>（黄色竖线）。</p>
+      <p style="margin-top:8px"><b>sha256</b> 由浏览器对原件字节实算（WebCrypto），
+      服务端收件后重算比对——不一致整单拒收，不伪造授权四件。</p>
+    </div>
+  </div>
+</div>
+<script src="/static/app.js"></script>
+<script>
+/* ================= 新建任务页（P4·授权信息表单） =================
+ * 元信息单源：GET /api/v2/new-task-meta.json（模板下拉=battle-kit BRIEF 模板
+ * 既有件+枚举+提交契约+八问清单——本页零硬编码枚举）。八问完备性实时指示器：
+ * 逐项点灯（checkEight 重算于每次输入），allEightDone() 且名称非空才亮「创建」。
+ * 提交：POST 既有 /api/battle/new（X-Requested-With+同源守卫；授权八问缺一=422
+ * 字段级拒因→顶部横幅 srv-banner 回显）。sha256=crypto.subtle 浏览器实算。 */
+'use strict';
+function $(id) { return document.getElementById(id); }
+var META = null;
+var AUTH = { filename: '', sha256: '', content_b64: '', size: 0 };
+var EIGHT_KEYS = ['auth_doc', 'window', 'legal', 'scope', 'cred_source',
+                  'budget', 'tier', 'contact'];
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function copyText(text) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text);
+      return true;
+    }
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    return true;
+  } catch (e) { return false; }
+}
+function fmtSize(n) {
+  if (n >= 1048576) { return (n / 1048576).toFixed(1) + ' MB'; }
+  if (n >= 1024) { return (n / 1024).toFixed(1) + ' KB'; }
+  return n + ' B';
+}
+function toISOZ(localValue) {
+  if (!localValue) { return ''; }
+  var d = new Date(localValue);
+  if (isNaN(d.getTime())) { return ''; }
+  return d.toISOString().replace(/\.\d{3}Z$/, 'Z');
+}
+function b64Of(u8) {
+  var s = '';
+  for (var i = 0; i < u8.length; i += 4096) {
+    s += String.fromCharCode.apply(null, u8.subarray(i, i + 4096));
+  }
+  return btoa(s);
+}
+function shaOf(u8) {
+  return crypto.subtle.digest('SHA-256', u8).then(function (h) {
+    var u = new Uint8Array(h), out = '';
+    for (var i = 0; i < u.length; i++) { out += ('0' + u[i].toString(16)).slice(-2); }
+    return out;
+  });
+}
+function validScopeLine(line) {
+  return /^\*?[A-Za-z0-9_.-]+(\.[A-Za-z0-9_-]+)+$/.test(line) ||   /* 域后缀 */
+         /^\d{1,3}(\.\d{1,3}){3}\/\d{1,2}$/.test(line) ||        /* CIDR */
+         /^[A-Za-z0-9_-][A-Za-z0-9_.-]+$/.test(line);                  /* 主机/服务名 */
+}
+function scopeLines() {
+  return $('f-scope').value.split('\n')
+    .map(function (l) { return l.trim(); })
+    .filter(function (l) { return l; });
+}
+
+/* ---------------- 八问完备性（实时指示器单源） ---------------- */
+function qState() {
+  var from = toISOZ($('f-valid-from').value);
+  var until = toISOZ($('f-valid-until').value);
+  var bt = $('f-budget-token').value.trim();
+  var br = $('f-budget-req').value.trim();
+  var bh = $('f-budget-hours').value.trim();
+  return {
+    auth_doc: { done: !!(AUTH.sha256 && AUTH.content_b64 && $('f-signer').value.trim()),
+                miss: !AUTH.sha256 ? '未上传授权书原件（或未选签署方）' : '' },
+    window: { done: !!(from && until && until > from),
+              miss: (!from || !until) ? '窗口起止未填齐' : (until <= from ? '窗口止须晚于起' : '') },
+    legal: { done: $('f-legal').checked, miss: '未勾选法律确认' },
+    scope: { done: scopeLines().some(validScopeLine),
+             miss: '无有效范围行（每行一条：域名后缀或网段）' },
+    cred_source: { done: !!$('f-cred').value, miss: '未选择凭据来源' },
+    budget: { done: !!(bt && br && bh), miss: '预算三段（token/请求/时长）缺一不可' },
+    tier: { done: !!($('f-model-tier').value && $('f-guard-tier').value),
+            miss: '执行档与拦截档都要选' },
+    contact: { done: !!$('f-contact').value.trim(), miss: '未填紧急联系人' }
+  };
+}
+function allEightDone() {
+  var st = qState(), ok = true;
+  EIGHT_KEYS.forEach(function (k) { if (!st[k].done) { ok = false; } });
+  return ok;
+}
+function checkEight() {
+  var st = qState(), done = 0;
+  var ul = $('eight-list');
+  ul.innerHTML = '';
+  (META && META.eight ? META.eight : []).forEach(function (q) {
+    var s = st[q.key] || { done: false, miss: '' };
+    if (s.done) { done++; }
+    var li = document.createElement('li');
+    li.className = s.done ? 'done' : '';
+    li.innerHTML = '<span class="no">' + esc(q.no) + '</span>' +
+      '<span class="mk">' + (s.done ? '✓' : '·') + '</span>' +
+      '<span class="lb">' + esc(q.label) +
+      (s.done ? '' : '<span class="miss">' + esc(s.miss || '待补齐') + '</span>') +
+      '</span>';
+    ul.appendChild(li);
+  });
+  $('eight-cnt').textContent = done + '/8';
+  var ready = allEightDone() && !!$('f-name').value.trim();
+  $('btn-create').disabled = !ready;
+  $('submit-note').textContent = ready
+    ? '八问齐备——「创建」已点亮。'
+    : '八问还差 ' + (8 - done) + ' 项' + ($('f-name').value.trim() ? '' : '（任务名称也未填）') +
+      '；齐了才亮「创建」。';
+  renderSummary(st);
+}
+function renderSummary(st) {
+  $('s-name').textContent = $('f-name').value.trim() || '—';
+  $('s-auth').textContent = AUTH.filename
+    ? (AUTH.filename + ' · ' + fmtSize(AUTH.size) +
+       (AUTH.sha256 ? ' · sha256 ' + AUTH.sha256.slice(0, 12) + '…' : ' · 计算中'))
+    : '未上传';
+  var from = toISOZ($('f-valid-from').value), until = toISOZ($('f-valid-until').value);
+  $('s-window').textContent = (from || until) ? (from + ' → ' + until) : '—';
+  var lines = scopeLines();
+  $('s-scope').textContent = lines.length
+    ? (lines.length + ' 条：' + lines.slice(0, 3).join('、') + (lines.length > 3 ? ' 等' : ''))
+    : '0 条';
+  var bt = $('f-budget-token').value.trim(), br = $('f-budget-req').value.trim(),
+      bh = $('f-budget-hours').value.trim();
+  $('s-budget').textContent = (bt || br || bh) ? (bt + ';' + br + ';' + bh) : '—';
+  $('s-cred').textContent = $('f-cred').value || '—';
+  var mt = $('f-model-tier').value, gt = $('f-guard-tier').value;
+  $('s-tier').textContent = (mt || gt) ? (mt + ' / ' + gt) : '—';
+  $('s-contact').textContent = $('f-contact').value.trim() || '—';
+}
+
+/* ---------------- 字段错（行内红，失焦校验） ---------------- */
+function setErr(fiId, ok, force) {
+  var el = $(fiId);
+  if (force || !ok) { el.classList.toggle('err', !ok); }
+  else { el.classList.remove('err'); }
+}
+function blurChecks() {
+  $('f-name').addEventListener('blur', function () {
+    setErr('fi-name', !!this.value.trim(), true);
+  });
+  $('f-signer').addEventListener('blur', function () {
+    setErr('fi-signer', !!this.value.trim(), true);
+  });
+  $('f-valid-until').addEventListener('blur', function () {
+    var ok = toISOZ(this.value) && toISOZ(this.value) > toISOZ($('f-valid-from').value);
+    setErr('fi-until', ok, !!this.value);
+    setErr('fi-from', !!toISOZ($('f-valid-from').value), !!$('f-valid-from').value);
+  });
+  ['f-budget-token', 'f-budget-req', 'f-budget-hours'].forEach(function (id) {
+    $(id).addEventListener('blur', function () {
+      var fi = { 'f-budget-token': 'fi-bt', 'f-budget-req': 'fi-br',
+                 'f-budget-hours': 'fi-bh' }[id];
+      setErr(fi, !!this.value.trim(), true);
+    });
+  });
+  $('f-scope').addEventListener('blur', function () {
+    setErr('fi-scope', scopeLines().some(validScopeLine), !!this.value.trim());
+  });
+  $('f-contact').addEventListener('blur', function () {
+    setErr('fi-contact', !!this.value.trim(), true);
+  });
+}
+
+/* ---------------- 授权书：拖拽+选择+sha256 实算 ---------------- */
+function takeFile(file) {
+  var em = $('auth-em');
+  var okType = file && ((file.type === 'application/pdf') ||
+                        (file.type === 'image/png') ||
+                        /\.(pdf|png)$/i.test(file.name || ''));
+  if (!okType) {
+    AUTH = { filename: '', sha256: '', content_b64: '', size: 0 };
+    $('fi-auth').classList.add('err');
+    em.textContent = '只收 PDF / PNG 授权书原件';
+    $('auth-meta').textContent = '尚未选择文件。';
+    $('auth-sha').className = '';
+    checkEight();
+    return;
+  }
+  $('fi-auth').classList.remove('err');
+  em.textContent = '';
+  var shaEl = $('auth-sha');
+  shaEl.className = 'on wait';
+  shaEl.textContent = 'sha256 计算中…';
+  $('auth-meta').textContent = file.name + ' · ' + fmtSize(file.size) + ' · 读取中';
+  var reader = new FileReader();
+  reader.onload = function () {
+    var u8 = new Uint8Array(reader.result);
+    AUTH.filename = file.name;
+    AUTH.size = file.size;
+    AUTH.content_b64 = b64Of(u8);
+    $('auth-meta').textContent = file.name + ' · ' + fmtSize(file.size) +
+                                 ' · 原件字节已就绪（将随表单上送）';
+    if (window.crypto && crypto.subtle && crypto.subtle.digest) {
+      shaOf(u8).then(function (hex) {
+        AUTH.sha256 = hex;
+        shaEl.className = 'on';
+        shaEl.textContent = 'sha256  ' + hex;
+        checkEight();
+      }).catch(function () {
+        shaEl.className = 'on bad';
+        shaEl.textContent = 'sha256 计算失败（WebCrypto 不可用——需 https 或 localhost 环境）';
+        checkEight();
+      });
+    } else {
+      shaEl.className = 'on bad';
+      shaEl.textContent = '浏览器不支持 WebCrypto——无法实算 sha256';
+    }
+    checkEight();
+  };
+  reader.onerror = function () {
+    shaEl.className = 'on bad';
+    shaEl.textContent = '文件读取失败';
+  };
+  reader.readAsArrayBuffer(file);
+}
+$('drop-zone').addEventListener('click', function () { $('f-auth-file').click(); });
+$('drop-zone').addEventListener('keydown', function (ev) {
+  if (ev.key === 'Enter' || ev.key === ' ') {
+    ev.preventDefault();
+    $('f-auth-file').click();
+  }
+});
+$('drop-zone').addEventListener('dragover', function (ev) {
+  ev.preventDefault();
+  this.classList.add('over');
+});
+$('drop-zone').addEventListener('dragleave', function () { this.classList.remove('over'); });
+$('drop-zone').addEventListener('drop', function (ev) {
+  ev.preventDefault();
+  this.classList.remove('over');
+  var fs = ev.dataTransfer && ev.dataTransfer.files;
+  if (fs && fs.length) { takeFile(fs[0]); }
+});
+$('f-auth-file').addEventListener('change', function () {
+  if (this.files && this.files.length) { takeFile(this.files[0]); }
+});
+$('auth-sha').addEventListener('click', function () {
+  if (AUTH.sha256) { copyText(AUTH.sha256); }
+});
+
+/* ---------------- 范围标签条 ---------------- */
+function renderScopeTags() {
+  var box = $('scope-tags');
+  box.innerHTML = '';
+  scopeLines().forEach(function (l) {
+    var s = document.createElement('span');
+    s.className = 'stag ' + (validScopeLine(l) ? 'ok' : 'bad');
+    s.textContent = l;
+    s.title = validScopeLine(l) ? '范围行可用' : '格式不认：须域名后缀 / 网段 / 主机名';
+    box.appendChild(s);
+  });
+}
+
+/* ---------------- 模板下拉 ---------------- */
+function applyTemplate(id) {
+  var t = null;
+  (META && META.templates ? META.templates : []).forEach(function (x) {
+    if (x.id === id) { t = x; }
+  });
+  var hint = $('tpl-hint');
+  if (!t) { hint.textContent = '选择模板可带入目标说明 / 范围白名单 / 预算三段的默认值（只填空位，不覆盖已填内容）。'; return; }
+  if (t.objective && !$('f-note').value.trim()) { $('f-note').value = t.objective; }
+  if (t.scope_lines && !scopeLines().length) {
+    $('f-scope').value = t.scope_lines.join('\n');
+  }
+  if (t.budget && !$('f-budget-token').value.trim()) {
+    var segs = t.budget.split(';');
+    if (segs[0]) { $('f-budget-token').value = segs[0]; }
+    if (segs[1]) { $('f-budget-req').value = segs[1]; }
+    if (segs[2]) { $('f-budget-hours').value = segs[2]; }
+  }
+  hint.textContent = '已套用「' + (t.name || t.id) + '」——空位带入，已填内容未动。';
+  renderScopeTags();
+  checkEight();
+}
+
+/* ---------------- 元信息装配 ---------------- */
+function fillMeta(d) {
+  META = d;
+  var sel = $('f-template');
+  sel.innerHTML = '<option value="">不使用模板</option>';
+  (d.templates || []).forEach(function (t) {
+    var o = document.createElement('option');
+    o.value = t.id;
+    o.textContent = t.name || t.id;
+    sel.appendChild(o);
+  });
+  var cred = $('f-cred');
+  cred.innerHTML = '<option value="">请选择</option>';
+  ((d.enums && d.enums.cred_source) || []).forEach(function (c) {
+    var o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    cred.appendChild(o);
+  });
+  var list = $('eight-list');
+  list.innerHTML = '';
+  (d.eight || []).forEach(function (q) {
+    var li = document.createElement('li');
+    li.setAttribute('data-key', q.key);
+    li.innerHTML = '<span class="no">' + esc(q.no) + '</span>' +
+      '<span class="mk">·</span><span class="lb">' + esc(q.label) +
+      '<span class="miss">' + esc(q.hint || '') + '</span></span>';
+    list.appendChild(li);
+  });
+  checkEight();
+}
+function loadMeta() {
+  fetch('/api/v2/new-task-meta.json').then(function (r) {
+    if (r.status === 401) { location.href = '/login'; throw new Error('须登录'); }
+    if (!r.ok) { return r.json().catch(function () { return {}; })
+      .then(function (j) { throw new Error(j.error || ('HTTP ' + r.status)); }); }
+    return r.json();
+  }).then(fillMeta).catch(function (e) {
+    $('srv-banner').classList.add('on');
+    $('srv-msg').innerHTML = '模板与选项加载失败——<span class="mono">' + esc(e.message) +
+                             '</span>（模板暂缺，表单仍可手填）';
+    fillMeta({ templates: [], eight: [], enums: {} });
+  });
+}
+
+/* ---------------- 提交（既有 /api/battle/new） ---------------- */
+var sending = false;
+function srvReject(msg) {
+  $('srv-banner').classList.add('on');
+  $('srv-msg').innerHTML = '<span class="mono">' + esc(msg) + '</span>';
+  window.scrollTo(0, 0);
+}
+function submit() {
+  if (sending) { return; }
+  if (!allEightDone() || !$('f-name').value.trim()) { return; }
+  sending = true;
+  $('srv-banner').classList.remove('on');
+  var btn = $('btn-create');
+  btn.disabled = true;
+  btn.textContent = '创建中…';
+  var body = {
+    name: $('f-name').value.trim(),
+    note: $('f-note').value.trim(),
+    budget: [$('f-budget-token').value.trim(), $('f-budget-req').value.trim(),
+             $('f-budget-hours').value.trim()].join(';'),
+    scope: scopeLines(),
+    auth: {
+      filename: AUTH.filename,
+      sha256: AUTH.sha256,
+      content_b64: AUTH.content_b64,
+      signer: $('f-signer').value.trim(),
+      valid_from: toISOZ($('f-valid-from').value),
+      valid_until: toISOZ($('f-valid-until').value)
+    },
+    cred_source: $('f-cred').value,
+    emergency_contact: $('f-contact').value.trim(),
+    model_tier: $('f-model-tier').value,
+    guard_tier: $('f-guard-tier').value,
+    legal_ack: legal()
+  };
+  fetch('/api/battle/new', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json',
+               'X-Requested-With': 'XMLHttpRequest' },
+    body: JSON.stringify(body)
+  }).then(function (r) {
+    return r.json().then(function (j) { return { st: r.status, j: j }; });
+  }).then(function (res) {
+    if (res.st === 200 && res.j.ok) {
+      $('pane-form').hidden = true;
+      $('col-summary').hidden = true;
+      $('pane-ok').hidden = false;
+      $('ok-battle').textContent = 'battle-' + res.j.battle;
+      $('create-ok').classList.add('on');
+    } else if (res.st === 401) {
+      location.href = '/login';
+    } else {
+      srvReject((res.j && (res.j.error || res.j.note)) ||
+                ('HTTP ' + res.st + '（整单拒收）'));
+    }
+  }).catch(function (e) {
+    srvReject('网络错误：' + e.message);
+  }).then(function () {
+    sending = false;
+    btn.textContent = '创建';
+    checkEight();
+  });
+}
+function legal() { return $('f-legal').checked === true; }
+$('btn-create').onclick = submit;
+$('ok-detail').onclick = function () {
+  location.href = '/session?battle=' +
+    encodeURIComponent(($('ok-battle').textContent || '').replace('battle-', ''));
+};
+$('ok-list').onclick = function () { location.href = 'tasks.html'; };
+
+/* ---------------- 接线 ---------------- */
+['f-name', 'f-note', 'f-signer', 'f-valid-from', 'f-valid-until', 'f-scope',
+ 'f-budget-token', 'f-budget-req', 'f-budget-hours', 'f-contact']
+  .forEach(function (id) {
+    $(id).addEventListener('input', function () {
+      if (id === 'f-scope') { renderScopeTags(); }
+      checkEight();
+    });
+  });
+['f-cred', 'f-model-tier', 'f-guard-tier', 'f-legal'].forEach(function (id) {
+  $(id).addEventListener('change', checkEight);
+});
+$('f-template').addEventListener('change', function () { applyTemplate(this.value); });
+$('legal-link').addEventListener('click', function (ev) {
+  ev.preventDefault();
+  var d = $('legal-text');
+  d.open = !d.open;
+});
+blurChecks();
+checkEight();
+loadMeta();
+
+/* 共享壳自注册（UI-1 舰 /static/app.js；壳未挂载时静默跳过，本页独立可用） */
+try {
+  if (window.nav && typeof nav.push === 'function') {
+    nav.push({ id: 'new-task', label: '新建任务', group: '任务' });
+  }
+} catch (e) { /* 壳异常不殃及本页 */ }
+</script>
+</body>
+</html>

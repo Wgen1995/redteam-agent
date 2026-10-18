@@ -220,7 +220,7 @@ def _eight_missing(goal, scope_include):
         missing.append("④紧急联系人")
     if not (goal.get("budget") or "").strip():
         missing.append("⑤预算硬顶")
-    if "凭据来源" not in (goal.get("business_context") or ""):
+    if "凭据" not in (goal.get("business_context") or ""):
         missing.append("⑥凭据来源")
     if goal.get("model_tier") not in _MODEL_TIERS \
             or goal.get("guard_tier") not in _GUARD_TIERS:
@@ -228,14 +228,13 @@ def _eight_missing(goal, scope_include):
     return missing
 
 
-def _battle_state(battle_dir, gen_dir, goal, scope_include, live):
-    """→ {code,label,detail}（12 态→界面子集；先匹配先赢，零墙钟）。"""
+def _battle_state(battle_dir, gen_dir, goal, scope_include, live, tl, has_findings):
+    """→ {code,label,detail}（12 态→界面子集；先匹配先赢，零墙钟）。
+
+    顺位律（实勘教训：boot 脚本立的仗先于表单期字段存在——执行在案的事实
+    [runner/发现/重放/报告] 压过 goals 行表单域完备，缺件只拦未执行的仗）。"""
     if goal is None:
         return {"code": "DRAFT", "label": "草稿", "detail": "未立项（无 goals 行）"}
-    missing = _eight_missing(goal, scope_include)
-    if missing:
-        return {"code": "AUTH-PENDING", "label": "待授权",
-                "detail": "八问缺 %d 项：%s" % (len(missing), "、".join(missing))}
     if os.path.isfile(os.path.join(battle_dir, ARCHIVE_MANIFEST)):
         return {"code": "ARCHIVED", "label": "已归档", "detail": "归档清单在场（冷存储）"}
     if gen_dir is not None and _signed(gen_dir):
@@ -251,9 +250,17 @@ def _battle_state(battle_dir, gen_dir, goal, scope_include, live):
         return {"code": "RUNNING", "label": "执行中", "detail": "在册执行（注册表活 pid）"}
     if rc is None and _runner_started(battle_dir):
         return {"code": "RUNNING", "label": "执行中", "detail": "已点火（runner 未完跑）"}
-    if _has_replay(_merged_tl(battle_dir)):
-        return {"code": "RETESTING", "label": "复测",
-                "detail": "验证环在跑（timeline 有重放行）"}
+    exec_evidence = (rc == 0) or has_findings or _has_replay(tl)
+    if exec_evidence:
+        if _has_replay(tl):
+            return {"code": "RETESTING", "label": "复测",
+                    "detail": "验证环在跑（timeline 有重放行）"}
+        return {"code": "CONVERGED", "label": "复测",
+                "detail": "执行完跑 · 待复测"}
+    missing = _eight_missing(goal, scope_include)
+    if missing:
+        return {"code": "AUTH-PENDING", "label": "待授权",
+                "detail": "八问缺 %d 项：%s" % (len(missing), "、".join(missing))}
     return {"code": "ARMED", "label": "执行中", "detail": "已授权 · 待点火"}
 
 
@@ -270,6 +277,102 @@ def _merged_tl(battle_dir):
         rows.extend(_tsv_rows(os.path.join(battle_dir, gen, "timeline.tsv"),
                               "timeline.tsv"))
     return rows
+
+
+# ------------------------------------------------- ①b 新建任务元信息投影 --
+
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DEFAULT_KIT_DIR = os.path.join(_REPO_ROOT, "tests", "range", "battle-kit")
+
+_OBJ_RE = re.compile(r"^\s*(?:\d+\)\s*)?目标[：:]\s*(.+)$", re.M)
+_SCOPE_RE = re.compile(r"(?:^|\s|；|;)(?:\d+\)\s*)?范围[：:]\s*(.+)$", re.M)
+_BUDGET_RE = re.compile(r"(?:^|\s)(?:\d+\)\s*)?预算[：:]\s*([0-9KMkmG.]+(?:;[0-9KMkmG.]*)*)")
+_TITLE_RE = re.compile(r"^#\s+(.+)$", re.M)
+
+
+def _kit_templates(kit_dir):
+    """battle-kit BRIEF 模板下拉（*.md 只读解析；py/说明件不入——BRIEF=md 件）。
+
+    mission 形结构行提取（battle-kit/历史 mission.txt 同形）：目标/范围
+    include 段/预算三段；纯 prose 模板缺行=诚实空（不虚构模板值）。
+    """
+    try:
+        names = sorted(n for n in os.listdir(kit_dir)
+                       if n.startswith("BRIEF") and n.endswith(".md"))
+    except OSError:
+        return []
+    out = []
+    for n in names:
+        path = os.path.join(kit_dir, n)
+        try:
+            with open(path, encoding="utf-8", errors="replace") as f:
+                text = f.read()
+        except OSError:
+            continue
+        objective = ""
+        m = _OBJ_RE.search(text)
+        if m:
+            objective = m.group(1).strip()
+        scope_lines = []
+        m = _SCOPE_RE.search(text)
+        if m:
+            seg = m.group(1)
+            inc = re.search(r"include=([^；;]+)", seg)
+            if inc:
+                for part in re.split(r"\s*与\s*|\s+", inc.group(1).strip()):
+                    part = part.strip().rstrip("。，,")
+                    if part:
+                        scope_lines.append(part)
+        budget = ""
+        m = _BUDGET_RE.search(text)
+        if m:
+            budget = m.group(1).strip().rstrip("。")
+        title = ""
+        m = _TITLE_RE.search(text)
+        if m:
+            title = m.group(1).strip()
+        out.append({"id": n[:-3], "name": title or n[:-3], "file":
+                    "tests/range/battle-kit/" + n, "objective": objective,
+                    "scope_lines": scope_lines, "budget": budget})
+    return out
+
+
+_EIGHT = (
+    {"no": "①", "key": "auth_doc", "label": "授权书原件",
+     "hint": "PDF/PNG 拖拽上传，浏览器实算 sha256，原件字节随表单上送"},
+    {"no": "②", "key": "window", "label": "授权窗口期", "hint": "起止时刻（UTC），止须晚于起"},
+    {"no": "③", "key": "legal", "label": "法律确认", "hint": "勾选确认本次测试经真实授权"},
+    {"no": "④", "key": "scope", "label": "范围白名单", "hint": "每行一条：域名后缀或网段，缺范围不开测"},
+    {"no": "⑤", "key": "cred_source", "label": "凭据来源", "hint": "测试账号从哪来"},
+    {"no": "⑥", "key": "budget", "label": "预算硬顶", "hint": "token / 请求次数 / 时长 三段"},
+    {"no": "⑦", "key": "tier", "label": "强度档", "hint": "执行档与拦截档"},
+    {"no": "⑧", "key": "contact", "label": "紧急联系人", "hint": "授权方 7×24 可达通道"},
+)
+
+
+def new_task_meta_view(kit_dir=None):
+    """新建任务页元信息 → {templates, enums, submit, eight}（只读确定性）。
+
+    枚举/提交契约与 server._auth_eight_questions 同域单源（本投影只描述，
+    校验仍在服务端——缺一=422 字段级拒因回显）。
+    """
+    root = kit_dir if kit_dir else DEFAULT_KIT_DIR
+    return {
+        "templates": _kit_templates(root),
+        "enums": {"model_tier": list(_MODEL_TIERS), "guard_tier": list(_GUARD_TIERS),
+                  "cred_source": ["客户提供", "自备（自行注册）", "盲测（无凭据探测）"]},
+        "submit": {"endpoint": "/api/battle/new", "method": "POST",
+                   "requires": ["name", "note", "budget", "scope",
+                                "auth", "cred_source", "emergency_contact",
+                                "model_tier", "guard_tier", "legal_ack"],
+                   "note": "授权八问缺一=422（字段级拒因回显）；成功=建任务并留痕"},
+        "eight": [dict(q) for q in _EIGHT],
+    }
+
+
+def new_task_meta_route(query, ledger_dir=None, battles_dir=None, kit_dir=None):
+    """路由适配层 → (200, payload)；元信息无 4xx 面（kit 缺=空模板诚实态）。"""
+    return 200, new_task_meta_view(kit_dir=kit_dir)
 
 
 # ---------------------------------------------------------------- ① 列表投影 --
@@ -300,8 +403,29 @@ def tasks_view(battles_dir=None):
                     scope_include = True
                 frows.append(r)
 
+        tl = _merged_tl(battle_dir)
+        # 发现：多代合并同 id 后代胜 → active 三色计数（宪法#41 验证状态词）。
+        latest, order = _latest_by_id(
+            (r for gen in gens for r in _tsv_rows(
+                os.path.join(battle_dir, gen, "findings.tsv"), "findings.tsv")),
+            "findings.tsv")
+        findings = {"total": 0, "verified": 0, "pending": 0, "ruled_out": 0}
+        for k in order:
+            r = latest[k]
+            if _cell("findings.tsv", r, "status") != "active":
+                continue
+            findings["total"] += 1
+            expl = _cell("findings.tsv", r, "exploitation_status")
+            if expl == "verified":
+                findings["verified"] += 1
+            elif expl == "ruled_out":
+                findings["ruled_out"] += 1
+            else:
+                findings["pending"] += 1
+
         state = _battle_state(battle_dir, gen_dir, goal, scope_include,
-                              live_map.get(b["n"], False))
+                              live_map.get(b["n"], False), tl,
+                              findings["total"] > 0)
 
         # 预算：帽=goals.budget 三段（token;requests;hours；K/M/G 后缀），
         # 已用=各代 budget.tsv 增量累计（网关侧计量口径随行披露）。
@@ -324,26 +448,6 @@ def tasks_view(battles_dir=None):
                 "pct": pct,
                 "warn": pct >= _WARN_PCT, "over": cap > 0 and used[key] > cap}
 
-        # 发现：多代合并同 id 后代胜 → active 三色计数（宪法#41 验证状态词）。
-        latest, order = _latest_by_id(
-            (r for gen in gens for r in _tsv_rows(
-                os.path.join(battle_dir, gen, "findings.tsv"), "findings.tsv")),
-            "findings.tsv")
-        findings = {"total": 0, "verified": 0, "pending": 0, "ruled_out": 0}
-        for k in order:
-            r = latest[k]
-            if _cell("findings.tsv", r, "status") != "active":
-                continue
-            findings["total"] += 1
-            expl = _cell("findings.tsv", r, "exploitation_status")
-            if expl == "verified":
-                findings["verified"] += 1
-            elif expl == "ruled_out":
-                findings["ruled_out"] += 1
-            else:
-                findings["pending"] += 1
-
-        tl = _merged_tl(battle_dir)
         created = (goal or {}).get("created") or (tl[0][0] if tl else "")
         updated = tl[-1][0] if tl else created
 
@@ -372,15 +476,20 @@ def tasks_route(query, ledger_dir=None, battles_dir=None):
 
 
 ROUTES[ROUTE_TASKS] = tasks_route
+ROUTES[ROUTE_NEW_META] = new_task_meta_route
 
 
-def dispatch(path, query, ledger_dir=None, battles_dir=None):
+def dispatch(path, query, ledger_dir=None, battles_dir=None, kit_dir=None):
     """include 机制分发口 → (status, payload) | None(非本域路由)。
 
-    UI-1 挂法（tests/test_webui_pagespec_tasks.py _V2MountHandler 钉）:
-        dispatch(path, query, server.ledger_dir, battles_dir=server.battles_dir)
+    UI-1 挂法（tests/test_webui_pagespec_tasks.py / _new_task.py
+    _V2MountHandler 钉）:
+        dispatch(path, query, server.ledger_dir, battles_dir=server.battles_dir,
+                 kit_dir=getattr(server, "kit_dir", None))
     """
     fn = ROUTES.get(path)
     if fn is None:
         return None
+    if path == ROUTE_NEW_META:
+        return fn(query, kit_dir=kit_dir)
     return fn(query, ledger_dir=ledger_dir, battles_dir=battles_dir)
