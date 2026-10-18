@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generated" content="2026-10-18 10:16">
+<meta name="generator" content="panorama 手写页（执法件=cli/ 与 contracts/ 实读）">
+<title>交战思维 · GraphLed 蓝图</title>
+<style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
+.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
+.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
+.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
+.nav a:hover{border-color:#30363d}
+h1{color:#f0f6fc;font-size:26px;margin:2px 0 6px}.sub{color:#8b949e;font-size:13px}
+h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
+.flowrow{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px}
+.step{min-width:172px;flex:1;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:12px 14px}
+.step h3{margin:0 0 2px;font-size:14.5px;color:#f0f6fc}
+.step .gate{font-size:11px;color:#d29922;margin-bottom:6px;display:block}
+.step p{font-size:12px;color:#c9d1d9;margin:4px 0}
+.step .law{font-size:11px;color:#8b949e;border-top:1px dashed #30363d;margin-top:8px;padding-top:6px}
+.step .law b{color:#bc8cff;font-weight:600}
+.arr{align-self:center;color:#30363d;font-size:22px;padding:0 6px;flex:0 0 auto}
+.gatesbar{display:flex;flex-wrap:wrap;gap:6px}
+.gp{font-size:11.5px;border:1px solid #30363d;border-radius:8px;padding:2px 8px;color:#8b949e}
+.gp b{color:#c9d1d9}
+.kv{font-size:13px;margin:4px 0}
+.kv b{color:#f0f6fc}
+.src{color:#8b949e;font-size:11.5px}
+a{color:#58a6ff}
+.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
+ol{font-size:13px;line-height:2;padding-left:22px}</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="graphled-blueprint.html">进度总图</a>
+<a href="graphled-architecture.html">全景架构</a>
+<a href="graphled-ui-map.html">界面地图</a>
+<a href="graphled-enemies.html">六产品对齐</a>
+<a href="graphled-roadmap.html">能力阶梯</a>
+<a href="graphled-methodology.html" class="on">交战思维</a>
+<a href="index.html">首页</a></nav>
+
+<h1>交战思维 · 一仗怎么打（横向流程）</h1>
+<p class="sub">从授权到报告的六步，每步都标了「执法件」——就是那一步管住它不许乱来的机器（宪法 #41 人话：执法件=不用人盯、违规自动拒的关卡）。九道门全程护航，门序单源自代码 core.GATE_ORDER，界面词表一字不差。</p>
+
+<h2>六步横向流程</h2>
+<div class="card">
+<div class="flowrow">
+  <div class="step">
+    <h3>① 八问授权</h3><span class="gate">门 P0 授权确认</span>
+    <p>建任务先答八问：授权件（原件+sha256+签署方）/窗口期/范围白名单/紧急联系人/预算/凭据来源/强度档/法律条款。</p>
+    <p class="law"><b>执法件：</b>缺一=422 整单拒（server.py:316 八问校验）；授权四件落 goals.tsv；范围落 scope.tsv；凭据真值永不进账本（vault 占位符）。</p>
+  </div>
+  <div class="arr">➜</div>
+  <div class="step">
+    <h3>② 意图链</h3><span class="gate">门 P1 范围检查 · P2 预算</span>
+    <p>任务拆成一条条意图（intents.tsv），战士领取打租约（时限标记），超时自动回收重授；无可用引擎=blocked 留因，不静默丢。</p>
+    <p class="law"><b>执法件：</b>双抢互斥 REJECT；租约超时先落 blocked[lease-expired] 回收行再重授（W2 租约舰）；预算三维（token/请求/时长[$]）触帽=优雅停+收尾令。</p>
+  </div>
+  <div class="arr">➜</div>
+  <div class="step">
+    <h3>③ 战士执行</h3><span class="gate">门 P3 执行</span>
+    <p>自研 AI 大脑循环：领意图→组上下文（50 张技法卡按意图检索注入+上轮自纠信号）→选模型道→发 JSON 指令→调工具→写账。</p>
+    <p class="law"><b>执法件：</b>每条工具命令过守卫门链（黑名单/范围界外/限速/审批档）；资源三帽（CPU/进程/内存）；心跳+停滞自杀重生交租约；断点续跑按 timeline 末行重建。</p>
+  </div>
+  <div class="arr">➜</div>
+  <div class="step">
+    <h3>④ 机械重放验证</h3><span class="gate">门 P4（发现入卷硬门）</span>
+    <p>每个发现由独立进程原样重放（tanyin-replay，上限 3 次）；重放不过=不算漏洞。</p>
+    <p class="law"><b>执法件：</b>未验证不入卷——SARIF 只收已验证（report_artifacts.py）；验证状态三态=已验证/待验证/已失效（事件溯源最新）；误报防线核心=机器复算，非人肉双签（#17 修订 C 用户裁定）。</p>
+  </div>
+  <div class="arr">➜</div>
+  <div class="step">
+    <h3>⑤ 复测</h3><span class="gate">门 P5 复测</span>
+    <p>对「已修复」候选自动排队复测；复测页已建成待挂载。</p>
+    <p class="law"><b>执法件：</b>复测走 rerun 门（gate reset 重走门序）；账本 supersede 墓碑——翻案留全史，后代行胜。</p>
+  </div>
+  <div class="arr">➜</div>
+  <div class="step">
+    <h3>⑥ 报告签发</h3><span class="gate">门 P5.5 报告→签发 · P6 清理 · P6.0 沉淀</span>
+    <p>报告中心：六节预览、渲染输入哈希钉（同输入同输出）、版本链、签发位（草稿→待签发→已签发锁定）。</p>
+    <p class="law"><b>执法件：</b>渲染纯函数两跑哈希比对；pass.json 绑定逐件复检，篡改=红条不回退；战毕过清理门（P6）清痕——仓净 0 行/容器 0 残留为验收。</p>
+  </div>
+</div>
+</div>
+
+<h2>九道门（门序单源=core.GATE_ORDER，界面词表同款）</h2>
+<div class="card gatesbar">
+<span class="gp"><b>P0</b> 授权确认</span><span class="gp"><b>P1</b> 范围检查</span><span class="gp"><b>P2</b> 预算</span><span class="gp"><b>P3</b> 执行</span><span class="gp"><b>P4</b> 复测前的发现验证</span><span class="gp"><b>P5</b> 复测</span><span class="gp"><b>P5.5</b> 报告</span><span class="gp"><b>P6</b> 签发</span><span class="gp"><b>P6.0</b> 清理→沉淀</span>
+</div>
+<p class="src" style="margin-top:8px">词表实读自 cli/webui/console.py（_PHASE_LABELS 与 core.GATE_ORDER 强校验，失配即崩——防两份词表漂移）；门文件=phases/P0.md..P6.0.md。界面叫「阶段」，代码里叫「门」，一回事。</p>
+
+<h2>三条全程律（哪一步都在管）</h2>
+<div class="card">
+<p class="kv"><b>范围执法：</b>四层拦截（账本/执行通道/宿主 hook/出口代理）+scope 四 kind 匹配+deny-list 黑名单单源；范围外发现走分域异步扩展审批（宪法 #45：门按域分不整体停），全停仅限法务红线（窗口到期/急停/预算硬顶）。</p>
+<p class="kv"><b>预算执法：</b>token/请求/时长（美元）三维预算树；超限=BUDGET-ENFORCE 收尾令重启（HANDOFF F3）；预算触帽时间窗优雅停。</p>
+<p class="kv"><b>留痕执法：</b>每一步（含拒绝本身）写 timeline.tsv 哈希链行——任意历史时刻可回放（演变回放条：帧号=记录行号）、可第三方验真（verify-chain）。</p>
+</div>
+
+<h2>为什么这样设计（三句）</h2>
+<div class="card">
+<ol>
+<li><b>误报是生死线</b>（宪法 #43）：所以验证不是「模型说算」而是机械重放——机器复算才算数。</li>
+<li><b>授权是地基</b>：八问缺一不开仗，凭据真值永不进账本——安全产品自己先不能成为泄露源。</li>
+<li><b>越打越强要能证明</b>：打法沉淀成 50 张技法卡按意图注入，评测棘轮管能力回归——这套循环的目标是把「经验」变成「资产」。</li>
+</ol>
+<p class="src">依据：docs/USER-CHARTER.md 宪法 #43/#45、docs/RATIFICATIONS.md #17 修订 C、cli/warrior/loop.py、phases/PROTOCOL.md。</p>
+</div>
+
+<p class="meta">
+执法件出处=cli/webui/server.py:316、cli/tanyin-guard、cli/ledger/enforce.py、cli/tanyin-replay、phases/、contracts/01-05 实读 ·
+快照 2026-10-18 10:16 · git f844987 ·
+姊妹页：<a href="graphled-architecture.html">全景架构</a>（这些执法件长在哪）· <a href="graphled-roadmap.html">能力阶梯</a>（下一步补什么）·
+旧版交战思维原典（面向人手的八步教程）：<a href="methodology.html">methodology.html</a>，零删改可读。
+</p>
+</div>
+</body>
+</html>

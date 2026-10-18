@@ -1,81 +1,111 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>红队成长全景 · 从源码审计到一人红队</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f3f0;color:#1f2329;line-height:1.7;padding:24px 14px 60px}
-.wrap{max-width:min(1560px,94vw);margin:0 auto}
-header{background:linear-gradient(135deg,#0f172a,#7f1d1d 55%,#b91c1c);color:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 10px 30px rgba(185,28,28,.28)}
-header h1{font-size:24px;margin-bottom:6px}header .sub{opacity:.92;font-size:14px}
-header .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
-header .tags span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;font-size:12.5px}
-h2{font-size:20px;margin:36px 0 14px;padding-left:14px;border-left:5px solid #b91c1c}
-p{font-size:14px;color:#475569;margin-bottom:10px}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
-@media(max-width:760px){.cards{grid-template-columns:1fr}}
-.card{background:#fff;border-radius:14px;padding:22px 20px;box-shadow:0 4px 16px rgba(0,0,0,.07);text-decoration:none;color:inherit;transition:transform .18s,box-shadow .18s;border-top:5px solid #b91c1c;display:flex;flex-direction:column}
-.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(185,28,28,.18)}
-.card.meth{border-top-color:#0369a1}.card.tech{border-top-color:#7c3aed}.card.tool{border-top-color:#b45309}
-.card .icon{font-size:30px;margin-bottom:10px}.card h4{font-size:17px;margin-bottom:6px;color:#1e293b}
-.card p{font-size:13px;color:#64748b;margin:0;flex:1}.card .go{margin-top:12px;font-size:13px;font-weight:600;color:#b91c1c}
-.card.meth .go{color:#0369a1}.card.tech .go{color:#7c3aed}.card.tool .go{color:#b45309}
-table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06);font-size:13px;margin:12px 0}
-th,td{padding:7px 11px;border-bottom:1px solid #e2e8f0;text-align:left}th{background:#f1f5f9;font-size:12px}
-.lv{color:#b91c1c;font-weight:600}.core{color:#0369a1;font-weight:600}.adv{color:#7c3aed;font-weight:600}
-.note{background:#fef2f2;border-left:4px solid #b91c1c;border-radius:8px;padding:12px 16px;font-size:13.5px;color:#7f1d1d;margin:14px 0}
-footer{text-align:center;color:#94a3b8;font-size:12.5px;margin-top:36px}
-.topnav{display:flex;gap:10px;margin:0 0 14px;flex-wrap:wrap}.topnav a{background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;color:#b91c1c;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-</style><style>.tblwrap{overflow-x:auto}@media(max-width:760px){table{display:block;overflow-x:auto;max-width:100%}p,li,td{overflow-wrap:anywhere}}</style>
-<style>@media(max-width:760px){.topnav{gap:6px}.topnav a{padding:4px 8px;font-size:12px}}</style>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generated" content="2026-10-18 10:16">
+<meta name="generator" content="panorama 手写页（GraphLed 蓝图全景集入口）">
+<title>GraphLed 蓝图全景 · 首页</title>
+<style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
+.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
+.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
+.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
+.nav a:hover{border-color:#30363d}
+h1{color:#f0f6fc;font-size:27px;margin:2px 0 6px}.sub{color:#8b949e;font-size:13px}
+h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
+.hero{background:linear-gradient(135deg,#0d1117 60%,#11251a);border:1px solid #23863666;border-radius:14px;padding:22px 24px;margin-bottom:8px}
+.hero .def{font-size:15.5px;color:#f0f6fc;margin:10px 0 4px}
+.hero .def b{color:#3fb950}
+.mile{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.mile .m{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:8px 14px;font-size:12.5px;color:#c9d1d9}
+.mile .m b{display:block;color:#f0f6fc;font-size:13.5px}
+.pages{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.pages{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.pages{grid-template-columns:1fr}}
+a.tile{display:block;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s}
+a.tile:hover{border-color:#1f6feb}
+a.tile h3{margin:0 0 4px;font-size:15px;color:#58a6ff}
+a.tile p{margin:0;font-size:12.5px;color:#8b949e}
+a.tile .st{font-size:11px;margin-left:6px;color:#d29922}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:#8b949e;text-align:left;font-weight:600;background:#161b22;padding:6px 8px;border-bottom:1px solid #30363d}
+td{padding:7px 8px;border-bottom:1px solid #21262d;vertical-align:top}
+td a{color:#58a6ff}
+td.v{color:#8b949e}
+a{color:#58a6ff}
+.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
+.quote{border-left:3px solid #30363d;padding:2px 12px;color:#8b949e;font-size:12.5px;margin:8px 0}</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="graphled-blueprint.html">进度总图</a>
+<a href="graphled-architecture.html">全景架构</a>
+<a href="graphled-ui-map.html">界面地图</a>
+<a href="graphled-enemies.html">六产品对齐</a>
+<a href="graphled-roadmap.html">能力阶梯</a>
+<a href="graphled-methodology.html">交战思维</a>
+<a href="index.html" class="on">首页</a></nav>
 
-<style>
-.znav{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:-6px 0 18px;font-size:12px;color:#94a3b8}
-.znav .zl{font-weight:600;margin-right:2px}
-.znav a{background:#fff;border-radius:7px;padding:3px 9px;font-size:12px;color:#64748b;text-decoration:none;box-shadow:0 1px 5px rgba(0,0,0,.05)}
-.znav a.on{color:#b91c1c;background:#fef2f2;font-weight:600}
-@media(max-width:760px){.znav{gap:4px}.znav a{padding:3px 7px;font-size:11.5px}}
-</style>
-</head><body><div class="wrap">
-<nav class="topnav gnav"><a href="index.html">🗺️ 总览</a><a href="../docs/learning/html/index.html">📚 手册</a><a href="design.html">🧩 设计</a></nav>
-<header><h1>红队成长全景 · 从源码审计到一人红队</h1>
-<div class="sub">图是地图，册是教材——六页全景导航 + 十二卷深度手册 · 为转岗渗透测试的源码审计工程师定制</div>
-<div class="tags"><span>能力里程碑制 · 不做时间排期</span><span>授权渗透 · 只打授权目标</span><span>白盒优势迁移 · 代码即真相→响应即真相+证据链</span><span>四类目标：认证后Web / 内网域 / 安装包 / 源码联动</span><span>交付导向：POC 卡片 + 中文报告</span></div></header>
-
-<h2>这套材料怎么用</h2>
-<div class="note"><b>三句话定位</b>：① <b>全景图（本目录六页）</b>回答"怎么思考/要学什么/有什么工具/怎么成长"——先看图建立框架；② <b>手册（docs/learning/ 十二卷）</b>是教材——每个知识点固定【原理】【操作】【验证】【陷阱】四段，操作细到每一步可跟着做；③ <b>你的优势是审计功底</b>——<a href="../docs/learning/html/VOL-04-source-assist.html#vol-04-源码审计-黑盒联动-审计员优势的降维打法">VOL-04</a> 专门讲怎么把白盒经验降维到黑盒，这不是补短板而是接长板。</div>
-<div class="cards">
-<a class="card meth" href="methodology.html"><div class="icon">🧭</div><h4>思路与逻辑全景</h4><p>交战生命周期八步流程条、Kill Chain/PTES/WSTG/ATT&CK 四框架对照与选型、黑盒信息渐进决策模型（信息缺口→下一动作）、审计员→渗透者思维转换表。</p><div class="go">看渗透测试怎么思考 →</div></a>
-<a class="card tech" href="techstack.html"><div class="icon">🗺️</div><h4>技术栈全景</h4><p>六层知识地图（侦察/Web/内网域/源码联动/客户端/交付），61 个知识点带核心·重点·进阶三级优先级与"能做什么算掌握"的验收标准。</p><div class="go">看要掌握哪些技术 →</div></a>
-<a class="card tool" href="toolchain.html"><div class="icon">🧰</div><h4>工具链全景</h4><p>五组工具矩阵（每工具：做什么/一句话原理/核心命令/陷阱）、七行场景→工具链→输出物战术矩阵、噪音/速率/授权边界决策要点。</p><div class="go">看工具做什么什么原理 →</div></a>
-<a class="card" href="roadmap.html"><div class="icon">🪜</div><h4>成长路线 · 能力阶梯</h4><p>L0-L5 六级能力里程碑（无时间约束）：每级能力清单/验收标准/推荐靶场/自测清单 + 13 行靶场全景表 + 自评模板——能独立做到 X 才算过级。</p><div class="go">看怎么成长怎么验收 →</div></a>
-<a class="card tool" href="ai-pentest.html"><div class="icon">🤖</div><h4>AI 渗透全景</h4><p>六大赛道地图、13 个代表项目档案、十大架构模式、AI 辅助实战协作位——把 AI 用进渗透工作流的三部曲导航（VOL-09A/B/C）。</p><div class="go">看 AI 渗透怎么玩 →</div></a>
-<a class="card" href="design.html"><div class="icon">🧩</div><h4>探隐 TanYin · 设计全景</h4><p>我们自研渗透 skill 的设计方案导航：四支柱/五层架构/12 表账本/九个 Phase 门/知识飞轮/引擎契约速览 + 原版十页深读 + 设计定稿速览。</p><div class="go">看设计怎么长出来 →</div></a>
-<a class="card meth" href="../docs/learning/html/VOL-10-engagement-walkthrough.html"><div class="icon">🎬</div><h4>实战全流程 · 上帝视角</h4><p>一场完整交战十幕实录：每步状态面板/因果/原理/操作/验证/陷阱/AI 位 + 导游词带路，交战目录从空长到终态、3 张 POC 卡、复测四态——把 VOL-01~09 的知识串成一场仗。</p><div class="go">进战场看全程 →</div></a>
-<a class="card tech" href="../docs/learning/html/VOL-11-retail-ecosystem.html"><div class="icon">🛒</div><h4>零售生态专题</h4><p>大厂产品生态的地形学：生态测绘法、五链 18 个业务逻辑漏洞场景库（交易/促销/退款/会员/供应链）、PCI·PIPL 合规红线、SSO 账户生态、企业内渗透工作流。</p><div class="go">看零售生态怎么打 →</div></a>
+<div class="hero">
+<h1>GraphLed 蓝图全景</h1>
+<p class="sub">一人红队 AI 自动化平台 · 这套图回答一个问题：<b>建到哪了</b>。数据真源=panorama/blueprint.json + 仓内文件实勘，零虚构（更新时间 2026-10-18 10:16，快照 git f844987）。</p>
+<p class="def">产品一句话（用户已定稿，USER-CHARTER 第 4 条）：<b>ARTEX 的用法 + 银行级不可篡改记录 + 每个漏洞必须实证 + 越打越强有数学证明。</b></p>
+<div class="mile">
+<div class="m"><b>当前里程碑</b>总装挂载在飞——14 页界面建成件往生产口接电</div>
+<div class="m"><b>首仗前置</b>复活靶场 + 点亮真模型生产道（channels.json 已备）</div>
+<div class="m"><b>家底</b>全仓 2,537 个测试函数（238 个测试文件实数）· CI 八作业 · coverage 89%</div>
+</div>
 </div>
 
-<h2>十二卷深度手册</h2>
-<table><tr><th>卷</th><th>标题</th><th>一句话内容</th><th>建议阅读时机</th></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-01-web-app-part1.html#vol-01-web-应用渗透-上-侦察-指纹与注入类漏洞">VOL-01</a></b></td><td>Web 应用渗透（上）</td><td>信息收集/指纹/攻击面/认证机制/注入类（SQL/命令/XSS/SSTI/SSRF）</td><td class="lv">L1-L2 主线</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-02-web-app-part2.html#vol-02-web-应用渗透-下-越权-逻辑漏洞与利用构造">VOL-02</a></b></td><td>Web 应用渗透（下）</td><td>越权/逻辑漏洞/文件上传/反序列化/POC→EXP 构造方法论</td><td class="lv">L1-L2 主线</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-03-intranet.html#vol-03-内网渗透-从打点到域控">VOL-03</a></b></td><td>内网渗透：从打点到域控</td><td>隧道代理/凭据获取/提权/横向移动/Kerberos 一页讲透/域控矩阵/GOAD 路径</td><td class="core">L2-L3 主线</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-04-source-assist.html#vol-04-源码审计-黑盒联动-审计员优势的降维打法">VOL-04</a></b></td><td>源码审计→黑盒联动</td><td>入口点优先审计法/代码→PoC 翻译/无源码反推/半黑盒——审计员的优势迁移</td><td class="core">随时（你的优势区）</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-05-client-package.html#vol-05-安装包与客户端分析-够用深度">VOL-05</a></b></td><td>安装包与客户端分析</td><td>EXE 解包/硬编码提取/.NET 反编译/APK 全链/自定义协议分析</td><td class="adv">按项目需要</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-06-toolchain.html#vol-06-工具链详解手册">VOL-06</a></b></td><td>工具链详解手册</td><td>五组工具逐个四段详解 + 工具组合战术矩阵</td><td class="lv">L0 起全程随用随查</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-07-08-methodology-reporting.html#vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08</a></b></td><td>方法论·报告交付·成长路线</td><td>四框架/信息渐进决策/L0-L5 阶梯 + 中文报告/POC 卡片/CVSS/等保/复测</td><td class="core">L0 先读 PART A；真实项目前读 PART B</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-09A-ai-pentest-tracks.html#vol-09a-ai-渗透-赛道地图与项目档案">VOL-09A</a></b></td><td>AI 渗透·赛道地图与项目档案</td><td>第零章痛点地图 + 六赛道格局 + 13 项目深度档案 + 大表 + 第四章选型决策</td><td class="adv">L2 起随时（认识生态）</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-09B-ai-pentest-patterns.html#vol-09b-ai-渗透-十大架构模式深度剖析">VOL-09B</a></b></td><td>AI 渗透·十大架构模式</td><td>问题→机制→案例→手动/AI 双启示，伪代码+工程类比</td><td class="adv">L3+（吃透机制）</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-09C-ai-pentest-practice.html#vol-09c-ai-渗透-ai-辅助实战指南">VOL-09C</a></b></td><td>AI 渗透·AI 辅助实战指南</td><td>上下文喂养/验收清单/L0-L5 AI 用法/交战目录纪律/四防陷阱</td><td class="lv">L1 起即可上手（落地卷）</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-10-engagement-walkthrough.html#vol-10-实战全流程实例-一场完整交战的上帝视角">VOL-10</a></b></td><td>实战全流程实例：一场完整交战的上帝视角</td><td>虚构交战十幕全程：状态面板/因果/原理/操作/验证/陷阱/AI 位 + 导游词 + 交战目录生长 + 3 张 POC 卡 + 复测四态</td><td class="core">L2 起跟读；L3 前必读</td></tr>
-<tr><td><b><a href="../docs/learning/html/VOL-11-retail-ecosystem.html#vol-11-零售生态渗透专题-大厂产品生态里的渗透测试">VOL-11</a></b></td><td>零售生态渗透专题</td><td>生态地形图/五链 18 业务逻辑场景库/PCI·PIPL 红线/SSO 账户生态/企业内工作流</td><td class="lv">入职零售生态即读</td></tr>
-</table>
+<h2>七页导航（互相链接，看进度从这进）</h2>
+<div class="pages">
+<a class="tile" href="graphled-blueprint.html"><h3>📊 进度总图</h3><p>核心页：四支柱逐项状态+23 项界面芯片+里程碑。数据从 blueprint.json 生成。</p><span class="st">python3 panorama/gen_blueprint.py 再生成</span></a>
+<a class="tile" href="graphled-architecture.html"><h3>🏗️ 全景架构</h3><p>六大件数据流向（账本/守卫/战士/工具引擎/评测飞轮/界面），每件行数+测试数+状态。</p></a>
+<a class="tile" href="graphled-ui-map.html"><h3>🖥️ 界面地图</h3><p>23 项界面逐页对账：状态色+一句话能力+对应路由，头部计数条。</p></a>
+<a class="tile" href="graphled-enemies.html"><h3>🆚 六产品对齐</h3><p>ARTEX/CSAI/ZhuLong/multica/VulnClaw/cyber-harness 六家 306 件判词+即刻吸收三件。</p></a>
+<a class="tile" href="graphled-roadmap.html"><h3>🪜 能力阶梯</h3><p>五道阶段门（无时间预算，宪法 #42）：首仗判卷→评测棘轮→挂载收口→W7→远期。</p></a>
+<a class="tile" href="graphled-methodology.html"><h3>🧭 交战思维</h3><p>一仗怎么打：八问授权→意图链→战士执行→机械重放→复测→报告签发，每步标注执法件。</p></a>
+</div>
 
-<h2>建议路径（按能力级，非时间表）</h2>
-<table><tr><th>能力级</th><th>先看图</th><th>再读册</th><th>动手</th></tr>
-<tr><td><b>L0 就绪</b></td><td>思路逻辑 + 工具链</td><td><a href="../docs/learning/html/VOL-06-toolchain.html#vol-06-工具链详解手册">VOL-06</a>（工具装好）+ <a href="../docs/learning/html/VOL-07-08-methodology-reporting.html#vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08</a> PART A</td><td>搭靶场环境（vulhub/本地双机）</td></tr>
-<tr><td><b>L1-L2 复现与贯通</b></td><td>技术栈（Web 层）</td><td><a href="../docs/learning/html/VOL-01-web-app-part1.html#vol-01-web-应用渗透-上-侦察-指纹与注入类漏洞">VOL-01</a> → <a href="../docs/learning/html/VOL-02-web-app-part2.html#vol-02-web-应用渗透-下-越权-逻辑漏洞与利用构造">VOL-02</a> →（<a href="../docs/learning/html/VOL-04-source-assist.html#vol-04-源码审计-黑盒联动-审计员优势的降维打法">VOL-04</a> 优势区随时穿插）</td><td>vulhub 全类 + PortSwigger 模块</td></tr>
-<tr><td><b>L3 独立通关</b></td><td>技术栈（内网层）</td><td><a href="../docs/learning/html/VOL-03-intranet.html#vol-03-内网渗透-从打点到域控">VOL-03</a></td><td>HTB easy→medium + GOAD 分模块</td></tr>
-<tr><td><b>L4-L5 实战交付</b></td><td>成长路线 自评</td><td><a href="../docs/learning/html/VOL-07-08-methodology-reporting.html#vol-07-08-方法论-报告交付-成长路线-合并卷">VOL-07-08</a> PART B（报告/交付）+ <a href="../docs/learning/html/VOL-05-client-package.html#vol-05-安装包与客户端分析-够用深度">VOL-05</a>（按项目）</td><td>真实授权项目辅助位→独立交付</td></tr>
+<h2>历史档案专区（宪法 #50 设计资产保全律：旧页零删改，一等资产可追溯）</h2>
+<div class="card">
+<table>
+<tr><th>档案</th><th>一句话价值</th></tr>
+<tr><td><a href="tanyin-architecture.html">tanyin-architecture.html</a></td><td class="v">架构思想第一版——全景图长卷的起点</td></tr>
+<tr><td><a href="tanyin-architecture-v2.html">tanyin-architecture-v2.html</a></td><td class="v">架构 v2——「从哲学到 13 本账」的运行长卷定型</td></tr>
+<tr><td><a href="tanyin-architecture-v3.html">tanyin-architecture-v3.html</a></td><td class="v">架构思想源头——v3 带「建造实况带」与「对账带」（用户原话「这种还不错」即指此版）</td></tr>
+<tr><td><a href="tanyin-architecture_副本.html">tanyin-architecture_副本.html</a></td><td class="v">v3 手工副本（工作快照，未入册）</td></tr>
+<tr><td><a href="tanyin-atlas.html">tanyin-atlas.html</a></td><td class="v">架构图集 × 定位体检——早期自我盘点</td></tr>
+<tr><td><a href="tanyin-vs-artex.html">tanyin-vs-artex.html</a></td><td class="v">首次与 ARTEX 对表——后来 A 档全件对齐的前身</td></tr>
+<tr><td><a href="design.html">design.html</a></td><td class="v">设计全景导航——四支柱/五层架构/12 表账本的设计谱系入口</td></tr>
+<tr><td><a href="methodology.html">methodology.html</a></td><td class="v">交战思维原典——面向人手的八步流程与四框架对照</td></tr>
+<tr><td><a href="roadmap.html">roadmap.html</a></td><td class="v">成长路线原典——L0-L5 能力阶梯（无时间约束）</td></tr>
+<tr><td><a href="techstack.html">techstack.html</a></td><td class="v">技术栈全景——六层知识地图 61 个知识点</td></tr>
+<tr><td><a href="toolchain.html">toolchain.html</a></td><td class="v">工具链全景——五组工具矩阵与场景战术矩阵</td></tr>
+<tr><td><a href="ai-pentest.html">ai-pentest.html</a></td><td class="v">AI 渗透全景——六赛道地图与 13 个代表项目档案</td></tr>
+<tr><td><a href="artex-analysis.html">artex-analysis.html</a></td><td class="v">ARTEX 实勘图集（配 artex-one-look.svg）——对手解剖第一档</td></tr>
+<tr><td><a href="graphled-console-prototype.html">graphled-console-prototype.html</a></td><td class="v">控制台最终态原型 v2（满数据版）——W6 五页真身的原型母本</td></tr>
+<tr><td><a href="notes/">notes/</a></td><td class="v">全景笔记区——绘图过程中的草稿与批注</td></tr>
+<tr><td><a href="blueprint.json">blueprint.json</a></td><td class="v">进度数据真源——舰队落地即更新，重生成总图用它</td></tr>
 </table>
-<div class="note"><b>阅读铁律</b>：手册里每个【操作】都要在靶场真做过一遍才算读过——渗透是手艺，眼睛会了不算会。每个【验证】就是"你做对了没有"的判据，每个【练习】都给出了对口的靶机。</div>
-<footer>红队成长全景 · 持续更新 · 配套 redteam-agent 一人红队 AI 自动化 skill（docs/research/ 与 docs/design/）</footer>
-</div></body></html>
+<p class="quote">演进关系：新七页（graphled-*，2026-10-18 全新建）演进自上列旧档，分工=旧图讲「怎么想清楚」（设计谱系），新图讲「建到哪了」（进度实况）。新旧冲突处一律在新图侧注「演进自 vX+差异点」（见 <a href="graphled-architecture.html">全景架构</a> 页演进侧注），旧页一字不动。</p>
+</div>
+
+<h2>配套手册</h2>
+<div class="card">
+<p class="sub" style="margin:0">人的成长看 <a href="../docs/learning/html/index.html">十二卷深度手册</a>（docs/learning/），系统的进度看本七页——图是地图，册是教材。</p>
+</div>
+
+<p class="meta">
+GraphLed 蓝图全景集 · 七页纯 HTML/CSS（零 CDN 零框架零图片）· 暗色 #0d1117 ·
+进度总图由 panorama/gen_blueprint.py 从 blueprint.json 生成，其余六页手写、数字带出处 ·
+更新时间 2026-10-18 10:16 · 快照 git f844987 ·
+本仓测试禁占口 8900/3000/8787/8443，蓝图页静态自检用随机口。
+</p>
+</div>
+</body>
+</html>

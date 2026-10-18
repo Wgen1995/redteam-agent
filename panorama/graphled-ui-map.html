@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generated" content="2026-10-18 10:16">
+<meta name="generator" content="panorama 手写页（状态=blueprint.json；路由/文件=仓内实勘 git f844987）">
+<title>界面地图 · GraphLed 蓝图</title>
+<style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
+.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
+.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
+.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
+.nav a:hover{border-color:#30363d}
+h1{color:#f0f6fc;font-size:26px;margin:2px 0 6px}.sub{color:#8b949e;font-size:13px}
+h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
+.bar{display:flex;height:18px;border-radius:9px;overflow:hidden;border:1px solid #30363d;max-width:680px;margin:12px 0 6px}
+.bar span{height:100%}.bar .ok{background:#238636}.bar .mount{background:#b08800}.bar .fly{background:#1f6feb}.bar .design{background:#8957e5}.bar .empty{background:#484f58}
+.counts{font-size:12.5px;color:#8b949e}
+.uigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.uihead{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.uihead h3{margin:0;font-size:15px;color:#f0f6fc}
+.st{font-size:12px;padding:2px 10px;border-radius:12px;border:1px solid #30363d;white-space:nowrap}
+.st.ok{border-color:#238636;color:#3fb950}.st.mount{border-color:#b08800;color:#d29922}
+.st.fly{border-color:#1f6feb;color:#58a6ff}.st.design{border-color:#8957e5;color:#bc8cff}
+.st.empty{color:#6e7681;border-color:#30363d}
+.cap{font-size:12.5px;color:#c9d1d9;margin:8px 0 6px}
+.route{font-size:11.5px;color:#8b949e;word-break:break-all}
+.route code{color:#79c0ff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
+.quote{border-left:3px solid #30363d;padding:2px 12px;color:#8b949e;font-size:12.5px;margin:8px 0}
+a{color:#58a6ff}
+.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="graphled-blueprint.html">进度总图</a>
+<a href="graphled-architecture.html">全景架构</a>
+<a href="graphled-ui-map.html" class="on">界面地图</a>
+<a href="graphled-enemies.html">六产品对齐</a>
+<a href="graphled-roadmap.html">能力阶梯</a>
+<a href="graphled-methodology.html">交战思维</a>
+<a href="index.html">首页</a></nav>
+
+<h1>界面地图 · 23 项逐页对账</h1>
+<p class="sub">状态一律以 panorama/blueprint.json 的 ui 数组为准（铁律：界面状态=blueprint.json）；路由与页面文件为仓内实勘。人话口径：「可点」=浏览器里现在就能用；「接电」=页面已造好、正在往生产口接线；「在建」=舰队在造；「设计」=图纸定稿等排产；「空白」=还没动工。</p>
+
+<h2>计数条（按 ui 数组实算）</h2>
+<div class="card">
+<div class="bar">
+<span class="ok" style="width:8.7%" title="可点 2"></span>
+<span class="mount" style="width:43.5%" title="接电 10"></span>
+<span class="fly" style="width:30.4%" title="在建 7"></span>
+<span class="design" style="width:4.3%" title="设计 1"></span>
+<span class="empty" style="width:13.0%" title="空白 3"></span>
+</div>
+<div class="counts">共 23 项：可点 2 · 接电 10 · 在建 7 · 设计 1 · 空白 3</div>
+<div class="quote">柱四判词原文（blueprint.json）：「对照ARTEX 22项: 4可点/9接电/7在建/3空白」——判词口径与 ui 数组不同（22 项 vs 23 项、可点 4 vs 2、接电 9 vs 10），本页计数按数组实算，两口径都如实上屏不互相冒充。</div>
+</div>
+
+<h2>23 项网格</h2>
+<div class="uigrid">
+<section class="card">
+<div class="uihead"><h3>仪表盘</h3><span class="st ok">✅ 可点</span></div>
+<p class="cap">作战台一屏：总览四卡、九门灯、预算三卡、KPI 五数，活动流最近动态。</p>
+<p class="route">生产路由 <code>/console</code>（console_dash.html；W6⑦，git 5849718）</p></section>
+<section class="card">
+<div class="uihead"><h3>发现</h3><span class="st ok">✅ 可点</span></div>
+<p class="cap">三态筛选（已验证/待验证/已失效）+CVSS 评分+证据原文抽屉，curl 可真转抄。</p>
+<p class="route">生产路由 <code>/console/findings</code>（git 5aa5d9e 冒烟收口）</p></section>
+<section class="card">
+<div class="uihead"><h3>任务</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">任务列表：状态七态徽章、预算已用对帽进度条（80% 预警线）、发现双色、搜索排序分页。</p>
+<p class="route">页已建 <code>pages/tasks.html</code>，待挂载（git 7eb6a9e；投影 /api/v2/tasks.json）</p></section>
+<section class="card">
+<div class="uihead"><h3>新建任务</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">整页表单：授权书拖拽上传（浏览器实算 sha256）+八问完备性指示器 0/8→8/8，齐了才亮「创建」。</p>
+<p class="route">页已建 <code>pages/new-task.html</code> 待挂载；旧简版 <code>/new</code> 在生产（git 6a4d158）</p></section>
+<section class="card">
+<div class="uihead"><h3>漏洞详情</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">单条发现的详情页：证据链、验证状态、时间线。</p>
+<p class="route">页已建 <code>pages/finding-detail.html</code>，待挂载（T5 批）</p></section>
+<section class="card">
+<div class="uihead"><h3>播报（日志）</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">任务执行过程的播报板视图（live 活动流的任务内版）。</p>
+<p class="route">页已建 <code>pages/broadcast.html</code>，待挂载（投影 api_v2_broadcast）</p></section>
+<section class="card">
+<div class="uihead"><h3>复测</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">对已修复发现自动复测排队与结果（复测页已建，blueprint 柱三）。</p>
+<p class="route">页已建 <code>pages/retest.html</code>，待挂载（投影 api_v2_retest）</p></section>
+<section class="card">
+<div class="uihead"><h3>资产</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">资产表：类型/授权复判（绿✓/范围外黄标）/已测请求数/关联发现，DSL 搜索（AND/OR/NOT+通配）。</p>
+<p class="route">页已建 <code>pages/assets.html</code>，待挂载（git b6a9c36；生产旧版 <code>/coverage</code> 族）</p></section>
+<section class="card">
+<div class="uihead"><h3>资产覆盖</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">资产×意图族热图（五态格+对数色阶）+未测清单带原因，覆盖率口径诚实披露。</p>
+<p class="route">新版 <code>pages/coverage.html</code> 待挂载；旧版生产路由 <code>/coverage</code> 在役（git 1e637bb）</p></section>
+<section class="card">
+<div class="uihead"><h3>拦截审批</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">审批卡三钮（批准/拒绝/改参）+AI 预审仅供参考+四层拦截流水表；全局版跨任务排队。</p>
+<p class="route">全局页 <code>pages/approval-center.html</code> 待挂载（git 55ec139）；简版生产 <code>/console/approval</code> ✅</p></section>
+<section class="card">
+<div class="uihead"><h3>报告中心</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">报告列表+详情六节预览、渲染输入哈希钉、版本链、双签位（草稿→待签发→已签发锁定）。</p>
+<p class="route">页已建 <code>pages/report-center.html</code>，待挂载（git 9d576f0/f9e61ac）</p></section>
+<section class="card">
+<div class="uihead"><h3>技法（Skill）</h3><span class="st mount">🔧 接电</span></div>
+<p class="cap">50 张技法卡列表+搜索，卡详情六节只读（场景/步骤/工具引用/纪律标注/证据标准/边界）。</p>
+<p class="route">页已建 <code>pages/techniques.html</code>，待挂载（git c846f46）</p></section>
+<section class="card">
+<div class="uihead"><h3>工作空间</h3><span class="st fly">✈️ 在建</span></div>
+<p class="cap">任务产物（工件）浏览+下载：有界漫游、类别推导、路径监狱防逃逸、2MB 上限。</p>
+<p class="route">页文件已在 <code>pages/workspace.html</code>（git f844987），blueprint 状态仍记 ✈️ 在建——以 blueprint.json 为准</p></section>
+<section class="card">
+<div class="uihead"><h3>LLM 录制</h3><span class="st fly">✈️ 在建</span></div>
+<p class="cap">模型调用流水页：每次调用的道、耗时、token 计量与判定记录（底子=llmpool 283 行）。</p>
+<p class="route">未建；W6 规格在册（exceed 蓝图 §四b llm-records 行）</p></section>
+<section class="card">
+<div class="uihead"><h3>对话</h3><span class="st fly">✈️ 在建</span></div>
+<p class="cap">介入对话页：每任务一线程，操作员指令注入+历史回放，介入本身入链。</p>
+<p class="route">未建页；写通道 <code>/api/battle/say</code> 已在生产（server.py:615-644）</p></section>
+<section class="card">
+<div class="uihead"><h3>工具执行</h3><span class="st fly">✈️ 在建</span></div>
+<p class="cap">工具卡注册表页：25 卡的档位/限速/黑名单/回滚义务一屏可查，装卡验签。</p>
+<p class="route">未建；CLI 面 tanyin-tools list/show/install 已在役（W3 工具卡舰）</p></section>
+<section class="card">
+<div class="uihead"><h3>LLM 状态</h3><span class="st fly">✈️ 在建</span></div>
+<p class="cap">模型池管理页：多道健康、冷却状态、插槽验签。</p>
+<p class="route">未建；llmpool 离线判定核已建（错误分类+分道冷却+抖动）</p></section>
+<section class="card">
+<div class="uihead"><h3>系统配置</h3><span class="st fly">✈️ 在建</span></div>
+<p class="cap">设置页：账本参数读写面（goals 档位/预算三元组/速率窗/范围修订链/豁免/修订史）。</p>
+<p class="route">页文件已在 <code>pages/settings.html</code>（git 52284f1，24 测），blueprint 状态仍记 ✈️——以 blueprint.json 为准</p></section>
+<section class="card">
+<div class="uihead"><h3>CommandPalette</h3><span class="st fly">✈️ 在建</span></div>
+<p class="cap">⌘K/Ctrl+K 全局命令面板：9 页路由+高频动作统一入口。</p>
+<p class="route">壳已带 Ctrl+K（console.js，W6⑦）；独立面板页未建</p></section>
+<section class="card">
+<div class="uihead"><h3>资产同步</h3><span class="st design">📐 设计</span></div>
+<p class="cap">外部资产源（如 ScopeSentry）导入同步的对等件。</p>
+<p class="route">设计排 W7 可选（exceed 蓝图 §四b sync 行：双向——出已建 zhulong_export、进待排）</p></section>
+<section class="card">
+<div class="uihead"><h3>流量</h3><span class="st empty">⬜ 空白</span></div>
+<p class="cap">流量录制回放页：三源回传+证据绑哈希链。</p>
+<p class="route">未建；出口代理 Tier3 已在（tanyin-egress），页=W6 规格（exceed §四b traffic 行）</p></section>
+<section class="card">
+<div class="uihead"><h3>MCP</h3><span class="st empty">⬜ 空白</span></div>
+<p class="cap">MCP 联邦/外部工具协议面。</p>
+<p class="route">未建；W7 可选（对等=插槽制，B 档 C9 口径）</p></section>
+<section class="card">
+<div class="uihead"><h3>通知推送</h3><span class="st empty">⬜ 空白</span></div>
+<p class="cap">钉钉/飞书/企微/Telegram/Email 五渠道+投递五态记录+重试。</p>
+<p class="route">未建；W7 webhook 起（A 档 C5：只排了 1/6）</p></section>
+</div>
+
+<h2>边注</h2>
+<div class="card">
+<p class="cap" style="margin-top:0">① 还有一页不在 23 项清单里：<code>pages/asset-registry.html</code> 跨任务资产库（按资产值归并、各任务复判分列，git c8728cb），归 W7 资产库族，此处只登记不计数。</p>
+<p class="cap">② 「工作空间」「系统配置」两页的页面文件已在仓（git f844987 / 52284f1），但 blueprint.json 仍记 ✈️ 在建——状态以 blueprint.json 为准，舰队落地会更新该文件；本页下次重生成即跟随。</p>
+<p class="cap">③ 生产口 8900 的既有路由（server.py:449-453 实读）：<code>/</code> <code>/coverage</code> <code>/graph</code> <code>/evidence</code> <code>/metrics</code> <code>/session</code> <code>/activity</code> <code>/new</code> <code>/console</code> 五页族——读面全部过登录门（B 舰 P0 修复后）。</p>
+</div>
+
+<p class="meta">
+状态真源=panorama/blueprint.json（23 项 ui 数组）· 路由/文件=cli/webui/server.py 与 cli/webui/static/pages/ 实勘 · 能力一句=git 提交记录与 HANDOFF 实读 ·
+快照 2026-10-18 10:16 · git f844987 ·
+姊妹页：<a href="graphled-blueprint.html">进度总图</a> · <a href="graphled-architecture.html">全景架构</a> · <a href="index.html">首页</a>。
+</p>
+</div>
+</body>
+</html>

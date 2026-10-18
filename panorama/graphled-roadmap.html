@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generated" content="2026-10-18 10:16">
+<meta name="generator" content="panorama 手写页（依据=blueprint.json+exceed 蓝图+RATIFICATIONS+git log 实读）">
+<title>能力阶梯 · GraphLed 蓝图</title>
+<style>*{box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;margin:0;line-height:1.7;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:9px 13px;margin-bottom:24px;position:sticky;top:0;z-index:5}
+.nav .brand{font-weight:700;color:#f0f6fc;margin-right:10px;font-size:14px}
+.nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid transparent}
+.nav a.on{background:rgba(31,111,235,.18);border-color:#1f6ebfcc;color:#f0f6fc}
+.nav a:hover{border-color:#30363d}
+h1{color:#f0f6fc;font-size:26px;margin:2px 0 6px}.sub{color:#8b949e;font-size:13px}
+h2{color:#58a6ff;font-size:18px;margin:34px 0 12px;border-left:4px solid #1f6feb;padding-left:10px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px 18px}
+.gate{display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:start}
+.gnum{width:44px;height:44px;border-radius:50%;background:#161b22;border:2px solid #1f6feb;color:#58a6ff;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.gate.done .gnum{border-color:#238636;color:#3fb950}
+.gate.now .gnum{border-color:#b08800;color:#d29922;box-shadow:0 0 0 4px rgba(176,136,0,.15)}
+.gate h3{margin:0 0 4px;font-size:16px;color:#f0f6fc}
+.kv{font-size:13px;margin:4px 0}
+.kv b{color:#f0f6fc}
+.src{color:#8b949e;font-size:11.5px}
+.garrow{width:2px;height:16px;background:#30363d;margin:4px 0 4px 21px;position:relative}
+.garrow::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#30363d}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:#8b949e;text-align:left;font-weight:600;background:#161b22;padding:6px 8px;border-bottom:1px solid #30363d}
+td{padding:7px 8px;border-bottom:1px solid #21262d;vertical-align:top}
+a{color:#58a6ff}
+.meta{color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:42px;padding-top:12px}
+.quote{border-left:3px solid #30363d;padding:2px 12px;color:#8b949e;font-size:12.5px;margin:8px 0}</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="nav"><span class="brand">GraphLed 蓝图</span>
+<a href="graphled-blueprint.html">进度总图</a>
+<a href="graphled-architecture.html">全景架构</a>
+<a href="graphled-ui-map.html">界面地图</a>
+<a href="graphled-enemies.html">六产品对齐</a>
+<a href="graphled-roadmap.html" class="on">能力阶梯</a>
+<a href="graphled-methodology.html">交战思维</a>
+<a href="index.html">首页</a></nav>
+
+<h1>能力阶梯 · 阶段门（无时间预算）</h1>
+<p class="sub">宪法 #42 量纲律：禁一切时间预算（几周/几天）——AI 施工，时间无意义；一切交付只报代码行数+测试数+通过率。所以这道梯子只问「上一道门的活干完没有」，不问「几号干完」。每道门=进入条件+当前卡点，全部来自实读档。</p>
+
+<h2>五道门（自下而上）</h2>
+
+<div class="gate done card">
+<div class="gnum">✓</div>
+<div>
+<h3>前置门 · W1 止血与兑现 —— 已完</h3>
+<p class="kv"><b>内容：</b>授权真上传（八问缺一=422）、读面登录门、battle auto 一键链、VulnClaw 插槽落地、定名 GraphLed。</p>
+<p class="src">依据：docs/design/exceed-blueprint-2026-10-17.md v4 总判「W1 已完」；git log W1 三舰战果。</p>
+</div>
+</div>
+<div class="garrow"></div>
+
+<div class="gate now card">
+<div class="gnum">1</div>
+<div>
+<h3>首仗判卷 —— 当前主攻</h3>
+<p class="kv"><b>目标：</b>打完第一场真仗并出判卷：误报率/漏报率是生死指标（宪法 #43）。ZhuLong 伤疤=免费评测集（egress 回归库/RBAC 剧本/回显验收单）。</p>
+<p class="kv"><b>进入条件：</b>①复活靶场（ZhuLong 靶场 3081+7090，现死）②点亮真模型生产道（channels.json 已备，生产道未点）③演示战役注入（G-r18，111 发现，blueprint 下一步第 2 条）。</p>
+<p class="kv"><b>当前卡点：</b>零场真仗——「大脑已成，未上过战场」（blueprint.json 柱一判词原文）。</p>
+<p class="src">依据：panorama/blueprint.json（柱一项 6/下一步 3·4·5）、exceed 蓝图 W3 靶场节、CODEBASE-ATLAS.md 活体服务节。</p>
+</div>
+</div>
+<div class="garrow"></div>
+
+<div class="gate card">
+<div class="gnum">2</div>
+<div>
+<h3>评测棘轮 —— 越打越强要有数学证明</h3>
+<p class="kv"><b>目标：</b>六齿飞轮+评测棘轮：能力件变更必须过 GT（标准答案集）增量门，能力回归当工程回归管；能力曲线可视。</p>
+<p class="kv"><b>进入条件：</b>首仗出真卷（真仗的发现/误报数据进 GT 集）；GT 集加厚舰收口。</p>
+<p class="kv"><b>当前卡点：</b>GT 集加厚舰在飞（blueprint 柱三项 4=✈️）；知识环曾停转 18 天（exceed 蓝图输面自纠在案）。</p>
+<p class="src">依据：git 8259749（演进飞轮设计 v1）、docs/RATIFICATIONS.md 裁定案 #16（待追认）、cli/ledger/evals_*（双锚/退出码 4 态已落）。</p>
+</div>
+</div>
+<div class="garrow"></div>
+
+<div class="gate card">
+<div class="gnum">3</div>
+<div>
+<h3>挂载收口 —— 界面件全部接电</h3>
+<p class="kv"><b>目标：</b>pages/ 下 14 页建成件全部挂进生产路由，界面从「4 可点」长到 ARTEX 22 项对齐口径的全可点。</p>
+<p class="kv"><b>进入条件：</b>总装舰接电完工（任务/新建任务/漏洞详情/播报/复测/资产/资产覆盖/审批中心/报告中心/技法/设置/工作区各族投影挂载）。</p>
+<p class="kv"><b>当前卡点：</b>9 页建成待挂载（blueprint 柱四项 2=🔧「总装舰接电中」；逐页明细见「界面地图」）。</p>
+<p class="src">依据：panorama/blueprint.json 柱四、cli/webui/static/pages/ 目录实勘 14 页、git log T5-T7 各页提交。</p>
+</div>
+</div>
+<div class="garrow"></div>
+
+<div class="gate card">
+<div class="gnum">4</div>
+<div>
+<h3>W7 门 —— 企业门禁与证明</h3>
+<p class="kv"><b>目标：</b>多人使用（两档：管理员/成员，#17 修订 C 案用户已裁）、源码审计（SA-1..SA-4，黑白互证）、安装级资产库、单文件分发（四平台出件，核必带引擎按需下载）、「15 分钟开箱」演示战役。</p>
+<p class="kv"><b>进入条件：</b>挂载收口+首仗判卷过（企业面要拿得出证明材料：越打越强实验/成本口径/升级 runbook）。</p>
+<p class="kv"><b>当前卡点：</b>两份设计定稿待追认——裁定案 #15（源码审计）与 #17（多用户与资产库，修订 C 已随用户裁定收窄）在 RATIFICATIONS 清单标「✅待你」。</p>
+<p class="src">依据：docs/RATIFICATIONS.md #15/#17、exceed 蓝图 W7 行、git 39625e4（#17 修订 C：双签只留报告位+两档角色——用户裁定）。</p>
+</div>
+</div>
+<div class="garrow"></div>
+
+<div class="gate card">
+<div class="gnum">5</div>
+<div>
+<h3>远期 —— 结构性扩张</h3>
+<p class="kv"><b>内容：</b>白盒双车道（W4，五接口裁决+五步证伪卡，真对手=GenSift/codex-security）、多战士编队（W5 常驻规划者+同轮工具并行）、多机/远程节点（G9，单机一人红队=产品律，立项才做）、MCP 联邦、通知五渠道、价值呈递（W8 四句+记分牌）。</p>
+<p class="kv"><b>进入条件：</b>各按自身设计档的触发判据（例：源码审计=审计合同占比&gt;30% 升一级入口）。</p>
+<p class="src">依据：exceed 蓝图 W4/W5/W8 行、docs/design/source-audit-v1.md 触发判据、multiuser-assetlib-v1.md G9 节。</p>
+</div>
+</div>
+
+<h2>背景：八波施工总账（W1-W8）</h2>
+<div class="card">
+<table>
+<tr><th>波次</th><th>内容一句</th><th>工程量（行数）</th><th>性质</th></tr>
+<tr><td>W1 止血与兑现</td><td>授权真上传/一键链/插槽落地/读面门/定名</td><td>~1,900（已完）</td><td>修地板</td></tr>
+<tr><td>W2 还债与地基</td><td>O(1) 追加/租约/多战执法/CI 三件/退出码分离</td><td>~3,000（在册多件已落）</td><td>修地板</td></tr>
+<tr><td>W3 肌肉</td><td>工具卡 25/内网横向/C2-lite 全门链/利用深挖</td><td>~15,000-15,900</td><td>修地板→超越</td></tr>
+<tr><td>W4 白盒引擎</td><td>五接口裁决+车道 A/B+黑白互证</td><td>~7,800-9,600</td><td>超越</td></tr>
+<tr><td>W5 大脑与记忆</td><td>知识环复活/常驻规划者/多战士编队</td><td>~8,000</td><td>超越</td></tr>
+<tr><td>W6 界面全面超越</td><td>九新页/SSE 换代/仪表盘经济学/介入对话页</td><td>~8,500-9,500</td><td>超越（界面硬底线）</td></tr>
+<tr><td>W7 企业门禁与证明</td><td>分发/RBAC/成本口径/考卷中心/开箱</td><td>~4,500</td><td>超越（采购硬门槛）</td></tr>
+<tr><td>W8 价值呈递</td><td>价值四句+验真三步+记分牌</td><td>~800</td><td>变现</td></tr>
+</table>
+<p class="quote">诚实总价（exceed 蓝图 v4 原文）：W1-W8 全程 ≈ 53,000-65,000 行 · AI 周计（并行舰队）。本页按宪法 #42 剥离一切时间量纲，只保留行数；原档中的周/天数字已折算不引用。要砍哪波，用户明砍，不许静默压丢。</p>
+</div>
+
+<h2>验收线摘八条（「超过五产品」判据）</h2>
+<div class="card">
+<table>
+<tr><th>维度</th><th>达标线（可验）</th></tr>
+<tr><td>架构</td><td>常驻事件驱动规划者在役；多战士租约；CISO 五问全答</td></tr>
+<tr><td>工程</td><td>CI 三平台+lint+mypy+coverage；版本单源；升级 runbook 演示</td></tr>
+<tr><td>渗透工作流</td><td>工具卡 25 张在役；内网横向实战一战；利用终态=拿到权限≥1 战；跨战复测产品化</td></tr>
+<tr><td>白盒</td><td>五接口裁决+解析器 v0+白盒假设×黑盒重放同账闭环</td></tr>
+<tr><td>AI-agent</td><td>知识环流水不断+消费者在役+常驻规划者跑完一战无人值守</td></tr>
+<tr><td>产品</td><td>装到报告 15 分钟；授权八问全真；客户隔离；报告品牌化</td></tr>
+<tr><td>价值</td><td>D2 三臂同考出数+记分牌在册+「越打越强」有实验证明</td></tr>
+<tr><td>UI</td><td>11 类词汇全量上图+图谱演进+演变回放条+发现三态终审；功能广度 9→21 路由级</td></tr>
+</table>
+<p class="src">摘自 exceed 蓝图 §五（逐字不改，仅排版）。</p>
+</div>
+
+<p class="meta">
+数据真源：panorama/blueprint.json + docs/design/exceed-blueprint-2026-10-17.md + docs/RATIFICATIONS.md + git log 实读 ·
+快照 2026-10-18 10:16 · git f844987 ·
+姊妹页：<a href="graphled-enemies.html">六产品对齐</a>（每道门背后欠谁的账）· <a href="graphled-methodology.html">交战思维</a>（门内一仗怎么打）。
+</p>
+</div>
+</body>
+</html>
