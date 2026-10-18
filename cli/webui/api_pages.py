@@ -40,7 +40,8 @@ from . import api_v2_techniques        # noqa: F401
 _OPTIONAL_MODULES = ("api_v2_settings", "api_v2_workspace", "api_v2_evals",
                      "api_v2_ask", "api_v2_command", "api_v2_llm",
                      "api_v2_llm_status", "api_v2_system", "api_v2_tools",
-                     "api_v2_capability")
+                     "api_v2_capability",
+                     "api_v2_fleet")     # 多任务治理舰（功能25补件）：总控数据面
 
 PAGES_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                           "static", "pages")
