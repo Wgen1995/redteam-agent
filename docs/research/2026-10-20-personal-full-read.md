@@ -67,3 +67,10 @@ ARTEX=「表单开仗+任务工作台+侧厅对话+全链观察」四件套成�
 - evidence=内容寻址证据仓(24h GC宽限+报告版本冻结导出+流式锁纪律)。
 - db 52文件176 Store方法;report严重度分组导出md/csv;selfupdate bootstrap/settle/rollback/github;sidequestion窗口感知+双次压缩重试。
 进度: [##########] P1✅P2✅ → P3 CSAI
+
+## 补课P3完成: CSAI全深
+- 架构: Gin单页(index.html+60模块JS)+Handler→SQLite+Agent/MultiAgent+MCP(YAML工具/Skills FS/外部)+RAG+Workflow+C2+WebShell+审计监控。
+- **multiagent=Eino ADK上160+中间件管线**: 检查点/恢复/上下文超限重试/瞬态重试/工具对账/孤儿调用剪枝/HITL/RBAC工具中间件/plan-execute步数帽/子代理上下文/推理轨迹/stdout抑制。
+- **fact-graph.js=事实图谱前端**(818行SVG卡片+置信徽标+暗亮主题)——与我方账本+图谱同源思想,它们已成品化。
+- supervisor编排=transfer专家子代理;授权哲学=系统前置裁决不反问(与我方授权确认+范围红线相反,我方法务更稳);roles=14场景YAML剧本;tools=YAML工具定义(name/command/params);知识=嵌入前缀对齐+DSL过滤检索链。
+- 不采维持: C2/WebShell/wechat-robot。
