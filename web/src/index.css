@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   GL-DS v1(GraphLed Design System)令牌
+   母版: cli/webui/static/login.html @ 4900af6(T6·P1 登录页装修定稿)
+   纪律: 12级灰阶+单强调色+mono数字;暗色为缺省,暂无亮色主题。
+   映射: 令牌本体在 :root;@theme inline 之后即可用工具类——
+         bg-bg / bg-card / text-tx1 / border-line / rounded-glds / text-fs-a …
+   ========================================================================== */
+:root {
+  /* 面 surface */
+  --bg: #0a0b0d; /* 页底 */
+  --bg-side: #0f1114; /* 侧栏/输入底 */
+  --bg-card: #14171c; /* 卡片 */
+  --bg-raise: #1c2026; /* 抬升面/禁用底 */
+  --bg-hover: #22262e; /* 悬停 */
+  /* 线 line */
+  --line: #232730; /* 一级线 */
+  --line-2: #343a44; /* 二级线/输入框 */
+  /* 文字 5 级 */
+  --tx1: #edf1f6;
+  --tx2: #c7cfda;
+  --tx3: #a6afbb;
+  --tx4: #8791a0;
+  --tx5: #5f6873;
+  /* 状态 */
+  --ok: #3ddc97;
+  --warn: #e8b34b;
+  --dang: #ff6f61;
+  --info: #5aa9e6;
+  /* 强调(单色系) */
+  --acc: #3ddc97;
+  --acc2: #2fae78;
+  --acc-on: #08130d; /* 强调面上的深字 */
+  --acc-dim: rgba(61, 220, 151, 0.12);
+  /* 圆角/阴影 */
+  --rad: 10px;
+  --rad-s: 6px;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  /* 字体 */
+  --sans: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+  /* 字号阶梯 a→e(13/14/16/20/24) */
+  --fs-a: 13px;
+  --fs-b: 14px;
+  --fs-c: 16px;
+  --fs-d: 20px;
+  --fs-e: 24px;
+}
+
+/* 暗色为缺省(P0 无亮色切换) */
+html {
+  color-scheme: dark;
+}
+
+/* Tailwind v4 主题映射 */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-side: var(--bg-side);
+  --color-bg-card: var(--bg-card);
+  --color-bg-raise: var(--bg-raise);
+  --color-bg-hover: var(--bg-hover);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-tx1: var(--tx1);
+  --color-tx2: var(--tx2);
+  --color-tx3: var(--tx3);
+  --color-tx4: var(--tx4);
+  --color-tx5: var(--tx5);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-dang: var(--dang);
+  --color-info: var(--info);
+  --color-acc: var(--acc);
+  --color-acc2: var(--acc2);
+  --color-acc-on: var(--acc-on);
+  --color-acc-dim: var(--acc-dim);
+  --font-sans: var(--sans);
+  --font-mono: var(--mono);
+  --text-fs-a: var(--fs-a);
+  --text-fs-b: var(--fs-b);
+  --text-fs-c: var(--fs-c);
+  --text-fs-d: var(--fs-d);
+  --text-fs-e: var(--fs-e);
+  --radius-glds: var(--rad);
+  --radius-glds-s: var(--rad-s);
+  --shadow-glds: var(--shadow);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    background-color: var(--bg);
+    background-image: radial-gradient(
+      ellipse 60% 40% at 50% 0%,
+      rgba(61, 220, 151, 0.05),
+      transparent 70%
+    );
+    color: var(--tx2);
+    font-family: var(--sans);
+    font-size: var(--fs-b);
+    line-height: 1.55;
+  }
+}
+
+/* 登录按钮加载态 spinner(母版同款) */
+@layer components {
+  .spin {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(8, 19, 13, 0.25);
+    border-top-color: var(--acc-on);
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 0.8s linear infinite;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
