@@ -46,3 +46,8 @@ ARTEX=「表单开仗+任务工作台+侧厅对话+全链观察」四件套成�
 **ARTEX 新发现我方原缺**: ①Agent即产品件(提示词编辑/版本/变量/预览/触发器/MCP-Skill-工具绑定/可见性/自定义Agent) ②自定义工具三型(command/script/http)+测试 ③任务级拦截规则 ④发现-流量证据可编辑绑定(四角色/排序/正文预览下载/lineage) ⑤任务模板CRUD ⑥客户实体+公司范围规则 ⑦LLM熔断状态+重试退避编辑+限速/优先级/思考档 ⑧自更新+回滚 ⑨通知三渠道(钉钉/飞书/邮件)+投递记录重试 ⑩意图rerun/blocked重跑 ⑪日志暂停清空 ⑫流量捕获开关+向Agent注入traffic_search/traffic_get工具 ⑬内置gov/edu合规黑名单。
 **CSAI**: 15阶段剧本兵(kill-chain)/HITL JEV策略门/攻击链Builder+晋级项目/RBAC全件/自更新套件(adopt/rollback/restart/job)/OTel观测/agentfinalizer(收仗挡未决工具执行)/C2+listeners+reverse_shell。
 **不采(定位裁决)**: C2/WebShell/reverse_shell(高危面与渗透Agent平台定位不符);oneliner;RBAC=P4已列;工作流编排=P4评估。
+
+## 任务详情页函数级深读(补课,用户点名)
+10签+任务头。任务头: LLM档位即时编辑/暂停恢复/归档(确认框)/状态徽标(engine模式+终态)。会话签: MAIN控制台(对话/停止带原因/新建MAIN切换)+意图会话列表(分页)+worker消息/LLM resolution/rerun/steer/kill+资产徽标。概况签: goals/constraints/scope/资产引用 CRUD+按模型token+缓存命中率。链路图签(coverage-graph): G6力导向+**级联折叠**(全图→可见集)+kind分组图标(lucide SVG)+tested/in_scope双色节点+标签截断+hover详情。广播签: live开关+kind过滤chips+行展开+关联节点HoverCard(带资产列表/状态徽标)。发现签/复测签/资产签/拦截签(任务级规则)/报告签。资产签: 任务资产表+范围引用+编辑追加。
+**诚实读深表(全24页)**: 深读(函数级)=chat/tasks列表+建仗/sessions/overview/graph/broadcast/assets结构+detail头/findings列表/拦截/技能/流量表面/仪表盘表面;结构读(函数签名)=llm-records/sync/workspace/notify/mcp/settings/commands/审批/日志;后端=深读(engine/guard/发现链/sidequestion/planner-worker签名面/api动词全量)。
+**读深缺口(待补函数级)**: findings/_components(表格/资产树内部)/dashboard内部组件/llm-records查看器/traffic查看器/retests任务签件/report签件/intercept任务签件——列为补课清单,我亲读逐件落档。
