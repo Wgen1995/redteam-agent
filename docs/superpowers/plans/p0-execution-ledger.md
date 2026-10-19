@@ -13,3 +13,4 @@
 - Ruling: 用户裁定 v4 总案「过」——设计正式定稿,v3/草案地位终结,P1 排期以 v4 为准。
 - Ruling+落地: 用户令「调试功能用当前LLM密钥」——已接。来源=~/.dsh/.credentials.yaml 的 WGEN001_API_KEY(智谱 coding 端点,glm-5.3);写入 ~/.tanyin/channels.json(仓外,chmod600,密钥零入日志/仓);活体验证: 200+「收到」+usage计费。T6起意图解析/AI确认真调此通道;注意该文件三密钥(DEEPSEEK/WGEN001/CODING_PLAN)——只用WGEN001,首抓DEEPSEEK得401已纠。
 - 调试通道终态: 用户亲授钥(user-glm,glm-5.3@bigmodel coding)+三协议端点(anthropic/coding/v1);此刻双端点429(疑与驱动本会话的同端点流量互挤,备用钥分钟级前同端点两发200)——已按引擎有序链落双钥接力(user-glm优先/wgen001垫后,~/.tanyin/channels.json 仓外600)。T6点火时真调即验,不阻塞T5。
+- T5 PASS(de6069a指挥流): 独立复跑PY36/36+VT17/17+BUILD=0引擎零改;活体8901真数据(stream/warboard/badge/翻页)。工艺裁决两条入册: ①G-r18实存4处ts时钟倒挂→弃「每仗取limit归并」改全量timeline_tail+(ts,key)确定全序开窗(翻页严格无重无漏,715行全链验证) ②next_cursor=入参∪本页末key(否则未出战之仗重现最新行)。检查点服务已起: 8901+演示模式+G-r18全量合成仗。等用户亲验。
