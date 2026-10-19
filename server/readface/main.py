@@ -23,10 +23,18 @@ def health() -> dict:
     return {"ok": True, "service": "graphled-readface"}
 
 
-# 静态托管占位:web/dist(vite build 产物)存在才挂;T14 收官启用。
-# 挂在 "/" 尾部,不影响 /health 与 /api/* 显式路由。
+# 静态托管:web/dist(vite build 产物)存在才挂;SPA 深链回退——
+# 客户端路由(/chat 等)刷新不再 404:真文件直供,否则回 index.html;/api/* 不兜。
 _WEB_DIST = Path(__file__).resolve().parents[2] / "web" / "dist"
 if _WEB_DIST.is_dir():
-    from fastapi.staticfiles import StaticFiles
+    from fastapi import HTTPException
+    from fastapi.responses import FileResponse
 
-    app.mount("/", StaticFiles(directory=str(_WEB_DIST), html=True), name="web")
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def spa(full_path: str):
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404)
+        cand = (_WEB_DIST / full_path).resolve()
+        if full_path and cand.is_file() and str(cand).startswith(str(_WEB_DIST.resolve())):
+            return FileResponse(str(cand))
+        return FileResponse(str(_WEB_DIST / "index.html"))
