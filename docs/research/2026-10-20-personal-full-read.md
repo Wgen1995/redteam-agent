@@ -26,3 +26,8 @@
 - **workspace(364)**: 文件浏览+下载。**sync(486)**: 第三方数据源(ss-*)项目同步任务。
 - **llm-records(580)**: prompt/response审计查看。**notify(605)**: 通知渠道CRUD+测试发送。
 - **mcp(482)**: 服务器CRUD+工具列表+可见性。**settings(713)**: 系统设置。
+
+## ②ARTEX后端亲读蒸馏
+- **agent/目录(10391行)=心脏**: Planner(规划者,含TodoStore任务清单/触发器渲染/kill/steer/约束注入)+Worker(执行者,默认工具集/代理环境变量让所有子进程走mitm)+MainAgent(任务主控台对话,Chat()即任务内聊天)+Compactor(压缩,三角色各配窗口解析)+retester(独立复测会话)+side_questions(旁路提问)+finding_workflow(发现-流量绑定工具)+wrapup(收尾)+blackboard_inheritance(黑板继承)+coldgraph(冷图)。
+- **三角色同构**: 每角色都可配 compaction窗口/NOA模式/流式开关/最大token/代理CA/网页搜索/约束注入——平台级能力矩阵。
+- **引擎(先前亲读)**: 每任务planner+worker双循环+steerBox意图级排队;guard=规则+LLM法官+ask阻塞+平台管控话术+失败归因;发现=单事务六写+推送原子。
