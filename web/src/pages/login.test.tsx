@@ -68,7 +68,7 @@ describe("登录页", () => {
     expect(screen.queryByTestId("chat-page")).not.toBeInTheDocument();
   });
 
-  it("演示模式(响应含 demo:true)→/chat 顶部黄条「演示模式:未设密钥」", async () => {
+  it("演示模式(响应含 demo:true)→挂会话级演示标记(黄条 T4 起由壳顶栏渲染,见 app/shell.test.tsx)", async () => {
     vi.stubGlobal("fetch", mockFetch(200, { ok: true, demo: true }));
     const user = userEvent.setup();
     renderApp();
@@ -76,8 +76,10 @@ describe("登录页", () => {
     await user.type(screen.getByLabelText("操作员密钥"), "anything");
     await user.click(screen.getByRole("button", { name: "登录" }));
 
-    const banner = await screen.findByRole("status");
-    expect(banner).toHaveTextContent("演示模式:未设密钥");
+    await waitFor(() =>
+      expect(screen.getByTestId("chat-page")).toBeInTheDocument(),
+    );
     expect(sessionStorage.getItem(DEMO_FLAG)).toBe("1");
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 });
