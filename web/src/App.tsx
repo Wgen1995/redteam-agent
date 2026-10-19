@@ -4,6 +4,7 @@ import ChatPage from "./pages/chat";
 import TasksPage from "./pages/tasks";
 import TaskDetailPage from "./pages/task-detail";
 import PlaceholderPage from "./pages/placeholder";
+import FindingsPage from "./pages/findings";
 import { AppShell } from "./app/shell";
 import { ALL_ITEMS } from "./app/ia";
 
@@ -21,7 +22,9 @@ export default function App() {
           {/* T11 任务列表+详情·会话签(20 页 IA 外深链页,仗卡自指挥流数据) */}
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/tasks/:id" element={<TaskDetailPage />} />
-          {ALL_ITEMS.filter((i) => i.path !== "/chat").map((i) => (
+          {/* T12 发现页(20 页 IA 内实页) */}
+          <Route path="/findings" element={<FindingsPage />} />
+          {ALL_ITEMS.filter((i) => i.path !== "/chat" && i.path !== "/findings").map((i) => (
             <Route
               key={i.path}
               path={i.path}

@@ -329,6 +329,69 @@ def cmd_halt(args):
     return 0
 
 
+def cmd_reverify(args):
+    """T12 复验: 对发现的绑定 EV 逐个 tanyin-replay 真重放(治理四门
+    内建: 授权窗/方法门/次数帽/scope);判定如实回报,状态回写走验证官
+    settle 门——本桥不代写判定(set-replay-state 是验证官写面)。"""
+    goal_dir, err = _resolve_battle(args.battle)
+    finding = (args.finding or "").strip()
+    if err is not None or not finding:
+        _emit({"ok": False, "error": err or "finding 必填(如 FD-r18-0075)"})
+        return 2
+    here = os.path.dirname(os.path.abspath(__file__))
+    if here not in sys.path:
+        sys.path.insert(0, here)
+    import ledger_reader as lr
+    f = lr.TABLES["findings.tsv"]
+    latest = lr.ledger_query.latest_by(
+        lr.ledger_core.Session(goal_dir).rows("findings.tsv"),
+        "findings.tsv", ["id"])
+    r = None
+    for k, v in latest.items():
+        if (isinstance(k, tuple) and k[0] == finding) or k == finding:
+            r = v
+            break
+    if r is None:
+        _emit({"ok": False, "error": "findings.tsv 无此发现: %s" % finding})
+        return 2
+    evs = [x for x in (r[f.index("evidence_ids")] + ";"
+                       + r[f.index("control_evidence_ids")]).split(";") if x]
+    if not evs:
+        _emit({"ok": False, "error": "无绑定证据卡,无可复放"})
+        return 2
+    ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())  # 指挥台申报钟
+    results = []
+    for ev in evs:
+        cmd = [sys.executable, os.path.join(_REPO_ROOT, "cli", "tanyin-replay"),
+               "replay", "--goal-dir", goal_dir, "--id=" + ev,
+               "--timestamp", ts, "--timeout", str(args.timeout)]
+        try:
+            p = subprocess.run(cmd, capture_output=True, text=True)
+        except Exception as e:                  # noqa: BLE001
+            results.append({"ev": ev, "verdict": None, "rc": -1,
+                            "note": "子进程失败: %s" % e})
+            continue
+        verdict, note = None, ""
+        for ln in reversed((p.stdout or "").splitlines()):
+            if ln.strip().startswith("{"):
+                try:
+                    verdict = json.loads(ln).get("verdict")
+                    break
+                except ValueError:
+                    continue
+        if verdict is None:
+            head = (p.stderr or p.stdout or "").strip().splitlines()
+            note = head[0][:160] if head else "rc=%d 无输出" % p.returncode
+        results.append({"ev": ev, "verdict": verdict,
+                        "rc": p.returncode, "note": note})
+    _emit({"ok": True, "cmd": "reverify", "battle": args.battle.strip(),
+           "finding": finding, "results": results,
+           "state_note": "判定产物落 replay/<EV>/;状态回写走验证官 settle 门"
+                         "(tanyin-ledger set-replay-state/retest-settle),"
+                         "本桥不代写"})
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="engine_bridge")
     sub = p.add_subparsers(dest="cmd")
@@ -355,6 +418,11 @@ def main(argv=None):
     ht = sub.add_parser("halt", help="全停该仗(warrior-stop+deck-halt 链,真写)")
     ht.add_argument("--battle", default="", help="仗目录名(如 battle-3)")
     ht.add_argument("--reason", default="", help="停仗原因(缺省=指挥台全停)")
+    rv = sub.add_parser("reverify", help="发现复验(tanyin-replay 真重放,不代写状态)")
+    rv.add_argument("--battle", default="", help="仗目录名(如 battle-1)")
+    rv.add_argument("--finding", default="", help="发现号(如 FD-r18-0075)")
+    rv.add_argument("--timeout", type=float, default=5.0,
+                    help="单 EV 重放超时秒(缺省 5)")
     args = p.parse_args(argv)
     if args.cmd == "ignite":
         return cmd_ignite(args)
@@ -364,6 +432,8 @@ def main(argv=None):
         return cmd_steer(args)
     if args.cmd == "halt":
         return cmd_halt(args)
+    if args.cmd == "reverify":
+        return cmd_reverify(args)
     p.print_usage(sys.stderr)
     return 2
 
