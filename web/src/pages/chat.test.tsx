@@ -112,8 +112,10 @@ describe("指挥台 T5(中央流+战况板)", () => {
     });
     expect(screen.getAllByTestId("chat-row")).toHaveLength(3);
     const stream = screen.getByTestId("chat-stream");
-    expect(within(stream).getByText("finding FD-1")).toBeInTheDocument();
-    expect(within(stream).getByText("scan http://x/a")).toBeInTheDocument();
+    // T7 时刻卡: 一级人话(词表),未知 kind 兜底 [kind] 原样
+    expect(within(stream).getAllByTestId("moment-line")).toHaveLength(3);
+    expect(within(screen.getByTestId("row-k1")).getByText("作战目标立卡 G-demo")).toBeInTheDocument();
+    expect(within(screen.getByTestId("row-k2")).getByText("[http-get] scan http://x/a")).toBeInTheDocument();
     // 每行带 battle 徽标点(色=badge,title=仗名;战况板内另有,故圈流面)
     const dots = within(screen.getByTestId("chat-stream")).getAllByTestId("battle-dot");
     expect(dots).toHaveLength(3);
@@ -144,7 +146,8 @@ describe("指挥台 T5(中央流+战况板)", () => {
     const fresh = screen.getByTestId("row-k4");
     expect(fresh.className).toContain("row-fade");
     expect(screen.getByTestId("row-k3").className).not.toContain("row-fade");
-    expect(within(fresh).getByText("replay:EV-1:VERIFIED")).toBeInTheDocument();
+    // T7: 一级人话(词表),原始行进二级
+    expect(within(fresh).getByText("机器复放验真 EV-1 已验")).toBeInTheDocument();
   });
 
   it("上滑翻页: 加载更早带 before_key,旧行前插无重复", async () => {
@@ -204,6 +207,26 @@ describe("指挥台 T5(中央流+战况板)", () => {
     fireEvent.click(screen.getByTestId("chip-all"));
     rows = screen.getAllByTestId("chat-row");
     expect(rows).toHaveLength(3);
+  });
+
+  it("T7 两级播报: 一级人话,原 raw 行仅留「原文」二级(kind 着色分 kind)", async () => {
+    await act(async () => {
+      render(<ChatPage />);
+    });
+    // 已知 kind: 一级=人话,原始 detail 不在一级
+    const row = screen.getByTestId("row-k3");
+    expect(within(row).getByText("新发现 FD-1")).toBeInTheDocument();
+    expect(within(row).queryByText("finding FD-1")).not.toBeInTheDocument();
+    expect(row.className).toContain("text-dang"); // 发现=红
+    // 点开二级: 原样 detail/kind/key/battle,透明不藏
+    fireEvent.click(within(row).getByTestId("moment-toggle"));
+    const raw = within(row).getByTestId("moment-raw");
+    expect(raw).toHaveTextContent("finding FD-1");
+    expect(raw).toHaveTextContent("kind: add-finding");
+    expect(raw).toHaveTextContent("key: k3");
+    expect(raw).toHaveTextContent("battle: battle-1");
+    // 未知 kind: 一级兜底 [kind] detail 原样
+    expect(within(screen.getByTestId("row-k2")).getByText("[http-get] scan http://x/a")).toBeInTheDocument();
   });
 
   it("战况板三格: 在跑士兵/最新发现/待审批,数据来自 /api/chat/warboard", async () => {

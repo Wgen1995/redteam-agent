@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FormEvent, UIEvent } from "react";
+import MomentCard from "../components/moment/MomentCard";
 
 /**
- * 指挥台(P0 T5 件B): 中央时刻流+右侧战况板。
+ * 指挥台(P0 T5 件B + T7 两级播报): 中央时刻流+右侧战况板。
  *
  * - 中央流: 1s 尾轮询 GET /api/chat/stream,增量按 key 去重追加,新行
  *   淡入;断线顶部黄条「连接中断,重连中…」自动恢复(轮询不停);
- *   上滑触顶自动加载更早(before_key 翻页,另有显式按钮);每行=GL-DS
- *   气泡(kind 着色)+battle 徽标点(色=服务端派生稳定色相)。
+ *   上滑触顶自动加载更早(before_key 翻页,另有显式按钮);每行=T7
+ *   MomentCard 时刻卡(一级人话=kinds.ts 词表+kind 着色+battle 徽标点,
+ *   二级点开原样 detail/kind/key/battle;原 raw 行仅留「原文」二级)。
  * - 顶栏仗过滤 chips(全部/各仗,点选客户端过滤)。
  * - 右侧战况板三格(可收起): 在跑士兵/最新发现/待审批,10s 轮询
  *   /api/chat/warboard;失败静默空态不造假。
@@ -165,16 +167,6 @@ function mergeRows(existing: StreamRow[], incoming: StreamRow[]): StreamRow[] {
   const map = new Map(existing.map((r) => [r.key, r]));
   for (const r of incoming) if (!map.has(r.key)) map.set(r.key, r);
   return [...map.values()].sort(byOrder);
-}
-
-/** kind → 气泡着色(GL-DS 状态色;未识 kind 中性灰不造假)。 */
-function kindClass(kind: string): string {
-  if (/^(add|supersede)-finding/.test(kind)) return "border-dang/40 text-dang";
-  if (/^replay/.test(kind)) return "border-ok/40 text-ok";
-  if (/^(http-|scan|nmap|port-)/.test(kind)) return "border-info/40 text-info";
-  if (/^(add-goal|add-scope|goal)/.test(kind)) return "border-acc/40 text-acc";
-  if (/^(warn|gate-exit)/.test(kind)) return "border-warn/40 text-warn";
-  return "border-line-2 text-tx3";
 }
 
 function BattleDot({ battle, badge }: { battle: string; badge: string }) {
@@ -513,19 +505,7 @@ export default function ChatPage() {
           <ul className="flex flex-1 flex-col gap-2">
             {visible.map((r) => (
               <li key={r.key} data-testid="chat-row" data-key={r.key}>
-                <div
-                  data-testid={"row-" + r.key}
-                  className={
-                    "flex items-start gap-2 rounded-glds-s border bg-bg-card px-3 py-2 font-mono text-fs-a leading-6 " +
-                    kindClass(r.kind) +
-                    (freshSet.has(r.key) ? " row-fade" : "")
-                  }
-                >
-                  <BattleDot battle={r.battle} badge={r.badge} />
-                  <span className="shrink-0 text-tx5">{r.ts}</span>
-                  <span className="shrink-0 opacity-70">{r.kind}</span>
-                  <span className="min-w-0 break-all text-tx2">{r.detail}</span>
-                </div>
+                <MomentCard row={r} fresh={freshSet.has(r.key)} />
               </li>
             ))}
           </ul>
