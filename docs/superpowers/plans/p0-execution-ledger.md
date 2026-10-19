@@ -12,3 +12,4 @@
 - Ruling: 用户「按专业的来就行」=解冻T5+,专业裁量授权;T5落地后仍停请用户上8901亲验(钦定检查点不变)。
 - Ruling: 用户裁定 v4 总案「过」——设计正式定稿,v3/草案地位终结,P1 排期以 v4 为准。
 - Ruling+落地: 用户令「调试功能用当前LLM密钥」——已接。来源=~/.dsh/.credentials.yaml 的 WGEN001_API_KEY(智谱 coding 端点,glm-5.3);写入 ~/.tanyin/channels.json(仓外,chmod600,密钥零入日志/仓);活体验证: 200+「收到」+usage计费。T6起意图解析/AI确认真调此通道;注意该文件三密钥(DEEPSEEK/WGEN001/CODING_PLAN)——只用WGEN001,首抓DEEPSEEK得401已纠。
+- 调试通道终态: 用户亲授钥(user-glm,glm-5.3@bigmodel coding)+三协议端点(anthropic/coding/v1);此刻双端点429(疑与驱动本会话的同端点流量互挤,备用钥分钟级前同端点两发200)——已按引擎有序链落双钥接力(user-glm优先/wgen001垫后,~/.tanyin/channels.json 仓外600)。T6点火时真调即验,不阻塞T5。
