@@ -59,3 +59,11 @@ ARTEX=「表单开仗+任务工作台+侧厅对话+全链观察」四件套成�
 ## 补课P1完成: ARTEX前端业务面函数级全读(~24业务文件)
 任务四小签(findings行内状态/retests分页拉findings/report/intercept包装)·四系统页(通知/MCP/设置/日志/Agent)·四大件(Skill文件管理全件/LLM池+拉模型/拦截法官+规则/资产+公司范围带变更理由)·五中页(录制开关+复制/流量三模删+host排序/命令统计/同步工作台/空间行内编)·发现组件(行内编辑保存/独立会话复测/资产树)·仪表盘15源·命令面板search-dialog·types.ts 154类型(TaskStatus七态)。测试件与ui/底件按档二规则豁免。
 进度: [########..] P1✅ P2后端深读开始
+
+## 补课P2完成: ARTEX后端全深
+- **norma=独立Go模块=Agent Harness SDK**(opencode同构): llm双格式流/tool八件fail-closed+延迟工具/permission四级管线/hook八生命周期/subagent递归守卫/mcp/plan模式/memory(MEMORY.md+相关性+陈旧警告)/skill(SKILL.md+调用解锁MCP)/coordinator(分解委派)/agentcore会话+JSONL transcript可Resume——**我方引擎的直接对标物**。
+- server编排: 调度器六源触发(间隔/发现/目标/超时/建仗/工具调用=事件起兵引擎);平台工具ro/wr读写分治;manager生命周期+LLM状态+并发;engine_timeout安定/inflight/deadline时钟/复活。
+- enrich=非AI资产自动补全(dnsx+HTTP探测经录制代理,长IP/端口节点+resolves/exposes边,RoE门控)。
+- evidence=内容寻址证据仓(24h GC宽限+报告版本冻结导出+流式锁纪律)。
+- db 52文件176 Store方法;report严重度分组导出md/csv;selfupdate bootstrap/settle/rollback/github;sidequestion窗口感知+双次压缩重试。
+进度: [##########] P1✅P2✅ → P3 CSAI
