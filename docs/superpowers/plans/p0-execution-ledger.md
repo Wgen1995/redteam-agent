@@ -24,3 +24,4 @@
 - 重启事故: 电脑重启→T12前舰亡(零落件)/夹具根失/服务失;已恢复(battle-1=G-r18+channels 重铺,8901 重启),T12重派。教训: 夹具根在/tmp怕重启——T14收官时评估挪仓内tests区。
 - T12 PASS(97efd11发现页+灰卡,父代理自做): 前舰二连亡(重启+无音讯)裁定接管。py10+vt7先红后绿,全回归绿,活体: 76发现/灰卡1张/详情EV+复放史/真reverify→tanyin-replay治理门真回REJECT授权窗口外(诚实不越权)。桥修2bug: server包import断→本目录引入式(approve同律);latest_by键=元组非裸串。铁律新证: 复验判定如实回报,状态回写走验证官settle门,桥不代写。
 - T13 PASS(6a680b1 E2E冒烟): 父独立复跑两连绿(11.4s/11.8s)+零残留根;12步全旅程真调LLM无SKIP,零产品bug。8901常驻=PID32950。
+- T14 PASS(父接管,舰死于断网): 三验①四门全绿(readface OK/vitest 123/123/build ✓/E2E 1过9.5s)②活体十面全通(登录demo/流/战板/总览/任务/详情7会话签/灰卡FD-r18-0076/详情EV-r18-0102/say真调LLM先ask追问预算→补预算态confirm→confirm→桥→真链add-goal dry_run零落账核验)③治本: scripts/make_gl_review_home.py(/tmp根三死于重启→仓内制造器)+START-HERE翻新(P0全毕/P1队列/8901重建律)+README方式6(读面指挥台,原只有旧webui 8900)。教训: 内联python引号被吞出空输出误疑面坏——先看原始字节再定罪。

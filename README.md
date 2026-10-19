@@ -91,6 +91,19 @@ TANYIN_OPERATOR_KEY=你的口令 python3 -m webui.server --ledger-dir ~/.tanyin
 
 人话说明：**所有页面只读**——数据全部来自任务记录（账本），能看不能改；需要动手的操作（新建任务、审批、发指令）走各自的写通道，都带登录 + 防跨站双重校验。顶栏可切换任务，页面地址里的 `?battle=N` 就是任务号。每个漏洞点进去是完整档案（CVSS 评分、证据原文、重放历史、修复建议），每条证据可验哈希。
 
+### 方式 6 · 读面指挥台（GraphLed——P0 新指挥台，对话即指挥）
+
+```bash
+# 演示模式（合成根：76 个真发现/1 张灰卡/6 名战士，重启后一键重建）
+python3 scripts/make_gl_review_home.py        # 建 /tmp/gl-review-home（G-r18 副本+钥链副件）
+TANYIN_HOME=/tmp/gl-review-home READFACE_ALLOW_DEMO=1 python3 -m uvicorn server.readface.main:app --port 8901
+# 真用：设 TANYIN_OPERATOR_KEY=口令（则演示登录关闭），TANYIN_HOME 缺省 ~/.tanyin
+```
+
+浏览器开 **http://127.0.0.1:8901** → 输入口令或演示登录 → 指挥台一张网：/chat 跨仗时刻流（人话时刻卡）+说话开仗（AI 解析意图→确认卡→dry-run 演习点火，P0 一律演习不真打）+内联审批+插话转向/全停；/tasks 仗列表+会话签；/findings 发现页（统计/过滤/灰卡区待机器复验/详情证据袋+复放史/复验钮→真重放，授权窗外如实 REJECT）。前端开发热更：cd web && npm run dev（5173，代理 /api→8901）。
+
+人话说明：读面**只读账本**，一切写走 engine_bridge 子进程单写者（引擎零改）；复验只真重放+如实回报，判定回写归验证官 settle 门，指挥台不代写。
+
 ### E2E 冒烟（开发者——新读面指挥台全旅程自动验收）
 
 Playwright（channel=chrome，本机缺 Chrome 则 env-skip）打**活体读面**：每次全跑自动造一次性合成根（`tests/fixtures/G-r18` 副本 + 微型在跑仗，不碰 `~/.tanyin` 与任何既有数据家）→ 随机端口起 uvicorn（`TANYIN_HOME=合成根 READFACE_ALLOW_DEMO=1`，根下带 channels.json 副件）→ demo 登录 → /chat 人话卡 → say 一句完整指令（**真调 LLM**，链 429 全败则该步如实标 SKIP 不判 FAIL）→ 确认卡 → 确认 → dry-run 回执气泡 → /tasks 列表 → 详情会话签 → 组流 → /findings 统计+灰卡 → 详情抽屉 → 复验（授权窗口外 REJECT 如实显示）→ 回 /chat 插话（对在跑仗）→ 全停确认。每步断言各页 `data-testid` 契约，并核验账本真写（dry-run 零落账 / 插话+全停真长行）；跑完自动停服删根，可无限重跑：
