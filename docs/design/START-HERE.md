@@ -1,7 +1,7 @@
 # START HERE · 会话启动锚(任何新会话/上下文压缩后,先读本档,按读序走)
 
 ## 一句话现状(2026-10-20 深夜)
-四相补课全毕→v4 总案落盘→用户「按专业的来就行」=解冻施工+专业裁量授权。T1-T4 已落真验;**T5 指挥流舰在飞(id a8f2c029-f85a-4be2-8e19-7c10f057d075)**;T5 落地验收后**必须停,请用户上 8901 亲验指挥台**(我向用户的承诺,不可跳过)。
+四相补课全毕→**v4 总案已过审(用户裁定「过」)**→解冻施工+专业裁量授权。T1-T4 已落真验;**T5 指挥流舰在飞(id a8f2c029-f85a-4be2-8e19-7c10f057d075)**;T5 落地验收后**必须停,请用户上 8901 亲验指挥台**(我向用户的承诺,不可跳过)。
 
 ## 读序(权威优先级)
 1. 本档 → 2. docs/design/2026-10-20-product-master-design-v4.md(现行总案:五层架构+新吸收六件 enrich/证据仓/事实图谱置信/YAML工具剧本包/旁路窗口/plan模式+norma17包对照+授权哲学) → 3. docs/research/2026-10-20-personal-full-read.md(四相全深档案:ARTEX前端24业务件/后端50路由+norma SDK/CSAI全件含15剧本/环境21页) → 4. docs/design/2026-10-20-system-mechanism-ledger.md(28机制对照) → 5. docs/superpowers/plans/p0-execution-ledger.md(施工态+全部裁决+工艺教训) → 6. docs/superpowers/plans/2026-10-20-p0-command-deck.md(P0 任务书 T1-T14) → 7. build-master-plan 落舱记(历史)
