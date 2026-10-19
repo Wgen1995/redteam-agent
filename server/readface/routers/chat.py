@@ -19,6 +19,13 @@
   ——从目录名派生的稳定色相,同仗恒同色,stream/warboard 同源。
 - warboard: soldiers_now/findings_list(各仗取前 5)/approvals_pending
   合并,皆注 battle+badge;无数据=空列表,不造假。
+- findings(T9): ledger_reader.findings_list 各仗全量合并,行
+  {id,title,severity,where,verified,replay_state,evidence,battle,badge,
+  ts}——severity/verified/replay_state/title/where=T2 投影单源透传
+  (severity=引擎 confidence 词表 C1/C2/C3/➖🛑 原样,不翻译不造假);
+  evidence=证据袋引用(findings.tsv evidence_ids+control_evidence_ids,
+  latest_by 事件溯源同律;无引用=空列表);battle 参数可空=全仗,
+  未知仗/空根零行不造假;全局 ts 新→旧(同 ts 以 id 定序,缺 ts 殿后)。
 - 坏游标(非 base64/非映射 JSON/悬空 key)→400 {"error":...}(auth 同款
   错误面);limit 走 FastAPI 校验(ge=1 le=200,坏值 422)。
 """
@@ -141,3 +148,64 @@ def chat_warboard():
     return {"soldiers": soldiers,
             "findings_latest": findings,
             "approvals": approvals}
+
+
+def _evidence_refs(goal_dir):
+    """发现号 → 证据袋引用链(EV 号列表)。
+
+    findings.tsv evidence_ids+control_evidence_ids 引用列(latest_by
+    事件溯源取最新行,与 findings_list 同律;Session/latest_by/TABLES
+    皆 ledger_reader 单源转引,列义零第二份)。无引用=空列表。
+    """
+    s = ledger_reader.ledger_core.Session(goal_dir)
+    f = ledger_reader.TABLES["findings.tsv"]
+    i_evid = f.index("evidence_ids")
+    i_ctrl = f.index("control_evidence_ids")
+    latest = ledger_reader.ledger_query.latest_by(
+        s.rows("findings.tsv"), "findings.tsv", ["id"])
+    out = {}
+    for key in latest:
+        r = latest[key]
+        out[r[0]] = [x for x in (r[i_evid] + ";" + r[i_ctrl]).split(";") if x]
+    return out
+
+
+def findings_doc(battles_dir=None, battle=None):
+    """发现清单跨仗合并 → [{id,title,severity,where,verified,
+    replay_state,evidence,battle,badge,ts}]。
+
+    - battle 缺省/空串=全仗;未知仗/空根零行,不造假;
+    - severity/verified/replay_state/title/where/ts=T2 findings_list
+      单源透传(severity=引擎 confidence 词表原样,前端词表才译色);
+    - evidence=证据袋引用(有则显,无则空列表);
+    - 全局 ts 新→旧,同 ts 以 id 定序;缺 created 的行 ts=None 殿后
+      (不造假不弃行)。
+    """
+    want = battle or None
+    out = []
+    for b, goal_dir in _battle_goals(battles_dir):
+        if want is not None and b != want:
+            continue
+        color = _badge(b)
+        ev = _evidence_refs(goal_dir)
+        for fd in ledger_reader.findings_list(goal_dir):
+            out.append({
+                "id": fd["id"],
+                "title": fd["title"],
+                "severity": fd["sev"],
+                "where": fd["where"],
+                "verified": fd["verified"],
+                "replay_state": fd["replay_state"],
+                "evidence": ev.get(fd["id"], []),
+                "ts": fd["ts"],
+                "battle": b,
+                "badge": color,
+            })
+    out.sort(key=lambda r: (r["ts"] or "", r["id"]), reverse=True)
+    return out
+
+
+@router.get("/findings")
+def chat_findings(battle: Optional[str] = Query(None)):
+    """T9 发现时刻配对面: 各仗发现清单(battle 可空=全仗),纯读。"""
+    return findings_doc(battle=battle)

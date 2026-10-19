@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent, UIEvent } from "react";
-import MomentCard from "../components/moment/MomentCard";
+import FindingCard, { findingRefOf, type FindingDoc } from "../components/moment/FindingCard";
 import ApprovalCard, { type ApprovalItem } from "../components/moment/ApprovalCard";
 
 /**
@@ -25,6 +25,13 @@ import ApprovalCard, { type ApprovalItem } from "../components/moment/ApprovalCa
  *   不在本页伪造——真点火经 stream 轮询自然到来,回执气泡只显 dry-run
  *   演练结果;取消→「已取消,目标保留」。失败红条(role=alert)带行内
  *   重试,服务器错误原文透出不吞。
+ * - T9 发现时刻卡: 30s 轮询 GET /api/chat/findings(挂载首拉;不打
+ *   battle 参数=全仗,配对时仗优先),流中 add-finding/supersede-finding
+ *   行经 findingRefOf 解析 FD 号配对升级为 FindingCard(发现号+标题+
+ *   严重度章+验真态徽;二级原文+证据袋引用);配不到/拉取失败 → 退回
+ *   T7 MomentCard 原卡,不硬凑。选 30s 周期而非翻页惰拉: 验真态随复放
+ *   终态落账演化,周期刷新保徽如实(绿不滞留);findings 面本就全量
+ *   (不分流窗),翻页不会带来配不到的新号,惰拉无增益。
  */
 
 export interface StreamRow {
@@ -100,6 +107,7 @@ async function postJSON(url: string, body: unknown): Promise<{ ok: boolean; stat
 
 const STREAM_POLL_MS = 1000;
 const WARBOARD_POLL_MS = 10000;
+const FINDINGS_POLL_MS = 30000;   // T9: 验真态随复放终态演化,30s 保徽如实
 
 /** 拉取+形状校验;失败/坏形状→null(宁缺毋假)。 */
 async function fetchJSON<T>(url: string, check: (v: unknown) => T | null): Promise<T | null> {
@@ -132,6 +140,23 @@ function asStreamDoc(v: unknown): StreamDoc | null {
     rows,
     next_cursor: typeof cursor === "string" ? cursor : null,
   };
+}
+
+/** T9 /api/chat/findings 行校验(宁缺毋假: 坏行丢弃,整坏=null 走回退)。 */
+function asFindingsDoc(v: unknown): FindingDoc[] | null {
+  if (!Array.isArray(v)) return null;
+  return v.filter(
+    (r): r is FindingDoc =>
+      typeof r === "object" &&
+      r !== null &&
+      typeof (r as FindingDoc).id === "string" &&
+      (r as FindingDoc).id !== "" &&
+      typeof (r as FindingDoc).title === "string" &&
+      typeof (r as FindingDoc).verified === "boolean" &&
+      typeof (r as FindingDoc).replay_state === "string" &&
+      typeof (r as FindingDoc).battle === "string" &&
+      typeof (r as FindingDoc).badge === "string",
+  );
 }
 
 function asWarboardDoc(v: unknown): WarboardDoc | null {
@@ -370,6 +395,7 @@ export default function ChatPage() {
   const [draft, setDraft] = useState("");
   const [flow, setFlow] = useState<SayFlow>({ phase: "idle" });
   const [approvalOpen, setApprovalOpen] = useState(true);   // T8 审批卡组开合
+  const [findings, setFindings] = useState<FindingDoc[] | null>(null);   // T9
   const scrollRef = useRef<HTMLDivElement>(null);
   const nearBottomRef = useRef(true);
   const loadingOlderRef = useRef(false);
@@ -410,6 +436,22 @@ export default function ChatPage() {
     };
     void tick();
     const id = setInterval(tick, WARBOARD_POLL_MS);
+    return () => {
+      alive = false;
+      clearInterval(id);
+    };
+  }, []);
+
+  // T9 发现清单 30s 轮询(不打 battle=全仗): 失败静默保持旧值/初值 null
+  // → 发现行回退 T7 原卡,不硬凑;成功才升卡(验真态随复放终态如实翻新)。
+  useEffect(() => {
+    let alive = true;
+    const tick = async () => {
+      const doc = await fetchJSON("/api/chat/findings", asFindingsDoc);
+      if (alive && doc !== null) setFindings(doc);
+    };
+    void tick();
+    const id = setInterval(tick, FINDINGS_POLL_MS);
     return () => {
       alive = false;
       clearInterval(id);
@@ -512,6 +554,18 @@ export default function ChatPage() {
   const visible = battleFilter ? rows.filter((r) => r.battle === battleFilter) : rows;
   const freshSet = new Set(fresh);
   const exhausted = olderCursor === null;
+  // T9 配对索引: (battle,id) 仗优先,同号异仗兜底全局取首个(FD 号带仗标,
+  // 实数据全局唯一;兜底仅为仗名对不上时不空手)。
+  const lookupFinding = useMemo(() => {
+    const byBattle = new Map<string, FindingDoc>();
+    const byId = new Map<string, FindingDoc>();
+    for (const f of findings ?? []) {
+      byBattle.set(f.battle + "\u0000" + f.id, f);
+      if (!byId.has(f.id)) byId.set(f.id, f);
+    }
+    return (battle: string, id: string): FindingDoc | null =>
+      byBattle.get(battle + "\u0000" + id) ?? byId.get(id) ?? null;
+  }, [findings]);
   // T8: warboard 待审 → 流顶审批卡(坏行丢弃;决后由卡内结果态稳显,
   // warboard 下轮消项后自然撤)。
   const approvalItems = (board?.approvals ?? [])
@@ -584,11 +638,19 @@ export default function ChatPage() {
             {exhausted ? "已到最早" : loadingOlder ? "加载中…" : "加载更早"}
           </button>
           <ul className="flex flex-1 flex-col gap-2">
-            {visible.map((r) => (
-              <li key={r.key} data-testid="chat-row" data-key={r.key}>
-                <MomentCard row={r} fresh={freshSet.has(r.key)} />
-              </li>
-            ))}
+            {visible.map((r) => {
+              // T9: 发现行配对升卡(配不到回退 T7 原卡,卡内自理)
+              const ref = findingRefOf(r.kind, r.detail);
+              return (
+                <li key={r.key} data-testid="chat-row" data-key={r.key}>
+                  <FindingCard
+                    row={r}
+                    finding={ref ? lookupFinding(r.battle, ref) : null}
+                    fresh={freshSet.has(r.key)}
+                  />
+                </li>
+              );
+            })}
           </ul>
         </div>
         {/* T6 说话开仗交互条: 解析中/问询/闲聊/确认卡/回执/红条(行内,不入流不造假) */}

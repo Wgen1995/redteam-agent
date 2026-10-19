@@ -309,8 +309,109 @@ class WarboardTests(unittest.TestCase):
                                  stream_badge[item["battle"]])
 
 
+# ---------------------------------------------------------------------------
+# T9 发现读面: GET /api/chat/findings(findings_list 各仗合并+battle 过滤)。
+# ---------------------------------------------------------------------------
+
+class FindingsApiTests(unittest.TestCase):
+    """/api/chat/findings: 发现清单跨仗合并,注 battle+badge(与 stream 同律)。
+
+    - 形状: [{id,title,severity,where,verified,replay_state,evidence,
+      battle,badge,ts}]——severity/verified/replay_state/title/where=
+      T2 findings_list 单源透传(严重度引擎词表 C1/C2/C3/➖🛑 原样,不翻译);
+      evidence=证据袋引用(findings.tsv evidence_ids+control_evidence_ids
+      引用链,latest_by 事件溯源同律;无引用=空列表);
+    - 合并: 全部仗(battle 缺省/空串=全仗),全局 ts 新→旧(同 ts 以 id
+      定序;缺 created 的行 ts=None 殿后,不造假不弃);
+    - battle 过滤: 指定仗只出该仗;仗存在无发现表→零行;未知仗→零行;
+    - 零假数: 空根零行(空 battles 根不造发现)。
+    """
+
+    def setUp(self):
+        self.syn = _SyntheticHome()
+        self.addCleanup(self.syn.cleanup)
+        self.client = TestClient(app)
+
+    def _get(self, battle=None):
+        params = {} if battle is None else {"battle": battle}
+        with mock.patch.dict(os.environ, {"TANYIN_HOME": self.syn.home}):
+            return self.client.get("/api/chat/findings", params=params)
+
+    def test_shape_and_merge_all_battles(self):
+        resp = self._get()
+        self.assertEqual(resp.status_code, 200)
+        rows = resp.json()
+        self.assertIsInstance(rows, list)
+        # 三仗合并: battle-1=G-r18 夹具 76 + battle-2 合成 3 + battle-3 无
+        # findings 表 0(零行不造假)
+        self.assertEqual(len(rows), 76 + 3)
+        for it in rows:
+            self.assertEqual(set(it), {"id", "title", "severity", "where",
+                                       "verified", "replay_state", "evidence",
+                                       "battle", "badge", "ts"})
+            self.assertIn(it["battle"], self.syn.goals)
+            self.assertEqual(it["badge"], _badge_of(it["battle"]))
+            self.assertIsInstance(it["evidence"], list)
+            self.assertTrue(all(isinstance(e, str) for e in it["evidence"]))
+        # 全局 ts 新→旧(同 ts 以 id 定序;ts=None 殿后)
+        keyed = [(r["ts"] or "", r["id"]) for r in rows]
+        self.assertEqual(keyed, sorted(keyed, reverse=True))
+        # 最新=FD-r18-0076(G-r18 13:30 末行);无 created 的 battle-2 行殿后
+        self.assertEqual(rows[0]["id"], "FD-r18-0076")
+        self.assertEqual({r["battle"] for r in rows[-3:]}, {"battle-2"})
+
+    def test_fields_pass_through_single_source(self):
+        rows = {r["id"]: r for r in self._get().json()}
+        # T2 findings_list 单源透传: 严重度/验真态/位置/标题
+        f76 = rows["FD-r18-0076"]
+        self.assertEqual(f76["severity"], "C1")
+        self.assertFalse(f76["verified"])
+        self.assertEqual(f76["replay_state"], "复验中")
+        self.assertEqual(f76["where"], "AST-r18-0037")
+        self.assertIn("beacon", f76["title"])
+        # 证据袋引用: findings.tsv evidence_ids(+control)引用链(有则显)
+        self.assertEqual(f76["evidence"], ["EV-r18-0102"])
+        self.assertEqual(rows["FD-r18-0062"]["evidence"],
+                         ["EV-r18-0097", "EV-r18-0098"])
+        # battle-2 合成行: 词表外 confidence 原样透传不翻译;无引用=空列表
+        self.assertEqual(rows["FD-s-1"]["severity"], "高")
+        self.assertEqual(rows["FD-s-1"]["evidence"], [])
+
+    def test_battle_filter(self):
+        rows = self._get(battle="battle-2").json()
+        self.assertEqual({r["id"] for r in rows},
+                         {"FD-s-1", "FD-s-2", "FD-s-3"})
+        self.assertTrue(all(r["battle"] == "battle-2" for r in rows))
+        self.assertTrue(all(r["badge"] == _badge_of("battle-2") for r in rows))
+        # 空串=全仗(可空缺省同义)
+        self.assertEqual(len(self._get(battle="").json()), 76 + 3)
+        self.assertEqual(len(self._get().json()), 76 + 3)
+        # 仗存在但无发现表 / 未知仗 → 零行不造假
+        self.assertEqual(self._get(battle="battle-3").json(), [])
+        self.assertEqual(self._get(battle="no-such-battle").json(), [])
+
+    def test_badge_same_law_as_stream(self):
+        rows = self._get().json()
+        with mock.patch.dict(os.environ, {"TANYIN_HOME": self.syn.home}):
+            stream = self.client.get("/api/chat/stream",
+                                     params={"limit": 200}).json()
+        sbadge = {r["battle"]: r["badge"] for r in stream["rows"]}
+        for r in rows:
+            self.assertEqual(r["badge"], _badge_of(r["battle"]))
+            if r["battle"] in sbadge:
+                self.assertEqual(r["badge"], sbadge[r["battle"]])
+
+    def test_empty_root_zero_rows_no_fabrication(self):
+        empty = tempfile.mkdtemp(prefix="readface-t9-empty-")
+        self.addCleanup(shutil.rmtree, empty, True)
+        with mock.patch.dict(os.environ, {"TANYIN_HOME": empty}):
+            resp = self.client.get("/api/chat/findings")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json(), [])
+
+
 class ZeroSideEffectTests(unittest.TestCase):
-    """纯读铁律: stream 首页+翻页+warboard 打一遍,树纹丝不动。"""
+    """纯读铁律: stream 首页+翻页+warboard+findings 打一遍,树纹丝不动。"""
 
     def _snapshot(self, root):
         snap = {}
@@ -335,6 +436,8 @@ class ZeroSideEffectTests(unittest.TestCase):
                 client.get("/api/chat/stream",
                            params={"limit": 9, "before_key": cursor})
             client.get("/api/chat/warboard")
+            client.get("/api/chat/findings")
+            client.get("/api/chat/findings", params={"battle": "battle-1"})
         self.assertEqual(self._snapshot(syn.home), before)
 
 

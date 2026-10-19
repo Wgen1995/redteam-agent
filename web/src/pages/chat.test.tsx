@@ -614,3 +614,135 @@ describe("指挥台 T8(内联审批)", () => {
     expect(screen.getByTestId("wb-approvals-empty")).toBeInTheDocument();
   });
 });
+
+// ---------------------------------------------------------------------------
+// T9 发现时刻卡: 流中 add-finding/supersede-finding 行与 /api/chat/findings
+// 配对(30s 轮询拉取,仗优先配对)→ 升级发现卡;配不到回退 T7 原卡。
+// ---------------------------------------------------------------------------
+
+const FD1 = {   // battle-1 已验(C2)
+  id: "FD-1", title: "finding FD-1", severity: "C2", where: "AST-1",
+  verified: true, replay_state: "已验", evidence: ["EV-1"],
+  battle: "battle-1", badge: "hsl(284, 70%, 60%)", ts: "2026-10-14T13:00:00Z",
+};
+const FD1_PENDING = {   // 30s 后复验中(徽须如实翻灰,不滞留旧绿)
+  ...FD1, verified: false, replay_state: "复验中",
+};
+const FD9 = {   // battle-2 复验中(C1)
+  id: "FD-9", title: "finding FD-9", severity: "C1", where: null,
+  verified: false, replay_state: "复验中", evidence: [],
+  battle: "battle-2", badge: "hsl(3, 70%, 60%)", ts: "2026-10-14T12:30:00Z",
+};
+const R_SUPER: Row = {   // supersede 行(箭头目标 FD-9)
+  key: "k9", ts: "2026-10-14T12:30:30Z", kind: "supersede-finding",
+  detail: "supersede-finding FD-8->FD-9", battle: "battle-2", badge: "hsl(3, 70%, 60%)",
+};
+const R_MISS: Row = {   // findings 里配不到的发现行
+  key: "k5", ts: "2026-10-14T10:00:00Z", kind: "add-finding",
+  detail: "add-finding FD-404", battle: "battle-1", badge: "hsl(284, 70%, 60%)",
+};
+
+/** 流行 li 定位(键=服务端行 key;升级后卡根 testid 变 finding-card)。 */
+function rowOf(key: string): HTMLElement {
+  const el = document.querySelector('[data-testid="chat-row"][data-key="' + key + '"]');
+  if (!el) throw new Error("chat-row not found: " + key);
+  return el as HTMLElement;
+}
+
+describe("指挥台 T9(发现时刻卡)", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    cleanup();
+  });
+
+  it("配对升级: add-finding/supersede-finding 行升发现卡(发现号+标题+四色章+三态徽)", async () => {
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R_SUPER, R3, R2, R_MISS, R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/findings": [[FD1, FD9]],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    // R3(add-finding FD-1)→ 发现卡: 号+标题+严重度章+验真徽(绿·机器已验)
+    const c1 = rowOf("k3").firstElementChild as HTMLElement;
+    expect(c1).toHaveAttribute("data-testid", "finding-card");
+    expect(c1).toHaveAttribute("data-fd", "FD-1");
+    expect(within(c1).getByTestId("finding-title")).toHaveTextContent("finding FD-1");
+    const sev = within(c1).getByTestId("sev-chip");
+    expect(sev).toHaveAttribute("data-sev", "high");       // C2→高
+    expect(sev).toHaveTextContent("C2");
+    const ver = within(c1).getByTestId("verify-chip");
+    expect(ver).toHaveAttribute("data-state", "verified");
+    expect(ver).toHaveTextContent("机器已验");
+    // R_SUPER(supersede-finding FD-8->FD-9)→ 配箭头目标 FD-9+更替来源注记
+    const c9 = rowOf("k9").firstElementChild as HTMLElement;
+    expect(c9).toHaveAttribute("data-testid", "finding-card");
+    expect(c9).toHaveAttribute("data-fd", "FD-9");
+    expect(within(c9).getByText(/更替自 FD-8/)).toBeInTheDocument();
+    const ver9 = within(c9).getByTestId("verify-chip");
+    expect(ver9).toHaveAttribute("data-state", "pending");  // 复验中→灰·待机器复验
+    expect(ver9).toHaveTextContent("待机器复验");
+    // 二级: 原文+证据袋引用(有则显)
+    fireEvent.click(within(c1).getByTestId("finding-toggle"));
+    expect(within(c1).getByTestId("finding-raw")).toHaveTextContent("finding FD-1");
+    expect(within(c1).getByTestId("finding-evidence")).toHaveTextContent("EV-1");
+  });
+
+  it("配不到回退: findings 无该发现号 → T7 原卡不硬凑", async () => {
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R_MISS, R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/findings": [[FD1]],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    const miss = rowOf("k5").firstElementChild as HTMLElement;
+    expect(miss).toHaveAttribute("data-testid", "row-k5");   // 原卡根=testid 行键
+    expect(within(miss).getByTestId("moment-line")).toHaveTextContent("新发现 FD-404");
+    expect(within(miss).queryByTestId("sev-chip")).not.toBeInTheDocument();
+    expect(within(miss).queryByTestId("verify-chip")).not.toBeInTheDocument();
+  });
+
+  it("findings 拉取失败: 静默回退原卡,流不受影响", async () => {
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R3, R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/findings": [{ reject: true }],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    expect(screen.queryByTestId("finding-card")).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("moment-line").length).toBe(2);
+    expect(within(screen.getByTestId("row-k3")).getByText("新发现 FD-1")).toBeInTheDocument();
+  });
+
+  it("30s 轮询刷新: 验真态翻新如实(绿→灰不滞留),挂载首拉+30s 一拉", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R3, R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/findings": [[FD1], [FD1_PENDING]],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    expect(screen.getByTestId("verify-chip")).toHaveAttribute("data-state", "verified");
+    await act(async () => { vi.advanceTimersByTime(30000); });
+    const calls = fetchMock.calls.filter((c) => c.url.includes("/api/chat/findings")).length;
+    expect(calls).toBe(2);                                   // 挂载首拉+30s 一拉
+    expect(screen.getByTestId("verify-chip")).toHaveAttribute("data-state", "pending");
+    expect(screen.getByTestId("verify-chip")).toHaveTextContent("待机器复验");
+  });
+
+  it("仗优先配对: 同号异仗取本仗发现(兜底才全局)", async () => {
+    const fdOther = { ...FD1, battle: "battle-2", title: "battle-2 的同名发现" };
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R3, R1])],           // R3 在 battle-1
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/findings": [[fdOther, { ...FD1, title: "battle-1 本仗发现" }]],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    expect(within(screen.getByTestId("finding-card")).getByTestId("finding-title"))
+      .toHaveTextContent("battle-1 本仗发现");
+  });
+});
