@@ -91,6 +91,14 @@ TANYIN_OPERATOR_KEY=你的口令 python3 -m webui.server --ledger-dir ~/.tanyin
 
 人话说明：**所有页面只读**——数据全部来自任务记录（账本），能看不能改；需要动手的操作（新建任务、审批、发指令）走各自的写通道，都带登录 + 防跨站双重校验。顶栏可切换任务，页面地址里的 `?battle=N` 就是任务号。每个漏洞点进去是完整档案（CVSS 评分、证据原文、重放历史、修复建议），每条证据可验哈希。
 
+### E2E 冒烟（开发者——新读面指挥台全旅程自动验收）
+
+Playwright（channel=chrome，本机缺 Chrome 则 env-skip）打**活体读面**：每次全跑自动造一次性合成根（`tests/fixtures/G-r18` 副本 + 微型在跑仗，不碰 `~/.tanyin` 与任何既有数据家）→ 随机端口起 uvicorn（`TANYIN_HOME=合成根 READFACE_ALLOW_DEMO=1`，根下带 channels.json 副件）→ demo 登录 → /chat 人话卡 → say 一句完整指令（**真调 LLM**，链 429 全败则该步如实标 SKIP 不判 FAIL）→ 确认卡 → 确认 → dry-run 回执气泡 → /tasks 列表 → 详情会话签 → 组流 → /findings 统计+灰卡 → 详情抽屉 → 复验（授权窗口外 REJECT 如实显示）→ 回 /chat 插话（对在跑仗）→ 全停确认。每步断言各页 `data-testid` 契约，并核验账本真写（dry-run 零落账 / 插话+全停真长行）；跑完自动停服删根，可无限重跑：
+
+```bash
+cd tests/e2e && npm install && npx playwright test
+```
+
 ## 四、DSH 插件（可选——账本当原生工具）
 
 把 13 个高频账本命令铸成 3 个带类型的安全工具（`tanyin_book` 写令 7 / `tanyin_gate` 门令 3 / `tanyin_query` 查令 3），schema 描述即作战纪律（scope 联查/一洞一行写进工具说明，模型调用前就见到法）；**v0.3 起附带 tanyin 技能 provider**——装插件即得探隐方法论（SKILL+九门详令随包分发）：
