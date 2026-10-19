@@ -20,3 +20,4 @@
 - T8 PASS(86a75b3内联审批): 独立复跑PY78/78+VT75/75+BUILD=0+cli零改;活体真批真拒双向+链verify过+DOM九断言;越界ledger_reader+12行(决定回链出队=引擎W6同律)正当入册。T9出航。
 - T9 PASS(01c6de1发现时刻卡): 独立复跑PY83/83+VT95/95+BUILD=0+引擎零改;活体6卡升级DOM实证(绿徽为主灰如实);偏差2条(where/evidence通道+REPAIRED词表透传)零假数取向正当。T10出航。
 - T10 PASS(ae20c56插话转向): 独立复跑PY110/110+VT103/103+BUILD=0+引擎零改;活体真steer+真halt入链+DOM实证。CLI面勘定: steer/stop单源=cli/warrior/steer.py write_steer/write_stop(桥进程内调,goal锁单写者)。T11出航。
+- T11 PASS(073975b任务·会话签): 独立复跑PY126/126+VT116/116+BUILD=0+引擎零改;活体三仗列表→详情→会话卡→组流DOM实证(steer原文逐字可见);裁量2条(main.py挂载先例/列表10s轮询如实)入册。T12出航。
