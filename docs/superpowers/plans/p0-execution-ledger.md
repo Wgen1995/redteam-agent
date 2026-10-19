@@ -5,3 +5,4 @@
 - T2 PASS(9cffdb2): 15用例独立复跑RC=0/cli零改动diff=空;approvals id=sha256(revert_cmd)即签名链command-hash(T8用)。
 - T3 PASS(eb32d1e): vitest 3/3+build绿;裁决=shadcn CLI不适用环境,手搓ui件同构(cva+cn);GL-DS令牌自login.html提取零漂移。
 - Ruling T4: 徽章数据需读面端点,T4内增 routers/overview.py(GET /api/overview: 进行中仗数/在跑士兵/待审批数,ledger_reader供给,2用例)——计划T2只建了库未建面,折叠入T4领地(新文件不相交)。
+- Ruling(用户掣令): v3降草案;T4落地后T5+冻结,待全量深析+重设计过审后续。补课战役=ARTEX前端内部件→后端全包→CSAI全件→环境(8787)→重综合设计v4。
