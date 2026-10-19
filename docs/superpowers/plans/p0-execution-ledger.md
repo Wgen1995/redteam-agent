@@ -18,3 +18,4 @@
 - T6 PASS(a612d7a说话开仗): 独立复跑PY53/53+VT24/24+BUILD=0+引擎零改;活体真钥glm-5.3全链(意图/确认卡/dry-run回执battle-43/零写入/缺预算只问缺的)。工艺注记: say客户端按TANYIN_HOME找channels.json——检查点服务起在重定向根时须同根备channels(已补/tmp/gl-review-home/channels.json 600)。8901常驻由父代理自持(T6舰沉服务随亡教训)。T7出航。
 - T7 PASS(5544d2a两级播报): 独立复跑VT61/61+BUILD=0;活体50卡DOM实证(发现红/关卡绿/更替琥珀)。父热修757d84e: SPA深链回退(/chat刷新200,/api不兜,穿越拒,5测,随修随部8901)。T8出航。
 - T8 PASS(86a75b3内联审批): 独立复跑PY78/78+VT75/75+BUILD=0+cli零改;活体真批真拒双向+链verify过+DOM九断言;越界ledger_reader+12行(决定回链出队=引擎W6同律)正当入册。T9出航。
+- T9 PASS(01c6de1发现时刻卡): 独立复跑PY83/83+VT95/95+BUILD=0+引擎零改;活体6卡升级DOM实证(绿徽为主灰如实);偏差2条(where/evidence通道+REPAIRED词表透传)零假数取向正当。T10出航。
