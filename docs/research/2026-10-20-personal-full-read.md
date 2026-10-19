@@ -41,3 +41,8 @@
 
 ## 总结论(四相后)
 ARTEX=「表单开仗+任务工作台+侧厅对话+全链观察」四件套成熟品。我方差异令不变(复放验真/考卷/飞轮/链账/四权),产品面按其成熟度对齐,交互取opencode式对话指挥(用户令),其旁路提问/审批四触点/失败归因/平台管控话术全数吸收。
+
+## 100%补全(ARTEX api.ts全动词+环境21页+全后端包 / CSAI全模块+路由+15剧本)
+**ARTEX 新发现我方原缺**: ①Agent即产品件(提示词编辑/版本/变量/预览/触发器/MCP-Skill-工具绑定/可见性/自定义Agent) ②自定义工具三型(command/script/http)+测试 ③任务级拦截规则 ④发现-流量证据可编辑绑定(四角色/排序/正文预览下载/lineage) ⑤任务模板CRUD ⑥客户实体+公司范围规则 ⑦LLM熔断状态+重试退避编辑+限速/优先级/思考档 ⑧自更新+回滚 ⑨通知三渠道(钉钉/飞书/邮件)+投递记录重试 ⑩意图rerun/blocked重跑 ⑪日志暂停清空 ⑫流量捕获开关+向Agent注入traffic_search/traffic_get工具 ⑬内置gov/edu合规黑名单。
+**CSAI**: 15阶段剧本兵(kill-chain)/HITL JEV策略门/攻击链Builder+晋级项目/RBAC全件/自更新套件(adopt/rollback/restart/job)/OTel观测/agentfinalizer(收仗挡未决工具执行)/C2+listeners+reverse_shell。
+**不采(定位裁决)**: C2/WebShell/reverse_shell(高危面与渗透Agent平台定位不符);oneliner;RBAC=P4已列;工作流编排=P4评估。
