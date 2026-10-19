@@ -26,6 +26,9 @@
 - 提交: pathspec-only;68律三验(全测绿+活体+落舱记);每次落地→账本→push
 - 施工纪律: subagent-driven-development(每任务新舰+逐舰验收+裁决不停摆记账本)
 
+## 调试通道(已备)
+~/.tanyin/channels.json=glm-5.3@bigmodel coding端点(源:~/.dsh/.credentials.yaml WGEN001_API_KEY;仓外600,禁入仓禁入日志;已活体验证)。AI功能调试真调它。
+
 ## 关键端口/路径
 8901=readface(uvicorn,T1起);8902=T4烟测用过;5173=vite dev(代理/api→8901);8900=旧webui(P1切走);夹具=tests/fixtures/G-r18;ARTEX源=/tmp/artex-look/ARTEX-main;CSAI=/Users/wgen/dsh-test/repos/CyberStrikeAI;ARTEX demo=artex-demo.mhtsec.com;用户本地ARTEX=8787(空数据)
 
