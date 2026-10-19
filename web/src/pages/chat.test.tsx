@@ -236,10 +236,11 @@ describe("指挥台 T5(中央流+战况板)", () => {
     expect(screen.getAllByTestId("chat-row")).toHaveLength(3);
   });
 
-  it("输入框常活: 提交即提示 T6 接线中,不发送任何写请求", async () => {
-    const fetchMock = makeFetch({
+  it("输入框常活: 发送即 POST /api/chat/say(带原文),解析中行内提示", async () => {
+    const fetchMock = makeFlowFetch({
       "/api/chat/stream": [firstPage([R3, R2, R1])],
       "/api/chat/warboard": [WARBOARD],
+      "/api/chat/say": [{ status: "chat", reply: "已收到。" }],
     });
     vi.stubGlobal("fetch", fetchMock);
     await act(async () => {
@@ -251,8 +252,209 @@ describe("指挥台 T5(中央流+战况板)", () => {
       fireEvent.change(input, { target: { value: "扫一下 demo.local" } });
       fireEvent.submit(input.closest("form")!);
     });
-    expect(screen.getByTestId("t6-hint")).toHaveTextContent("指令通道 T6 接线中");
-    // 只有读面 GET,无 POST 写路径
-    expect(fetchMock.calls.every((u) => !u.includes("/api/chat/say"))).toBe(true);
+    const sayCall = fetchMock.calls.find((c) => c.url.includes("/api/chat/say"));
+    expect(sayCall?.method).toBe("POST");
+    expect(sayCall?.body).toEqual({ text: "扫一下 demo.local" });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// T6 说话开仗: 输入接 say(意图解析→确认卡→confirm 双钮;失败红条重试)。
+// ---------------------------------------------------------------------------
+
+const CARD = {
+  kind: "confirm-ignite", id: "c1", target: "demo.example.com",
+  scope: ["*.demo.example.com", "只读探测"], budget: "50万 tokens,4 小时",
+  auth_notice: "确认开打仅按 dry-run 演练(P0);真点火须授权书在位且预算过仲裁。",
+};
+
+const IGNITED = {
+  ok: true, cancelled: false, ignited: true, dry_run: true, battle: 4,
+  note: "已按 dry-run 点火演练(战号 battle-4,零落账);真点火后续舰接线",
+  bridge: { ok: true, dry_run: true, battle: 4, chain: [], note: "P0 dry-run 演练" },
+};
+
+const CANCELLED = { ok: true, cancelled: true, note: "已取消,目标保留(卡作废,可重新发起)" };
+
+type Call = { url: string; method: string; body: unknown };
+
+/** GET/POST 混合 fetch mock: POST 带体捕获;队列空重复末项;{reject}|{status,json} 特例。 */
+function makeFlowFetch(routes: Record<string, unknown[]>) {
+  const calls: Call[] = [];
+  const fn = vi.fn((input: RequestInfo | URL, init?: RequestInit): Promise<Resp> => {
+    const url = String(input);
+    const method = (init?.method as string) || "GET";
+    let body: unknown = undefined;
+    if (init?.body) {
+      try { body = JSON.parse(String(init.body)); } catch { body = String(init.body); }
+    }
+    calls.push({ url, method, body });
+    for (const [frag, queue] of Object.entries(routes)) {
+      if (!url.includes(frag)) continue;
+      const item = queue.length > 1 ? queue.shift() : queue[0];
+      if (item && typeof item === "object" && "reject" in item) {
+        return Promise.reject(new Error("net down"));
+      }
+      if (item && typeof item === "object" && "httpStatus" in item) {
+        const err = item as { httpStatus: number; json: unknown };
+        return Promise.resolve({ ok: false, status: err.httpStatus, json: async () => err.json });
+      }
+      return Promise.resolve(resp(item));
+    }
+    return Promise.reject(new Error("no route: " + url));
+  });
+  return Object.assign(fn, { calls });
+}
+
+async function submitSay(text: string) {
+  const input = screen.getByTestId("chat-input");
+  await act(async () => {
+    fireEvent.change(input, { target: { value: text } });
+    fireEvent.submit(input.closest("form")!);
+  });
+}
+
+describe("指挥台 T6(说话开仗)", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/say": [{ status: "confirm", card: CARD }],
+      "/api/chat/confirm": [IGNITED],
+    }));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    cleanup();
+  });
+
+  it("解析中态: 发送后行内『指挥→AI 解析中』,回卡即撤", async () => {
+    let resolveSay!: (v: Resp) => void;
+    const pending = new Promise<Resp>((res) => { resolveSay = res; });
+    const fetchMock = vi.fn((input: RequestInfo | URL): Promise<Resp> => {
+      const url = String(input);
+      if (url.includes("/api/chat/say")) return pending;
+      if (url.includes("/api/chat/stream")) return Promise.resolve(resp(firstPage([R1])));
+      if (url.includes("/api/chat/warboard")) return Promise.resolve(resp(WARBOARD));
+      return Promise.reject(new Error("no route: " + url));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await submitSay("对 demo.example.com 开仗,只读,50万 tokens");
+    expect(screen.getByTestId("say-parsing")).toHaveTextContent("指挥→AI 解析中");
+    await act(async () => {
+      resolveSay(resp({ status: "confirm", card: CARD }));
+    });
+    expect(screen.queryByTestId("say-parsing")).not.toBeInTheDocument();
+    expect(screen.getByTestId("say-card")).toBeInTheDocument();
+  });
+
+  it("确认卡渲染: kind 着色+目标/范围/预算三行+授权一句+双钮", async () => {
+    await act(async () => { render(<ChatPage />); });
+    await submitSay("对 demo.example.com 开仗,只读,50万 tokens");
+    const card = screen.getByTestId("say-card");
+    expect(card).toHaveTextContent("confirm-ignite");
+    expect(card.className).toContain("border-acc");        // kind 着色
+    expect(card).toHaveTextContent("demo.example.com");
+    expect(card).toHaveTextContent("*.demo.example.com");
+    expect(card).toHaveTextContent("50万 tokens,4 小时");
+    expect(card).toHaveTextContent("授权书");
+    expect(screen.getByTestId("say-confirm")).toHaveTextContent("确认开打");
+    expect(screen.getByTestId("say-cancel")).toHaveTextContent("取消");
+  });
+
+  it("双钮流·确认: POST confirm(approved:true)→点火回执气泡,卡撤", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/say": [{ status: "confirm", card: CARD }],
+      "/api/chat/confirm": [IGNITED],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await submitSay("对 demo.example.com 开仗");
+    fireEvent.click(screen.getByTestId("say-confirm"));
+    await act(async () => { await Promise.resolve(); });
+    const c = fetchMock.calls.find((x) => x.url.includes("/api/chat/confirm"));
+    expect(c?.method).toBe("POST");
+    expect(c?.body).toEqual({ id: "c1", approved: true });
+    expect(screen.queryByTestId("say-card")).not.toBeInTheDocument();
+    expect(screen.getByTestId("say-result")).toHaveTextContent("battle-4");
+    expect(screen.getByTestId("say-result")).toHaveTextContent("dry-run");
+  });
+
+  it("双钮流·取消: POST confirm(approved:false)→『已取消,目标保留』气泡", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/say": [{ status: "confirm", card: CARD }],
+      "/api/chat/confirm": [CANCELLED],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await submitSay("对 demo.example.com 开仗");
+    fireEvent.click(screen.getByTestId("say-cancel"));
+    await act(async () => { await Promise.resolve(); });
+    const c = fetchMock.calls.find((x) => x.url.includes("/api/chat/confirm"));
+    expect(c?.body).toEqual({ id: "c1", approved: false });
+    expect(screen.queryByTestId("say-card")).not.toBeInTheDocument();
+    expect(screen.getByTestId("say-result")).toHaveTextContent("已取消");
+    expect(screen.getByTestId("say-result")).toHaveTextContent("目标保留");
+  });
+
+  it("失败红条: 502 错误文案不吞+行内重试成功转确认卡", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/say": [
+        { httpStatus: 502, json: { error: "模型链全败,意图解析不可用: llm-chain-exhausted" } },
+        { status: "confirm", card: CARD },
+      ],
+      "/api/chat/confirm": [IGNITED],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await submitSay("对 demo.example.com 开仗");
+    const bar = screen.getByTestId("say-error");
+    expect(bar).toHaveAttribute("role", "alert");
+    expect(bar).toHaveTextContent("模型链全败");          // 服务器原文,不吞错
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("say-retry"));
+    });
+    expect(screen.queryByTestId("say-error")).not.toBeInTheDocument();
+    expect(screen.getByTestId("say-card")).toBeInTheDocument();
+  });
+
+  it("闲聊直回: status=chat 气泡显回话,无确认卡无双钮", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/say": [{ status: "chat", reply: "已收到。这句未识别为开仗指令——说清目标(可选范围/预算)即可开仗。" }],
+      "/api/chat/confirm": [IGNITED],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await submitSay("今天天气如何");
+    expect(screen.getByTestId("say-chat")).toHaveTextContent("未识别为开仗指令");
+    expect(screen.queryByTestId("say-card")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("say-confirm")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("say-cancel")).not.toBeInTheDocument();
+  });
+
+  it("缺项问询: status=ask 问回去,不产卡", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/say": [{ status: "ask", questions: ["预算给多少(tokens/时长)?"], intent: { target: "demo.example.com", scope: [], budget_note: "" } }],
+      "/api/chat/confirm": [IGNITED],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await submitSay("扫一下 demo.example.com");
+    expect(screen.getByTestId("say-ask")).toHaveTextContent("预算给多少");
+    expect(screen.queryByTestId("say-card")).not.toBeInTheDocument();
   });
 });
