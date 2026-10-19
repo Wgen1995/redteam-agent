@@ -1,0 +1,258 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import ChatPage from "./chat";
+
+/**
+ * T5 指挥流页测试(mock api,先红后绿):
+ * 首载渲染行 / 1s 增量轮询按 key 去重+新行淡入 / before_key 翻页 /
+ * 断线黄条自动恢复 / 仗过滤 chips / 战况板三格 / 战况板失败静默空态 /
+ * 输入常活(T6 接线提示)。
+ */
+
+interface Row {
+  key: string;
+  ts: string;
+  kind: string;
+  detail: string;
+  battle: string;
+  badge: string;
+}
+
+const R1: Row = {
+  key: "k1", ts: "2026-10-14T11:00:00Z", kind: "add-goal",
+  detail: "add-goal G-demo", battle: "battle-1", badge: "hsl(284, 70%, 60%)",
+};
+const R2: Row = {
+  key: "k2", ts: "2026-10-14T12:00:00Z", kind: "http-get",
+  detail: "scan http://x/a", battle: "battle-2", badge: "hsl(3, 70%, 60%)",
+};
+const R3: Row = {
+  key: "k3", ts: "2026-10-14T13:00:00Z", kind: "add-finding",
+  detail: "finding FD-1", battle: "battle-1", badge: "hsl(284, 70%, 60%)",
+};
+const R4: Row = {
+  key: "k4", ts: "2026-10-14T14:00:00Z", kind: "replay",
+  detail: "replay:EV-1:VERIFIED", battle: "battle-2", badge: "hsl(3, 70%, 60%)",
+};
+const R0A: Row = {
+  key: "k0a", ts: "2026-10-14T09:00:00Z", kind: "note",
+  detail: "older row a", battle: "battle-1", badge: "hsl(284, 70%, 60%)",
+};
+const R0B: Row = {
+  key: "k0b", ts: "2026-10-14T08:00:00Z", kind: "note",
+  detail: "older row b", battle: "battle-2", badge: "hsl(3, 70%, 60%)",
+};
+
+const WARBOARD = {
+  soldiers: [
+    { corps: "recon", intent: "live-scan", status: "active",
+      heartbeat_ts: null, tokens: 100, battle: "battle-2", badge: "hsl(3, 70%, 60%)" },
+  ],
+  findings_latest: [
+    { id: "FD-1", sev: "高", where: "AST-1", title: "finding FD-1",
+      verified: true, replay_state: "已验", ts: "2026-10-14T13:00:00Z",
+      battle: "battle-1", badge: "hsl(284, 70%, 60%)" },
+  ],
+  approvals: [
+    { id: "a1", event: "http-get http://x/a", risk_line: null,
+      timeout_policy: "待审挂起超 30 分钟", ts: "2026-10-14T12:00:00Z",
+      battle: "battle-2", badge: "hsl(3, 70%, 60%)" },
+  ],
+};
+
+type Resp = { ok: boolean; status: number; json: () => Promise<unknown> };
+
+function resp(body: unknown): Resp {
+  return { ok: true, status: 200, json: async () => body };
+}
+
+/** 按路径前缀分发的 fetch mock;队列为空时重复末项;reject 项抛错。 */
+function makeFetch(routes: Record<string, unknown[]>) {
+  const last: Record<string, unknown> = {};
+  const calls: string[] = [];
+  const fn = vi.fn((input: RequestInfo | URL): Promise<Resp> => {
+    const url = String(input);
+    calls.push(url);
+    for (const [frag, queue] of Object.entries(routes)) {
+      if (!url.includes(frag)) continue;
+      const item = queue.length > 1 ? queue.shift() : queue[0];
+      last[frag] = item;
+      if (item && typeof item === "object" && "reject" in item) {
+        return Promise.reject(new Error("net down"));
+      }
+      return Promise.resolve(resp(item));
+    }
+    return Promise.reject(new Error("no route: " + url));
+  });
+  return Object.assign(fn, { calls });
+}
+
+function firstPage(rows: Row[]) {
+  return { rows, next_cursor: "CUR0" };
+}
+
+describe("指挥台 T5(中央流+战况板)", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.stubGlobal("fetch", makeFetch({
+      "/api/chat/stream": [firstPage([R3, R2, R1])],
+      "/api/chat/warboard": [WARBOARD],
+    }));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    cleanup();
+  });
+
+  it("首载渲染行: 尾窗行+仗徽标点+过滤 chips(全部/各仗)", async () => {
+    await act(async () => {
+      render(<ChatPage />);
+    });
+    expect(screen.getAllByTestId("chat-row")).toHaveLength(3);
+    const stream = screen.getByTestId("chat-stream");
+    expect(within(stream).getByText("finding FD-1")).toBeInTheDocument();
+    expect(within(stream).getByText("scan http://x/a")).toBeInTheDocument();
+    // 每行带 battle 徽标点(色=badge,title=仗名;战况板内另有,故圈流面)
+    const dots = within(screen.getByTestId("chat-stream")).getAllByTestId("battle-dot");
+    expect(dots).toHaveLength(3);
+    expect(dots[0]).toHaveAttribute("title", "battle-1");
+    expect(dots[0]).toHaveStyle({ backgroundColor: "hsl(284, 70%, 60%)" });
+    // chips: 全部+两仗
+    expect(screen.getByTestId("chip-all")).toHaveTextContent("全部");
+    expect(screen.getByTestId("chip-battle-1")).toHaveTextContent("battle-1");
+    expect(screen.getByTestId("chip-battle-2")).toHaveTextContent("battle-2");
+  });
+
+  it("1s 尾轮询增量: 按 key 去重追加,新行带淡入标记", async () => {
+    const fetchMock = makeFetch({
+      "/api/chat/stream": [firstPage([R3, R2, R1]), { rows: [R4, R3, R2, R1], next_cursor: "CUR0" }],
+      "/api/chat/warboard": [WARBOARD],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => {
+      render(<ChatPage />);
+    });
+    expect(screen.getAllByTestId("chat-row")).toHaveLength(3);
+    await act(async () => {
+      vi.advanceTimersByTime(1000);
+    });
+    // 重叠 3 行被去重,仅追加 k4;共 4 行,k4 带淡入类
+    const rows = screen.getAllByTestId("chat-row");
+    expect(rows).toHaveLength(4);
+    const fresh = screen.getByTestId("row-k4");
+    expect(fresh.className).toContain("row-fade");
+    expect(screen.getByTestId("row-k3").className).not.toContain("row-fade");
+    expect(within(fresh).getByText("replay:EV-1:VERIFIED")).toBeInTheDocument();
+  });
+
+  it("上滑翻页: 加载更早带 before_key,旧行前插无重复", async () => {
+    const fetchMock = makeFetch({
+      "/api/chat/stream": [
+        firstPage([R3, R2, R1]),
+        { rows: [R0A, R0B], next_cursor: null },
+      ],
+      "/api/chat/warboard": [WARBOARD],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => {
+      render(<ChatPage />);
+    });
+    const older = screen.getByTestId("load-older");
+    expect(older).toBeEnabled();
+    await act(async () => {
+      fireEvent.click(older);
+    });
+    expect(fetchMock.calls.some((u) => u.includes("before_key=CUR0"))).toBe(true);
+    const rows = screen.getAllByTestId("chat-row");
+    expect(rows).toHaveLength(5);          // 3+2,无重复
+    // 旧→新渲染: 最旧行在最上
+    expect(rows[0]).toHaveAttribute("data-key", "k0b");
+    expect(rows[4]).toHaveAttribute("data-key", "k3");
+    // 游标尽 → 按钮进「已到最早」不可再翻
+    expect(screen.getByTestId("load-older")).toBeDisabled();
+  });
+
+  it("断线黄条: 失败显示连接中断,恢复自动撤", async () => {
+    const fetchMock = makeFetch({
+      "/api/chat/stream": [{ reject: true }, firstPage([R3, R2, R1])],
+      "/api/chat/warboard": [WARBOARD],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => {
+      render(<ChatPage />);
+    });
+    const banner = screen.getByRole("alert");
+    expect(banner).toHaveTextContent("连接中断,重连中");
+    // 1s 后下一轮成功 → 黄条撤,行照常渲染
+    await act(async () => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("chat-row")).toHaveLength(3);
+  });
+
+  it("仗过滤: 点选 battle-2 仅显该仗,全部恢复", async () => {
+    await act(async () => {
+      render(<ChatPage />);
+    });
+    fireEvent.click(screen.getByTestId("chip-battle-2"));
+    let rows = screen.getAllByTestId("chat-row");
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toHaveAttribute("data-key", "k2");
+    fireEvent.click(screen.getByTestId("chip-all"));
+    rows = screen.getAllByTestId("chat-row");
+    expect(rows).toHaveLength(3);
+  });
+
+  it("战况板三格: 在跑士兵/最新发现/待审批,数据来自 /api/chat/warboard", async () => {
+    await act(async () => {
+      render(<ChatPage />);
+    });
+    const board = screen.getByTestId("warboard");
+    const soldiers = within(board).getByTestId("wb-soldiers");
+    expect(within(soldiers).getByText(/live-scan/)).toBeInTheDocument();
+    const findings = within(board).getByTestId("wb-findings");
+    expect(within(findings).getByText(/finding FD-1/)).toBeInTheDocument();
+    expect(within(findings).getByText("已验")).toBeInTheDocument();
+    const approvals = within(board).getByTestId("wb-approvals");
+    expect(within(approvals).getByText("http-get http://x/a")).toBeInTheDocument();
+  });
+
+  it("战况板失败: 静默空态不造假", async () => {
+    vi.stubGlobal("fetch", makeFetch({
+      "/api/chat/stream": [firstPage([R3, R2, R1])],
+      "/api/chat/warboard": [{ reject: true }],
+    }));
+    await act(async () => {
+      render(<ChatPage />);
+    });
+    expect(screen.getByTestId("wb-soldiers-empty")).toBeInTheDocument();
+    expect(screen.getByTestId("wb-findings-empty")).toBeInTheDocument();
+    expect(screen.getByTestId("wb-approvals-empty")).toBeInTheDocument();
+    expect(screen.queryByText(/live-scan/)).not.toBeInTheDocument();
+    // 流不受战况板失败影响
+    expect(screen.getAllByTestId("chat-row")).toHaveLength(3);
+  });
+
+  it("输入框常活: 提交即提示 T6 接线中,不发送任何写请求", async () => {
+    const fetchMock = makeFetch({
+      "/api/chat/stream": [firstPage([R3, R2, R1])],
+      "/api/chat/warboard": [WARBOARD],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => {
+      render(<ChatPage />);
+    });
+    const input = screen.getByTestId("chat-input");
+    expect(input).toBeEnabled();
+    await act(async () => {
+      fireEvent.change(input, { target: { value: "扫一下 demo.local" } });
+      fireEvent.submit(input.closest("form")!);
+    });
+    expect(screen.getByTestId("t6-hint")).toHaveTextContent("指令通道 T6 接线中");
+    // 只有读面 GET,无 POST 写路径
+    expect(fetchMock.calls.every((u) => !u.includes("/api/chat/say"))).toBe(true);
+  });
+});

@@ -8,11 +8,12 @@ from pathlib import Path
 
 from fastapi import FastAPI
 
-from .routers import auth, overview
+from .routers import auth, chat, overview
 
 app = FastAPI(title="graphled-readface", version="0.1.0")
 
 app.include_router(auth.router)
+app.include_router(chat.router)
 app.include_router(overview.router)
 
 
