@@ -9,42 +9,45 @@
      POST /login 窄门口径不变（JSON password+X-Requested-With）；
      429 retry_after_s → 页内锁定倒计时；成功 → 总览。 -->
 <style>
-  :root{--g0:#0a0b0d;--g1:#101216;--g2:#16181d;--g3:#1d2026;--g4:#252930;--g5:#2e333b;
-        --g6:#3a4049;--g7:#4c535e;--g8:#6b7480;--g9:#8b949f;--ga:#aab3bd;--gb:#ccd3da;
-        --gc:#e8edf2;--acc:#3ddc97;--acc2:#2fae78;--warn:#e8b34b;--dang:#e8635a;
-        --mono:"SF Mono",Menlo,Consolas,monospace}
+  :root{--bg:#0a0b0d;--bg-side:#0f1114;--bg-card:#14171c;--bg-raise:#1c2026;--bg-hover:#22262e;
+        --line:#232730;--line-2:#343a44;
+        --tx1:#edf1f6;--tx2:#c7cfda;--tx3:#a6afbb;--tx4:#8791a0;--tx5:#5f6873;
+        --ok:#3ddc97;--warn:#e8b34b;--dang:#ff6f61;--info:#5aa9e6;
+        --acc:#3ddc97;--acc2:#2fae78;--acc-dim:rgba(61,220,151,.12);
+        --mono:"SF Mono",Menlo,Consolas,"Courier New",monospace;
+        --fs-a:13px;--fs-b:14px;--fs-c:16px;--fs-d:20px;--fs-e:24px;
+        --rad:10px;--rad-s:6px;--shadow:0 6px 24px rgba(0,0,0,.35)}
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%}
-  body{background:var(--g0);color:var(--gb);
+  body{background:var(--bg);color:var(--tx2);
        font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
        display:flex;align-items:center;justify-content:center;padding:24px;
        background-image:radial-gradient(ellipse 60% 40% at 50% 0%,
                         rgba(61,220,151,.05), transparent 70%)}
-  .login-card{background:var(--g2);border:1px solid var(--g4);border-radius:8px;
-              padding:32px;width:min(360px,92vw);
-              box-shadow:0 8px 32px rgba(0,0,0,.45)}
+  .login-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--rad);
+              padding:32px;width:min(380px,92vw);box-shadow:var(--shadow)}
   .brand-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
   .brand-row svg{flex:none;color:var(--acc)}
-  .login-card h1{font-size:20px;letter-spacing:1px;color:var(--gc)}
-  .login-card .sub{color:var(--g8);font-size:12px;margin:0 0 20px;line-height:1.7}
-  .login-card label{display:block;font-size:12px;color:var(--g8);
+  .login-card h1{font-size:var(--fs-d);letter-spacing:.3px;color:var(--tx1);font-weight:600}
+  .login-card .sub{color:var(--tx4);font-size:var(--fs-a);margin:0 0 22px;line-height:1.75}
+  .login-card label{display:block;font-size:var(--fs-a);color:var(--tx4);
                     margin:0 0 8px;letter-spacing:1px}
   .pw-wrap{position:relative}
-  .pw-wrap input{width:100%;background:var(--g1);border:1px solid var(--g5);
-                 border-radius:6px;color:var(--gc);padding:8px 48px 8px 12px;
-                 font:14px/1.4 inherit;transition:border-color .15s}
+  .pw-wrap input{width:100%;background:var(--bg-side);border:1px solid var(--line-2);
+                 border-radius:var(--rad-s);color:var(--tx1);padding:9px 48px 9px 12px;
+                 font:var(--fs-b)/1.4 inherit;transition:border-color .15s}
   .pw-wrap input:focus{outline:none;border-color:var(--acc2)}
   .pw-wrap input.err{border-color:var(--dang)}          /* 错误态=输入框红 */
   .pw-wrap button{position:absolute;top:0;right:0;height:100%;
                   padding:0 12px;border:none;background:none;
                   color:var(--g8);cursor:pointer;display:inline-flex;align-items:center}
   .pw-wrap button:hover{color:var(--acc)}
-  #op-login{width:100%;font:600 14px/1 inherit;margin-top:16px;padding:12px;
-            border:1px solid var(--acc2);border-radius:6px;
+  #op-login{width:100%;font:600 var(--fs-b)/1 inherit;margin-top:18px;padding:12px;
+            border:1px solid var(--acc2);border-radius:var(--rad-s);
             background:var(--acc2);color:#08130d;cursor:pointer;
             display:flex;align-items:center;justify-content:center;gap:8px}
   #op-login:hover{background:var(--acc)}
-  #op-login:disabled{background:var(--g4);border-color:var(--g5);color:var(--g7);
+  #op-login:disabled{background:var(--bg-raise);border-color:var(--line-2);color:var(--tx5);
                      cursor:not-allowed}
   /* 加载态：按钮转圈（loading class 由 JS 挂） */
   #op-login .spin{width:14px;height:14px;border:2px solid rgba(8,19,13,.25);
@@ -52,19 +55,19 @@
                   animation:spin .8s linear infinite}
   #op-login.loading .spin{display:inline-block}
   @keyframes spin{to{transform:rotate(360deg)}}
-  #op-msg{color:var(--dang);font-size:12px;min-height:20px;margin:8px 0 0}
+  #op-msg{color:var(--dang);font-size:var(--fs-a);min-height:20px;margin:8px 0 0}
   #lock-countdown{display:none;margin-top:8px;padding:8px 12px;font-size:13px;
                   border-radius:6px;border:1px solid rgba(232,99,90,.5);
                   background:rgba(232,99,90,.08);color:var(--dang);
                   font-family:var(--mono)}                 /* mono 数字 */
   #lock-countdown.on{display:block}
   /* 空态（首次）：从启动日志取口令提示 */
-  #st-empty{margin-top:12px;padding:12px;border:1px dashed var(--g5);
-            border-radius:6px;color:var(--g8);font-size:12px;line-height:1.8}
-  #st-empty b{color:var(--ga);font-weight:500}
-  #st-empty .mono{font-family:var(--mono);color:var(--ga)}
-  .login-card .foot{color:var(--g8);font-size:12px;margin:16px 0 0;line-height:1.7}
-  .login-card .foot .sep{color:var(--g6);margin:0 8px}
+  #st-empty{margin-top:14px;padding:12px;border:1px dashed var(--line-2);
+            border-radius:var(--rad-s);color:var(--tx4);font-size:var(--fs-a);line-height:1.8}
+  #st-empty b{color:var(--tx3);font-weight:500}
+  #st-empty .mono{font-family:var(--mono);color:var(--tx3)}
+  .login-card .foot{color:var(--tx5);font-size:var(--fs-a);margin:18px 0 0;line-height:1.7}
+  .login-card .foot .sep{color:var(--tx5);margin:0 8px}
 </style>
 </head>
 <body>
@@ -72,9 +75,7 @@
   <div class="brand-row">
     <svg width="22" height="22" viewBox="0 0 16 16" fill="none"
          stroke="currentColor" stroke-width="1.4" aria-hidden="true">
-      <path d="M8 1.2 14 3.6v4.2c0 3.4-2.5 5.8-6 7-3.5-1.2-6-3.6-6-7V3.6Z"></path>
-      <circle cx="8" cy="7.4" r="2.2"></circle>
-      <path d="M6.4 7.4c.9.9 2.3.9 3.2 0"></path>
+      <path d="M8 1.6 14.4 8 8 14.4 1.6 8Z"></path>
     </svg>
     <h1>GraphLed</h1>
   </div>
@@ -164,7 +165,7 @@ document.getElementById("op-login").addEventListener("click", function () {
     .then(function (out) {
       btn.classList.remove("loading");
       if (out.s === 200 && out.j.ok) {
-        window.location.href = "/console";          /* 正常态=总览 */
+        window.location.href = "/p/chat";           /* 正常态=对话页(IA v2第一公民) */
         return;
       }
       if (out.s === 429) {
