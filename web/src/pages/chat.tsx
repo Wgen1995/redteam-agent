@@ -70,6 +70,21 @@ export interface ConfirmCard {
   auth_notice: string;
 }
 
+/** T10 在跑仗条行(GET /api/chat/running;执行中口径=服务端单源)。 */
+export interface RunningBattle {
+  battle: string;
+  badge: string;
+  detail?: string;
+}
+
+/** T10 插话/全停交互态机: 插话直发→回执; 全停先确认小卡(原因可选)。 */
+type DeckFlow =
+  | { phase: "idle" }
+  | { phase: "busy"; battle: string; action: "steer" | "halt" }
+  | { phase: "halt-confirm"; battle: string }
+  | { phase: "result"; text: string }
+  | { phase: "error"; message: string; retry: () => void };
+
 /** 说话开仗交互态机: 解析中→(问询|闲聊|确认卡)→(点火回执|已取消|红条重试)。 */
 type SayFlow =
   | { phase: "idle" }
@@ -108,6 +123,7 @@ async function postJSON(url: string, body: unknown): Promise<{ ok: boolean; stat
 const STREAM_POLL_MS = 1000;
 const WARBOARD_POLL_MS = 10000;
 const FINDINGS_POLL_MS = 30000;   // T9: 验真态随复放终态演化,30s 保徽如实
+const RUNNING_POLL_MS = 10000;    // T10: 在跑仗条随执行态演化,10s 同战况板
 
 /** 拉取+形状校验;失败/坏形状→null(宁缺毋假)。 */
 async function fetchJSON<T>(url: string, check: (v: unknown) => T | null): Promise<T | null> {
@@ -184,6 +200,21 @@ function asWarboardDoc(v: unknown): WarboardDoc | null {
     findings_latest: list(d.findings_latest),
     approvals: list(d.approvals),
   };
+}
+
+/** T10 /api/chat/running 回体校验(坏行丢弃,整坏=null=条隐藏,宁缺毋假)。 */
+function asRunningDoc(v: unknown): RunningBattle[] | null {
+  if (typeof v !== "object" || v === null) return null;
+  const battles = (v as { battles?: unknown }).battles;
+  if (!Array.isArray(battles)) return null;
+  return battles.filter(
+    (b): b is RunningBattle =>
+      typeof b === "object" &&
+      b !== null &&
+      typeof (b as RunningBattle).battle === "string" &&
+      (b as RunningBattle).battle !== "" &&
+      typeof (b as RunningBattle).badge === "string",
+  );
 }
 
 /** 旧→新全序(ts 升,同 ts 以 key 倒——服务端 (ts,key) 双倒的镜像)。 */
@@ -396,6 +427,9 @@ export default function ChatPage() {
   const [flow, setFlow] = useState<SayFlow>({ phase: "idle" });
   const [approvalOpen, setApprovalOpen] = useState(true);   // T8 审批卡组开合
   const [findings, setFindings] = useState<FindingDoc[] | null>(null);   // T9
+  const [running, setRunning] = useState<RunningBattle[] | null>(null);  // T10
+  const [deckFlow, setDeckFlow] = useState<DeckFlow>({ phase: "idle" }); // T10
+  const [haltReason, setHaltReason] = useState("");                      // T10
   const scrollRef = useRef<HTMLDivElement>(null);
   const nearBottomRef = useRef(true);
   const loadingOlderRef = useRef(false);
@@ -452,6 +486,22 @@ export default function ChatPage() {
     };
     void tick();
     const id = setInterval(tick, FINDINGS_POLL_MS);
+    return () => {
+      alive = false;
+      clearInterval(id);
+    };
+  }, []);
+
+  // T10 在跑仗 10s 轮询(执行中口径=服务端单源): 失败静默保持旧值/初值
+  // null → 条隐藏(无在跑不占位,不造假)。
+  useEffect(() => {
+    let alive = true;
+    const tick = async () => {
+      const doc = await fetchJSON("/api/chat/running", asRunningDoc);
+      if (alive && doc !== null) setRunning(doc);
+    };
+    void tick();
+    const id = setInterval(tick, RUNNING_POLL_MS);
     return () => {
       alive = false;
       clearInterval(id);
@@ -520,7 +570,8 @@ export default function ChatPage() {
       setFlow({ phase: "ask", questions: d.questions.map(String) });
       return;
     }
-    if (status === "chat") {
+    if (status === "chat" || status === "steer" || status === "halt") {
+      // T10: steer/halt 分类→气泡指路在跑仗条(say 面不带仗标,发出走插话/全停钮)
       setFlow({ phase: "chat", reply: String(d?.reply ?? "") });
       return;
     }
@@ -550,10 +601,41 @@ export default function ChatPage() {
     void sendSay(text);
   };
 
+  // T10 插话: 输入框原文以 steer 发送(带仗标);回执气泡只显服务端结果,
+  // 插话入链时刻不伪造——经 stream 轮询自然到来。
+  const sendSteer = useCallback(async (battle: string, text: string) => {
+    setDeckFlow({ phase: "busy", battle, action: "steer" });
+    const r = await postJSON("/api/chat/steer", { battle, text });
+    if (!r.ok) {
+      const d = r.data as { error?: unknown } | null;
+      const msg = typeof d?.error === "string" && d.error ? d.error : "插话请求失败(HTTP " + r.status + ")";
+      setDeckFlow({ phase: "error", message: msg, retry: () => void sendSteer(battle, text) });
+      return;
+    }
+    const d = r.data as { note?: unknown } | null;
+    setDeckFlow({ phase: "result", text: String(d?.note ?? "插话已发出。") });
+  }, []);
+
+  // T10 全停: 确认小卡(原因可选)→halt;停令时刻经流自然来,不伪造。
+  const sendHalt = useCallback(async (battle: string, reason: string) => {
+    setDeckFlow({ phase: "busy", battle, action: "halt" });
+    const r = await postJSON("/api/chat/halt", reason ? { battle, reason } : { battle });
+    if (!r.ok) {
+      const d = r.data as { error?: unknown } | null;
+      const msg = typeof d?.error === "string" && d.error ? d.error : "全停请求失败(HTTP " + r.status + ")";
+      setDeckFlow({ phase: "error", message: msg, retry: () => void sendHalt(battle, reason) });
+      return;
+    }
+    const d = r.data as { note?: unknown } | null;
+    setDeckFlow({ phase: "result", text: String(d?.note ?? "全停已发出。") });
+  }, []);
+
   const battles = [...new Set(rows.map((r) => r.battle))].sort();
   const visible = battleFilter ? rows.filter((r) => r.battle === battleFilter) : rows;
   const freshSet = new Set(fresh);
   const exhausted = olderCursor === null;
+  // T10 在跑仗(拉取失败/未拉=空,条隐藏不占位)
+  const runningBattles = running ?? [];
   // T9 配对索引: (battle,id) 仗优先,同号异仗兜底全局取首个(FD 号带仗标,
   // 实数据全局唯一;兜底仅为仗名对不上时不空手)。
   const lookupFinding = useMemo(() => {
@@ -708,6 +790,125 @@ export default function ChatPage() {
               </div>
             )}
           </div>
+        )}
+        {/* T10 在跑仗条(输入框上方常显;无在跑=条隐藏不占位):
+            进行中仗名+徽标+插话/全停两小钮;插话=输入框内容以 steer
+            发送(带仗标);全停=确认小卡(原因可选)→halt;回执时刻卡经
+            流轮询自然来,本条零伪造。 */}
+        {(runningBattles.length > 0 || deckFlow.phase !== "idle") && (
+          <section
+            data-testid="running-bar"
+            aria-label="在跑仗"
+            className="border-t border-line px-4 py-2"
+          >
+            {runningBattles.length > 0 && (
+              <div className="flex flex-wrap items-center gap-1.5">
+                <h2 className="text-fs-a tracking-[2px] text-ok">在跑仗</h2>
+                {runningBattles.map((rb) => (
+                  <div
+                    key={rb.battle}
+                    data-testid={"running-" + rb.battle}
+                    title={typeof rb.detail === "string" ? rb.detail : rb.battle}
+                    className="flex items-center gap-1.5 rounded-glds-s border border-line-2 bg-bg-raise px-2 py-1 font-mono text-fs-a"
+                  >
+                    <BattleDot battle={rb.battle} badge={rb.badge} />
+                    <span className="text-tx2">{rb.battle}</span>
+                    <button
+                      type="button"
+                      data-testid={"steer-" + rb.battle}
+                      disabled={!draft.trim() || deckFlow.phase === "busy"}
+                      title="把输入框内容作为插话发给该仗(带仗标)"
+                      onClick={() => {
+                        const text = draft.trim();
+                        if (!text) return;
+                        setDraft("");
+                        void sendSteer(rb.battle, text);
+                      }}
+                      className="rounded-glds-s border border-acc/40 px-1.5 py-0.5 text-acc hover:bg-acc/10 disabled:cursor-default disabled:opacity-50"
+                    >
+                      插话
+                    </button>
+                    <button
+                      type="button"
+                      data-testid={"halt-" + rb.battle}
+                      disabled={deckFlow.phase === "busy"}
+                      title="全停该仗(确认后发停令)"
+                      onClick={() => {
+                        setHaltReason("");
+                        setDeckFlow({ phase: "halt-confirm", battle: rb.battle });
+                      }}
+                      className="rounded-glds-s border border-dang/50 px-1.5 py-0.5 text-dang hover:bg-dang/10 disabled:cursor-default disabled:opacity-50"
+                    >
+                      全停
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            {deckFlow.phase === "halt-confirm" && (
+              <div
+                data-testid="halt-confirm"
+                className="mt-1.5 rounded-glds-s border border-dang/50 bg-dang/10 px-3 py-2 font-mono text-fs-a leading-6"
+              >
+                <p className="text-dang">
+                  确认全停 {deckFlow.battle}——停令直达该仗全部在编战士,在跑战士 scan 即停。
+                </p>
+                <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                  <input
+                    data-testid="halt-reason"
+                    value={haltReason}
+                    onChange={(e) => setHaltReason(e.target.value)}
+                    placeholder="原因(可选,入链留痕)"
+                    aria-label="停仗原因"
+                    className="h-8 min-w-0 flex-1 rounded-glds-s border border-line-2 bg-bg-side px-2 text-fs-a text-tx1 placeholder:text-tx5 focus:border-dang/50 focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    data-testid="halt-confirm-ok"
+                    onClick={() => void sendHalt(deckFlow.battle, haltReason.trim())}
+                    className="rounded-glds-s bg-dang px-3 py-1 font-medium text-dang-on"
+                  >
+                    确认全停
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="halt-confirm-cancel"
+                    onClick={() => setDeckFlow({ phase: "idle" })}
+                    className="rounded-glds-s border border-line-2 px-3 py-1 text-tx3 hover:text-tx1"
+                  >
+                    取消
+                  </button>
+                </div>
+              </div>
+            )}
+            {deckFlow.phase === "busy" && (
+              <p data-testid="deck-busy" className="mt-1.5 font-mono text-fs-a text-acc">
+                {deckFlow.action === "steer" ? "插话发送中…" : "全停发送中…"}（{deckFlow.battle}）
+              </p>
+            )}
+            {deckFlow.phase === "result" && (
+              <p data-testid="deck-result" className="mt-1.5 rounded-glds-s border border-ok/40 px-3 py-2 font-mono text-fs-a leading-6 text-ok">
+                {deckFlow.text}
+              </p>
+            )}
+            {deckFlow.phase === "error" && (
+              <div
+                data-testid="deck-error"
+                role="alert"
+                className="mt-1.5 flex flex-wrap items-center gap-2 rounded-glds-s border border-dang/50 px-3 py-2 font-mono text-fs-a leading-6 text-dang"
+              >
+                <span className="min-w-0 break-all">{deckFlow.message}</span>
+                <button
+                  type="button"
+                  data-testid="deck-retry"
+                  onClick={deckFlow.retry}
+                  className="shrink-0 rounded-glds-s border border-dang/50 px-2 py-0.5 hover:bg-dang/10"
+                >
+                  重试
+                </button>
+              </div>
+            )}
+          </section>
         )}
         {/* 输入常活(T6): 发送即 POST /api/chat/say */}
         <form onSubmit={onSubmit} className="border-t border-line p-3">

@@ -18,7 +18,14 @@ CLI(仓库根):
     (T8 内联审批: 键=sha256(revert_cmd) 同 ledger_reader.approvals_pending
      的 id;真写 approvals.tsv+timeline 链——note 落事件原文锚,引擎 webui
      W6「决定回链」同律,待审队列据此消项)
-stdout 末行=JSON 回执;rc: 0=演练成/审批成 / 2=用法或 fail-closed/拒收。
+  python3 server/readface/engine_bridge.py steer       --battle <battle-N> --text <插话原文> [--intent <target_intent 线索>]
+    (T10 插话转向: 真写 timeline warrior-steer 行,仗内全部在编战士逐个
+     fan-out,无在编缺省 w1(引擎 webui 同律);原文必达,账本战士每轮
+     模型调用前 scan 消费)
+  python3 server/readface/engine_bridge.py halt       --battle <battle-N> [--reason <停仗原因>]
+    (T10 全停该仗: 真写 warrior-stop 行(逐战士)+deck-halt 留痕行,
+     在跑战士 scan 即停;停信号=steer.py 单源,引擎零改)
+stdout 末行=JSON 回执;rc: 0=演练成/审批成/入链成 / 2=用法或 fail-closed/拒收。
 """
 import argparse
 import json
@@ -35,7 +42,9 @@ _CLI_DIR = os.path.join(_REPO_ROOT, "cli")
 if _CLI_DIR not in sys.path:
     sys.path.insert(0, _CLI_DIR)
 
+from ledger import timeline as ledger_timeline      # noqa: E402
 from ledger.session_view import default_battles_dir   # noqa: E402
+from warrior import steer as warrior_steer          # noqa: E402
 
 _LEDGER_CLI = os.path.join(_CLI_DIR, "tanyin-ledger")
 _GEN_OF_NEW_BATTLE = "G-w1"     # 引擎 webui server.py 同位约定
@@ -219,6 +228,107 @@ def cmd_approve(args):
     return 0
 
 
+# ---------------------------------------------------------------- ③ steer/halt --
+
+# CLI 面实勘(T10): tanyin-ledger 无 steer/stop 子命令——插话/停令写面单源=
+# cli/warrior/steer.py write_steer/write_stop(引擎 webui /api/v2/steer-reply
+# 与 fleet supervisor._signal 同款调用)。本桥=读面唯一写出口的子进程,
+# 进程内调该单源写函数(goal 锁 append_tl_locked 单写者),零私铸 TSV,
+# 引擎零改。事件形(steer.py 单源):
+#   warrior-steer target=<warrior-id> text=<单行>   actor=总控 phase=P3
+#   warrior-stop warrior=<warrior-id> reason=<单行> actor=总控 phase=P3
+# halt 另铸 deck-halt 留痕行(supervisor._signal 的 fleet-stop 同律)。
+
+_STEER_DEFAULT_WARRIOR = "w1"     # 账本无在编战士时的缺省目标(引擎 webui
+                                  # steer_reply「warrior or "w1"」同律缺省)
+_DEFAULT_HALT_REASON = "指挥台全停"
+# 仗内在编战士判读(supervisor._warriors 同律: warrior-start/heartbeat 事件源)
+_WARRIOR_EV_RE = re.compile(r"^warrior-(?:start|heartbeat)\s+.*?warrior=(\S+)")
+
+
+def _battle_warriors(goal_dir):
+    """仗账本可见的全部战士 id(warrior-start/heartbeat 事件源,supervisor 同律)。"""
+    out = set()
+    try:
+        rows = ledger_timeline.read_rows(goal_dir)
+    except Exception:                              # noqa: BLE001 账本未生=无战士
+        return []
+    for r in rows:
+        if len(r) < 4:
+            continue
+        m = _WARRIOR_EV_RE.match(r[3])
+        if m:
+            out.add(m.group(1))
+    return sorted(out)
+
+
+def _resolve_battle(battle):
+    """仗名 → (goal_dir|None, error|None): 空名/无代目录 fail-closed。"""
+    battle = (battle or "").strip()
+    if not battle:
+        return None, "battle 必填(如 battle-3)"
+    goal_dir = _latest_gen(os.path.join(default_battles_dir(), battle))
+    if goal_dir is None:
+        return None, "战目录无 goal 代目录(G-*): %s" % battle
+    return goal_dir, None
+
+
+def cmd_steer(args):
+    goal_dir, err = _resolve_battle(args.battle)
+    if err is not None:
+        _emit({"ok": False, "error": err})
+        return 2
+    text = (args.text or "").strip()
+    if not text:
+        _emit({"ok": False, "error": "text 必填(插话内容不可为空)"})
+        return 2
+    warriors = _battle_warriors(goal_dir) or [_STEER_DEFAULT_WARRIOR]
+    ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    try:
+        for wid in warriors:                        # 原文必达: 战士领原话
+            warrior_steer.write_steer(goal_dir, wid, text, ts)
+    except Exception as e:                          # noqa: BLE001 fail-closed 如实
+        _emit({"ok": False, "battle": args.battle.strip(),
+               "error": "插话入链失败(引擎拒收/fail-closed): %s" % e})
+        return 2
+    _emit({"ok": True, "cmd": "steer", "battle": args.battle.strip(),
+           "goal_dir": goal_dir, "warriors": warriors,
+           "timeline_row": _tl_count(goal_dir), "text": text,
+           "intent": (args.intent or "").strip(),
+           "note": "插话已入链(目标战士 %s);账本战士每轮模型调用前 scan 消费"
+                   % ",".join(warriors)})
+    return 0
+
+
+def cmd_halt(args):
+    battle = (args.battle or "").strip()
+    goal_dir, err = _resolve_battle(battle)
+    if err is not None:
+        _emit({"ok": False, "error": err})
+        return 2
+    reason = (args.reason or "").strip() or _DEFAULT_HALT_REASON
+    warriors = _battle_warriors(goal_dir)           # 无在编=只铸留痕行(如实)
+    ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    try:
+        for wid in warriors:
+            warrior_steer.write_stop(goal_dir, wid, reason, ts)
+        ledger_timeline.append_tl_locked(           # 全停留痕(supervisor 同律)
+            goal_dir, ts,
+            "deck-halt battle=%s reason=%s" % (
+                battle, " ".join(reason.split())),
+            actor=warrior_steer.ACTOR, phase="P-lifecycle")
+    except Exception as e:                          # noqa: BLE001 fail-closed 如实
+        _emit({"ok": False, "battle": battle,
+               "error": "全停入链失败(引擎拒收/fail-closed): %s" % e})
+        return 2
+    _emit({"ok": True, "cmd": "halt", "battle": battle,
+           "goal_dir": goal_dir, "stopped": warriors,
+           "timeline_row": _tl_count(goal_dir), "reason": reason,
+           "note": "全停信号已入链(warrior-stop→%s+deck-halt 留痕);"
+                   "在跑战士 scan 即停" % (",".join(warriors) or "无在编")})
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="engine_bridge")
     sub = p.add_subparsers(dest="cmd")
@@ -237,11 +347,23 @@ def main(argv=None):
     ap.add_argument("--decision", default="",
                     help="approved|rejected(指挥台只发批/拒)")
     ap.add_argument("--note", default="", help="操作员补充说明(入链)")
+    st = sub.add_parser("steer", help="插话转向(warrior-steer 链,真写)")
+    st.add_argument("--battle", default="", help="仗目录名(如 battle-3)")
+    st.add_argument("--text", default="", help="插话原文(必达战士,单行折叠)")
+    st.add_argument("--intent", default="",
+                    help="target_intent 线索(回执留痕,不入链)")
+    ht = sub.add_parser("halt", help="全停该仗(warrior-stop+deck-halt 链,真写)")
+    ht.add_argument("--battle", default="", help="仗目录名(如 battle-3)")
+    ht.add_argument("--reason", default="", help="停仗原因(缺省=指挥台全停)")
     args = p.parse_args(argv)
     if args.cmd == "ignite":
         return cmd_ignite(args)
     if args.cmd == "approve":
         return cmd_approve(args)
+    if args.cmd == "steer":
+        return cmd_steer(args)
+    if args.cmd == "halt":
+        return cmd_halt(args)
     p.print_usage(sys.stderr)
     return 2
 

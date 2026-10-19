@@ -311,5 +311,411 @@ class TestBridgeDryRun(unittest.TestCase):
         self.assertIn("dry-run", cp.stdout + cp.stderr)   # 指路: P0 一律 dry-run
 
 
+# ---------------------------------------------------------------------------
+# T10 插话与转向: 意图三分类扩(steer/halt)+ /steer /halt /running + 桥 steer/halt。
+# CLI 面实勘: tanyin-ledger 无 steer/stop 子命令——写面单源=cli/warrior/steer.py
+# write_steer/write_stop(引擎 webui steer_reply 与 fleet supervisor 同款调用),
+# 桥子进程内调该单源函数(goal 锁 append_tl_locked),事件形:
+#   warrior-steer target=<warrior-id> text=<单行>  /  warrior-stop warrior=<id>
+#   reason=<单行>(actor=总控 phase=P3);halt 另铸 deck-halt 留痕行
+#   (fleet supervisor._signal fleet-stop 同律)。
+# ---------------------------------------------------------------------------
+
+import shutil                                      # noqa: E402
+
+from ledger import core as ledger_core             # noqa: E402
+from ledger import timeline as ledger_timeline     # noqa: E402
+from ledger.schemas import TABLES                  # noqa: E402
+
+
+def _chain(spec):
+    """[(ts,actor,phase,event,revert_cmd)...] → 引擎真实接链 8 列行(test_overview 同律)。"""
+    rows = []
+    for ts, actor, phase, event, revert in spec:
+        row, _prev = ledger_timeline.chained_row(rows, ts, actor, phase,
+                                                 event, revert)
+        rows.append(row)
+    return rows
+
+
+def _mk_goal(gd, tl_spec, tables=None):
+    """微型 goal: 接链 timeline+若干净表(引擎 write_tsv 落盘,缺列补空)。"""
+    os.makedirs(gd, exist_ok=True)
+    ledger_core.write_tsv(os.path.join(gd, "timeline.tsv"), _chain(tl_spec))
+    for tname, dict_rows in (tables or {}).items():
+        cols = TABLES[tname]
+        ledger_core.write_tsv(
+            os.path.join(gd, tname),
+            [[d.get(c, "") for c in cols] for d in dict_rows])
+
+
+def _mk_runner(battle_dir, done=False):
+    """runner 生命周期行: 已点火未完跑(LAUNCH 无 DONE)或已完跑(DONE)。"""
+    lines = ["2026-10-20T09:00:00Z\tBOOT\tup",
+             "2026-10-20T09:00:05Z\tLAUNCH\topencode"]
+    if done:
+        lines.append("2026-10-20T10:00:00Z\tDONE\tfinal_rc=0")
+    with open(os.path.join(battle_dir, "opencode-run.log.runner.tsv"),
+              "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
+
+# 在跑仗夹具 timeline: 一条立卡+两战士在编(w1 start/w2 heartbeat)
+_TL_RUNNING = [
+    ("2026-10-20T09:00:00Z", "op", "P0", "add-goal G-1 target=10.2.0.7", ""),
+    ("2026-10-20T09:00:05Z", "runner", "P3",
+     "warrior-start battle=battle-3 warrior=w1 pid=101 model=strong", ""),
+    ("2026-10-20T09:00:06Z", "warrior:w2", "P3",
+     "warrior-heartbeat warrior=w2 intent=INT-2", ""),
+]
+
+
+def _steer_intent(action="steer", target_intent=""):
+    return json.dumps({"action": action, "target": "", "scope": [],
+                       "budget_note": "", "questions": [],
+                       "target_intent": target_intent}, ensure_ascii=False)
+
+
+class TestIntentSteerHalt(SayBase):
+    """/say 意图三分类扩: 开新仗(既有)/插话 steer/停 halt;target_intent 线索透传。"""
+
+    def test_steer_words_status_steer_with_target_intent(self):
+        with mock.patch.object(say, "llm_chat", return_value=_ok_llm(
+                _steer_intent(target_intent="跳过 10.2.0.9,重点 10.2.0.7"))):
+            r = self.client.post("/api/chat/say",
+                                 json={"text": "跳过 10.2.0.9,重点打 10.2.0.7"})
+        self.assertEqual(r.status_code, 200)
+        body = r.json()
+        self.assertEqual(body["status"], "steer")
+        self.assertEqual(body["intent"]["target_intent"],
+                         "跳过 10.2.0.9,重点 10.2.0.7")
+        self.assertNotIn("card", body)                 # 插话不产确认卡
+        self.assertEqual(len(say._pending_cards), 0)
+
+    def test_stop_words_status_halt(self):
+        with mock.patch.object(say, "llm_chat", return_value=_ok_llm(
+                _steer_intent(action="halt"))):
+            r = self.client.post("/api/chat/say", json={"text": "这场仗先停下"})
+        self.assertEqual(r.status_code, 200)
+        body = r.json()
+        self.assertEqual(body["status"], "halt")
+        self.assertNotIn("card", body)
+        self.assertEqual(len(say._pending_cards), 0)
+
+    def test_parse_intent_accepts_steer_halt_vocab(self):
+        with mock.patch.object(say, "llm_chat", return_value=_ok_llm(
+                _steer_intent(target_intent="跳过 10.2.0.9"))):
+            out = say.parse_intent("跳过 10.2.0.9")
+        self.assertEqual(out["action"], "steer")
+        self.assertEqual(out["target_intent"], "跳过 10.2.0.9")
+
+    def test_unknown_action_still_rejected_no_guess(self):
+        with mock.patch.object(say, "llm_chat", return_value=_ok_llm(
+                _steer_intent(action="dance"))):
+            r = self.client.post("/api/chat/say", json={"text": "跳舞"})
+        self.assertEqual(r.status_code, 502)
+        self.assertIn("error", r.json())
+
+
+def _steer_receipt(warriors=("w1", "w2")):
+    return {"ok": True, "cmd": "steer", "battle": "battle-3",
+            "goal_dir": "/tmp/x", "warriors": list(warriors),
+            "timeline_row": 7, "text": "跳过 10.2.0.9", "intent": "",
+            "note": "插话已入链"}
+
+
+def _halt_receipt(stopped=("w1", "w2")):
+    return {"ok": True, "cmd": "halt", "battle": "battle-3",
+            "goal_dir": "/tmp/x", "stopped": list(stopped),
+            "timeline_row": 9, "reason": "T10 验证",
+            "note": "全停信号已入链"}
+
+
+class TestSteerHaltApi(SayBase):
+    """POST /api/chat/steer + /api/chat/halt: 校验面+桥调用参数断言+败路 502。"""
+
+    def setUp(self):
+        super().setUp()
+        self.home = tempfile.mkdtemp(prefix="t10-say-home-")
+        self.addCleanup(shutil.rmtree, self.home, True)
+        self.gd = os.path.join(self.home, "battles", "battle-3", "G-1")
+        _mk_goal(self.gd, _TL_RUNNING)
+        env = mock.patch.dict(os.environ, {"TANYIN_HOME": self.home})
+        env.start()
+        self.addCleanup(env.stop)
+        goals = mock.patch.object(say, "_battle_goals",
+                                  return_value=[("battle-3", self.gd)])
+        goals.start()
+        self.addCleanup(goals.stop)
+
+    def _events(self):
+        return [r[3] for r in ledger_timeline.read_rows(self.gd)]
+
+    # ---- steer ----
+
+    def test_steer_empty_text_422(self):
+        r = self.client.post("/api/chat/steer",
+                             json={"battle": "battle-3", "text": "  "})
+        self.assertEqual(r.status_code, 422)
+        self.assertIn("error", r.json())
+
+    def test_steer_unknown_battle_404(self):
+        with mock.patch.object(say, "_battle_goals", return_value=[]):
+            r = self.client.post("/api/chat/steer",
+                                 json={"battle": "battle-99", "text": "停"})
+        self.assertEqual(r.status_code, 404)
+        self.assertIn("error", r.json())
+
+    def test_steer_bridge_argv_asserted(self):
+        cp = subprocess.CompletedProcess([], 0, stdout=json.dumps(
+            _steer_receipt()), stderr="")
+        with mock.patch.object(say.subprocess, "run",
+                               return_value=cp) as run, \
+                mock.patch.object(say, "_tl_has_row", return_value=True):
+            r = self.client.post("/api/chat/steer", json={
+                "battle": "battle-3", "text": "跳过 10.2.0.9,重点 10.2.0.7",
+                "intent": "跳过 10.2.0.9"})
+        self.assertEqual(r.status_code, 200)
+        body = r.json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["warriors"], ["w1", "w2"])   # 回执透传
+        argv = run.call_args[0][0]
+        self.assertEqual(argv[0], sys.executable)
+        self.assertIn("engine_bridge.py", argv[1])
+        self.assertIn("steer", argv)
+        i = argv.index("--battle")
+        self.assertEqual(argv[i + 1], "battle-3")
+        i = argv.index("--text")
+        self.assertEqual(argv[i + 1], "跳过 10.2.0.9,重点 10.2.0.7")
+        i = argv.index("--intent")
+        self.assertEqual(argv[i + 1], "跳过 10.2.0.9")
+
+    def test_steer_intent_flag_omitted_when_absent(self):
+        cp = subprocess.CompletedProcess([], 0, stdout=json.dumps(
+            _steer_receipt(warriors=("w1",))), stderr="")
+        with mock.patch.object(say.subprocess, "run",
+                               return_value=cp) as run, \
+                mock.patch.object(say, "_tl_has_row", return_value=True):
+            r = self.client.post("/api/chat/steer", json={
+                "battle": "battle-3", "text": "重点 10.2.0.7"})
+        self.assertEqual(r.status_code, 200)
+        self.assertNotIn("--intent", run.call_args[0][0])   # 无线索不带旗
+
+    def test_steer_bridge_failure_502_honest(self):
+        cp = subprocess.CompletedProcess([], 2, stdout="",
+                                         stderr="boom: no battle")
+        with mock.patch.object(say.subprocess, "run", return_value=cp):
+            r = self.client.post("/api/chat/steer", json={
+                "battle": "battle-3", "text": "停"})
+        self.assertEqual(r.status_code, 502)
+        self.assertIn("error", r.json())
+        self.assertNotIn("warriors", r.json())           # 不造假回执
+
+    def test_steer_readback_mismatch_502(self):
+        cp = subprocess.CompletedProcess([], 0, stdout=json.dumps(
+            _steer_receipt()), stderr="")
+        with mock.patch.object(say.subprocess, "run",
+                               return_value=cp), \
+                mock.patch.object(say, "_tl_has_row", return_value=False):
+            r = self.client.post("/api/chat/steer", json={
+                "battle": "battle-3", "text": "跳过 10.2.0.9"})
+        self.assertEqual(r.status_code, 502)
+        self.assertIn("读写不一致", r.json()["error"])
+
+    def test_steer_end_to_end_real_bridge(self):
+        r = self.client.post("/api/chat/steer", json={
+            "battle": "battle-3", "text": "跳过 10.2.0.9,重点 10.2.0.7",
+            "intent": "跳过 10.2.0.9"})
+        self.assertEqual(r.status_code, 200, r.text)
+        body = r.json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["warriors"], ["w1", "w2"])
+        evs = self._events()
+        self.assertIn("warrior-steer target=w1 text=跳过 10.2.0.9,重点 10.2.0.7", evs)
+        self.assertIn("warrior-steer target=w2 text=跳过 10.2.0.9,重点 10.2.0.7", evs)
+
+    # ---- halt ----
+
+    def test_halt_unknown_battle_404(self):
+        with mock.patch.object(say, "_battle_goals", return_value=[]):
+            r = self.client.post("/api/chat/halt",
+                                 json={"battle": "battle-99"})
+        self.assertEqual(r.status_code, 404)
+
+    def test_halt_empty_battle_422(self):
+        r = self.client.post("/api/chat/halt", json={"battle": " "})
+        self.assertEqual(r.status_code, 422)
+
+    def test_halt_bridge_argv_asserted(self):
+        cp = subprocess.CompletedProcess([], 0, stdout=json.dumps(
+            _halt_receipt()), stderr="")
+        with mock.patch.object(say.subprocess, "run",
+                               return_value=cp) as run, \
+                mock.patch.object(say, "_tl_has_row", return_value=True):
+            r = self.client.post("/api/chat/halt", json={
+                "battle": "battle-3", "reason": "T10 验证"})
+        self.assertEqual(r.status_code, 200)
+        body = r.json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["stopped"], ["w1", "w2"])
+        argv = run.call_args[0][0]
+        self.assertIn("halt", argv)
+        i = argv.index("--battle")
+        self.assertEqual(argv[i + 1], "battle-3")
+        i = argv.index("--reason")
+        self.assertEqual(argv[i + 1], "T10 验证")
+
+    def test_halt_reason_flag_omitted_when_absent(self):
+        cp = subprocess.CompletedProcess([], 0, stdout=json.dumps(
+            _halt_receipt(stopped=("w1",))), stderr="")
+        with mock.patch.object(say.subprocess, "run",
+                               return_value=cp) as run, \
+                mock.patch.object(say, "_tl_has_row", return_value=True):
+            r = self.client.post("/api/chat/halt", json={"battle": "battle-3"})
+        self.assertEqual(r.status_code, 200)
+        self.assertNotIn("--reason", run.call_args[0][0])
+
+    def test_halt_bridge_failure_502_honest(self):
+        cp = subprocess.CompletedProcess([], 2, stdout="", stderr="boom")
+        with mock.patch.object(say.subprocess, "run", return_value=cp):
+            r = self.client.post("/api/chat/halt", json={"battle": "battle-3"})
+        self.assertEqual(r.status_code, 502)
+        self.assertIn("error", r.json())
+
+    def test_halt_end_to_end_real_bridge(self):
+        r = self.client.post("/api/chat/halt", json={
+            "battle": "battle-3", "reason": "T10 活体验证"})
+        self.assertEqual(r.status_code, 200, r.text)
+        body = r.json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["stopped"], ["w1", "w2"])
+        evs = self._events()
+        self.assertIn("warrior-stop warrior=w1 reason=T10 活体验证", evs)
+        self.assertIn("warrior-stop warrior=w2 reason=T10 活体验证", evs)
+        self.assertIn("deck-halt battle=battle-3 reason=T10 活体验证", evs)
+
+
+class TestRunningDoc(SayBase):
+    """GET /api/chat/running: 在跑仗条数据面(overview 执行中口径单源)。"""
+
+    def setUp(self):
+        super().setUp()
+        self.home = tempfile.mkdtemp(prefix="t10-running-home-")
+        self.addCleanup(shutil.rmtree, self.home, True)
+        # battle-9: 已点火未完跑 → 执行中(条应显)
+        b9 = os.path.join(self.home, "battles", "battle-9")
+        _mk_goal(os.path.join(b9, "G-1"), _TL_RUNNING,
+                 {"goals.tsv": [{"id": "G-1", "target": "10.2.0.9"}]})
+        _mk_runner(b9)
+        # battle-8: 已完跑(DONE final_rc=0)→非执行中(条不显)
+        b8 = os.path.join(self.home, "battles", "battle-8")
+        _mk_goal(os.path.join(b8, "G-1"), _TL_RUNNING,
+                 {"goals.tsv": [{"id": "G-1", "target": "10.2.0.8"}]})
+        _mk_runner(b8, done=True)
+
+    def test_running_lists_running_battles_only(self):
+        # battles_dir=battles 根(default_battles_dir 同位约定)
+        doc = say.running_doc(battles_dir=os.path.join(self.home, "battles"))
+        self.assertEqual([b["battle"] for b in doc["battles"]], ["battle-9"])
+        row = doc["battles"][0]
+        self.assertTrue(row["badge"].startswith("hsl("))   # 徽标同源派生
+        self.assertIn("已点火", row["detail"])              # 态说明透传
+
+    def test_endpoint_uses_env_home(self):
+        with mock.patch.dict(os.environ, {"TANYIN_HOME": self.home}):
+            r = self.client.get("/api/chat/running")
+        self.assertEqual(r.status_code, 200)
+        body = r.json()
+        self.assertEqual([b["battle"] for b in body["battles"]], ["battle-9"])
+
+    def test_empty_root_no_battles_not_fake(self):
+        empty = tempfile.mkdtemp(prefix="t10-empty-")
+        self.addCleanup(shutil.rmtree, empty, True)
+        doc = say.running_doc(battles_dir=empty)
+        self.assertEqual(doc, {"battles": []})
+
+
+class TestBridgeSteerHalt(unittest.TestCase):
+    """engine_bridge steer/halt 真子进程(合成 TANYIN_HOME 真写——安全)。"""
+
+    def setUp(self):
+        self.home = tempfile.mkdtemp(prefix="t10-bridge-home-")
+        self.addCleanup(shutil.rmtree, self.home, True)
+        _mk_goal(os.path.join(self.home, "battles", "battle-3", "G-1"),
+                 _TL_RUNNING)
+        # battle-4: 无战士在编(无 warrior-* 行)
+        _mk_goal(os.path.join(self.home, "battles", "battle-4", "G-1"),
+                 [("2026-10-20T09:00:00Z", "op", "P0",
+                   "add-goal G-1 target=10.2.0.4", "")])
+
+    def _run(self, *args):
+        env = dict(os.environ, TANYIN_HOME=self.home)
+        return subprocess.run(
+            [sys.executable, BRIDGE] + list(args),
+            capture_output=True, text=True, env=env, timeout=60)
+
+    def _events(self, battle="battle-3"):
+        gd = os.path.join(self.home, "battles", battle, "G-1")
+        return [r[3] for r in ledger_timeline.read_rows(gd)]
+
+    def _receipt(self, cp):
+        self.assertEqual(cp.returncode, 0, cp.stdout + cp.stderr)
+        return json.loads(cp.stdout.strip().splitlines()[-1])
+
+    def test_steer_fans_out_to_all_warriors(self):
+        cp = self._run("steer", "--battle", "battle-3",
+                       "--text", "跳过 10.2.0.9,重点 10.2.0.7",
+                       "--intent", "跳过 10.2.0.9")
+        receipt = self._receipt(cp)
+        self.assertTrue(receipt["ok"])
+        self.assertEqual(receipt["cmd"], "steer")
+        self.assertEqual(receipt["warriors"], ["w1", "w2"])
+        self.assertEqual(receipt["timeline_row"], 5)   # 3 存量+2 新行
+        self.assertEqual(receipt["intent"], "跳过 10.2.0.9")
+        evs = self._events()
+        self.assertIn("warrior-steer target=w1 text=跳过 10.2.0.9,重点 10.2.0.7", evs)
+        self.assertIn("warrior-steer target=w2 text=跳过 10.2.0.9,重点 10.2.0.7", evs)
+
+    def test_steer_no_warriors_defaults_w1(self):
+        cp = self._run("steer", "--battle", "battle-4", "--text", "重点 10.2.0.4")
+        receipt = self._receipt(cp)
+        self.assertTrue(receipt["ok"])
+        self.assertEqual(receipt["warriors"], ["w1"])  # 引擎 webui 缺省同律
+        self.assertIn("warrior-steer target=w1 text=重点 10.2.0.4",
+                      self._events("battle-4"))
+
+    def test_steer_missing_text_rc2(self):
+        cp = self._run("steer", "--battle", "battle-3", "--text", " ")
+        self.assertEqual(cp.returncode, 2)
+        self.assertIn("text", cp.stdout + cp.stderr)
+
+    def test_steer_unknown_battle_rc2(self):
+        cp = self._run("steer", "--battle", "battle-99", "--text", "停")
+        self.assertEqual(cp.returncode, 2)
+
+    def test_halt_stops_all_warriors_plus_audit_row(self):
+        cp = self._run("halt", "--battle", "battle-3", "--reason", "T10 验证")
+        receipt = self._receipt(cp)
+        self.assertTrue(receipt["ok"])
+        self.assertEqual(receipt["cmd"], "halt")
+        self.assertEqual(receipt["stopped"], ["w1", "w2"])
+        evs = self._events()
+        self.assertIn("warrior-stop warrior=w1 reason=T10 验证", evs)
+        self.assertIn("warrior-stop warrior=w2 reason=T10 验证", evs)
+        self.assertIn("deck-halt battle=battle-3 reason=T10 验证", evs)
+
+    def test_halt_default_reason_when_omitted(self):
+        cp = self._run("halt", "--battle", "battle-3")
+        receipt = self._receipt(cp)
+        self.assertTrue(receipt["ok"])
+        self.assertIn("指挥台全停", receipt["reason"])
+        self.assertIn("warrior-stop warrior=w1 reason=指挥台全停",
+                      self._events())
+
+    def test_halt_unknown_battle_rc2(self):
+        cp = self._run("halt", "--battle", "battle-99")
+        self.assertEqual(cp.returncode, 2)
+
+
 if __name__ == "__main__":
     unittest.main()

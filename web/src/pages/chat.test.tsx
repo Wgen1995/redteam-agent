@@ -746,3 +746,208 @@ describe("指挥台 T9(发现时刻卡)", () => {
       .toHaveTextContent("battle-1 本仗发现");
   });
 });
+
+// ---------------------------------------------------------------------------
+// T10 插话与转向: 流顶在跑仗条(显隐/插话带仗/全停确认流/失败红条)。
+// 数据面=GET /api/chat/running(执行中口径);发送=POST /api/chat/steer|halt。
+// ---------------------------------------------------------------------------
+
+const RUNNING = {
+  battles: [
+    { battle: "battle-2", badge: "hsl(3, 70%, 60%)", detail: "已点火（runner 未完跑）" },
+  ],
+};
+const RUNNING_EMPTY = { battles: [] };
+const STEERED = {
+  ok: true, battle: "battle-2", text: "跳过 10.2.0.9", intent: "",
+  warriors: ["w1"], timeline_row: 6,
+  note: "插话已入链（战士 w1）；回执时刻经流自然来",
+};
+const HALTED = {
+  ok: true, battle: "battle-2", reason: "预算超限", stopped: ["w1"],
+  timeline_row: 8, note: "全停已入链（w1）；停令时刻经流自然来",
+};
+
+async function typeDraft(text: string) {
+  const input = screen.getByTestId("chat-input");
+  await act(async () => {
+    fireEvent.change(input, { target: { value: text } });
+  });
+}
+
+describe("指挥台 T10(插话与转向)", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    cleanup();
+  });
+
+  it("在跑仗条显: 执行中仗名+徽标+插话/全停两小钮(输入框上方)", async () => {
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/running": [RUNNING],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    const bar = screen.getByTestId("running-bar");
+    const row = within(bar).getByTestId("running-battle-2");
+    expect(row).toHaveTextContent("battle-2");
+    const dot = within(row).getByTestId("battle-dot");
+    expect(dot).toHaveAttribute("title", "battle-2");
+    expect(dot).toHaveStyle({ backgroundColor: "hsl(3, 70%, 60%)" });
+    expect(within(row).getByTestId("steer-battle-2")).toHaveTextContent("插话");
+    expect(within(row).getByTestId("halt-battle-2")).toHaveTextContent("全停");
+    // 条在输入框上方: bar 先于 form 出现于 DOM
+    const form = screen.getByTestId("chat-input").closest("form")!;
+    const rel = bar.compareDocumentPosition(form);
+    expect(rel & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("在跑仗条隐: 无在跑仗=条隐藏不占位", async () => {
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/running": [RUNNING_EMPTY],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    expect(screen.queryByTestId("running-bar")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("steer-battle-2")).not.toBeInTheDocument();
+  });
+
+  it("插话: 输入框内容以 steer 发送(带仗标),回执气泡显,输入清空", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/running": [RUNNING],
+      "/api/chat/steer": [STEERED],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await typeDraft("跳过 10.2.0.9,重点 10.2.0.7");
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("steer-battle-2"));
+    });
+    const call = fetchMock.calls.find((c) => c.url.includes("/api/chat/steer"));
+    expect(call?.method).toBe("POST");
+    expect(call?.body).toEqual({ battle: "battle-2", text: "跳过 10.2.0.9,重点 10.2.0.7" });
+    expect(screen.getByTestId("deck-result")).toHaveTextContent("插话已入链");
+    expect(screen.getByTestId("deck-result")).toHaveTextContent("经流自然来");
+    expect(screen.getByTestId("chat-input")).toHaveValue("");     // 输入已消费
+  });
+
+  it("插话空输入: 钮禁用不发请求", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/running": [RUNNING],
+      "/api/chat/steer": [STEERED],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    expect(screen.getByTestId("steer-battle-2")).toBeDisabled();
+  });
+
+  it("全停确认流: 确认小卡(原因可选)→halt 带 reason;取消不发", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/running": [RUNNING],
+      "/api/chat/halt": [HALTED],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("halt-battle-2"));
+    });
+    const card = screen.getByTestId("halt-confirm");
+    expect(card).toHaveTextContent("battle-2");                 // 卡上带仗
+    await act(async () => {
+      fireEvent.change(screen.getByTestId("halt-reason"), { target: { value: "预算超限" } });
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("halt-confirm-ok"));
+    });
+    const call = fetchMock.calls.find((c) => c.url.includes("/api/chat/halt"));
+    expect(call?.method).toBe("POST");
+    expect(call?.body).toEqual({ battle: "battle-2", reason: "预算超限" });
+    expect(screen.getByTestId("deck-result")).toHaveTextContent("全停已入链");
+    // 取消路径: 另开一仗确认后取消,零 halt 请求
+    const fetchMock2 = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/running": [RUNNING],
+      "/api/chat/halt": [HALTED],
+    });
+    vi.stubGlobal("fetch", fetchMock2);
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("halt-battle-2"));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("halt-confirm-cancel"));
+    });
+    expect(fetchMock2.calls.some((c) => c.url.includes("/api/chat/halt"))).toBe(false);
+    expect(screen.queryByTestId("halt-confirm")).not.toBeInTheDocument();
+  });
+
+  it("全停不带原因也可确认: body 无 reason 字段", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/running": [RUNNING],
+      "/api/chat/halt": [{ ...HALTED, reason: "指挥台全停" }],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("halt-battle-2"));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("halt-confirm-ok"));
+    });
+    const call = fetchMock.calls.find((c) => c.url.includes("/api/chat/halt"));
+    expect(call?.body).toEqual({ battle: "battle-2" });         // 原因可选=不带字段
+  });
+
+  it("失败红条: steer 502 服务器原文不吞+行内重试转绿", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/running": [RUNNING],
+      "/api/chat/steer": [
+        { httpStatus: 502, json: { error: "桥失败（rc=2）: 战目录无 goal 代目录: battle-2" } },
+        STEERED,
+      ],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await typeDraft("跳过 10.2.0.9");
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("steer-battle-2"));
+    });
+    const bar = screen.getByTestId("deck-error");
+    expect(bar).toHaveAttribute("role", "alert");
+    expect(bar).toHaveTextContent("战目录无 goal 代目录");      // 原文不吞
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("deck-retry"));
+    });
+    expect(screen.queryByTestId("deck-error")).not.toBeInTheDocument();
+    expect(screen.getByTestId("deck-result")).toHaveTextContent("插话已入链");
+  });
+
+  it("say 意图 steer/halt: 分类气泡指路在跑仗条,不产确认卡", async () => {
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/running": [RUNNING],
+      "/api/chat/say": [{ status: "steer", reply: "已识别为对进行中仗的插话指令——请用流顶在跑仗条的「插话」钮发出。", intent: { target_intent: "跳过 10.2.0.9" } }],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    await submitSay("跳过 10.2.0.9");
+    expect(screen.getByTestId("say-chat")).toHaveTextContent("插话指令");
+    expect(screen.queryByTestId("say-card")).not.toBeInTheDocument();
+  });
+});
