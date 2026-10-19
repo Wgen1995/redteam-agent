@@ -15,3 +15,4 @@
 - 调试通道终态: 用户亲授钥(user-glm,glm-5.3@bigmodel coding)+三协议端点(anthropic/coding/v1);此刻双端点429(疑与驱动本会话的同端点流量互挤,备用钥分钟级前同端点两发200)——已按引擎有序链落双钥接力(user-glm优先/wgen001垫后,~/.tanyin/channels.json 仓外600)。T6点火时真调即验,不阻塞T5。
 - T5 PASS(de6069a指挥流): 独立复跑PY36/36+VT17/17+BUILD=0引擎零改;活体8901真数据(stream/warboard/badge/翻页)。工艺裁决两条入册: ①G-r18实存4处ts时钟倒挂→弃「每仗取limit归并」改全量timeline_tail+(ts,key)确定全序开窗(翻页严格无重无漏,715行全链验证) ②next_cursor=入参∪本页末key(否则未出战之仗重现最新行)。检查点服务已起: 8901+演示模式+G-r18全量合成仗。等用户亲验。
 - 检查点判定: 用户「目前看还行」=骨架过;痛点=数据看不懂(原账本黑话)/无操作路径——正是T6(说话开仗)与T7-T9(两级播报/时刻卡)的既定范围,非设计缺口。T6即刻出航。
+- T6 PASS(a612d7a说话开仗): 独立复跑PY53/53+VT24/24+BUILD=0+引擎零改;活体真钥glm-5.3全链(意图/确认卡/dry-run回执battle-43/零写入/缺预算只问缺的)。工艺注记: say客户端按TANYIN_HOME找channels.json——检查点服务起在重定向根时须同根备channels(已补/tmp/gl-review-home/channels.json 600)。8901常驻由父代理自持(T6舰沉服务随亡教训)。T7出航。
