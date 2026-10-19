@@ -21,3 +21,4 @@
 - T9 PASS(01c6de1发现时刻卡): 独立复跑PY83/83+VT95/95+BUILD=0+引擎零改;活体6卡升级DOM实证(绿徽为主灰如实);偏差2条(where/evidence通道+REPAIRED词表透传)零假数取向正当。T10出航。
 - T10 PASS(ae20c56插话转向): 独立复跑PY110/110+VT103/103+BUILD=0+引擎零改;活体真steer+真halt入链+DOM实证。CLI面勘定: steer/stop单源=cli/warrior/steer.py write_steer/write_stop(桥进程内调,goal锁单写者)。T11出航。
 - T11 PASS(073975b任务·会话签): 独立复跑PY126/126+VT116/116+BUILD=0+引擎零改;活体三仗列表→详情→会话卡→组流DOM实证(steer原文逐字可见);裁量2条(main.py挂载先例/列表10s轮询如实)入册。T12出航。
+- 重启事故: 电脑重启→T12前舰亡(零落件)/夹具根失/服务失;已恢复(battle-1=G-r18+channels 重铺,8901 重启),T12重派。教训: 夹具根在/tmp怕重启——T14收官时评估挪仓内tests区。
