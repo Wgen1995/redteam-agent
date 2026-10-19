@@ -8,7 +8,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 
-from .routers import auth, chat, overview, say
+from .routers import approvals, auth, chat, overview, say
 
 app = FastAPI(title="graphled-readface", version="0.1.0")
 
@@ -16,6 +16,7 @@ app.include_router(auth.router)
 app.include_router(chat.router)
 app.include_router(overview.router)
 app.include_router(say.router)   # T6 说话开仗: say/confirm(写走 engine_bridge)
+app.include_router(approvals.router)   # T8 内联审批: approve(写走 engine_bridge)
 
 
 @app.get("/health")

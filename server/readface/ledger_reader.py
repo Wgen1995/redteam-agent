@@ -263,6 +263,10 @@ def approvals_pending(goal_dir):
     - 数据面=ledger_query._replay_status(preauth 同源引用先例):
       timeline revert_cmd 非空行,reverted(后续 revert:<原事件>行)/
       exempted(approvals 行 decision=exempted 且 note 含原事件)出队;
+    - 决定回链出队(T8): approvals 行 note 含原事件文本 → 已决
+      (approved/rejected/…),移出待审——引擎 webui W6 审批页同律
+      (server._approval_projection「决定回链,核销口径 _replay_status
+      不变」);T8 写桥落笔同锚(note=事件原文+（指挥台审批）);
     - id=sha256(revert_cmd)=approve 通道 --command-hash 同键(写转发即用);
     - timeout_policy=preauth.load_timeout(approval.json timeout_min,
       缺省 30 分钟)超时保守跳过;顺序=timeline 文件序(挂起先后)。
@@ -270,16 +274,22 @@ def approvals_pending(goal_dir):
     s = ledger_core.Session(goal_dir)
     tmo = ledger_preauth.load_timeout(goal_dir)
     policy = "待审挂起超 %d 分钟→保守跳过(超时保守策略)" % tmo
+    _note_i = TABLES["approvals.tsv"].index("note")
+    decided_notes = [str(r[_note_i]) for r in s.rows("approvals.tsv")
+                     if str(r[_note_i])]
     out = []
     for it in ledger_query._replay_status(s):
         if it["status"] != "pending":
             continue
         r = it["row"]
+        ev = r[_EV_I]
+        if any(ev in note for note in decided_notes):
+            continue                    # 已决(W6 决定回链,待审出队)
         revert = r[_RV_I]
         out.append({
             "id": hashlib.sha256(revert.encode("utf-8")).hexdigest(),
-            "event": r[_EV_I],
-            "risk_line": _risk_line(r[_EV_I], revert),
+            "event": ev,
+            "risk_line": _risk_line(ev, revert),
             "timeout_policy": policy,
             "ts": r[_TS_I],
         })

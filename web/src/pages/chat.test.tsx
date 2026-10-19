@@ -481,3 +481,136 @@ describe("指挥台 T6(说话开仗)", () => {
     expect(screen.queryByTestId("say-card")).not.toBeInTheDocument();
   });
 });
+
+// ---------------------------------------------------------------------------
+// T8 内联审批: warboard 待审→流顶审批卡组(战况板待审批数=入口);
+// 批/拒→POST /api/chat/approve→卡转结果态;warboard 轮询消项后卡自然撤。
+// ---------------------------------------------------------------------------
+
+const WARBOARD_EMPTY_AP = {
+  soldiers: WARBOARD.soldiers,
+  findings_latest: WARBOARD.findings_latest,
+  approvals: [],
+};
+
+describe("指挥台 T8(内联审批)", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    cleanup();
+  });
+
+  it("流顶审批卡组: warboard 待审出卡(命令原文),且在流容器之前", async () => {
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/say": [{ status: "chat", reply: "已收到。" }],
+      "/api/chat/approve": [{ ok: true, approval_id: "AP-1-0001" }],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    const deck = screen.getByTestId("approval-deck");
+    const card = within(deck).getByTestId("approval-card");
+    expect(card).toHaveTextContent("http-get http://x/a");   // 命令原文
+    expect(within(card).getByTestId("approval-approve")).toBeInTheDocument();
+    // 卡组在流顶: deck 先于流容器出现于 DOM
+    const stream = screen.getByTestId("chat-stream");
+    const rel = deck.compareDocumentPosition(stream);
+    expect(rel & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("战况板待审批格=入口: 点标题收起/展开卡组", async () => {
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/approve": [{ ok: true, approval_id: "AP-1-0001" }],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    expect(screen.getByTestId("approval-card")).toBeInTheDocument();
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("wb-approvals-entry"));
+    });
+    expect(screen.queryByTestId("approval-card")).not.toBeInTheDocument();
+    expect(screen.getByTestId("approval-deck")).toBeInTheDocument(); // 组头还在
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("approval-deck-toggle"));
+    });
+    expect(screen.getByTestId("approval-card")).toBeInTheDocument();
+  });
+
+  it("批一次: POST approve 带仗名+命令哈希,卡转绿已批准", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/approve": [{ ok: true, approval_id: "AP-1-0009", decision: "approve" }],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("approval-approve"));
+    });
+    const call = fetchMock.calls.find((c) => c.url.includes("/api/chat/approve"));
+    expect(call?.method).toBe("POST");
+    expect(call?.body).toEqual({
+      battle: "battle-2", command_hash: "a1", decision: "approve",
+    });
+    const done = screen.getByTestId("approval-done");
+    expect(done).toHaveTextContent("已批准");
+    expect(done).toHaveTextContent("AP-1-0009");
+  });
+
+  it("决后轮询消项: warboard 下轮无该待审→卡自然撤(零待审=组不显)", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD, WARBOARD_EMPTY_AP],
+      "/api/chat/approve": [{ ok: true, approval_id: "AP-1-0010", decision: "approve" }],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("approval-approve"));
+    });
+    expect(screen.getByTestId("approval-done")).toBeInTheDocument();  // 决后仍显结果
+    await act(async () => {
+      vi.advanceTimersByTime(10000);                                  // 下一轮战况板
+    });
+    expect(screen.queryByTestId("approval-card")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("approval-deck")).not.toBeInTheDocument();
+  });
+
+  it("审批失败红条: 服务器原文不吞,重试可再提交", async () => {
+    const fetchMock = makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD],
+      "/api/chat/approve": [
+        { httpStatus: 502, json: { error: "审批桥失败(rc=2): 引擎拒收审批" } },
+        { ok: true, approval_id: "AP-1-0011", decision: "reject" },
+      ],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await act(async () => { render(<ChatPage />); });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("approval-reject"));
+    });
+    const bar = screen.getByTestId("approval-error");
+    expect(bar).toHaveAttribute("role", "alert");
+    expect(bar).toHaveTextContent("引擎拒收审批");
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("approval-retry"));
+    });
+    expect(screen.getByTestId("approval-done")).toHaveTextContent("已拒绝");
+  });
+
+  it("零待审: warboard approvals 空 → 无卡组不占位", async () => {
+    vi.stubGlobal("fetch", makeFlowFetch({
+      "/api/chat/stream": [firstPage([R1])],
+      "/api/chat/warboard": [WARBOARD_EMPTY_AP],
+    }));
+    await act(async () => { render(<ChatPage />); });
+    expect(screen.queryByTestId("approval-deck")).not.toBeInTheDocument();
+    expect(screen.getByTestId("wb-approvals-empty")).toBeInTheDocument();
+  });
+});

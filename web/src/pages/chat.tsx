@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FormEvent, UIEvent } from "react";
 import MomentCard from "../components/moment/MomentCard";
+import ApprovalCard, { type ApprovalItem } from "../components/moment/ApprovalCard";
 
 /**
  * 指挥台(P0 T5 件B + T7 两级播报): 中央时刻流+右侧战况板。
@@ -13,6 +14,11 @@ import MomentCard from "../components/moment/MomentCard";
  * - 顶栏仗过滤 chips(全部/各仗,点选客户端过滤)。
  * - 右侧战况板三格(可收起): 在跑士兵/最新发现/待审批,10s 轮询
  *   /api/chat/warboard;失败静默空态不造假。
+ * - T8 内联审批: warboard approvals 待审 → 流顶审批卡组
+ *   (data-testid=approval-deck;战况板「待审批」格=入口,点标题开合);
+ *   每卡=ApprovalCard(命令原文/风险句/关联发现/超时策略+批准执行/
+ *   拒绝双钮→POST /api/chat/approve);决后卡转结果态,warboard 下轮
+ *   消项后卡自然撤;审批入链时刻经中央流轮询自然到来,本页不伪造。
  * - 输入框常活(T6 说话开仗): 发送→POST /api/chat/say(行内「指挥→AI
  *   解析中」态)→confirm-ignite 确认卡气泡(kind 着色,目标/范围/预算三行
  *   +授权一句+确认开打/取消双钮);确认→POST /api/chat/confirm,点火时刻
@@ -169,6 +175,22 @@ function mergeRows(existing: StreamRow[], incoming: StreamRow[]): StreamRow[] {
   return [...map.values()].sort(byOrder);
 }
 
+/** warboard 待审批项 → 卡数据(缺 id/event 的坏行丢弃,宁缺毋假)。 */
+function asApprovalItem(it: WarboardItem): ApprovalItem | null {
+  if (typeof it.id !== "string" || !it.id || typeof it.event !== "string" || !it.event) {
+    return null;
+  }
+  return {
+    id: it.id,
+    event: it.event,
+    risk_line: typeof it.risk_line === "string" ? it.risk_line : null,
+    timeout_policy: typeof it.timeout_policy === "string" ? it.timeout_policy : null,
+    ts: typeof it.ts === "string" ? it.ts : null,
+    battle: it.battle,
+    badge: it.badge,
+  };
+}
+
 function BattleDot({ battle, badge }: { battle: string; badge: string }) {
   return (
     <span
@@ -273,18 +295,38 @@ function WbPanel({
   title,
   items,
   empty,
+  entryTestId,
+  onEntryClick,
 }: {
   testid: string;
   title: string;
   items: WarboardItem[];
   empty: string;
+  /** 有值=标题成入口钮(T8 待审批格开合流顶卡组)。 */
+  entryTestId?: string;
+  onEntryClick?: () => void;
 }) {
+  const head = (
+    <>
+      {title}
+      <span className="ml-1.5 font-mono text-tx5">{items.length}</span>
+    </>
+  );
   return (
     <section data-testid={testid} className="border-b border-line px-3 py-2.5">
-      <h3 className="mb-1.5 text-fs-a tracking-[1px] text-tx4">
-        {title}
-        <span className="ml-1.5 font-mono text-tx5">{items.length}</span>
-      </h3>
+      {entryTestId && onEntryClick ? (
+        <button
+          type="button"
+          data-testid={entryTestId}
+          onClick={onEntryClick}
+          title="开合流顶审批卡"
+          className="mb-1.5 text-left text-fs-a tracking-[1px] text-tx4 hover:text-tx2"
+        >
+          {head}
+        </button>
+      ) : (
+        <h3 className="mb-1.5 text-fs-a tracking-[1px] text-tx4">{head}</h3>
+      )}
       {items.length === 0 ? (
         <p data-testid={testid + "-empty"} className="text-fs-a text-tx5">
           {empty}
@@ -327,6 +369,7 @@ export default function ChatPage() {
   const [boardOpen, setBoardOpen] = useState(true);
   const [draft, setDraft] = useState("");
   const [flow, setFlow] = useState<SayFlow>({ phase: "idle" });
+  const [approvalOpen, setApprovalOpen] = useState(true);   // T8 审批卡组开合
   const scrollRef = useRef<HTMLDivElement>(null);
   const nearBottomRef = useRef(true);
   const loadingOlderRef = useRef(false);
@@ -469,6 +512,11 @@ export default function ChatPage() {
   const visible = battleFilter ? rows.filter((r) => r.battle === battleFilter) : rows;
   const freshSet = new Set(fresh);
   const exhausted = olderCursor === null;
+  // T8: warboard 待审 → 流顶审批卡(坏行丢弃;决后由卡内结果态稳显,
+  // warboard 下轮消项后自然撤)。
+  const approvalItems = (board?.approvals ?? [])
+    .map(asApprovalItem)
+    .filter((x): x is ApprovalItem => x !== null);
 
   return (
     <section data-testid="chat-page" className="flex h-full min-h-0">
@@ -486,6 +534,39 @@ export default function ChatPage() {
           <div role="alert" className="border-b border-warn/40 bg-warn/10 px-4 py-1.5 text-fs-a text-warn">
             连接中断,重连中…
           </div>
+        )}
+        {/* T8 内联审批: warboard 待审→流顶审批卡组(战况板待审批格=入口) */}
+        {approvalItems.length > 0 && (
+          <section
+            data-testid="approval-deck"
+            aria-label="待审批"
+            className="border-b border-line px-4 py-2.5"
+          >
+            <div className="flex items-center justify-between">
+              <h2 className="text-fs-a tracking-[2px] text-warn">
+                待审批
+                <span className="ml-1.5 font-mono text-tx5">{approvalItems.length}</span>
+              </h2>
+              <button
+                type="button"
+                data-testid="approval-deck-toggle"
+                aria-pressed={approvalOpen}
+                onClick={() => setApprovalOpen((v) => !v)}
+                className="rounded-glds-s border border-line-2 px-2 py-0.5 text-fs-a text-tx4 hover:text-tx2"
+              >
+                {approvalOpen ? "收起" : "展开"}
+              </button>
+            </div>
+            {approvalOpen && (
+              <ul data-testid="approval-list" className="mt-2 flex flex-col gap-2">
+                {approvalItems.map((it) => (
+                  <li key={it.id}>
+                    <ApprovalCard item={it} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
         )}
         <div
           ref={scrollRef}
@@ -606,7 +687,14 @@ export default function ChatPage() {
         </div>
         <WbPanel testid="wb-soldiers" title="在跑士兵" items={board?.soldiers ?? []} empty="暂无在跑士兵" />
         <WbPanel testid="wb-findings" title="最新发现" items={board?.findings_latest ?? []} empty="暂无发现" />
-        <WbPanel testid="wb-approvals" title="待审批" items={board?.approvals ?? []} empty="暂无待审批" />
+        <WbPanel
+          testid="wb-approvals"
+          title="待审批"
+          items={board?.approvals ?? []}
+          empty="暂无待审批"
+          entryTestId="wb-approvals-entry"
+          onEntryClick={() => setApprovalOpen((v) => !v)}
+        />
       </aside>
     </section>
   );
