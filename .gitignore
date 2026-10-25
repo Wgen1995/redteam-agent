@@ -10,3 +10,6 @@ __pycache__/
 # coverage 计量工件（W2·CI 护栏⑤：主进程+子进程数据文件）
 .coverage
 .coverage.*
+
+# 账本校验输出碎片拦截面（SECW-75 安检处置：token- 为 edges 校验回执落盘，非凭据）
+/token-*
